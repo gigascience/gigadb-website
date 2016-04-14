@@ -1,0 +1,4 @@
+0 20 * * * /opt/bin/cronic /var/www/gigadb.cogini.com/htdocs/protected/scripts/autoIndexer.sh
+0 21 * * * /opt/bin/cronic /var/www/gigadb.cogini.com/htdocs/protected/scripts/createSiteMap.sh
+0 21 * * * /opt/bin/cronic /var/www/gigadb.cogini.com/htdocs/protected/scripts/mcsync.sh
+0 22 * * * /opt/bin/cronic /var/www/gigadb.cogini.com/htdocs/protected/yiic autosearch search
