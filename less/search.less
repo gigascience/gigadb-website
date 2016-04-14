@@ -1,0 +1,126 @@
+
+/* ------------------------ 
+Author : Huy Truong
+Date : 17-12-2014
+*/
+
+/* Variants describe */
+@gigaGreen: #00B050;
+@gigaGreenHover: #7AB441;
+
+
+/* Standard Definition */
+.no-margin-left{
+	margin-left:0px !important;
+}
+
+/* CSS for Search */
+
+.search-result-container{
+	background-color: #ededed;
+	border:1px solid #ddd;
+	border-radius: 8px;
+	padding-top:10px;
+	padding-bottom:10px;
+	margin-bottom:20px;
+
+}
+
+
+.filter-your-result{
+	font-size:18px;
+	font-weight:bold;
+	color:#4F6228;
+	margin-bottom:20px !important;
+}
+
+.result-sub-links{
+	font-weight: bold;
+	color: @gigaGreen !important;
+	&:hover{
+		background-color: transparent !important;
+		color:@gigaGreenHover !important;
+	}
+}
+
+.result-cell{
+	li{
+		.result-main-link{
+			font-size:17px !important;
+			color: @gigaGreen !important;
+			&:hover{
+				color: @gigaGreenHover !important;
+				background-color: transparent !important;
+			}
+		}
+
+		a{
+			padding-left:0px !important;
+			border-width:0px !important;
+			background-color:transparent !important;
+			color:#000 !important;
+			&:hover{
+				background-color: transparent !important;
+				color:@gigaGreenHover;
+			}
+		}
+	}
+}
+
+
+.logo-container{
+	padding-top:10px !important;
+	img{
+		max-width:30px;
+		margin-left:20px !important;
+	}
+}
+.main-content{
+	margin-left:10px !important;
+}
+
+
+.file-container{
+	.logo-container-file{
+		.logo-container;
+		padding-top:5px !important;
+	}
+
+	.file-name, .file-type, .file-size, .file-checkbox{
+		padding-top:15px;
+		.no-margin-left;
+		text-align: center;
+	}
+
+	.file-name{
+		text-align: left !important;
+		margin-left:10px !important;
+		font-size:15px !important;
+	}
+
+}
+
+.result .nav-tabs .active a, .result .nav-tabs a:hover{
+	background:transparent !important;
+
+}
+
+
+/* Search popup */
+
+.popover-box{
+	width:200px;
+	height:200px;
+}
+
+.login-popup-btn{
+	width:180px;
+	margin-left:10px;
+	margin-right:10px;
+	margin-top:10px;
+	float:left;
+}
+
+.login-popup-img{
+	max-height: 24px;
+}
