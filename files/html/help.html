@@ -1,0 +1,458 @@
+<h2>Back to <a href="GigaDB_new.php"><em>Giga</em>DB</a></h2>
+<h4><a href="#intro">Introduction</a></h4>
+<h4><a href="#gigasearch"><em>Giga</em>DB search</a></h4>
+<ul>
+<li><a href="#basic">Basic search</a></li>
+
+<!--
+<li><a href="#advanced">Advanced search</a></li>
+-->
+
+<li><a href="#results">Search results</a></li>
+<li><a href="#filtering">Filtering results</a></li>
+</ul>
+<h4><a href="#aspera">Using Aspera</a></h4>
+<h4><a href="#submission">Submission guidelines</a></h4>
+<h4><a href="#vocabulary">Controlled vocabulary</a></h4>
+<ul>
+<li><a href="#datasettype">Dataset types</a></li>
+<li><a href="#fileformat">File formats</a></li>
+<li><a href="#filetype">File types</a></li>
+<li><a href="#upload">Upload status</a></li>
+<li><a href="#relation">DOI relationship</a></li>
+</ul>
+<hr/>
+
+<h2><a name="intro">Introduction</a></h2>
+	<p>The <a href="http://gigadb.org/"><em>Giga</em>DB</a> website allows any user to browse, search, view datasets and access data files. If you want to submit a dataset, save searches or be alerted of new content of interest we request that you <a href="http://gigadb.org/user/create">create an account</a>.</p>
+	<p>A 'Latest news' section will be visible to announce any updates or new features to the database and the RSS feed automatically announces each new dataset release.</p>
+	<p>The <a href="http://gigadb.org/"><em>Giga</em>DB</a> homepage allows you to browse datasets by type eg Genomic, Metagenomic, Transcriptomic. Clicking on the DOI (digital object identifier) or image will take you directly to the webpage for the dataset of interest.</p>
+	<p>Alternatively you can use the <a href="#basic">search</a> functions to find datasets, samples or files of interest.</p>
+<br/>
+
+<h2><a name="gigasearch">GigaDB search</a></h2>
+<h2><a name="basic">Search Operation</a></h2>
+<p> To search across all Dataset, Sample and File records in GigaDB, simply enter a search term in the search bar found at the top of all GigaDB pages. </p>
+<p>The search is case insensitive which means both uppercase and lowercase keywords will have the same result. </p>
+<!--
+<h2><a name="advanced">Advanced search</a></h2>
+	<p>The <a href="http://sphinxsearch.com/docs/1.10/extended-syntax.html">Extended query syntax</a> is powered by <a href="http://sphinxsearch.com/docs/1.10/boolean-syntax.html">Sphinx</a> using the field search operator @. The following field names may be searched using the syntax '@ &lt;field name&gt; &lt;value&gt;':</p>
+
+<ul>
+<li>title</li>
+<li>description (searches Dataset and File description)</li>
+<li>identifier (Dataset DOI eg '100001' or '10.5524\/100001')</li>
+<li>author_names (Author name format: LastName, Initial eg 'Wang, J')</li>
+<li>affiliation (Submitter affiliation eg 'BGI',  'University of Puerto Rico', 'UCL Cancer Institute')</li>
+<li>dataset_type_names (<a href="#datasettype">Dataset type</a> controlled vocabulary eg  'Genomic', 'Proteomic')</li>
+<li>manuscript_identifiers (Manuscript DOI eg 'NEJMoa1107643' or '10.1056\/NEJMoa1107643')</li>
+<li>manuscript_pmids (<a href="http://www.ncbi.nlm.nih.gov/pubmed/">PubMed</a> ID eg '21793736', '22002653')</li>
+<li>project_names (Project name eg 'Genome 10K', '1000 Genomes')</li>
+<li>links (External accessions eg 'GSE27468', 'PRJNA170655', 'SRA051254') </li>
+<li>external_type_names (External links controlled vocabulary: 'Genome Browser' or 'Additional Data')</li>
+<li>dpublication_date (Publication date format: yyyy/mm/dd)</li>
+<li>dmodification_date  (Modification date format: yyyy/mm/dd)</li>
+</ul>
+
+	<p>For samples:</p>
+<ul>
+<li>common_name (Internally controlled Common name eg 'Human', 'Mouse')</li>
+<li>genbank_name (<a href="http://www.ncbi.nlm.nih.gov/taxonomy">NCBI Taxonomy</a> GenBank name eg 'human', 'house mouse')</li>
+<li>scientific_name (<a href="http://www.ncbi.nlm.nih.gov/taxonomy">NCBI Taxonomy</a> Scientific name eg 'Homo sapiens', 'Mus musculus') </li>
+<li>tax_id (<a href="http://www.ncbi.nlm.nih.gov/taxonomy">NCBI Taxonomy</a> ID eg '9606', '10090')</li>
+<li>s_attrs (Sample attributes eg 'age=43', 'sex=female')</li>
+</ul>
+
+	<p>For files:</p>
+<ul>
+<li>name</li>
+<li>description (searches Dataset and File description)</li>
+<li>type (<a href="#filetype">File type</a> controlled vocabulary eg 'Alignments', 'Genome sequence', 'SNPs')</li>
+<li>format (<a href="#fileformat">File format</a> controlled vocabulary eg 'BIGWIG', 'FASTQ', 'VCF')</li>
+<li>extension (File extension eg '</li>
+<li>ddate_stamp  (Release date format: yyyy/mm/dd)</li>
+</ul>
+<br/>
+-->
+
+<h2><a name="results">Search results</a></h2>
+The search results are grouped by GigaDB Datasets (G), Samples (S) and Files (F).
+	<p style="margin-top:10px;"><img src="/images/icons/g-new-icon.png" style="max-width:30px;"> For each dataset result, author names and DOI are displayed. Hovering over dataset name provides the description of dataset. Dataset and sample names are linked to the specific DOI page for those data, as well as file links are provided to download.</p>
+	<p style="margin-top:10px;"><img src="/images/icons/s-new-icon.png" style="max-width:30px;"> For each sample result, the sample name, species name and species ID are displayed with links to the NCBI taxonomy page for the species and to the GigaDB dataset page.</p>
+	<p style="margin-top:10px;"><img src="/images/icons/f-new-icon.png" style="max-width:30px;"> For each file result, the file name, file type and file size are displayed with a direct link to the FTP server location of that file.</p>
+
+	<p style="margin-top:10px;">Only those objects that have direct matches are displayed in the search results, i.e. the only Files to be displayed in the search results will be those with matches to the search term, all other files within the same dataset will NOT be displayed.</p>
+
+	<p style="margin-top:10px;">For example, searching for the term “Potato” will return the dataset with the title “Genomic data from the potato” which contains 17 files, however, the search results table will only display 3 of those 17 files because only 3 contain the search term “potato”. To find all data associated with a dataset you must follow the link to the dataset page.</p>
+
+<br/>
+
+<h2><a name="filtering">Filtering results</a></h2>
+	<p>On the left of the search results you have the option to further refine the results by using the filters. By default all filters are disabled, allowing you to see all search results for your keyword. If you want to hide some results based on some criteria, choose the filter for your criteria, and select the options that match what you want to see. </p>
+	<p>TFilter options for Datasets:</p>
+
+<ul>
+<li>Dataset Type (<a href="#datasettype">Dataset Type</a> controlled vocabulary eg 'Genomic', 'Proteomic')</li>
+<li>Project (eg 'Genome 10K', '1000 Genomes'</li>
+<li>External Link Types (Controlled vocabulary: 'Genome Browser' or 'Additional Data')</li>
+<li>Publication Date (From and To. Format: dd-mm-yyyy)</li>
+</ul>
+
+	<p>Filter options for Samples:</p>
+<ul>
+<li>Common Name (Internally controlled eg 'Human', 'Mouse')</li>
+</ul>
+
+	<p>Filter options for Files:</p>
+<ul>
+
+<li>File Type (<a href="#filetype">File Type</a> controlled vocabulary eg 'Alignments', 'Genome sequence', 'SNPs')</li>
+<li>File Format (<a href="#fileformat">File format</a> controlled vocabulary eg 'BIGWIG', 'FASTQ', 'VCF')</li>
+<li>File Size (From and To: Format KB, MB, GB, TB)</li>
+</ul>
+
+	<p>Click the 'Apply Filters' button to see your refined results table.</p>
+<br/>
+
+<h2><a name="aspera">Using Aspera</a></h2>
+	<p>As many of the <em>Giga</em>DB datasets are large, several in the terabyte range, we have installed <a href="http://asperasoft.com">Aspera</a> to provide a faster and more reliable method for users to download files from the <em>Giga</em>DB FTP server:</p>
+<p><a href="http://aspera.gigadb.org/?B=pub/10.5524/100001_101000/">http://aspera.gigadb.org/?B=pub/10.5524/100001_101000/</a></p>
+<p>Login: gigadb
+<br/>Password: gigadb</p>
+	<p>In order to use Aspera to download files you first need to install the free <a href="http://downloads.asperasoft.com/download_connect/">AsperaConnect web browser plug-in</a>. For information on setup and use see the documentation on the plug-in site and the <a href="http://download.asperasoft.com/download/docs/connect/2.0/aspera-connect-win.html">Aspera Connect User Guide</a>.</p>
+<p>For bulk downloads it is recommended that you do this programmatically via the '<a href="http://download.asperasoft.com/download/docs/ascp/2.6/html/index.html?http://download.asperasoft.com/download/docs/ascp/2.6/html/fasp/faq.html">ascp</a>' command line (this utility is delivered along with the AsperaConnect product).</p>
+<br/>
+
+<h2><a name="submission">Submission guidelines</a></h2>
+	<p><a href="http://gigadb.org/"><em>Giga</em>DB</a> is an open-access database. As such, all data submitted to <em>Giga</em>DB must be fully consented for public release (for more information about our data policies, please see our <a href="http://gigadb.org/site/term/">Terms of use page</a>).</p>
+	<p>All sequence, assembly, variation, and microarray data must be deposited in a public database at <a href="http://www.ncbi.nlm.nih.gov/">NCBI</a>, <a href="http://www.ebi.ac.uk/">EBI</a>, or <a href="http://www.ddbj.nig.ac.jp/">DDBJ</a> before you submit them to <a href="http://gigadb.org/"><em>Giga</em>DB</a>. In the cases where you would like <em>Giga</em>DB to host files associated with genomic data not fully consented for public release, you must first submit the non-public data to <a href="http://www.ncbi.nlm.nih.gov/gap/">dbGaP</a> or <a href="http://www.ebi.ac.uk/ega/ ">EGA</a>.</p>
+	<p><strong>Step 1</strong> - <a href="http://gigadb.org/user/create">Create an account</a> or <a href="http://gigadb.org/site/login">log in</a> to <a href="http://gigadb.org/"><em>Giga</em>DB</a></p>
+	<p><strong>Step 2</strong> - Download and complete the <a href="http://gigadb.org/files/GigaDBUploadForm.xls">Excel template file</a>. Completed example files for the E. coli (<a href="http://gigadb.org/dataset/100001">10.5524/100001</a>) and Sorghum (<a href="http://gigadb.org/dataset/100012">10.5524/100012</a>) datasets are available.</p>
+
+	<p>The template file contains:</p>
+<ul>
+<li>3 tabs which must all be completed [Study, Samples, Files]</li>
+<li>4 informational tabs [Samples (info), Files (info), CV, Links]</li>
+</ul>
+	<p>Mandatory fields are highlighted in yellow.</p>
+
+<h5>Study</h5>
+	<p>Required information includes submitter name, email and affiliation, upload status [can we publish this dataset immediately after review (Publish) or should it be held until publication (HUP)], author list, <a href="#datasettype">dataset type(s)</a> (selected from a controlled vocabulary list), dataset title and description, estimated total size of the files that will be submitted and dataset image information.</p>
+	<p>Optional information includes links to additional resources and related manuscripts, accessions for data in other databases (prefixes are found in the Links tab), and <a href="#relation">relationship</a> (if any) to a previously published <em>Giga</em>DB dataset (selected from a controlled vocabulary list).</p>
+
+<h5>Samples</h5>
+	<p>Required information includes a sample ID or name (please use an <a href="http://www.ncbi.nlm.nih.gov/biosample">NCBI BioSample ID</a> when possible), species <a href="http://www.ncbi.nlm.nih.gov/Taxonomy">NCBI taxonomy ID</a>, and species common name.</p>
+	<p>Optional information includes sample attributes (these are automatically populated in <em>Giga</em>DB if an <a href="http://www.ncbi.nlm.nih.gov/biosample">NCBI BioSample ID</a> is provided).</p>
+
+<h5>Files</h5>
+	<p>Required information includes a file name or path relative to your home directory and <a href="#filetype">file type</a> (selected from a controlled vocabulary list). A readme file must be provided.</p>
+	<p>Optional information includes a file description and a sample ID or name.</p>
+	<p><strong>Step 3</strong> - confirm you have read our <a href="http://gigadb.org/site/term/">Terms of use</a> page and upload the completed Excel template file.</p>
+	<p>You can expect a response from the <a href="http://gigadb.org/"><em>Giga</em>DB</a> team within 5 days to verify the information in your submission and to arrange upload of your files to our FTP site.</p>
+	<p>If you have any questions, please contact us at <a href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a>.</p>
+<br/>
+
+<h2><a name="vocabulary">Controlled vocabulary</a></h2>
+<h3><a name="datasettype">Dataset types</a></h3>
+	<p><strong>Genomic</strong> - includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation.<br/>Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files)</p>
+	<p><strong>Epigenomic</strong> - includes methylation and histone modification data.<br/>Minimal requirements: Details on methylation sites/status eg qmap files OR details on histone modification sites/status.</p>
+	<p><strong>Metagenomic</strong> - includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation from environmental samples.<br/>Minimal requirements: Environmental DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</p>
+	<p><strong>Proteomic</strong> - includes all mass spec data.<br/>Minimal requirements: Peptide/protein data eg mass spec.</p>
+	<p><strong>Transcriptomic</strong> - includes all data relating to mRNA.<br/>Minimal requirements: RNA sequence data eg next-gen raw reads (fastq files) OR transcript statistics eg RNA coverage/depth.</p>
+	<p>Additional dataset types can be added, upon review, as new submissions are received.</p>
+<br/>
+
+<h3><a name="filetype">File types</a></h3>
+<p>File types and examples of associated file extensions:</p>
+<p><strong>Alignments:</strong> .bam, .chain, .maf, .net, .sam</p>
+<p><strong>Allele frequencies:</strong> .frq</p>
+<p><strong>Annotation:</strong> .gff, .ipr, .kegg, .wego</p>
+<p><strong>Coding sequence:</strong> .cds, .fa</p>
+<p><strong>InDels:</strong> .gff, .txt, .vcf</p>
+<p><strong>ISA-Tab:</strong> see <a href="http://isatab.sourceforge.net/format.html">ISA tools</a></p>
+<p><strong>Genome assembly:</strong> .agp, .contig, .depth, .fa, .length, .scafseq</p>
+<p><strong>Genome sequence:</strong> .fastq, .fq</p>
+<p><strong>Haplotypes:</strong> .haplotype</p>
+<p><strong>Methylome data:</strong> .fa, .qmap, .rpm, .txt</p>
+<p><strong>Protein sequence:</strong> .fa, .pep</p>
+<p><strong>Readme:</strong> .pdf, .txt</p>
+<p><strong>SNPs:</strong> .annotation, .gff, .txt, .vcf</p>
+<p><strong>SVs:</strong> .gff, .txt, .vcf</p>
+<p><strong>Transcriptome data:</strong> .depth, .rpkm, .wig</p>
+<p><strong>Other:</strong> .xls, .pdf, .txt</p>
+<p>Additional file types can be added, upon review, as new submissions are received.</p>
+<br/>
+
+<h3><a name="fileformat">File formats</a></h3>
+<ul>
+<li><a href="#agp">AGP</a></li>
+<li><a href="#bam">BAM</a></li>
+<li><a href="#bigwig">BIGWIG</a></li>
+<li><a href="#chain">CHAIN</a></li>
+<li><a href="#contig">CONTIG</a></li>
+<li><a href="#excel">EXCEL</a></li>
+<li><a href="#fasta">FASTA</a></li>
+<li><a href="#fastq">FASTQ</a></li>
+<li><a href="#gff">GFF</a></li>
+<li><a href="#ipr">IPR</a></li>
+<li><a href="#kegg">KEGG</a></li>
+<li><a href="#maf">MAF</a></li>
+<li><a href="#net">NET</a></li>
+<li><a href="#pdf">PDF</a></li>
+<li><a href="#png">PNG</a></li>
+<li><a href="#qmap">QMAP</a></li>
+<li><a href="#qual">QUAL</a></li>
+<li><a href="#rpkm">RPKM</a></li>
+<li><a href="#sam">SAM</a></li>
+<li><a href="#tar">TAR</a></li>
+<li><a href="#text">TEXT</a></li>
+<li><a href="#vcf">VCF</a></li>
+<li><a href="#wego">WEGO</a></li>
+<li><a href="#wig">WIG</a></li>
+<li><a href="#unknown">UNKNOWN</a></li>
+<li><a href="#xml">XML</a></li>
+</ul>
+
+<a name="agp"></a>
+<p><strong>AGP</strong> (.agp) - the Accessioned Golden Path (AGP) file describes the assembly of a larger sequence object from smaller objects:</p>
+<table>
+<tr>
+<td>chr1</td>
+<td>1</td>
+<td>1972671</td>
+<td>0</td>
+<td>W</td>
+<td>scaffold43</td>
+<td>1</td>
+<td>1972671</td>
+<td>m</td>
+</tr>
+<tr>
+<td>chr1</td>
+<td>1972672</td>
+<td>3061819</td>
+<td>1</td>
+<td>W</td>
+<td>scaffold8</td>
+<td>1</td>
+<td>1089148</td>
+<td>p</td>
+</tr>
+<tr>
+<td>chr1</td>
+<td>3061820</td>
+<td>3181505</td>
+<td>2</td>
+<td>W</td>
+<td>scaffold548</td>
+<td>1</td>
+<td>119686</td>
+<td>m</td>
+</tr>
+<tr>
+<td>chr1</td>
+<td>3181506</td>
+<td>4176151</td>
+<td>3</td>
+<td>W</td>
+<td>scaffold313</td>
+<td>1</td>
+<td>994646</td>
+<td>m</td>
+</tr>
+</table>
+
+<p>The large object can be a contig, a scaffold (supercontig), or a chromosome.
+<br/>See <a  href="http://www.ncbi.nlm.nih.gov/projects/genome/assembly/agp/AGP%5FSpecification.shtml">AGP Specification v2.0</a></p>
+
+<a name="bam"></a>
+	<p><strong>BAM</strong> (.bam) - the <a href="http://genome.sph.umich.edu/wiki/BAM">Binary Alignment/Map (BAM) format</a> is the compressed binary version of the Sequence Alignment/Map (SAM) format, a compact and index-able representation of nucleotide sequence alignments.</p>
+
+<a name="bigwig"></a>
+	<p><strong>BIGWIG</strong> (.bw) - the <a href="http://genome.ucsc.edu/goldenPath/help/bigWig.html">BIGWIG format</a> is for storing dense, continuous data (such as GC percent, probability scores, and transcriptome data) that will be displayed in the UCSC Genome Browser as a graph. BIGWIG files are created initially from wiggle (WIG) type files, using the program wigToBigWig.</p>
+
+<a name="chain"></a>
+	<p><strong>CHAIN</strong> (.chain) - the  <a href="http://genome.ucsc.edu/goldenPath/help/chain.html">CHAIN format</a> describes a pairwise alignment that allow gaps in both sequences simultaneously and is used by the UCSC Genome Browser.</p>
+
+<a name="contig"></a>
+	<p><strong>CONTIG</strong> (.contig) - the <a href="http://soap.genomics.org.cn/soapdenovo.html">CONTIG format</a> is a direct output from the SOAPdenovo alignment program:</p>
+<table>
+<tr><td>&gt;1 length 32 cvg_0.0_tip_0</td></tr>
+<tr><td>GAGAACGGCGAAGCCTGCTCGGGCCCGTTATA</td></tr>
+<tr><td>&gt;3 length 32 cvg_23.0_tip_0</td></tr>
+<tr><td>TAGCAGCGATTTGATCAAACTCAATCTTACCG</td></tr>
+<tr><td>&gt;5 length 32 cvg_40.0_tip_0</td></tr>
+<tr><td>GGTAAGATTGAGTTTGATCAAATCGCTGCTAT</td></tr>
+</table>
+
+<a name="excel"></a>
+	<p><strong>EXCEL</strong> (.xls, .xlsx) - Microsoft office spreadsheet files</p>
+
+<a name="fasta"></a>
+	<p><strong>FASTA</strong> (.fasta, .fa, .seq, .cds, .pep, .scafseq [SOAPdenovo output file - sequence of each scaffold]) -  <a href="http://www.ebi.ac.uk/help/formats.html#fasta">FASTA</a> is a text-based format for representing either nucleotide sequences or peptide sequences.</p>
+
+<a name="fastq"></a>
+	<p><strong>FASTQ</strong> (.fq, .fastq) - the <a href="http://maq.sourceforge.net/fastq.shtml">FASTQ format</a> stores sequences  (usually nucleotide sequence) and Phred qualities in a single file.</p>
+
+<a name="gff"></a>
+	<p><strong>GFF</strong> (.gff) - The <a href="http://www.sanger.ac.uk/resources/software/gff/">General Feature Format (GFF)</a> is used for describing genes and other features of DNA, RNA and protein sequences.</p>
+
+<a name="ipr"></a>
+	<p><strong>IPR</strong> (.ipr) - the <a href="http://wego.genomics.org.cn/cgi-bin/wego/Documents.pl">Web Gene Ontology (WEGO) Annotation format</a> consists of the protein ID, followed by column(s) that are the IPR (<a href="http://www.ebi.ac.uk/interpro/">InterPro</a>) ID(s):</p>
+<table>
+<tr>
+<td>CR_ENSP00000334840</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>CR_ENSMMUP00000018123</td>
+<td>IPR000504</td>
+<td>IPR003954</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>CR_ENSP00000333725</td>
+<td>IPR001781</td>
+<td>IPR015880</td>
+<td>IPR007087</td>
+<td>IPR001909</td>
+</tr>
+</table>
+
+	<p>See <a href="http://www.ncbi.nlm.nih.gov/pubmed/16845012?dopt=Abstract">WEGO: a web tool for plotting GO annotations</a></p>
+
+<a name="kegg"></a>
+	<p><strong>KEGG</strong> (.kegg) - the <a href="http://wego.genomics.org.cn/cgi-bin/wego/Documents.pl">Web Gene Ontology (WEGO) Annotation format</a> consists of the protein ID, followed by column(s) that are the <a href="http://www.genome.jp/kegg/ ">KEGG</a> (Kyoto Encyclopedia of Genes and Genomes) ID(s):</p>
+<table>
+<tr>
+<td>CR_ENSMMUP00000031408</td>
+<td>ko03010</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>CR_ENSP00000364815</td>
+<td>ko00970</td>
+<td>ko00290</td>
+<td></td>
+</tr>
+<tr>
+<td>CR_ENSP00000414605</td>
+<td>ko05146</td>
+<td>ko04510</td>
+<td>ko04512</td>
+</tr>
+</table>
+	<p>See <a href="http://www.ncbi.nlm.nih.gov/pubmed/16845012?dopt=Abstract">WEGO: a web tool for plotting GO annotations</a></p>
+
+<a name="maf"></a>
+	<p><strong>MAF</strong> (.maf) - the <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format5">Multiple Alignment Format (MAF)</a> stores a series of multiple alignments at the DNA level between entire genomes.</p>
+
+<a name="net"></a>
+	<p><strong>NET</strong> (.net) - the <a href="http://genome.ucsc.edu/goldenPath/help/net.html">NET file format</a> is used to describe the axtNet data that underlie the net alignment annotations in the UCSC Genome Browser.</p>
+
+<a name="pdf"></a>
+	<p><strong>PDF</strong> (.pdf) - portable document format</p>
+
+<a name="png"></a>
+	<p><strong>PNG</strong> (.png) - portable network graphics</p>
+
+<a name="qmap"></a>
+	<p><strong>QMAP</strong> (.qmap) - <a href="http://yh.genomics.org.cn/Format%20of%20qmap%20file.txt">QMAP</a> files are generated for methylation data from an internal <a href="http://www.genomics.cn/en">BGI</a> pipeline.</p>
+
+<a name="qual"></a>
+	<p><strong>QUAL</strong> (.qual) - the <a href="http://www.broadinstitute.org/crd/wiki/index.php/Qual">QUAL file format</a> represents base quality score file for NextGen data (similar in format to fasta).</p>
+
+<a name="rpkm"></a>
+	<p><strong>RPKM</strong> (.rpkm) - Gene expression levels are calculated by <a href="http://sourceforge.net/apps/mediawiki/seqgene/index.php?title=SeqGene#.rpkm:_expression_estimates_generated_by_rpkm.py">Reads Per Kilobase per Million (RPKM) mapped reads</a> eg 1kb transcript with 1000 alignments in a sample of 10 million reads (out of which 8 million reads can be mapped) will have RPKM = 1000/(1 * 8) = 125:</p>
+<table>
+<tr>
+<td>ENSP00000379387</td>
+<td>15.5651433366423</td>
+<td>6002951</td>
+<td>289</td>
+<td>3093</td>
+</tr>
+<tr>
+<td>ENSP00000349977</td>
+<td>24.7483107230444</td>
+<td>6002951</td>
+<td>398</td>
+<td>2679</td>
+</tr>
+<tr>
+<td>ENSP00000368887</td>
+<td>24.6477413647837</td>
+<td>6002951</td>
+<td>174</td>
+<td>1176</td>
+</tr>
+</table>
+
+<a name="sam"></a>
+	<p><strong>SAM</strong> (.sam) - the <a href="http://genome.sph.umich.edu/wiki/SAM">Sequence Alignment/Map (SAM) format</a> is a TAB-delimited text format consisting of a header section, which is optional, and an alignment section. Most often it is generated as a human readable version of its sister <a href="#bam">BAM</a> format, which stores the same data in a compressed, indexed, binary form. Currently, most SAM format data is output from aligners that read <a href="#fastq">FASTQ</a> files and assign the sequences to a position with respect to a known reference genome. In the future, SAM will also be used to archive unaligned sequence data generated directly from sequencing machines.
+<br/>See <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2723002/">The Sequence Alignment/Map format and SAMtools</a></p>
+
+<a name="tar"></a>
+	<p><strong>TAR</strong> (.tar) - an archive containing other files</p>
+
+<a name="text"></a>
+	<p><strong>TEXT</strong> (.doc, .readme, .text, .txt) - a text file</p>
+
+<a name="vcf"></a>
+	<p><strong>VCF</strong> (.vcf) -  the <a href="http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-40">Variant Call Format (VCF)</a> is a text file format for representing eg SNPs, InDels, CNVs, SVs, microsatellites, genotypes.</p>
+
+<a name="wego"></a>
+	<p><strong>WEGO</strong> (.wego) - the <a href="http://wego.genomics.org.cn/cgi-bin/wego/Documents.pl">Web Gene Ontology (WEGO) Annotation format</a> consists of the protein ID, followed by column(s) that are the <a href="http://www.geneontology.org/">GO</a> ID(s):</p>
+<table>
+<tr>
+<td>Bmb015379_2_IPR001092</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Bmb003749_1_IPR006329</td>
+<td>GO:0009168</td>
+<td>GO:0003876</td>
+<td></td>
+</tr>
+<tr>
+<td>Bmb006173_1_IPR000909</td>
+<td>GO:0007165</td>
+<td>GO:0004629</td>
+<td>GO:0007242</td>
+</tr>
+</table>
+	<p>See <a href="http://www.ncbi.nlm.nih.gov/pubmed/16845012?dopt=Abstract">WEGO: a web tool for plotting GO annotations</a></p>
+
+<a name="wig"></a>
+	<p><strong>WIG</strong> (.wig) - the output file from <a href="http://tophat.cbcb.umd.edu">TopHat</a> is a <a href="http://genome.ucsc.edu/goldenPath/help/wiggle.html">UCSC wigglegram</a> of alignment coverage.</p>
+
+<a name="unknown"></a>
+	<p><strong>UNKNOWN</strong> - any file format not in this list</p>
+
+<a name="xml"></a>
+	<p><strong>XML</strong> (.xml) - <a href="http://www.w3schools.com/xml/">eXtensible Markup Language</a></p>
+<br/>
+
+<h3><a name="upload">Upload status</a></h3>
+<p><strong>Publish: </strong>this dataset is fully consented for immediate release upon <em>Giga</em>DB approval </p>
+<p><strong>HUP: </strong>this dataset should be Held Until Publication (HUP)</p>
+<br/>
+
+<h3><a name="relation">DOI relationship</a></h3>
+<p>The DOI relationship vocabulary is taken from the <a href="http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf">DataCite</a> 'relationType' schema property (ID=12.2).</p>
+<p>Definition: Description of the relationship of the resource being registered (A) and the related resource (B).</p>
+<p><strong>IsSupplementTo:</strong> indicates that A is a supplement to B</p>
+<p><strong>IsSupplementedBy:</strong> indicates that B is a supplement to A</p>
+<p><strong>IsNewVersionOf:</strong> indicates A is a new edition of B, where the new edition has been modified or updated</p>
+<p><strong>IsPreviousVersionOf:</strong> indicates A is a previous edition of B</p>
+<p><strong>IsPartOf:</strong> indicates A is a portion of B; may be used for elements of a series</p>
+<p><strong>HasPart:</strong> indicates A includes the part B</p>
+<p><strong>References:</strong> indicates B is used as a source of information for A</p>
+<p><strong>IsReferencedBy:</strong> indicates A is used as a source of information by B</p>
