@@ -1,0 +1,11 @@
+# Create postgres database
+createuser --no-superuser --no-createdb --no-createrole --encrypted --pwprompt cogini_music_dev
+createdb --encoding UNICODE --owner cogini_music_dev cogini_music_dev
+
+# check out source
+
+# Set permissions
+# as root
+cd /var/www/hosts/music.cogini.com/htdocs/protected/scripts
+./init_perms.sh
+
