@@ -9,3 +9,8 @@ themes/classic/views/
 *.iml
 *.iws
 .idea/
+
+# NetBeans
+nbproject/private/
+nbproject/project.xml
+nbproject/project.properties
