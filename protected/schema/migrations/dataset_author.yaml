@@ -1,0 +1,25 @@
+---
+table: dataset_author
+from: null
+to: thk_1
+depends:
+  - [dataset, thk_1]
+  - [author, thk_1]
+sql: |
+  CREATE TABLE dataset_author (
+    id SERIAL NOT NULL PRIMARY KEY,
+    dataset_id INTEGER NOT NULL REFERENCES dataset(id) ON DELETE CASCADE,
+    author_id INTEGER NOT NULL REFERENCES author(id) ON DELETE CASCADE
+  );
+
+---
+table: dataset_author
+to: knn_2
+sql: |
+  ALTER TABLE dataset_author ADD COLUMN position int default 0;
+
+---
+table: dataset_author
+to: knn_3
+sql: |
+  ALTER TABLE dataset_author RENAME COLUMN position TO rank;

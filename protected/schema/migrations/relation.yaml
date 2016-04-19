@@ -1,0 +1,13 @@
+---
+table: relation
+from: null
+to: bgh_1
+depends:
+  - [dataset, bgh_1]
+sql: |
+  CREATE TABLE relation (
+    id SERIAL NOT NULL PRIMARY KEY,
+    dataset_id INTEGER NOT NULL REFERENCES dataset(id) ON DELETE CASCADE,
+    related_doi VARCHAR(15) NOT NULL,
+    relationship VARCHAR(30) NOT NULL
+  );

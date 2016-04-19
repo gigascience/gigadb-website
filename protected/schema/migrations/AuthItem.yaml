@@ -1,0 +1,12 @@
+---
+table: "AuthItem"
+from: null
+to: sum_1
+sql: |
+  CREATE TABLE "AuthItem" (
+    name VARCHAR(64) NOT NULL PRIMARY KEY,
+    type INTEGER NOT NULL,
+    description TEXT,
+    bizrule TEXT,
+    data TEXT
+  );

@@ -1,0 +1,13 @@
+---
+table: link
+from: null
+to: bgh_1
+depends:
+  - [dataset, bgh_1]
+sql: |
+  CREATE TABLE link (
+    id SERIAL NOT NULL PRIMARY KEY,
+    dataset_id INTEGER NOT NULL REFERENCES dataset(id) ON DELETE CASCADE,
+    is_primary BOOLEAN NOT NULL DEFAULT 'f',
+    link VARCHAR(100) NOT NULL
+  );

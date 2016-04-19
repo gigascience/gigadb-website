@@ -1,0 +1,49 @@
+---
+table: gigadb_user
+from: null
+to: bgh_1
+sql: |
+  CREATE TABLE gigadb_user (
+    id SERIAL NOT NULL PRIMARY KEY,
+
+    email VARCHAR(64) NOT NULL,
+    password VARCHAR(64) NOT NULL,
+
+    handle VARCHAR(30) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    affiliation VARCHAR(100) NOT NULL
+  );
+---
+table: gigadb_user
+to: thk_1
+sql: |
+  ALTER TABLE gigadb_user ADD COLUMN role VARCHAR(30) NOT NULL DEFAULT 'user';
+---
+table: gigadb_user
+to: thk_2
+sql: |
+  ALTER TABLE gigadb_user ADD COLUMN is_activated BOOL NOT NULL DEFAULT FALSE;
+---
+table: gigadb_user
+to: thk_3
+sql: |
+  ALTER TABLE gigadb_user DROP COLUMN handle;
+---
+table: gigadb_user
+to: thk_4
+sql: |
+  ALTER TABLE gigadb_user ADD COLUMN newsletter BOOL NOT NULL DEFAULT TRUE;
+
+---
+table: gigadb_user
+to: knn_5
+sql: |
+  ALTER TABLE gigadb_user ADD COLUMN previous_newsletter_state BOOL NOT NULL DEFAULT FALSE;
+  UPDATE gigadb_user set previous_newsletter_state = newsletter;
+
+---
+table: gigadb_user
+to: knn_6
+sql: |
+  ALTER TABLE gigadb_user ADD CONSTRAINT email_unique UNIQUE (email);

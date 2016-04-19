@@ -1,0 +1,16 @@
+---
+table: experiment
+from: null
+to: stpn_1
+depends:
+  - [sample, stpn_1]
+sql: |
+  CREATE TABLE experiment (
+    id SERIAL NOT NULL PRIMARY KEY,
+    experiment_type varchar(45) NOT NULL,
+    instrument varchar(45) NOT NULL,
+    modification varchar(45) NOT NULL,
+    quantification varchar(45) NOT NULL,
+    data_process varchar(45) NOT NULL,
+    sample_id INTEGER NOT NULL REFERENCES sample(id) ON DELETE CASCADE
+  );

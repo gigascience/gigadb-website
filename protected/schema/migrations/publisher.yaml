@@ -1,0 +1,10 @@
+---
+table: publisher
+from: null
+to: sum_1
+sql: |
+  CREATE TABLE publisher (
+    id SERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR(45) NOT NULL,
+    description TEXT NOT NULL DEFAULT ''
+  );

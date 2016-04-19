@@ -1,0 +1,25 @@
+---
+table: project
+from: null
+to: bgh_1
+depends: 
+  - [dataset, bgh_1]
+sql: |
+  CREATE TABLE project (
+    id SERIAL NOT NULL PRIMARY KEY,
+    dataset_id INTEGER NOT NULL REFERENCES dataset(id) ON DELETE CASCADE,
+    url VARCHAR(128) NOT NULL
+  );
+---
+table: project
+to: thk_1
+sql: |
+  ALTER TABLE project ADD name VARCHAR(255) NOT NULL DEFAULT '';
+  ALTER TABLE project ADD image_location VARCHAR(100);
+
+
+---
+table: project
+to: sum_1
+sql: |
+  ALTER TABLE project DROP COLUMN dataset_id ;

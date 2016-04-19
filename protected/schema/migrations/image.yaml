@@ -1,0 +1,26 @@
+---
+table: image
+from: null
+to: bgh_1
+sql: |
+  CREATE TABLE image (
+    id SERIAL NOT NULL PRIMARY KEY,
+    location VARCHAR(45) NOT NULL,
+    tag VARCHAR(50),
+    url VARCHAR(256),
+    license TEXT NOT NULL,
+    photographer VARCHAR(128) NOT NULL,
+    source VARCHAR(256) NOT NULL
+  );
+
+---
+table: image
+to: knn_2
+sql: |
+  ALTER TABLE image ALTER COLUMN location SET DEFAULT '';
+
+---
+table: image
+to: nmkl_3
+sql: |
+  ALTER TABLE image ALTER COLUMN tag TYPE varchar(100);

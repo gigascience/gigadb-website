@@ -1,0 +1,16 @@
+---
+table: file_attributes
+from: null
+to: stpn_1
+depends:
+  - [attributes, stpn_1]
+  - [file, stpn_1]
+  - [units, stpn_1]
+sql: |
+  CREATE TABLE file_attributes (
+    id SERIAL NOT NULL PRIMARY KEY,
+    file_id INTEGER NOT NULL REFERENCES file(id) ON DELETE CASCADE,
+    attributes_id INTEGER NOT NULL REFERENCES attributes(id) ON DELETE CASCADE,
+    value VARCHAR(255) NOT NULL,
+    units_id INTEGER NOT NULL REFERENCES units(id) ON DELETE CASCADE
+  );

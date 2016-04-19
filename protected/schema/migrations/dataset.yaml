@@ -1,0 +1,66 @@
+---
+table: dataset
+from: null
+to: bgh_1
+depends:
+  - [gigadb_user, bgh_1]
+  - [image, bgh_1]
+sql: |
+  CREATE TABLE dataset (
+    id SERIAL NOT NULL PRIMARY KEY,
+    submitter_id INTEGER NOT NULL REFERENCES gigadb_user(id) ON DELETE RESTRICT,
+    image_id INTEGER REFERENCES image(id) ON DELETE SET NULL,
+
+    identifier VARCHAR(32) NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    description TEXT NOT NULL DEFAULT '',
+    publisher VARCHAR(45) NOT NULL DEFAULT 'GigaScience',
+    dataset_size BIGINT NOT NULL,
+
+    ftp_site VARCHAR(100) NOT NULL,
+    upload_status VARCHAR(45) NOT NULL DEFAULT 'Published',
+
+    excelfile VARCHAR(50),
+    excelfile_md5 VARCHAR(32),
+
+    release_date DATE,
+    publication_date DATE,
+    modification_date DATE
+  );
+---
+
+table: dataset
+to: thk_1
+sql: |
+  ALTER TABLE dataset DROP COLUMN release_date;
+  ALTER TABLE dataset ALTER COLUMN upload_status SET DEFAULT 'Pending';
+
+---
+table: dataset
+from: thk_1
+to: sum_1
+depends:
+  - [publisher, sum_1]
+sql: |
+  ALTER TABLE dataset DROP COLUMN publisher CASCADE;
+  ALTER TABLE dataset ADD COLUMN publisher_id INTEGER DEFAULT NULL REFERENCES publisher (id)  ON DELETE SET NULL;
+
+---
+table: dataset
+from: sum_1
+to: sum_2
+sql: |
+  UPDATE dataset SET identifier=trim(replace(identifier,'10.5524/',''));
+  CREATE UNIQUE INDEX identifier_idx ON dataset (identifier);
+---
+table: dataset
+to: nmkl_1
+sql: |
+  ALTER TABLE dataset ALTER "title" TYPE character varying(300);
+
+
+---
+table: dataset
+to: knn_6
+sql: |
+  ALTER TABLE dataset ADD COLUMN token varchar(16) DEFAULT NULL;

@@ -1,0 +1,25 @@
+---
+table: external_link
+from: null
+to: bgh_1
+depends:
+  - [dataset, bgh_1]
+sql: |
+  CREATE TABLE external_link (
+    id SERIAL NOT NULL PRIMARY KEY,
+    dataset_id INTEGER NOT NULL REFERENCES dataset(id) ON DELETE CASCADE,
+  
+    url VARCHAR(128) NOT NULL,
+    type varchar(100) NOT NULL -- "additional_information", "genome_browser"
+  );
+---
+table: external_link
+from: bgh_1
+to: sum_2
+depends:
+  - [external_link_type, sum_1]
+sql: |
+  ALTER TABLE external_link ADD COLUMN external_link_type_id INTEGER REFERENCES external_link_type(id) ON DELETE CASCADE;
+  UPDATE external_link SET external_link_type_id = (SELECT id FROM external_link_type WHERE external_link_type.name = type);
+  ALTER TABLE external_link DROP COLUMN type;
+  ALTER TABLE external_link ALTER COLUMN external_link_type_id SET NOT NULL;

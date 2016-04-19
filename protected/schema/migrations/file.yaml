@@ -1,0 +1,55 @@
+---
+table: file
+from: null
+to: bgh_1
+depends:
+  - [dataset, bgh_1]
+  - [sample, bgh_1]
+sql: |
+  CREATE TABLE file (
+    id SERIAL NOT NULL PRIMARY KEY,
+    dataset_id INTEGER NOT NULL REFERENCES dataset(id) ON DELETE CASCADE,
+    sample_id INTEGER NOT NULL REFERENCES sample(id) ON DELETE CASCADE,
+
+    name VARCHAR(100) NOT NULL,
+    location VARCHAR(200) NOT NULL,
+    format VARCHAR(10) NOT NULL,
+    extension VARCHAR(30) NOT NULL,
+    type VARCHAR(100) NOT NULL,
+    size BIGINT NOT NULL,
+    description TEXT NOT NULL DEFAULT '',
+
+    date_stamp DATE
+  );
+
+
+---
+table: file
+from: bgh_1
+to: sum_1
+depends:
+  - [file_format, sum_1]
+  - [file_type, sum_1]
+sql: |
+  ALTER TABLE file DROP COLUMN format, DROP COLUMN type;
+  ALTER TABLE file
+  ADD COLUMN format_id INTEGER DEFAULT NULL REFERENCES file_format (id)  ON DELETE CASCADE,
+  ADD COLUMN type_id INTEGER DEFAULT NULL REFERENCES file_type (id)  ON DELETE CASCADE;
+  
+---
+table: file
+from: sum_1
+to: thk_1
+sql: |
+  ALTER TABLE file ADD COLUMN code VARCHAR (64) DEFAULT 'FILE_CODE';
+---
+table: file
+to: thk_2
+sql: |
+  ALTER TABLE file DROP COLUMN sample_id;
+  ---
+table: file
+from: thk_2
+to: stpn_1
+sql: |
+  ALTER TABLE file ADD COLUMN index4blast INTEGER NOT NULL;

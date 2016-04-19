@@ -1,0 +1,12 @@
+---
+table: news
+from: null
+to: sum_1
+sql: |
+  CREATE TABLE news (
+    id SERIAL NOT NULL PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    body TEXT NOT NULL DEFAULT '',
+    start_date date NOT NULL,
+    end_date date NOT NULL
+  );

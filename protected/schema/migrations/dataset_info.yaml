@@ -1,0 +1,111 @@
+---
+table: dataset_info
+from: null
+to: sum_1
+depends:
+  - [dataset, sum_1]
+  - [publisher, sum_1]
+  - [dataset_type, sum_1]
+  - [dataset_project, sum_1]
+  - [file, sum_1]
+sql: |
+  CREATE VIEW dataset_info AS SELECT
+  	dataset.id as id,
+  	dataset.title as title,
+  	dataset.description as description,
+  	publisher.id as publisher_id,
+  	dataset_type.type_id as dataset_type_id,
+  	dataset_project.project_id as project_id,
+  	file.type_id as file_type_id,
+  	file.format_id as file_format_id
+  	FROM dataset
+  	left join publisher ON publisher.id=dataset.publisher_id
+  	left join dataset_type ON dataset.id=dataset_type.dataset_id
+  	left join dataset_project ON dataset.id=dataset_project.dataset_id
+  	left join file ON dataset.id=file.dataset_id;
+
+---
+table: dataset_info
+from: sum_1
+to: sum_2
+sql: |
+  DROP VIEW dataset_info;
+  CREATE VIEW dataset_info AS SELECT
+    dataset.id as id,
+    dataset.title as title,
+    dataset.description as description,
+    publisher.id as publisher_id,
+    dataset_type.type_id as dataset_type_id,
+    dataset_project.project_id as project_id,
+    file.type_id as file_type_id,
+    file.format_id as file_format_id,
+    date_part('epoch',publication_date) as publication_date,
+    date_part('epoch',modification_date) as modification_date
+
+    FROM dataset
+    left join publisher ON publisher.id=dataset.publisher_id
+    left join dataset_type ON dataset.id=dataset_type.dataset_id
+    left join dataset_project ON dataset.id=dataset_project.dataset_id
+    left join file ON dataset.id=file.dataset_id;
+
+
+---
+table: dataset_info
+from: sum_2
+to: sum_3
+sql: |
+  DROP VIEW dataset_info;
+  CREATE VIEW dataset_info AS SELECT
+    dataset.id as id,
+    dataset.title as title,
+    dataset.description as description,
+    publisher.id as publisher_id,
+    dataset_type.type_id as dataset_type_id,
+    dataset_project.project_id as project_id,
+    file.type_id as file_type_id,
+    file.format_id as file_format_id,
+    date_part('epoch',publication_date) as publication_date,
+    date_part('epoch',modification_date) as modification_date,
+    species.common_name
+
+    FROM dataset
+    left join publisher ON publisher.id=dataset.publisher_id
+    left join dataset_type ON dataset.id=dataset_type.dataset_id
+    left join dataset_project ON dataset.id=dataset_project.dataset_id
+    left join file ON dataset.id=file.dataset_id
+    left join dataset_sample ON dataset.id=dataset_sample.dataset_id
+    left join sample ON dataset_sample.sample_id=sample.id
+    left join species ON sample.species_id=species.id;
+
+
+---
+table: dataset_info
+from: sum_3
+to: sum_4
+sql: |
+  DROP VIEW dataset_info;
+  CREATE VIEW dataset_info AS SELECT
+    dataset.id as id,
+    dataset.title as title,
+    dataset.description as description,
+    publisher.id as publisher_id,
+    dataset_type.type_id as dataset_type_id,
+    dataset_project.project_id as project_id,
+    file.type_id as file_type_id,
+    file.format_id as file_format_id,
+    date_part('epoch',publication_date) as publication_date,
+    date_part('epoch',modification_date) as modification_date,
+    sample.species_id as species_id
+    FROM dataset
+    left join publisher ON publisher.id=dataset.publisher_id
+    left join dataset_type ON dataset.id=dataset_type.dataset_id
+    left join dataset_project ON dataset.id=dataset_project.dataset_id
+    left join file ON dataset.id=file.dataset_id
+    left join dataset_sample ON dataset.id=dataset_sample.dataset_id
+    left join sample ON dataset_sample.sample_id=sample.id;
+---
+table: dataset_info
+from: sum_4
+to: sum_5
+sql: |
+  DROP VIEW dataset_info;

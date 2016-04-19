@@ -1,0 +1,22 @@
+---
+table: species
+from: null
+to: bgh_1
+sql: |
+  CREATE TABLE species (
+    id SERIAL NOT NULL PRIMARY KEY,
+    tax_id INTEGER NOT NULL,
+    common_name VARCHAR(64) NOT NULL,
+    genbank_name VARCHAR(128) NOT NULL,
+    scientific_name VARCHAR(128) NOT NULL
+  );
+---
+table: species 
+to: thk_1
+sql: |
+  ALTER TABLE species ALTER COLUMN genbank_name DROP NOT NULL;
+---
+table: species
+to: stpn_1
+sql: |
+  ALTER TABLE species ADD COLUMN eol_link varchar(255) NOT NULL DEFAULT '';

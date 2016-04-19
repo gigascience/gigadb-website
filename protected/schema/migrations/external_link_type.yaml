@@ -1,0 +1,9 @@
+---
+table: external_link_type
+from: null
+to: sum_1
+sql: |
+  CREATE TABLE external_link_type (
+    id SERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR(45) NOT NULL
+  );

@@ -1,0 +1,17 @@
+---
+table: funder_name
+from: null
+to: stpn_1
+sql: |
+  CREATE TABLE funder_name (
+    id SERIAL NOT NULL PRIMARY KEY,
+    uri VARCHAR(100) NOT NULL,
+    primary_name_display VARCHAR(1000) DEFAULT ''
+  );
+
+---
+table: funder_name
+from: stpn_1
+to: nht_2
+sql: |
+	ALTER TABLE funder_name ADD COLUMN country VARCHAR(128) DEFAULT '';

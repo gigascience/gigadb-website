@@ -1,0 +1,10 @@
+---
+table: rss_message
+from: null
+to: nmkl_1
+sql: |
+  CREATE TABLE rss_message(
+      id SERIAL PRIMARY KEY ,
+      message varchar(128) NOT NULL,
+      publication_date date NOT NULL DEFAULT CURRENT_DATE
+  ) ;

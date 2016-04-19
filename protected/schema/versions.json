@@ -1,0 +1,36 @@
+{
+  "gigadb_user": "knn_6",
+  "dataset": "knn_6",
+  "project": "sum_1",
+  "external_link": "sum_2",
+  "relation": "bgh_1",
+  "link": "bgh_1",
+  "image": "nmkl_3",
+  "manuscript": "thk_1",
+  "species": "thk_1",
+  "sample": "nmkl_1",
+  "file":"thk_2",
+
+  "dataset_type": "sum_1",
+  "dataset_manuscript": "thk_deleted",
+  "dataset_sample": "bgh_1",
+  "dataset_author": "knn_3",
+  "funder_name": "nht_1",
+  "dataset_funder": "nht_1",
+
+  "author": "knn_3",
+  "AuthAssignment": "sum_1",
+  "AuthItem": "sum_1",
+
+  "dataset_info": "sum_5",
+  "dataset_project": "sum_1",
+  "type": "sum_1",
+  "file_format": "sum_1",
+  "file_type": "sum_1",
+  "publisher": "sum_1",
+  "news": "sum_1",
+  "search": "sum_3",
+  "external_link_type": "sum_1",
+
+  "rss_message": "nmkl_1"
+}

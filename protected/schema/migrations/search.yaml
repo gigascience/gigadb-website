@@ -1,0 +1,23 @@
+---
+table: search
+from: null
+to: thk_1
+sql: |
+  CREATE TABLE search ( 
+    id SERIAL NOT NULL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES gigadb_user(id) ON DELETE RESTRICT,
+    name VARCHAR(32) NOT NULL,
+    query TEXT NOT NULL
+  ) 
+---
+table: search
+from: thk_1
+to: sum_2
+sql: |
+  ALTER TABLE search ALTER COLUMN name TYPE VARCHAR(128) ;
+---
+table: search
+from: sum_2
+to: sum_3
+sql: |
+  ALTER TABLE search ADD COLUMN result TEXT  ;

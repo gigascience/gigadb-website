@@ -1,0 +1,36 @@
+---
+table: author 
+from: null
+to: thk_1
+depends:
+  - [dataset, bgh_1]
+sql: |
+  CREATE TABLE author (
+    id SERIAL NOT NULL PRIMARY KEY,
+    dataset_id INTEGER NOT NULL REFERENCES dataset(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    orcid VARCHAR(128) NOT NULL,
+    position INT NOT NULL 
+  );
+---
+table: author
+to: thk_2
+sql: |
+  ALTER TABLE author DROP COLUMN dataset_id;
+
+---
+table: author
+to: knn_3
+sql: |
+  ALTER TABLE author RENAME COLUMN position TO RANK;
+
+---
+table: author
+to: stpn_1
+depends:
+  - [gigadb_user, knn_6]
+sql: |
+  ALTER TABLE author ADD COLUMN surname varchar(45) NOT NULL;
+  ALTER TABLE author ADD COLUMN middle_name varchar(45) NOT NULL;
+  ALTER TABLE author ADD COLUMN first_name varchar(45) NOT NULL;
+  ALTER TABLE author ADD COLUMN gigadb_user_id INTEGER NOT NULL REFERENCES gigadb_user(id) ON DELETE CASCADE;

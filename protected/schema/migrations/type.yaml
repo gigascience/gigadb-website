@@ -1,0 +1,10 @@
+---
+table: type
+from: null
+to: sum_1
+sql: |
+  CREATE TABLE type (
+    id SERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR(32) NOT NULL,
+    description TEXT NOT NULL DEFAULT ''
+  );

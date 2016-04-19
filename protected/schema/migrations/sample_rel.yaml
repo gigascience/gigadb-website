@@ -1,0 +1,14 @@
+---
+table: sample_rel
+from: null
+to: stpn_1
+depends:
+  - [sample, stpn_1]
+  - [relation, stpn_1]
+sql: |
+  CREATE TABLE sample_rel (
+    id SERIAL NOT NULL PRIMARY KEY,
+    sample_id INTEGER NOT NULL REFERENCES sample(id) ON DELETE CASCADE,
+    related_sample_id INTEGER NOT NULL REFERENCES sample(id) ON DELETE CASCADE,
+    relationship_id INTEGER NOT NULL REFERENCES relation(id) ON DELETE CASCADE,
+  );

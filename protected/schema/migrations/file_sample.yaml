@@ -1,0 +1,13 @@
+---
+table: file_sample
+from: null
+to: stpn_1
+depends:
+  - [sample, stpn_1]
+  - [file, stpn_1]
+sql: |
+  CREATE TABLE file_sample (
+    id SERIAL NOT NULL PRIMARY KEY,
+    sample_id INTEGER NOT NULL REFERENCES sample(id) ON DELETE CASCADE,
+    file_id INTEGER NOT NULL REFERENCES file(id) ON DELETE CASCADE
+  );

@@ -1,0 +1,13 @@
+---
+table: dataset_sample
+from: null
+to: bgh_1
+depends:
+  - [dataset, thk_1]
+  - [sample, thk_1]
+sql: |
+  CREATE TABLE dataset_sample (
+    id SERIAL NOT NULL PRIMARY KEY,
+    dataset_id INTEGER NOT NULL REFERENCES dataset(id) ON DELETE CASCADE,
+    sample_id INTEGER NOT NULL REFERENCES sample(id) ON DELETE CASCADE
+  );

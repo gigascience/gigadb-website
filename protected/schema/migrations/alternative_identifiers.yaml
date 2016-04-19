@@ -1,0 +1,14 @@
+---
+table: alternative_identifiers
+from: null
+to: stpn_1
+depends:
+  - [sample, stpn_1]
+  - [extdb, stpn_1]
+sql: |
+  CREATE TABLE alternative_identifiers (
+    id INTEGER NOT NULL PRIMARY KEY,
+    sample_id INTEGER NOT NULL REFERENCES dataset(id),
+    extdb_id INTEGER NOT NULL REFERENCES extdb(id),
+    extdb_accession VARCHAR(100) NULL
+  );

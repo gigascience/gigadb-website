@@ -1,0 +1,15 @@
+---
+table: dataset_funder
+from: null
+to: nht_1
+depends:
+  - [dataset, bgh_1]
+  - [funder_name, nht_1]
+sql:  |
+  CREATE TABLE dataset_funder (
+    id SERIAL NOT NULL PRIMARY KEY,
+    dataset_id INT NOT NULL REFERENCES dataset(id) ON DELETE CASCADE,
+    funder_id INT NOT NULL REFERENCES funder_name(id) ON DELETE CASCADE,
+    grant_award TEXT DEFAULT '',
+    comments TEXT DEFAULT ''
+  );

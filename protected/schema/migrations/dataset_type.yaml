@@ -1,0 +1,23 @@
+---
+table: dataset_type
+from: null
+to: bgh_1
+depends:
+  - [dataset, bgh_1]
+sql: |
+  CREATE TABLE dataset_type (
+    id SERIAL NOT NULL PRIMARY KEY,
+    dataset_id INTEGER NOT NULL REFERENCES dataset(id) ON DELETE CASCADE,
+    type VARCHAR(32) NOT NULL
+  );
+
+---
+
+table: dataset_type
+from: bgh_1
+to: sum_1
+depends:
+  - [type, sum_1]
+sql: |
+  ALTER TABLE dataset_type DROP COLUMN type CASCADE;
+  ALTER TABLE dataset_type ADD COLUMN type_id INTEGER DEFAULT NULL REFERENCES type (id)  ON DELETE CASCADE;

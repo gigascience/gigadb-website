@@ -1,0 +1,44 @@
+---
+table: sample
+from: null
+to: bgh_1
+depends:
+  - [species, bgh_1]
+sql: |
+  CREATE TABLE sample (
+    id SERIAL NOT NULL PRIMARY KEY,
+    species_id INTEGER NOT NULL REFERENCES species(id) ON DELETE CASCADE,
+    attributes TEXT NOT NULL DEFAULT ''
+  );
+---
+table: sample
+to: thk_1
+sql: |
+  ALTER TABLE sample ALTER COLUMN attributes DROP NOT NULL;
+---
+table: sample
+to: thk_2
+sql: |
+  ALTER TABLE sample ADD COLUMN code varchar(50) NOT NULL DEFAULT 'SRS188811';
+---
+table: sample
+to: nmkl_1
+sql: |
+  ALTER TABLE sample RENAME attributes TO s_attrs;
+---
+table: sample
+to: stpn_1
+depends:
+  - [gigadb_user, knn_6]
+sql: |
+  ALTER TABLE sample ADD COLUMN name VARCHAR(50) NOT NULL DEFAULT 'SAMPLE:SRS188811';
+  ALTER TABLE sample ADD COLUMN consent_document VARCHAR(45) NULL;
+  ALTER TABLE sample ADD COLUMN submitted_id INTEGER NULL REFERENCES gigadb_user(id);
+  ALTER TABLE sample ADD COLUMN submission_date DATE;
+  ALTER TABLE sample ADD COLUMN contact_author_name VARCHAR(45) NULL;
+  ALTER TABLE sample ADD COLUMN contact_author_email VARCHAR(100) NULL;
+  ALTER TABLE sample ADD COLUMN sampling_protocol VARCHAR(100) NULL;
+  ALTER TABLE sample ADD COLUMN code varchar(50) NOT NULL DEFAULT 'SRS188811';
+  ALTER TABLE sample DROP COLUMN s_attrs_text;
+  ALTER TABLE sample ADD COLUMN sample_attribute INTEGER NULL REFERENCES sample_attribute(id);
+

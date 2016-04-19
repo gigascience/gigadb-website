@@ -1,0 +1,15 @@
+---
+table: "AuthAssignment"
+from: null
+to: sum_1
+depends:
+  - ["AuthItem", sum_1]
+sql: |
+  CREATE TABLE "AuthAssignment" (
+    itemname VARCHAR(64) NOT NULL,
+    userid   VARCHAR(64) NOT NULL,
+    bizrule  TEXT,
+    data     TEXT,
+    PRIMARY KEY (itemname,userid),
+    FOREIGN KEY (itemname) REFERENCES "AuthItem" (name) ON DELETE CASCADE ON UPDATE CASCADE
+  );

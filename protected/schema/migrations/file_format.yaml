@@ -1,0 +1,10 @@
+---
+table: file_format
+from: null
+to: sum_1
+sql: |
+  CREATE TABLE file_format (
+    id SERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR(10) NOT NULL,
+    description TEXT NOT NULL DEFAULT ''
+  );

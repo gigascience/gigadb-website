@@ -1,0 +1,24 @@
+---
+table: sample_attribute 
+from: null
+to: stpn_1
+depends:
+  - [sample, stpn_1]
+  - [unit, stpn_1]
+  - [attribute, stpn_1]
+sql: |
+  CREATE TABLE sample_attribute (
+    id SERIAL NOT NULL,
+    unit_id VARCHAR(3O) NULL REFERENCES unit(id),
+    sample_id INTEGER NOT NULL REFERENCES sample(id),
+    attribute_id INTEGER NOT NULL REFERENCES attribute(id),
+    value VARCHAR(200) NULL,
+    PRIMARY KEY (id, attribute_id)
+  );
+---
+table: sample
+to: stpn_2
+depends:
+  - [sample, stpn_1]
+sql: |
+ALTER TABLE sample_attribute ADD CONSTRAINT "sample_attribute_id_fkey" FOREIGN KEY (sample_id) REFERENCES sample(id);

@@ -1,0 +1,13 @@
+---
+table: dataset_project
+from: null
+to: sum_1
+depends:
+  - [dataset, sum_1]
+  - [project, sum_1]
+sql: |
+  CREATE TABLE dataset_project (
+    id SERIAL NOT NULL PRIMARY KEY,
+    dataset_id INTEGER DEFAULT NULL REFERENCES dataset (id)  ON DELETE CASCADE,
+    project_id INTEGER DEFAULT NULL REFERENCES project (id)  ON DELETE CASCADE
+  );

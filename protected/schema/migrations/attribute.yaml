@@ -1,0 +1,17 @@
+---
+table: attribute
+from: null
+to: stpn_1
+sql: |
+  CREATE TABLE attribute (
+    id INTEGER NOT NULL PRIMARY KEY,
+    allowed_units VARCHAR(100) NULL,
+    attribute_name VARCHAR(100) NULL,
+    note VARCHAR(50) NULL,
+    occurance VARCHAR(5) NULL,
+    ontology_link VARCHAR(1000) NULL,
+    value_syntax VARCHAR(500) NULL,
+    structured_comment_name VARCHAR(50) NULL,
+    model VARCHAR(30) NULL,
+    definition VARCHAR(1000) NULL
+  );

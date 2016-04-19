@@ -1,0 +1,15 @@
+---
+table: manuscript
+from: null
+to: bgh_1
+sql: |
+  CREATE TABLE manuscript (
+    id SERIAL NOT NULL PRIMARY KEY,
+    identifier VARCHAR(32) NOT NULL,
+    pmid INTEGER
+  );
+---
+table: manuscript 
+to: thk_1
+sql: |
+  ALTER TABLE manuscript ADD COLUMN dataset_id INTEGER NOT NULL REFERENCES dataset(id) ON DELETE CASCADE

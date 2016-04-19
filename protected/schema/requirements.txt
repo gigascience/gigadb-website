@@ -1,0 +1,3 @@
+psycopg2
+pyyaml
+git+git://github.com/brendonh/schemup.git@5f5d35f5c7e9708e62ca43aa4743610e2cb696ae

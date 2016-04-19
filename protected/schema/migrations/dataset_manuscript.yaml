@@ -1,0 +1,18 @@
+---
+table: dataset_manuscript
+from: null
+to: bgh_1
+depends: 
+  - [dataset, bgh_1]
+  - [manuscript, bgh_1]
+sql: |
+  CREATE TABLE dataset_manuscript (
+    id SERIAL NOT NULL PRIMARY KEY,
+    dataset_id INTEGER NOT NULL REFERENCES dataset(id) ON DELETE CASCADE,
+    manuscript_id INTEGER NOT NULL REFERENCES manuscript(id) ON DELETE CASCADE
+  );
+---
+table: dataset_manuscript
+to: thk_deleted
+sql: |
+  DROP TABLE dataset_manuscript;
