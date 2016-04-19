@@ -5,6 +5,9 @@ protected/runtime/*
 protected/data/*.db
 themes/classic/views/
 
+# Vagrant
+*.vagrant
+
 # PhpStorm
 *.iml
 *.iws
