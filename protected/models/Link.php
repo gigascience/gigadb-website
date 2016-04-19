@@ -1,0 +1,143 @@
+<?php
+
+/**
+ * This is the model class for table "link".
+ *
+ * The followings are the available columns in table 'link':
+ * @property integer $id
+ * @property integer $dataset_id
+ * @property boolean $is_primary
+ * @property string $link
+ *
+ * The followings are the available model relations:
+ * @property Dataset $dataset
+ */
+class Link extends MyActiveRecord
+{
+	/**
+	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
+	 * @return Link the static model class
+	 */
+   
+    public $doi_search;
+    public $acc_num;
+    public $database;
+
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return 'link';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			array('dataset_id, link', 'required'),
+			array('dataset_id', 'numerical', 'integerOnly'=>true),
+			array('link', 'length', 'max'=>100),
+			array('is_primary', 'safe'),
+			// The following rule is used by search().
+			// Please remove those attributes that should not be searched.
+			array('id, dataset_id, is_primary, link, doi_search', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+			'dataset' => array(self::BELONGS_TO, 'Dataset', 'dataset_id'),
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+            'id' => 'ID',
+            'dataset_id' => 'Dataset',
+            'acc_num' => 'Accession number',
+            'database' => 'Database',
+            'is_primary' => 'Is Primary',
+            'link' => 'Link',
+            'doi_search' => 'DOI',
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+        $criteria->with = array( 'dataset' );
+		$criteria->compare('t.id',$this->id);
+		$criteria->compare('dataset_id',$this->dataset_id);
+		$criteria->compare('is_primary',$this->is_primary);
+		$criteria->compare('LOWER(link)',strtolower($this->link),true);
+		$criteria->compare('dataset.identifier',$this->doi_search,true);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+        
+      public function getFullUrl($source = '') {
+        $temp = explode(":", trim($this->link));
+        $prefix = $temp[0];
+        $value = $temp[1];
+        
+        $model = Prefix::model()->find("lower(prefix) = :p and source = :s", 
+        	array(':p'=>strtolower($prefix), ':s'=>$source));     
+        
+        // find url with preferred source
+        if($model)
+        	return $model->url . $value;
+
+        // if not get available url
+        $model = Prefix::model()->find("lower(prefix) = :p", array(':p'=>strtolower($prefix)));
+        if($model)
+        	return $model->url. $value;
+
+        return "#";
+    }
+
+    public function getDatabase() {
+        $url = "http://";
+        if(strpos($this->link,$url)===0)
+                return "";
+        $temp = explode(":", $this->link);    
+        $prefix = $temp[0];     
+        return trim($prefix);
+    }
+
+    public function behaviors() {
+        return array(
+            'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
+        );
+    }
+
+}
