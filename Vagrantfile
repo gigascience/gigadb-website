@@ -5,8 +5,9 @@ if ENV['GIGADB_BOX'] == 'centos'
   box = "centos6-64"
   box_url = "http://boxes.cogini.com/centos6-64.box"
 else
-  box = "lucid32"
-  box_url = "http://files.vagrantup.com/lucid32.box"
+  # Use trusty32 box which is Ubuntu-14.04
+  box = "trusty32"
+  box_url = "https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box"
 end
 
 Vagrant.configure(2) do |config|
