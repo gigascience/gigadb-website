@@ -19,9 +19,9 @@ return array(
         ),
         'analytics' => array(
             "class" => "Analytics",
-            "client_email" => "<%= analytics_client_email %>",
-            "client_id" => "<%= analytics_client_id %>",
-            "keyfile" => realpath(dirname(__FILE__)."<%= analytics_keyfile_path %>"),
+            "client_email" => "<%= node[:gigadb][:analytics][:analytics_client_email] %>",
+            "client_id" => "<%= node[:gigadb][:analytics][:analytics_client_id] %>",
+            "keyfile" => realpath(dirname(__FILE__)."<%= node[:gigadb][:analytics][:analytics_keyfile_path] %>"),
             "app_name" => "GigaDB",
         ),
     ),

@@ -1,6 +1,9 @@
 # Provide values for the following attributes
 default[:gigadb][:mailchimp][:mailchimp_api_key] = 'provide_mailchimp_api_key'
 default[:gigadb][:mailchimp][:mailchimp_list_id] = 'provide_mailchimp_list_id'
+default[:gigadb][:analytics][:analytics_client_email] = 'provide_analytics_client_email'
+default[:gigadb][:analytics][:analytics_client_id] = 'provide_analytics_client_id'
+default[:gigadb][:analytics][:analytics_keyfile_path] = 'provide_analytics_keyfile_path'
 
 default[:gigadb][:app_user] = 'gigadb'
 default[:gigadb][:admin_email] = 'database@gigasciencejournal.com'
