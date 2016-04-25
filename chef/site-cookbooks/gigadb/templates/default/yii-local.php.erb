@@ -43,9 +43,9 @@ return array(
         'notify_email' => '<%= server_email %>',
 
         // Cogini
-        'recaptcha_publickey' => '<%= recaptcha_publickey %>',
-        'recaptcha_privatekey' => '<%= recaptcha_privatekey %>',
-        "google_analytics_profile" => "<%= google_analytics_profile %>",
+        'recaptcha_publickey' => '<%= node[:gigadb][:recaptcha][:recaptcha_publickey] %>',
+        'recaptcha_privatekey' => '<%= node[:gigadb][:recaptcha][:recaptcha_privatekey] %>',
+        "google_analytics_profile" => "<%= node[:gigadb][:analytics][:google_analytics_profile] %>",
 
         // Sphinx params
         'sphinx_servername' => 'localhost',
