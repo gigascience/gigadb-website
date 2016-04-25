@@ -8,6 +8,9 @@ themes/classic/views/
 # Vagrant
 *.vagrant
 
+# Chef
+chef/site-cookbooks/gigadb/attributes/default.rb
+
 # PhpStorm
 *.iml
 *.iws
