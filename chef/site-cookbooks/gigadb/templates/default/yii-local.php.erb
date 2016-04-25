@@ -12,8 +12,8 @@ return array(
     'components' => array(
         'mailchimp' => array(
             'class'     => 'ext.mailchimp.EMailChimp2',
-            'apikey'    => '<%= mailchimp_api_key %>',
-            'listId'    => '<%= mailchimp_list_id %>',
+            'apikey'    => '<%= node[:gigadb][:mailchimp][:mailchimp_api_key] %>',
+            'listId'    => '<%= node[:gigadb][:mailchimp][:mailchimp_list_id] %>',
             'ecommerce360Enabled' => false,
             'devMode'   => false
         ),
