@@ -82,6 +82,11 @@ template "#{site_dir}/protected/config/local.php" do
     mode "0644"
 end
 
+template "#{site_dir}/protected/config/main.php" do
+    source "yii-main.php.erb"
+    mode "0644"
+end
+
 template "#{site_dir}/protected/config/db.json" do
     source 'yii-db.json.erb'
     mode '0644'
