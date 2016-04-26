@@ -164,14 +164,30 @@ execute 'Build css' do
     user css_user
 end
 
+###############
+#### nginx ####
+###############
+
 # Remove default dummy nginx sites
 ['default.conf', 'example_ssl.conf'].each do |fname|
     file "/etc/nginx/conf.d/#{fname}" do
         action :delete
     end
 end
+
+# Delete default nginx conf file
+file "/etc/nginx/sites-available/default" do
+  action :delete
+end
+
+# Delete link to default nginx conf file
+link '/etc/nginx/sites-enabled/default' do
+  action :delete
+end
+
+# Reload nginx configuration
 service 'nginx' do
-    action :restart
+    action :reload
 end
 
 dirs = %w{
@@ -188,7 +204,7 @@ dirs.each do |component|
             mkdir -p #{the_dir}
             chown -R www-data:#{app_user} #{the_dir}
             chmod -R ug+rwX #{the_dir}
-            find #{the_dir} -type d | xargs chmod g+x
+            #find #{the_dir} -type d | xargs chmod g+x
         EOH
     end
 end
