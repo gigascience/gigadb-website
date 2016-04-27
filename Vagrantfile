@@ -73,7 +73,7 @@ Vagrant.configure(2) do |config|
       },
       :postgresql => {
         :version => '9.1',
-        :dir => '/var/lib/pgsql/9.1/data',
+        #:dir => '/var/lib/pgsql/9.1/data',
       },
       :elasticsearch => {
         :version => '1.3.4',
