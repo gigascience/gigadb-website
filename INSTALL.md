@@ -26,11 +26,15 @@ installer, you can generally do so through the basic package
 management tool that comes with your distribution. If you’re on
 Fedora and Centos for example, open a commandline terminal and use yum:
 
-`$ sudo yum install git-all`
+```bash
+$ sudo yum install git-all
+```
 
 If you’re on a Debian-based distribution like Ubuntu, try apt-get:
 
-`$ sudo apt-get install git-all`
+```bash
+$ sudo apt-get install git-all
+```
 
 There are several ways to install Git on a Mac. The easiest is
 probably to install the Xcode Command Line Tools. On Mavericks (10.9)
@@ -55,7 +59,7 @@ However, the code for these projects are missing. For example,
 chef-cookbooks is a submodule and its folder is present at
 `chef/chef-cookbooks` but the code is missing:
 
-```
+```bash
 $ git clone https://github.com/gigascience/gigadb-website.git`
 Cloning into 'gigadb-website'...
 remote: Counting objects: 1657, done.
@@ -73,7 +77,7 @@ drwxr-xr-x  4 peterli  staff   136B Apr 27 09:57 ../
 
 The code for these other Github projects need to be downloaded:
 
-```
+```bash
 $ git submodule init
 Submodule 'chef/chef-cookbooks' (https://github.com/pli888/chef-cookbooks.git) registered for path '../chef-cookbooks'
 $ git submodule update
@@ -96,14 +100,41 @@ variables should be configured with.
 
 Vagrant can now be used to create the virtual machine:
 
-```
+```bash
 $ vagrant up
 ```
 
-It will now take up to 10 minutes for the VM to be created. In
-addition, Vagrant will also install GigaDB and its software
-dependencies in a process called provisioning which is performed by
-Chef Solo. During the provisioning process, you will see many log
-messages in your terminal which will keep you up to date with the
-deployment of GigaDB in your local VM.
+It will now take up to 10 minutes for the VM to be created and
+installed with GigaDB and its software dependencies in a process
+called provisioning which is performed by Chef Solo. During the
+provisioning process, you will see many log messages in your terminal
+which will keep you up to date with the deployment of GigaDB in your
+local VM.
+
+Once the `vagrant up` command has finished, you will not see anything
+since Vagrant runs the VM without a user interface (UI). However, you
+can SSH into the machine:
+
+```bash
+$ vagrant ssh
+```
+
+This command will log you into a SSH session in the VM created by
+Vagrant. To leave the SSH session:
+
+```bash
+$ logout
+Connection to 127.0.0.1 closed.
+```
+
+## Shared folder
+
+There is a folder `/vagrant` in the VM created Vagrant which is
+shared with a directory on your computer which is hosting the
+Vagrant-VM.
+
+## Shutting down the VM
+
+The Vagrant VM can be completely removed by running `vagrant destroy`.
+This command will terminate the use of any resources by the VM.
 
