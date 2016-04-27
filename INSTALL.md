@@ -60,7 +60,7 @@ chef-cookbooks is a submodule and its folder is present at
 `chef/chef-cookbooks` but the code is missing:
 
 ```bash
-$ git clone https://github.com/gigascience/gigadb-website.git`
+$ git clone https://github.com/gigascience/gigadb-website.git
 Cloning into 'gigadb-website'...
 remote: Counting objects: 1657, done.
 remote: Compressing objects: 100% (68/68), done.
