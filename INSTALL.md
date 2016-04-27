@@ -46,7 +46,7 @@ If you want a more up to date version, you can also install it via a
 binary installer. An OSX Git installer is maintained and available
 for download at the [Git website](http://git-scm.com/download/mac).
 
-## Download and configuration
+## Downloading the GigaDB code repository
 
 After you have git installed, you can now use it to download the
 GigaDB source code from Github:
@@ -90,13 +90,32 @@ Checking connectivity... done.
 Submodule path '../chef-cookbooks': checked out '1cf3e93cb1f7ef481269751a55df4bf7af458462'
 ```
 
+If you are developing GigaDB for GigaScience, you might be informed
+to write new code for a particular [branch](https://git-scm.com/book/en/v1/Git-Branching-What-a-Branch-Is)
+in the code repository. If you are asked to use the `develop` branch
+then you need to checkout this branch from Github:
+
+```bash
+$ git fetch
+$ git checkout develop
+Branch develop set up to track remote branch develop from origin.
+Switched to a new branch 'develop'
+$ git branch
+* develop
+  master
+```
+
+## Configuring the provisioning of the GigaDB virtual machine
+
 There are attribute variables in GigaDB which require values to be set.
 These variables are listed in
-`gigadb-website/chef/site-cookbooks/gigadb/attributes/default.rb`.
+`gigadb-website/chef/site-cookbooks/gigadb/attributes/default.rb.sample`.
 Your technical manager will be able to provide the values that these
-variables should be configured with.
+variables should be configured with. Once you have filled in the
+required values for the attributes, the file must then be saved as
+`default.rb` in the same folder.
 
-# Creating and provisioning the virtual machine
+## Creating and provisioning the virtual machine
 
 Vagrant can now be used to create the virtual machine:
 
@@ -120,7 +139,15 @@ $ vagrant ssh
 ```
 
 This command will log you into a SSH session in the VM created by
-Vagrant. To leave the SSH session:
+Vagrant.
+
+For further evidence that GigaDB is running on the VM, open a web
+browser and point it to [http://127.0.0.1:9170]. You should see the
+GigaDB web site that is deployed on your local VM.
+
+[http://127.0.0.1:9170]: http://127.0.0.1:9170
+
+To leave the SSH session:
 
 ```bash
 $ logout
@@ -137,4 +164,5 @@ Vagrant-VM.
 
 The Vagrant VM can be completely removed by running `vagrant destroy`.
 This command will terminate the use of any resources by the VM.
+
 
