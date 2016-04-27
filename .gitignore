@@ -1,12 +1,19 @@
-assets/*
+index.php
+logs
+assets
 !assets/.gitignore
 protected/runtime/*
+protected/config/es.json
+protected/config/main.php
+protected/yiic.php
 !protected/runtime/.gitignore
 protected/data/*.db
+protected/scripts/set_env.sh
 themes/classic/views/
 
 # Vagrant
 *.vagrant
+vagrant.log
 
 # Chef
 chef/site-cookbooks/gigadb/attributes/default.rb
