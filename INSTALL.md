@@ -92,8 +92,8 @@ Submodule path '../chef-cookbooks': checked out '1cf3e93cb1f7ef481269751a55df4bf
 
 If you are developing GigaDB for GigaScience, you might be informed
 to write new code for a particular [branch](https://git-scm.com/book/en/v1/Git-Branching-What-a-Branch-Is)
-in the code repository. If you are asked to use the `develop` branch
-then you need to checkout this branch from Github:
+in the code repository. For example, if you are asked to use the
+`develop` branch then you need to checkout this branch from Github:
 
 ```bash
 $ git fetch
