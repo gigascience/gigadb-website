@@ -52,6 +52,16 @@ if db[:host] == 'localhost'
     postgresql_database db[:database] do
         owner db_user
     end
+
+    bash 'restore gigadb database' do
+        db_user = db[:user]
+        password = db[:password]
+        sql_script = db[:sql_script]
+
+        code <<-EOH
+            export PGPASSWORD='#{password}'; psql -U #{db_user} -h localhost gigadb < #{sql_script}
+        EOH
+    end
 end
 
 user app_user do
