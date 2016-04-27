@@ -1,6 +1,7 @@
 index.php
 logs
 assets
+giga_cache
 !assets/.gitignore
 protected/runtime/*
 protected/config/es.json
