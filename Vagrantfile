@@ -2,8 +2,8 @@
 # vi: set ft=ruby :
 
 if ENV['GIGADB_BOX'] == 'centos'
-  box = "centos6-64"
-  box_url = "http://boxes.cogini.com/centos6-64.box"
+  box = "nrel/CentOS-6.5-x86_64"
+  box_url = "https://atlas.hashicorp.com/nrel/boxes/CentOS-6.5-x86_64/versions/1.2.0/providers/virtualbox.box"
 else
   # Use trusty32 box which is Ubuntu-14.04
   box = "trusty32"
