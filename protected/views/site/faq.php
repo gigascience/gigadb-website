@@ -220,7 +220,7 @@ Files:
 <ol>
 <li> FTP. This is the "normal" method, click the download button on any dataset page and this is how your data will be sent.
 </li>
-<li> Aspera. We subscribe to the Aspera server software, so you don't have to. It is FREE for people to download our data using Aspera, but you will need to install the browser app to do so. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, GigaDB cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment.
+<li> Hard drive shipment. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, GigaDB cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment.
 </li>
 </ol>
 <br />
@@ -282,7 +282,7 @@ Files:
 <br />
 <br />
 
-<h4><a name="TOC-Can-I-see-how-often-my-dataset-is-being-used-and-downloaded-"></a>Can I see how often my dataset is being used and downloaded?</h4>urrrm. Sort-of yes. If a user clicks the download button on the website, it is recorded in the database and you can see on the dataset page how many times this has happened. However, if a file is pulled directly from the FTP server or using Aspera it is currently not recorded in the database. This functionality is on our to-do list and will be addressed as soon as we can.
+<h4><a name="TOC-Can-I-see-how-often-my-dataset-is-being-used-and-downloaded-"></a>Can I see how often my dataset is being used and downloaded?</h4>urrrm. Sort-of yes. If a user clicks the download button on the website, it is recorded in the database and you can see on the dataset page how many times this has happened. However, if a file is pulled directly from the FTP server it is currently not recorded in the database. This functionality is on our to-do list and will be addressed as soon as we can.
 
 <br />
 <br />
