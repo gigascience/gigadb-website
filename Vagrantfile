@@ -1,13 +1,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-if ENV['GIGADB_BOX'] == 'centos'
-  box = "nrel/CentOS-6.5-x86_64"
-  box_url = "https://atlas.hashicorp.com/nrel/boxes/CentOS-6.5-x86_64/versions/1.2.0/providers/virtualbox.box"
-else
+if ENV['GIGADB_BOX'] == 'ubuntu'
   # Use trusty32 box which is Ubuntu-14.04
   box = "trusty32"
   box_url = "https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box"
+else
+  box = "nrel/CentOS-6.5-x86_64"
+  box_url = "https://atlas.hashicorp.com/nrel/boxes/CentOS-6.5-x86_64/versions/1.2.0/providers/virtualbox.box"
 end
 
 Vagrant.configure(2) do |config|
