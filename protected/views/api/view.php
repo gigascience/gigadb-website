@@ -348,12 +348,6 @@ $xml.="</gigadb_entry>";
 
 $xml=preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', $xml);
 
-$filename=dirname(Yii::app()->getBasePath())."/files/api/".$model->identifier;
-if(!file_exists($filename))
-{
-    $file=fopen($filename,'w');
-    fwrite($file, $xml);
-}
 
 
 $output= simplexml_load_string($xml);
