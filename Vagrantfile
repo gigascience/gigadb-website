@@ -6,8 +6,8 @@ if ENV['GIGADB_BOX'] == 'ubuntu'
   box = "trusty32"
   box_url = "https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box"
 else
-  box = "nrel/CentOS-6.5-x86_64"
-  box_url = "https://atlas.hashicorp.com/nrel/boxes/CentOS-6.5-x86_64/versions/1.2.0/providers/virtualbox.box"
+  box = "nrel/CentOS-6.7-x86_64"
+  box_url = "https://atlas.hashicorp.com/nrel/boxes/CentOS-6.7-x86_64/versions/1.0.0/providers/virtualbox.box"
 end
 
 Vagrant.configure(2) do |config|
