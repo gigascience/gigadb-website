@@ -34,8 +34,16 @@ Vagrant.configure(2) do |config|
     config.vm.share_folder "apt_cache", "/var/cache/apt/archives", apt_cache
   end
 
-  config.vm.provider :virtualbox do |vb|
+  # Cannot get VirtualBox shared folders to work with a Mac host
+  # and CentOS guest so use a rsync synced folder between these 2
+  # platforms
+  if ENV['GIGADB_BOX'] == 'ubuntu'
+    config.vm.provider :virtualbox do |vb|
       vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//vagrant","1"]
+    end
+  else  # CentOS
+    config.vm.synced_folder ".", "/vagrant", type: "rsync",
+      rsync__exclude: ".git/"
   end
 
   FileUtils.mkpath("./protected/runtime")
@@ -44,7 +52,6 @@ Vagrant.configure(2) do |config|
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
-  #
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = [
       "chef/site-cookbooks",
