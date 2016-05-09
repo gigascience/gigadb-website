@@ -7,17 +7,11 @@
 # All rights reserved - Do Not Redistribute
 #
 
-assets_dir = "/home/vagrant/assets"
-
-directory assets_dir do
-    action :create
-    recursive true
-    mode '0777'
-end
-
-link '/vagrant/assets' do
-    action :create
-    to assets_dir
+case node[:platform_family]
+when 'rhel'
+    include_recipe 'vagrant::redhat'
+when 'debian'
+    include_recipe 'vagrant::debian'
 end
 
 include_recipe "gigadb"

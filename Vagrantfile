@@ -1,13 +1,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-if ENV['GIGADB_BOX'] == 'centos'
-  box = "centos6-64"
-  box_url = "http://boxes.cogini.com/centos6-64.box"
-else
+if ENV['GIGADB_BOX'] == 'ubuntu'
   # Use trusty32 box which is Ubuntu-14.04
   box = "trusty32"
   box_url = "https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box"
+else
+  box = "nrel/CentOS-6.7-x86_64"
+  box_url = "https://atlas.hashicorp.com/nrel/boxes/CentOS-6.7-x86_64/versions/1.0.0/providers/virtualbox.box"
 end
 
 Vagrant.configure(2) do |config|
@@ -34,8 +34,16 @@ Vagrant.configure(2) do |config|
     config.vm.share_folder "apt_cache", "/var/cache/apt/archives", apt_cache
   end
 
-  config.vm.provider :virtualbox do |vb|
+  # Cannot get VirtualBox shared folders to work with a Mac host
+  # and CentOS guest so use a rsync synced folder between these 2
+  # platforms
+  if ENV['GIGADB_BOX'] == 'ubuntu'
+    config.vm.provider :virtualbox do |vb|
       vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//vagrant","1"]
+    end
+  else  # CentOS
+    config.vm.synced_folder ".", "/vagrant", type: "rsync",
+      rsync__exclude: ".git/"
   end
 
   FileUtils.mkpath("./protected/runtime")
@@ -44,7 +52,6 @@ Vagrant.configure(2) do |config|
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
-  #
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = [
       "chef/site-cookbooks",
