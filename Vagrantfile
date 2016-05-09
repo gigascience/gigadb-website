@@ -34,16 +34,18 @@ Vagrant.configure(2) do |config|
     config.vm.share_folder "apt_cache", "/var/cache/apt/archives", apt_cache
   end
 
-  # Cannot get VirtualBox shared folders to work with a Mac host
-  # and CentOS guest so use a rsync synced folder between these 2
-  # platforms
-  if ENV['GIGADB_BOX'] == 'ubuntu'
-    config.vm.provider :virtualbox do |vb|
-      vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//vagrant","1"]
-    end
-  else  # CentOS
-    config.vm.synced_folder ".", "/vagrant", type: "rsync",
-      rsync__exclude: ".git/"
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//vagrant","1"]
+  end
+
+  # CentOS-specific Vagrant configuration to allow the Yii assets folder
+  # to be world-readable.
+  if ENV['GIGADB_BOX'] != 'ubuntu' # For CentOS VM
+    config.vm.synced_folder ".", "/vagrant"
+
+    FileUtils.mkpath("./assets")
+    config.vm.synced_folder "./assets/", "/vagrant/assets",
+       :mount_options => ["dmode=777,fmode=777"]
   end
 
   FileUtils.mkpath("./protected/runtime")
