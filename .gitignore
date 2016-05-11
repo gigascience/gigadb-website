@@ -28,3 +28,6 @@ chef/site-cookbooks/gigadb/attributes/default.rb
 nbproject/private/
 nbproject/project.xml
 nbproject/project.properties
+
+# MacOSX
+.DS_Store
