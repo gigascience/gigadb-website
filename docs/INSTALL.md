@@ -9,8 +9,9 @@ Vagrant is a command line utility for creating VMs. To get started,
 download and install Vagrant using the appropriate installer or
 package for your platform which is available from the
 [Vagrant download page](https://www.vagrantup.com/downloads.html).
-There is no need to install any software for Chef-Solo since Vagrant
-will automatically do this for you.
+There is no need to install any software for Chef-Solo since the base
+Vagrant VMs that we will be using to deploy GigaDB on will come with
+Chef pre-installed.
 
 The virtual machine we will use to host a test version of GigaDB is
 provided by [VirtualBox](https://www.virtualbox.org) which is free
