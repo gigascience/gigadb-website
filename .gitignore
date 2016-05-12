@@ -3,6 +3,7 @@ logs
 assets
 giga_cache
 !assets/.gitignore
+css/site.css
 protected/runtime/*
 protected/config/db.json
 protected/config/es.json
