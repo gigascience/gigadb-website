@@ -14,8 +14,9 @@ website.
 
 ## Installation
 
-Please see the file called INSTALL.md in the docs directory.
+Please see the file called [INSTALL.md](docs/INSTALL.md) in the docs
+directory.
 
 ## Licensing
 
-Please see the file called LICENSE.
+Please see the file called [LICENSE](./LICENSE).
