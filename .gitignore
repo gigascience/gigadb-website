@@ -4,7 +4,9 @@ assets
 giga_cache
 !assets/.gitignore
 protected/runtime/*
+protected/config/db.json
 protected/config/es.json
+protected/config/local.php
 protected/config/main.php
 protected/yiic.php
 !protected/runtime/.gitignore
