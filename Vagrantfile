@@ -1,12 +1,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-if ENV['GIGADB_BOX'] == 'centos'
-  box = "centos6-64"
-  box_url = "http://boxes.cogini.com/centos6-64.box"
+if ENV['GIGADB_BOX'] == 'ubuntu'
+  # Use trusty32 box which is Ubuntu-14.04
+  box = "trusty32"
+  box_url = "https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box"
 else
-  box = "lucid32"
-  box_url = "http://files.vagrantup.com/lucid32.box"
+  box = "nrel/CentOS-6.7-x86_64"
+  box_url = "https://atlas.hashicorp.com/nrel/boxes/CentOS-6.7-x86_64/versions/1.0.0/providers/virtualbox.box"
 end
 
 Vagrant.configure(2) do |config|
@@ -34,7 +35,17 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provider :virtualbox do |vb|
-      vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//vagrant","1"]
+    vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//vagrant","1"]
+  end
+
+  # CentOS-specific Vagrant configuration to allow the Yii assets folder
+  # to be world-readable.
+  if ENV['GIGADB_BOX'] != 'ubuntu' # For CentOS VM
+    config.vm.synced_folder ".", "/vagrant"
+
+    FileUtils.mkpath("./assets")
+    config.vm.synced_folder "./assets/", "/vagrant/assets",
+       :mount_options => ["dmode=777,fmode=777"]
   end
 
   FileUtils.mkpath("./protected/runtime")
@@ -43,7 +54,6 @@ Vagrant.configure(2) do |config|
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
-  #
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = [
       "chef/site-cookbooks",
@@ -72,7 +82,7 @@ Vagrant.configure(2) do |config|
       },
       :postgresql => {
         :version => '9.1',
-        :dir => '/var/lib/pgsql/9.1/data',
+        #:dir => '/var/lib/pgsql/9.1/data',
       },
       :elasticsearch => {
         :version => '1.3.4',
