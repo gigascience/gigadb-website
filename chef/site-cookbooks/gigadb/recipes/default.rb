@@ -52,6 +52,16 @@ if db[:host] == 'localhost'
     postgresql_database db[:database] do
         owner db_user
     end
+
+    bash 'restore gigadb database' do
+        db_user = db[:user]
+        password = db[:password]
+        sql_script = db[:sql_script]
+
+        code <<-EOH
+            export PGPASSWORD='#{password}'; psql -U #{db_user} -h localhost gigadb < #{sql_script}
+        EOH
+    end
 end
 
 user app_user do
@@ -79,6 +89,11 @@ end
 
 template "#{site_dir}/protected/config/local.php" do
     source "yii-local.php.erb"
+    mode "0644"
+end
+
+template "#{site_dir}/protected/config/main.php" do
+    source "yii-main.php.erb"
     mode "0644"
 end
 
@@ -159,14 +174,30 @@ execute 'Build css' do
     user css_user
 end
 
+###############
+#### nginx ####
+###############
+
 # Remove default dummy nginx sites
 ['default.conf', 'example_ssl.conf'].each do |fname|
     file "/etc/nginx/conf.d/#{fname}" do
         action :delete
     end
 end
+
+# Delete default nginx conf file
+file "/etc/nginx/sites-available/default" do
+  action :delete
+end
+
+# Delete link to default nginx conf file
+link '/etc/nginx/sites-enabled/default' do
+  action :delete
+end
+
+# Reload nginx configuration
 service 'nginx' do
-    action :restart
+    action :reload
 end
 
 dirs = %w{
@@ -183,7 +214,7 @@ dirs.each do |component|
             mkdir -p #{the_dir}
             chown -R www-data:#{app_user} #{the_dir}
             chmod -R ug+rwX #{the_dir}
-            find #{the_dir} -type d | xargs chmod g+x
+            #find #{the_dir} -type d | xargs chmod g+x
         EOH
     end
 end

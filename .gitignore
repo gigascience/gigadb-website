@@ -1,12 +1,26 @@
-assets/*
+index.php
+logs
+assets
+giga_cache
 !assets/.gitignore
+css/site.css
 protected/runtime/*
+protected/config/db.json
+protected/config/es.json
+protected/config/local.php
+protected/config/main.php
+protected/yiic.php
 !protected/runtime/.gitignore
 protected/data/*.db
+protected/scripts/set_env.sh
 themes/classic/views/
 
 # Vagrant
 *.vagrant
+vagrant.log
+
+# Chef
+chef/site-cookbooks/gigadb/attributes/default.rb
 
 # PhpStorm
 *.iml
@@ -17,3 +31,6 @@ themes/classic/views/
 nbproject/private/
 nbproject/project.xml
 nbproject/project.properties
+
+# MacOSX
+.DS_Store
