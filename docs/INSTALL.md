@@ -2,8 +2,8 @@
 
 ## Preparation
 
-GigaDB can be automatically installed in a virtual machine (VM) using
-[Vagrant](https://www.vagrantup.com) and [Chef Solo](https://docs.chef.io/chef_solo.html).
+A test instance of GigaDB can be automatically installed in a virtual
+machine (VM) using [Vagrant](https://www.vagrantup.com) and [Chef Solo](https://docs.chef.io/chef_solo.html).
 
 Vagrant is a command line utility for creating VMs. To get started,
 download and install Vagrant using the appropriate installer or
@@ -42,7 +42,7 @@ or above, you can do this by trying to run git from the Terminal the
 very first time. If you don’t have it installed already, it will
 prompt you to install it.
 
-If you want a more up to date version, you can also install it via a
+If you want a more up to date version, you can also install git via a
 binary installer. An OSX Git installer is maintained and available
 for download at the [Git website](http://git-scm.com/download/mac).
 
@@ -113,7 +113,8 @@ These variables are listed in
 Your technical manager will be able to provide the values that these
 variables should be configured with. Once you have filled in the
 required values for the attributes, the file must then be saved as
-`default.rb` in the same folder.
+`default.rb` in the same folder. One or two key files may also be
+required in the files/certs directory.
 
 ## Creating and provisioning the virtual machine
 
@@ -157,8 +158,12 @@ Connection to 127.0.0.1 closed.
 ## Shared folder
 
 There is a folder `/vagrant` in the VM created Vagrant which is
-shared with a directory on your computer which is hosting the
-Vagrant-VM.
+shared with the directory that contains the local gigadb-website Github
+repository on your computer which is hosting the Vagrant-VM. If you
+change the code in your gigadb-website repository, this means that
+the code is also changed in `/vagrant` on your guest VM. Use
+[http://127.0.0.1:9170] in your web browser to check how your code
+may have affect the behvaiour of GigaDB.
 
 ## Shutting down the VM
 
