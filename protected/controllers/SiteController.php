@@ -188,9 +188,9 @@ class SiteController extends Controller {
     public function getDatasetByType($type) {
 
  	if ($type > 0) {
-        $models = Dataset::model()->findAllBySql("SELECT * FROM dataset JOIN dataset_type ON dataset.id=dataset_type.dataset_id WHERE dataset_type.type_id=:type_id AND dataset.upload_status = 'Published' limit 9", array(':type_id' => $type));
+        $models = Dataset::model()->findAllBySql("SELECT * FROM dataset JOIN dataset_type ON dataset.id=dataset_type.dataset_id WHERE dataset_type.type_id=:type_id AND dataset.upload_status = 'Published' order by publication_date desc limit 9", array(':type_id' => $type));
         } else {
-            $models = Dataset::model()->findAllBySql("SELECT * FROM dataset WHERE dataset.upload_status = 'Published' limit 9");
+            $models = Dataset::model()->findAllBySql("SELECT * FROM dataset WHERE dataset.upload_status = 'Published' order by publication_date desc limit 9");
         }
 
         return $models;  }
