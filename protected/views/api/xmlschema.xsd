@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!-- definition of simple elements -->
+<xs:element name="ID" type="xs:integer"/>
+<xs:element name="Title" type="xs:string"/>
+<xs:element name="Description" type="xs:string"/>
+
+<xs:element name="Location" type="xs:string"/>
+<xs:element name="ImagePhtographer" type="xs:string"/>
+<xs:element name="ImageURL" type="xs:string"/>
+<xs:element name="ImageTag" type="xs:string"/>
+<xs:element name="ImageLicense" type="xs:string"/>
+<xs:element name="ImageSource" type="xs:string"/>
+
+<xs:element name="AuthorName" type="xs:string"/>
+
+<xs:element name="ProjectName" type="xs:string"/>
+<xs:element name="ProjectURL" type="xs:string"/>
+
+<xs:element name="SampleID" type="xs:string"/>
+<xs:element name="Attibutes" type="xs:string"/>
+<xs:element name="CommonName" type="xs:string"/>
+<xs:element name="GenbankName" type="xs:string"/>
+<xs:element name="ScientificName" type="xs:string"/>
+<xs:element name="Tax" type="xs:string"/>
+
+<xs:element name="FileName" type="xs:string"/>
+<xs:element name="FileLocation" type="xs:string"/>
+<xs:element name="FileExtension" type="xs:string"/>
+<xs:element name="Size" type="xs:string"/>
+<xs:element name="FileDescription" type="xs:string"/>
+
+<xs:element name="PublisherName" type="xs:string"/>
+<xs:element name="PublisherDescription" type="xs:string"/>
+<xs:element name="PublicationDate" type="xs:date"/>
+
+<!-- definition of attributes -->
+<xs:attribute name="DOI" type="xs:string"/>
+
+<!-- definition of complex elements -->
+<xs:element name="Images">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="Location"/>
+      <xs:element ref="ImagePhotographer"/>
+      <xs:element ref="ImageURL"/>
+      <xs:element ref="ImageTag"/>
+      <xs:element ref="ImageLicense"/>
+      <xs:element ref="ImageSource"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="Authors">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="AuthorName" minOccurs="1" maxOccurs="Unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="Projects">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="ProjectName"/>
+      <xs:element ref="ProjectURL"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="Samples">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="SampleID"/>
+      <xs:element ref="Attributes"/>
+      <xs:element ref="CommonName"/>
+      <xs:element ref="GenbankName"/>
+      <xs:element ref="ScientificName"/>
+      <xs:element ref="Tax"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="File">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="FileName"/>
+      <xs:element ref="FileLocation"/>
+      <xs:element ref="FileExtension"/>
+      <xs:element ref="Size"/>
+      <xs:element ref="FileDescription"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="Files">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="File" minOccurs="0" maxOccurs="Unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="Publisher">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="PublisherName"/>
+      <xs:element ref="PublisherDescription"/>
+      <xs:element ref="PublicationDate"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<!--definition of Datasets-->
+<xs:element name="Dataset">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="ID"/>
+      <xs:attribute ref="DOI" use="required"/>
+      <xs:element ref="Title"/>
+      <xs:element ref="Description"/>
+      <xs:element ref="Images"/>
+      <xs:element ref="Authors"/>
+      <xs:element ref="Projects"/>
+      <xs:element ref="Manuscripts"/>
+      <xs:element ref="Samples"/>
+      <xs:element ref="Files"/>
+      <xs:element ref="Publisher"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="Datasets">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="Dataset" minOccurs="0" maxOccurs="Unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>
