@@ -24,7 +24,7 @@ branches which are always present:
 * `master`
 * `develop`
 
-<img src="http://nvie.com/img/main-branches@2x.png">](http://nvie.com/posts/a-successful-git-branching-model/)
+<img src="http://nvie.com/img/main-branches@2x.png">
 
 The `origin/master` branch is the main branch which contains code
 that is ready for production deployment. This `origin/develop` branch
