@@ -2,12 +2,26 @@
 
 The live version of [GigaDB](http://gigadb.org) is currently running
 on a machine with Centos 6 as its operating system. Due to this
-reason, testing of new GigaDB code should be done with a
-Centos 6 development environment using Vagrant. This requires the use
-of a Centos base box. The creation of Centos 6 base box is described
-in this document.
+reason, testing of new GigaDB code is being done with a Centos 6
+development environment using Vagrant. This requires the use of a
+Centos base box.
 
-## Requirements
+## Automating the creation of Centos base boxes
+
+It is possible to automate the creation of base boxes using
+[Packer](https://www.packer.io) which is "a tool for creating machine
+and container images for mulitple platforms from a single source
+configuration". The National Renewable Energy Laboratory (NREL) has
+kindly made available their packer scripts to automate the creation of
+Centos images in a [repo](https://github.com/NREL/vagrant-boxes)
+which has been forked [here](https://github.com/pli888/vagrant-boxes).
+
+## Manual creation of Centos base boxes
+
+The manual creation of Centos 6 base box is described in the
+remainder of this document.
+
+### Requirements
 
 Download and install a copy of [VirtualBox](https://www.virtualbox.org)
 from its [official download page](https://www.virtualbox.org/wiki/Downloads).
@@ -15,7 +29,7 @@ In addition, download and install [Vagrant](https://www.vagrantup.com).
 Since we will be creating a Centos 6 base box, download the minimal
 x86_64 version of Centos 6.7, e.g. from [http://centos.uhost.hk/6.7/isos/x86_64/CentOS-6.7-x86_64-minimal.iso](http://centos.uhost.hk/6.7/isos/x86_64/CentOS-6.7-x86_64-minimal.iso).
 
-## Creating the virtual machine
+### Creating the virtual machine
 
 Create a virtual machine (VM) for Centos using the VirtualBox GUI.
 Specify its name as vagrant-centos-6.7-x86_64, type as linux and
@@ -25,7 +39,7 @@ allocated. The iso file you downloaded from http://centos.uhost.hk/6
 .7/isos/x86_64/CentOS-6.7-x86_64-minimal.iso should be specified as
 its virtual CD/DVD disk file. Enable shared folders.
 
-## Installing Centos 6.7 on the virtual machine
+### Installing Centos 6.7 on the virtual machine
 
 The installation process for Centos 6.7 should be straight forward
 since most of the default options can be used. Remember the password
