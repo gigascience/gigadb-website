@@ -11,8 +11,8 @@ that is being written by developers, we use a [specific branching
 model](http://nvie.com/posts/a-successful-git-branching-model/)
 which has been described by Vincent Driessen:
 
-<img src="http://nvie.com/img/git-model@2x.png">](http://nvie.com/posts/a-successful-git-branching-model/)
-Declare attribution!
+<img src="http://nvie.com/img/git-model@2x.png">
+
 
 ## Main branches
 
@@ -57,7 +57,7 @@ Must merge back into: `develop`
 Branch naming convention: anything in the form of `new-feature/*` or
 `fix/reported_bug` except `master`, `develop`, `release-*` or `hotfix-*`
 
-<img src="http://nvie.com/img/fb@2x.png">](http://nvie.com/posts/a-successful-git-branching-model/)
+<img src="http://nvie.com/img/fb@2x.png">
 
 Feature branches are used to develop new pieces of functionality for
 a future release. This type of branch exists as long as the new
@@ -230,7 +230,7 @@ Must merge back into: `develop` and `master`
 
 Branch naming convention: `hotfix-*`
 
-<img src="http://nvie.com/img/hotfix-branches@2x.png">](http://nvie.com/posts/a-successful-git-branching-model/)
+<img src="http://nvie.com/img/hotfix-branches@2x.png">
 
 Hotfix branches are used to immediately fix critical bugs in a
 production release of GigaDB. The hotfix branch is branched off from
