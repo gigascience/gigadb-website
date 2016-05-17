@@ -85,18 +85,14 @@ To create a connection the database, select `Add server` from the
 the `SSH Tunnel` tab. The text fields in this box need to completed
 as follows:
 
-![pgAdmin1](https://github.com/gigascience/gigadb-website/blob/fix/documentation/images/docs/pgadmin1.png)
+<img src="https://github.com/gigascience/gigadb-website/blob/develop/images/docs/pgadmin1.png?raw=true">
 
 Next, the connection to the PostgreSQL database itself needs to be
 set up:
 
-![pgAdmin2](https://github.com/gigascience/gigadb-website/blob/fix/documentation/images/docs/pgadmin2.png)
-
+<img src="https://github.com/gigascience/gigadb-website/blob/develop/images/docs/pgadmin2.png?raw=true">
 
 `gigadb` should appear as an available database with a successful
 PostgreSQL connection to the Vagrant VM:
 
-![pgAdmin3](https://github.com/gigascience/gigadb-website/blob/fix/documentation/images/docs/pgadmin3.png)
-
-
-
+<img src="https://github.com/gigascience/gigadb-website/blob/develop/images/docs/pgadmin3.png?raw=true">
