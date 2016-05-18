@@ -1,10 +1,19 @@
 # GigaDB development
 
-## Website architecture
+## Website
 
 The GigaDB website is built using the [Yii](http://www.yiiframework.com)
 PHP framework which provides it with a Model-View-Controller (MVC)
 architecture.
+
+Developing the website means that you will be writing new PHP code and
+for this, you will need to use a text editor. For making simple changes,
+a text-based editor will suffice such as [vi](https://en.wikipedia.org/wiki/Vi)
+which comes pre-installed on Linux operating systems. However, you will
+probably require a more user-friendly text editor for writing code in
+the long term. You will need to decide which text editor is the most
+suitable for your needs but I have heard good things about
+[Sublime Text](https://www.sublimetext.com).
 
 ## Database
 
