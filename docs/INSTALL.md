@@ -22,6 +22,8 @@ The GigaDB code base is available from [GitHub](https://github.com/gigascience/g
 Since you will be committing code you will have written, please use
 git to do this.
 
+### Linux
+
 If you want to install the basic Git tools on Linux via a binary
 installer, you can generally do so through the basic package
 management tool that comes with your distribution. If you’re on
@@ -37,6 +39,8 @@ If you’re on a Debian-based distribution like Ubuntu, try apt-get:
 $ sudo apt-get install git-all
 ```
 
+### MacOSX
+
 There are several ways to install Git on a Mac. The easiest is
 probably to install the Xcode Command Line Tools. On Mavericks (10.9)
 or above, you can do this by trying to run git from the Terminal the
@@ -46,6 +50,12 @@ prompt you to install it.
 If you want a more up to date version, you can also install git via a
 binary installer. An OSX Git installer is maintained and available
 for download at the [Git website](http://git-scm.com/download/mac).
+
+### Windows
+
+We suggest that you install [Babun](http://babun.github.io) which
+provides a Linux-like console on Windows platforms. Babun will provide
+`git` as well as other develop tools.
 
 ## Downloading the GigaDB code repository
 
