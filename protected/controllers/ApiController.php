@@ -182,6 +182,11 @@ class ApiController extends Controller
             }
             else{
                 ob_end_clean();
+                
+                 if(!isset($model))
+                {
+                    $this->_sendResponse(404,'Dataset cannt find in the database, Please check the DOI '.$_GET['id']);
+                }
             	 if($table==='sample')
                 {
                     $this->renderPartial('view_sample',array('model'=>$model,'type'=>$type));  
