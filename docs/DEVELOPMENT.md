@@ -15,6 +15,20 @@ the long term. You will need to decide which text editor is the most
 suitable for your needs but I have heard good things about
 [Sublime Text](https://www.sublimetext.com).
 
+## GitHub
+
+The source code for GigaDB is hosted on
+[GitHub](https://github.com/gigascience/gigadb-website). For this
+reason, you will need to understand how to use git and GitHub to work on
+GigaDB. The development of the GigaDB website will use to a 'fork and
+pull' model. You will [fork](https://help.github.com/articles/fork-a-repo/)
+(copy) the source gigascience/gigadb-website repository to a personal 
+fork and [push](https://help.github.com/articles/pushing-to-a-remote/)
+changes made to it. These changes must then be pulled into the source 
+gigascience/gigadb-website repository by making a
+[pull request](https://help.github.com/articles/using-pull-requests/)
+to the GigaDB project maintainer.
+
 ## Database
 
 The data that the MVC architecture operates on is stored in a
