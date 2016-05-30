@@ -12,3 +12,17 @@
         action :install
     end
 end
+
+# Remove PostgreSQL version 8.4 packages which have been installed as
+# part of the @base packages
+package "postgresql" do
+  action :remove
+end
+
+package "postgresql-devel" do
+  action :remove
+end
+
+package "postgresql-libs" do
+  action :remove
+end
