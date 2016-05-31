@@ -135,7 +135,7 @@ class AdminFileController extends Controller
                 if ($model->location) {
                     $extension = $format = null;
                     $this->getFileExtension($model->name, $extension, $format);
-                    $this->setAutoFileAttributes($model);
+                   // $this->setAutoFileAttributes($model);
                 }
                 $this->redirect(array('view', 'id' => $model->id));
             }
