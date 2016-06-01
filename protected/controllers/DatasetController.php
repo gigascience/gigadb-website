@@ -511,7 +511,7 @@ EO_MAIL;
  public function actionSubmit() { 
            if (isset($_POST['File'])) {
             $count = count($_POST['File']);
-            var_dump('count'.$count);
+            //var_dump('count'.$count);
             for ($i = 0; $i < $count; $i++) {
                 $id=$_POST['File'][$i]['id'];
                 $model = File::model()->findByPk($id);
