@@ -21,6 +21,7 @@ vagrant.log
 
 # Chef
 chef/site-cookbooks/gigadb/attributes/default.rb
+chef/site-cookbooks/aws/attributes/default.rb
 
 # PhpStorm
 *.iml
