@@ -27,6 +27,7 @@ include_recipe "nginx"
 include_recipe "python"
 include_recipe 'nodejs'
 include_recipe "elasticsearch"
+include_recipe 'user'
 
 python_env = node[:gigadb][:python][:virtualenv]
 build_dir = node[:gigadb][:python][:build_dir]
@@ -71,6 +72,37 @@ user app_user do
     action :create
 end
 
+
+# Add user accounts for GigaScience team
+user1 = node[:gigadb][:user1]
+user1_name = node[:gigadb][:user1_name]
+user1_public_key = node[:gigadb][:user1_public_key]
+
+user_account node[:gigadb][:user1] do
+    comment   node[:gigadb][:user1_name]
+    ssh_keys  node[:gigadb][:user1_public_key]
+    home      "/home/#{node[:gigadb][:user1]}"
+end
+
+user2 = node[:gigadb][:user2]
+user2_name = node[:gigadb][:user2_name]
+user2_public_key = node[:gigadb][:user2_public_key]
+
+user_account node[:gigadb][:user2] do
+    comment   node[:gigadb][:user2_name]
+    ssh_keys  node[:gigadb][:user2_public_key]
+    home      "/home/#{node[:gigadb][:user2]}"
+end
+
+user3 = node[:gigadb][:user3]
+user3_name = node[:gigadb][:user3_name]
+user3_public_key = node[:gigadb][:user3_public_key]
+
+user_account node[:gigadb][:user3] do
+    comment   node[:gigadb][:user3_name]
+    ssh_keys  node[:gigadb][:user3_public_key]
+    home      "/home/#{node[:gigadb][:user3]}"
+end
 
 template "/etc/nginx/sites-available/gigadb" do
     source "nginx-gigadb.erb"
