@@ -120,6 +120,7 @@ class AdminFileController extends Controller
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['File'])) {
+            $_POST['File'] = array_filter($_POST['File']);
             $model->attributes = $_POST['File'];
 
             // save file attributes from location
