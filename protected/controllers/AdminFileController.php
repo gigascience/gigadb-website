@@ -120,6 +120,7 @@ class AdminFileController extends Controller
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['File'])) {
+            $_POST['File'] = array_filter($_POST['File']);
             $model->attributes = $_POST['File'];
 
             // save file attributes from location
@@ -127,14 +128,15 @@ class AdminFileController extends Controller
             if ($model->save()) {
                 if(isset($_POST['File']['sample_name'])) {
                     $fs = new FileSample;
-                    $fs->sample_id = $_POST['File']['sample_name'];
+                    $sample = Sample::model()->findbyAttributes(array('name'=>$_POST['File']['sample_name']));
+                    $fs->sample_id = $sample->id;
                     $fs->file_id = $model->id;
                     $fs->save(false);
                 }
                 if ($model->location) {
                     $extension = $format = null;
                     $this->getFileExtension($model->name, $extension, $format);
-                    $this->setAutoFileAttributes($model);
+                   // $this->setAutoFileAttributes($model);
                 }
                 $this->redirect(array('view', 'id' => $model->id));
             }
@@ -427,7 +429,8 @@ class AdminFileController extends Controller
                     } else {
                         $fs = $fs[0];
                     }
-                    $fs->sample_id = $_POST['File']['sample_name'];
+                    $sample = Sample::model()->findbyAttributes(array('name'=>$_POST['File']['sample_name']));
+                    $fs->sample_id = $sample->id;
                     $fs->file_id = $model->id;
                     if( $fs->sample_id !='None'&& $fs->sample_id !="" )
                     {

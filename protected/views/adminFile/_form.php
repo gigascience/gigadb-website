@@ -94,8 +94,8 @@ Yii::app()->clientScript->registerScriptFile('/js/jquery-migrate-1.2.1.js', CCli
 		<div class="control-group">
 			<?php echo $form->labelEx($model,'sample_name',array('class'=>'control-label')); ?>
 			<div class="controls">
-	        			<?= CHtml::activeDropDownList($model,'sample_name',CHtml::listData(Sample::model()->findAll(),'id','name'),array('empty' => 'None',)); ?>
-				<?php echo $form->error($model,'sample_name'); ?>
+                                <?php echo $form->textField($model,'sample_name'); ?>
+                                <?php echo $form->error($model,'sample_name'); ?>
 			</div>
 		</div>
 
