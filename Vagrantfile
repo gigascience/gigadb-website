@@ -22,17 +22,30 @@ Vagrant.configure(2) do |config|
   # doesn't already exist on the user's system.
   config.vm.box_url = box_url
 
+  # Forward ports from guest to host, which allows for outside computers
+  # to access VM, whereas host only networking does not.va
+  config.vm.network "forwarded_port", guest: 80, host: 9170
+  config.vm.network "forwarded_port", guest: 5432, host: 9171
+  config.vm.network "forwarded_port", guest: 22, host: 2224
+
+  config.vm.synced_folder ".", "/vagrant"
+
+  FileUtils.mkpath("./protected/runtime")
+  FileUtils.chmod_R 0777, ["./protected/runtime"]
+
+  # CentOS-specific Vagrant configuration to allow Yii assets folder
+  # to be world-readable.
+  if ENV['GIGADB_BOX'] != 'ubuntu' # For CentOS VM and AWS instance
+    FileUtils.mkpath("./assets")
+    config.vm.synced_folder "./assets/", "/vagrant/assets",
+       :mount_options => ["dmode=777,fmode=777"]
+  end
+
   ####################
   #### VirtualBox ####
   ####################
   config.vm.provider :virtualbox do |vb|
     vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//vagrant","1"]
-
-    # Forward ports from guest to host, which allows for outside computers
-    # to access VM, whereas host only networking does not.
-    config.vm.network "forwarded_port", guest: 80, host: 9170
-    config.vm.network "forwarded_port", guest: 5432, host: 9171
-    config.vm.network "forwarded_port", guest: 22, host: 2224
 
     # Share an additional folder to the guest VM. The first argument is
     # an identifier, the second is the path on the guest to mount the
@@ -42,19 +55,6 @@ Vagrant.configure(2) do |config|
     if File.directory?(apt_cache)
       config.vm.share_folder "apt_cache", "/var/cache/apt/archives", apt_cache
     end
-
-    # CentOS-specific Vagrant configuration to allow the Yii assets folder
-    # to be world-readable.
-    if ENV['GIGADB_BOX'] != 'ubuntu' # For CentOS VM
-      config.vm.synced_folder ".", "/vagrant"
-
-      FileUtils.mkpath("./assets")
-      config.vm.synced_folder "./assets/", "/vagrant/assets",
-         :mount_options => ["dmode=777,fmode=777"]
-    end
-
-    FileUtils.mkpath("./protected/runtime")
-    FileUtils.chmod_R 0777, ["./protected/runtime"]
   end
 
   #############
@@ -118,7 +118,7 @@ Vagrant.configure(2) do |config|
         :version => '1.3.4',
       },
       :java => {
-        :install_flavor => 'oracle',
+        #:install_flavor => 'oracle',
         :jdk_version => '7',
         :oracle => {
            "accept_oracle_download_terms" => true,
