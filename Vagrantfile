@@ -22,6 +22,12 @@ Vagrant.configure(2) do |config|
   # doesn't already exist on the user's system.
   config.vm.box_url = box_url
 
+  # Cache packages to reduce provisioning time
+  if Vagrant.has_plugin?("vagrant-cachier")
+    #Configure cached packages to be shared between instances of the same base box
+    config.cache.scope = :box
+  end
+
   # Forward ports from guest to host, which allows for outside computers
   # to access VM, whereas host only networking does not.va
   config.vm.network "forwarded_port", guest: 80, host: 9170
@@ -38,7 +44,7 @@ Vagrant.configure(2) do |config|
   if ENV['GIGADB_BOX'] != 'ubuntu' # For CentOS VM and AWS instance
     FileUtils.mkpath("./assets")
     config.vm.synced_folder "./assets/", "/vagrant/assets",
-       :mount_options => ["dmode=777,fmode=777"]
+      :mount_options => ["dmode=777,fmode=777"]
   end
 
   ####################
