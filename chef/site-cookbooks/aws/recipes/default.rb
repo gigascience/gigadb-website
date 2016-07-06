@@ -7,6 +7,11 @@
 
 include_recipe 'user'
 
+# Create www-data user and group
+user_account 'www-data' do
+    comment 'www-data'
+end
+
 # Add user accounts to AWS instance
 user1 = node[:gigadb][:user1]
 user1_name = node[:gigadb][:user1_name]
@@ -43,4 +48,10 @@ group 'gigadb-admin' do
   action    :create
   members   [user1, user2, user3]
   append    true
+end
+
+group 'www-data' do
+    action  :modify
+    members [user1, user2, user3]
+    append  true
 end
