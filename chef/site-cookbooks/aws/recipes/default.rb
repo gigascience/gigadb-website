@@ -37,3 +37,10 @@ user_account node[:gigadb][:user3] do
     ssh_keys  node[:gigadb][:user3_public_key]
     home      "/home/#{node[:gigadb][:user3]}"
 end
+
+# Create group for GigaDB admins
+group 'gigadb-admin' do
+  action    :create
+  members   [user1, user2, user3]
+  append    true
+end
