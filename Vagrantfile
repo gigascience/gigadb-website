@@ -39,6 +39,9 @@ Vagrant.configure(2) do |config|
   FileUtils.mkpath("./protected/runtime")
   FileUtils.chmod_R 0777, ["./protected/runtime"]
 
+  FileUtils.mkpath("./giga_cache")
+    FileUtils.chmod_R 0777, ["./giga_cache"]
+
   # CentOS-specific Vagrant configuration to allow Yii assets folder
   # to be world-readable.
   if ENV['GIGADB_BOX'] != 'ubuntu' # For CentOS VM and AWS instance
