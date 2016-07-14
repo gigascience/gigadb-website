@@ -40,7 +40,7 @@ Vagrant.configure(2) do |config|
   FileUtils.chmod_R 0777, ["./protected/runtime"]
 
   FileUtils.mkpath("./giga_cache")
-    FileUtils.chmod_R 0777, ["./giga_cache"]
+  FileUtils.chmod_R 0777, ["./giga_cache"]
 
   # CentOS-specific Vagrant configuration to allow Yii assets folder
   # to be world-readable.
