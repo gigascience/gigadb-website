@@ -55,3 +55,27 @@ group 'www-data' do
     members [user1, user2, user3]
     append  true
 end
+
+dirs = %w{
+  assets
+  protected/runtime
+  giga_cache
+}
+
+dirs.each do |component|
+    the_dir = "/vagrant/#{component}"
+
+    bash 'setup permissions' do
+        code <<-EOH
+            mkdir -p #{the_dir}
+            chown -R www-data:gigadb-admin #{the_dir}
+            chmod -R ug+rwx #{the_dir}
+        EOH
+    end
+end
+
+bash 'gigadb-admin group permissions' do
+    code <<-EOH
+        chgrp -R gigadb-admin /vagrant/*
+    EOH
+end

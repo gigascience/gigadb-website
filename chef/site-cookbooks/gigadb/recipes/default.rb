@@ -106,7 +106,7 @@ template "#{site_dir}/protected/scripts/set_env.sh" do
     mode '0644'
 end
 
-execute "#{site_dir}/protected/scripts/init_perms.sh"
+#execute "#{site_dir}/protected/scripts/init_perms.sh"
 
 nginx_site "gigadb" do
     action :enable
