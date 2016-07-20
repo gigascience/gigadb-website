@@ -6,6 +6,7 @@
 #
 
 include_recipe 'user'
+include_recipe 'iptables'
 
 # Create www-data user and group
 user_account 'www-data' do
@@ -79,3 +80,13 @@ bash 'gigadb-admin group permissions' do
         chgrp -R gigadb-admin /vagrant/*
     EOH
 end
+
+service "iptables" do
+    action :start
+end
+
+iptables_rule 'http' do
+    action :enable
+end
+
+
