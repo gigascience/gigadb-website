@@ -102,6 +102,7 @@ Vagrant.configure(2) do |config|
 
     # You may also specify custom JSON attributes:
     chef.json = {
+      :gigadb_box => ENV['GIGADB_BOX'],
       :environment => "vagrant",
       :gigadb => {
         :server_names => ["localhost"],

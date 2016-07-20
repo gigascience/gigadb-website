@@ -161,8 +161,8 @@ end
 
 # Compile less files
 execute 'npm install -g less'
-if node[:environment] != 'vagrant'
-    css_user = app_user
+if node[:gigadb_box] == 'aws'
+    css_user = 'centos'
 else
     css_user = 'vagrant'
 end
