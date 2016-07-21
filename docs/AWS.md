@@ -11,6 +11,7 @@ required to launch an EC2 instance hosting GigaDB. Vagrant needs to be
 able to access the AWS user account's security credentials using the 
 following environment variables:
 
+```bash
 AWS_ACCESS_KEY_ID="Access key for accessing AWS"
 AWS_SECRET_ACCESS_KEY="Secret access key for accessing AWS"
 AWS_DEFAULT_REGION="The region to start the instance in"
@@ -18,6 +19,7 @@ AWS_KEYPAIR_NAME="Name of keypair used to bootstrap AMIs"
 AWS_SECURITY_GROUPS="Name of AWS security group to use"
 AWS_SSH_PRIVATE_KEY_PATH="Path to AWS private key"
 AWS_KEYPAIR_NAME="Name of keypair used to bootstrap AMIs"
+```
 
 The above environment variables can be set and managed in your
 .bash_profile file.
