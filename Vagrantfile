@@ -101,10 +101,10 @@ Vagrant.configure(2) do |config|
     ############################################################
     chef.environment = "aws_test"
 
+    chef.add_recipe "vagrant"
     if ENV['GIGADB_BOX'] == 'aws'
         chef.add_recipe "aws"
     end
-    chef.add_recipe "vagrant"
 
     # You may also specify custom JSON attributes:
     chef.json = {
