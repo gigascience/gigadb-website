@@ -85,10 +85,8 @@ service "iptables" do
     action :start
 end
 
-iptables_rule 'prefix' 
-iptables_rule 'http' 
+iptables_rule 'prefix'
+iptables_rule 'http'
 iptables_rule 'ssh'
- iptables_rule 'postgres' 
+iptables_rule 'postgres'
 iptables_rule 'postfix'
-
-
