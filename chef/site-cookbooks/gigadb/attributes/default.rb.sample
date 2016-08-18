@@ -25,8 +25,6 @@ default[:gigadb][:twitter][:secret] = 'provide_twitter_secret'
 default[:gigadb][:orcid][:client_id] = 'provide_orcid_client_id'
 default[:gigadb][:orcid][:client_secret] = 'provide_orcid_client_secret'
 
-default[:gigadb][:db][:sql_script] = 'provide_gigadb_sql_script'
-
 default[:gigadb][:app_user] = 'gigadb'
 default[:gigadb][:admin_email] = 'database@gigasciencejournal.com'
 default[:gigadb][:site_dir] = '/vagrant'
