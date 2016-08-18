@@ -94,6 +94,12 @@ Vagrant.configure(2) do |config|
       "chef/site-cookbooks",
       "chef/chef-cookbooks",
     ]
+    chef.environments_path = 'chef/environments'
+
+    ############################################################
+    #### Need to set server environment: development or aws ####
+    ############################################################
+    chef.environment = "aws_test"
 
     if ENV['GIGADB_BOX'] == 'aws'
         chef.add_recipe "aws"
