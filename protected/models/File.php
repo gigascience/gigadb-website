@@ -420,6 +420,25 @@ class File extends MyActiveRecord
     	return Sample::model()->find($criteria);
     }
 
+     public function getallsample($id){
+        
+      $sql="select sample.* from sample,file_sample,file where sample.id=file_sample.sample_id and file_sample.file_id=file.id and file.id=$id";
+      $samples= Sample::model()->findAllBySql($sql);
+      $ret = "";
+      $first = true;
+      foreach ($samples as $sample) {
+
+        if ($first === true) {
+            $first = false;
+        } else {
+            $ret .= ', ';
+        }
+        $ret .= $sample->name;
+    }
+
+    return $ret;
+    }
+    
     public function getNameHtml() {
     	$display = <<<HTML
 		<div title="$this->description"> 
