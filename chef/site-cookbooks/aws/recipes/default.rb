@@ -7,6 +7,7 @@
 
 include_recipe 'user'
 include_recipe 'iptables'
+include_recipe 'fail2ban'
 
 # Create www-data user and group
 user_account 'www-data' do
@@ -90,3 +91,24 @@ iptables_rule 'http'
 iptables_rule 'ssh'
 iptables_rule 'postgres'
 iptables_rule 'postfix'
+
+##################
+#### fail2ban ####
+##################
+
+# Protect against DDoS attacks
+file "/etc/fail2ban/jail.local" do
+    content <<-EOS
+[ssh-ddos]
+
+enabled  = true
+port     = ssh
+filter   = sshd-ddos
+logpath  = /var/log/secure
+maxretry = 6
+        EOS
+            owner "root"
+            group "root"
+            mode 0644
+            notifies :restart, "service[fail2ban]"
+    end
