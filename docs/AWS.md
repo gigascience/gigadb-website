@@ -3,6 +3,22 @@
 The GigaDB website can be deployed on an AWS EC2 instance using Vagrant.
 This document outlines how this can be achieved.
 
+## Amazon Machine Image
+
+Launching GigaDB on AWS requires an Amazon Machine Image (AMI) which
+provides the information required to launch a virtual server in the
+cloud. The AMI for GigaDB contains a template for the root volume which
+consists of the Centos 6 operating system and a number of server
+applications, launch permissions wich control which AWS accounts can use
+the AMI to launch instances and a block device mapping that specifies 
+the volumes to attach to the instance when it is launched.
+
+The [Packer](https://www.packer.io) tool was used for creating the
+GigaDB machine image from a source configuration which can be found in a
+[GitHub repository](https://github.com/pli888/vagrant-boxes). Once
+created the AMI was uploaded into AWS and is available for use with the
+AMI ID: ami-1bfa2b78.
+
 ## Preparation
 
 In addition to downloading the gigadb-website GitHub source code
