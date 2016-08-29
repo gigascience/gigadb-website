@@ -9,23 +9,31 @@ Launching GigaDB on AWS requires an Amazon Machine Image (AMI) which
 provides the information required to launch a virtual server in the
 cloud. The AMI for GigaDB contains a template for the root volume which
 consists of the Centos 6 operating system and a number of server
-applications, launch permissions wich control which AWS accounts can use
-the AMI to launch instances and a block device mapping that specifies 
-the volumes to attach to the instance when it is launched.
+applications, launch permissions which control which AWS accounts can 
+use the AMI to launch instances and a block device mapping that 
+specifies the volumes to attach to the instance when it is launched.
 
-The [Packer](https://www.packer.io) tool was used for creating the
-GigaDB machine image from a source configuration which can be found in a
-[GitHub repository](https://github.com/pli888/vagrant-boxes). Once
-created the AMI was uploaded into AWS and is available for use with the
-AMI ID: ami-1bfa2b78.
+The [Packer](https://www.packer.io) tool was used for creating the AMI
+for GigaDB from a source configuration available from
+[GitHub repository](https://github.com/pli888/vagrant-boxes) and issuing
+the following commands in its root directory:
+
+```sh
+$ cd packer
+$ ./build.sh
+```
+
+Packer uses a pre-built AMI as the source for building the GigaDB AMI.
+This process involves using an AWS account to launch an EC2 instance 
+from the source pre-built AMI, provisioning this running machine and 
+then creating an AMI from this machine. Once created, the AMI was 
+uploaded into AWS and available for use with the AMI ID: ami-1bfa2b78.
 
 ## Preparation
 
-In addition to downloading the gigadb-website GitHub source code
-repository and its chef-cookbooks submodule, an AWS user account is 
-required to launch an EC2 instance hosting GigaDB. Vagrant needs to be 
-able to access the AWS user account's security credentials using the 
-following environment variables:
+An AWS user account is required to launch an EC2 instance hosting
+GigaDB. Vagrant needs to be able to access the AWS user account's 
+security credentials using the following environment variables:
 
 ```bash
 AWS_ACCESS_KEY_ID="Access key for accessing AWS"
@@ -49,14 +57,24 @@ $ vagrant plugin install vagrant-aws
 
 ## Deployment
 
-GigaDB can be deployed by issuing the command below:
+To deploy GigaDB on an AWS virtual server, you need to download the 
+gigadb-website GitHub source code repository with its chef-cookbooks 
+submodule:
+
+```bash
+$ git clone https://github.com/gigascience/gigadb-website.git
+$ git submodule init
+$ git submodule update
+```
+
+GigaDB can be deployed onto the AWS cloud by issuing the command below:
 
 ```bash
 $ vagrant up --provider=aws
 ```
 
 If successful, the GigaDB website will be visible on a web browser
-pointing to the IP address of the EC2 instance.
+using the IP address of the EC2 instance.
 
 ## SSH access
 
