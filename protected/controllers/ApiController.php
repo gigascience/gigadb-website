@@ -1,13 +1,5 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-
 class ApiController extends Controller
 {
     // Members
@@ -61,13 +53,17 @@ class ApiController extends Controller
                 if(isset($id))
                 {
                    echo $id; 
+                   $model=  Dataset::model()->findByAttributes(array('id'=>$id));
                 }
                 else{
-                   
+                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi));
                    echo $doi;
                 }
                 
-
+                ob_end_clean();
+                $this->renderPartial('singledataset',array(
+			'model'=>$model,
+		));
 	}
         
         public function actionFile()
@@ -121,6 +117,7 @@ class ApiController extends Controller
                 }
                 echo $result;
                 echo $keyword;
+                echo $project;
 
 	}
         
