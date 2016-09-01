@@ -112,7 +112,7 @@ class ApiController extends Controller
         
          public function actionSearch()
 	{
-		echo "hello";
+		
                 $keyword = Yii::app()->request->getParam('keyword');
                 $result= Yii::app()->request->getParam('result');
                 $taxno= Yii::app()->request->getParam('taxno');
@@ -124,9 +124,56 @@ class ApiController extends Controller
                 {
                   $result='dataset'; 
                 }
-                echo $result;
-                echo $keyword;
-                echo $project;
+                
+                if(isset($keyword))
+                {
+                    if(strpos($keyword, ':'))
+                    {
+                        $pieces = explode(":", $keyword);
+                        $sql="SELECT * from dataset where ".$pieces[0]." like '%".$pieces[1]."%'";                      
+                        $models= Dataset::model()->findAllBySql($sql);
+                        
+                    }else {
+                        
+                        $ds = new DatabaseSearch();        
+                        $data = $ds->searchByKey($keyword);
+                        $datasets = $data['datasets']['data'];
+                        $invalue='';
+                        foreach($datasets as $dataset)
+                        {
+                           $invalue=$invalue.$dataset.",";
+ 
+                        }
+                        $invalue = trim($invalue,',');
+                        $sql="SELECT * from dataset where id in (".$invalue.")";
+                        $models= Dataset::model()->findAllBySql($sql);
+                        
+                    }
+                    ob_end_clean();
+                    
+                    switch ($result) {
+                        case "dataset":
+                            
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":
+                          
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":
+                            
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+               
+                }
+          
 
 	}
         
