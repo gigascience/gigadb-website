@@ -1,23 +1,17 @@
 <?php
-ob_start();
-header("Content-type: text/xml");
-$xml='<?xml version="1.0" encoding="UTF-8"?>'; 
-$xml.= "<gigadb_entrys>";
-foreach($data as $dataset)
-{ 
-$model= Dataset::model()->with('authors')->findByAttributes(array(
-        'id'=>$dataset));
-
-$xml.="<gigadb_entry id=\"$model->id\" doi=\"$model->identifier\">";
-
+header("Content-Type: text/xml");
+$xml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+$xml.="<gigadb_entrys>";
+foreach($models as $model)
+{
+$xml.="<gigadb_entry>";    
 $xml.="<samples>";
 $samples=$model->samples;
 foreach($samples as $sample){
     $xml.="<sample submission_date=\"$sample->submission_date\" id=\"$sample->id\">";
     $xml.="<name>$sample->name</name>";
-    $xml.="<submitted_id>$sample->submitted_id</submitted_id>";
     $species=$sample->species;
-    $xml.="<species species_id=\"$species->id\">";
+    $xml.="<species>";
     $xml.="<tax_id>$species->tax_id</tax_id>";
     $xml.="<common_name>$species->common_name</common_name>";
     $xml.="<genbank_name>$species->genbank_name</genbank_name>";
@@ -37,7 +31,7 @@ foreach($samples as $sample){
     {
         $sample_temp=Sample::model()->findByAttributes(array('id'=>$relsample->related_sample_id));
         $sample_rel=  Relationship::model()->findByAttributes(array('id'=>$relsample->relationship_id));
-        $xml.="<related_sample sample_rel_id=\"$relsample->related_sample_id\" relationship_type=\"$sample_rel->name\">$sample_temp->name</related_sample>";
+        $xml.="<related_sample relationship_type=\"$sample_rel->name\">$sample_temp->name</related_sample>";
     }
     $xml.="</related_samples>";
     
@@ -45,8 +39,8 @@ foreach($samples as $sample){
     $sa_attributes=  SampleAttribute::model()->findAllByAttributes(array('sample_id'=>$sample->id));
     foreach($sa_attributes as $sa_attribute){
         $saattribute=  Attribute::model()->findByAttributes(array('id'=>$sa_attribute->attribute_id));
-        $xml.="<attribute id=\"$sa_attribute->id\">";
-        $xml.="<key id=\"$saattribute->id\">$saattribute->attribute_name</key>";
+        $xml.="<attribute>";
+        $xml.="<key>$saattribute->attribute_name</key>";
         $xml.="<value>$sa_attribute->value</value>";
         $sample_unit=  Unit::model()->findByAttributes(array('id'=>$sa_attribute->unit_id));
         if(isset($sample_unit)){
@@ -56,22 +50,12 @@ foreach($samples as $sample){
         $xml.="</attribute>";
     }
     $xml.="</sample_attributes>";
-    
-    
-  
     $xml.="</sample>";
-    
-    
-    
     }
-
-
 $xml.="</samples>";
-
 $xml.="</gigadb_entry>";
 }
 $xml.="</gigadb_entrys>";
 $xml=preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', $xml);
-$output = new SimpleXMLElement($xml);
+$output= simplexml_load_string($xml);
 echo $output->asXML();
-
