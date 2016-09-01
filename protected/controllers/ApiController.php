@@ -68,18 +68,22 @@ class ApiController extends Controller
         
         public function actionFile()
 	{
-		echo "hello";
-                $id = Yii::app()->request->getParam('id');
+		$id = Yii::app()->request->getParam('id');
                 $doi= Yii::app()->request->getParam('doi');
                 if(isset($id))
                 {
                    echo $id; 
+                   $model=  Dataset::model()->findByAttributes(array('id'=>$id));
                 }
                 else{
-                   
+                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi));
                    echo $doi;
                 }
                 
+                ob_end_clean();
+                $this->renderPartial('singlefile',array(
+			'model'=>$model,
+		));
 
 	}
         
