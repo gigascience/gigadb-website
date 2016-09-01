@@ -1,5 +1,5 @@
 <?php
-header("Content-Type: text/xml");
+header('Content-Type: text/xml');
 $xml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 $xml.="<gigadb_entrys>";
 foreach($models as $model)
@@ -180,4 +180,3 @@ $xml.="</gigadb_entrys>";
 $xml=preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', $xml);
 $output= simplexml_load_string($xml);
 echo $output->asXML();
-
