@@ -52,12 +52,33 @@ class ApiController extends Controller
                 $doi= Yii::app()->request->getParam('doi');
                 if(isset($id))
                 {
-                   echo $id; 
-                   $model=  Dataset::model()->findByAttributes(array('id'=>$id));
+                   try{
+                   $model=  Dataset::model()->findByAttributes(array('id'=>$id));}
+                   catch(CDbException $e)
+                   {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for dataset id <b>%s</b>',$id) );
+                   }
+                    if(!isset($model))
+                   {
+                        $this->_sendResponse(200, 
+                            sprintf('No items where found for dataset id <b>%s</b>',$id) );
+                   }
                 }
                 else{
-                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi));
-                   echo $doi;
+                    try{
+                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi));}
+                    catch(CDbException $e)
+                   {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
+                   }
+                   if(!isset($model))
+                   {
+                        $this->_sendResponse(200, 
+                            sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
+                   }
+                   
                 }
                 
                 ob_end_clean();
@@ -72,12 +93,34 @@ class ApiController extends Controller
                 $doi= Yii::app()->request->getParam('doi');
                 if(isset($id))
                 {
-                   echo $id; 
-                   $model=  Dataset::model()->findByAttributes(array('id'=>$id));
+                   
+                   try{
+                   $model=  Dataset::model()->findByAttributes(array('id'=>$id));}
+                   catch(CDbException $e)
+                   {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for file id <b>%s</b>',$id) );
+                   }
+                    if(!isset($model))
+                   {
+                        $this->_sendResponse(200, 
+                            sprintf('No items where found for file id <b>%s</b>',$id) );
+                   }
                 }
                 else{
-                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi));
-                   echo $doi;
+                   try{ 
+                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi));}
+                   catch(CDbException $e)
+                   {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for file doi <b>%s</b>',$doi) );
+                   }
+                    if(!isset($model))
+                   {
+                        $this->_sendResponse(200, 
+                            sprintf('No items where found for file doi <b>%s</b>',$doi) );
+                   }
+                  
                 }
                 
                 ob_end_clean();
@@ -93,12 +136,34 @@ class ApiController extends Controller
                 $doi= Yii::app()->request->getParam('doi');
                 if(isset($id))
                 {
-                   echo $id; 
-                   $model=  Dataset::model()->findByAttributes(array('id'=>$id));
+                   
+                   try{
+                   $model=  Dataset::model()->findByAttributes(array('id'=>$id));}
+                   catch(CDbException $e)
+                        {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for sample id <b>%s</b>',$id) );
+                        }
+                     if(!isset($model))
+                   {
+                        $this->_sendResponse(200, 
+                            sprintf('No items where found for sample id <b>%s</b>',$id) );
+                   }
                 }
                 else{
-                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi));
-                   echo $doi;
+                   try{
+                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi));}
+                   catch(CDbException $e)
+                        {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for sample doi <b>%s</b>',$doi) );
+                        }
+                    if(!isset($model))
+                   {
+                        $this->_sendResponse(200, 
+                            sprintf('No items where found for sample doi <b>%s</b>',$doi) );
+                   }
+                   
                 }
                 
                 ob_end_clean();
@@ -133,8 +198,14 @@ class ApiController extends Controller
                     if(strpos($keyword, ':'))
                     {
                         $pieces = explode(":", $keyword);
-                        $sql="SELECT * from dataset where ".$pieces[0]." like '%".$pieces[1]."%'";                      
-                        $models= Dataset::model()->findAllBySql($sql);
+                        $sql="SELECT * from dataset where ".$pieces[0]." like '%".$pieces[1]."%'";  
+                        try{
+                        $models= Dataset::model()->findAllBySql($sql);}
+                        catch(CDbException $e)
+                        {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for keyword <b>%s</b>',$keyword) );
+                        }
                         
                     }else {
                         
@@ -185,6 +256,11 @@ class ApiController extends Controller
                     $command=$connection->createCommand($sql);
                     $command->bindParam(":taxno",$taxno,PDO::PARAM_STR); 
                     $rows=$command->queryAll();
+                    if(count($rows)<1)
+                      {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for taxno <b>%s</b>',$taxno) );
+                      }
                     
                     
                     $dataset_ids="";
@@ -229,7 +305,11 @@ class ApiController extends Controller
                     $command=$connection->createCommand($sql);
                     $command->bindParam(":scientific_name",$taxname,PDO::PARAM_STR);    
                     $rows=$command->queryAll();
-                    
+                    if(count($rows)<1)
+                      {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for taxname <b>%s</b>',$taxname) );
+                      }
                     
                     $dataset_ids="";
                    
@@ -280,6 +360,11 @@ class ApiController extends Controller
                       $command->bindParam(":middlename",$middlename,PDO::PARAM_STR); 
                       $rows=$command->queryAll();
                       $dataset_ids="";
+                       if(count($rows)<1)
+                      {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for author <b>%s</b>',$surname." ".$middlename." ".$firstname) );
+                      }
                    
                     foreach($rows as $row)
                     {
@@ -325,6 +410,11 @@ class ApiController extends Controller
                       $command->bindParam(":firstname",$firstname,PDO::PARAM_STR); 
                       $rows=$command->queryAll();
                       $dataset_ids="";
+                      if(count($rows)<1)
+                      {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for author <b>%s</b>',$surname." ".$firstname) );
+                      }
                    
                     foreach($rows as $row)
                     {
@@ -368,7 +458,11 @@ class ApiController extends Controller
                        
                       $rows=$command->queryAll();
                       $dataset_ids="";
-                   
+                      if(count($rows)<1)
+                      {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for manuscript <b>%s</b>',$manuscript) );
+                      }
                     foreach($rows as $row)
                     {
                         $dataset_ids=$dataset_ids.$row['id'].",";
@@ -410,6 +504,11 @@ class ApiController extends Controller
                        
                       $rows=$command->queryAll();
                       $dataset_ids="";
+                       if(count($rows)<1)
+                      {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for dataset type <b>%s</b>',$datasettype) );
+                      }
                    
                     foreach($rows as $row)
                     {
@@ -452,7 +551,11 @@ class ApiController extends Controller
                       $command->bindParam(":project",$project,PDO::PARAM_STR);               
                       $rows=$command->queryAll();
                       $dataset_ids="";
-                   
+                      if(count($rows)<1)
+                      {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for project <b>%s</b>',$project) );
+                      }
                     foreach($rows as $row)
                     {
                         $dataset_ids=$dataset_ids.$row['id'].",";
@@ -496,6 +599,85 @@ class ApiController extends Controller
 			'model'=>$this->loadModel(),
 		));
 	}
+        
+         private function _sendResponse($status = 200, $body = '', $content_type = 'text/html')
+        {
+        // set the status
+        $status_header = 'HTTP/1.1 ' . $status . ' ' . $this->_getStatusCodeMessage($status);
+        header($status_header);
+        // and the content type
+        header('Content-type: ' . $content_type);
+        // pages with body are easy
+        if($body != '')
+        {
+            // send the body
+            echo $body;
+        }
+        // we need to create the body if none is passed
+        else
+        {
+            // create some body messages
+            $message = '';
+            // this is purely optional, but makes the pages a little nicer to read
+            // for your users.  Since you won't likely send a lot of different status codes,
+            // this also shouldn't be too ponderous to maintain
+            switch($status)
+            {
+                case 401:
+                    $message = 'You must be authorized to view this page.';
+                    break;
+                case 404:
+                    $message = 'The requested URL ' . $_SERVER['REQUEST_URI'] . ' was not found.';
+                    break;
+                case 500:
+                    $message = 'The server encountered an error processing your request.';
+                    break;
+                case 501:
+                    $message = 'The requested method is not implemented.';
+                    break;
+            }
+            // servers don't always have a signature turned on 
+            // (this is an apache directive "ServerSignature On")
+            $signature = ($_SERVER['SERVER_SIGNATURE'] == '') ? $_SERVER['SERVER_SOFTWARE'] . ' Server at ' . $_SERVER['SERVER_NAME'] . ' Port ' . $_SERVER['SERVER_PORT'] : $_SERVER['SERVER_SIGNATURE'];
+            // this should be templated in a real-world solution
+            $body = '
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <title>' . $status . ' ' . $this->_getStatusCodeMessage($status) . '</title>
+    </head>
+    <body>
+        <h1>' . $this->_getStatusCodeMessage($status) . '</h1>
+        <p>' . $message . '</p>
+        <hr />
+        <address>' . $signature . '</address>
+    </body>
+    </html>';
+            echo $body;
+        }
+        Yii::app()->end();
+    }
+    
+    private function _getStatusCodeMessage($status)
+    {
+        // these could be stored in a .ini file and loaded
+        // via parse_ini_file()... however, this will suffice
+        // for an example
+        $codes = Array(
+            200 => 'OK',
+            400 => 'Bad Request',
+            401 => 'Unauthorized',
+            402 => 'Payment Required',
+            403 => 'Forbidden',
+            404 => 'Not Found',
+            500 => 'Internal Server Error',
+            501 => 'Not Implemented',
+        );
+        return (isset($codes[$status])) ? $codes[$status] : '';
+    }
+    
+
         
 }
 
