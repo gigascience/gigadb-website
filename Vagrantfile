@@ -42,12 +42,21 @@ Vagrant.configure(2) do |config|
   FileUtils.mkpath("./giga_cache")
   FileUtils.chmod_R 0777, ["./giga_cache"]
 
+  FileUtils.mkpath("./logs")
+  FileUtils.chmod_R 0777, ["./logs"]
+
   # CentOS-specific Vagrant configuration to allow Yii assets folder
   # to be world-readable.
-  if ENV['GIGADB_BOX'] != 'ubuntu' # For CentOS VM and AWS instance
+
+  if ENV['GIGADB_BOX'] == 'aws' # For CentOS VM and AWS instance
+    FileUtils.mkpath("./assets")
+    FileUtils.chmod_R 0777, ["./assets"]
+  end
+
+  if ENV['GIGADB_BOX'] == 'centos'
     FileUtils.mkpath("./assets")
     config.vm.synced_folder "./assets/", "/vagrant/assets",
-      :mount_options => ["dmode=777,fmode=777"]
+        :mount_options => ["dmode=777,fmode=777"]
   end
 
   ####################
@@ -73,7 +82,8 @@ Vagrant.configure(2) do |config|
     aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
     aws.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
     aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
-    aws.ami = "ami-1bfa2b78"
+    # aws.ami = "ami-1bfa2b78" # selinux disabled
+    aws.ami = "ami-b85e86db" # selinux on
     aws.region = ENV['AWS_DEFAULT_REGION']
     aws.instance_type = "t2.micro"
     aws.tags = {
@@ -101,9 +111,10 @@ Vagrant.configure(2) do |config|
     ############################################################
     chef.environment = "aws_test"
 
-    chef.add_recipe "vagrant"
     if ENV['GIGADB_BOX'] == 'aws'
         chef.add_recipe "aws"
+    else
+        chef.add_recipe "vagrant"
     end
 
     # You may also specify custom JSON attributes:
