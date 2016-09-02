@@ -112,14 +112,17 @@ class ApiController extends Controller
         
          public function actionSearch()
 	{
-		
+		ini_set('log_errors', true);
+                ini_set('error_log', dirname(__FILE__).'/php_errors.log');
                 $keyword = Yii::app()->request->getParam('keyword');
                 $result= Yii::app()->request->getParam('result');
                 $taxno= Yii::app()->request->getParam('taxno');
+                $taxname= Yii::app()->request->getParam('taxname');
                 $author= Yii::app()->request->getParam('author');
                 $manuscript= Yii::app()->request->getParam('manuscript');
                 $datasettype= Yii::app()->request->getParam('datasettype');
                 $project= Yii::app()->request->getParam('project');
+                $connection=Yii::app()->db;
                 if(!isset($result))
                 {
                   $result='dataset'; 
@@ -173,6 +176,316 @@ class ApiController extends Controller
                     }
                
                 }
+                
+                if(isset($taxno))
+                {
+                        
+                    
+                    $sql='select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.tax_id=:taxno;';
+                    $command=$connection->createCommand($sql);
+                    $command->bindParam(":taxno",$taxno,PDO::PARAM_STR); 
+                    $rows=$command->queryAll();
+                    
+                    
+                    $dataset_ids="";
+                    
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    ob_end_clean();
+
+                    switch ($result) {
+                        case "dataset":
+                            
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":
+                          
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":
+                            
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+               
+                }
+                
+                if(isset($taxname))
+                {
+                    
+                    $sql="select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.scientific_name=:scientific_name;";
+                    
+                    $command=$connection->createCommand($sql);
+                    $command->bindParam(":scientific_name",$taxname,PDO::PARAM_STR);    
+                    $rows=$command->queryAll();
+                    
+                    
+                    $dataset_ids="";
+                   
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    
+                    
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    
+                    ob_end_clean();
+
+                    switch ($result) {
+                        case "dataset":                         
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":                         
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":                           
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                    
+                }
+                if(isset($author))
+                {
+                    
+                    $names=  explode(" ", $author);
+                    if(count($names)>2)
+                    {
+                      $surname=$names[0]; 
+                      $middlename=$names[1];
+                      $firstname=$names[2];  
+                      $sql='select DISTINCT dataset.id from dataset,dataset_author,author where dataset.id=dataset_author.dataset_id and dataset_author.author_id=author.id and author.surname=:surname and author.first_name=:firstname and author.middle_name=:middlename;';
+                      $command=$connection->createCommand($sql);
+                      $command->bindParam(":surname",$surname,PDO::PARAM_STR); 
+                      $command->bindParam(":firstname",$firstname,PDO::PARAM_STR); 
+                      $command->bindParam(":middlename",$middlename,PDO::PARAM_STR); 
+                      $rows=$command->queryAll();
+                      $dataset_ids="";
+                   
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    
+                    
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    
+                    ob_end_clean();
+
+                    switch ($result) {
+                        case "dataset":                         
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":                         
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":                           
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                      
+                      
+                      
+                      
+                      
+                    }
+                    else{
+                      $surname=$names[0];                   
+                      $firstname=$names[1];  
+                      $sql='select DISTINCT dataset.id from dataset,dataset_author,author where dataset.id=dataset_author.dataset_id and dataset_author.author_id=author.id and author.surname=:surname and author.first_name=:firstname;';
+                      $command=$connection->createCommand($sql);
+                      $command->bindParam(":surname",$surname,PDO::PARAM_STR); 
+                      $command->bindParam(":firstname",$firstname,PDO::PARAM_STR); 
+                      $rows=$command->queryAll();
+                      $dataset_ids="";
+                   
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    
+                    
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    
+                    ob_end_clean();
+
+                    switch ($result) {
+                        case "dataset":                         
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":                         
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":                           
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+  
+                    }
+  
+                }
+                if(isset($manuscript))
+                {
+                    
+                      $sql='select DISTINCT dataset.id from dataset,manuscript where manuscript.dataset_id=dataset.id and manuscript.identifier=:manuscript;';
+                      $command=$connection->createCommand($sql);
+                      $command->bindParam(":manuscript",$manuscript,PDO::PARAM_STR); 
+                       
+                      $rows=$command->queryAll();
+                      $dataset_ids="";
+                   
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    
+                    
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    
+                    ob_end_clean();
+
+                    switch ($result) {
+                        case "dataset":                         
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":                         
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":                           
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                    
+                    
+                }
+                if(isset($datasettype))
+                {
+                    
+                      $sql='select DISTINCT dataset.id from dataset,dataset_type,type where dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and type.name=:datasettype;';
+                      $command=$connection->createCommand($sql);
+                      $command->bindParam(":datasettype",$datasettype,PDO::PARAM_STR); 
+                       
+                      $rows=$command->queryAll();
+                      $dataset_ids="";
+                   
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    
+                    
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    
+                    ob_end_clean();
+
+                    switch ($result) {
+                        case "dataset":                         
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":                         
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":                           
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                    
+                    
+                }
+                
+                if(isset($project))
+                {
+                    
+                      $sql='select DISTINCT dataset.id from dataset,dataset_project,project where dataset_project.dataset_id=dataset.id and dataset_project.project_id=project.id and project.name=:project;';
+                      $command=$connection->createCommand($sql);
+                      $command->bindParam(":project",$project,PDO::PARAM_STR);               
+                      $rows=$command->queryAll();
+                      $dataset_ids="";
+                   
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    
+                    
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    
+                    ob_end_clean();
+
+                    switch ($result) {
+                        case "dataset":                         
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":                         
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":                           
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                    
+                    
+                }
+                
           
 
 	}
