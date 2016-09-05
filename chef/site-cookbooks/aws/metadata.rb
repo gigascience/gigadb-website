@@ -9,4 +9,6 @@ name			 "aws"
 depends "user"
 depends "iptables"
 depends "fail2ban"
+depends "selinux"
 
+depends "gigadb"
