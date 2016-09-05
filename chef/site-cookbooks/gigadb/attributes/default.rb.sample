@@ -27,7 +27,6 @@ default[:gigadb][:orcid][:client_secret] = 'provide_orcid_client_secret'
 
 default[:gigadb][:app_user] = 'gigadb'
 default[:gigadb][:admin_email] = 'database@gigasciencejournal.com'
-default[:gigadb][:site_dir] = '/vagrant'
 default[:gigadb][:db][:database] = 'gigadb'
 default[:gigadb][:db][:user] = 'gigadb'
 default[:gigadb][:db][:password] = 'vagrant'
