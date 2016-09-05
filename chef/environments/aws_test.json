@@ -11,6 +11,9 @@
       "db": {
         "sql_script": "/vagrant/sql/gigadb_testdata.sql"
       }
+    },
+    "nginx": {
+      "log_dir": "/var/log/nginx"
     }
   },
   "json_class": "Chef::Environment",
