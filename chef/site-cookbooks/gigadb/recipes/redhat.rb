@@ -1,7 +1,6 @@
 #
 # Cookbook Name:: gigadb
 # Recipe:: redhat
-#
 # Copyright 2014, Cogini
 #
 # All rights reserved - Do Not Redistribute
@@ -15,16 +14,6 @@ site_dir = node[:gigadb][:site_dir]
 # Defined in gigadb attributes
 python_env = node[:gigadb][:python][:virtualenv]
 build_dir = node[:gigadb][:python][:build_dir]
-
-#############################
-#### PostgreSQL database ####
-#############################
-
-%w{ postgresql-devel }.each do |pkg|
-    package pkg do
-        action :install
-    end
-end
 
 #########################
 #### Directory admin ####
