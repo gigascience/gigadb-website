@@ -9,6 +9,10 @@ include_recipe 'user'
 include_recipe 'iptables'
 include_recipe 'fail2ban'
 include_recipe 'selinux'
+include_recipe 'cron'
+
+# Locates GigaDB in /vagrant directory
+site_dir = node[:gigadb][:site_dir]
 
 ############################
 #### Configure iptables ####
@@ -173,3 +177,36 @@ end
 ########################
 
 include_recipe 'gigadb'
+
+###########################################
+#### Set up automated database backups ####
+###########################################
+
+template "#{site_dir}/protected/scripts/db_backup.sh" do
+    source 'db_backup.sh.erb'
+    mode '0644'
+end
+
+bash 'make db_backup.sh executable' do
+    code <<-EOH
+        chown centos:gigadb-admin #{site_dir}/protected/scripts/db_backup.sh
+        chmod ugo+x #{site_dir}/protected/scripts/db_backup.sh
+    EOH
+end
+
+cron 'database backup cron job' do
+    minute '59'
+    hour '23'
+    day '*'
+    month '*'
+    shell '/bin/bash'
+    path '/sbin:/bin:/usr/sbin:/usr/bin'
+    user 'root'
+    command '/vagrant/protected/scripts/db_backup.sh'
+end
+
+bash 'restart cron service' do
+    code <<-EOH
+        service crond restart
+    EOH
+end
