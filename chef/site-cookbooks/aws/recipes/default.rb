@@ -182,6 +182,30 @@ include_recipe 'gigadb'
 #### Set up automated database backups ####
 ###########################################
 
+aws_access_key = node[:aws][:aws_access_key_id]
+aws_secret_access_key = node[:aws][:aws_secret_access_key]
+aws_default_region = node[:aws][:aws_default_region]
+
+# Install AWS CLI
+bash 'Install AWS CLI' do
+    code <<-EOH
+        curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+        unzip awscli-bundle.zip
+        sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+        sudo mkdir /root/.aws
+    EOH
+end
+
+template "/root/.aws/credentials" do
+    source 'aws_credentials.erb'
+    mode '0644'
+end
+
+template "root/.aws/config" do
+    source 'aws_config.erb'
+    mode '0644'
+end
+
 template "#{site_dir}/protected/scripts/db_backup.sh" do
     source 'db_backup.sh.erb'
     mode '0644'
@@ -200,7 +224,7 @@ cron 'database backup cron job' do
     day '*'
     month '*'
     shell '/bin/bash'
-    path '/sbin:/bin:/usr/sbin:/usr/bin'
+    path '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin'
     user 'root'
     command '/vagrant/protected/scripts/db_backup.sh'
 end
