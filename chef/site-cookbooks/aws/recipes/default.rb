@@ -145,6 +145,12 @@ group 'www-data' do
     append  true
 end
 
+group 'wheel' do
+    action  :modify
+    members [user1, user2, user3]
+    append  true
+end
+
 #########################
 #### Directory admin ####
 #########################
