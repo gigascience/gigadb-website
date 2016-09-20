@@ -1,3 +1,5 @@
+default[:gigadb][:users] = ['user1', 'user2', 'user3']
+
 default[:gigadb][:user1] = 'user1'
 default[:gigadb][:user1_name] = 'user1_name'
 default[:gigadb][:user1_public_key] = 'user1_public_key'

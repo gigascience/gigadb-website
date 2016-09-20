@@ -11,6 +11,8 @@ include_recipe 'fail2ban'
 include_recipe 'selinux'
 include_recipe 'cron'
 
+include_recipe 'postgresql'
+
 # Locates GigaDB in /vagrant directory
 site_dir = node[:gigadb][:site_dir]
 
@@ -177,6 +179,29 @@ end
 ########################
 
 include_recipe 'gigadb'
+
+# Create gigadb_users postgres group role
+bash 'Create postgres database roles' do
+    code <<-EOH
+        sudo -u postgres psql -U postgres -d postgres -c "CREATE ROLE gigadb_users;"
+        sudo -u postgres psql -U postgres -d postgres -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO gigadb_users;"
+    EOH
+end
+
+# Add postgresql users
+users = node[:gigadb][:users]
+users.each do |item|
+    the_user = "#{item}"
+
+    bash 'postgres stuff' do
+        code <<-EOH
+            sudo -u postgres psql -U postgres -d postgres -c "CREATE USER #{the_user} WITH LOGIN SUPERUSER;"
+            sudo -u postgres psql -U postgres -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE gigadb to #{the_user};"
+            sudo -u postgres psql -U postgres -d postgres -c "GRANT gigadb_users TO #{the_user};"
+        EOH
+    end
+end
+
 
 ###########################################
 #### Set up automated database backups ####
