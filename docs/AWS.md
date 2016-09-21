@@ -84,9 +84,9 @@ private key will therefore allow a SSH connection without a password
 being required:
 
 ```bash
-$ ssh peter@ec2-xx-xxx-xxx-x.ap-southeast-1.compute.amazonaws.com
+$ ssh user1@ec2-xx-xxx-xxx-x.ap-southeast-1.compute.amazonaws.com
 Last login: Thu Jul 21 06:30:01 2016 from xx.xxx.xxx.xxx
-[peter@ip-xxx-xx-xx-xxx ~]$ ls
+[user1@ip-xxx-xx-xx-xxx ~]$ ls
 
 ```
 
@@ -115,3 +115,51 @@ aws recipe.
 [SElinux](https://wiki.centos.org/HowTos/SELinux) is an access control 
 mechanism which has been switched on in the GigaDB EC2 server. Its 
 configuration is controlled within the aws recipe.
+
+## Access to PostgreSQL database
+
+The GigaDB website relies on the use of a PostgreSQL database to store
+metadata relating to published datasets. This database can be accessed
+using the psql command line interface. Users on the AWS virtual server
+can access the gigadb database as follows:
+
+```bash
+$ ssh user1@xx.xxx.xxx.xxx
+Last login: Tue Sep 20 08:02:10 2016 from xxx.xxx.xx.xxx
+$ psql -U gigadb -h localhost
+psql (9.1.23)
+Type "help" for help.
+
+gigadb=> select * from gigadb_user;
+ id  |      email       |             password             | first_name | last_name | affiliation | role  | is_activated | newsletter | previo
+us_newsletter_state | facebook_id | twitter_id | linkedin_id | google_id |    username     | orcid_id | preferred_link 
+-----+------------------+----------------------------------+------------+-----------+-------------+-------+--------------+------------+-------
+--------------------+-------------+------------+-------------+-----------+-----------------+----------+----------------
+ 344 | admin@gigadb.org | 5a4f75053077a32e681f81daa8792f95 | Joe        | Bloggs    | BGI         | admin | t            | f          | t     
+                    |             |            |             |           | test@gigadb.org |          | EBI
+ 345 | user@gigadb.org  | 5a4f75053077a32e681f81daa8792f95 | John       | Smith     | BGI         | user  | t            | f          | t     
+                    |             |            |             |           | user@gigadb.org |          | EBI
+(2 rows)
+
+gigadb=> 
+
+```
+
+In addition, it is possible to use pgAdmin3 GUI as a client to manage 
+the database. To create a connection the database, select Add server 
+from the File menu or click on the plug icon on the pgAdmin GUI window. 
+A New Server Registration box will appear in which you need to click on 
+the SSH Tunnel tab. The text fields in this box need to completed as 
+follows:
+
+<img src="https://github.com/gigascience/gigadb-website/blob/develop/images/docs/pgadmin4.png?raw=true">
+
+Next, the connection to the PostgreSQL database itself needs to be
+set up:
+
+<img src="https://github.com/gigascience/gigadb-website/blob/develop/images/docs/pgadmin5.png?raw=true">
+
+`gigadb` should appear as an available database with a successful
+PostgreSQL connection to the Vagrant VM:
+
+<img src="https://github.com/gigascience/gigadb-website/blob/develop/images/docs/pgadmin6.png?raw=true">
