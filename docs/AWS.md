@@ -116,7 +116,7 @@ aws recipe.
 mechanism which has been switched on in the GigaDB EC2 server. Its 
 configuration is controlled within the aws recipe.
 
-## Access to PostgreSQL database
+## PostgreSQL database
 
 The GigaDB website relies on the use of a PostgreSQL database to store
 metadata relating to published datasets. This database can be accessed
@@ -163,3 +163,10 @@ set up:
 PostgreSQL connection to the Vagrant VM:
 
 <img src="https://github.com/gigascience/gigadb-website/blob/develop/images/docs/pgadmin6.png?raw=true">
+
+### Database backups
+
+Backups of GigaDB's PostgreSQL database are made nightly by a bash 
+script which is executed as a cron job. These backups are stored in an 
+AWS bucket, the programmatic and console access of which have been 
+already provided to users using access key and password credentials.
