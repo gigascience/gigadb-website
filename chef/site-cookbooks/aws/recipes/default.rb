@@ -180,6 +180,20 @@ bash 'gigadb-admin group permissions' do
     EOH
 end
 
+
+#######################
+#### Configure SSH ####
+#######################
+
+bash 'Configure SSH' do
+    code <<-EOH
+        sed -i -- 's/#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+        sed -i -- 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
+    EOH
+end
+
+
+
 ########################
 #### Install GigaDB ####
 ########################
