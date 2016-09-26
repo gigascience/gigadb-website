@@ -1,0 +1,15 @@
+#!/bin/sh
+directory_name="/var/log/db_backup/"
+
+if [ -d $directory_name ]
+then
+    echo "Directory already existing"
+else
+   sudo  mkdir -p $directory_name
+   chown -R postgres $directory_name
+fi
+filename="/var/log/db_backup/"$(date +%Y%m%d)".backup"
+old_directory="ftp://climb.genomics.cn/pub"
+new_directory="ftp://asw-server"
+sudo -u postgres PGPASSWORD="password" -H -- psql -d gigadb -c "update file set location= replace(location,'$old_directory','$new_directory')"
+sudo -u postgres PGPASSWORD="password" pg_dump -h localhost -p 5432 -U gigadb -Fc gigadb -f $filename

@@ -131,6 +131,10 @@ template "#{site_dir}/protected/config/es.json" do
     mode 0644
 end
 
+template "#{site_dir}/protected/scripts/update_links.sh" do
+    source "update_links.sh.erb"
+end
+
 ######################
 #### Python stuff ####
 ######################
