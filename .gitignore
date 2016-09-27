@@ -4,7 +4,7 @@ assets
 giga_cache
 !assets/.gitignore
 css/site.css
-protected/runtime/*
+protected/runtime
 protected/config/db.json
 protected/config/es.json
 protected/config/local.php
@@ -13,6 +13,7 @@ protected/yiic.php
 !protected/runtime/.gitignore
 protected/data/*.db
 protected/scripts/set_env.sh
+protected/scripts/update_links.sh
 themes/classic/views/
 
 # Vagrant
@@ -21,6 +22,8 @@ vagrant.log
 
 # Chef
 chef/site-cookbooks/gigadb/attributes/default.rb
+chef/site-cookbooks/aws/attributes/default.rb
+chef/environments/aws_test.json
 
 # PhpStorm
 *.iml

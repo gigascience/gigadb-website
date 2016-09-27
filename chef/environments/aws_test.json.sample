@@ -1,0 +1,22 @@
+{
+  "name": "aws_test",
+  "default_attributes": {
+    "gigadb": {
+      "db": {
+        "sql_script": "/vagrant/sql/gigadb_testdata.sql"
+      }
+    },
+    "aws": {
+      "aws_access_key_id": "",
+      "aws_secret_access_key": "",
+      "aws_default_region": "ap-southeast-1",
+      "aws_security_groups": ""
+    },
+    "nginx": {
+      "log_dir": "/var/log/nginx"
+    }
+  },
+  "json_class": "Chef::Environment",
+  "description": "Test environment for deploying on EC2 servers",
+  "chef_type": "environment"
+}
