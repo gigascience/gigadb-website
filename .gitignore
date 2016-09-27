@@ -22,6 +22,7 @@ vagrant.log
 # Chef
 chef/site-cookbooks/gigadb/attributes/default.rb
 chef/site-cookbooks/aws/attributes/default.rb
+chef/environments/aws_test.json
 
 # PhpStorm
 *.iml
