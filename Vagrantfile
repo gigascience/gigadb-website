@@ -108,10 +108,12 @@ Vagrant.configure(2) do |config|
     ############################################################
     #### Need to set server environment: development or aws ####
     ############################################################
-    chef.environment = "aws_test"
+    chef.environment = "fileserver_test"
 
     if ENV['GIGADB_BOX'] == 'aws'
         chef.add_recipe "aws"
+    elsif ENV['GIGADB_BOX'] == 'fileserver'
+        chef.add_recipe "fileserver"
     else
         chef.add_recipe "vagrant"
     end
