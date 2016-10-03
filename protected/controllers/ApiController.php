@@ -34,9 +34,9 @@ class ApiController extends Controller
 	{
 		return array(
 			
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions				
-				'users'=>array('@'),
-				'roles'=>array('admin'),
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('Dataset','File' , 'Sample','Search'),
+				'users'=>array('*'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -47,13 +47,13 @@ class ApiController extends Controller
         
         public function actionDataset()
 	{
-
+                $status='Published';
                 $id = Yii::app()->request->getParam('id');
                 $doi= Yii::app()->request->getParam('doi');
                 if(isset($id))
                 {
                    try{
-                   $model=  Dataset::model()->findByAttributes(array('id'=>$id));}
+                   $model=  Dataset::model()->findByAttributes(array('id'=>$id,'upload_status'=>$status));}
                    catch(CDbException $e)
                    {
                             $this->_sendResponse(200, 
@@ -67,7 +67,7 @@ class ApiController extends Controller
                 }
                 else{
                     try{
-                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi));}
+                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
                     catch(CDbException $e)
                    {
                             $this->_sendResponse(200, 
@@ -88,14 +88,15 @@ class ApiController extends Controller
 	}
         
         public function actionFile()
-	{
+	{       
+                $status='Published';
 		$id = Yii::app()->request->getParam('id');
                 $doi= Yii::app()->request->getParam('doi');
                 if(isset($id))
                 {
                    
                    try{
-                   $model=  Dataset::model()->findByAttributes(array('id'=>$id));}
+                   $model=  Dataset::model()->findByAttributes(array('id'=>$id,'upload_status'=>$status));}
                    catch(CDbException $e)
                    {
                             $this->_sendResponse(200, 
@@ -109,7 +110,7 @@ class ApiController extends Controller
                 }
                 else{
                    try{ 
-                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi));}
+                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
                    catch(CDbException $e)
                    {
                             $this->_sendResponse(200, 
@@ -132,13 +133,14 @@ class ApiController extends Controller
         
          public function actionSample()
 	{
-		$id = Yii::app()->request->getParam('id');
+		$status='Published';
+                $id = Yii::app()->request->getParam('id');
                 $doi= Yii::app()->request->getParam('doi');
                 if(isset($id))
                 {
                    
                    try{
-                   $model=  Dataset::model()->findByAttributes(array('id'=>$id));}
+                   $model=  Dataset::model()->findByAttributes(array('id'=>$id,'upload_status'=>$status));}
                    catch(CDbException $e)
                         {
                             $this->_sendResponse(200, 
@@ -152,7 +154,7 @@ class ApiController extends Controller
                 }
                 else{
                    try{
-                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi));}
+                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
                    catch(CDbException $e)
                         {
                             $this->_sendResponse(200, 
@@ -219,8 +221,15 @@ class ApiController extends Controller
  
                         }
                         $invalue = trim($invalue,',');
+                        try{
                         $sql="SELECT * from dataset where id in (".$invalue.")";
                         $models= Dataset::model()->findAllBySql($sql);
+                        }
+                         catch(CDbException $e)
+                        {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for keyword <b>%s</b>',$keyword) );
+                        }
                         
                     }
                     ob_end_clean();
@@ -252,7 +261,7 @@ class ApiController extends Controller
                 {
                         
                     
-                    $sql='select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.tax_id=:taxno;';
+                    $sql='select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.tax_id=:taxno and dataset.upload_status=\'Published\';';
                     $command=$connection->createCommand($sql);
                     $command->bindParam(":taxno",$taxno,PDO::PARAM_STR); 
                     $rows=$command->queryAll();
@@ -300,7 +309,7 @@ class ApiController extends Controller
                 if(isset($taxname))
                 {
                     
-                    $sql="select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.scientific_name=:scientific_name;";
+                    $sql="select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.scientific_name=:scientific_name and dataset.upload_status=\'Published\';";
                     
                     $command=$connection->createCommand($sql);
                     $command->bindParam(":scientific_name",$taxname,PDO::PARAM_STR);    
@@ -319,9 +328,15 @@ class ApiController extends Controller
                     }
                     $dataset_ids=  trim($dataset_ids,',');
                     
-                    
+                    try{
                     $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
                     $models= Dataset::model()->findAllBySql($sql1);
+                    }
+                    catch(CDbException $e)
+                    {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for taxname <b>%s</b>',$taxname) );
+                    }
                     
                     ob_end_clean();
 
@@ -353,7 +368,7 @@ class ApiController extends Controller
                       $surname=$names[0]; 
                       $middlename=$names[1];
                       $firstname=$names[2];  
-                      $sql='select DISTINCT dataset.id from dataset,dataset_author,author where dataset.id=dataset_author.dataset_id and dataset_author.author_id=author.id and author.surname=:surname and author.first_name=:firstname and author.middle_name=:middlename;';
+                      $sql='select DISTINCT dataset.id from dataset,dataset_author,author where dataset.id=dataset_author.dataset_id and dataset_author.author_id=author.id and author.surname=:surname and author.first_name=:firstname and author.middle_name=:middlename and dataset.upload_status=\'Published\';';
                       $command=$connection->createCommand($sql);
                       $command->bindParam(":surname",$surname,PDO::PARAM_STR); 
                       $command->bindParam(":firstname",$firstname,PDO::PARAM_STR); 
@@ -404,7 +419,7 @@ class ApiController extends Controller
                     else{
                       $surname=$names[0];                   
                       $firstname=$names[1];  
-                      $sql='select DISTINCT dataset.id from dataset,dataset_author,author where dataset.id=dataset_author.dataset_id and dataset_author.author_id=author.id and author.surname=:surname and author.first_name=:firstname;';
+                      $sql='select DISTINCT dataset.id from dataset,dataset_author,author where dataset.id=dataset_author.dataset_id and dataset_author.author_id=author.id and author.surname=:surname and author.first_name=:firstname and dataset.upload_status=\'Published\';';
                       $command=$connection->createCommand($sql);
                       $command->bindParam(":surname",$surname,PDO::PARAM_STR); 
                       $command->bindParam(":firstname",$firstname,PDO::PARAM_STR); 
@@ -452,7 +467,7 @@ class ApiController extends Controller
                 if(isset($manuscript))
                 {
                     
-                      $sql='select DISTINCT dataset.id from dataset,manuscript where manuscript.dataset_id=dataset.id and manuscript.identifier=:manuscript;';
+                      $sql='select DISTINCT dataset.id from dataset,manuscript where manuscript.dataset_id=dataset.id and manuscript.identifier=:manuscript and dataset.upload_status=\'Published\';';
                       $command=$connection->createCommand($sql);
                       $command->bindParam(":manuscript",$manuscript,PDO::PARAM_STR); 
                        
@@ -498,7 +513,7 @@ class ApiController extends Controller
                 if(isset($datasettype))
                 {
                     
-                      $sql='select DISTINCT dataset.id from dataset,dataset_type,type where dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and type.name=:datasettype;';
+                      $sql='select DISTINCT dataset.id from dataset,dataset_type,type where dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and type.name=:datasettype and dataset.upload_status=\'Published\';';
                       $command=$connection->createCommand($sql);
                       $command->bindParam(":datasettype",$datasettype,PDO::PARAM_STR); 
                        
@@ -546,7 +561,7 @@ class ApiController extends Controller
                 if(isset($project))
                 {
                     
-                      $sql='select DISTINCT dataset.id from dataset,dataset_project,project where dataset_project.dataset_id=dataset.id and dataset_project.project_id=project.id and project.name=:project;';
+                      $sql='select DISTINCT dataset.id from dataset,dataset_project,project where dataset_project.dataset_id=dataset.id and dataset_project.project_id=project.id and project.name=:project and dataset.upload_status=\'Published\';';
                       $command=$connection->createCommand($sql);
                       $command->bindParam(":project",$project,PDO::PARAM_STR);               
                       $rows=$command->queryAll();
