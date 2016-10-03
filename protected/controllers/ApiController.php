@@ -387,9 +387,15 @@ class ApiController extends Controller
                     }
                     $dataset_ids=  trim($dataset_ids,',');
                     
-                    
+                    try{
                     $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
                     $models= Dataset::model()->findAllBySql($sql1);
+                    }
+                     catch(CDbException $e)
+                    {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for author <b>%s</b>',$author) );
+                    }
                     
                     ob_end_clean();
 
@@ -437,9 +443,15 @@ class ApiController extends Controller
                     }
                     $dataset_ids=  trim($dataset_ids,',');
                     
-                    
+                    try{
                     $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
                     $models= Dataset::model()->findAllBySql($sql1);
+                    }
+                     catch(CDbException $e)
+                    {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for author <b>%s</b>',$author) );
+                    }
                     
                     ob_end_clean();
 
@@ -484,9 +496,15 @@ class ApiController extends Controller
                     }
                     $dataset_ids=  trim($dataset_ids,',');
                     
-                    
+                    try{
                     $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
                     $models= Dataset::model()->findAllBySql($sql1);
+                    }
+                     catch(CDbException $e)
+                    {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for manuscript <b>%s</b>',$manuscript) );
+                    }
                     
                     ob_end_clean();
 
@@ -531,9 +549,15 @@ class ApiController extends Controller
                     }
                     $dataset_ids=  trim($dataset_ids,',');
                     
-                    
+                    try{
                     $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
                     $models= Dataset::model()->findAllBySql($sql1);
+                    }
+                     catch(CDbException $e)
+                    {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for dataset type <b>%s</b>',$datasettype) );
+                    }
                     
                     ob_end_clean();
 
@@ -577,9 +601,15 @@ class ApiController extends Controller
                     }
                     $dataset_ids=  trim($dataset_ids,',');
                     
-                    
+                    try{
                     $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
                     $models= Dataset::model()->findAllBySql($sql1);
+                    }
+                    catch(CDbException $e)
+                    {
+                            $this->_sendResponse(200, 
+                            sprintf('No items where found for project <b>%s</b>',$project) );
+                    }
                     
                     ob_end_clean();
 
