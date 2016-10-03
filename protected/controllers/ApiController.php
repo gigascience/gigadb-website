@@ -179,7 +179,8 @@ class ApiController extends Controller
         
          public function actionSearch()
 	{
-		ini_set('log_errors', true);
+		$status='Published';
+                ini_set('log_errors', true);
                 ini_set('error_log', dirname(__FILE__).'/php_errors.log');
                 $keyword = Yii::app()->request->getParam('keyword');
                 $result= Yii::app()->request->getParam('result');
@@ -261,9 +262,10 @@ class ApiController extends Controller
                 {
                         
                     
-                    $sql='select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.tax_id=:taxno and dataset.upload_status=\'Published\';';
+                    $sql='select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.tax_id=:taxno and dataset.upload_status=:status;';
                     $command=$connection->createCommand($sql);
                     $command->bindParam(":taxno",$taxno,PDO::PARAM_STR); 
+                    $command->bindParam(":status",$status,PDO::PARAM_STR); 
                     $rows=$command->queryAll();
                     if(count($rows)<1)
                       {
@@ -309,10 +311,11 @@ class ApiController extends Controller
                 if(isset($taxname))
                 {
                     
-                    $sql="select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.scientific_name=:scientific_name and dataset.upload_status=\'Published\';";
+                    $sql="select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.scientific_name=:scientific_name and dataset.upload_status=:status;";
                     
                     $command=$connection->createCommand($sql);
-                    $command->bindParam(":scientific_name",$taxname,PDO::PARAM_STR);    
+                    $command->bindParam(":scientific_name",$taxname,PDO::PARAM_STR);  
+                    $command->bindParam(":status",$status,PDO::PARAM_STR); 
                     $rows=$command->queryAll();
                     if(count($rows)<1)
                       {
@@ -362,17 +365,18 @@ class ApiController extends Controller
                 if(isset($author))
                 {
                     
-                    $names=  explode(" ", $author);
+                    $names=  explode(" ", strtoupper($author));
                     if(count($names)>2)
                     {
                       $surname=$names[0]; 
                       $middlename=$names[1];
                       $firstname=$names[2];  
-                      $sql='select DISTINCT dataset.id from dataset,dataset_author,author where dataset.id=dataset_author.dataset_id and dataset_author.author_id=author.id and author.surname=:surname and author.first_name=:firstname and author.middle_name=:middlename and dataset.upload_status=\'Published\';';
+                      $sql='select DISTINCT dataset.id from dataset,dataset_author,author where dataset.id=dataset_author.dataset_id and dataset_author.author_id=author.id and upper(author.surname)=:surname and upper(author.first_name)=:firstname and upper(author.middle_name)=:middlename and dataset.upload_status=:status;';
                       $command=$connection->createCommand($sql);
                       $command->bindParam(":surname",$surname,PDO::PARAM_STR); 
                       $command->bindParam(":firstname",$firstname,PDO::PARAM_STR); 
                       $command->bindParam(":middlename",$middlename,PDO::PARAM_STR); 
+                      $command->bindParam(":status",$status,PDO::PARAM_STR);
                       $rows=$command->queryAll();
                       $dataset_ids="";
                        if(count($rows)<1)
@@ -425,10 +429,11 @@ class ApiController extends Controller
                     else{
                       $surname=$names[0];                   
                       $firstname=$names[1];  
-                      $sql='select DISTINCT dataset.id from dataset,dataset_author,author where dataset.id=dataset_author.dataset_id and dataset_author.author_id=author.id and author.surname=:surname and author.first_name=:firstname and dataset.upload_status=\'Published\';';
+                      $sql='select DISTINCT dataset.id from dataset,dataset_author,author where dataset.id=dataset_author.dataset_id and dataset_author.author_id=author.id and upper(author.surname)=:surname and upper(author.first_name)=:firstname and dataset.upload_status=:status;';
                       $command=$connection->createCommand($sql);
                       $command->bindParam(":surname",$surname,PDO::PARAM_STR); 
-                      $command->bindParam(":firstname",$firstname,PDO::PARAM_STR); 
+                      $command->bindParam(":firstname",$firstname,PDO::PARAM_STR);
+                      $command->bindParam(":status",$status,PDO::PARAM_STR);
                       $rows=$command->queryAll();
                       $dataset_ids="";
                       if(count($rows)<1)
@@ -479,9 +484,10 @@ class ApiController extends Controller
                 if(isset($manuscript))
                 {
                     
-                      $sql='select DISTINCT dataset.id from dataset,manuscript where manuscript.dataset_id=dataset.id and manuscript.identifier=:manuscript and dataset.upload_status=\'Published\';';
+                      $sql='select DISTINCT dataset.id from dataset,manuscript where manuscript.dataset_id=dataset.id and manuscript.identifier=:manuscript and dataset.upload_status=:status;';
                       $command=$connection->createCommand($sql);
                       $command->bindParam(":manuscript",$manuscript,PDO::PARAM_STR); 
+                      $command->bindParam(":status",$status,PDO::PARAM_STR);
                        
                       $rows=$command->queryAll();
                       $dataset_ids="";
@@ -530,10 +536,11 @@ class ApiController extends Controller
                 }
                 if(isset($datasettype))
                 {
-                    
-                      $sql='select DISTINCT dataset.id from dataset,dataset_type,type where dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and type.name=:datasettype and dataset.upload_status=\'Published\';';
+                      $uppertype=strtoupper($datasettype);
+                      $sql='select DISTINCT dataset.id from dataset,dataset_type,type where dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and upper(type.name)=:datasettype and dataset.upload_status=:status;';
                       $command=$connection->createCommand($sql);
-                      $command->bindParam(":datasettype",$datasettype,PDO::PARAM_STR); 
+                      $command->bindParam(":datasettype",$uppertype,PDO::PARAM_STR); 
+                      $command->bindParam(":status",$status,PDO::PARAM_STR);
                        
                       $rows=$command->queryAll();
                       $dataset_ids="";
@@ -584,10 +591,11 @@ class ApiController extends Controller
                 
                 if(isset($project))
                 {
-                    
-                      $sql='select DISTINCT dataset.id from dataset,dataset_project,project where dataset_project.dataset_id=dataset.id and dataset_project.project_id=project.id and project.name=:project and dataset.upload_status=\'Published\';';
+                      $uppertype=strtoupper($project);
+                      $sql='select DISTINCT dataset.id from dataset,dataset_project,project where dataset_project.dataset_id=dataset.id and dataset_project.project_id=project.id and upper(project.name)=:project and dataset.upload_status=:status;';
                       $command=$connection->createCommand($sql);
-                      $command->bindParam(":project",$project,PDO::PARAM_STR);               
+                      $command->bindParam(":project",$uppertype,PDO::PARAM_STR);   
+                      $command->bindParam(":status",$status,PDO::PARAM_STR);
                       $rows=$command->queryAll();
                       $dataset_ids="";
                       if(count($rows)<1)
