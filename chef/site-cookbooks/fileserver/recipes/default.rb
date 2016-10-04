@@ -10,6 +10,7 @@
 include_recipe 'postgresql::server'
 include_recipe 'vsftpd'
 include_recipe 'cron'
+include_recipe 'nfs::client4'
 
 ['vim', 'tree'].each do |pkg|
     package pkg
@@ -28,7 +29,6 @@ end
 db = node[:fileserver][:db]
 if db[:host] == 'localhost'
 
-    # include_recipe 'postgresql::server'
     db_user = db[:user]
 
     postgresql_user db_user do
@@ -126,4 +126,22 @@ bash 'restart cron service' do
     code <<-EOH
         service crond restart
     EOH
+end
+
+############################
+#### Set up NFS folders ####
+############################
+
+mount_point = node[:fileserver][:mount_point]
+directory mount_point do
+  action :create
+end
+
+# Test mount resource in Chef by mounting /opt/chef onto /mnt/chef
+remote_folder = node[:fileserver][:device]
+mount mount_point do
+  device remote_folder
+  fstype 'none'
+  options 'bind,rw'
+  action [:mount, :enable]
 end

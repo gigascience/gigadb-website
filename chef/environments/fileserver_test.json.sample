@@ -9,7 +9,9 @@
         "host": "localhost",
         "port": "5432",
         "database": "ftpusers"
-      }
+      },
+      "mount_point": "",
+      "device": ""
     }
   },
   "json_class": "Chef::Environment",
