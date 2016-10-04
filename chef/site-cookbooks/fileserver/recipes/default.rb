@@ -51,6 +51,24 @@ if db[:host] == 'localhost'
     end
 end
 
+############################
+#### Set up NFS folders ####
+############################
+
+mount_point = node[:fileserver][:mount_point]
+directory mount_point do
+  action :create
+end
+
+# Test mount resource in Chef by mounting /opt/chef onto /mnt/chef
+remote_folder = node[:fileserver][:device]
+mount mount_point do
+  device remote_folder
+  fstype 'none'
+  options 'bind,rw'
+  action [:mount, :enable]
+end
+
 ###############################
 #### Install VSFTPD server ####
 ###############################
@@ -93,7 +111,8 @@ directory '/home/vagrant/bin' do
   action :create
 end
 
-directory '/var/ftp/temporary_upload' do
+temp_upload_dir = "#{mount_point}/temporary_upload"
+directory temp_upload_dir do
   owner 'ftp'
   group 'ftp'
   mode '0755'
@@ -128,20 +147,4 @@ bash 'restart cron service' do
     EOH
 end
 
-############################
-#### Set up NFS folders ####
-############################
 
-mount_point = node[:fileserver][:mount_point]
-directory mount_point do
-  action :create
-end
-
-# Test mount resource in Chef by mounting /opt/chef onto /mnt/chef
-remote_folder = node[:fileserver][:device]
-mount mount_point do
-  device remote_folder
-  fstype 'none'
-  options 'bind,rw'
-  action [:mount, :enable]
-end

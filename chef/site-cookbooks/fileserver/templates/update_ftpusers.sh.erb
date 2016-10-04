@@ -44,10 +44,10 @@ $PSQL \
     echo ${name}:${passwd} | chpasswd
     # Create ftp user config file
     touch <%= node[:vsftpd][:etcdir] + '/users.d/' %>${name}
-    echo "local_root=/var/ftp/temporary_upload/"${name} >> <%= node[:vsftpd][:etcdir] + '/users.d/' %>${name}
+    echo "local_root="<%= node[:fileserver][:mount_point] + '/temporary_upload/' %>${name} >> <%= node[:vsftpd][:etcdir] + '/users.d/' %>${name}
     # Create directory for user to upload files by FTP
-    mkdir /var/ftp/temporary_upload/${name}
-    chown ${name}:${name} /var/ftp/temporary_upload/${name}
-    chmod 0700 /var/ftp/temporary_upload/${name}
+    mkdir <%= node[:fileserver][:mount_point] + '/temporary_upload/' %>${name}
+    chown ${name}:${name} <%= node[:fileserver][:mount_point] + '/temporary_upload/' %>${name}
+    chmod 0700 <%= node[:fileserver][:mount_point] + '/temporary_upload/' %>${name}
   fi
 done
