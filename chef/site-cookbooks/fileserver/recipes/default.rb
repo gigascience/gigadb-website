@@ -7,6 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recipe 'user'
 include_recipe 'postgresql::server'
 include_recipe 'vsftpd'
 include_recipe 'cron'
@@ -21,13 +22,71 @@ service 'iptables' do
     action [:disable, :stop]
 end
 
+##############################
+#### User and group admin ####
+##############################
+
+# Create user accounts
+user1 = node[:fileserver][:user1]
+user1_name = node[:fileserver][:user1_name]
+user1_public_key = node[:fileserver][:user1_public_key]
+
+user_account node[:fileserver][:user1] do
+    comment   node[:fileserver][:user1_name]
+    ssh_keys  node[:fileserver][:user1_public_key]
+    home      "/home/#{node[:fileserver][:user1]}"
+end
+
+user2 = node[:fileserver][:user2]
+user2_name = node[:fileserver][:user2_name]
+user2_public_key = node[:fileserver][:user2_public_key]
+
+user_account node[:fileserver][:user2] do
+    comment   node[:fileserver][:user2_name]
+    ssh_keys  node[:fileserver][:user2_public_key]
+    home      "/home/#{node[:fileserver][:user2]}"
+end
+
+user3 = node[:fileserver][:user3]
+user3_name = node[:fileserver][:user3_name]
+user3_public_key = node[:fileserver][:user3_public_key]
+
+user_account node[:fileserver][:user3] do
+    comment   node[:fileserver][:user3_name]
+    ssh_keys  node[:fileserver][:user3_public_key]
+    home      "/home/#{node[:fileserver][:user3]}"
+end
+
+# Create group for GigaDB admins
+group 'gigadb-admin' do
+  action    :create
+  members   [user1, user2, user3]
+  append    true
+end
+
+group 'wheel' do
+    action  :modify
+    members [user1, user2, user3]
+    append  true
+end
+
+
 ####################################
 #### Set up PostgreSQL database ####
 ####################################
 
+cookbook_file '/tmp/ftpusers_testdata.sql' do
+  source 'ftpusers_testdata.sql'
+  owner 'centos'
+  group 'centos'
+  mode '0755'
+  action :create_if_missing
+end
+
 # Defined in Vagrantfile - provides database access details
 db = node[:fileserver][:db]
-if db[:host] == 'localhost'
+host = node[:fileserver][:db][:host]
+if host == 'localhost'
 
     db_user = db[:user]
 
@@ -104,10 +163,11 @@ end
 #### Install update_ftpusers script from template ####
 ######################################################
 
-directory '/home/vagrant/bin' do
-  owner 'vagrant'
-  group 'vagrant'
+directory '/usr/local/fileserver/bin' do
+  owner 'root'
+  group 'root'
   mode '0755'
+  recursive true
   action :create
 end
 
@@ -119,10 +179,10 @@ directory temp_upload_dir do
   action :create
 end
 
-template "/home/vagrant/bin/update_ftpusers.sh" do
+template "/usr/local/fileserver/bin/update_ftpusers.sh" do
     source "update_ftpusers.sh.erb"
-    owner 'vagrant'
-    group 'vagrant'
+    owner 'root'
+    group 'root'
     mode 0700
 end
 
@@ -138,7 +198,7 @@ cron 'FTP users synchronisation cron job' do
     shell '/bin/bash'
     path '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin'
     user 'root'
-    command '/home/vagrant/bin/update_ftpusers.sh > /dev/null'
+    command '/usr/local/fileserver/bin/update_ftpusers.sh > /dev/null'
 end
 
 bash 'restart cron service' do
