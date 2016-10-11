@@ -47,26 +47,26 @@ user_account node[:fileserver][:user2] do
     home      "/home/#{node[:fileserver][:user2]}"
 end
 
-user3 = node[:fileserver][:user3]
-user3_name = node[:fileserver][:user3_name]
-user3_public_key = node[:fileserver][:user3_public_key]
+admin_user = node[:fileserver][:admin_user]
+admin_user_name = node[:fileserver][:admin_user_name]
+admin_user_public_key = node[:fileserver][:admin_user_public_key]
 
-user_account node[:fileserver][:user3] do
-    comment   node[:fileserver][:user3_name]
-    ssh_keys  node[:fileserver][:user3_public_key]
-    home      "/home/#{node[:fileserver][:user3]}"
+user_account node[:fileserver][:admin_user] do
+    comment   node[:fileserver][:admin_user_name]
+    ssh_keys  node[:fileserver][:admin_user_public_key]
+    home      "/home/#{node[:fileserver][:admin_user]}"
 end
 
 # Create group for GigaDB admins
 group 'gigadb-admin' do
   action    :create
-  members   [user1, user2, user3]
+  members   [user1, user2, admin_user]
   append    true
 end
 
 group 'wheel' do
     action  :modify
-    members [user1, user2, user3]
+    members [user1, user2, admin_user]
     append  true
 end
 
@@ -77,8 +77,8 @@ end
 
 cookbook_file '/tmp/ftpusers_testdata.sql' do
   source 'ftpusers_testdata.sql'
-  owner 'centos'
-  group 'centos'
+  owner node[:fileserver][:admin_user]
+  group node[:fileserver][:admin_user]
   mode '0755'
   action :create_if_missing
 end

@@ -12,6 +12,17 @@
       },
       "mount_point": "",
       "device": ""
+      "users": [ ],
+      "admin_user": "",
+      "admin_user_name": "",
+      "admin_user_public_key": "",
+      "admin_user_group": "",
+      "user1": "",
+      "user1_name": "",
+      "user1_public_key": "",
+      "user2": "",
+      "user2_name": "",
+      "user2_public_key": "",
     }
   },
   "json_class": "Chef::Environment",
