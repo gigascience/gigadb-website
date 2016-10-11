@@ -1,0 +1,19 @@
+{
+  "name": "development",
+  "default_attributes": {
+    "apache2": {
+      "listen_ports": [
+        "80",
+        "443"
+      ]
+    },
+    "gigadb": {
+      "db": {
+        "sql_script": "/vagrant/sql/gigadb_testdata.sql"
+      }
+    }
+  },
+  "json_class": "Chef::Environment",
+  "description": "Test environment for deploying onto local Vagrant VMs",
+  "chef_type": "environment"
+}
