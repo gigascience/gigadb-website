@@ -22,7 +22,7 @@
       "user1_public_key": "",
       "user2": "",
       "user2_name": "",
-      "user2_public_key": "",
+      "user2_public_key": ""
     }
   },
   "json_class": "Chef::Environment",
