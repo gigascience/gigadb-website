@@ -1,14 +1,12 @@
 <?php
-ob_start();
-header("Content-type: text/xml");
-$xml='<?xml version="1.0" encoding="UTF-8"?>'; 
-$xml.= "<gigadb_entrys>";
-foreach($data as $dataset)
+header("Content-Type: text/xml");
+$xml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+$xml.="<gigadb_entrys>";
+foreach($models as $model)
 { 
-$model= Dataset::model()->with('authors')->findByAttributes(array(
-        'id'=>$dataset));
 
 $xml.="<gigadb_entry id=\"$model->id\" doi=\"$model->identifier\">";
+
 $files=$model->files;
 $xml.="<files>";
 foreach($files as $file){
@@ -23,6 +21,7 @@ $file_type= FileType::model()->findByAttributes(array('id'=>$file->type_id));
 $xml.="<type id=\"$file->type_id\">$file_type->name</type>";
 $file_format= FileFormat::model()->findByAttributes(array('id'=>$file->format_id));
 $xml.="<format id=\"$file->format_id\">$file_format->name</format>";
+
 $xml.="<linked_samples>";
 $filesamples=$file->fileSamples;
 foreach($filesamples as $filesample)
@@ -60,9 +59,10 @@ $xml.="</file>";
 
 }
 $xml.="</files>";
+
 $xml.="</gigadb_entry>";
 }
 $xml.="</gigadb_entrys>";
 $xml=preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', $xml);
-$output = new SimpleXMLElement($xml);
+$output= simplexml_load_string($xml);
 echo $output->asXML();
