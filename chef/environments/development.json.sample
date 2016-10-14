@@ -1,12 +1,6 @@
 {
   "name": "development",
   "default_attributes": {
-    "apache2": {
-      "listen_ports": [
-        "80",
-        "443"
-      ]
-    },
     "gigadb": {
       "db": {
         "sql_script": "/vagrant/sql/gigadb_testdata.sql"
