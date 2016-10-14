@@ -26,6 +26,7 @@ chef/site-cookbooks/aws/attributes/default.rb
 chef/site-cookbooks/fileserver/attributes/default.rb
 chef/environments/aws_test.json
 chef/environments/fileserver_test.json
+chef/nodes/*.json
 
 # PhpStorm
 *.iml
