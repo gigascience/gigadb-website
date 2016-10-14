@@ -25,6 +25,7 @@ site_dir = node[:gigadb][:site_dir]
 # Defines gigadb as the app_user
 app_user = node[:gigadb][:app_user]
 
+
 ##############################
 #### User and group admin ####
 ##############################
@@ -42,6 +43,7 @@ group 'gigadb-admin' do
     action :create
 end
 
+
 #########################
 #### Directory admin ####
 #########################
@@ -49,6 +51,7 @@ end
 yii_framework node[:yii][:version] do
     symlink "#{site_dir}/../yii"
 end
+
 
 ########################################
 #### Platform specific provisioning ####
@@ -61,9 +64,27 @@ when 'debian'
     include_recipe 'gigadb::debian'
 end
 
+
 ####################################
 #### Set up PostgreSQL database ####
 ####################################
+
+# If provisioning by Chef-Solo, need to manually add SQL file
+directory '/vagrant/sql' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+cookbook_file '/vagrant/sql/gigadb_testdata.sql' do
+    not_if { ::File.exist?('/vagrant/sql/gigadb_testdata.sql') }
+    source 'sql/gigadb_testdata.sql'
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
+end
 
 # Defined in Vagrantfile - provides database access details
 db = node[:gigadb][:db]
@@ -86,10 +107,118 @@ if db[:host] == 'localhost'
         sql_script = db[:sql_script]
 
         code <<-EOH
+            # Might need to drop database first or foreign key constraints stop database restoration
             export PGPASSWORD='#{password}'; psql -U #{db_user} -h localhost gigadb < #{sql_script}
         EOH
     end
 end
+
+
+###############################################################
+#### Copy website files into node if not present in server ####
+###############################################################
+
+# For provisioning by Chef-Solo where website folders are not
+# automatically synced
+remote_directory '/vagrant/protected' do
+  source 'protected'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+  not_if do ::File.exists?('/vagrant/protected/models') end
+end
+
+remote_directory '/vagrant/css' do
+  source 'css'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+  not_if do ::File.exists?('/vagrant/css') end
+end
+
+remote_directory '/vagrant/docs' do
+  source 'docs'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+  not_if do ::File.exists?('/vagrant/docs') end
+end
+
+remote_directory '/vagrant/Elastica' do
+  source 'docs'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+  not_if do ::File.exists?('/vagrant/Elastica') end
+end
+
+remote_directory '/vagrant/files' do
+  source 'files'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+  not_if do ::File.exists?('/vagrant/files') end
+end
+
+remote_directory '/vagrant/google-api-php-client' do
+  source 'google-api-php-client'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+  not_if do ::File.exists?('/vagrant/google-api-php-client') end
+end
+
+remote_directory '/vagrant/images' do
+  source 'images'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+  not_if do ::File.exists?('/vagrant/images') end
+end
+
+remote_directory '/vagrant/js' do
+  source 'js'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+  not_if do ::File.exists?('/vagrant/js') end
+end
+
+remote_directory '/vagrant/less' do
+  source 'less'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+  not_if do ::File.exists?('/vagrant/less') end
+end
+
+remote_directory '/vagrant/sphinx' do
+  source 'sphinx'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+  not_if do ::File.exists?('/vagrant/sphinx') end
+end
+
+remote_directory '/vagrant/themes' do
+  source 'themes'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+  not_if do ::File.exists?('/vagrant/themes') end
+end
+
 
 #####################################
 #### Create files from templates ####
@@ -134,6 +263,7 @@ end
 template "#{site_dir}/protected/scripts/update_links.sh" do
     source "update_links.sh.erb"
 end
+
 
 ######################
 #### Python stuff ####
@@ -183,6 +313,7 @@ bash 'install python packages' do
     EOH
 end
 
+
 ##############
 #### Less ####
 ##############
@@ -195,12 +326,20 @@ else
     css_user = 'vagrant'
 end
 
-execute 'Build css' do
-    command "#{site_dir}/protected/yiic lesscompiler"
-    cwd "#{site_dir}/protected"
-    group css_user
-    user css_user
+# Check yiic is executable
+file '/vagrant/protected/yiic' do
+  mode '0755'
+  action :touch
 end
+
+
+execute 'Build css' do
+    command "/vagrant/protected/yiic lesscompiler"
+    cwd "/vagrant/protected"
+    group 'root'
+    user 'root'
+end
+
 
 ###############
 #### nginx ####

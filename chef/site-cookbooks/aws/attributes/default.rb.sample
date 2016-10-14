@@ -11,3 +11,7 @@ default[:gigadb][:user3_name] = 'user3_name'
 default[:gigadb][:user3_public_key] = 'user3_public_key'
 
 default[:gigadb][:db][:backup_folder] = 'directory to store database backup files'
+
+default[:iptables][:iptables_sysconfig][:IPTABLES_SAVE_ON_STOP] = 'yes'
+
+default[:ssh][:enable_password] = 'no'

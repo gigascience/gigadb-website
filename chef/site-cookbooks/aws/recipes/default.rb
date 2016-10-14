@@ -155,10 +155,14 @@ end
 #### Directory admin ####
 #########################
 
+# These folders are auto created by Vagrant. If not using Vagrant e.g.
+# when using Chef-Solo for provisioning these folders are explicitly
+# created.
 dirs = %w{
   assets
   protected/runtime
   giga_cache
+  logs
 }
 
 dirs.each do |component|
@@ -166,9 +170,17 @@ dirs.each do |component|
 
     bash 'setup permissions' do
         code <<-EOH
-            # mkdir -p #{the_dir}
-            # chown -R nginx:gigadb-admin #{the_dir}
-            chmod -R ug+rwx #{the_dir}
+        	# Check if directory exists
+            if [ -d #{the_dir} ]
+            then
+                # Will enter here if the_dir exists,
+                echo "#{the_dir} directory exists"
+                chmod -R ugo+rwx #{the_dir}
+            else
+                mkdir -p #{the_dir}
+                # chown -R nginx:gigadb-admin #{the_dir}
+                chmod -R ugo+rwx #{the_dir}
+            fi
         EOH
     end
 end
@@ -185,6 +197,7 @@ end
 #### Configure SSH ####
 #######################
 
+# Disable root logins and password authentication
 bash 'Configure SSH' do
     code <<-EOH
         sed -i -- 's/#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
@@ -237,18 +250,28 @@ bash 'Install AWS CLI' do
         curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
         unzip awscli-bundle.zip
         sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-        sudo mkdir /root/.aws
+        if [ -d /root/.aws ]
+        then
+            # Will enter here if .aws exists, even if it contains spaces
+            echo ".aws folder exists"
+        else
+            mkdir -p /root/.aws
+        fi
     EOH
 end
 
 template "/root/.aws/credentials" do
     source 'aws_credentials.erb'
     mode '0644'
+    ignore_failure true
+    action :create_if_missing
 end
 
 template "root/.aws/config" do
     source 'aws_config.erb'
     mode '0644'
+    ignore_failure true
+    action :create_if_missing
 end
 
 template "#{site_dir}/protected/scripts/db_backup.sh" do

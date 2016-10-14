@@ -38,7 +38,7 @@ case node['gigadb_box']
 when 'aws'
   # Create access log for nginx in /vagrant
   file "/vagrant/logs/access.log" do
-    owner 'centos'
+    owner 'root'
     group 'gigadb-admin'
     mode 0666
     action :create
