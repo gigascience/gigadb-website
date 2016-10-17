@@ -28,7 +28,19 @@
     },
     "nginx": {
       "log_dir": "/var/log/nginx"
-    }
+    },
+    "postgresql": {
+	  "version": "9.1",
+	  "repo_version": "9.1"
+	},
+    "iptables": {
+	  "iptables_sysconfig": {
+		"IPTABLES_SAVE_ON_STOP": "yes"
+	  }
+	},
+	"ssh": {
+	  "enable_password": "no"
+	}
   },
   "json_class": "Chef::Environment",
   "description": "Test environment for deploying on EC2 servers",
