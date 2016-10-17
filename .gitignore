@@ -28,6 +28,7 @@ chef/environments/aws_test.json
 chef/environments/fileserver_test.json
 chef/environments/gigadb_chef_solo.json
 chef/environments/development.json
+chef/environments/production.json
 chef/nodes/*.json
 
 # PhpStorm

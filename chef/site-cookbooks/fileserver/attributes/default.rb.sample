@@ -71,5 +71,3 @@ default['vsftpd']['config'] = {
   'rsa_cert_file'               => node['vsftpd']['ssl']['cert']['public_cert_file'],
   'rsa_private_key_file'        => node['vsftpd']['ssl']['key']['private_key_file']
 }
-
-default['vsftpd']['allowed'] = [ 'vagrant' ]

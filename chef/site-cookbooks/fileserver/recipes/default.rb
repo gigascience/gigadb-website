@@ -27,34 +27,34 @@ end
 ##############################
 
 # Create user accounts
-user1 = node[:fileserver][:user1]
-user1_name = node[:fileserver][:user1_name]
-user1_public_key = node[:fileserver][:user1_public_key]
+user1 = node[:gigadb][:user1]
+user1_name = node[:gigadb][:user1_name]
+user1_public_key = node[:gigadb][:user1_public_key]
 
-user_account node[:fileserver][:user1] do
-    comment   node[:fileserver][:user1_name]
-    ssh_keys  node[:fileserver][:user1_public_key]
-    home      "/home/#{node[:fileserver][:user1]}"
+user_account node[:gigadb][:user1] do
+    comment   node[:gigadb][:user1_name]
+    ssh_keys  node[:gigadb][:user1_public_key]
+    home      "/home/#{node[:gigadb][:user1]}"
 end
 
-user2 = node[:fileserver][:user2]
-user2_name = node[:fileserver][:user2_name]
-user2_public_key = node[:fileserver][:user2_public_key]
+user2 = node[:gigadb][:user2]
+user2_name = node[:gigadb][:user2_name]
+user2_public_key = node[:gigadb][:user2_public_key]
 
-user_account node[:fileserver][:user2] do
-    comment   node[:fileserver][:user2_name]
-    ssh_keys  node[:fileserver][:user2_public_key]
-    home      "/home/#{node[:fileserver][:user2]}"
+user_account node[:gigadb][:user2] do
+    comment   node[:gigadb][:user2_name]
+    ssh_keys  node[:gigadb][:user2_public_key]
+    home      "/home/#{node[:gigadb][:user2]}"
 end
 
-admin_user = node[:fileserver][:admin_user]
-admin_user_name = node[:fileserver][:admin_user_name]
-admin_user_public_key = node[:fileserver][:admin_user_public_key]
+admin_user = node[:gigadb][:admin_user]
+admin_user_name = node[:gigadb][:admin_user_name]
+admin_user_public_key = node[:gigadb][:admin_user_public_key]
 
-user_account node[:fileserver][:admin_user] do
-    comment   node[:fileserver][:admin_user_name]
-    ssh_keys  node[:fileserver][:admin_user_public_key]
-    home      "/home/#{node[:fileserver][:admin_user]}"
+user_account node[:gigadb][:admin_user] do
+    comment   node[:gigadb][:admin_user_name]
+    ssh_keys  node[:gigadb][:admin_user_public_key]
+    home      "/home/#{node[:gigadb][:admin_user]}"
 end
 
 # Create group for GigaDB admins
@@ -77,8 +77,8 @@ end
 
 cookbook_file '/tmp/ftpusers_testdata.sql' do
   source 'ftpusers_testdata.sql'
-  owner node[:fileserver][:admin_user]
-  group node[:fileserver][:admin_user]
+  owner node[:gigadb][:admin_user]
+  group node[:gigadb][:admin_user]
   mode '0755'
   action :create_if_missing
 end

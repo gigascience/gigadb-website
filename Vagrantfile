@@ -52,7 +52,7 @@ Vagrant.configure(2) do |config|
     FileUtils.chmod_R 0777, ["./assets"]
   end
 
-  if ENV['GIGADB_BOX'] == 'centos'
+  if ENV['GIGADB_BOX'] == 'centos' || ''
     FileUtils.mkpath("./assets")
     config.vm.synced_folder "./assets/", "/vagrant/assets",
         :mount_options => ["dmode=777,fmode=777"]
@@ -108,7 +108,7 @@ Vagrant.configure(2) do |config|
     ############################################################
     #### Need to set server environment: development or aws ####
     ############################################################
-    chef.environment = "fileserver_test"
+    chef.environment = "development"
 
     if ENV['GIGADB_BOX'] == 'aws'
         chef.add_recipe "aws"
@@ -128,12 +128,6 @@ Vagrant.configure(2) do |config|
         :site_dir => "/vagrant",
         :log_dir => "/vagrant/logs",
         :yii_path => "/opt/yii-1.1.10/framework/yii.php",
-        :db => {
-          :user => "gigadb",
-          :password => "vagrant",
-          :database => "gigadb",
-          :host => "localhost",
-        }
       },
       :nginx => {
         :version => :latest,
