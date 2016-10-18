@@ -22,7 +22,6 @@ default[:yii][:version] = '1.1.16'
 default[:yii][:path] = '/opt/yii-1.1.16'
 
 default['java']['jdk_version'] = '7'
-#default['java']['install_flavor'] = 'oracle'
 default["java"]["install_flavor"] = 'openjdk'
 
 default['fail2ban']['ignoreip'] = '127.0.0.1/8 59.148.193.108/32'
