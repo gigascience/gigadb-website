@@ -3,5 +3,5 @@
     "recipe[aws]",
     "recipe[gigadb]"
   ]
-  "environment": "gigadb_test"
+  "environment": "development"
 }
