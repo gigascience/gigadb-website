@@ -363,7 +363,7 @@ HTML;
                     array(
                         'name' => 'sample_name',
                         'type' => 'raw',
-                        'value' => '$data->sampleName',
+                        'value' => '$data->getallsample($data->id)',
                         'visible' => in_array('sample_id', $setting),
                     ),
                     array(

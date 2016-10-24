@@ -80,7 +80,7 @@ class DatasetController extends Controller
         $crit->addCondition("t.dataset_id = ".$model->id);
         $crit->select = '*';
         $crit->join = "LEFT JOIN dataset ON dataset.id = t.dataset_id LEFT JOIN file_type ft ON t.type_id = ft.id 
-                LEFT JOIN file_format ff ON t.format_id = ff.id LEFT JOIN file_sample fs ON fs.file_id = t.id LEFT JOIN sample s ON s.id = fs.sample_id";
+                LEFT JOIN file_format ff ON t.format_id = ff.id";
 
         $cookies = Yii::app()->request->cookies;
         // file 
@@ -116,7 +116,6 @@ class DatasetController extends Controller
                                 'name', 
                                 'description', 
                                 'size', 
-                                'sample_name' => array('asc'=>'s.name asc', 'desc' => 's.name desc'),
                                 'type_id' => array('asc'=>'ft.name asc', 'desc'=>'ft.name desc'),
                                 'format_id' => array('asc'=>'ff.name asc', 'desc'=>'ff.name desc'),
                                 'date_stamp',    
