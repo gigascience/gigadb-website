@@ -21,11 +21,11 @@ $ cd packer
 $ ./build.sh
 ```
 
-Packer uses a pre-built AMI as the source for building the GigaDB AMI.
-This process involves using an AWS account to launch an EC2 instance 
-from the source pre-built AMI, provisioning this running machine and 
-then creating an AMI from this machine. The GigaDB AMI ID is 
-ami-1bfa2b78.
+Packer itself uses a pre-built AMI as the source for building the GigaDB 
+AMI. This process involves using an AWS account to launch an EC2 
+instance from the source pre-built AMI, provisioning this running 
+machine and then creating an AMI from this machine. The GigaDB AMI ID is 
+ami-b85e86db.
 
 ## Preparation
 
@@ -44,7 +44,13 @@ AWS_KEYPAIR_NAME="Name of keypair used to bootstrap AMIs"
 ```
 
 The above environment variables can be set and managed in your
-.bash_profile file.
+`~/.bash_profile` file. Once these additions have been made then the
+.bash_profile should be sourced to load the AWS variables into your 
+environment:
+
+```bash
+$ source ~/.bash_profile
+```
 
 In order for Vagrant to control and provision machines hosted on EC2
 instances, the AWS provider plugin for Vagrant needs to be installed:
@@ -64,6 +70,14 @@ $ git clone https://github.com/gigascience/gigadb-website.git
 $ git submodule init
 $ git submodule update
 ```
+
+In addition, there are variables in GigaDB which require values to be 
+set in order for the web site to function. These variables are listed in
+the `gigadb-website/chef/environments/development.json.sample` file. The
+values in this file should be provided and the `development.json.sample`
+file renamed as `development.json`. However, your technical liaison at 
+*GigaScience* will be able to provide you with a development.json file 
+with example values that these variables should be configured with.
 
 GigaDB can then be deployed onto the AWS cloud by issuing the command 
 below:
