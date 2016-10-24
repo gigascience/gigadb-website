@@ -120,15 +120,13 @@ $ git branch
 
 There are variables in GigaDB which require values to be set in order
 for the web site to function. These variables are listed in the
-gigadb-website/chef/environments/development.json.sample file. The
-values in this file should be provided and the development.json.sample
-file should be renamed as development.json.
+`gigadb-website/chef/environments/development.json.sample` file. The
+values in this file should be provided and the `development.json.sample`
+file should be renamed as `development.json`.
 
-Your liason at GigaScience will be able to provide you with a 
-development.json files with example values that these variables should 
-be configured with.
-
-One or two key files may also be required in the files/certs directory.
+Your technical liason at *GigaScience* will be able to provide you with 
+a `development.json` file with example values that these variables 
+should be configured with.
 
 ## Creating and provisioning the virtual machine
 

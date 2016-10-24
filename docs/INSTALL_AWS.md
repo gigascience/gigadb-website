@@ -71,12 +71,12 @@ $ git submodule init
 $ git submodule update
 ```
 
-There are variables in GigaDB which require values to be set in order
-for the web site to function. These variables are listed in the
-`gigadb-website/chef/environments/development.json.sample` file. The
-values in this file should be provided and the development.json.sample
-file  renamed as development.json. However, your technical liason at 
-GigaScience will be able to provide you with a development.json files 
+In addition, there are variables in GigaDB which require values to be 
+set in order for the web site to function. These variables are listed in
+the `gigadb-website/chef/environments/development.json.sample` file. The
+values in this file should be provided and the `development.json.sample`
+file renamed as `development.json`. However, your technical liaison at 
+*GigaScience* will be able to provide you with a development.json file 
 with example values that these variables should be configured with.
 
 GigaDB can then be deployed onto the AWS cloud by issuing the command 
