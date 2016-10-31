@@ -59,6 +59,7 @@ $this->pageTitle='GigaDB - About';
 <li ><a href="#TOC-How-may-data-from-GigaDB-be-reused-">How may data from GigaDB be reused?</a></li>
 <li ><a href="#TOC-What-is-the-side-bar-on-the-right-of-all-dataset-pages-">What is the side-bar on the right of all dataset pages?</a></li>
 <li ><a href="#TOC-What-is-Hypothes.is-">What is Hypothes.is ? </a></li>
+<li ><a href="#TOC-How-do-I-report-missing-values-in-my-metadata-">How do I report missing values in my metadata? </a></li>
 
 </ol>
 
@@ -301,7 +302,16 @@ Files:
 
 <br />
 <br />
-        
+
+<h4><a name="TOC-How-do-I-report-missing-values-in-my-metadata-"></a>How do I report missing values in my metadata?</h4><p>A. There are various reason why certain data values may need to not be included in the sample metadata, but you still want it to be compliant with particular Minimum Information standards such the GSC MIxS. To maintain compliance when there are missing values within the mandatory fields please use the following terms only:<br>
+ Term - Definition<br>
+ <b>not applicable</b> - information is inappropriate to report, can indicate that the standard itself fails to model or represent the information appropriately<br>
+ <b>restricted access</b> - information exists but can not be released openly because of privacy concerns<br>
+ <b>not provided</b> - information is not available at the time of submission, a value may be provided at the later stage<br>
+ <b>not collected</b> - information was not collected and will therefore never be available</p>
+ 
+<br />
+<br />  
     </div>
 </div>
 
