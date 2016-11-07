@@ -31,7 +31,7 @@ casper.test.begin('Navigation to profile page', 5, function(test) {
 });
 
 
-casper.test.begin('Submission of a new dataset', 5, function(test) {
+casper.test.begin('Navigation to the dataset wizard', 8, function(test) {
 
 	casper.start("http://127.0.0.1:9170/site/login", function() {
         test.assertExists('form[action="/site/login"]', "main form is found");
@@ -51,6 +51,29 @@ casper.test.begin('Submission of a new dataset', 5, function(test) {
 	casper.waitForUrl('http://127.0.0.1:9170/dataset/upload', function() {
 		test.assertTitle("GigaDB - Upload Dataset", "GigaDB - Upload Dataset title is ok");
 		test.assertSelectorHasText('input[type="submit"]', 'Submission wizard');
+	});
+
+	casper.then(function() {
+
+		this.test.assertExists('#agree-checkbox1');
+		this.click('#agree-checkbox1');
+		this.wait(100, function() {
+		    this.test.assert(this.evaluate(function () {
+		      return document.getElementById('agree-checkbox1').checked;
+		  }), "terms agreement check-box is checked");
+		});
+
+	});
+
+	// this.evaluate(function() {
+	//     $('input[type="submit"]:first').click();
+	// });
+	casper.then(function() {
+		 this.click(x('//input[@value="Submission wizard"]'));
+	});
+
+	casper.waitForUrl('http://127.0.0.1:9170/dataset/create1', function() {
+		test.assertTitle("GigaDB - Create1 Dataset", "GigaDB - Create1 Dataset title is ok");
 	});
 
 	casper.run(function() {
