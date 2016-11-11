@@ -1,6 +1,6 @@
 var x = require('casper').selectXPath;
 
-casper.test.begin('Navigating to a dataset admin page', 25, function(test) {
+casper.test.begin('Navigating to a dataset admin page', 26, function(test) {
 
 	casper.start("http://127.0.0.1:9170/dataset/admin", function() {
         test.assertExists('form[action="/site/login"]', "main form is found");
@@ -42,6 +42,7 @@ casper.test.begin('Navigating to a dataset admin page', 25, function(test) {
         test.assertExists(x('//input[@type="text" and @id="Dataset_modification_date"]'), 'Modification Date');
         test.assertSelectorHasText('a.btn', 'Cancel');
         test.assertSelectorHasText(x('//input[@type="submit" and @onclick="js:checkdate()" and @class="btn-green"]'), 'Save');
+		test.assertExists(x('//input[@type="text" and @id="keywords"]'), 'Keywords');
 	});
 
 

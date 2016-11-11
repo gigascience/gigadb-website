@@ -6,7 +6,12 @@ $cs = Yii::app()->getClientScript();
 $cssCoreUrl = $cs->getCoreScriptUrl();
 Yii::app()->clientScript->registerScriptFile('/js/jquery-migrate-1.2.1.js', CClientScript::POS_END);
 Yii::app()->clientScript->registerScriptFile('/js/jquery-ui-1.8.21.custom.min.js');
+Yii::app()->clientScript->registerScriptFile('/js/jquery-ui-1.8.21.custom.min.js');
+Yii::app()->clientScript->registerScriptFile('/js/jquery.tag-editor.min.js');
+Yii::app()->clientScript->registerScriptFile('/js/jquery.caret.min.js');
+
 $cs->registerCssFile($cssCoreUrl . '/jui/css/base/jquery-ui.css');
+$cs->registerCssFile('/css/jquery.tag-editor.css');
 
 ?>
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -193,6 +198,7 @@ $cs->registerCssFile($cssCoreUrl . '/jui/css/base/jquery-ui.css');
             <div class="row">
 
                 <div class="span12">
+
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'title',array('class'=>'control-label')); ?>
                         <div class="controls">
@@ -206,6 +212,13 @@ $cs->registerCssFile($cssCoreUrl . '/jui/css/base/jquery-ui.css');
                         <div class="controls">
                             <?php echo $form->textArea($model,'description',array('class'=>'span8','rows'=>8, 'cols'=>50)); ?>
                             <?php echo $form->error($model,'description'); ?>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <?php echo CHtml::label('Keywords','keywords', array('class'=>'control-label')); ?>
+                        <div class="controls">
+                            <?php echo CHtml::textField('keywords', '', array('class'=>'span8', 'size'=>60,'maxlength'=>300)); ?>
                         </div>
                     </div>
 
@@ -299,6 +312,15 @@ $(function() {
 
 });
 
+</script>
+
+<script>
+    $('#keywords').tagEditor({
+    initialTags:
+        ['Hello', 'World', 'Example', 'Tags'],
+    delimiter: ',', /* comma */
+    placeholder: 'Enter keywords (separated by commas) ...'
+});
 </script>
 
 
