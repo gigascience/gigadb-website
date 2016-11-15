@@ -10,42 +10,16 @@ include_recipe 'iptables'
 include_recipe 'fail2ban'
 include_recipe 'selinux'
 include_recipe 'cron'
-
 include_recipe 'postgresql'
 
 # Locates GigaDB in /vagrant directory
 site_dir = node[:gigadb][:site_dir]
 
-# Download gigadb-website repo into /tmp 
-git '/tmp/gigadb-website do 
-	repository 'https://github.com/gigascience/gigadb-website.git' 
-	revision 'cngb' 
-	action :checkout 
-end
-
-# Download chef-cookbooks
-bash 'Download cookbooks' do
-    code <<-EOH
-        cd /tmp/gigadb-website
-        git submodule init
-        git submodule update
-    EOH
-end
-
 # Copy files to /vagrant
 execute "copy_repo" do
-    command "cp -R /tmp/gigadb-website/* /#{site_dir}"
+    command "cp -R ~/gigadb-website/* /#{site_dir}"
     user "root"
 end
-
-# Create solo.rb
-template "/#{site_dir}/chef/solo.rb" do
-    source 'solo.rb.erb'
-    mode '0644'
-    ignore_failure true
-    action :create_if_missing
-end
-
 
 
 ############################
