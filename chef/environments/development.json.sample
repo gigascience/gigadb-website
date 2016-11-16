@@ -11,6 +11,7 @@
         "port": "5432",
         "database": "gigadb"
       },
+      "repo_dir": "~",
       "server_names": "localhost:9170",
       "site_dir": "/vagrant",
       "root_dir": "/vagrant",
