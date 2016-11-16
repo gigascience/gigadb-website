@@ -17,7 +17,7 @@ site_dir = node[:gigadb][:site_dir]
 
 # Copy files to /vagrant
 execute "copy_repo" do
-    command "cp -R ~/gigadb-website/* /#{site_dir}"
+    command "cp -R gigadb-website/* #{site_dir}"
     user "root"
 end
 
@@ -57,6 +57,48 @@ maxretry = 6
     notifies :restart, "service[fail2ban]"
 end
 
+#########################
+#### Directory admin ####
+#########################
+
+# These folders are auto created by Vagrant. If not using Vagrant e.g.
+# when using Chef-Solo for provisioning these folders are explicitly
+# created.
+dirs = %w{
+  assets
+  protected/runtime
+  giga_cache
+  logs
+}
+
+dirs.each do |component|
+    the_dir = "/#{site_dir}/#{component}"
+
+    bash 'setup permissions' do
+        code <<-EOH
+        	# Check if directory exists
+            if [ -d #{the_dir} ]
+            then
+                # Will enter here if the_dir exists,
+                echo "#{the_dir} directory exists"
+                chmod -R ugo+rwx #{the_dir}
+            else
+                mkdir -p #{the_dir}
+                # chown -R nginx:gigadb-admin #{the_dir}
+                chmod -R ugo+rwx #{the_dir}
+            fi
+        EOH
+    end
+end
+
+# Change files in /vagrant to gigadb-admin group
+bash 'gigadb-admin group permissions' do
+    code <<-EOH
+        chgrp -R gigadb-admin /#{site_dir}/*
+    EOH
+end
+
+
 ###########################
 #### Configure SELinux ####
 ###########################
@@ -68,35 +110,36 @@ end
 # Add SELinux policies for GigaDB
 bash 'gigadb-admin group permissions' do
     code <<-EOH
-        semanage fcontext -a -t httpd_sys_rw_content_t "/#{site_dir}/logs(/.*)?"
-        restorecon -Rv "/#{site_dir}/logs"
+        semanage fcontext -a -t httpd_sys_rw_content_t "#{site_dir}/logs(/.*)?"
+        restorecon -Rv "#{site_dir}/logs"
 
-        semanage fcontext -a -t httpd_sys_content_t "/#{site_dir}/index.php"
-        restorecon -Rv "/#{site_dir}/index.php"
+        semanage fcontext -a -t httpd_sys_content_t "#{site_dir}/index.php"
+        restorecon -Rv "#{site_dir}/index.php"
 
-        semanage fcontext -a -t httpd_sys_content_t "/#{site_dir}/protected(/.*)?"
-        restorecon -Rv "/#{site_dir}/protected"
+        semanage fcontext -a -t httpd_sys_content_t "#{site_dir}/protected(/.*)?"
+        restorecon -Rv "#{site_dir}/protected"
 
-        semanage fcontext -a -t httpd_sys_rw_content_t "/#{site_dir}/protected/runtime(/.*)?"
-        restorecon -Rv "/#{site_dir}/protected/runtime"
+        semanage fcontext -a -t httpd_sys_rw_content_t "#{site_dir}/protected/runtime(/.*)?"
+        restorecon -Rv "#{site_dir}/protected/runtime"
 
-        semanage fcontext -a -t httpd_sys_rw_content_t "/#{site_dir}/assets(/.*)?"
-        restorecon -Rv "/#{site_dir}/assets"
+        semanage fcontext -a -t httpd_sys_rw_content_t "#{site_dir}/assets(/.*)?"
+        restorecon -Rv "#{site_dir}/assets"
 
-        semanage fcontext -a -t httpd_sys_content_t '/#{site_dir}/css/site.css'
-        restorecon -Rv '/#{site_dir}/css/site.css'
+        semanage fcontext -a -t httpd_sys_content_t '#{site_dir}/css/site.css'
+        restorecon -Rv '#{site_dir}/css/site.css'
 
-        semanage fcontext -a -t httpd_sys_content_t '/#{site_dir}/images(/.*)?'
-        restorecon -Rv '/#{site_dir}/images'
+        semanage fcontext -a -t httpd_sys_content_t '#{site_dir}/images(/.*)?'
+        restorecon -Rv '#{site_dir}/images'
 
         setsebool -P httpd_can_network_connect 1
         setsebool -P httpd_can_network_connect_db 1
     EOH
 end
 
-selinux_state 'enforcing' do
-    action :enforcing
-end
+# Leave SELinux on permissive mode
+# selinux_state 'enforcing' do
+#    action :enforcing
+# end
 
 ##############################
 #### User and group admin ####
@@ -157,47 +200,6 @@ group 'wheel' do
     append  true
 end
 
-#########################
-#### Directory admin ####
-#########################
-
-# These folders are auto created by Vagrant. If not using Vagrant e.g.
-# when using Chef-Solo for provisioning these folders are explicitly
-# created.
-dirs = %w{
-  assets
-  protected/runtime
-  giga_cache
-  logs
-}
-
-dirs.each do |component|
-    the_dir = "/#{site_dir}/#{component}"
-
-    bash 'setup permissions' do
-        code <<-EOH
-        	# Check if directory exists
-            if [ -d #{the_dir} ]
-            then
-                # Will enter here if the_dir exists,
-                echo "#{the_dir} directory exists"
-                chmod -R ugo+rwx #{the_dir}
-            else
-                mkdir -p #{the_dir}
-                # chown -R nginx:gigadb-admin #{the_dir}
-                chmod -R ugo+rwx #{the_dir}
-            fi
-        EOH
-    end
-end
-
-# Change files in /vagrant to gigadb-admin group
-bash 'gigadb-admin group permissions' do
-    code <<-EOH
-        chgrp -R gigadb-admin /#{site_dir}/*
-    EOH
-end
-
 
 #######################
 #### Configure SSH ####
@@ -210,7 +212,6 @@ bash 'Configure SSH' do
         sed -i -- 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config
     EOH
 end
-
 
 
 ########################
