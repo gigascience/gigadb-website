@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: aws
+# Cookbook Name:: cngb
 # Recipe:: default
 #
 # Copyright 2016, GigaScience
@@ -14,10 +14,17 @@ include_recipe 'postgresql'
 
 # Locates GigaDB in /vagrant directory
 site_dir = node[:gigadb][:site_dir]
+directory site_dir do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
 
+repo_dir = node[:gigadb][:repo_dir]
 # Copy files to /vagrant
 execute "copy_repo" do
-    command "cp -R gigadb-website/* #{site_dir}"
+    command "cp -R #{repo_dir}/gigadb-website/* #{site_dir}"
     user "root"
 end
 
@@ -55,6 +62,66 @@ maxretry = 6
     group "root"
     mode 0644
     notifies :restart, "service[fail2ban]"
+end
+
+
+##############################
+#### User and group admin ####
+##############################
+
+# Create user accounts
+user1 = node[:gigadb][:user1]
+user1_name = node[:gigadb][:user1_name]
+user1_public_key = node[:gigadb][:user1_public_key]
+
+user_account node[:gigadb][:user1] do
+    comment   node[:gigadb][:user1_name]
+    ssh_keys  node[:gigadb][:user1_public_key]
+    home      "/home/#{node[:gigadb][:user1]}"
+end
+
+user2 = node[:gigadb][:user2]
+user2_name = node[:gigadb][:user2_name]
+user2_public_key = node[:gigadb][:user2_public_key]
+
+user_account node[:gigadb][:user2] do
+    comment   node[:gigadb][:user2_name]
+    ssh_keys  node[:gigadb][:user2_public_key]
+    home      "/home/#{node[:gigadb][:user2]}"
+end
+
+user3 = node[:gigadb][:user3]
+user3_name = node[:gigadb][:user3_name]
+user3_public_key = node[:gigadb][:user3_public_key]
+
+user_account node[:gigadb][:user3] do
+    comment   node[:gigadb][:user3_name]
+    ssh_keys  node[:gigadb][:user3_public_key]
+    home      "/home/#{node[:gigadb][:user3]}"
+end
+
+# Create group for GigaDB admins
+group 'gigadb-admin' do
+  action    :create
+  members   [user1, user2, user3]
+  append    true
+end
+
+# Create www-data user and group
+user_account 'www-data' do
+    comment 'www-data'
+end
+
+group 'www-data' do
+    action  :modify
+    members [user1, user2, user3]
+    append  true
+end
+
+group 'wheel' do
+    action  :modify
+    members [user1, user2, user3]
+    append  true
 end
 
 #########################
@@ -140,65 +207,6 @@ end
 # selinux_state 'enforcing' do
 #    action :enforcing
 # end
-
-##############################
-#### User and group admin ####
-##############################
-
-# Create user accounts
-user1 = node[:gigadb][:user1]
-user1_name = node[:gigadb][:user1_name]
-user1_public_key = node[:gigadb][:user1_public_key]
-
-user_account node[:gigadb][:user1] do
-    comment   node[:gigadb][:user1_name]
-    ssh_keys  node[:gigadb][:user1_public_key]
-    home      "/home/#{node[:gigadb][:user1]}"
-end
-
-user2 = node[:gigadb][:user2]
-user2_name = node[:gigadb][:user2_name]
-user2_public_key = node[:gigadb][:user2_public_key]
-
-user_account node[:gigadb][:user2] do
-    comment   node[:gigadb][:user2_name]
-    ssh_keys  node[:gigadb][:user2_public_key]
-    home      "/home/#{node[:gigadb][:user2]}"
-end
-
-user3 = node[:gigadb][:user3]
-user3_name = node[:gigadb][:user3_name]
-user3_public_key = node[:gigadb][:user3_public_key]
-
-user_account node[:gigadb][:user3] do
-    comment   node[:gigadb][:user3_name]
-    ssh_keys  node[:gigadb][:user3_public_key]
-    home      "/home/#{node[:gigadb][:user3]}"
-end
-
-# Create group for GigaDB admins
-group 'gigadb-admin' do
-  action    :create
-  members   [user1, user2, user3]
-  append    true
-end
-
-# Create www-data user and group
-user_account 'www-data' do
-    comment 'www-data'
-end
-
-group 'www-data' do
-    action  :modify
-    members [user1, user2, user3]
-    append  true
-end
-
-group 'wheel' do
-    action  :modify
-    members [user1, user2, user3]
-    append  true
-end
 
 
 #######################
