@@ -675,16 +675,34 @@ file_put_contents("/files/database_dump.xml", $xml);
                
                 if(isset($taxno))
                 {
-                        
+                    if(isset($datasettype)&& $datasettype !='')    
                     
-                    $sql='select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.tax_id=:taxno and dataset.upload_status=:status;';
+                    {
+                    $uppertype=strtoupper($datasettype);    
+                    $sql='select DISTINCT dataset.id from dataset,dataset_sample,sample,species,dataset_type,type where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and species.tax_id=:taxno and dataset.upload_status=:status and upper(type.name)=:datasettype;';
                     $command=$connection->createCommand($sql);
                     $command->bindParam(":taxno",$taxno,PDO::PARAM_STR); 
                     $command->bindParam(":status",$status,PDO::PARAM_STR); 
+                    $command->bindParam(":datasettype",$uppertype,PDO::PARAM_STR); 
                     $rows=$command->queryAll();
+                   
+                    }
+                    else{
+                        
+                    $sql='select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.tax_id=:taxno and dataset.upload_status=:status;';
+                    $command=$connection->createCommand($sql);
+                    $command->bindParam(":taxno",$taxno,PDO::PARAM_STR); 
+                    $command->bindParam(":status",$status,PDO::PARAM_STR);
+                    $rows=$command->queryAll();   
+                    
+                        
+                        
+                    }
+               
                     if(count($rows)<1)
                       {
-                            ob_end_clean();
+                            if (ob_get_contents()){
+                            ob_end_clean();}
                             $this->_sendResponse(404, 
                             sprintf('No items where found for taxno <b>%s</b>',$taxno) );
                       }
@@ -699,7 +717,8 @@ file_put_contents("/files/database_dump.xml", $xml);
                     $dataset_ids=  trim($dataset_ids,',');
                     $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
                     $models= Dataset::model()->findAllBySql($sql1);
-                    ob_end_clean();
+                    if (ob_get_contents()){
+                    ob_end_clean();}
 
                     switch ($result) {
                         case "dataset":
@@ -721,12 +740,28 @@ file_put_contents("/files/database_dump.xml", $xml);
                         default:
                             break;
                     }
+                    exit;
+                    
+                   
                
                 }
                 
                 if(isset($taxname))
                 {
-                    
+                   
+                 if(isset($datasettype)&& $datasettype !='')  {
+                    $uppertype=strtoupper($datasettype);  
+                    $sql="select DISTINCT dataset.id from dataset,dataset_sample,sample,species,dataset_type,type where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and upper(species.scientific_name)=:scientific_name and dataset.upload_status=:status and upper(type.name)=:datasettype;";
+                    $uppertaxname=strtoupper($taxname);
+                    $command=$connection->createCommand($sql);
+                    $command->bindParam(":scientific_name",$uppertaxname,PDO::PARAM_STR);  
+                    $command->bindParam(":status",$status,PDO::PARAM_STR); 
+                    $command->bindParam(":datasettype",$uppertype,PDO::PARAM_STR); 
+                    $rows=$command->queryAll();
+                     
+                 }   
+                 
+                 
                     $sql="select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and upper(species.scientific_name)=:scientific_name and dataset.upload_status=:status;";
                     $uppertaxname=strtoupper($taxname);
                     $command=$connection->createCommand($sql);
@@ -735,7 +770,8 @@ file_put_contents("/files/database_dump.xml", $xml);
                     $rows=$command->queryAll();
                     if(count($rows)<1)
                       {
-                            ob_end_clean();
+                             if (ob_get_contents()){
+                             ob_end_clean();}
                             $this->_sendResponse(404, 
                             sprintf('No items where found for taxname <b>%s</b>',$taxname) );
                       }
@@ -758,8 +794,9 @@ file_put_contents("/files/database_dump.xml", $xml);
                             $this->_sendResponse(404, 
                             sprintf('No items where found for taxname <b>%s</b>',$taxname) );
                     }
-                    
+                     if (ob_get_contents()){
                     ob_end_clean();
+                     }
 
                     switch ($result) {
                         case "dataset":                         
@@ -778,7 +815,7 @@ file_put_contents("/files/database_dump.xml", $xml);
                         default:
                             break;
                     }
-                    
+                    exit;
                 }
                 if(isset($author))
                 {
@@ -1045,12 +1082,14 @@ file_put_contents("/files/database_dump.xml", $xml);
                     }
                      catch(CDbException $e)
                     {
-                            ob_end_clean();
+                            if (ob_get_contents()){
+                            ob_end_clean();}
                             $this->_sendResponse(404, 
                             sprintf('No items where found for dataset type <b>%s</b>',$datasettype) );
                     }
-                    
+                    if (ob_get_contents()){
                     ob_end_clean();
+                    }
 
                     switch ($result) {
                         case "dataset":                         
