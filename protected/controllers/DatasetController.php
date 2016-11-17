@@ -66,7 +66,7 @@ class DatasetController extends Controller
 
         if ($model->upload_status != "Published") {
             if (isset($_GET['token']) && $model->token == $_GET['token']) {
-                
+
             } else {
 
                 $form = new SearchForm;
@@ -75,15 +75,15 @@ class DatasetController extends Controller
                 return;
             }
         }
-        
+
         $crit = new CDbCriteria;
         $crit->addCondition("t.dataset_id = ".$model->id);
         $crit->select = '*';
-        $crit->join = "LEFT JOIN dataset ON dataset.id = t.dataset_id LEFT JOIN file_type ft ON t.type_id = ft.id 
+        $crit->join = "LEFT JOIN dataset ON dataset.id = t.dataset_id LEFT JOIN file_type ft ON t.type_id = ft.id
                 LEFT JOIN file_format ff ON t.format_id = ff.id LEFT JOIN file_sample fs ON fs.file_id = t.id LEFT JOIN sample s ON s.id = fs.sample_id";
 
         $cookies = Yii::app()->request->cookies;
-        // file 
+        // file
         $setting = array('name','size', 'type_id', 'format_id', 'location', 'date_stamp','sample_id'); // 'description','attribute' are hidden by default
         $pageSize = 10;
 
@@ -113,13 +113,13 @@ class DatasetController extends Controller
             'criteria'=> $crit,
             'sort' => array('defaultOrder'=>'name ASC',
                             'attributes' => array(
-                                'name', 
-                                'description', 
-                                'size', 
+                                'name',
+                                'description',
+                                'size',
                                 'sample_name' => array('asc'=>'s.name asc', 'desc' => 's.name desc'),
                                 'type_id' => array('asc'=>'ft.name asc', 'desc'=>'ft.name desc'),
                                 'format_id' => array('asc'=>'ff.name asc', 'desc'=>'ff.name desc'),
-                                'date_stamp',    
+                                'date_stamp',
                             )),
             'pagination' => array('pageSize'=>$pageSize)
         ));
@@ -168,7 +168,7 @@ class DatasetController extends Controller
                                         ),
                                     'scientific_name' => array(
                                             'asc' => 'species.scientific_name ASC',
-                                            'desc' => 'species.scientific_name DESC',                                        
+                                            'desc' => 'species.scientific_name DESC',
                                         ),
                                     'taxonomic_id' => array(
                                             'asc' => 'species.tax_id ASC',
@@ -176,13 +176,13 @@ class DatasetController extends Controller
                                         ),
                                 )),
         ));
-        
+
         $email = 'no_submitter@bgi.com';
         $result = Dataset::model()->findAllBySql("select email from gigadb_user g,dataset d where g.id=d.submitter_id and d.identifier='" . $id . "';");
         if (count($result) > 0) {
             $email = $result[0]['email'];
         }
-        
+
         $result = Dataset::model()->findAllBySql("select identifier from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {
             $result = Dataset::model()->findAllBySql("select identifier from dataset where upload_status='Published' order by identifier asc limit 1;");
@@ -210,7 +210,7 @@ class DatasetController extends Controller
         foreach($authors as $au) {
             $at[] = $au->id;
         }
-        
+
         $relateCriteria = new CDbCriteria;
         $relateCriteria->distinct = true;
         $relateCriteria->addNotInCondition("t.id", array($model->id));
@@ -226,24 +226,24 @@ class DatasetController extends Controller
 
         // if we don't find any dataset related by the first way, then by common type
         if (!$relates || count($relates) < 9) {
-            
+
             $relatesIds = array($model->id);
             foreach ($relates as $relate) {
                 $relatesIds[] = $relate->id;
             }
-        
+
             $rc = clone $relateCriteria;
             $rc->join = "JOIN dataset_type dt ON t.id = dt.dataset_id";
             $rc->addInCondition("dt.type_id", $model->getTypeIds());
             $rc->addNotInCondition("t.id", $relatesIds);
             $rc->limit = 9 - count($relates);
             $relatesType = Dataset::model()->findAll($rc);
-            
+
             foreach ($relatesType as $relate) {
                 $relates[] = $relate;
             }
         }
-        
+
         $scholar = $model->cited;
 
         $link_type = 'EBI';
@@ -301,13 +301,13 @@ class DatasetController extends Controller
         if (isset($_POST['Dataset'])) {
             $datasetAttr = $_POST['Dataset'];
 
-            $model->setAttributes($datasetAttr, true);            
-            
+            $model->setAttributes($datasetAttr, true);
+
             if ($model->upload_status == 'Published') {
                 $files = $model->files;
                 if (strpos($model->ftp_site, "10.5524") == FALSE) {
                     $model->ftp_site="ftp://climb.genomics.cn/pub/10.5524/100001_101000/" . $model->identifier;
-                    
+
                     if (count($files) > 0) {
                         foreach ($files as $file) {
                             $origin_location = $file->location;
@@ -329,20 +329,20 @@ class DatasetController extends Controller
                     }
                 }
             }
-            
+
             // Image information
             $image = $model->image;
             $image->attributes = $_POST['Images'];
             $image->scenario = 'update';
-            
+
             if ($model->publication_date == "")
                 $model->publication_date = null;
             if ($model->modification_date == "")
                 $model->modification_date = null;
             if ($model->fairnuse == "")
                 $model->fairnuse = null;
-                                
-                
+
+
             if ($model->save() && $image->save()) {
                 if (isset($_POST['datasettypes'])) {
                     $datasettypes = $_POST['datasettypes'];
@@ -368,20 +368,47 @@ class DatasetController extends Controller
                         }
                     }
                 }
-                
-                
+
+                // semantic kewyords update, using remove all and re-create approach
+				if( isset($_POST['keywords']) ){
+
+					$sKeywordAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));
+
+					// remove existing dataset attributes
+					$datasetAttributes = datasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$id,'attribute_id'=>$sKeywordAttr->id));
+					// Yii::log(print_r($datasetAttributes));
+					// Yii::app()->end();
+					foreach ($datasetAttributes as $key => $keyword) {
+						$keyword->delete();
+					}
+
+					// create dataset attributes from form data
+					$keywordsArray = explode(',', $_POST['keywords']);
+					foreach ($keywordsArray as $keyword)
+					{
+						$dataset_attribute = new DatasetAttributes();
+						$dataset_attribute->attribute_id = $sKeywordAttr->id;
+						$dataset_attribute->dataset_id = $id;
+						$dataset_attribute->value = $keyword;
+						$dataset_attribute->save();
+					}
+				}
+
+
+
+
                 if ($model->upload_status == 'Published') {
                     $this->redirect('/dataset/' . $model->identifier);
                 } else {
                     $this->redirect(array('/dataset/view/id/' . $model->identifier.'/token/'.$model->token));
                 }
-                
-                
-            }           
-            else {                
-                Yii::log(print_r($model->getErrors(), true), 'debug');               
+
+
             }
-            
+            else {
+                Yii::log(print_r($model->getErrors(), true), 'debug');
+            }
+
         }
 
         $this->render('update', array(
@@ -408,7 +435,7 @@ class DatasetController extends Controller
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
-        
+
 	/**
 	 * Lists all models.
 	 */
@@ -427,7 +454,7 @@ class DatasetController extends Controller
 	{
 		$model=new Dataset('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Dataset'])) {			
+		if(isset($_GET['Dataset'])) {
             $model->setAttributes($_GET['Dataset']);
         }
 
@@ -508,7 +535,7 @@ EO_MAIL;
 	}
 
 
- public function actionSubmit() { 
+ public function actionSubmit() {
            if (isset($_POST['File'])) {
             $count = count($_POST['File']);
             var_dump('count'.$count);
@@ -526,7 +553,7 @@ EO_MAIL;
                 }
             }
         }
-        
+
         if (!isset($_GET['id'])) {
                 $this->redirect("/user/view_profile");
         } else {
@@ -557,17 +584,17 @@ EO_MAIL;
             if($dataset->upload_status == 'Incomplete') {
                 $isOld = 0;
             }
-            
+
             //change the upload status
             $fileLink = "";
             if (isset($_POST['file'])) {
                 $fileLink .= 'Files:<br/>';
                 $fileLink = $link = Yii::app()->params['home_url'] . "/dataset/updateFile/?id=" . $dataset_id;
                   $dataset->upload_status = 'Pending';
-            } else {             
+            } else {
                 $dataset->upload_status = 'Request';
             }
- 
+
             if (!$dataset->save()){
                 Yii::app()->user->setFlash('keyword', "Submit failure" . $dataset_id);
                 $this->redirect("/user/view_profile");
@@ -609,13 +636,13 @@ Affiliation:  <b>{$user->affiliation}</b>
 Receiving Newsletter:  <b>{$receiveNewsletter}</b>
 <br/>
 Submission ID: <b>$dataset_id</b><br/>
-$link      
+$link
 <br/>
 $sampleLink
     <br/>
 $linkFolder
         <br/>
-        
+
 EO_MAIL;
             $headers = "Fcrrom: $from";
 
@@ -636,7 +663,7 @@ EO_MAIL;
 
             $ok1 = @mail($to, $subject, $message, $headers, $returnpath);
 
-            //send email to user to 
+            //send email to user to
 
             $to = $user->email;
 
@@ -657,7 +684,7 @@ Best regards,<br/>
 The GigaDB team<br/>
 <br/>
 Submission date: $timestamp
-<br/>               
+<br/>
 EO_MAIL;
 
             $headers = "From: $from";
@@ -702,7 +729,7 @@ Affiliation:  <b>{$user->affiliation}</b>
 Receiving Newsletter:  <b>{$receiveNewsletter}</b>
 <br/>
 Submission ID: <b>$dataset_id</b><br/>
-$link      
+$link
 <br/>
 $adminFileLink
     <br/>
@@ -727,7 +754,7 @@ EO_MAIL;
 
             $ok1 = @mail($to, $subject, $message, $headers, $returnpath);
 
-            //send email to user to 
+            //send email to user to
 
             $to = $user->email;
 
@@ -749,7 +776,7 @@ Best regards,<br/>
 The GigaDB team<br/>
 <br/>
 Submission date: $timestamp
-<br/>               
+<br/>
 EO_MAIL;
 
             $headers = "From: $from";
@@ -781,8 +808,8 @@ EO_MAIL;
             $this->render("upload", array('study' => $dataset_id, 'uploadedDatasets' => $uploadedDatasets));
         }
     }
-        
-        
+
+
     public function actionCreate(){
         $dataset = new Dataset;
         $dataset->image = new Images;
@@ -825,7 +852,7 @@ EO_MAIL;
         }
         $this->render('create', array('model'=>$dataset)) ;
     }
-    
+
         public function actionUpdateSubmit() {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
@@ -846,9 +873,9 @@ EO_MAIL;
         }
         Yii::app()->user->setFlash('keyword', 'no dataset is specified');
         return $this->redirect("/user/view_profile");
-    } 
-    
-    
+    }
+
+
     public function actionUpdateFile() {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
@@ -866,14 +893,14 @@ EO_MAIL;
                 'links', 'externalLinks', 'relations', 'samples');
             foreach ($vars as $var) {
                 $_SESSION[$var] = CJSON::decode($dataset_session->$var);
-            }                 
+            }
             $_SESSION['isOld'] = 1;
             $this->redirect("/adminFile/create1");
         }
         Yii::app()->user->setFlash('keyword', 'no dataset is specified');
         return $this->redirect("/user/view_profile");
     }
-    
+
      public function storeDataset(&$dataset) {
         $dataset_id = 0;
         $identifier = 0;
@@ -882,7 +909,7 @@ EO_MAIL;
             if (isset($_SESSION['identifier'])) {
                 $identifier = $_SESSION['identifier'];
                 $dataset = Dataset::model()->findByAttributes(array('identifier' => $identifier));
-            } 
+            }
 
             /*else {
                 $file = fopen(Yii::app()->basePath."/scripts/data/lastdoi.txt", 'r');
@@ -891,7 +918,7 @@ EO_MAIL;
                 fwrite($file1, $test+1);
                 fclose($file);
                 fclose($file1);
-               
+
                 $identifier=$test;
             }*/
 
@@ -959,11 +986,11 @@ EO_MAIL;
                                 }
                             }
                         }
-                        
+
                        if (!( $dataset->image->validate() && $dataset->image->save() ))
                             return false;
-                     
-                        $dataset->image_id = $dataset->image->id;                        
+
+                        $dataset->image_id = $dataset->image->id;
                     }
 
 
@@ -1251,11 +1278,11 @@ EO_MAIL;
                     }
 
                     $dataset->identifier = $lastIdentifier + 1;
-                    
+
                     if($_POST['Dataset']['union']=='B') {
                         $dataset->dataset_size=$_POST['Dataset']['dataset_size'];
                     } else if($_POST['Dataset']['union']=='M') {
-                        $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024;                
+                        $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024;
                     } else if($_POST['Dataset']['union']=='G') {
                         $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024*1024;
                     } else if($_POST['Dataset']['union']=='T') {
@@ -1349,11 +1376,11 @@ EO_MAIL;
                             $dataset->types = $_POST['datasettypes'];
                         }
 
-                
+
                         if($_POST['Dataset']['union']=='B') {
                             $dataset->dataset_size=$_POST['Dataset']['dataset_size'];
                         } else if($_POST['Dataset']['union']=='M') {
-                            $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024;                
+                            $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024;
                         } else if($_POST['Dataset']['union']=='G') {
                             $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024*1024;
                         } else if($_POST['Dataset']['union']=='T') {
@@ -1582,7 +1609,7 @@ EO_MAIL;
                     $keywords->attribute_id = $keywordsAttr->id;
                 }
                 $pxForm->keywords = $keywords->value;
-                
+
                 # load sample processing protocol
                 $criteria = new CDbCriteria;
                 $criteria->join = 'LEFT JOIN sample s on (t.sample_id = s.id) LEFT JOIN dataset_sample ds on (ds.sample_id = s.id)';
@@ -1621,7 +1648,7 @@ EO_MAIL;
                     # set default experiment type
                     $expType = new ExpAttributes;
                     $expType->exp_id = $experiment->id;
-                    $expType->attribute_id = $expTypeAttr->id; 
+                    $expType->attribute_id = $expTypeAttr->id;
                     $expType->value = CJSON::encode(array());
                 }
                 $expTypeVal = CJSON::decode($expType->value);
@@ -1644,7 +1671,7 @@ EO_MAIL;
                 if(isset($insVal['Other'])) {
                     $pxForm->instrumentOther = $insVal['Other'];
                 }
-                
+
                 # load quantification
                 $quantification = ExpAttributes::model()->findByAttributes(array('exp_id'=>$experiment->id, 'attribute_id'=>$quantificationAttr->id));
                 if(!$quantification) {
@@ -1659,7 +1686,7 @@ EO_MAIL;
                 if(isset($quanVal['Other'])) {
                     $pxForm->quantificationOther = $quanVal['Other'];
                 }
-                
+
                 # load modification
                 $modification = ExpAttributes::model()->findByAttributes(array('exp_id'=>$experiment->id, 'attribute_id'=>$modificationAttr->id));
                 if(!$modification) {
@@ -1693,10 +1720,10 @@ EO_MAIL;
                         if($pxForm->validate()) {
                             #store keywords
                             $keywords->value = $attrs['keywords'];
-                            
+
                             #store dpp
                             $dpp->value = $attrs['dpp'];
-     
+
                             if(isset($_POST['exType'])) {
                                 #store exp type
                                 $expTypeVal = $_POST['exType'];
@@ -1710,7 +1737,7 @@ EO_MAIL;
                                 #store quantification
                                 $quanVal = $_POST['quantification'];
                                 if(isset($quanVal['Other'])) {
-                                    $quanVal['Other'] = ($attrs['quantificationOther'])? $attrs['quantificationOther'] : ""; 
+                                    $quanVal['Other'] = ($attrs['quantificationOther'])? $attrs['quantificationOther'] : "";
                                 }
                                 $quantification->value = CJSON::encode($quanVal);
                             }
@@ -1719,7 +1746,7 @@ EO_MAIL;
                                 #store instrument
                                 $insVal = $_POST['instrument'];
                                 if(isset($insVal['Other'])) {
-                                    $insVal['Other'] = ($attrs['instrumentOther'])? $attrs['instrumentOther'] : ""; 
+                                    $insVal['Other'] = ($attrs['instrumentOther'])? $attrs['instrumentOther'] : "";
                                 }
                                 $instrument->value = CJSON::encode($insVal);
                             }
@@ -1728,7 +1755,7 @@ EO_MAIL;
                                 #store modification
                                 $modiVal = $_POST['modification'];
                                 if(isset($modiVal['Other'])) {
-                                    $modiVal['Other'] = ($attrs['modificationOther'])? $attrs['modificationOther'] : ""; 
+                                    $modiVal['Other'] = ($attrs['modificationOther'])? $attrs['modificationOther'] : "";
                                 }
                                 $modification->value = CJSON::encode($modiVal);
                             }
@@ -1763,7 +1790,7 @@ EO_MAIL;
                 if(!$dataset) {
                     Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Dataset does not exist.")));
                 }
-                
+
                 if($dataset->delete()) {
                     Util::returnJSON(array("success"=>true));
                 }

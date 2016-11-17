@@ -8,9 +8,9 @@ class Dataset extends MyActiveRecord
      * @param string $className active record class name.
      * @return Dataset the static model class
      */
-    
+
     const DATASET_PRIVATE = 'Private';
-    
+
     const URL_RIS = 'http://data.datacite.org/application/x-research-info-systems/10.5524/';
     const URL_BIBTEXT = 'http://data.datacite.org/application/x-bibtex/10.5524/';
     const URL_TEXT = 'http://data.datacite.org/application/x-datacite+text/10.5524/';
@@ -23,7 +23,7 @@ class Dataset extends MyActiveRecord
 
     public static $statusList = array('Incomplete'=>'Incomplete',
                          'Request'=>'Request',
-                         'Uploaded'=>'Uploaded',                                               
+                         'Uploaded'=>'Uploaded',
                          'Pending'=>'Pending',
                          'Private'=>'Private',
                          'Published'=>'Published'
@@ -107,7 +107,7 @@ class Dataset extends MyActiveRecord
             'funders' =>array(self::HAS_MANY, 'Funder', 'dataset_funder(dataset_id, funder_id)'),
             'datasetLogs'=>array(self::HAS_MANY, 'DatasetLog', 'dataset_id'),
             'datasetAttributes' => array(self::HAS_MANY, 'DatasetAttributes', 'dataset_id'),
-            'attributes' => array(self::MANY_MANY, 'Attribute', 'dataset_attributes(dataset_id, attribute_id)'), 
+            'attributes' => array(self::MANY_MANY, 'Attribute', 'dataset_attributes(dataset_id, attribute_id)'),
         );
     }
 
@@ -122,28 +122,28 @@ class Dataset extends MyActiveRecord
         $crit = new CDbCriteria;
         $crit->join = "join dataset_sample ds on ds.sample_id = t.id";
         $crit->condition = "ds.dataset_id = :id";
-        $crit->params = array(':id'=>$this->id); 
-        $crit->addInCondition("t.id", $ids);             
+        $crit->params = array(':id'=>$this->id);
+        $crit->addInCondition("t.id", $ids);
         return Sample::model()->findAll($crit);
     }
 
     public function getFilesInIds($ids) {
         $crit = new CDbCriteria;
         $crit->condition = "dataset_id = :id";
-        $crit->params = array(':id'=>$this->id); 
-        $crit->addInCondition("id", $ids);               
+        $crit->params = array(':id'=>$this->id);
+        $crit->addInCondition("id", $ids);
         return File::model()->findAll($crit);
     }
 
     public function getPreviousDoi() {
-        return Dataset::model()->find(array('condition' =>"identifier < :id and upload_status = 'Published'", 
+        return Dataset::model()->find(array('condition' =>"identifier < :id and upload_status = 'Published'",
                 'params'=>array(':id'=>$this->identifier),
                 'order'=>'identifier desc'
         ));
     }
 
     public function getNextDoi() {
-        return Dataset::model()->find(array('condition' =>"identifier > :id and upload_status = 'Published'", 
+        return Dataset::model()->find(array('condition' =>"identifier > :id and upload_status = 'Published'",
                 'params'=>array(':id'=>$this->identifier),
                 'order'=>'identifier asc'
         ));
@@ -155,7 +155,7 @@ class Dataset extends MyActiveRecord
         $citeds = Utils::searchScholar($phrase);
         $sum = 0;
         if($citeds)
-            $sum = count($citeds);       
+            $sum = count($citeds);
         $url = Yii::app()->params['scholar_query'].$phrase;
         return array('total'=>$sum, 'url'=>$url);
     }
@@ -166,7 +166,7 @@ class Dataset extends MyActiveRecord
 
     public function getEPMCLink() {
         return  Yii::app()->params['ePMC_query']."(REF:'10.5524/".$this->identifier."')";
-    } 
+    }
 
     public static function clearDatasetSession() {
         $vars = array('dataset', 'images', 'authors', 'projects',
@@ -477,10 +477,10 @@ class Dataset extends MyActiveRecord
         $criteria->addCondition("ds.dataset_id = ".$this->id);
         return Sample::model()->findAll($criteria);
     }
-    
+
     /**
      * Get the url with the title slugify
-     * 
+     *
      * @return string
      */
     public function getDatasetUrl()
@@ -502,5 +502,18 @@ class Dataset extends MyActiveRecord
         }
         return $ids;
     }
-   
+
+    public function getSemanticKeywords() {
+        $sKeywordAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));
+
+        $sk = DatasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$this->id,'attribute_id'=>$sKeywordAttr->id));
+
+        $list=array();
+
+        foreach ($sk as $key => $keyword) {
+            $list[]=$keyword->value;
+        }
+        return $list;
+    }
+
 }

@@ -315,9 +315,13 @@ $(function() {
 </script>
 
 <script>
+<?php
+$js_array = json_encode($model->getSemanticKeywords());
+echo "var existingTags = ". $js_array . ";\n";
+?>
     $('#keywords').tagEditor({
     initialTags:
-        ['Hello', 'World', 'Example', 'Tags'],
+        existingTags,
     delimiter: ',', /* comma */
     placeholder: 'Enter keywords (separated by commas) ...'
 });
