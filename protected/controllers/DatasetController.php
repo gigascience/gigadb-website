@@ -373,24 +373,27 @@ class DatasetController extends Controller
 				if( isset($_POST['keywords']) ){
 
 					$sKeywordAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));
+					$keywordsArray = array_filter(explode(',', $_POST['keywords']));
+
 
 					// remove existing dataset attributes
 					$datasetAttributes = datasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$id,'attribute_id'=>$sKeywordAttr->id));
-					// Yii::log(print_r($datasetAttributes));
-					// Yii::app()->end();
+
 					foreach ($datasetAttributes as $key => $keyword) {
 						$keyword->delete();
 					}
 
 					// create dataset attributes from form data
-					$keywordsArray = explode(',', $_POST['keywords']);
-					foreach ($keywordsArray as $keyword)
-					{
-						$dataset_attribute = new DatasetAttributes();
-						$dataset_attribute->attribute_id = $sKeywordAttr->id;
-						$dataset_attribute->dataset_id = $id;
-						$dataset_attribute->value = $keyword;
-						$dataset_attribute->save();
+					if ( count($keywordsArray) > 0 ) {
+
+						foreach ($keywordsArray as $keyword)
+						{
+							$dataset_attribute = new DatasetAttributes();
+							$dataset_attribute->attribute_id = $sKeywordAttr->id;
+							$dataset_attribute->dataset_id = $id;
+							$dataset_attribute->value = $keyword;
+							$dataset_attribute->save();
+						}
 					}
 				}
 
