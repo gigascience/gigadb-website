@@ -51,14 +51,50 @@ casper.test.begin('Removing all keywords', 6, function(test) {
     // });
 
     casper.run(function() {
-		test.done();
-	});
+        test.done();
+    });
 
 });
 
 
-// Adding new keywords
-// 'Keywords': "abcd, a four part keyword, my_keyword, my-keyword",
+casper.test.begin('Adding new keywords', 7, function(test) {
+
+	casper.start("http://127.0.0.1:9170/dataset/update/id/210", function() {
+
+        test.assertTitle("GigaDB - Update Dataset", "GigaDB - Update Dataset title is ok");
+        this.fill('form[action="/dataset/update/id/210"]', {
+            'keywords': "abcd, a four part keyword, my_keyword, my-keyword",
+        }, true);
+
+    });
+
+    casper.waitForUrl('http://127.0.0.1:9170/dataset/100002', function() {
+        test.assertTitle("GigaDB Dataset - DOI 10.5524/100002 - Genomic data from Adelie penguin (Pygoscelis adeline)..", "GigaDB Dataset view Dataset title is ok");
+        test.assertTextExist('Keywords:','Keywords label is shown on dataset view');
+        test.assertTextExist('abcd','Keywords are shown on dataset view');
+        test.assertTextExist('a four part keyword','Keywords are shown on dataset view');
+        test.assertTextExist('my_keyword','Keywords are shown on dataset view');
+        test.assertTextExist('my-keyword','Keywords are shown on dataset view');
+    });
+
+
+    casper.wait(5000, function() {
+        this.capture('dataset_view.png', {
+            top: 0,
+            left: 0,
+            width: 900,
+            height: 900
+        });
+    });
+
+
+    casper.run(function() {
+        test.done();
+    });
+
+});
+
+
 
 // Removing some keywords, Adding new keywords
 
