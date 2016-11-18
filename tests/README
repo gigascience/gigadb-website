@@ -1,0 +1,20 @@
+* How to install:
+
+On Mac, using homebrew:
+
+brew install phantomjs
+brew install casperjs
+
+
+(Alternatively, both can be installed with npm)
+
+* To run the tests:
+
+casperjs test tests/admin-dataset-form-loading.js
+
+casperjs test tests/admin-dataset-keywords.js
+
+casperjs test tests/submission-wizard-test.js
+
+
+("casperjs test tests" doesn't work quite yet, need to refactor the test and create a proper setup function for them)

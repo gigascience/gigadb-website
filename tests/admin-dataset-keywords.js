@@ -134,6 +134,7 @@ casper.test.begin('Removing some keywords, Adding new keywords', 8, function(tes
     });
 
 });
+
 // trying xss
 casper.test.begin('Keywords are filtered against xss', 8, function(test) {
 
@@ -170,6 +171,37 @@ casper.test.begin('Keywords are filtered against xss', 8, function(test) {
     //         height: 900
     //     });
     // });
+
+
+    casper.run(function() {
+        test.done();
+    });
+
+});
+
+// tear-down
+casper.test.begin('Tear-down: Removing  keywords, Logout', 3, function(test) {
+
+	casper.start("http://127.0.0.1:9170/dataset/update/id/210", function() {
+
+        test.assertTitle("GigaDB - Update Dataset", "GigaDB - Update Dataset title is ok");
+        this.fill('form[action="/dataset/update/id/210"]', {
+            'keywords': "",
+        }, true);
+
+    });
+
+    casper.waitForUrl('http://127.0.0.1:9170/dataset/100002', function() {
+        test.assertTitle("GigaDB Dataset - DOI 10.5524/100002 - Genomic data from Adelie penguin (Pygoscelis adeline)..", "GigaDB Dataset view Dataset title is ok");
+    });
+
+    casper.then(function() {
+		 this.click(x('//a[@href="/site/logout"]'));
+	});
+
+    casper.waitForUrl('http://127.0.0.1:9170/', function() {
+        test.assertTitle("GigaDB", "GigaDB homepage title is ok");
+    });
 
 
     casper.run(function() {
