@@ -134,4 +134,46 @@ casper.test.begin('Removing some keywords, Adding new keywords', 8, function(tes
     });
 
 });
-// trying sql injection
+// trying xss
+casper.test.begin('Keywords are filtered against xss', 8, function(test) {
+
+	casper.start("http://127.0.0.1:9170/dataset/update/id/210", function() {
+
+        test.assertTitle("GigaDB - Update Dataset", "GigaDB - Update Dataset title is ok");
+        this.fill('form[action="/dataset/update/id/210"]', {
+            'keywords': "abcd, my_keyword, my-keyword, my dodgy tag<script>alert('xss!');</script>",
+        }, true);
+
+    });
+
+    casper.waitForUrl('http://127.0.0.1:9170/dataset/100002', function() {
+        test.assertTitle("GigaDB Dataset - DOI 10.5524/100002 - Genomic data from Adelie penguin (Pygoscelis adeline)..", "GigaDB Dataset view Dataset title is ok");
+        test.assertTextExist('Keywords:','Keywords label is shown on dataset view');
+        test.assertTextExist('abcd','Keywords are shown on dataset view');
+        test.assertTextDoesntExist('a four part keyword','Removed keywords are not shown on dataset view');
+        test.assertTextExist('my_keyword','Keywords are shown on dataset view');
+        test.assertTextExist('my-keyword','Keywords are shown on dataset view');
+    });
+
+    casper.waitForAlert(function fail (response) {
+        //this.echo("Alert received: " + response.data);
+        test.fail('dangerous entries are not properly filtered');
+    }, function success (response) {
+        test.pass('keywords are filtered properly');
+    });
+
+    // casper.wait(5000, function() {
+    //     this.capture('dataset_view.png', {
+    //         top: 0,
+    //         left: 0,
+    //         width: 900,
+    //         height: 900
+    //     });
+    // });
+
+
+    casper.run(function() {
+        test.done();
+    });
+
+});
