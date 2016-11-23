@@ -398,6 +398,32 @@ class DatasetController extends Controller
 				}
 
 
+				// retrieve existing redirect
+				$urlToRedirectAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
+				$urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id));
+
+				// saving url to redirect as a dataset attribute
+				if( isset($urlToRedirectDatasetAttribute) || isset($_POST['urltoredirect'])  ){
+
+
+					// update with value from form if value has changed.
+					if (isset($urlToRedirectDatasetAttribute) && $_POST['urltoredirect'] != $urlToRedirectDatasetAttribute->value ) {
+						$urlToRedirectDatasetAttribute->value = $_POST['urltoredirect'];
+						$urlToRedirectDatasetAttribute->save();
+
+					}
+
+					// create a new dataset attribute if there isn't one
+					else if ( isset($_POST['urltoredirect']) ){
+						$urlToRedirectDatasetAttribute = new DatasetAttributes();
+						$urlToRedirectDatasetAttribute->attribute_id = $urlToRedirectAttr->id;
+						$urlToRedirectDatasetAttribute->dataset_id = $id;
+						$urlToRedirectDatasetAttribute->value = $_POST['urltoredirect'];
+						$urlToRedirectDatasetAttribute->save();
+					}
+
+				}
+
 
 
                 if ($model->upload_status == 'Published') {

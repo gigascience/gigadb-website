@@ -516,4 +516,12 @@ class Dataset extends MyActiveRecord
         return $list;
     }
 
+    public function getUrlToRedirectAttribute() {
+        $urlToRedirectAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
+
+        $urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$this->id,'attribute_id'=>$urlToRedirectAttr->id));
+
+        return isset($urlToRedirectDatasetAttribute) ? $urlToRedirectDatasetAttribute->value : '';
+    }
+
 }

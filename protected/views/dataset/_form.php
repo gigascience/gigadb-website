@@ -222,6 +222,12 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         </div>
                     </div>
 
+                    <div class="control-group">
+                        <?php echo CHtml::label('URL to redirect','urltoredirect', array('class'=>'control-label')); ?>
+                        <div class="controls">
+                            <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class'=>'span8', 'size'=>60,'maxlength'=>300)); ?>
+                        </div>
+                    </div>
                 </div>
             </div> <!-- end of row of one column -->
 
