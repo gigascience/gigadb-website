@@ -1,6 +1,6 @@
 var x = require('casper').selectXPath;
 
-casper.test.begin('Creating a new redirect', 10, function(test) {
+casper.test.begin('Creating a new redirect', 5, function(test) {
 
     //login
     casper.start("http://127.0.0.1:9170/dataset/admin", function() {
@@ -37,9 +37,23 @@ casper.test.begin('Creating a new redirect', 10, function(test) {
         test.assertTitle("GigaDB - Update Dataset", "GigaDB - Update Dataset title is ok");
         test.assertField('urltoredirect', '');
         this.fill('form[action="/dataset/update/id/210"]', {
-            'urltoredirect': "http://foobar.com",
+            'urltoredirect': "http://127.0.0.1:9170/dataset/100002/token/453454",
         }, true);
 
+    });
+
+
+    casper.run(function() {
+        test.done();
+    });
+
+
+});
+
+casper.test.begin('Navigating to the meta refresh interstitial', 6, function(test) {
+
+    casper.start("http://127.0.0.1:9170/dataset/100002/token/453454", function() {
+        test.assertTextExists('Redirect notice', "interstitial text is found");
     });
 
 

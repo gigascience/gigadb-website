@@ -76,6 +76,16 @@ class DatasetController extends Controller
             }
         }
 
+		$urlToRedirect = $model->getUrlToRedirectAttribute();
+		$currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
+
+		if($urlToRedirect && $currentAbsoluteFullUrl == $urlToRedirect ) {
+			$this->metaData['redirect'] = 'http://dx.doi.org/10.5524/'.$model->identifier ;
+			$this->render('interstitial',array(
+				'model'=>$model
+			));
+			return;
+		}
         $crit = new CDbCriteria;
         $crit->addCondition("t.dataset_id = ".$model->id);
         $crit->select = '*';

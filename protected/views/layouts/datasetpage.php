@@ -9,6 +9,11 @@
         <meta name="googlebot" content="noindex">
     <?php endif ?>
 
+    <? if ($metaData['redirect']) {
+            Yii::app()->clientScript->registerMetaTag("5;url={$metaData['redirect']}", null, 'refresh');
+        }
+    ?>
+
     <meta name="title" content="<?php echo MyHtml::encode($this->pageTitle); ?>" />
     <meta name="description" content="<?php echo MyHtml::encode($metaData['description']) ?>" />
     <meta name="identifier-url" content="<?php echo Yii::app()->createAbsoluteUrl(Yii::app()->request->url) ?>">
@@ -62,10 +67,10 @@
                 <?php if(Yii::app()->user->isGuest) { ?>
                 <a class="btn" href="/site/login"><?=Yii::t('app' , 'Login')?></a>
 		<a class="btn" href="/user/create" id="btnCreateAccount" title="<?=Yii::t('app' , 'An account with GigaDB is required if you want to upload a dataset or be automatically notified of new content of interest to you')?>"><?=Yii::t('app' , 'Create account')?></a>
-                <?php } else { 
-                
+                <?php } else {
+
                         $name = Yii::app()->user->getFirst_Name();
-                      
+
                 // var_dump($name);
 
                         if (substr($name, -1) === 's') {
@@ -145,9 +150,9 @@
      <script src="/js/bootstrap-carousel.js"></script>
      <script src="/js/bootstrap-typeahead.js"></script>-->
      <!-- <script src="/js/application.js"></script>-->
-     
+
      <?php if (Yii::app()->user->isGuest) : ?>
-     
+
         <div class="popover-login" style="display: none;">
             <div class="content-btnlog">
                 <!--<a class="btn btnlog orcid-log" href="/opauth/orcid">
@@ -174,13 +179,13 @@
                 </a>
              </div>
         </div>
-     
+
      <?php endif ?>
-     
+
      <script>
         $(function() {
             $("#btnCreateAccount").tooltip({'placement':'left'});
-            
+
             <?php if (Yii::app()->user->isGuest) : ?>
             $('#btnLogin').attr('data-content', $('.popover-login').html()).popover({
                 trigger: 'manual',
@@ -192,7 +197,7 @@
                 return false;
             }).mouseenter(function(e) {
                 $(this).popover('show');
-                
+
                 $('.popover').one('mouseleave', function() {
                     $('#btnLogin').popover('hide');
                 });
