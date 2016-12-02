@@ -1,6 +1,6 @@
 var x = require('casper').selectXPath;
 
-casper.test.begin('Navigating to a dataset admin page', 27, function(test) {
+casper.test.begin('Navigating to a dataset admin page', 28, function(test) {
 
 	casper.start("http://127.0.0.1:9170/dataset/admin", function() {
         test.assertExists('form[action="/site/login"]', "main form is found");
@@ -35,7 +35,8 @@ casper.test.begin('Navigating to a dataset admin page', 27, function(test) {
         test.assertExists(x('//input[@type="text" and @size="60" and @maxlength="200" and @id="Images_license"]'), 'Image License');
         test.assertExists(x('//input[@type="text" and @size="60" and @maxlength="200" and @id="Images_photographer"]'), 'Image Photographer');
         test.assertExists(x('//input[@type="text" and @size="32" and @maxlength="32" and @disabled="disabled" and @id="Dataset_identifier"]'), 'Dataset Identifier');
-        test.assertExists(x('//input[@type="text" and @size="60" and @maxlength="200" and @disabled="disabled" and @id="Dataset_ftp_site"]'), 'FTP site');
+		test.assertExists(x('//input[contains(@class, "btn-green") and @value="Mint DOI"]'),'Mint DOI button')
+		test.assertExists(x('//input[@type="text" and @size="60" and @maxlength="200" and @disabled="disabled" and @id="Dataset_ftp_site"]'), 'FTP site');
         test.assertExists(x('//select[@id="Dataset_publisher_id"]'), 'Publisher drop-down menu');
         test.assertExists(x('//input[@type="text" and @id="Dataset_fairnuse"]'), 'Dataset Fair User Policy');
         test.assertExists(x('//input[@type="text" and @disabled="disabled" and @id="Dataset_publication_date"]'), 'Publication Date');

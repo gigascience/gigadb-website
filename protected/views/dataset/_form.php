@@ -30,7 +30,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
         <div class="container">
 
             <div class="row">
-                <div class="span5">
+                <div class="span6">
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'submitter_id',array('class'=>'control-label')); ?>
                         <div class="controls">
@@ -127,28 +127,54 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                             <?php echo $form->error($model->image,'photographer'); ?>
                         </div>
                     </div>
+                    <div class="row">
+                        <fieldset class="form-inline">
 
-                    <div class="control-group">
-                        <?php echo $form->labelEx($model,'identifier',array('class'=>'control-label')); ?>
-                        <div class="controls">
-                            <?php echo $form->textField($model,'identifier',array('size'=>32,'maxlength'=>32, 'disabled'=>$model->upload_status == 'Published',
-                                                                                    'ajax' => array(
-                                                                                        'type' => 'POST',
-                                                                                        'url' => array('dataset/checkDOIExist'),
-                                                                                        'dataType' => 'JSON',
-                                                                                        'data'=>array('doi'=>'js:$(this).val()'),
-                                                                                        'success'=>'function(data){
-                                                                                            if(data.status){
-                                                                                                $("#Dataset_identifier").addClass("error");
-                                                                                            }else {
-                                                                                                $("#Dataset_identifier").removeClass("error");
+                            <div class="control-group">
+                                <div class="span2">
+                                    <?php echo $form->labelEx($model,'identifier',array('class'=>'control-label')); ?>
+                                </div>
+                                <div class="controls">
+                                    <div class="span2">
+                                        <?php echo $form->textField($model,'identifier',array('size'=>32,
+                                                                                                'maxlength'=>32,
+                                                                                                'disabled'=>$model->upload_status == 'Published',
+                                                                                                'class' => "input-small",
+                                                                                                'ajax' => array(
+                                                                                                    'type' => 'POST',
+                                                                                                    'url' => array('dataset/checkDOIExist'),
+                                                                                                    'dataType' => 'JSON',
+                                                                                                    'data'=>array('doi'=>'js:$(this).val()'),
+                                                                                                    'success'=>'function(data){
+                                                                                                        if(data.status){
+                                                                                                            $("#Dataset_identifier").addClass("error");
+                                                                                                        }else {
+                                                                                                            $("#Dataset_identifier").removeClass("error");
 
-                                                                                            }
-                                                                                        }',
-                                                                                    ),
-                                                                                    )); ?>
-                            <?php echo $form->error($model,'identifier'); ?>
-                        </div>
+                                                                                                        }
+                                                                                                    }',
+                                                                                                ),
+                                                                                                )); ?>
+                                        <?php echo $form->error($model,'identifier'); ?>
+                                    </div>
+
+
+                                        <?php
+                                        echo CHtml::ajaxSubmitButton('Mint DOI',Yii::app()->createUrl('/dataset/mint/id/'.$model->identifier),
+                                        array(
+                                            'type'=>'POST',
+                                            'data'=> 'js:{"data1": val1, "data2": val2 }',
+                                            'success'=>'js:function(string){ alert(string); }'
+                                        ),array('class'=>'btn-green',));
+
+                                        ?>
+
+                                </div>
+                            </div>
+
+
+
+                        </fieldset>
                     </div>
 
                     <div class="control-group">
