@@ -15,6 +15,9 @@ class Dataset extends MyActiveRecord
     const URL_BIBTEXT = 'http://data.datacite.org/application/x-bibtex/10.5524/';
     const URL_TEXT = 'http://data.datacite.org/application/x-datacite+text/10.5524/';
 
+    const DOI_PREFIX = "10.5524" ;
+    const DOI_PREFIX_TEST = "10.5072" ;
+
     public $dTypes="";
     public $commonNames="";
     public $email;
@@ -524,4 +527,96 @@ class Dataset extends MyActiveRecord
         return isset($urlToRedirectDatasetAttribute) ? $urlToRedirectDatasetAttribute->value : '';
     }
 
+    /**
+     * toXML(): fucntion tha treturn Datacite XML for this dataset
+     * @return Datacite XML 4.0 for this dataset
+     */
+    public function toXML() {
+        $xmlstr = "<?xml version='1.0' ?>\n".
+              '<resource xmlns="http://datacite.org/schema/kernel-4"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel‐4/metadata.xsd"
+                >
+                </resource>';
+
+        // create the SimpleXMLElement object with an empty <book> element
+        $xml = new SimpleXMLElement($xmlstr);
+
+        // <identifier identifierType="DOI">10.5072/example-full</identifier>
+        $identifier = $xml->addChild("identifier", DOI_PREFIX_TEST."/".$this->id);
+        $identifier->addAttribute("identifierType", "DOI");
+
+        //<creators>
+        $creators = $xml->addChild("creators");
+
+        // <creator>
+        $creator = $creators->addChild('creator');
+        $creator->addChild('creatorName',$submitter->last_name." ".$submitter->first_name);
+        $name_identifier = $creator->addChild('nameIdentifier',$submitter->orcid_id);
+        $name_identifier->addAttribute('schemeURI','http://orcid.org/');
+        $name_identifier->addAttribute('nameIdentifierScheme','ORCID');
+
+        //<titles>
+        $titles = $xml->addChild("titles");
+
+        //<title xml:lang="en-us">Full DataCite XML Example</title>
+        $title = $titles->addChild('title',$this->title);
+        $title->addAttribute('xml:lang','en-US');
+
+        //<publisher>GigaScience Database</publisher>
+        $xml->addChild('publisher',$this->publisher->name);
+
+        //<publicationYear>2014</publicationYear>
+        $publication_date = new DateTime($this->publication_date);
+        $xml->addChild('publicationYear',$publication_date->format('Y'));
+
+
+        //<subjects>
+        $subjects = $xml->addChild("subjects");
+
+        //<subject xml:lang="en-US">dataset type</subject>
+        foreach ($this->getDatasetTypes() as $dataset_type) {
+            $subject = $subjects->addChild('subject',$dataset_type);
+            $subject->addAttribute('xml:lang','en-US');
+        }
+
+        //<subject xml:lang="en-US">keywords</subject>
+        foreach ($this->getSemanticKeywords() as $keyword) {
+            $subject = $subjects->addChild('subject',$keyword);
+            $subject->addAttribute('xml:lang','en-US');
+        }
+
+        //<dates>
+    	//	<date dateType="Available">2014-10-17</date>
+        $dates = $xml->addChild("dates");
+        $dates->addChild('date','2014-10-17');
+
+        //<language>en-us</language>
+        $xml->addChild('language','en-US');
+
+        //<resourceType resourceTypeGeneral="Dataset">GigaDB Dataset</resourceType>
+        $resource_type = $xml->addChild('resourceType',$this->type);
+        $resource_type->addAttribute('resourceTypeGeneral','Dataset');
+
+        //<relatedIdentifiers>
+        //$related_identifiers = $xml->addChild("relatedIdentifiers");
+
+        //<sizes><size>
+        $sizes = $xml->addChild("sizes");
+        $sizes->addChild('size',$this->dataset_size);
+
+        //<rightsList>
+        $rights_list = $xml->addChild("rightsList");
+        $rights = $rights_list->addChild('rights','CC0 1.0 Universal');
+        $rights->addAttribute('rightsURI','http://creativecommons.org/publicdomain/zero/1.0/');
+
+        //<descriptions><description xml:lang="en-US" descriptionType="Abstract">
+        $descriptions = $xml->addChild("descriptions");
+        $description = $descriptions->addChild('description',$this->description);
+        $description->addAttribute('xml:lang','en-US');
+        $description->addAttribute('descriptionType','Abstract');
+
+
+        return $xml->asXML();
+    }
 }
