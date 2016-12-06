@@ -160,11 +160,18 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 
 
                                         <?php
-                                        echo CHtml::ajaxSubmitButton('Mint DOI',Yii::app()->createUrl('/dataset/mint/id/'.$model->identifier),
+                                        echo CHtml::ajaxSubmitButton('Mint DOI',Yii::app()->createUrl('/dataset/mint/'),
                                         array(
                                             'type'=>'POST',
-                                            'data'=> 'js:{"data1": val1, "data2": val2 }',
-                                            'success'=>'js:function(string){ alert(string); }'
+                                            'data'=> array('doi'=>'js:$(#Dataset_identifier).val()'),
+                                            'success'=>'js:function(string){
+                                                if(data.status){
+                                                    $("#Dataset_identifier").removeClass("error");
+                                                }else {
+                                                    $("#Dataset_identifier").addClass("error");
+
+                                                }
+                                            }',
                                         ),array('class'=>'btn-green',));
 
                                         ?>

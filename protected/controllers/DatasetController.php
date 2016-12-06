@@ -940,6 +940,66 @@ EO_MAIL;
         return $this->redirect("/user/view_profile");
     }
 
+
+
+/**
+ *	actionMint
+ *	mint a new DOI
+ */
+	public function actionMint() {
+
+		$result = array();
+        $result['status'] = false;
+
+		$mds_metadata_url="https://mds.datacite.org/metadata";
+		$mds_doi_url="https://mds.datacite.org/doi";
+
+
+		if(isset($_POST['doi'])){
+
+			$doi = $_POST['doi'];
+			if(stristr($doi, "/")){
+				$temp = explode("/", $doi);
+				$doi = $temp[1];
+			}
+
+			$doi = trim($doi);
+
+			$dataset = Dataset::model()->find("identifier=?",array($doi));
+
+
+			$xml_data = $dataset->toXML();
+			$ch= curl_init();
+			curl_setopt($ch, CURLOPT_URL, $mds_metadata_url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml'));
+			curl_exec($ch);
+			$info1 = curl_getinfo($ch);
+			curl_close ($ch) ;
+
+			if ( $info1['http_code'] == 201) {
+				$ch2= curl_init();
+				curl_setopt($ch2, CURLOPT_URL, $mds_doi_url);
+				curl_setopt($ch2, CURLOPT_POST, 1);
+				curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type:application/xml'));
+				curl_exec($ch2);
+				$info2 = curl_getinfo($ch2);
+				curl_close ($ch2) ;
+			}
+
+
+			if ( $info2['http_code'] == 201 ) {
+				$result['status'] = true;
+			}
+			else {
+				$result['status'] = false;
+			}
+		}
+
+		echo json_encode($result);
+	}
+
      public function storeDataset(&$dataset) {
         $dataset_id = 0;
         $identifier = 0;
