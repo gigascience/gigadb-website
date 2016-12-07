@@ -589,7 +589,7 @@ class Dataset extends MyActiveRecord
         //<dates>
     	//	<date dateType="Available">2014-10-17</date>
         $dates = $xml->addChild("dates");
-        $dates->addChild('date','2014-10-17');
+        $dates->addChild('date',$publication_date->format('Y-m-d'));
 
         //<language>en-us</language>
         $xml->addChild('language','en-US');
