@@ -1,4 +1,5 @@
 <?php
+ini_set('max_execution_time',300);
 header('Content-Type: text/xml');
 $xml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 $xml.="<gigadb_entrys>";
@@ -144,6 +145,7 @@ foreach($dataset_funders as $dataset_funder){
     $xml.="<grant>";
     $funder=Funder::model()->findByAttributes(array('id'=>$dataset_funder->funder_id));
     $xml.="<funder_name>$funder->primary_name_display</funder_name>";
+    $xml.="<fundref_url>$funder->uri</fundref_url>";
     $xml.="<award>$dataset_funder->grant_award</award>";
     $xml.="<comment>$dataset_funder->comments</comment>";
     $xml.="</grant>";
@@ -244,7 +246,8 @@ $file=  File::model()->findByPK($fileid);
 $dataset2=  Dataset::model()->findByPK($file->dataset_id);
 if($dataset2->id == $datasetid)
 {
-$fileids= array_diff($fileids, array($fileid));    
+$key= array_search($fileid, $fileids);
+unset($fileids[$key]);   
 $xml.="<file id=\"$file->id\" doi=\"$dataset2->identifier\" index4blast=\"$file->index4blast\" download_count=\"$file->download_count\" >";
 $xml.="<name>$file->name</name>";
 $xml.="<location>$file->location</location>";

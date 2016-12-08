@@ -138,6 +138,7 @@ foreach($dataset_funders as $dataset_funder){
     $xml.="<grant>";
     $funder=Funder::model()->findByAttributes(array('id'=>$dataset_funder->funder_id));
     $xml.="<funder_name>$funder->primary_name_display</funder_name>";
+    $xml.="<fundref_url>$funder->uri</fundref_url>";
     $xml.="<award>$dataset_funder->grant_award</award>";
     $xml.="<comment>$dataset_funder->comments</comment>";
     $xml.="</grant>";
