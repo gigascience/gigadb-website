@@ -20,6 +20,7 @@ include_recipe "gigadb"
     package pkg
 end
 
+# iptables not required for default development environment
 service 'iptables' do
     action [:disable, :stop]
 end

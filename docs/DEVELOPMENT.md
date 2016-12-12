@@ -15,19 +15,72 @@ the long term. You will need to decide which text editor is the most
 suitable for your needs but I have heard good things about
 [Sublime Text](https://www.sublimetext.com).
 
-## GitHub
+## Chef cookbooks
 
-The source code for GigaDB is hosted on
-[GitHub](https://github.com/gigascience/gigadb-website). For this
-reason, you will need to understand how to use git and GitHub to work on
-GigaDB. The development of the GigaDB website will use to a 'fork and
-pull' model. You will [fork](https://help.github.com/articles/fork-a-repo/)
-(copy) the source gigascience/gigadb-website repository to a personal 
-fork and [push](https://help.github.com/articles/pushing-to-a-remote/)
-changes made to it. These changes must then be pulled into the source 
-gigascience/gigadb-website repository by making a
-[pull request](https://help.github.com/articles/using-pull-requests/)
-to the GigaDB project maintainer.
+Occasionally, the operation of GigaDB and its website may require an 
+application to be installed on its server platform. This application
+should be provisioned using [Chef-Solo](https://docs.chef.io/chef_solo.html)
+so that the installation process can be recorded as source code and 
+readily automated as and when required. The procedure to do this is
+demonstrated below using fail2ban as an example.
+
+[Fail2ban](http://www.fail2ban.org) is an application that can protect a
+server from malicious internet attacks by adding rules into the server's
+firewall based on information recorded in log files.
+
+Add the fail2ban cookbook to the [custom set of Chef cookbooks](https://github.com/pli888/chef-cookbooks)
+that GigaDB uses:
+
+```bash
+$ mv fail2ban chef-cookbooks
+```
+
+Commit fail2ban into the repo:
+
+```bash
+$ cd chef/chef-cookbooks
+$ git add fail2ban
+$ git commit
+```
+
+Push fail2ban commit to origin:
+
+```bash
+$ git push origin`
+```
+
+Move to master branch of the chef-cookbooks directory:
+
+```bash
+$ cd chef/chef-cookbooks
+$ git checkout master
+```
+
+Update the chef/chef-cookbooks submodule to fetch the fail2ban commit:
+
+```bash
+$ git fetch
+remote: Counting objects: 44, done.
+remote: Total 44 (delta 6), reused 6 (delta 6), pack-reused 38
+Unpacking objects: 100% (44/44), done.
+From https://github.com/pli888/chef-cookbooks
+   797ad8d..0295ff9  master     -> origin/master
+```
+
+If you change directory out of the chef-cookbooks submodule and into the
+gigadb-website repo, doing `git status` will now show that
+chef-cookbooks has been modified due to the presence of fail2ban
+cookbook. You therefore need to add, commit and
+push the change in the chef-cookbooks so it can be used by the 
+gigadb-website repo:
+
+```bash
+$ git add chef-cookbooks
+$ git commit
+$ git push origin
+```
+
+fail2ban can now be provisioned for GigaDB in a Chef recipe.
 
 ## Database
 
