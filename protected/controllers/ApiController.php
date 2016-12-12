@@ -35,7 +35,7 @@ class ApiController extends Controller
 		return array(
 			
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('Dataset','File' , 'Sample','Search','Dump'),
+				'actions'=>array('Dataset','File' , 'Sample','Search','Dump','List'),
 				'users'=>array('*'),
 			),
 			array('deny',  // deny all users
@@ -381,6 +381,21 @@ file_put_contents("/files/database_dump.xml", $xml);
 			'model'=>$model,
 		));
 	}
+        
+        public function actionList()
+        {
+
+          $status='Published';
+          $datasets = Dataset::model()-> findAllByAttributes(array('upload_status'=>$status));
+          ob_end_clean();
+           $this->renderPartial('list',array(
+                        'models'=>$datasets,
+                ));
+
+
+
+        }
+
         
         public function actionFile()
 	{       
