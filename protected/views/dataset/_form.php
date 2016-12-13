@@ -131,15 +131,15 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         <fieldset class="form-inline">
 
                             <div class="control-group">
-                                <div class="span2">
+                                <div class="span1">
                                     <?php echo $form->labelEx($model,'identifier',array('class'=>'control-label')); ?>
                                 </div>
                                 <div class="controls">
-                                    <div class="span2">
+                                    <div class="span1">
                                         <?php echo $form->textField($model,'identifier',array('size'=>32,
                                                                                                 'maxlength'=>32,
                                                                                                 'disabled'=>$model->upload_status == 'Published',
-                                                                                                'class' => "input-small",
+                                                                                                'class' => "input-mini",
                                                                                                 'ajax' => array(
                                                                                                     'type' => 'POST',
                                                                                                     'url' => array('dataset/checkDOIExist'),
@@ -158,23 +158,29 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                         <?php echo $form->error($model,'identifier'); ?>
                                     </div>
 
-
+                                    <div class="span3">
                                         <?php
-                                        echo CHtml::ajaxSubmitButton('Mint DOI',Yii::app()->createUrl('/dataset/mint/'),
+                                        echo CHtml::ajaxLink('Mint DOI',Yii::app()->createUrl('/dataset/mint/'),
                                         array(
                                             'type'=>'POST',
-                                            'data'=> array('doi'=>'js:$(#Dataset_identifier).val()'),
-                                            'success'=>'js:function(string){
-                                                if(data.status){
-                                                    $("#Dataset_identifier").removeClass("error");
+                                            'data'=> array('doi'=>'js:$("#Dataset_identifier").val()'),
+                                            'dataType'=>'json',
+                                            'success'=>'js:function(output){
+                                                console.log(output);
+                                                if(output.status){
+                                                    $("#minting").html("new DOI minted:" + output.status);
                                                 }else {
-                                                    $("#Dataset_identifier").addClass("error");
+                                                    $("#minting").html("error minting a DOI:"+ output.response);
 
                                                 }
                                             }',
-                                        ),array('class'=>'btn-green',));
+                                        ),array('class'=>'btn btn-green has-spinner',
+                                                'id' =>'mint_doi_button',
+                                        ));
 
                                         ?>
+                                        <div id="minting"></div>
+                                    </div>
 
                                 </div>
                             </div>
@@ -364,6 +370,8 @@ echo "var existingTags = ". $js_array . ";\n";
     delimiter: ',', /* comma */
     placeholder: 'Enter keywords (separated by commas) ...'
 });
+
+
 </script>
 
 
