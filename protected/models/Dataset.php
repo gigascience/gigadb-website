@@ -543,7 +543,7 @@ class Dataset extends MyActiveRecord
         $xml = new SimpleXMLElement($xmlstr);
 
         // <identifier identifierType="DOI">10.5072/example-full</identifier>
-        $identifier = $xml->addChild("identifier", DOI_PREFIX_TEST."/".$this->id);
+        $identifier = $xml->addChild("identifier", self::DOI_PREFIX_TEST."/".$this->id);
         $identifier->addAttribute("identifierType", "DOI");
 
         //<creators>
@@ -551,8 +551,8 @@ class Dataset extends MyActiveRecord
 
         // <creator>
         $creator = $creators->addChild('creator');
-        $creator->addChild('creatorName',$submitter->last_name." ".$submitter->first_name);
-        $name_identifier = $creator->addChild('nameIdentifier',$submitter->orcid_id);
+        $creator->addChild('creatorName',$this->submitter->last_name." ".$this->submitter->first_name);
+        $name_identifier = $creator->addChild('nameIdentifier',$this->submitter->orcid_id);
         $name_identifier->addAttribute('schemeURI','http://orcid.org/');
         $name_identifier->addAttribute('nameIdentifierScheme','ORCID');
 
@@ -595,7 +595,7 @@ class Dataset extends MyActiveRecord
         $xml->addChild('language','en-US');
 
         //<resourceType resourceTypeGeneral="Dataset">GigaDB Dataset</resourceType>
-        $resource_type = $xml->addChild('resourceType',$this->type);
+        $resource_type = $xml->addChild('resourceType','GigaDB Dataset');
         $resource_type->addAttribute('resourceTypeGeneral','Dataset');
 
         //<relatedIdentifiers>
