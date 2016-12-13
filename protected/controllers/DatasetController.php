@@ -37,7 +37,7 @@ class DatasetController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-			      'actions'=>array('admin','update','create','updateMetadata','private', 'index'),
+			      'actions'=>array('admin','update','create','updateMetadata','private', 'mint', 'index'),
 			      'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -948,12 +948,11 @@ EO_MAIL;
  */
 	public function actionMint() {
 
-		$result = array();
         $result['status'] = false;
+		$result['response']  = "minting...";
 
 		$mds_metadata_url="https://mds.datacite.org/metadata";
 		$mds_doi_url="https://mds.datacite.org/doi";
-
 
 		if(isset($_POST['doi'])){
 
@@ -964,40 +963,58 @@ EO_MAIL;
 			}
 
 			$doi = trim($doi);
-
+			$result['doi']  = $doi;
 			$dataset = Dataset::model()->find("identifier=?",array($doi));
 
+			if ( $dataset ) {
 
-			$xml_data = $dataset->toXML();
-			$ch= curl_init();
-			curl_setopt($ch, CURLOPT_URL, $mds_metadata_url);
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml'));
-			curl_exec($ch);
-			$info1 = curl_getinfo($ch);
-			curl_close ($ch) ;
+				try {
+					$xml_data = $dataset->toXML();
+					//$result['metadata'] = $xml_data;
+					$ch= curl_init();
+					curl_setopt($ch, CURLOPT_URL, $mds_metadata_url);
+					curl_setopt($ch, CURLOPT_POST, 1);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
+					curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml'));
+					$username = "foobar";
+					$password = "foobar";
+					//curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
+					if(curl_exec($ch) === false)
+					{
+					    throw new Exception('Curl error: ' . curl_error($ch));
+					}
+					$info1 = curl_getinfo($ch);
+					curl_close ($ch) ;
+				} catch (Exception $e) {
+					$result['error'] = $e->getMessage();
+				}
 
-			if ( $info1['http_code'] == 201) {
-				$ch2= curl_init();
-				curl_setopt($ch2, CURLOPT_URL, $mds_doi_url);
-				curl_setopt($ch2, CURLOPT_POST, 1);
-				curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type:application/xml'));
-				curl_exec($ch2);
-				$info2 = curl_getinfo($ch2);
-				curl_close ($ch2) ;
 			}
+			//
+			// if ( $info1['http_code'] == 201) {
+			// 	$ch2= curl_init();
+			// 	curl_setopt($ch2, CURLOPT_URL, $mds_doi_url);
+			// 	curl_setopt($ch2, CURLOPT_POST, 1);
+			// 	curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type:application/xml'));
+			// 	curl_exec($ch2);
+			// 	$info2 = curl_getinfo($ch2);
+			// 	curl_close ($ch2) ;
+			// }
 
 
-			if ( $info2['http_code'] == 201 ) {
-				$result['status'] = true;
-			}
-			else {
-				$result['status'] = false;
-			}
+			// if ( $info2['http_code'] == 201 ) {
+			// 	$result['status'] = true;
+			// }
+			// else {
+			// 	$result['status'] = false;
+			// }
 		}
 
 		echo json_encode($result);
+		// $this->_sendResponse(200, CJSON::encode($result));
+
+		//echo CJSON::encode($result);
+		Yii::app()->end();
 	}
 
      public function storeDataset(&$dataset) {
