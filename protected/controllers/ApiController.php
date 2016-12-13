@@ -61,6 +61,10 @@ else
                 $id = Yii::app()->request->getParam('id');
                 $doi= Yii::app()->request->getParam('doi');
                 $result= Yii::app()->request->getParam('result');
+                if(!isset($result))
+                {
+                  $result='all'; 
+                }
                 if(isset($id))
                 {
                    try{
@@ -97,9 +101,36 @@ else
                 }
                 
                 ob_end_clean();
+                
+                 switch ($result) {
+                        case "dataset":
+                            
+                            $this->renderPartial('singledatasetonly',array(
+                            'model'=>$model,));
+                            break;
+                        case "sample":
+                          
+                            $this->renderPartial('singlesample',array(
+                            'model'=>$model,));
+                            break;
+                        case "file":
+                            
+                            $this->renderPartial('singlefile',array(
+                            'model'=>$model,));
+                            break;
+                        case "all":
+                            
+                            $this->renderPartial('singlefile',array(
+                            'model'=>$model,));
+                            break;
+
+                        default:
+                            break;
+                    }
+               /*     
                 $this->renderPartial('singledataset',array(
 			'model'=>$model,
-		));
+		));*/
 	}
         
         public function actionList()
@@ -124,7 +155,7 @@ else
                 $doi= Yii::app()->request->getParam('doi');
                 if(isset($id))
                 {
-                   
+                                    
                    try{
                    $model=  Dataset::model()->findByAttributes(array('id'=>$id,'upload_status'=>$status));}
                    catch(CDbException $e)
@@ -141,6 +172,7 @@ else
                    }
                 }
                 else{
+                   $this->redirect(array('api/dataset','doi'=>$doi,'result'=>'file')); 
                    try{ 
                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
                    catch(CDbException $e)
@@ -190,6 +222,7 @@ else
                 }
                 else{
                    try{
+                   $this->redirect(array('api/dataset','doi'=>$doi,'result'=>'sample'));     
                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
                    catch(CDbException $e)
                         {
