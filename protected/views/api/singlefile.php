@@ -9,7 +9,8 @@ foreach($files as $file){
 $xml.="<file id=\"$file->id\" index4blast=\"$file->index4blast\" download_count=\"$file->download_count\" >";
 $xml.="<name>$file->name</name>";
 $xml.="<location>$file->location</location>";
-$xml.="<description>$file->description</description>";
+$fdescription=preg_replace('/[<>]/', '', $file->description);
+$xml.="<description>$fdescription</description>";
 $xml.="<extension>$file->extension</extension>";
 $xml.="<size units=\"bytes\">$file->size</size>";
 $xml.="<release_date>$file->date_stamp</release_date>";
@@ -32,7 +33,7 @@ $fileattributes=$file->fileAttributes;
 foreach($fileattributes as $fileattribute){
     $xml.="<attribute>";
     $file_att=  Attribute::model()->findByAttributes(array('id'=>$fileattribute->attribute_id));
-    $xml.="<key>$file_att->name</key>";
+    $xml.="<key>$file_att->attribute_name</key>";
     $xml.="<value>$fileattribute->value</value>";
     $file_unit=  Unit::model()->findByAttributes(array('id'=>$fileattribute->unit_id));
     if(isset($file_unit)){
