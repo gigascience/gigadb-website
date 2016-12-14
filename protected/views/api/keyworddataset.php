@@ -130,7 +130,15 @@ foreach($alternative_identifiers as $link){
     $linkname=explode(":", $link->link);
     $name=$linkname[0];
     $modelurl = Prefix::model()->find("lower(prefix) = :p", array(':p'=>strtolower($name)));
+    $modelurl = Prefix::model()->find("lower(prefix) = :p", array(':p'=>strtolower($name)));  
+    if(isset($modelurl))
+    {    
     $xml.="<alternative_identifier is_primary=\"$link->is_primary\" prefix=\"$linkname[0]\">$modelurl->url$linkname[1]</alternative_identifier>";
+    }
+    else
+    {
+    $xml.="<alternative_identifier is_primary=\"$link->is_primary\" prefix=\"$linkname[0]\">$linkname[1]</alternative_identifier>";    
+    }
 }
 }
 $xml.="</alternative_identifiers>";
