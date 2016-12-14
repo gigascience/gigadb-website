@@ -120,7 +120,7 @@ else
                             break;
                         case "all":
                             
-                            $this->renderPartial('singlefile',array(
+                            $this->renderPartial('singledataset',array(
                             'model'=>$model,));
                             break;
 
@@ -172,7 +172,8 @@ else
                    }
                 }
                 else{
-                   $this->redirect(array('api/dataset','doi'=>$doi,'result'=>'file')); 
+                    $this->redirect(array("api/dataset?doi=$doi&result=file")); 
+                  //$this->redirect(array('api/dataset','doi'=>$doi,'result'=>'file')); 
                    try{ 
                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
                    catch(CDbException $e)
@@ -222,7 +223,7 @@ else
                 }
                 else{
                    try{
-                   $this->redirect(array('api/dataset','doi'=>$doi,'result'=>'sample'));     
+                    $this->redirect(array("api/dataset?doi=$doi&result=sample"));     
                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
                    catch(CDbException $e)
                         {
@@ -283,7 +284,8 @@ else
                             sprintf('No items where found for keyword <b>%s</b>',$keyword) );
                         }
                      
-                                            ob_end_clean();
+                                              if (ob_get_contents()){
+                             ob_end_clean();}
                   
                     switch ($result) {
                         case "dataset":
@@ -305,6 +307,7 @@ else
                         default:
                             break;
                     }
+
                     }else {
                        
                         $ds = new DatabaseSearch();        
@@ -368,11 +371,12 @@ else
                                      
                                      $files[] = $fileid;
                           }
-                        }
+                        
                         
                         if(empty($datasets)&&empty($samples)&&empty($files)){
                             
-                          ob_end_clean();
+                            if (ob_get_contents()){
+                             ob_end_clean();}
                           $this->_sendResponse(404, 
                           sprintf('No items where found for keyword <b>%s</b>',$keyword) );   
                         }
@@ -438,7 +442,7 @@ else
                             'fileids'=>$files));
                     */
                  
-                      
+                    }
                     }
                
                 if(isset($taxno))
@@ -487,21 +491,27 @@ else
                     $models= Dataset::model()->findAllBySql($sql1);
                     if (ob_get_contents()){
                     ob_end_clean();}
-
+                    if(!isset($_GET['result']))
+                    {
+                        
+                          $this->renderPartial('keywordalldataset',array(
+                            'models'=>$models,));
+                        
+                    }else{
                     switch ($result) {
                         case "dataset":
                             
-                            $this->renderPartial('keyworddataset',array(
+                            $this->renderPartial('keywordalldataset',array(
                             'models'=>$models,));
                             break;
                         case "sample":
                           
-                            $this->renderPartial('keywordsample',array(
+                            $this->renderPartial('keywordallsample',array(
                             'models'=>$models,));
                             break;
                         case "file":
                             
-                            $this->renderPartial('keywordfile',array(
+                            $this->renderPartial('keywordallfile',array(
                             'models'=>$models,));
                             break;
 
@@ -509,6 +519,7 @@ else
                             break;
                     }
                     exit;
+                    }
                     
                    
                
@@ -565,7 +576,13 @@ else
                      if (ob_get_contents()){
                     ob_end_clean();
                      }
-
+                    if(!isset($_GET['result']))
+                    {
+                        
+                          $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                        
+                    }else{
                     switch ($result) {
                         case "dataset":                         
                             $this->renderPartial('keyworddataset',array(
@@ -584,6 +601,7 @@ else
                             break;
                     }
                     exit;
+                    }
                 }
                 if(isset($author))
                 {
