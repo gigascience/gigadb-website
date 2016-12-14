@@ -15,8 +15,6 @@ class Dataset extends MyActiveRecord
     const URL_BIBTEXT = 'http://data.datacite.org/application/x-bibtex/10.5524/';
     const URL_TEXT = 'http://data.datacite.org/application/x-datacite+text/10.5524/';
 
-    const DOI_PREFIX = "10.5524" ;
-    const DOI_PREFIX_TEST = "10.5072" ;
 
     public $dTypes="";
     public $commonNames="";
@@ -543,7 +541,7 @@ class Dataset extends MyActiveRecord
         $xml = new SimpleXMLElement($xmlstr);
 
         // <identifier identifierType="DOI">10.5072/example-full</identifier>
-        $identifier = $xml->addChild("identifier", self::DOI_PREFIX_TEST."/".$this->id);
+        $identifier = $xml->addChild("identifier", Yii::app()->params['mds_prefix']."/".$this->id);
         $identifier->addAttribute("identifierType", "DOI");
 
         //<creators>

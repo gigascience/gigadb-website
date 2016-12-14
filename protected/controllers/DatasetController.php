@@ -954,6 +954,9 @@ EO_MAIL;
 		$mds_metadata_url="https://mds.datacite.org/metadata";
 		$mds_doi_url="https://mds.datacite.org/doi";
 
+		$mds_username = Yii::app()->params['mds_username'];
+		$mds_password = Yii::app()->params['mds_password'];
+
 		if(isset($_POST['doi'])){
 
 			$doi = $_POST['doi'];
@@ -975,9 +978,7 @@ EO_MAIL;
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml'));
-				$username = "foobar";
-				$password = "foobar";
-				curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
+				curl_setopt($ch, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
 				$curl_response = curl_exec($ch);
 				$result['md_curl_response'] = $curl_response;
 				$info1 = curl_getinfo($ch);
