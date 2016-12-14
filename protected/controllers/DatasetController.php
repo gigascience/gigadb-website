@@ -968,26 +968,21 @@ EO_MAIL;
 
 			if ( $dataset ) {
 
-				try {
-					$xml_data = $dataset->toXML();
-					//$result['metadata'] = $xml_data;
-					$ch= curl_init();
-					curl_setopt($ch, CURLOPT_URL, $mds_metadata_url);
-					curl_setopt($ch, CURLOPT_POST, 1);
-					curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
-					curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml'));
-					$username = "foobar";
-					$password = "foobar";
-					//curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
-					if(curl_exec($ch) === false)
-					{
-					    throw new Exception('Curl error: ' . curl_error($ch));
-					}
-					$info1 = curl_getinfo($ch);
-					curl_close ($ch) ;
-				} catch (Exception $e) {
-					$result['error'] = $e->getMessage();
-				}
+				$xml_data = $dataset->toXML();
+				$ch= curl_init();
+				curl_setopt($ch, CURLOPT_URL, $mds_metadata_url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml'));
+				$username = "foobar";
+				$password = "foobar";
+				curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
+				$curl_response = curl_exec($ch);
+				$result['md_curl_response'] = $curl_response;
+				$info1 = curl_getinfo($ch);
+				$result['md_curl_status'] = $info1['http_code'];
+				curl_close ($ch) ;
 
 			}
 			//
