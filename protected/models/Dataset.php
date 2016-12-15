@@ -533,7 +533,7 @@ class Dataset extends MyActiveRecord
         $xmlstr = "<?xml version='1.0' ?>\n".
               '<resource xmlns="http://datacite.org/schema/kernel-4"
                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                        xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel‐4/metadata.xsd"
+                        xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd"
                 >
                 </resource>';
 
@@ -550,16 +550,18 @@ class Dataset extends MyActiveRecord
         // <creator>
         $creator = $creators->addChild('creator');
         $creator->addChild('creatorName',$this->submitter->last_name." ".$this->submitter->first_name);
-        $name_identifier = $creator->addChild('nameIdentifier',$this->submitter->orcid_id);
-        $name_identifier->addAttribute('schemeURI','http://orcid.org/');
-        $name_identifier->addAttribute('nameIdentifierScheme','ORCID');
+        if (! empty ($this->submitter->orcid_id) ) {
+            $name_identifier = $creator->addChild('nameIdentifier',$this->submitter->orcid_id);
+            $name_identifier->addAttribute('schemeURI','http://orcid.org/');
+            $name_identifier->addAttribute('nameIdentifierScheme','ORCID');
+        }
 
         //<titles>
         $titles = $xml->addChild("titles");
 
         //<title xml:lang="en-us">Full DataCite XML Example</title>
         $title = $titles->addChild('title',$this->title);
-        $title->addAttribute('xml:lang','en-US');
+        $title->addAttribute('xml:lang','en-US','http://www.w3.org/XML/1998/namespace');
 
         //<publisher>GigaScience Database</publisher>
         $xml->addChild('publisher',$this->publisher->name);
@@ -575,19 +577,20 @@ class Dataset extends MyActiveRecord
         //<subject xml:lang="en-US">dataset type</subject>
         foreach ($this->getDatasetTypes() as $dataset_type) {
             $subject = $subjects->addChild('subject',$dataset_type);
-            $subject->addAttribute('xml:lang','en-US');
+            $subject->addAttribute('xml:lang','en-US','http://www.w3.org/XML/1998/namespace');
         }
 
         //<subject xml:lang="en-US">keywords</subject>
         foreach ($this->getSemanticKeywords() as $keyword) {
             $subject = $subjects->addChild('subject',$keyword);
-            $subject->addAttribute('xml:lang','en-US');
+            $subject->addAttribute('xml:lang','en-US','http://www.w3.org/XML/1998/namespace');
         }
 
         //<dates>
     	//	<date dateType="Available">2014-10-17</date>
         $dates = $xml->addChild("dates");
-        $dates->addChild('date',$publication_date->format('Y-m-d'));
+        $date = $dates->addChild('date',$publication_date->format('Y-m-d'));
+        $date->addAttribute('dateType','Available');
 
         //<language>en-us</language>
         $xml->addChild('language','en-US');
@@ -611,7 +614,7 @@ class Dataset extends MyActiveRecord
         //<descriptions><description xml:lang="en-US" descriptionType="Abstract">
         $descriptions = $xml->addChild("descriptions");
         $description = $descriptions->addChild('description',$this->description);
-        $description->addAttribute('xml:lang','en-US');
+        $description->addAttribute('xml:lang','en-US','http://www.w3.org/XML/1998/namespace');
         $description->addAttribute('descriptionType','Abstract');
 
 

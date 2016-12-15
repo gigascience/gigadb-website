@@ -977,7 +977,7 @@ EO_MAIL;
 				curl_setopt($ch, CURLOPT_POST, 1);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml'));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
 				curl_setopt($ch, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
 				$curl_response = curl_exec($ch);
 				$result['md_curl_response'] = $curl_response;
@@ -1008,7 +1008,6 @@ EO_MAIL;
 
 		echo json_encode($result);
 		// $this->_sendResponse(200, CJSON::encode($result));
-
 		//echo CJSON::encode($result);
 		Yii::app()->end();
 	}
