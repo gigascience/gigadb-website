@@ -956,6 +956,7 @@ EO_MAIL;
 
 		$mds_username = Yii::app()->params['mds_username'];
 		$mds_password = Yii::app()->params['mds_password'];
+		$mds_prefix = Yii::app()->params['mds_prefix'];
 
 		if(isset($_POST['doi'])){
 
@@ -966,7 +967,6 @@ EO_MAIL;
 			}
 
 			$doi = trim($doi);
-			$result['doi']  = $doi;
 			$dataset = Dataset::model()->find("identifier=?",array($doi));
 
 			if ( $dataset ) {
@@ -986,24 +986,24 @@ EO_MAIL;
 				curl_close ($ch) ;
 
 			}
-			//
-			// if ( $info1['http_code'] == 201) {
-			// 	$ch2= curl_init();
-			// 	curl_setopt($ch2, CURLOPT_URL, $mds_doi_url);
-			// 	curl_setopt($ch2, CURLOPT_POST, 1);
-			// 	curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type:application/xml'));
-			// 	curl_exec($ch2);
-			// 	$info2 = curl_getinfo($ch2);
-			// 	curl_close ($ch2) ;
-			// }
 
+			if ( $dataset && $result['md_curl_status'] == 201) {
+				$doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=https://gigadb.org/dataset/".$dataset->identifier ;
+				$result['doi_data']  = $doi_data;
+				$ch2= curl_init();
+				curl_setopt($ch2, CURLOPT_URL, $mds_doi_url);
+				curl_setopt($ch2, CURLOPT_POST, 1);
+				curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch2, CURLOPT_POSTFIELDS, $doi_data);
+				curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
+				curl_setopt($ch2, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
+				$curl_response = curl_exec($ch2);
+				$result['doi_curl_response'] = $curl_response;
+				$info2 = curl_getinfo($ch2);
+				$result['doi_curl_status'] = $info2['http_code'];
+				curl_close ($ch2) ;
+			}
 
-			// if ( $info2['http_code'] == 201 ) {
-			// 	$result['status'] = true;
-			// }
-			// else {
-			// 	$result['status'] = false;
-			// }
 		}
 
 		echo json_encode($result);

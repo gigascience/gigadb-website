@@ -541,7 +541,7 @@ class Dataset extends MyActiveRecord
         $xml = new SimpleXMLElement($xmlstr);
 
         // <identifier identifierType="DOI">10.5072/example-full</identifier>
-        $identifier = $xml->addChild("identifier", Yii::app()->params['mds_prefix']."/".$this->id);
+        $identifier = $xml->addChild("identifier", Yii::app()->params['mds_prefix']."/".$this->identifier);
         $identifier->addAttribute("identifierType", "DOI");
 
         //<creators>
