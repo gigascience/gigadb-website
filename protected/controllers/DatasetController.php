@@ -949,7 +949,6 @@ EO_MAIL;
 	public function actionMint() {
 
         $result['status'] = false;
-		$result['response']  = "minting...";
 
 		$mds_metadata_url="https://mds.datacite.org/metadata";
 		$mds_doi_url="https://mds.datacite.org/doi";
@@ -1004,11 +1003,13 @@ EO_MAIL;
 				curl_close ($ch2) ;
 			}
 
+			if (isset($result['doi_curl_status']) && $result['doi_curl_status'] == 201) {
+				$result['status'] = true;
+			}
+
 		}
 
 		echo json_encode($result);
-		// $this->_sendResponse(200, CJSON::encode($result));
-		//echo CJSON::encode($result);
 		Yii::app()->end();
 	}
 

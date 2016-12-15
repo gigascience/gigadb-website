@@ -168,11 +168,12 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                             'success'=>'js:function(output){
                                                 console.log(output);
                                                 if(output.status){
-                                                    $("#minting").html("new DOI minted:" + output.status);
-                                                }else {
-                                                    $("#minting").html("error minting a DOI:"+ output.response);
+                                                    $("#minting").html("new DOI successfully minted");
 
+                                                }else {
+                                                    $("#minting").html("error minting a DOI: "+ output.md_curl_status + ", " + output.doi_curl_status);
                                                 }
+                                                $("#mint_doi_button").toggleClass("active");
                                             }',
                                         ),array('class'=>'btn btn-green has-spinner',
                                                 'id' =>'mint_doi_button',
@@ -371,6 +372,12 @@ echo "var existingTags = ". $js_array . ";\n";
     placeholder: 'Enter keywords (separated by commas) ...'
 });
 
+$(function(){
+    $('#mint_doi_button').click(function() {
+        $('#minting').html('minting under way, please wait');
+        $(this).toggleClass('active');
+    });
+});
 
 </script>
 
