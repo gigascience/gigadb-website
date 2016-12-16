@@ -1,7 +1,8 @@
 var x = require('casper').selectXPath;
 
-casper.test.begin('Navigating to a dataset admin page', 28, function(test) {
+casper.test.begin('Navigating to a dataset admin page', 29, function(test) {
 
+	// login
 	casper.start("http://127.0.0.1:9170/dataset/admin", function() {
         test.assertExists('form[action="/site/login"]', "main form is found");
         this.fill('form[action="/site/login"]', {
@@ -48,6 +49,14 @@ casper.test.begin('Navigating to a dataset admin page', 28, function(test) {
 	});
 
 
+	// logout
+    casper.then(function() {
+         this.click(x('//a[@href="/site/logout"]'));
+    });
+
+    casper.waitForUrl('http://127.0.0.1:9170/', function() {
+        test.assertTitle("GigaDB", "GigaDB homepage title is ok");
+    });
 
 	casper.run(function() {
 		test.done();
