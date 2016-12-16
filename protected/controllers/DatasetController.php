@@ -409,8 +409,9 @@ class DatasetController extends Controller
 
 
 				// retrieve existing redirect
+				$criteria = new CDbCriteria(array('order'=>'id ASC'));
 				$urlToRedirectAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
-				$urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id));
+				$urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
 
 				// saving url to redirect as a dataset attribute
 				if( isset($urlToRedirectDatasetAttribute) || isset($_POST['urltoredirect'])  ){

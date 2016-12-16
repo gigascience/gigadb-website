@@ -518,9 +518,12 @@ class Dataset extends MyActiveRecord
     }
 
     public function getUrlToRedirectAttribute() {
+
+        $criteria = new CDbCriteria(array('order'=>'id ASC'));
+
         $urlToRedirectAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
 
-        $urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$this->id,'attribute_id'=>$urlToRedirectAttr->id));
+        $urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$this->id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
 
         return isset($urlToRedirectDatasetAttribute) ? $urlToRedirectDatasetAttribute->value : '';
     }
