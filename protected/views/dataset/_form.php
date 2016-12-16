@@ -175,7 +175,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                                 }
                                                 $("#mint_doi_button").toggleClass("active");
                                             }',
-                                        ),array('class'=>'btn btn-green has-spinner',
+                                        ),array('class'=>'btn btn-green',
                                                 'id' =>'mint_doi_button',
                                         ));
 
