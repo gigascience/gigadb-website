@@ -22,6 +22,8 @@ The GigaDB code base is available from [GitHub](https://github.com/gigascience/g
 Since you will be committing code you will have written, please use
 git to do this.
 
+### Linux
+
 If you want to install the basic Git tools on Linux via a binary
 installer, you can generally do so through the basic package
 management tool that comes with your distribution. If you’re on
@@ -37,6 +39,8 @@ If you’re on a Debian-based distribution like Ubuntu, try apt-get:
 $ sudo apt-get install git-all
 ```
 
+### MacOSX
+
 There are several ways to install Git on a Mac. The easiest is
 probably to install the Xcode Command Line Tools. On Mavericks (10.9)
 or above, you can do this by trying to run git from the Terminal the
@@ -46,6 +50,12 @@ prompt you to install it.
 If you want a more up to date version, you can also install git via a
 binary installer. An OSX Git installer is maintained and available
 for download at the [Git website](http://git-scm.com/download/mac).
+
+### Windows
+
+We suggest that you install [Babun](http://babun.github.io) which
+provides a Linux-like console on Windows platforms. Babun will provide
+`git` as well as other develop tools.
 
 ## Downloading the GigaDB code repository
 
@@ -108,14 +118,15 @@ $ git branch
 
 ## Configuring the provisioning of the GigaDB virtual machine
 
-There are attribute variables in GigaDB which require values to be set.
-These variables are listed in
-`gigadb-website/chef/site-cookbooks/gigadb/attributes/default.rb.sample`.
-Your technical manager will be able to provide the values that these
-variables should be configured with. Once you have filled in the
-required values for the attributes, the file must then be saved as
-`default.rb` in the same folder. One or two key files may also be
-required in the files/certs directory.
+There are variables in GigaDB which require values to be set in order
+for the web site to function. These variables are listed in the
+`gigadb-website/chef/environments/development.json.sample` file. The
+values in this file should be provided and the `development.json.sample`
+file should be renamed as `development.json`.
+
+Your technical liason at *GigaScience* will be able to provide you with 
+a `development.json` file with example values that these variables 
+should be configured with.
 
 ## Creating and provisioning the virtual machine
 
@@ -125,9 +136,9 @@ Vagrant can now be used to create the virtual machine:
 $ vagrant up
 ```
 
-It will now take up to 10 minutes for the VM to be created and
-installed with GigaDB and its software dependencies in a process
-called provisioning which is performed by Chef Solo. During the
+It will now take up to 10 minutes for the VM running CentOS 6 to be 
+created and installed with GigaDB and its software dependencies in a 
+process called provisioning which is performed by Chef Solo. During the
 provisioning process, you will see many log messages in your terminal
 which will keep you up to date with the deployment of GigaDB in your
 local VM.
@@ -162,13 +173,13 @@ There is a folder `/vagrant` in the VM created Vagrant which is
 shared with the directory that contains the local gigadb-website Github
 repository on your computer which is hosting the Vagrant-VM. If you
 change the code in your gigadb-website repository, this means that
-the code is also changed in `/vagrant` on your guest VM. Use
-[http://127.0.0.1:9170] in your web browser to check how your code
-may have affect the behvaiour of GigaDB.
+the code is also changed in the `/vagrant` directory on your guest VM.
+Use [http://127.0.0.1:9170] in your web browser to check how your code
+may have affected the behaviour of GigaDB.
 
 ## Shutting down the VM
 
-The Vagrant VM can be completely removed by running `vagrant destroy`.
+The Vagrant VM can be completely removed by running `vagrant destroy -f`.
 This command will terminate the use of any resources by the VM.
 
 

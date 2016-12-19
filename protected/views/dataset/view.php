@@ -98,12 +98,53 @@ HTML;
                 <?php if (count($model->relations) > 0) { ?>
                 <h4><?= Yii::t('app' , 'Related datasets:')?></h4>
                 <p>
-                    <? foreach ($model->relations as $key=>$relation){
-                        echo "doi:" . MyHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . MyHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi);
-                        echo "<br/>";
-                    }
-                    ?>
-                </p>
+                <?php foreach ($model->relations as $key=>$relation){
+                if($relation->relationship->name == "IsPreviousVersionOf")
+                {
+                echo "doi:" . MyHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . MyHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi)."<b> (It is a more recent version of this dataset) </b>";
+                echo "<br/>";
+                ?>
+
+                   <?php
+            $target = 'window.location='."'".$this->createUrl('dataset/'.$relation->related_doi)."'";
+            $this->beginWidget('zii.widgets.jui.CJuiDialog', array(// the dialog
+                'id' => 'dialogDisplay1',
+                'options' => array(
+                    'title' => 'New Version Alert',
+                    'autoOpen' => true,
+                    'modal' => true,
+                    'width' => 400,
+                    'height' => 300,
+                    'buttons' => array(
+                        array('text' => 'Continue to view old version', 'click' => 'js:function(){$(this).dialog("close");}'),
+                          array('text' => 'View new version', 'click' => 'js:function(){'.$target.'}'),
+                        ),
+                ),
+            ));
+            ?>
+            <div class="divForForm">
+                <br>
+
+                    There is a new version of this dataset available at: DOI: 10.5524/<?php echo $relation->related_doi ?>
+
+
+            </div>
+
+                <?php $this->endWidget(); ?>
+
+
+
+               <?php }
+
+                else
+                {
+                echo "doi:" . MyHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . MyHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi);
+                echo "<br/>";
+                }
+             }
+            ?>
+        </p>
+
                 <?php } ?>
 
                 <?php if (count($model->externalLinks) > 0) { ?>
@@ -325,7 +366,7 @@ HTML;
                     array(
                         'name' => 'sample_name',
                         'type' => 'raw',
-                        'value' => '$data->sampleName',
+                        'value' => '$data->getallsample($data->id)',
                         'visible' => in_array('sample_id', $setting),
                     ),
                     array(

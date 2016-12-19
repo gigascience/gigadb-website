@@ -7,4 +7,3 @@ version          "0.0.1"
 name "vagrant"
 
 depends 'gigadb'
-depends 'nginx'

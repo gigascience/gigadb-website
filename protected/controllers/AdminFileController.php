@@ -120,6 +120,7 @@ class AdminFileController extends Controller
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['File'])) {
+            $_POST['File'] = array_filter($_POST['File']);
             $model->attributes = $_POST['File'];
 
             // save file attributes from location
@@ -127,14 +128,15 @@ class AdminFileController extends Controller
             if ($model->save()) {
                 if(isset($_POST['File']['sample_name'])) {
                     $fs = new FileSample;
-                    $fs->sample_id = $_POST['File']['sample_name'];
+                    $sample = Sample::model()->findbyAttributes(array('name'=>$_POST['File']['sample_name']));
+                    $fs->sample_id = $sample->id;
                     $fs->file_id = $model->id;
                     $fs->save(false);
                 }
                 if ($model->location) {
                     $extension = $format = null;
                     $this->getFileExtension($model->name, $extension, $format);
-                    $this->setAutoFileAttributes($model);
+                   // $this->setAutoFileAttributes($model);
                 }
                 $this->redirect(array('view', 'id' => $model->id));
             }
@@ -427,7 +429,8 @@ class AdminFileController extends Controller
                     } else {
                         $fs = $fs[0];
                     }
-                    $fs->sample_id = $_POST['File']['sample_name'];
+                    $sample = Sample::model()->findbyAttributes(array('name'=>$_POST['File']['sample_name']));
+                    $fs->sample_id = $sample->id;
                     $fs->file_id = $model->id;
                     if( $fs->sample_id !='None'&& $fs->sample_id !="" )
                     {
@@ -476,19 +479,38 @@ class AdminFileController extends Controller
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete($id)
+   public function actionDelete($id)
     {
+        
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
-            $file_sample = FileSample::model()->findByAttributes(array('file_id'=>$id))->delete();
-	    $this->loadModel($id)->delete();
+           $file = File::model()->findByPk($id);
+           
+          // $file->fileSamples->delete();
+          foreach ($file->fileAttributes as $fileattributes) {
+              print_r($fileattributes);
+              $fileattributes->delete();
+              
+          }
+         foreach ($file->fileSamples as $filesample) {
+              print_r($filesample);
+              $filesample->delete();
+              
+          }
+      
+           $file->delete();
+           
+            
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+           
             if (!isset($_GET['ajax']))
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         } else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+      
     }
+
 
     /**
      * Lists all models.

@@ -59,6 +59,7 @@ $this->pageTitle='GigaDB - About';
 <li ><a href="#TOC-How-may-data-from-GigaDB-be-reused-">How may data from GigaDB be reused?</a></li>
 <li ><a href="#TOC-What-is-the-side-bar-on-the-right-of-all-dataset-pages-">What is the side-bar on the right of all dataset pages?</a></li>
 <li ><a href="#TOC-What-is-Hypothes.is-">What is Hypothes.is ? </a></li>
+<li ><a href="#TOC-How-do-I-report-missing-values-in-my-metadata-">How do I report missing values in my metadata? </a></li>
 
 </ol>
 
@@ -220,7 +221,7 @@ Files:
 <ol>
 <li> FTP. This is the "normal" method, click the download button on any dataset page and this is how your data will be sent.
 </li>
-<li> Aspera. We subscribe to the Aspera server software, so you don't have to. It is FREE for people to download our data using Aspera, but you will need to install the browser app to do so. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, GigaDB cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment.
+<li> Hard drive shipment. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, GigaDB cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment.
 </li>
 </ol>
 <br />
@@ -282,7 +283,7 @@ Files:
 <br />
 <br />
 
-<h4><a name="TOC-Can-I-see-how-often-my-dataset-is-being-used-and-downloaded-"></a>Can I see how often my dataset is being used and downloaded?</h4>urrrm. Sort-of yes. If a user clicks the download button on the website, it is recorded in the database and you can see on the dataset page how many times this has happened. However, if a file is pulled directly from the FTP server or using Aspera it is currently not recorded in the database. This functionality is on our to-do list and will be addressed as soon as we can.
+<h4><a name="TOC-Can-I-see-how-often-my-dataset-is-being-used-and-downloaded-"></a>Can I see how often my dataset is being used and downloaded?</h4>urrrm. Sort-of yes. If a user clicks the download button on the website, it is recorded in the database and you can see on the dataset page how many times this has happened. However, if a file is pulled directly from the FTP server it is currently not recorded in the database. This functionality is on our to-do list and will be addressed as soon as we can.
 
 <br />
 <br />
@@ -301,7 +302,16 @@ Files:
 
 <br />
 <br />
-        
+
+<h4><a name="TOC-How-do-I-report-missing-values-in-my-metadata-"></a>How do I report missing values in my metadata?</h4><p>A. There are various reason why certain data values may need to not be included in the sample metadata, but you still want it to be compliant with particular Minimum Information standards such the GSC MIxS. To maintain compliance when there are missing values within the mandatory fields please use the following terms only:<br>
+ Term - Definition<br>
+ <b>not applicable</b> - information is inappropriate to report, can indicate that the standard itself fails to model or represent the information appropriately<br>
+ <b>restricted access</b> - information exists but can not be released openly because of privacy concerns<br>
+ <b>not provided</b> - information is not available at the time of submission, a value may be provided at the later stage<br>
+ <b>not collected</b> - information was not collected and will therefore never be available</p>
+ 
+<br />
+<br />  
     </div>
 </div>
 
