@@ -91,7 +91,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model->image,'url',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'url',array('size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'url',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
                             <?php echo $form->error($model->image,'url'); ?>
                         </div>
                     </div>
@@ -99,7 +99,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model->image,'source',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'source',array('size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'source',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
                             <?php echo $form->error($model->image,'source'); ?>
                         </div>
                     </div>
@@ -107,7 +107,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model->image,'tag',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'tag',array('size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'tag',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
                             <?php echo $form->error($model->image,'tag'); ?>
                         </div>
                     </div>
@@ -115,7 +115,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model->image,'license',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'license',array('size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'license',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
                             <?php echo $form->error($model->image,'license'); ?>
                         </div>
                     </div>
@@ -123,7 +123,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model->image,'photographer',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'photographer',array('size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'photographer',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
                             <?php echo $form->error($model->image,'photographer'); ?>
                         </div>
                     </div>
@@ -194,7 +194,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'ftp_site',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model,'ftp_site',array('size'=>60,'maxlength'=>200, 'disabled'=>$model->upload_status == 'Published')); ?>
+                            <?php echo $form->textField($model,'ftp_site',array('class'=>'span4','size'=>60,'maxlength'=>200, 'disabled'=>$model->upload_status == 'Published')); ?>
                             <?php echo $form->error($model,'ftp_site'); ?>
                         </div>
                     </div>
@@ -202,7 +202,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'publisher',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->dropDownList($model,'publisher_id',MyHtml::listData(Publisher::model()->findAll(),'id','name')); ?>
+                            <?php echo $form->dropDownList($model,'publisher_id',MyHtml::listData(Publisher::model()->findAll(),'id','name'), array('class'=>'span4')); ?>
                             <?php echo $form->error($model,'publisher_id'); ?>
                         </div>
                     </div>
@@ -210,7 +210,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'fairnuse',array('class'=>'control-label')); ?>
                         <div class="controls">
-                        <?php echo $form->textField($model,'fairnuse',array('class'=>'date')); ?>
+                        <?php echo $form->textField($model,'fairnuse',array('class'=>'span4 date')); ?>
                         <?php echo $form->error($model,'fairnuse'); ?>
                         </div>
                     </div>
@@ -218,7 +218,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'publication_date',array('class'=>'control-label')); ?>
                         <div class="controls">
-                        <?php echo $form->textField($model,'publication_date',array('class'=>'date js-date-pub', 'disabled'=>$model->upload_status == 'Published')); ?>
+                        <?php echo $form->textField($model,'publication_date',array('class'=>'span4 date js-date-pub', 'disabled'=>$model->upload_status == 'Published')); ?>
                         <?php echo $form->error($model,'publication_date'); ?>
                         </div>
                     </div>
@@ -226,7 +226,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'modification_date',array('class'=>'control-label')); ?>
                         <div class="controls">
-                        <?php echo $form->textField($model,'modification_date',array('class'=>'date')); ?>
+                        <?php echo $form->textField($model,'modification_date',array('class'=>'span4 date')); ?>
                         <?php echo $form->error($model,'modification_date'); ?>
                         </div>
                     </div>
@@ -242,7 +242,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'title',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model,'title',array('class'=>'span8', 'size'=>60,'maxlength'=>300)); ?>
+                            <?php echo $form->textField($model,'title',array('class'=>'span10', 'size'=>60,'maxlength'=>300)); ?>
                             <?php echo $form->error($model,'title'); ?>
                         </div>
                     </div>
@@ -250,7 +250,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'description',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textArea($model,'description',array('class'=>'span8','rows'=>8, 'cols'=>50)); ?>
+                            <?php echo $form->textArea($model,'description',array('class'=>'span10','rows'=>8, 'cols'=>50)); ?>
                             <?php echo $form->error($model,'description'); ?>
                         </div>
                     </div>
@@ -258,14 +258,14 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo CHtml::label('Keywords','keywords', array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo CHtml::textField('keywords', '', array('class'=>'span8', 'size'=>60,'maxlength'=>300)); ?>
+                            <?php echo CHtml::textField('keywords', '', array('class'=>'span10', 'size'=>60,'maxlength'=>300)); ?>
                         </div>
                     </div>
 
                     <div class="control-group">
                         <?php echo CHtml::label('URL to redirect','urltoredirect', array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class'=>'span8', 'size'=>60,'maxlength'=>300)); ?>
+                            <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class'=>'span10', 'size'=>60,'maxlength'=>300)); ?>
                         </div>
                     </div>
                 </div>
