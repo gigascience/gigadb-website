@@ -46,125 +46,6 @@ class DatasetController extends Controller
 		);
 	}
 
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-
-        public function actionMint(){
-
-            if(isset($_GET['doi']))
-            {
-                $doi=$_GET['doi'];
-                $model = Dataset::model()->find("identifier=?", array($doi));
-
-                $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-				."<resource xmlns=\"http://datacite.org/schema/kernel-3\" "
-				."xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-				."xsi:schemaLocation=\"http://datacite.org/schema/kernel-3 "
-				."http://schema.datacite.org/meta/kernel-3/metadata.xsd\">\n";
-                $xml .= "\t<identifier identifierType=\"DOI\">10.5524/$doi</identifier>\n";
-                $xml  .= "\t<creators>\n";
-
-                $authors=$model->authors;
-                foreach($authors as $author)
-                {
-
-                    if($author->gigadb_user_id != null)
-                    {
-                        $user = User::model()->find("id=?", array($author->gigadb_user_id));
-                        if($author->orcid != null)
-                        {
-                            $xml.="\t\t<creator>\n\t\t\t<creatorName>$author->surname $author->middle_name $author->first_name </creatorName>\n\t\t\t<nameIdentifier schemeURI=\"http://orcid.org/\" nameIdentifierScheme=\"ORCID\">$author->orcid</nameIdentifier>\n\t\t\t<affiliation>$user->affiliation</affiliation>\n\t\t</creator>\n";
-                        }
-                        else{
-                            $xml.="\t\t<creator>\n\t\t\t<creatorName>$author->surname $author->middle_name $author->first_name</creatorName>\n\t\t\t<affiliation>$user->affiliation</affiliation>\n\t\t</creator>\n";
-                        }
-                    }else{
-
-                        if($author->orcid != null)
-                        {
-                            $xml.="\t\t<creator>\n\t\t\t<creatorName>$author->surname $author->middle_name $author->first_name </creatorName>\n\t\t\t<nameIdentifier schemeURI=\"http://orcid.org/\" nameIdentifierScheme=\"ORCID\">$author->orcid</nameIdentifier>\n\t\t</creator>\n";
-                        } else {
-
-                            $xml.="\t\t<creator>\n\t\t\t<creatorName>$author->surname $author->middle_name $author->first_name </creatorName>\n\t\t</creator>\n";
-                        }
-
-
-                    }
-                }
-                $xml .= "\t</creators>\n";
-                $title=strip_tags($model->title);
-
-                $xml .= "\t<titles>\n\t\t<title xml:lang=\"en-us\">$model->title</title>\n\t</titles>\n";
-		$xml .= "\t<publisher>GigaScience Database</publisher>\n";
-                $xml .= "\t<publicationYear>2016</publicationYear>\n";
-
-                $xml .= "\t<subjects>\n";
-                $dataset_types=$model->datasetTypes;
-
-                foreach($dataset_types as $dataset_type) {
-
-                  $xml.="\t\t<subject xml:lang=\"en-us\">$dataset_type->name</subject>\n";
-                }
-                $dataset_attributes=$model->datasetAttributes;
-                foreach($dataset_attributes as $dataset_attribute)
-                {
-                    if($dataset_attribute->attribute_id == 455){
-
-                         $xml.="\t\t<subject xml:lang=\"en-us\">$dataset_attribute->value</subject>\n";
-                    }
-
-                }
-                $xml .= "\t</subjects>\n";
-                $xml .= "\t<dates>\n";
-                $xml .= "\t<date dateType=\"Available\">$model->publication_date</date>\n";
-                $xml .= "\t</dates>\n";
-                $xml .= "\t<language>eng</language>\n";
-                $xml .= "\t<resourceType resourceTypeGeneral=\"Dataset\">GigaDB Dataset</resourceType>\n";
-                $xml .= "\t<relatedIdentifiers>\n";
-                $manuscripts=$model->manuscripts;
-                foreach($manuscripts as $manuscript){
-
-                $xml .= "\t\t<relatedIdentifier relatedIdentifierType=\"DOI\" relationType=\"IsReferencedBy\">$manuscript->identifier</relatedIdentifier>\n";
-                }
-                $internal_links=$model->relations;
-                if(isset($internal_links)){
-                foreach($internal_links as $relation)
-                {
-                $xml .= "\t\t<relatedIdentifier relatedIdentifierType=\"DOI\" relationType=\"$relationship->name\">$relation->related_doi</relatedIdentifier>\n";
-                }
-                }
-                $xml .="\t</relatedIdentifiers>\n";
-
-
-    $units = array('B', 'KB', 'MB', 'GB', 'TB');
-
-    $bytes = max($model->dataset_size, 0);
-    $pow = floor(($model->dataset_size ? log($model->dataset_size) : 0) / log(1024));
-    $pow = min($pow, count($units) - 1);
-    $precision=2;
-
-    // Uncomment one of the following alternatives
-    // $bytes /= pow(1024, $pow);
-    // $bytes /= (1 << (10 * $pow));
-
-    $size = round($model->dataset_size, $precision) . ' ' . $units[$pow];
-
-
-                $xml .= "\t<sizes>\n\t\t<size>$size</size>\n\t</sizes>\n";
-                $xml .= "\t<rightsList>\n\t\t<rights rightsURI=\"http://creativecommons.org/publicdomain/zero/1.0/\">CC0 1.0 Universal</rights>\n\t</rightsList>\n";
-                $description=str_replace("@<(\w+)\b.*?>.*?</\1>@si", "",$model->description);
-                $description=strip_tags($description);
-                $xml .= "\t<descriptions>\n\t\t<description xml:lang=\"en-us\" descriptionType=\"Abstract\">$description\n\t\t</description>\n\t</descriptions>\n";
-
-                $xml .= "</resource>\n";
-
-                echo $xml;
-
-                }
-
-        }
 
 	public function actionView($id)	{
         $form = new SearchForm;  // Use for Form
@@ -1087,6 +968,7 @@ EO_MAIL;
 			if ( $dataset ) {
 
 				$xml_data = $dataset->toXML();
+				$result['xml_data'] = $xml_data;
 				$ch= curl_init();
 				curl_setopt($ch, CURLOPT_URL, $mds_metadata_url);
 				curl_setopt($ch, CURLOPT_POST, 1);

@@ -551,12 +551,21 @@ class Dataset extends MyActiveRecord
         $creators = $xml->addChild("creators");
 
         // <creator>
-        $creator = $creators->addChild('creator');
-        $creator->addChild('creatorName',$this->submitter->last_name." ".$this->submitter->first_name);
-        if (! empty ($this->submitter->orcid_id) ) {
-            $name_identifier = $creator->addChild('nameIdentifier',$this->submitter->orcid_id);
-            $name_identifier->addAttribute('schemeURI','http://orcid.org/');
-            $name_identifier->addAttribute('nameIdentifierScheme','ORCID');
+        $authors=$this->authors;
+        foreach($authors as $author)
+        {
+            $creator = $creators->addChild('creator');
+            $creator->addChild('creatorName',$author->surname." ".$author->middle_name." ". $author->first_name);
+
+            if ( $author->orcid != null ) {
+                $name_identifier = $creator->addChild('nameIdentifier',$author->orcid);
+                $name_identifier->addAttribute('schemeURI','http://orcid.org/');
+                    $name_identifier->addAttribute('nameIdentifierScheme','ORCID');
+            }
+            if( $author->gigadb_user_id != null ) {
+                $user = User::model()->find("id=?", array($author->gigadb_user_id));
+                $creator->addChild('affiliation',$user->affiliation);
+            }
         }
 
         //<titles>
@@ -605,6 +614,7 @@ class Dataset extends MyActiveRecord
         //<relatedIdentifiers>
         $manuscripts=$this->manuscripts;
         $internal_links=$this->relations;
+
         $related_identifiers = $xml->addChild("relatedIdentifiers");
 
         if ( isset($manuscripts) ){
