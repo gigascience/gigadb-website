@@ -941,7 +941,7 @@ EO_MAIL;
 
 /**
  *	actionMint
- *	mint a new DOI
+ *	post metadata, mint a new DOI
  */
 	public function actionMint() {
 
