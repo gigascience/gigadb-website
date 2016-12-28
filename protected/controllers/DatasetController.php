@@ -968,7 +968,6 @@ EO_MAIL;
 			if ( $dataset ) {
 
 				$xml_data = $dataset->toXML();
-				$result['xml_data'] = $xml_data;
 				$ch= curl_init();
 				curl_setopt($ch, CURLOPT_URL, $mds_metadata_url);
 				curl_setopt($ch, CURLOPT_POST, 1);
