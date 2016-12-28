@@ -603,11 +603,43 @@ class Dataset extends MyActiveRecord
         $resource_type->addAttribute('resourceTypeGeneral','Dataset');
 
         //<relatedIdentifiers>
-        //$related_identifiers = $xml->addChild("relatedIdentifiers");
+        $manuscripts=$this->manuscripts;
+        $internal_links=$this->relations;
+        $related_identifiers = $xml->addChild("relatedIdentifiers");
+
+        if ( isset($manuscripts) ){
+            foreach($manuscripts as $manuscript){
+                $related_identifier = $related_identifiers->addchild("relatedIdentifier", $manuscript->identifier);
+                $related_identifier->addAttribute('relatedIdentifierType','DOI');
+                $related_identifier->addAttribute('relationType','IsReferencedBy');
+            }
+
+        }
+        if ( isset($internal_links) ){
+            foreach($internal_links as $relation){
+                $related_identifier = $related_identifiers->addchild("relatedIdentifier",$relation->related_doi);
+                $related_identifier->addAttribute('relatedIdentifierType','DOI');
+                $related_identifier->addAttribute('relationType',$relation->relationship->name);
+            }
+
+        }
 
         //<sizes><size>
+        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+
+        $bytes = max($this->dataset_size, 0);
+        $pow = floor(($this->dataset_size ? log($this->dataset_size) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $precision=2;
+
+        // Uncomment one of the following alternatives
+        $bytes /= pow(1024, $pow);
+        // $bytes /= (1 << (10 * $pow));
+
+        $size = round($bytes, $precision) . ' ' . $units[$pow];
+
         $sizes = $xml->addChild("sizes");
-        $sizes->addChild('size',$this->dataset_size);
+        $sizes->addChild('size',$size);
 
         //<rightsList>
         $rights_list = $xml->addChild("rightsList");
