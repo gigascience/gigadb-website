@@ -35,7 +35,7 @@ class ApiController extends Controller
 		return array(
 			
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('Dataset','File' , 'Sample','Search','Dump','List'),
+				'actions'=>array('Dataset','File' , 'Sample','Search','Dump','List','Listsampleh'),
 				'users'=>array('*'),
 			),
 			array('deny',  // deny all users
@@ -143,6 +143,22 @@ else
                         'models'=>$datasets,
                 ));
 
+
+
+        }
+        
+        public function actionListsampleh()
+        {
+                    $connection=Yii::app()->db;
+                    $sql='select sample.id from sample, species where sample.species_id=species.id and species.tax_id=9606;';
+                    $command=$connection->createCommand($sql);
+                    $rows=$command->queryAll();
+                     ob_end_clean();
+                    $this->renderPartial('listsampleh',array(
+                        'models'=>$rows,
+                ));
+                  
+            
 
 
         }
@@ -494,24 +510,24 @@ else
                     if(!isset($_GET['result']))
                     {
                         
-                          $this->renderPartial('keywordalldataset',array(
+                          $this->renderPartial('keyworddataset',array(
                             'models'=>$models,));
                         
                     }else{
                     switch ($result) {
                         case "dataset":
                             
-                            $this->renderPartial('keywordalldataset',array(
+                            $this->renderPartial('keyworddataset',array(
                             'models'=>$models,));
                             break;
                         case "sample":
                           
-                            $this->renderPartial('keywordallsample',array(
+                            $this->renderPartial('keywordsample',array(
                             'models'=>$models,));
                             break;
                         case "file":
                             
-                            $this->renderPartial('keywordallfile',array(
+                            $this->renderPartial('keywordlfile',array(
                             'models'=>$models,));
                             break;
 
