@@ -160,6 +160,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 
                                     <div class="span3">
                                         <?php
+                                        $status_array = array('Request', 'Incomplete', 'Uploaded');
                                         echo CHtml::ajaxLink('Mint DOI',Yii::app()->createUrl('/dataset/mint/'),
                                         array(
                                             'type'=>'POST',
@@ -177,6 +178,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                             }',
                                         ),array('class'=>'btn btn-green',
                                                 'id' =>'mint_doi_button',
+                                                'disabled'=>in_array($model->upload_status, $status_array),
                                         ));
 
                                         ?>

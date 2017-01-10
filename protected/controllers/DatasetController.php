@@ -946,6 +946,7 @@ EO_MAIL;
 	public function actionMint() {
 
         $result['status'] = false;
+		$status_array = array('Request', 'Incomplete', 'Uploaded');
 
 		$mds_metadata_url="https://mds.datacite.org/metadata";
 		$mds_doi_url="https://mds.datacite.org/doi";
@@ -965,7 +966,7 @@ EO_MAIL;
 			$doi = trim($doi);
 			$dataset = Dataset::model()->find("identifier=?",array($doi));
 
-			if ( $dataset ) {
+			if ( $dataset && ! in_array($dataset->upload_status, $status_array) ) {
 
 				$xml_data = $dataset->toXML();
 				$ch= curl_init();
