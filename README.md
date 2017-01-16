@@ -10,12 +10,13 @@ freely-accessible and can be obtained from a file server hosted by
 [BGI](http://www.genomics.cn/en/index).
 
 This repository contains the source code for running the [GigaDB](http://gigadb.org)
-website.
+website. This current release is version 3.0.
 
 ## Installation
 
-Please see the file called INSTALL.md.
+Please see the file called [INSTALL.md](docs/INSTALL.md) in the docs
+directory.
 
 ## Licensing
 
-Please see the file called LICENSE.
+Please see the file called [LICENSE](./LICENSE).

@@ -108,7 +108,7 @@ class User extends CActiveRecord {
             'password' => Yii::t('app' , 'Password'),
             'affiliation' => Yii::t('app' , 'Affiliation'),
             'password_repeat' => Yii::t('app' ,'Confirm Password'),
-            'validacion' => Yii::t('CAPTCHA', 'Enter both words separated by a space: '),
+            'validacion' => Yii::t('CAPTCHA', 'Enter the alpha-numeric characters visible in the image below, separate individual words by a space: '),
             'preferred_link' => Yii::t('app', 'Link out preference'),
         );
     }
