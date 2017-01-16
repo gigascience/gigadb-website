@@ -1,14 +1,12 @@
 <?php
 header("Content-Type: text/xml");
 $xml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-$xml.="<gigadb_entrys>";
-foreach($models as $model)
-{
-$xml.="<gigadb_entry>";    
+$xml.="<gigadb_entry>";
+//samples
 $xml.="<samples>";
 $samples=$model->samples;
 foreach($samples as $sample){
-    $xml.="<sample submission_date=\"$sample->submission_date\" id=\"$sample->id\" doi=\"$model->identifier\">";
+    $xml.="<sample submission_date=\"$sample->submission_date\" id=\"$sample->id\">";
     $xml.="<name>$sample->name</name>";
     $species=$sample->species;
     $xml.="<species>";
@@ -50,12 +48,16 @@ foreach($samples as $sample){
         $xml.="</attribute>";
     }
     $xml.="</sample_attributes>";
+    
+    
+  
     $xml.="</sample>";
+    
+    
+    
     }
 $xml.="</samples>";
 $xml.="</gigadb_entry>";
-}
-$xml.="</gigadb_entrys>";
 $xml=preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', $xml);
 $output= simplexml_load_string($xml);
 echo $output->asXML();
