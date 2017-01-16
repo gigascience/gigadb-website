@@ -1,373 +1,992 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-
 class ApiController extends Controller
 {
     // Members
-    /**
-     * Key which has to be in HTTP USERNAME and PASSWORD headers 
-     */
-    Const APPLICATION_ID = 'ASCCPE';
- 
-    /**
-     * Default response format
-     * either 'json' or 'xml'
-     */
-    private $format = 'xml';
-    /**
-     * @return array action filters
-     */
-    public function filters()
-    {
-            return array();
-    }
-    
-    public function actionIndex()
-    {
-        echo CJSON::encode(array(1, 2, 3));       
-    }
-    
-    public function queryDatasets($key1,$value1)
-    {
-        if($key1=='dataset')
-            $model = Dataset::model()->with('authors')->findByAttributes(array('identifier'=>$value1));
-        elseif($key1=='keyword')
-            $models=  $this->getFullDatasetResultByKeyword($value1);
-        elseif($key1=='sample')
-            $models = Dataset::model()->with('samples','samples.species')->findAll(array('condition'=>'scientific_name like :name','params'=>array(':name'=>'%'.$value1."%")));       
-        elseif($key1=='author')
-            $models = Dataset::model()->with('authors')->findAll(array('condition'=>'name like :name','params'=>array(':name'=>'%'.$value1."%"))); 
+	/**
+	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
+	 * using two-column layout. See 'protected/views/layouts/column2.php'.
+	 */
+	public $layout='//layouts/column2';
+
+	/**
+	 * @var CActiveRecord the currently loaded data model instance.
+	 */
+	private $_model;
+
+	/**
+	 * @return array action filters
+	 */
+	
+        public function filters()
+	{
+		return array(
+			'accessControl', // perform access control for CRUD operations
+		);
+	}
+
+	/**
+	 * Specifies the access control rules.
+	 * This method is used by the 'accessControl' filter.
+	 * @return array access control rules
+	 */
+	public function accessRules()
+	{
+		return array(
+			
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('Dataset','File' , 'Sample','Search','Dump','List','Listsampleh'),
+				'users'=>array('*'),
+			),
+			array('deny',  // deny all users
+				'users'=>array('*'),
+			),
+		);
+	}
         
-        if(empty($models) and empty($model)) {
-            $this->renderPartial('view_empty');
-        } elseif(empty($model)) {        
-            $this->renderPartial('view_datasets',array('models'=>$models));   
-        }else{
-            $this->renderPartial('view',array('model'=>$model)); 
-        } 
-    }
-    
-    public function querySamples($key1,$value1)
-    {
-        if($key1=='sample')
-            $models = Sample::model()->with('datasetSamples','species','datasets')->findAll(array('condition'=>'scientific_name like :name','params'=>array(':name'=>'%'.$value1."%")));                
- 
-        if(empty($models) and empty($model)) {
-            $this->renderPartial('view_empty');
-        } elseif(empty($model)) {        
-            $this->renderPartial('view_samples',array('models'=>$models));   
-        }else{
-            $this->renderPartial('view',array('model'=>$model)); 
-        } 
-    }
-    
-    public function queryFiles($key1,$value1)
-    {
-        if($key1=='dataset')
-            $models = File::model()->with('dataset')->findAll(array('condition'=>'identifier=:identifier','params'=>array(':identifier'=>$value1)));    
-               
-        if(empty($models) and empty($model)) {
-            $this->renderPartial('view_empty');
-        } elseif(empty($model)) {        
-            $this->renderPartial('view_files',array('model'=>$models));   
-        }else{
-            $this->renderPartial('view',array('model'=>$model)); 
-        } 
-    }
-    
-    public function actionQuery()
-    {
-        $url=Yii::app()->request->requestUri;
-        
-        $equal_sign=strpos($url,'=');
-        $question_mark=strpos($url,'?');
-        if ($equal_sign==false or $question_mark==false){
-            $models = Dataset::model()->findAll();
-            if(empty($models)) {
-                $this->renderPartial('view_empty');
-            } else {      
-                $this->renderPartial('view_datasets',array('models'=>$models));
-            }
-        }else{
-            $return_sets=substr($url,11,$question_mark-11);
-            $key1=substr($url,$question_mark+1,$equal_sign-$question_mark-1);
-            $value1=substr($url,$equal_sign+1); 
-            $value1=str_ireplace("%20", " ", $value1);
-            if ($return_sets=='datasets')
-                $this->queryDatasets($key1,$value1);
-                //echo $key1," ", $value1;
-            elseif ($return_sets=='samples')
-                $this->querySamples ($key1, $value1);
-                //echo $key1, " ", $value1;
-            elseif($return_sets=='files')
-                $this->queryFiles ($key1, $value1);
-        }
-    }
-    
-    
-    // Actions
-    public function actionList()
-    {        
-        // Get the respective model instance
-        switch($_GET['model'])
+        public function actionDump()
         {
-            case 'file':
-                $models = File::model()->findAll();
-                break;
-            case 'dataset':
-                $models = Dataset::model()->findAll();
-                break;
-            case 'sample':
-                $models = Sample::model()->findAll();
-                break;
-            default:
-                // Model not implemented error
-               // $this->_sendResponse(501, sprintf(
-                   // 'Error: Mode <b>list1</b> is not implemented for model <b>%s</b>',
-                 //   $_GET['model']) );
-                $this->renderPartial('view_empty');
-                Yii::app()->end();
+            $fileName = Yii::app()->basePath.'/../files/gigadb_dump.xml';
+            if (file_exists($fileName))
+                        return Yii::app()->getRequest()->sendFile('gigadb_dump.xml', @file_get_contents($fileName));
+
+
+else
+                        throw new CHttpException(404, 'The requested page does not exist.');
+            
         }
-        // Did we get some results?
-        if(empty($models)) {
-            // No
-            //$this->_sendResponse(200, 
-              //      sprintf('No items where found for model <b>%s</b>', $_GET['model']) );
-            $this->renderPartial('view_empty');
-        } else {
-            // Prepare response
-            //$rows = array();
-            //foreach($models as $model)
-            //    $rows[] = $model->attributes;
-            // Send the response
-            //$this->_sendResponse(200, CJSON::encode($rows));
-            if($_GET['model']=='dataset'){         
-                $this->renderPartial('view_datasets',array('models'=>$models));
-            }
-            elseif($_GET['model']=='file'){
-                $this->renderPartial('view_files',array('models'=>$models));
-            }
-            elseif($_GET['model']=='sample'){
-                $this->renderPartial('view_samples',array('models'=>$models));
-            }
-        }    
-    }
-    
-    public function actionView()
-    {
-    	  $model = Dataset::model()->with('authors')->findByAttributes(array('identifier'=>$_GET['id']));
-       if(!isset($_GET['id']))
-            $this->_sendResponse(500, 'Error: Parameter <b>id</b> is missing' );
-       $type='xml';
-        if(isset($_GET['type']))
-        {
-        $type=$_GET['type'];  
-        }
-        $table='none';
-        if(isset($_GET['table']))
-        {
-        $table=$_GET['table'];  
-        }
-       if($_GET['model']=='dataset'){
-            //$this->_sendResponse(200, CJSON::encode($model));
-            if($model->upload_status!='Published')
-            {
-                $this->_sendResponse(404,'Item Not Published now with id '.$_GET['id']);
-            }
-            else{
-                ob_end_clean();
-            	 if($table==='sample')
+        public function actionDataset()
+	{
+                $status='Published';
+                $id = Yii::app()->request->getParam('id');
+                $doi= Yii::app()->request->getParam('doi');
+                $result= Yii::app()->request->getParam('result');
+                if(!isset($result))
                 {
-                    $this->renderPartial('view_sample',array('model'=>$model,'type'=>$type));  
-                }elseif ($table==='file') {
-                    $this->renderPartial('view_file',array('model'=>$model,'type'=>$type));  
+                  $result='all'; 
+                }
+                if(isset($id))
+                {
+                   try{
+                   $model=  Dataset::model()->findByAttributes(array('id'=>$id,'upload_status'=>$status));}
+                   catch(CDbException $e)
+                   {
+                             ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for dataset id <b>%s</b>',$id) );
+                   }
+                    if(!isset($model))
+                   {
+                        ob_end_clean();
+                        $this->_sendResponse(404, 
+                            sprintf('No items where found for dataset id <b>%s</b>',$id) );
+                   }
+                }
+                else{
+                    try{
+                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
+                    catch(CDbException $e)
+                   {
+                             ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
+                   }
+                   if(!isset($model))
+                   {
+                        ob_end_clean(); 
+                       $this->_sendResponse(404, 
+                            sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
+                   }
+                   
+                }
+                
+                ob_end_clean();
+                
+                 switch ($result) {
+                        case "dataset":
+                            
+                            $this->renderPartial('singledatasetonly',array(
+                            'model'=>$model,));
+                            break;
+                        case "sample":
+                          
+                            $this->renderPartial('singlesample',array(
+                            'model'=>$model,));
+                            break;
+                        case "file":
+                            
+                            $this->renderPartial('singlefile',array(
+                            'model'=>$model,));
+                            break;
+                        case "all":
+                            
+                            $this->renderPartial('singledataset',array(
+                            'model'=>$model,));
+                            break;
+
+                        default:
+                            break;
+                    }
+               /*     
+                $this->renderPartial('singledataset',array(
+			'model'=>$model,
+		));*/
+	}
+        
+        public function actionList()
+        {
+
+          $status='Published';
+          $datasets = Dataset::model()-> findAllByAttributes(array('upload_status'=>$status));
+          ob_end_clean();
+           $this->renderPartial('list',array(
+                        'models'=>$datasets,
+                ));
+
+
+
+        }
+        
+        public function actionListsampleh()
+        {
+                    $connection=Yii::app()->db;
+                    $sql='select sample.id from sample, species where sample.species_id=species.id and species.tax_id=9606;';
+                    $command=$connection->createCommand($sql);
+                    $rows=$command->queryAll();
+                     ob_end_clean();
+                    $this->renderPartial('listsampleh',array(
+                        'models'=>$rows,
+                ));
+                  
+            
+
+
+        }
+
+        
+        public function actionFile()
+	{       
+                $status='Published';
+		$id = Yii::app()->request->getParam('id');
+                $doi= Yii::app()->request->getParam('doi');
+                if(isset($id))
+                {
+                                    
+                   try{
+                   $model=  Dataset::model()->findByAttributes(array('id'=>$id,'upload_status'=>$status));}
+                   catch(CDbException $e)
+                   {
+                             ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for file id <b>%s</b>',$id) );
+                   }
+                    if(!isset($model))
+                   {
+                         ob_end_clean();
+                        $this->_sendResponse(404, 
+                            sprintf('No items where found for file id <b>%s</b>',$id) );
+                   }
+                }
+                else{
+                    $this->redirect(array("api/dataset?doi=$doi&result=file")); 
+                  //$this->redirect(array('api/dataset','doi'=>$doi,'result'=>'file')); 
+                   try{ 
+                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
+                   catch(CDbException $e)
+                   {
+                            ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for file doi <b>%s</b>',$doi) );
+                   }
+                    if(!isset($model))
+                   {
+                        ob_end_clean();
+                        $this->_sendResponse(404, 
+                            sprintf('No items where found for file doi <b>%s</b>',$doi) );
+                   }
+                  
+                }
+                
+                ob_end_clean();
+                $this->renderPartial('singlefile',array(
+			'model'=>$model,
+		));
+
+	}
+        
+         public function actionSample()
+	{
+		$status='Published';
+                $id = Yii::app()->request->getParam('id');
+                $doi= Yii::app()->request->getParam('doi');
+                if(isset($id))
+                {
+                   
+                   try{
+                   $model=  Dataset::model()->findByAttributes(array('id'=>$id,'upload_status'=>$status));}
+                   catch(CDbException $e)
+                        {
+                             ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for sample id <b>%s</b>',$id) );
+                        }
+                     if(!isset($model))
+                   {
+                        ob_end_clean(); 
+                        $this->_sendResponse(404, 
+                            sprintf('No items where found for sample id <b>%s</b>',$id) );
+                   }
+                }
+                else{
+                   try{
+                    $this->redirect(array("api/dataset?doi=$doi&result=sample"));     
+                   $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
+                   catch(CDbException $e)
+                        {
+                             ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for sample doi <b>%s</b>',$doi) );
+                        }
+                    if(!isset($model))
+                   {
+                         ob_end_clean();
+                        $this->_sendResponse(404, 
+                            sprintf('No items where found for sample doi <b>%s</b>',$doi) );
+                   }
+                   
+                }
+                
+                ob_end_clean();
+                $this->renderPartial('singlesample',array(
+			'model'=>$model,
+		));
+                
+
+	}
+        
+        
+         public function actionSearch()
+	{
+		$status='Published';
+                ini_set('log_errors', true);
+                ini_set('error_log', dirname(__FILE__).'/php_errors.log');
+                $keyword = Yii::app()->request->getParam('keyword');
+                $result= Yii::app()->request->getParam('result');
+                $taxno= Yii::app()->request->getParam('taxno');
+                $taxname= Yii::app()->request->getParam('taxname');
+                $author= Yii::app()->request->getParam('author');
+                $manuscript= Yii::app()->request->getParam('manuscript');
+                $token= Yii::app()->request->getParam('token');
+                $datasettype= Yii::app()->request->getParam('datasettype');
+                $project= Yii::app()->request->getParam('project');
+                $connection=Yii::app()->db;
+                if(!isset($result))
+                {
+                  $result='dataset'; 
+                }
+                
+                if(isset($keyword))
+                {
+                    if(strpos($keyword, ':'))
+                    {
+                        $pieces = explode(":", $keyword);
+                        $sql="SELECT * from dataset where ".$pieces[0]." like '%".$pieces[1]."%'";  
+                        try{
+                        $models= Dataset::model()->findAllBySql($sql);}
+                        catch(CDbException $e)
+                        {
+                            ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for keyword <b>%s</b>',$keyword) );
+                        }
+                     
+                                              if (ob_get_contents()){
+                             ob_end_clean();}
+                  
+                    switch ($result) {
+                        case "dataset":
+                            
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":
+                          
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":
+                            
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    }else {
+                       
+                        $ds = new DatabaseSearch();        
+                        $data = $ds->searchByKey($keyword);
+                        $datasets=[];
+                        $samples=[];
+                        $files=[];
+                       
+                        /*
+                        if(isset($_GET['type']))
+                        {
+                            $type=$_GET['type'];
+                             for($int=0;$int<count($type);$int++)
+                             {
+                                 if($type[$int]=='sample'){
+                                    
+                                 foreach($data['samples']['data'] as $sampleid)
+                                 {
+                                     $id = DatasetSample::model()->findByAttributes(array('sample_id'=>$sampleid));
+                                     $datasets[] = $id->dataset_id;
+                                 }
+                                // $datasets[] = $data['samples']['data'];
+                                 continue;
+                                 }
+                                 if($type[$int]=='file'){
+                                  foreach($data['files']['data'] as $fileid)
+                                 {
+                                     $id = File::model()->findByAttributes(array('id'=>$fileid));
+                                     $datasets[] = $id->dataset_id;
+                                 }
+                                 continue;
+                                 }
+                                 if($type[$int]=='dataset'){
+                                 foreach($data['datasets']['data'] as $datasetid)
+                                 {
+                                     
+                                     $datasets[] = $datasetid;
+                                 }
+                                 continue;
+                                 }
+                                 if($type[$int] !=='sample' || $type[$int] !=='file' || $type[$int] !=='dataset'){
+                                 ob_end_clean();
+                                 $this->_sendResponse(404, 
+                                 sprintf('Parameter type[] is wrong <b>%s</b>',$type[$int]) );
+                                 }
+                             }
+                        }*/
+                        foreach($data['datasets']['data'] as $datasetid)
+                          {
+                                     
+                                     $datasets[] = $datasetid;
+                          }
+                        
+                        foreach($data['samples']['data'] as $sampleid)
+                          {
+                                     
+                                     $samples[] = $sampleid;
+                          }
+                        foreach($data['files']['data'] as $fileid)
+                          {
+                                     
+                                     $files[] = $fileid;
+                          }
+                        
+                        
+                        if(empty($datasets)&&empty($samples)&&empty($files)){
+                            
+                            if (ob_get_contents()){
+                             ob_end_clean();}
+                          $this->_sendResponse(404, 
+                          sprintf('No items where found for keyword <b>%s</b>',$keyword) );   
+                        }
+                       // print_r($datasets);
+                       // print_r($samples);
+                      //  print_r($files);
+                        
+  
+                    ob_end_clean();
                     
-                }elseif($table==='dataset'){
-                    $this->renderPartial('view_datasets',array('model'=>$model,'type'=>$type));  
-                }else
-                $this->renderPartial('view',array('model'=>$model,'type'=>$type));
-		}
-        } 
+                    if(!isset($_GET['result']))
+                    {
+                        
+                         $this->renderPartial('keyword',array(
+                            'datasetids'=>$datasets,
+                            'sampleids'=>$samples,
+                            'fileids'=>$files));
+                        
+                    }
+                    else{
+                    switch ($result) {
+                        case "dataset":
+                             if(empty($datasets)){
+                                 
+                               
+                          $this->_sendResponse(404, 
+                          sprintf('No items where found for keyword <b>%s</b> in dataset, Please search in sample or file',$keyword) );    
+                             }
+                            $this->renderPartial('keywordalldataset',array(
+                            'datasetids'=>$datasets,));
+                            break;
+                        case "sample":
+                          if(empty($samples)){
+                                 
+                                
+                          $this->_sendResponse(404, 
+                          sprintf('No items where found for keyword <b>%s</b> in sample, Please search in dataset or file',$keyword) );    
+                             }
+                            
+                            $this->renderPartial('keywordallsample',array(
+                            'sampleids'=>$samples,));
+                            break;
+                        case "file":
+                            
+                            if(empty($files)){
+                                 
+                                
+                          $this->_sendResponse(404, 
+                          sprintf('No items where found for keyword <b>%s</b> in file, Please search in dataset or sample',$keyword) );    
+                             }
+                            $this->renderPartial('keywordallfile',array(
+                            'fileids'=>$files,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                    }
+                   /*     
+                     $this->renderPartial('keyword',array(
+                            'datasetids'=>$datasets,
+                            'sampleids'=>$samples,
+                            'fileids'=>$files));
+                    */
+                 
+                    }
+                    }
+               
+                if(isset($taxno))
+                {
+                    if(isset($datasettype)&& $datasettype !='')    
+                    
+                    {
+                    $uppertype=strtoupper($datasettype);    
+                    $sql='select DISTINCT dataset.id from dataset,dataset_sample,sample,species,dataset_type,type where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and species.tax_id=:taxno and dataset.upload_status=:status and upper(type.name)=:datasettype;';
+                    $command=$connection->createCommand($sql);
+                    $command->bindParam(":taxno",$taxno,PDO::PARAM_STR); 
+                    $command->bindParam(":status",$status,PDO::PARAM_STR); 
+                    $command->bindParam(":datasettype",$uppertype,PDO::PARAM_STR); 
+                    $rows=$command->queryAll();
+                   
+                    }
+                    else{
+                        
+                    $sql='select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and species.tax_id=:taxno and dataset.upload_status=:status;';
+                    $command=$connection->createCommand($sql);
+                    $command->bindParam(":taxno",$taxno,PDO::PARAM_STR); 
+                    $command->bindParam(":status",$status,PDO::PARAM_STR);
+                    $rows=$command->queryAll();   
+                    
+                        
+                        
+                    }
+               
+                    if(count($rows)<1)
+                      {
+                            if (ob_get_contents()){
+                            ob_end_clean();}
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for taxno <b>%s</b>',$taxno) );
+                      }
+                    
+                    
+                    $dataset_ids="";
+                    
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    if (ob_get_contents()){
+                    ob_end_clean();}
+                    if(!isset($_GET['result']))
+                    {
+                        
+                          $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                        
+                    }else{
+                    switch ($result) {
+                        case "dataset":
+                            
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":
+                          
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":
+                            
+                            $this->renderPartial('keywordlfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                    exit;
+                    }
+                    
+                   
+               
+                }
+                
+                if(isset($taxname))
+                {
+                   
+                 if(isset($datasettype)&& $datasettype !='')  {
+                    $uppertype=strtoupper($datasettype);  
+                    $sql="select DISTINCT dataset.id from dataset,dataset_sample,sample,species,dataset_type,type where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and upper(species.scientific_name)=:scientific_name and dataset.upload_status=:status and upper(type.name)=:datasettype;";
+                    $uppertaxname=strtoupper($taxname);
+                    $command=$connection->createCommand($sql);
+                    $command->bindParam(":scientific_name",$uppertaxname,PDO::PARAM_STR);  
+                    $command->bindParam(":status",$status,PDO::PARAM_STR); 
+                    $command->bindParam(":datasettype",$uppertype,PDO::PARAM_STR); 
+                    $rows=$command->queryAll();
+                     
+                 }   
+                 
+                 
+                    $sql="select DISTINCT dataset.id from dataset,dataset_sample,sample,species where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and upper(species.scientific_name)=:scientific_name and dataset.upload_status=:status;";
+                    $uppertaxname=strtoupper($taxname);
+                    $command=$connection->createCommand($sql);
+                    $command->bindParam(":scientific_name",$uppertaxname,PDO::PARAM_STR);  
+                    $command->bindParam(":status",$status,PDO::PARAM_STR); 
+                    $rows=$command->queryAll();
+                    if(count($rows)<1)
+                      {
+                             if (ob_get_contents()){
+                             ob_end_clean();}
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for taxname <b>%s</b>',$taxname) );
+                      }
+                    
+                    $dataset_ids="";
+                   
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    
+                    try{
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    }
+                    catch(CDbException $e)
+                    {
+                             ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for taxname <b>%s</b>',$taxname) );
+                    }
+                     if (ob_get_contents()){
+                    ob_end_clean();
+                     }
+                    if(!isset($_GET['result']))
+                    {
+                        
+                          $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                        
+                    }else{
+                    switch ($result) {
+                        case "dataset":                         
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":                         
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":                           
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                    exit;
+                    }
+                }
+                if(isset($author))
+                {
+                    
+                    $names=  explode(" ", strtoupper($author));
+                    if(count($names)>2)
+                    {
+                      $surname=$names[0]; 
+                      $middlename=$names[1];
+                      $firstname=$names[2];  
+                      $sql='select DISTINCT dataset.id from dataset,dataset_author,author where dataset.id=dataset_author.dataset_id and dataset_author.author_id=author.id and upper(author.surname)=:surname and upper(author.first_name)=:firstname and upper(author.middle_name)=:middlename and dataset.upload_status=:status;';
+                      $command=$connection->createCommand($sql);
+                      $command->bindParam(":surname",$surname,PDO::PARAM_STR); 
+                      $command->bindParam(":firstname",$firstname,PDO::PARAM_STR); 
+                      $command->bindParam(":middlename",$middlename,PDO::PARAM_STR); 
+                      $command->bindParam(":status",$status,PDO::PARAM_STR);
+                      $rows=$command->queryAll();
+                      $dataset_ids="";
+                       if(count($rows)<1)
+                      {
+                            ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for author <b>%s</b>',$surname." ".$middlename." ".$firstname) );
+                      }
+                   
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    
+                    try{
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    }
+                     catch(CDbException $e)
+                    {
+                            ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for author <b>%s</b>',$author) );
+                    }
+                    
+                    ob_end_clean();
+
+                    switch ($result) {
+                        case "dataset":                         
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":                         
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":                           
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                      
+                      
+                      
+                      
+                      
+                    }
+                    else{
+                      $surname=$names[0];                   
+                      $firstname=$names[1];  
+                      $sql='select DISTINCT dataset.id from dataset,dataset_author,author where dataset.id=dataset_author.dataset_id and dataset_author.author_id=author.id and upper(author.surname)=:surname and upper(author.first_name)=:firstname and dataset.upload_status=:status;';
+                      $command=$connection->createCommand($sql);
+                      $command->bindParam(":surname",$surname,PDO::PARAM_STR); 
+                      $command->bindParam(":firstname",$firstname,PDO::PARAM_STR);
+                      $command->bindParam(":status",$status,PDO::PARAM_STR);
+                      $rows=$command->queryAll();
+                      $dataset_ids="";
+                      if(count($rows)<1)
+                      {
+                            ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for author <b>%s</b>',$surname." ".$firstname) );
+                      }
+                   
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    
+                    try{
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    }
+                     catch(CDbException $e)
+                    {
+                             ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for author <b>%s</b>',$author) );
+                    }
+                    
+                    ob_end_clean();
+
+                    switch ($result) {
+                        case "dataset":                         
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":                         
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":                           
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+  
+                    }
+  
+                }
+                if(isset($manuscript))
+                {
+                    
+                      $sql='select DISTINCT dataset.id from dataset,manuscript where manuscript.dataset_id=dataset.id and manuscript.identifier=:manuscript and dataset.upload_status=:status;';
+                      $command=$connection->createCommand($sql);
+                      $command->bindParam(":manuscript",$manuscript,PDO::PARAM_STR); 
+                      $command->bindParam(":status",$status,PDO::PARAM_STR);
+                       
+                      $rows=$command->queryAll();
+                      $dataset_ids="";
+                      if(count($rows)<1)
+                      {
+                        if(isset($token) && $token == 'doibanner')
+                        {
+                            ob_end_clean();
+                            $body = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+    <body>
+      <img style="-webkit-user-select: none" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
+    </body>
+</html>';
+            echo $body;
         
+                         Yii::app()->end();
 
-
-
-    }
-
-    // Actions
-    public function actionSample()
-    {
-        // Get the respective model instance
-        $models = Dataset::model()->with('samples','samples.species')->findAll(array('condition'=>'scientific_name like :name','params'=>array(':name'=>'%'.$_GET['name']."%")));                
-        // Did we get some results?
-        if(empty($models)) {
-            // No
-            //$this->_sendResponse(200, 
-              //      sprintf('No items where found for for for model <b>%s</b>', $_GET['action']) );
-            $this->renderPartial('view_empty');
-        } else {       
-            $this->renderPartial('view_datasets',array('models'=>$models));
-            
-        }                
+                         }else{
+                          
+                            ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for manuscript <b>%s</b>',$manuscript) );
+                         }
+                      }
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    
+                    try{
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    }
+                     catch(CDbException $e)
+                    {
+                        if(isset($token) && $token == 'doibanner')
+                        {
+                         ob_end_clean();
+                             $body = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+    <body>
+      <img style="-webkit-user-select: none" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
+    </body>
+</html>';
+            echo $body;
         
-        
-        /*
-        switch($_GET['action'])
-        {
-            case 'sample':
-                $models = Dataset::model()->with('samples','samples.species')->findAll(array('condition'=>'scientific_name like :name','params'=>array(':name'=>'%'.$_GET['name']."%")));                
-                break;
-            default:
-                // Model not implemented error
-                $this->_sendResponse(501, sprintf(
-                    'Error: Mode <b>list_sample</b> is not implemented for model <b>%s</b>',
-                    $_GET['action']) );
-                Yii::app()->end();
-        }
+                         Yii::app()->end();
 
-        // Did we get some results?
-        if(empty($models)) {
-            // No
-            $this->_sendResponse(200, 
-                    sprintf('No items where found for for for model <b>%s</b>', $_GET['action']) );
-        } else {
-            if($_GET['action']=='sample'){         
-                $this->renderPartial('view_datasets',array('models'=>$models));
-            }
-            }
-         * 
-         */
-    }    
-    
-    public function actionKeyword()
-    {
-	if(isset($_GET['keyword']))
-        {
+                         }else{
+                             
+                            ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for manuscript <b>%s</b>',$manuscript) );
+                    }
+                    }
+                    
+                    ob_end_clean();
+                    
+                    if(isset($token) && $token == 'doibanner')
+                    {
+                          $body = '
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    </head>
+    <body>
+      <img style="-webkit-user-select: none" src="http://media.springer.com/lw900/springer-cms/rest/v1/content/755916/data/v1">
+    </body>
+    </html>';
+            echo $body;
+        
+        Yii::app()->end();
+                        
+                        
+                        
+                    }else{
+
+                    switch ($result) {
+                        case "dataset":                         
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":                         
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":                           
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                    }
+                    
+                }
+                if(isset($datasettype))
+                {
+                      $uppertype=strtoupper($datasettype);
+                      $sql='select DISTINCT dataset.id from dataset,dataset_type,type where dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and upper(type.name)=:datasettype and dataset.upload_status=:status;';
+                      $command=$connection->createCommand($sql);
+                      $command->bindParam(":datasettype",$uppertype,PDO::PARAM_STR); 
+                      $command->bindParam(":status",$status,PDO::PARAM_STR);
+                       
+                      $rows=$command->queryAll();
+                      $dataset_ids="";
+                       if(count($rows)<1)
+                      {
+                            ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for dataset type <b>%s</b>',$datasettype) );
+                      }
+                   
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    
+                    try{
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    }
+                     catch(CDbException $e)
+                    {
+                            if (ob_get_contents()){
+                            ob_end_clean();}
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for dataset type <b>%s</b>',$datasettype) );
+                    }
+                    if (ob_get_contents()){
+                    ob_end_clean();
+                    }
+
+                    switch ($result) {
+                        case "dataset":                         
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":                         
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":                           
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                    
+                    
+                }
+                
+                if(isset($project))
+                {
+                      $uppertype=strtoupper($project);
+                      $sql='select DISTINCT dataset.id from dataset,dataset_project,project where dataset_project.dataset_id=dataset.id and dataset_project.project_id=project.id and upper(project.name)=:project and dataset.upload_status=:status;';
+                      $command=$connection->createCommand($sql);
+                      $command->bindParam(":project",$uppertype,PDO::PARAM_STR);   
+                      $command->bindParam(":status",$status,PDO::PARAM_STR);
+                      $rows=$command->queryAll();
+                      $dataset_ids="";
+                      if(count($rows)<1)
+                      {
+                            ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for project <b>%s</b>',$project) );
+                      }
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    
+                    try{
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    }
+                    catch(CDbException $e)
+                    {
+                            ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for project <b>%s</b>',$project) );
+                    }
+                    
+                    ob_end_clean();
+
+                    switch ($result) {
+                        case "dataset":                         
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":                         
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":                           
+                            $this->renderPartial('keywordfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                    
+                    
+                }
+                
           
-            
-        $keyword=$_GET['keyword'];
-        
 
-        $ds = new DatabaseSearch();        
-
-        $data = $ds->searchByKey($keyword);
-        $datasets = $data['datasets']['data'];
-        $slicedatasets=NULL;
-        if(isset($_GET['limit']))
-        {
-        $limit=$_GET['limit'];
+	}
         
-        $slicedatasets = array_slice($datasets, 0, $limit);
-        //print_r($slicedatasets);
-        }
-        else
-        {
-        $slicedatasets = $datasets;
-        //print_r($slicedatasets);
-        }
-       
-	 $table='none';
-        if(isset($_GET['table']))
-        {
-            $table= $_GET['table'];
-        }
- 
-        $type='xml';
-        if(isset($_GET['type']))
-        {
-        $type=$_GET['type'];  
-        }
+        public function actionView()
+	{
+		$this->render('view',array(
+			'model'=>$this->loadModel(),
+		));
+	}
         
-        ob_end_clean();
-        
-	if($table === 'sample')
+         private function _sendResponse($status = 200, $body = '', $content_type = 'text/html')
         {
-        $this->renderPartial('keywordsample',array('data'=>$slicedatasets,'type'=>$type));
-        }
-        elseif($table === 'file')
-        {
-        $this->renderPartial('keywordfile',array('data'=>$slicedatasets,'type'=>$type));  
-        }
-	elseif($table === 'dataset')
-        {
-        $this->renderPartial('keyworddataset',array('data'=>$slicedatasets,'type'=>$type));
-        }
-        else
-        {
-        $this->renderPartial('keyword',array('data'=>$slicedatasets,'type'=>$type));
-        }
-                //$this->renderPartial('keywordtest',array('data'=>$slicedatasets,'type'=>$type));
-        
-        }
-    }
-  
-     private function getFullDatasetResultByKeyword($keyword) {
-        $wordCriteria=array();
-        $wordCriteria['keyword']=$keyword;
-        $list_result_dataset_criteria = Dataset::sphinxSearch($wordCriteria);
-        //print_r($wordCriteria);
-        //print_r($list_result_dataset_criteria);
-        $temp_dataset_criteria = new CDbCriteria();
-        $temp_dataset_criteria->addInCondition("id", $list_result_dataset_criteria);
-        //print_r($temp_dataset_criteria);
-        return Dataset::model()->findAll($temp_dataset_criteria);
-    }
-        // Actions
-    public function actionAuthor()
-    {
-        // Get the respective model instance
-        switch($_GET['action'])
-        {
-            case 'author':
-                $models = Dataset::model()->with('authors')->findAll(array('condition'=>'name like :name','params'=>array(':name'=>'%'.$_GET['name']."%")));               
-                break;
-            default:
-                // Model not implemented error
-               // $this->_sendResponse(501, sprintf(
-                 //   'Error: Mode <b>list</b> is not implemented for model <b>%s</b>',
-                   // $_GET['action']) );
-                $this->renderPartial('view_empty');
-                Yii::app()->end();
-        }
-        // Did we get some results?
-        if(empty($models)) {
-            // No
-            //$this->_sendResponse(200, 
-              //      sprintf('No items where found for for for model <b>%s</b>', $_GET['action']) );
-            $this->renderPartial('view_empty');
-        } else {
-            if($_GET['action']=='author'){         
-                $this->renderPartial('view_datasets',array('models'=>$models));
-            }
-            }
-    }    
-  
-    
-    public function actionCreate()
-    {
-    }
-    public function actionUpdate()
-    {
-    }
-    public function actionDelete()
-    {
-    }
-    
-    
-    private function _sendResponse($status = 200, $body = '', $content_type = 'text/html')
-    {
         // set the status
         $status_header = 'HTTP/1.1 ' . $status . ' ' . $this->_getStatusCodeMessage($status);
         header($status_header);
         // and the content type
         header('Content-type: ' . $content_type);
-
         // pages with body are easy
         if($body != '')
         {
@@ -379,7 +998,6 @@ class ApiController extends Controller
         {
             // create some body messages
             $message = '';
-
             // this is purely optional, but makes the pages a little nicer to read
             // for your users.  Since you won't likely send a lot of different status codes,
             // this also shouldn't be too ponderous to maintain
@@ -398,11 +1016,9 @@ class ApiController extends Controller
                     $message = 'The requested method is not implemented.';
                     break;
             }
-
             // servers don't always have a signature turned on 
             // (this is an apache directive "ServerSignature On")
             $signature = ($_SERVER['SERVER_SIGNATURE'] == '') ? $_SERVER['SERVER_SOFTWARE'] . ' Server at ' . $_SERVER['SERVER_NAME'] . ' Port ' . $_SERVER['SERVER_PORT'] : $_SERVER['SERVER_SIGNATURE'];
-
             // this should be templated in a real-world solution
             $body = '
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -418,7 +1034,6 @@ class ApiController extends Controller
         <address>' . $signature . '</address>
     </body>
     </html>';
-
             echo $body;
         }
         Yii::app()->end();
@@ -442,6 +1057,7 @@ class ApiController extends Controller
         return (isset($codes[$status])) ? $codes[$status] : '';
     }
     
+
+        
 }
 
-?>

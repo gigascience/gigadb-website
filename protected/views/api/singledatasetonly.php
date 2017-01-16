@@ -1,10 +1,7 @@
 <?php
-header('Content-Type: text/xml');
+header("Content-Type: text/xml");
 $xml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-$xml.="<gigadb_entrys>";
-foreach($models as $model)
-{
-$xml.="<gigadb_entry>";    
+$xml.="<gigadb_entry>";
 $xml.="<dataset id=\"$model->id\" doi=\"$model->identifier\">";
 $submitter_id=$model->submitter->id;
 $xml.="<submitter>";
@@ -129,7 +126,6 @@ if(isset($alternative_identifiers)){
 foreach($alternative_identifiers as $link){
     $linkname=explode(":", $link->link);
     $name=$linkname[0];
-    $modelurl = Prefix::model()->find("lower(prefix) = :p", array(':p'=>strtolower($name)));
     $modelurl = Prefix::model()->find("lower(prefix) = :p", array(':p'=>strtolower($name)));  
     if(isset($modelurl))
     {    
@@ -186,8 +182,7 @@ foreach($dataset_attributes as $dataset_attribute)
 $xml.="</ds_attributes>";
 $xml.="</dataset>";
 $xml.="</gigadb_entry>";
-}
-$xml.="</gigadb_entrys>";
 $xml=preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', $xml);
 $output= simplexml_load_string($xml);
 echo $output->asXML();
+
