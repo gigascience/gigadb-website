@@ -146,7 +146,9 @@ HTML;
 
                 <?php if (count($model->externalLinks) > 0) { ?>
                 <p>
-                    <?  $types = array();
+                    <?php  
+                        $types = array();
+                        $protocol = array();
                         foreach ($model->externalLinks as $key=>$externalLink){
                             $types[$externalLink->externalLinkType->name] = 1;
                         }
@@ -154,12 +156,17 @@ HTML;
                             $typeNameLabel = preg_replace('/(?:^|_)(.?)/e',"strtoupper('$1')",$typeName);
                             $typeNameLabel = preg_replace('/(?<=\\w)(?=[A-Z])/'," $1", $typeNameLabel);
                             $typeNameLabel = trim($typeNameLabel);
-                            echo "<h4>$typeNameLabel:</h4>";
+                            if($typeNameLabel !== 'Protocols.io')
+                            {
+                              echo "<h4>$typeNameLabel:</h4>";
+                            }
+                          
                             foreach ($model->externalLinks as $key=>$externalLink){
                                 if ($externalLink->externalLinkType->name == $typeName) {
                                     if($typeName == 'Protocols.io')
                                     {
-                                    echo "<iframe src=\"$externalLink->url\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
+                                       array_push($protocol,$externalLink->url);
+                                    
                                     }
                                     else
                                     {
@@ -167,6 +174,19 @@ HTML;
                                     }
                                 }
                             }
+                            if(!empty($protocol)){
+                             echo "<h4>Protocols.io:</h4>";
+                             echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                             echo "<a id=\"js-close-btn1\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                             echo "<div id=\"js-logs-1\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($protocol as $p) {
+
+                            {    
+                                 echo "<iframe src=\"$p\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
+                            }
+                                echo "</div>";
+                            }
+                        }
                         }
                     ?>
                 </p>
