@@ -75,7 +75,19 @@ $this->pageTitle='GigaDB - About';
                 <img class="people6" title="Dr Xin Zhou" align="right" src="/images/ZhouXin.png" alt="">
                 <b>Dr Xin Zhou</b> <br> <a href="https://www.linkedin.com/profile/view?id=157662709&trk=nav_responsive_tab_profile_pic">https://www.linkedin.com/profile/view?id=157662709&trk=nav_responsive_tab_profile_pic</a>
             </p>
-        </div>       
+        </div>
+	<br>
+        <div class="people">
+            <p>
+                <img class="people6" title="Dr Xin Zhou" align="right" src="/ima
+ges/Guojie_Zhang.png" alt="">
+                <b>Dr Guojie Zhang</b> <br> <a href="http://www1.bio.ku.dk/engli
+sh/research/oe/staff/?pure=en%2Fpersons%2Fguojie-zhang(f5381bdc-b377-47a3-bdc0-4
+deccfda761c)%2Fpublications.html">http://www1.bio.ku.dk/english/research/oe/staf
+f/?pure=en%2Fpersons%2Fguojie-zhang(f5381bdc-b377-47a3-bdc0-4deccfda761c)%2Fpubl
+ications.html</a>
+            </p>
+        </div>          
     </div>
 </div>
 
