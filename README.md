@@ -10,7 +10,7 @@ freely-accessible and can be obtained from a file server hosted by
 [BGI](http://www.genomics.cn/en/index).
 
 This repository contains the source code for running the [GigaDB](http://gigadb.org)
-website. This current release is version 3.0.
+website. This current release is version 3.1.
 
 ## Installation
 
