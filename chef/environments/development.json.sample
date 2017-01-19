@@ -69,6 +69,11 @@
         "client_id": "",
         "client_secret": ""
       },
+      "mds": {
+        "mds_username" => "",
+        "mds_password" => "",
+        "mds_prefix" => "10.5072"
+      },
       "python": {
         "build_dir": "/home/gigadb/build",
         "virtualenv": "/home/gigadb/.virtualenvs/gigadb",

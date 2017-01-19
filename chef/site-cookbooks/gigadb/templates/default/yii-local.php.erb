@@ -52,8 +52,8 @@ return array(
         'sphinx_port' => 9312,
 
         // MDS params
-        'mds_username' => 'username goes here',
-        'mds_password' => 'password goes here',
-        'mds_prefix' => '10.5072', // 10.5072 is MDS test prefix
+        'mds_username' => '<%= node[:gigadb][:mds][:mds_username] %>',
+        'mds_password' => '<%= node[:gigadb][:mds][:mds_password] %>',
+        'mds_prefix' => '<%= node[:gigadb][:mds][:mds_prefix] %>',
     ),
 );
