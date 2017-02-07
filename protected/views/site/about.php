@@ -16,7 +16,7 @@ $this->pageTitle='GigaDB - About';
 		<br>
 		<a href="/site/about#database">Database:GigaDB</a>
 		<br>
-		<a href="/site/about#citation">Thomson Recuter Data Citation Index</a>
+		<a href="/site/about#citation">Indexing</a>
 		<br>
 		<br>
 		<a name="journal"></a>
@@ -82,23 +82,22 @@ $this->pageTitle='GigaDB - About';
 		</p>
 		<a name="citation"></a>
 
-		<h2>Thomson Reuters Data Citation Index</h2>
+		<h2>Indexing</h2>
 		<p>
-			<a href="/site/index/" target="_blank"><em>GigaDB</em></a> has been included in the 
-			<a href="http://search.datacite.org/ui/"><em>DataCite search engine</em></a> and Thomson Reuters 
-			<a href="http://wokinfo.com/products_tools/multidisciplinary/dci/"><em>Data Citation Index (DCI)</em></a> 
-			to aid data discovery. Through DataCite the metadata is also exposed and accessible through their 
-			<a href="http://oai.datacite.org/"><em>metadata store</em></a> through the Open Archives Initiative Protocol for 
-			Metadata Harvesting (OAI-PMH). The DCI allows data to be discoverable to other researchers around the world. 
-			This indexes a significant number of the world’s leading data repositories of critical interest to the scientific community. 
-			The records for the datasets, which include authors, institutions, keywords, citations and other metadata, are connected to 
-			related peer-reviewed literature indexed in their Web of Knowledge database.
+                    <a href="/site/index/" target="_blank"><em>GigaDB</em></a> has been included in several external indexing systems including google, the <a href="http://search.datacite.org/ui/"><em>DataCite search engine</em></a> , Thomson Reuters “Web of Science” <a href="http://wokinfo.com/products_tools/multidisciplinary/dci/"><em>Data Citation Index (DCI)</em></a>, and <a href="https://repositive.io/"><em>Repositive</em></a> to aid data discovery. 
+GigaDB pushes dataset metadata to DataCite every time a DOI is minted, this is exposed and accessible via their <a href="http://oai.datacite.org/"><em>metadata store</em></a> through the Open Archives Initiative Protocol for Metadata Harvesting (OAI-PMH). 
+The Web of Science DCI allows data to be discoverable to other researchers around the world. This indexes a significant number of the world’s leading data repositories of critical interest to the scientific community. The records for the datasets, which include authors, institutions, keywords, citations and other metadata, are connected to related peer-reviewed literature indexed in their Web of Knowledge database.
+Repositive are an early adopter of our recently released API, they currently index all Human associated datasets with the aim aim to speed up genetic diagnostics and research through efficient data access solutions.
+In addition, GigaDB is listed in <a href="https://biosharing.org/"><em>BioSharing</em></a>, <a href="http://Re3Data.org"><em>Re3Data.org</em></a> and other database catalogues to ensure we reach as wide an audience as possible.
+
 		</p>         
 		
 		<a href="http://www.datacite.org/" target="_blank" class="aboutImgBot"><img title="DataCite_header_final1_1" src="/images/DataCite_header_final1_1.png" alt=""></a>
 		<a href="http://isa-tools.org/" target="_blank" class="aboutImgBot"><img title="isa" src="/images/isa.jpg" alt=""></a>
-		<a href="http://www.biosharing.org/" target="_blank" class="aboutImgBot"><img title="bioshare" src="/images/bioshare.jpg" alt=""></a>
+		<a href="http://www.biosharing.org/" target="_blank" class="aboutImgBot"><img title="bioshare" src="/images/bioshare.jpg" alt=""></a><br>
 		<a href="http://wokinfo.com/products_tools/multidisciplinary/dci/" target="_blank" class="aboutImgBot"><img title="data_citation" src="/images/data_citation.png" alt=""></a>
+                <a href="http://Re3Data.org" target="_blank" class="aboutImgBot"><img title="isa" src="/images/re3data.png" alt=""></a>
+                <a href="https://repositive.io/" target="_blank" class="aboutImgBot"><img title="isa" src="/images/repositive.png" alt=""></a>
      
     </div>
 </div>

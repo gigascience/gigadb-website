@@ -64,11 +64,10 @@ GigaDB source code from Github:
 
 `$ git clone https://github.com/gigascience/gigadb-website.git`
 
-The GigaDB source code repository relies on other Github projects
-which are incorporated into its code base as Github submodules.
-However, the code for these projects are missing. For example,
-chef-cookbooks is a submodule and its folder is present at
-`chef/chef-cookbooks` but the code is missing:
+If you are developing GigaDB for GigaScience, you might be informed
+to write new code for a particular [branch](https://git-scm.com/book/en/v1/Git-Branching-What-a-Branch-Is)
+in the code repository. For example, if you are asked to use the
+`develop` branch then you need to checkout this branch from Github:
 
 ```bash
 $ git clone https://github.com/gigascience/gigadb-website.git
@@ -79,6 +78,23 @@ remote: Total 1657 (delta 25), reused 0 (delta 0), pack-reused 1581
 Receiving objects: 100% (1657/1657), 2.33 MiB | 785.00 KiB/s, done.
 Resolving deltas: 100% (516/516), done.
 Checking connectivity... done.
+$ cd gigadb-website
+$ git fetch
+$ git checkout develop
+Branch develop set up to track remote branch develop from origin.
+Switched to a new branch 'develop'
+$ git branch
+* develop
+  master
+```
+
+The GigaDB source code repository relies on other Github projects
+which are incorporated into its code base as Github submodules.
+However, the code for these projects are missing. For example,
+chef-cookbooks is a submodule and its folder is present at
+`chef/chef-cookbooks` but the code is missing:
+
+```bash
 $ cd chef/chef-cookbooks/
 $ ls
 total 0
@@ -99,21 +115,6 @@ Receiving objects: 100% (8148/8148), 2.42 MiB | 449.00 KiB/s, done.
 Resolving deltas: 100% (2874/2874), done.
 Checking connectivity... done.
 Submodule path '../chef-cookbooks': checked out '1cf3e93cb1f7ef481269751a55df4bf7af458462'
-```
-
-If you are developing GigaDB for GigaScience, you might be informed
-to write new code for a particular [branch](https://git-scm.com/book/en/v1/Git-Branching-What-a-Branch-Is)
-in the code repository. For example, if you are asked to use the
-`develop` branch then you need to checkout this branch from Github:
-
-```bash
-$ git fetch
-$ git checkout develop
-Branch develop set up to track remote branch develop from origin.
-Switched to a new branch 'develop'
-$ git branch
-* develop
-  master
 ```
 
 ## Configuring the provisioning of the GigaDB virtual machine
