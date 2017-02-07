@@ -5,7 +5,8 @@ VirtualBox VM for development work. To deploy this VM, the
 `DEPLOY_GIGADB_FTP='true'` environment variable needs to be defined. In
 MacOSX, this variable can be declared in your `~/.bash_profile` file.
 This will enable the Vagrantfile to instantiate a second VM which
-replicates GigaDB's current FTP server.
+replicates GigaDB's current FTP server when you `source ~/.bash_profile`
+and `vagrant up`.
 
 The fileserver VM has an internal IP address: `10.1.1.33`. This can be
 used to test that the FTP server is working:
