@@ -75,12 +75,21 @@ end
 #### Set up PostgreSQL database ####
 ####################################
 
-cookbook_file '/tmp/ftpusers_testdata.sql' do
-  source 'ftpusers_testdata.sql'
-  owner node[:gigadb][:admin_user]
-  group node[:gigadb][:admin_user]
+# If provisioning by Chef-Solo, need to manually add SQL file
+directory '/vagrant/sql' do
+  owner 'root'
+  group 'root'
   mode '0755'
-  action :create_if_missing
+  action :create
+end
+
+cookbook_file '/vagrant/sql/ftpusers_testdata.sql' do
+    not_if { ::File.exist?('/vagrant/sql/ftpusers_testdata.sql') }
+    source 'sql/ftpusers_testdata.sql'
+    owner 'root'
+    group 'root'
+    mode '0755'
+    action :create
 end
 
 # Defined in Vagrantfile - provides database access details
@@ -102,7 +111,7 @@ if host == 'localhost'
         db_user = db[:user]
         password = db[:password]
         database = db[:database]
-        sql_script = db[:sql_script]
+        sql_script = '/vagrant/sql/ftpusers_testdata.sql'
 
         code <<-EOH
             export PGPASSWORD='#{password}'; psql -U #{db_user} -h localhost #{database} < #{sql_script}
