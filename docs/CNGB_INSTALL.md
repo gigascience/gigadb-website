@@ -12,7 +12,7 @@ Install [chef-solo](https://docs.chef.io/ctl_chef_solo.html). This
 command line tool executes chef-client in a way that does not require 
 the Chef server in order to converge cookbooks. chef-solo uses 
 chef-client’s Chef local mode, and does not support the following 
-functionality present in chef-client / server configurations.
+functionality present in chef-client/server configurations.
 ```bash
 $ sudo curl -L https://www.opscode.com/chef/install.sh | bash
 ```
@@ -36,10 +36,13 @@ $ git submodule update
 ```
 
 Add a production.json file into the `~/gigadb-website/chef/environments`
-directory which will be provided by the technical staff at GigaScience.
+directory. This file contains a number of variables required by the 
+GigaDB website to function. The technical staff at GigaScience can
+provide you with a production.json file.
 
 Create a `solo.rb` file in the `~/gigadb-website/chef` directory using
-the content below:
+the content below. N.B. the `home/centos` path to your gigadb-website 
+repository may need to be edited to fit with your system.
 ```bash
 add_formatter :min
 checksum_path '/home/centos/gigadb-website/chef/checksums'
@@ -63,9 +66,9 @@ umask 0022
 verbose_logging nil
 ```
 
-Create a node.json in the `~/gigadb-website/chef/nodes` directory which
-contains the following:
-```bash
+Create a node.json file in the `~/gigadb-website/chef/nodes` directory 
+which contains the following:
+```json
 {
   "run_list": [
     "recipe[cngb]",
@@ -76,7 +79,7 @@ contains the following:
 ```
 
 Change directory to where your gigadb-website repo folder is and use 
-chef-solo to install the GigaDB website:
+chef-solo to install the GigaDB website on the server:
 ```bash
 $ cd ~
 $ sudo chef-solo -c ~/gigadb-website/chef/solo.rb -j ~/gigadb-website/chef/nodes/node.json
