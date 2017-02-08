@@ -50,5 +50,10 @@ return array(
         // Sphinx params
         'sphinx_servername' => 'localhost',
         'sphinx_port' => 9312,
+
+        // MDS params
+        'mds_username' => '<%= node[:gigadb][:mds][:mds_username] %>',
+        'mds_password' => '<%= node[:gigadb][:mds][:mds_password] %>',
+        'mds_prefix' => '<%= node[:gigadb][:mds][:mds_prefix] %>',
     ),
 );
