@@ -24,6 +24,8 @@ vagrant.log
 chef/environments/development.json
 chef/environments/production.json
 chef/nodes/*.json
+.chef/encrypted_data_bag_secret
+
 
 # PhpStorm
 *.iml
