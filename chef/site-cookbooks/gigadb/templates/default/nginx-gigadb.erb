@@ -1,6 +1,6 @@
 server {
     listen      80;
-    server_name <%= node[:gigadb][:server_names] %>;
+    server_name <%= node[:gigadb][:db][:server_names] %>;
 
     root        <%= node[:gigadb][:root_dir] %>;
     access_log  <%= node[:gigadb][:log_dir] %>/access.log;
