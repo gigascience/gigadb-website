@@ -14,20 +14,12 @@ include_recipe 'postgresql'
 
 # Locates GigaDB in /vagrant directory
 site_dir = node[:gigadb][:site_dir]
-directory site_dir do
+directory 'node[:gigadb][:site_dir]/protected' do
   owner 'root'
   group 'root'
   mode '0755'
   action :create
 end
-
-repo_dir = node[:gigadb][:repo_dir]
-# Copy files to /vagrant
-execute "copy_repo" do
-    command "cp -R #{repo_dir}/gigadb-website/* #{site_dir}"
-    user "root"
-end
-
 
 ############################
 #### Configure iptables ####
