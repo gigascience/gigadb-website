@@ -352,22 +352,28 @@ HTML;
         <?php } ?>
         
         <div class="clear"></div>
+        <div id="file_table">
+            <?php
+                $aspera = null;
+                if($model->ftp_site){
+                    $aspera = strstr( $model->ftp_site , 'pub/');
+                    if($aspera)
+                        $aspera = 'http://aspera.gigadb.org/?B=' . $aspera;
+                }
 
-        <?php
-            $aspera = null;
-            if($model->ftp_site){
-                $aspera = strstr( $model->ftp_site , 'pub/');
-                if($aspera)
-                    $aspera = 'http://aspera.gigadb.org/?B=' . $aspera;
-            }
-
-        ?>
-        <h4><?=Yii::t('app' , 'Files:')?> <?= MyHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank'))?>
-        <?php $this->renderPartial('_display_setting',array('setting'=>$setting));?>
-        </h4>
-        <?php
-            $this->renderPartial('//file/_grid',array('files'=>$files, 'error'=>null, 'template'=>$template, 'setting'=>$setting));
-        ?>
+            ?>
+            <h4><?=Yii::t('app' , 'Files:')?> <?= MyHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank'))?>
+            <?php $this->renderPartial('_display_setting',array('setting'=>$setting));?>
+            </h4>
+            <?php
+                if ($wants_ftp_table === true ) {
+                    $this->renderPartial('//file/_ftpgrid',array('files'=>$files, 'error'=>true, 'template'=>$template, 'setting'=>$setting));
+                }
+                else {
+                    $this->renderPartial('//file/_grid',array('files'=>$files, 'error'=>null, 'template'=>$template, 'setting'=>$setting));
+                }
+            ?>
+        </div>
     </div>
 </div>
 

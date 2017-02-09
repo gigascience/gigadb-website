@@ -170,6 +170,15 @@ class DatasetController extends Controller
         $form = new SearchForm;  // Use for Form
         $dataset = new Dataset; // Use for auto suggestion
         $model = Dataset::model()->find("identifier=?", array($id));
+
+        if (isset($_GET['location'])) {
+            $wants_ftp_table = true;
+        }
+        else {
+            $wants_ftp_table = false;
+
+        }
+
         if (!$model) {
 
             $form = new SearchForm;
@@ -385,7 +394,8 @@ class DatasetController extends Controller
             'logs'=>$model->datasetLogs,
             'relates' => $relates,
             'scholar' => $scholar,
-            'link_type' => $link_type
+            'link_type' => $link_type,
+            'wants_ftp_table' => $wants_ftp_table
         ));
     }
 
