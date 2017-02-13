@@ -79,6 +79,11 @@ file renamed as `development.json`. However, your technical liaison at
 *GigaScience* will be able to provide you with a development.json file 
 with example values that these variables should be configured with.
 
+The `gigadb-website/chef/environments` directory also requires a secret 
+key if the Chef deployment is to generate the P12 key file for accessing 
+Google Analytics with GigaDB. Please ask your *GigaScience* contact for 
+this secret key file.
+
 GigaDB can then be deployed onto the AWS cloud by issuing the command 
 below:
 

@@ -96,6 +96,11 @@ directory. This file contains a number of variables required by the
 GigaDB website to function. The technical staff at GigaScience can
 provide you with a production.json file.
 
+The `/vagrant/chef/environments` directory also requires a secret key
+if the Chef deployment is to generate the P12 key file for accessing 
+Google Analytics with GigaDB. Please ask your GigaScience contact for 
+this secret key file.
+
 Create a `solo.rb` file in the `/vagrant/chef` directory using
 the content below.
 ```bash
