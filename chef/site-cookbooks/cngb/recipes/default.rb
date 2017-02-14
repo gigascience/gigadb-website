@@ -14,12 +14,6 @@ include_recipe 'postgresql'
 
 # Locates GigaDB in /vagrant directory
 site_dir = node[:gigadb][:site_dir]
-directory 'node[:gigadb][:site_dir]/protected' do
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
-end
 
 ############################
 #### Configure iptables ####
