@@ -138,4 +138,6 @@ Use chef-solo to install the GigaDB website on the server:
 $ sudo chef-solo -c /vagrant/chef/solo.rb -j /vagrant/chef/nodes/node.json
 ```
 
-
+To check whether the Chef installation has been successful, use a web 
+browser to test whether the GigaDB website is available from your 
+server's IP address.
