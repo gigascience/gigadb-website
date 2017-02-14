@@ -52,6 +52,7 @@ yii_framework node[:yii][:version] do
     symlink "#{site_dir}/../yii"
 end
 
+include_recipe "gigadb::google_analytics_setup"
 
 ########################################
 #### Platform specific provisioning ####
