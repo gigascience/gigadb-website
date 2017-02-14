@@ -24,7 +24,7 @@ vagrant.log
 # Chef
 chef/environments/development.json
 chef/environments/production.json
-chef/environments/encrypted_data_bag_secret
+**/encrypted_data_bag_secret
 chef/nodes/*.json
 
 
