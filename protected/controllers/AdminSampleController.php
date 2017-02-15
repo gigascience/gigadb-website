@@ -220,6 +220,7 @@ class AdminSampleController extends Controller
 		if(isset($_POST['Sample']))
 		{
 			$model->attributes = $_POST['Sample'];
+                        $model->name = $_POST['Sample']['name'];
 
             if (strpos($_POST['Sample']['species_id'], ":") !== false) {
                 $array = explode(":", $_POST['Sample']['species_id']);
