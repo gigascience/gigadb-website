@@ -353,7 +353,7 @@ class AdminSampleController extends Controller
             $sampleAttr = new SampleAttribute();
             $sampleAttr->sample_id = $model->id;
             
-            foreach (explode(',', $model->attributesList) as $sAttr) {
+            foreach (explode('",', $model->attributesList) as $sAttr) {
                 $sAttr = str_replace('"', '', $sAttr);
                 $data = explode('=', $sAttr);
                 if (count($data) == 2) {
