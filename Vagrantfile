@@ -38,6 +38,9 @@ Vagrant.configure(2) do |config|
     # to access VM, whereas host only networking does not.
   	gigadb.vm.network "forwarded_port", guest: 80, host: 9170
   	gigadb.vm.network "forwarded_port", guest: 5432, host: 9171
+
+    # make sure the web site and the ftp server are on the same private network
+    gigadb.vm.network 'private_network', ip: '10.1.1.37'
 	# Set up directories
   	gigadb.vm.synced_folder ".", "/vagrant"
   	FileUtils.mkpath("./protected/runtime")
