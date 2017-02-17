@@ -171,13 +171,7 @@ class DatasetController extends Controller
         $dataset = new Dataset; // Use for auto suggestion
         $model = Dataset::model()->find("identifier=?", array($id));
 
-        if (isset($_GET['location'])) {
-            $wants_ftp_table = true;
-        }
-        else {
-            $wants_ftp_table = false;
 
-        }
 
         if (!$model) {
 
@@ -233,20 +227,51 @@ class DatasetController extends Controller
             Yii::app()->request->cookies['file_setting'] = $nc;
         }
 
+        $base_parts = parse_url($model->ftp_site);
+        $location =  Yii::app()->request->getParam('location');
 
-        $files = new CActiveDataProvider('File' , array(
-            'criteria'=> $crit,
-            'sort' => array('defaultOrder'=>'name ASC',
-                            'attributes' => array(
-                                'name', 
-                                'description', 
-                                'size', 
-                                'type_id' => array('asc'=>'ft.name asc', 'desc'=>'ft.name desc'),
-                                'format_id' => array('asc'=>'ff.name asc', 'desc'=>'ff.name desc'),
-                                'date_stamp',    
-                            )),
-            'pagination' => array('pageSize'=>$pageSize)
-        ));
+
+        if (isset($location) && $base_parts['host'] == "climb.genomics.cn") {
+
+            $location_parts = parse_url($_GET['location']);
+            $path_array = explode("/",$location_parts['path']);
+//            var_dump ($path_array);
+//            print_r("----------");
+            $location_path = ltrim(implode("/", array_splice($path_array,2)));
+//            var_dump ($location_path);
+//            Yii::app()->end();
+            $wants_ftp_table = true;
+            try {
+                Yii::app()->ftp->chdir($location_path);
+            } catch (GFtpException $e) {
+                $error = $e->getMessage();
+            }
+            try {
+                $files = Yii::app()->ftp->ls(".", true, false);
+            } catch (GFtpException $e) {
+                $error = $e->getMessage();
+            }
+
+        }
+        else {
+            $wants_ftp_table = false;
+
+            $files = new CActiveDataProvider('File' , array(
+                'criteria'=> $crit,
+                'sort' => array('defaultOrder'=>'name ASC',
+                    'attributes' => array(
+                        'name',
+                        'description',
+                        'size',
+                        'type_id' => array('asc'=>'ft.name asc', 'desc'=>'ft.name desc'),
+                        'format_id' => array('asc'=>'ff.name asc', 'desc'=>'ff.name desc'),
+                        'date_stamp',
+                    )),
+                'pagination' => array('pageSize'=>$pageSize)
+            ));
+
+        }
+
 
         //Sample
         $columns = array('name', 'taxonomic_id', 'genbank_name', 'scientific_name', 'common_name', 'attribute');
