@@ -467,13 +467,32 @@ HTML;
     }
     
     public function getNameHtml() {
-    	$display = <<<HTML
+
+
+         $identifier = $this->dataset->identifier;
+
+    	$displayForFile = <<<HTML
 		<div title="$this->description"> 
 		<a href='$this->location' target='_blank'>
 		$this->name
 		</a> 
 		<div>
 HTML;
+
+        $displayForDirectory = <<<HTML
+		<div title="$this->description"> 
+		<a href="/dataset/view/id/$identifier?location=$this->location#file_table" >
+		$this->name
+		</a> 
+		<div>
+HTML;
+
+    if ($this->type->name == 'Directory') {
+        $display = $displayForDirectory;
+    }
+    else {
+        $display = $displayForFile;
+    }
 
 	return $display;
     }

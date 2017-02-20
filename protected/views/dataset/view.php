@@ -367,7 +367,11 @@ HTML;
             </h4>
             <?php
                 if ($wants_ftp_table === true ) {
-                    $this->renderPartial('//file/_ftpgrid',array('files'=>$files, 'error'=>true, 'template'=>$template, 'setting'=>$setting));
+                    $this->renderPartial('//file/_ftpgrid',array('files'=>$files,
+                                                                'error'=>null,
+                                                                'template'=>$template,
+                                                                'location'=>$location,
+                                                                'setting'=>$setting));
                 }
                 else {
                     $this->renderPartial('//file/_grid',array('files'=>$files, 'error'=>null, 'template'=>$template, 'setting'=>$setting));

@@ -233,7 +233,7 @@ class DatasetController extends Controller
 
         if (isset($location) && $base_parts['host'] == "climb.genomics.cn") {
 
-            $location_parts = parse_url($_GET['location']);
+            $location_parts = parse_url($location);
             $path_array = explode("/",$location_parts['path']);
 //            var_dump ($path_array);
 //            print_r("----------");
@@ -245,9 +245,15 @@ class DatasetController extends Controller
                 Yii::app()->ftp->chdir($location_path);
             } catch (GFtpException $e) {
                 $error = $e->getMessage();
+                var_dump($error);
+                Yii::app()->end();
             }
             try {
-                $files = Yii::app()->ftp->ls(".", true, false);
+                $gftp_files = Yii::app()->ftp->ls(".", true, false);
+                $files = array_map(array('DirectoryListing','toDirectoryListing'), $gftp_files, array_fill(0, count($gftp_files) , $base_parts['scheme'].'://'.$base_parts['host'].'/pub/'.$location_path) );
+//                var_dump($files);
+//                Yii::app()->end();
+
             } catch (GFtpException $e) {
                 $error = $e->getMessage();
             }
@@ -410,6 +416,7 @@ class DatasetController extends Controller
             'form'=>$form,
             'dataset'=>$dataset,
             'files'=>$files,
+            'location'=>isset($location)?$location:'',
             'samples'=>$samples,
             'email' => $email,
             'previous_doi' => $previous_doi,

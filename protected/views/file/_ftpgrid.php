@@ -21,60 +21,81 @@ if ($error != null) {
         )
     );
 
+
+
     $this->widget('zii.widgets.grid.CGridView', array(
-        'id'=>'page-grid',
+        'id' => 'file-grid',
         'dataProvider'=>$dp,
-        'columns'=>array(
-            array (
-                'class' =>'CDataColumn',
-                'header' => 'File name',
-                'value' => 'GFtpUtils::displayFilename($data, "'.$this->navKey.'", "'.$this->baseFolder.'", '.($this->allowNavigation ? 'true' : 'false').')',
-                'type' => 'html',
-                'filter' => false,
-                'name' => 'filename',
-                'visible' => in_array('filename', $this->columns, true)
+        'itemsCssClass'=>'table table-bordered',
+        'template' => $template,
+        'pager' => 'SiteLinkPager',
+        'pagerCssClass' => '',
+        'summaryText' => 'Displaying {start}-{end} of {count} File(s).',
+        'htmlOptions' => array('style'=>'padding-top: 0px'),
+        'columns' => array(
+            array(
+                'name' => 'name',
+                'type' => 'raw',
+                'value' => '$data->isDirectory?CHtml::link(CHtml::encode($data->filename), CHtml::encode(Yii::app()->request->getBaseUrl(true) . "/" . Yii::app()->request->pathInfo . "?location=".$data->location . "#file_table")):CHtml::link(CHtml::encode($data->filename), CHtml::encode($data->location))',
+                'visible' => in_array('name', $setting),
             ),
-            array (
-                'class' =>'CDataColumn',
-                'header' => 'Rights',
-                'value' => '$data->rights',
-                'filter' => false,
-                'name' => 'rights',
-                'visible' => in_array('rights', $this->columns, true)
+            array(
+                'name' => 'description',
+                'value' => 'n/a',
+                'visible' => in_array('description', $setting),
             ),
-            array (
-                'class' =>'CDataColumn',
-                'header' => 'User',
-                'value' => '$data->user',
-                'filter' => false,
-                'name' => 'user',
-                'visible' => in_array('user', $this->columns, true)
+            array(
+                'name' => 'sample_name',
+                'type' => 'raw',
+                'value' => '',
+                'visible' => in_array('sample_id', $setting),
             ),
-            array (
-                'class' =>'CDataColumn',
-                'header' => 'Group',
-                'value' => '$data->group',
-                'filter' => false,
-                'name' => 'group',
-                'visible' => in_array('group', $this->columns, true)
+            array(
+                'name' => 'type_id',
+                'value' => '',
+                'visible' => in_array("type_id", $setting),
             ),
-            array (
-                'class' =>'CDataColumn',
-                'header' => 'Modification time',
-                'value' => '$data->mdTime',
-                'filter' => false,
-                'name' => 'mdTime',
-                'visible' => in_array('mdTime', $this->columns, true)
+            array(
+                'name' => 'format_id',
+                'value' => '',
+                'visible' => in_array("format_id", $setting),
             ),
-            array (
-                'class' =>'CDataColumn',
-                'header' => 'Size',
-                'value' => 'GFtpUtils::isDir($data) ? "" : $data->size',
-                'htmlOptions' => array('style'=>'text-align: right;'),
-                'filter' => false,
+            array(
                 'name' => 'size',
-                'visible' => in_array('size', $this->columns, true)
+                'value' => 'File::staticBytesToSize($data->size)',
+                'visible' => in_array("size", $setting),
             ),
+            array(
+                'name' => 'date_stamp',
+                'value' => '$data->mdTime',
+                'visible' => in_array("date_stamp", $setting),
+            ),
+            array(
+                'name' => 'attribute',
+                'type' => 'raw',
+                'value' => '',
+                'visible' => in_array("attribute", $setting),
+            ),
+            array(
+                'class'=>'CButtonColumn',
+                'template' => '{download}',
+                'buttons' => array(
+                    'download' => array(
+                        'label'=>'',
+                        'url' => '$data->location',
+                        'imageUrl' => '',
+                        'options' => array(
+                            'target' => '_blank',
+                            'class' => 'download-btn js-download-count',
+                        ),
+                    )
+                ),
+                'visible' => in_array("location", $setting),
+            ),
+
         ),
+
     ));
+
+
 }
