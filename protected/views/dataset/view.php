@@ -369,6 +369,8 @@ HTML;
                 if ($wants_ftp_table === true ) {
                     $this->renderPartial('//file/_ftpgrid',array('files'=>$files,
                                                                 'error'=>null,
+                                                                'model'=>$model,
+                                                                'breadcrumbs'=>$breadcrumbs,
                                                                 'template'=>$template,
                                                                 'location'=>$location,
                                                                 'setting'=>$setting));

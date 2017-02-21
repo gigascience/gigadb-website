@@ -230,6 +230,7 @@ class DatasetController extends Controller
         $base_parts = parse_url($model->ftp_site);
         $location =  Yii::app()->request->getParam('location');
 
+        $breadcrumbs = null;
 
         if (isset($location) && $base_parts['host'] == "climb.genomics.cn") {
 
@@ -237,7 +238,7 @@ class DatasetController extends Controller
             $location_parts = parse_url($location);
             $path_array = explode("/",$location_parts['path']);
 
-            $location_path = ltrim(implode("/", array_splice($path_array,2)));
+            $location_path = ltrim(implode("/", array_splice($path_array,1)));
 
             $wants_ftp_table = true;
             try {
@@ -249,7 +250,7 @@ class DatasetController extends Controller
             }
             try {
                 $gftp_files = Yii::app()->ftp->ls(".", true, false);
-                $directory_listing = array_map(array('DirectoryListing','toDirectoryListing'), $gftp_files, array_fill(0, count($gftp_files) , $base_parts['scheme'].'://'.$base_parts['host'].'/pub/'.$location_path) );
+                $directory_listing = array_map(array('DirectoryListing','toDirectoryListing'), $gftp_files, array_fill(0, count($gftp_files) , $base_parts['scheme'].'://'.$base_parts['host'].'/'.$location_path) );
 
                 $pagination = new FtpTablePagination(sizeof($gftp_files));
                 $pagination->setPageSize($pageSize);
@@ -265,6 +266,11 @@ class DatasetController extends Controller
                         'pagination'=>$pagination
                     )
                 );
+
+
+                $breadcrumbs = DirectoryListing::toBreadCrumbs($model->identifier, $location_path, $location);
+//                var_dump($breadcrumbs);
+//                Yii::app()->end();
 
             } catch (GFtpException $e) {
                 $error = $e->getMessage();
@@ -428,6 +434,7 @@ class DatasetController extends Controller
             'form'=>$form,
             'dataset'=>$dataset,
             'files'=>$files,
+            'breadcrumbs'=>$breadcrumbs,
             'location'=>isset($location)?$location:'',
             'samples'=>$samples,
             'email' => $email,

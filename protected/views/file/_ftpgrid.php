@@ -11,6 +11,12 @@ if ($error != null) {
     echo '<div class="flash-error">Could not display folder content : ' . "</div>\n";
 } else {
 
+    $this->widget('zii.widgets.CBreadcrumbs', array(
+        'homeLink'=>CHtml::link('Dataset files', array('dataset/view', 'id'=>$model->identifier, '#'=>'file_table')),
+        'links'=>$breadcrumbs,
+    ));
+
+
     $this->widget('zii.widgets.grid.CGridView', array(
         'id' => 'file-grid',
         'dataProvider'=>$files,
