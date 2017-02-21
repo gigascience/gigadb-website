@@ -10,22 +10,10 @@ if ($error != null) {
     //echo '<div class="flash-error">Could not display folder content : ' . $error->getMessage() . "</div>\n";
     echo '<div class="flash-error">Could not display folder content : ' . "</div>\n";
 } else {
-    $dp = new CArrayDataProvider (
-        $files,
-        array(
-            'id'=>'filename',
-            'keyField'=>'filename',
-            'pagination'=>array(
-                'pageSize'=>10,
-            )
-        )
-    );
-
-
 
     $this->widget('zii.widgets.grid.CGridView', array(
         'id' => 'file-grid',
-        'dataProvider'=>$dp,
+        'dataProvider'=>$files,
         'itemsCssClass'=>'table table-bordered',
         'template' => $template,
         'pager' => 'SiteLinkPager',

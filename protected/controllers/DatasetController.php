@@ -233,13 +233,12 @@ class DatasetController extends Controller
 
         if (isset($location) && $base_parts['host'] == "climb.genomics.cn") {
 
+
             $location_parts = parse_url($location);
             $path_array = explode("/",$location_parts['path']);
-//            var_dump ($path_array);
-//            print_r("----------");
+
             $location_path = ltrim(implode("/", array_splice($path_array,2)));
-//            var_dump ($location_path);
-//            Yii::app()->end();
+
             $wants_ftp_table = true;
             try {
                 Yii::app()->ftp->chdir($location_path);
@@ -250,9 +249,22 @@ class DatasetController extends Controller
             }
             try {
                 $gftp_files = Yii::app()->ftp->ls(".", true, false);
-                $files = array_map(array('DirectoryListing','toDirectoryListing'), $gftp_files, array_fill(0, count($gftp_files) , $base_parts['scheme'].'://'.$base_parts['host'].'/pub/'.$location_path) );
-//                var_dump($files);
-//                Yii::app()->end();
+                $directory_listing = array_map(array('DirectoryListing','toDirectoryListing'), $gftp_files, array_fill(0, count($gftp_files) , $base_parts['scheme'].'://'.$base_parts['host'].'/pub/'.$location_path) );
+
+                $pagination = new FtpTablePagination(sizeof($gftp_files));
+                $pagination->setPageSize($pageSize);
+                $pagination->params= array('location'=>$location);
+                $pagination->route="/dataset/view/id/$model->identifier";
+
+
+                $files = new CArrayDataProvider (
+                    $directory_listing,
+                    array(
+                        'id'=>'filename',
+                        'keyField'=>'filename',
+                        'pagination'=>$pagination
+                    )
+                );
 
             } catch (GFtpException $e) {
                 $error = $e->getMessage();
