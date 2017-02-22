@@ -15,7 +15,7 @@ if ($error != null) {
         'dataProvider'=>$files,
         'itemsCssClass'=>'table table-bordered',
         'template' => $template,
-        'pager' => 'SiteLinkPager',
+        'pager' => array('class'=>'SiteLinkPager', 'id'=>'file_table_pager'),
         'pagerCssClass' => '',
         'summaryText' => 'Displaying {start}-{end} of {count} File(s).',
         'htmlOptions' => array('style'=>'padding-top: 0px'),
