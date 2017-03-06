@@ -20,6 +20,7 @@ default[:sphinx][:url] = "http://sphinxsearch.com/files/sphinx-#{sphinx[:version
 
 default[:yii][:version] = '1.1.16'
 default[:yii][:path] = '/opt/yii-1.1.16'
+default[:yii][:ip_address] = 'http://127.0.0.1:9170'
 
 default['java']['jdk_version'] = '7'
 default["java"]["install_flavor"] = 'openjdk'
