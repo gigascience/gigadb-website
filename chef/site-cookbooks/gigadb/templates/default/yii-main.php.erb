@@ -73,6 +73,12 @@ return CMap::mergeArray(array(
             'enableParamLogging'=>true,
             'schemaCachingDuration'=>30
         ),
+        'ftp' => array(
+            'class' => 'ext.GFtp.GFtpApplicationComponent',
+            'connectionString' => '<%= node[:gigadb][:ftp][:connection_url] %>',
+            'timeout' => 120,
+            'passive' => true
+        ),
         'request' => array(
             //'enableCookieValidation' => true,
         ),
@@ -101,17 +107,17 @@ return CMap::mergeArray(array(
                 //'download/<search:.+>'=>'site/index',
                 //'download'=>'site/index',
                 /*
-		array('api/list', 'pattern'=>'api/<model:\w+>', 'verb'=>'GET'),                
+		array('api/list', 'pattern'=>'api/<model:\w+>', 'verb'=>'GET'),
                 array('api/view', 'pattern'=>'api/<model:\w+>/<id:\d+>', 'verb'=>'GET'),
                 array('api/sample', 'pattern'=>'api/sample/<name>', 'verb'=>'GET'),
                 array('api/keyword', 'pattern'=>'api/keyword/<keyword:\w+>', 'verb'=>'GET'),
-               
+
                 //array('api/keyword', 'pattern'=>'api/keyword/<keyword:\w+>/type/<type:\w+>', 'verb'=>'GET'),
                 array('api/author', 'pattern'=>'api/<action:\w+>/<name>', 'verb'=>'GET'),
                 array('api/update', 'pattern'=>'api/<model:\w+>/<id:\d+>', 'verb'=>'PUT'),
                 array('api/delete', 'pattern'=>'api/<model:\w+>/<id:\d+>', 'verb'=>'DELETE'),
                 array('api/create', 'pattern'=>'api/<model:\w+>', 'verb'=>'POST'),
-                 * */                
+                 * */
                 '.*'=>'site/index',
             ),
         ),
