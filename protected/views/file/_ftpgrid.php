@@ -71,6 +71,7 @@ if ($error != null) {
                 'visible' => in_array("attribute", $setting),
             ),
             array(
+                'header'=>'Download',
                 'class'=>'CButtonColumn',
                 'template' => '{download}',
                 'buttons' => array(
@@ -85,6 +86,12 @@ if ($error != null) {
                     )
                 ),
                 'visible' => in_array("location", $setting),
+            ),
+            array(
+                'class'=>'CCheckBoxColumn',
+                'selectableRows'=>2,
+                'value'=> '$data->location',
+                'cssClassExpression'=>'($data->isDirectory) ? "hidden-checkbox":"" '
             ),
 
         ),

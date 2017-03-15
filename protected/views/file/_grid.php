@@ -6,9 +6,12 @@
  * Time: 16:21
  */
 
+
+
 if ($error != null) {
     echo '<div class="flash-error">Could not display folder content : ' . $error->getMessage() . "</div>\n";
 } else {
+
 
     $this->widget('zii.widgets.grid.CGridView', array(
         'id' => 'file-grid',
@@ -78,6 +81,12 @@ if ($error != null) {
                     )
                 ),
                 'visible' => in_array("location", $setting),
+            ),
+            array(
+                'class'=>'CCheckBoxColumn',
+                'selectableRows'=>2,
+                'value'=> '$data->location',
+                'cssClassExpression'=>'($data->type->name === "Directory") ? "hidden-checkbox":"" '
             ),
 
         ),
