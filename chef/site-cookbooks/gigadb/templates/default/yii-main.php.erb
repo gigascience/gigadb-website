@@ -103,6 +103,7 @@ return CMap::mergeArray(array(
             'rules'=>array(
                 '/dataset/<id:\d+>'=>'dataset/view/id/<id>',
                 '/dataset/<id:\d+>/<slug:.+>'=>'dataset/view/id/<id>',
+                '/file/<operation:\w+>'=>'file/bundle',
                 //'search'=>'site/index',
                 //'download/<search:.+>'=>'site/index',
                 //'download'=>'site/index',

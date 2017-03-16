@@ -6,6 +6,51 @@
  * Time: 16:21
  */
 
+$url1 = $this->createUrl('/file/addToBundle');
+$url2 = $this->createUrl('/file/removeFromBundle');
+
+$js = "
+         $('#file-grid :checkbox').change(function(){
+             if( $(this).is(':checked') ) {
+                $.ajax({
+                   type: 'GET',
+                   url: '$url1',
+                   data:{'location': $(this).val()},
+                   success: function(output){
+                       var response = JSON.parse(output);
+                        if(response.status == 'OK') {
+                            console.log('success with ' + response.lastop + ' !');
+                        } else {
+                            console.log(response);
+                        }
+                      },
+                    error:function(){
+                      console.log('error!');
+                    }
+                });
+             }
+             else {
+                 $.ajax({
+                    type: 'GET',
+                    url: '$url2',
+                    data:{'location': $(this).val()},
+                    success: function(output){
+                        var response = JSON.parse(output);
+                         if(response.status == 'OK') {
+                             console.log('success with removeFromBundle!');
+                         } else {
+                             console.log(response.status);
+                         }
+                       },
+                     error:function(){
+                       console.log('error!');
+                     }
+                 });
+             }
+
+         });
+        ";
+Yii::app()->clientScript->registerScript('file-grid', $js);
 
 
 if ($error != null) {
@@ -84,9 +129,11 @@ if ($error != null) {
             ),
             array(
                 'class'=>'CCheckBoxColumn',
+                'id'=>'selecttodownload',
                 'selectableRows'=>2,
                 'value'=> '$data->location',
-                'cssClassExpression'=>'($data->type->name === "Directory") ? "hidden-checkbox":"" '
+                'cssClassExpression'=>'($data->type->name === "Directory") ? "hidden-checkbox":"" ',
+                'checked'=>'( Yii::app()->session[$data->location] ) ? true : false',
             ),
 
         ),
