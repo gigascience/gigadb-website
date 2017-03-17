@@ -133,7 +133,7 @@ if ($error != null) {
                 'selectableRows'=>2,
                 'value'=> '$data->location',
                 'cssClassExpression'=>'($data->type->name === "Directory") ? "hidden-checkbox":"" ',
-                'checked'=>'( Yii::app()->session[$data->location] ) ? true : false',
+                'checked'=>'( isset(unserialize(Yii::app()->session["bundle"])[$data->location]) ) ? true : false',
             ),
 
         ),

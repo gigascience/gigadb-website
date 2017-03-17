@@ -56,13 +56,26 @@ class FileController extends Controller
         $result = array('status' => "ERROR");
         $location = Yii::app()->request->getParam('location');
 
+        //init session bundle
+        if(!isset(Yii::app()->session['bundle'])){
+          Yii::app()->session['bundle'] = serialize(array());
+        }
+
+
         if ($operation === 'addToBundle') {
-            Yii::app()->session->add($location, 1);
+
+
+            //add new item to session myvar
+            $bundle = unserialize(Yii::app()->session['bundle']);
+            $bundle[$location] = 1 ;
+            Yii::app()->session['bundle'] = serialize($bundle);
             $result["status"] = "OK";
             $result["lastop"] = "addToBundle";
         }
         else if ($operation === 'removeFromBundle') {
-            Yii::app()->session->remove($location);
+            $bundle = unserialize(Yii::app()->session['bundle']);
+            unset($bundle[$location]);
+            Yii::app()->session['bundle'] = serialize($bundle);
             $result["status"] = "OK";
             $result["lastop"] = "removeFromBundle";
         }
