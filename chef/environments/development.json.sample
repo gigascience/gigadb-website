@@ -11,6 +11,9 @@
         "port": "5432",
         "database": "gigadb"
       },
+      "ftp": {
+		"connection_url": "ftp://anonymous:anonymous@10.1.1.33:21"
+	  },
       "repo_dir": "~",
       "server_names": "localhost:9170",
       "site_dir": "/vagrant",
