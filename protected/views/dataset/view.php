@@ -95,38 +95,106 @@ HTML;
                 <?php if (count($model->relations) > 0) { ?>
                 <h4><?= Yii::t('app' , 'Related datasets:')?></h4>
                 <p>
-                    <? foreach ($model->relations as $key=>$relation){
-                        echo "doi:" . MyHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . MyHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi);
-                        echo "<br/>";
-                    }
-                    ?>
-                </p>
+                <?php foreach ($model->relations as $key=>$relation){
+                if($relation->relationship->name == "IsPreviousVersionOf")
+                {
+                echo "doi:" . MyHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . MyHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi)."<b> (It is a more recent version of this dataset) </b>";
+                echo "<br/>";
+                ?>
+
+                   <?php
+            $target = 'window.location='."'".$this->createUrl('dataset/'.$relation->related_doi)."'";
+            $this->beginWidget('zii.widgets.jui.CJuiDialog', array(// the dialog
+                'id' => 'dialogDisplay1',
+                'options' => array(
+                    'title' => 'New Version Alert',
+                    'autoOpen' => true,
+                    'modal' => true,
+                    'width' => 400,
+                    'height' => 300,
+                    'buttons' => array(
+                        array('text' => 'Continue to view old version', 'click' => 'js:function(){$(this).dialog("close");}'),
+                          array('text' => 'View new version', 'click' => 'js:function(){'.$target.'}'),
+                        ),
+                ),
+            ));
+            ?>
+            <div class="divForForm">
+                <br>
+
+                    There is a new version of this dataset available at: DOI: 10.5524/<?php echo $relation->related_doi ?>
+
+
+            </div>
+
+                <?php $this->endWidget(); ?>
+
+
+
+               <?php }
+
+                else
+                {
+                echo "doi:" . MyHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . MyHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi);
+                echo "<br/>";
+                }
+             }
+            ?>
+        </p>
+
                 <?php } ?>
 
                 <?php if (count($model->externalLinks) > 0) { ?>
                 <p>
-                    <?  $types = array();
-
+                    <?php  
+                        $types = array();
+                        $protocol = array();
                         foreach ($model->externalLinks as $key=>$externalLink){
                             $types[$externalLink->externalLinkType->name] = 1;
                         }
-
                         foreach ($types as $typeName => $value) {
                             $typeNameLabel = preg_replace('/(?:^|_)(.?)/e',"strtoupper('$1')",$typeName);
                             $typeNameLabel = preg_replace('/(?<=\\w)(?=[A-Z])/'," $1", $typeNameLabel);
                             $typeNameLabel = trim($typeNameLabel);
-
-                            echo "<h4>$typeNameLabel:</h4>";
+                            if($typeNameLabel !== 'Protocols.io')
+                            {
+                              echo "<h4>$typeNameLabel:</h4>";
+                            }
+                          
                             foreach ($model->externalLinks as $key=>$externalLink){
                                 if ($externalLink->externalLinkType->name == $typeName) {
+                                    if($typeName == 'Protocols.io')
+                                    {
+                                       array_push($protocol,$externalLink->url);
+                                    
+                                    }
+                                    else
+                                    {
                                     echo '<p>'. MyHtml::link($externalLink->url, $externalLink->url) . '</p>';
+                                    }
                                 }
                             }
+                            if(!empty($protocol)){
+                             echo "<h4>Protocols.io:</h4>";
+                             echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                             echo "<a id=\"js-close-btn1\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                             echo "<div id=\"js-logs-1\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($protocol as $p) {
+
+                            {    
+                                 echo "<iframe src=\"$p\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
+                            }
+                                echo "</div>";
+                            }
+                        }
                         }
                     ?>
                 </p>
 
                 <?php } ?>
+                
+
+
         
                 <?php if (count($model->links) > 0) { ?>
 
@@ -322,7 +390,7 @@ HTML;
                     array(
                         'name' => 'sample_name',
                         'type' => 'raw',
-                        'value' => '$data->sampleName',
+                        'value' => '$data->getallsample($data->id)',
                         'visible' => in_array('sample_id', $setting),
                     ),
                     array(
@@ -381,7 +449,7 @@ HTML;
         <h4><?= Yii::t('app' , 'History:')?></h4>
         <a id="js-expand-btn" class="btn btn-expand"><div class="history-status"> + </div></a>
         <a id="js-close-btn" class="btn btn-collapse" style='display:none;'><div class="history-status"> - </div></a>
-        <div class="js-logs" style='display:none;'>
+        <div id="js-logs-2"class="js-logs" style='display:none;'>
             <table class="table table-bordered">
                 <thead><tr><th class="span3">Date</th><th class="span8">Action</th></tr></thead>
                 <tbody>
@@ -504,6 +572,13 @@ $(document).ready(function() {
             wrap: 'circular'
         });
     }
+    	$('.tab-container').on("click", function() {
+		$(this).toggleClass('tab-show');
+		$(this).toggleClass('tab-hide');
+
+		var arrow = $(this).find('.tab-container__arrow')[0];
+		$(arrow).toggleClass('flip-vertical');
+	});
 });
 /* ----------------------------------- */
 
@@ -513,13 +588,26 @@ $(".image-hint").tooltip({'placement':'top'});
 $("#js-expand-btn").click(function(){
       $(this).hide();
       $("#js-close-btn").show();
-      $(".js-logs").show();
+      $("#js-logs-2").show();
 });
 
 $("#js-close-btn").click(function(){
       $(this).hide();
       $("#js-expand-btn").show();
-      $(".js-logs").hide();
+      $("#js-logs-2").hide();
+});
+
+
+$("#js-expand-btn1").click(function(){
+      $(this).hide();
+      $("#js-close-btn1").show();
+      $("#js-logs-1").show();
+});
+
+$("#js-close-btn1").click(function(){
+      $(this).hide();
+      $("#js-expand-btn1").show();
+      $("#js-logs-1").hide();
 });
 
 $(".js-download-count").click(function(){

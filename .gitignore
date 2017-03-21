@@ -1,12 +1,29 @@
-assets/*
+index.php
+logs
+assets
+giga_cache
 !assets/.gitignore
-protected/runtime/*
+css/site.css
+protected/runtime
+protected/config/db.json
+protected/config/es.json
+protected/config/local.php
+protected/config/main.php
+protected/yiic.php
 !protected/runtime/.gitignore
 protected/data/*.db
+protected/scripts/set_env.sh
+protected/scripts/update_links.sh
 themes/classic/views/
 
 # Vagrant
 *.vagrant
+vagrant.log
+
+# Chef
+chef/environments/development.json
+chef/environments/production.json
+chef/nodes/*.json
 
 # PhpStorm
 *.iml
@@ -17,3 +34,6 @@ themes/classic/views/
 nbproject/private/
 nbproject/project.xml
 nbproject/project.properties
+
+# MacOSX
+.DS_Store
