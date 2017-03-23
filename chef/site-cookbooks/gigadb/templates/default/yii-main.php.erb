@@ -10,6 +10,9 @@ Yii::setPathOfAlias('Elastica', realpath(dirname(__FILE__). '/../../Elastica/lib
 Yii::setPathOfAlias('googleAPI', realpath(dirname(__FILE__).'/../../google-api-php-client/src'));
 Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.py'));
 
+//Importing beanstalkd client
+Yii::setPathOfAlias('Beanstalk',dirname(__FILE__).DIRECTORY_SEPARATOR.'../vendors/beanstalk');
+
 return CMap::mergeArray(array(
     'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
     'name'=>'GigaDB',
@@ -24,6 +27,7 @@ return CMap::mergeArray(array(
         'application.components.*',
         'application.behaviors.*',
         'application.vendors.*',
+        'application.vendors.beanstalk',
         'application.helpers.*',
     ),
 
@@ -93,6 +97,19 @@ return CMap::mergeArray(array(
             'class' => 'system.web.CDbHttpSession',
             'connectionID' => 'db',
             'timeout' => 3600,
+        ),
+        'beanstalk'=>array(
+            'class'=>'application.components.Beanstalk',
+            'servers'=>array(
+                'server1'=>array(
+                    'host'=>'localhost',
+                    'port'=>11300,
+                    'weight'=>50,
+                    // array of connections/tubes
+                    'connections'=>array(),
+                ),
+
+            ),
         ),
         'errorHandler'=>array(
             'errorAction'=>'site/error',

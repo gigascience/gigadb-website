@@ -79,8 +79,21 @@ class FileController extends Controller
             $result["status"] = "OK";
             $result["lastop"] = "removeFromBundle";
         }
+        else if ($operation === 'downloadSelection') {
+            $ret = $this->prepare_bundle_job(Yii::app()->session['bundle']);
+
+            if ( $ret ) {
+                $result["status"] = "OK";
+            }
+            else {
+                $result["status"] = "ERROR";
+                $result["error"] = "Failing to queue a files packaging job";
+            }
+            $result["lastop"] = "downloadSelection";
+        }
         else {
-            $result["status"] = "ERROR: Unrecognised operation";
+            $result["status"] = "ERROR";
+            $result["error"] = "Unrecognised operation";
         }
 
         echo json_encode($result);
@@ -91,6 +104,40 @@ class FileController extends Controller
         //var_dump(Yii::app()->session->keys);
 		Yii::app()->end();
 
+    }
+
+    private function prepare_bundle_job($serialised_bundle) {
+        if(isset($serialised_bundle) && count(unserialize($serialised_bundle)> 0 ) ) {
+            $client = Yii::app()->beanstalk->getClient();
+            $client->connect();
+            $client->useTube('filespackaging');
+            $jobDetails = [
+                'application'=>'gigadb-website',
+                'list'=>$serialised_bundle,
+                'submission_time'=>date("c"),
+            ];
+
+            $jobDetailString = json_encode($jobDetails);
+
+            $ret = $client->put(
+                0, // priority
+                0, // do not wait, put in immediately
+                90, // will run within n seconds
+                $jobDetailString // job body
+            );
+
+            if ($ret) {
+                return $ret;
+            }
+            else {
+                return 0;
+            }
+
+
+        }
+        else {
+            return 0;
+        }
     }
 
 

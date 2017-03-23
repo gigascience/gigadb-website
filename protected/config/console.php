@@ -7,6 +7,9 @@ $pre_config = require(dirname(__FILE__).'/local.php');
 Yii::setPathOfAlias('Elastica', realpath(dirname(__FILE__). '/../../Elastica/lib'));
 Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.py'));
 
+//Importing beanstalkd client
+Yii::setPathOfAlias('Beanstalk',dirname(__FILE__).DIRECTORY_SEPARATOR.'../vendors/beanstalk');
+
 
 # Location where user images are stored
 #Yii::setPathOfAlias('uploadPath', realpath(dirname(__FILE__). '/../../images/uploads'));
@@ -18,7 +21,7 @@ Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.p
 return CMap::mergeArray($pre_config, array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Music',
-    
+
     # preloading 'log' component
     'preload'=>array('log'),
 
@@ -69,6 +72,25 @@ return CMap::mergeArray($pre_config, array(
             'host' => $esConfig['host'],
             'port' => $esConfig['port']
         ),
+		'beanstalk'=>array(
+			'class'=>'application.components.Beanstalk',
+			'servers'=>array(
+				'server1'=>array(
+					'host'=>'localhost',
+					'port'=>11300,
+					'weight'=>50,
+					// array of connections/tubes
+					'connections'=>array(),
+				),
+
+			),
+		),
+		'ftp' => array(
+			'class' => 'ext.GFtp.GFtpApplicationComponent',
+			'connectionString' => 'ftp://anonymous:anonymous@10.1.1.33:21',
+			'timeout' => 120,
+			'passive' => true
+		),
     ),
     # application-level parameters that can be accessed
     # using Yii::app()->params['paramName']
