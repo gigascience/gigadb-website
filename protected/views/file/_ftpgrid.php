@@ -15,7 +15,7 @@
                  $.ajax({
                     type: 'GET',
                     url: '$url1',
-                    data:{'location': $(this).val()},
+                    data:{'fileinfo': $(this).val()},
                     success: function(output){
                         var response = JSON.parse(output);
                          if(response.status == 'OK') {
@@ -33,7 +33,7 @@
                   $.ajax({
                      type: 'GET',
                      url: '$url2',
-                     data:{'location': $(this).val()},
+                     data:{'fileinfo': $(this).val()},
                      success: function(output){
                          var response = JSON.parse(output);
                           if(response.status == 'OK') {
@@ -136,7 +136,7 @@ if ($error != null) {
             array(
                 'class'=>'CCheckBoxColumn',
                 'selectableRows'=>2,
-                'value'=> '$data->location',
+                'value'=> 'serialize(array("location" => $data->location, "filename" => $data->filename))',
                 'cssClassExpression'=>'($data->isDirectory) ? "hidden-checkbox":"" ',
                 'checked'=>'( isset(unserialize(Yii::app()->session["bundle"])[$data->location]) ) ? true : false',
             ),

@@ -32,6 +32,7 @@ return CMap::mergeArray($pre_config, array(
         'application.behaviors.*',
         'application.vendors.*',
         'application.helpers.*',
+        'application.extensions.*',
     ),
     # application components
     'components'=>array(
