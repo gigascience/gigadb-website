@@ -55,10 +55,12 @@ class BundleFilesCommand extends CConsoleCommand {
                     {
                         $body_array = json_decode($job['body'], true);
                         $bundle = unserialize($body_array['list']);
+                        $bid = $body_array['bid'];
+
                         echo "* Got a new job...\n";
 
                         //create directory for the files
-                        $bundle_dir = self::random_string(20);
+                        $bundle_dir = $bid;
                         mkdir("$local_dir/$bundle_dir", 0700);
 
                         //create a compressed tar archive
@@ -89,6 +91,7 @@ class BundleFilesCommand extends CConsoleCommand {
 
                         echo "\n* Job done...\n\n\n";
                         $consumer->delete($job['id']);
+                        $this->clean_up("$local_dir/$bundle_dir");
                         ftp_raw($conn_id, 'NOOP');
                     }
                     else
@@ -119,16 +122,16 @@ class BundleFilesCommand extends CConsoleCommand {
         }
     }
 
-
-    public static function random_string($length) {
-        $key = '';
-        $keys = array_merge(range(0, 9), range('a', 'z'));
-
-        for ($i = 0; $i < $length; $i++) {
-            $key .= $keys[array_rand($keys)];
+    function clean_up($directory) {
+        $files = array_diff(scandir($directory), array('..', '.'));
+        foreach ($files as $file) {
+            unlink("$directory/$file");
+        }
+        $rmdir_status  = rmdir($directory);
+        if (false === $rmdir_status) {
+            echo "Failed removing $directory";
         }
 
-        return $key;
     }
 
     function custom_error_handler($errno, $errstr, $errfile, $errline) {

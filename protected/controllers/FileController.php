@@ -89,14 +89,15 @@ class FileController extends Controller
             $result["lastop"] = "removeFromBundle";
         }
         else if ($operation === 'downloadSelection') {
-            $ret = $this->prepare_bundle_job(Yii::app()->session['bundle']);
+            $bid = $this->prepare_bundle_job(Yii::app()->session['bundle']);
 
-            if ( $ret ) {
-                $result["status"] = "OK";
-            }
-            else {
+            if ( false === $bid ) {
                 $result["status"] = "ERROR";
                 $result["error"] = "Failing to queue a files packaging job";
+            }
+            else {
+                $result["status"] = "OK";
+                $result["bid"] = $bid;
             }
             $result["lastop"] = "downloadSelection";
         }
@@ -117,12 +118,14 @@ class FileController extends Controller
 
     private function prepare_bundle_job($serialised_bundle) {
         if(isset($serialised_bundle) && count(unserialize($serialised_bundle)> 0 ) ) {
+            $bid = self::random_string(20);
             $client = Yii::app()->beanstalk->getClient();
             $client->connect();
             $client->useTube('filespackaging');
             $jobDetails = [
                 'application'=>'gigadb-website',
                 'list'=>$serialised_bundle,
+                'bid'=>$bid,
                 'submission_time'=>date("c"),
             ];
 
@@ -136,18 +139,28 @@ class FileController extends Controller
             );
 
             if ($ret) {
-                return $ret;
+                return $bid; //return the bundle id that identifies the bundle across all systems
             }
             else {
-                return 0;
+                return false;
             }
 
 
         }
         else {
-            return 0;
+            return false;
         }
     }
 
+    private static function random_string($length) {
+        $key = '';
+        $keys = array_merge(range(0, 9), range('a', 'z'));
+
+        for ($i = 0; $i < $length; $i++) {
+            $key .= $keys[array_rand($keys)];
+        }
+
+        return $key;
+    }
 
 }
