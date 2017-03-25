@@ -14,63 +14,96 @@ class BundleFilesCommand extends CConsoleCommand {
     private function process_data()
     {
         $queue = "bundle_queue";
-        $local_dir = "/tmp";
+        $local_dir = "/tmp/bundles";
 
-        $consumer = Yii::app()->beanstalk->getClient();
-        $consumer->connect();
-        $consumer->watch('filespackaging');
-        echo "* connected to the job server, waiting for new jobs...\n";
-
-        $connectionString = "ftp://anonymous:anonymous@10.1.1.33:21/pub/10.5524";
-
-
-        $conn_id = $this->getFtpConnection($connectionString);
-        ftp_pasv($conn_id, true);
-
-        echo "* connected to ftp server, waiting for new file downloads...\n";
 
         try {
 
+            $consumer = Yii::app()->beanstalk->getClient();
+            $consumer->connect();
+            $consumer->watch('filespackaging');
+            echo "* connected to the job server, waiting for new jobs...\n";
+
+            $connectionString = "ftp://anonymous:anonymous@10.1.1.33:21/pub/10.5524";
+
+
+            $conn_id = $this->getFtpConnection($connectionString);
+
+            echo "\n* connected to ftp server, waiting for new file downloads...\n";
+
+            if (false === is_dir($local_dir) ) {
+                $workdir_status = mkdir("$local_dir", 0700);
+                if (false === $workdir_status) {
+                    throw new Exception ("Error creating directory $local_dir");
+                }
+            }
+
+            echo "\n* work directory created...\n" ;
+
             while (true) {
 
-                ftp_raw($conn_id, 'NOOP');
-                $job = $consumer->reserve();
-                $result = $consumer->touch($job['id']);
+                try {
 
-                if( $result )
-                {
-                    $body_array = json_decode($job['body'], true);
-                    $bundle = unserialize($body_array['list']);
-                    echo "* Got a new job:\n";
-                    echo var_dump($bundle);
-
-                    //create directory for the files
-                    $bundle_dir = self::random_string(20);
-                    mkdir("$local_dir/$bundle_dir", 0700);
-
-                    //create a compressed tar archive
-                    $tar = new Archive_Tar("$local_dir/bundle_$bundle_dir.tar.gz", "gz");
-                    echo var_dump(ftp_rawlist($conn_id, ".", true) );
-
-
-                    foreach ($bundle as $file => $file_name) {
-                        //$full_local_path = $gftp->get($file," $local_dir/$bundle_dir/$file_name");
+                    ftp_raw($conn_id, 'NOOP');
+                    $job = $consumer->reserve();
+                    if (false === $job) {
+                        throw new Exception("Error reserving a new job from the job queue");
                     }
+                    $result = $consumer->touch($job['id']);
 
-                    echo "* Job done...\n";
-                    //$consumer->delete($job['id']);
-                    $consumer->release($job['id'],0,5);
-                    echo var_dump($consumer->statsJob($job['id']));
+                    if( $result )
+                    {
+                        $body_array = json_decode($job['body'], true);
+                        $bundle = unserialize($body_array['list']);
+                        echo "* Got a new job...\n";
+
+                        //create directory for the files
+                        $bundle_dir = self::random_string(20);
+                        mkdir("$local_dir/$bundle_dir", 0700);
+
+                        //create a compressed tar archive
+                        $tar = new Archive_Tar("$local_dir/bundle_$bundle_dir.tar.gz", "gz");
+
+
+                        foreach ($bundle as $location => $filename) {
+                            $location_parts = parse_url($location);
+
+                            echo "* downloading " . $location_parts['path'] . " -> " . "$local_dir/$bundle_dir/$filename \n" ;
+                            $download_status = ftp_get($conn_id,
+                            "$local_dir/$bundle_dir/$filename",
+                            $location_parts['path'],
+                            $this->get_ftp_mode($location_parts['path']));
+
+                            if (false === $download_status) {
+                                throw new Exception("Error while: " . "downloading " . $location_parts['path'] . " -> " . "$local_dir/$bundle_dir/$filename \n");
+                            }
+                            else {
+                                echo "* adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz\n";
+                                $archive_status = $tar->add(["$local_dir/$bundle_dir/$filename"]);
+
+                                if (false === $archive_status) {
+                                    throw new Exception("Error while:" . "adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz\n");
+                                }
+                            }
+                        }
+
+                        echo "\n* Job done...\n\n\n";
+                        $consumer->delete($job['id']);
+                        ftp_raw($conn_id, 'NOOP');
+                    }
+                    else
+                    {
+                        throw new Exception("Failed touching the newly reserved job");
+                    }
                 }
-                else
-                {
-                    // handle failure here
-                    echo "Burying...\n";
+                catch(Exception $ex) {
+                    ftp_raw($conn_id, 'NOOP');
+                    echo "Error while processing job of id " . $job['id'] . ":" . $ex->getMessage();
                     $consumer->bury($job['id'],0);
-                    echo $consumer->statsJob($job['id']);
-                    ftp_close($conn_id);
-                    $consumer->disconnect();
+                    echo "The job of id: " . $job['id'] . " has been " . $consumer->statsJob($job['id'])['state'];
+
                 }
+
 
 
 
@@ -80,12 +113,7 @@ class BundleFilesCommand extends CConsoleCommand {
             $consumer->disconnect();
 
         } catch (Exception $ex) {
-            $error = $ex->getMessage();
-            echo $error;
-            // handle failure here
-            echo "Burying...\n";
-            $consumer->bury($job['id'],0);
-            echo var_dump($consumer->statsJob($job['id']));
+            echo "Error while initialising the worker: " . $ex->getMessage();
             ftp_close($conn_id);
             $consumer->disconnect();
         }
@@ -160,6 +188,25 @@ class BundleFilesCommand extends CConsoleCommand {
 
         // Or retun null
         return null;
+    }
+
+    function get_ftp_mode($filepath)
+    {
+        $path_parts = pathinfo($filepath);
+
+        if (!isset($path_parts['extension'])) return FTP_BINARY;
+        switch (strtolower($path_parts['extension'])) {
+            case 'am':case 'asp':case 'bat':case 'c':case 'cfm':case 'cgi':case 'conf':
+            case 'cpp':case 'css':case 'dhtml':case 'diz':case 'h':case 'hpp':case 'htm':
+            case 'html':case 'in':case 'inc':case 'js':case 'm4':case 'mak':case 'nfs':
+            case 'nsi':case 'pas':case 'patch':case 'php':case 'php3':case 'php4':case 'php5':
+            case 'phtml':case 'pl':case 'po':case 'py':case 'qmail':case 'sh':case 'shtml':
+            case 'sql':case 'tcl':case 'tpl':case 'txt':case 'vbs':case 'xml':case 'xrc':
+            case 'tsv':case 'fastq':case 'fq':case 'fasta':case 'fna':case 'ffn':case 'faa':
+            case 'frn':case 'raw':case 'fq':case 'mzml':case 'mzxml':case 'csv':
+                return FTP_ASCII;
+        }
+        return FTP_BINARY;
     }
 
 
