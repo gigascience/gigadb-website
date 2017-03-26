@@ -71,13 +71,20 @@ class BundleFilesCommand extends CConsoleCommand {
                             $location_parts = parse_url($location);
 
                             echo "* downloading " . $location_parts['path'] . " -> " . "$local_dir/$bundle_dir/$filename \n" ;
+                            $download_status = false;
                             $download_status = ftp_get($conn_id,
-                            "$local_dir/$bundle_dir/$filename",
-                            $location_parts['path'],
-                            $this->get_ftp_mode($location_parts['path']));
+                                "$local_dir/$bundle_dir/$filename",
+                                $location_parts['path'],
+                                $this->get_ftp_mode($location_parts['path'])
+                            );
 
                             if (false === $download_status) {
-                                throw new Exception("Error while: " . "downloading " . $location_parts['path'] . " -> " . "$local_dir/$bundle_dir/$filename \n");
+                                echo "* Error while downloading" .  $location_parts['path'] . "\n" ;
+                                $fp = fopen("$local_dir/$bundle_dir/$filename.error", 'w');
+                                fwrite($fp, "Error while downloading from " . $location_parts['path']. ": \n");
+                                fwrite($fp, error_get_last()['message']);
+                                fclose($fp);
+                                $archive_status = $tar->add(["$local_dir/$bundle_dir/$filename.error"]);
                             }
                             else {
                                 echo "* adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz\n";
