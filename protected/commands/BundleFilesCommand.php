@@ -99,6 +99,7 @@ class BundleFilesCommand extends CConsoleCommand {
                         echo "\n* Job done...\n\n\n";
                         $consumer->delete($job['id']);
                         $this->clean_up("$local_dir/$bundle_dir");
+                        $this->prepare_upload_job("$local_dir/bundle_$bundle_dir.tar.gz",$bid);
                         ftp_raw($conn_id, 'NOOP');
                     }
                     else
@@ -127,6 +128,35 @@ class BundleFilesCommand extends CConsoleCommand {
             ftp_close($conn_id);
             $consumer->disconnect();
         }
+    }
+
+    function prepare_upload_job($file_path, $bid) {
+        $client = Yii::app()->beanstalk->getClient();
+        $client->connect();
+        $client->useTube('bundleuploading');
+        $jobDetails = [
+            'application'=>'gigadb-website',
+            'file_path'=>$file_path,
+            'bid'=>$bid,
+            'submission_time'=>date("c"),
+        ];
+
+        $jobDetailString = json_encode($jobDetails);
+
+        $ret = $client->put(
+            0, // priority
+            0, // do not wait, put in immediately
+            90, // will run within n seconds
+            $jobDetailString // job body
+        );
+
+        if ($ret) {
+            return $bid; //return the bundle id that identifies the bundle across all systems
+        }
+        else {
+            return false;
+        }
+
     }
 
     function clean_up($directory) {
