@@ -56,7 +56,7 @@ class UploadBundleCommand extends CConsoleCommand {
 
     function process_bundle_upload_job($file_path, $bid) {
 
-        echo "* processing job to upload bundle...\n";
+        echo "* processing job to upload bundle $bid...\n";
         //data needed by s3
         $bucket = 'gigadb-bundles-test';
         $keyname = "$bid.tar.gz";

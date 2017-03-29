@@ -6,13 +6,7 @@ class BundleFilesCommand extends CConsoleCommand {
     public function run($args) {
 
 
-        set_error_handler( array($this, "custom_error_handler"));
-        $this->process_data();
-        return 0;
-    }
-
-    private function process_data()
-    {
+        //set_error_handler( array($this, "custom_error_handler"));
         $queue = "bundle_queue";
         $local_dir = "/tmp/bundles";
 
@@ -24,12 +18,7 @@ class BundleFilesCommand extends CConsoleCommand {
             $consumer->watch('filespackaging');
             echo "* connected to the job server, waiting for new jobs...\n";
 
-            $connectionString = "ftp://anonymous:anonymous@10.1.1.33:21/pub/10.5524";
 
-
-            $conn_id = $this->getFtpConnection($connectionString);
-
-            echo "\n* connected to ftp server, waiting for new file downloads...\n";
 
             if (false === is_dir($local_dir) ) {
                 $workdir_status = mkdir("$local_dir", 0700);
@@ -44,7 +33,8 @@ class BundleFilesCommand extends CConsoleCommand {
 
                 try {
 
-                    ftp_raw($conn_id, 'NOOP');
+                    echo "Reserving next job...\n";
+
                     $job = $consumer->reserve();
                     if (false === $job) {
                         throw new Exception("Error reserving a new job from the job queue");
@@ -53,11 +43,17 @@ class BundleFilesCommand extends CConsoleCommand {
 
                     if( $result )
                     {
+
                         $body_array = json_decode($job['body'], true);
                         $bundle = unserialize($body_array['list']);
                         $bid = $body_array['bid'];
 
                         echo "* Got a new job...\n";
+
+                        $connectionString = "ftp://anonymous:anonymous@10.1.1.33:21/pub/10.5524";
+                        $conn_id = $this->getFtpConnection($connectionString);
+
+                        echo "\n* connected to ftp server, ready to download files...\n";
 
                         //create directory for the files
                         $bundle_dir = $bid;
@@ -73,9 +69,9 @@ class BundleFilesCommand extends CConsoleCommand {
                             echo "* downloading " . $location_parts['path'] . " -> " . "$local_dir/$bundle_dir/$filename \n" ;
                             $download_status = false;
                             $download_status = ftp_get($conn_id,
-                                "$local_dir/$bundle_dir/$filename",
-                                $location_parts['path'],
-                                $this->get_ftp_mode($location_parts['path'])
+                            "$local_dir/$bundle_dir/$filename",
+                            $location_parts['path'],
+                            $this->get_ftp_mode($location_parts['path'])
                             );
 
                             if (false === $download_status) {
@@ -97,19 +93,26 @@ class BundleFilesCommand extends CConsoleCommand {
                         }
 
                         echo "\n* Job done...\n\n\n";
-                        $consumer->delete($job['id']);
+                        $deletion_status = $consumer->delete($job['id']);
+                        if (true === $deletion_status) {
+                            echo "Job for bundle $bid successfully deleted\n";
+                        }
+                        else {
+                            echo "Failed to delete job for bundle $bid]\n";
+                        }
+
                         $this->clean_up("$local_dir/$bundle_dir");
                         $this->prepare_upload_job("$local_dir/bundle_$bundle_dir.tar.gz",$bid);
-                        ftp_raw($conn_id, 'NOOP');
+                        ftp_close($conn_id);
                     }
                     else
                     {
                         throw new Exception("Failed touching the newly reserved job");
                     }
                 }
-                catch(Exception $ex) {
+                catch(Exception $loopex) {
                     ftp_raw($conn_id, 'NOOP');
-                    echo "Error while processing job of id " . $job['id'] . ":" . $ex->getMessage();
+                    echo "Error while processing job of id " . $job['id'] . ":" . $loopex->getMessage();
                     $consumer->bury($job['id'],0);
                     echo "The job of id: " . $job['id'] . " has been " . $consumer->statsJob($job['id'])['state'];
 
@@ -122,6 +125,7 @@ class BundleFilesCommand extends CConsoleCommand {
 
             ftp_close($conn_id);
             $consumer->disconnect();
+            echo "* Closed FTP connection and stopped listenging to the job queue...\n";
 
         } catch (Exception $ex) {
             echo "Error while initialising the worker: " . $ex->getMessage();
@@ -130,9 +134,9 @@ class BundleFilesCommand extends CConsoleCommand {
         }
     }
 
+
     function prepare_upload_job($file_path, $bid) {
         $client = Yii::app()->beanstalk->getClient();
-        $client->connect();
         $client->useTube('bundleuploading');
         $jobDetails = [
             'application'=>'gigadb-website',
@@ -169,25 +173,6 @@ class BundleFilesCommand extends CConsoleCommand {
             echo "Failed removing $directory";
         }
 
-    }
-
-    function custom_error_handler($errno, $errstr, $errfile, $errline) {
-        // Determine if this error is one of the enabled ones in php config (php.ini, .htaccess, etc)
-        $error_is_enabled = (bool)($errno & ini_get('error_reporting') );
-
-        // -- FATAL ERROR
-        // throw an Error Exception, to be handled by whatever Exception handling logic is available in this context
-        if( in_array($errno, array(E_USER_ERROR, E_RECOVERABLE_ERROR)) && $error_is_enabled ) {
-            throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-        }
-
-        // -- NON-FATAL ERROR/WARNING/NOTICE
-        // Log the error if it's enabled, otherwise just ignore it
-        else if( $error_is_enabled ) {
-            error_log( $errstr, 0 );
-            echo $errstr;
-            return false; // Make sure this ends up in $php_errormsg, if appropriate
-        }
     }
 
     function getFtpConnection($uri)
