@@ -7,6 +7,7 @@ css/site.css
 protected/runtime
 protected/config/db.json
 protected/config/es.json
+protected/config/aws.json
 protected/config/local.php
 protected/config/main.php
 protected/yiic.php

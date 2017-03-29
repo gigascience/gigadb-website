@@ -3,6 +3,7 @@
 
 $esConfig = json_decode(file_get_contents(dirname(__FILE__).'/es.json'), true);
 $dbConfig = json_decode(file_get_contents(dirname(__FILE__).'/db.json'), true);
+$awsConfig = json_decode(file_get_contents(dirname(__FILE__).'/aws.json'), true);
 $pre_config = require(dirname(__FILE__).'/local.php');
 Yii::setPathOfAlias('Elastica', realpath(dirname(__FILE__). '/../../Elastica/lib'));
 Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.py'));
@@ -92,6 +93,11 @@ return CMap::mergeArray($pre_config, array(
 			'timeout' => 120,
 			'passive' => true
 		),
+		'aws'=>array(
+		    'class' => 'application.components.AwsYiiConfig',
+		    'access_key' => $awsConfig['access_key'],
+		    'secret_key' => $awsConfig['secret_key'],
+		  ),
     ),
     # application-level parameters that can be accessed
     # using Yii::app()->params['paramName']

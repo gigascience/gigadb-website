@@ -1,9 +1,5 @@
 <?php
 
-spl_autoload_unregister(array('YiiBase', 'autoload'));
-require_once 'vendors/aws/aws-autoloader.php';
-spl_autoload_register(array('YiiBase', 'autoload'));
-
 class UploadBundleCommand extends CConsoleCommand {
 
 
@@ -60,13 +56,13 @@ class UploadBundleCommand extends CConsoleCommand {
 
     function process_bundle_upload_job($file_path, $bid) {
 
-        echo "* processing job to upload bundle...";
+        echo "* processing job to upload bundle...\n";
         //data needed by s3
         $bucket = 'gigadb-bundles-test';
         $keyname = "$bid.tar.gz";
 
-        // Instantiate the client.
-        $s3 = \Aws\S3\S3Client::factory();
+        // Instantiate the S3 client.
+        $s3 = Yii::app()->aws->getS3Instance();
 
         // Prepare the upload parameters.
         $uploader = \Aws\S3\Model\MultipartUpload\UploadBuilder::newInstance()
