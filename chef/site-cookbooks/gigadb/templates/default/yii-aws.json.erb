@@ -1,0 +1,5 @@
+{
+    <% aws = node[:gigadb][:aws] -%>
+    "access_key": "<%= aws[:access_key] %>",
+    "secret_key"    : "<%= aws[:secret_key] %>"
+}
