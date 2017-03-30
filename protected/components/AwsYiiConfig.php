@@ -10,15 +10,9 @@ class AwsYiiConfig extends CApplicationComponent
     public $s3_bucket;
 
 
-    public function init() {
-        parent::init();
+    private function initializeS3Client() {
 
-        spl_autoload_unregister(array('YiiBase', 'autoload'));
-        require_once 'vendors/aws/aws-autoloader.php';
-        spl_autoload_register(array('YiiBase', 'autoload'));
-    }
-
-    private function initialiazeS3Client() {
+        if ( $this->access_key === NULL || $this->secret_key === NULL )	throw new CException('S3 credentials are not set.');
 
         $this->_s3 = \Aws\S3\S3Client::factory(array(
             'key'    => $this->access_key,
@@ -27,7 +21,7 @@ class AwsYiiConfig extends CApplicationComponent
     }
 
     public function getS3Instance() {
-        if ($this->_s3 === NULL) $this->initialiazeS3Client();
+        if ($this->_s3 === NULL) $this->initializeS3Client();
         return $this->_s3;
     }
 

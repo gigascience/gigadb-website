@@ -5,11 +5,8 @@ class BundleFilesCommand extends CConsoleCommand {
 
     public function run($args) {
 
-
-        //set_error_handler( array($this, "custom_error_handler"));
         $queue = "bundle_queue";
         $local_dir = "/tmp/bundles";
-
 
         try {
 
@@ -17,8 +14,6 @@ class BundleFilesCommand extends CConsoleCommand {
             $consumer->connect();
             $consumer->watch('filespackaging');
             echo "* connected to the job server, waiting for new jobs...\n";
-
-
 
             if (false === is_dir($local_dir) ) {
                 $workdir_status = mkdir("$local_dir", 0700);

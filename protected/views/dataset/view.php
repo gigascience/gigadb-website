@@ -384,8 +384,8 @@ HTML;
                                                             array("/file/downloadSelection"),
                                                             array('type'=>'POST','dataType'=>'json' ,'success'=>"function(response){
                                 if(response.status == 'OK'){
-                                    $('#download_selection').html(\"Your bundle is being prepared. Please wait a few minutes\");
-                                    console.log('Your bundle is being prepared. Please wait a few moment');
+                                    $('#download_selection').html('Your bundle is being prepared. <a href=\"/file/download/' + response.bid + '\">Click here to download</a>');
+                                    console.log('Your bundle is being prepared. <a href=\"/file/download/' + response.bid + '\">Click here to download</a>');
                                 }else {
                                     console.log('There was an error in preparing your selection of file to download. Please try again later.');
                                 }

@@ -1,6 +1,7 @@
 <?php
 $esConfig = json_decode(file_get_contents(dirname(__FILE__).'/es.json'), true);
 $dbConfig = json_decode(file_get_contents(dirname(__FILE__).'/db.json'), true);
+$awsConfig = json_decode(file_get_contents(dirname(__FILE__).'/aws.json'), true);
 $pre_config = require(dirname(__FILE__).'/local.php');
 
 // Location where user images are stored
@@ -9,6 +10,12 @@ Yii::setPathOfAlias('uploadURL', '/images/uploads/');
 Yii::setPathOfAlias('Elastica', realpath(dirname(__FILE__). '/../../Elastica/lib'));
 Yii::setPathOfAlias('googleAPI', realpath(dirname(__FILE__).'/../../google-api-php-client/src'));
 Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.py'));
+
+//Importing AWS SDK
+Yii::setPathOfAlias('Aws',dirname(__FILE__).DIRECTORY_SEPARATOR.'../vendors/aws/Aws');
+Yii::setPathOfAlias('Guzzle',dirname(__FILE__).DIRECTORY_SEPARATOR.'../vendors/aws/Guzzle');
+Yii::setPathOfAlias('Symfony',dirname(__FILE__).DIRECTORY_SEPARATOR.'../vendors/aws/Symfony');
+
 
 //Importing beanstalkd client
 Yii::setPathOfAlias('Beanstalk',dirname(__FILE__).DIRECTORY_SEPARATOR.'../vendors/beanstalk');
@@ -83,6 +90,11 @@ return CMap::mergeArray(array(
             'timeout' => 120,
             'passive' => true
         ),
+        'aws'=>array(
+            'class' => 'application.components.AwsYiiConfig',
+            'access_key' => $awsConfig['access_key'],
+            'secret_key' => $awsConfig['secret_key'],
+          ),
         'request' => array(
             //'enableCookieValidation' => true,
         ),
@@ -120,6 +132,7 @@ return CMap::mergeArray(array(
             'rules'=>array(
                 '/dataset/<id:\d+>'=>'dataset/view/id/<id>',
                 '/dataset/<id:\d+>/<slug:.+>'=>'dataset/view/id/<id>',
+                '/file/download/<bid:\w+>'=>'file/download',
                 '/file/<operation:\w+>'=>'file/bundle',
                 //'search'=>'site/index',
                 //'download/<search:.+>'=>'site/index',

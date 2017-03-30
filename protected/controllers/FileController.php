@@ -41,7 +41,7 @@ class FileController extends Controller
         return array(
 
             array('allow',  // allow all users to perform 'index' and 'view' actions
-                'actions'=>array('Bundle'),
+                'actions'=>array('Bundle', 'Download'),
                 'users'=>array('*'),
             ),
             array('deny',  // deny all users
@@ -114,6 +114,18 @@ class FileController extends Controller
         //var_dump(Yii::app()->session->keys);
 		Yii::app()->end();
 
+    }
+
+    public function actionDownload($bid) {
+        $download_url = 'http://gigadb-bundles-test.s3.amazonaws.com/'.$bid.'.tar.gz' ;
+        $bundle = new Bundle();
+        $bundle->bid = $bid;
+        $bundle->download_url = $download_url;
+        // echo var_dump($bundle);
+        // Yii::app()->end();
+        $this->render('download',array(
+            'bundle'=>$bundle
+        ));
     }
 
     private function prepare_bundle_job($serialised_bundle) {

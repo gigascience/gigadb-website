@@ -1,5 +1,10 @@
 <?php
 
+spl_autoload_unregister(array('YiiBase', 'autoload'));
+require_once 'vendors/aws/aws-autoloader.php';
+spl_autoload_register(array('YiiBase', 'autoload'));
+
+
 class UploadBundleCommand extends CConsoleCommand {
 
 
