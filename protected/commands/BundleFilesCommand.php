@@ -79,7 +79,7 @@ class BundleFilesCommand extends CConsoleCommand {
                             }
                             else {
                                 echo "* adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz\n";
-                                $archive_status = $tar->add(["$local_dir/$bundle_dir/$filename"]);
+                                $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$filename"], "", $local_dir);
 
                                 if (false === $archive_status) {
                                     throw new Exception("Error while:" . "adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz\n");
