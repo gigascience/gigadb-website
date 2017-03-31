@@ -124,6 +124,9 @@
     "ssh": {
       "enable_password": "no"
     },
+    "beanstalkd": {
+      "opts": "-b"
+    },
     "supervisor": {
       "programs": [
           {
