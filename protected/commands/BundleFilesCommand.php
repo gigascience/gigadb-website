@@ -126,7 +126,7 @@ class BundleFilesCommand extends CConsoleCommand {
                             echo "An error occured while submitting an upload job\n";
                         }
 
-                        echo "\n* Job done...\n\n\n";
+                        echo "\n* Job done...(" . $job['id'] . ")\n\n\n";
                         $deletion_status = $consumer->delete($job['id']);
                         if (true === $deletion_status) {
                             echo "Job for bundle $bid successfully deleted\n";

@@ -123,6 +123,34 @@
     },
     "ssh": {
       "enable_password": "no"
+    },
+    "supervisor": {
+      "programs": [
+          {
+            "name":"bundlefiles",
+            "command":"/usr/bin/php /vagrant/protected/yiic bundlefiles",
+            "numprocs": "1",
+            "directory":"/vagrant/protected",
+            "autostart": "true",
+            "autorestart": "true",
+            "log_stdout": "true",
+            "log_stderr": "true",
+            "logfile": "/var/log/bundlefiles.log",
+            "logfile_maxbytes": "100MB"
+          },
+          {
+            "name":"uploadbundle",
+            "command":"/usr/bin/php /vagrant/protected/yiic uploadbundle",
+            "numprocs": "1",
+            "directory":"/vagrant/protected",
+            "autostart": "true",
+            "autorestart": "true",
+            "log_stdout": "true",
+            "log_stderr": "true",
+            "logfile": "/var/log/uploadbundle.log",
+            "logfile_maxbytes": "100MB"
+          }
+      ]
     }
   },
   "json_class": "Chef::Environment",
