@@ -1,7 +1,7 @@
 <?php
 
 spl_autoload_unregister(array('YiiBase', 'autoload'));
-require_once 'vendors/aws/aws-autoloader.php';
+require_once dirname(__FILE__). '/../vendors/aws/aws-autoloader.php';
 spl_autoload_register(array('YiiBase', 'autoload'));
 
 
