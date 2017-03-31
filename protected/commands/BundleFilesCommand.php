@@ -1,7 +1,7 @@
 <?php
 
-
 class BundleFilesCommand extends CConsoleCommand {
+
 
     public function run($args) {
 
@@ -42,6 +42,7 @@ class BundleFilesCommand extends CConsoleCommand {
                         $body_array = json_decode($job['body'], true);
                         $bundle = unserialize($body_array['list']);
                         $bid = $body_array['bid'];
+                        $dataset_id = $body_array['dataset_id'];
 
                         echo "* Got a new job...\n";
 
@@ -52,22 +53,37 @@ class BundleFilesCommand extends CConsoleCommand {
 
                         //create directory for the files
                         $bundle_dir = $bid;
-                        mkdir("$local_dir/$bundle_dir", 0700);
+                        echo "* Creating working directory " . "$local_dir/$bundle_dir" . "...\n";
+                        if (!(is_dir("$local_dir/$bundle_dir")))
+                            mkdir("$local_dir/$bundle_dir", 0700);
+                        chdir("$local_dir/$bundle_dir");
 
                         //create a compressed tar archive
                         $tar = new Archive_Tar("$local_dir/bundle_$bundle_dir.tar.gz", "gz");
 
 
-                        foreach ($bundle as $location => $filename) {
+                        foreach ($bundle as $selection) {
+
+                            $location = $selection["location"];
+                            $filename = $selection["filename"];
+                            $type = $selection["type"];
+
                             $location_parts = parse_url($location);
 
                             echo "* downloading " . $location_parts['path'] . " -> " . "$local_dir/$bundle_dir/$filename \n" ;
                             $download_status = false;
-                            $download_status = ftp_get($conn_id,
-                            "$local_dir/$bundle_dir/$filename",
-                            $location_parts['path'],
-                            $this->get_ftp_mode($location_parts['path'])
+                            chdir("$local_dir/$bundle_dir/");
+
+                            if ($type === "Directory") {
+                                $download_status = $this->ftp_getdir($conn_id, $location_parts['path'], $dataset_id);
+                            }
+                            else {
+                                $download_status = ftp_get($conn_id,
+                                "$local_dir/$bundle_dir/$filename",
+                                $location_parts['path'],
+                                $this->get_ftp_mode($location_parts['path'])
                             );
+                            }
 
                             if (false === $download_status) {
                                 echo "* Error while downloading" .  $location_parts['path'] . "\n" ;
@@ -78,14 +94,36 @@ class BundleFilesCommand extends CConsoleCommand {
                                 $archive_status = $tar->add(["$local_dir/$bundle_dir/$filename.error"]);
                             }
                             else {
-                                $portable_path = str_replace("/pub/10.5524/100001_101000/100117/","", pathinfo($location_parts['path'], PATHINFO_DIRNAME));
-                                echo "* adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz\n";
-                                $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$filename"], $portable_path, "$local_dir/$bundle_dir");
+                                if ($type === "Directory") {
+                                    $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", $location_parts['path']);
+                                    echo "* adding " . "$portable_path" .  " to $local_dir/bundle_$bundle_dir.tar.gz\n";
+                                    $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$portable_path"], "", "$local_dir/$bundle_dir");
+                                }
+                                else if (pathinfo($location_parts['path'], PATHINFO_DIRNAME) === "/pub/10.5524/100001_101000/$dataset_id") {
+                                    $portable_path = "" ;
+                                    echo "* adding " . "$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz\n";
+                                    $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$filename"], $portable_path, "$local_dir/$bundle_dir/");
+                                }
+                                else {
+                                    $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", pathinfo($location_parts['path'], PATHINFO_DIRNAME));
+                                    echo "* adding " . "$portable_path/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz\n";
+                                    $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$filename"], $portable_path, "$local_dir/$bundle_dir/");
+                                }
 
                                 if (false === $archive_status) {
                                     throw new Exception("Error while:" . "adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz\n");
                                 }
+                                // else {
+                                //     echo var_dump($tar->listcontent());
+                                // }
                             }
+                        }
+                        $upload_job = $this->prepare_upload_job("$local_dir/bundle_$bundle_dir.tar.gz",$bid);
+                        if($upload_job) {
+                            echo "* Submitted an upload job with id: $upload_job\n";
+                        }
+                        else {
+                            echo "An error occured while submitting an upload job\n";
                         }
 
                         echo "\n* Job done...\n\n\n";
@@ -96,9 +134,8 @@ class BundleFilesCommand extends CConsoleCommand {
                         else {
                             echo "Failed to delete job for bundle $bid]\n";
                         }
+                        $this->rrmdir("$local_dir/$bundle_dir");
 
-                        $this->clean_up("$local_dir/$bundle_dir");
-                        $this->prepare_upload_job("$local_dir/bundle_$bundle_dir.tar.gz",$bid);
                         ftp_close($conn_id);
                     }
                     else
@@ -113,8 +150,6 @@ class BundleFilesCommand extends CConsoleCommand {
                     echo "The job of id: " . $job['id'] . " has been " . $consumer->statsJob($job['id'])['state'];
 
                 }
-
-
 
 
             }
@@ -150,16 +185,11 @@ class BundleFilesCommand extends CConsoleCommand {
             $jobDetailString // job body
         );
 
-        if ($ret) {
-            return $bid; //return the bundle id that identifies the bundle across all systems
-        }
-        else {
-            return false;
-        }
+        return $ret;
 
     }
 
-    function clean_up($directory) {
+    function clean_up_files($directory) {
         $files = array_diff(scandir($directory), array('..', '.'));
         foreach ($files as $file) {
             unlink("$directory/$file");
@@ -169,6 +199,19 @@ class BundleFilesCommand extends CConsoleCommand {
             echo "Failed removing $directory";
         }
 
+    }
+
+    function rrmdir($dir) {
+       if (is_dir($dir)) {
+         $objects = scandir($dir);
+         foreach ($objects as $object) {
+           if ($object != "." && $object != "..") {
+             if (filetype($dir."/".$object) == "dir") $this->rrmdir($dir."/".$object); else unlink($dir."/".$object);
+           }
+         }
+         reset($objects);
+         rmdir($dir);
+       }
     }
 
     function getFtpConnection($uri)
@@ -228,6 +271,57 @@ class BundleFilesCommand extends CConsoleCommand {
                 return FTP_ASCII;
         }
         return FTP_BINARY;
+    }
+
+
+    function ftp_getdir ($conn_id, $dir, $dataset_id) {
+
+        $errors = [];
+
+        if ($dir != ".") {
+            if (ftp_chdir($conn_id, $dir) == false) {
+                echo ("Change Dir Failed: $dir<BR>\r\n");
+                return false;
+            }
+            $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", $dir);
+            // echo "current dir: ". getcwd() . "\n";
+            // echo "ftp_getdir: mkdir($portable_path, true)\n";
+            if (!(is_dir($portable_path)))
+                mkdir($portable_path, 0777, true);
+            chdir ($portable_path);
+        }
+
+        $contents = ftp_nlist($conn_id, ".");
+        foreach ($contents as $file) {
+
+            if ($file == '.' || $file == '..')
+                continue;
+
+            if (@ftp_chdir($conn_id, $file)) {
+                ftp_chdir ($conn_id, "..");
+                $getdir_status = $this->ftp_getdir ($conn_id, $file, $dataset_id);
+                if (false === $getdir_status) {
+                    $errors[] =  $file ;
+                }
+            }
+            else {
+                $get_response = ftp_get($conn_id, $file, $file, $this->get_ftp_mode($file));
+                if (false === $get_response) {
+                    $errors[] =  $file ;
+                }
+            }
+        }
+
+        ftp_chdir ($conn_id, "..");
+        chdir ("..");
+
+        if(empty($errors)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
     }
 
 

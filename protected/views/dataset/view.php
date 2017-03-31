@@ -382,7 +382,7 @@ HTML;
             <div class="pull-right" id="download_selection">
                 <?php             echo MyHtml::ajaxButton(Yii::t('app' , 'Download file selection'),
                                                             array("/file/downloadSelection"),
-                                                            array('type'=>'POST','dataType'=>'json' ,'success'=>"function(response){
+                                                            array('type'=>'POST','dataType'=>'json' ,'data'=>array('dataset_id'=>$model->identifier), 'success'=>"function(response){
                                 if(response.status == 'OK'){
                                     $('#download_selection').html('Your bundle is being prepared. <a href=\"/file/download/' + response.bid + '\">Click here to download</a>');
                                     console.log('Your bundle is being prepared. <a href=\"/file/download/' + response.bid + '\">Click here to download</a>');

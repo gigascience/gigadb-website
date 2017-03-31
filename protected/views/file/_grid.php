@@ -131,8 +131,7 @@ if ($error != null) {
                 'class'=>'CCheckBoxColumn',
                 'id'=>'selecttodownload',
                 'selectableRows'=>2,
-                'value'=> 'serialize(array("location" => $data->location, "filename" => $data->name))',
-                'cssClassExpression'=>'($data->type->name === "Directory") ? "hidden-checkbox":"" ',
+                'value'=> 'serialize(array("location" => $data->location, "filename" => $data->name, "type" => $data->type->name ))',
                 'checked'=>'( isset(unserialize(Yii::app()->session["bundle"])[$data->location]) ) ? true : false',
             ),
 

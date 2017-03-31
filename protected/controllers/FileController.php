@@ -58,6 +58,8 @@ class FileController extends Controller
 
         $result = array('status' => "ERROR");
         $fileinfo = Yii::app()->request->getParam('fileinfo');
+        $dataset_id = Yii::app()->request->getParam('dataset_id');
+
         if(isset($fileinfo)) {
             $fileinfo_array = unserialize($fileinfo);
         }
@@ -76,7 +78,7 @@ class FileController extends Controller
 
             //add new item to session myvar
             $bundle = unserialize(Yii::app()->session['bundle']);
-            $bundle[$fileinfo_array['location']] = $fileinfo_array['filename'] ;
+            $bundle[$fileinfo_array['location']] = array( "location" => $fileinfo_array['location'], "filename" =>  $fileinfo_array['filename'], "type" => $fileinfo_array['type']) ;
             Yii::app()->session['bundle'] = serialize($bundle);
             $result["status"] = "OK";
             $result["lastop"] = "addToBundle";
@@ -89,7 +91,7 @@ class FileController extends Controller
             $result["lastop"] = "removeFromBundle";
         }
         else if ($operation === 'downloadSelection') {
-            $bid = $this->prepare_bundle_job(Yii::app()->session['bundle']);
+            $bid = $this->prepare_bundle_job(Yii::app()->session['bundle'], $dataset_id);
 
             if ( false === $bid ) {
                 $result["status"] = "ERROR";
@@ -117,6 +119,7 @@ class FileController extends Controller
     }
 
     public function actionDownload($bid) {
+
         $download_url = 'http://gigadb-bundles-test.s3.amazonaws.com/'.$bid.'.tar.gz' ;
         $bundle = new Bundle();
         $bundle->bid = $bid;
@@ -128,7 +131,7 @@ class FileController extends Controller
         ));
     }
 
-    private function prepare_bundle_job($serialised_bundle) {
+    private function prepare_bundle_job($serialised_bundle, $dataset_id) {
         if(isset($serialised_bundle) && count(unserialize($serialised_bundle)> 0 ) ) {
             $bid = self::random_string(20);
             $client = Yii::app()->beanstalk->getClient();
@@ -138,6 +141,7 @@ class FileController extends Controller
                 'application'=>'gigadb-website',
                 'list'=>$serialised_bundle,
                 'bid'=>$bid,
+                'dataset_id'=>$dataset_id,
                 'submission_time'=>date("c"),
             ];
 

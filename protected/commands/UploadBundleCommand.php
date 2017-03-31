@@ -34,7 +34,7 @@ class UploadBundleCommand extends CConsoleCommand {
                             throw new Exception(error_get_last()['message']);
                         }
                         else {
-                            echo "\n* Job done...\n\n\n";
+                            echo "\n* Job done...deleting (" . $job['id'] . ")\n\n\n";
                             $consumer->delete($job['id']);
                             $this->clean_up("$file_path");
                         }
