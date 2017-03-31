@@ -78,8 +78,9 @@ class BundleFilesCommand extends CConsoleCommand {
                                 $archive_status = $tar->add(["$local_dir/$bundle_dir/$filename.error"]);
                             }
                             else {
+                                $portable_path = str_replace("/pub/10.5524/100001_101000/100117/","", pathinfo($location_parts['path'], PATHINFO_DIRNAME));
                                 echo "* adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz\n";
-                                $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$filename"], "", $local_dir);
+                                $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$filename"], $portable_path, "$local_dir/$bundle_dir");
 
                                 if (false === $archive_status) {
                                     throw new Exception("Error while:" . "adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz\n");
