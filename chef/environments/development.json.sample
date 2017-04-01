@@ -15,10 +15,6 @@
       "ftp": {
         "connection_url": "ftp://anonymous:anonymous@10.1.1.33:21"
       },
-      "aws": {
-        "access_key": "your access key here",
-        "secret_key": "your secret key here"
-      },
       "site_dir": "/vagrant",
       "root_dir": "/vagrant",
       "log_dir": "/vagrant/logs",
