@@ -117,18 +117,35 @@ if ($error != null) {
                 'visible' => in_array("attribute", $setting),
             ),
             array(
+                'header'=>'Preview',
+                'template'=>'{preview}',
+                'class'=>'bootstrap.widgets.BootButtonColumn',
+                'buttons' => array(
+                    'preview' => array(
+                        'icon'=>'eye-open',
+                        'options'=>array(
+                            'class'=>'btn btn-mini'
+                        )
+                    ),
+                ),
+                'htmlOptions'=>array('style'=>'width: 50px'),
+                'viewButtonUrl'=>null,
+                'updateButtonUrl'=>null,
+                'deleteButtonUrl'=>null,
+                'visible' => in_array("location", $setting),
+            ),
+            array(
                 'header'=>'Download',
-                'class'=>'CButtonColumn',
+                'class'=>'bootstrap.widgets.BootButtonColumn',
                 'template' => '{download}',
                 'buttons' => array(
-                    'download' => array(
-                        'label'=>'',
-                        'url' => '$data->location',
-                        'imageUrl' => '',
-                        'options' => array(
-                            'target' => '_blank',
-                            'class' => 'download-btn js-download-count',
-                        ),
+                        'download' => array(
+                            'icon'=>'icon-download-alt',
+                            'url' => '$data->location',
+                            'options' => array(
+                                'target' => '_blank',
+                                'class' => 'btn btn-mini js-download-count',
+                            ),
                     )
                 ),
                 'visible' => in_array("location", $setting),
