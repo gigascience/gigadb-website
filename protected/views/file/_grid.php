@@ -129,6 +129,7 @@ if ($error != null) {
             ),
             array(
                 'class'=>'CCheckBoxColumn',
+                'headerTemplate'=> 'Select',
                 'id'=>'selecttodownload',
                 'selectableRows'=>2,
                 'value'=> 'serialize(array("location" => $data->location, "filename" => $data->name, "type" => $data->type->name ))',

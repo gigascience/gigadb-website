@@ -135,6 +135,7 @@ if ($error != null) {
             ),
             array(
                 'class'=>'CCheckBoxColumn',
+                'headerTemplate'=> 'Select',
                 'selectableRows'=>2,
                 'value'=> 'serialize(array("location" => $data->location, "filename" => $data->filename, "type" => ($data->isDirectory) ? "Directory": "File" ))',
                 'checked'=>'( isset(unserialize(Yii::app()->session["bundle"])[$data->location]) ) ? true : false',
