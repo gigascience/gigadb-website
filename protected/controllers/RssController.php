@@ -64,36 +64,32 @@ class RssController extends Controller {
 
 	private function generateFeed($datasets){
 		Yii::import('ext.feed.*');
-
-		// specify feed type
-		$feed = new EFeed(EFeed::RSS1);
-		$feed->title = $this->title;
-		$feed->link = $this->rssLink;
-		$feed->description = $this->rssDescription;
-		$feed->RSS1ChannelAbout = $this->rssAbout;
-
-		foreach ($datasets as $key => $dataset) {
+                // specify feed type
+                $feed = new EFeed();
+                $feed->title = $this->title;
+                $feed->link = $this->rssLink;
+                $feed->description = 'GigaDB RSS Feed';
+                $feed->addChannelTag('language', 'en-us');
+                $feed->addChannelTag('pubDate', date(DATE_RSS, time()));
+                $feed->addChannelTag('link', 'http://www.gigadb.org' );
+                $feed->addChannelTag('title', 'GigaDB' );
+                foreach ($datasets as $key => $dataset) {
             $title = $this->isDataset($dataset) ? $dataset->title : $dataset->message;
             $link = $this->isDataset($dataset) ? Yii::app()->request->hostInfo."/dataset/".$dataset->identifier : Yii::app()->request->hostInfo;
             $desc = $this->isDataset($dataset) ? $dataset->description : $dataset->message;
-
-			// create dataset item
-			$item = $feed->createNewItem();
-			$item->title = $title;
-			$item->link = $link;
-			$item->date = $dataset->publication_date;
-			$item->description = $desc;
-			$item->addTag('dc:subject', $title);
-
-			$feed->addItem($item);
-		}
-
-
-		if(count($datasets)==0){
-			echo "No Item";
-		}else {
-			$feed->generateFeed();
-		}
+                        // create dataset item
+                        $item = $feed->createNewItem();
+                        $item->title = $title;
+                        $item->link = $link;
+                        $item->date = $dataset->publication_date;
+                        $item->description = $desc;
+                        $feed->addItem($item);
+                }
+                if(count($datasets)==0){
+                        echo "No Item";
+                 }else {
+                        $feed->generateFeed();
+                }
 
 	}
 
