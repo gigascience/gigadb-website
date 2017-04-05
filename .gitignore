@@ -15,6 +15,7 @@ protected/data/*.db
 protected/scripts/set_env.sh
 protected/scripts/update_links.sh
 themes/classic/views/
+files/certs
 
 # Vagrant
 *.vagrant
@@ -23,7 +24,9 @@ vagrant.log
 # Chef
 chef/environments/development.json
 chef/environments/production.json
+**/encrypted_data_bag_secret
 chef/nodes/*.json
+
 
 # PhpStorm
 *.iml

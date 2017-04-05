@@ -12,6 +12,10 @@
         "database": "gigadb",
         "server_names": ["localhost"]
       },
+      "ftp": {
+		"connection_url": "ftp://anonymous:anonymous@10.1.1.33:21"
+	  },
+      "repo_dir": "~",
       "site_dir": "/vagrant",
       "root_dir": "/vagrant",
       "log_dir": "/vagrant/logs",
@@ -68,6 +72,11 @@
       "orcid": {
         "client_id": "",
         "client_secret": ""
+      },
+      "mds": {
+        "mds_username": "",
+        "mds_password": "",
+        "mds_prefix": "10.5072"
       },
       "python": {
         "build_dir": "/home/gigadb/build",

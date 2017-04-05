@@ -1,8 +1,4 @@
-<%- if node[:gigadb][:server_names][0] == 'localhost' -%>
-<%- home_url = 'localhost:9170'-%>
-<%- else -%>
-<%- home_url = node[:gigadb][:server_names][0] -%>
-<%- end -%>
+<% home_url = node[:gigadb][:server_names] -%>
 
 <% server_email = node[:gigadb][:admin_email] -%>
 
@@ -50,5 +46,10 @@ return array(
         // Sphinx params
         'sphinx_servername' => 'localhost',
         'sphinx_port' => 9312,
+
+        // MDS params
+        'mds_username' => '<%= node[:gigadb][:mds][:mds_username] %>',
+        'mds_password' => '<%= node[:gigadb][:mds][:mds_password] %>',
+        'mds_prefix' => '<%= node[:gigadb][:mds][:mds_prefix] %>',
     ),
 );
