@@ -6,10 +6,7 @@ class RssController extends Controller {
 	public $rssLink="http://gigadb.org";
 	public $rssDescription="";
 	public $rssAbout="http://gigadb.org";
-
     public $numberOfLatestDataset=10;
-
-
 
 	public function actionFeed($id){
 		$search=SearchRecord::model()->findByPk($id);
@@ -52,8 +49,6 @@ class RssController extends Controller {
         }
     }
 
-
-
 	public function displayDataset($ids){
 
 		$criteria = new CDbCriteria();
@@ -64,39 +59,38 @@ class RssController extends Controller {
 
 	private function generateFeed($datasets){
 		Yii::import('ext.feed.*');
-                // specify feed type
-                $feed = new EFeed();
-                $feed->title = $this->title;
-                $feed->link = $this->rssLink;
-                $feed->description = 'GigaDB RSS Feed';
-                $feed->addChannelTag('language', 'en-us');
-                $feed->addChannelTag('pubDate', date(DATE_RSS, time()));
-                $feed->addChannelTag('link', 'http://www.gigadb.org' );
-                $feed->addChannelTag('title', 'GigaDB' );
-                foreach ($datasets as $key => $dataset) {
+		// specify feed type
+		$feed = new EFeed();
+		$feed->title = $this->title;
+		$feed->link = $this->rssLink;
+		$feed->description = 'GigaDB RSS Feed';
+		$feed->addChannelTag('language', 'en-us');
+		$feed->addChannelTag('pubDate', date(DATE_RSS, time()));
+		$feed->addChannelTag('link', 'http://www.gigadb.org' );
+		$feed->addChannelTag('title', 'GigaDB' );
+		foreach ($datasets as $key => $dataset) {
             $title = $this->isDataset($dataset) ? $dataset->title : $dataset->message;
             $link = $this->isDataset($dataset) ? Yii::app()->request->hostInfo."/dataset/".$dataset->identifier : Yii::app()->request->hostInfo;
             $desc = $this->isDataset($dataset) ? $dataset->description : $dataset->message;
-                        // create dataset item
-                        $item = $feed->createNewItem();
-                        $item->title = $title;
-                        $item->link = $link;
-                        $item->date = $dataset->publication_date;
-                        $item->description = $desc;
-                        $feed->addItem($item);
-                }
-                if(count($datasets)==0){
-                        echo "No Item";
-                 }else {
-                        $feed->generateFeed();
-                }
-
+			// create dataset item
+			$item = $feed->createNewItem();
+			$item->title = $title;
+			$item->link = $link;
+			$item->date = $dataset->publication_date;
+			$item->description = $desc;
+			$feed->addItem($item);
+		}
+		if(count($datasets)==0){
+			echo "No Item";
+		}
+		else {
+			$feed->generateFeed();
+		}
 	}
 
     private function isDataset($class){
         return (get_class($class) == 'Dataset') ;
     }
-
 
 	private function newSphinxClient() {
         $s = new SphinxClient;
@@ -125,8 +119,6 @@ class RssController extends Controller {
         $moddate_from=$this->convertDate($moddate_from);
         $moddate_to=$this->convertDate($moddate_to);
 
-
-
         if(is_array($dataset_type)){
             $s->SetFilter( 'dataset_type_ids', $dataset_type );
         }
@@ -136,7 +128,6 @@ class RssController extends Controller {
         }
 
         if(is_array($common_name)){
-
             $s->SetFilter( 'species_ids', $common_name );
         }
 
@@ -147,7 +138,6 @@ class RssController extends Controller {
             $s->SetFilter( 'external_type_ids', $external_link_type );
         }
 
-
         if($pubdate_from && $pubdate_to && $pubdate_to > $pubdate_from){
             $s->SetFilterRange('publication_date',$pubdate_from,$pubdate_to);
         }
@@ -155,10 +145,6 @@ class RssController extends Controller {
         if($moddate_from && $moddate_to && $moddate_to > $moddate_from){
             $s->SetFilterRange('modification_date',$moddate_from,"");
         }
-
-
-
-
 
 		$result = $s->query($keyword,"dataset");
         $matches=array();
@@ -172,6 +158,4 @@ class RssController extends Controller {
 	private function convertDate($date){
         return strtotime($date);
     }
-
-
 }

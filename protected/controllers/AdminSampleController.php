@@ -220,6 +220,7 @@ class AdminSampleController extends Controller
 		if(isset($_POST['Sample']))
 		{
 			$model->attributes = $_POST['Sample'];
+                        $model->name = $_POST['Sample']['name'];
 
             if (strpos($_POST['Sample']['species_id'], ":") !== false) {
                 $array = explode(":", $_POST['Sample']['species_id']);
@@ -352,7 +353,7 @@ class AdminSampleController extends Controller
             $sampleAttr = new SampleAttribute();
             $sampleAttr->sample_id = $model->id;
             
-            foreach (explode(',', $model->attributesList) as $sAttr) {
+            foreach (explode('",', $model->attributesList) as $sAttr) {
                 $sAttr = str_replace('"', '', $sAttr);
                 $data = explode('=', $sAttr);
                 if (count($data) == 2) {

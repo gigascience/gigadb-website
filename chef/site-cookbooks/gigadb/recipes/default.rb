@@ -265,6 +265,11 @@ template "#{site_dir}/protected/scripts/update_links.sh" do
     source "update_links.sh.erb"
 end
 
+template "#{site_dir}/files/html/help.html" do
+    source "yii-help.html.erb"
+    mode 0644
+end
+
 
 ######################
 #### Python stuff ####
