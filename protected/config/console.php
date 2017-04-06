@@ -97,6 +97,8 @@ return CMap::mergeArray($pre_config, array(
 		    'class' => 'application.components.AwsYiiConfig',
 		    'access_key' => $awsConfig['access_key'],
 		    'secret_key' => $awsConfig['secret_key'],
+			'bundle_bucket' => $awsConfig['s3_bucket_for_file_bundles'],
+			'preview_bucket' => $awsConfig['s3_bucket_for_file_previews'],
 		  ),
     ),
     # application-level parameters that can be accessed

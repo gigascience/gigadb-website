@@ -88,7 +88,9 @@
       "aws_access_key_id": "",
       "aws_secret_access_key": "",
       "aws_default_region": "ap-southeast-1",
-      "aws_security_groups": ""
+      "aws_security_groups": "",
+      "s3_bucket_for_file_bundles": "",
+      "s3_bucket_for_file_previews": ""
     },
     "fileserver": {
       "db": {

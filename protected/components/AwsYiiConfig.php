@@ -6,8 +6,8 @@ class AwsYiiConfig extends CApplicationComponent
     private $_s3;
     public $access_key;
     public $secret_key;
-    public $aws_region;
-    public $s3_bucket;
+    public $bundle_bucket;
+    public $preview_bucket;
 
 
     private function initializeS3Client() {

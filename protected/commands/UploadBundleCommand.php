@@ -53,9 +53,11 @@ class UploadBundleCommand extends CConsoleCommand {
         catch(Exception $topex) {
             echo "Error while initialising the worker: " . $ex->getMessage();
             $consumer->disconnect();
+            return 1;
         }
 
         $consumer->disconnect();
+        return 0;
 
     }
 
@@ -63,7 +65,7 @@ class UploadBundleCommand extends CConsoleCommand {
 
         echo "* processing job to upload bundle $bid...\n";
         //data needed by s3
-        $bucket = 'gigadb-bundles-test';
+        $bucket = Yii::app()->aws->bundle_bucket;
         $keyname = "$bid.tar.gz";
 
         // Instantiate the S3 client.
