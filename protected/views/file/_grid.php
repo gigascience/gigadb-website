@@ -124,9 +124,6 @@ if ($error != null) {
                     ),
                 ),
                 'htmlOptions'=>array('style'=>'width: 50px'),
-                'viewButtonUrl'=>null,
-                'updateButtonUrl'=>null,
-                'deleteButtonUrl'=>null,
                 'visible' => in_array("location", $setting),
             ),
             array(

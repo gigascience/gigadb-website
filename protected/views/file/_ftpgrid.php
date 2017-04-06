@@ -120,18 +120,35 @@ if ($error != null) {
                 'header'=>'Preview',
                 'template'=>'{preview}',
                 'class'=>'bootstrap.widgets.BootButtonColumn',
+                //'class'=>'CButtonColumn',
                 'buttons' => array(
                     'preview' => array(
                         'icon'=>'eye-open',
+                        // 'label'=>'P',
+                        'url'=>'Yii::app()->createUrl("file/preview",array("location"=>$data->location))',
+                        'click'=>"function(){
+                            $.ajax({  //change my-grid to your grid's name
+                                type:'GET',
+                                url:$(this).attr('href'),
+                                success:function(data) {
+                                    //open a iframe with mfr url
+                                    console.log('ajax here');
+                                    if (data.preview_url) {
+                                        document.getElementById('preview').innerHTML='<iframe src=\"http://127.0.0.1:8000/mfr?'+ data.preview_url +  '\"></iframe>';
+                                    }else {
+                                        document.getElementById('preview').innerHTML='<iframe src=\"\">a preview for this file is not ready, try again later,</p></iframe>' ;
+                                    }
+                                }
+                            })
+                            return false;
+                          }
+                        ",
                         'options'=>array(
                             'class'=>'btn btn-mini'
                         )
                     ),
                 ),
                 'htmlOptions'=>array('style'=>'width: 50px'),
-                'viewButtonUrl'=>null,
-                'updateButtonUrl'=>null,
-                'deleteButtonUrl'=>null,
                 'visible' => in_array("location", $setting),
             ),
             array(

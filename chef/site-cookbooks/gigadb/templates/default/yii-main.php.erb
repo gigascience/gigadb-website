@@ -110,7 +110,6 @@ return CMap::mergeArray(array(
             'hostname'=>'localhost',
             'port'=>6379,
             'database'=>0,
-            'options'=>STREAM_CLIENT_CONNECT,
         ),
         'session' => array(
             'class' => 'system.web.CDbHttpSession',
@@ -140,6 +139,7 @@ return CMap::mergeArray(array(
                 '/dataset/<id:\d+>'=>'dataset/view/id/<id>',
                 '/dataset/<id:\d+>/<slug:.+>'=>'dataset/view/id/<id>',
                 '/file/download/<bid:\w+>'=>'file/download',
+                '/file/preview/<location:.+>'=>'file/preview',
                 '/file/<operation:\w+>'=>'file/bundle',
                 //'search'=>'site/index',
                 //'download/<search:.+>'=>'site/index',

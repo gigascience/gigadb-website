@@ -41,7 +41,7 @@ class FileController extends Controller
         return array(
 
             array('allow',  // allow all users to perform 'index' and 'view' actions
-                'actions'=>array('Bundle', 'Download'),
+                'actions'=>array('Bundle', 'Download', 'Preview'),
                 'users'=>array('*'),
             ),
             array('deny',  // deny all users
@@ -131,6 +131,66 @@ class FileController extends Controller
         ));
     }
 
+    public function actionPreview($location) {
+
+        if( !isset($_GET['ajax']) ) {
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        $result = array('status' => "ERROR");
+
+        $preview_url = Yii::app()->redis->get(md5($location)) ;
+
+        if ( $preview_url ) {
+
+            $result['preview_url'] =  $preview_url;
+            $result['status'] = "OK";
+
+        }
+        else {
+
+            $this->prepare_preview_job($location);
+            $result['preview_url'] = '';
+            $result['status'] = "PENDING";
+        }
+
+        echo json_encode($result);
+        Yii::app()->end();
+
+    }
+
+    private function prepare_preview_job($location) {
+        if($location) {
+            $client = Yii::app()->beanstalk->getClient();
+            $client->connect();
+            $client->useTube('previewgeneration');
+            $jobDetails = [
+                'application'=>'gigadb-website',
+                'location'=>$location,
+                'submission_time'=>date("c"),
+            ];
+
+            $jobDetailString = json_encode($jobDetails);
+
+            $ret = $client->put(
+                0, // priority
+                0, // do not wait, put in immediately
+                90, // will run within n seconds
+                $jobDetailString // job body
+            );
+
+            if ($ret) {
+                return $ret; //return the bundle id that identifies the bundle across all systems
+            }
+            else {
+                return false;
+            }
+
+        }
+        else {
+            return false;
+        }
+    }
     private function prepare_bundle_job($serialised_bundle, $dataset_id) {
         if(isset($serialised_bundle) && count(unserialize($serialised_bundle)> 0 ) ) {
             $bid = self::random_string(20);
