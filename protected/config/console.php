@@ -40,11 +40,30 @@ return CMap::mergeArray($pre_config, array(
         'log'=>array(
             'class'=>'CLogRouter',
             'routes'=>array(
-                array(
+				array(
                     'class'=>'CFileLogRoute',
                     'levels'=>'error, warning, info, debug',
-                    'logFile'=>'console.log',
+                    'logFile'=>'UploadBundleCommand.log',
+					'categories'=>'application.commands.UploadBundleCommand',
                 ),
+				array(
+                    'class'=>'CFileLogRoute',
+                    'levels'=>'error, warning, info, debug',
+                    'logFile'=>'GeneratePreviewCommand.log',
+					'categories'=>'application.commands.GeneratePreviewCommand',
+                ),
+				array(
+                    'class'=>'CFileLogRoute',
+                    'levels'=>'error, warning, info, debug',
+                    'logFile'=>'BundleFilesCommand.log',
+					'categories'=>'application.commands.BundleFilesCommand',
+                ),
+				array(
+					'class'=>'CFileLogRoute',
+					'levels'=>'error, warning, info, debug',
+					'logFile'=>'console.log',
+					'except'=>'application.commands.*',
+				),
             ),
         ),
         'authManager'=>array(
