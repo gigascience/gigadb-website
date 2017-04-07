@@ -17,6 +17,10 @@ class GeneratePreviewCommand extends CConsoleCommand {
         $this->attachBehavior("ftp", new FileTransferBehavior() );
 
         $this->log("GeneratePreviewCommand started", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+        // $this->log("mime for csv: " . mime_content_type("/vagrant/consortium_list.csv"), pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+        // $this->log("mime for tsv: " . mime_content_type("/vagrant/full-map.tsv"), pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+        // $this->log("mime for fa.gz: " . mime_content_type("/vagrant/wisent.fa.gz"), pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+        // $this->log("mime for fa: " . mime_content_type("/vagrant/V_corymbosum_scaffold_May_2013.fa"), pathinfo(__FILE__, PATHINFO_FILENAME)) ;
 
         try {
             $consumer = Yii::app()->beanstalk->getClient();
@@ -68,13 +72,29 @@ class GeneratePreviewCommand extends CConsoleCommand {
                             $this->get_ftp_mode($location_parts['path'])
                         );
                         ftp_close($conn_id);
-                        //if too big, make small copy for files
-                        //upload generated preview to s3.
-                        $preview_url = $this->upload_preview($location, $local_dir, $preview_dir, $filename);
-                        //update redis
-                        $cache_result = Yii::app()->redis->set(md5($location),$preview_url);
-                        if (false === $cache_result) {
-                            throw new Exception("Failed saving preview_url in Redis");
+                        //if too big, make small copy for files, otherwise send file as is
+                        $preview_path = false;
+                        if (filesize("$local_dir/$preview_dir/$filename") > 200000) {
+                            $preview_path = $this->make_content_previewable("$local_dir/$preview_dir/$filename");
+                        }
+                        else {
+                            $preview_path = "$local_dir/$preview_dir/$filename" ;
+                        }
+                        if (true === is_file($preview_path)) {
+
+                            //upload generated preview to s3.
+                            $preview_url = $this->upload_preview($location, $preview_path, $filename);
+                            if (false === $preview_url) {
+                                throw new Exception("Failed uploading preview file ");
+                            }
+                            //update redis
+                            $cache_result = Yii::app()->redis->set(md5($location),$preview_url);
+                            if (false === $cache_result) {
+                                throw new Exception("Failed saving preview_url in Redis");
+                            }
+
+                        } else {
+                            throw new Exception ("Failed to generate a preview for $local_dir/$preview_dir/$filename ") ;
                         }
                     }
                     else {
@@ -104,8 +124,59 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
     }
 
+    function make_content_previewable($sourcepath) {
+        $type = "inode/x-empty";
+        $preview = "" ;
+        $lines = 0 ;
 
-    function upload_preview($location, $local_dir, $preview_dir, $filename) {
+
+        //identify type
+        $filetype = mime_content_type("$sourcepath");
+        //gunzip first if necessary
+        if ("application/x-gzip" === $filetype) {
+            $zip = new ZipArchive;
+            $res = $zip->open($sourcepath);
+            if (true === $res) {
+              $zip->extractTo( pathinfo($sourcepath, PATHINFO_DIRNAME) );
+              $zip->close();
+              $filepath = pathinfo($sourcepath, PATHINFO_DIRNAME) . "/" . pathinfo($sourcepath, PATHINFO_FILENAME);
+              $filetype = mime_content_type("$filepath");
+            } else {
+                throw new Exception ("Problem unziping $sourcepath");
+            }
+        }else {
+            $filepath = $sourcepath;
+        }
+
+
+        //only support text/plain for now
+        if ("text/plain" === $filetype) {
+            $handle = fopen("$filepath", "r");
+            if (false === $handle ) {
+                throw new Exception("Couldn't get handle for $filepath");
+            }
+            else {
+                while (!feof($handle)) {
+                    if ($lines > 30) {
+                        break;
+                    }
+                    $buffer = fgets($handle, 4096);
+                    $preview .= $buffer.PHP_EOL;
+                    $lines++;
+                }
+                fclose($handle);
+            }
+
+            $fp = fopen("$filepath.preview", 'w');
+            fwrite($fp, $preview);
+            fclose($fp);
+            return "$filepath.preview" ;
+        }
+
+        return false;
+    }
+
+    function upload_preview($location, $preview_path, $filename) {
 
         $this->log( "Uploading generated preview to S3...", pathinfo(__FILE__, PATHINFO_FILENAME));
         //data needed by s3
@@ -119,7 +190,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
             $result = $client->putObject(array(
                 'Bucket'     => $bucket,
                 'Key'        => $keyname,
-                'SourceFile' => "$local_dir/$preview_dir/$filename",
+                'SourceFile' => pathinfo($preview_path,PATHINFO_DIRNAME),
                 'ACL'        => 'public-read',
                 'Metadata'   => array(
                     'source.location.md5' => md5($location)
