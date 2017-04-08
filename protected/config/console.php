@@ -119,6 +119,12 @@ return CMap::mergeArray($pre_config, array(
 			'bundle_bucket' => $awsConfig['s3_bucket_for_file_bundles'],
 			'preview_bucket' => $awsConfig['s3_bucket_for_file_previews'],
 		  ),
+		  'redis'=>array(
+			  'class'=>'CRedisCache',
+			  'hostname'=>'localhost',
+			  'port'=>6379,
+			  'database'=>0,
+		  ),
     ),
     # application-level parameters that can be accessed
     # using Yii::app()->params['paramName']

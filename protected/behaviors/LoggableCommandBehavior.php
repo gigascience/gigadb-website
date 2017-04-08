@@ -8,7 +8,7 @@ Class LoggableCommandBehavior extends CBehavior
         // Yii::getLogger()->autoDump = true;
 
         set_error_handler( array($this, "error") );
-        register_shutdown_function(array($this, "handle_fatal_error"));
+        register_shutdown_function( array($this, "handle_fatal_error") );
 
         parent::init();
 
@@ -30,6 +30,7 @@ Class LoggableCommandBehavior extends CBehavior
             $this->error( $error["type"], $error["message"], $error["file"], $error["line"] );
             if (isset($this->owner->queue) && isset($this->owner->current_job)) {
                 $this->owner->queue->bury($this->owner->current_job['id'], 0);
+                $this->owner->current_job = null;
             }
         }
     }

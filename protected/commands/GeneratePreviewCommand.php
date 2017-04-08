@@ -17,7 +17,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
         $this->attachBehavior("ftp", new FileTransferBehavior() );
 
         $local_dir = "/tmp/previews";
-        $threshold = "200000";
+        $size_threshold = "200000";
 
 
         $this->log("GeneratePreviewCommand started") ;
@@ -45,15 +45,16 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
             while(true) {
                 try {
+                    $this->log("Ready for new jobs...");
 
-                    $job = $this->queue->reserve();
-                    if (false === $job) {
-                        throw new Exception("Error reserving a new job from the job queue");
+                    $this->current_job = $this->queue->reserve();
+                    if (false === $this->current_job) {
+                        throw new Exception("Error reserving a new job from the job queue: " . PHP_EOL . var_dump($this->queue->statsTube('previewgeneration')) . PHP_EOL . var_dump($this->current_job) );
                     }
                     else {
-                        $this->current_job = $job;
+                        $this->log("About to process new job: " . $this->current_job['id']);
                     }
-                    $result = $this->queue->touch($job['id']);
+                    $result = $this->queue->touch($this->current_job['id']);
 
                     if ($result) {
 
@@ -65,7 +66,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
                         chdir("$local_dir/$preview_dir");
 
                         //extract job details
-                        $body_array = json_decode($job['body'], true);
+                        $body_array = json_decode($this->current_job['body'], true);
                         $location = $body_array['location'];
                         $location_parts = parse_url($location);
                         $filename = pathinfo($location_parts['path'], PATHINFO_BASENAME);
@@ -84,7 +85,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
                         ftp_close($conn_id);
                         //if too big, make small copy for files, otherwise send file as is
                         $preview_path = false;
-                        if (filesize("$local_dir/$preview_dir/$filename") > 200000) {
+                        if (filesize("$local_dir/$preview_dir/$filename") > $size_threshold) {
                             $preview_path = $this->make_content_previewable("$local_dir/$preview_dir/$filename");
                         }
                         else {
@@ -97,38 +98,58 @@ class GeneratePreviewCommand extends CConsoleCommand {
                             if (false === $preview_url) {
                                 throw new Exception("Failed uploading preview file ");
                             }
+                            else {
+                                $this->log("preview file uploaded at $preview_url");
+                            }
                             //update redis
                             $cache_result = Yii::app()->redis->set(md5($location),$preview_url);
                             if (false === $cache_result) {
                                 throw new Exception("Failed saving preview_url in Redis");
                             }
+                            else {
+                                $this->log("preview_url saved in Redis with key:" . md5($location) ." and value:" . $preview_url );
+                            }
 
                         } else {
                             throw new Exception ("Failed to generate a preview for $local_dir/$preview_dir/$filename ") ;
                         }
+
                     }
                     else {
                         throw new Exception("Failed touching the newly reserved job");
                     }
 
+                    //job done, deleting the job
+                    $this->log("job ". $this->current_job['id'] . " completed successfully" );
+                    $this->queue->delete($this->current_job['id']);
+                    $this->current_job = null;
+
                 }catch (Exception $loopex) {
-                    $this->log( "Error while processing job of id " . $job['id'] . ":" . $loopex->getMessage());
-                    $this->queue->bury($job['id'],0);
-                    $this->log( "The job of id: " . $job['id'] . " has been " . $this->queue->statsJob($job['id'])['state']);
+                    if ($this->current_job) {
+                        $this->log( "Error while processing job of id " . $this->current_job['id'] . ":" . $loopex->getMessage());
+                        $this->queue->bury($this->current_job['id'],0);
+                        $this->log( "The job of id: " . $this->current_job['id'] . " has been " . $this->queue->statsJob($this->current_job['id'])['state']);
+                    }
+                    else {
+                        throw new Exception ($loopex->getMessage()) ;
+                    }
                 }
+
             }
 
 
 
         }
         catch (Exception $runex) {
-            $this->log( "Error while initialising the worker: " . $ex->getMessage());
+            $this->log( "Fatal Error: " . $runex->getMessage());
             $this->queue->disconnect();
+            $this->current_job = null ;
             $this->log( "GeneratePreviewCommand stopping");
             return 1;
         }
 
         $this->queue->disconnect();
+        $this->current_job = null ;
         $this->log( "GeneratePreviewCommand stopping");
         return 0;
 
@@ -188,19 +209,20 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
     function upload_preview($location, $preview_path, $filename) {
 
-        $this->log( "Uploading generated preview to S3...");
         //data needed by s3
-        $bucket = Yii::app()->aws->bundle_bucket;
+        $bucket = Yii::app()->aws->preview_bucket;
         $keyname = "$filename";
+
+        $this->log( "Uploading file $preview_path to S3 in bucket:" . $bucket . " with keyname:" . $keyname);
 
         // Instantiate the S3 client.
         $s3 = Yii::app()->aws->getS3Instance();
 
         try {
-            $result = $client->putObject(array(
+            $result = $s3->putObject(array(
                 'Bucket'     => $bucket,
                 'Key'        => $keyname,
-                'SourceFile' => pathinfo($preview_path,PATHINFO_DIRNAME),
+                'SourceFile' => $preview_path,
                 'ACL'        => 'public-read',
                 'Metadata'   => array(
                     'source.location.md5' => md5($location)
@@ -209,14 +231,14 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
             if ($result) {
                 $this->log( "generated preview uploaded to S3");
-                return  $client->getObjectUrl($bucket, $keyname);
+                return  $s3->getObjectUrl($bucket, $keyname);
             }else {
                 $this->log( "Uploading generated preview to S3 is NOT successful");
                 return false;
             }
         }
         catch(Exception $s3ex) {
-            $this->log( "Upload of generated preview failed: " . $e->getMessage());
+            $this->log( "Upload of generated preview failed: " . $s3ex->getMessage());
             return false;
         }
 
