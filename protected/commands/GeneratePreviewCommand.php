@@ -7,11 +7,12 @@ spl_autoload_register(array('YiiBase', 'autoload'));
 
 class GeneratePreviewCommand extends CConsoleCommand {
 
+    public $queue ;
+    public $current_job;
 
     public function run($args) {
 
 
-        set_error_handler( array($this, "error") );
         $this->attachBehavior("loggable", new LoggableCommandBehavior() );
         $this->attachBehavior("ftp", new FileTransferBehavior() );
 
@@ -26,9 +27,9 @@ class GeneratePreviewCommand extends CConsoleCommand {
         // $this->log("mime for fa: " . mime_content_type("/vagrant/V_corymbosum_scaffold_May_2013.fa")) ;
 
         try {
-            $consumer = Yii::app()->beanstalk->getClient();
-            $consumer->connect();
-            $consumer->watch('previewgeneration');
+            $this->queue = Yii::app()->beanstalk->getClient();
+            $this->queue->connect();
+            $this->queue->watch('previewgeneration');
             $this->log( "connected to the job server, waiting for new jobs...");
 
             if (false === is_dir($local_dir) ) {
@@ -45,11 +46,14 @@ class GeneratePreviewCommand extends CConsoleCommand {
             while(true) {
                 try {
 
-                    $job = $consumer->reserve();
+                    $job = $this->queue->reserve();
                     if (false === $job) {
                         throw new Exception("Error reserving a new job from the job queue");
                     }
-                    $result = $consumer->touch($job['id']);
+                    else {
+                        $this->current_job = $job;
+                    }
+                    $result = $this->queue->touch($job['id']);
 
                     if ($result) {
 
@@ -109,8 +113,8 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
                 }catch (Exception $loopex) {
                     $this->log( "Error while processing job of id " . $job['id'] . ":" . $loopex->getMessage());
-                    $consumer->bury($job['id'],0);
-                    $this->log( "The job of id: " . $job['id'] . " has been " . $consumer->statsJob($job['id'])['state']);
+                    $this->queue->bury($job['id'],0);
+                    $this->log( "The job of id: " . $job['id'] . " has been " . $this->queue->statsJob($job['id'])['state']);
                 }
             }
 
@@ -119,12 +123,12 @@ class GeneratePreviewCommand extends CConsoleCommand {
         }
         catch (Exception $runex) {
             $this->log( "Error while initialising the worker: " . $ex->getMessage());
-            $consumer->disconnect();
+            $this->queue->disconnect();
             $this->log( "GeneratePreviewCommand stopping");
             return 1;
         }
 
-        $consumer->disconnect();
+        $this->queue->disconnect();
         $this->log( "GeneratePreviewCommand stopping");
         return 0;
 

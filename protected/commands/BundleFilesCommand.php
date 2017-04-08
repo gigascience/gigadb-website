@@ -5,7 +5,6 @@ class BundleFilesCommand extends CConsoleCommand {
 
     public function run($args) {
 
-        set_error_handler( array($this, "error") );
 
         $queue = "bundle_queue";
         $local_dir = "/tmp/bundles";

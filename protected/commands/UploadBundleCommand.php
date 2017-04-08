@@ -10,7 +10,6 @@ class UploadBundleCommand extends CConsoleCommand {
 
     function run($args) {
 
-        set_error_handler( array($this, "error") );
 
         $this->attachBehavior("loggable", new LoggableCommandBehavior() );
 
