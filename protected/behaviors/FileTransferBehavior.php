@@ -62,7 +62,7 @@ Class FileTransferBehavior extends CBehavior
             case 'phtml':case 'pl':case 'po':case 'py':case 'qmail':case 'sh':case 'shtml':
             case 'sql':case 'tcl':case 'tpl':case 'txt':case 'vbs':case 'xml':case 'xrc':
             case 'tsv':case 'fastq':case 'fq':case 'fasta':case 'fna':case 'ffn':case 'faa':
-            case 'frn':case 'raw':case 'fq':case 'mzml':case 'mzxml':case 'csv':
+            case 'frn':case 'raw':case 'fa':case 'mzml':case 'mzxml':case 'csv':
                 return FTP_ASCII;
         }
         return FTP_BINARY;

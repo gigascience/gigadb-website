@@ -57,39 +57,77 @@ class GeneratePreviewCommand extends CConsoleCommand {
                     $result = $this->queue->touch($this->current_job['id']);
 
                     if ($result) {
-
-                        //creating working directory
-                        $preview_dir = self::random_string(20);
-                        $this->log( "Creating working directory " . "$local_dir/$preview_dir" . "...");
-                        if (!(is_dir("$local_dir/$preview_dir")))
-                            mkdir("$local_dir/$preview_dir", 0700);
-                        chdir("$local_dir/$preview_dir");
-
                         //extract job details
                         $body_array = json_decode($this->current_job['body'], true);
                         $location = $body_array['location'];
                         $location_parts = parse_url($location);
                         $filename = pathinfo($location_parts['path'], PATHINFO_BASENAME);
-                        //download file
-                        $connectionString = "ftp://anonymous:anonymous@10.1.1.33:21/pub/10.5524";
+
+                        //creating working directory
+                        $preview_dir = md5($location);
+                        $this->log( "Creating working directory " . "$local_dir/$preview_dir" . "...");
+                        if (!(is_dir("$local_dir/$preview_dir")))
+                            mkdir("$local_dir/$preview_dir", 0700);
+                        chdir("$local_dir/$preview_dir");
+
+
+                        //download file by ftp, starting with connecting to the server
+                        $connectionString = "ftp://anonymous:anonymous@10.1.1.33:21/pub/10.5524"; //TODO
                         $conn_id = $this->getFtpConnection($connectionString);
-                        $this->log( "connected to ftp server, ready to download file from $location...");
-                        $download_status = ftp_get($conn_id,
-                            "$local_dir/$preview_dir/$filename",
-                            $location_parts['path'],
-                            $this->get_ftp_mode($location_parts['path'])
-                        );
-                        if (false === $download_status) {
-                            throw new Exception("error downloading " . $location_parts['path'] . " to $local_dir/$preview_dir/$filename") ;
-                        }
-                        ftp_close($conn_id);
-                        //if too big, make small copy for files, otherwise send file as is
-                        $preview_path = false;
-                        if (filesize("$local_dir/$preview_dir/$filename") > $size_threshold) {
-                            $preview_path = $this->make_content_previewable("$local_dir/$preview_dir/$filename");
+                        if (false == $conn_id) { //if connection fail, relase the job for future retry as it could be connection issues
+                            $temp_job_id = $this->current_job['id'] ; //because we are about to nullify current_job but needs the id
+                            $this->queue->release($temp_job_id, 10 , 60) ; //release the job, with delay, at lower priority for future retry
+                            $this->current_job = null ; // so that the exception is picked up by the outer catch block
+                            throw new Exception("Failed connecting to FTP server, the job $temp_job_id has been released for future retry") ;
                         }
                         else {
-                            $preview_path = "$local_dir/$preview_dir/$filename" ;
+                            $this->log( "Connected to ftp server, ready to download file from $location...");
+                        }
+                        //check wether the file exists locally
+                        $local_before_size = is_file("$local_dir/$preview_dir/$filename") ? filesize("$local_dir/$preview_dir/$filename") : 0 ;
+
+                        //download the file
+                        $download_status = false ;
+                        $ftp_mode = $this->get_ftp_mode($location_parts['path']) ;
+                        $local_destination = "$local_dir/$preview_dir/$filename" ;
+
+                        if ( $local_before_size > 0 && FTP_BINARY === $ftp_mode) {
+                            $this->log("Resuming download of " . $location_parts['path'] . "to $local_destination at $local_before_size");
+                            $download_status = ftp_get($conn_id,
+                                "$local_destination",
+                                $location_parts['path'],
+                                $ftp_mode,
+                                $local_before_size
+                            );
+                        } else {
+                            $this->log("Starting download of " . $location_parts['path'] . " to $local_destination") ;
+                            $download_status = ftp_get($conn_id,
+                                "$local_destination",
+                                $location_parts['path'],
+                                $ftp_mode
+                            );
+                        }
+
+                        ftp_close($conn_id);
+
+                        if (false === $download_status) {
+                            if(filesize("$local_destination") >  0 ) { //partial download, we release the job for future retry
+                                $temp_job_id = $this->current_job['id'] ; //because we are about to nullify current_job but needs the id
+                                $this->queue->release($temp_job_id, 10 , 60) ; //release the job, with delay, at lower priority for future retry
+                                $this->current_job = null ; // so that the exception is picked up by the outer catch block
+                                throw new Exception("($temp_job_id) Error while downloading " . $location_parts['path'] . " to $local_destination." . PHP_EOL . "The job $temp_job_id has been released for future retry");
+                            } else {
+                                throw new Exception("Failed to download " . $location_parts['path'] . " to $local_destination") ;
+                            }
+                        }
+
+                        //if too big, make small copy for files, otherwise send file as is
+                        $preview_path = false;
+                        if (filesize("$local_destination") > $size_threshold) {
+                            $preview_path = $this->make_content_previewable("$local_destination");
+                        }
+                        else {
+                            $preview_path = "$local_destination" ;
                         }
                         if (true === is_file($preview_path)) {
 
@@ -107,7 +145,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
                                 throw new Exception("Failed saving preview_url in Redis");
                             }
                             else {
-                                $this->log("preview_url saved in Redis with key:" . md5($location) ." and value:" . $preview_url );
+                                $this->log("preview_url saved in Redis with key:" . md5($location) ." and value:" . Yii::app()->redis->get(md5($location)) );
                             }
 
                         } else {
@@ -127,7 +165,8 @@ class GeneratePreviewCommand extends CConsoleCommand {
                 }catch (Exception $loopex) {
                     if ($this->current_job) {
                         $this->log( "Error while processing job of id " . $this->current_job['id'] . ":" . $loopex->getMessage());
-                        $this->queue->bury($this->current_job['id'],0);
+
+                        $this->queue->bury($this->current_job['id'],0); //bury the job as they are something wrong with it
                         $this->log( "The job of id: " . $this->current_job['id'] . " has been " . $this->queue->statsJob($this->current_job['id'])['state']);
                     }
                     else {
@@ -247,18 +286,6 @@ class GeneratePreviewCommand extends CConsoleCommand {
         return;
     }
 
-
-
-    private static function random_string($length) {
-        $key = '';
-        $keys = array_merge(range(0, 9), range('a', 'z'));
-
-        for ($i = 0; $i < $length; $i++) {
-            $key .= $keys[array_rand($keys)];
-        }
-
-        return $key;
-    }
 
 
 }
