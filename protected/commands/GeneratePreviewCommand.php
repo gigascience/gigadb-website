@@ -10,33 +10,36 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
     public function run($args) {
 
-        $local_dir = "/tmp/previews";
-        $threshold = "200000";
 
+        set_error_handler( array($this, "error") );
         $this->attachBehavior("loggable", new LoggableCommandBehavior() );
         $this->attachBehavior("ftp", new FileTransferBehavior() );
 
-        $this->log("GeneratePreviewCommand started", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
-        // $this->log("mime for csv: " . mime_content_type("/vagrant/consortium_list.csv"), pathinfo(__FILE__, PATHINFO_FILENAME)) ;
-        // $this->log("mime for tsv: " . mime_content_type("/vagrant/full-map.tsv"), pathinfo(__FILE__, PATHINFO_FILENAME)) ;
-        // $this->log("mime for fa.gz: " . mime_content_type("/vagrant/wisent.fa.gz"), pathinfo(__FILE__, PATHINFO_FILENAME)) ;
-        // $this->log("mime for fa: " . mime_content_type("/vagrant/V_corymbosum_scaffold_May_2013.fa"), pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+        $local_dir = "/tmp/previews";
+        $threshold = "200000";
+
+
+        $this->log("GeneratePreviewCommand started") ;
+        // $this->log("mime for csv: " . mime_content_type("/vagrant/consortium_list.csv")) ;
+        // $this->log("mime for tsv: " . mime_content_type("/vagrant/full-map.tsv")) ;
+        // $this->log("mime for fa.gz: " . mime_content_type("/vagrant/wisent.fa.gz")) ;
+        // $this->log("mime for fa: " . mime_content_type("/vagrant/V_corymbosum_scaffold_May_2013.fa")) ;
 
         try {
             $consumer = Yii::app()->beanstalk->getClient();
             $consumer->connect();
             $consumer->watch('previewgeneration');
-            $this->log( "connected to the job server, waiting for new jobs...", pathinfo(__FILE__, PATHINFO_FILENAME));
+            $this->log( "connected to the job server, waiting for new jobs...");
 
             if (false === is_dir($local_dir) ) {
                 $workdir_status = mkdir("$local_dir", 0700);
                 if (false === $workdir_status) {
                     throw new Exception ("Error creating directory $local_dir");
                 }
-                $this->log( "work directory created..." , pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                $this->log( "work directory created..." ) ;
             }
             else {
-                $this->log( "work directory already present..." , pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                $this->log( "work directory already present..." ) ;
             }
 
             while(true) {
@@ -51,8 +54,8 @@ class GeneratePreviewCommand extends CConsoleCommand {
                     if ($result) {
 
                         //creating working directory
-                        $preview_dir = $self::random_string(20);
-                        $this->log( "Creating working directory " . "$local_dir/$preview_dir" . "...", pathinfo(__FILE__, PATHINFO_FILENAME));
+                        $preview_dir = self::random_string(20);
+                        $this->log( "Creating working directory " . "$local_dir/$preview_dir" . "...");
                         if (!(is_dir("$local_dir/$preview_dir")))
                             mkdir("$local_dir/$preview_dir", 0700);
                         chdir("$local_dir/$preview_dir");
@@ -65,12 +68,15 @@ class GeneratePreviewCommand extends CConsoleCommand {
                         //download file
                         $connectionString = "ftp://anonymous:anonymous@10.1.1.33:21/pub/10.5524";
                         $conn_id = $this->getFtpConnection($connectionString);
-                        $this->log( "connected to ftp server, ready to download file from $location...", pathinfo(__FILE__, PATHINFO_FILENAME));
+                        $this->log( "connected to ftp server, ready to download file from $location...");
                         $download_status = ftp_get($conn_id,
                             "$local_dir/$preview_dir/$filename",
                             $location_parts['path'],
                             $this->get_ftp_mode($location_parts['path'])
                         );
+                        if (false === $download_status) {
+                            throw new Exception("error downloading " . $location_parts['path'] . " to $local_dir/$preview_dir/$filename") ;
+                        }
                         ftp_close($conn_id);
                         //if too big, make small copy for files, otherwise send file as is
                         $preview_path = false;
@@ -102,9 +108,9 @@ class GeneratePreviewCommand extends CConsoleCommand {
                     }
 
                 }catch (Exception $loopex) {
-                    $this->log( "Error while processing job of id " . $job['id'] . ":" . $loopex->getMessage(), pathinfo(__FILE__, PATHINFO_FILENAME));
+                    $this->log( "Error while processing job of id " . $job['id'] . ":" . $loopex->getMessage());
                     $consumer->bury($job['id'],0);
-                    $this->log( "The job of id: " . $job['id'] . " has been " . $consumer->statsJob($job['id'])['state'], pathinfo(__FILE__, PATHINFO_FILENAME));
+                    $this->log( "The job of id: " . $job['id'] . " has been " . $consumer->statsJob($job['id'])['state']);
                 }
             }
 
@@ -112,14 +118,14 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
         }
         catch (Exception $runex) {
-            $this->log( "Error while initialising the worker: " . $ex->getMessage(), pathinfo(__FILE__, PATHINFO_FILENAME));
+            $this->log( "Error while initialising the worker: " . $ex->getMessage());
             $consumer->disconnect();
-            $this->log( "GeneratePreviewCommand stopping", pathinfo(__FILE__, PATHINFO_FILENAME));
+            $this->log( "GeneratePreviewCommand stopping");
             return 1;
         }
 
         $consumer->disconnect();
-        $this->log( "GeneratePreviewCommand stopping", pathinfo(__FILE__, PATHINFO_FILENAME));
+        $this->log( "GeneratePreviewCommand stopping");
         return 0;
 
     }
@@ -178,7 +184,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
     function upload_preview($location, $preview_path, $filename) {
 
-        $this->log( "Uploading generated preview to S3...", pathinfo(__FILE__, PATHINFO_FILENAME));
+        $this->log( "Uploading generated preview to S3...");
         //data needed by s3
         $bucket = Yii::app()->aws->bundle_bucket;
         $keyname = "$filename";
@@ -198,15 +204,15 @@ class GeneratePreviewCommand extends CConsoleCommand {
             ));
 
             if ($result) {
-                $this->log( "generated preview uploaded to S3", pathinfo(__FILE__, PATHINFO_FILENAME));
+                $this->log( "generated preview uploaded to S3");
                 return  $client->getObjectUrl($bucket, $keyname);
             }else {
-                $this->log( "Uploading generated preview to S3 is NOT successful", pathinfo(__FILE__, PATHINFO_FILENAME));
+                $this->log( "Uploading generated preview to S3 is NOT successful");
                 return false;
             }
         }
         catch(Exception $s3ex) {
-            $this->log( "Upload of generated preview failed: " . $e->getMessage(), pathinfo(__FILE__, PATHINFO_FILENAME));
+            $this->log( "Upload of generated preview failed: " . $e->getMessage());
             return false;
         }
 
@@ -227,5 +233,6 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
         return $key;
     }
+
 
 }

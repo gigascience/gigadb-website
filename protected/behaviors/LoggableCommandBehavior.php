@@ -12,6 +12,10 @@ Class LoggableCommandBehavior extends CBehavior
 
     public function log($message, $command="application.commands") {
         //Yii::log($message, "info","application.commands." . $command) ;
-        echo "[$command] * $message " . PHP_EOL ;
+        echo "[". get_class($this->owner) ."] * $message " . PHP_EOL ;
+    }
+
+    public function error($num, $str, $file, $line, $context = null) {
+        echo "[". get_class($this->owner) ."] * A PHP Error [$num] occured in " . $file  ."[" . $line . "]: $str". PHP_EOL;
     }
 }

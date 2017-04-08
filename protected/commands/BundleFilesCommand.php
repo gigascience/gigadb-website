@@ -5,20 +5,22 @@ class BundleFilesCommand extends CConsoleCommand {
 
     public function run($args) {
 
+        set_error_handler( array($this, "error") );
+
         $queue = "bundle_queue";
         $local_dir = "/tmp/bundles";
 
         $this->attachBehavior("loggable", new LoggableCommandBehavior() );
         $this->attachBehavior("ftp", new FileTransferBehavior() );
 
-        $this->log("BundleFilesCommand started", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+        $this->log("BundleFilesCommand started") ;
 
         try {
 
             $consumer = Yii::app()->beanstalk->getClient();
             $consumer->connect();
             $consumer->watch('filespackaging');
-            $this->log("connected to the job server, waiting for new jobs...", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+            $this->log("connected to the job server, waiting for new jobs...") ;
 
             if (false === is_dir($local_dir) ) {
                 $workdir_status = mkdir("$local_dir", 0700);
@@ -27,13 +29,13 @@ class BundleFilesCommand extends CConsoleCommand {
                 }
             }
 
-            $this->log("work directory created..." , pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+            $this->log("work directory created..." ) ;
 
             while (true) {
 
                 try {
 
-                    $this->log("Reserving next job...", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                    $this->log("Reserving next job...") ;
 
                     $job = $consumer->reserve();
                     if (false === $job) {
@@ -49,16 +51,16 @@ class BundleFilesCommand extends CConsoleCommand {
                         $bid = $body_array['bid'];
                         $dataset_id = $body_array['dataset_id'];
 
-                        $this->log("Got a new job...", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                        $this->log("Got a new job...") ;
 
                         $connectionString = "ftp://anonymous:anonymous@10.1.1.33:21/pub/10.5524";
                         $conn_id = $this->getFtpConnection($connectionString);
 
-                        $this->log("connected to ftp server, ready to download files...", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                        $this->log("connected to ftp server, ready to download files...") ;
 
                         //create directory for the files
                         $bundle_dir = $bid;
-                        $this->log("Creating working directory " . "$local_dir/$bundle_dir" . "...", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                        $this->log("Creating working directory " . "$local_dir/$bundle_dir" . "...") ;
                         if (!(is_dir("$local_dir/$bundle_dir")))
                             mkdir("$local_dir/$bundle_dir", 0700);
                         chdir("$local_dir/$bundle_dir");
@@ -75,7 +77,7 @@ class BundleFilesCommand extends CConsoleCommand {
 
                             $location_parts = parse_url($location);
 
-                            $this->log("downloading " . $location_parts['path'] . " -> " . "$local_dir/$bundle_dir/$filename " , pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                            $this->log("downloading " . $location_parts['path'] . " -> " . "$local_dir/$bundle_dir/$filename " ) ;
                             $download_status = false;
                             chdir("$local_dir/$bundle_dir/");
 
@@ -91,7 +93,7 @@ class BundleFilesCommand extends CConsoleCommand {
                             }
 
                             if (false === $download_status) {
-                                $this->log("Error while downloading" .  $location_parts['path'] . "" , pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                                $this->log("Error while downloading" .  $location_parts['path'] . "" ) ;
                                 $fp = fopen("$local_dir/$bundle_dir/$filename.error", 'w');
                                 fwrite($fp, "Error while downloading from " . $location_parts['path']. ": \n");
                                 fwrite($fp, error_get_last()['message']);
@@ -101,17 +103,17 @@ class BundleFilesCommand extends CConsoleCommand {
                             else {
                                 if ($type === "Directory") {
                                     $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", $location_parts['path']);
-                                    $this->log("adding " . "$portable_path" .  " to $local_dir/bundle_$bundle_dir.tar.gz", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                                    $this->log("adding " . "$portable_path" .  " to $local_dir/bundle_$bundle_dir.tar.gz") ;
                                     $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$portable_path"], "", "$local_dir/$bundle_dir");
                                 }
                                 else if (pathinfo($location_parts['path'], PATHINFO_DIRNAME) === "/pub/10.5524/100001_101000/$dataset_id") {
                                     $portable_path = "" ;
-                                    $this->log("adding " . "$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                                    $this->log("adding " . "$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz") ;
                                     $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$filename"], $portable_path, "$local_dir/$bundle_dir/");
                                 }
                                 else {
                                     $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", pathinfo($location_parts['path'], PATHINFO_DIRNAME));
-                                    $this->log("adding " . "$portable_path/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                                    $this->log("adding " . "$portable_path/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz") ;
                                     $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$filename"], $portable_path, "$local_dir/$bundle_dir/");
                                 }
 
@@ -119,25 +121,25 @@ class BundleFilesCommand extends CConsoleCommand {
                                     throw new Exception("Error while:" . "adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz");
                                 }
                                 // else {
-                                //     $this->log(var_dump($tar->listcontent()), pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                                //     $this->log(var_dump($tar->listcontent())) ;
                                 // }
                             }
                         }
                         $upload_job = $this->prepare_upload_job("$local_dir/bundle_$bundle_dir.tar.gz",$bid);
                         if($upload_job) {
-                            $this->log("Submitted an upload job with id: $upload_job", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                            $this->log("Submitted an upload job with id: $upload_job") ;
                         }
                         else {
-                            $this->log("An error occured while submitting an upload job", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                            $this->log("An error occured while submitting an upload job") ;
                         }
 
-                        $this->log("Job done...(" . $job['id'] . ")", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                        $this->log("Job done...(" . $job['id'] . ")") ;
                         $deletion_status = $consumer->delete($job['id']);
                         if (true === $deletion_status) {
-                            $this->log("Job for bundle $bid successfully deleted", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                            $this->log("Job for bundle $bid successfully deleted") ;
                         }
                         else {
-                            $this->log("Failed to delete job for bundle $bid]", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                            $this->log("Failed to delete job for bundle $bid]") ;
                         }
                         $this->rrmdir("$local_dir/$bundle_dir");
 
@@ -150,9 +152,9 @@ class BundleFilesCommand extends CConsoleCommand {
                 }
                 catch(Exception $loopex) {
                     ftp_raw($conn_id, 'NOOP');
-                    $this->log("Error while processing job of id " . $job['id'] . ":" . $loopex->getMessage(), pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                    $this->log("Error while processing job of id " . $job['id'] . ":" . $loopex->getMessage()) ;
                     $consumer->bury($job['id'],0);
-                    $this->log("The job of id: " . $job['id'] . " has been " . $consumer->statsJob($job['id'])['state'], pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+                    $this->log("The job of id: " . $job['id'] . " has been " . $consumer->statsJob($job['id'])['state']) ;
 
                 }
 
@@ -161,18 +163,18 @@ class BundleFilesCommand extends CConsoleCommand {
 
             ftp_close($conn_id);
             $consumer->disconnect();
-            $this->log("Closed FTP connection and stopped listenging to the job queue...", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+            $this->log("Closed FTP connection and stopped listenging to the job queue...") ;
 
         } catch (Exception $runex) {
-            $this->log("Error while initialising the worker: " . $runex->getMessage(), pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+            $this->log("Error while initialising the worker: " . $runex->getMessage()) ;
             ftp_close($conn_id);
             $consumer->disconnect();
-            $this->log( "BundleFilesCommand stopping", pathinfo(__FILE__, PATHINFO_FILENAME));
+            $this->log( "BundleFilesCommand stopping");
             return 1;
         }
 
         $consumer->disconnect();
-        $this->log( "BundleFilesCommand stopping", pathinfo(__FILE__, PATHINFO_FILENAME));
+        $this->log( "BundleFilesCommand stopping");
         return 0;
     }
 
@@ -207,7 +209,7 @@ class BundleFilesCommand extends CConsoleCommand {
         }
         $rmdir_status  = rmdir($directory);
         if (false === $rmdir_status) {
-            $this->log("Failed removing $directory", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+            $this->log("Failed removing $directory") ;
         }
 
     }

@@ -10,16 +10,18 @@ class UploadBundleCommand extends CConsoleCommand {
 
     function run($args) {
 
+        set_error_handler( array($this, "error") );
+
         $this->attachBehavior("loggable", new LoggableCommandBehavior() );
 
-        $this->log("UploadBundleCommand started", pathinfo(__FILE__, PATHINFO_FILENAME)) ;
+        $this->log("UploadBundleCommand started") ;
 
         try {
             $consumer = Yii::app()->beanstalk->getClient();
             $consumer->connect();
             $consumer->watch('bundleuploading');
 
-            $this->log( "connected to the job server, waiting for new jobs..." , pathinfo(__FILE__, PATHINFO_FILENAME));
+            $this->log( "connected to the job server, waiting for new jobs..." );
 
             while(true) {
                 try {
@@ -39,7 +41,7 @@ class UploadBundleCommand extends CConsoleCommand {
                             throw new Exception(error_get_last()['message']);
                         }
                         else {
-                            $this->log( "Job done...deleting (" . $job['id'] . ")", pathinfo(__FILE__, PATHINFO_FILENAME));
+                            $this->log( "Job done...deleting (" . $job['id'] . ")");
                             $consumer->delete($job['id']);
                             $this->clean_up("$file_path");
                         }
@@ -49,28 +51,28 @@ class UploadBundleCommand extends CConsoleCommand {
                     }
                 }
                 catch(Exception $loopex) {
-                    $this->log( "Error with job " . $job['id'] . ":" . $loopex->getMessage(), pathinfo(__FILE__, PATHINFO_FILENAME));
+                    $this->log( "Error with job " . $job['id'] . ":" . $loopex->getMessage());
                     $consumer->bury($job['id'],0);
-                    $this->log( "The job of id: " . $job['id'] . " has been " . $consumer->statsJob($job['id'])['state'], pathinfo(__FILE__, PATHINFO_FILENAME));
+                    $this->log( "The job of id: " . $job['id'] . " has been " . $consumer->statsJob($job['id'])['state']);
                 }
             }
         }
         catch(Exception $topex) {
-            $this->log( "Error while initialising the worker: " . $ex->getMessage(), pathinfo(__FILE__, PATHINFO_FILENAME));
+            $this->log( "Error while initialising the worker: " . $ex->getMessage());
             $consumer->disconnect();
-            $this->log( "UploadBundleCommand stopping", pathinfo(__FILE__, PATHINFO_FILENAME));
+            $this->log( "UploadBundleCommand stopping");
             return 1;
         }
 
         $consumer->disconnect();
-        $this->log( "UploadBundleCommand stopping", pathinfo(__FILE__, PATHINFO_FILENAME));
+        $this->log( "UploadBundleCommand stopping");
         return 0;
 
     }
 
     function process_bundle_upload_job($file_path, $bid) {
 
-        $this->log( "Processing job to upload bundle $bid...", pathinfo(__FILE__, PATHINFO_FILENAME));
+        $this->log( "Processing job to upload bundle $bid...");
         //data needed by s3
         $bucket = Yii::app()->aws->bundle_bucket;
         $keyname = "$bid.tar.gz";
@@ -92,10 +94,10 @@ class UploadBundleCommand extends CConsoleCommand {
         // Perform the upload. Abort the upload if something goes wrong.
         try {
             $uploader->upload();
-            $this->log( "Upload complete.", pathinfo(__FILE__, PATHINFO_FILENAME));
+            $this->log( "Upload complete.");
         } catch (MultipartUploadException $e) {
             $uploader->abort();
-            $this->log( "Upload failed.", pathinfo(__FILE__, PATHINFO_FILENAME));
+            $this->log( "Upload failed.");
             throw new Exception($e->getMessage());
         }
 
