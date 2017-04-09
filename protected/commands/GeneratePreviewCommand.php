@@ -72,7 +72,9 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
 
                         //download file by ftp, starting with connecting to the server
-                        $connectionString = "ftp://anonymous:anonymous@10.1.1.33:21/pub/10.5524"; //TODO
+                        $initial_remote_dir = "/pub/10.5524" ;
+                        $connectionString = Yii::app()->ftp->getConnectionString(true) . $initial_remote_dir;
+
                         $conn_id = $this->getFtpConnection($connectionString);
                         if (false == $conn_id) { //if connection fail, relase the job for future retry as it could be connection issues
                             $temp_job_id = $this->current_job['id'] ; //because we are about to nullify current_job but needs the id
