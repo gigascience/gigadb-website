@@ -92,6 +92,7 @@ class UploadBundleCommand extends CConsoleCommand {
 
         // Perform the upload. Abort the upload if something goes wrong.
         try {
+            $this->log("starting upload...");
             $uploader->upload();
             $this->log( "Upload complete.");
         } catch (MultipartUploadException $e) {

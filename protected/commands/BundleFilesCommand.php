@@ -11,6 +11,7 @@ class BundleFilesCommand extends CConsoleCommand {
 
         $this->attachBehavior("loggable", new LoggableCommandBehavior() );
         $this->attachBehavior("ftp", new FileTransferBehavior() );
+        $this->attachBehavior("fs", new LocalFileSystemBehavior() );
 
         $this->log("BundleFilesCommand started") ;
 
@@ -202,29 +203,5 @@ class BundleFilesCommand extends CConsoleCommand {
 
     }
 
-    function clean_up_files($directory) {
-        $files = array_diff(scandir($directory), array('..', '.'));
-        foreach ($files as $file) {
-            unlink("$directory/$file");
-        }
-        $rmdir_status  = rmdir($directory);
-        if (false === $rmdir_status) {
-            $this->log("Failed removing $directory") ;
-        }
-
-    }
-
-    function rrmdir($dir) {
-       if (is_dir($dir)) {
-         $objects = scandir($dir);
-         foreach ($objects as $object) {
-           if ($object != "." && $object != "..") {
-             if (filetype($dir."/".$object) == "dir") $this->rrmdir($dir."/".$object); else unlink($dir."/".$object);
-           }
-         }
-         reset($objects);
-         rmdir($dir);
-       }
-    }
 
 }

@@ -15,6 +15,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
         $this->attachBehavior("loggable", new LoggableCommandBehavior() );
         $this->attachBehavior("ftp", new FileTransferBehavior() );
+        $this->attachBehavior("fs", new LocalFileSystemBehavior() );
 
         $local_dir = "/tmp/previews";
         $size_threshold = "200000";
@@ -162,6 +163,10 @@ class GeneratePreviewCommand extends CConsoleCommand {
                     //job done, deleting the job
                     $this->log("job ". $this->current_job['id'] . " completed successfully" );
                     $this->queue->delete($this->current_job['id']);
+                    $this->rrmdir("$local_dir/$preview_dir") ;
+                    if(false === is_dir("$local_dir/$preview_dir")) {
+                        $this->log("temporary directory $local_dir/$preview_dir removed");
+                    }
                     $this->current_job = null;
 
                 }catch (Exception $loopex) {
@@ -287,7 +292,6 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
         return;
     }
-
 
 
 }
