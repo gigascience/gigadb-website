@@ -134,8 +134,10 @@ class GeneratePreviewCommand extends CConsoleCommand {
                         }
                         if (true === is_file($preview_path)) {
 
+                            //extract filename from preview_path as it has already taken care of .gz files special case
+                            $remote_filename = pathinfo($preview_path,PATHINFO_FILENAME);
                             //upload generated preview to s3.
-                            $preview_url = $this->upload_preview($location, $preview_path, $filename);
+                            $preview_url = $this->upload_preview($location, $preview_path, $remote_filename);
                             if (false === $preview_url) {
                                 throw new Exception("Failed uploading preview file ");
                             }
@@ -152,7 +154,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
                             }
 
                         } else {
-                            throw new Exception ("Failed to generate a preview for $local_dir/$preview_dir/$filename ") ;
+                            throw new Exception ("Failed to generate a preview for $local_destination ") ;
                         }
 
                     }
@@ -211,16 +213,10 @@ class GeneratePreviewCommand extends CConsoleCommand {
         $filetype = mime_content_type("$sourcepath");
         //gunzip first if necessary
         if ("application/x-gzip" === $filetype) {
-            $zip = new ZipArchive;
-            $res = $zip->open($sourcepath);
-            if (true === $res) {
-              $zip->extractTo( pathinfo($sourcepath, PATHINFO_DIRNAME) );
-              $zip->close();
-              $filepath = pathinfo($sourcepath, PATHINFO_DIRNAME) . "/" . pathinfo($sourcepath, PATHINFO_FILENAME);
-              $filetype = mime_content_type("$filepath");
-            } else {
-                throw new Exception ("Problem unziping $sourcepath");
-            }
+            $filepath = pathinfo($sourcepath, PATHINFO_DIRNAME) . "/" . pathinfo($sourcepath, PATHINFO_FILENAME);
+            $this->ungzip($sourcepath, $filepath);
+            $filetype = mime_content_type("$filepath");
+
         }else {
             $filepath = $sourcepath;
         }
@@ -270,6 +266,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
                 'Key'        => $keyname,
                 'SourceFile' => $preview_path,
                 'ACL'        => 'public-read',
+                'ContentType' => mime_content_type("$preview_path"),
                 'Metadata'   => array(
                     'source.location.md5' => md5($location)
                 )
