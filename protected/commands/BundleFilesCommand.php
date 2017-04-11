@@ -53,8 +53,7 @@ class BundleFilesCommand extends CConsoleCommand {
 
                         $this->log("Got a new job...") ;
 
-                        $initial_remote_dir = "/pub/10.5524" ;
-                        $connectionString = Yii::app()->ftp->getConnectionString(true) . $initial_remote_dir;
+                        $connectionString = $this->buildConnectionString();
                         $conn_id = $this->getFtpConnection($connectionString);
 
                         $this->log("connected to ftp server, ready to download files...") ;

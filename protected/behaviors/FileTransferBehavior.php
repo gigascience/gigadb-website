@@ -9,6 +9,20 @@ Class FileTransferBehavior extends CBehavior
         parent::init();
     }
 
+    function buildConnectionString() {
+
+        $config = Yii::app()->getComponents(false);
+        if (isset($config['ftp']) && isset($config['ftp']['connectionString'])) {
+            $ftp_server_credentials = $config['ftp']['connectionString'] ;
+            $initial_remote_dir = isset($config['mds']['doi']) ? "/pub/" . $config['mds']['doi'] : "/pub/10.5524" ;
+            $connectionString = $ftp_server_credentials . $initial_remote_dir;
+            return $connectionString;
+        }
+        else {
+            return false ;
+        }
+    }
+
     function getFtpConnection($uri)
     {
         // Split FTP URI into:

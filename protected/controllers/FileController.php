@@ -131,13 +131,20 @@ class FileController extends Controller
         ));
     }
 
-    public function actionPreview($location) {
+    public function actionPreview() {
 
-        if( !isset($_GET['ajax']) ) {
-            $this->redirect(Yii::app()->request->urlReferrer);
-        }
+        // if( !isset($_GET['ajax']) ) {
+        //     $this->redirect(Yii::app()->request->urlReferrer);
+        // }
 
         $result = array('status' => "ERROR");
+        if(isset($_POST['location'])){
+			$location = $_POST['location'];
+        } else {
+            echo json_encode($result);
+            Yii::app()->end();
+        }
+
 
         $preview_url = Yii::app()->redis->get(md5($location)) ;
 

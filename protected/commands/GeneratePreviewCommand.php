@@ -17,8 +17,11 @@ class GeneratePreviewCommand extends CConsoleCommand {
         $this->attachBehavior("ftp", new FileTransferBehavior() );
         $this->attachBehavior("fs", new LocalFileSystemBehavior() );
 
+        $this->log_setup();
+
         $local_dir = "/tmp/previews";
         $size_threshold = "200000";
+        $supported_formats = array("text/plain");
 
 
         $this->log("GeneratePreviewCommand started") ;
@@ -73,8 +76,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
 
                         //download file by ftp, starting with connecting to the server
-                        $initial_remote_dir = "/pub/10.5524" ;
-                        $connectionString = Yii::app()->ftp->getConnectionString(true) . $initial_remote_dir;
+                        $connectionString = $this->buildConnectionString();
 
                         $conn_id = $this->getFtpConnection($connectionString);
                         if (false == $conn_id) { //if connection fail, relase the job for future retry as it could be connection issues
@@ -124,14 +126,20 @@ class GeneratePreviewCommand extends CConsoleCommand {
                             }
                         }
 
-                        //if too big, make small copy for files, otherwise send file as is
+                        // check wether we support the file for preview
+                        $mime_type = mime_content_type($local_destination);
                         $preview_path = false;
-                        if (filesize("$local_destination") > $size_threshold) {
-                            $preview_path = $this->make_content_previewable("$local_destination");
+                        if(in_array($mime_type , $supported_formats)) {
+
+                            //if too big, make small copy for files, otherwise send file as is
+                            if (filesize("$local_destination") > $size_threshold) {
+                                $preview_path = $this->make_content_previewable("$local_destination");
+                            }
+                            else {
+                                $preview_path = "$local_destination" ;
+                            }
                         }
-                        else {
-                            $preview_path = "$local_destination" ;
-                        }
+
                         if (true === is_file($preview_path)) {
 
                             //extract filename from preview_path as it has already taken care of .gz files special case
@@ -153,8 +161,25 @@ class GeneratePreviewCommand extends CConsoleCommand {
                                 $this->log("preview_url saved in Redis with key:" . md5($location) ." and value:" . Yii::app()->redis->get(md5($location)) );
                             }
 
+                            //job done, deleting the job
+                            $this->log("this job has been processed successfully" );
+                            if ($this->queue->delete($this->current_job['id'])) {
+                                $this->log("this job has been deleted from the queue" );
+                            }
+                            else {
+                                $this->log("Error deleting the job from the queue");
+                            }
+
                         } else {
-                            throw new Exception ("Failed to generate a preview for $local_destination ") ;
+
+                            //job skipped because unsupported file format
+                            $this->log("skipping this job as mime type $mime_type is not supported") ;
+                            if ($this->queue->delete($this->current_job['id'])) {
+                                $this->log("this job has been deleted from the queue" );
+                            }
+                            else {
+                                $this->log("Error deleting the job from the queue");
+                            }
                         }
 
                     }
@@ -162,24 +187,31 @@ class GeneratePreviewCommand extends CConsoleCommand {
                         throw new Exception("Failed touching the newly reserved job");
                     }
 
-                    //job done, deleting the job
-                    $this->log("job ". $this->current_job['id'] . " completed successfully" );
-                    $this->queue->delete($this->current_job['id']);
+
                     $this->rrmdir("$local_dir/$preview_dir") ;
                     if(false === is_dir("$local_dir/$preview_dir")) {
                         $this->log("temporary directory $local_dir/$preview_dir removed");
                     }
+                    else {
+                        $this->log("Error removing temporary directory $local_dir/$preview_dir" );
+                    }
                     $this->current_job = null;
 
                 }catch (Exception $loopex) {
+                    $code = $loopex->getCode() ;
+                    $message = $loopex->getMessage() ;
                     if ($this->current_job) {
-                        $this->log( "Error while processing job of id " . $this->current_job['id'] . ":" . $loopex->getMessage());
-
-                        $this->queue->bury($this->current_job['id'],0); //bury the job as they are something wrong with it
-                        $this->log( "The job of id: " . $this->current_job['id'] . " has been " . $this->queue->statsJob($this->current_job['id'])['state']);
+                        $this->log($message);
+                        if ( E_NOTICE === $code || E_WARNING === $code || E_ERROR === $code ) {
+                            $this->queue->release($this->current_job['id'],0,60); //release the job if code error
+                        }
+                        else {
+                            $this->queue->bury($this->current_job['id'],0); //bury the job as they are something wrong with the data
+                        }
+                        $this->log( "Due to errors, this job has been " . $this->queue->statsJob($this->current_job['id'])['state']);
                     }
                     else {
-                        throw new Exception ($loopex->getMessage()) ;
+                        throw new Exception ($message, $code) ;
                     }
                 }
 
@@ -220,7 +252,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
         }else {
             $filepath = $sourcepath;
         }
-
+        $this->log("Downloaded file has mime type: $filetype and size: " . filesize($filepath) );
 
         //only support text/plain for now
         if ("text/plain" === $filetype) {
