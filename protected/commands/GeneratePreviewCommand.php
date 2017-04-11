@@ -61,8 +61,13 @@ class GeneratePreviewCommand extends CConsoleCommand {
                         $body_array = json_decode($this->current_job['body'], true);
                         $location = $body_array['location'];
                         $location_parts = parse_url($location);
-                        $basename = pathinfo($location_parts['path'], PATHINFO_BASENAME);
-                        $filename = pathinfo($location_parts['path'], PATHINFO_FILENAME);
+                        if (isset($location_parts['path'])) {
+                            $basename = pathinfo($location_parts['path'], PATHINFO_BASENAME);
+                            $filename = pathinfo($location_parts['path'], PATHINFO_FILENAME);
+                        }
+                        else {
+                            throw new Exception("Malformed job message. location data is missing") ;
+                        }
 
 
                         //creating working directory
@@ -178,7 +183,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
                         } else {
 
                             //job skipped because unsupported file format
-                            $this->log("skipping this job as mime type $mime_type is not supported") ;
+                            $this->log("skipping this job as mime type $mime_type for $local_destination is not supported") ;
                             if ($this->queue->delete($this->current_job['id'])) {
                                 $this->log("this job has been deleted from the queue" );
                             }

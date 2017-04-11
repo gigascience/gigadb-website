@@ -50,7 +50,36 @@
 
           });
          ";
+
+ $previewjs = "
+    $('.previewbtn').click(function(){
+
+        $.ajax({
+            type: 'POST',
+            url: '/file/preview',
+            data:{'location': $(this).attr('href') },
+            success: function(output){
+                var response = JSON.parse(output);
+                 if(response.status == 'OK') {
+                     console.log('success with ' + response.lastop + ' !');
+                 } else {
+                     console.log(response);
+                 }
+            },
+            error:function(){
+                console.log('error!');
+            }
+
+        });
+
+        return false;
+
+
+    });
+";
+
  Yii::app()->clientScript->registerScript('file-grid', $js);
+ Yii::app()->clientScript->registerScript('preview-button', $previewjs);
 
 if ($error != null) {
     //echo '<div class="flash-error">Could not display folder content : ' . $error->getMessage() . "</div>\n";
@@ -125,26 +154,9 @@ if ($error != null) {
                     'preview' => array(
                         'icon'=>'eye-open',
                         // 'label'=>'P',
-                        'url'=>'Yii::app()->createUrl("file/preview",array("location"=>$data->location))',
-                        'click'=>"function(){
-                            $.ajax({  //change my-grid to your grid's name
-                                type:'GET',
-                                url:$(this).attr('href'),
-                                success:function(data) {
-                                    //open a iframe with mfr url
-                                    console.log('ajax here');
-                                    if (data.preview_url) {
-                                        document.getElementById('preview').innerHTML='<iframe src=\"http://127.0.0.1:8000/mfr?'+ data.preview_url +  '\"></iframe>';
-                                    }else {
-                                        document.getElementById('preview').innerHTML='<iframe src=\"\">a preview for this file is not ready, try again later,</p></iframe>' ;
-                                    }
-                                }
-                            })
-                            return false;
-                          }
-                        ",
+                        'url'=>'$data->location',
                         'options'=>array(
-                            'class'=>'btn btn-mini'
+                            'class'=>'btn btn-mini previewbtn'
                         )
                     ),
                 ),
