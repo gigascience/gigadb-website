@@ -25,10 +25,6 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
 
         $this->log("GeneratePreviewCommand started") ;
-        // $this->log("mime for csv: " . mime_content_type("/vagrant/consortium_list.csv")) ;
-        // $this->log("mime for tsv: " . mime_content_type("/vagrant/full-map.tsv")) ;
-        // $this->log("mime for fa.gz: " . mime_content_type("/vagrant/wisent.fa.gz")) ;
-        // $this->log("mime for fa: " . mime_content_type("/vagrant/V_corymbosum_scaffold_May_2013.fa")) ;
 
         try {
             $this->queue = Yii::app()->beanstalk->getClient();
@@ -65,7 +61,9 @@ class GeneratePreviewCommand extends CConsoleCommand {
                         $body_array = json_decode($this->current_job['body'], true);
                         $location = $body_array['location'];
                         $location_parts = parse_url($location);
-                        $filename = pathinfo($location_parts['path'], PATHINFO_BASENAME);
+                        $basename = pathinfo($location_parts['path'], PATHINFO_BASENAME);
+                        $filename = pathinfo($location_parts['path'], PATHINFO_FILENAME);
+
 
                         //creating working directory
                         $preview_dir = md5($location);
@@ -74,66 +72,73 @@ class GeneratePreviewCommand extends CConsoleCommand {
                             mkdir("$local_dir/$preview_dir", 0700);
                         chdir("$local_dir/$preview_dir");
 
-
-                        //download file by ftp, starting with connecting to the server
-                        $connectionString = $this->buildConnectionString();
-
-                        $conn_id = $this->getFtpConnection($connectionString);
-                        if (false == $conn_id) { //if connection fail, relase the job for future retry as it could be connection issues
-                            $temp_job_id = $this->current_job['id'] ; //because we are about to nullify current_job but needs the id
-                            $this->queue->release($temp_job_id, 10 , 60) ; //release the job, with delay, at lower priority for future retry
-                            $this->current_job = null ; // so that the exception is picked up by the outer catch block
-                            throw new Exception("Failed connecting to FTP server, the job $temp_job_id has been released for future retry") ;
-                        }
-                        else {
-                            $this->log( "Connected to ftp server, ready to download file from $location...");
-                        }
-                        //check wether the file exists locally
-                        $local_before_size = is_file("$local_dir/$preview_dir/$filename") ? filesize("$local_dir/$preview_dir/$filename") : 0 ;
-
-                        //download the file
-                        $download_status = false ;
-                        $ftp_mode = $this->get_ftp_mode($location_parts['path']) ;
-                        $local_destination = "$local_dir/$preview_dir/$filename" ;
-
-                        if ( $local_before_size > 0 && FTP_BINARY === $ftp_mode) {
-                            $this->log("Resuming download of " . $location_parts['path'] . "to $local_destination at $local_before_size");
-                            $download_status = ftp_get($conn_id,
-                                "$local_destination",
-                                $location_parts['path'],
-                                $ftp_mode,
-                                $local_before_size
-                            );
-                        } else {
-                            $this->log("Starting download of " . $location_parts['path'] . " to $local_destination") ;
-                            $download_status = ftp_get($conn_id,
-                                "$local_destination",
-                                $location_parts['path'],
-                                $ftp_mode
-                            );
+                        // check wether we support the file for preview
+                        $local_destination = "$local_dir/$preview_dir/$basename" ;
+                        $mime_type = $this->extension_to_mime_type(  pathinfo($local_destination,PATHINFO_EXTENSION) );
+                        //in case the file is a gzipped file, we need to check mime type of uncompressed file
+                        if ("application/x-gzip" === $mime_type ) {
+                            $uncompressed_extension =  pathinfo($filename,PATHINFO_EXTENSION) ;
+                            $mime_type = $this->extension_to_mime_type(  $uncompressed_extension );
                         }
 
-                        ftp_close($conn_id);
+                        $preview_path = false;
+                        if( in_array($mime_type , $supported_formats) ) {
+                            $this->log("supported format ($mime_type), proceeding to downloading source file");
 
-                        if (false === $download_status) {
-                            if(filesize("$local_destination") >  0 ) { //partial download, we release the job for future retry
+                            //download file by ftp, starting with connecting to the server
+                            $connectionString = $this->buildConnectionString();
+
+                            $conn_id = $this->getFtpConnection($connectionString);
+                            if (false == $conn_id) { //if connection fail, relase the job for future retry as it could be connection issues
                                 $temp_job_id = $this->current_job['id'] ; //because we are about to nullify current_job but needs the id
                                 $this->queue->release($temp_job_id, 10 , 60) ; //release the job, with delay, at lower priority for future retry
                                 $this->current_job = null ; // so that the exception is picked up by the outer catch block
-                                throw new Exception("($temp_job_id) Error while downloading " . $location_parts['path'] . " to $local_destination." . PHP_EOL . "The job $temp_job_id has been released for future retry");
-                            } else {
-                                throw new Exception("Failed to download " . $location_parts['path'] . " to $local_destination") ;
+                                throw new Exception("Failed connecting to FTP server, the job $temp_job_id has been released for future retry") ;
                             }
-                        }
+                            else {
+                                $this->log( "Connected to ftp server, ready to download source file from $location...");
+                            }
+                            //check wether the file exists locally
+                            $local_before_size = is_file("$local_dir/$preview_dir/$basename") ? filesize("$local_dir/$preview_dir/$basename") : 0 ;
 
-                        // check wether we support the file for preview
-                        $mime_type = mime_content_type($local_destination);
-                        $preview_path = false;
-                        if(in_array($mime_type , $supported_formats)) {
+                            //download the file
+                            $download_status = false ;
+                            $ftp_mode = $this->get_ftp_mode($location_parts['path']) ;
+
+
+                            if ( $local_before_size > 0 && FTP_BINARY === $ftp_mode) {
+                                $this->log("Resuming download of " . $location_parts['path'] . "to $local_destination at $local_before_size");
+                                $download_status = ftp_get($conn_id,
+                                    "$local_destination",
+                                    $location_parts['path'],
+                                    $ftp_mode,
+                                    $local_before_size
+                                );
+                            } else {
+                                $this->log("Starting download of " . $location_parts['path'] . " to $local_destination") ;
+                                $download_status = ftp_get($conn_id,
+                                    "$local_destination",
+                                    $location_parts['path'],
+                                    $ftp_mode
+                                );
+                            }
+
+                            ftp_close($conn_id);
+
+                            if (false === $download_status) {
+                                if(filesize("$local_destination") >  0 ) { //partial download, we release the job for future retry
+                                    $temp_job_id = $this->current_job['id'] ; //because we are about to nullify current_job but needs the id
+                                    $this->queue->release($temp_job_id, 10 , 60) ; //release the job, with delay, at lower priority for future retry
+                                    $this->current_job = null ; // so that the exception is picked up by the outer catch block
+                                    throw new Exception("($temp_job_id) Error while downloading " . $location_parts['path'] . " to $local_destination." . PHP_EOL . "The job $temp_job_id has been released for future retry");
+                                } else {
+                                    throw new Exception("Failed to download " . $location_parts['path'] . " to $local_destination") ;
+                                }
+                            }
 
                             //if too big, make small copy for files, otherwise send file as is
                             if (filesize("$local_destination") > $size_threshold) {
-                                $preview_path = $this->make_content_previewable("$local_destination");
+                                $preview_path = $this->make_content_previewable("$local_destination"); //TODO extract uncompress as separate function
                             }
                             else {
                                 $preview_path = "$local_destination" ;
@@ -190,10 +195,10 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
                     $this->rrmdir("$local_dir/$preview_dir") ;
                     if(false === is_dir("$local_dir/$preview_dir")) {
-                        $this->log("temporary directory $local_dir/$preview_dir removed");
+                        $this->log("temporary directory $local_dir/$preview_dir removed" . PHP_EOL);
                     }
                     else {
-                        $this->log("Error removing temporary directory $local_dir/$preview_dir" );
+                        $this->log("Error removing temporary directory $local_dir/$preview_dir" . PHP_EOL );
                     }
                     $this->current_job = null;
 
@@ -252,7 +257,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
         }else {
             $filepath = $sourcepath;
         }
-        $this->log("Downloaded file has mime type: $filetype and size: " . filesize($filepath) );
+        $this->log("Downloaded (and extracted) file $filepath has mime type: $filetype and size: " . filesize($filepath) );
 
         //only support text/plain for now
         if ("text/plain" === $filetype) {
@@ -281,11 +286,11 @@ class GeneratePreviewCommand extends CConsoleCommand {
         return false;
     }
 
-    function upload_preview($location, $preview_path, $filename) {
+    function upload_preview($location, $preview_path, $basename) {
 
         //data needed by s3
         $bucket = Yii::app()->aws->preview_bucket;
-        $keyname = "$filename";
+        $keyname = "$basename";
 
         $this->log( "Uploading file $preview_path to S3 in bucket:" . $bucket . " with keyname:" . $keyname);
 
