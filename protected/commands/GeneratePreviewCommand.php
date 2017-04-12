@@ -20,7 +20,6 @@ class GeneratePreviewCommand extends CConsoleCommand {
         $this->log_setup();
 
         $local_dir = "/tmp/previews";
-        $size_threshold = "200000";
         $supported_formats = array("text/plain");
 
 
@@ -141,13 +140,9 @@ class GeneratePreviewCommand extends CConsoleCommand {
                                 }
                             }
 
-                            //if too big, make small copy for files, otherwise send file as is
-                            if (filesize("$local_destination") > $size_threshold) {
-                                $preview_path = $this->make_content_previewable("$local_destination"); //TODO extract uncompress as separate function
-                            }
-                            else {
-                                $preview_path = "$local_destination" ;
-                            }
+                            //Generating preview file
+                            $preview_path = $this->make_preview("$local_destination"); //TODO extract uncompress as separate function
+
                         }
 
                         if (true === is_file($preview_path)) {
@@ -163,12 +158,13 @@ class GeneratePreviewCommand extends CConsoleCommand {
                                 $this->log("preview file uploaded at $preview_url");
                             }
                             //update redis
-                            $cache_result = Yii::app()->redis->set(md5($location),$preview_url);
+                            //$cache_result = Yii::app()->redis->set(md5($location),$preview_url,0);
+                            $cache_result = Yii::app()->redis->executeCommand('SET',array(md5($location),$preview_url));
                             if (false === $cache_result) {
                                 throw new Exception("Failed saving preview_url in Redis");
                             }
                             else {
-                                $this->log("preview_url saved in Redis with key:" . md5($location) ." and value:" . Yii::app()->redis->get(md5($location)) );
+                                $this->log("preview_url saved in Redis with key:" . md5($location) ." and value:" . Yii::app()->redis->executeCommand('GET',array(md5($location))) );
                             }
 
                             //job done, deleting the job
@@ -245,11 +241,9 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
     }
 
-    function make_content_previewable($sourcepath) {
+    function make_preview($sourcepath) {
+        $size_threshold = "200000";
         $type = "inode/x-empty";
-        $preview = "" ;
-        $lines = 0 ;
-
 
         //identify type
         $filetype = mime_content_type("$sourcepath");
@@ -259,36 +253,44 @@ class GeneratePreviewCommand extends CConsoleCommand {
             $this->ungzip($sourcepath, $filepath);
             $filetype = mime_content_type("$filepath");
 
+            $this->log("Extracted $sourcepath into $filepath" );
         }else {
             $filepath = $sourcepath;
         }
-        $this->log("Downloaded (and extracted) file $filepath has mime type: $filetype and size: " . filesize($filepath) );
 
-        //only support text/plain for now
-        if ("text/plain" === $filetype) {
-            $handle = fopen("$filepath", "r");
-            if (false === $handle ) {
-                throw new Exception("Couldn't get handle for $filepath");
-            }
-            else {
-                while (!feof($handle)) {
-                    if ($lines > 30) {
-                        break;
-                    }
-                    $buffer = fgets($handle, 4096);
-                    $preview .= $buffer.PHP_EOL;
-                    $lines++;
+        if (filesize("$filepath") > $size_threshold) {
+            $preview = "" ;
+            $lines = 0 ;
+            //only support text/plain for now
+            if ("text/plain" === $filetype) {
+                $this->log("$filepath size > $size_threshold, generating a preview file $filepath.preview" );
+                $handle = fopen("$filepath", "r");
+                if (false === $handle ) {
+                    throw new Exception("Couldn't get handle for $filepath");
                 }
-                fclose($handle);
-            }
+                else {
+                    while (!feof($handle)) {
+                        if ($lines > 30) {
+                            break;
+                        }
+                        $buffer = fgets($handle, 4096);
+                        $preview .= $buffer.PHP_EOL;
+                        $lines++;
+                    }
+                    fclose($handle);
+                }
 
-            $fp = fopen("$filepath.preview", 'w');
-            fwrite($fp, $preview);
-            fclose($fp);
-            return "$filepath.preview" ;
+                $fp = fopen("$filepath.preview", 'w');
+                fwrite($fp, $preview);
+                fclose($fp);
+            }
+        }
+        else {
+            $this->log("$filepath sizes < $size_threshold, so copying it as is into $filepath.preview ") ;
+            copy($filepath, "$filepath.preview") ;
         }
 
-        return false;
+        return "$filepath.preview";
     }
 
     function upload_preview($location, $preview_path, $basename) {

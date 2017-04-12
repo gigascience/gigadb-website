@@ -146,7 +146,7 @@ class FileController extends Controller
         }
 
 
-        $preview_url = Yii::app()->redis->get(md5($location)) ;
+        $preview_url = Yii::app()->redis->executeCommand('GET',array(md5($location))) ;
 
         if ( $preview_url ) {
 
@@ -157,7 +157,8 @@ class FileController extends Controller
         else {
 
             $this->prepare_preview_job($location);
-            $result['preview_url'] = '';
+            $result['preview_url'] = Yii::app()->redis->executeCommand('GET',array(md5($location)));
+            $result['key'] = md5($location);
             $result['status'] = "PENDING";
         }
 
