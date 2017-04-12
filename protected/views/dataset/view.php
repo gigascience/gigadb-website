@@ -398,7 +398,6 @@ HTML;
         </div>
     </div>
 </div>
-<div id="preview"/>
 <!-- HISTORY LOG  -->
 <?php if ($model->isPublic && $logs) : ?>
     <div class="dataset_log">

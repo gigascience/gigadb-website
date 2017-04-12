@@ -60,8 +60,13 @@ $previewjs = "
            data:{'location': $(this).attr('href') },
            success: function(output){
                var response = JSON.parse(output);
+               var options = {
+                    url: response.preview_url,
+                    title:'Preview',
+                    size: eModal.size.sm,
+                };
                 if(response.preview_url) {
-                    eModal.iframe(data.preview_url, 'Preview', null);
+                    eModal.iframe(options);
                     console.log('success with ' + response.lastop + ' !');
                 } else {
                     eModal.alert('No preview available', 'Preview');
