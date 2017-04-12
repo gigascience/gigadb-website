@@ -1,4 +1,8 @@
 <?php
+
+Yii::app()->clientScript->registerScriptFile('/js/eModal.min.js');
+
+
 $title= strlen($model->title)>100?strip_tags(substr($model->title, 0,100))." ...":strip_tags($model->title);
 $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title;
 

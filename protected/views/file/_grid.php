@@ -50,7 +50,37 @@ $js = "
 
          });
         ";
+
+$previewjs = "
+   $('.previewbtn').click(function(){
+
+       $.ajax({
+           type: 'POST',
+           url: '/file/preview',
+           data:{'location': $(this).attr('href') },
+           success: function(output){
+               var response = JSON.parse(output);
+                if(response.preview_url) {
+                    eModal.iframe(data.preview_url, 'Preview', null);
+                    console.log('success with ' + response.lastop + ' !');
+                } else {
+                    eModal.alert('No preview available', 'Preview');
+                    console.log(response);
+                }
+           },
+           error:function(){
+               console.log('error!');
+           }
+
+       });
+
+       return false;
+
+
+   });
+";
 Yii::app()->clientScript->registerScript('file-grid', $js);
+Yii::app()->clientScript->registerScript('preview-button', $previewjs);
 
 
 if ($error != null) {
@@ -118,8 +148,9 @@ if ($error != null) {
                 'buttons' => array(
                     'preview' => array(
                         'icon'=>'eye-open',
+                        'url'=>'$data->location',
                         'options'=>array(
-                            'class'=>'btn btn-mini'
+                            'class'=>'btn btn-mini previewbtn'
                         )
                     ),
                 ),

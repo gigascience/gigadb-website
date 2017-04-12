@@ -60,9 +60,11 @@
             data:{'location': $(this).attr('href') },
             success: function(output){
                 var response = JSON.parse(output);
-                 if(response.status == 'OK') {
+                 if(response.preview_url) {
+                     document.getElementById('preview').innerHTML='<iframe src=\"http://127.0.0.1:8000/mfr?'+ data.preview_url +  '\"></iframe>';
                      console.log('success with ' + response.lastop + ' !');
                  } else {
+                     document.getElementById('preview').innerHTML='<iframe src=\"\">a preview for this file is not ready, try again later,</p></iframe>' ;
                      console.log(response);
                  }
             },
