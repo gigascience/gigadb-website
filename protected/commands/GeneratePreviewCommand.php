@@ -68,6 +68,15 @@ class GeneratePreviewCommand extends CConsoleCommand {
                             throw new Exception("Malformed job message. location data is missing") ;
                         }
 
+                        // Update redis with inprogress status for frontend
+                        $location_md5 = md5($location);
+                        $cache = array('status' => 'INPROGRESS', 'url' => '') ;
+                        if ( false === Yii::app()->redis->executeCommand('SET',array( $location_md5, json_encode($cache) )) ) {
+                            throw new Exception("Failed updating KV server with INPROGRESS status");
+                        }
+                        else {
+                            $this->log("Updated KV server with INPROGRESS status");
+                        }
 
                         //creating working directory
                         $preview_dir = md5($location);
@@ -112,7 +121,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
                             if ( $local_before_size > 0 && FTP_BINARY === $ftp_mode) {
                                 $this->log("Resuming download of " . $location_parts['path'] . "to $local_destination at $local_before_size");
-                                $download_status = ftp_get($conn_id,
+                                $download_status = ftp_nb_get($conn_id,
                                     "$local_destination",
                                     $location_parts['path'],
                                     $ftp_mode,
@@ -120,7 +129,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
                                 );
                             } else {
                                 $this->log("Starting download of " . $location_parts['path'] . " to $local_destination") ;
-                                $download_status = ftp_get($conn_id,
+                                $download_status = ftp_nb_get($conn_id,
                                     "$local_destination",
                                     $location_parts['path'],
                                     $ftp_mode
@@ -130,7 +139,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
                             ftp_close($conn_id);
 
                             if (false === $download_status) {
-                                if(filesize("$local_destination") >  0 ) { //partial download, we release the job for future retry
+                                if(is_file($local_destination) && filesize("$local_destination") >  0 ) { //partial download, we release the job for future retry
                                     $temp_job_id = $this->current_job['id'] ; //because we are about to nullify current_job but needs the id
                                     $this->queue->release($temp_job_id, 10 , 60) ; //release the job, with delay, at lower priority for future retry
                                     $this->current_job = null ; // so that the exception is picked up by the outer catch block
@@ -158,13 +167,13 @@ class GeneratePreviewCommand extends CConsoleCommand {
                                 $this->log("preview file uploaded at $preview_url");
                             }
                             //update redis
-                            //$cache_result = Yii::app()->redis->set(md5($location),$preview_url,0);
-                            $cache_result = Yii::app()->redis->executeCommand('SET',array(md5($location),$preview_url));
-                            if (false === $cache_result) {
-                                throw new Exception("Failed saving preview_url in Redis");
+                            $cache['status'] = "COMPLETED" ;
+                            $cache['url'] = $preview_url ;
+                            if ( false === Yii::app()->redis->executeCommand('SET',array( $location_md5, json_encode($cache) )) ) {
+                                throw new Exception("Failed updating KV server with COMPLETED status");
                             }
                             else {
-                                $this->log("preview_url saved in Redis with key:" . md5($location) ." and value:" . Yii::app()->redis->executeCommand('GET',array(md5($location))) );
+                                $this->log("Updated KV server with COMPLETED status");
                             }
 
                             //job done, deleting the job
@@ -204,15 +213,31 @@ class GeneratePreviewCommand extends CConsoleCommand {
                     $this->current_job = null;
 
                 }catch (Exception $loopex) {
+                    if(isset($conn_id)) {
+                        ftp_close($conn_id);
+                    }
                     $code = $loopex->getCode() ;
                     $message = $loopex->getMessage() ;
                     if ($this->current_job) {
-                        $this->log($message);
                         if ( E_NOTICE === $code || E_WARNING === $code || E_ERROR === $code ) {
-                            $this->queue->release($this->current_job['id'],0,60); //release the job if code error
+                            $this->queue->release($this->current_job['id'],0,60*2); //release the job if code error
+                            $cache['status'] = "DELAYED" ;
+                            if ( false === Yii::app()->redis->executeCommand('SET',array( $location_md5, json_encode($cache) )) ) {
+                                throw new Exception("Failed updating KV server with DELAYED status");
+                            }
+                            else {
+                                $this->log("Updated KV server with DELAYED status");
+                            }
                         }
                         else {
                             $this->queue->bury($this->current_job['id'],0); //bury the job as they are something wrong with the data
+                            $cache['status'] = "FAILED" ;
+                            if ( false === Yii::app()->redis->executeCommand('SET',array( $location_md5, json_encode($cache) )) ) {
+                                throw new Exception("Failed updating KV server with FAILED status");
+                            }
+                            else {
+                                $this->log("Updated KV server with FAILED status");
+                            }
                         }
                         $this->log( "Due to errors, this job has been " . $this->queue->statsJob($this->current_job['id'])['state']);
                     }

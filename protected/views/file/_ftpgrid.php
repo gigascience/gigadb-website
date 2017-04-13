@@ -65,12 +65,19 @@
                      title:'Preview',
                      size: eModal.size.sm,
                  };
-                 if(response.preview_url) {
+                 console.log(response.status);
+                 if(response.status === 'UNSUPPORTED') {
+                     eModal.alert('Preview is not supported for this type of document', 'Preview');
+                 }
+
+                 else if(response.status === 'PENDING') {
+                     eModal.alert('Preview for this document is not available at the moment.<br/> Please check back later.', 'Preview');
+                 }
+
+                 else if(response.status === 'OK' && response.preview_url) {
                      eModal.iframe(options);
-                     console.log('success with ' + response.lastop + ' !');
                  } else {
                      eModal.alert('No preview available', 'Preview');
-                     console.log(response);
                  }
             },
             error:function(){

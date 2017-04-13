@@ -17,7 +17,10 @@ class FileController extends Controller
     */
     public $layout='//layouts/column2';
 
-
+    function init() {
+        $this->attachBehavior("fs", new LocalFileSystemBehavior());
+        parent::init();
+    }
 
 
     /**
@@ -133,11 +136,10 @@ class FileController extends Controller
 
     public function actionPreview() {
 
-        // if( !isset($_GET['ajax']) ) {
-        //     $this->redirect(Yii::app()->request->urlReferrer);
-        // }
+        $supported_formats = array("text/plain");
 
-        $result = array('status' => "ERROR");
+        $result = array('status' => "UNKNOWN");
+
         if(isset($_POST['location'])){
 			$location = $_POST['location'];
         } else {
@@ -145,22 +147,49 @@ class FileController extends Controller
             Yii::app()->end();
         }
 
+        $ext = pathinfo(parse_url($location)['path'], PATHINFO_EXTENSION) ;
+        $mime_type = $this->extension_to_mime_type(  $ext );
+        //in case the file is a gzipped file, we need to check mime type of uncompressed file
+        if ("application/x-gzip" === $mime_type ) {
+            $uncompressed_extension =  pathinfo(pathinfo(parse_url($location)['path'], PATHINFO_FILENAME),PATHINFO_EXTENSION) ;
+            $mime_type = $this->extension_to_mime_type(  $uncompressed_extension );
+        }
 
-        $preview_url = Yii::app()->redis->executeCommand('GET',array(md5($location))) ;
+        if( false ===  in_array($mime_type , $supported_formats) ) {
+            $result['status'] = "UNSUPPORTED";
+            echo json_encode($result);
+            Yii::app()->end();
+        }
 
-        if ( $preview_url ) {
 
-            $result['preview_url'] =  $preview_url;
-            $result['status'] = "OK";
+        $preview_status_raw = Yii::app()->redis->executeCommand('GET',array(md5($location))) ;
 
+
+        if (isset($preview_status_raw)) {
+            $result['redis_raw'] = $preview_status_raw ;
+            $preview_status = json_decode($preview_status_raw, true) ;
+            if ( isset($preview_status['status']) && ("INITIATED" === $preview_status['status'] || "INPROGRESS" === $preview_status['status'] || "DELAYED" === $preview_status['status'] )) {
+                $result['status'] = "PENDING";
+            }
+            else if ( isset($preview_status['status']) && "FAILED" === $preview_status['status']) {
+                $result['status'] = "ERROR";
+            }
+            else if ( isset($preview_status['status']) && "COMPLETED" === $preview_status['status'] &&  isset($preview_status['url']) ) {
+
+                $result['preview_url'] =  $preview_status['url'];
+                $result['status'] = "OK";
+
+            }
+            else {
+                $this->prepare_preview_job($location);
+                $result['status'] = "INITIATED";
+            }
         }
         else {
-
             $this->prepare_preview_job($location);
-            $result['preview_url'] = Yii::app()->redis->executeCommand('GET',array(md5($location)));
-            $result['key'] = md5($location);
-            $result['status'] = "PENDING";
+            $result['status'] = "INITIATED";
         }
+
 
         echo json_encode($result);
         Yii::app()->end();

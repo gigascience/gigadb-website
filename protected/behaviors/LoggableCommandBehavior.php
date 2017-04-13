@@ -33,8 +33,12 @@ Class LoggableCommandBehavior extends CBehavior
         // $time_index = date(DATE_ATOM);
         //
         // echo "[". $time_index ."]" . "[". get_class($this->owner) ."] * $job_id A PHP Error $num occured in " . $file  ."[" . $line . "]: $str". PHP_EOL;
-
-        throw new Exception ("A PHP Error $num occured in " . $file  ."[" . $line . "]: $str", $num) ;
+        if (E_ERROR === $num) {
+            throw new Exception ("A PHP Error $num occured in " . $file  ."[" . $line . "]: $str", $num) ;
+        }
+        else {
+            $this->log("A PHP Error $num was occured in " . $file  ."[" . $line . "]: $str");
+        }
     }
 
     public function handle_fatal_error() {
