@@ -34,10 +34,13 @@ Class LoggableCommandBehavior extends CBehavior
         //
         // echo "[". $time_index ."]" . "[". get_class($this->owner) ."] * $job_id A PHP Error $num occured in " . $file  ."[" . $line . "]: $str". PHP_EOL;
         if (E_ERROR === $num) {
-            throw new Exception ("A PHP Error $num occured in " . $file  ."[" . $line . "]: $str", $num) ;
+            throw new Exception ("A PHP Fatal Error $num occured in " . $file  ."[" . $line . "]: $str", $num) ;
+        }
+        else if (E_WARNING === $num){
+            $this->log("A PHP warning $num has occured in " . $file  ."[" . $line . "]: $str");
         }
         else {
-            $this->log("A PHP Error $num was occured in " . $file  ."[" . $line . "]: $str");
+            $this->log("A PHP error $num has occured in " . $file  ."[" . $line . "]: $str");
         }
     }
 

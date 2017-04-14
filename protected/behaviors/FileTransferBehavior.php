@@ -85,21 +85,19 @@ Class FileTransferBehavior extends CBehavior
     function ftp_getdir ($conn_id, $dir, $dataset_id) {
 
         $errors = [];
-
         if ($dir != ".") {
             if (ftp_chdir($conn_id, $dir) == false) {
                 $this->log(("Change Dir Failed: $dir"),  pathinfo(__FILE__, PATHINFO_FILENAME) );
                 return false;
             }
             $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", $dir);
-            // $this->log("current dir: ". getcwd() . "\n",  pathinfo(__FILE__, PATHINFO_FILENAME) );
-            // $this->log("ftp_getdir: mkdir($portable_path, true)\n",  pathinfo(__FILE__, PATHINFO_FILENAME) );
             if (!(is_dir($portable_path)))
                 mkdir($portable_path, 0777, true);
             chdir ($portable_path);
         }
 
         $contents = ftp_nlist($conn_id, ".");
+        trigger_error(var_dump($contents));
         foreach ($contents as $file) {
 
             if ($file == '.' || $file == '..')
@@ -113,8 +111,20 @@ Class FileTransferBehavior extends CBehavior
                 }
             }
             else {
-                $get_response = ftp_get($conn_id, $file, $file, $this->get_ftp_mode($file));
-                if (false === $get_response) {
+                $get_response = ftp_nb_get($conn_id, $file, $file, $this->get_ftp_mode($file));
+                if ($get_response== FTP_MOREDATA) {
+                   // Continue downloading...
+                   $get_response = ftp_nb_continue($conn_id);
+                }
+                while ($get_response == FTP_MOREDATA) {
+                   // Continue downloading...
+                   $get_response = ftp_nb_continue($conn_id);
+                }
+                $filesize_array = ftp_raw($conn_id, "SIZE " . $file);
+                $filesize_array = ftp_raw($conn_id, "SIZE " . $file); //needs to call twice due to issues with ftp server configuration
+                $remote_size = floatval(str_replace('213 ', '', $filesize_array[0])) ;
+                $local_size = filesize($file) ;
+                if ($remote_size != $local_size) {
                     $errors[] =  $file ;
                 }
             }

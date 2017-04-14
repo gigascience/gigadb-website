@@ -1,17 +1,20 @@
 <?php
+ini_set('max_execution_time', 300);
 
 class BundleFilesCommand extends CConsoleCommand {
-
+    public $queue ;
+    public $current_job;
 
     public function run($args) {
 
 
-        $queue = "bundle_queue";
         $local_dir = "/tmp/bundles";
 
         $this->attachBehavior("loggable", new LoggableCommandBehavior() );
         $this->attachBehavior("ftp", new FileTransferBehavior() );
         $this->attachBehavior("fs", new LocalFileSystemBehavior() );
+
+        $this->log_setup();
 
         $this->log("BundleFilesCommand started") ;
 
@@ -35,28 +38,25 @@ class BundleFilesCommand extends CConsoleCommand {
 
                 try {
 
-                    $this->log("Reserving next job...") ;
+                    $this->log("Ready for new jobs...");
 
-                    $job = $consumer->reserve();
-                    if (false === $job) {
+                    $this->current_job = $consumer->reserve();
+                    if (false === $this->current_job) {
                         throw new Exception("Error reserving a new job from the job queue");
                     }
-                    $result = $consumer->touch($job['id']);
+                    $result = $consumer->touch($this->current_job['id']);
 
                     if( $result )
                     {
 
-                        $body_array = json_decode($job['body'], true);
+                        $body_array = json_decode($this->current_job['body'], true);
                         $bundle = unserialize($body_array['list']);
                         $bid = $body_array['bid'];
                         $dataset_id = $body_array['dataset_id'];
 
                         $this->log("Got a new job...") ;
 
-                        $connectionString = $this->buildConnectionString();
-                        $conn_id = $this->getFtpConnection($connectionString);
 
-                        $this->log("connected to ftp server, ready to download files...") ;
 
                         //create directory for the files
                         $bundle_dir = $bid;
@@ -70,6 +70,10 @@ class BundleFilesCommand extends CConsoleCommand {
 
 
                         foreach ($bundle as $selection) {
+                            $connectionString = $this->buildConnectionString();
+                            $conn_id = $this->getFtpConnection($connectionString);
+                            ftp_set_option($conn_id, FTP_TIMEOUT_SEC, 300);
+                            $this->log("connected to ftp server, ready to download files...") ;
 
                             $location = $selection["location"];
                             $filename = $selection["filename"];
@@ -79,51 +83,63 @@ class BundleFilesCommand extends CConsoleCommand {
 
                             $this->log("downloading " . $location_parts['path'] . " -> " . "$local_dir/$bundle_dir/$filename " ) ;
                             $download_status = false;
+                            $directory_download_status = false;
                             chdir("$local_dir/$bundle_dir/");
 
                             if ($type === "Directory") {
-                                $download_status = $this->ftp_getdir($conn_id, $location_parts['path'], $dataset_id);
-                            }
-                            else {
-                                $download_status = ftp_get($conn_id,
-                                "$local_dir/$bundle_dir/$filename",
-                                $location_parts['path'],
-                                $this->get_ftp_mode($location_parts['path'])
-                            );
-                            }
-
-                            if (false === $download_status) {
-                                $this->log("Error while downloading" .  $location_parts['path'] . "" ) ;
-                                $fp = fopen("$local_dir/$bundle_dir/$filename.error", 'w');
-                                fwrite($fp, "Error while downloading from " . $location_parts['path']. ": \n");
-                                fwrite($fp, error_get_last()['message']);
-                                fclose($fp);
-                                $archive_status = $tar->add(["$local_dir/$bundle_dir/$filename.error"]);
-                            }
-                            else {
-                                if ($type === "Directory") {
+                                $directory_download_status = $this->ftp_getdir($conn_id, $location_parts['path'], $dataset_id);
+                                if ( $directory_download_status  ) { //add the directory to the archive
                                     $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", $location_parts['path']);
                                     $this->log("adding " . "$portable_path" .  " to $local_dir/bundle_$bundle_dir.tar.gz") ;
                                     $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$portable_path"], "", "$local_dir/$bundle_dir");
-                                }
-                                else if (pathinfo($location_parts['path'], PATHINFO_DIRNAME) === "/pub/10.5524/100001_101000/$dataset_id") {
-                                    $portable_path = "" ;
-                                    $this->log("adding " . "$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz") ;
-                                    $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$filename"], $portable_path, "$local_dir/$bundle_dir/");
+                                    if (false === $archive_status) {
+                                        throw new Exception("Error while:" . "adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz");
+                                    }
                                 }
                                 else {
-                                    $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", pathinfo($location_parts['path'], PATHINFO_DIRNAME));
-                                    $this->log("adding " . "$portable_path/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz") ;
-                                    $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$filename"], $portable_path, "$local_dir/$bundle_dir/");
+                                    $this->log("directory " .  $location_parts['path'] . " couldn't be downloaded") ;
+                                }
+                            }
+                            else {
+                                $download_status = ftp_nb_get($conn_id, "$local_dir/$bundle_dir/$filename", $location_parts['path'], $this->get_ftp_mode($location_parts['path']) );
+                                if ($download_status == FTP_MOREDATA) {
+                                   // Continue downloading...
+                                   $download_status = ftp_nb_continue($conn_id);
+                                }
+                                while ($download_status == FTP_MOREDATA) {
+                                   // Continue downloading...
+                                   $download_status = ftp_nb_continue($conn_id);
                                 }
 
-                                if (false === $archive_status) {
-                                    throw new Exception("Error while:" . "adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz");
+                                $filesize_array = ftp_raw($conn_id, "SIZE " . $location_parts['path']);
+                                $filesize_array = ftp_raw($conn_id, "SIZE " . $location_parts['path']); //needs to call twice due to issues with ftp server configuration
+                                $remote_size = floatval(str_replace('213 ', '', $filesize_array[0])) ;
+                                $local_size = filesize("$local_dir/$bundle_dir/$filename") ;
+
+                                if ($remote_size == $local_size) {
+                                    $this->log("Successfully downloaded " . $location_parts['path']) ;
+                                    if (pathinfo($location_parts['path'], PATHINFO_DIRNAME) === "/pub/10.5524/100001_101000/$dataset_id") {
+                                        $portable_path = "" ;
+                                        $this->log("adding " . "$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz") ;
+                                        $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$filename"], $portable_path, "$local_dir/$bundle_dir/");
+                                    }
+                                    else {
+                                        $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", pathinfo($location_parts['path'], PATHINFO_DIRNAME));
+                                        $this->log("adding " . "$portable_path/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz") ;
+                                        $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$filename"], $portable_path, "$local_dir/$bundle_dir/");
+                                    }
+                                    if (false === $archive_status) {
+                                        throw new Exception("Error while:" . "adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz");
+                                    }
                                 }
-                                // else {
-                                //     $this->log(var_dump($tar->listcontent())) ;
-                                // }
+                                else {
+                                    $this->log("Failed downloading " . $location_parts['path']) ;
+                                }
+
                             }
+
+
+                            ftp_close($conn_id);
                         }
                         $upload_job = $this->prepare_upload_job("$local_dir/bundle_$bundle_dir.tar.gz",$bid);
                         if($upload_job) {
@@ -133,17 +149,17 @@ class BundleFilesCommand extends CConsoleCommand {
                             $this->log("An error occured while submitting an upload job") ;
                         }
 
-                        $this->log("Job done...(" . $job['id'] . ")") ;
-                        $deletion_status = $consumer->delete($job['id']);
+                        $this->log("Job done...(" . $this->current_job['id'] . ")") ;
+                        $deletion_status = $consumer->delete($this->current_job['id']);
                         if (true === $deletion_status) {
                             $this->log("Job for bundle $bid successfully deleted") ;
                         }
                         else {
                             $this->log("Failed to delete job for bundle $bid]") ;
                         }
+                        $this->current_job = null ;
                         $this->rrmdir("$local_dir/$bundle_dir");
 
-                        ftp_close($conn_id);
                     }
                     else
                     {
@@ -151,11 +167,11 @@ class BundleFilesCommand extends CConsoleCommand {
                     }
                 }
                 catch(Exception $loopex) {
-                    ftp_raw($conn_id, 'NOOP');
-                    $this->log("Error while processing job of id " . $job['id'] . ":" . $loopex->getMessage()) ;
-                    $consumer->bury($job['id'],0);
-                    $this->log("The job of id: " . $job['id'] . " has been " . $consumer->statsJob($job['id'])['state']) ;
-
+                    ftp_close($conn_id);
+                    $this->log("Error while processing job of id " . $this->current_job['id'] . ":" . $loopex->getMessage()) ;
+                    $consumer->bury($this->current_job['id'],0);
+                    $this->log("The job of id: " . $this->current_job['id'] . " has been " . $consumer->statsJob($this->current_job['id'])['state']) ;
+                    $this->current_job = null ;
                 }
 
 
@@ -169,6 +185,7 @@ class BundleFilesCommand extends CConsoleCommand {
             $this->log("Error while initialising the worker: " . $runex->getMessage()) ;
             ftp_close($conn_id);
             $consumer->disconnect();
+            $this->current_job = null ;
             $this->log( "BundleFilesCommand stopping");
             return 1;
         }
