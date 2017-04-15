@@ -111,30 +111,13 @@ class GeneratePreviewCommand extends CConsoleCommand {
                             else {
                                 $this->log( "Connected to ftp server, ready to download source file from $location...");
                             }
-                            //check wether the file exists locally
-                            $local_before_size = is_file("$local_dir/$preview_dir/$basename") ? filesize("$local_dir/$preview_dir/$basename") : 0 ;
+
 
                             //download the file
                             $download_status = false ;
-                            $ftp_mode = $this->get_ftp_mode($location_parts['path']) ;
 
-
-                            if ( $local_before_size > 0 && FTP_BINARY === $ftp_mode) {
-                                $this->log("Resuming download of " . $location_parts['path'] . "to $local_destination at $local_before_size");
-                                $download_status = ftp_nb_get($conn_id,
-                                    "$local_destination",
-                                    $location_parts['path'],
-                                    $ftp_mode,
-                                    $local_before_size
-                                );
-                            } else {
-                                $this->log("Starting download of " . $location_parts['path'] . " to $local_destination") ;
-                                $download_status = ftp_nb_get($conn_id,
-                                    "$local_destination",
-                                    $location_parts['path'],
-                                    $ftp_mode
-                                );
-                            }
+                            $this->log("Downloading " . $location_parts['path'] . " to $local_destination");
+                            $download_status = $this->manage_nb_download($conn_id, "$local_destination", $location_parts['path']) ;
 
                             ftp_close($conn_id);
 
@@ -213,9 +196,6 @@ class GeneratePreviewCommand extends CConsoleCommand {
                     $this->current_job = null;
 
                 }catch (Exception $loopex) {
-                    if(isset($conn_id)) {
-                        ftp_close($conn_id);
-                    }
                     $code = $loopex->getCode() ;
                     $message = $loopex->getMessage() ;
                     if ($this->current_job) {

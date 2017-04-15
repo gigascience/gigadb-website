@@ -101,22 +101,9 @@ class BundleFilesCommand extends CConsoleCommand {
                                 }
                             }
                             else {
-                                $download_status = ftp_nb_get($conn_id, "$local_dir/$bundle_dir/$filename", $location_parts['path'], $this->get_ftp_mode($location_parts['path']) );
-                                if ($download_status == FTP_MOREDATA) {
-                                   // Continue downloading...
-                                   $download_status = ftp_nb_continue($conn_id);
-                                }
-                                while ($download_status == FTP_MOREDATA) {
-                                   // Continue downloading...
-                                   $download_status = ftp_nb_continue($conn_id);
-                                }
+                                $download_status = $this->manage_nb_download($conn_id, "$local_dir/$bundle_dir/$filename", $location_parts['path'] );
 
-                                $filesize_array = ftp_raw($conn_id, "SIZE " . $location_parts['path']);
-                                $filesize_array = ftp_raw($conn_id, "SIZE " . $location_parts['path']); //needs to call twice due to issues with ftp server configuration
-                                $remote_size = floatval(str_replace('213 ', '', $filesize_array[0])) ;
-                                $local_size = filesize("$local_dir/$bundle_dir/$filename") ;
-
-                                if ($remote_size == $local_size) {
+                                if ($download_status) {
                                     $this->log("Successfully downloaded " . $location_parts['path']) ;
                                     if (pathinfo($location_parts['path'], PATHINFO_DIRNAME) === "/pub/10.5524/100001_101000/$dataset_id") {
                                         $portable_path = "" ;

@@ -108,7 +108,7 @@ return CMap::mergeArray($pre_config, array(
 		),
 		'ftp' => array(
 			'class' => 'ext.GFtp.GFtpApplicationComponent',
-			'connectionString' => 'ftp://anonymous:anonymous@climb.genomics.cn:21',
+			'connectionString' => 'ftp://anonymous:anonymous@10.1.1.33:21',
 			'timeout' => 120,
 			'passive' => true
 		),

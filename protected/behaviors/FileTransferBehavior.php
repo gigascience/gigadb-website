@@ -82,6 +82,48 @@ Class FileTransferBehavior extends CBehavior
         return FTP_BINARY;
     }
 
+    function manage_nb_download($conn_id, $local_file, $remote_file) {
+        $download_status = false;
+        $ftp_mode = $this->get_ftp_mode($remote_file) ;
+
+        //check wether the file exists locally
+        $position = is_file($local_file) ? filesize($local_file) : 0 ;
+        echo "ftp_mode: $ftp_mode, position: $position" . PHP_EOL ;
+
+        if( FTP_BINARY === $ftp_mode && $position > 0 ) {
+            $download_status = ftp_nb_get($conn_id,$local_file, $remote_file, $ftp_mode, $position);
+        }
+        else {
+            $download_status = ftp_nb_get($conn_id,$local_file, $remote_file, $ftp_mode);
+        }
+
+        echo "download_status 1: $download_status " . PHP_EOL ;
+
+        if ($download_status == FTP_MOREDATA) {
+           // Continue downloading...
+           echo "current size: "  . filesize($local_file) . PHP_EOL ;
+
+           $download_status = ftp_nb_continue($conn_id);
+
+           echo "download_status 2: $download_status " . PHP_EOL ;
+        }
+        while ($download_status == FTP_MOREDATA) {
+           // Continue downloading...
+           $download_status = ftp_nb_continue($conn_id);
+        }
+
+        $filesize_array = ftp_raw($conn_id, "SIZE " . $remote_file);
+        $filesize_array = ftp_raw($conn_id, "SIZE " . $remote_file); //needs to call twice due to bug in php: https://bugs.php.net/bug.php?id=52766
+        $remote_size = floatval(str_replace('213 ', '', $filesize_array[0])) ;
+        $local_size = filesize($local_file) ;
+        echo "remote_size: $remote_size" . PHP_EOL;
+        echo "local_size: $local_size" . PHP_EOL;
+        echo $download_status == FTP_FINISHED ? "status: FTP_FINISHED" : ($download_status == FTP_FAILED ? "status: FTP_FAILED"  : $download_status) ;
+        echo PHP_EOL ;
+        //FTP_FAILED and FTP_FINISHED are not reliable so we use size comparison to determine wether the download is successful or not
+        return ($download_status) ;
+    }
+
     function ftp_getdir ($conn_id, $dir, $dataset_id) {
 
         $errors = [];
