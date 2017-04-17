@@ -82,15 +82,17 @@ Class FileTransferBehavior extends CBehavior
         return FTP_BINARY;
     }
 
-    function manage_nb_download($conn_id, $local_file, $remote_file) {
+    function manage_download($connectionString, $local_file, $remote_file) {
         $download_status = false;
         $ftp_mode = $this->get_ftp_mode($remote_file) ;
+
+        $conn_id = $this->getFtpConnection($connectionString);
 
         //check wether the file exists locally
         $position = is_file($local_file) ? filesize($local_file) : 0 ;
         echo "ftp_mode: $ftp_mode, position: $position" . PHP_EOL ;
 
-        if( FTP_BINARY === $ftp_mode && $position > 0 ) {
+        if( FTP_BINARY == $ftp_mode && $position > 0 ) {
             $download_status = ftp_nb_get($conn_id,$local_file, $remote_file, $ftp_mode, $position);
         }
         else {
@@ -99,7 +101,7 @@ Class FileTransferBehavior extends CBehavior
 
         echo "download_status 1: $download_status " . PHP_EOL ;
 
-        if ($download_status == FTP_MOREDATA) {
+        if (FTP_MOREDATA == $download_status) {
            // Continue downloading...
            echo "current size: "  . filesize($local_file) . PHP_EOL ;
 
@@ -107,7 +109,7 @@ Class FileTransferBehavior extends CBehavior
 
            echo "download_status 2: $download_status " . PHP_EOL ;
         }
-        while ($download_status == FTP_MOREDATA) {
+        while (FTP_MOREDATA == $download_status) {
            // Continue downloading...
            $download_status = ftp_nb_continue($conn_id);
         }
@@ -118,13 +120,15 @@ Class FileTransferBehavior extends CBehavior
         $local_size = filesize($local_file) ;
         echo "remote_size: $remote_size" . PHP_EOL;
         echo "local_size: $local_size" . PHP_EOL;
-        echo $download_status == FTP_FINISHED ? "status: FTP_FINISHED" : ($download_status == FTP_FAILED ? "status: FTP_FAILED"  : $download_status) ;
+        echo FTP_FINISHED == $download_status ? "status: FTP_FINISHED" : ($download_status == FTP_FAILED ? "status: FTP_FAILED"  : $download_status) ;
         echo PHP_EOL ;
-        //FTP_FAILED and FTP_FINISHED are not reliable so we use size comparison to determine wether the download is successful or not
+        ftp_close($conn_id);
         return ($download_status) ;
     }
 
-    function ftp_getdir ($conn_id, $dir, $dataset_id) {
+    function ftp_getdir ($connectionString, $dir, $dataset_id) {
+
+        $conn_id = $this->getFtpConnection($connectionString);
 
         $errors = [];
         if ($dir != ".") {
@@ -139,7 +143,6 @@ Class FileTransferBehavior extends CBehavior
         }
 
         $contents = ftp_nlist($conn_id, ".");
-        trigger_error(var_dump($contents));
         foreach ($contents as $file) {
 
             if ($file == '.' || $file == '..')
@@ -147,18 +150,18 @@ Class FileTransferBehavior extends CBehavior
 
             if (@ftp_chdir($conn_id, $file)) {
                 ftp_chdir ($conn_id, "..");
-                $getdir_status = $this->ftp_getdir ($conn_id, $file, $dataset_id);
+                $getdir_status = $this->ftp_getdir ($connectionString, $file, $dataset_id);
                 if (false === $getdir_status) {
                     $errors[] =  $file ;
                 }
             }
             else {
                 $get_response = ftp_nb_get($conn_id, $file, $file, $this->get_ftp_mode($file));
-                if ($get_response== FTP_MOREDATA) {
+                if (FTP_MOREDATA == $get_response) {
                    // Continue downloading...
                    $get_response = ftp_nb_continue($conn_id);
                 }
-                while ($get_response == FTP_MOREDATA) {
+                while (FTP_MOREDATA == $get_response) {
                    // Continue downloading...
                    $get_response = ftp_nb_continue($conn_id);
                 }
@@ -166,7 +169,7 @@ Class FileTransferBehavior extends CBehavior
                 $filesize_array = ftp_raw($conn_id, "SIZE " . $file); //needs to call twice due to issues with ftp server configuration
                 $remote_size = floatval(str_replace('213 ', '', $filesize_array[0])) ;
                 $local_size = filesize($file) ;
-                if ($remote_size != $local_size) {
+                if (FTP_FINISHED != $get_response) {
                     $errors[] =  $file ;
                 }
             }
@@ -175,12 +178,15 @@ Class FileTransferBehavior extends CBehavior
         ftp_chdir ($conn_id, "..");
         chdir ("..");
 
+        ftp_close($conn_id);
         if(empty($errors)) {
             return true;
         }
         else {
             return false;
         }
+
+
 
     }
 }

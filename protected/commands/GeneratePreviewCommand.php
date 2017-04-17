@@ -101,27 +101,15 @@ class GeneratePreviewCommand extends CConsoleCommand {
                             //download file by ftp, starting with connecting to the server
                             $connectionString = $this->buildConnectionString();
 
-                            $conn_id = $this->getFtpConnection($connectionString);
-                            if (false == $conn_id) { //if connection fail, relase the job for future retry as it could be connection issues
-                                $temp_job_id = $this->current_job['id'] ; //because we are about to nullify current_job but needs the id
-                                $this->queue->release($temp_job_id, 10 , 60) ; //release the job, with delay, at lower priority for future retry
-                                $this->current_job = null ; // so that the exception is picked up by the outer catch block
-                                throw new Exception("Failed connecting to FTP server, the job $temp_job_id has been released for future retry") ;
-                            }
-                            else {
-                                $this->log( "Connected to ftp server, ready to download source file from $location...");
-                            }
-
-
                             //download the file
                             $download_status = false ;
 
                             $this->log("Downloading " . $location_parts['path'] . " to $local_destination");
-                            $download_status = $this->manage_nb_download($conn_id, "$local_destination", $location_parts['path']) ;
+                            $download_status = $this->manage_download($connectionString, "$local_destination", $location_parts['path']) ;
 
-                            ftp_close($conn_id);
+                            // ftp_close($conn_id);
 
-                            if (false === $download_status) {
+                            if (FTP_FAILED === $download_status) {
                                 if(is_file($local_destination) && filesize("$local_destination") >  0 ) { //partial download, we release the job for future retry
                                     $temp_job_id = $this->current_job['id'] ; //because we are about to nullify current_job but needs the id
                                     $this->queue->release($temp_job_id, 10 , 60) ; //release the job, with delay, at lower priority for future retry
@@ -198,6 +186,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
                 }catch (Exception $loopex) {
                     $code = $loopex->getCode() ;
                     $message = $loopex->getMessage() ;
+                    $this->log($message) ;
                     if ($this->current_job) {
                         if ( E_NOTICE === $code || E_WARNING === $code || E_ERROR === $code ) {
                             $this->queue->release($this->current_job['id'],0,60*2); //release the job if code error

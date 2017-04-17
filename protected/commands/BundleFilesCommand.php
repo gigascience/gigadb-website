@@ -71,9 +71,6 @@ class BundleFilesCommand extends CConsoleCommand {
 
                         foreach ($bundle as $selection) {
                             $connectionString = $this->buildConnectionString();
-                            $conn_id = $this->getFtpConnection($connectionString);
-                            ftp_set_option($conn_id, FTP_TIMEOUT_SEC, 300);
-                            $this->log("connected to ftp server, ready to download files...") ;
 
                             $location = $selection["location"];
                             $filename = $selection["filename"];
@@ -87,7 +84,7 @@ class BundleFilesCommand extends CConsoleCommand {
                             chdir("$local_dir/$bundle_dir/");
 
                             if ($type === "Directory") {
-                                $directory_download_status = $this->ftp_getdir($conn_id, $location_parts['path'], $dataset_id);
+                                $directory_download_status = $this->ftp_getdir($connectionString, $location_parts['path'], $dataset_id);
                                 if ( $directory_download_status  ) { //add the directory to the archive
                                     $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", $location_parts['path']);
                                     $this->log("adding " . "$portable_path" .  " to $local_dir/bundle_$bundle_dir.tar.gz") ;
@@ -101,7 +98,7 @@ class BundleFilesCommand extends CConsoleCommand {
                                 }
                             }
                             else {
-                                $download_status = $this->manage_nb_download($conn_id, "$local_dir/$bundle_dir/$filename", $location_parts['path'] );
+                                $download_status = $this->manage_download($connectionString, "$local_dir/$bundle_dir/$filename", $location_parts['path'] );
 
                                 if ($download_status) {
                                     $this->log("Successfully downloaded " . $location_parts['path']) ;
@@ -126,7 +123,6 @@ class BundleFilesCommand extends CConsoleCommand {
                             }
 
 
-                            ftp_close($conn_id);
                         }
                         $upload_job = $this->prepare_upload_job("$local_dir/bundle_$bundle_dir.tar.gz",$bid);
                         if($upload_job) {
@@ -154,7 +150,6 @@ class BundleFilesCommand extends CConsoleCommand {
                     }
                 }
                 catch(Exception $loopex) {
-                    ftp_close($conn_id);
                     $this->log("Error while processing job of id " . $this->current_job['id'] . ":" . $loopex->getMessage()) ;
                     $consumer->bury($this->current_job['id'],0);
                     $this->log("The job of id: " . $this->current_job['id'] . " has been " . $consumer->statsJob($this->current_job['id'])['state']) ;
@@ -164,7 +159,6 @@ class BundleFilesCommand extends CConsoleCommand {
 
             }
 
-            ftp_close($conn_id);
             $consumer->disconnect();
             $this->log("Closed FTP connection and stopped listenging to the job queue...") ;
 
