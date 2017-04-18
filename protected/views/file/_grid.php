@@ -148,8 +148,8 @@ if ($error != null) {
                 'headerTemplate'=> 'Select',
                 'id'=>'selecttodownload',
                 'selectableRows'=>2,
-                'value'=> 'serialize(array("location" => $data->location, "filename" => $data->name, "type" => $data->type->name ))',
-                'checked'=>'( isset(unserialize(Yii::app()->session["bundle"])[$data->location]) ) ? true : false',
+                'value'=> 'serialize(array("location" => $data->location, "filename" => $data->name, "type" => $data->type->name, "dataset" => $data->dataset->identifier ))',
+                'checked'=>'$data->is_in_bundle(Yii::app()->session["bundle"])',
             ),
 
         ),

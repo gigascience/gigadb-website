@@ -376,7 +376,7 @@ class File extends MyActiveRecord
 		$file_format = isset($criteria['file_format']) ? $criteria['file_format'] : "";
 		$reldate_from = isset($criteria['reldate_from']) ? $criteria['reldate_from'] : "";
 		$reldate_to = isset($criteria['reldate_to']) ? $criteria['reldate_to'] : "";
-        
+
 		$reldate_from_temp = Utils::convertDate($reldate_from);
 		$reldate_to_temp = Utils::convertDate($reldate_to);
 
@@ -421,7 +421,7 @@ class File extends MyActiveRecord
     }
 
      public function getallsample($id){
-        
+
        $sql="select sample.* from sample,file_sample,file where sample.id=file_sample.sample_id and file_sample.file_id=file.id and file.id=$id";
       $samples= Sample::model()->findAllBySql($sql);
       $num = count($samples);
@@ -465,25 +465,25 @@ HTML;
         		<span class="js-long-$this->id">$ret</span>
 HTML;
     }
-    
+
     public function getNameHtml() {
 
 
          $identifier = $this->dataset->identifier;
 
     	$displayForFile = <<<HTML
-		<div title="$this->description"> 
+		<div title="$this->description">
 		<a href='$this->location' target='_blank'>
 		$this->name
-		</a> 
+		</a>
 		<div>
 HTML;
 
         $displayForDirectory = <<<HTML
-		<div title="$this->description"> 
+		<div title="$this->description">
 		<a href="/dataset/view/id/$identifier?location=$this->location#file_table" >
 		$this->name
-		</a> 
+		</a>
 		<div>
 HTML;
 
@@ -507,7 +507,7 @@ HTML;
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );
     }
-    
+
     /**
      * Before save file
      */
@@ -524,6 +524,20 @@ HTML;
                     $this->size = filesize(ReadFile::TEMP_FOLDER . $this->name);
                 }
             }
+        }
+    }
+
+    public function is_in_bundle($raw_bundle) {
+        $bundle = unserialize($raw_bundle) ;
+        //error_log($raw_bundle , 0);
+
+        if ( isset($bundle[ $this->dataset->identifier][$this->location]) ) {
+            //error_log("MATCH Dataset: ". $this->dataset->identifier . PHP_EOL . "Location: ". $this->location . PHP_EOL, 0);
+            return true;
+        }
+        else {
+            //error_log("Dataset: ".  $this->dataset->identifier . PHP_EOL . "Location: ". $this->location . PHP_EOL , 0) ;
+            return false;
         }
     }
 }

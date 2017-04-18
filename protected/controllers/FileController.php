@@ -81,14 +81,19 @@ class FileController extends Controller
 
             //add new item to session myvar
             $bundle = unserialize(Yii::app()->session['bundle']);
-            $bundle[$fileinfo_array['location']] = array( "location" => $fileinfo_array['location'], "filename" =>  $fileinfo_array['filename'], "type" => $fileinfo_array['type']) ;
+            //$bundle[$fileinfo_array['dataset']] = array() ;
+            if ( !isset($bundle[$fileinfo_array['dataset']])) {
+                $bundle[] = array($fileinfo_array['dataset'] => []);
+            }
+            $bundle[$fileinfo_array['dataset']][$fileinfo_array['location']] = array( "location" => $fileinfo_array['location'], "filename" =>  $fileinfo_array['filename'], "type" => $fileinfo_array['type']) ;
             Yii::app()->session['bundle'] = serialize($bundle);
             $result["status"] = "OK";
             $result["lastop"] = "addToBundle";
+            //error_log("Updated session bundler (" .$fileinfo_array['dataset'] . "): " . Yii::app()->session['bundle'],0);
         }
         else if ($operation === 'removeFromBundle') {
             $bundle = unserialize(Yii::app()->session['bundle']);
-            unset($bundle[$fileinfo_array['location']]);
+            unset($bundle[$fileinfo_array['dataset']][$fileinfo_array['location']]);
             Yii::app()->session['bundle'] = serialize($bundle);
             $result["status"] = "OK";
             $result["lastop"] = "removeFromBundle";
@@ -229,7 +234,9 @@ class FileController extends Controller
         }
     }
     private function prepare_bundle_job($serialised_bundle, $dataset_id) {
-        if(isset($serialised_bundle) && count(unserialize($serialised_bundle)> 0 ) ) {
+        $bundle = unserialize($serialised_bundle);
+
+        if(isset($bundle) && count($bundle[$dataset_id]) > 0  ) {
             $bid = self::random_string(20);
             $client = Yii::app()->beanstalk->getClient();
             $client->connect();

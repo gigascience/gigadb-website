@@ -69,7 +69,7 @@ class BundleFilesCommand extends CConsoleCommand {
                         $tar = new Archive_Tar("$local_dir/bundle_$bundle_dir.tar.gz", "gz");
 
 
-                        foreach ($bundle as $selection) {
+                        foreach ($bundle[$dataset_id] as $selection) {
                             $connectionString = $this->buildConnectionString();
 
                             $location = $selection["location"];

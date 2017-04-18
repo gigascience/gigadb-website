@@ -155,8 +155,8 @@ if ($error != null) {
                 'class'=>'CCheckBoxColumn',
                 'headerTemplate'=> 'Select',
                 'selectableRows'=>2,
-                'value'=> 'serialize(array("location" => $data->location, "filename" => $data->filename, "type" => ($data->isDirectory) ? "Directory": "File" ))',
-                'checked'=>'( isset(unserialize(Yii::app()->session["bundle"])[$data->location]) ) ? true : false',
+                'value'=> 'serialize(array("location" => $data->location, "filename" => $data->filename, "type" => ($data->isDirectory) ? "Directory": "File", "dataset" => $data->dataset_identifier ))',
+                'checked'=>'$data->is_in_bundle(Yii::app()->session["bundle"])',
             ),
 
         ),
