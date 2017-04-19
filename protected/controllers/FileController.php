@@ -160,6 +160,9 @@ class FileController extends Controller
             $mime_type = $this->extension_to_mime_type(  $uncompressed_extension );
         }
 
+        $result['mime_type'] = $mime_type ;
+        $result['extension'] = $ext ;
+
         if( false ===  in_array($mime_type , $supported_formats) ) {
             $result['status'] = "UNSUPPORTED";
             echo json_encode($result);
