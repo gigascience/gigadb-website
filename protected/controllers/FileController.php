@@ -141,7 +141,7 @@ class FileController extends Controller
 
     public function actionPreview() {
 
-        $supported_formats = array("text/plain");
+        $supported_formats = Yii::app()->preview->supported_media_types ;
 
         $result = array('status' => "UNKNOWN");
 
@@ -213,7 +213,7 @@ class FileController extends Controller
         if($location) {
             $client = Yii::app()->beanstalk->getClient();
             $client->connect();
-            $client->useTube('previewgeneration');
+            $client->useTube(Yii::app()->preview->preview_job_queue);
             $jobDetails = [
                 'application'=>'gigadb-website',
                 'location'=>$location,

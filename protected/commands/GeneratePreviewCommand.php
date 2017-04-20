@@ -19,8 +19,8 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
         $this->log_setup();
 
-        $local_dir = "/tmp/previews";
-        $supported_formats = array("text/plain");
+        $local_dir = Yii::app()->preview->temporary_directory;
+        $supported_formats = Yii::app()->preview->supported_media_types;
 
 
         $this->log("GeneratePreviewCommand started") ;
@@ -28,7 +28,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
         try {
             $this->queue = Yii::app()->beanstalk->getClient();
             $this->queue->connect();
-            $this->queue->watch('previewgeneration');
+            $this->queue->watch(Yii::app()->preview->preview_job_queue);
             $this->log( "connected to the job server, waiting for new jobs...");
 
             if (false === is_dir($local_dir) ) {
@@ -290,7 +290,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
     function upload_preview($location, $preview_path, $basename) {
 
         //data needed by s3
-        $bucket = Yii::app()->aws->preview_bucket;
+        $bucket = Yii::app()->preview->preview_bucket;
         $keyname = "$basename";
 
         $this->log( "Uploading file $preview_path to S3 in bucket:" . $bucket . " with keyname:" . $keyname);

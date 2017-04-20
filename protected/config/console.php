@@ -118,7 +118,14 @@ return CMap::mergeArray($pre_config, array(
 		    'secret_key' => $awsConfig['secret_key'],
 			'bundle_bucket' => $awsConfig['s3_bucket_for_file_bundles'],
 			'preview_bucket' => $awsConfig['s3_bucket_for_file_previews'],
-		  ),
+		),
+	  	'preview'=>array(
+		  'class' => 'application.components.FilePreview',
+		  'supported_media_types' => array('text/plain', 'text/html'),
+		  'preview_job_queue' => 'previewgeneration',
+		  'temporary_directory' => '/tmp/previews',
+		  'preview_bucket' => 'gigadb-bundles-test',
+		),
 		  'redis'=>array(
 			  'class'=>'CRedisCache',
 			  'hostname'=>'localhost',

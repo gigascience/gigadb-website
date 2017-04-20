@@ -102,6 +102,13 @@ return CMap::mergeArray(array(
             'previewServer' => '<%= node[:gigadb][:mfr][:preview_server] %>',
             'supportedExtensions' => array('txt', 'csv', 'tsv'),
           ),
+        'preview'=>array(
+            'class' => 'application.components.FilePreview',
+            'supported_media_types' => array('text/plain', 'text/html'),
+            'preview_job_queue' => 'previewgeneration',
+            'temporary_directory' => '/tmp/previews',
+            'preview_bucket' => 'gigadb-bundles-test',
+        ),
         'request' => array(
             //'enableCookieValidation' => true,
         ),
