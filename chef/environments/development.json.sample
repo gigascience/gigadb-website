@@ -15,6 +15,9 @@
       "ftp": {
         "connection_url": "ftp://anonymous:anonymous@10.1.1.33:21"
       },
+      "mfr": {
+        "preview_server": "192.168.99.100:7778"
+      },
       "site_dir": "/vagrant",
       "root_dir": "/vagrant",
       "log_dir": "/vagrant/logs",

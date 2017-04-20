@@ -97,6 +97,11 @@ return CMap::mergeArray(array(
             'bundle_bucket' => $awsConfig['s3_bucket_for_file_bundles'],
             'preview_bucket' => $awsConfig['s3_bucket_for_file_previews'],
           ),
+        'mfr'=>array(
+            'class' => 'application.components.ModularFileRenderer',
+            'previewServer' => '<%= node[:gigadb][:mfr][:preview_server] %>',
+            'supportedExtensions' => array('txt', 'csv', 'tsv'),
+          ),
         'request' => array(
             //'enableCookieValidation' => true,
         ),

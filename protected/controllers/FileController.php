@@ -184,7 +184,12 @@ class FileController extends Controller
             }
             else if ( isset($preview_status['status']) && "COMPLETED" === $preview_status['status'] &&  isset($preview_status['url']) ) {
 
-                $result['preview_url'] =  $preview_status['url'];
+                if ( true === Yii::app()->mfr->is_preview_server_ok() && in_array($ext, Yii::app()->mfr->getsupportedExtensions() ) ) {
+                    $result['preview_url'] =  Yii::app()->mfr->get_preview_server_url("render?url=") . $preview_status['url'];
+                }
+                else {
+                    $result['preview_url'] =  $preview_status['url'];
+                }
                 $result['status'] = "OK";
 
             }

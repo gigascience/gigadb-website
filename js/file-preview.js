@@ -6,17 +6,12 @@ $('.previewbtn').click(function(){
         data:{'location': $(this).attr('href') },
         success: function(output){
             var response = JSON.parse(output);
-            var preview_url = '' ;
-            if ( response.extension.match(/(fasta|fastq|fa|fq)/i) ) {
-                preview_url = response.preview_url ;
-            }
-            else {
-                preview_url = 'http://192.168.99.100:7778/render?url=' + response.preview_url ;
-            }
+            var preview_url = response.preview_url ;
+
             var options = {
                  url: preview_url,
                  title:'Preview',
-                 size: eModal.size.sm,
+                 size: eModal.size.xl,
              };
              console.log(response);
              if(response.status === 'UNSUPPORTED') {
