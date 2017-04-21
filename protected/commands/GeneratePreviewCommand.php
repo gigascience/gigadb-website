@@ -125,6 +125,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
                         }
 
+                        clearstatcache();
                         if (true === is_file($preview_path)) {
 
                             //extract filename from preview_path as it has already taken care of .gz files special case
@@ -251,12 +252,14 @@ class GeneratePreviewCommand extends CConsoleCommand {
         }else {
             $filepath = $sourcepath;
         }
+        $filesize = filesize("$filepath") ;
 
-        if (filesize("$filepath") > $size_threshold) {
-            $preview = "" ;
-            $lines = 0 ;
-            //only support text/plain for now
-            if ("text/plain" === $filetype) {
+        $this->log("making preview for $filepath of mime type: $filetype and size: $filesize");
+
+        if ("text/plain" === $filetype) {
+            if ($filesize > $size_threshold) {
+                $preview = "" ;
+                $lines = 0 ;
                 $this->log("$filepath size > $size_threshold, generating a preview file $filepath.preview" );
                 $handle = fopen("$filepath", "r");
                 if (false === $handle ) {
@@ -278,10 +281,15 @@ class GeneratePreviewCommand extends CConsoleCommand {
                 fwrite($fp, $preview);
                 fclose($fp);
             }
+            else {
+                $this->log("Renaming text/plain file $filepath to $fileapth.preview") ;
+                rename($filepath, "$filepath.preview") ;
+            }
+
         }
         else {
-            $this->log("$filepath sizes < $size_threshold, so copying it as is into $filepath.preview ") ;
-            copy($filepath, "$filepath.preview") ;
+            $this->log("Renaming file $filepath to $filepath.preview") ;
+            rename($filepath, "$filepath.preview") ;
         }
 
         return "$filepath.preview";

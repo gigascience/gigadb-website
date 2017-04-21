@@ -89,6 +89,7 @@ Class FileTransferBehavior extends CBehavior
         $conn_id = $this->getFtpConnection($connectionString);
 
         //check wether the file exists locally
+        clearstatcache();
         $position = is_file($local_file) ? filesize($local_file) : 0 ;
         echo "ftp_mode: $ftp_mode, position: $position" . PHP_EOL ;
 
@@ -103,6 +104,7 @@ Class FileTransferBehavior extends CBehavior
 
         if (FTP_MOREDATA == $download_status) {
            // Continue downloading...
+           clearstatcache();
            echo "current size: "  . filesize($local_file) . PHP_EOL ;
 
            $download_status = ftp_nb_continue($conn_id);
@@ -117,6 +119,7 @@ Class FileTransferBehavior extends CBehavior
         $filesize_array = ftp_raw($conn_id, "SIZE " . $remote_file);
         $filesize_array = ftp_raw($conn_id, "SIZE " . $remote_file); //needs to call twice due to bug in php: https://bugs.php.net/bug.php?id=52766
         $remote_size = floatval(str_replace('213 ', '', $filesize_array[0])) ;
+        clearstatcache();
         $local_size = filesize($local_file) ;
         echo "remote_size: $remote_size" . PHP_EOL;
         echo "local_size: $local_size" . PHP_EOL;

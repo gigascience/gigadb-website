@@ -119,12 +119,12 @@ return CMap::mergeArray($pre_config, array(
 			'bundle_bucket' => $awsConfig['s3_bucket_for_file_bundles'],
 			'preview_bucket' => $awsConfig['s3_bucket_for_file_previews'],
 		),
-	  	'preview'=>array(
+		'preview'=>array(
 		  'class' => 'application.components.FilePreview',
-		  'supported_media_types' => array('text/plain', 'text/html'),
+		  'supported_media_types' => array('text/plain', 'text/html', 'image/png', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'),
 		  'preview_job_queue' => 'previewgeneration',
 		  'temporary_directory' => '/tmp/previews',
-		  'preview_bucket' => 'gigadb-bundles-test',
+		  'preview_bucket' => $awsConfig['s3_bucket_for_file_previews'],
 		),
 		  'redis'=>array(
 			  'class'=>'CRedisCache',
