@@ -144,6 +144,7 @@ class FileController extends Controller
         $supported_formats = Yii::app()->preview->supported_media_types ;
 
         $result = array('status' => "UNKNOWN");
+        $result['preview_server'] = Yii::app()->mfr->is_preview_server_ok() ? "up" : "down" ;
 
         if(isset($_POST['location'])){
 			$location = $_POST['location'];
@@ -184,7 +185,7 @@ class FileController extends Controller
             }
             else if ( isset($preview_status['status']) && "COMPLETED" === $preview_status['status'] &&  isset($preview_status['url']) ) {
 
-                if ( true === Yii::app()->mfr->is_preview_server_ok() && in_array($ext, Yii::app()->mfr->getsupportedExtensions() ) ) {
+                if ( "up" === $result['preview_server'] && in_array($ext, Yii::app()->mfr->getsupportedExtensions() ) ) {
                     $result['preview_url'] =  Yii::app()->mfr->get_preview_server_url("render?url=") . $preview_status['url'];
                 }
                 else {

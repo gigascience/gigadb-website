@@ -2,6 +2,7 @@
 $esConfig = json_decode(file_get_contents(dirname(__FILE__).'/es.json'), true);
 $dbConfig = json_decode(file_get_contents(dirname(__FILE__).'/db.json'), true);
 $awsConfig = json_decode(file_get_contents(dirname(__FILE__).'/aws.json'), true);
+$previewConfig = json_decode(file_get_contents(dirname(__FILE__).'/preview.json'), true);
 $pre_config = require(dirname(__FILE__).'/local.php');
 
 // Location where user images are stored
@@ -100,11 +101,11 @@ return CMap::mergeArray(array(
         'mfr'=>array(
             'class' => 'application.components.ModularFileRenderer',
             'previewServer' => '<%= node[:gigadb][:mfr][:preview_server] %>',
-            'supportedExtensions' => array('txt', 'csv', 'tsv', 'pptx'),
+            'supportedExtensions' => $previewConfig['mfr_supported_extensions'],
           ),
         'preview'=>array(
             'class' => 'application.components.FilePreview',
-            'supported_media_types' => array('text/plain', 'text/html', 'image/png', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'),
+            'supported_media_types' => $previewConfig['supported_types'],
             'preview_job_queue' => 'previewgeneration',
             'temporary_directory' => '/tmp/previews',
             'preview_bucket' => $awsConfig['s3_bucket_for_file_previews'],

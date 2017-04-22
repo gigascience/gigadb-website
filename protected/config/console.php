@@ -4,6 +4,8 @@
 $esConfig = json_decode(file_get_contents(dirname(__FILE__).'/es.json'), true);
 $dbConfig = json_decode(file_get_contents(dirname(__FILE__).'/db.json'), true);
 $awsConfig = json_decode(file_get_contents(dirname(__FILE__).'/aws.json'), true);
+$previewConfig = json_decode(file_get_contents(dirname(__FILE__).'/preview.json'), true);
+
 $pre_config = require(dirname(__FILE__).'/local.php');
 Yii::setPathOfAlias('Elastica', realpath(dirname(__FILE__). '/../../Elastica/lib'));
 Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.py'));
@@ -121,7 +123,7 @@ return CMap::mergeArray($pre_config, array(
 		),
 		'preview'=>array(
 		  'class' => 'application.components.FilePreview',
-		  'supported_media_types' => array('text/plain', 'text/html', 'image/png', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'),
+		  'supported_media_types' => $previewConfig['supported_types'],
 		  'preview_job_queue' => 'previewgeneration',
 		  'temporary_directory' => '/tmp/previews',
 		  'preview_bucket' => $awsConfig['s3_bucket_for_file_previews'],
