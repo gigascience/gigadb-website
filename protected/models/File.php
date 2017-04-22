@@ -26,7 +26,7 @@
  * @property FileExperiment[] $fileExperiments
  * @property FileAttributes[] $fileAttributes
  */
-class File extends MyActiveRecord
+class File extends MyActiveRecord implements DatasetFilesInterface
 {
     public $doi_search;
     public $format_search;
@@ -121,6 +121,12 @@ class File extends MyActiveRecord
 			'attribute' => Yii::t('app','File Attributes'),
 		);
 	}
+
+    function init() {
+
+        $this->attachBehavior("bundle", new BundleBehavior() );
+        parent::init();
+    }
 
 	public function afterSave() {
         $log = new DatasetLog;
@@ -527,17 +533,21 @@ HTML;
         }
     }
 
-    public function is_in_bundle($raw_bundle) {
-        $bundle = unserialize($raw_bundle) ;
-        //error_log($raw_bundle , 0);
-
-        if ( isset($bundle[ $this->dataset->identifier][$this->location]) ) {
-            //error_log("MATCH Dataset: ". $this->dataset->identifier . PHP_EOL . "Location: ". $this->location . PHP_EOL, 0);
-            return true;
-        }
-        else {
-            //error_log("Dataset: ".  $this->dataset->identifier . PHP_EOL . "Location: ". $this->location . PHP_EOL , 0) ;
-            return false;
-        }
+    /**
+     * Implementing method from the DatasetFilesInterface
+     * @return return a dataset identifier (the document related part of a DOI)
+     */
+    public function getDatasetIdentifier() {
+        return $this->dataset->identifier ;
     }
+
+    /**
+     * Implementing method from the DatasetFilesInterface
+     * @return return an url string
+     */
+    public function getLocationUrl() {
+        return $this->location ;
+    }
+
+
 }

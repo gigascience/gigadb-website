@@ -8,7 +8,7 @@
 
 
 
-class DirectoryListing extends GFtpFile
+class DirectoryListing extends GFtpFile implements DatasetFilesInterface
 {
     public $isDirectory;
     public $location;
@@ -25,9 +25,12 @@ class DirectoryListing extends GFtpFile
                                                             'user' => $f->user
         ));
 
+
+
         $dl->location = $location_path.'/'.$dl->filename;
         $dl->dataset_identifier = $dataset_identifier ;
         $dl->isDirectory = substr($dl->rights, 0, 1) === 'd'?true:false;
+        $dl->attachBehavior("bundle", new BundleBehavior());
 
         return $dl;
     }
@@ -49,20 +52,22 @@ class DirectoryListing extends GFtpFile
         return $breadcrumbs;
     }
 
-    public function is_in_bundle($raw_bundle) {
-        $bundle = unserialize($raw_bundle) ;
-        //error_log($raw_bundle , 0);
-
-        if ( isset($bundle[ $this->dataset_identifier][$this->location]) ) {
-            //error_log("MATCH Dataset: ". $this->dataset_identifier . PHP_EOL . "Location: ". $this->location . PHP_EOL, 0);
-            return true;
-        }
-        else {
-            //error_log("Dataset: ".  $this->dataset_identifier . PHP_EOL . "Location: ". $this->location . PHP_EOL , 0) ;
-            return false;
-        }
+    /**
+     * Implementing method from the DatasetFilesInterface
+     * @return return a dataset identifier (the document related part of a DOI)
+     */
+    public function getDatasetIdentifier() {
+        return $this->dataset_identifier ;
     }
 
+
+    /**
+     * Implementing method from the DatasetFilesInterface
+     * @return return an url string
+     */
+    public function getLocationUrl() {
+        return $this->location ;
+    }
 
 
 }
