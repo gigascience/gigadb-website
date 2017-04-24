@@ -4,7 +4,7 @@
                 'style' => 'cursor: pointer; text-decoration: underline;',
                 'onclick' => "{ $('#dialogDisplay').dialog('open');}"
             ));
-   
+
     $this->beginWidget('zii.widgets.jui.CJuiDialog', array(// the dialog
         'id' => 'dialogDisplay',
         'options' => array(
@@ -21,9 +21,9 @@
     ?>
     <div class="divForForm">
         <form name="myform" method="POST">
-        <input type='hidden' name='setting[]' value="name"/> 
+        <input type='hidden' name='setting[]' value="name"/>
 
-            <div class="attribute-setting-item"> 
+            <div class="attribute-setting-item">
                 <label><strong>Items per page:</strong></label>
                 <select name="pageSize" class="selectPageSize">
                     <option value="5">5</option>
@@ -31,7 +31,7 @@
                     <option value="20">20</option>
                     <option value="50">50</option>
                     <option value="100">100</option>
-                    <option value="200">200</option>                 
+                    <option value="200">200</option>
                 </select>
             </div>
 
@@ -41,13 +41,13 @@
                     <div class="span4">
                         <div class="row">
                             <div class="span3"><?= Yii::t('app','File Description') ?></div>
-                            <div class="span1"><input type="checkbox" name="setting[]"value="description" 
+                            <div class="span1"><input type="checkbox" name="setting[]"value="description"
                                 <?= (in_array("description", $setting))? "checked" : ""?>/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="span3"><?= Yii::t('app','Sample ID') ?></div>
-                            <div class="span1"><input type="checkbox" name="setting[]"value="sample_id" 
+                            <div class="span1"><input type="checkbox" name="setting[]"value="sample_id"
                                 <?= (in_array("sample_id", $setting))? "checked" : ""?>/>
                             </div>
                         </div>
@@ -63,19 +63,25 @@
                             <?= (in_array("format_id", $setting))? "checked" : ""?>/>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="span3"><?= Yii::t('app','Size') ?></div>
+                            <div class="span1"><input type="checkbox" name="setting[]" value="size"
+                                <?= (in_array("size", $setting))? "checked" : ""?>/>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="span4">
-                         <div class="row">
-                            <div class="span3"><?= Yii::t('app','Size') ?></div>
-                            <div class="span1"><input type="checkbox" name="setting[]" value="size"
-                            <?= (in_array("size", $setting))? "checked" : ""?>/>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="span3"><?= Yii::t('app','Release Date') ?></div>
                             <div class="span1"><input type="checkbox" name="setting[]" value="date_stamp"
                             <?= (in_array("date_stamp", $setting))? "checked" : ""?>/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span3"><?= Yii::t('app','Preview Link') ?></div>
+                            <div class="span1"><input type="checkbox" name="setting[]" value="preview"
+                            <?= (in_array("preview", $setting))? "checked" : ""?>/>
                             </div>
                         </div>
                         <div class="row">
@@ -93,9 +99,9 @@
                     </div>
                 </div>
             <div>
-                
+
         </form>
 
-    </div>    
+    </div>
 
 <?php $this->endWidget(); ?>

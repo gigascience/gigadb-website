@@ -125,7 +125,7 @@ if ($error != null) {
                     ),
                 ),
                 'htmlOptions'=>array('style'=>'width: 50px'),
-                'visible' => in_array("location", $setting),
+                'visible' => in_array("preview", $setting),
             ),
             array(
                 'header'=>'Download',
