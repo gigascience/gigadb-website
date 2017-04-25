@@ -80,7 +80,8 @@
         "virtualenv": "/home/gigadb/.virtualenvs/gigadb",
         "packages": [
           "biopython",
-          "beautifulsoup4"
+          "beautifulsoup4",
+          "supervisord"
         ],
         "schemup": {
           "version": "07905e6948273fc4393f5155999bce2e012dcfa8"

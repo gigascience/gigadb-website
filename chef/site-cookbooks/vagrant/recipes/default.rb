@@ -15,6 +15,7 @@ when 'debian'
 end
 
 include_recipe "gigadb"
+include_recipe "workers"
 
 ['vim', 'tree'].each do |pkg|
     package pkg
