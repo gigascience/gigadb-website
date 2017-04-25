@@ -105,6 +105,7 @@ Vagrant.configure(2) do |config|
       chef.cookbooks_path = [
         "chef/site-cookbooks",
         "chef/chef-cookbooks",
+        "development-cookbooks",
       ]
       chef.environments_path = 'chef/environments'
 
