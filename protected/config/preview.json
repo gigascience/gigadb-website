@@ -1,0 +1,14 @@
+{
+    "supported_types": [
+        "text/plain",
+        "text/html",
+        "image/png",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    ],
+    "mfr_supported_extensions": [
+        "txt",
+        "csv",
+        "tsv",
+        "pptx"
+    ]
+}
