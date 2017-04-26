@@ -8,3 +8,5 @@ name			 "workers"
 
 
 depends "redisio"
+depends "python"
+depends "gigadb"
