@@ -16,7 +16,7 @@
         "connection_url": "ftp://anonymous:anonymous@10.1.1.33:21"
       },
       "mfr": {
-        "preview_server": "192.168.99.100:7778"
+        "preview_server": "128.199.125.190:7778"
       },
       "site_dir": "/vagrant",
       "root_dir": "/vagrant",
@@ -132,6 +132,7 @@
       "programs": [
           {
             "name":"bundlefiles",
+            "user":"root",
             "command":"/usr/bin/php /vagrant/protected/yiic bundlefiles",
             "numprocs": "1",
             "directory":"/vagrant/protected",
@@ -144,6 +145,7 @@
           },
           {
             "name":"uploadbundle",
+            "user":"root",
             "command":"/usr/bin/php /vagrant/protected/yiic uploadbundle",
             "numprocs": "1",
             "directory":"/vagrant/protected",
@@ -156,6 +158,7 @@
           },
           {
             "name":"generatepreview",
+            "user":"root",
             "command":"/usr/bin/php /vagrant/protected/yiic generatepreview",
             "numprocs": "1",
             "directory":"/vagrant/protected",
