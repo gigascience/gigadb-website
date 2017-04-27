@@ -21,6 +21,7 @@ class GeneratePreviewCommand extends CConsoleCommand {
 
         $local_dir = Yii::app()->preview->temporary_directory;
         $supported_formats = Yii::app()->preview->supported_media_types;
+        $this->log("supported formats: " . var_dump($supported_formats));
 
 
         $this->log("GeneratePreviewCommand started") ;

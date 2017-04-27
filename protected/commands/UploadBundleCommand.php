@@ -89,6 +89,7 @@ class UploadBundleCommand extends CConsoleCommand {
         ->setOption('ACL', 'public-read')
         ->setConcurrency(3)
         ->build();
+        $this->log("multipart uploader instantiated to upload $file_path to $bucket as $keyname");
 
         // Perform the upload. Abort the upload if something goes wrong.
         try {

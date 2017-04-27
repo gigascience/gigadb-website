@@ -195,13 +195,15 @@ class FileController extends Controller
 
             }
             else {
-                $this->prepare_preview_job($location);
+                $job_id = $this->prepare_preview_job($location);
                 $result['status'] = "INITIATED";
+                $result['job_id'] = $job_id ;
             }
         }
         else {
-            $this->prepare_preview_job($location);
+            $job_id = $this->prepare_preview_job($location);
             $result['status'] = "INITIATED";
+            $result['job_id'] = $job_id ;
         }
 
 
@@ -231,7 +233,7 @@ class FileController extends Controller
             );
 
             if ($ret) {
-                return $ret; //return the bundle id that identifies the bundle across all systems
+                return $ret;
             }
             else {
                 return false;

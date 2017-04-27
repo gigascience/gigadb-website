@@ -39,8 +39,10 @@ Vagrant.configure(2) do |config|
   	gigadb.vm.network "forwarded_port", guest: 80, host: 9170
   	gigadb.vm.network "forwarded_port", guest: 5432, host: 9171
 
-    # make sure the web site and the ftp server are on the same private network
-    gigadb.vm.network 'private_network', ip: '10.1.1.37'
+    if ENV['GIGADB_ON_MACOSX'] == 'true'
+        # make sure the web site and the ftp server are on the same private network
+        gigadb.vm.network 'private_network', ip: '10.1.1.37'
+    end
 	# Set up directories
   	gigadb.vm.synced_folder ".", "/vagrant"
   	FileUtils.mkpath("./protected/runtime")
@@ -176,6 +178,7 @@ Vagrant.configure(2) do |config|
 	    # Set server environment: development
 	    ftp_chef.environment = "development"
 	    ftp_chef.add_recipe "fileserver"
+	    ftp_chef.add_recipe "fileserver::examples"
 	  end
 
 	  ftp.vm.provider 'virtualbox' do |v|

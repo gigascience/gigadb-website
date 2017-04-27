@@ -38,12 +38,16 @@ class ClearBucketCommand extends CConsoleCommand {
       $clear->clear();
 
       // Delete the bucket
-      if (isset($options['delete']) && "yes" === $options['delete']) {
+      if ("yes" === $this->getOption('delete')) {
           echo "about to delete bucket: " .  $this->getOption('bucket') . PHP_EOL ;
           $s3->deleteBucket(array('Bucket' =>  $this->getOption('bucket')));
           // Wait until the bucket is not accessible
-          $s3->waitUntil('BucketNotExists', array('Bucket' => $options['bucket']));
+          $s3->waitUntil('BucketNotExists', array('Bucket' => $this->getOption('bucket')));
+          echo "Bucket " . $this->getOption('bucket') . " deleted" . PHP_EOL ;
           return 0 ;
+      }
+      else {
+          echo "Bucket NOT deleted" . PHP_EOL ;
       }
       return 0 ;
 
