@@ -8,6 +8,10 @@ ftp directories, multi-download and preview
 $ git clone https://github.com/rija/gigadb-website
 $ cd gigadb-website
 $ git checkout -b ftp-table origin/ftp-table
+$ cd chef
+$ git submodule init
+$ git submodule update
+$ ..
 ```
 
 ## (1) Copy development.json.sample to development.json
@@ -37,7 +41,8 @@ otherwise to connect to the live ftp server, use:
 this is where you indicate the url of the preview server from
 Center For Open Science: Modular-File-Renderer a.k.a MFR.
 The default value is of a remote test server.
-For testing purpose, there is no need to change this value
+For testing purpose, there is no need to change this value.
+Later on in the configuration process you will need to supply me with the bucket name created so I can whitelist them on this server.
 
 ```
   "mfr": {
@@ -93,9 +98,7 @@ $ /vagrant/protected/yiic createbucket --fromconfig
 
 the above command will create the __two__ buckets with the name configured in section [1.3].
 
-They will be created with a __public-read__ policy attached to them.
-
-to delete a bucket and all its content, use the following command:
+To delete a bucket and all its content, use the following command:
 
 ```
 $ /vagrant/protected/yiic clearbucket -b=<bucket name> --delete=yes
@@ -103,9 +106,9 @@ $ /vagrant/protected/yiic clearbucket -b=<bucket name> --delete=yes
 
 ## (4) authorising the s3 urls for the preview bucket to MFR
 
-MFR whitelists urls from  where to render previews.
+MFR whitelists urls that are allowed to have a preview generated.
 
-so if you've configured the "mfr" block of development.json with the default MFR test server, please notify me the bucket name you've created so I can add it to the list of allowed domains on the test server.
+So if you've configured the "mfr" block of development.json with the default MFR test server, please notify me the bucket name you've created for preview so I can add it to the list of allowed domains on the test server.
 
 Alternatively, if you have Docker installed (MFR uses Docker for dev/test), you can run the following commands to deploy your own instance of MFR with your own allowed domains:
 
