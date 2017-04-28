@@ -36,6 +36,29 @@ otherwise to connect to the live ftp server, use:
 },
 ```
 
+The ftp-server vagrant box needs users information to be filled in in the development.json file
+
+```
+"user1": "user1",
+"user1_name": "user one",
+"user1_public_key": "",
+"user1_group": "gigadb-admin",
+"user2": "user2",
+"user2_name": "user two",
+"user2_public_key": "",
+"user2_group": "gigadb-admin",
+"user3": "user3",
+"user3_name": "user three",
+"user3_public_key": "",
+"user3_group": "gigadb-admin",
+"admin_user": "admin",
+"admin_user_name": "admin user",
+"admin_user_public_key": "",
+"admin_user_group": "gigadb-admin",
+
+```
+
+
 ### (1.2) MFR
 
 this is where you indicate the url of the preview server from
@@ -69,6 +92,7 @@ Firstly, add the Access key and Secret id of an AWS user that can fully manage S
 The __s3_bucket_for_file_bundles__ bucket is where the bundle of selected files are uploaded before the web visitor can access and download them.
 
 The __s3_bucket_for_file_previews__ bucket is where the preview file are uploaded before they are shown in a preview pane (directly or indirectly through MFR) to the web visitors.
+
 
 ## (2) Run and provision vagrant images
 
