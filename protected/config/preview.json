@@ -3,12 +3,26 @@
         "text/plain",
         "text/html",
         "image/png",
-        "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+        "image/jpeg",
+        "image/gif",
+        "image/tif",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/msword",
+        "application/vnd.ms-excel",
+        "application/pdf",
+        "application/xml"
     ],
     "mfr_supported_extensions": [
         "txt",
         "csv",
         "tsv",
-        "pptx"
+        "pptx",
+        "xlsx",
+        "docx",
+        "doc",
+        "xml",
+        "md"
     ]
 }

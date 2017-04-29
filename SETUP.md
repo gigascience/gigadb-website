@@ -164,11 +164,16 @@ then in the development.json, use __192.168.99.100:7778__ in the "mfr" block (re
 some of the dataset files for DOI 10.5524/100117
 have been installed on the ftp-server vagrant box.
 
-All the new functionalities can be tested by navigating to the dataset view for DOI 10.5524/100117
+All the new functionalities can be tested by navigating to the dataset view below using the files shown in the tree further down
 
-```
-http://127.0.0.1:9170/dataset/view/id/100117/
-```
+
+* http://127.0.0.1:9170/dataset/view/id/100112/
+* http://127.0.0.1:9170/dataset/view/id/100117/
+* http://127.0.0.1:9170/dataset/view/id/100159/
+* http://127.0.0.1:9170/dataset/view/id/100179/
+* http://127.0.0.1:9170/dataset/view/id/100258/
+* http://127.0.0.1:9170/dataset/view/id/100104/
+
 
 It's possible to navigate to the other datasets on the database, but the new functionalities won't be working on them if using ftp-server vagrant box. However old functionalities should still be working on those.
 
@@ -177,6 +182,20 @@ __Note__: a production-like database dump needs to be loaded to access the examp
 dataset files available on the ftp-server vagrant box:
 ```
 /var/ftp/pub/10.5524/100001_101000/
+├── 100104
+│   ├── Annotation
+│   │   ├── functional_annotation
+│   │   │   └── Mongolia_Human.function.statistics.xls
+│   │   └── gene_annotation
+│   │       └── Mongolia_Human.gene.gff
+│   ├── Mongolia_genome.jpg
+│   ├── Mongolian_Genome_novel_seq.fa
+│   └── Variation
+│       └── NovelSeq
+│           └── Mongolian_Genome_novel_seq.fa
+├── 100112
+│   ├── Data_Access_Agreement_PGDPGS.doc
+│   └── Data_Application_form_PGDPGS.docx
 ├── 100117
 │   ├── AltSplicing
 │   │   ├── AltSplicing.Rproj
@@ -237,13 +256,18 @@ dataset files available on the ftp-server vagrant box:
 │   │       ├── coord92.png
 │   │       └── igbblueberryripereps.png
 │   ├── contributors.txt
+│   ├── README.md
 │   └── V_corymbosum_scaffold_May_2013.fa.gz
 ├── 100159
 │   └── S_typhi_H58
 │       └── STH58links11.pairing_distribution.csv
+├── 100179
+│   └── chr1-7_opmap.xml
 └── 100258
     ├── readme.txt
     └── tBLASTx_all
         └── SBdb_CAq.txt
+
+
 
 ```

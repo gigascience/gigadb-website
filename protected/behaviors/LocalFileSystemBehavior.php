@@ -26,6 +26,7 @@ Class LocalFileSystemBehavior extends CBehavior
         $mime_types = array(
 
             'txt' => 'text/plain',
+            'md' => 'text/plain',
             'htm' => 'text/html',
             'html' => 'text/html',
             'php' => 'text/html',
@@ -124,12 +125,13 @@ Class LocalFileSystemBehavior extends CBehavior
             'faa' => 'text/plain',
             'fasta' => 'text/plain',
             'fastq' => 'text/plain',
+            'gff' => 'text/plain',
             'sam' => 'text/plain',
             'bam' => 'application/x-samtools',
             'cram' => 'application/x-samtools',
             'hdf5' => 'application/x-hdf5',
             'raw' => 'text/plain',
-            'mzml' => 'application/xml',
+            'mzML' => 'application/xml',
             'mzxml' => 'application/xml',
 
         );

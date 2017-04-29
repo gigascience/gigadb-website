@@ -281,16 +281,27 @@ class GeneratePreviewCommand extends CConsoleCommand {
                 $fp = fopen("$filepath.preview", 'w');
                 fwrite($fp, $preview);
                 fclose($fp);
+                $this->log("Truncating $filetype file $filepath to $filepath.preview") ;
+                return "$filepath.preview" ;
             }
             else {
-                $this->log("Renaming text/plain file $filepath to $fileapth.preview") ;
+                $this->log("Renaming $filetype file $filepath to $filepath.preview") ;
                 rename($filepath, "$filepath.preview") ;
+                return "$filepath.preview" ;
             }
 
+
+
+        }
+        else if ("application/xml" === $filetype) {
+            $this->log("Renaming $filetype file $filepath to $filepath.xml.preview") ;
+            rename($filepath, "$filepath.xml.preview") ;
+            return "$filepath.xml.preview" ;
         }
         else {
             $this->log("Renaming file $filepath to $filepath.preview") ;
             rename($filepath, "$filepath.preview") ;
+            return "$filepath.preview";
         }
 
         return "$filepath.preview";
