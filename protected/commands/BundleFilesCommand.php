@@ -79,13 +79,16 @@ class BundleFilesCommand extends CConsoleCommand {
                             $location_parts = parse_url($location);
 
                             $this->log("downloading " . $location_parts['path'] . " -> " . "$local_dir/$bundle_dir/$filename " ) ;
-                            $download_status = false;
-                            $directory_download_status = false;
+                            // $download_status = false;
+                            $copy_status = false;
+                            // $directory_download_status = false;
+                            $directory_copy_status = false;
                             chdir("$local_dir/$bundle_dir/");
 
                             if ($type === "Directory") {
-                                $directory_download_status = $this->ftp_getdir($connectionString, $location_parts['path'], $dataset_id);
-                                if ( $directory_download_status  ) { //add the directory to the archive
+                                // $directory_download_status = $this->ftp_getdir($connectionString, $location_parts['path'], $dataset_id);
+                                $directory_copy_status = $this->local_getdir("/var". $location_parts['path'], "$local_dir/$bundle_dir/$filename");
+                                if ( $directory_copy_status  ) { //add the directory to the archive
                                     $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", $location_parts['path']);
                                     $this->log("adding " . "$portable_path" .  " to $local_dir/bundle_$bundle_dir.tar.gz") ;
                                     $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$portable_path"], "", "$local_dir/$bundle_dir");
@@ -98,9 +101,10 @@ class BundleFilesCommand extends CConsoleCommand {
                                 }
                             }
                             else {
-                                $download_status = $this->manage_download($connectionString, "$local_dir/$bundle_dir/$filename", $location_parts['path'] );
+                                // $download_status = $this->manage_download($connectionString, "$local_dir/$bundle_dir/$filename", $location_parts['path'] );
+                                $copy_status = copy("/var". $location_parts['path'], "$local_dir/$bundle_dir/$filename");
 
-                                if ($download_status) {
+                                if ($copy_status) {
                                     $this->log("Successfully downloaded " . $location_parts['path']) ;
                                     if (pathinfo($location_parts['path'], PATHINFO_DIRNAME) === "/pub/10.5524/100001_101000/$dataset_id") {
                                         $portable_path = "" ;

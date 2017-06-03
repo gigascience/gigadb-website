@@ -179,6 +179,7 @@ Vagrant.configure(2) do |config|
 	    ftp_chef.environment = "development"
 	    ftp_chef.add_recipe "fileserver"
 	    ftp_chef.add_recipe "fileserver::examples"
+        ftp_chef.add_recipe "worker"
 	  end
 
 	  ftp.vm.provider 'virtualbox' do |v|

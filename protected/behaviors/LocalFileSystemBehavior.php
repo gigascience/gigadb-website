@@ -1,6 +1,31 @@
 <?php
 Class LocalFileSystemBehavior extends CBehavior
 {
+
+    function init() {
+
+        $this->attachBehavior("loggable", new LoggableCommandBehavior() );
+        parent::init();
+    }
+
+    function local_getdir($src, $dst) {
+        echo "Copying $src to $dst";
+        $dir = opendir($src);
+        mkdir($dst);
+        while(false !== ( $file = readdir($dir)) ) {
+            if (( $file != '.' ) && ( $file != '..' )) {
+                if ( is_dir($src . '/' . $file) ) {
+                    local_getdir($src . '/' . $file,$dst . '/' . $file);
+                }
+                else {
+                    copy($src . '/' . $file,$dst . '/' . $file);
+                }
+            }
+        }
+        closedir($dir);
+    }
+
+
     function rrmdir($dir) {
        if (is_dir($dir)) {
          $objects = scandir($dir);

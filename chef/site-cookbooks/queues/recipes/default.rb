@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: workers
+# Cookbook Name:: queues
 # Recipe:: default
 #
-# install tools to manage background workers for Gigadb website
+# install job management servers
 #
 # Copyright 2016, GigaScience
 #
