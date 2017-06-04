@@ -242,8 +242,8 @@ template "#{site_dir}/protected/config/local.php" do
     mode "0644"
 end
 
-template "#{site_dir}/protected/config/main.php" do
-    source "yii-main.php.erb"
+template "#{site_dir}/protected/config/console.php" do
+    source "yii-console.php.erb"
     mode "0644"
 end
 

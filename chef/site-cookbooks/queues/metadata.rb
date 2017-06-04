@@ -7,6 +7,6 @@ version          "0.0.1"
 name			 "queues"
 
 
-depends "redisio"
+depends "yum"
 depends "python"
 depends "gigadb"

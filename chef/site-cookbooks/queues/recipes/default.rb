@@ -13,6 +13,9 @@
 python_env = node[:gigadb][:python][:virtualenv]
 build_dir = node[:gigadb][:python][:build_dir]
 
+include_recipe "yum"
+include_recipe "yum::epel"
+include_recipe "python"
 
 # Install a Redis server used by the Preview functionality to track work stage
 # and status and preview url between frontend and backend
@@ -63,8 +66,8 @@ python_pip 'supervisor' do
 end
 
 
-template "/etc/supervisord.conf" do
-    source "supervisord.conf.erb"
+cookbook_file "/etc/supervisord.conf" do
+    source "supervisord.conf"
     mode "0644"
 end
 
@@ -75,4 +78,9 @@ service 'supervisord' do
   supports [:start, :stop, :status]
   # starts the service if it's not running and enables it to start at system boot time
   action [:enable, :start]
+end
+
+# iptables not required for default development environment
+service 'iptables' do
+    action [:disable, :stop]
 end
