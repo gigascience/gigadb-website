@@ -145,7 +145,7 @@ class BundleFilesCommand extends CConsoleCommand {
                             $this->log("Failed to delete job for bundle $bid]") ;
                         }
                         $this->current_job = null ;
-                        //$this->rrmdir("$local_dir/$bundle_dir");
+                        $this->rrmdir("$local_dir/$bundle_dir");
 
                     }
                     else
