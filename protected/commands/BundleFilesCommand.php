@@ -87,13 +87,13 @@ class BundleFilesCommand extends CConsoleCommand {
 
                             if ($type === "Directory") {
                                 // $directory_download_status = $this->ftp_getdir($connectionString, $location_parts['path'], $dataset_id);
-                                $directory_copy_status = $this->local_getdir("/var". $location_parts['path'], "$local_dir/$bundle_dir/$filename");
+                                $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", $location_parts['path']);
+                                $directory_copy_status = $this->local_getdir("/var/ftp". $location_parts['path'], "$local_dir/$bundle_dir/$portable_path");
                                 if ( $directory_copy_status  ) { //add the directory to the archive
-                                    $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", $location_parts['path']);
-                                    $this->log("adding " . "$portable_path" .  " to $local_dir/bundle_$bundle_dir.tar.gz") ;
-                                    $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$portable_path"], "", "$local_dir/$bundle_dir");
-                                    if (false === $archive_status) {
-                                        throw new Exception("Error while:" . "adding " . "$local_dir/$bundle_dir/$filename" .  " to $local_dir/bundle_$bundle_dir.tar.gz");
+                                    $this->log("adding " . "$portable_path" .  " to $local_dir/bundle_$bundle_dir.tar.gz as $portable_path") ;
+                                    $archive_status = $tar->addModify(["$local_dir/$bundle_dir/$portable_path/"], "", "$local_dir/$bundle_dir");
+                                    if ($tar->error_object) {
+                                        throw new Exception("Error while:" . "adding " . "$local_dir/$bundle_dir/$portable_path" .  " to $local_dir/bundle_$bundle_dir.tar.gz: " . $tar->error_object);
                                     }
                                 }
                                 else {
@@ -102,7 +102,7 @@ class BundleFilesCommand extends CConsoleCommand {
                             }
                             else {
                                 // $download_status = $this->manage_download($connectionString, "$local_dir/$bundle_dir/$filename", $location_parts['path'] );
-                                $copy_status = copy("/var". $location_parts['path'], "$local_dir/$bundle_dir/$filename");
+                                $copy_status = copy("/var/ftp". $location_parts['path'], "$local_dir/$bundle_dir/$filename");
 
                                 if ($copy_status) {
                                     $this->log("Successfully downloaded " . $location_parts['path']) ;
@@ -145,7 +145,7 @@ class BundleFilesCommand extends CConsoleCommand {
                             $this->log("Failed to delete job for bundle $bid]") ;
                         }
                         $this->current_job = null ;
-                        $this->rrmdir("$local_dir/$bundle_dir");
+                        //$this->rrmdir("$local_dir/$bundle_dir");
 
                     }
                     else

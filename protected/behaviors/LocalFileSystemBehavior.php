@@ -8,21 +8,31 @@ Class LocalFileSystemBehavior extends CBehavior
         parent::init();
     }
 
-    function local_getdir($src, $dst) {
-        echo "Copying $src to $dst";
-        $dir = opendir($src);
-        mkdir($dst);
-        while(false !== ( $file = readdir($dir)) ) {
-            if (( $file != '.' ) && ( $file != '..' )) {
-                if ( is_dir($src . '/' . $file) ) {
-                    local_getdir($src . '/' . $file,$dst . '/' . $file);
-                }
-                else {
-                    copy($src . '/' . $file,$dst . '/' . $file);
-                }
-            }
+    function local_getdir($source, $dest) {
+        echo "Starting copying $source to $dest \n";
+        try {
+
+            mkdir($dest, 0755, true);
+            foreach (
+                $iterator = new \RecursiveIteratorIterator(
+                    new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
+                    \RecursiveIteratorIterator::SELF_FIRST) as $item
+                    )
+                    {
+                        echo "Copying " . call_user_func_array (array ($iterator, "getSubPathname"), array ()) . "\n" ;
+                        if ($item->isDir()) {
+                            mkdir($dest . DIRECTORY_SEPARATOR . call_user_func_array (array ($iterator, "getSubPathname"), array ()));
+                        } else {
+                            copy($item, $dest . DIRECTORY_SEPARATOR . call_user_func_array (array ($iterator, "getSubPathname"), array ()));
+                        }
+                    }
+                    echo "Finished copying $source to $dest \n";
         }
-        closedir($dir);
+        catch (Exception $ex) {
+            echo "Failed recursive copy: " . $ex->getMessage() ;
+            return 0 ;
+        }
+        return 1;
     }
 
 

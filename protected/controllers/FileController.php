@@ -260,6 +260,7 @@ class FileController extends Controller
                 'submission_time'=>date("c"),
             ];
 
+
             $jobDetailString = json_encode($jobDetails);
 
             $ret = $client->put(
