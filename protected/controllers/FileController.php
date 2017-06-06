@@ -128,7 +128,8 @@ class FileController extends Controller
 
     public function actionDownload($bid) {
 
-        $download_url = 'http://gigadb-bundles-test.s3.amazonaws.com/'.$bid.'.tar.gz' ;
+        // $download_url = 'http://gigadb-bundles-test.s3.amazonaws.com/'.$bid.'.tar.gz' ;
+        $download_url = 'ftp://10.1.1.33/pub/user_bundles/bundle_'.$bid.'.tar.gz' ;
         $bundle = new Bundle();
         $bundle->bid = $bid;
         $bundle->download_url = $download_url;

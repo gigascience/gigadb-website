@@ -128,13 +128,22 @@ class BundleFilesCommand extends CConsoleCommand {
 
 
                         }
-                        $upload_job = $this->prepare_upload_job("$local_dir/bundle_$bundle_dir.tar.gz",$bid);
-                        if($upload_job) {
-                            $this->log("Submitted an upload job with id: $upload_job") ;
+                        $publish_status = $this->local_publish("$local_dir/bundle_$bundle_dir.tar.gz", "/var/ftp/pub/user_bundles/bundle_$bundle_dir.tar.gz");
+                        if ( true === $publish_status  ) {
+                            $cache['status'] = "PUBLISHED" ;
+                            Yii::app()->redis->executeCommand('SET',array( $bundle_dir, json_encode($cache) )) ;
+                            $this->log("bundle successfuly published");
                         }
                         else {
-                            $this->log("An error occured while submitting an upload job") ;
+                            throw new Exception("Failed publishing the bundle");
                         }
+                        // $upload_job = $this->prepare_upload_job("$local_dir/bundle_$bundle_dir.tar.gz",$bid);
+                        // if($upload_job) {
+                        //     $this->log("Submitted an upload job with id: $upload_job") ;
+                        // }
+                        // else {
+                        //     $this->log("An error occured while submitting an upload job") ;
+                        // }
 
                         $this->log("Job done...(" . $this->current_job['id'] . ")") ;
                         $deletion_status = $consumer->delete($this->current_job['id']);

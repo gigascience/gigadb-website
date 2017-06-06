@@ -35,6 +35,10 @@ Class LocalFileSystemBehavior extends CBehavior
         return 1;
     }
 
+    function local_publish($bundle, $target) {
+        echo "Copying $bundle to $target\n";
+        return copy($bundle, $target);
+    }
 
     function rrmdir($dir) {
        if (is_dir($dir)) {

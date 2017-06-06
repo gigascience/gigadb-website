@@ -17,15 +17,24 @@ class Bundle extends CModel
 
     public function check_download_status() {
 
-        $s3 = Yii::app()->aws->getS3Instance();
-        try {
-            $result = $s3->doesObjectExist('gigadb-bundles-test',$this->bid . '.tar.gz');
+        $cache = json_decode(Yii::app()->redis->executeCommand('GET',array($this->bid)), true) ;
+
+        if ('PUBLISHED' === $cache['status'] ) {
+            return true ;
         }
-        catch(Exception $e) {
+        else {
             return false;
         }
 
-        return $result;
+        // $s3 = Yii::app()->aws->getS3Instance();
+        // try {
+        //     $result = $s3->doesObjectExist('gigadb-bundles-test',$this->bid . '.tar.gz');
+        // }
+        // catch(Exception $e) {
+        //     return false;
+        // }
+        //
+        // return $result;
 
     }
 
