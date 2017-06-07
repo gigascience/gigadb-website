@@ -119,7 +119,7 @@ $ vagrant ssh gigadb-website
 $ /vagrant/protected/yiic createbucket --fromconfig
 ```
 
-the above command will create the __two__ buckets with the name configured in section [1.3].
+the above command will create the one bucket with the name configured in section [1.3].
 
 To delete a bucket and all its content, use the following command:
 
@@ -188,7 +188,7 @@ dataset files available on the ftp-server vagrant box:
 │   │   └── gene_annotation
 │   │       └── Mongolia_Human.gene.gff
 │   ├── Mongolia_genome.jpg
-│   ├── Mongolian_Genome_novel_seq.fa
+│   ├── Mongolian_Genome_novel_seq.fa (page 2)
 │   └── Variation
 │       └── NovelSeq
 │           └── Mongolian_Genome_novel_seq.fa
@@ -256,16 +256,16 @@ dataset files available on the ftp-server vagrant box:
 │   │       └── igbblueberryripereps.png
 │   ├── contributors.txt
 │   ├── README.md
-│   └── V_corymbosum_scaffold_May_2013.fa.gz
+│   └── V_corymbosum_scaffold_May_2013.fa.gz (page 3)
 ├── 100159
 │   └── S_typhi_H58
-│       └── STH58links11.pairing_distribution.csv
+│       └── STH58links11.pairing_distribution.csv (page 9)
 ├── 100179
 │   └── chr1-7_opmap.xml
 └── 100258
     ├── readme.txt
     └── tBLASTx_all
-        └── SBdb_CAq.txt
+        └── SBdb_CAq.txt  (page 3)
 
 
 
