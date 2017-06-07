@@ -1,6 +1,10 @@
 # SETUP for new functionalities
 
-ftp directories, multi-download and preview
+ftp directories [#63](https://github.com/gigascience/gigadb-website/issues/63), multi-download [#67](https://github.com/gigascience/gigadb-website/issues/67) and file preview [#66](https://github.com/gigascience/gigadb-website/issues/66)
+
+System Architecture :
+[https://gist.githubusercontent.com/rija/f6fa3cfeda0f0a0da4c6f08326bbe6f7/raw/d882eddfb1028b07eaabbc6a5b264af78890921a/gistfile1.txt]
+
 
 ## (0) check out the ftp-table branch
 
@@ -16,7 +20,7 @@ $ ..
 
 ## (1) Copy development.json.sample to development.json
 
-review or change the information in  the "ftp", "mfr", "aws" blocks
+review or change the information in  the "ftp", "mfr", "aws", and "supervisor" blocks
 
 
 ### (1.1) FTP
@@ -25,7 +29,8 @@ to use the ftp server on the ftp-server vagrant box, use the following values:
 
 ```
 "ftp": {
-"connection_url": "ftp://anonymous:anonymous@10.1.1.33:21"
+"connection_url": "ftp://anonymous:anonymous@10.1.1.33:21",
+"host": "10.1.1.33"
 },
 ```
 
@@ -33,6 +38,7 @@ otherwise to connect to the live ftp server, use:
 ```
 "ftp": {
   "connection_url": "ftp://anonymous:anonymous@climb.genomics.cn:21"
+  "host": "climb.genomics.cn"
 },
 ```
 
@@ -89,6 +95,11 @@ Later on in the configuration process you will need to supply me with the bucket
 Firstly, add the Access key and Secret id of an AWS user that can fully manage S3 resources.
 
 The __s3_bucket_for_file_previews__ bucket is where the preview file are uploaded before they are shown in a preview pane (directly or indirectly through MFR) to the web visitors.
+
+### (1.4) Supervisor
+
+The new functionalities will work without changing the default values for this block.
+However, on production, it's recommended to increase the value of the ``numprocs`` key to greater than one.
 
 
 ## (2) Run and provision vagrant images
