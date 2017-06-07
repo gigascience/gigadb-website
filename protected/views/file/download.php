@@ -10,7 +10,6 @@
             </h4>
             <?php } else { ?>
                 <em>Please reload this page in a moment, your download is being prepared.</em>
-                <? var_dump($bundle->status)?>
             <?php } ?>
         </p>
     </div>

@@ -13,7 +13,8 @@
         "server_names": ["localhost"]
       },
       "ftp": {
-        "connection_url": "ftp://anonymous:anonymous@10.1.1.33:21"
+        "connection_url": "ftp://anonymous:anonymous@10.1.1.33:21",
+        "host": "10.1.1.33"
       },
       "mfr": {
         "preview_server": "128.199.125.190:7778"

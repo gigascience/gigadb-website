@@ -110,6 +110,14 @@ return CMap::mergeArray(array(
             'temporary_directory' => '/tmp/previews',
             'preview_bucket' => $awsConfig['s3_bucket_for_file_previews'],
         ),
+        'multidownload'=>array(
+            'class' => 'application.components.MultiDownload',
+            'download_host' => '10.1.1.33',
+            'download_protocol' => 'ftp://',
+            'multidownload_job_queue' => 'filespackaging',
+            'temporary_directory' => '/tmp/bundles',
+            'ftp_bundle_directory' => '/pub/user_bundles',
+        ),
         'request' => array(
             //'enableCookieValidation' => true,
         ),

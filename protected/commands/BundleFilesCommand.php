@@ -8,7 +8,7 @@ class BundleFilesCommand extends CConsoleCommand {
     public function run($args) {
 
 
-        $local_dir = "/tmp/bundles";
+        $local_dir = Yii::app()->multidownload->temporary_directory;
 
         $this->attachBehavior("loggable", new LoggableCommandBehavior() );
         $this->attachBehavior("ftp", new FileTransferBehavior() );
@@ -22,7 +22,7 @@ class BundleFilesCommand extends CConsoleCommand {
 
             $consumer = Yii::app()->beanstalk->getClient();
             $consumer->connect();
-            $consumer->watch('filespackaging');
+            $consumer->watch(Yii::app()->multidownload->multidownload_job_queue);
             $this->log("connected to the job server, waiting for new jobs...") ;
 
             if (false === is_dir($local_dir) ) {
@@ -128,7 +128,7 @@ class BundleFilesCommand extends CConsoleCommand {
 
 
                         }
-                        $publish_status = $this->local_publish("$local_dir/bundle_$bundle_dir.tar.gz", "/var/ftp/pub/user_bundles/bundle_$bundle_dir.tar.gz");
+                        $publish_status = $this->local_publish("$local_dir/bundle_$bundle_dir.tar.gz", "/var/ftp" . Yii::app()->multidownload->ftp_bundle_directory . "/bundle_$bundle_dir.tar.gz");
                         if ( true === $publish_status  ) {
                             $cache['status'] = "PUBLISHED" ;
                             Yii::app()->redis->executeCommand('SET',array( $bundle_dir, json_encode($cache) )) ;
@@ -190,28 +190,28 @@ class BundleFilesCommand extends CConsoleCommand {
     }
 
 
-    function prepare_upload_job($file_path, $bid) {
-        $client = Yii::app()->beanstalk->getClient();
-        $client->useTube('bundleuploading');
-        $jobDetails = [
-            'application'=>'gigadb-website',
-            'file_path'=>$file_path,
-            'bid'=>$bid,
-            'submission_time'=>date("c"),
-        ];
-
-        $jobDetailString = json_encode($jobDetails);
-
-        $ret = $client->put(
-            0, // priority
-            0, // do not wait, put in immediately
-            90, // will run within n seconds
-            $jobDetailString // job body
-        );
-
-        return $ret;
-
-    }
+    // function prepare_upload_job($file_path, $bid) {
+    //     $client = Yii::app()->beanstalk->getClient();
+    //     $client->useTube('bundleuploading');
+    //     $jobDetails = [
+    //         'application'=>'gigadb-website',
+    //         'file_path'=>$file_path,
+    //         'bid'=>$bid,
+    //         'submission_time'=>date("c"),
+    //     ];
+    //
+    //     $jobDetailString = json_encode($jobDetails);
+    //
+    //     $ret = $client->put(
+    //         0, // priority
+    //         0, // do not wait, put in immediately
+    //         90, // will run within n seconds
+    //         $jobDetailString // job body
+    //     );
+    //
+    //     return $ret;
+    //
+    // }
 
 
 }
