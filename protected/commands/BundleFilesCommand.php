@@ -86,7 +86,6 @@ class BundleFilesCommand extends CConsoleCommand {
                             chdir("$local_dir/$bundle_dir/");
 
                             if ($type === "Directory") {
-                                // $directory_download_status = $this->ftp_getdir($connectionString, $location_parts['path'], $dataset_id);
                                 $portable_path = str_replace("/pub/10.5524/100001_101000/$dataset_id/","", $location_parts['path']);
                                 $directory_copy_status = $this->local_getdir("/var/ftp". $location_parts['path'], "$local_dir/$bundle_dir/$portable_path");
                                 if ( $directory_copy_status  ) { //add the directory to the archive
@@ -101,7 +100,6 @@ class BundleFilesCommand extends CConsoleCommand {
                                 }
                             }
                             else {
-                                // $download_status = $this->manage_download($connectionString, "$local_dir/$bundle_dir/$filename", $location_parts['path'] );
                                 $copy_status = copy("/var/ftp". $location_parts['path'], "$local_dir/$bundle_dir/$filename");
 
                                 if ($copy_status) {
@@ -137,13 +135,6 @@ class BundleFilesCommand extends CConsoleCommand {
                         else {
                             throw new Exception("Failed publishing the bundle");
                         }
-                        // $upload_job = $this->prepare_upload_job("$local_dir/bundle_$bundle_dir.tar.gz",$bid);
-                        // if($upload_job) {
-                        //     $this->log("Submitted an upload job with id: $upload_job") ;
-                        // }
-                        // else {
-                        //     $this->log("An error occured while submitting an upload job") ;
-                        // }
 
                         $this->log("Job done...(" . $this->current_job['id'] . ")") ;
                         $deletion_status = $consumer->delete($this->current_job['id']);
@@ -189,29 +180,6 @@ class BundleFilesCommand extends CConsoleCommand {
         return 0;
     }
 
-
-    // function prepare_upload_job($file_path, $bid) {
-    //     $client = Yii::app()->beanstalk->getClient();
-    //     $client->useTube('bundleuploading');
-    //     $jobDetails = [
-    //         'application'=>'gigadb-website',
-    //         'file_path'=>$file_path,
-    //         'bid'=>$bid,
-    //         'submission_time'=>date("c"),
-    //     ];
-    //
-    //     $jobDetailString = json_encode($jobDetails);
-    //
-    //     $ret = $client->put(
-    //         0, // priority
-    //         0, // do not wait, put in immediately
-    //         90, // will run within n seconds
-    //         $jobDetailString // job body
-    //     );
-    //
-    //     return $ret;
-    //
-    // }
 
 
 }

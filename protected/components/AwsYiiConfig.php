@@ -6,7 +6,6 @@ class AwsYiiConfig extends CApplicationComponent
     private $_s3;
     public $access_key;
     public $secret_key;
-    public $bundle_bucket;
     public $preview_bucket;
 
 

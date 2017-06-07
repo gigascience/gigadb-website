@@ -82,23 +82,22 @@ Later on in the configuration process you will need to supply me with the bucket
   "aws_secret_access_key": "DUMMYxxxxxxxxxxxxxxxxx",
   "aws_default_region": "ap-southeast-1",
   "aws_security_groups": "",
-  "s3_bucket_for_file_bundles": "<unique name for bundle bucket",
   "s3_bucket_for_file_previews": "<unique name for preview bucket"
 },
 ```
 
 Firstly, add the Access key and Secret id of an AWS user that can fully manage S3 resources.
 
-The __s3_bucket_for_file_bundles__ bucket is where the bundle of selected files are uploaded before the web visitor can access and download them.
-
 The __s3_bucket_for_file_previews__ bucket is where the preview file are uploaded before they are shown in a preview pane (directly or indirectly through MFR) to the web visitors.
 
 
 ## (2) Run and provision vagrant images
 
+Vagrantfile now configures **3 machines**.
 make sure the following environment variable are set:
 ```
 DEPLOY_GIGADB_FTP=true
+DEPLOY_GIGADB_QUEUES=true
 GIGADB_BOX=centos
 ```
 

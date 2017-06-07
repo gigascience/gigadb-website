@@ -10,11 +10,11 @@ class CreateBucketCommand extends CConsoleCommand {
 
     $this->attachBehavior("commandline", new CommandLineBehavior()) ;
 
-    $this->parseArguments($args,array("h" => "help",  "p" => "preview", "b" => "bundle", "a" =>"all", "c" => "fromconfig"));
+    $this->parseArguments($args,array("h" => "help",  "p" => "preview", "a" =>"all", "c" => "fromconfig"));
     $this->setHelpMessage(array(
       "Usage:",
       "/vagrant/protected/yiic createbucket -h|--help",
-      "/vagrant/protected/yiic createbucket -b|--bundle=<bucket name 1> -p|--preview=<bucket name 2>",
+      "/vagrant/protected/yiic createbucket -p|--preview=<bucket name>",
       "/vagrant/protected/yiic createbucket -a|--all=<bucket name>",
       "/vagrant/protected/yiic createbucket -c|--fromconfig"
     ));
@@ -25,15 +25,12 @@ class CreateBucketCommand extends CConsoleCommand {
         return 1;
     }
     else if( $this->getOption('fromconfig') ) {
-        $bundle_bucket = Yii::app()->aws->bundle_bucket ;
         $preview_bucket = Yii::app()->aws->preview_bucket ;
     }
     else if ( $this->getOption('all') ) {
-        $bundle_bucket =  $this->getOption('all') ;
         $preview_bucket = $this->getOption('all') ;
     }
-    else if ( $this->getOption('bundle') || $this->getOption('preview')) {
-        $bundle_bucket =  $this->getOption('bundle') ;
+    else if ( $this->getOption('preview')) {
         $preview_bucket = $this->getOption('preview') ;
     }
     else {
@@ -42,13 +39,6 @@ class CreateBucketCommand extends CConsoleCommand {
     }
 
     $s3 = Yii::app()->aws->getS3Instance();
-
-
-    if( $bundle_bucket ) {
-        echo "Creating bucket for bundle functionality: " . $bundle_bucket . PHP_EOL ;
-        $s3->createBucket(array('Bucket' => $bundle_bucket));
-        $s3->waitUntil('BucketExists', array('Bucket' => $bundle_bucket));
-    }
 
     if ( $preview_bucket ) {
         echo "Creating bucket for preview functionality: " . $preview_bucket . PHP_EOL ;

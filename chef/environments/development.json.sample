@@ -145,19 +145,6 @@
             "logfile_maxbytes": "100MB"
           },
           {
-            "name":"uploadbundle",
-            "user":"root",
-            "command":"/usr/bin/php /vagrant/protected/yiic uploadbundle",
-            "numprocs": "1",
-            "directory":"/vagrant/protected",
-            "autostart": "true",
-            "autorestart": "true",
-            "log_stdout": "true",
-            "log_stderr": "true",
-            "logfile": "/var/log/uploadbundle.log",
-            "logfile_maxbytes": "100MB"
-          },
-          {
             "name":"generatepreview",
             "user":"root",
             "command":"/usr/bin/php /vagrant/protected/yiic generatepreview",

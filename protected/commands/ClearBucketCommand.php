@@ -15,15 +15,12 @@ class ClearBucketCommand extends CConsoleCommand {
         $this->setHelpMessage(array(
             "Usage:",
             "/vagrant/protected/yiic clearbucket -h|--help",
-            "/vagrant/protected/yiic clearbucket -b|--bucket=<bucket name>|bundle|preview [ -d|--delete=yes|no ]"
+            "/vagrant/protected/yiic clearbucket -b|--bucket=<bucket name>|preview [ -d|--delete=yes|no ]"
         ));
 
         $this->validateMandatoryOptions(["bucket"]) ;
 
-        if( "bundle" === $this->getOption('bucket') ) {
-            $this->setOption('bucket',Yii::app()->aws->bundle_bucket) ;
-        }
-        else if( "preview" === $this->getOption('bucket') ) {
+        if( "preview" === $this->getOption('bucket') ) {
             $this->setOption('bucket',Yii::app()->aws->preview_bucket) ;
         }
 
