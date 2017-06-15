@@ -184,8 +184,9 @@ HTML;
                             {    
                                  echo "<iframe src=\"$p\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
                             }
-                                echo "</div>";
+                               
                             }
+                             echo "</div>";
                         }
                         }
                     ?>
