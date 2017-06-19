@@ -15,6 +15,7 @@ build_dir = node[:gigadb][:python][:build_dir]
 
 include_recipe "yum"
 include_recipe "yum::remi"
+include_recipe "yum::epel"
 include_recipe "python"
 
 # Install a Redis server used by the Preview functionality to track work stage
