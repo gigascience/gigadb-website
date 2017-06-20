@@ -168,7 +168,6 @@ class BundleFilesCommand extends CConsoleCommand {
 
         } catch (Exception $runex) {
             $this->log("Error while initialising the worker: " . $runex->getMessage()) ;
-            ftp_close($conn_id);
             $consumer->disconnect();
             $this->current_job = null ;
             $this->log( "BundleFilesCommand stopping");
