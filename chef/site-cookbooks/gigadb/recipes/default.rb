@@ -280,43 +280,43 @@ end
 # Install lxml as an external parser for beautifulsoup
 # For some reason, installing via pip fails (some C compile error) so
 # we're resorting to the distro-provided package...
-package 'python-lxml' do
-    action :install
-end
+#package 'python-lxml' do
+#    action :install
+#end
 
-python_virtualenv python_env do
-    owner app_user
-    action :create
+#python_virtualenv python_env do
+#    owner app_user
+#    action :create
     # TODO: redhat prod server uses 2.6 - let's uncomment the following
     # line if something blows up
     #interpreter 'python2.6'
-end
+#end
 
 # Install biopython and beautifulsoup4 packages
-node[:gigadb][:python][:packages].each do |pkg|
-    python_pip pkg do
-        action :install
-    end
-end
+#node[:gigadb][:python][:packages].each do |pkg|
+#    python_pip pkg do
+#        action :install
+#    end
+#end
 
-bash "install schemup" do
-    cwd build_dir
-    code <<-EOH
-        . #{python_env}/bin/activate
-        git clone https://github.com/brendonh/schemup.git
-        cd schemup
-        git fetch
-        git checkout #{node[:gigadb][:python][:schemup][:version]}
-        pip install .
-    EOH
-end
+#bash "install schemup" do
+#    cwd build_dir
+#    code <<-EOH
+#        . #{python_env}/bin/activate
+#        git clone https://github.com/brendonh/schemup.git
+#        cd schemup
+#        git fetch
+#        git checkout #{node[:gigadb][:python][:schemup][:version]}
+#        pip install .
+#    EOH
+#end
 
-bash 'install python packages' do
-    code <<-EOH
-        . #{python_env}/bin/activate
-        pip install -r #{site_dir}/protected/schema/requirements.txt
-    EOH
-end
+#bash 'install python packages' do
+#    code <<-EOH
+#        . #{python_env}/bin/activate
+#        pip install -r #{site_dir}/protected/schema/requirements.txt
+#    EOH
+#end
 
 
 ##############

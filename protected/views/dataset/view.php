@@ -174,6 +174,7 @@ HTML;
                                     }
                                 }
                             }
+                        }
                             if(!empty($protocol)){
                              echo "<h4>Protocols.io:</h4>";
                              echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
@@ -188,7 +189,7 @@ HTML;
                             }
                              echo "</div>";
                         }
-                        }
+                        
                     ?>
                 </p>
 
