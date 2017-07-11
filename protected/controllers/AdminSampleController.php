@@ -58,10 +58,11 @@ class AdminSampleController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
+               
 		if(isset($_POST['Sample']))
 		{
 			$model->attributes=$_POST['Sample'];
+                        $model->name = $_POST['Sample']['name'];
                         
                         $array = explode(":",$_POST['Sample']['species_id']);
                         $tax_id=$array[0];
@@ -95,7 +96,6 @@ class AdminSampleController extends Controller
                         $this->redirect(array('view','id'=>$model->id));
                     }
 		}
-
 		$this->render('create',array(
 			'model'=>$model,
 		));
