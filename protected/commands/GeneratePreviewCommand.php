@@ -105,21 +105,22 @@ class GeneratePreviewCommand extends CConsoleCommand {
                             //download the file
                             $download_status = false ;
 
-                            $this->log("Downloading " . $location_parts['path'] . " to $local_destination");
-                            $download_status = $this->manage_download($connectionString, "$local_destination", $location_parts['path']) ;
+                            $this->log("Copying " . "/var/ftp".$location_parts['path'] . " to $local_destination");
+                            //$download_status = $this->manage_download($connectionString, "$local_destination", $location_parts['path']) ;
+                            $copy_status = copy("/var/ftp". $location_parts['path'], "$local_destination");
 
                             // ftp_close($conn_id);
 
-                            if (FTP_FAILED === $download_status) {
-                                if(is_file($local_destination) && filesize("$local_destination") >  0 ) { //partial download, we release the job for future retry
-                                    $temp_job_id = $this->current_job['id'] ; //because we are about to nullify current_job but needs the id
-                                    $this->queue->release($temp_job_id, 10 , 60) ; //release the job, with delay, at lower priority for future retry
-                                    $this->current_job = null ; // so that the exception is picked up by the outer catch block
-                                    throw new Exception("($temp_job_id) Error while downloading " . $location_parts['path'] . " to $local_destination." . PHP_EOL . "The job $temp_job_id has been released for future retry");
-                                } else {
-                                    throw new Exception("Failed to download " . $location_parts['path'] . " to $local_destination") ;
-                                }
-                            }
+                            // if (FTP_FAILED === $download_status) {
+                            //     if(is_file($local_destination) && filesize("$local_destination") >  0 ) { //partial download, we release the job for future retry
+                            //         $temp_job_id = $this->current_job['id'] ; //because we are about to nullify current_job but needs the id
+                            //         $this->queue->release($temp_job_id, 10 , 60) ; //release the job, with delay, at lower priority for future retry
+                            //         $this->current_job = null ; // so that the exception is picked up by the outer catch block
+                            //         throw new Exception("($temp_job_id) Error while downloading " . $location_parts['path'] . " to $local_destination." . PHP_EOL . "The job $temp_job_id has been released for future retry");
+                            //     } else {
+                            //         throw new Exception("Failed to download " . $location_parts['path'] . " to $local_destination") ;
+                            //     }
+                            // }
 
                             //Generating preview file
                             $preview_path = $this->make_preview("$local_destination"); //TODO extract uncompress as separate function
