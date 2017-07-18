@@ -43,7 +43,12 @@ class CreateBucketCommand extends CConsoleCommand {
     if ( $preview_bucket ) {
         echo "Creating bucket for preview functionality: " . $preview_bucket . PHP_EOL ;
         $s3->createBucket(array('Bucket' => $preview_bucket));
-        $s3->waitUntil('BucketExists', array('Bucket' => $preview_bucket));
+        if (true == $s3->doesBucketExist($preview_bucket)) {
+            return 0;
+        }
+        else {
+            return 1;
+        }
     }
 
     return 0 ;
