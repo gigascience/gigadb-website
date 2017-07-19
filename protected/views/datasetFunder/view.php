@@ -16,6 +16,7 @@
 			'value' => $model->funder->primary_name_display,
 		),
 		'grant_award',
+                'awardee',
 		'comments',
 	),
 )); ?>

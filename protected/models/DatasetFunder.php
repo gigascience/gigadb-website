@@ -45,7 +45,7 @@ class DatasetFunder extends CActiveRecord
 			array('funder_id', 'checkIsFunderDuplicate', 'on'=>'insert'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, dataset_id, funder_id, grant_award, comments, doi_search, funder_search', 'safe', 'on'=>'search'),
+			array('id, dataset_id, funder_id, grant_award, awardee, comments, doi_search, funder_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,6 +73,7 @@ class DatasetFunder extends CActiveRecord
 			'funder_id' => 'Funder',
 			'grant_award' => 'Grant Award',
 			'comments' => 'Comments',
+                        'awardee' => 'Awardee',
 			'doi_search' => 'Dataset',
 			'funder_search' => 'Funder',
 		);
@@ -93,6 +94,7 @@ class DatasetFunder extends CActiveRecord
 		$criteria->compare('dataset_id',$this->dataset_id);
 		$criteria->compare('funder_id',$this->funder_id);
 		$criteria->compare('grant_award',$this->grant_award,true);
+                $criteria->compare('awardee',$this->awardee,true);
 		$criteria->compare('comments',$this->comments,true);
 		$criteria->compare('dataset.identifier', $this->doi_search, true);
 		$criteria->compare('LOWER(funder.primary_name_display)', strtolower($this->funder_search), true);
@@ -110,6 +112,10 @@ class DatasetFunder extends CActiveRecord
 			'grant_award' => array(
 				'asc' => 'grant_award ASC',
 				'desc' => 'grant_award DESC',
+			),
+                        'awardee' => array(
+				'asc' => 'awardee ASC',
+				'desc' => 'awardee DESC',
 			),
 			'comments' => array(
 				'asc' => 'comments ASC',

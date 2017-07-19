@@ -92,6 +92,7 @@ class DatasetFunderController extends Controller
 			$attrs = $_POST['DatasetFunder'];
 			$model->attributes = $attrs;
 			$model->grant_award = Util::trimText($attrs['grant_award']);
+                        $model->awardee = Util::trimText($attrs['awardee']);
 			$model->comments = Util::trimText($attrs['comments']);
 
 			if($model->save())
@@ -123,6 +124,7 @@ class DatasetFunderController extends Controller
 			$attrs = $_POST['DatasetFunder'];
 			$model->attributes = $attrs;
 			$model->grant_award = Util::trimText($attrs['grant_award']);
+                        $model->awardee = Util::trimText($attrs['awardee']);
 			$model->comments = Util::trimText($attrs['comments']);
 
 			if($model->save())
