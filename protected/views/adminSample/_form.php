@@ -35,7 +35,7 @@
                         'htmlOptions' => array(
                             'placeholder' => 'name',
                             'size' => 'auto',
-                            'value' => $specie->tax_id .':'. $specie->scientific_name,
+                            //'value' => $specie->tax_id .':'. $specie->scientific_name,
                         ),
                     ));
                     ?>

@@ -33,6 +33,14 @@
 			<?php echo $form->error($model,'grant_award'); ?>
 		</div>
 	</div>
+        
+        <div class="control-group">
+		<?php echo $form->labelEx($model,'awardee', array('class'=>'control-label')); ?>
+		<div class="controls">
+			<?php echo $form->textArea($model,'awardee',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->error($model,'awardee'); ?>
+		</div>
+	</div>
 
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'comments', array('class'=>'control-label')); ?>
