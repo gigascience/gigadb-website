@@ -22,12 +22,12 @@ HTML;
         'previous_doi'=>$previous_doi,
         'next_doi'=>$next_doi
         )); ?>
-        
+
 <div class="row first">
     <div class="span12"><p><?= Yii::t('app' , 'Data released on')?> <?= strftime("%B %d, %Y",strtotime($model->publication_date)) ?></p></div>
 </div>
 <div class="row dataset-information">
-    
+
     <!--dataset content - left slidebar-->
         <div class="span9">
                 <h3 class='dataset-title'><?echo $model->title; ?></h3>
@@ -45,6 +45,9 @@ HTML;
                 <? } ?>
 
                 <p><?= $model->description; ?> </p>
+                <?php if ( count( $model->getSemanticKeywords() ) > 0) { ?>
+                    <p><strong>Keywords:</strong> <?= MyHtml::encode(implode(', ', $model->getSemanticKeywords() )); ?></p>
+                <? } ?>
                 <span class="content-popup" <?= !Yii::app()->user->isGuest ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
                     <a class="btn btn-green <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
                         Contact Submitter
@@ -62,16 +65,16 @@ HTML;
                     </p>
                 </div>
                 <div class="clear"></div>
-                
+
                 <?php if($model->fairnuse) {
                             if( (time() < strtotime($model->fairnuse))) { ?>
                     <img src="/images/fair_use2.gif" alt="policy" style=""/>
                     <p>
-                        These data are made available pre-publication under the Fort Lauderdale rules. 
-                        Please respect the rights of the data producers to publish their whole dataset analysis first. 
-                        The data is being made available so that the research community can make use of them for more 
-                        focused studies without having to wait for publication of the whole dataset analysis paper. 
-                        If you wish to perform analyses on this complete dataset, please contact the authors directly 
+                        These data are made available pre-publication under the Fort Lauderdale rules.
+                        Please respect the rights of the data producers to publish their whole dataset analysis first.
+                        The data is being made available so that the research community can make use of them for more
+                        focused studies without having to wait for publication of the whole dataset analysis paper.
+                        If you wish to perform analyses on this complete dataset, please contact the authors directly
                         so that you can work in collaboration rather than in competition.
                     </p>
                     <p><strong>This dataset fair use agreement is in place until <?= strftime('%d %B %Y',strtotime($model->fairnuse))?></strong></p>
@@ -146,7 +149,7 @@ HTML;
 
                 <?php if (count($model->externalLinks) > 0) { ?>
                 <p>
-                    <?php  
+                    <?php
                         $types = array();
                         $protocol = array();
                         foreach ($model->externalLinks as $key=>$externalLink){
@@ -160,13 +163,13 @@ HTML;
                             {
                               echo "<h4>$typeNameLabel:</h4>";
                             }
-                          
+
                             foreach ($model->externalLinks as $key=>$externalLink){
                                 if ($externalLink->externalLinkType->name == $typeName) {
                                     if($typeName == 'Protocols.io')
                                     {
                                        array_push($protocol,$externalLink->url);
-                                    
+
                                     }
                                     else
                                     {
@@ -182,7 +185,7 @@ HTML;
                              echo "<div id=\"js-logs-1\" class=\"js-logs\" style=\"display:none;\">";
                              foreach ($protocol as $p) {
 
-                            {    
+                            {
                                  echo "<iframe src=\"$p\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
                             }
                                
@@ -194,10 +197,11 @@ HTML;
                 </p>
 
                 <?php } ?>
-                
 
 
-        
+
+
+
                 <?php if (count($model->links) > 0) { ?>
 
                     <?php
@@ -271,7 +275,7 @@ HTML;
         <!--dataset Image - right slidebar-->
         <div class="span3 data-img">
             <h3><? echo MyHtml::encode(implode(", ", $model->getDatasetTypes()));?></h3>
-            <?php if($model->image) { 
+            <?php if($model->image) {
                 $url = $model->getImageUrl() ? $model->getImageUrl(): $model->image->image('image_upload');
                 ?>
             <a href="<?= $url ?>" >
@@ -294,7 +298,7 @@ HTML;
                     <?php } ?>
             </div>
             <?php } ?>
-        </div>        
+        </div>
 </div>
 
 <div class="row">
@@ -352,7 +356,7 @@ HTML;
             ));
         ?>
         <?php } ?>
-        
+
         <div class="clear"></div>
 
         <?php
@@ -499,38 +503,38 @@ HTML;
 <div class="container">
 <h4><?= Yii::t('app' , 'Other datasets you might like:')?></h4>
   <div class="span10 offset1 content-carousel">
-    
+
     <div class="well">
-     
+
         <div id="myCarousel" class="carousel slide giga-carousel" data-total="<?php echo count($relates) ?>">
-         
+
             <ol class="carousel-indicators hide-indicators">
                 <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                
+
                 <?php if (count($relates) > 3) : ?>
                     <li data-target="#myCarousel" data-slide-to="1"></li>
                 <?php endif ?>
-                
+
                 <?php if (count($relates) > 6) : ?>
                     <li data-target="#myCarousel" data-slide-to="2"></li>
                 <?php endif ?>
             </ol>
-             
+
             <!-- Carousel items -->
             <div class="carousel-inner giga-carousel-inner">
-                
+
                 <?php foreach (array_chunk($relates, 3) as $key => $relateByTree) : ?>
-                
+
                     <div class="item <?= $key == 0 ? 'active' : ''?>" >
                         <div class="row-fluid">
-                            
+
                             <?php foreach ($relateByTree as $relate) : ?>
-                            
+
                                 <?php $title = strip_tags($relate->title) ?>
                                 <?php $url = $relate->getImageUrl() ? $relate->getImageUrl() : $relate->image->image('image_upload') ?>
                                 <div class="span4">
                                     <a href="<?= $relate->shortUrl ?>" class="thumbnail">
-                                        <img src="<?= $url ? $url : 'http://placehold.it/250x250'?>" alt="Image">                
+                                        <img src="<?= $url ? $url : 'http://placehold.it/250x250'?>" alt="Image">
                                     </a>
                                     <a class="link-doi" href="http://dx.doi.org/10.5524/<?= $relate->identifier; ?>">
                                         DOI: 10.5524/<?= $relate->identifier ?>
@@ -538,23 +542,23 @@ HTML;
                                     <p><?= CHtml::encode(strlen($title) > 50 ? substr($title, 0,50)."...": $title)?></p>
                                     <p><?= strftime('%Y-%m-%d', strtotime($relate->publication_date))?></p>
                                 </div>
-                            
+
                             <?php endforeach ?>
-                            
+
                         </div>
                     </div>
-                
+
                 <?php endforeach ?>
-             
+
             </div><!--/carousel-inner-->
-         
+
             <?php if (count($relates) > 3) : ?>
                 <a class="carousel-control left homepage-carousel-control gigadb-arrow-button" href="#myCarousel" data-slide="prev">‹</a>
                 <a class="carousel-control right homepage-carousel-control gigadb-arrow-button" href="#myCarousel" data-slide="next">›</a>
             <?php endif ?>
-                
+
         </div><!--/myCarousel-->
-     
+
     </div><!--/well-->
   </div>
 </div>
@@ -566,7 +570,7 @@ HTML;
 
 /* Document ready for Thumbnail Slider */
 /* ----------------------------------- */
-$(document).ready(function() {    
+$(document).ready(function() {
     // If the related are more than 3 so we add the caroussel
     if ($('#myCarousel').attr('data-total') > 3) {
         $('#myCarousel').carousel({
@@ -625,7 +629,7 @@ $(".js-download-count").click(function(){
             }
           },
       error:function(){
-        }   
+        }
     });
 });
 
