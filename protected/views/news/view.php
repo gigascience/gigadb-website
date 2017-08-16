@@ -1,7 +1,7 @@
 
 <div class="news">
-	<h3><?php echo MyHtml::encode($model->title); ?></h3>
-	<p><?php echo MyHtml::encode($model->body); ?></p>
+	<h3><?php echo $model->title; ?></h3>
+	<p><?php echo $model->body; ?></p>
 </div>
 
 

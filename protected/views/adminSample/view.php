@@ -10,6 +10,7 @@
 	'data'=>$model,
 	'attributes'=>array(
             'id',
+            'name',
             'species_id',
             array(
                 'name'=>'attributesList',

@@ -1,8 +1,4 @@
-<%- if node[:gigadb][:server_names][0] == 'localhost' -%>
-<%- home_url = 'localhost:9170'-%>
-<%- else -%>
-<%- home_url = node[:gigadb][:server_names][0] -%>
-<%- end -%>
+<% home_url = node[:gigadb][:server_names] -%>
 
 <% server_email = node[:gigadb][:admin_email] -%>
 

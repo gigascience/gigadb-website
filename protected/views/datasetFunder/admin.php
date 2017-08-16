@@ -16,6 +16,7 @@
 			'value' => '$data->funder->primary_name_display',
 		),
 		'grant_award',
+                'awardee',
 		'comments',
 		array(
 			'class'=>'CButtonColumn',

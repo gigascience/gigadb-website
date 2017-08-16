@@ -12,6 +12,10 @@
         "database": "gigadb",
         "server_names": ["localhost"]
       },
+      "ftp": {
+		"connection_url": "ftp://anonymous:anonymous@10.1.1.33:21"
+	  },
+      "repo_dir": "~",
       "site_dir": "/vagrant",
       "root_dir": "/vagrant",
       "log_dir": "/vagrant/logs",
@@ -70,9 +74,9 @@
         "client_secret": ""
       },
       "mds": {
-        "mds_username" => "",
-        "mds_password" => "",
-        "mds_prefix" => "10.5072"
+        "mds_username": "",
+        "mds_password": "",
+        "mds_prefix": "10.5072"
       },
       "python": {
         "build_dir": "/home/gigadb/build",
@@ -93,35 +97,67 @@
       "aws_security_groups": ""
     },
     "fileserver": {
-      "db": {
-        "sql_script": "/tmp/ftpusers_testdata.sql",
-        "user": "gigadb",
-        "password": "vagrant",
-        "host": "localhost",
-        "port": "5432",
-        "database": "ftpusers"
-      },
+      "gigadb_data_location": "",
+	  "db": {
+	    "sql_script": "/tmp/ftpusers_testdata.sql",
+	    "user": "",
+	    "password": "",
+	    "host": "localhost",
+	    "port": "5432",
+	    "database": "ftpusers",
+	    "user_password_prefix": ""
+	  },
       "mount_point": "/mnt/chef",
       "device": "/opt/chef"
     },
-    "vsftpd": {
-	  "allowed": ["vagrant"]
+	"nginx": {
+	  "log_dir": "/var/log/nginx"
 	},
-    "nginx": {
-      "log_dir": "/var/log/nginx"
+	"postgresql": {
+	  "version": "9.1",
+	  "repo_version": "9.1"
+	},
+	"iptables": {
+	  "iptables_sysconfig": {
+		"IPTABLES_SAVE_ON_STOP": "yes"
+	  }
+	},
+	"ssh": {
+	  "enable_password": "no"
     },
-    "postgresql": {
-      "version": "9.1",
-      "repo_version": "9.1"
-    },
-    "iptables": {
-      "iptables_sysconfig": {
-        "IPTABLES_SAVE_ON_STOP": "yes"
-      }
-    },
-    "ssh": {
-      "enable_password": "no"
-    }
+    "vsftpd": {
+	  "allowed": [
+		"vagrant"
+	  ],
+	  "config": {
+		"listen": "YES",
+		"ftpd_banner": "Welcome to the GigaDB FTP service",
+		"anonymous_enable": "YES",
+		"anon_world_readable_only": "YES",
+		"userlist_deny": "YES",
+		"local_enable": "YES",
+		"pam_service_name": "vsftpd",
+		"anon_mkdir_write_enable": "NO",
+		"anon_root": "/var/ftp/pub",
+		"no_anon_password": "YES",
+		"local_root": "/var/ftp/pub",
+		"chroot_local_user": "YES",
+		"chroot_list_enable": "NO",
+		"write_enable": "YES",
+		"local_umask": "077",
+		"dirmessage_enable": "YES",
+		"max_per_ip": "2",
+		"max_clients": "15",
+		"anon_max_rate": "128000",
+		"connect_from_port_20": "YES",
+		"pasv_enable": "YES",
+		"xferlog_enable": "YES",
+		"xferlog_std_format": "YES",
+		"xferlog_file": "/var/log/xferlog",
+		"dual_log_enable": "YES",
+		"vsftpd_log_file": "/var/log/vsftpd.log"
+	  }
+	}
   },
   "json_class": "Chef::Environment",
   "description": "Test environment for deploying onto local Vagrant VMs",

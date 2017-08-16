@@ -12,14 +12,14 @@
             <div class="<? echo $active; ?> item">
             <? }?> 
                 <div class="data-block">
-                  <h4><?php echo MyHtml::encode($temp_news->title); ?></h4>
+                  <h4><?php $temp_news->title; ?></h4>
                   <p>
                     <? echo '<br/>';
 
                     if(strlen($temp_news->body) > 100){
-                      echo MyHtml::encode(substr($temp_news->body,0,100)." ...");
+                      echo substr($temp_news->body,0,100)." ...";
                     }else {
-                      echo MyHtml::encode($temp_news->body);
+                      echo $temp_news->body;
                     }
                     ?>
                   </p>
