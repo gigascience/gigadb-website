@@ -157,6 +157,7 @@ if ($error != null) {
                 'selectableRows'=>2,
                 'value'=> 'serialize(array("location" => $data->location, "filename" => $data->filename, "type" => ($data->isDirectory) ? "Directory": "File", "dataset" => $data->dataset_identifier ))',
                 'checked'=>'$data->is_in_bundle(Yii::app()->session["bundle"])',
+                'visible' => $multidownload,
             ),
 
         ),

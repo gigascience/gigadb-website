@@ -6,5 +6,6 @@ class MultiDownload extends CApplicationComponent {
     public $multidownload_job_queue; //name of the Beanstalkd tube to use
     public $temporary_directory;
     public $ftp_bundle_directory; //directory in the ftp document root where to make the bundle available
+    public $feature_enabled; // To disable or enable the multi download feature
 }
  ?>

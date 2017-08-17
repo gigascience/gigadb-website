@@ -375,16 +375,20 @@ HTML;
                                                                 'error'=>null,
                                                                 'model'=>$model,
                                                                 'breadcrumbs'=>$breadcrumbs,
+                                                                'multidownload'=>$multidownload,
                                                                 'template'=>$template,
                                                                 'location'=>$location,
                                                                 'setting'=>$setting));
                 }
                 else {
-                    $this->renderPartial('//file/_grid',array('files'=>$files, 'error'=>null, 'template'=>$template, 'setting'=>$setting));
+                    $this->renderPartial('//file/_grid',array('files'=>$files, 'error'=>null, 'multidownload'=>$multidownload,'template'=>$template, 'setting'=>$setting));
                 }
             ?>
             <div class="pull-right" id="download_selection">
-                <?php             echo MyHtml::ajaxButton(Yii::t('app' , 'Download file selection'),
+                <?php
+
+                    if (true === $multidownload) {
+                        echo MyHtml::ajaxButton(Yii::t('app' , 'Download file selection'),
                                                             array("/file/downloadSelection"),
                                                             array('type'=>'POST','dataType'=>'json' ,'data'=>array('dataset_id'=>$model->identifier), 'success'=>"function(response){
                                 if(response.status == 'OK'){
@@ -393,7 +397,9 @@ HTML;
                                 }else {
                                     console.log('There was an error in preparing your selection of file to download. Please try again later.');
                                 }
-                            }") ,array('class'=>'span3 btn') ); ?>
+                            }") ,array('class'=>'span3 btn') );
+                    }
+                ?>
             </div>
         </div>
     </div>

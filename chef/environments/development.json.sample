@@ -133,19 +133,6 @@
     "supervisor": {
       "programs": [
           {
-            "name":"bundlefiles",
-            "user":"root",
-            "command":"/usr/bin/php /vagrant/protected/yiic bundlefiles",
-            "numprocs": "1",
-            "directory":"/vagrant/protected",
-            "autostart": "true",
-            "autorestart": "true",
-            "log_stdout": "true",
-            "log_stderr": "true",
-            "logfile": "/var/log/bundlefiles.log",
-            "logfile_maxbytes": "100MB"
-          },
-          {
             "name":"generatepreview",
             "user":"root",
             "command":"/usr/bin/php /vagrant/protected/yiic generatepreview",

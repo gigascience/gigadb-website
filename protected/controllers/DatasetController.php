@@ -435,6 +435,7 @@ class DatasetController extends Controller
             'dataset'=>$dataset,
             'files'=>$files,
             'breadcrumbs'=>$breadcrumbs,
+            'multidownload'=>Yii::app()->multidownload->feature_enabled,
             'location'=>isset($location)?$location:'',
             'samples'=>$samples,
             'email' => $email,

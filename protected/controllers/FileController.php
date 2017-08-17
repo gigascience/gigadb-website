@@ -43,9 +43,14 @@ class FileController extends Controller
     {
         return array(
 
-            array('allow',  // allow all users to perform 'index' and 'view' actions
-                'actions'=>array('Bundle', 'Download', 'Preview'),
+            array('allow',  // allow all users to perform 'preview'  action for preview functionality
+                'actions'=>array('Preview'),
                 'users'=>array('*'),
+            ),
+            array('allow',  // allow all users to perform 'bundle' and 'download' actions for multidownload functionality
+                'actions'=>array('Bundle', 'Download'),
+                'users'=>array('*'),
+                'expression'=>'true === Yii::app()->multidownload->feature_enabled',
             ),
             array('deny',  // deny all users
                 'users'=>array('*'),
