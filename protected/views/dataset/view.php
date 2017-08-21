@@ -149,6 +149,7 @@ HTML;
                     <?php  
                         $types = array();
                         $protocol = array();
+                        $jb = array();
                         foreach ($model->externalLinks as $key=>$externalLink){
                             $types[$externalLink->externalLinkType->name] = 1;
                         }
@@ -156,9 +157,9 @@ HTML;
                             $typeNameLabel = preg_replace('/(?:^|_)(.?)/e',"strtoupper('$1')",$typeName);
                             $typeNameLabel = preg_replace('/(?<=\\w)(?=[A-Z])/'," $1", $typeNameLabel);
                             $typeNameLabel = trim($typeNameLabel);
-                            if($typeNameLabel !== 'Protocols.io')
+                            if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse')
                             {
-                              echo "<h4>$typeNameLabel:</h4>";
+                               echo "<h4>$typeNameLabel:</h4>";
                             }
                           
                             foreach ($model->externalLinks as $key=>$externalLink){
@@ -166,6 +167,11 @@ HTML;
                                     if($typeName == 'Protocols.io')
                                     {
                                        array_push($protocol,$externalLink->url);
+                                    
+                                    }
+                                    elseif($typeName == 'JBrowse')
+                                    {
+                                       array_push($jb,$externalLink->url);
                                     
                                     }
                                     else
@@ -189,15 +195,29 @@ HTML;
                             }
                              echo "</div>";
                         }
+                            if(!empty($jb)){
+                             echo "<h4>JBrowse:</h4>";
+                             echo "<a id=\"js-expand-btn2\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                             echo "<a id=\"js-close-btn2\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                             echo "<div id=\"js-logs-2\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($jb as $p) {
+
+                            {    
+                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                            }
+                               
+                            }
+                             echo "</div>";
+                        }
                         
                     ?>
                 </p>
 
                 <?php } ?>
                 
+                
 
-
-        
+      
                 <?php if (count($model->links) > 0) { ?>
 
                     <?php
@@ -281,7 +301,7 @@ HTML;
             <?php } ?>
             <br/>
             <?php if($model->datasetFunders) { ?>
-            <div style="margin-top:20px;">
+            <div style="margin-top:20px;height:100px;overflow: scroll;" >
                 <h4>Funding:</h4>
                 <!--get information for Funding-->
                     <?php foreach($model->datasetFunders as $fd) { ?>
@@ -610,6 +630,18 @@ $("#js-close-btn1").click(function(){
       $(this).hide();
       $("#js-expand-btn1").show();
       $("#js-logs-1").hide();
+});
+
+$("#js-expand-btn2").click(function(){
+      $(this).hide();
+      $("#js-close-btn2").show();
+      $("#js-logs-2").show();
+});
+
+$("#js-close-btn2").click(function(){
+      $(this).hide();
+      $("#js-expand-btn2").show();
+      $("#js-logs-2").hide();
 });
 
 $(".js-download-count").click(function(){
