@@ -301,7 +301,7 @@ HTML;
             <?php } ?>
             <br/>
             <?php if($model->datasetFunders) { ?>
-            <div style="margin-top:20px;height:100px;overflow: scroll;" >
+            <div style="margin-top:20px;height:220px;overflow: scroll;" >
                 <h4>Funding:</h4>
                 <!--get information for Funding-->
                     <?php foreach($model->datasetFunders as $fd) { ?>
