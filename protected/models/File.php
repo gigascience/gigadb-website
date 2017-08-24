@@ -26,7 +26,7 @@
  * @property FileExperiment[] $fileExperiments
  * @property FileAttributes[] $fileAttributes
  */
-class File extends MyActiveRecord
+class File extends MyActiveRecord implements DatasetFilesInterface
 {
     public $doi_search;
     public $format_search;
@@ -121,6 +121,12 @@ class File extends MyActiveRecord
 			'attribute' => Yii::t('app','File Attributes'),
 		);
 	}
+
+    function init() {
+
+        $this->attachBehavior("bundle", new BundleBehavior() );
+        parent::init();
+    }
 
 	public function afterSave() {
         $log = new DatasetLog;
@@ -376,7 +382,7 @@ class File extends MyActiveRecord
 		$file_format = isset($criteria['file_format']) ? $criteria['file_format'] : "";
 		$reldate_from = isset($criteria['reldate_from']) ? $criteria['reldate_from'] : "";
 		$reldate_to = isset($criteria['reldate_to']) ? $criteria['reldate_to'] : "";
-        
+
 		$reldate_from_temp = Utils::convertDate($reldate_from);
 		$reldate_to_temp = Utils::convertDate($reldate_to);
 
@@ -421,7 +427,7 @@ class File extends MyActiveRecord
     }
 
      public function getallsample($id){
-        
+
        $sql="select sample.* from sample,file_sample,file where sample.id=file_sample.sample_id and file_sample.file_id=file.id and file.id=$id";
       $samples= Sample::model()->findAllBySql($sql);
       $num = count($samples);
@@ -465,15 +471,34 @@ HTML;
         		<span class="js-long-$this->id">$ret</span>
 HTML;
     }
-    
+
     public function getNameHtml() {
-    	$display = <<<HTML
-		<div title="$this->description"> 
+
+
+         $identifier = $this->dataset->identifier;
+
+    	$displayForFile = <<<HTML
+		<div title="$this->description">
 		<a href='$this->location' target='_blank'>
 		$this->name
-		</a> 
+		</a>
 		<div>
 HTML;
+
+        $displayForDirectory = <<<HTML
+		<div title="$this->description">
+		<a href="/dataset/view/id/$identifier?location=$this->location#file_table" >
+		$this->name
+		</a>
+		<div>
+HTML;
+
+    if ($this->type->name == 'Directory') {
+        $display = $displayForDirectory;
+    }
+    else {
+        $display = $displayForFile;
+    }
 
 	return $display;
     }
@@ -488,7 +513,7 @@ HTML;
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );
     }
-    
+
     /**
      * Before save file
      */
@@ -507,4 +532,22 @@ HTML;
             }
         }
     }
+
+    /**
+     * Implementing method from the DatasetFilesInterface
+     * @return return a dataset identifier (the document related part of a DOI)
+     */
+    public function getDatasetIdentifier() {
+        return $this->dataset->identifier ;
+    }
+
+    /**
+     * Implementing method from the DatasetFilesInterface
+     * @return return an url string
+     */
+    public function getLocationUrl() {
+        return $this->location ;
+    }
+
+
 }

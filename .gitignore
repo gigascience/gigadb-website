@@ -7,6 +7,7 @@ css/site.css
 protected/runtime
 protected/config/db.json
 protected/config/es.json
+protected/config/aws.json
 protected/config/local.php
 protected/config/main.php
 protected/yiic.php
@@ -26,6 +27,7 @@ chef/environments/development.json
 chef/environments/production.json
 **/encrypted_data_bag_secret
 chef/nodes/*.json
+development-cookbooks/development.json
 
 
 # PhpStorm

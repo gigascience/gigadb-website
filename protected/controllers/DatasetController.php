@@ -46,474 +46,588 @@ class DatasetController extends Controller
 		);
 	}
 
+	/**
+	 * Displays a particular model.
+	 * @param integer $id the ID of the model to be displayed
+	 */
 
-	public function actionView($id)	{
-        $form = new SearchForm;  // Use for Form
-        $dataset = new Dataset; // Use for auto suggestion
-        $model = Dataset::model()->find("identifier=?", array($id));
-        if (!$model) {
+        public function actionMint(){
 
-            $form = new SearchForm;
-            $keyword = $id;
-            $this->render('invalid', array('model' => $form, 'keyword' => $keyword, 'general_search' => 1));
-            return;
+            if(isset($_GET['doi']))
+            {
+                $doi=$_GET['doi'];
+                $model = Dataset::model()->find("identifier=?", array($doi));
+
+                $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				."<resource xmlns=\"http://datacite.org/schema/kernel-3\" "
+				."xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+				."xsi:schemaLocation=\"http://datacite.org/schema/kernel-3 "
+				."http://schema.datacite.org/meta/kernel-3/metadata.xsd\">\n";
+                $xml .= "\t<identifier identifierType=\"DOI\">10.5524/$doi</identifier>\n";
+                $xml  .= "\t<creators>\n";
+
+                $authors=$model->authors;
+                foreach($authors as $author)
+                {
+
+                    if($author->gigadb_user_id != null)
+                    {
+                        $user = User::model()->find("id=?", array($author->gigadb_user_id));
+                        if($author->orcid != null)
+                        {
+                            $xml.="\t\t<creator>\n\t\t\t<creatorName>$author->surname $author->middle_name $author->first_name </creatorName>\n\t\t\t<nameIdentifier schemeURI=\"http://orcid.org/\" nameIdentifierScheme=\"ORCID\">$author->orcid</nameIdentifier>\n\t\t\t<affiliation>$user->affiliation</affiliation>\n\t\t</creator>\n";
+                        }
+                        else{
+                            $xml.="\t\t<creator>\n\t\t\t<creatorName>$author->surname $author->middle_name $author->first_name</creatorName>\n\t\t\t<affiliation>$user->affiliation</affiliation>\n\t\t</creator>\n";
+                        }
+                    }else{
+
+                        if($author->orcid != null)
+                        {
+                            $xml.="\t\t<creator>\n\t\t\t<creatorName>$author->surname $author->middle_name $author->first_name </creatorName>\n\t\t\t<nameIdentifier schemeURI=\"http://orcid.org/\" nameIdentifierScheme=\"ORCID\">$author->orcid</nameIdentifier>\n\t\t</creator>\n";
+                        } else {
+
+                            $xml.="\t\t<creator>\n\t\t\t<creatorName>$author->surname $author->middle_name $author->first_name </creatorName>\n\t\t</creator>\n";
+                        }
+
+
+                    }
+                }
+                $xml .= "\t</creators>\n";
+                $title=strip_tags($model->title);
+
+                $xml .= "\t<titles>\n\t\t<title xml:lang=\"en-us\">$model->title</title>\n\t</titles>\n";
+				$xml .= "\t<publisher>GigaScience Database</publisher>\n";
+                $xml .= "\t<publicationYear>2016</publicationYear>\n";
+
+                $xml .= "\t<subjects>\n";
+                $dataset_types=$model->datasetTypes;
+
+                foreach($dataset_types as $dataset_type) {
+
+                  $xml.="\t\t<subject xml:lang=\"en-us\">$dataset_type->name</subject>\n";
+                }
+                $dataset_attributes=$model->datasetAttributes;
+                foreach($dataset_attributes as $dataset_attribute)
+                {
+                    if($dataset_attribute->attribute_id == 455){
+
+                         $xml.="\t\t<subject xml:lang=\"en-us\">$dataset_attribute->value</subject>\n";
+                    }
+
+                }
+                $xml .= "\t</subjects>\n";
+                $xml .= "\t<dates>\n";
+                $xml .= "\t<date dateType=\"Available\">$model->publication_date</date>\n";
+                $xml .= "\t</dates>\n";
+                $xml .= "\t<language>eng</language>\n";
+                $xml .= "\t<resourceType resourceTypeGeneral=\"Dataset\">GigaDB Dataset</resourceType>\n";
+                $xml .= "\t<relatedIdentifiers>\n";
+                $manuscripts=$model->manuscripts;
+                foreach($manuscripts as $manuscript){
+
+                $xml .= "\t\t<relatedIdentifier relatedIdentifierType=\"DOI\" relationType=\"IsReferencedBy\">$manuscript->identifier</relatedIdentifier>\n";
+                }
+                $internal_links=$model->relations;
+                if(isset($internal_links)){
+                foreach($internal_links as $relation)
+                {
+                $xml .= "\t\t<relatedIdentifier relatedIdentifierType=\"DOI\" relationType=\"$relationship->name\">$relation->related_doi</relatedIdentifier>\n";
+                }
+                }
+                $xml .="\t</relatedIdentifiers>\n";
+
+
+			    $units = array('B', 'KB', 'MB', 'GB', 'TB');
+
+			    $bytes = max($model->dataset_size, 0);
+			    $pow = floor(($model->dataset_size ? log($model->dataset_size) : 0) / log(1024));
+			    $pow = min($pow, count($units) - 1);
+			    $precision=2;
+
+			    // Uncomment one of the following alternatives
+			    // $bytes /= pow(1024, $pow);
+			    // $bytes /= (1 << (10 * $pow));
+
+			    $size = round($model->dataset_size, $precision) . ' ' . $units[$pow];
+
+
+                $xml .= "\t<sizes>\n\t\t<size>$size</size>\n\t</sizes>\n";
+                $xml .= "\t<rightsList>\n\t\t<rights rightsURI=\"http://creativecommons.org/publicdomain/zero/1.0/\">CC0 1.0 Universal</rights>\n\t</rightsList>\n";
+                $description=str_replace("@<(\w+)\b.*?>.*?</\1>@si", "",$model->description);
+                $description=strip_tags($description);
+                $xml .= "\t<descriptions>\n\t\t<description xml:lang=\"en-us\" descriptionType=\"Abstract\">$description\n\t\t</description>\n\t</descriptions>\n";
+
+                $xml .= "</resource>\n";
+
+                echo $xml;
+
+                }
+
         }
-        $this->metaData['description'] = $model->description;
-        $status_array = array('Request', 'Incomplete', 'Uploaded');
 
-        if ($model->upload_status != "Published") {
-            if (isset($_GET['token']) && $model->token == $_GET['token']) {
+		public function actionView($id)	{
+	        $form = new SearchForm;  // Use for Form
+	        $dataset = new Dataset; // Use for auto suggestion
+	        $model = Dataset::model()->find("identifier=?", array($id));
 
-            } else {
 
-                $form = new SearchForm;
-                $keyword = $id;
-                $this->render('invalid', array('model' => $form, 'keyword' => $keyword));
-                return;
+
+	        if (!$model) {
+
+	            $form = new SearchForm;
+	            $keyword = $id;
+	            $this->render('invalid', array('model' => $form, 'keyword' => $keyword, 'general_search' => 1));
+	            return;
+	        }
+	        $this->metaData['description'] = $model->description;
+	        $status_array = array('Request', 'Incomplete', 'Uploaded');
+
+	        if ($model->upload_status != "Published") {
+	            if (isset($_GET['token']) && $model->token == $_GET['token']) {
+
+	            } else {
+
+	                $form = new SearchForm;
+	                $keyword = $id;
+	                $this->render('invalid', array('model' => $form, 'keyword' => $keyword));
+	                return;
+	            }
+	        }
+
+
+	        $crit = new CDbCriteria;
+	        $crit->addCondition("t.dataset_id = ".$model->id);
+	        $crit->select = '*';
+	        $crit->join = "LEFT JOIN dataset ON dataset.id = t.dataset_id LEFT JOIN file_type ft ON t.type_id = ft.id
+	                LEFT JOIN file_format ff ON t.format_id = ff.id";
+
+	        $cookies = Yii::app()->request->cookies;
+	        // file
+
+	        $setting = array('name','size', 'type_id', 'format_id', 'preview', 'location', 'date_stamp','sample_id'); // 'description','attribute' are hidden by default
+	        $pageSize = 10;
+
+	        if(isset($cookies['file_setting'])) {
+	            //$ss = json_decode($cookies['sample_setting']);
+	            $fcookie = $cookies['file_setting'];
+	            $fcookie = json_decode($fcookie->value, true);
+	            if($fcookie['setting'])
+	                $setting = $fcookie['setting'];
+	            $pageSize = $fcookie['page'];
+	        }
+
+	        if(isset($_POST['setting'])) {
+	            $setting = $_POST['setting'];
+	            $pageSize = $_POST['pageSize'];
+
+	            if(isset($cookies['file_setting']))
+	                unset(Yii::app()->request->cookies['file_setting']);
+
+	            $nc = new CHttpCookie('file_setting', json_encode(array('setting'=> $setting, 'page'=>$pageSize)));
+	            $nc->expire = time() + (60*60*24*30);
+	            Yii::app()->request->cookies['file_setting'] = $nc;
+	        }
+
+	        $base_parts = parse_url($model->ftp_site);
+	        $location =  Yii::app()->request->getParam('location');
+
+	        $breadcrumbs = null;
+
+	        if (isset($location) && $base_parts['host'] == "climb.genomics.cn") {
+
+
+	            $location_parts = parse_url($location);
+	            $path_array = explode("/",$location_parts['path']);
+
+	            $location_path = ltrim(implode("/", array_splice($path_array,1)));
+
+	            $wants_ftp_table = true;
+	            try {
+	                Yii::app()->ftp->chdir($location_path);
+	            } catch (GFtpException $e) {
+	                $error = $e->getMessage();
+	                var_dump($error);
+	                Yii::app()->end();
+	            }
+	            try {
+	                $gftp_files = Yii::app()->ftp->ls(".", true, false);
+	                $directory_listing = array_map(array('DirectoryListing','toDirectoryListing'), $gftp_files, array_fill(0, count($gftp_files) , $base_parts['scheme'].'://'.$base_parts['host'].'/'.$location_path), array_fill(0,count($gftp_files) , $model->identifier) );
+
+	                $pagination = new FtpTablePagination(sizeof($gftp_files));
+	                $pagination->setPageSize($pageSize);
+	                $pagination->params= array('location'=>$location);
+	                $pagination->route="/dataset/view/id/$model->identifier";
+
+
+	                $files = new CArrayDataProvider (
+	                    $directory_listing,
+	                    array(
+	                        'id'=>'filename',
+	                        'keyField'=>'filename',
+	                        'pagination'=>$pagination
+	                    )
+	                );
+
+
+	                $breadcrumbs = DirectoryListing::toBreadCrumbs($model->identifier, $location_path, $location);
+	//                var_dump($breadcrumbs);
+	//                Yii::app()->end();
+
+	            } catch (GFtpException $e) {
+	                $error = $e->getMessage();
+	            }
+
+	        }
+	        else {
+	            $wants_ftp_table = false;
+
+	            $files = new CActiveDataProvider('File' , array(
+	                'criteria'=> $crit,
+	                'sort' => array('defaultOrder'=>'name ASC',
+	                    'attributes' => array(
+	                        'name',
+	                        'description',
+	                        'size',
+	                        'type_id' => array('asc'=>'ft.name asc', 'desc'=>'ft.name desc'),
+	                        'format_id' => array('asc'=>'ff.name asc', 'desc'=>'ff.name desc'),
+	                        'date_stamp',
+	                    )),
+	                'pagination' => array('pageSize'=>$pageSize)
+	            ));
+
+	        }
+
+	        //Sample
+	        $columns = array('name', 'taxonomic_id', 'genbank_name', 'scientific_name', 'common_name', 'attribute');
+	        $perPage = 10;
+	        if(isset($cookies['sample_setting'])) {
+	            //$ss = json_decode($cookies['sample_setting']);
+	            $scookie = $cookies['sample_setting'];
+	            $scookie = json_decode($scookie->value, true);
+	            if($scookie['columns'])
+	                $columns = $scookie['columns'];
+	            $perPage = $scookie['page'];
+	        }
+
+	        if(isset($_POST['columns'])) {
+	            $columns = $_POST['columns'];
+	            $perPage = $_POST['perPage'];
+
+	            if(isset($cookies['sample_setting']))
+	                unset(Yii::app()->request->cookies['sample_setting']);
+
+	            $ncookie = new CHttpCookie('sample_setting', json_encode(array('columns'=> $columns, 'page'=>$perPage)));
+	            $ncookie->expire = time() + (60*60*24*30);
+	            Yii::app()->request->cookies['sample_setting'] = $ncookie;
+	        }
+
+	        $scrit = new CDbCriteria;
+	        $scrit->join = "LEFT JOIN dataset_sample ds ON ds.sample_id = t.id LEFT JOIN species ON t.species_id = species.id";
+	        $scrit->condition = "ds.dataset_id = :id";
+	        $scrit->params = array(':id' => $model->id);
+	        $samples = new CActiveDataProvider('Sample' , array(
+	            'criteria'=> $scrit,
+	            'pagination' => array('pageSize'=>$perPage),
+	            'sort' => array('defaultOrder'=>'t.name ASC',
+	                            'attributes' => array(
+	                                    'name',
+	                                    'common_name' => array(
+	                                            'asc' => 'species.common_name ASC',
+	                                            'desc' => 'species.common_name DESC',
+	                                        ),
+	                                    'genbank_name' => array(
+	                                            'asc' => 'species.genbank_name ASC',
+	                                            'desc' => 'species.genbank_name DESC',
+	                                        ),
+	                                    'scientific_name' => array(
+	                                            'asc' => 'species.scientific_name ASC',
+	                                            'desc' => 'species.scientific_name DESC',
+	                                        ),
+	                                    'taxonomic_id' => array(
+	                                            'asc' => 'species.tax_id ASC',
+	                                            'desc' => 'species.tax_id DESC',
+	                                        ),
+	                                )),
+	        ));
+
+	        $email = 'no_submitter@bgi.com';
+	        $result = Dataset::model()->findAllBySql("select email from gigadb_user g,dataset d where g.id=d.submitter_id and d.identifier='" . $id . "';");
+	        if (count($result) > 0) {
+	            $email = $result[0]['email'];
+	        }
+
+	        $result = Dataset::model()->findAllBySql("select identifier from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
+	        if (count($result) == 0) {
+	            $result = Dataset::model()->findAllBySql("select identifier from dataset where upload_status='Published' order by identifier asc limit 1;");
+	            $next_doi = $result[0]->identifier;
+	        } else {
+	            $next_doi = $result[0]->identifier;
+	        }
+
+	        $result = Dataset::model()->findAllBySql("select identifier from dataset where identifier < '" . $id . "' and upload_status='Published' order by identifier desc limit 1;");
+	        if (count($result) == 0) {
+	            $result = Dataset::model()->findAllBySql("select identifier from dataset where upload_status='Published' order by identifier desc limit 1;");
+	            $previous_doi = $result[0]->identifier;
+	        } else {
+	            $previous_doi = $result[0]->identifier;
+	        }
+
+	        $attributes = $model->attributes;
+	        $l = array();
+	        foreach($attributes as $att) {
+	            $l[] = $att->id;
+	        }
+
+	        $authors = $model->authors;
+	        $at = array();
+	        foreach($authors as $au) {
+	            $at[] = $au->id;
+	        }
+
+	        $relateCriteria = new CDbCriteria;
+	        $relateCriteria->distinct = true;
+	        $relateCriteria->addNotInCondition("t.id", array($model->id));
+	        $relateCriteria->addCondition("t.upload_status = 'Published'");
+	        $relateCriteria->limit = 9;
+
+	        $rc = clone $relateCriteria;
+	        $rc->join = "JOIN dataset_attributes da ON t.id = da.dataset_id JOIN dataset_author au ON t.id = au.dataset_id";
+	        $rc->addInCondition("da.attribute_id", $l);
+	        $rc->addInCondition("au.author_id", $at, 'OR');
+		$rc->addCondition("t.upload_status = 'Published'");
+	        $relates = Dataset::model()->findAll($rc);
+
+	        // if we don't find any dataset related by the first way, then by common type
+	        if (!$relates || count($relates) < 9) {
+
+	            $relatesIds = array($model->id);
+	            foreach ($relates as $relate) {
+	                $relatesIds[] = $relate->id;
+	            }
+
+	            $rc = clone $relateCriteria;
+	            $rc->join = "JOIN dataset_type dt ON t.id = dt.dataset_id";
+	            $rc->addInCondition("dt.type_id", $model->getTypeIds());
+	            $rc->addNotInCondition("t.id", $relatesIds);
+	            $rc->limit = 9 - count($relates);
+	            $relatesType = Dataset::model()->findAll($rc);
+
+	            foreach ($relatesType as $relate) {
+	                $relates[] = $relate;
+	            }
+	        }
+
+	        $scholar = $model->cited;
+
+	        $link_type = 'EBI';
+	        if(!Yii::app()->user->isGuest) {
+	            $user = User::model()->findByPk(Yii::app()->user->_id);
+	            if($user)
+	                $link_type = $user->preferred_link;
+	        }
+
+	        // Page private ? Disable robot to index
+	        $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $model->upload_status);
+
+	        $this->render('view',array(
+	            'model'=>$model,
+	            'form'=>$form,
+	            'dataset'=>$dataset,
+	            'files'=>$files,
+	            'breadcrumbs'=>$breadcrumbs,
+	            'multidownload'=>Yii::app()->multidownload->feature_enabled,
+	            'location'=>isset($location)?$location:'',
+	            'samples'=>$samples,
+	            'email' => $email,
+	            'previous_doi' => $previous_doi,
+	            'next_doi' => $next_doi,
+	            'setting' => $setting,
+	            'columns' => $columns,
+	            'logs'=>$model->datasetLogs,
+	            'relates' => $relates,
+	            'scholar' => $scholar,
+	            'link_type' => $link_type,
+	            'wants_ftp_table' => $wants_ftp_table
+	        ));
+	    }
+
+
+        public function actionPrivate() {
+			$id = $_GET['identifier'];
+			$model= Dataset::model()->find("identifier=?",array($id));
+			if (!$model) {
+			$this->redirect('/site/index');
+			} else if ($model->upload_status == 'Published') {
+			$this->redirect('/dataset/'.$model->identifier);
+			}
+
+			$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+			$model->token = substr(str_shuffle($chars),0,16);
+			$model->save();
+
+			$this->redirect('/dataset/view/id/'.$model->identifier.'/token/'.$model->token);
+        }
+
+		/**
+		 * Updates a particular model.
+		 * If update is successful, the browser will be redirected to the 'view' page.
+		 * @param integer $id the ID of the model to be updated
+		 */
+		public function actionUpdate($id) {
+	        $model = $this->loadModel($id);
+	        if (isset($_POST['Dataset'])) {
+	            $datasetAttr = $_POST['Dataset'];
+
+	            $model->setAttributes($datasetAttr, true);
+
+	            if ($model->upload_status == 'Published') {
+	                $files = $model->files;
+	                if (strpos($model->ftp_site, "10.5524") == FALSE) {
+	                    $model->ftp_site="ftp://climb.genomics.cn/pub/10.5524/100001_101000/" . $model->identifier;
+
+	                    if (count($files) > 0) {
+	                        foreach ($files as $file) {
+	                            $origin_location = $file->location;
+	                            $new_location = "";
+	                            $location_array = explode("/", $origin_location);
+	                            $count = count($location_array);
+	                            if ($count == 1) {
+	                                $new_location = "ftp://climb.genomics.cn/pub/10.5524/100001_101000/" .
+	                                        $model->identifier . "/" . $location_array[0];
+	                            } else if ($count >= 2) {
+	                                $new_location = "ftp://climb.genomics.cn/pub/10.5524/100001_101000/" .
+	                                        $model->identifier . "/" . $location_array[$count - 2] . "/" . $location_array[$count - 1];
+	                            }
+	                            $file->location = $new_location;
+	                            $file->date_stamp = date("Y-m-d H:i:s");
+	                            if (!$file->save())
+	                                return false;
+	                        }
+	                    }
+	                }
+	            }
+
+	            // Image information
+	            $image = $model->image;
+	            $image->attributes = $_POST['Images'];
+	            $image->scenario = 'update';
+
+	            if ($model->publication_date == "")
+	                $model->publication_date = null;
+	            if ($model->modification_date == "")
+	                $model->modification_date = null;
+	            if ($model->fairnuse == "")
+	                $model->fairnuse = null;
+
+
+	            if ($model->save() && $image->save()) {
+	                if (isset($_POST['datasettypes'])) {
+	                    $datasettypes = $_POST['datasettypes'];
+	                }
+
+	                $datasetTypeMaps = DatasetType::model()->findAllByAttributes(array('dataset_id' => $id));
+
+	                for ($i = 0; $i < count($datasetTypeMaps); ++$i) {
+	                    $datasetTypeMap = $datasetTypeMaps[$i];
+	                    if ((isset($datasettypes) && !in_array($datasetTypeMap->type_id, array_keys($datasettypes), true)) || !isset($datasettypes)) {
+	                        $datasetTypeMap->delete();
+	                    }
+	                }
+
+	                if (isset($datasettypes)) {
+	                    foreach ($datasettypes as $datasetTypeId => $datasettype) {
+	                        $currDatasetTypeMap = DatasetType::model()->findByAttributes(array('dataset_id' => $model->id, 'type_id' => $datasetTypeId));
+	                        if (!$currDatasetTypeMap) {
+	                            $newDatasetTypeRelationship = new DatasetType;
+	                            $newDatasetTypeRelationship->dataset_id = $model->id;
+	                            $newDatasetTypeRelationship->type_id = $datasetTypeId;
+	                            $newDatasetTypeRelationship->save();
+	                        }
+	                    }
+	                }
+
+	                if ($model->upload_status == 'Published') {
+	                    $this->redirect('/dataset/' . $model->identifier);
+	                } else {
+	                    $this->redirect(array('/dataset/view/id/' . $model->identifier.'/token/'.$model->token));
+	                }
+
+
+	            }
+	            else {
+	                Yii::log(print_r($model->getErrors(), true), 'debug');
+	            }
+
             }
-        }
 
-		$urlToRedirect = $model->getUrlToRedirectAttribute();
-		$currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
-
-		if($urlToRedirect && $currentAbsoluteFullUrl == $urlToRedirect ) {
-			$this->metaData['redirect'] = 'http://dx.doi.org/10.5524/'.$model->identifier ;
-			$this->render('interstitial',array(
-				'model'=>$model
-			));
-			return;
+	        $this->render('update', array(
+	            'model' => $model,
+	        ));
 		}
-        $crit = new CDbCriteria;
-        $crit->addCondition("t.dataset_id = ".$model->id);
-        $crit->select = '*';
-        $crit->join = "LEFT JOIN dataset ON dataset.id = t.dataset_id LEFT JOIN file_type ft ON t.type_id = ft.id
-                LEFT JOIN file_format ff ON t.format_id = ff.id";
 
-        $cookies = Yii::app()->request->cookies;
-        // file
-        $setting = array('name','size', 'type_id', 'format_id', 'location', 'date_stamp','sample_id'); // 'description','attribute' are hidden by default
-        $pageSize = 10;
-
-        if(isset($cookies['file_setting'])) {
-            //$ss = json_decode($cookies['sample_setting']);
-            $fcookie = $cookies['file_setting'];
-            $fcookie = json_decode($fcookie->value, true);
-            if($fcookie['setting'])
-                $setting = $fcookie['setting'];
-            $pageSize = $fcookie['page'];
-        }
-
-        if(isset($_POST['setting'])) {
-            $setting = $_POST['setting'];
-            $pageSize = $_POST['pageSize'];
-
-            if(isset($cookies['file_setting']))
-                unset(Yii::app()->request->cookies['file_setting']);
-
-            $nc = new CHttpCookie('file_setting', json_encode(array('setting'=> $setting, 'page'=>$pageSize)));
-            $nc->expire = time() + (60*60*24*30);
-            Yii::app()->request->cookies['file_setting'] = $nc;
-        }
-
-
-        $files = new CActiveDataProvider('File' , array(
-            'criteria'=> $crit,
-            'sort' => array('defaultOrder'=>'name ASC',
-                            'attributes' => array(
-                                'name',
-                                'description',
-                                'size',
-                                'type_id' => array('asc'=>'ft.name asc', 'desc'=>'ft.name desc'),
-                                'format_id' => array('asc'=>'ff.name asc', 'desc'=>'ff.name desc'),
-                                'date_stamp',
-                            )),
-            'pagination' => array('pageSize'=>$pageSize)
-        ));
-
-        //Sample
-        $columns = array('name', 'taxonomic_id', 'genbank_name', 'scientific_name', 'common_name', 'attribute');
-        $perPage = 10;
-        if(isset($cookies['sample_setting'])) {
-            //$ss = json_decode($cookies['sample_setting']);
-            $scookie = $cookies['sample_setting'];
-            $scookie = json_decode($scookie->value, true);
-            if($scookie['columns'])
-                $columns = $scookie['columns'];
-            $perPage = $scookie['page'];
-        }
-
-        if(isset($_POST['columns'])) {
-            $columns = $_POST['columns'];
-            $perPage = $_POST['perPage'];
-
-            if(isset($cookies['sample_setting']))
-                unset(Yii::app()->request->cookies['sample_setting']);
-
-            $ncookie = new CHttpCookie('sample_setting', json_encode(array('columns'=> $columns, 'page'=>$perPage)));
-            $ncookie->expire = time() + (60*60*24*30);
-            Yii::app()->request->cookies['sample_setting'] = $ncookie;
-        }
-
-        $scrit = new CDbCriteria;
-        $scrit->join = "LEFT JOIN dataset_sample ds ON ds.sample_id = t.id LEFT JOIN species ON t.species_id = species.id";
-        $scrit->condition = "ds.dataset_id = :id";
-        $scrit->params = array(':id' => $model->id);
-        $samples = new CActiveDataProvider('Sample' , array(
-            'criteria'=> $scrit,
-            'pagination' => array('pageSize'=>$perPage),
-            'sort' => array('defaultOrder'=>'t.name ASC',
-                            'attributes' => array(
-                                    'name',
-                                    'common_name' => array(
-                                            'asc' => 'species.common_name ASC',
-                                            'desc' => 'species.common_name DESC',
-                                        ),
-                                    'genbank_name' => array(
-                                            'asc' => 'species.genbank_name ASC',
-                                            'desc' => 'species.genbank_name DESC',
-                                        ),
-                                    'scientific_name' => array(
-                                            'asc' => 'species.scientific_name ASC',
-                                            'desc' => 'species.scientific_name DESC',
-                                        ),
-                                    'taxonomic_id' => array(
-                                            'asc' => 'species.tax_id ASC',
-                                            'desc' => 'species.tax_id DESC',
-                                        ),
-                                )),
-        ));
-
-        $email = 'no_submitter@bgi.com';
-        $result = Dataset::model()->findAllBySql("select email from gigadb_user g,dataset d where g.id=d.submitter_id and d.identifier='" . $id . "';");
-        if (count($result) > 0) {
-            $email = $result[0]['email'];
-        }
-
-        $result = Dataset::model()->findAllBySql("select identifier from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
-        if (count($result) == 0) {
-            $result = Dataset::model()->findAllBySql("select identifier from dataset where upload_status='Published' order by identifier asc limit 1;");
-            $next_doi = $result[0]->identifier;
-        } else {
-            $next_doi = $result[0]->identifier;
-        }
-
-        $result = Dataset::model()->findAllBySql("select identifier from dataset where identifier < '" . $id . "' and upload_status='Published' order by identifier desc limit 1;");
-        if (count($result) == 0) {
-            $result = Dataset::model()->findAllBySql("select identifier from dataset where upload_status='Published' order by identifier desc limit 1;");
-            $previous_doi = $result[0]->identifier;
-        } else {
-            $previous_doi = $result[0]->identifier;
-        }
-
-        $attributes = $model->attributes;
-        $l = array();
-        foreach($attributes as $att) {
-            $l[] = $att->id;
-        }
-
-        $authors = $model->authors;
-        $at = array();
-        foreach($authors as $au) {
-            $at[] = $au->id;
-        }
-
-        $relateCriteria = new CDbCriteria;
-        $relateCriteria->distinct = true;
-        $relateCriteria->addNotInCondition("t.id", array($model->id));
-        $relateCriteria->addCondition("t.upload_status = 'Published'");
-        $relateCriteria->limit = 9;
-
-        $rc = clone $relateCriteria;
-        $rc->join = "JOIN dataset_attributes da ON t.id = da.dataset_id JOIN dataset_author au ON t.id = au.dataset_id";
-        $rc->addInCondition("da.attribute_id", $l);
-        $rc->addInCondition("au.author_id", $at, 'OR');
-	$rc->addCondition("t.upload_status = 'Published'");
-        $relates = Dataset::model()->findAll($rc);
-
-        // if we don't find any dataset related by the first way, then by common type
-        if (!$relates || count($relates) < 9) {
-
-            $relatesIds = array($model->id);
-            foreach ($relates as $relate) {
-                $relatesIds[] = $relate->id;
-            }
-
-            $rc = clone $relateCriteria;
-            $rc->join = "JOIN dataset_type dt ON t.id = dt.dataset_id";
-            $rc->addInCondition("dt.type_id", $model->getTypeIds());
-            $rc->addNotInCondition("t.id", $relatesIds);
-            $rc->limit = 9 - count($relates);
-            $relatesType = Dataset::model()->findAll($rc);
-
-            foreach ($relatesType as $relate) {
-                $relates[] = $relate;
-            }
-        }
-
-        $scholar = $model->cited;
-
-        $link_type = 'EBI';
-        if(!Yii::app()->user->isGuest) {
-            $user = User::model()->findByPk(Yii::app()->user->_id);
-            if($user)
-                $link_type = $user->preferred_link;
-        }
-
-        // Page private ? Disable robot to index
-        $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $model->upload_status);
-
-        $this->render('view',array(
-            'model'=>$model,
-            'form'=>$form,
-            'dataset'=>$dataset,
-            'files'=>$files,
-            'samples'=>$samples,
-            'email' => $email,
-            'previous_doi' => $previous_doi,
-            'next_doi' => $next_doi,
-            'setting' => $setting,
-            'columns' => $columns,
-            'logs'=>$model->datasetLogs,
-            'relates' => $relates,
-            'scholar' => $scholar,
-            'link_type' => $link_type
-        ));
-    }
-
-
-    public function actionPrivate() {
-          $id = $_GET['identifier'];
-          $model= Dataset::model()->find("identifier=?",array($id));
-          if (!$model) {
-            $this->redirect('/site/index');
-          } else if ($model->upload_status == 'Published') {
-            $this->redirect('/dataset/'.$model->identifier);
-          }
-
-          $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-          $model->token = substr(str_shuffle($chars),0,16);
-          $model->save();
-
-          $this->redirect('/dataset/view/id/'.$model->identifier.'/token/'.$model->token);
-        }
-
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id) {
-        $model = $this->loadModel($id);
-        if (isset($_POST['Dataset'])) {
-            $datasetAttr = $_POST['Dataset'];
-
-            $model->setAttributes($datasetAttr, true);
-
-            if ($model->upload_status == 'Published') {
-                $files = $model->files;
-                if (strpos($model->ftp_site, "10.5524") == FALSE) {
-                    $model->ftp_site="ftp://climb.genomics.cn/pub/10.5524/100001_101000/" . $model->identifier;
-
-                    if (count($files) > 0) {
-                        foreach ($files as $file) {
-                            $origin_location = $file->location;
-                            $new_location = "";
-                            $location_array = explode("/", $origin_location);
-                            $count = count($location_array);
-                            if ($count == 1) {
-                                $new_location = "ftp://climb.genomics.cn/pub/10.5524/100001_101000/" .
-                                        $model->identifier . "/" . $location_array[0];
-                            } else if ($count >= 2) {
-                                $new_location = "ftp://climb.genomics.cn/pub/10.5524/100001_101000/" .
-                                        $model->identifier . "/" . $location_array[$count - 2] . "/" . $location_array[$count - 1];
-                            }
-                            $file->location = $new_location;
-                            $file->date_stamp = date("Y-m-d H:i:s");
-                            if (!$file->save())
-                                return false;
-                        }
-                    }
-                }
-            }
-
-            // Image information
-            $image = $model->image;
-            $image->attributes = $_POST['Images'];
-            $image->scenario = 'update';
-
-            if ($model->publication_date == "")
-                $model->publication_date = null;
-            if ($model->modification_date == "")
-                $model->modification_date = null;
-            if ($model->fairnuse == "")
-                $model->fairnuse = null;
-
-
-            if ($model->save() && $image->save()) {
-                if (isset($_POST['datasettypes'])) {
-                    $datasettypes = $_POST['datasettypes'];
-                }
-
-                $datasetTypeMaps = DatasetType::model()->findAllByAttributes(array('dataset_id' => $id));
-
-                for ($i = 0; $i < count($datasetTypeMaps); ++$i) {
-                    $datasetTypeMap = $datasetTypeMaps[$i];
-                    if ((isset($datasettypes) && !in_array($datasetTypeMap->type_id, array_keys($datasettypes), true)) || !isset($datasettypes)) {
-                        $datasetTypeMap->delete();
-                    }
-                }
-
-                if (isset($datasettypes)) {
-                    foreach ($datasettypes as $datasetTypeId => $datasettype) {
-                        $currDatasetTypeMap = DatasetType::model()->findByAttributes(array('dataset_id' => $model->id, 'type_id' => $datasetTypeId));
-                        if (!$currDatasetTypeMap) {
-                            $newDatasetTypeRelationship = new DatasetType;
-                            $newDatasetTypeRelationship->dataset_id = $model->id;
-                            $newDatasetTypeRelationship->type_id = $datasetTypeId;
-                            $newDatasetTypeRelationship->save();
-                        }
-                    }
-                }
-
-                // semantic kewyords update, using remove all and re-create approach
-				if( isset($_POST['keywords']) ){
-
-					$sKeywordAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));
-					$keywordsArray = array_filter(explode(',', $_POST['keywords']));
-
-
-					// remove existing dataset attributes
-					$datasetAttributes = datasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$id,'attribute_id'=>$sKeywordAttr->id));
-
-					foreach ($datasetAttributes as $key => $keyword) {
-						$keyword->delete();
-					}
-
-					// create dataset attributes from form data
-					if ( count($keywordsArray) > 0 ) {
-
-						foreach ($keywordsArray as $keyword)
-						{
-							$dataset_attribute = new DatasetAttributes();
-							$dataset_attribute->attribute_id = $sKeywordAttr->id;
-							$dataset_attribute->dataset_id = $id;
-							$dataset_attribute->value = $keyword;
-							$dataset_attribute->save();
-						}
-					}
-				}
-
-
-				// retrieve existing redirect
-				$criteria = new CDbCriteria(array('order'=>'id ASC'));
-				$urlToRedirectAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
-				$urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
-
-				// saving url to redirect as a dataset attribute
-				if( isset($urlToRedirectDatasetAttribute) || isset($_POST['urltoredirect'])  ){
-
-
-					// update with value from form if value has changed.
-					if (isset($urlToRedirectDatasetAttribute) && $_POST['urltoredirect'] != $urlToRedirectDatasetAttribute->value ) {
-						$urlToRedirectDatasetAttribute->value = $_POST['urltoredirect'];
-						$urlToRedirectDatasetAttribute->save();
-
-					}
-
-					// create a new dataset attribute if there isn't one
-					else if ( isset($_POST['urltoredirect']) ){
-						$urlToRedirectDatasetAttribute = new DatasetAttributes();
-						$urlToRedirectDatasetAttribute->attribute_id = $urlToRedirectAttr->id;
-						$urlToRedirectDatasetAttribute->dataset_id = $id;
-						$urlToRedirectDatasetAttribute->value = $_POST['urltoredirect'];
-						$urlToRedirectDatasetAttribute->save();
-					}
-
-				}
-
-
-
-                if ($model->upload_status == 'Published') {
-                    $this->redirect('/dataset/' . $model->identifier);
-                } else {
-                    $this->redirect(array('/dataset/view/id/' . $model->identifier.'/token/'.$model->token));
-                }
-
-
-            }
-            else {
-                Yii::log(print_r($model->getErrors(), true), 'debug');
-            }
-
-        }
-
-        $this->render('update', array(
-            'model' => $model,
-        ));
-    }
-
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionDelete($id)
-	{
-		if(Yii::app()->request->isPostRequest)
+		/**
+		 * Deletes a particular model.
+		 * If deletion is successful, the browser will be redirected to the 'admin' page.
+		 * @param integer $id the ID of the model to be deleted
+		 */
+		public function actionDelete($id)
 		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+			if(Yii::app()->request->isPostRequest)
+			{
+				// we only allow deletion via POST request
+				$this->loadModel($id)->delete();
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+				// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+				if(!isset($_GET['ajax']))
+					$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			}
+			else
+				throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-	}
 
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('Dataset');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
+		/**
+		 * Lists all models.
+		 */
+		public function actionIndex()
+		{
+			$dataProvider=new CActiveDataProvider('Dataset');
+			$this->render('index',array(
+				'dataProvider'=>$dataProvider,
+			));
+		}
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Dataset('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Dataset'])) {
-            $model->setAttributes($_GET['Dataset']);
-        }
+		/**
+		 * Manages all models.
+		 */
+		public function actionAdmin()
+		{
+			$model=new Dataset('search');
+			$model->unsetAttributes();  // clear any default values
+			if(isset($_GET['Dataset'])) {
+	            $model->setAttributes($_GET['Dataset']);
+	        }
 
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
+			$this->render('admin',array(
+				'model'=>$model,
+			));
+		}
 
-	public function actionUpload() {
-		if (isset($_POST['userId'])) {
-			$user = User::model()->findByPk(Yii::app()->user->id);
+		public function actionUpload() {
+			if (isset($_POST['userId'])) {
+				$user = User::model()->findByPk(Yii::app()->user->id);
 
 
-			$excelFile = CUploadedFile::getInstanceByName('xls');
-            // print_r($excelFile);die;
-			$excelTempFileName = $excelFile->tempName;
+				$excelFile = CUploadedFile::getInstanceByName('xls');
+	            // print_r($excelFile);die;
+				$excelTempFileName = $excelFile->tempName;
 
-			// email fields: to, from, subject, and so on
-		    $from = Yii::app()->params['app_email_name']." <".Yii::app()->params['app_email'].">";
-		    $to = Yii::app()->params['adminEmail'];
-		    $subject = "New dataset uploaded by user ".$user->id." - ".$user->first_name.' '.$user->last_name;
-		    $receiveNewsletter = $user->newsletter ? 'Yes' : 'No';
-		    $message = <<<EO_MAIL
+				// email fields: to, from, subject, and so on
+			    $from = Yii::app()->params['app_email_name']." <".Yii::app()->params['app_email'].">";
+			    $to = Yii::app()->params['adminEmail'];
+			    $subject = "New dataset uploaded by user ".$user->id." - ".$user->first_name.' '.$user->last_name;
+			    $receiveNewsletter = $user->newsletter ? 'Yes' : 'No';
+			    $message = <<<EO_MAIL
 
 New dataset is uploaded by:
 <br/>
@@ -532,46 +646,46 @@ Receiving Newsletter:  <b>{$receiveNewsletter}</b>
 <br/><br/>
 EO_MAIL;
 
-		    $headers = "From: $from";
+			    $headers = "From: $from";
 
-		    /* prepare attachments */
+			    /* prepare attachments */
 
-			// boundary
-		    $semi_rand = md5(time());
-		    $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
+				// boundary
+			    $semi_rand = md5(time());
+			    $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
-		    // headers for attachment
-		    $headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$mime_boundary}\"";
-		     // multipart boundary
-		    $message = "--{$mime_boundary}\n" . "Content-Type: text/html; charset=\"utf-8\"\n" ."Content-Transfer-Encoding: 7bit\n\n" . $message . "\n\n";
-		    $message .= "--{$mime_boundary}\n";
-            $fp =    @fopen($excelTempFileName,"rb");
-	        $data =    @fread($fp,filesize($excelTempFileName));
-            @fclose($fp);
-            $data = chunk_split(base64_encode($data));
-            // $newFileName = 'dataset_upload_'.$user->id.'.xls';
-            $newFileName = $excelFile->name;
-            $message .= "Content-Type: application/octet-stream; name=\"".$newFileName."\"\n" .
-            "Content-Description: ".$newFileName."\n" ."Content-Disposition: attachment;\n" . " filename=\"".$newFileName."\"; size=".filesize($excelTempFileName).";\n" ."Content-Transfer-Encoding: base64\n\n" . $data . "\n\n";
+			    // headers for attachment
+			    $headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$mime_boundary}\"";
+			     // multipart boundary
+			    $message = "--{$mime_boundary}\n" . "Content-Type: text/html; charset=\"utf-8\"\n" ."Content-Transfer-Encoding: 7bit\n\n" . $message . "\n\n";
+			    $message .= "--{$mime_boundary}\n";
+	            $fp =    @fopen($excelTempFileName,"rb");
+		        $data =    @fread($fp,filesize($excelTempFileName));
+	            @fclose($fp);
+	            $data = chunk_split(base64_encode($data));
+	            // $newFileName = 'dataset_upload_'.$user->id.'.xls';
+	            $newFileName = $excelFile->name;
+	            $message .= "Content-Type: application/octet-stream; name=\"".$newFileName."\"\n" .
+	            "Content-Description: ".$newFileName."\n" ."Content-Disposition: attachment;\n" . " filename=\"".$newFileName."\"; size=".filesize($excelTempFileName).";\n" ."Content-Transfer-Encoding: base64\n\n" . $data . "\n\n";
 
-            $message .= "--{$mime_boundary}--";
-		    $returnpath = "-f" . Yii::app()->params['adminEmail'];
+	            $message .= "--{$mime_boundary}--";
+			    $returnpath = "-f" . Yii::app()->params['adminEmail'];
 
-	        $ok = @mail($to, $subject, $message, $headers, $returnpath);
+		        $ok = @mail($to, $subject, $message, $headers, $returnpath);
 
-	        if ($ok)  {
-	        	$this->redirect('/dataset/upload/status/successful');
-	        	return;
-	        } else {
-	        	$this->redirect('/dataset/upload/status/failed');
-	        	return;
-	        }
+		        if ($ok)  {
+		            $this->redirect('/dataset/upload/status/successful');
+		            return;
+		        } else {
+		            $this->redirect('/dataset/upload/status/failed');
+		            return;
+		        }
+			}
+			$this->render('upload');
 		}
-		$this->render('upload');
-	}
 
 
- public function actionSubmit() {
+        public function actionSubmit() {
            if (isset($_POST['File'])) {
             $count = count($_POST['File']);
             //var_dump('count'.$count);
@@ -936,80 +1050,6 @@ EO_MAIL;
         Yii::app()->user->setFlash('keyword', 'no dataset is specified');
         return $this->redirect("/user/view_profile");
     }
-
-
-
-/**
- *	actionMint
- *	post metadata, mint a new DOI
- */
-	public function actionMint() {
-
-        $result['status'] = false;
-		$status_array = array('Request', 'Incomplete', 'Uploaded');
-
-		$mds_metadata_url="https://mds.datacite.org/metadata";
-		$mds_doi_url="https://mds.datacite.org/doi";
-
-		$mds_username = Yii::app()->params['mds_username'];
-		$mds_password = Yii::app()->params['mds_password'];
-		$mds_prefix = Yii::app()->params['mds_prefix'];
-
-		if(isset($_POST['doi'])){
-
-			$doi = $_POST['doi'];
-			if(stristr($doi, "/")){
-				$temp = explode("/", $doi);
-				$doi = $temp[1];
-			}
-
-			$doi = trim($doi);
-			$dataset = Dataset::model()->find("identifier=?",array($doi));
-
-			if ( $dataset && ! in_array($dataset->upload_status, $status_array) ) {
-
-				$xml_data = $dataset->toXML();
-				$ch= curl_init();
-				curl_setopt($ch, CURLOPT_URL, $mds_metadata_url);
-				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-				curl_setopt($ch, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-				$curl_response = curl_exec($ch);
-				$result['md_curl_response'] = $curl_response;
-				$info1 = curl_getinfo($ch);
-				$result['md_curl_status'] = $info1['http_code'];
-				curl_close ($ch) ;
-
-			}
-
-			if ( $dataset && $result['md_curl_status'] == 201) {
-				$doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=https://gigadb.org/dataset/".$dataset->identifier ;
-				$result['doi_data']  = $doi_data;
-				$ch2= curl_init();
-				curl_setopt($ch2, CURLOPT_URL, $mds_doi_url);
-				curl_setopt($ch2, CURLOPT_POST, 1);
-				curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch2, CURLOPT_POSTFIELDS, $doi_data);
-				curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-				curl_setopt($ch2, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-				$curl_response = curl_exec($ch2);
-				$result['doi_curl_response'] = $curl_response;
-				$info2 = curl_getinfo($ch2);
-				$result['doi_curl_status'] = $info2['http_code'];
-				curl_close ($ch2) ;
-			}
-
-			if (isset($result['doi_curl_status']) && $result['doi_curl_status'] == 201) {
-				$result['status'] = true;
-			}
-
-		}
-
-		echo json_encode($result);
-		Yii::app()->end();
-	}
 
      public function storeDataset(&$dataset) {
         $dataset_id = 0;

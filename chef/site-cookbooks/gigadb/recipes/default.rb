@@ -250,6 +250,11 @@ template "#{site_dir}/protected/config/db.json" do
     mode '0644'
 end
 
+template "#{site_dir}/protected/config/aws.json" do
+    source 'yii-aws.json.erb'
+    mode '0644'
+end
+
 template "#{site_dir}/protected/scripts/set_env.sh" do
     source 'set_env.sh.erb'
     mode '0644'

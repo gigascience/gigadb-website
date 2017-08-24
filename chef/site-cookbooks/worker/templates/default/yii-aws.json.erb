@@ -1,0 +1,7 @@
+{
+    <% aws = node[:aws] -%>
+    "access_key": "<%= aws[:aws_access_key_id] %>",
+    "secret_key"    : "<%= aws[:aws_secret_access_key] %>",
+    "s3_bucket_for_file_bundles": "<%= aws[:s3_bucket_for_file_bundles] %>",
+    "s3_bucket_for_file_previews": "<%= aws[:s3_bucket_for_file_previews] %>"
+}
