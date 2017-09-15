@@ -204,6 +204,7 @@ HTML;
 
                             {    
                                  echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                 echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
                             }
                                
                             }
@@ -281,6 +282,18 @@ HTML;
                             echo MyHtml::link($project->name, $project->url);
 
                         echo "<br/>";
+                    }
+                    ?>
+                </p>
+                <? } ?>
+                <?php if (count($model->datasetAttributes) > 0) { ?>
+                <h4><?=Yii::t('app' , 'Keywords:')?></h4>
+                <p>
+                    <? foreach ($model->datasetAttributes as $key=>$keyword){
+                        if ($keyword->attribute_id == 455)
+                            echo "<a href='/search/new?keyword=$keyword->value'>$keyword->value</a>&nbsp";
+
+                      
                     }
                     ?>
                 </p>
