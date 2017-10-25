@@ -35,6 +35,8 @@ $ vagrant ssh
 
 ## Docker usage
 
+### Docker images
+
 To create the Docker image from the Dockerfile:
 
 ```bash
@@ -53,9 +55,12 @@ deleted using:
 [vagrant@localhost ~]$ sudo docker rmi $(docker images -q)
 ```
 
+### Docker containers
+
 To run the `sample` image as a container, use the run command. -p publishes the 
-container's ports to the host, -v mounts a volume and -d runs the `sample`
-container in the background:
+container's ports to the host, -v mounts the host's /vagrant directory into a 
+given directory in the container, and -d runs the `sample` image as a container 
+in the background:
 
 ```bash
 [vagrant@localhost ~]$ sudo docker run -p 80:80 -v /vagrant:/vagrant -d sample
@@ -67,6 +72,13 @@ CONTAINER ID        IMAGE               COMMAND                CREATED          
 
 You can check the container is running by opening a web browser and pointing it 
 to [http://192.168.33.10](http://192.168.33.10).
+
+To SSH into a Docker container, use the `containerId`or `containerName` that 
+you want to connect to:
+
+```bash
+[vagrant@localhost ~]$ sudo docker exec -it condescending_engelbart bash
+```
 
 To delete a container, it has to be stopped first:
 
