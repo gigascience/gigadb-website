@@ -37,7 +37,15 @@ $ vagrant ssh
 
 ### Docker images
 
-To create the Docker image from the Dockerfile:
+The files in the gigadb-website GitHub repo have been synced into the VM and are
+located in /vagrant. Change directory to folder:
+
+```bash
+[vagrant@localhost ~]$ cd /vagrant
+```
+
+There is a Dockerfile in this directory. Create the Docker image from this 
+Dockerfile:
 
 ```bash
 [vagrant@localhost ~]$ sudo docker build -t sample .
@@ -52,7 +60,7 @@ Images can be deleted using the `rmi` command. For example, all images can be
 deleted using:
 
 ```bash
-[vagrant@localhost ~]$ sudo docker rmi $(docker images -q)
+[vagrant@localhost ~]$ sudo docker rmi $(sudo docker images -q)
 ```
 
 ### Docker containers
