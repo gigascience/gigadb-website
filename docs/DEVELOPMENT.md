@@ -46,7 +46,7 @@ $ git commit
 Push fail2ban commit to origin:
 
 ```bash
-$ git push origin`
+$ git push origin
 ```
 
 Move to master branch of the chef-cookbooks directory:
@@ -172,3 +172,26 @@ set up:
 PostgreSQL connection to the Vagrant VM:
 
 <img src="https://github.com/gigascience/gigadb-website/blob/develop/images/docs/pgadmin3.png?raw=true">
+
+:warning: If you are using SSH tunneling, making a backup of a database or 
+restoring database from the pgAdmin3 GUI will likely result in a connection 
+refused error message. In these cases, you will need to use the command line 
+to perform these operations:
+
+```bash
+# Log into the gigadb-website VM
+vagrant ssh gigadb-website
+# Create a new, empty gigadb database on the Postgresql server
+psql -U postgres -h localhost -W
+drop database gigadb;
+create database gigadb;
+# Make the gigadb user a superuser
+alter user gigadb with superuser;
+# Exit from the Postgresql terminal
+\q
+# Perform the restore operation
+cd /vagrant/files
+pg_restore -i -h localhost -p 5432 -U gigadb -d gigadb -v "gigadb_20160111.backup"
+# Restart Postgresql server to effect changes
+sudo service postgresql-9.1 restart
+```

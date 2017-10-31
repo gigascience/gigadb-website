@@ -40,3 +40,14 @@ If you need to create a SQL dump of the database, you can use the
 ```bash
 $ pg_dump -U gigadb -h localhost -W -F plain gigadb > /vagrant/sql/gigadb_dump.sql
 ```
+
+## Using a *.backup file to load data
+
+If you have been provided with a *.backup file as a database dump then these
+commands will load the data into the PostgreSQL database:
+
+```bash
+sudo -u postgres /usr/bin/psql -c 'drop database gigadb'
+sudo -u postgres /usr/bin/psql -c 'create database gigadb owner gigadb'
+sudo -u postgres /usr/bin/psql -f gigadbv3_20170815_plant.backup> gigadb 
+```

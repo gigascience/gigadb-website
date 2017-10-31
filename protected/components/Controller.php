@@ -20,15 +20,16 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
-        
+
         /**
          * All metadata we need for SEO
-         * @var array 
+         * @var array
          */
         public $metaData = array(
-            'title' => '', 
+            'title' => '',
             'description' => '',
             'private' => false,
+            'redirect' => false,
         );
 
     /*
