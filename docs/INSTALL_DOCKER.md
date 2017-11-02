@@ -71,17 +71,49 @@ given directory in the container, and -d runs the `sample` image as a container
 in the background:
 
 ```bash
-[vagrant@localhost ~]$ sudo docker run -p 80:80 -v /vagrant:/vagrant -d sample
+# Expose port 80 from the container onto port 8080 
+# in the virtual machine that is running Docker
+$ sudo docker run -p 8080:80 -v /vagrant:/vagrant -d sample
 # Check container has been created
-[vagrant@localhost ~]$ sudo docker ps -a
+$ sudo docker ps -a
 CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                NAMES
 85789746e9d1        sample              "/usr/sbin/apachectl   24 minutes ago      Up 24 minutes       0.0.0.0:80->80/tcp   condescending_engelbart   
 ```
 
-You can check the container is running by opening a web browser and pointing it 
-to [http://192.168.33.10](http://192.168.33.10).
+You can now check the container is running by opening a web browser and pointing 
+it to [http://192.168.33.10:8080](http://192.168.33.10:8080) which the IP 
+address of the virtual machine. Port 8080 is showing the web page served by
+Apache which is running on the container.
 
-To SSH into a Docker container, use the `containerId`or `containerName` that 
+To get the IP address for a container from the host VM, first get the container
+ID:
+
+```bash
+$ sudo docker ps
+CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                    NAMES
+10a8c0e40017        sample              "/usr/sbin/apachectl   3 seconds ago       Up 2 seconds        0.0.0.0:2122->2122/tcp   goofy_sinoussi 
+# Then use the container ID to execute inspect
+$ sudo docker inspect <container ID> | grep IPAddress
+       "IPAddress": "172.17.0.6",
+        "SecondaryIPAddresses": null,
+```
+
+You can now do a further check by downloading the displayed file using the 
+container IP address from within the VM that is hosting the Docker container:
+
+```bash
+[vagrant@localhost vagrant]$ wget 172.17.0.6
+Connecting to 172.17.0.7:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 13 [text/html]
+Saving to: “index.html”
+
+100%[================================================================================================================================>] 13          --.-K/s   in 0s      
+
+2017-11-02 07:14:53 (2.07 MB/s) - “index.html” saved [13/13]
+```
+
+To SSH into a Docker container, use the `containerId` or `containerName` that 
 you want to connect to:
 
 ```bash

@@ -4,7 +4,6 @@ MAINTAINER Peter Li <peter@gigasciencejournal.com>
 # Install httpd and php
 RUN yum -y install httpd
 RUN yum -y install php
-#RUN yum -y install sed
 
 # wheel_tty.sh #
 # Allows wheel group to run all commands without password and tty
@@ -19,16 +18,18 @@ RUN yum -y update
 RUN yum -y groupinstall base core
 
 # Used to install common packages on all vm images
-RUN PACKAGES="ntp bind-utils wget nfs-utils autofs bzip2 unzip mlocate yum-utils yum-plugin-remove-with-leaves deltarpm epel-release"
-RUN yum install -y $PACKAGES
+#RUN PACKAGES="ntp bind-utils wget nfs-utils autofs bzip2 unzip mlocate yum-utils yum-plugin-remove-with-leaves deltarpm epel-release"
+#RUN yum install -y $PACKAGES
 
-# Disable SElinux
-# sudo sed -i 's/enforcing/disabled/' /etc/selinux/config /etc/selinux/config
+RUN yum -y install ntp bind-utils wget nfs-utils autofs bzip2 unzip mlocate yum-utils yum-plugin-remove-with-leaves deltarpm epel-release
 
 # Disable iptables on boot up
-RUN sudo chkconfig iptables off
+#RUN chkconfig iptables off
+
+# Add file in web directory
+RUN echo "Hello World" >/var/www/html/index.html
 
 
 #################
 # Run Apache web server
-CMD ["/usr/sbin/apachectl", "-DFOREGROUND"]
+CMD ["/usr/sbin/apachectl start", "-DFOREGROUND"]
