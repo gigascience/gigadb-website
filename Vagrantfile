@@ -1,46 +1,48 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
+#
+# latest version available at:
+# https://github.com/shyiko/docker-vm
+#
+Vagrant.configure("2") do |config|
 
-# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
-VAGRANTFILE_API_VERSION = "2"
+  # for box definition go to https://github.com/phusion/open-vagrant-boxes
+  config.vm.box = "phusion-open-ubuntu-14.04-amd64"
+  config.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/latest/ubuntu-14.04-amd64-vbox.box"
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "opscode-centos65"
-  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box"
+  config.vm.network "private_network", ip: "192.168.42.10"
 
-  config.vm.provider :virtualbox do |vb|
-    vb.name = "docker"
-    vb.customize ["modifyvm", :id, "--memory", 1024]
-  end
+  # install & start docker daemon
+  config.vm.provision "docker"
 
-  config.vm.network :private_network, ip: "192.168.33.10"
-#   config.vm.network :forwarded_port, guest: 4243, host: 4243
-	config.vm.network :forwarded_port, guest: 2123, host: 2123
+  # make docker daemon accessible from the host OS (port 2376)
+  config.vm.provision :shell, inline: <<-EOT
+    echo 'DOCKER_OPTS="-H unix:// -H tcp://0.0.0.0:2376 ${DOCKER_OPTS}"' >> /etc/default/docker
+    service docker restart
+  EOT
+
+#   if Vagrant::Util::Platform.windows?
+#     # use MSYS/Cygwin style path(s)
+#     ["/c/Users/#{ENV['USERNAME']}", "/cygdrive/c/Users/#{ENV['USERNAME']}"].each do |target|
+#       config.vm.synced_folder "C:/Users/#{ENV['USERNAME']}", target, type: "smb"
+#     end
+#   else
+#     # mirror /Users/USERNAME
+#     config.vm.synced_folder "/Users/#{ENV['USER']}", "/Users/#{ENV['USER']}", type: "nfs"
+#   end
 
   config.vm.synced_folder ".", "/vagrant"
 
-  config.vm.provision :shell, :inline => <<-EOT
-    #
-    # Turn iptables off
-    #
-    /sbin/iptables -F
-    /sbin/service iptables stop
-    /sbin/chkconfig iptables off
-    #
-    # Upgrade device-mapper-libs
-    #
-    yum upgrade -y device-mapper-libs
-    #
-    # Install packages from yum repository
-    #
-    rpm -ivh http://ftp.riken.jp/Linux/fedora/epel/6/i386/epel-release-6-8.noarch.rpm
-    yum install -y vim-enhanced telnet
-    #
-    # Install Docker
-    #
-    yum install -y docker-io
-    sed -i 's,^other_args=.*$,other_args="-H tcp://0.0.0.0:4243 -H unix:// --dns 8.8.8.8",g' /etc/sysconfig/docker
-    chkconfig docker on
-    service docker restart
-  EOT
+  config.vm.provider "virtualbox" do |v|
+
+    v.customize ["modifyvm", :id, "--nictype1", "virtio" ]
+
+    # unless synced_folder's nfs_udp is set to false (which slows things down considerably - up to 50%)
+    # DO NOT change --nictype2 to virtio (otherwise writes may freeze)
+
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+
+    v.customize ["modifyvm", :id, "--memory", "2048"]
+
+  end
+
 end

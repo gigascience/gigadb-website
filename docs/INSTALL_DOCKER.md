@@ -3,7 +3,7 @@
 ## Background
 
 A Docker container is a lightweight virtualised operating system (OS)
-environment that can be easily deployed to run isolated packages of software in 
+environment that can be deployed to run isolated packages of software in 
 a host computer. Unlike a virtual machine, the container does not need a guest 
 OS because it shares the kernel of the host OS. The kernel mediates access to 
 the computer's CPU, RAM and hardware such as the keyboard, mouse, monitor, etc.
@@ -80,10 +80,10 @@ CONTAINER ID        IMAGE               COMMAND                CREATED          
 85789746e9d1        sample              "/usr/sbin/apachectl   24 minutes ago      Up 24 minutes       0.0.0.0:80->80/tcp   condescending_engelbart   
 ```
 
-You can now check the container is running by opening a web browser and pointing 
-it to [http://192.168.33.10:8080](http://192.168.33.10:8080) which the IP 
-address of the virtual machine. Port 8080 is showing the web page served by
-Apache which is running on the container.
+You can now check the container is running by opening a web browser on your host
+and pointing it to [http://192.168.42.10:8080](http://192.168.42.10:8080) which 
+is the IP address of the virtual machine. Port 8080 is showing the web page 
+served by Apache which is running on the container.
 
 To get the IP address for a container from the host VM, first get the container
 ID:
@@ -91,7 +91,7 @@ ID:
 ```bash
 $ sudo docker ps
 CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                    NAMES
-10a8c0e40017        sample              "/usr/sbin/apachectl   3 seconds ago       Up 2 seconds        0.0.0.0:2122->2122/tcp   goofy_sinoussi 
+10a8c0e40017        sample              "/run-httpd.sh"   3 seconds ago       Up 2 seconds        0.0.0.0:8080->80/tcp   goofy_sinoussi 
 # Then use the container ID to execute inspect
 $ sudo docker inspect <container ID> | grep IPAddress
        "IPAddress": "172.17.0.6",
