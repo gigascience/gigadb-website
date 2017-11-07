@@ -92,8 +92,8 @@ ID:
 $ sudo docker ps
 CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                    NAMES
 10a8c0e40017        sample              "/run-httpd.sh"   3 seconds ago       Up 2 seconds        0.0.0.0:8080->80/tcp   goofy_sinoussi 
-# Then use the container ID to execute inspect
-$ sudo docker inspect <container ID> | grep IPAddress
+# Then use the container ID to execute inspect and grep the IP address
+$ sudo docker inspect 10a8c0e40017 | grep IPAddress
        "IPAddress": "172.17.0.6",
         "SecondaryIPAddresses": null,
 ```
