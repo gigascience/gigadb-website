@@ -3,7 +3,6 @@ MAINTAINER Peter Li <peter@gigasciencejournal.com>
 
 # Install httpd and php
 RUN yum -y install httpd
-#RUN yum -y install php
 
 # wheel_tty.sh #
 # Allows wheel group to run all commands without password and tty
@@ -27,18 +26,8 @@ RUN yum -y install httpd
 #RUN chkconfig iptables off
 
 # Add file in web directory
-#RUN echo "Hello World" >/var/www/html/index.html
-
-
-#################
-# Run Apache web server
-#CMD ["/usr/sbin/apachectl start", "-DFOREGROUND"]
-#CMD ["/bin/bash"]
-
-# Add file in web directory
 RUN echo "Apache HTTPD" >> /var/www/html/index.html
 
-#################
 EXPOSE 80
 
 # Simple startup script to avoid some issues observed with container restart
