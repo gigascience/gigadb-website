@@ -1,0 +1,6 @@
+{
+  "run_list": [
+    "recipe[vagrant]"
+  ],
+  "environment": "development"
+}

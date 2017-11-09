@@ -1,0 +1,20 @@
+add_formatter :min
+checksum_path '/vagrant/chef/checksums'
+cookbook_path ['/vagrant/chef/chef-cookbooks','/vagrant/chef/site-cookbooks']
+data_bag_path '/home/centos/chef/data_bags'
+environment 'development'
+environment_path '/vagrant/chef/environments'
+file_backup_path '/vagrant/chef/backup'
+file_cache_path '/vagrant/chef/cache'
+json_attribs nil
+lockfile '/vagrant/chef/chef.pid'
+log_level :debug
+log_location STDOUT
+node_name 'gigadb.genomics.cn'
+rest_timeout 300
+role_path '/vagrant/chef/roles'
+sandbox_path 'path_to_folder'
+solo false
+syntax_check_cache_path
+umask 0022
+verbose_logging nil
