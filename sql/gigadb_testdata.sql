@@ -264,7 +264,9 @@ CREATE TABLE dataset_author (
     id integer NOT NULL,
     dataset_id integer NOT NULL,
     author_id integer NOT NULL,
-    rank integer DEFAULT 0
+    rank integer DEFAULT 0,
+    role character varying(30),
+    awardee character varying(50)
 );
 
 
@@ -724,7 +726,8 @@ CREATE TABLE file (
     type_id integer,
     code character varying(200) DEFAULT 'FILE_CODE'::character varying,
     index4blast character varying(50),
-    download_count integer DEFAULT 0 NOT NULL
+    download_count integer DEFAULT 0 NOT NULL,
+    alternative_location character varying(200)
 );
 
 
@@ -807,7 +810,8 @@ ALTER SEQUENCE file_experiment_id_seq OWNED BY file_experiment.id;
 CREATE TABLE file_format (
     id integer NOT NULL,
     name character varying(20) NOT NULL,
-    description text DEFAULT ''::text NOT NULL
+    description text DEFAULT ''::text NOT NULL,
+    edam_ontology_id character varying(100)
 );
 
 
@@ -931,7 +935,8 @@ ALTER SEQUENCE file_sample_id_seq OWNED BY file_sample.id;
 CREATE TABLE file_type (
     id integer NOT NULL,
     name character varying(100) NOT NULL,
-    description text DEFAULT ''::text NOT NULL
+    description text DEFAULT ''::text NOT NULL,
+    edam_ontology_id character varying(100)
 );
 
 
@@ -1087,7 +1092,8 @@ CREATE TABLE link (
     id integer NOT NULL,
     dataset_id integer NOT NULL,
     is_primary boolean DEFAULT false NOT NULL,
-    link character varying(100) NOT NULL
+    link character varying(100) NOT NULL,
+    description character varying(200)
 );
 
 
@@ -1207,7 +1213,8 @@ CREATE TABLE prefix (
     id integer DEFAULT nextval('link_prefix_id_seq'::regclass) NOT NULL,
     prefix character(20) NOT NULL,
     url text NOT NULL,
-    source character varying(128) DEFAULT ''::character varying
+    source character varying(128) DEFAULT ''::character varying,
+    icon character varying(100)
 );
 
 
@@ -2403,6 +2410,9 @@ SELECT pg_catalog.setval('external_link_id_seq', 61, true);
 COPY external_link_type (id, name) FROM stdin;
 3	Additional information
 4	Genome browser
+5	Protocols.io
+6	JBrowse
+7	3D Models
 \.
 
 
@@ -2417,23 +2427,23 @@ SELECT pg_catalog.setval('external_link_type_id_seq', 4, true);
 -- Data for Name: file; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
-COPY file (id, dataset_id, name, location, extension, size, description, date_stamp, format_id, type_id, code, index4blast, download_count) FROM stdin;
-88252	210	Pygoscelis_adeliae.cds.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.cds.gz	cds	6	coding sequence predictions on genome assembly	2014-05-12	41	117	FILE_CODE	\N	0
-88254	210	Pygoscelis_adeliae.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.fa.gz	gz	350	assembled scaffolds from sequence data	2014-05-12	41	113	FILE_CODE	\N	0
-88255	210	Pygoscelis_adeliae.gff.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.gff.gz	gz	1590	coding sequence annotation of assembly	2014-05-12	42	114	FILE_CODE	\N	0
-88256	210	Pygoscelis_adeliae.pep.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.pep.gz	gz	4170000	peptide translations of CDS predictions	2014-05-12	41	115	FILE_CODE	\N	0
-88257	210	Pygoscelis_adeliae.RepeatMasker.out.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz	gz	7490000	repeat masker results	2014-05-12	43	116	FILE_CODE	\N	0
-88258	210	Pygoscelis_adeliae.scaf.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz	gz	350		2014-05-12	41	113	FILE_CODE	\N	0
-88259	210	readme.txt	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/readme.txt	txt	1		2014-05-12	43	112	FILE_CODE	\N	0
-88261	211	millet.chr.version2.3.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz	gz	109		2011-11-12	41	113	FILE_CODE	\N	0
-88262	211	Millet.fa.glean.cds.v3.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet.fa.glean.cds.v3.gz	gz	13000		2011-11-12	41	117	FILE_CODE	\N	0
-88263	211	Millet.fa.glean.pep.v3.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet.fa.glean.pep.v3.gz	gz	85000000		2011-11-12	41	115	FILE_CODE	\N	0
-88264	211	Millet.fa.glean.v3.gff	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet.fa.glean.v3.gff	gz	14000000		2011-11-12	42	114	FILE_CODE	\N	0
-88265	211	Millet_scaffoldVersion2.3.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet_scaffoldVersion2.3.fa.gz	gz	109000		2011-11-12	41	113	FILE_CODE	\N	0
-88266	211	readme.txt	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/readme.txt	txt	1		2011-11-12	43	112	FILE_CODE	\N	0
-88267	212	CS-master.tar.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100094/CS-master.tar.gz	gz	114	compressed archive of the Analysis scripts (CS) files	2014-06-06	44	118	FILE_CODE	\N	0
-88269	212	GD-master.tar.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100094/GD-master.tar.gz	gz	163	compressed archive of the mock data and scripts GD files	2014-06-06	44	119	FILE_CODE	\N	0
-88270	213	Diagram-ALL-FIELDS-Check-annotation.jpg	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100142/Diagram-ALL-FIELDS-Check-annotation.jpg	jpg	54	image used in manuscript	2015-04-29	41	113	FILE_CODE	\N	0
+COPY file (id, dataset_id, name, location, extension, size, description, date_stamp, format_id, type_id, code, index4blast, download_count, alternative_location) FROM stdin;
+88252	210	Pygoscelis_adeliae.cds.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.cds.gz	cds	6	coding sequence predictions on genome assembly	2014-05-12	41	117	FILE_CODE	\N	0	\N
+88254	210	Pygoscelis_adeliae.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.fa.gz	gz	350	assembled scaffolds from sequence data	2014-05-12	41	113	FILE_CODE	\N	0	\N
+88255	210	Pygoscelis_adeliae.gff.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.gff.gz	gz	1590	coding sequence annotation of assembly	2014-05-12	42	114	FILE_CODE	\N	0 	\N
+88256	210	Pygoscelis_adeliae.pep.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.pep.gz	gz	4170000	peptide translations of CDS predictions	2014-05-12	41	115	FILE_CODE	\N	0	\N
+88257	210	Pygoscelis_adeliae.RepeatMasker.out.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz	gz	7490000	repeat masker results	2014-05-12	43	116	FILE_CODE	\N	0	\N
+88258	210	Pygoscelis_adeliae.scaf.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz	gz	350		2014-05-12	41	113	FILE_CODE	\N	0	\N
+88259	210	readme.txt	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/readme.txt	txt	1		2014-05-12	43	112	FILE_CODE	\N	0	\N
+88261	211	millet.chr.version2.3.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz	gz	109		2011-11-12	41	113	FILE_CODE	\N	0	\N
+88262	211	Millet.fa.glean.cds.v3.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet.fa.glean.cds.v3.gz	gz	13000		2011-11-12	41	117	FILE_CODE	\N	0	\N
+88263	211	Millet.fa.glean.pep.v3.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet.fa.glean.pep.v3.gz	gz	85000000		2011-11-12	41	115	FILE_CODE	\N	0	\N
+88264	211	Millet.fa.glean.v3.gff	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet.fa.glean.v3.gff	gz	14000000		2011-11-12	42	114	FILE_CODE	\N	0	\N
+88265	211	Millet_scaffoldVersion2.3.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet_scaffoldVersion2.3.fa.gz	gz	109000		2011-11-12	41	113	FILE_CODE	\N	0	\N
+88266	211	readme.txt	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/readme.txt	txt	1		2011-11-12	43	112	FILE_CODE	\N	0	\N
+88267	212	CS-master.tar.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100094/CS-master.tar.gz	gz	114	compressed archive of the Analysis scripts (CS) files	2014-06-06	44	118	FILE_CODE	\N	0	\N
+88269	212	GD-master.tar.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100094/GD-master.tar.gz	gz	163	compressed archive of the mock data and scripts GD files	2014-06-06	44	119	FILE_CODE	\N	0	\N
+88270	213	Diagram-ALL-FIELDS-Check-annotation.jpg	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100142/Diagram-ALL-FIELDS-Check-annotation.jpg	jpg	54	image used in manuscript	2015-04-29	41	113	FILE_CODE	\N	0	\N
 \.
 
 
@@ -2541,14 +2551,14 @@ SELECT pg_catalog.setval('file_sample_id_seq', 18935, true);
 --
 
 COPY file_type (id, name, description) FROM stdin;
-112	Readme
-113	Sequence assembly
-114	Annotation
-115	Protein sequence
-116	Repeat sequence
-117	Coding sequence
-118	Script
-119	Mixed archive
+112	Readme	Readme
+113	Sequence assembly	Sequence assembly
+114	Annotation	Annotation
+115	Protein sequence	Protein sequence
+116	Repeat sequence	Repeat sequence
+117	Coding sequence	Coding sequence
+118	Script	Script
+119	Mixed archive	Mixed archive
 \.
 
 
@@ -2694,7 +2704,7 @@ SELECT pg_catalog.setval('project_id_seq', 17, true);
 -- Data for Name: publisher; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
-COPY publisher (id, name, description) FROM stdin;
+COPY publisher (id, name) FROM stdin;
 1	GigaScience
 \.
 
@@ -2867,10 +2877,10 @@ COPY type (id, name, description) FROM stdin;
 20	Transcriptomic	data relating to mRNA
 21	Software	computational tools for analysing and managing biological data
 22	Imaging	data involving the visual depiction of biological samples
-23	Metabolomic
+23	Metabolomic	None
 24	Proteomic	large scale protein analysis dataset
 25	Genomic	genetic and genomic data e.g. sequence and assemblies
-26	Metadata
+26	Metadata	None
 \.
 
 
