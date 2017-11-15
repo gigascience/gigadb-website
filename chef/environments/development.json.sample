@@ -115,7 +115,7 @@
 	},
 	"postgresql": {
 	  "version": "9.1",
-	  "repo_version": "9.1"
+	  "repo_version": "8.4"
 	},
 	"iptables": {
 	  "iptables_sysconfig": {
