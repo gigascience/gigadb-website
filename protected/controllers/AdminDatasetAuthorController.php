@@ -452,6 +452,7 @@ class AdminDatasetAuthorController extends Controller
                     $da->author->delete();
 
                     $criteria = new CDbCriteria;
+                    $criteria->addCondition('dataset_id='.$da->dataset_id);
                     $criteria->addCondition('rank > '.$rank);
                     $higherRankDas = DatasetAuthor::model()->findAll($criteria);
 
