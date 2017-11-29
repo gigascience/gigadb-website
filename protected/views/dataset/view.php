@@ -153,6 +153,7 @@ HTML;
                         $types = array();
                         $protocol = array();
                         $jb = array();
+                        $dmodel = array();
                         foreach ($model->externalLinks as $key=>$externalLink){
                             $types[$externalLink->externalLinkType->name] = 1;
                         }
@@ -160,7 +161,7 @@ HTML;
                             $typeNameLabel = preg_replace('/(?:^|_)(.?)/e',"strtoupper('$1')",$typeName);
                             $typeNameLabel = preg_replace('/(?<=\\w)(?=[A-Z])/'," $1", $typeNameLabel);
                             $typeNameLabel = trim($typeNameLabel);
-                            if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse')
+                            if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse' and $typeNameLabel !== '3 D Models')
                             {
                                echo "<h4>$typeNameLabel:</h4>";
                             }
@@ -175,6 +176,11 @@ HTML;
                                     elseif($typeName == 'JBrowse')
                                     {
                                        array_push($jb,$externalLink->url);
+                                    
+                                    }
+                                    elseif($typeName == '3D Models')
+                                    {
+                                       array_push($dmodel,$externalLink->url);
                                     
                                     }
                                     else
@@ -208,6 +214,21 @@ HTML;
                             {    
                                  echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
                                  echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
+                            }
+                               
+                            }
+                             echo "</div>";
+                        }
+                         if(!empty($dmodel)){
+                             echo "<h4>3D Models:</h4>";
+                             echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                             echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                             echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($dmodel as $p) {
+
+                            {    
+                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                
                             }
                                
                             }
@@ -655,6 +676,17 @@ $("#js-close-btn2").click(function(){
       $(this).hide();
       $("#js-expand-btn2").show();
       $("#js-logs-2").hide();
+});
+$("#js-expand-btn3").click(function(){
+      $(this).hide();
+      $("#js-close-btn3").show();
+      $("#js-logs-3").show();
+});
+
+$("#js-close-btn3").click(function(){
+      $(this).hide();
+      $("#js-expand-btn3").show();
+      $("#js-logs-3").hide();
 });
 
 $(".js-download-count").click(function(){

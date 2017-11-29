@@ -297,7 +297,8 @@ CREATE TABLE dataset_author (
     id integer NOT NULL,
     dataset_id integer NOT NULL,
     author_id integer NOT NULL,
-    rank integer DEFAULT 0
+    rank integer DEFAULT 0,
+    role character varying(30)
 );
 
 
@@ -337,7 +338,8 @@ CREATE TABLE dataset_funder (
     dataset_id integer NOT NULL,
     funder_id integer NOT NULL,
     grant_award text DEFAULT ''::text,
-    comments text DEFAULT ''::text
+    comments text DEFAULT ''::text,
+    awardee character varying(50)
 );
 
 
@@ -808,7 +810,8 @@ CREATE TABLE file (
     type_id integer,
     code character varying(200) DEFAULT 'FILE_CODE'::character varying,
     index4blast character varying(50),
-    download_count integer DEFAULT 0 NOT NULL
+    download_count integer DEFAULT 0 NOT NULL,
+    alternative_location character varying(200)
 );
 
 
@@ -900,7 +903,8 @@ ALTER SEQUENCE file_experiment_id_seq OWNED BY file_experiment.id;
 CREATE TABLE file_format (
     id integer NOT NULL,
     name character varying(20) NOT NULL,
-    description text DEFAULT ''::text NOT NULL
+    description text DEFAULT ''::text NOT NULL,
+    edam_ontology_id character varying(100)
 );
 
 
@@ -1039,7 +1043,8 @@ ALTER SEQUENCE file_sample_id_seq OWNED BY file_sample.id;
 CREATE TABLE file_type (
     id integer NOT NULL,
     name character varying(100) NOT NULL,
-    description text DEFAULT ''::text NOT NULL
+    description text DEFAULT ''::text NOT NULL,
+    edam_ontology_id character varying(100)
 );
 
 
@@ -1211,7 +1216,8 @@ CREATE TABLE link (
     id integer NOT NULL,
     dataset_id integer NOT NULL,
     is_primary boolean DEFAULT false NOT NULL,
-    link character varying(100) NOT NULL
+    link character varying(100) NOT NULL,
+    description character varying(200)
 );
 
 
@@ -1344,7 +1350,8 @@ CREATE TABLE prefix (
     id integer DEFAULT nextval('link_prefix_id_seq'::regclass) NOT NULL,
     prefix character(20) NOT NULL,
     url text NOT NULL,
-    source character varying(128) DEFAULT ''::character varying
+    source character varying(128) DEFAULT ''::character varying,
+    icon character varying(100)
 );
 
 

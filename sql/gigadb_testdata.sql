@@ -280,7 +280,8 @@ CREATE TABLE dataset_author (
     dataset_id integer NOT NULL,
     author_id integer NOT NULL,
     rank integer DEFAULT 0,
-    role character varying(30)
+    role character varying(30),
+    awardee character varying(50)
 );
 
 
@@ -2550,6 +2551,9 @@ COPY external_link (id, dataset_id, url, external_link_type_id) FROM stdin;
 COPY external_link_type (id, name) FROM stdin;
 3	Additional information
 4	Genome browser
+5	Protocols.io
+6	JBrowse
+7	3D Models
 \.
 
 
@@ -2637,6 +2641,7 @@ COPY file_sample (id, sample_id, file_id) FROM stdin;
 --
 -- Data for Name: file_type; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
+
 
 COPY file_type (id, name, description, edam_ontology_id) FROM stdin;
 112	Readme		\N
@@ -2728,6 +2733,7 @@ COPY project (id, url, name, image_location) FROM stdin;
 --
 -- Data for Name: publisher; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
+
 
 COPY publisher (id, name, description) FROM stdin;
 1	GigaScience	

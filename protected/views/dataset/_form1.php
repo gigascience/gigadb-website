@@ -5,7 +5,10 @@ if (Yii::app()->user->hasFlash('saveSuccess'))
 $cs = Yii::app()->getClientScript();
 $cssCoreUrl = $cs->getCoreScriptUrl();
 Yii::app()->clientScript->registerScriptFile('/js/jquery-ui-1.8.21.custom.min.js');
+Yii::app()->clientScript->registerScriptFile('/js/jquery.tag-editor.min.js');
+Yii::app()->clientScript->registerScriptFile('/js/jquery.caret.min.js');
 $cs->registerCssFile($cssCoreUrl . '/jui/css/base/jquery-ui.css');
+$cs->registerCssFile('/css/jquery.tag-editor.css');
 ?>
 <div class="span12 form well">
     <div class="form-horizontal">
@@ -150,6 +153,14 @@ $cs->registerCssFile($cssCoreUrl . '/jui/css/base/jquery-ui.css');
                 </div>
             </div>
         </div>
+        <div class="span10">
+        <div class="control-group">
+                        <?php echo CHtml::label('Keywords','keywords', array('class'=>'control-label')); ?>
+                        <div class="controls">
+                            <?php echo CHtml::textField('keywords', '', array('class'=>'span10', 'size'=>60,'maxlength'=>300)); ?>
+                        </div>
+                    </div>
+               </div>
     </div>
 
     <div class="span12" style="text-align:center">
@@ -202,5 +213,17 @@ $cs->registerCssFile($cssCoreUrl . '/jui/css/base/jquery-ui.css');
         
     window.onload = disableImage;
 
+</script>
+<script>
+<?php
+$js_array = json_encode($model->getSemanticKeywords());
+echo "var existingTags = ". $js_array . ";\n";
+?>
+    $('#keywords').tagEditor({
+    initialTags:
+        existingTags,
+    delimiter: ',', /* comma */
+    placeholder: 'Enter keywords (separated by commas) ...'
+});
 </script>
 
