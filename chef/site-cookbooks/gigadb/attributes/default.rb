@@ -13,7 +13,7 @@ end
 default[:nginx][:version] = 'on'
 
 default[:postgresql][:version] = '9.1'
-default[:postgresql][:repo_version] = '9.1'
+default[:postgresql][:repo_version] = '8.4'
 
 default[:sphinx][:version] = '2.0.6-release'
 default[:sphinx][:url] = "http://sphinxsearch.com/files/sphinx-#{sphinx[:version]}.tar.gz"
