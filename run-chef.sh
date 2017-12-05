@@ -5,4 +5,4 @@
 # if it thinks it is already running.
 #rm -rf /run/httpd/*
 
-exec /usr/bin/chef-solo -c /chef/docker-chef-solo-example/solo.rb -j /chef/docker-chef-solo-example/node.json
+exec /usr/bin/chef-solo -c /vagrant/chef/docker-chef-solo/solo.rb -j /vagrant/chef/docker-chef-solo/node.json
