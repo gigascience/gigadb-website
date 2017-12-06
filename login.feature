@@ -1,7 +1,7 @@
 Feature: sign in into the gigadb website with my social media credentials
 AS an author,
 I WANT TO sign in to the gigadb website with my social media credentials
-SO THAT I have a Gigadb account to upload and manage the dataset for my papers
+SO THAT I can upload and manage the dataset for my papers
 
 
 	Scenario: I sign in with Facebook with no existing Gigadb account
