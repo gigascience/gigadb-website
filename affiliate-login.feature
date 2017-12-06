@@ -1,7 +1,7 @@
 Feature: sign in into the gigadb website with my social media credentials
 AS an author,
 I WANT TO sign in to the gigadb website with my social media credentials
-SO THAT I can upload and manage the dataset for my papers
+SO THAT I can upload and manage the datasets for my papers
 
 
 	Scenario: I sign in with Facebook with no existing Gigadb account
@@ -44,6 +44,16 @@ SO THAT I can upload and manage the dataset for my papers
 	And I'm logged in into that account
 	And the email I used for "LinkedIn" is used for that account
 
+	Scenario: I sign in with ORCID with no existing Gigadb account
+	Given I have a "ORCID" account
+	But I don't have a Gigadb account
+	When I navigate to /site/chooseLogin
+	And I click on the "ORCID" button
+	And I authorise Gigadb for "ORCID"
+	Then a new Gigadb account is created
+	And I'm logged in into that account
+	And the email I used for "ORCID" is used for that account
+
 	Scenario: I have a Gigadb account and I sign in with my "Facebook" credentials
 	Given I have a Gigadb account
 	And I have a "Facebook" account
@@ -81,6 +91,16 @@ SO THAT I can upload and manage the dataset for my papers
 	When I navigate to /site/chooseLogin
 	And I click on the "LinkedIn" buttons
 	And I authorise Gigadb for "LinkedIn"
+	Then I'm logged in into my existing account
+	And no new gigadb account is created
+
+	Scenario: I have a Gigadb account and I sign in with my "ORCID" credentials
+	Given I have a Gigadb account
+	And I have a "ORCID" account
+	And email addresses for those accounts match
+	When I navigate to /site/chooseLogin
+	And I click on the "ORCID" buttons
+	And I authorise Gigadb for "ORCID"
 	Then I'm logged in into my existing account
 	And no new gigadb account is created
 
@@ -128,4 +148,15 @@ SO THAT I can upload and manage the dataset for my papers
 	Then a new Gigadb account is created
 	And I'm logged in into that account
 	And the email I used for "LinkedIn" is used for that account
+
+	Scenario: I sign in with my "ORCID" credentials and I have a gigadb account with a different email address
+	Given I have a Gigadb account
+	And I have a "ORCID" account
+	But email addresses for those accounts do not match
+	When I navigate to /site/chooseLogin
+	And I click on the "ORCID" button
+	And I authorise Gigadb for "ORCID"
+	Then a new Gigadb account is created
+	And I'm logged in into that account
+	And the email I used for "ORCID" is used for that account
 
