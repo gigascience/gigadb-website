@@ -4,23 +4,10 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
+SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
+SET escape_string_warning = off;
 
 SET search_path = public, pg_catalog;
 
@@ -29,7 +16,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: AuthAssignment; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: AuthAssignment; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE "AuthAssignment" (
@@ -43,7 +30,7 @@ CREATE TABLE "AuthAssignment" (
 ALTER TABLE public."AuthAssignment" OWNER TO gigadb;
 
 --
--- Name: AuthItem; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: AuthItem; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE "AuthItem" (
@@ -58,7 +45,7 @@ CREATE TABLE "AuthItem" (
 ALTER TABLE public."AuthItem" OWNER TO gigadb;
 
 --
--- Name: YiiSession; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: YiiSession; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE "YiiSession" (
@@ -71,7 +58,7 @@ CREATE TABLE "YiiSession" (
 ALTER TABLE public."YiiSession" OWNER TO gigadb;
 
 --
--- Name: alternative_identifiers; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: alternative_identifiers; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE alternative_identifiers (
@@ -100,8 +87,8 @@ COMMENT ON COLUMN alternative_identifiers.id IS '
 CREATE SEQUENCE alternative_identifiers_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -115,20 +102,27 @@ ALTER SEQUENCE alternative_identifiers_id_seq OWNED BY alternative_identifiers.i
 
 
 --
--- Name: attribute; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: alternative_identifiers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('alternative_identifiers_id_seq', 1, false);
+
+
+--
+-- Name: attribute; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE attribute (
     id integer NOT NULL,
     attribute_name character varying(100),
     definition character varying(1000),
-    model character varying(30),
-    structured_comment_name character varying(50),
+    model character varying(100),
+    structured_comment_name character varying(100),
     value_syntax character varying(500),
     allowed_units character varying(100),
     occurance character varying(5),
     ontology_link character varying(1000),
-    note character varying(50)
+    note character varying(100)
 );
 
 
@@ -141,8 +135,8 @@ ALTER TABLE public.attribute OWNER TO gigadb;
 CREATE SEQUENCE attribute_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -156,7 +150,14 @@ ALTER SEQUENCE attribute_id_seq OWNED BY attribute.id;
 
 
 --
--- Name: author; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: attribute_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('attribute_id_seq', 422, true);
+
+
+--
+-- Name: author; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE author (
@@ -178,8 +179,8 @@ ALTER TABLE public.author OWNER TO gigadb;
 CREATE SEQUENCE author_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -193,7 +194,14 @@ ALTER SEQUENCE author_id_seq OWNED BY author.id;
 
 
 --
--- Name: dataset; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('author_id_seq', 3809, true);
+
+
+--
+-- Name: dataset; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE dataset (
@@ -219,14 +227,14 @@ CREATE TABLE dataset (
 ALTER TABLE public.dataset OWNER TO gigadb;
 
 --
--- Name: dataset_attributes; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_attributes; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE dataset_attributes (
     id integer NOT NULL,
     dataset_id integer,
     attribute_id integer,
-    value character varying(50),
+    value character varying(200),
     units_id character varying(30),
     image_id integer,
     until_date date
@@ -242,8 +250,8 @@ ALTER TABLE public.dataset_attributes OWNER TO gigadb;
 CREATE SEQUENCE dataset_attributes_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -257,14 +265,23 @@ ALTER SEQUENCE dataset_attributes_id_seq OWNED BY dataset_attributes.id;
 
 
 --
--- Name: dataset_author; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('dataset_attributes_id_seq', 35, true);
+
+
+--
+-- Name: dataset_author; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE dataset_author (
     id integer NOT NULL,
     dataset_id integer NOT NULL,
     author_id integer NOT NULL,
-    rank integer DEFAULT 0
+    rank integer DEFAULT 0,
+    role character varying(30),
+    awardee character varying(50)
 );
 
 
@@ -277,8 +294,8 @@ ALTER TABLE public.dataset_author OWNER TO gigadb;
 CREATE SEQUENCE dataset_author_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -292,7 +309,14 @@ ALTER SEQUENCE dataset_author_id_seq OWNED BY dataset_author.id;
 
 
 --
--- Name: dataset_funder; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('dataset_author_id_seq', 3492, true);
+
+
+--
+-- Name: dataset_funder; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE dataset_funder (
@@ -300,7 +324,8 @@ CREATE TABLE dataset_funder (
     dataset_id integer NOT NULL,
     funder_id integer NOT NULL,
     grant_award text DEFAULT ''::text,
-    comments text DEFAULT ''::text
+    comments text DEFAULT ''::text,
+    awardee character varying(50)
 );
 
 
@@ -313,8 +338,8 @@ ALTER TABLE public.dataset_funder OWNER TO gigadb;
 CREATE SEQUENCE dataset_funder_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -328,14 +353,21 @@ ALTER SEQUENCE dataset_funder_id_seq OWNED BY dataset_funder.id;
 
 
 --
+-- Name: dataset_funder_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('dataset_funder_id_seq', 31, true);
+
+
+--
 -- Name: dataset_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
 --
 
 CREATE SEQUENCE dataset_id_seq
     START WITH 33
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -349,7 +381,14 @@ ALTER SEQUENCE dataset_id_seq OWNED BY dataset.id;
 
 
 --
--- Name: dataset_log; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('dataset_id_seq', 213, true);
+
+
+--
+-- Name: dataset_log; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE dataset_log (
@@ -372,8 +411,8 @@ ALTER TABLE public.dataset_log OWNER TO gigadb;
 CREATE SEQUENCE dataset_log_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -387,7 +426,14 @@ ALTER SEQUENCE dataset_log_id_seq OWNED BY dataset_log.id;
 
 
 --
--- Name: dataset_project; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('dataset_log_id_seq', 119, true);
+
+
+--
+-- Name: dataset_project; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE dataset_project (
@@ -406,8 +452,8 @@ ALTER TABLE public.dataset_project OWNER TO gigadb;
 CREATE SEQUENCE dataset_project_id_seq
     START WITH 7
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -421,7 +467,14 @@ ALTER SEQUENCE dataset_project_id_seq OWNED BY dataset_project.id;
 
 
 --
--- Name: dataset_sample; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_project_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('dataset_project_id_seq', 127, true);
+
+
+--
+-- Name: dataset_sample; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE dataset_sample (
@@ -440,8 +493,8 @@ ALTER TABLE public.dataset_sample OWNER TO gigadb;
 CREATE SEQUENCE dataset_sample_id_seq
     START WITH 211
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -455,7 +508,14 @@ ALTER SEQUENCE dataset_sample_id_seq OWNED BY dataset_sample.id;
 
 
 --
--- Name: dataset_session; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_sample_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('dataset_sample_id_seq', 4355, true);
+
+
+--
+-- Name: dataset_session; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE dataset_session (
@@ -483,8 +543,8 @@ ALTER TABLE public.dataset_session OWNER TO gigadb;
 CREATE SEQUENCE dataset_session_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -498,7 +558,14 @@ ALTER SEQUENCE dataset_session_id_seq OWNED BY dataset_session.id;
 
 
 --
--- Name: dataset_type; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_session_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('dataset_session_id_seq', 26, true);
+
+
+--
+-- Name: dataset_type; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE dataset_type (
@@ -517,8 +584,8 @@ ALTER TABLE public.dataset_type OWNER TO gigadb;
 CREATE SEQUENCE dataset_type_id_seq
     START WITH 37
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -532,7 +599,14 @@ ALTER SEQUENCE dataset_type_id_seq OWNED BY dataset_type.id;
 
 
 --
--- Name: exp_attributes; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('dataset_type_id_seq', 258, true);
+
+
+--
+-- Name: exp_attributes; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE exp_attributes (
@@ -553,8 +627,8 @@ ALTER TABLE public.exp_attributes OWNER TO gigadb;
 CREATE SEQUENCE exp_attributes_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -568,7 +642,14 @@ ALTER SEQUENCE exp_attributes_id_seq OWNED BY exp_attributes.id;
 
 
 --
--- Name: experiment; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: exp_attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('exp_attributes_id_seq', 5, true);
+
+
+--
+-- Name: experiment; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE experiment (
@@ -576,7 +657,8 @@ CREATE TABLE experiment (
     experiment_type character varying(100),
     experiment_name character varying(100),
     exp_description character varying(1000),
-    dataset_id integer
+    dataset_id integer,
+    "protocols.io" character varying(200)
 );
 
 
@@ -589,8 +671,8 @@ ALTER TABLE public.experiment OWNER TO gigadb;
 CREATE SEQUENCE experiment_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -604,7 +686,14 @@ ALTER SEQUENCE experiment_id_seq OWNED BY experiment.id;
 
 
 --
--- Name: extdb; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: experiment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('experiment_id_seq', 3, true);
+
+
+--
+-- Name: extdb; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE extdb (
@@ -625,8 +714,8 @@ ALTER TABLE public.extdb OWNER TO gigadb;
 CREATE SEQUENCE extdb_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -640,7 +729,14 @@ ALTER SEQUENCE extdb_id_seq OWNED BY extdb.id;
 
 
 --
--- Name: external_link; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: extdb_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('extdb_id_seq', 2, true);
+
+
+--
+-- Name: external_link; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE external_link (
@@ -660,8 +756,8 @@ ALTER TABLE public.external_link OWNER TO gigadb;
 CREATE SEQUENCE external_link_id_seq
     START WITH 17
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -675,7 +771,14 @@ ALTER SEQUENCE external_link_id_seq OWNED BY external_link.id;
 
 
 --
--- Name: external_link_type; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: external_link_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('external_link_id_seq', 61, true);
+
+
+--
+-- Name: external_link_type; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE external_link_type (
@@ -693,8 +796,8 @@ ALTER TABLE public.external_link_type OWNER TO gigadb;
 CREATE SEQUENCE external_link_type_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -708,7 +811,14 @@ ALTER SEQUENCE external_link_type_id_seq OWNED BY external_link_type.id;
 
 
 --
--- Name: file; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: external_link_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('external_link_type_id_seq', 4, true);
+
+
+--
+-- Name: file; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE file (
@@ -724,21 +834,22 @@ CREATE TABLE file (
     type_id integer,
     code character varying(200) DEFAULT 'FILE_CODE'::character varying,
     index4blast character varying(50),
-    download_count integer DEFAULT 0 NOT NULL
+    download_count integer DEFAULT 0 NOT NULL,
+    alternative_location character varying(200)
 );
 
 
 ALTER TABLE public.file OWNER TO gigadb;
 
 --
--- Name: file_attributes; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_attributes; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE file_attributes (
     id integer NOT NULL,
     file_id integer NOT NULL,
     attribute_id integer NOT NULL,
-    value character varying(50),
+    value character varying(200),
     unit_id character varying(30)
 );
 
@@ -752,8 +863,8 @@ ALTER TABLE public.file_attributes OWNER TO gigadb;
 CREATE SEQUENCE file_attributes_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -767,7 +878,14 @@ ALTER SEQUENCE file_attributes_id_seq OWNED BY file_attributes.id;
 
 
 --
--- Name: file_experiment; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('file_attributes_id_seq', 2, true);
+
+
+--
+-- Name: file_experiment; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE file_experiment (
@@ -786,8 +904,8 @@ ALTER TABLE public.file_experiment OWNER TO gigadb;
 CREATE SEQUENCE file_experiment_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -801,13 +919,21 @@ ALTER SEQUENCE file_experiment_id_seq OWNED BY file_experiment.id;
 
 
 --
--- Name: file_format; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_experiment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('file_experiment_id_seq', 1, true);
+
+
+--
+-- Name: file_format; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE file_format (
     id integer NOT NULL,
     name character varying(20) NOT NULL,
-    description text DEFAULT ''::text NOT NULL
+    description text DEFAULT ''::text NOT NULL,
+    edam_ontology_id character varying(100)
 );
 
 
@@ -820,8 +946,8 @@ ALTER TABLE public.file_format OWNER TO gigadb;
 CREATE SEQUENCE file_format_id_seq
     START WITH 26
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -835,14 +961,21 @@ ALTER SEQUENCE file_format_id_seq OWNED BY file_format.id;
 
 
 --
+-- Name: file_format_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('file_format_id_seq', 45, true);
+
+
+--
 -- Name: file_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
 --
 
 CREATE SEQUENCE file_id_seq
     START WITH 6716
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -856,7 +989,14 @@ ALTER SEQUENCE file_id_seq OWNED BY file.id;
 
 
 --
--- Name: file_relationship; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('file_id_seq', 88270, true);
+
+
+--
+-- Name: file_relationship; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE file_relationship (
@@ -876,8 +1016,8 @@ ALTER TABLE public.file_relationship OWNER TO gigadb;
 CREATE SEQUENCE file_relationship_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -891,7 +1031,14 @@ ALTER SEQUENCE file_relationship_id_seq OWNED BY file_relationship.id;
 
 
 --
--- Name: file_sample; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_relationship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('file_relationship_id_seq', 4, true);
+
+
+--
+-- Name: file_sample; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE file_sample (
@@ -910,8 +1057,8 @@ ALTER TABLE public.file_sample OWNER TO gigadb;
 CREATE SEQUENCE file_sample_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -925,13 +1072,21 @@ ALTER SEQUENCE file_sample_id_seq OWNED BY file_sample.id;
 
 
 --
--- Name: file_type; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_sample_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('file_sample_id_seq', 18935, true);
+
+
+--
+-- Name: file_type; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE file_type (
     id integer NOT NULL,
     name character varying(100) NOT NULL,
-    description text DEFAULT ''::text NOT NULL
+    description text DEFAULT ''::text NOT NULL,
+    edam_ontology_id character varying(100)
 );
 
 
@@ -944,8 +1099,8 @@ ALTER TABLE public.file_type OWNER TO gigadb;
 CREATE SEQUENCE file_type_id_seq
     START WITH 15
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -959,7 +1114,14 @@ ALTER SEQUENCE file_type_id_seq OWNED BY file_type.id;
 
 
 --
--- Name: funder_name; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('file_type_id_seq', 119, true);
+
+
+--
+-- Name: funder_name; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE funder_name (
@@ -979,8 +1141,8 @@ ALTER TABLE public.funder_name OWNER TO gigadb;
 CREATE SEQUENCE funder_name_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -994,7 +1156,14 @@ ALTER SEQUENCE funder_name_id_seq OWNED BY funder_name.id;
 
 
 --
--- Name: gigadb_user; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: funder_name_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('funder_name_id_seq', 6171, true);
+
+
+--
+-- Name: gigadb_user; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE gigadb_user (
@@ -1027,8 +1196,8 @@ ALTER TABLE public.gigadb_user OWNER TO gigadb;
 CREATE SEQUENCE gigadb_user_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1042,7 +1211,14 @@ ALTER SEQUENCE gigadb_user_id_seq OWNED BY gigadb_user.id;
 
 
 --
--- Name: image; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: gigadb_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('gigadb_user_id_seq', 345, true);
+
+
+--
+-- Name: image; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE image (
@@ -1065,8 +1241,8 @@ ALTER TABLE public.image OWNER TO gigadb;
 CREATE SEQUENCE image_id_seq
     START WITH 31
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1080,14 +1256,22 @@ ALTER SEQUENCE image_id_seq OWNED BY image.id;
 
 
 --
--- Name: link; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: image_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('image_id_seq', 225, true);
+
+
+--
+-- Name: link; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE link (
     id integer NOT NULL,
     dataset_id integer NOT NULL,
     is_primary boolean DEFAULT false NOT NULL,
-    link character varying(100) NOT NULL
+    link character varying(100) NOT NULL,
+    description character varying(200)
 );
 
 
@@ -1100,8 +1284,8 @@ ALTER TABLE public.link OWNER TO gigadb;
 CREATE SEQUENCE link_id_seq
     START WITH 66
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1115,21 +1299,35 @@ ALTER SEQUENCE link_id_seq OWNED BY link.id;
 
 
 --
+-- Name: link_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('link_id_seq', 294, true);
+
+
+--
 -- Name: link_prefix_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
 --
 
 CREATE SEQUENCE link_prefix_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
 ALTER TABLE public.link_prefix_id_seq OWNER TO gigadb;
 
 --
--- Name: manuscript; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: link_prefix_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('link_prefix_id_seq', 46, true);
+
+
+--
+-- Name: manuscript; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE manuscript (
@@ -1149,8 +1347,8 @@ ALTER TABLE public.manuscript OWNER TO gigadb;
 CREATE SEQUENCE manuscript_id_seq
     START WITH 27
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1164,7 +1362,14 @@ ALTER SEQUENCE manuscript_id_seq OWNED BY manuscript.id;
 
 
 --
--- Name: news; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: manuscript_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('manuscript_id_seq', 284, true);
+
+
+--
+-- Name: news; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE news (
@@ -1185,8 +1390,8 @@ ALTER TABLE public.news OWNER TO gigadb;
 CREATE SEQUENCE news_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1200,21 +1405,29 @@ ALTER SEQUENCE news_id_seq OWNED BY news.id;
 
 
 --
--- Name: prefix; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: news_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('news_id_seq', 3, true);
+
+
+--
+-- Name: prefix; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE prefix (
     id integer DEFAULT nextval('link_prefix_id_seq'::regclass) NOT NULL,
     prefix character(20) NOT NULL,
     url text NOT NULL,
-    source character varying(128) DEFAULT ''::character varying
+    source character varying(128) DEFAULT ''::character varying,
+    icon character varying(100)
 );
 
 
 ALTER TABLE public.prefix OWNER TO gigadb;
 
 --
--- Name: project; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: project; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE project (
@@ -1234,8 +1447,8 @@ ALTER TABLE public.project OWNER TO gigadb;
 CREATE SEQUENCE project_id_seq
     START WITH 7
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1249,7 +1462,14 @@ ALTER SEQUENCE project_id_seq OWNED BY project.id;
 
 
 --
--- Name: publisher; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: project_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('project_id_seq', 17, true);
+
+
+--
+-- Name: publisher; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE publisher (
@@ -1268,8 +1488,8 @@ ALTER TABLE public.publisher OWNER TO gigadb;
 CREATE SEQUENCE publisher_id_seq
     START WITH 3
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1283,7 +1503,14 @@ ALTER SEQUENCE publisher_id_seq OWNED BY publisher.id;
 
 
 --
--- Name: relation; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: publisher_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('publisher_id_seq', 4, true);
+
+
+--
+-- Name: relation; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE relation (
@@ -1303,8 +1530,8 @@ ALTER TABLE public.relation OWNER TO gigadb;
 CREATE SEQUENCE relation_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1318,7 +1545,14 @@ ALTER SEQUENCE relation_id_seq OWNED BY relation.id;
 
 
 --
--- Name: relationship; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: relation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('relation_id_seq', 84, true);
+
+
+--
+-- Name: relationship; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE relationship (
@@ -1336,8 +1570,8 @@ ALTER TABLE public.relationship OWNER TO gigadb;
 CREATE SEQUENCE relationship_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1351,7 +1585,14 @@ ALTER SEQUENCE relationship_id_seq OWNED BY relationship.id;
 
 
 --
--- Name: rss_message; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: relationship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('relationship_id_seq', 22, true);
+
+
+--
+-- Name: rss_message; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE rss_message (
@@ -1370,8 +1611,8 @@ ALTER TABLE public.rss_message OWNER TO gigadb;
 CREATE SEQUENCE rss_message_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1385,7 +1626,14 @@ ALTER SEQUENCE rss_message_id_seq OWNED BY rss_message.id;
 
 
 --
--- Name: sample; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: rss_message_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('rss_message_id_seq', 2, true);
+
+
+--
+-- Name: sample; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE sample (
@@ -1404,14 +1652,14 @@ CREATE TABLE sample (
 ALTER TABLE public.sample OWNER TO gigadb;
 
 --
--- Name: sample_attribute; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: sample_attribute; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE sample_attribute (
     id integer NOT NULL,
     sample_id integer NOT NULL,
     attribute_id integer NOT NULL,
-    value character varying(5000),
+    value character varying(10000),
     unit_id character varying(30)
 );
 
@@ -1425,8 +1673,8 @@ ALTER TABLE public.sample_attribute OWNER TO gigadb;
 CREATE SEQUENCE sample_attribute_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1440,7 +1688,14 @@ ALTER SEQUENCE sample_attribute_id_seq OWNED BY sample_attribute.id;
 
 
 --
--- Name: sample_experiment; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: sample_attribute_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('sample_attribute_id_seq', 30060, true);
+
+
+--
+-- Name: sample_experiment; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE sample_experiment (
@@ -1459,8 +1714,8 @@ ALTER TABLE public.sample_experiment OWNER TO gigadb;
 CREATE SEQUENCE sample_experiment_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1474,14 +1729,21 @@ ALTER SEQUENCE sample_experiment_id_seq OWNED BY sample_experiment.id;
 
 
 --
+-- Name: sample_experiment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('sample_experiment_id_seq', 2, true);
+
+
+--
 -- Name: sample_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
 --
 
 CREATE SEQUENCE sample_id_seq
     START WITH 210
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1495,7 +1757,14 @@ ALTER SEQUENCE sample_id_seq OWNED BY sample.id;
 
 
 --
--- Name: sample_rel; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: sample_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('sample_id_seq', 4347, true);
+
+
+--
+-- Name: sample_rel; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE sample_rel (
@@ -1515,8 +1784,8 @@ ALTER TABLE public.sample_rel OWNER TO gigadb;
 CREATE SEQUENCE sample_rel_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1530,7 +1799,14 @@ ALTER SEQUENCE sample_rel_id_seq OWNED BY sample_rel.id;
 
 
 --
--- Name: schemup_tables; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: sample_rel_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('sample_rel_id_seq', 8, true);
+
+
+--
+-- Name: schemup_tables; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE schemup_tables (
@@ -1544,7 +1820,7 @@ CREATE TABLE schemup_tables (
 ALTER TABLE public.schemup_tables OWNER TO gigadb;
 
 --
--- Name: search; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: search; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE search (
@@ -1565,8 +1841,8 @@ ALTER TABLE public.search OWNER TO gigadb;
 CREATE SEQUENCE search_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1577,6 +1853,13 @@ ALTER TABLE public.search_id_seq OWNER TO gigadb;
 --
 
 ALTER SEQUENCE search_id_seq OWNED BY search.id;
+
+
+--
+-- Name: search_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('search_id_seq', 27, true);
 
 
 --
@@ -1630,7 +1913,7 @@ CREATE VIEW show_project AS
 ALTER TABLE public.show_project OWNER TO gigadb;
 
 --
--- Name: species; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: species; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE species (
@@ -1652,8 +1935,8 @@ ALTER TABLE public.species OWNER TO gigadb;
 CREATE SEQUENCE species_id_seq
     START WITH 28
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1667,7 +1950,14 @@ ALTER SEQUENCE species_id_seq OWNED BY species.id;
 
 
 --
--- Name: type; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: species_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('species_id_seq', 1128856, true);
+
+
+--
+-- Name: type; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE type (
@@ -1686,8 +1976,8 @@ ALTER TABLE public.type OWNER TO gigadb;
 CREATE SEQUENCE type_id_seq
     START WITH 6
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -1701,7 +1991,14 @@ ALTER SEQUENCE type_id_seq OWNED BY type.id;
 
 
 --
--- Name: unit; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('type_id_seq', 26, true);
+
+
+--
+-- Name: unit; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE unit (
@@ -1735,7 +2032,7 @@ COMMENT ON COLUMN unit.definition IS 'the inition taken from the unit ontology';
 
 
 --
--- Name: yiisession; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+-- Name: yiisession; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE TABLE yiisession (
@@ -2062,7 +2359,7 @@ COPY "AuthItem" (name, type, description, bizrule, data) FROM stdin;
 --
 
 COPY "YiiSession" (id, expire, data) FROM stdin;
-2lbjbgdtlu4220o60j25nlm6f6      	1508487546	\\x64376331326638376330613462306363363262336232616132313263333365395f5f69647c693a3334343b64376331326638376330613462306363363262336232616132313263333365395f5f6e616d657c733a31363a2261646d696e406769676164622e6f7267223b64376331326638376330613462306363363262336232616132313263333365395f69647c693a3334343b6437633132663837633061346230636336326233623261613231326333336539726f6c65737c733a353a2261646d696e223b64376331326638376330613462306363363262336232616132313263333365395f5f7374617465737c613a323a7b733a333a225f6964223b623a313b733a353a22726f6c6573223b623a313b7d
+6jsqqar06qp73kd5lsn5uaona5      	1510721051	
 \.
 
 
@@ -2075,13 +2372,6 @@ COPY alternative_identifiers (id, sample_id, extdb_id, extdb_accession) FROM std
 
 
 --
--- Name: alternative_identifiers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('alternative_identifiers_id_seq', 1, false);
-
-
---
 -- Data for Name: attribute; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
@@ -2090,13 +2380,6 @@ COPY attribute (id, attribute_name, definition, model, structured_comment_name, 
 497	urltoredirect	\N	\N	urltoredirect	\N	\N	\N	\N	\N
 455	keyword	\N	\N	keywords	\N	\N	\N	\N	\N
 \.
-
-
---
--- Name: attribute_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('attribute_id_seq', 422, true);
 
 
 --
@@ -2129,13 +2412,6 @@ COPY author (id, surname, middle_name, first_name, orcid, gigadb_user_id) FROM s
 
 
 --
--- Name: author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('author_id_seq', 3809, true);
-
-
---
 -- Data for Name: dataset; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
@@ -2156,62 +2432,34 @@ COPY dataset_attributes (id, dataset_id, attribute_id, value, units_id, image_id
 
 
 --
--- Name: dataset_attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('dataset_attributes_id_seq', 35, true);
-
-
---
 -- Data for Name: dataset_author; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
-COPY dataset_author (id, dataset_id, author_id, rank) FROM stdin;
-3478	210	3789	1
-3479	210	3790	2
-3480	210	3791	3
-3481	211	3792	1
-3482	211	3793	2
-3483	211	3794	3
-3484	211	3795	4
-3485	211	3796	5
-3486	212	3803	1
-3487	212	3804	2
-3488	212	3805	3
-3489	212	3806	4
-3490	212	3807	5
-3491	213	3808	1
-3492	213	3809	2
+COPY dataset_author (id, dataset_id, author_id, rank, role) FROM stdin;
+3478	210	3789	1	\N
+3479	210	3790	2	\N
+3480	210	3791	3	\N
+3481	211	3792	1	\N
+3482	211	3793	2	\N
+3483	211	3794	3	\N
+3484	211	3795	4	\N
+3485	211	3796	5	\N
+3486	212	3803	1	\N
+3487	212	3804	2	\N
+3488	212	3805	3	\N
+3489	212	3806	4	\N
+3490	212	3807	5	\N
+3491	213	3808	1	\N
+3492	213	3809	2	\N
 \.
-
-
---
--- Name: dataset_author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('dataset_author_id_seq', 3492, true);
 
 
 --
 -- Data for Name: dataset_funder; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
-COPY dataset_funder (id, dataset_id, funder_id, grant_award, comments) FROM stdin;
+COPY dataset_funder (id, dataset_id, funder_id, grant_award, comments, awardee) FROM stdin;
 \.
-
-
---
--- Name: dataset_funder_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('dataset_funder_id_seq', 31, true);
-
-
---
--- Name: dataset_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('dataset_id_seq', 213, true);
 
 
 --
@@ -2219,51 +2467,7 @@ SELECT pg_catalog.setval('dataset_id_seq', 213, true);
 --
 
 COPY dataset_log (id, dataset_id, message, created_at, model, model_id, url) FROM stdin;
-83	210	Dataset publish	2016-05-09 05:57:06.197262	dataset	210
-84	210	Additional file Pygoscelis_adeliae.cds.gz added	2016-05-10 08:19:27.650724	File	88252	/adminFile/update/id/88252
-85	210	Additional file Pygoscelis_adeliae.cds.gz added	2016-05-10 08:21:48.756562	File	88253	/adminFile/update/id/88253
-86	210	File Pygoscelis_adeliae.cds.gz removed	2016-05-11 01:10:04.889131	File	88253
-87	210	File removed : Pygoscelis_adeliae.cds.gz	2016-05-11 01:10:04.893427	file	88253
-88	210	File Pygoscelis_adeliae.cds.gz updated	2016-05-11 01:10:28.280863	File	88252	/adminFile/update/id/88252
-89	210	Additional file Pygoscelis_adeliae.fa.gz added	2016-05-11 01:12:26.942622	File	88254	/adminFile/update/id/88254
-90	210	Additional file Pygoscelis_adeliae.gff.gz added	2016-05-11 01:20:07.395908	File	88255	/adminFile/update/id/88255
-91	210	Additional file Pygoscelis_adeliae.pep.gz added	2016-05-11 01:21:58.034232	File	88256	/adminFile/update/id/88256
-92	210	Additional file Pygoscelis_adeliae.RepeatMasker.out.gz added	2016-05-11 01:24:16.454904	File	88257	/adminFile/update/id/88257
-93	210	Additional file Pygoscelis_adeliae.scaf.fa.gz added	2016-05-11 01:25:37.83405	File	88258	/adminFile/update/id/88258
-94	210	Additional file readme.txt added	2016-05-11 01:27:13.557086	File	88259	/adminFile/update/id/88259
-95	210	Additional file readme.txt added	2016-05-11 01:27:43.208558	File	88260	/adminFile/update/id/88260
-96	211	Dataset publish	2016-05-11 02:56:26.749407	dataset	211
-97	211	Author added : Cheng, S	2016-05-11 02:58:07.010484	dataset_author	3481
-98	211	Author added : Liu, X	2016-05-11 02:58:32.227515	dataset_author	3482
-99	211	Author added : Pan, S	2016-05-11 02:58:57.686013	dataset_author	3483
-100	211	Author added : Quan, Z	2016-05-11 02:59:26.629794	dataset_author	3484
-101	211	Author added : Xie, M	2016-05-11 02:59:43.628232	dataset_author	3485
-102	211	Additional file millet.chr.version2.3.fa.gz added	2016-05-11 03:01:08.857306	File	88261	/adminFile/update/id/88261
-103	211	Additional file Millet.fa.glean.cds.v3.gz added	2016-05-11 03:03:01.540038	File	88262	/adminFile/update/id/88262
-104	211	Additional file Millet.fa.glean.pep.v3.gz added	2016-05-11 03:04:25.705292	File	88263	/adminFile/update/id/88263
-105	211	Additional file Millet.fa.glean.v3.gff added	2016-05-11 03:05:48.829187	File	88264	/adminFile/update/id/88264
-106	211	Additional file Millet_scaffoldVersion2.3.fa.gz added	2016-05-11 03:07:06.536613	File	88265	/adminFile/update/id/88265
-107	211	Additional file readme.txt added	2016-05-11 03:08:19.868845	File	88266	/adminFile/update/id/88266
-108	212	Dataset publish	2016-05-11 03:24:13.131903	dataset	212
-109	212	Additional file CS-master.tar.gz added	2016-05-11 03:26:57.855575	File	88267	/adminFile/update/id/88267
-110	212	Additional file CS-master.tar.gz added	2016-05-11 03:38:29.903249	File	88268	/adminFile/update/id/88268
-111	212	File CS-master.tar.gz updated	2016-05-11 03:52:31.146589	File	88267	/adminFile/update/id/88267
-112	212	File CS-master.tar.gz updated	2016-05-11 03:52:45.300105	File	88267	/adminFile/update/id/88267
-113	210	File readme.txt removed	2016-05-11 03:55:43.906815	File	88260
-114	210	File removed : readme.txt	2016-05-11 03:55:43.911084	file	88260
-115	212	Additional file GD-master.tar.gz added	2016-05-11 03:58:54.477316	File	88269	/adminFile/update/id/88269
-116	212	File GD-master.tar.gz updated	2016-05-11 03:59:48.519874	File	88269	/adminFile/update/id/88269
-117	213	Dataset publish	2016-05-11 04:16:46.655354	dataset	213
-118	213	Additional file Diagram-ALL-FIELDS-Check-annotation.jpg added	2016-05-11 04:18:16.420011	File	88270	/adminFile/update/id/88270
-119	213	File Diagram-ALL-FIELDS-Check-annotation.jpg updated	2016-05-11 04:19:19.786088	File	88270	/adminFile/update/id/88270
 \.
-
-
---
--- Name: dataset_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('dataset_log_id_seq', 119, true);
 
 
 --
@@ -2277,13 +2481,6 @@ COPY dataset_project (id, dataset_id, project_id) FROM stdin;
 
 
 --
--- Name: dataset_project_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('dataset_project_id_seq', 127, true);
-
-
---
 -- Data for Name: dataset_sample; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
@@ -2294,25 +2491,11 @@ COPY dataset_sample (id, dataset_id, sample_id) FROM stdin;
 
 
 --
--- Name: dataset_sample_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('dataset_sample_id_seq', 4355, true);
-
-
---
 -- Data for Name: dataset_session; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
 COPY dataset_session (id, identifier, dataset, dataset_id, datasettypes, images, authors, projects, links, "externalLinks", relations, samples) FROM stdin;
 \.
-
-
---
--- Name: dataset_session_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('dataset_session_id_seq', 26, true);
 
 
 --
@@ -2328,13 +2511,6 @@ COPY dataset_type (id, dataset_id, type_id) FROM stdin;
 
 
 --
--- Name: dataset_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('dataset_type_id_seq', 258, true);
-
-
---
 -- Data for Name: exp_attributes; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
@@ -2343,25 +2519,11 @@ COPY exp_attributes (id, exp_id, attribute_id, value, units_id) FROM stdin;
 
 
 --
--- Name: exp_attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('exp_attributes_id_seq', 5, true);
-
-
---
 -- Data for Name: experiment; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
-COPY experiment (id, experiment_type, experiment_name, exp_description, dataset_id) FROM stdin;
+COPY experiment (id, experiment_type, experiment_name, exp_description, dataset_id, "protocols.io") FROM stdin;
 \.
-
-
---
--- Name: experiment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('experiment_id_seq', 3, true);
 
 
 --
@@ -2370,13 +2532,6 @@ SELECT pg_catalog.setval('experiment_id_seq', 3, true);
 
 COPY extdb (id, database_name, definition, database_homepage, database_search_url) FROM stdin;
 \.
-
-
---
--- Name: extdb_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('extdb_id_seq', 2, true);
 
 
 --
@@ -2390,50 +2545,39 @@ COPY external_link (id, dataset_id, url, external_link_type_id) FROM stdin;
 
 
 --
--- Name: external_link_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('external_link_id_seq', 61, true);
-
-
---
 -- Data for Name: external_link_type; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
 COPY external_link_type (id, name) FROM stdin;
 3	Additional information
 4	Genome browser
+5	Protocols.io
+6	JBrowse
+7	3D Models
 \.
-
-
---
--- Name: external_link_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('external_link_type_id_seq', 4, true);
 
 
 --
 -- Data for Name: file; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
-COPY file (id, dataset_id, name, location, extension, size, description, date_stamp, format_id, type_id, code, index4blast, download_count) FROM stdin;
-88252	210	Pygoscelis_adeliae.cds.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.cds.gz	cds	6	coding sequence predictions on genome assembly	2014-05-12	41	117	FILE_CODE	\N	0
-88254	210	Pygoscelis_adeliae.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.fa.gz	gz	350	assembled scaffolds from sequence data	2014-05-12	41	113	FILE_CODE	\N	0
-88255	210	Pygoscelis_adeliae.gff.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.gff.gz	gz	1590	coding sequence annotation of assembly	2014-05-12	42	114	FILE_CODE	\N	0
-88256	210	Pygoscelis_adeliae.pep.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.pep.gz	gz	4170000	peptide translations of CDS predictions	2014-05-12	41	115	FILE_CODE	\N	0
-88257	210	Pygoscelis_adeliae.RepeatMasker.out.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz	gz	7490000	repeat masker results	2014-05-12	43	116	FILE_CODE	\N	0
-88258	210	Pygoscelis_adeliae.scaf.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz	gz	350		2014-05-12	41	113	FILE_CODE	\N	0
-88259	210	readme.txt	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/readme.txt	txt	1		2014-05-12	43	112	FILE_CODE	\N	0
-88261	211	millet.chr.version2.3.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz	gz	109		2011-11-12	41	113	FILE_CODE	\N	0
-88262	211	Millet.fa.glean.cds.v3.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet.fa.glean.cds.v3.gz	gz	13000		2011-11-12	41	117	FILE_CODE	\N	0
-88263	211	Millet.fa.glean.pep.v3.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet.fa.glean.pep.v3.gz	gz	85000000		2011-11-12	41	115	FILE_CODE	\N	0
-88264	211	Millet.fa.glean.v3.gff	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet.fa.glean.v3.gff	gz	14000000		2011-11-12	42	114	FILE_CODE	\N	0
-88265	211	Millet_scaffoldVersion2.3.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet_scaffoldVersion2.3.fa.gz	gz	109000		2011-11-12	41	113	FILE_CODE	\N	0
-88266	211	readme.txt	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/readme.txt	txt	1		2011-11-12	43	112	FILE_CODE	\N	0
-88267	212	CS-master.tar.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100094/CS-master.tar.gz	gz	114	compressed archive of the Analysis scripts (CS) files	2014-06-06	44	118	FILE_CODE	\N	0
-88269	212	GD-master.tar.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100094/GD-master.tar.gz	gz	163	compressed archive of the mock data and scripts GD files	2014-06-06	44	119	FILE_CODE	\N	0
-88270	213	Diagram-ALL-FIELDS-Check-annotation.jpg	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100142/Diagram-ALL-FIELDS-Check-annotation.jpg	jpg	54	image used in manuscript	2015-04-29	41	113	FILE_CODE	\N	0
+COPY file (id, dataset_id, name, location, extension, size, description, date_stamp, format_id, type_id, code, index4blast, download_count, alternative_location) FROM stdin;
+88252	210	Pygoscelis_adeliae.cds.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.cds.gz	cds	6	coding sequence predictions on genome assembly	2014-05-12	41	117	FILE_CODE	\N	0	\N
+88254	210	Pygoscelis_adeliae.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.fa.gz	gz	350	assembled scaffolds from sequence data	2014-05-12	41	113	FILE_CODE	\N	0	\N
+88255	210	Pygoscelis_adeliae.gff.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.gff.gz	gz	1590	coding sequence annotation of assembly	2014-05-12	42	114	FILE_CODE	\N	0	\N
+88256	210	Pygoscelis_adeliae.pep.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.pep.gz	gz	4170000	peptide translations of CDS predictions	2014-05-12	41	115	FILE_CODE	\N	0	\N
+88257	210	Pygoscelis_adeliae.RepeatMasker.out.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz	gz	7490000	repeat masker results	2014-05-12	43	116	FILE_CODE	\N	0	\N
+88258	210	Pygoscelis_adeliae.scaf.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz	gz	350		2014-05-12	41	113	FILE_CODE	\N	0	\N
+88259	210	readme.txt	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/readme.txt	txt	1		2014-05-12	43	112	FILE_CODE	\N	0	\N
+88261	211	millet.chr.version2.3.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz	gz	109		2011-11-12	41	113	FILE_CODE	\N	0	\N
+88262	211	Millet.fa.glean.cds.v3.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet.fa.glean.cds.v3.gz	gz	13000		2011-11-12	41	117	FILE_CODE	\N	0	\N
+88263	211	Millet.fa.glean.pep.v3.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet.fa.glean.pep.v3.gz	gz	85000000		2011-11-12	41	115	FILE_CODE	\N	0	\N
+88264	211	Millet.fa.glean.v3.gff	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet.fa.glean.v3.gff	gz	14000000		2011-11-12	42	114	FILE_CODE	\N	0	\N
+88265	211	Millet_scaffoldVersion2.3.fa.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/Millet_scaffoldVersion2.3.fa.gz	gz	109000		2011-11-12	41	113	FILE_CODE	\N	0	\N
+88266	211	readme.txt	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/readme.txt	txt	1		2011-11-12	43	112	FILE_CODE	\N	0	\N
+88267	212	CS-master.tar.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100094/CS-master.tar.gz	gz	114	compressed archive of the Analysis scripts (CS) files	2014-06-06	44	118	FILE_CODE	\N	0	\N
+88269	212	GD-master.tar.gz	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100094/GD-master.tar.gz	gz	163	compressed archive of the mock data and scripts GD files	2014-06-06	44	119	FILE_CODE	\N	0	\N
+88270	213	Diagram-ALL-FIELDS-Check-annotation.jpg	ftp://climb.genomics.cn/pub/10.5524/100001_101000/100142/Diagram-ALL-FIELDS-Check-annotation.jpg	jpg	54	image used in manuscript	2015-04-29	41	113	FILE_CODE	\N	0	\N
 \.
 
 
@@ -2446,13 +2590,6 @@ COPY file_attributes (id, file_id, attribute_id, value, unit_id) FROM stdin;
 
 
 --
--- Name: file_attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('file_attributes_id_seq', 2, true);
-
-
---
 -- Data for Name: file_experiment; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
@@ -2461,37 +2598,16 @@ COPY file_experiment (id, file_id, experiment_id) FROM stdin;
 
 
 --
--- Name: file_experiment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('file_experiment_id_seq', 1, true);
-
-
---
 -- Data for Name: file_format; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
-COPY file_format (id, name, description) FROM stdin;
-41	FASTA	A text-based format which begins with a single-line description, followed by lines of sequence data
-42	GFF	The General Feature Format (GFF) is used for describing genes and other features of DNA, RNA and protein sequences
-43	TEXT	(.doc, .readme, .text, .txt) - a text file
-44	TAR	(.tar) - an archive containing other files
-45	PDF	(.pdf) - portable document format
+COPY file_format (id, name, description, edam_ontology_id) FROM stdin;
+41	FASTA	A text-based format which begins with a single-line description, followed by lines of sequence data	\N
+42	GFF	The General Feature Format (GFF) is used for describing genes and other features of DNA, RNA and protein sequences	\N
+43	TEXT	(.doc, .readme, .text, .txt) - a text file	\N
+44	TAR	(.tar) - an archive containing other files	\N
+45	PDF	(.pdf) - portable document format	\N
 \.
-
-
---
--- Name: file_format_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('file_format_id_seq', 45, true);
-
-
---
--- Name: file_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('file_id_seq', 88270, true);
 
 
 --
@@ -2500,13 +2616,6 @@ SELECT pg_catalog.setval('file_id_seq', 88270, true);
 
 COPY file_relationship (id, file_id, related_file_id, relationship_id) FROM stdin;
 \.
-
-
---
--- Name: file_relationship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('file_relationship_id_seq', 4, true);
 
 
 --
@@ -2530,33 +2639,20 @@ COPY file_sample (id, sample_id, file_id) FROM stdin;
 
 
 --
--- Name: file_sample_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('file_sample_id_seq', 18935, true);
-
-
---
 -- Data for Name: file_type; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
-COPY file_type (id, name, description) FROM stdin;
-112	Readme
-113	Sequence assembly
-114	Annotation
-115	Protein sequence
-116	Repeat sequence
-117	Coding sequence
-118	Script
-119	Mixed archive
+
+COPY file_type (id, name, description, edam_ontology_id) FROM stdin;
+112	Readme		\N
+113	Sequence assembly		\N
+114	Annotation		\N
+115	Protein sequence		\N
+116	Repeat sequence		\N
+117	Coding sequence		\N
+118	Script		\N
+119	Mixed archive		\N
 \.
-
-
---
--- Name: file_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('file_type_id_seq', 119, true);
 
 
 --
@@ -2568,13 +2664,6 @@ COPY funder_name (id, uri, primary_name_display, country) FROM stdin;
 
 
 --
--- Name: funder_name_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('funder_name_id_seq', 6171, true);
-
-
---
 -- Data for Name: gigadb_user; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
@@ -2582,13 +2671,6 @@ COPY gigadb_user (id, email, password, first_name, last_name, affiliation, role,
 344	admin@gigadb.org	5a4f75053077a32e681f81daa8792f95	Joe	Bloggs	BGI	admin	t	f	t	\N	\N	\N	\N	test@gigadb.org	\N	EBI
 345	user@gigadb.org	5a4f75053077a32e681f81daa8792f95	John	Smith	BGI	user	t	f	t	\N	\N	\N	\N	user@gigadb.org	\N	EBI
 \.
-
-
---
--- Name: gigadb_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('gigadb_user_id_seq', 345, true);
 
 
 --
@@ -2605,32 +2687,11 @@ COPY image (id, location, tag, url, license, photographer, source) FROM stdin;
 
 
 --
--- Name: image_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('image_id_seq', 225, true);
-
-
---
 -- Data for Name: link; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
-COPY link (id, dataset_id, is_primary, link) FROM stdin;
+COPY link (id, dataset_id, is_primary, link, description) FROM stdin;
 \.
-
-
---
--- Name: link_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('link_id_seq', 294, true);
-
-
---
--- Name: link_prefix_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('link_prefix_id_seq', 46, true);
 
 
 --
@@ -2642,13 +2703,6 @@ COPY manuscript (id, identifier, pmid, dataset_id) FROM stdin;
 
 
 --
--- Name: manuscript_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('manuscript_id_seq', 284, true);
-
-
---
 -- Data for Name: news; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
@@ -2657,19 +2711,12 @@ COPY news (id, title, body, start_date, end_date) FROM stdin;
 
 
 --
--- Name: news_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('news_id_seq', 3, true);
-
-
---
 -- Data for Name: prefix; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
-COPY prefix (id, prefix, url, source) FROM stdin;
-45	ENA                 	http://www.ebi.ac.uk/ena/data/view/	EBI
-46	SRA                 	http://www.ncbi.nlm.nih.gov/sra?term=	NCBI
+COPY prefix (id, prefix, url, source, icon) FROM stdin;
+45	ENA                 	http://www.ebi.ac.uk/ena/data/view/	EBI	\N
+46	SRA                 	http://www.ncbi.nlm.nih.gov/sra?term=	NCBI	\N
 \.
 
 
@@ -2684,26 +2731,13 @@ COPY project (id, url, name, image_location) FROM stdin;
 
 
 --
--- Name: project_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('project_id_seq', 17, true);
-
-
---
 -- Data for Name: publisher; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
+
 COPY publisher (id, name, description) FROM stdin;
-1	GigaScience
+1	GigaScience	
 \.
-
-
---
--- Name: publisher_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('publisher_id_seq', 4, true);
 
 
 --
@@ -2712,13 +2746,6 @@ SELECT pg_catalog.setval('publisher_id_seq', 4, true);
 
 COPY relation (id, dataset_id, related_doi, relationship_id) FROM stdin;
 \.
-
-
---
--- Name: relation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('relation_id_seq', 84, true);
 
 
 --
@@ -2731,25 +2758,11 @@ COPY relationship (id, name) FROM stdin;
 
 
 --
--- Name: relationship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('relationship_id_seq', 22, true);
-
-
---
 -- Data for Name: rss_message; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
 COPY rss_message (id, message, publication_date) FROM stdin;
 \.
-
-
---
--- Name: rss_message_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('rss_message_id_seq', 2, true);
 
 
 --
@@ -2772,13 +2785,6 @@ COPY sample_attribute (id, sample_id, attribute_id, value, unit_id) FROM stdin;
 
 
 --
--- Name: sample_attribute_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('sample_attribute_id_seq', 30060, true);
-
-
---
 -- Data for Name: sample_experiment; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
@@ -2787,32 +2793,11 @@ COPY sample_experiment (id, sample_id, experiment_id) FROM stdin;
 
 
 --
--- Name: sample_experiment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('sample_experiment_id_seq', 2, true);
-
-
---
--- Name: sample_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('sample_id_seq', 4347, true);
-
-
---
 -- Data for Name: sample_rel; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
 COPY sample_rel (id, sample_id, related_sample_id, relationship_id) FROM stdin;
 \.
-
-
---
--- Name: sample_rel_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('sample_rel_id_seq', 8, true);
 
 
 --
@@ -2832,13 +2817,6 @@ COPY search (id, user_id, name, query, result) FROM stdin;
 
 
 --
--- Name: search_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('search_id_seq', 27, true);
-
-
---
 -- Data for Name: species; Type: TABLE DATA; Schema: public; Owner: gigadb
 --
 
@@ -2847,13 +2825,6 @@ COPY species (id, tax_id, common_name, genbank_name, scientific_name, eol_link) 
 1128855	4555	Foxtail millet	foxtail millet	Setaria italica	\N
 1128856	-1	None assigned	None assigned	None assigned	\N
 \.
-
-
---
--- Name: species_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('species_id_seq', 1128856, true);
 
 
 --
@@ -2867,18 +2838,11 @@ COPY type (id, name, description) FROM stdin;
 20	Transcriptomic	data relating to mRNA
 21	Software	computational tools for analysing and managing biological data
 22	Imaging	data involving the visual depiction of biological samples
-23	Metabolomic
+23	Metabolomic	
 24	Proteomic	large scale protein analysis dataset
 25	Genomic	genetic and genomic data e.g. sequence and assemblies
-26	Metadata
+26	Metadata	
 \.
-
-
---
--- Name: type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('type_id_seq', 26, true);
 
 
 --
@@ -2898,7 +2862,7 @@ COPY yiisession (id, expire, data) FROM stdin;
 
 
 --
--- Name: AuthAssignment_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: AuthAssignment_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY "AuthAssignment"
@@ -2906,7 +2870,7 @@ ALTER TABLE ONLY "AuthAssignment"
 
 
 --
--- Name: AuthItem_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: AuthItem_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY "AuthItem"
@@ -2914,7 +2878,7 @@ ALTER TABLE ONLY "AuthItem"
 
 
 --
--- Name: YiiSession_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: YiiSession_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY "YiiSession"
@@ -2922,7 +2886,7 @@ ALTER TABLE ONLY "YiiSession"
 
 
 --
--- Name: alternative_identifiers_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: alternative_identifiers_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY alternative_identifiers
@@ -2930,7 +2894,7 @@ ALTER TABLE ONLY alternative_identifiers
 
 
 --
--- Name: attribute_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: attribute_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY attribute
@@ -2938,7 +2902,7 @@ ALTER TABLE ONLY attribute
 
 
 --
--- Name: author_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: author_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY author
@@ -2946,7 +2910,7 @@ ALTER TABLE ONLY author
 
 
 --
--- Name: dataset_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY dataset_attributes
@@ -2954,7 +2918,7 @@ ALTER TABLE ONLY dataset_attributes
 
 
 --
--- Name: dataset_author_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_author_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY dataset_author
@@ -2962,7 +2926,7 @@ ALTER TABLE ONLY dataset_author
 
 
 --
--- Name: dataset_funder_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_funder_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY dataset_funder
@@ -2970,7 +2934,7 @@ ALTER TABLE ONLY dataset_funder
 
 
 --
--- Name: dataset_log_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_log_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY dataset_log
@@ -2978,7 +2942,7 @@ ALTER TABLE ONLY dataset_log
 
 
 --
--- Name: dataset_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY dataset
@@ -2986,7 +2950,7 @@ ALTER TABLE ONLY dataset
 
 
 --
--- Name: dataset_project_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_project_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY dataset_project
@@ -2994,7 +2958,7 @@ ALTER TABLE ONLY dataset_project
 
 
 --
--- Name: dataset_sample_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_sample_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY dataset_sample
@@ -3002,7 +2966,7 @@ ALTER TABLE ONLY dataset_sample
 
 
 --
--- Name: dataset_session_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_session_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY dataset_session
@@ -3010,7 +2974,7 @@ ALTER TABLE ONLY dataset_session
 
 
 --
--- Name: dataset_type_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: dataset_type_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY dataset_type
@@ -3018,7 +2982,7 @@ ALTER TABLE ONLY dataset_type
 
 
 --
--- Name: email_unique; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: email_unique; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY gigadb_user
@@ -3026,7 +2990,7 @@ ALTER TABLE ONLY gigadb_user
 
 
 --
--- Name: exp_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: exp_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY exp_attributes
@@ -3034,7 +2998,7 @@ ALTER TABLE ONLY exp_attributes
 
 
 --
--- Name: experiment_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: experiment_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY experiment
@@ -3042,7 +3006,7 @@ ALTER TABLE ONLY experiment
 
 
 --
--- Name: extdb_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: extdb_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY extdb
@@ -3050,7 +3014,7 @@ ALTER TABLE ONLY extdb
 
 
 --
--- Name: external_link_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: external_link_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY external_link
@@ -3058,7 +3022,7 @@ ALTER TABLE ONLY external_link
 
 
 --
--- Name: external_link_type_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: external_link_type_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY external_link_type
@@ -3066,7 +3030,7 @@ ALTER TABLE ONLY external_link_type
 
 
 --
--- Name: file_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY file_attributes
@@ -3074,7 +3038,7 @@ ALTER TABLE ONLY file_attributes
 
 
 --
--- Name: file_experiment_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_experiment_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY file_experiment
@@ -3082,7 +3046,7 @@ ALTER TABLE ONLY file_experiment
 
 
 --
--- Name: file_format_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_format_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY file_format
@@ -3090,7 +3054,7 @@ ALTER TABLE ONLY file_format
 
 
 --
--- Name: file_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY file
@@ -3098,7 +3062,7 @@ ALTER TABLE ONLY file
 
 
 --
--- Name: file_relationship_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_relationship_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY file_relationship
@@ -3106,7 +3070,7 @@ ALTER TABLE ONLY file_relationship
 
 
 --
--- Name: file_sample_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_sample_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY file_sample
@@ -3114,7 +3078,7 @@ ALTER TABLE ONLY file_sample
 
 
 --
--- Name: file_type_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: file_type_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY file_type
@@ -3122,7 +3086,7 @@ ALTER TABLE ONLY file_type
 
 
 --
--- Name: funder_name_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: funder_name_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY funder_name
@@ -3130,7 +3094,7 @@ ALTER TABLE ONLY funder_name
 
 
 --
--- Name: gigadb_user_facebook_id_key; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: gigadb_user_facebook_id_key; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY gigadb_user
@@ -3138,7 +3102,7 @@ ALTER TABLE ONLY gigadb_user
 
 
 --
--- Name: gigadb_user_google_id_key; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: gigadb_user_google_id_key; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY gigadb_user
@@ -3146,7 +3110,7 @@ ALTER TABLE ONLY gigadb_user
 
 
 --
--- Name: gigadb_user_linked_id_key; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: gigadb_user_linked_id_key; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY gigadb_user
@@ -3154,7 +3118,7 @@ ALTER TABLE ONLY gigadb_user
 
 
 --
--- Name: gigadb_user_orcid_id_key; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: gigadb_user_orcid_id_key; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY gigadb_user
@@ -3162,7 +3126,7 @@ ALTER TABLE ONLY gigadb_user
 
 
 --
--- Name: gigadb_user_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: gigadb_user_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY gigadb_user
@@ -3170,7 +3134,7 @@ ALTER TABLE ONLY gigadb_user
 
 
 --
--- Name: gigadb_user_twitter_id_key; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: gigadb_user_twitter_id_key; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY gigadb_user
@@ -3178,7 +3142,7 @@ ALTER TABLE ONLY gigadb_user
 
 
 --
--- Name: gigadb_user_username_key; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: gigadb_user_username_key; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY gigadb_user
@@ -3186,7 +3150,7 @@ ALTER TABLE ONLY gigadb_user
 
 
 --
--- Name: image_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: image_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY image
@@ -3194,7 +3158,7 @@ ALTER TABLE ONLY image
 
 
 --
--- Name: link_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: link_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY link
@@ -3202,7 +3166,7 @@ ALTER TABLE ONLY link
 
 
 --
--- Name: link_prefix_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: link_prefix_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY prefix
@@ -3210,7 +3174,7 @@ ALTER TABLE ONLY prefix
 
 
 --
--- Name: manuscript_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: manuscript_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY manuscript
@@ -3218,7 +3182,7 @@ ALTER TABLE ONLY manuscript
 
 
 --
--- Name: news_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: news_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY news
@@ -3226,7 +3190,7 @@ ALTER TABLE ONLY news
 
 
 --
--- Name: project_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: project_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY project
@@ -3234,7 +3198,7 @@ ALTER TABLE ONLY project
 
 
 --
--- Name: publisher_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: publisher_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY publisher
@@ -3242,7 +3206,7 @@ ALTER TABLE ONLY publisher
 
 
 --
--- Name: relation_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: relation_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY relation
@@ -3250,7 +3214,7 @@ ALTER TABLE ONLY relation
 
 
 --
--- Name: relationship_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: relationship_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY relationship
@@ -3258,7 +3222,7 @@ ALTER TABLE ONLY relationship
 
 
 --
--- Name: rss_message_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: rss_message_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY rss_message
@@ -3266,7 +3230,7 @@ ALTER TABLE ONLY rss_message
 
 
 --
--- Name: sample_attribute_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: sample_attribute_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY sample_attribute
@@ -3274,7 +3238,7 @@ ALTER TABLE ONLY sample_attribute
 
 
 --
--- Name: sample_experiment_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: sample_experiment_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY sample_experiment
@@ -3282,7 +3246,7 @@ ALTER TABLE ONLY sample_experiment
 
 
 --
--- Name: sample_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: sample_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY sample
@@ -3290,7 +3254,7 @@ ALTER TABLE ONLY sample
 
 
 --
--- Name: sample_rel_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: sample_rel_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY sample_rel
@@ -3298,7 +3262,7 @@ ALTER TABLE ONLY sample_rel
 
 
 --
--- Name: search_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: search_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY search
@@ -3306,7 +3270,7 @@ ALTER TABLE ONLY search
 
 
 --
--- Name: species_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: species_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY species
@@ -3314,7 +3278,7 @@ ALTER TABLE ONLY species
 
 
 --
--- Name: type_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: type_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY type
@@ -3322,7 +3286,7 @@ ALTER TABLE ONLY type
 
 
 --
--- Name: un_dataset_funder; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: un_dataset_funder; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY dataset_funder
@@ -3330,7 +3294,7 @@ ALTER TABLE ONLY dataset_funder
 
 
 --
--- Name: unit_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: unit_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY unit
@@ -3338,7 +3302,7 @@ ALTER TABLE ONLY unit
 
 
 --
--- Name: yiisession_pkey1; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace:
+-- Name: yiisession_pkey1; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 ALTER TABLE ONLY yiisession
@@ -3346,14 +3310,14 @@ ALTER TABLE ONLY yiisession
 
 
 --
--- Name: fki_sample_attribute_fkey; Type: INDEX; Schema: public; Owner: gigadb; Tablespace:
+-- Name: fki_sample_attribute_fkey; Type: INDEX; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE INDEX fki_sample_attribute_fkey ON sample_attribute USING btree (attribute_id);
 
 
 --
--- Name: identifier_idx; Type: INDEX; Schema: public; Owner: gigadb; Tablespace:
+-- Name: identifier_idx; Type: INDEX; Schema: public; Owner: gigadb; Tablespace: 
 --
 
 CREATE UNIQUE INDEX identifier_idx ON dataset USING btree (identifier);
@@ -3472,14 +3436,6 @@ ALTER TABLE ONLY dataset_project
 
 
 --
--- Name: dataset_publisher_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gigadb
---
-
-ALTER TABLE ONLY dataset
-    ADD CONSTRAINT dataset_publisher_id_fkey FOREIGN KEY (publisher_id) REFERENCES publisher(id) ON DELETE SET NULL;
-
-
---
 -- Name: dataset_sample_dataset_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gigadb
 --
 
@@ -3509,14 +3465,6 @@ ALTER TABLE ONLY dataset
 
 ALTER TABLE ONLY dataset_type
     ADD CONSTRAINT dataset_type_dataset_id_fkey FOREIGN KEY (dataset_id) REFERENCES dataset(id) ON DELETE CASCADE;
-
-
---
--- Name: dataset_type_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gigadb
---
-
-ALTER TABLE ONLY dataset_type
-    ADD CONSTRAINT dataset_type_type_id_fkey FOREIGN KEY (type_id) REFERENCES type(id) ON DELETE CASCADE;
 
 
 --
@@ -3653,14 +3601,6 @@ ALTER TABLE ONLY file_sample
 
 ALTER TABLE ONLY file_sample
     ADD CONSTRAINT file_sample_sample_id_fkey FOREIGN KEY (sample_id) REFERENCES sample(id);
-
-
---
--- Name: file_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gigadb
---
-
-ALTER TABLE ONLY file
-    ADD CONSTRAINT file_type_id_fkey FOREIGN KEY (type_id) REFERENCES file_type(id) ON DELETE CASCADE;
 
 
 --
