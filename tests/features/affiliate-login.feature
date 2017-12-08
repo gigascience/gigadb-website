@@ -3,180 +3,160 @@ AS an author,
 I WANT TO sign in to the gigadb website with my social media credentials
 SO THAT I can upload and manage the datasets for my papers
 
-	Background:
-		Given test users are loaded
-		And Gigadb has a "Facebook" API keys
-		And Gigadb has a "Google" API keys
-		And Gigadb has a "Twitter" API keys
-		And Gigadb has a "LinkedIn" API keys
-		And Gigadb has a "Orcid" API keys
 
-
-	@ok @javascript @facebook @done @first
 	Scenario: I sign in with Facebook with no existing Gigadb account
-		Given I have a "Facebook" account
-		And The "Facebook" account has not authorised login to GigaDB web site
-		But I don't have a Gigadb account for my "Facebook" account email
-		When I am on "/site/chooseLogin"
-		And I click on the "Facebook" button
-		And I sign in to "Facebook"
-		And I authorise gigadb for "Facebook"
-		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "Facebook" details
+	Given I have a "Facebook" account
+	But I don't have a Gigadb account
+	When I navigate to /site/chooseLogin
+	And I click on the "Facebook" button
+	And I authorise Gigadb for "Facebook"
+	Then a new Gigadb account is created
+	And I'm logged in into that account
+	And the email I used for "Facebook" is used for that account
 
-	@ok @javascript @google @done
 	Scenario: I sign in with Google with no existing Gigadb account
-		Given I have a "Google" account
-		But I don't have a Gigadb account for my "Google" account email
-		When I am on "/site/chooseLogin"
-		And I click on the "Google" button
-		And I sign in to "Google"
-		And I authorise gigadb for "Google"
-		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "Google" details
+	Given I have a "Google" account
+	But I don't have a Gigadb account
+	When I navigate to /site/chooseLogin
+	And I click on the "Google" button
+	And I authorise Gigadb for "Google"
+	Then a new Gigadb account is created
+	And I'm logged in into that account
+	And the email I used for "Google" is used for that account
 
-	@ok @twitter @done @first-non-js
 	Scenario: I sign in with Twitter with no existing Gigadb account
-		Given I have a "Twitter" account
-		But I don't have a Gigadb account for my "Twitter" account email
-		When I am on "/site/chooseLogin"
-		And I click on the "Twitter" button
-		And I sign in to "Twitter"
-		And I authorise gigadb for "Twitter"
-		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "Twitter" details
+	Given I have a "Twitter" account
+	But I don't have a Gigadb account
+	When I navigate to /site/chooseLogin
+	And I click on the "Twitter" button
+	And I authorise Gigadb for "Twitter"
+	Then a new Gigadb account is created
+	And I'm logged in into that account
+	And the email I used for "Twitter" is used for that account
 
-	@ok @linkedin @done
 	Scenario: I sign in with LinkedIn with no existing Gigadb account
-		Given I have a "LinkedIn" account
-		But I don't have a Gigadb account for my "LinkedIn" account email
-		When I am on "/site/chooseLogin"
-		And I click on the "LinkedIn" button
-		And I sign in to "LinkedIn"
-		And I authorise gigadb for "LinkedIn"
-		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "LinkedIn" details
+	Given I have a "LinkedIn" account
+	But I don't have a Gigadb account
+	When I navigate to /site/chooseLogin
+	And I click on the "LinkedIn" button
+	And I authorise Gigadb for "LinkedIn"
+	Then a new Gigadb account is created
+	And I'm logged in into that account
+	And the email I used for "LinkedIn" is used for that account
 
-	@ok @orcid @javascript @done
 	Scenario: I sign in with ORCID with no existing Gigadb account
-		Given I have a "Orcid" account
-		But I don't have a Gigadb account for my "Orcid" account email
-		When I am on "/site/chooseLogin"
-		And I click on the "ORCID" button
-		And I sign in to "Orcid"
-		And I authorise gigadb for "Orcid"
-		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "Orcid" details
+	Given I have a "ORCID" account
+	But I don't have a Gigadb account
+	When I navigate to /site/chooseLogin
+	And I click on the "ORCID" button
+	And I authorise Gigadb for "ORCID"
+	Then a new Gigadb account is created
+	And I'm logged in into that account
+	And the email I used for "ORCID" is used for that account
 
-	@ok @facebook @javascript @done
 	Scenario: I have a Gigadb account and I sign in with my "Facebook" credentials
-		Given I have a "Facebook" account
-		And The "Facebook" account has not authorised login to GigaDB web site
-		And I have a Gigadb account for my "Facebook" account email
-		When I am on "/site/chooseLogin"
-		And I click on the "Facebook" button
-		And I sign in to "Facebook"
-		And I authorise gigadb for "Facebook"
-		Then I'm logged in into the Gigadb web site
-		And no new gigadb account is created for my "Facebook" account email
+	Given I have a Gigadb account
+	And I have a "Facebook" account
+	And email addresses for those accounts match
+	When I navigate to /site/chooseLogin
+	And I click on the "Facebook" button
+	And I authorise Gigadb for "Facebook"
+	Then I'm logged in into my existing account
+	And no new gigadb account is created
 
-	@ok @javascript @google @done
 	Scenario: I have a Gigadb account and I sign in with my "Google" credentials
-		Given I have a "Google" account
-		And I have a Gigadb account for my "Google" account email
-		When I am on "/site/chooseLogin"
-		And I click on the "Google" button
-		And I sign in to "Google"
-		And I authorise gigadb for "Google"
-		Then I'm logged in into the Gigadb web site
-		And no new gigadb account is created for my "Google" account email
+	Given I have a Gigadb account
+	And I have a "Google" account
+	And email addresses for those accounts match
+	When I navigate to /site/chooseLogin
+	And I click on the "Google" button
+	And I authorise Gigadb for "Google"
+	Then I'm logged in into my existing account
+	And no new gigadb account is created
 
-	@ok @twitter @done
 	Scenario: I have a Gigadb account and I sign in with my "Twitter" credentials
-		Given I have a "Twitter" account
-		And I have a Gigadb account for my "Twitter" account email
-		When I am on "/site/chooseLogin"
-		And I click on the "Twitter" button
-		And I sign in to "Twitter"
-		And I authorise gigadb for "Twitter"
-		Then I'm logged in into the Gigadb web site
-		And no new gigadb account is created for my "Twitter" account email
+	Given I have a Gigadb account
+	And I have a "Twitter" account
+	And email addresses for those accounts match
+	When I navigate to /site/chooseLogin
+	And I click on the "Twitter" button
+	And I authorise Gigadb for "Twitter"
+	Then I'm logged in into my existing account
+	And no new gigadb account is created
 
-	@ok @linkedin @done
 	Scenario: I have a Gigadb account and I sign in with my "LinkedIn" credentials
-		And I have a "LinkedIn" account
-		And I have a Gigadb account for my "LinkedIn" account email
-		When I am on "/site/chooseLogin"
-		And I click on the "LinkedIn" button
-		And I sign in to "LinkedIn"
-		And I authorise gigadb for "LinkedIn"
-		Then I'm logged in into the Gigadb web site
-		And no new gigadb account is created for my "LinkedIn" account email
+	Given I have a Gigadb account
+	And I have a "LinkedIn" account
+	And email addresses for those accounts match
+	When I navigate to /site/chooseLogin
+	And I click on the "LinkedIn" buttons
+	And I authorise Gigadb for "LinkedIn"
+	Then I'm logged in into my existing account
+	And no new gigadb account is created
 
-	@ok @orcid @javascript @done
-	Scenario: I have a Gigadb account associated with my ORCID id and I sign in with my "ORCID" credentials
-		Given I have a "Orcid" account
-		And I have a Gigadb account for my "Orcid" uid
-		When I am on "/site/chooseLogin"
-		And I click on the "ORCID" button
-		And I sign in to "Orcid"
-		And I authorise gigadb for "Orcid"
-		Then I'm logged in into the Gigadb web site
-		And no new gigadb account is created for my "Orcid" account email
+	Scenario: I have a Gigadb account and I sign in with my "ORCID" credentials
+	Given I have a Gigadb account
+	And I have a "ORCID" account
+	And email addresses for those accounts match
+	When I navigate to /site/chooseLogin
+	And I click on the "ORCID" buttons
+	And I authorise Gigadb for "ORCID"
+	Then I'm logged in into my existing account
+	And no new gigadb account is created
 
-	@ok @differentemails @facebook @javascript @done
 	Scenario: I sign in with my "Facebook" credentials and I have a gigadb account with a different email address
-		Given I have a "Facebook" account
-		And The "Facebook" account has not authorised login to GigaDB web site
-		And I have a Gigadb account with a different email
-		When I am on "/site/chooseLogin"
-		And I click on the "Facebook" button
-		And I sign in to "Facebook"
-		And I authorise gigadb for "Facebook"
-		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "Facebook" details
+	Given I have a Gigadb account
+	And I have a "Facebook" account
+	But email addresses for those accounts do not match
+	When I navigate to /site/chooseLogin
+	And I click on the "Facebook" button
+	And I authorise Gigadb for "Facebook"
+	Then a new Gigadb account is created
+	And I'm logged in into that account
+	And the email I used for "Facebook" is used for that account
 
-	@ok @differentemails @google @javascript @done
+
 	Scenario: I sign in with my "Google" credentials and I have a gigadb account with a different email address
-		Given I have a "Google" account
-		And I have a Gigadb account with a different email
-		When I am on "/site/chooseLogin"
-		And I click on the "Google" button
-		And I sign in to "Google"
-		And I authorise gigadb for "Google"
-		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "Google" details
+	Given I have a Gigadb account
+	And I have a "Google" account
+	But email addresses for those accounts do not match
+	When I navigate to /site/chooseLogin
+	And I click on the "Google" button
+	And I authorise Gigadb for "Google"
+	Then a new Gigadb account is created
+	And I'm logged in into that account
+	And the email I used for "Google" is used for that account
 
-	@ok @differentemails @twitter @done
 	Scenario: I sign in with my "Twitter" credentials and I have a gigadb account with a different email address
-		Given I have a "Twitter" account
-		And I have a Gigadb account with a different email
-		When I am on "/site/chooseLogin"
-		And I click on the "Twitter" button
-		And I sign in to "Twitter"
-		And I authorise gigadb for "Twitter"
-		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "Twitter" details
+	Given I have a Gigadb account
+	And I have a "Twitter" account
+	But email addresses for those accounts do not match
+	When I navigate to /site/chooseLogin
+	And I click on the "Twitter" button
+	And I authorise Gigadb for "Twitter"
+	Then a new Gigadb account is created
+	And I'm logged in into that account
+	And the email I used for "Twitter" is used for that account
 
-	@ok @differentemails @linkedin @done
 	Scenario: I sign in with my "LinkedIn" credentials and I have a gigadb account with a different email address
-		Given I have a "LinkedIn" account
-		And I have a Gigadb account with a different email
-		When I am on "/site/chooseLogin"
-		And I click on the "LinkedIn" button
-		And I sign in to "LinkedIn"
-		And I authorise gigadb for "LinkedIn"
-		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "LinkedIn" details
+	Given I have a Gigadb account
+	And I have a "LinkedIn" account
+	But email addresses for those accounts do not match
+	When I navigate to /site/chooseLogin
+	And I click on the "LinkedIn" button
+	And I authorise Gigadb for "LinkedIn"
+	Then a new Gigadb account is created
+	And I'm logged in into that account
+	And the email I used for "LinkedIn" is used for that account
 
-	@ok @differentemails @orcid @javascript @done
-	Scenario: I sign in with my "Orcid" credentials and I have a gigadb account with a different email address
-		Given I have a "Orcid" account
-		And I have a Gigadb account with a different email
-		When I am on "/site/chooseLogin"
-		And I click on the "ORCID" button
-		And I sign in to "Orcid"
-		And I authorise gigadb for "Orcid"
-		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "Orcid" details
+	Scenario: I sign in with my "ORCID" credentials and I have a gigadb account with a different email address
+	Given I have a Gigadb account
+	And I have a "ORCID" account
+	But email addresses for those accounts do not match
+	When I navigate to /site/chooseLogin
+	And I click on the "ORCID" button
+	And I authorise Gigadb for "ORCID"
+	Then a new Gigadb account is created
+	And I'm logged in into that account
+	And the email I used for "ORCID" is used for that account
 
