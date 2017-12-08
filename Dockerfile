@@ -47,7 +47,7 @@ COPY ./chef /chef
 WORKDIR /chef
 
 # Disable iptables on boot up
-RUN yum -y install iptables && chkconfig iptables off
+#RUN yum -y install iptables && chkconfig iptables off
 
 EXPOSE 80
 
@@ -55,6 +55,6 @@ EXPOSE 80
 
 ## Simple startup script to avoid some issues observed with container restart
 ADD run-chef.sh /run-chef.sh
-RUN chmod -v +x /run-chef.sh
-CMD ["/run-chef.sh"]
-#CMD ["/bin/bash"]
+#RUN chmod -v +x /run-chef.sh
+#CMD ["/run-chef.sh"]
+CMD ["/bin/bash"]
