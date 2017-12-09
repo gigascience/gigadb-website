@@ -1,6 +1,7 @@
 
 <?
-$this->pageTitle='GigaDB - Contact Us';
+	$this->pageTitle='GigaDB - Contact Us';
+
 ?>
 
 
@@ -8,7 +9,9 @@ $this->pageTitle='GigaDB - Contact Us';
 <div class="flash-success alert alert-success">
 	<?= Yii::app()->user->getFlash('contact'); ?>
 </div>
-<? } else { ?>
+<? } else { 
+	$text = $this->captchaGenerator();
+	?>
 <h2>Contact</h2>
 <div class="row" id="contact">
 	<div class="span8 offset2">
@@ -49,19 +52,19 @@ $this->pageTitle='GigaDB - Contact Us';
 					</div>
 				</div>
 
-				<div class="control-group">
-			        <div class="controls">
-			        	<?= $form->labelEx($model, 'validacion') ?>
-			        	<? $this->widget('application.extensions.recaptcha.EReCaptcha',
-			            array('model'=>$model, 'attribute'=>'validacion',
-			                  'theme'=>'clean', 'language'=>'zh_TW',
-			                  'publicKey'=>Yii::app()->params['recaptcha_publickey'])) ?>
-			        </div>
-				</div>
-
-				
-
-			
+				<div class="control-group">		
+					<?php echo $form->labelEx($model,'verifyCode'); ?>		
+			        <div class="controls">					
+						<div style="width:100%">	
+							<img style="width:200px;" src="/images/tempcaptcha/<?php echo $text; ?>.png">	
+						</div>
+						<?php echo $form->textField($model,'verifyCode'); ?>	
+						<div class="hint">Please enter the letters as they are shown in the image above.
+						<br/>Letters are not case-sensitive.</div>
+						<?php echo $form->error($model, 'verifyCode'); ?>					
+						</div>		
+			    </div>
+			</div>
 		</div><!-- form -->
 
 	</div>

@@ -5,6 +5,7 @@
 		<p><?=Yii::t('app' , 'GigaScience appreciates your interest in the GigaDB project. With a GigaDB account, you can submit new datasets to the database. Also, GigaDB can automatically notify you of new content which matches your interests. Please fill out the following information and register to enjoy the benefits of GigaDB membership!')?></p>
 <?}
 		?>
+		<?php $text = $this->captchaGenerator(); ?>
 		<p class="note"><?=Yii::t('app' , 'Fields with <span class="required">*</span> are required.')?></p>
 		<div class="form well">
 			<? $form=$this->beginWidget('CActiveForm', array(
@@ -83,16 +84,18 @@
 
 
 			<? if ($model->isNewRecord) { ?>
-				<div class="control-group">
-					<div class="controls">
-						<?= $form->labelEx($model,'validacion') ?>
-				        <? $this->widget('application.extensions.recaptcha.EReCaptcha',
-				           array('model'=>$model, 'attribute'=>'validacion',
-				                 'theme'=>'clean', 'language'=>'zh_TW',
-				                 'publicKey'=>Yii::app()->params['recaptcha_publickey'])) ?>
-				        <?= $form->error($model,'validacion') ?>
-					</div>
-				</div>
+			<div class="control-group">		
+					<?php echo $form->labelEx($model,'verifyCode'); ?>		
+			        <div class="controls">					
+						<div style="width:100%">	
+							<img style="width:200px;" src="/images/tempcaptcha/<?php echo $text; ?>.png">	
+						</div>
+						<?php echo $form->textField($model,'verifyCode'); ?>	
+						<div class="hint">Please enter the letters as they are shown in the image above.
+						<br/>Letters are not case-sensitive.</div>
+						<?php echo $form->error($model, 'verifyCode'); ?>					
+						</div>		
+			    </div>
 			<? } ?>
 
 
