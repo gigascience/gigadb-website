@@ -18,6 +18,7 @@ use Behat\MinkExtension\Context\MinkContext;
 //   require_once 'PHPUnit/Framework/Assert/Functions.php';
 //
 
+
 /**
  * Features context.
  */
@@ -51,7 +52,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iHaveAAccount($arg1)
     {
-        true;
+        true; //temporary set to true to test the connection to the browser simulator
+        // throw new PendingException();
     }
 
     /**
@@ -59,23 +61,24 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iDonTHaveAGigadbAccount()
     {
-        true;
+        true; //temporary set to true to test the connection to the browser simulator
+        // throw new PendingException();
     }
 
 
     /**
-     * @When /^I navigate to \/site\/chooseLogin$/
+     * @When /^I navigate to "([^"]*)"$/
      */
-    public function iNavigateToSiteChooselogin()
+    public function iNavigateTo($arg1)
     {
-        $this->visit( "/site/chooseLogin" ) ;
+        $this->visit( $arg1 ) ;
         $session =  $this->getSession('Goutte');
-        echo $session->getCurrentUrl() . PHP_EOL ;
-        // PHPUnit_Framework_Assert::assertSame(
-        //     "http://localhost/site/chooseLogin",
-        //     $session->getCurrentUrl()
-        // );
+        \PHPUnit\Framework\Assert::assertSame(
+            200,
+            $session->getStatusCode(), "Error while visiting the web site $arg1"
+        );
     }
+
 
     /**
      * @Given /^I click on the "([^"]*)" button$/
@@ -84,7 +87,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     {
         $this->clickLink($arg1);
         $session=  $this->getSession('Goutte');
-        echo $session->getCurrentUrl() . PHP_EOL ;
     }
 
     /**
@@ -115,54 +117,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      * @Given /^the email I used for "([^"]*)" is used for that account$/
      */
     public function theEmailIUsedForIsUsedForThatAccount($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^I have a Gigadb account$/
-     */
-    public function iHaveAGigadbAccount()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^email addresses for those accounts match$/
-     */
-    public function emailAddressesForThoseAccountsMatch()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then /^I\'m logged in into my existing account$/
-     */
-    public function iMLoggedInIntoMyExistingAccount()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^no new gigadb account is created$/
-     */
-    public function noNewGigadbAccountIsCreated()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^I click on the "([^"]*)" buttons$/
-     */
-    public function iClickOnTheButtons($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^email addresses for those accounts do not match$/
-     */
-    public function emailAddressesForThoseAccountsDoNotMatch()
     {
         throw new PendingException();
     }

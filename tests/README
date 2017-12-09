@@ -18,13 +18,9 @@ $ casperjs test tests/*.js
 
 (2) Acceptance tests:
 
-make sure to have an instance of phantomjs running:
 
-$ phantomjs --webdriver=8643
+you can choose one of the commands below:
 
-
-Then you can choose one of the commands below:
-
-$ Behat/bin/behat  -p phantomjs --tags @wip -c Behat/behat.yml    # will run the scenarios tagged as @wip
-$ Behat/bin/behat  -p phantomjs --tags ~@wip -c Behat/behat.yml    # will run all the scenarios but those tagged as @wip
-$ Behat/bin/behat  -p phantomjs  -c Behat/behat.yml    # will run all the scenarios
+$ Behat/bin/behat --tags @wip -c Behat/behat.yml    # will run the scenarios tagged as @wip
+$ Behat/bin/behat --tags ~@wip -c Behat/behat.yml    # will run all the scenarios but those tagged as @wip
+$ Behat/bin/behat -c Behat/behat.yml    # will run all the scenarios
