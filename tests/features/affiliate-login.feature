@@ -7,7 +7,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with Facebook with no existing Gigadb account
 	Given I have a "Facebook" account
 	But I don't have a Gigadb account
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "Facebook" button
 	And I authorise Gigadb for "Facebook"
 	Then a new Gigadb account is created
@@ -17,7 +17,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with Google with no existing Gigadb account
 	Given I have a "Google" account
 	But I don't have a Gigadb account
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "Google" button
 	And I authorise Gigadb for "Google"
 	Then a new Gigadb account is created
@@ -27,7 +27,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with Twitter with no existing Gigadb account
 	Given I have a "Twitter" account
 	But I don't have a Gigadb account
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "Twitter" button
 	And I authorise Gigadb for "Twitter"
 	Then a new Gigadb account is created
@@ -37,7 +37,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with LinkedIn with no existing Gigadb account
 	Given I have a "LinkedIn" account
 	But I don't have a Gigadb account
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "LinkedIn" button
 	And I authorise Gigadb for "LinkedIn"
 	Then a new Gigadb account is created
@@ -47,7 +47,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with ORCID with no existing Gigadb account
 	Given I have a "ORCID" account
 	But I don't have a Gigadb account
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "ORCID" button
 	And I authorise Gigadb for "ORCID"
 	Then a new Gigadb account is created
@@ -58,7 +58,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Given I have a Gigadb account
 	And I have a "Facebook" account
 	And email addresses for those accounts match
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "Facebook" button
 	And I authorise Gigadb for "Facebook"
 	Then I'm logged in into my existing account
@@ -68,7 +68,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Given I have a Gigadb account
 	And I have a "Google" account
 	And email addresses for those accounts match
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "Google" button
 	And I authorise Gigadb for "Google"
 	Then I'm logged in into my existing account
@@ -78,7 +78,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Given I have a Gigadb account
 	And I have a "Twitter" account
 	And email addresses for those accounts match
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "Twitter" button
 	And I authorise Gigadb for "Twitter"
 	Then I'm logged in into my existing account
@@ -88,7 +88,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Given I have a Gigadb account
 	And I have a "LinkedIn" account
 	And email addresses for those accounts match
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "LinkedIn" buttons
 	And I authorise Gigadb for "LinkedIn"
 	Then I'm logged in into my existing account
@@ -98,7 +98,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Given I have a Gigadb account
 	And I have a "ORCID" account
 	And email addresses for those accounts match
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "ORCID" buttons
 	And I authorise Gigadb for "ORCID"
 	Then I'm logged in into my existing account
@@ -108,7 +108,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Given I have a Gigadb account
 	And I have a "Facebook" account
 	But email addresses for those accounts do not match
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "Facebook" button
 	And I authorise Gigadb for "Facebook"
 	Then a new Gigadb account is created
@@ -120,7 +120,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Given I have a Gigadb account
 	And I have a "Google" account
 	But email addresses for those accounts do not match
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "Google" button
 	And I authorise Gigadb for "Google"
 	Then a new Gigadb account is created
@@ -131,7 +131,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Given I have a Gigadb account
 	And I have a "Twitter" account
 	But email addresses for those accounts do not match
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "Twitter" button
 	And I authorise Gigadb for "Twitter"
 	Then a new Gigadb account is created
@@ -142,7 +142,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Given I have a Gigadb account
 	And I have a "LinkedIn" account
 	But email addresses for those accounts do not match
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "LinkedIn" button
 	And I authorise Gigadb for "LinkedIn"
 	Then a new Gigadb account is created
@@ -153,7 +153,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Given I have a Gigadb account
 	And I have a "ORCID" account
 	But email addresses for those accounts do not match
-	When I navigate to /site/chooseLogin
+	When I navigate to "/site/chooseLogin"
 	And I click on the "ORCID" button
 	And I authorise Gigadb for "ORCID"
 	Then a new Gigadb account is created
