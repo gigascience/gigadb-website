@@ -9,6 +9,8 @@ use Behat\Gherkin\Node\PyStringNode,
 
 use Behat\MinkExtension\Context\MinkContext;
 
+
+
 //
 // Require 3rd-party libraries here:
 //
@@ -49,7 +51,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iHaveAAccount($arg1)
     {
-        throw new PendingException();
+        true;
     }
 
     /**
@@ -57,7 +59,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iDonTHaveAGigadbAccount()
     {
-        throw new PendingException();
+        true;
     }
 
 
@@ -66,7 +68,13 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iNavigateToSiteChooselogin()
     {
-        $this->visit( "/site/chooseLogin" );
+        $this->visit( "/site/chooseLogin" ) ;
+        $session =  $this->getSession('Goutte');
+        echo $session->getCurrentUrl() . PHP_EOL ;
+        // PHPUnit_Framework_Assert::assertSame(
+        //     "http://localhost/site/chooseLogin",
+        //     $session->getCurrentUrl()
+        // );
     }
 
     /**
@@ -74,7 +82,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iClickOnTheButton($arg1)
     {
-        throw new PendingException();
+        $this->clickLink($arg1);
+        $session=  $this->getSession('Goutte');
+        echo $session->getCurrentUrl() . PHP_EOL ;
     }
 
     /**
