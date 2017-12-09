@@ -1,21 +1,30 @@
-Acceptance tests:
 
-Behat/bin/behat  -p phantomjs --tags @wip -c Behat/behat.yml    # will run the scenarios tagged as @wip
-Behat/bin/behat  -p phantomjs --tags ~@wip -c Behat/behat.yml    # will run all the scenarios but those tagged as @wip
-Behat/bin/behat  -p phantomjs  -c Behat/behat.yml    # will run all the scenarios
-
-Functional tests:
+(1) Functional tests:
 
 * How to install:
 
 On Mac, using homebrew:
 
-brew install phantomjs
-brew install casperjs
+$ brew install phantomjs
+$ brew install casperjs
 
 
 (Alternatively, both can be installed with npm)
 
 * To run all the tests:
 
-casperjs test tests/*.js
+$ casperjs test tests/*.js
+
+
+(2) Acceptance tests:
+
+make sure to have an instance of phantomjs running:
+
+$ phantomjs --webdriver=8643
+
+
+Then you can choose one of the commands below:
+
+$ Behat/bin/behat  -p phantomjs --tags @wip -c Behat/behat.yml    # will run the scenarios tagged as @wip
+$ Behat/bin/behat  -p phantomjs --tags ~@wip -c Behat/behat.yml    # will run all the scenarios but those tagged as @wip
+$ Behat/bin/behat  -p phantomjs  -c Behat/behat.yml    # will run all the scenarios
