@@ -3,7 +3,7 @@ AS an author,
 I WANT TO sign in to the gigadb website with my social media credentials
 SO THAT I can upload and manage the datasets for my papers
 
-
+	@wip
 	Scenario: I sign in with Facebook with no existing Gigadb account
 	Given I have a "Facebook" account
 	But I don't have a Gigadb account
