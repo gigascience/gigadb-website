@@ -8,6 +8,7 @@ use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
 use Behat\MinkExtension\Context\MinkContext;
+use Behat\YiiExtension\Context\YiiAwareContextInterface;
 
 
 
@@ -22,8 +23,15 @@ use Behat\MinkExtension\Context\MinkContext;
 /**
  * Features context.
  */
-class FeatureContext extends Behat\MinkExtension\Context\MinkContext
+class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements Behat\YiiExtension\Context\YiiAwareContextInterface
 {
+    private $yii;
+    private $keys_map = array('Facebook' => array('api_key' => 'app_id', 'client_key' => 'app_secret'),
+                               'Google' => array('api_key' => 'client_id', 'client_key' => 'client_secret'),
+                               'Twitter' => array('api_key' => 'key', 'client_key' => 'secret'),
+                               'LinkedIn' => array('api_key' => 'api_key', 'client_key' => 'secret_key'),
+                               'Orcid' => array('api_key' => 'client_id', 'client_key' => 'client_secret'),
+                           );
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
@@ -33,6 +41,23 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     public function __construct(array $parameters)
     {
         // Initialize your context here
+    }
+
+    public function setYiiWebApplication(\CWebApplication $yii)
+    {
+        $this->yii = $yii ;
+    }
+
+    public function getYii()
+    {
+        if (null === $this->yii) {
+            throw new \RuntimeException(
+                'Yii instance has not been set on Yii context class. ' .
+                'Have you enabled the Yii Extension?'
+            );
+        }
+
+        return $this->yii ;
     }
 
 //
@@ -46,6 +71,25 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
 //        doSomethingWith($argument);
 //    }
 //
+
+    /**
+     * @Given /^Gigadb has a "([^"]*)" API keys$/
+     */
+    public function gigadbHasAApiKeys($arg1)
+    {
+        $_SERVER['REQUEST_URI'] = 'foobar';
+        $_SERVER['HTTP_HOST'] = 'foobar';
+        $opauthModule = $this->getYii()->getModules()['opauth'];
+        $api_key = $opauthModule['opauthParams']["Strategy"][$arg1][$this->keys_map[$arg1]['api_key']] ;
+        $client_key = $opauthModule['opauthParams']["Strategy"][$arg1][$this->keys_map[$arg1]['client_key']] ;
+
+
+        \PHPUnit\Framework\Assert::assertTrue('' != $api_key, "api_key for $arg1 is not empty");
+        \PHPUnit\Framework\Assert::assertTrue('' != $client_key, "client_key for $arg1 is not empty");
+
+    }
+
+
 
     /**
      * @Given /^I have a "([^"]*)" account$/

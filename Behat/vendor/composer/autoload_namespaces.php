@@ -7,6 +7,9 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'WebDriver' => array($vendorDir . '/instaclick/php-webdriver/lib'),
+    'WUnit\\HttpKernel' => array($vendorDir . '/behat/mink-wunit-driver/src'),
+    'WUnit\\Http' => array($vendorDir . '/behat/mink-wunit-driver/src'),
+    'WUnit' => array($vendorDir . '/behat/mink-wunit-driver/src'),
     'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'Guzzle\\Stream' => array($vendorDir . '/guzzle/stream'),
@@ -15,7 +18,7 @@ return array(
     'Guzzle\\Common' => array($vendorDir . '/guzzle/common'),
     'Goutte' => array($vendorDir . '/fabpot/goutte'),
     'Behat\\YiiExtension' => array($vendorDir . '/behat/yii-extension/src'),
-    'Behat\\Mink\\Driver' => array($vendorDir . '/behat/mink-browserkit-driver/src', $vendorDir . '/behat/mink-goutte-driver/src', $vendorDir . '/behat/mink-selenium2-driver/src'),
+    'Behat\\Mink\\Driver' => array($vendorDir . '/behat/mink-browserkit-driver/src', $vendorDir . '/behat/mink-goutte-driver/src', $vendorDir . '/behat/mink-selenium2-driver/src', $vendorDir . '/behat/mink-wunit-driver/src'),
     'Behat\\MinkExtension' => array($vendorDir . '/behat/mink-extension/src'),
     'Behat\\Mink' => array($vendorDir . '/behat/mink/src'),
     'Behat\\Gherkin' => array($vendorDir . '/behat/gherkin/src'),
