@@ -28,7 +28,7 @@ $this->pageTitle='GigaDB - About';
 			<a href="/site/index" target="_blank"><em>GigaDB</em></a>. 
 			<em>GigaScience</em> is co-published in collaboration between 
 			<a href="http://www.genomics.cn/" target="_blank">BGI</a> and 
-			<a href="http://www.biomedcentral.com/" target="_blank">BioMed Central</a>, 
+			<a href="https://academic.oup.com/gigascience" target="_blank">Oxford University Press</a>, 
 			to meet the needs of a new generation of biological and biomedical research as it enters the era of “big-data.” 
 			The journal’s scope covers studies from the entire spectrum of the life sciences that produce and use large-scale data as 
 			the center of their work. Data from these articles are hosted in <a href="/site/index/" target="_blank"><em>GigaDB</em></a>, 
