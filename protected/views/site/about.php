@@ -76,10 +76,7 @@ $this->pageTitle='GigaDB - About';
 			<a href="http://www.gigasciencejournal.com/authors/instructions/datanote" target="_blank">here</a>).
 		</p>
 
-		<p>
-			To submit data to <em>Giga</em>DB, visit <a href="/site/index/" target="_blank">GigaDB.org</a> 
-			or contact us at: <a href="mailto:database@gigasciencejournal.com" target="_blank">database@gigasciencejournal.com</a>.
-		</p>
+		
 		<a name="citation"></a>
 
 		<h2>Indexing</h2>
