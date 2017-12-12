@@ -20,7 +20,7 @@ Documentation on how to do this is provided below.
 ## Preparation
 
 To begin, download GigaDB's source code repository from GitHub and also its
-chef cookbooks as described in [INSTALL.md](./INSTALL.md). A development.json
+chef cookbooks as described in [INSTALL.md](../docs/INSTALL.md). A development.json
 file should also be present in the chef/environments directory.
 
 Docker uses Linux-specific tools which means that it cannot run natively on 
@@ -100,7 +100,7 @@ The gigadb container does not have the GigaDB website installed but this
 can be performed using chef-solo:
 
 ```bash
-/usr/bin/chef-solo -l info -c /vagrant/chef/docker-chef-solo/solo.rb -j /vagrant/chef/docker-chef-solo/node.json
+/usr/bin/chef-solo -l info -c /vagrant/docker/docker-chef-solo/solo.rb -j /vagrant/docker/docker-chef-solo/node.json
 ```
 
 The above command will generate a lot of messages informing you about the status

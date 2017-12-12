@@ -1,7 +1,7 @@
 add_formatter :min
 checksum_path '/vagrant/chef/checksums'
 cookbook_path ['/vagrant/chef/chef-cookbooks','/vagrant/chef/site-cookbooks']
-data_bag_path '/home/centos/chef/data_bags'
+data_bag_path '/vagrant/chef/data_bags'
 environment 'development'
 environment_path '/vagrant/chef/environments'
 file_backup_path '/vagrant/chef/backup'
