@@ -71,6 +71,15 @@
 	<div class="span8 offset2"><?= MyHtml::submitButton('Submit', array('class'=>'btn-green pull-right')); ?></div>
 
 	<? $this->endWidget(); ?>
+	<?php 
+		$path = "images/tempcaptcha/".$text.".png";
+		$files = glob('images/tempcaptcha/*');
+		foreach($files as $file){ 
+		  if (is_file($file))
+		  	if ($file != $path)
+		  		 unlink($file); 
+		}
+	?>	
 </div>
 
 <? } ?>
