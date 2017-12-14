@@ -159,6 +159,16 @@ class SiteController extends Controller {
 		}
 		$this->render('contact',array('model'=>$model));
 	}
+	/**
+	*This method returns all dataset locations
+	*/
+	public function actionMapbrowse() {
+	    $locations = $list= Yii::app()->db->createCommand("SELECT d.title, satt.value FROM dataset as d
+	      INNER JOIN dataset_sample	as dsam on dsam.dataset_id = d.id
+				INNER JOIN sample as s on s.id = dsam.sample_id
+	      INNER JOIN sample_attribute as satt on satt.sample_id=s.id where satt.attribute_id = 269")->queryAll();
+		$this->render('mapbrowse', array('locations' => $locations));
+	}
 
 	public function actionAbout() {
 		$this->render('about');

@@ -58,6 +58,7 @@
                     <? if (Yii::app()->user->checkAccess('admin')) { ?>
                     <a class="btn" href="/site/admin"><?=Yii::t('app' , 'Administration')?></a>
                     <? } ?>
+                <a class="btn" href="/site/mapbrowse"><?=Yii::t('app' , "Browse Samples")?></a>  
                     <a class="btn" href="/site/logout"><?=Yii::t('app' , 'LogOut')?></a>
                 <? } ?>
             </p>

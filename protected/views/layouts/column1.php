@@ -1,5 +1,5 @@
 <?php $this->beginContent('//layouts/main'); ?>
-<div class="container">
+<!-- <div class="container"> -->
 	<?php echo $content; ?>
-</div>
+<!-- </div> -->
 <?php $this->endContent(); ?>
