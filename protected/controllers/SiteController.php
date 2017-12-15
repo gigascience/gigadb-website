@@ -356,13 +356,13 @@ class SiteController extends Controller {
     public function captchaGenerator($length = 7){
 		try{
 		$captchaPath = null;
-		$im = imagecreatetruecolor(420, 100);
+		$im = imagecreatetruecolor(600, 100);
 		// Create some colors
 		$white = imagecolorallocate($im, 255, 255, 255);
 		$grey = imagecolorallocate($im, 128, 128, 128);
 
 		$black = imagecolorallocate($im, 66, 164, 244);
-		imagefilledrectangle($im, 0, 0, 420, 100, $white);
+		imagefilledrectangle($im, 0, 0, 600, 100, $white);
 		// The text to draw
 		
 		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -374,7 +374,6 @@ class SiteController extends Controller {
 			
 
 		$text = $randomString;
-		
 		$font = '/fonts/times_new_yorker.ttf';		
 		imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
 		
