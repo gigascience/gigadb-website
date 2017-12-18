@@ -9,7 +9,7 @@ default:
       base_url: 'http://localhost:9170/'
       goutte: ~
     Behat\YiiExtension\Extension:
-      framework_script: /opt/yii-1.1.16/framework/yii.php
+      framework_script: ../Behat/vendor/yiisoft/yii/framework/yii.php
       config_script:    ../protected/config/main.php
       mink_driver: true
 
