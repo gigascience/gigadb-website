@@ -1,31 +1,42 @@
-version: "3.1"
-services:
-
-#    database:
-#      image: postgres:9.4-alpine
-#      container_name: gigadb-postgres
-#      working_dir: /application
-#      volumes:
-#        - .:/application
-#      ports:
-#         - "8432:5432"
-#      environment:
-#        - POSTGRES_USER=postgres
-#        - POSTGRES_PASSWORD=gigadb
-#        - POSTGRES_DB=gigadb
-
-    webserver:
-      image: nginx:latest
-      volumes:
-          - ./site.conf:/etc/nginx/conf.d/site.conf
-          - ./code:/code
-      ports:
-        - "8080:80"
-      links:
-        - php
-
-    php:
-      image: php:7-fpm
-      volumes:
-         - ./code:/code
+{
+  "version": "3.1",
+  "volumes": {
+    "postgres_data": {}
+  },
+  "services": {
+    "database": {
+      "image": "postgres:9.4-alpine",
+      "volumes": [
+        "postgres_data:/var/lib/postgresql/data"
+      ],
+      "ports": [
+        "8432:5432"
+      ],
+      "restart": "always",
+      "environment": [
+        "POSTGRES_PASSWORD": "gigadb",
+        "POSTGRES_USER": "gigadb"
+      ]
+    },
+    "webserver": {
+      "image": "nginx:latest",
+      "volumes": [
+          "./webserver/site.conf:/etc/nginx/conf.d/site.conf",
+          "./code:/code"
+      ],
+      "ports": [
+        "8080:80"
+      ],
+      "links": [
+        "app"
+      ]
+    },
+    "app": {
+      "image": "php:7-fpm",
+      "volumes": [
+         "./code:/code"
+      ]
+    }
+  }
+}
 
