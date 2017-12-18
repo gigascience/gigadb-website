@@ -10,7 +10,8 @@
         "behat/yii-extension":  "*",
         "phpunit/php-code-coverage": "*",
         "phpunit/phpunit-mock-objects": "*",
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "yiisoft/yii": "*"
     },
     "minimum-stability": "dev",
     "config": {
