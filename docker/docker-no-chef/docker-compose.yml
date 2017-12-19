@@ -5,18 +5,19 @@
   },
   "services": {
     "database": {
-      "image": "postgres:9.4-alpine",
+      "image": "postgres:9.4",
       "volumes": [
-        "postgres_data:/var/lib/postgresql/data"
+        "postgres_data:/var/lib/postgresql/data",
+        "./database:/docker-entrypoint-initdb.d/"
       ],
       "ports": [
         "8432:5432"
       ],
       "restart": "always",
-      "environment": [
-        "POSTGRES_PASSWORD": "gigadb",
-        "POSTGRES_USER": "gigadb"
-      ]
+      "environment": {
+        "POSTGRES_PASSWORD": "mysecretpassword",
+        "POSTGRES_USER": "postgres"
+      }
     },
     "webserver": {
       "image": "nginx:latest",
@@ -28,10 +29,10 @@
         "8080:80"
       ],
       "links": [
-        "app"
+        "php"
       ]
     },
-    "app": {
+    "php": {
       "image": "php:7-fpm",
       "volumes": [
          "./code:/code"
