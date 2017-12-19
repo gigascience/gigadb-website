@@ -40,15 +40,13 @@
                 <a class="btn" href="/site/help"><?=Yii::t('app' , 'Help')?></a>
                 <? if(Yii::app()->user->isGuest) { ?>
                 <a class="btn" href="/site/login"><?=Yii::t('app' , 'Login')?></a>
-		<a class="btn" href="/user/create" id="btnCreateAccount" title="<?=Yii::t('app' , 'An account with GigaDB is required if you want to upload a dataset or be automatically notified of new content of interest to you')?>"><?=Yii::t('app' , 'Create account')?></a>
-                <? } else { 
-                
+                <a class="btn" href="/site/mapbrowse"><?=Yii::t('app' , "Browse Samples")?></a>
+	           	<a class="btn" href="/user/create" id="btnCreateAccount" title="<?=Yii::t('app' , 'An account with GigaDB is required if you want to upload a dataset or be automatically notified of new content of interest to you')?>"><?=Yii::t('app' , 'Create account')?></a>
+                <? } else {                 
                         $name = Yii::app()->user->getFirst_Name();
-                      
+                
                 // var_dump($name);
-
                         if (substr($name, -1) === 's') {
-
                             $name = $name . '\'';
                         } else {
                             $name = $name . "'s";

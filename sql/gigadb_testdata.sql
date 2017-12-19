@@ -2783,6 +2783,7 @@ COPY sample (id, species_id, name, consent_document, submitted_id, submission_da
 COPY sample_attribute (id, sample_id, attribute_id, value, unit_id) FROM stdin;
 30060	4346	422	David Lambert & BGI	\N
 30061	4346	269	35.904731, 127.162202	\N
+30062	4347	269	16.606667,  49.259444	\N
 \.
 
 
