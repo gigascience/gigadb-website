@@ -42,6 +42,8 @@ Vagrant.configure(2) do |config|
   	gigadb.vm.synced_folder ".", "/vagrant"
   	FileUtils.mkpath("./protected/runtime")
   	FileUtils.chmod_R 0777, ["./protected/runtime"]
+    FileUtils.mkpath("./images/tempcaptcha")
+    FileUtils.chmod_R 0777, ["./images/tempcaptcha"]    
   	FileUtils.mkpath("./giga_cache")
   	FileUtils.chmod_R 0777, ["./giga_cache"]
   	FileUtils.mkpath("./logs")
