@@ -19,33 +19,20 @@ class DemoFeatureContext extends MinkContext
 	 */
 	public function iWaitForTheSuggestionBoxToAppear()
 	{
-	    $this->getSession()->wait(10000,
+	    $this->getSession()->wait(5000,
 	        "$('.suggestions-results').children().length > 0"
 	    );
 	}
 
 	/**
-     * @Then /^I should see the suggestion "([^"]*)"$/
-     */
-    public function iShouldSeeTheSuggestion($arg1)
-    {
-       
-        //$page = $this->getSession()->getPage();
-        $this->assertSession()->pageTextContains($this->fixStepArgument($arg1));
-    }
-
-
-	/**
 	 * @AfterStep
 	 */
-	 public function takeSnapshotAfterFailedStep($event)
+	 public function takeScreenshotAfterFailedStep($event)
 	 {
 	   if ($event->getResult() == 4) {
 	     if ($this->getSession()->getDriver() instanceof \Behat\Mink\Driver\Selenium2Driver) {
 	       $screenshot = $this->getSession()->getDriver()->getScreenshot();
-	       $content = $this->getSession()->getDriver()->getContent();
-	       file_put_contents('/tmp/test.png', $screenshot);
-	       file_put_contents('/tmp/test.html', $content);
+	       file_put_contents('/tmp/screenshot.png', $screenshot);
 	     }
 	   }
 	 }
