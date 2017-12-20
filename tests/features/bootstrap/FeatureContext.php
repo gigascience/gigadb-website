@@ -96,8 +96,11 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
      */
     public function iHaveAAccount($arg1)
     {
-        true; //temporary set to true to test the connection to the browser simulator
         // throw new PendingException();
+        \PHPUnit\Framework\Assert::assertTrue(null != $_ENV["${arg1}_tester_email"], "tester_email for $arg1 is not empty");
+        \PHPUnit\Framework\Assert::assertTrue(null != $_ENV["${arg1}_tester_password"], "tester_password for $arg1 is not empty");
+
+
     }
 
     /**
