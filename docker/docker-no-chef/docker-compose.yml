@@ -8,14 +8,14 @@
       "image": "postgres:9.4",
       "volumes": [
         "postgres_data:/var/lib/postgresql/data",
-        "./database:/docker-entrypoint-initdb.d/"
+        "./database/init.sql:/docker-entrypoint-initdb.d/1-init.sql"
       ],
       "ports": [
         "8432:5432"
       ],
       "restart": "always",
       "environment": {
-        "POSTGRES_PASSWORD": "mysecretpassword",
+        "POSTGRES_PASSWORD": "postgres",
         "POSTGRES_USER": "postgres"
       }
     },

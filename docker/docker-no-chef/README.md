@@ -26,7 +26,7 @@ postgres=#
 
 # Connect to Postgres
 $ docker exec -it 05b3a3471f6f bash
-bash-4.3# psql -U gigadb
+bash-4.3# psql -U postgres
 psql (9.4.15)
 Type "help" for help.
 
