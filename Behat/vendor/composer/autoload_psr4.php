@@ -26,4 +26,6 @@ return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
+    'Behat\\Mink\\Driver\\' => array($vendorDir . '/behat/mink-goutte-driver/src'),
+    'Behat\\Mink\\' => array($vendorDir . '/behat/mink/src'),
 );

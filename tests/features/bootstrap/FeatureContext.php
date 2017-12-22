@@ -92,25 +92,26 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
 
     /**
-     * @Given /^I have a "([^"]*)" account$/
+     * @Given /^I have a "([^"]*)" account for "([^"]*)"$/
      */
-    public function iHaveAAccount($arg1)
+    public function iHaveAAccountFor($arg1, $arg2)
     {
         // throw new PendingException();
-        \PHPUnit\Framework\Assert::assertTrue(null != $_ENV["${arg1}_tester_email"], "tester_email for $arg1 is not empty");
-        \PHPUnit\Framework\Assert::assertTrue(null != $_ENV["${arg1}_tester_password"], "tester_password for $arg1 is not empty");
+        \PHPUnit\Framework\Assert::assertTrue($arg2 == $_ENV["${arg1}_tester_email"], "${arg1}_tester_email  is set to #arg2");
+        \PHPUnit\Framework\Assert::assertTrue(null != $_ENV["${arg1}_tester_password"], "${arg1}_tester_password is not empty");
 
 
     }
 
-    /**
-     * @Given /^I don\'t have a Gigadb account$/
+   /**
+     * @Given /^I don\'t have a Gigadb account for "([^"]*)"$/
      */
-    public function iDonTHaveAGigadbAccount()
+    public function iDonTHaveAGigadbAccountFor($arg1)
     {
-        true; //temporary set to true to test the connection to the browser simulator
-        // throw new PendingException();
+        \PHPUnit\Framework\Assert::assertTrue('user@gigadb.org' != $arg1, "$arg1 is not the default user account");
+        \PHPUnit\Framework\Assert::assertTrue('admin@gigadb.org' != $arg1, "$arg1 is not the default admin account");
     }
+
 
 
     /**
@@ -119,7 +120,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     public function iNavigateTo($arg1)
     {
         $this->visit( $arg1 ) ;
-        $session =  $this->getSession('Goutte');
+        //$session =  $this->getSession('Goutte');
         \PHPUnit\Framework\Assert::assertSame(
             200,
             $session->getStatusCode(), "Error while visiting the web site $arg1"
@@ -168,7 +169,20 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         throw new PendingException();
     }
 
-
+    /**
+     * @AfterStep
+    */
+    public function takeSnapshotAfterFailedStep($event)
+    {
+        if ($event->getResult() == 4) {
+            if ($this->getSession()->getDriver() instanceof \Behat\Mink\Driver\Selenium2Driver) {
+                $screenshot = $this->getSession()->getDriver()->getScreenshot();
+                $content = $this->getSession()->getDriver()->getContent();
+                file_put_contents('/tmp/bgi.png', $screenshot);
+                file_put_contents('/tmp/bgi.html', $content);
+            }
+        }
+    }
 
 
 }

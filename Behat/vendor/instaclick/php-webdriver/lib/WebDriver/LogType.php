@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2004-2017 Facebook. All Rights Reserved.
+ * Copyright 2014-2017 Anthon Pang. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,27 @@
  *
  * @package WebDriver
  *
- * @author Justin Bishop <jubishop@gmail.com>
  * @author Anthon Pang <apang@softwaredevelopment.ca>
  */
 
-namespace WebDriver\Exception;
-
-use WebDriver\Exception as BaseException;
+namespace WebDriver;
 
 /**
- * WebDriver\Exception\InvalidSelector class
+ * WebDriver\LogType class
  *
  * @package WebDriver
  */
-final class InvalidSelector extends BaseException
+final class LogType
 {
+    /**
+     * Log Type
+     *
+     * @see https://code.google.com/p/selenium/source/browse/java/client/src/org/openqa/selenium/logging/LogType.java
+     */
+    const BROWSER     = 'browser';
+    const CLIENT      = 'client';
+    const DRIVER      = 'driver';
+    const PERFORMANCE = 'performance';
+    const PROFILER    = 'driver';
+    const SERVER      = 'server';
 }
