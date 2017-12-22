@@ -18,6 +18,13 @@ $ casperjs test tests/*.js
 
 (2) Acceptance tests:
 
+First run a browser emulator:
+
+$ java -jar -Dwebdriver.chrome.driver=chromedriver selenium-server-standalone-3.8.1.jar
+
+or 
+
+$  phantomjs --webdriver=8643
 
 you can choose one of the commands below:
 

@@ -1,7 +1,6 @@
-#!/usr/bin/env php
 <?php
 /**
- * Copyright 2011-2013 Anthon Pang. All Rights Reserved.
+ * Copyright 2014-2017 Anthon Pang. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +19,24 @@
  * @author Anthon Pang <apang@softwaredevelopment.ca>
  */
 
+namespace WebDriver;
+
 /**
- * WebDriver-based web test runner
+ * WebDriver\Log class
+ *
+ * @package WebDriver
+ *
+ * @method array types() Get available log types.
  */
-use WebDriver\WebTest\WebTest;
-
-require_once(__DIR__ . '/../lib/WebDriver/ClassLoader.php');
-
-$rc = WebTest::main($argc, $argv);
-
-exit((int) !$rc);
+final class Log extends AbstractWebDriver
+{
+    /**
+     * {@inheritdoc}
+     */
+    protected function methods()
+    {
+        return array(
+            'types' => array('GET'),
+        );
+    }
+}

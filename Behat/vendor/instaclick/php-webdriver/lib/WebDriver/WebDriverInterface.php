@@ -20,15 +20,30 @@
  * @author Anthon Pang <apang@softwaredevelopment.ca>
  */
 
-namespace WebDriver\Exception;
-
-use WebDriver\Exception as BaseException;
+namespace WebDriver;
 
 /**
- * WebDriver\Exception\InvalidSelector class
+ * WebDriverInterface interface
  *
  * @package WebDriver
  */
-final class InvalidSelector extends BaseException
+interface WebDriverInterface
 {
+    /**
+     * New Session: /session (POST)
+     * Get session object for chaining
+     *
+     * @param array|string $requiredCapabilities Required capabilities (or browser name)
+     * @param array        $desiredCapabilities  Desired capabilities
+     *
+     * @return \WebDriver\Session
+     */
+    public function session($requiredCapabilities = Browser::FIREFOX, $desiredCapabilities = array());
+
+    /**
+     * Get list of currently active sessions
+     *
+     * @return array an array of \WebDriver\Session objects
+     */
+    public function sessions();
 }

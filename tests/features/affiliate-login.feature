@@ -11,11 +11,11 @@ SO THAT I can upload and manage the datasets for my papers
 		And Gigadb has a "Orcid" API keys
 
 
-	@wip
+	@wip @javascript
 	Scenario: I sign in with Facebook with no existing Gigadb account
-		Given I have a "Facebook" account
-		But I don't have a Gigadb account
-		When I navigate to "/site/chooseLogin"
+		Given I have a "Facebook" account for "unknown@gigadb.org"
+		And I don't have a Gigadb account for "unknown@gigadb.org"
+		When I am on "/site/chooseLogin"
 		And I click on the "Facebook" button
 		And I authorise Gigadb for "Facebook"
 		Then a new Gigadb account is created
