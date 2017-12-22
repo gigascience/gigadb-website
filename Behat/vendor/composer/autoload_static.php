@@ -47,6 +47,11 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
             'Doctrine\\Instantiator\\' => 22,
             'DeepCopy\\' => 9,
         ),
+        'B' => 
+        array (
+            'Behat\\Mink\\Driver\\' => 18,
+            'Behat\\Mink\\' => 11,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -132,6 +137,14 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
+        'Behat\\Mink\\Driver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/behat/mink-goutte-driver/src',
+        ),
+        'Behat\\Mink\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/behat/mink/src',
+        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -199,18 +212,13 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
             ),
             'Behat\\Mink\\Driver' => 
             array (
-                0 => __DIR__ . '/..' . '/behat/mink-browserkit-driver/src',
-                1 => __DIR__ . '/..' . '/behat/mink-wunit-driver/src',
-                2 => __DIR__ . '/..' . '/behat/mink-goutte-driver/src',
-                3 => __DIR__ . '/..' . '/behat/mink-selenium2-driver/src',
+                0 => __DIR__ . '/..' . '/behat/mink-wunit-driver/src',
+                1 => __DIR__ . '/..' . '/behat/mink-selenium2-driver/src',
+                2 => __DIR__ . '/..' . '/behat/mink-browserkit-driver/src',
             ),
             'Behat\\MinkExtension' => 
             array (
                 0 => __DIR__ . '/..' . '/behat/mink-extension/src',
-            ),
-            'Behat\\Mink' => 
-            array (
-                0 => __DIR__ . '/..' . '/behat/mink/src',
             ),
             'Behat\\Gherkin' => 
             array (
