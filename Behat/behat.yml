@@ -6,7 +6,7 @@ default:
       class:  'FeatureContext'
   extensions:
     Behat\MinkExtension\Extension:
-      base_url: 'http://localhost:9170/'
+      base_url: 'http://lvh.me:9170/'
       goutte: ~
       selenium2:
         wd_host: http://localhost:8643/wd/hub
