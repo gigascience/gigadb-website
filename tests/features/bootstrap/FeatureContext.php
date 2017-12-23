@@ -90,26 +90,26 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     }
 
 
-
-    /**
-     * @Given /^I have a "([^"]*)" account for "([^"]*)"$/
+/**
+     * @Given /^I have a "([^"]*)" account$/
      */
-    public function iHaveAAccountFor($arg1, $arg2)
+    public function iHaveAAccount($arg1)
     {
         // throw new PendingException();
-        \PHPUnit\Framework\Assert::assertTrue($arg2 == $_ENV["${arg1}_tester_email"], "${arg1}_tester_email  is set to #arg2");
+        \PHPUnit\Framework\Assert::assertTrue(null != $_ENV["${arg1}_tester_email"], "${arg1}_tester_email  is not empty");
         \PHPUnit\Framework\Assert::assertTrue(null != $_ENV["${arg1}_tester_password"], "${arg1}_tester_password is not empty");
 
 
     }
 
-   /**
-     * @Given /^I don\'t have a Gigadb account for "([^"]*)"$/
+  /**
+     * @Given /^I don\'t have a Gigadb account for my "([^"]*)" account email$/
      */
-    public function iDonTHaveAGigadbAccountFor($arg1)
+    public function iDonTHaveAGigadbAccountForMyAccountEmail($arg1)
     {
-        \PHPUnit\Framework\Assert::assertTrue('user@gigadb.org' != $arg1, "$arg1 is not the default user account");
-        \PHPUnit\Framework\Assert::assertTrue('admin@gigadb.org' != $arg1, "$arg1 is not the default admin account");
+        $tester_email = $_ENV["${arg1}_tester_email"];
+        \PHPUnit\Framework\Assert::assertTrue('user@gigadb.org' != $tester_email, "$tester_email is not the default user account");
+        \PHPUnit\Framework\Assert::assertTrue('admin@gigadb.org' != $tester_email, "$tester_email is not the default admin account");
     }
 
 
@@ -142,32 +142,55 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
      */
     public function iAuthoriseGigadbFor($arg1)
     {
-        throw new PendingException();
+        $login = $_ENV["{$arg1}_tester_email"];
+        $password = $_ENV["${arg1}_tester_password"];
+        $this->fillField("username_or_email", $login);
+        $this->fillField("password", $password);
+
+        $this->pressButton("Sign In");
+
+        $this->assertResponseStatus(200);
     }
 
     /**
-     * @Then /^a new Gigadb account is created$/
+     * @Then /^I should be redirected$/
      */
-    public function aNewGigadbAccountIsCreated()
+    public function iShouldBeRedirected()
     {
-        throw new PendingException();
+        $this->clickLink('click here to continue');
+    }
+
+
+
+    /**
+     * @Then /^I\'m logged in into the Gigadb web site$/
+     */
+    public function iMLoggedInIntoTheGigadbWebSite()
+    {
+        $this->assertPageContainsText("GigaDB Page");
     }
 
     /**
-     * @Given /^I\'m logged in into that account$/
+     * @Given /^a new Gigadb account is created with my "([^"]*)" details$/
      */
-    public function iMLoggedInIntoThatAccount()
+    public function aNewGigadbAccountIsCreatedWithMyDetails($arg1)
+
     {
-        throw new PendingException();
+
+        $email = $_ENV["${arg1}_tester_email"];
+        $first_name = $_ENV["${arg1}_tester_first_name"];
+        $last_name = $_ENV["${arg1}_tester_last_name"];
+        $this->visit('/user/view_profile');
+        $this->assertPageContainsText($arg1);
+        $this->assertPageContainsText($email);
+        $this->assertPageContainsText($first_name);
+        $this->assertPageContainsText($last_name);
+        
     }
 
-    /**
-     * @Given /^the email I used for "([^"]*)" is used for that account$/
-     */
-    public function theEmailIUsedForIsUsedForThatAccount($arg1)
-    {
-        throw new PendingException();
-    }
+
+
+    /* -------------------------------------------------------- utility functions and hooks -----------------*/
 
     /**
      * @AfterStep
@@ -183,6 +206,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             }
         }
     }
+
+
+
 
 
 }

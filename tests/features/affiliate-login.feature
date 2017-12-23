@@ -11,7 +11,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And Gigadb has a "Orcid" API keys
 
 
-	@wip @javascript
+	@blocked @javascript
 	Scenario: I sign in with Facebook with no existing Gigadb account
 		Given I have a "Facebook" account for "unknown@gigadb.org"
 		And I don't have a Gigadb account for "unknown@gigadb.org"
@@ -32,15 +32,16 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into that account
 		And the email I used for "Google" is used for that account
 
+	@wip
 	Scenario: I sign in with Twitter with no existing Gigadb account
 		Given I have a "Twitter" account
-		But I don't have a Gigadb account
-		When I navigate to "/site/chooseLogin"
+		But I don't have a Gigadb account for my "Twitter" account email
+		When I am on "/site/chooseLogin"
 		And I click on the "Twitter" button
 		And I authorise Gigadb for "Twitter"
-		Then a new Gigadb account is created
-		And I'm logged in into that account
-		And the email I used for "Twitter" is used for that account
+		Then I should be redirected
+		And I'm logged in into the Gigadb web site
+		And a new Gigadb account is created with my "Twitter" details
 
 	Scenario: I sign in with LinkedIn with no existing Gigadb account
 		Given I have a "LinkedIn" account
