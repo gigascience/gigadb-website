@@ -238,17 +238,17 @@ class User extends CActiveRecord {
 
 /**
   * process OAuth response after successfull authorisaion and redirection to the loginAffilate callback
+  * TODO: what if email is empty?
   * TODO: the logic with name vs first_name+last_name may not be ideal (eg: my firstname Rija is my twitter name, it becomes last name in gigadb
+
 */
     public static function processAffiliateUser($auth) 
     {
         $provider = $auth['provider'];
         $uid = $auth['uid'];
         $info = $auth['info'];
-        $email = null ;
-        if (isset($info['email'])) {
-            $email = $info['email'];
-        }
+
+        $email = $info['email'];
         $username = $provider.":".$uid;
         if((isset($info['first_name'])) and (isset($info['last_name']))) {
             $first_name = $info['first_name'];
@@ -262,20 +262,12 @@ class User extends CActiveRecord {
             $last_name = " ";
         }
 
-        $user = null ;
-        # check if exist user by email
-        if (null != $email) {
-            $user = User::findAffiliateEmail($email);
-        }
-        else
-        # if no email
-        {
-            $user = User::findAffiliateUser($provider,$uid) ;
-        }
+        #check if exist user
+        $user = User::findAffiliateUser($provider, $uid);
 
         if(!$user) {
             $user = new User;
-            $user->email = ($email != null ? $email : $uid."@".$provider);
+            $user->email = $email;
             $user->username = $username;
             $user->first_name = $first_name;
             $user->last_name = $last_name;
@@ -297,22 +289,9 @@ class User extends CActiveRecord {
             #generate some credential data
             $user->password = User::generatePassword(32);
             $user->encryptPassword();
-        } else {
-            # still update the uid if user exist, so session and database record still match
-            if($provider == "Facebook") {
-                $user->facebook_id = $uid;
-            } else if ($provider == "Twitter") {
-                $user->twitter_id = $uid;
-            } else if ($provider == "LinkedIn") {
-                $user->linkedin_id = $uid;
-            } else if ($provider == "Google") {
-                $user->google_id = $uid;
-            } else if ($provider == "Orcid") {
-                $user->orcid_id = $uid;
-            }
         }
 
-        # if login with affiliate provider, activate the user, as they are already trusted third-party verified
+        # if login with fb, activate the user
          $user->is_activated = true;
 
         if($user->save(false)){
@@ -345,13 +324,6 @@ class User extends CActiveRecord {
             ));
         }
 
-        return $user;
-    }
-
-    public static function findAffiliateEmail($email) {
-        $user = User::model()->find("email = :email", array(
-                ':email' => $email
-            ));
         return $user;
     }
 
