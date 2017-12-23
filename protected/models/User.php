@@ -178,7 +178,7 @@ class User extends CActiveRecord {
         #Yii::log(__FUNCTION__."> encryptPassword password after  hash = " . $this->password, 'debug');
     }
 
-    public function generatePassword($length=8) {
+    public static function generatePassword($length=8) {
         $chars = "abcdefghijkmnopqrstuvwxyz023456789";
         srand((double)microtime()*1000000);
         $i = 0;
@@ -236,13 +236,19 @@ class User extends CActiveRecord {
         return $role;
     }
 
-    public function processAffiliateUser($auth) 
+/**
+  * process OAuth response after successfull authorisaion and redirection to the loginAffilate callback
+  * TODO: what if email is empty?
+  * TODO: the logic with name vs first_name+last_name may not be ideal (eg: my firstname Rija is my twitter name, it becomes last name in gigadb
+
+*/
+    public static function processAffiliateUser($auth) 
     {
         $provider = $auth['provider'];
         $uid = $auth['uid'];
         $info = $auth['info'];
 
-        $email = $provider.":".$uid;
+        $email = $info['email'];
         $username = $provider.":".$uid;
         if((isset($info['first_name'])) and (isset($info['last_name']))) {
             $first_name = $info['first_name'];
@@ -281,7 +287,7 @@ class User extends CActiveRecord {
             }
 
             #generate some credential data
-            $user->password = self::generatePassword(32);
+            $user->password = User::generatePassword(32);
             $user->encryptPassword();
         }
 
@@ -293,7 +299,7 @@ class User extends CActiveRecord {
         }
     }
 
-    public function findAffiliateUser($provider, $uid) 
+    public static function findAffiliateUser($provider, $uid) 
     {
         $user = null;
         if($provider == "Facebook") {

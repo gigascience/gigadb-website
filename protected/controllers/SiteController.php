@@ -263,7 +263,7 @@ class SiteController extends Controller {
 					$this->redirect('/');
 				}
 
-		                 $user = User::processAffiliateUser($auth);
+		        $user = User::processAffiliateUser($auth);
 
 				 #process to mark as logined in
 				$_SESSION['affiliate_login']['provider'] = $auth['provider'];
