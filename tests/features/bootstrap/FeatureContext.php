@@ -113,19 +113,28 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     }
 
 
+    /**
+     * @Given /^I login to Gigadb as an admin$/
+     */
+    public function iLoginToGigadbAsAnAdmin()
+    {
+      
+        $this->getSession()->getPage()->fillField("LoginForm_username", "admin@gigadb.org");
+        $this->getSession()->getPage()->fillField("LoginForm_password", "gigadb");
+        $this->getSession()->getPage()->pressButton("Login");
+    }
+
 
     /**
-     * @When /^I navigate to "([^"]*)"$/
+     * @Given /^I have a Gigadb account for my "([^"]*)" account email$/
      */
-    public function iNavigateTo($arg1)
+    public function iHaveAGigadbAccountForMyAccountEmail($arg1)
     {
-        $this->visit( $arg1 ) ;
-        //$session =  $this->getSession('Goutte');
-        \PHPUnit\Framework\Assert::assertSame(
-            200,
-            $session->getStatusCode(), "Error while visiting the web site $arg1"
-        );
+       $tester_email = $_ENV["${arg1}_tester_email"];
+       $this->assertPageContainsText($tester_email);
+
     }
+
 
 
     /**
