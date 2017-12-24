@@ -32,7 +32,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into that account
 		And the email I used for "Google" is used for that account
 
-	@wip
+	@ok
 	Scenario: I sign in with Twitter with no existing Gigadb account
 		Given I have a "Twitter" account
 		But I don't have a Gigadb account for my "Twitter" account email
@@ -83,14 +83,18 @@ SO THAT I can upload and manage the datasets for my papers
 		Then I'm logged in into my existing account
 		And no new gigadb account is created
 
+	@wip
 	Scenario: I have a Gigadb account and I sign in with my "Twitter" credentials
-		Given I have a Gigadb account
-		And I have a "Twitter" account
-		And email addresses for those accounts match
-		When I navigate to "/site/chooseLogin"
+		Given I have a "Twitter" account
+		And I am on "/site/login"
+		And I login to Gigadb as an admin
+		And I am on "/user/"
+		And I have a Gigadb account for my "Twitter" account email
+		When I am on "/site/chooseLogin"
 		And I click on the "Twitter" button
 		And I authorise Gigadb for "Twitter"
-		Then I'm logged in into my existing account
+		Then I should be redirected
+		And I'm logged in into the Gigadb web site
 		And no new gigadb account is created
 
 	Scenario: I have a Gigadb account and I sign in with my "LinkedIn" credentials
