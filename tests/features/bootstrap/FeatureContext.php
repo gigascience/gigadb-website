@@ -90,7 +90,18 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     }
 
 
-/**
+    /**
+     * @Given /^the Gigadb database has only the default users$/
+     */
+    public function theGigadbDatabaseHasOnlyTheDefaultUsers()
+    {
+        exec("vagrant ssh -c \"sudo -u postgres /usr/bin/psql -c 'drop database gigadb'\"");
+        exec("vagrant ssh -c \"sudo -u postgres /usr/bin/psql -c 'create database gigadb owner gigadb'\"");
+        exec("vagrant ssh -c \"psql -U gigadb -h localhost gigadb < /vagrant/sql/gigadb_testdata.sql\"");
+    }
+
+
+    /**
      * @Given /^I have a "([^"]*)" account$/
      */
     public function iHaveAAccount($arg1)
@@ -102,14 +113,16 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
     }
 
-  /**
+    /**
      * @Given /^I don\'t have a Gigadb account for my "([^"]*)" account email$/
      */
     public function iDonTHaveAGigadbAccountForMyAccountEmail($arg1)
     {
-        $tester_email = $_ENV["${arg1}_tester_email"];
-        \PHPUnit\Framework\Assert::assertTrue('user@gigadb.org' != $tester_email, "$tester_email is not the default user account");
-        \PHPUnit\Framework\Assert::assertTrue('admin@gigadb.org' != $tester_email, "$tester_email is not the default admin account");
+        $email = $_ENV["${arg1}_tester_email"];
+        $expected_nb_occurrences =  0 ;
+        $nb_ocurrences = $this->countEmailOccurencesInUserList($email,$expected_nb_occurrences);
+        \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I don't have a gigadb account for $email");
+
     }
 
 
@@ -130,8 +143,10 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
      */
     public function iHaveAGigadbAccountForMyAccountEmail($arg1)
     {
-       $tester_email = $_ENV["${arg1}_tester_email"];
-       $this->assertPageContainsText($tester_email);
+       $email = $_ENV["${arg1}_tester_email"];
+       $expected_nb_occurrences =  1 ;
+       $nb_ocurrences = $this->countEmailOccurencesInUserList($email,$expected_nb_occurrences);
+        \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
 
     }
 
@@ -205,16 +220,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         $email = $_ENV["${arg1}_tester_email"];
         $expected_nb_occurrences = 1; 
 
-        $this->getSession()->visit('/site/logout');
-        $this->getSession()->visit('/site/login');
-        $this->getSession()->getPage()->fillField("LoginForm_username", "admin@gigadb.org");
-        $this->getSession()->getPage()->fillField("LoginForm_password", "gigadb");
-        $this->getSession()->getPage()->pressButton("Login");
-        $this->assertResponseStatus(200);
-        $this->getSession()->visit('/user/');
-        $this->assertResponseStatus(200);
-        $content = $this->getSession()->getPage()->getText();
-        $nb_ocurrences = substr_count($content, $email);
+        $nb_ocurrences = $this->countEmailOccurencesInUserList($email,$expected_nb_occurrences);
+
         if ($expected_nb_occurrences != $nb_ocurrences) {
             throw new \Exception('Found '.$nb_ocurrences.' occurences of "'.$email.'" when expecting '.$expected_nb_occurrences);
         }
@@ -225,8 +232,20 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     /* -------------------------------------------------------- utility functions and hooks -----------------*/
 
 
-    private function checkEmailInUserList() {
+    private function countEmailOccurencesInUserList($email, $expected_nb_occurrences) {
+        $this->visit('/site/logout');
+        $this->visit('/site/login');
+        $this->getSession()->getPage()->fillField("LoginForm_username", "admin@gigadb.org");
+        $this->getSession()->getPage()->fillField("LoginForm_password", "gigadb");
+        $this->getSession()->getPage()->pressButton("Login");
+        $this->assertResponseStatus(200);
+        $this->visit('/user/');
+        $this->assertResponseStatus(200);
+        $content = $this->getSession()->getPage()->getText();
+        $nb_ocurrences = substr_count($content, $email);
 
+        $this->getSession()->visit('/site/logout');
+        return $nb_ocurrences;
     }
 
     /**
@@ -247,7 +266,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
                 }
 
 
-            }else {
+            }else if ($this->getSession()->getDriver() instanceof \Behat\Mink\Driver\GoutteDriver) {
 
                 $html_data = $this->getSession()->getDriver()->getContent();
                 $file_and_path = '/tmp/behat_page.html';
