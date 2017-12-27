@@ -197,9 +197,37 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         
     }
 
+     /**
+     * @Given /^no new gigadb account is created for my "([^"]*)" account email$/
+     */
+    public function noNewGigadbAccountIsCreatedForMyAccountEmail($arg1)
+    {
+        $email = $_ENV["${arg1}_tester_email"];
+        $expected_nb_occurrences = 1; 
+
+        $this->getSession()->visit('/site/logout');
+        $this->getSession()->visit('/site/login');
+        $this->getSession()->getPage()->fillField("LoginForm_username", "admin@gigadb.org");
+        $this->getSession()->getPage()->fillField("LoginForm_password", "gigadb");
+        $this->getSession()->getPage()->pressButton("Login");
+        $this->assertResponseStatus(200);
+        $this->getSession()->visit('/user/');
+        $this->assertResponseStatus(200);
+        $content = $this->getSession()->getPage()->getText();
+        $nb_ocurrences = substr_count($content, $email);
+        if ($expected_nb_occurrences != $nb_ocurrences) {
+            throw new \Exception('Found '.$nb_ocurrences.' occurences of "'.$email.'" when expecting '.$expected_nb_occurrences);
+        }
+    }
+
 
 
     /* -------------------------------------------------------- utility functions and hooks -----------------*/
+
+
+    private function checkEmailInUserList() {
+
+    }
 
     /**
      * @AfterStep
@@ -207,14 +235,32 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     public function takeSnapshotAfterFailedStep($event)
     {
         if ($event->getResult() == 4) {
+
             if ($this->getSession()->getDriver() instanceof \Behat\Mink\Driver\Selenium2Driver) {
                 $screenshot = $this->getSession()->getDriver()->getScreenshot();
                 $content = $this->getSession()->getDriver()->getContent();
-                file_put_contents('/tmp/bgi.png', $screenshot);
-                file_put_contents('/tmp/bgi.html', $content);
+                $file_and_path = "/tmp/behat_page.png" ;
+                file_put_contents($file_and_path, $screenshot);
+
+                if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
+                    exec('open -a "Preview.app" ' . $file_and_path);
+                }
+
+
+            }else {
+
+                $html_data = $this->getSession()->getDriver()->getContent();
+                $file_and_path = '/tmp/behat_page.html';
+                file_put_contents($file_and_path, $html_data);
+
+                if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
+                    exec('open -a "Safari.app" ' . $file_and_path);
+                };
+
             }
         }
     }
+
 
 
 
