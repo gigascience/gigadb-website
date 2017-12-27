@@ -95,7 +95,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I authorise Gigadb for "Twitter"
 		Then I should be redirected
 		And I'm logged in into the Gigadb web site
-		And no new gigadb account is created
+		And no new gigadb account is created for my "Twitter" account email
 
 	Scenario: I have a Gigadb account and I sign in with my "LinkedIn" credentials
 		Given I have a Gigadb account
