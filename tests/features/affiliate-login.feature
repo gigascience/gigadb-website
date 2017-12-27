@@ -9,6 +9,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And Gigadb has a "Twitter" API keys
 		And Gigadb has a "LinkedIn" API keys
 		And Gigadb has a "Orcid" API keys
+		And the Gigadb database has only the default users
 
 
 	@blocked @javascript
@@ -86,9 +87,6 @@ SO THAT I can upload and manage the datasets for my papers
 	@wip
 	Scenario: I have a Gigadb account and I sign in with my "Twitter" credentials
 		Given I have a "Twitter" account
-		And I am on "/site/login"
-		And I login to Gigadb as an admin
-		And I am on "/user/"
 		And I have a Gigadb account for my "Twitter" account email
 		When I am on "/site/chooseLogin"
 		And I click on the "Twitter" button
