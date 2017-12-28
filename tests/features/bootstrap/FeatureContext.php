@@ -127,24 +127,15 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
 
     /**
-     * @Given /^I login to Gigadb as an admin$/
-     */
-    public function iLoginToGigadbAsAnAdmin()
-    {
-      
-        $this->getSession()->getPage()->fillField("LoginForm_username", "admin@gigadb.org");
-        $this->getSession()->getPage()->fillField("LoginForm_password", "gigadb");
-        $this->getSession()->getPage()->pressButton("Login");
-    }
-
-
-    /**
      * @Given /^I have a Gigadb account for my "([^"]*)" account email$/
      */
     public function iHaveAGigadbAccountForMyAccountEmail($arg1)
     {
        $email = $_ENV["${arg1}_tester_email"];
        $expected_nb_occurrences =  1 ;
+
+       $this->createNewUserAccountForEmail($email);
+
        $nb_ocurrences = $this->countEmailOccurencesInUserList($email,$expected_nb_occurrences);
         \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
 
@@ -246,6 +237,21 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
         $this->getSession()->visit('/site/logout');
         return $nb_ocurrences;
+    }
+
+    private function createNewUserAccountForEmail($email) {
+        $this->visit('/user/create');
+        $this->getSession()->getPage()->fillField("User_email", $email);
+        $this->getSession()->getPage()->fillField("User_first_name", "First");
+        $this->getSession()->getPage()->fillField("User_last_name", "Last");
+        $this->getSession()->getPage()->fillField("User_password", "1234");
+        $this->getSession()->getPage()->fillField("User_password_repeat", "1234");
+        $this->getSession()->getPage()->fillField("User_affiliation", "Testing");
+        $this->getSession()->getPage()->fillField("User_preferred_link", "EBI");
+        $this->getSession()->getPage()->fillField("User_newsletter", "1");
+
+        $this->getSession()->getPage()->pressButton("Register");
+
     }
 
     /**
