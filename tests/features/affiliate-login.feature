@@ -12,7 +12,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And the Gigadb database has only the default users
 
 
-	@wip
+	@wip @javascript
 	Scenario: I sign in with Facebook with no existing Gigadb account
 		Given I have a "Facebook" account
 		But I don't have a Gigadb account for my "Facebook" account email
