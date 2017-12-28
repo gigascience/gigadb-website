@@ -99,10 +99,17 @@
 			<? } ?>
 
 
-		</div><!--well-->
 		<div class="pull-right">
+			<div class="control-group">
+					<div class="controls">
 			<?= MyHtml::submitButton($model->isNewRecord ? Yii::t('app' , 'Register') : 'Save', array('class'=>'btn-green')) ?>
+			    <?= $form->error($model,'validacion') ?>
+					</div>
+				</div>
 		</div>
+		<span>&nbsp;</span>
+		</div><!--well-->
+
 
 	<? $this->endWidget() ?>
 	<?php 
