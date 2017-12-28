@@ -159,20 +159,61 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     {
         $login = $_ENV["{$arg1}_tester_email"];
         $password = $_ENV["${arg1}_tester_password"];
-        $this->fillField("username_or_email", $login);
-        $this->fillField("password", $password);
 
-        $this->pressButton("Sign In");
+        if ($arg1 == "Twitter") {        
+            $this->fillField("username_or_email", $login);
+            $this->fillField("password", $password);
+
+            $this->pressButton("Sign In"); 
+        }
+        else if ($arg1 == "Facebook") {
+            $this->fillField("email", $login);
+            $this->fillField("pass", $password);
+
+            $this->pressButton("loginbutton");
+
+        }
 
         $this->assertResponseStatus(200);
     }
 
     /**
-     * @Then /^I should be redirected$/
+     * @Then /^I should be redirected from "([^"]*)"$/
      */
-    public function iShouldBeRedirected()
+    public function iShouldBeRedirectedFrom($arg1)
     {
-        $this->clickLink('click here to continue');
+        if ($arg1 == "Twitter") {
+            $this->clickLink('click here to continue');
+        }
+        else if ($arg1 == "Facebook") {
+            $text = "Continue as Elizabeth";
+            // $xpath = "//button[@type='submit']" ;
+            // $xpath = '//*[@id="u_0_s"]/div[2]/div[1]/div[1]/button' ;
+            // $xpath = '//div[2]/div[1]/div[1]/button' ;
+            // $xpath = '//button[@type="submit" and contains(., "Continue")]' ;
+            //$xpath = '//div[2]/div[1]/div[1]/button' ;
+            //$xpath = '//button' ;
+            //$element = $this->getSession()->getPage()->find('xpath', $this->getSession()->getSelectorsHandler()->selectorToXpath('xpath', $xpath) );
+            //$element = $this->getSession()->getPage()->find('xpath', $xpath );
+            // $element->find();
+            $selectorsHandler = $this->getSession()->getSelectorsHandler();
+            $element = $this->getSession()->getPage()->find(
+                'named',
+                array(
+                    'button',
+                    $selectorsHandler->xpathLiteral($text)
+                )
+            );
+
+            if (null === $element) {
+                throw new \Exception("The element is not found");
+            }
+            else {
+                // var_dump($element->getHtml());
+                $element->press();
+            }
+
+        }
     }
 
 
@@ -253,6 +294,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         $this->getSession()->getPage()->pressButton("Register");
 
     }
+
 
     /**
      * @AfterStep
