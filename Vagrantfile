@@ -53,8 +53,7 @@ Vagrant.configure(2) do |config|
   	if ENV['GIGADB_BOX'] == 'aws' # For CentOS VM and AWS instance
       FileUtils.mkpath("./assets")
       FileUtils.chmod_R 0777, ["./assets"]
-    end
-    if ENV['GIGADB_BOX'] == 'centos' || ''
+    else
       FileUtils.mkpath("./assets")
       gigadb.vm.synced_folder "./assets/", "/vagrant/assets",
         :mount_options => ["dmode=777,fmode=777"]
