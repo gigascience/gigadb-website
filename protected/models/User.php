@@ -263,7 +263,7 @@ class User extends CActiveRecord {
         }
 
         #check if exist user
-        $user = User::findAffiliateUser($provider, $uid);
+        $user = User::findAffiliateEmail($email);
 
         if(!$user) {
             $user = new User;
@@ -324,6 +324,13 @@ class User extends CActiveRecord {
             ));
         }
 
+        return $user;
+    }
+
+    public static function findAffiliateEmail($email) {
+        $user = User::model()->find("email = :email", array(
+                ':email' => $email
+            ));
         return $user;
     }
 
