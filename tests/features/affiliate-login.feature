@@ -12,7 +12,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And the Gigadb database has only the default users
 
 
-	@wip @javascript
+	@ok @javascript @insulated @facebook
 	Scenario: I sign in with Facebook with no existing Gigadb account
 		Given I have a "Facebook" account
 		But I don't have a Gigadb account for my "Facebook" account email
@@ -33,7 +33,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into that account
 		And the email I used for "Google" is used for that account
 
-	@ok
+	@wip @insulated @twitter @mink:goutte
 	Scenario: I sign in with Twitter with no existing Gigadb account
 		Given I have a "Twitter" account
 		But I don't have a Gigadb account for my "Twitter" account email
