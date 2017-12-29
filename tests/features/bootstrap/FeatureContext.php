@@ -185,32 +185,22 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             $this->clickLink('click here to continue');
         }
         else if ($arg1 == "Facebook") {
-            $text = "Continue as Elizabeth";
-            // $xpath = "//button[@type='submit']" ;
-            // $xpath = '//*[@id="u_0_s"]/div[2]/div[1]/div[1]/button' ;
-            // $xpath = '//div[2]/div[1]/div[1]/button' ;
-            // $xpath = '//button[@type="submit" and contains(., "Continue")]' ;
-            //$xpath = '//div[2]/div[1]/div[1]/button' ;
-            //$xpath = '//button' ;
-            //$element = $this->getSession()->getPage()->find('xpath', $this->getSession()->getSelectorsHandler()->selectorToXpath('xpath', $xpath) );
-            //$element = $this->getSession()->getPage()->find('xpath', $xpath );
-            // $element->find();
-            $selectorsHandler = $this->getSession()->getSelectorsHandler();
-            $element = $this->getSession()->getPage()->find(
-                'named',
-                array(
-                    'button',
-                    $selectorsHandler->xpathLiteral($text)
-                )
-            );
+            $session = $this->getSession();
+            $driver = $session->getDriver();
+            $xpath = '//button[@type="submit" and contains(., "Continue")]' ;
+            $elements = $driver->find($xpath) ;
 
-            // if (null === $element) {
-            //     throw new \Exception("The element is not found");
-            // }
-            // else {
-            //     var_dump($element->getHtml());
-            //     $element->press();
-            // }
+            if( 0 == count($elements) ) {
+                throw new \Exception("The element is not found");
+            }
+            else {
+                //print_r("pressing the button ". $driver->getHtml( $elements[0]->getParent()->getXpath() ) );
+                $elements[0]->press();
+            }
+
+            sleep(5);
+            $this->assertPageContainsText("GigaDB contains 4 discoverable, trackable, and citable datasets");
+
 
         }
     }
@@ -295,6 +285,13 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     }
 
 
+    /** @AfterSuite */
+    public static function resetDatabase()
+    {
+        exec("vagrant ssh -c \"sudo -u postgres /usr/bin/psql -c 'drop database gigadb'\"");
+        exec("vagrant ssh -c \"sudo -u postgres /usr/bin/psql -c 'create database gigadb owner gigadb'\"");
+        exec("vagrant ssh -c \"psql -U gigadb -h localhost gigadb < /vagrant/sql/gigadb_testdata.sql\"");
+    }
     /**
      * @AfterStep
     */
