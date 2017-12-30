@@ -43,12 +43,8 @@ nbproject/project.properties
 # MacOSX
 .DS_Store
 
+
 # Testing
 tests/fixtures/affiliate_users_credentials
 sql/temp_command.sql
-
-
-# Behat
-
-Behat/vendor/**/.git
 

@@ -18,7 +18,7 @@ $ casperjs test tests/*.js
 
 (2) Acceptance tests:
 
-First run a browser emulator:
+First run a full browser emulator:
 
 $ java -jar -Dwebdriver.chrome.driver=chromedriver selenium-server-standalone-3.8.1.jar
 
@@ -26,8 +26,12 @@ or
 
 $  phantomjs --webdriver=8643
 
+
 you can choose one of the commands below:
 
-$ Behat/bin/behat --tags @wip -c Behat/behat.yml    # will run the scenarios tagged as @wip
-$ Behat/bin/behat --tags ~@wip -c Behat/behat.yml    # will run all the scenarios but those tagged as @wip
-$ Behat/bin/behat -c Behat/behat.yml    # will run all the scenarios
+$ Behat/bin/behat --tags @ok,@wip -v --stop-on-failure -c Behat/behat.yml # will run the scenarios tagged with @ok or @wip
+$ Behat/bin/behat --tags ~@wip -v --stop-on-failure -c Behat/behat.yml # will run all the scenarios except those tagged with @wip
+$ Behat/bin/behat  -v --stop-on-failure -c Behat/behat.yml # will run all the scenarios
+
+
+Also make sure before running the suite the facebook test user has the gigadb app deauthorised by login as her and deauthorising the app in the Settings>Apps section. 
