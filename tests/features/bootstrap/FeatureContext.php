@@ -322,21 +322,21 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     /**
      * @AfterStep
     */
-    // public function takeSnapshotAfterFailedStep($event)
-    // {
-    //     if ($event->getResult() == 4) {
+    public function takeSnapshotAfterFailedStep($event)
+    {
+        if ($event->getResult() == 4) {
 
-    //         $content = $this->getSession()->getDriver()->getContent();
-    //         $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
-    //         file_put_contents("/tmp/".$file_and_path.".html", $content);
+            $content = $this->getSession()->getDriver()->getContent();
+            $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
+            file_put_contents("/tmp/".$file_and_path.".html", $content);
 
-    //         if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
-    //             // exec('open -a "Preview.app" ' . $file_and_path.".png");
-    //             exec('open -a "Safari.app" ' . $file_and_path.".html");
-    //         }
+            if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
+                // exec('open -a "Preview.app" ' . $file_and_path.".png");
+                exec('open -a "Safari.app" ' . $file_and_path.".html");
+            }
 
-    //     }
-    // }
+        }
+    }
 
 
 
