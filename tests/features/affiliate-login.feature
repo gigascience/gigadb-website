@@ -32,7 +32,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into that account
 		And the email I used for "Google" is used for that account
 
-	@wip @twitter @mink:goutte
+	@ok @twitter @mink:goutte
 	Scenario: I sign in with Twitter with no existing Gigadb account
 		Given I have a "Twitter" account
 		But I don't have a Gigadb account for my "Twitter" account email
@@ -63,15 +63,16 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into that account
 		And the email I used for "ORCID" is used for that account
 
+	@wip @facebook @javascript
 	Scenario: I have a Gigadb account and I sign in with my "Facebook" credentials
-		Given I have a Gigadb account
-		And I have a "Facebook" account
-		And email addresses for those accounts match
-		When I navigate to "/site/chooseLogin"
+		Given I have a "Facebook" account
+		And I have a Gigadb account for my "Facebook" account email
+		When I am on "/site/chooseLogin"
 		And I click on the "Facebook" button
 		And I authorise Gigadb for "Facebook"
-		Then I'm logged in into my existing account
-		And no new gigadb account is created
+		Then I should be redirected from "Facebook"
+		And I'm logged in into the Gigadb web site
+		And no new gigadb account is created for my "Facebook" account email
 
 	Scenario: I have a Gigadb account and I sign in with my "Google" credentials
 		Given I have a Gigadb account
