@@ -289,9 +289,22 @@ class User extends CActiveRecord {
             #generate some credential data
             $user->password = User::generatePassword(32);
             $user->encryptPassword();
+        } else {
+            # still update the uid if user exist, so session and database record still match
+            if($provider == "Facebook") {
+                $user->facebook_id = $uid;
+            } else if ($provider == "Twitter") {
+                $user->twitter_id = $uid;
+            } else if ($provider == "LinkedIn") {
+                $user->linkedin_id = $uid;
+            } else if ($provider == "Google") {
+                $user->google_id = $uid;
+            } else if ($provider == "Orcid") {
+                $user->orcid_id = $uid;
+            }
         }
 
-        # if login with fb, activate the user
+        # if login with affiliate provider, activate the user, as they are already trusted third-party verified
          $user->is_activated = true;
 
         if($user->save(false)){
