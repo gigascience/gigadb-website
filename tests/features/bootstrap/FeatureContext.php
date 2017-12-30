@@ -90,15 +90,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     }
 
 
-    /**
-     * @Given /^the Gigadb database has only the default users$/
-     */
-    public function theGigadbDatabaseHasOnlyTheDefaultUsers()
-    {
-        exec("vagrant ssh -c \"sudo -u postgres /usr/bin/psql -c 'drop database gigadb'\"");
-        exec("vagrant ssh -c \"sudo -u postgres /usr/bin/psql -c 'create database gigadb owner gigadb'\"");
-        exec("vagrant ssh -c \"psql -U gigadb -h localhost gigadb < /vagrant/sql/gigadb_testdata.sql\"");
-    }
 
 
     /**
@@ -120,7 +111,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     {
         $email = $_ENV["${arg1}_tester_email"];
         $expected_nb_occurrences =  0 ;
-        $nb_ocurrences = $this->countEmailOccurencesInUserList($email,$expected_nb_occurrences);
+
+        $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
         \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I don't have a gigadb account for $email");
 
     }
@@ -136,7 +128,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
        $this->createNewUserAccountForEmail($email);
 
-       $nb_ocurrences = $this->countEmailOccurencesInUserList($email,$expected_nb_occurrences);
+
+       $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
         \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
 
     }
@@ -215,7 +208,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
      */
     public function iMLoggedInIntoTheGigadbWebSite()
     {
-        true;
+        sleep(2);
         
     }
 
@@ -227,13 +220,10 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     {
 
         $email = $_ENV["${arg1}_tester_email"];
-        $first_name = $_ENV["${arg1}_tester_first_name"];
-        $last_name = $_ENV["${arg1}_tester_last_name"];
-        $this->visit('/user/view_profile');
-        $this->assertPageContainsText($arg1);
-        $this->assertPageContainsText($email);
-        $this->assertPageContainsText($first_name);
-        $this->assertPageContainsText($last_name);
+        $expected_nb_occurrences = 1; 
+
+        $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
+        \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "Success creating a new gigadb account");
         
     }
 
@@ -245,7 +235,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         $email = $_ENV["${arg1}_tester_email"];
         $expected_nb_occurrences = 1; 
 
-        $nb_ocurrences = $this->countEmailOccurencesInUserList($email,$expected_nb_occurrences);
+        $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
 
         if ($expected_nb_occurrences != $nb_ocurrences) {
             throw new \Exception('Found '.$nb_ocurrences.' occurences of "'.$email.'" when expecting '.$expected_nb_occurrences);
@@ -257,47 +247,44 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     /* -------------------------------------------------------- utility functions and hooks -----------------*/
 
 
-    private function countEmailOccurencesInUserList($email, $expected_nb_occurrences) {
-        $this->visit('/site/logout');
-        $this->visit('/site/login');
-        $this->printCurrentUrl();
-        $this->getSession()->getPage()->fillField("LoginForm_username", "admin@gigadb.org");
-        $this->getSession()->getPage()->fillField("LoginForm_password", "gigadb");
-        $this->getSession()->getPage()->pressButton("Login");
-        sleep(5);
-        // $this->assertResponseStatus(200);
-        $this->visit('/user/');
-        $this->printCurrentUrl();
-        sleep(5);
-        // $this->assertResponseStatus(200);
-        $content = $this->getSession()->getPage()->getText();
-        $nb_ocurrences = substr_count($content, $email);
+    private function countEmailOccurencesInUserList($email=null) {
+        $nb_ocurrences = 0 ;
+        print_r("Querying the database for emails... ");
+        exec("vagrant ssh -c 'sudo -Hiu postgres /usr/bin/psql gigadb -qt -c \"select email from gigadb_user\"'", $output, $err);
+        $trimmer = function($value) {
+            return trim($value);
+        };
+        $squeezer = function($value) {
+            return $value != "" ;
+        };
+        $trimmed_emails = array_map($trimmer,array_filter($output, $squeezer)) ;
+        // var_dump($trimmed_emails);
+        $occurrences = array_keys($trimmed_emails, $email);
 
-        $this->getSession()->visit('/site/logout');
+        $nb_ocurrences =  count($occurrences);
+        print_r("Found {$nb_ocurrences} of {$email}");
         return $nb_ocurrences;
     }
 
     private function createNewUserAccountForEmail($email) {
-        $this->visit('/user/create');
-        $this->getSession()->getPage()->fillField("User_email", $email);
-        $this->getSession()->getPage()->fillField("User_first_name", "First");
-        $this->getSession()->getPage()->fillField("User_last_name", "Last");
-        $this->getSession()->getPage()->fillField("User_password", "1234");
-        $this->getSession()->getPage()->fillField("User_password_repeat", "1234");
-        $this->getSession()->getPage()->fillField("User_affiliation", "Testing");
-        $this->getSession()->getPage()->fillField("User_preferred_link", "EBI");
-        $this->getSession()->getPage()->fillField("User_newsletter", "1");
-
-        $this->getSession()->getPage()->pressButton("Register");
+        $sql = "insert into gigadb_user(email,password,first_name, last_name, affiliation,role,is_activated,username) values('{$email}','12345678','John','Doe','ETH','user',true,'johndoe')" ; 
+        file_put_contents("sql/temp_command.sql", $sql);
+        print_r("Creating a test user account... ");
+        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/temp_command.sql\"");
 
     }
+
+
 
 
     /** @BeforeScenario */
     public static function initialize_database()
     {
-        exec("vagrant ssh -c \"sudo -u postgres /usr/bin/psql -c 'drop database gigadb'\"");
-        exec("vagrant ssh -c \"sudo -u postgres /usr/bin/psql -c 'create database gigadb owner gigadb'\"");
+       print_r("Initializing the database (drop)... ");
+        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql -c 'drop database gigadb'\"");
+       print_r("Initializing the database (create)... ");
+        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql -c 'create database gigadb owner gigadb;'\"");
+       print_r("Initializing the database (data)... ");
         exec("vagrant ssh -c \"psql -U gigadb -h localhost gigadb < /vagrant/sql/gigadb_testdata.sql\"");
     }
 
@@ -324,38 +311,32 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     }
 
     /**
+     * @AfterSuite
+    */
+    public static function reset_db() {
+       Self::initialize_database();
+    }
+
+
+
+    /**
      * @AfterStep
     */
-    public function takeSnapshotAfterFailedStep($event)
-    {
-        if ($event->getResult() == 4) {
+    // public function takeSnapshotAfterFailedStep($event)
+    // {
+    //     if ($event->getResult() == 4) {
 
-            if ($this->getSession()->getDriver() instanceof \Behat\Mink\Driver\Selenium2Driver) {
-                $screenshot = $this->getSession()->getDriver()->getScreenshot();
-                $content = $this->getSession()->getDriver()->getContent();
-                $file_and_path = "/tmp/{$event->getLogicalParent()->getTitle()}" ;
-                file_put_contents($file_and_path.".png", $screenshot);
-                file_put_contents($file_and_path.".html", $content);
+    //         $content = $this->getSession()->getDriver()->getContent();
+    //         $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
+    //         file_put_contents("/tmp/".$file_and_path.".html", $content);
 
-                if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
-                    // exec('open -a "Preview.app" ' . $file_and_path.".png");
-                    exec('open -a "Safari.app" ' . $file_and_path.".html");
-                }
+    //         if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
+    //             // exec('open -a "Preview.app" ' . $file_and_path.".png");
+    //             exec('open -a "Safari.app" ' . $file_and_path.".html");
+    //         }
 
-
-            }else if ($this->getSession()->getDriver() instanceof \Behat\Mink\Driver\GoutteDriver) {
-
-                $html_data = $this->getSession()->getDriver()->getContent();
-                $file_and_path = "/tmp/{$event->getLogicalParent()->getTitle()}" ;
-                file_put_contents($file_and_path.".html", $html_data);
-
-                if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
-                    exec('open -a "Safari.app" ' . $file_and_path);
-                };
-
-            }
-        }
-    }
+    //     }
+    // }
 
 
 
