@@ -9,7 +9,6 @@ SO THAT I can upload and manage the datasets for my papers
 		And Gigadb has a "Twitter" API keys
 		And Gigadb has a "LinkedIn" API keys
 		And Gigadb has a "Orcid" API keys
-		And the Gigadb database has only the default users
 
 
 	@ok @javascript @insulated @facebook
@@ -33,7 +32,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into that account
 		And the email I used for "Google" is used for that account
 
-	@wip @insulated @twitter @mink:goutte
+	@wip @twitter @mink:goutte
 	Scenario: I sign in with Twitter with no existing Gigadb account
 		Given I have a "Twitter" account
 		But I don't have a Gigadb account for my "Twitter" account email
@@ -84,7 +83,7 @@ SO THAT I can upload and manage the datasets for my papers
 		Then I'm logged in into my existing account
 		And no new gigadb account is created
 
-	@ok
+	@ok @twitter @mink:goutte
 	Scenario: I have a Gigadb account and I sign in with my "Twitter" credentials
 		Given I have a "Twitter" account
 		And I have a Gigadb account for my "Twitter" account email
