@@ -14,6 +14,7 @@ SO THAT I can upload and manage the datasets for my papers
 	@ok @javascript @insulated @facebook
 	Scenario: I sign in with Facebook with no existing Gigadb account
 		Given I have a "Facebook" account
+		And The "Facebook" account has not authorised login to GigaDB web site
 		But I don't have a Gigadb account for my "Facebook" account email
 		When I am on "/site/chooseLogin"
 		And I click on the "Facebook" button
@@ -63,9 +64,10 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into that account
 		And the email I used for "ORCID" is used for that account
 
-	@wip @facebook @javascript
+	@ok @facebook @javascript @insulated
 	Scenario: I have a Gigadb account and I sign in with my "Facebook" credentials
 		Given I have a "Facebook" account
+		And The "Facebook" account has not authorised login to GigaDB web site
 		And I have a Gigadb account for my "Facebook" account email
 		When I am on "/site/chooseLogin"
 		And I click on the "Facebook" button
