@@ -104,6 +104,26 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
     }
 
+
+    /**
+     * @Given /^The "([^"]*)" account has not authorised login to GigaDB web site$/
+     */
+    public function theAccountHasNotAuthorisedLoginToGigadbWebSite($arg1)
+    {
+        if ("Facebook" == $arg1) {
+            $facebook = new Guzzle\Http\Client("https://graph.facebook.com");
+            $request = $facebook->createRequest("DELETE");
+            $request->setPath('/102733567195512/permissions');
+             $request->getQuery()
+                    ->set('access_token', $_ENV["${arg1}_access_token"]);
+            $response = $facebook->send($request);
+            $body = json_decode($response->getBody(true),true);
+            \PHPUnit\Framework\Assert::assertTrue("true" == $body["success"],'Test users de-authorised');
+
+        }
+    }
+
+
     /**
      * @Given /^I don\'t have a Gigadb account for my "([^"]*)" account email$/
      */
@@ -193,8 +213,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
                 $elements[0]->press();
             }
 
-            sleep(5);
-            $this->assertPageContainsText("GigaDB Page");
+            // sleep(10);
+            $this->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
+            // $this->assertPageContainsText("GigaDB Page");
             
 
 
@@ -208,7 +229,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
      */
     public function iMLoggedInIntoTheGigadbWebSite()
     {
-        sleep(2);
+        $this->assertPageContainsText("GigaDB Page");
         
     }
 
@@ -219,6 +240,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
     {
 
+        sleep(2);
         $email = $_ENV["${arg1}_tester_email"];
         $expected_nb_occurrences = 1; 
 
@@ -270,7 +292,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         $sql = "insert into gigadb_user(email,password,first_name, last_name, affiliation,role,is_activated,username) values('{$email}','12345678','John','Doe','ETH','user',true,'johndoe')" ; 
         file_put_contents("sql/temp_command.sql", $sql);
         print_r("Creating a test user account... ");
-        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/temp_command.sql\"");
+        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/temp_command.sql\"",$output,$err);
+        var_dump($output);
+        var_dump($err);
 
     }
 
@@ -293,6 +317,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
      * @BeforeScenario
     */
     public function initialize_session() {
+        clearstatcache() ;
         $session = $this->getSession();
         $driver = $session->getDriver();
         if ($driver instanceof GoutteDriver) {
@@ -305,16 +330,26 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     /**
      * @AfterScenario
     */
-    public function reset_stop_session() {
+    public function reset_stop_session($event) {
+        $sqlfile = "sql/temp_command.sql" ;
         $this->getSession()->reset();
         $this->getSession()->stop();
+        if (file_exists($sqlfile) && $event->getResult() == 0) {
+            $deleted =unlink($sqlfile);
+            if (!$deleted) {
+                throw new Exception("${sqlfile} could not be deleted");
+            }
+        }
     }
 
     /**
      * @AfterSuite
     */
-    public static function reset_db() {
-       Self::initialize_database();
+    public static function reset_db($event) {
+
+        if (true == $event->isCompleted()) {
+            Self::initialize_database();
+        }
     }
 
 
