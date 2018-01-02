@@ -289,12 +289,11 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     }
 
     private function createNewUserAccountForEmail($email) {
-        $sql = "insert into gigadb_user(email,password,first_name, last_name, affiliation,role,is_activated,username) values('{$email}','12345678','John','Doe','ETH','user',true,'johndoe')" ; 
+        $sql = "select nextval('gigadb_user_id_seq');insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username) values(lastval(),'{$email}','12345678','John','Doe','ETH','user',true,'johndoe')" ; 
         file_put_contents("sql/temp_command.sql", $sql);
         print_r("Creating a test user account... ");
-        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/temp_command.sql\"",$output,$err);
-        var_dump($output);
-        var_dump($err);
+        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/temp_command.sql\"",$output);
+        // var_dump($output);
 
     }
 
@@ -304,12 +303,18 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     /** @BeforeScenario */
     public static function initialize_database()
     {
-       print_r("Initializing the database (drop)... ");
-        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql -c 'drop database gigadb'\"");
-       print_r("Initializing the database (create)... ");
-        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql -c 'create database gigadb owner gigadb;'\"");
-       print_r("Initializing the database (data)... ");
-        exec("vagrant ssh -c \"psql -U gigadb -h localhost gigadb < /vagrant/sql/gigadb_testdata.sql\"");
+        print_r("Initializing the database (kill connections)... ");
+        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/terminate_connections.sql\"",$kill_output);
+        print_r("Initializing the database (drop database)... ");
+        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql -c 'drop database gigadb'\"",$drop_output);
+        print_r("Initializing the database (create database)... ");
+        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql -c 'create database gigadb owner gigadb;'\"",$create_output);
+        print_r("Initializing the database (load data)... ");
+        exec("vagrant ssh -c \"psql -U gigadb -h localhost gigadb < /vagrant/sql/gigadb_testdata.sql\"", $load_output);
+        // var_dump($kill_output);
+        // var_dump($drop_output);
+        // var_dump($create_output);
+        // var_dump($load_output);
     }
 
 
