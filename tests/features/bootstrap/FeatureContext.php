@@ -185,6 +185,14 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             $this->pressButton("loginbutton");
 
         }
+        else if ($arg1 == "Google") {
+            $this->fillField("Email", $login);
+            $this->pressButton("Next");
+            sleep(5);
+            $this->fillField("Passwd", $password);
+            $this->pressButton("Sign in");
+            
+        }
 
         // $this->assertResponseStatus(200);
     }
@@ -218,6 +226,12 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             // $this->assertPageContainsText("GigaDB Page");
             
 
+
+        }
+        else if ($arg1 == "Google") {
+
+            $this->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
+            $this->pressButton("Allow");
 
         }
     }
