@@ -23,7 +23,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "Facebook" details
 
-	@wip @javascript @google
+	@ok @javascript @google
 	Scenario: I sign in with Google with no existing Gigadb account
 		Given I have a "Google" account
 		But I don't have a Gigadb account for my "Google" account email
@@ -77,15 +77,16 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And no new gigadb account is created for my "Facebook" account email
 
+	@wip @javascript @google
 	Scenario: I have a Gigadb account and I sign in with my "Google" credentials
-		Given I have a Gigadb account
-		And I have a "Google" account
-		And email addresses for those accounts match
-		When I navigate to "/site/chooseLogin"
+		Given I have a "Google" account
+		And I have a Gigadb account for my "Google" account email
+		When I am on "/site/chooseLogin"
 		And I click on the "Google" button
 		And I authorise Gigadb for "Google"
-		Then I'm logged in into my existing account
-		And no new gigadb account is created
+		Then I should be redirected from "Google"
+		And I'm logged in into the Gigadb web site
+		And no new gigadb account is created for my "Google" account email
 
 	@ok @twitter @mink:goutte
 	Scenario: I have a Gigadb account and I sign in with my "Twitter" credentials
