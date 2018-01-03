@@ -77,7 +77,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And no new gigadb account is created for my "Facebook" account email
 
-	@wip @javascript @google
+	@ok @javascript @google
 	Scenario: I have a Gigadb account and I sign in with my "Google" credentials
 		Given I have a "Google" account
 		And I have a Gigadb account for my "Google" account email
