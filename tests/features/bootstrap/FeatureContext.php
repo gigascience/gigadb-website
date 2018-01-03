@@ -200,7 +200,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             
         }
         else {
-            throw new PendingException();
+            $this->printCurrentUrl();
+            throw new Exception();
         }
 
         // $this->assertResponseStatus(200);
