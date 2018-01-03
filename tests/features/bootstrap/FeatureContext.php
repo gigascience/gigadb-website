@@ -193,6 +193,12 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             $this->pressButton("Sign in");
             
         }
+        else if ($arg1 == "LinkedIn") {
+            $this->fillField("session_key", $login);
+            $this->fillField("session_password", $password);
+            $this->pressButton("Allow access");
+            
+        }
         else {
             throw new PendingException();
         }
