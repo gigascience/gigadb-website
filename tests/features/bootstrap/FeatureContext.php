@@ -199,6 +199,13 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             $this->pressButton("Allow access");
             
         }
+        else if ($arg1 == "ORCID") {
+            $this->fillField("userId", $login);
+            $this->fillField("password", $password);
+            $this->pressButton("Sign into ORCID");
+            sleep(10);
+            
+        }
         else {
             $this->printCurrentUrl();
             throw new Exception();
@@ -243,6 +250,19 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             $this->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
             $this->pressButton("Allow");
 
+        }
+        else if ($arg1 == "ORCID") {
+            $this->getSession()->wait(15000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
+            \PHPUnit\Framework\Assert::assertTrue($this->getSession()->getPage()->hasField("enablePersistentToken"), "Authorize checkbox");
+            \PHPUnit\Framework\Assert::assertTrue($this->getSession()->getPage()->hasButton("authorize"), "Authorize button");
+            $the_checkbox = $this->getSession()->getPage()->findField("enablePersistentToken");
+            $the_button = $this->getSession()->getPage()->findButton("authorize");
+            //var_dump($the_checkbox);
+            //var_dump($the_button);
+            $the_checkbox->check();
+            sleep(5);
+            $the_button->press();
+            sleep(5);
         }
     }
 
