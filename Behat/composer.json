@@ -11,7 +11,8 @@
         "phpunit/php-code-coverage": "*",
         "phpunit/phpunit-mock-objects": "*",
         "phpunit/phpunit": "*",
-        "yiisoft/yii": "*"
+        "yiisoft/yii": "*",
+        "google/apiclient": "^2.0"
     },
     "minimum-stability": "dev",
     "config": {
