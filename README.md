@@ -1,4 +1,4 @@
-# GigaDB
+# GigaDB - README for Issue 130
 
 ## What is it?
 
@@ -16,6 +16,8 @@ website. This current release is version 3.1.
 
 Please see the file called [INSTALL.md](docs/INSTALL.md) in the docs
 directory.
+
+For this issue, adding a CAPTCHA system that works in China, some PHP libraries need installed on the server. Follow instructions in [INSTALL.md](docs/INSTALL.md) in the docs directory as normal then also follow instructions in the [INSTALL_ISSUE_130.md](docs/INSTALL_ISSUE_130.md) file, also in the docs directory.
 
 ## Licensing
 
