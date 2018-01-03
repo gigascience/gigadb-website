@@ -193,6 +193,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             $this->pressButton("Sign in");
             
         }
+        else {
+            throw new PendingException();
+        }
 
         // $this->assertResponseStatus(200);
     }
@@ -244,7 +247,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     public function iMLoggedInIntoTheGigadbWebSite()
     {
         $this->assertPageContainsText("GigaDB Page");
-        
+
     }
 
     /**
@@ -378,15 +381,21 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     */
     public function takeSnapshotAfterFailedStep($event)
     {
-        if ($event->getResult() == 4) {
+        if ($event->getResult() == 4 &&  $this->getSession()->isStarted() ) {
 
-            $content = $this->getSession()->getDriver()->getContent();
-            $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
-            file_put_contents("/tmp/".$file_and_path.".html", $content);
+            try {
 
-            if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
-                // exec('open -a "Preview.app" ' . $file_and_path.".png");
-                exec('open -a "Safari.app" ' . $file_and_path.".html");
+                $content = $this->getSession()->getDriver()->getContent();
+                $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
+                file_put_contents("/tmp/".$file_and_path.".html", $content);
+
+                if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
+                    // exec('open -a "Preview.app" ' . $file_and_path.".png");
+                    exec('open -a "Safari.app" ' . $file_and_path.".html");
+                }
+            }
+            catch (Behat\Mink\Exception\DriverException $e) {
+                print_r("Unable to take a snatpshot");
             }
 
         }

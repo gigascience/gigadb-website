@@ -45,15 +45,16 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "Twitter" details
 
+	@wip @linkedin
 	Scenario: I sign in with LinkedIn with no existing Gigadb account
 		Given I have a "LinkedIn" account
-		But I don't have a Gigadb account
-		When I navigate to "/site/chooseLogin"
+		But I don't have a Gigadb account for my "LinkedIn" account email
+		When I am on "/site/chooseLogin"
 		And I click on the "LinkedIn" button
 		And I authorise Gigadb for "LinkedIn"
-		Then a new Gigadb account is created
-		And I'm logged in into that account
-		And the email I used for "LinkedIn" is used for that account
+		Then I should be redirected from "LinkedIn"
+		And I'm logged in into the Gigadb web site
+		And a new Gigadb account is created with my "LinkedIn" details
 
 	Scenario: I sign in with ORCID with no existing Gigadb account
 		Given I have a "ORCID" account
