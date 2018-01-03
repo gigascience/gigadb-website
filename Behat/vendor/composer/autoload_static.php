@@ -8,12 +8,17 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'p' => 
         array (
+            'phpseclib\\' => 10,
             'phpDocumentor\\Reflection\\' => 25,
         ),
         'W' => 
@@ -26,8 +31,6 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
             'Symfony\\Component\\Yaml\\' => 23,
             'Symfony\\Component\\Translation\\' => 30,
             'Symfony\\Component\\Process\\' => 26,
-            'Symfony\\Component\\HttpKernel\\' => 29,
-            'Symfony\\Component\\HttpFoundation\\' => 33,
             'Symfony\\Component\\Filesystem\\' => 29,
             'Symfony\\Component\\EventDispatcher\\' => 34,
             'Symfony\\Component\\DomCrawler\\' => 29,
@@ -41,6 +44,23 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
         'P' => 
         array (
             'Psr\\Log\\' => 8,
+            'Psr\\Http\\Message\\' => 17,
+            'Psr\\Cache\\' => 10,
+        ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
+        ),
+        'G' => 
+        array (
+            'GuzzleHttp\\Psr7\\' => 16,
+            'GuzzleHttp\\Promise\\' => 19,
+            'GuzzleHttp\\' => 11,
+            'Google\\Auth\\' => 12,
+        ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
         ),
         'D' => 
         array (
@@ -55,6 +75,10 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
     );
 
     public static $prefixDirsPsr4 = array (
+        'phpseclib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+        ),
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
@@ -80,14 +104,6 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
         'Symfony\\Component\\Process\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/process',
-        ),
-        'Symfony\\Component\\HttpKernel\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/http-kernel',
-        ),
-        'Symfony\\Component\\HttpFoundation\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/http-foundation',
         ),
         'Symfony\\Component\\Filesystem\\' => 
         array (
@@ -129,6 +145,38 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'GuzzleHttp\\Psr7\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'GuzzleHttp\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
+        ),
+        'GuzzleHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'Google\\Auth\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/auth/src',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
         'Doctrine\\Instantiator\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
@@ -169,6 +217,14 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
         ),
         'S' => 
         array (
+            'Symfony\\Component\\HttpKernel\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/symfony/http-kernel',
+            ),
+            'Symfony\\Component\\HttpFoundation\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/symfony/http-foundation',
+            ),
             'Symfony\\Component\\Finder\\' => 
             array (
                 0 => __DIR__ . '/..' . '/symfony/finder',
@@ -203,6 +259,14 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
             array (
                 0 => __DIR__ . '/..' . '/fabpot/goutte',
             ),
+            'Google_Service_' => 
+            array (
+                0 => __DIR__ . '/..' . '/google/apiclient-services/src',
+            ),
+            'Google_' => 
+            array (
+                0 => __DIR__ . '/..' . '/google/apiclient/src',
+            ),
         ),
         'B' => 
         array (
@@ -235,6 +299,8 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',
         'File_Iterator_Facade' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Facade.php',
         'File_Iterator_Factory' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Factory.php',
+        'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
+        'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert.php',
         'PHPUnit\\Framework\\AssertionFailedError' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/AssertionFailedError.php',
@@ -408,7 +474,6 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
         'PHPUnit\\Util\\Xml' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/Xml.php',
         'PHPUnit\\Util\\XmlTestListRenderer' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/XmlTestListRenderer.php',
         'PHPUnit_Framework_MockObject_MockObject' => __DIR__ . '/..' . '/phpunit/phpunit-mock-objects/src/MockObject.php',
-        'PHP_Timer' => __DIR__ . '/..' . '/phpunit/php-timer/src/Timer.php',
         'PHP_Token' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_TokenWithScope' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_TokenWithScopeAndVisibility' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
@@ -737,7 +802,11 @@ class ComposerStaticInit970a468663225dcc5f8b99305eecc5df
         'SebastianBergmann\\RecursionContext\\Exception' => __DIR__ . '/..' . '/sebastian/recursion-context/src/Exception.php',
         'SebastianBergmann\\RecursionContext\\InvalidArgumentException' => __DIR__ . '/..' . '/sebastian/recursion-context/src/InvalidArgumentException.php',
         'SebastianBergmann\\ResourceOperations\\ResourceOperations' => __DIR__ . '/..' . '/sebastian/resource-operations/src/ResourceOperations.php',
+        'SebastianBergmann\\Timer\\Exception' => __DIR__ . '/..' . '/phpunit/php-timer/src/Exception.php',
+        'SebastianBergmann\\Timer\\RuntimeException' => __DIR__ . '/..' . '/phpunit/php-timer/src/RuntimeException.php',
+        'SebastianBergmann\\Timer\\Timer' => __DIR__ . '/..' . '/phpunit/php-timer/src/Timer.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
+        'SessionHandlerInterface' => __DIR__ . '/..' . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
         'Text_Template' => __DIR__ . '/..' . '/phpunit/php-text-template/src/Template.php',
         'TheSeer\\Tokenizer\\Exception' => __DIR__ . '/..' . '/theseer/tokenizer/src/Exception.php',
         'TheSeer\\Tokenizer\\NamespaceUri' => __DIR__ . '/..' . '/theseer/tokenizer/src/NamespaceUri.php',
