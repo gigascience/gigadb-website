@@ -154,6 +154,39 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
     }
 
+    /**
+     * @Given /^And I have a Gigadb account for my "([^"]*)" uid$/
+     */
+    public function iHaveAGigadbAccountForMyUid($arg1)
+    {
+       $uid = $_ENV["${arg1}_tester_uid"];
+       $email = $_ENV["${arg1}_tester_email"];
+       $expected_nb_occurrences =  1 ;
+
+       $this->createNewUserAccountForUidAndEmail(strtolower($arg1),$uid,$email);
+
+
+       $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
+        \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
+
+    }
+
+    /**
+     * @Given /^I have a Gigadb account with a different email$/
+     */
+    public function iHaveAGigadbAccountWithADifferentEmail($arg1)
+    {
+       $email = "foo@bar.me";
+       $expected_nb_occurrences =  1 ;
+
+       $this->createNewUserAccountForEmail($email);
+
+
+       $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
+        \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
+
+    }
+
 
 
     /**
@@ -333,7 +366,16 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     }
 
     private function createNewUserAccountForEmail($email) {
-        $sql = "select nextval('gigadb_user_id_seq');insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username) values(lastval(),'{$email}','12345678','John','Doe','ETH','user',true,'johndoe')" ; 
+        $sql = "select nextval('gigadb_user_id_seq');insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username) values(lastval(),'{$email}','12345678','John','Doe','ETH','user',true,'johndoe')" ;
+        file_put_contents("sql/temp_command.sql", $sql);
+        print_r("Creating a test user account... ");
+        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/temp_command.sql\"",$output);
+        // var_dump($output);
+
+    }
+
+    private function createNewUserAccountForUidAndEmail($provider,$uid,$email) {
+        $sql = "select nextval('gigadb_user_id_seq');insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username,${provider}_id) values(lastval(),'{$email}','12345678','John','Doe','ETH','user',true,'johndoe',$uid)" ; 
         file_put_contents("sql/temp_command.sql", $sql);
         print_r("Creating a test user account... ");
         exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/temp_command.sql\"",$output);
