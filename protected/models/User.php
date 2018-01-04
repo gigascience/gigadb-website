@@ -9,7 +9,7 @@ class User extends CActiveRecord {
 
     public $passwordInvalid = false;
     public $sendNewPassword = false;
-
+    public $verifyCode;
     /** For the captcha */
     public $validacion;
 
@@ -59,10 +59,7 @@ class User extends CActiveRecord {
             array('newsletter','required'),
             array('role','safe'),
             array('preferred_link', 'safe'),
-
-            array('validacion',
-               'application.extensions.recaptcha.EReCaptchaValidator',
-               'privateKey'=>Yii::app()->params['recaptcha_privatekey'], 'on'=>'insert'),
+            array('verifyCode', 'validateCaptcha'),                
         );
     }
 
@@ -85,7 +82,36 @@ class User extends CActiveRecord {
         }
         return true;
     }
-
+    /**
+    * Validate captcha
+    */
+    public function validateCaptcha($attribute, $params){
+        $file = "images/tempcaptcha/".$_SESSION["captcha"].".png";
+        
+        if (empty($this->$attribute)){          
+            //Check if file exist
+            if(file_exists($file)){
+                //Delete file               
+                 unlink($file);
+                 $this->addError($attribute, 'Captcha is required');
+            }
+        }
+        else if (!empty($this->$attribute)){
+          if($this->$attribute == $_SESSION["captcha"]){
+            //Delete file               
+            unlink($file);          
+          }else{
+            //Delete file               
+            unlink($file);
+            $this->addError($attribute, 'Captcha is incorrect!');
+          }
+        }
+        else{
+            //  Delete file                 
+            unlink($file);
+          $this->addError($attribute, 'Captcha is required');
+        }   
+    }
 
     /**
      * @return array relational rules.
@@ -107,9 +133,7 @@ class User extends CActiveRecord {
             'last_name' => Yii::t('app' , 'Last Name'),
             'password' => Yii::t('app' , 'Password'),
             'affiliation' => Yii::t('app' , 'Affiliation'),
-            'password_repeat' => Yii::t('app' ,'Confirm Password'),
-            'validacion' => Yii::t('CAPTCHA', 'Enter the alpha-numeric characters visible in the image below, separate individual words by a space: '),
-            'preferred_link' => Yii::t('app', 'Link out preference'),
+            'password_repeat' => Yii::t('app' ,'Confirm Password'),          
         );
     }
 

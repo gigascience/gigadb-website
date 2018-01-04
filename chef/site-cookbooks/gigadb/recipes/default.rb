@@ -9,6 +9,7 @@
 
 include_recipe "php::fpm"
 include_recipe "php::module_pgsql"
+include_recipe "php::module_gd"
 include_recipe "nginx"
 include_recipe "python"
 include_recipe 'nodejs'

@@ -19,13 +19,43 @@ class ContactForm extends CFormModel {
 	 * Declares the validation rules.
 	 */
 	public function rules() {
+	
 		return array(
 			array('name, email, subject, body', 'required'),
 			array('email', 'email'),
-            array('validacion',
-               'application.extensions.recaptcha.EReCaptchaValidator',
-               'privateKey'=>Yii::app()->params['recaptcha_privatekey']),
+			array('verifyCode', 'validateCaptcha'),			
 		);
+	}
+	/**
+	* Validate captcha
+	*/
+	public function validateCaptcha($attribute, $params){
+		$file = "images/tempcaptcha/".$_SESSION["captcha"].".png";
+		
+		if (empty($this->$attribute)){			
+			//Check if file exist
+			if(file_exists($file)){
+				//Delete file 				
+				 unlink($file);
+				 $this->addError($attribute, 'Captcha is required');
+			}
+		}
+		else if (!empty($this->$attribute)){
+	      if($this->$attribute == $_SESSION["captcha"]){
+	      	//Delete file 				
+			unlink($file);			
+	      }else{
+	      	//Delete file 				
+			unlink($file);
+	      	$this->addError($attribute, 'Captcha is incorrect!');
+	      }
+	  	}
+	    else{
+	    	//	Delete file 				
+	    	unlink($file);
+	      $this->addError($attribute, 'Captcha is required');
+	    }	   
+			
 	}
 
 	/**
