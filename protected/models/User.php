@@ -238,9 +238,7 @@ class User extends CActiveRecord {
 
 /**
   * process OAuth response after successfull authorisaion and redirection to the loginAffilate callback
-  * TODO: what if email is empty?
   * TODO: the logic with name vs first_name+last_name may not be ideal (eg: my firstname Rija is my twitter name, it becomes last name in gigadb
-
 */
     public static function processAffiliateUser($auth) 
     {
@@ -262,8 +260,16 @@ class User extends CActiveRecord {
             $last_name = " ";
         }
 
-        #check if exist user
-        $user = User::findAffiliateEmail($email);
+        $user = null ;
+        # check if exist user by email
+        if (null != $email) {
+            $user = User::findAffiliateEmail($email);
+        }
+        else
+        # if no email
+        {
+            $user = findAffiliateUser($provider,$uid) ;
+        }
 
         if(!$user) {
             $user = new User;
