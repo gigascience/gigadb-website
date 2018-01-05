@@ -319,6 +319,11 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
         sleep(2);
         $email = $_ENV["${arg1}_tester_email"];
+        if("ORCID" == $arg1) {
+            $uid = $_ENV["${arg1}_tester_uid"];
+            $email = "${uid}@Orcid";
+        }
+        
         $expected_nb_occurrences = 1; 
 
         $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
