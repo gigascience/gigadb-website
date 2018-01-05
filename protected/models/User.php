@@ -245,8 +245,10 @@ class User extends CActiveRecord {
         $provider = $auth['provider'];
         $uid = $auth['uid'];
         $info = $auth['info'];
-
-        $email = $info['email'];
+        $email = null ;
+        if (isset($info['email'])) {
+            $email = $info['email'];
+        }
         $username = $provider.":".$uid;
         if((isset($info['first_name'])) and (isset($info['last_name']))) {
             $first_name = $info['first_name'];
@@ -268,12 +270,12 @@ class User extends CActiveRecord {
         else
         # if no email
         {
-            $user = findAffiliateUser($provider,$uid) ;
+            $user = User::findAffiliateUser($provider,$uid) ;
         }
 
         if(!$user) {
             $user = new User;
-            $user->email = $email;
+            $user->email = ($email != null ? $email : $uid."@".$provider);
             $user->username = $username;
             $user->first_name = $first_name;
             $user->last_name = $last_name;
