@@ -61,7 +61,7 @@ class OrcidStrategy extends OpauthStrategy{
 			
 			if (!empty($results) && !empty($results->access_token) && !empty($results->orcid)) {
 
-				//$userinfo = $this->userinfo($results->access_token);
+				// $userinfo = $this->userinfo($results->orcid);
 				
 				$this->auth = array(
 					'provider' => 'Orcid',
@@ -71,6 +71,7 @@ class OrcidStrategy extends OpauthStrategy{
 						'token' => $results->access_token,
 						'expires' => date('c', time() + $results->expires_in)
 					),
+					// 'raw' => $userinfo,
 				);
 
 				if (!empty($results->refresh_token))
@@ -83,6 +84,8 @@ class OrcidStrategy extends OpauthStrategy{
 					$this->auth['info']['name'] = $results->name;
 				}
 				
+				$this->auth['info']['email'] = null;
+
 				$this->callback();
 			}
 			else{
@@ -111,16 +114,20 @@ class OrcidStrategy extends OpauthStrategy{
 	/**
 	 * Queries Orcid API for user info
 	 *
-	 * @param string $access_token 
+	 * @param string $uid 
 	 * @return array Parsed JSON results
 	 */
-	// private function userinfo($access_token){
-	// 	$userinfo = $this->serverGet('https://api.sandbox.orcid.org/v1.1', array('access_token' => $access_token), null, $headers);
+	// private function userinfo($uid){
+	// 	$userinfo = $this->serverPost("https://sandbox.orcid.org/v2.1/$uid/person", 
+	// 		array('access_token' => $this->strategy['public_access_token']), 
+	// 		null, 
+	// 		$headers);
 
 
 
 	// 	if (!empty($userinfo)){
-	// 		return $this->recursiveGetObjectVars(json_decode($userinfo));
+	// 		return $userinfo;
+	// 		//return $this->recursiveGetObjectVars(json_decode($userinfo));
 	// 	}
 	// 	else{
 	// 		$error = array(
