@@ -45,7 +45,11 @@ class UserIdentity extends CUserIdentity {
         return $this->_id;
     }
 
-    public static function revoke_token() {  # revoke affilate login token for Google and ORCID
+
+    /** 
+     * revoke affilate login token
+    **/
+    public static function revoke_token() {  
         $provider = null;
         $token = null;
 
@@ -74,6 +78,8 @@ class UserIdentity extends CUserIdentity {
             curl_close($curl);
 
         }
+        //TODO:add Google, Facebook, Twitter
+        //TODO:refactor most of the curl stuff into its own function as likely common to all providers
     }
     
 
