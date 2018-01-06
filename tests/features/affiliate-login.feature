@@ -56,7 +56,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "LinkedIn" details
 
-	@wip @orcid @javascript
+	@ok @orcid @javascript
 	Scenario: I sign in with ORCID with no existing Gigadb account
 		Given I have a "ORCID" account
 		But I don't have a Gigadb account for my "ORCID" account email
