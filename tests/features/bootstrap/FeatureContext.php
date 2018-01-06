@@ -31,7 +31,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
                                'Twitter' => array('api_key' => 'key', 'client_key' => 'secret'),
                                'LinkedIn' => array('api_key' => 'api_key', 'client_key' => 'secret_key'),
                                'Orcid' => array('api_key' => 'client_id', 'client_key' => 'client_secret'),
-                           );
+                           ); //TODO: extract this map into a module as it is also going to be used in UserIdentity's revoke_token
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
@@ -121,12 +121,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             \PHPUnit\Framework\Assert::assertTrue("true" == $body["success"],'Test users de-authorised');
 
         }
-        // else if("ORCID" == $arg1) {
-        //     $client = new Guzzle\Http\Client("http://lvh.me:9170");
-        //     $request = $client->createRequest("GET");
-        //     $request->setPath('/site/revoke');
-        //     $response = $client->send($request);
-        // }
+
     }
 
 
@@ -180,7 +175,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     /**
      * @Given /^I have a Gigadb account with a different email$/
      */
-    public function iHaveAGigadbAccountWithADifferentEmail($arg1)
+    public function iHaveAGigadbAccountWithADifferentEmail()
     {
        $email = "foo@bar.me";
        $expected_nb_occurrences =  1 ;
@@ -246,7 +241,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             
         }
         else {
-            $this->printCurrentUrl();
             throw new Exception();
         }
 
@@ -413,6 +407,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         // var_dump($drop_output);
         // var_dump($create_output);
         // var_dump($load_output);
+        //TODO: refactor the 4 calls into 1 call of a reset_db.sql script
         sleep(5);
     }
 
@@ -420,7 +415,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     /**
      * @BeforeScenario
     */
-    public function initialize_session() {
+    public function initialize_session() { 
         clearstatcache() ;
         $session = $this->getSession();
         $driver = $session->getDriver();
@@ -430,7 +425,10 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         }
         $session->start();
 
+
     }
+    //TODO: wonder if the above function is still needed now the database is properly initialized
+
     /**
      * @AfterScenario
     */
@@ -485,9 +483,14 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         }
     }
 
-
-
-
-
+    /**
+     * @AfterStep
+    */
+    public function debugStep($event)
+    {
+        if ($event->getResult() == 4  ) {
+            $this->printCurrentUrl();
+        }
+    }
 
 }

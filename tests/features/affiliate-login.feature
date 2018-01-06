@@ -11,7 +11,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And Gigadb has a "Orcid" API keys
 
 
-	@ok @javascript @insulated @facebook
+	@ok @javascript @facebook
 	Scenario: I sign in with Facebook with no existing Gigadb account
 		Given I have a "Facebook" account
 		And The "Facebook" account has not authorised login to GigaDB web site
@@ -34,7 +34,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "Google" details
 
-	@ok @twitter @mink:goutte
+	@ok @twitter
 	Scenario: I sign in with Twitter with no existing Gigadb account
 		Given I have a "Twitter" account
 		But I don't have a Gigadb account for my "Twitter" account email
@@ -67,7 +67,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "ORCID" details
 
-	@ok @facebook @javascript @insulated
+	@ok @facebook @javascript
 	Scenario: I have a Gigadb account and I sign in with my "Facebook" credentials
 		Given I have a "Facebook" account
 		And The "Facebook" account has not authorised login to GigaDB web site
@@ -90,7 +90,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And no new gigadb account is created for my "Google" account email
 
-	@ok @twitter @mink:goutte
+	@ok @twitter
 	Scenario: I have a Gigadb account and I sign in with my "Twitter" credentials
 		Given I have a "Twitter" account
 		And I have a Gigadb account for my "Twitter" account email
@@ -123,9 +123,10 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And no new gigadb account is created for my "ORCID" account email
 
-	@differentemails
+	@ok @differentemails @facebook @javascript
 	Scenario: I sign in with my "Facebook" credentials and I have a gigadb account with a different email address
 		Given I have a "Facebook" account
+		And The "Facebook" account has not authorised login to GigaDB web site
 		And I have a Gigadb account with a different email
 		When I am on "/site/chooseLogin"
 		And I click on the "Facebook" button
@@ -134,7 +135,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "Facebook" details
 
-
+	@ok @differentemails @google @javascript
 	Scenario: I sign in with my "Google" credentials and I have a gigadb account with a different email address
 		Given I have a "Google" account
 		And I have a Gigadb account with a different email
@@ -145,6 +146,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "Google" details
 
+	@ok @differentemails @twitter
 	Scenario: I sign in with my "Twitter" credentials and I have a gigadb account with a different email address
 		Given I have a "Twitter" account
 		And I have a Gigadb account with a different email
@@ -155,6 +157,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "Twitter" details
 
+	@ok @differentemails @linkedin
 	Scenario: I sign in with my "LinkedIn" credentials and I have a gigadb account with a different email address
 		Given I have a "LinkedIn" account
 		And I have a Gigadb account with a different email
@@ -165,6 +168,7 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "LinkedIn" details
 
+	@ok @differentemails @orcid @javascript
 	Scenario: I sign in with my "ORCID" credentials and I have a gigadb account with a different email address
 		Given I have a "ORCID" account
 		And I have a Gigadb account with a different email
