@@ -121,6 +121,12 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             \PHPUnit\Framework\Assert::assertTrue("true" == $body["success"],'Test users de-authorised');
 
         }
+        // else if("ORCID" == $arg1) {
+        //     $client = new Guzzle\Http\Client("http://lvh.me:9170");
+        //     $request = $client->createRequest("GET");
+        //     $request->setPath('/site/revoke');
+        //     $response = $client->send($request);
+        // }
     }
 
 
@@ -394,6 +400,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     /** @BeforeScenario */
     public static function initialize_database()
     {
+        sleep(2) ; # pad the adminstrative operations to cater for latency in order to avoid fatal error
         print_r("Initializing the database (kill connections)... ");
         exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/terminate_connections.sql\"",$kill_output);
         print_r("Initializing the database (drop database)... ");
@@ -406,6 +413,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         // var_dump($drop_output);
         // var_dump($create_output);
         // var_dump($load_output);
+        sleep(5);
     }
 
 
@@ -427,6 +435,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
      * @AfterScenario
     */
     public function reset_stop_session($event) {
+
+        $this->visit("/site/revoke");
         $sqlfile = "sql/temp_command.sql" ;
         $this->getSession()->reset();
         $this->getSession()->stop();

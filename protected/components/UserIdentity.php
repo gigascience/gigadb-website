@@ -45,11 +45,7 @@ class UserIdentity extends CUserIdentity {
         return $this->_id;
     }
 
-
-    /** 
-     * revoke affilate login token
-    **/
-    public static function revoke_token() {  
+    public static function revoke_token() {  # revoke affilate login token for Google and ORCID
         $provider = null;
         $token = null;
 
@@ -59,8 +55,7 @@ class UserIdentity extends CUserIdentity {
         }
 
         if ("Orcid" == $provider) {
-            $environment = ("sandbox" == Yii::app()->getModules()['opauth']['opauthParams']["Strategy"]["Orcid"]["environment"] ? "sandbox."  : "") ;
-            $service_url = 'https://'. $environment . 'orcid.org/oauth/revoke';  #TODO: make orcid coming form config
+            $service_url = 'https://sandbox.orcid.org/oauth/revoke';  #TODO: make orcid coming form config
             $curl = curl_init($service_url);
             $curl_post_data = array(
                 "client_id" => Yii::app()->getModules()['opauth']['opauthParams']["Strategy"]["Orcid"]["client_id"],
@@ -79,8 +74,6 @@ class UserIdentity extends CUserIdentity {
             curl_close($curl);
 
         }
-        //TODO:add Google, Facebook, Twitter
-        //TODO:refactor most of the curl stuff into its own function as likely common to all providers
     }
     
 
