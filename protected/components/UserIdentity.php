@@ -44,6 +44,37 @@ class UserIdentity extends CUserIdentity {
     {
         return $this->_id;
     }
+
+    public static function revoke_token() {  # revoke affilate login token for Google and ORCID
+        $provider = null;
+        $token = null;
+
+        if(isset($_SESSION['affiliate_login'])) {
+            $provider = isset($_SESSION['affiliate_login']['provider']) ? $_SESSION['affiliate_login']['provider'] : null ;
+            $token = isset($_SESSION['affiliate_login']['token']) ? $_SESSION['affiliate_login']['token'] : null ;
+        }
+
+        if ("Orcid" == $provider) {
+            $service_url = 'https://sandbox.orcid.org/oauth/revoke';  #TODO: make orcid coming form config
+            $curl = curl_init($service_url);
+            $curl_post_data = array(
+                "client_id" => Yii::app()->getModules()['opauth']['opauthParams']["Strategy"]["Orcid"]["client_id"],
+                "client_secret" => Yii::app()->getModules()['opauth']['opauthParams']["Strategy"]["Orcid"]["client_secret"],
+                "token" => $token,
+            );
+            $headers = array(
+                'Accept: application/json',
+            );
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($curl_post_data) );
+            $http_response = curl_exec($curl);
+            $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
+            curl_close($curl);
+
+        }
+    }
     
 
 }
