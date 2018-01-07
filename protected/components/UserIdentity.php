@@ -59,7 +59,8 @@ class UserIdentity extends CUserIdentity {
         }
 
         if ("Orcid" == $provider) {
-            $service_url = 'https://sandbox.orcid.org/oauth/revoke';  #TODO: make orcid coming form config
+            $environment = ("sandbox" == Yii::app()->getModules()['opauth']['opauthParams']["Strategy"]["Orcid"]["environment"] ? "sandbox."  : "") ;
+            $service_url = 'https://'. $environment . 'orcid.org/oauth/revoke';  #TODO: make orcid coming form config
             $curl = curl_init($service_url);
             $curl_post_data = array(
                 "client_id" => Yii::app()->getModules()['opauth']['opauthParams']["Strategy"]["Orcid"]["client_id"],

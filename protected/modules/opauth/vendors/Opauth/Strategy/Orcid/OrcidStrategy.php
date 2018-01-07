@@ -45,9 +45,10 @@ class OrcidStrategy extends OpauthStrategy{
 	 * https://api.sandbox.orcid.org/oauth/token
 	 */
 	public function oauth2callback(){
+			$environment = ("sandbox" == $this->strategy['environment'] ? "sandbox."  : "") ;
 		if (array_key_exists('code', $_GET) && !empty($_GET['code'])){
 			$code = $_GET['code'];
-			$url = 'https://sandbox.orcid.org/oauth/token';
+			$url = 'https://' . $environment . 'orcid.org/oauth/token';
 			$params = array(
 				'code' => $code,
 				'client_id' => $this->strategy['client_id'],
