@@ -112,12 +112,12 @@ SO THAT I can upload and manage the datasets for my papers
 		And I'm logged in into the Gigadb web site
 		And no new gigadb account is created for my "LinkedIn" account email
 
-	@orcid @javascript
+	@ok @orcid @javascript
 	Scenario: I have a Gigadb account associated with my ORCID id and I sign in with my "ORCID" credentials
 		Given I have a "ORCID" account
 		And I have a Gigadb account for my "ORCID" uid
 		When I am on "/site/chooseLogin"
-		And I click on the "ORCID" buttons
+		And I click on the "ORCID" button
 		And I authorise Gigadb for "ORCID"
 		Then I should be redirected from "ORCID"
 		And I'm logged in into the Gigadb web site

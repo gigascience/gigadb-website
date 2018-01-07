@@ -156,7 +156,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     }
 
     /**
-     * @Given /^And I have a Gigadb account for my "([^"]*)" uid$/
+     * @Given /^I have a Gigadb account for my "([^"]*)" uid$/
      */
     public function iHaveAGigadbAccountForMyUid($arg1)
     {
@@ -237,7 +237,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             $this->fillField("userId", $login);
             $this->fillField("password", $password);
             $this->pressButton("Sign into ORCID");
-            sleep(10);
+            sleep(15);
+            $this->printCurrentUrl();
             
         }
         else {
@@ -295,7 +296,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             $the_checkbox->check();
             sleep(5);
             $the_button->press();
-            sleep(5);
+            sleep(10);
         }
     }
 
@@ -416,6 +417,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
      * @BeforeScenario
     */
     public function initialize_session() { 
+        $this->visit("/site/revoke");
+        sleep(3);
+        $this->assertHomepage();
         clearstatcache() ;
         $session = $this->getSession();
         $driver = $session->getDriver();
@@ -435,6 +439,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     public function reset_stop_session($event) {
 
         $this->visit("/site/revoke");
+        sleep(3);
+        $this->assertHomepage();
         $sqlfile = "sql/temp_command.sql" ;
         $this->getSession()->reset();
         $this->getSession()->stop();
