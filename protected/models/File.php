@@ -110,7 +110,7 @@ class File extends MyActiveRecord
 			'description' => 'Description',
 			'date_stamp' => Yii::t('app' , 'Release Date'),
 			'format_id' => Yii::t('app' , 'File Format'),
-			'type_id' => Yii::t('app' , 'File Type'),
+			'type_id' => Yii::t('app' , 'Data Type'),
 			'code' => Yii::t('app' , 'Sample ID') ,
 			'doi_search' => 'DOI',
 			'format_search' => 'File Format',
