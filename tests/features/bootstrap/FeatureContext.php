@@ -238,7 +238,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             $this->fillField("password", $password);
             $this->pressButton("Sign into ORCID");
             sleep(15);
-            $this->printCurrentUrl();
             
         }
         else {
@@ -397,6 +396,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     {
         print_r("Initializing the database... ");
         exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/reset.sql\"",$kill_output);
+        // var_dump($kill_output);
         sleep(5) ; # pad the adminstrative operations to cater for latency in order to avoid fatal error
     }
 
