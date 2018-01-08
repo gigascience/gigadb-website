@@ -372,44 +372,31 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     }
 
     private function createNewUserAccountForEmail($email) {
-        $sql = "select nextval('gigadb_user_id_seq');insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username) values(lastval(),'{$email}','12345678','John','Doe','ETH','user',true,'johndoe')" ;
+        $sql = "insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username) values(1,:'email','12345678','John','Doe','ETH','user',true,'johndoe')" ;
+        $psql_command = "sudo -Hiu postgres /usr/bin/psql -v email='$email' gigadb" ;
         file_put_contents("sql/temp_command.sql", $sql);
         print_r("Creating a test user account... ");
-        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/temp_command.sql\"",$output);
+        exec("vagrant ssh -c \"$psql_command < /vagrant/sql/temp_command.sql\"",$output);
         // var_dump($output);
 
     }
 
     private function createNewUserAccountForUidAndEmail($provider,$uid,$email) {
-        $sql = "select nextval('gigadb_user_id_seq');insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username,${provider}_id) values(lastval(),'{$email}','12345678','John','Doe','ETH','user',true,'johndoe',$uid)" ; 
+        $sql = "insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username,orcid_id) values(1,:'email','12345678','John','Doe','ETH','user',true,'johndoe',:'uid')" ; 
+        $psql_command = "sudo -Hiu postgres /usr/bin/psql -v email='$email' -v uid='$uid' gigadb" ;
         file_put_contents("sql/temp_command.sql", $sql);
+
         print_r("Creating a test user account... ");
-        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/temp_command.sql\"",$output);
+        exec("vagrant ssh -c \"$psql_command < /vagrant/sql/temp_command.sql\"",$output);
         // var_dump($output);
 
     }
 
 
-
-
-    /** @BeforeScenario */
     public static function initialize_database()
     {
         print_r("Initializing the database... ");
         exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/reset.sql\"",$kill_output);
-        // print_r("Initializing the database (kill connections)... ");
-        // exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/terminate_connections.sql\"",$kill_output);
-        // print_r("Initializing the database (drop database)... ");
-        // exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql -c 'drop database gigadb'\"",$drop_output);
-        // print_r("Initializing the database (create database)... ");
-        // exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql -c 'create database gigadb owner gigadb;'\"",$create_output);
-        // print_r("Initializing the database (load data)... ");
-        // exec("vagrant ssh -c \"psql -U gigadb -h localhost gigadb < /vagrant/sql/gigadb_testdata.sql\"", $load_output);
-        // var_dump($kill_output);
-        // var_dump($drop_output);
-        // var_dump($create_output);
-        // var_dump($load_output);
-        //TODO: refactor the 4 calls into 1 call of a reset_db.sql script
         sleep(5) ; # pad the adminstrative operations to cater for latency in order to avoid fatal error
     }
 
@@ -420,6 +407,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     public function initialize_session() { 
         $this->visit("/site/revoke");
         sleep(3);
+        Self::initialize_database();
         // $this->assertHomepage();
         clearstatcache() ;
         $session = $this->getSession();
@@ -432,7 +420,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
 
     }
-    //TODO: wonder if the above function is still needed now the database is properly initialized
 
     /**
      * @AfterScenario
@@ -441,7 +428,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
         $this->visit("/site/revoke");
         sleep(3);
-        $this->assertHomepage();
+        // $this->assertHomepage();
         $sqlfile = "sql/temp_command.sql" ;
         $this->getSession()->reset();
         $this->getSession()->stop();
@@ -468,11 +455,13 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     /**
      * @AfterStep
     */
-    public function takeSnapshotAfterFailedStep($event)
+    public function debugStep($event)
     {
-        if ($event->getResult() == 4 &&  $this->getSession()->isStarted() ) {
+        if ($event->getResult() == 4 ) {
 
-            try {
+            $this->printCurrentUrl();
+
+            try { # take a snapshot of web page
 
                 $content = $this->getSession()->getDriver()->getContent();
                 $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
@@ -490,14 +479,5 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         }
     }
 
-    /**
-     * @AfterStep
-    */
-    public function debugStep($event)
-    {
-        if ($event->getResult() == 4  ) {
-            $this->printCurrentUrl();
-        }
-    }
 
 }
