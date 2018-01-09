@@ -354,16 +354,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     private function countEmailOccurencesInUserList($email=null) {
         $nb_ocurrences = 0 ;
         print_r("Querying the database for emails... ");
-        exec("vagrant ssh -c 'sudo -Hiu postgres /usr/bin/psql gigadb -qt -c \"select email from gigadb_user\"'", $output, $err);
-        $trimmer = function($value) {
-            return trim($value);
-        };
-        $squeezer = function($value) {
-            return $value != "" ;
-        };
-        $trimmed_emails = array_map($trimmer,array_filter($output, $squeezer)) ;
-        // var_dump($trimmed_emails);
-        $occurrences = array_keys($trimmed_emails, $email);
+        exec("vagrant ssh -c 'echo \"select email from gigadb_user;\" | sudo -Hiu postgres /usr/bin/psql -qtA gigadb'", $output, $err);
+        $occurrences = array_keys($output, $email);
 
         $nb_ocurrences =  count($occurrences);
         print_r("Found {$nb_ocurrences} of {$email}");
@@ -382,7 +374,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
     private function createNewUserAccountForUidAndEmail($provider,$uid,$email) {
         $sql = "insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username,orcid_id) values(1,:'email','12345678','John','Doe','ETH','user',true,'johndoe',:'uid')" ; 
-        $psql_command = "sudo -Hiu postgres /usr/bin/psql -v email='$email' -v uid='$uid' gigadb" ;
+
+       $psql_command = "sudo -Hiu postgres /usr/bin/psql -v email='$email' -v uid='$uid' gigadb" ;
         file_put_contents("sql/temp_command.sql", $sql);
 
         print_r("Creating a test user account... ");
