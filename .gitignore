@@ -47,3 +47,8 @@ nbproject/project.properties
 tests/fixtures/affiliate_users_credentials
 sql/temp_command.sql
 
+
+# Behat
+
+Behat/vendor/**/.git
+

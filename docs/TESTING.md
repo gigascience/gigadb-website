@@ -23,16 +23,10 @@ Run PhantomJS as WebDriver compatible browser:
 $ phantomjs --webdriver=8643
 ```
 
-Set up the environment variables for test users
+#### Running regressions test
 
 ```bash
-$ . test_users.txt
-```
-
-#### Running the tests
-
-```bash
-$ ./tests/run
+$ Behat/bin/behat  -c Behat/behat.yml
 
 ```
 
@@ -54,7 +48,7 @@ use can use tags (e.g: @wip, @todo, @ok, @broken,...) to run a subset of tests a
 
 
 ```bash
-$ Behat/bin/behat --tags @ok,@wip -v --stop-on-failure -c tests/behat.yml
+$ Behat/bin/behat --tags @ok, @wip -v --stop-on-failure -c Behat/behat.yml
 
 ```
 
