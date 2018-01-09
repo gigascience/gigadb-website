@@ -114,7 +114,7 @@ class File extends MyActiveRecord
 			'code' => Yii::t('app' , 'Sample ID') ,
 			'doi_search' => 'DOI',
 			'format_search' => 'File Format',
-			'type_search' => 'File Type',
+			'type_search' => 'Data Type',
 			'index4blast' => 'Index4blast',
 			'sample_name' => Yii::t('app', 'Sample ID'),
 			'download_count' => Yii::t('app','# of Downloads'),
