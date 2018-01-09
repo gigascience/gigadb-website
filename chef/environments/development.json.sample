@@ -50,8 +50,8 @@
         "google_analytics_profile": ""
       },
       "recaptcha": {
-        "recaptcha_publickey": "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
-        "recaptcha_privatekey": "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+        "recaptcha_publickey": "",
+        "recaptcha_privatekey": ""
       },
       "facebook": {
         "app_id": "",
