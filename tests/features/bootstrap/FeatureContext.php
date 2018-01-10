@@ -191,17 +191,17 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
 
     /**
-     * @Given /^I click on the "([^"]*)" button$/
+     * @When /^I click on the "([^"]*)" button$/
      */
     public function iClickOnTheButton($arg1)
     {
         $this->clickLink($arg1);
     }
 
-    /**
-     * @Given /^I authorise Gigadb for "([^"]*)"$/
+     /**
+     * @When /^I sign in to "([^"]*)"$/
      */
-    public function iAuthoriseGigadbFor($arg1)
+    public function iSignInTo($arg1)
     {
         $login = $_ENV["{$arg1}_tester_email"];
         $password = $_ENV["${arg1}_tester_password"];
@@ -248,9 +248,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     }
 
     /**
-     * @Then /^I should be redirected from "([^"]*)"$/
+     * @When /^I authorise gigadb for "([^"]*)"$/
      */
-    public function iShouldBeRedirectedFrom($arg1)
+    public function iAuthoriseGigadbFor($arg1)
     {
         $session = $this->getSession();
         $driver = $session->getDriver();
@@ -358,7 +358,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         $occurrences = array_keys($output, $email);
 
         $nb_ocurrences =  count($occurrences);
-        print_r("Found {$nb_ocurrences} of {$email}");
+        // print_r("Found {$nb_ocurrences} of {$email}");
         return $nb_ocurrences;
     }
 
