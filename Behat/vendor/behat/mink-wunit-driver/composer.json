@@ -1,0 +1,33 @@
+{
+    "name":         "behat/mink-wunit-driver",
+    "description":  "WUnit driver for Mink framework",
+    "keywords":     ["wunit", "headless", "testing", "browser"],
+    "homepage":     "http://mink.behat.org/",
+    "type":         "mink-driver",
+    "license":      "MIT",
+
+    "authors": [
+        {
+            "name":      "Patrick Dreyer",
+            "email":     "patrick@dreyer.name",
+            "homepage":  "http://patrick.dreyer.name"
+        }
+    ],
+
+    "require": {
+        "php":                           ">=5.3.1",
+        "behat/mink":                    "~1.5@dev",
+        "behat/mink-browserkit-driver":  "~1.0@dev,>=1.0.5@dev",
+        "symfony/http-kernel":           "~2.1",
+        "symfony/process":               "~2.1"
+    },
+
+    "autoload": {
+        "psr-0": {
+            "Behat\\Mink\\Driver": "src/",
+            "WUnit": "src/",
+            "WUnit\\Http": "src/",
+            "WUnit\\HttpKernel": "src/"
+        }
+    }
+}
