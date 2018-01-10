@@ -25,7 +25,8 @@ class OrcidStrategy extends OpauthStrategy{
 	 * example: https://sandbox.orcid.org/oauth/authorize?client_id=0000-0003-2736-8061&response_type=code&scope=/orcid-profile/read-limited&redirect_uri=https://developers.google.com/oauthplayground
 	 */
 	public function request(){
-		$url = 'https://sandbox.orcid.org/oauth/authorize';
+		$environment = ("sandbox" == $this->strategy['environment'] ? "sandbox."  : "") ;
+		$url = 'https://' . $environment . 'orcid.org/oauth/authorize';
 		$params = array(
 			'client_id' => $this->strategy['client_id'],
 			'response_type' => 'code',
