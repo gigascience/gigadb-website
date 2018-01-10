@@ -168,7 +168,7 @@ SO THAT I can upload and manage the datasets for my papers
 		Then I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "LinkedIn" details
 
-	@ok @differentemails @orcid @javascript done
+	@ok @differentemails @orcid @javascript @done
 	Scenario: I sign in with my "ORCID" credentials and I have a gigadb account with a different email address
 		Given I have a "ORCID" account
 		And I have a Gigadb account with a different email
