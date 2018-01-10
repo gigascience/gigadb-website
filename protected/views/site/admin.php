@@ -112,7 +112,7 @@
                             <div class="clear"></div>
 
 
-                            <a class="btn-green left2" title="Add/update types of files supported by GigaDB" href="/adminFileType/admin">File Types</a>
+                            <a class="btn-green left2" title="Add/update types of files supported by GigaDB" href="/adminFileType/admin">Data Types</a>
 
 
                             <div class="clear"></div>

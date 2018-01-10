@@ -100,7 +100,7 @@
             <li id="share_twitter"><a href="http://twitter.com/GigaScience"><?=Yii::t('app' , 'Follow us on Twitter')?></a></li>
             <li id="share_weibo"><a href="http://weibo.com/gigasciencejournal"><?=Yii::t('app' , 'Follow us on Sina')?></a></li>
             <li id="share_google"><a href="https://plus.google.com/u/0/104409890199786402308"><?=Yii::t('app' , 'Follow us on Google+')?></a></li>
-            <li id="share_rss"><a href="http://blogs.openaccesscentral.com/blogs/gigablog/"><?=Yii::t('app' , 'GigaBlog')?></a></li>
+            <li id="share_rss"><a href="http://gigasciencejournal.com/blog/"><?=Yii::t('app' , 'GigaBlog')?></a></li>
             </ul>
         </div>
     </div>

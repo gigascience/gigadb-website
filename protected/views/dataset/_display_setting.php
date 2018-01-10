@@ -52,7 +52,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="span3"><?= Yii::t('app','File Type') ?></div>
+                            <div class="span3"><?= Yii::t('app','Data Type') ?></div>
                             <div class="span1"><input type="checkbox" name="setting[]" value="type_id"
                             <?= (in_array("type_id", $setting))? "checked" : ""?>/>
                             </div>
