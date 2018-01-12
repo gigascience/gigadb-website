@@ -1,0 +1,56 @@
+default:
+  paths:
+    features:  ../tests/features
+    bootstrap: ../tests/features/bootstrap
+  context:
+      class:  'FeatureContext'
+  extensions:
+    Behat\MinkExtension\Extension:
+      base_url: 'http://gigadb.cinecinetique.com:9170/'
+      goutte: ~
+      selenium2:
+        wd_host: http://localhost:8643/wd/hub
+    Behat\YiiExtension\Extension:
+      framework_script: ../Behat/vendor/yiisoft/yii/framework/yii.php
+      config_script:    ../protected/config/main.php
+      mink_driver: true
+
+phantomjs:
+  paths:
+    features:  ../tests/features
+    bootstrap: ../tests/features/bootstrap
+  context:
+      class:  'FeatureContext'
+  extensions:
+    Behat\MinkExtension\Extension:
+      base_url: 'http://localhost:9170/'
+      goutte: ~
+      selenium2:
+        wd_host: "http://localhost:8643/wd/hub"
+demo:
+  paths:
+    features:  ../tests/features
+    bootstrap: ../tests/features/bootstrap/demo
+  context:
+      class:  'DemoFeatureContext'
+  extensions:
+    Behat\MinkExtension\Extension:
+      base_url: http://en.wikipedia.org
+      goutte: ~
+      selenium2: 
+        browser: "chrome"
+        wd_host: http://localhost:4444/wd/hub
+
+demo2:
+  paths:
+    features:  ../tests/features
+    bootstrap: ../tests/features/bootstrap/demo
+  context:
+    class:  'DemoFeatureContext'
+  extensions:
+    Behat\MinkExtension\Extension:
+      base_url: http://en.wikipedia.org
+      goutte: ~
+      selenium2: 
+        wd_host: http://localhost:8643/wd/hub
+          
