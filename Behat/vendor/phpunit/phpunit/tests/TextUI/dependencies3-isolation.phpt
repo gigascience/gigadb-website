@@ -5,15 +5,16 @@ phpunit --process-isolation MultiDependencyTest ../_files/MultiDependencyTest.ph
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = 'MultiDependencyTest';
-$_SERVER['argv'][4] = __DIR__ . '/../_files/MultiDependencyTest.php';
+$_SERVER['argv'][4] = dirname(dirname(__FILE__)) . '/_files/MultiDependencyTest.php';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit_TextUI_Command::main();
+?>
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s by Sebastian Bergmann.
 
-...                                                                 3 / 3 (100%)
+...
 
-Time: %s, Memory: %s
+Time: %s, Memory: %sMb
 
-OK (3 tests, 4 assertions)
+OK (3 tests, 2 assertions)

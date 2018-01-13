@@ -1,7 +1,5 @@
 <?php
-use PHPUnit\Framework\TestCase;
-
-class DataProviderTest extends TestCase
+class DataProviderTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider providerMethod
@@ -13,11 +11,11 @@ class DataProviderTest extends TestCase
 
     public static function providerMethod()
     {
-        return [
-          [0, 0, 0],
-          [0, 1, 1],
-          [1, 1, 3],
-          [1, 0, 1]
-        ];
+        return array(
+          array(0, 0, 0),
+          array(0, 1, 1),
+          array(1, 1, 3),
+          array(1, 0, 1)
+        );
     }
 }

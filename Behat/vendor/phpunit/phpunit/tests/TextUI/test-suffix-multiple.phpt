@@ -5,15 +5,16 @@ phpunit --test-suffix .test.php,.my.php ../_files/
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--test-suffix';
 $_SERVER['argv'][3] = '.test.php,.my.php';
-$_SERVER['argv'][4] = __DIR__ . '/../_files/';
+$_SERVER['argv'][4] = dirname(__FILE__).'/../_files/';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit_TextUI_Command::main();
+?>
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s by Sebastian Bergmann.
 
-.....                                                               5 / 5 (100%)
+.....
 
-Time: %s, Memory: %s
+Time: %s, Memory: %sMb
 
-OK (5 tests, 5 assertions)
+OK (5 tests, 3 assertions)

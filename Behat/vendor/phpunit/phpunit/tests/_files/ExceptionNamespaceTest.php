@@ -2,7 +2,7 @@
 
 namespace My\Space;
 
-class ExceptionNamespaceTest extends \PHPUnit\Framework\TestCase
+class ExceptionNamespaceTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Exception message
@@ -14,7 +14,7 @@ class ExceptionNamespaceTest extends \PHPUnit\Framework\TestCase
     /**
      * Exception code
      *
-     * @var int
+     * @var integer
      */
     const ERROR_CODE = 200;
 

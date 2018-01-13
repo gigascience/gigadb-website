@@ -6,18 +6,17 @@ $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = '--verbose';
 $_SERVER['argv'][4] = 'DependencyTestSuite';
-$_SERVER['argv'][5] = __DIR__ . '/../_files/DependencyTestSuite.php';
+$_SERVER['argv'][5] = dirname(dirname(__FILE__)) . '/_files/DependencyTestSuite.php';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit_TextUI_Command::main();
+?>
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s by Sebastian Bergmann.
 
-Runtime:       %s
+...FSS
 
-...FSSS                                                             7 / 7 (100%)
-
-Time: %s, Memory: %s
+Time: %s, Memory: %sMb
 
 There was 1 failure:
 
@@ -27,7 +26,7 @@ There was 1 failure:
 
 --
 
-There were 3 skipped tests:
+There were 2 skipped tests:
 
 1) DependencyFailureTest::testTwo
 This test depends on "DependencyFailureTest::testOne" to pass.
@@ -35,8 +34,5 @@ This test depends on "DependencyFailureTest::testOne" to pass.
 2) DependencyFailureTest::testThree
 This test depends on "DependencyFailureTest::testTwo" to pass.
 
-3) DependencyFailureTest::testFour
-This test depends on "DependencyFailureTest::testOne" to pass.
-
 FAILURES!
-Tests: 7, Assertions: 4, Failures: 1, Skipped: 3.
+Tests: 4, Assertions: 0, Failures: 1, Skipped: 2.

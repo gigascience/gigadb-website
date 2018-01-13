@@ -1,95 +1,115 @@
 <?php
-/*
- * This file is part of PHPUnit.
+/**
+ * PHPUnit
  *
- * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
+ * All rights reserved.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *   * Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *   * Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *   * Neither the name of Sebastian Bergmann nor the names of his
+ *     contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @package    PHPUnit
+ * @subpackage Util
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 4.0.0
  */
-
-namespace PHPUnit\Util;
-
-use Composer\Autoload\ClassLoader;
-use DeepCopy\DeepCopy;
-use Doctrine\Instantiator\Instantiator;
-use File_Iterator;
-use PHP_Token;
-use phpDocumentor\Reflection\DocBlock;
-use PHPUnit\Framework\MockObject\Generator;
-use PHPUnit\Framework\TestCase;
-use Prophecy\Prophet;
-use ReflectionClass;
-use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\Comparator\Comparator;
-use SebastianBergmann\Diff\Diff;
-use SebastianBergmann\Environment\Runtime;
-use SebastianBergmann\Exporter\Exporter;
-use SebastianBergmann\GlobalState\Snapshot;
-use SebastianBergmann\Invoker\Invoker;
-use SebastianBergmann\RecursionContext\Context;
-use SebastianBergmann\Timer\Timer;
-use SebastianBergmann\Version;
-use Text_Template;
 
 /**
  * Utility class for blacklisting PHPUnit's own source code files.
+ *
+ * @package    PHPUnit
+ * @subpackage Util
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 4.0.0
  */
-final class Blacklist
+class PHPUnit_Util_Blacklist
 {
     /**
      * @var array
      */
-    public static $blacklistedClassNames = [
-        File_Iterator::class          => 1,
-        Timer::class                  => 1,
-        PHP_Token::class              => 1,
-        TestCase::class               => 2,
-        'PHPUnit\DbUnit\TestCase'     => 2,
-        Generator::class              => 1,
-        Text_Template::class          => 1,
+    public static $blacklistedClassNames = array(
+        'File_Iterator' => 1,
+        'PHP_CodeCoverage' => 1,
+        'PHP_Invoker' => 1,
+        'PHP_Timer' => 1,
+        'PHP_Token' => 1,
+        'PHPUnit_Framework_TestCase' => 2,
+        'PHPUnit_Extensions_Database_TestCase' => 2,
+        'PHPUnit_Framework_MockObject_Generator' => 2,
+        'PHPUnit_Extensions_SeleniumTestCase' => 2,
+        'PHPUnit_Extensions_Story_TestCase' => 2,
+        'Text_Template' => 1,
         'Symfony\Component\Yaml\Yaml' => 1,
-        CodeCoverage::class           => 1,
-        Diff::class                   => 1,
-        Runtime::class                => 1,
-        Comparator::class             => 1,
-        Exporter::class               => 1,
-        Snapshot::class               => 1,
-        Invoker::class                => 1,
-        Context::class                => 1,
-        Version::class                => 1,
-        ClassLoader::class            => 1,
-        Instantiator::class           => 1,
-        DocBlock::class               => 1,
-        Prophet::class                => 1,
-        DeepCopy::class               => 1
-    ];
+        'SebastianBergmann\Diff\Diff' => 1,
+        'SebastianBergmann\Environment\Runtime' => 1,
+        'SebastianBergmann\Comparator\Comparator' => 1,
+        'SebastianBergmann\Exporter\Exporter' => 1,
+        'SebastianBergmann\Version' => 1,
+        'Composer\Autoload\ClassLoader' => 1
+    );
 
     /**
-     * @var string[]
+     * @var array
      */
     private static $directories;
 
     /**
-     * @return string[]
+     * @return array
+     * @since  Method available since Release 4.1.0
      */
-    public function getBlacklistedDirectories(): array
+    public function getBlacklistedDirectories()
     {
         $this->initialize();
 
         return self::$directories;
     }
 
-    public function isBlacklisted(string $file): bool
+    /**
+     * @param  string  $file
+     * @return boolean
+     */
+    public function isBlacklisted($file)
     {
-        if (\defined('PHPUNIT_TESTSUITE')) {
+        if (defined('PHPUNIT_TESTSUITE')) {
             return false;
         }
 
         $this->initialize();
 
         foreach (self::$directories as $directory) {
-            if (\strpos($file, $directory) === 0) {
+            if (strpos($file, $directory) === 0) {
                 return true;
             }
         }
@@ -97,13 +117,13 @@ final class Blacklist
         return false;
     }
 
-    private function initialize(): void
+    private function initialize()
     {
         if (self::$directories === null) {
-            self::$directories = [];
+            self::$directories = array();
 
             foreach (self::$blacklistedClassNames as $className => $parent) {
-                if (!\class_exists($className)) {
+                if (!class_exists($className)) {
                     continue;
                 }
 
@@ -111,18 +131,11 @@ final class Blacklist
                 $directory = $reflector->getFileName();
 
                 for ($i = 0; $i < $parent; $i++) {
-                    $directory = \dirname($directory);
+                    $directory = dirname($directory);
                 }
 
                 self::$directories[] = $directory;
             }
-
-            // Hide process isolation workaround on Windows.
-            if (DIRECTORY_SEPARATOR === '\\') {
-                // tempnam() prefix is limited to first 3 chars.
-                // @see http://php.net/manual/en/function.tempnam.php
-                self::$directories[] = \sys_get_temp_dir() . '\\PHP';
-            }
-        }
+       }
     }
 }

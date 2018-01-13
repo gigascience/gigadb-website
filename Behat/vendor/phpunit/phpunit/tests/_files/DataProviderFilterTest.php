@@ -1,7 +1,5 @@
 <?php
-use PHPUnit\Framework\TestCase;
-
-class DataProviderFilterTest extends TestCase
+class DataProviderFilterTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider truthProvider
@@ -13,12 +11,12 @@ class DataProviderFilterTest extends TestCase
 
     public static function truthProvider()
     {
-        return [
-           [true],
-           [true],
-           [true],
-           [true]
-        ];
+        return array(
+           array(true),
+           array(true),
+           array(true),
+           array(true)
+        );
     }
 
     /**
@@ -31,11 +29,11 @@ class DataProviderFilterTest extends TestCase
 
     public static function falseProvider()
     {
-        return [
-          'false test'       => [false],
-          'false test 2'     => [false],
-          'other false test' => [false],
-          'other false test2'=> [false]
-        ];
+        return array(
+          'false test'=>array(false),
+          'false test 2'=>array(false),
+          'other false test'=>array(false),
+          'other false test2'=>array(false)
+        );
     }
 }

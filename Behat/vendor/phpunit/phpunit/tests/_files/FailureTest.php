@@ -1,11 +1,9 @@
 <?php
-use PHPUnit\Framework\TestCase;
-
-class FailureTest extends TestCase
+class FailureTest extends PHPUnit_Framework_TestCase
 {
     public function testAssertArrayEqualsArray()
     {
-        $this->assertEquals([1], [2], 'message');
+        $this->assertEquals(array(1), array(2), 'message');
     }
 
     public function testAssertIntegerEqualsInteger()
@@ -15,10 +13,10 @@ class FailureTest extends TestCase
 
     public function testAssertObjectEqualsObject()
     {
-        $a      = new stdClass;
+        $a = new StdClass;
         $a->foo = 'bar';
 
-        $b      = new stdClass;
+        $b = new StdClass;
         $b->bar = 'foo';
 
         $this->assertEquals($a, $b, 'message');
@@ -56,12 +54,12 @@ class FailureTest extends TestCase
 
     public function testAssertObjectSameObject()
     {
-        $this->assertSame(new stdClass, new stdClass, 'message');
+        $this->assertSame(new StdClass, new StdClass, 'message');
     }
 
     public function testAssertObjectSameNull()
     {
-        $this->assertSame(new stdClass, null, 'message');
+        $this->assertSame(new StdClass, null, 'message');
     }
 
     public function testAssertFloatSameFloat()
@@ -74,4 +72,5 @@ class FailureTest extends TestCase
     {
         $this->assertStringMatchesFormatFile(__DIR__ . '/expectedFileFormat.txt', '...BAR...');
     }
+
 }

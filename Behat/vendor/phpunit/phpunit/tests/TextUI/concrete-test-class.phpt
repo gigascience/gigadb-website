@@ -4,15 +4,16 @@ phpunit ConcreteTest ../_files/ConcreteTest.php
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'ConcreteTest';
-$_SERVER['argv'][3] = __DIR__ . '/../_files/ConcreteTest.php';
+$_SERVER['argv'][3] = dirname(dirname(__FILE__)) . '/_files/ConcreteTest.php';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit_TextUI_Command::main();
+?>
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s by Sebastian Bergmann.
 
-..                                                                  2 / 2 (100%)
+..
 
-Time: %s, Memory: %s
+Time: %s, Memory: %sMb
 
-OK (2 tests, 2 assertions)
+OK (2 tests, 0 assertions)

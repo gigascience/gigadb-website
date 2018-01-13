@@ -1,22 +1,60 @@
 <?php
-/*
- * This file is part of PHPUnit.
+/**
+ * PHPUnit
  *
- * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
+ * All rights reserved.
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *   * Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *   * Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *   * Neither the name of Sebastian Bergmann nor the names of his
+ *     contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @package    PHPUnit
+ * @subpackage Framework_Constraint
+ * @author     Bastian Feder <php@bastian-feder.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 3.7.0
  */
-namespace PHPUnit\Framework\Constraint;
-
-use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Util\Json;
-use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * Asserts whether or not two JSON objects are equal.
+ *
+ * @package    PHPUnit
+ * @subpackage Framework_Constraint
+ * @author     Bastian Feder <php@bastian-feder.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 3.7.0
  */
-class JsonMatches extends Constraint
+class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constraint
 {
     /**
      * @var string
@@ -35,86 +73,39 @@ class JsonMatches extends Constraint
     }
 
     /**
-     * Returns a string representation of the object.
-     *
-     * @return string
-     */
-    public function toString(): string
-    {
-        return \sprintf(
-            'matches JSON string "%s"',
-            $this->value
-        );
-    }
-
-    /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
      * This method can be overridden to implement the evaluation algorithm.
      *
-     * @param mixed $other value or object to evaluate
-     *
+     * @param  mixed $other Value or object to evaluate.
      * @return bool
      */
-    protected function matches($other): bool
+    protected function matches($other)
     {
-        [$error, $recodedOther] = Json::canonicalize($other);
-
-        if ($error) {
+        $decodedOther = json_decode($other);
+        if (json_last_error()) {
             return false;
         }
 
-        [$error, $recodedValue] = Json::canonicalize($this->value);
-
-        if ($error) {
+        $decodedValue = json_decode($this->value);
+        if (json_last_error()) {
             return false;
         }
 
-        return $recodedOther == $recodedValue;
+        return $decodedOther == $decodedValue;
     }
 
     /**
-     * Throws an exception for the given compared value and test description
+     * Returns a string representation of the object.
      *
-     * @param mixed             $other             evaluated value or object
-     * @param string            $description       Additional information about the test
-     * @param ComparisonFailure $comparisonFailure
-     *
-     * @throws ExpectationFailedException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
+     * @return string
      */
-    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
+    public function toString()
     {
-        if ($comparisonFailure === null) {
-            [$error] = Json::canonicalize($other);
-
-            if ($error) {
-                parent::fail($other, $description);
-
-                return;
-            }
-
-            [$error] = Json::canonicalize($this->value);
-
-            if ($error) {
-                parent::fail($other, $description);
-
-                return;
-            }
-
-            $comparisonFailure = new ComparisonFailure(
-                \json_decode($this->value),
-                \json_decode($other),
-                Json::prettify($this->value),
-                Json::prettify($other),
-                false,
-                'Failed asserting that two json values are equal.'
-            );
-        }
-
-        parent::fail($other, $description, $comparisonFailure);
+        return sprintf(
+            'matches JSON string "%s"',
+            $this->value
+        );
     }
 }

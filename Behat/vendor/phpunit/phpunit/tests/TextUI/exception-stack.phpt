@@ -4,21 +4,22 @@ phpunit ExceptionStackTest ../_files/ExceptionStackTest.php
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'ExceptionStackTest';
-$_SERVER['argv'][3] = __DIR__ . '/../_files/ExceptionStackTest.php';
+$_SERVER['argv'][3] = dirname(dirname(__FILE__)) . '/_files/ExceptionStackTest.php';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit_TextUI_Command::main();
+?>
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s by Sebastian Bergmann.
 
-EE                                                                  2 / 2 (100%)
+EE
 
-Time: %s, Memory: %s
+Time: %s, Memory: %sMb
 
 There were 2 errors:
 
 1) ExceptionStackTest::testPrintingChildException
-PHPUnit\Framework\Exception: Child exception
+ExceptionStackTestException: Child exception
 message
 Failed asserting that two arrays are equal.
 --- Expected
@@ -27,8 +28,10 @@ Failed asserting that two arrays are equal.
  Array (
 -    0 => 1
 +    0 => 2
+ )
 
 
+%s:%i
 %s:%i
 
 Caused by
@@ -40,6 +43,7 @@ Failed asserting that two arrays are equal.
  Array (
 -    0 => 1
 +    0 => 2
+ )
 
 %s:%i
 
@@ -58,5 +62,5 @@ Exception: Three
 
 %s:%i
 
-ERRORS!
+FAILURES!
 Tests: 2, Assertions: 1, Errors: 2.
