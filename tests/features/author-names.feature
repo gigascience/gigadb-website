@@ -6,13 +6,14 @@ Feature: Standardizing the display of names of a paper's authors
 
 
 Scenario Outline: 
-	Given author has surname <surname>
-	And author has first name <first_name>
-	And author has middle name <middle_name>
-	When I am on <dataset>
-	Then the author's name should be displayed as <display_name>
+	Given author has surname "<surname>"
+	And author has first name "<first_name>"
+	And author has middle name "<middle_name>"
+	When I am on "<dataset>"
+	Then I should see "<display_name>"
 
 Examples:
+    | surname| first_name | middle_name | dataset | display_name |
 	| Teo | Audrey | SM | /dataset/100182 | Teo ASM |
 	| Gilbert | M.Thomas | P | /dataset/101031 | Gilbert MTP | 
 	| Muñoz | Ángel | GG | /dataset/100243 | Muñoz ÁGG | 
