@@ -190,6 +190,10 @@ EO_SQL;
         return $name; 
     }
 
+    public function getSurname() {
+        return $this->surname;
+    }
+
     public function getDatasetsByOrder() {
         $criteria = new CDbCriteria;
         $criteria->join = 'LEFT JOIN dataset_author da on da.dataset_id = t.id';

@@ -9,8 +9,24 @@ class AuthorTest extends CDbTestCase
  
 
  	function testDisplayNameSubstring() {
- 		 $this->assertEquals("Muñoz, Á, G", $this->authors(0)->getDisplayName(),"First names with accentuated character display correctly (#82)");
- 		 $this->assertEquals("Montana, C, Á", $this->authors(1)->getDisplayName(),"Middle names with accentuated character display correctly (#82)");
+ 		$expectations = array("Muñoz, Á, G", "Montana, C, Á", "Martinez-Cruzado, J, C", "Potato Genome Sequencing Consortium", "Gilbert, MP") ;
+ 		foreach ($expectations as $indice => $expectation) {
+	 		$this->assertEquals($expectation, $this->authors($indice)->getDisplayName(),"First names with accentuated character display correctly (#82)");
+ 		}
+ 	}
+
+ 	function testSurname() {
+ 		$expectations = array ("Muñoz", "Montana", "Martinez-Cruzado","Potato Genome Sequencing Consortium", "Gilbert") ;
+ 		foreach ($expectations as $indice => $expectation) {
+			$this->assertEquals($expectation, $this->authors($indice)->getSurname(),"Surname is returned");
+ 		}
+ 	}
+
+ 	 	function testInitials() {
+ 		$expectations = array("ÁGG", "CÁ", "JC", "", "MTP") ;
+ 		foreach ($expectations as $indice => $expectation) {
+	 		$this->assertEquals($expectation, $this->authors($indice)->getInitials(),"Initials is returned in correct format");
+ 		}
  	}
 
 }
