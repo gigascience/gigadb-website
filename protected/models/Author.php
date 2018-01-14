@@ -181,17 +181,32 @@ EO_SQL;
     }
 
     public function getDisplayName() {
-        $first_initial = ($this->first_name)? strtoupper(mb_substr($this->first_name, 0,  1)) : "";
-        $name =  $this->surname . ', ' . $first_initial;
-        if($this->middle_name) {
-            $name .= ', ' . strtoupper(mb_substr($this->middle_name, 0, 1));
-        }
+        // $first_initial = ($this->first_name)? strtoupper(mb_substr($this->first_name, 0,  1)) : "";
+        // $name =  $this->surname . ', ' . $first_initial;
+        // if($this->middle_name) {
+        //     $name .= ', ' . strtoupper(mb_substr($this->middle_name, 0, 1));
+        // }
 
-        return $name; 
+        // return rtrim($name,", ");
+        return rtrim($this->getSurname() . " " . $this->getInitials()," ");
     }
 
     public function getSurname() {
-        return $this->surname;
+        return rtrim($this->surname,",;  "); //after the ";", there is a space AND a non breakable space
+    }
+
+    public function getInitials() {
+        $get_initial_func = function($value) {
+            if( mb_ereg_match("[A-Z]+$", $value) || mb_ereg_match("Jr$", $value) ) {
+                return $value;
+            }
+            return mb_substr($value,0,1);
+        };
+
+        $names = mb_split("[\s,.]+", $this->first_name." ".$this->middle_name);
+
+        return implode("", array_map($get_initial_func, $names));
+
     }
 
     public function getDatasetsByOrder() {

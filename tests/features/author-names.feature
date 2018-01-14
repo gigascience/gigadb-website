@@ -15,11 +15,12 @@ Scenario Outline:
 Examples:
     | surname| first_name | middle_name | dataset | display_name |
 	| Teo | Audrey | SM | /dataset/100182 | Teo ASM |
-	| Gilbert | M.Thomas | P | /dataset/101031 | Gilbert MTP | 
-	| Muñoz | Ángel | GG | /dataset/100243 | Muñoz ÁGG | 
+	| Gilbert | M.Thomas | P | /dataset/101031 | Gilbert MTP |
+	| Muñoz | Ángel | GG | /dataset/100243 | Muñoz ÁGG |
 	| Martinez-Cruzado | Juan | Carlos | /dataset/100039 | Martinez-Cruzado JC |
-	| Shen | Yong-Yi |  | /dataset/100027 | Shen Y | 
-	| Tong | Steve | KwanHok | /dataset/100245 |  Tong SK |
+	| Shen | Yong-Yi |  | /dataset/100027 | Shen Y |
+	| Loughran | Thomas | P Jr | dataset/100069 | Loughran TPJr |
+	| Ng | Amanda | HuiQi | dataset/100208 | Ng AH |
 	| Schiøtt, | Morten | | /dataset/100011 | Schiøtt M |
 	| Hekkert| Bas | te Lintel | /dataset/100016 | Hekkert BtL |
 	| Potato Genome Sequencing Consortium| | | /dataset/100016 | Potato Genome Sequencing Consortium |
@@ -28,7 +29,7 @@ Examples:
 
 # Feature: Adjusting how an author's name is displayed on a dataset page
 # As a paper author,
-# I want to be able to set up how my name appears on gigadb paper's page. 
+# I want to be able to set up how my name appears on gigadb paper's page.
 # So that it appears correctly on the dataset page.
 
 

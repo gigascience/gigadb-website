@@ -13,7 +13,7 @@ class DatasetTest extends CDbTestCase
  	}
 
  	function testGetAuthorNames() {
- 		$authorNames = '<a class="result-sub-links" href="/search/new?keyword=Montana, C, Á&amp;author_id=2">Montana, C, Á</a>; <a class="result-sub-links" href="/search/new?keyword=Muñoz, Á, G&amp;author_id=1">Muñoz, Á, G</a>';
+ 		$authorNames = '<a class="result-sub-links" href="/search/new?keyword=Montana CÁG&amp;author_id=2">Montana CÁG</a>; <a class="result-sub-links" href="/search/new?keyword=Muñoz ÁGG&amp;author_id=1">Muñoz ÁGG</a>';
  		
 
  		$this->assertEquals($authorNames, $this->datasets(0)->authorNames, "dataset returns formatted authors name");
