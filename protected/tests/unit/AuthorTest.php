@@ -8,8 +8,9 @@ class AuthorTest extends CDbTestCase
     );
  
 
- 	function testDisplayName() {
- 		 $this->assertEquals("Muñoz, Á, G", $this->authors(0)->getDisplayName());
+ 	function testDisplayNameSubstring() {
+ 		 $this->assertEquals("Muñoz, Á, G", $this->authors(0)->getDisplayName(),"First names with accentuated character display correctly (#82)");
+ 		 $this->assertEquals("Montana, C, Á", $this->authors(1)->getDisplayName(),"Middle names with accentuated character display correctly (#82)");
  	}
 
 }

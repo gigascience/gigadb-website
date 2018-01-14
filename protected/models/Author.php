@@ -181,10 +181,10 @@ EO_SQL;
     }
 
     public function getDisplayName() {
-        $first_initial = ($this->first_name)? strtoupper(substr($this->first_name, 0,  1)) : "";
+        $first_initial = ($this->first_name)? strtoupper(mb_substr($this->first_name, 0,  1)) : "";
         $name =  $this->surname . ', ' . $first_initial;
         if($this->middle_name) {
-            $name .= ', ' . strtoupper(substr($this->middle_name, 0, 1));
+            $name .= ', ' . strtoupper(mb_substr($this->middle_name, 0, 1));
         }
 
         return $name; 
