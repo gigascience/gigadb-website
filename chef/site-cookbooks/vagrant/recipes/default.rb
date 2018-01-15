@@ -16,7 +16,7 @@ end
 
 include_recipe "gigadb"
 
-['vim', 'tree'].each do |pkg|
+['vim', 'tree', 'php-pecl-xdebug'].each do |pkg|
     package pkg
 end
 
