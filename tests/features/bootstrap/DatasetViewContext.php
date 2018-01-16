@@ -15,7 +15,7 @@ use Behat\YiiExtension\Context\YiiAwareContextInterface;
 /**
  * AuthorWorkflow Features context.
  */
-class AuthorWorkflowContext extends Behat\MinkExtension\Context\MinkContext implements Behat\YiiExtension\Context\YiiAwareContextInterface
+class DatasetViewContext extends BehatContext
 {
     private $surname = null;
     private $first_name = null;
@@ -31,20 +31,8 @@ class AuthorWorkflowContext extends Behat\MinkExtension\Context\MinkContext impl
     {
         // Initialize your context here
     }
-    public function setYiiWebApplication(\CWebApplication $yii)
-    {
-        $this->yii = $yii ;
-    }
-    public function getYii()
-    {
-        if (null === $this->yii) {
-            throw new \RuntimeException(
-                'Yii instance has not been set on Yii context class. ' .
-                'Have you enabled the Yii Extension?'
-            );
-        }
-        return $this->yii ;
-    }
+
+
 //
 // Place your definition and hook methods here:
 //
@@ -56,7 +44,7 @@ class AuthorWorkflowContext extends Behat\MinkExtension\Context\MinkContext impl
 //        doSomethingWith($argument);
 //    }
 //
-    
+
     /**
      * @Given /^author has surname "([^"]*)"$/
      */
