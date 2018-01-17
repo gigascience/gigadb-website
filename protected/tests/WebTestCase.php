@@ -4,7 +4,7 @@
  * Change the following URL based on your server configuration
  * Make sure the URL ends with a slash so that we can use relative URLs in test cases
  */
-define('TEST_BASE_URL','http://localhost/yii/demos/blog/index-test.php/');
+define('TEST_BASE_URL','http://localhost/index-test.php/');
 
 /**
  * The base class for functional test cases.
@@ -20,6 +20,8 @@ class WebTestCase extends CWebTestCase
 	protected function setUp()
 	{
 		parent::setUp();
+		$this->setHost('localhost');
+        $this->setPort(8643);
 		$this->setBrowserUrl(TEST_BASE_URL);
 	}
 }
