@@ -20,14 +20,30 @@ class AuthorEditContext extends BehatContext
     private $surname = null;
     private $first_name = null;
     private $middle_name =  null;
+    private $login = "local-gigadb-admin@rijam.ml1.net";
+    private $password = "gigadb";
 
+
+     /**
+     * Initializes context.
+     * Every scenario gets it's own context object.
+     *
+     * @param array $parameters context parameters (set them up through behat.yml)
+     */
+    public function __construct(array $parameters)
+    {
+        // Initialize your context here
+    }
 
     /**
      * @Given /^I sign in as an admin$/
      */
     public function iSignInAsAnAdmin()
     {
-         throw new PendingException();
+         $this->getMainContext()->visit("/site/login");
+         $this->getMainContext()->fillField("LoginForm_username", $this->login);
+         $this->getMainContext()->fillField("LoginForm_password", $this->password);
+         $this->getMainContext()->pressButton("Login"); 
     }
 
 

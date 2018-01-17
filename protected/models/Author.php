@@ -181,31 +181,42 @@ EO_SQL;
     }
 
     public function getDisplayName() {
-        // $first_initial = ($this->first_name)? strtoupper(mb_substr($this->first_name, 0,  1)) : "";
-        // $name =  $this->surname . ', ' . $first_initial;
-        // if($this->middle_name) {
-        //     $name .= ', ' . strtoupper(mb_substr($this->middle_name, 0, 1));
-        // }
 
-        // return rtrim($name,", ");
         return rtrim($this->getSurname() . " " . $this->getInitials()," ");
     }
 
     public function getSurname() {
-        return rtrim($this->surname,",;  "); //after the ";", there is a space AND a non breakable space
+
+        return self::generateDisplayName($this->surname, null, null);
     }
 
     public function getInitials() {
-        $get_initial_func = function($value) {
-            if( mb_ereg_match("[A-Z]+$", $value) || mb_ereg_match("Jr$", $value) ) {
+
+        return self::generateDisplayName(null, $this->first_name, $this->middle_name);
+    }
+
+    public static function generateDisplayName($surname, $first_name, $middle_name) {
+
+        $to_initial_func = function($value) {
+            if( mb_ereg_match("[A-Z]+$", $value) || mb_ereg_match("Jr$", $value) ) { //keep asis If it's all initials or is "Jr"
                 return $value;
             }
-            return mb_substr($value,0,1);
+            return mb_substr($value,0,1); //otherwise get the first letter. Use mb_* functions to preserve accentuated chars
         };
 
-        $names = mb_split("[\s,.]+", $this->first_name." ".$this->middle_name);
+        $names_array = mb_split("[\s,.]+", $first_name ." ". $middle_name);
+        $initials =  implode("", array_map($to_initial_func, $names_array));
 
-        return implode("", array_map($get_initial_func, $names));
+        if( null === $surname ) {
+            return $initials ;
+        }
+        else if ( null === $first_name && null === $middle_name) {
+            return rtrim($surname,",;  ") ; //Watch out: after the ";", there is a space AND an invisible non breakable space
+        }
+        else {
+            return $surname . " " . $initials ;
+        }
+
 
     }
 

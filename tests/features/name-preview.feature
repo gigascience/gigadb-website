@@ -10,4 +10,5 @@ Scenario: Preview names when editing author's details
 	When I fill in "Author_surname" with "Poe"
 	And I fill in "Author_first_name" with "Edgar"
 	And I fill in "Author_middle_name" with "Allan"
+	And I press "Save"
 	Then I should see "Poe EA"
