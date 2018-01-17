@@ -20,9 +20,8 @@ class AuthorEditContext extends BehatContext
     private $surname = null;
     private $first_name = null;
     private $middle_name =  null;
-    private $login = "local-gigadb-admin@rijam.ml1.net";
-    private $password = "gigadb";
-
+    private $login = null;
+    private $password = null ;
 
      /**
      * Initializes context.
@@ -33,6 +32,8 @@ class AuthorEditContext extends BehatContext
     public function __construct(array $parameters)
     {
         // Initialize your context here
+        $this->login = $_ENV["GIGADB_tester_email"];
+        $this->password = $_ENV["GIGADB_tester_password"] ;
     }
 
     /**
