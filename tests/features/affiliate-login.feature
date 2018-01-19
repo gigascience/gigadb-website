@@ -4,14 +4,15 @@ I WANT TO sign in to the gigadb website with my social media credentials
 SO THAT I can upload and manage the datasets for my papers
 
 	Background:
-		Given Gigadb has a "Facebook" API keys
+		Given test users are loaded
+		And Gigadb has a "Facebook" API keys
 		And Gigadb has a "Google" API keys
 		And Gigadb has a "Twitter" API keys
 		And Gigadb has a "LinkedIn" API keys
 		And Gigadb has a "Orcid" API keys
 
 
-	@ok @javascript @facebook @done
+	@ok @javascript @facebook @done @first
 	Scenario: I sign in with Facebook with no existing Gigadb account
 		Given I have a "Facebook" account
 		And The "Facebook" account has not authorised login to GigaDB web site
@@ -34,7 +35,7 @@ SO THAT I can upload and manage the datasets for my papers
 		Then I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "Google" details
 
-	@ok @twitter @done
+	@ok @twitter @done @first-non-js
 	Scenario: I sign in with Twitter with no existing Gigadb account
 		Given I have a "Twitter" account
 		But I don't have a Gigadb account for my "Twitter" account email

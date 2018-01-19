@@ -20,7 +20,6 @@ class AffiliateLoginContext extends BehatContext
                                'LinkedIn' => array('api_key' => 'api_key', 'client_key' => 'secret_key'),
                                'Orcid' => array('api_key' => 'client_id', 'client_key' => 'client_secret'),
                            ); //TODO: extract this map into a module as it is also going to be used in UserIdentity's revoke_token
-
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
@@ -217,7 +216,7 @@ class AffiliateLoginContext extends BehatContext
             $this->getMainContext()->pressButton("Allow access");
 
         }
-        else if ($arg1 == "Orcid") {
+        else if ($arg1 == "ORCID") {
             $this->getMainContext()->fillField("userId", $login);
             $this->getMainContext()->fillField("password", $password);
             $this->getMainContext()->pressButton("Sign into ORCID");
@@ -267,7 +266,7 @@ class AffiliateLoginContext extends BehatContext
             $this->getMainContext()->pressButton("Allow");
 
         }
-        else if ($arg1 == "Orcid") {
+        else if ($arg1 == "ORCID") {
             $this->getMainContext()->getSession()->wait(15000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
             Assert::assertTrue($this->getMainContext()->getSession()->getPage()->hasField("enablePersistentToken"), "Authorize checkbox");
             Assert::assertTrue($this->getMainContext()->getSession()->getPage()->hasButton("authorize"), "Authorize button");
@@ -302,7 +301,7 @@ class AffiliateLoginContext extends BehatContext
 
         sleep(2);
         $email = $_ENV["${arg1}_tester_email"];
-        if("Orcid" == $arg1) {
+        if("ORCID" == $arg1) {
             $uid = $_ENV["${arg1}_tester_uid"];
             $email = "${uid}@Orcid";
         }
@@ -371,7 +370,7 @@ class AffiliateLoginContext extends BehatContext
     public static function initialize_database()
     {
         print_r("Initializing the database... ");
-        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/reset_user_table.sql\"",$kill_output);
+        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/reset.sql\"",$kill_output);
         // var_dump($kill_output);
         sleep(5) ; # pad the adminstrative operations to cater for latency in order to avoid fatal error
     }
