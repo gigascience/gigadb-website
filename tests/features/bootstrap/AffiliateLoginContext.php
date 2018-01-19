@@ -7,25 +7,13 @@ use Behat\Behat\Context\ClosuredContextInterface,
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
-use Behat\MinkExtension\Context\MinkContext;
-use Behat\YiiExtension\Context\YiiAwareContextInterface;
-
-
-
-//
-// Require 3rd-party libraries here:
-//
-//   require_once 'PHPUnit/Autoload.php';
-//   require_once 'PHPUnit/Framework/Assert/Functions.php';
-//
-
+use PHPUnit\Framework\Assert;
 
 /**
  * Features context.
  */
-class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements Behat\YiiExtension\Context\YiiAwareContextInterface
+class AffiliateLoginContext extends BehatContext
 {
-    private $yii;
     private $keys_map = array('Facebook' => array('api_key' => 'app_id', 'client_key' => 'app_secret'),
                                'Google' => array('api_key' => 'client_id', 'client_key' => 'client_secret'),
                                'Twitter' => array('api_key' => 'key', 'client_key' => 'secret'),
@@ -43,22 +31,6 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         // Initialize your context here
     }
 
-    public function setYiiWebApplication(\CWebApplication $yii)
-    {
-        $this->yii = $yii ;
-    }
-
-    public function getYii()
-    {
-        if (null === $this->yii) {
-            throw new \RuntimeException(
-                'Yii instance has not been set on Yii context class. ' .
-                'Have you enabled the Yii Extension?'
-            );
-        }
-
-        return $this->yii ;
-    }
 
 //
 // Place your definition and hook methods here:
@@ -73,19 +45,30 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 //
 
     /**
+     * @Given /^test users are loaded$/
+     */
+    public function testUsersAreLoaded()
+    {
+        foreach ($this->keys_map as $key => $value) {
+            Assert::assertTrue(null != $_ENV["${key}_tester_email"],"null != _ENV['${key}_tester_email']");
+        }
+    }
+
+
+    /**
      * @Given /^Gigadb has a "([^"]*)" API keys$/
      */
     public function gigadbHasAApiKeys($arg1)
     {
         $_SERVER['REQUEST_URI'] = 'foobar';
         $_SERVER['HTTP_HOST'] = 'foobar';
-        $opauthModule = $this->getYii()->getModules()['opauth'];
+        $opauthModule = $this->getMainContext()->getYii()->getModules()['opauth'];
         $api_key = $opauthModule['opauthParams']["Strategy"][$arg1][$this->keys_map[$arg1]['api_key']] ;
         $client_key = $opauthModule['opauthParams']["Strategy"][$arg1][$this->keys_map[$arg1]['client_key']] ;
 
 
-        \PHPUnit\Framework\Assert::assertTrue('' != $api_key, "api_key for $arg1 is not empty");
-        \PHPUnit\Framework\Assert::assertTrue('' != $client_key, "client_key for $arg1 is not empty");
+        Assert::assertTrue('' != $api_key, "api_key for $arg1 is not empty");
+        Assert::assertTrue('' != $client_key, "client_key for $arg1 is not empty");
 
     }
 
@@ -98,8 +81,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     public function iHaveAAccount($arg1)
     {
         // throw new PendingException();
-        \PHPUnit\Framework\Assert::assertTrue(null != $_ENV["${arg1}_tester_email"], "${arg1}_tester_email  is not empty");
-        \PHPUnit\Framework\Assert::assertTrue(null != $_ENV["${arg1}_tester_password"], "${arg1}_tester_password is not empty");
+        Assert::assertTrue(null != $_ENV["${arg1}_tester_email"], "${arg1}_tester_email  is not empty");
+        Assert::assertTrue(null != $_ENV["${arg1}_tester_password"], "${arg1}_tester_password is not empty");
 
 
     }
@@ -118,7 +101,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
                     ->set('access_token', $_ENV["${arg1}_access_token"]);
             $response = $facebook->send($request);
             $body = json_decode($response->getBody(true),true);
-            \PHPUnit\Framework\Assert::assertTrue("true" == $body["success"],'Test users de-authorised');
+            Assert::assertTrue("true" == $body["success"],'Test users de-authorised');
 
         }
 
@@ -134,7 +117,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         $expected_nb_occurrences =  0 ;
 
         $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
-        \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I don't have a gigadb account for $email");
+        Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I don't have a gigadb account for $email");
 
     }
 
@@ -151,7 +134,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
 
        $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
-        \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
+        Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
 
     }
 
@@ -168,7 +151,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
 
        $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
-        \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
+        Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
 
     }
 
@@ -184,7 +167,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
 
 
        $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
-        \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
+        Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
 
     }
 
@@ -195,7 +178,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
      */
     public function iClickOnTheButton($arg1)
     {
-        $this->clickLink($arg1);
+        $this->getMainContext()->clickLink($arg1);
     }
 
      /**
@@ -206,39 +189,39 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
         $login = $_ENV["{$arg1}_tester_email"];
         $password = $_ENV["${arg1}_tester_password"];
 
-        if ($arg1 == "Twitter") {        
-            $this->fillField("username_or_email", $login);
-            $this->fillField("password", $password);
+        if ($arg1 == "Twitter") {
+            $this->getMainContext()->fillField("username_or_email", $login);
+            $this->getMainContext()->fillField("password", $password);
 
-            $this->pressButton("Sign In"); 
+            $this->getMainContext()->pressButton("Sign In");
         }
         else if ($arg1 == "Facebook") {
-            $this->fillField("email", $login);
-            $this->fillField("pass", $password);
+            $this->getMainContext()->fillField("email", $login);
+            $this->getMainContext()->fillField("pass", $password);
 
-            $this->pressButton("loginbutton");
+            $this->getMainContext()->pressButton("loginbutton");
 
         }
         else if ($arg1 == "Google") {
-            $this->fillField("Email", $login);
-            $this->pressButton("Next");
+            $this->getMainContext()->fillField("Email", $login);
+            $this->getMainContext()->pressButton("Next");
             sleep(5);
-            $this->fillField("Passwd", $password);
-            $this->pressButton("Sign in");
-            
+            $this->getMainContext()->fillField("Passwd", $password);
+            $this->getMainContext()->pressButton("Sign in");
+
         }
         else if ($arg1 == "LinkedIn") {
-            $this->fillField("session_key", $login);
-            $this->fillField("session_password", $password);
-            $this->pressButton("Allow access");
-            
+            $this->getMainContext()->fillField("session_key", $login);
+            $this->getMainContext()->fillField("session_password", $password);
+            $this->getMainContext()->pressButton("Allow access");
+
         }
         else if ($arg1 == "ORCID") {
-            $this->fillField("userId", $login);
-            $this->fillField("password", $password);
-            $this->pressButton("Sign into ORCID");
+            $this->getMainContext()->fillField("userId", $login);
+            $this->getMainContext()->fillField("password", $password);
+            $this->getMainContext()->pressButton("Sign into ORCID");
             sleep(15);
-            
+
         }
         else {
             throw new Exception();
@@ -252,14 +235,14 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
      */
     public function iAuthoriseGigadbFor($arg1)
     {
-        $session = $this->getSession();
+        $session = $this->getMainContext()->getSession();
         $driver = $session->getDriver();
 
         if ($arg1 == "Twitter") {
-            $this->clickLink('click here to continue');
+            $this->getMainContext()->clickLink('click here to continue');
         }
         else if ($arg1 == "Facebook") {
-            
+
             $xpath = '//button[@type="submit" and contains(., "Continue")]' ;
             $elements = $driver->find($xpath) ;
 
@@ -272,24 +255,23 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             }
 
             // sleep(10);
-            $this->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
-            // $this->assertPageContainsText("GigaDB Page");
-            
+            $this->getMainContext()->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
+
 
 
         }
         else if ($arg1 == "Google") {
 
-            $this->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
-            $this->pressButton("Allow");
+            $this->getMainContext()->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
+            $this->getMainContext()->pressButton("Allow");
 
         }
         else if ($arg1 == "ORCID") {
-            $this->getSession()->wait(15000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
-            \PHPUnit\Framework\Assert::assertTrue($this->getSession()->getPage()->hasField("enablePersistentToken"), "Authorize checkbox");
-            \PHPUnit\Framework\Assert::assertTrue($this->getSession()->getPage()->hasButton("authorize"), "Authorize button");
-            $the_checkbox = $this->getSession()->getPage()->findField("enablePersistentToken");
-            $the_button = $this->getSession()->getPage()->findButton("authorize");
+            $this->getMainContext()->getSession()->wait(15000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
+            Assert::assertTrue($this->getMainContext()->getSession()->getPage()->hasField("enablePersistentToken"), "Authorize checkbox");
+            Assert::assertTrue($this->getMainContext()->getSession()->getPage()->hasButton("authorize"), "Authorize button");
+            $the_checkbox = $this->getMainContext()->getSession()->getPage()->findField("enablePersistentToken");
+            $the_button = $this->getMainContext()->getSession()->getPage()->findButton("authorize");
             //var_dump($the_checkbox);
             //var_dump($the_button);
             $the_checkbox->check();
@@ -306,7 +288,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
      */
     public function iMLoggedInIntoTheGigadbWebSite()
     {
-        $this->assertPageContainsText("GigaDB Page");
+        $this->getMainContext()->assertPageContainsText("GigaDB Page");
 
     }
 
@@ -323,12 +305,12 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
             $uid = $_ENV["${arg1}_tester_uid"];
             $email = "${uid}@Orcid";
         }
-        
-        $expected_nb_occurrences = 1; 
+
+        $expected_nb_occurrences = 1;
 
         $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
-        \PHPUnit\Framework\Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "Success creating a new gigadb account");
-        
+        Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "Success creating a new gigadb account");
+
     }
 
      /**
@@ -337,7 +319,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     public function noNewGigadbAccountIsCreatedForMyAccountEmail($arg1)
     {
         $email = $_ENV["${arg1}_tester_email"];
-        $expected_nb_occurrences = 1; 
+        $expected_nb_occurrences = 1;
 
         $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
 
@@ -373,7 +355,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     }
 
     private function createNewUserAccountForUidAndEmail($provider,$uid,$email) {
-        $sql = "insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username,orcid_id) values(1,:'email','12345678','John','Doe','ETH','user',true,'johndoe',:'uid')" ; 
+        $sql = "insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username,orcid_id) values(1,:'email','12345678','John','Doe','ETH','user',true,'johndoe',:'uid')" ;
 
        $psql_command = "sudo -Hiu postgres /usr/bin/psql -v email='$email' -v uid='$uid' gigadb" ;
         file_put_contents("sql/temp_command.sql", $sql);
@@ -397,21 +379,11 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     /**
      * @BeforeScenario
     */
-    public function initialize_session() { 
-        $this->visit("/site/revoke");
+    public function initialize_session() {
+        $this->getMainContext()->visit("/site/revoke");
         sleep(3);
         Self::initialize_database();
-        // $this->assertHomepage();
         clearstatcache() ;
-        $session = $this->getSession();
-        $driver = $session->getDriver();
-        if ($driver instanceof GoutteDriver) {
-            print_r("Restarting GoutteDriver");
-            $driver->getClient()->restart();
-        }
-        $session->start();
-
-
     }
 
     /**
@@ -419,12 +391,11 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     */
     public function reset_stop_session($event) {
 
-        $this->visit("/site/revoke");
+        $this->getMainContext()->visit("/site/revoke");
         sleep(3);
-        // $this->assertHomepage();
         $sqlfile = "sql/temp_command.sql" ;
-        $this->getSession()->reset();
-        $this->getSession()->stop();
+        // $this->getMainContext()->getSession()->reset();
+        $this->getMainContext()->getSession()->stop();
         if (file_exists($sqlfile) && $event->getResult() == 0) {
             $deleted =unlink($sqlfile);
             if (!$deleted) {
@@ -452,11 +423,11 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext implements 
     {
         if ($event->getResult() == 4 ) {
 
-            $this->printCurrentUrl();
+            $this->getMainContext()->printCurrentUrl();
 
             try { # take a snapshot of web page
 
-                $content = $this->getSession()->getDriver()->getContent();
+                $content = $this->getMainContext()->getSession()->getDriver()->getContent();
                 $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
                 file_put_contents("/tmp/".$file_and_path.".html", $content);
 

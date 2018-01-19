@@ -1,0 +1,1 @@
+Behat/bin/behat  -v --stop-on-failure -c tests/behat.yml

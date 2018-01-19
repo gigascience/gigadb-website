@@ -1,9 +1,9 @@
 default:
   paths:
-    features:  ../tests/features
-    bootstrap: ../tests/features/bootstrap
+    features:  features
+    bootstrap: features/bootstrap
   context:
-      class:  'FeatureContext'
+      class:  'GigadbWebsiteContext'
   extensions:
     Behat\MinkExtension\Extension:
       base_url: 'http://gigadb.cinecinetique.com:9170/'
@@ -14,4 +14,3 @@ default:
       framework_script: ../Behat/vendor/yiisoft/yii/framework/yii.php
       config_script:    ../protected/config/main.php
       mink_driver: true
-
