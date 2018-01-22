@@ -22,16 +22,6 @@ Vagrant.configure("2") do |config|
     service docker restart
   EOT
 
-#   if Vagrant::Util::Platform.windows?
-#     # use MSYS/Cygwin style path(s)
-#     ["/c/Users/#{ENV['USERNAME']}", "/cygdrive/c/Users/#{ENV['USERNAME']}"].each do |target|
-#       config.vm.synced_folder "C:/Users/#{ENV['USERNAME']}", target, type: "smb"
-#     end
-#   else
-#     # mirror /Users/USERNAME
-#     config.vm.synced_folder "/Users/#{ENV['USER']}", "/Users/#{ENV['USER']}", type: "nfs"
-#   end
-
   config.vm.synced_folder ".", "/vagrant"
   config.vm.provider "virtualbox" do |v|
     # Unless synced_folder's nfs_udp is set to false (which slows things
@@ -42,4 +32,9 @@ Vagrant.configure("2") do |config|
     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     v.customize ["modifyvm", :id, "--memory", "2048"]
   end
+
+  # Install Chef-Solo
+  config.vm.provision :shell, inline: <<-EOT
+    curl -LO https://omnitruck.chef.io/install.sh && sudo bash ./install.sh -v 12.5.1 && rm install.sh
+  EOT
 end
