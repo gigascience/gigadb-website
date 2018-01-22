@@ -26,13 +26,13 @@ $ phantomjs --webdriver=8643
 Set up the environment variables for test users
 
 ```bash
-$ . test_users
+$ . test_users.txt
 ```
 
 #### Running the tests
 
 ```bash
-$ Behat/bin/behat  -c Behat/behat.yml
+$ ./tests/run
 
 ```
 
@@ -54,7 +54,7 @@ use can use tags (e.g: @wip, @todo, @ok, @broken,...) to run a subset of tests a
 
 
 ```bash
-$ Behat/bin/behat --tags @ok,@wip -v --stop-on-failure -c Behat/behat.yml
+$ Behat/bin/behat --tags @ok,@wip -v --stop-on-failure -c tests/behat.yml
 
 ```
 

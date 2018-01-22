@@ -59,14 +59,14 @@ SO THAT I can upload and manage the datasets for my papers
 
 	@ok @orcid @javascript @done
 	Scenario: I sign in with ORCID with no existing Gigadb account
-		Given I have a "ORCID" account
-		But I don't have a Gigadb account for my "ORCID" account email
+		Given I have a "Orcid" account
+		But I don't have a Gigadb account for my "Orcid" account email
 		When I am on "/site/chooseLogin"
 		And I click on the "ORCID" button
-		And I sign in to "ORCID"
-		And I authorise gigadb for "ORCID"
+		And I sign in to "Orcid"
+		And I authorise gigadb for "Orcid"
 		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "ORCID" details
+		And a new Gigadb account is created with my "Orcid" details
 
 	@ok @facebook @javascript @done
 	Scenario: I have a Gigadb account and I sign in with my "Facebook" credentials
@@ -115,14 +115,14 @@ SO THAT I can upload and manage the datasets for my papers
 
 	@ok @orcid @javascript @done
 	Scenario: I have a Gigadb account associated with my ORCID id and I sign in with my "ORCID" credentials
-		Given I have a "ORCID" account
-		And I have a Gigadb account for my "ORCID" uid
+		Given I have a "Orcid" account
+		And I have a Gigadb account for my "Orcid" uid
 		When I am on "/site/chooseLogin"
 		And I click on the "ORCID" button
-		And I sign in to "ORCID"
-		And I authorise gigadb for "ORCID"
+		And I sign in to "Orcid"
+		And I authorise gigadb for "Orcid"
 		Then I'm logged in into the Gigadb web site
-		And no new gigadb account is created for my "ORCID" account email
+		And no new gigadb account is created for my "Orcid" account email
 
 	@ok @differentemails @facebook @javascript @done
 	Scenario: I sign in with my "Facebook" credentials and I have a gigadb account with a different email address
@@ -170,13 +170,13 @@ SO THAT I can upload and manage the datasets for my papers
 		And a new Gigadb account is created with my "LinkedIn" details
 
 	@ok @differentemails @orcid @javascript @done
-	Scenario: I sign in with my "ORCID" credentials and I have a gigadb account with a different email address
-		Given I have a "ORCID" account
+	Scenario: I sign in with my "Orcid" credentials and I have a gigadb account with a different email address
+		Given I have a "Orcid" account
 		And I have a Gigadb account with a different email
 		When I am on "/site/chooseLogin"
 		And I click on the "ORCID" button
-		And I sign in to "ORCID"
-		And I authorise gigadb for "ORCID"
+		And I sign in to "Orcid"
+		And I authorise gigadb for "Orcid"
 		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "ORCID" details
+		And a new Gigadb account is created with my "Orcid" details
 

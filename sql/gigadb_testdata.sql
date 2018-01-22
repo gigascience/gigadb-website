@@ -1172,7 +1172,7 @@ CREATE TABLE gigadb_user (
     password character varying(64) NOT NULL,
     first_name character varying(100) NOT NULL,
     last_name character varying(100) NOT NULL,
-    affiliation character varying(200) NOT NULL,
+    affiliation character varying(200),
     role character varying(30) DEFAULT 'user'::character varying NOT NULL,
     is_activated boolean DEFAULT false NOT NULL,
     newsletter boolean DEFAULT true NOT NULL,

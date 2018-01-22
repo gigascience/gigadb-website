@@ -280,7 +280,6 @@ class User extends CActiveRecord {
             $user->first_name = $first_name;
             $user->last_name = $last_name;
             $user->role = 'user';
-            $user->affiliation = $provider;
 
             if($provider == "Facebook") {
                 $user->facebook_id = $uid;
