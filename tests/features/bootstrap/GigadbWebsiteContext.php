@@ -75,7 +75,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
          $this->visit("/site/login");
          $this->fillField("LoginForm_username", $this->admin_login);
          $this->fillField("LoginForm_password", $this->admin_password);
-         $this->pressButton("Login"); 
+         $this->pressButton("Login");
     }
 
 
