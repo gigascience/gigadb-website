@@ -78,7 +78,7 @@ class DatabaseSearch extends CApplicationComponent {
 		$command->selectDistinct("d.id");
 		$command->from = "dataset d";
 		$command->join = "
-			left join (select dataset_id, string_agg(p.name, ',') as names from dataset_project dp, project p where dp.project_id = p.id group by dataset_id) dprojects on d.id = dprojects.dataset_id 
+	            left join (select dataset_id, string_agg(p.name, ',') as names from dataset_project dp, project p where dp.project_id = p.id group by dataset_id) dprojects on d.id = dprojects.dataset_id 
 		    left join (select dataset_id, string_agg(a.surname||', '||substring(a.first_name,1,1)||', '||substring(a.middle_name,1,1), ';') as author_names from dataset_author da, author a where da.author_id = a.id group by dataset_id) dauthors on d.id = dauthors.dataset_id 
    		    left join (select dataset_id, string_agg(a.surname || ' '||a.first_name||' ' || a.middle_name, ';') as author_names from dataset_author da, author a where da.author_id = a.id group by dataset_id) dnames on d.id = dnames.dataset_id 
 		    left join manuscript m on d.id = m.dataset_id 
@@ -88,6 +88,8 @@ class DatabaseSearch extends CApplicationComponent {
 		    left join dataset_type dt on dt.dataset_id = d.id 
 		    left join dataset_funder df on df.dataset_id = d.id 
 		    left join funder_name fn on fn.id = df.funder_id 
+                    left join dataset_attributes dat on dat.dataset_id = d.id
+                    left join (select t.name as name, dt.dataset_id from type t, dataset_type dt where dt.type_id=t.id) dtnames on d.id=dtnames.dataset_id
 
 		";
 
@@ -96,6 +98,9 @@ class DatabaseSearch extends CApplicationComponent {
 	    $command->orWhere(array('like', 'lower(dauthors.author_names)', '%'.$keyword.'%'));
 	    $command->orWhere(array('like', 'lower(dnames.author_names)', '%'.$keyword.'%'));
 	    $command->orWhere(array('like', 'lower(d.description)', '%'.$keyword.'%'));
+            $command->orWhere(array('like', 'lower(dtnames.name)', '%'.$keyword.'%'));
+            $command->orWhere(array('like', 'lower(dat.value)', '%'.$keyword.'%'));
+           
 	    //$command->orWhere(array('like', 'd.ftp_site', '%'.$keyword.'%'));
 
 	    $command->orWhere(array('like', 'lower(dprojects.names)', '%'.$keyword.'%'));	    
@@ -124,8 +129,12 @@ class DatabaseSearch extends CApplicationComponent {
 
 	    if($author_id)
 	    	$command->andWhere("da.author_id = :aid", array(':aid'=>$author_id));
+            
+            $command->andWhere("dat.attribute_id = 455");
+            
 
 	    $command->andWhere("d.upload_status = 'Published'");
+            $command->order(array('d.id desc'));
 	    return $command->queryAll();
 	}
 
