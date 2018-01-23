@@ -28,6 +28,9 @@ chef/environments/development.json
 chef/environments/production.json
 **/encrypted_data_bag_secret
 chef/nodes/*.json
+chef/backup
+chef/cache
+chef/chef.pid
 
 # PhpStorm
 *.iml
