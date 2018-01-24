@@ -3,7 +3,6 @@ logs
 assets
 giga_cache
 !assets/.gitignore
-css/site.css
 protected/runtime
 protected/config/db.json
 protected/config/es.json
@@ -17,7 +16,17 @@ protected/scripts/set_env.sh
 protected/scripts/update_links.sh
 themes/classic/views/
 files/certs
+files/html/help.html
 yii-1.1.16
+
+# css
+css/site.css
+css/bg.gif
+css/form.css
+css/ie.css
+css/main.css
+css/print.css
+css/screen.css
 
 # Vagrant
 *.vagrant
