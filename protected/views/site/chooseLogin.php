@@ -27,16 +27,4 @@
     <a class="btn btnlog linkedin-log" href="/opauth/orcid">
         <img src="/images/icons/id.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'ORCID')?>
     </a>
- </div>  <div class="content-btnlog">
-    <a class="btn btnlog linkedin-log" href="/opauth/orcid">
-        <img src="/images/icons/id.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'ORCID')?>
-    </a>
- </div>  <div class="content-btnlog">
-    <a class="btn btnlog linkedin-log" href="/opauth/orcid">
-        <img src="/images/icons/in.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'ORCID')?>
-    </a>
- </div>  <div class="content-btnlog">
-    <a class="btn btnlog linkedin-log" href="/opauth/orcid">
-        <img src="/images/icons/in.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'ORCID')?>
-    </a>
  </div>
