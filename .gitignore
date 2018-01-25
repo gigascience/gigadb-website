@@ -51,5 +51,5 @@ sql/temp_command.sql
 
 # Behat
 
-Behat/vendor/**/.git
+Behat/vendor
 

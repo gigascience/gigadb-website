@@ -4,6 +4,13 @@
 
 #### Preparation
 
+Install Behat with composer
+
+```bash
+$ cd Behat
+$ composer install
+```
+
 Install PhantomJS 
 
 using NPM: 
