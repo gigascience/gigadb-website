@@ -411,40 +411,14 @@ class AffiliateLoginContext extends BehatContext
     public static function reset_db($event) {
 
         if (true == $event->isCompleted()) {
-            Self::initialize_database();
-            print_r("Reloading test data... ");
-            exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/gigadb_testdata.sql\"",$kill_output);
+            print_r("Recreate database... ");
+            exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/kill_drop_recreate.sql\"",$reload_output);
+            print_r("Reload test data... ");
+            exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/gigadb_testdata.sql\"",$reload_output);
+            // var_dump($reload_output);
         }
     }
 
-
-
-    /**
-     * @AfterStep
-    */
-    public function debugStep($event)
-    {
-        if ($event->getResult() == 4 ) {
-
-            $this->getMainContext()->printCurrentUrl();
-
-            try { # take a snapshot of web page
-
-                $content = $this->getMainContext()->getSession()->getDriver()->getContent();
-                $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
-                file_put_contents("/tmp/".$file_and_path.".html", $content);
-
-                if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
-                    // exec('open -a "Preview.app" ' . $file_and_path.".png");
-                    exec('open -a "Safari.app" ' . $file_and_path.".html");
-                }
-            }
-            catch (Behat\Mink\Exception\DriverException $e) {
-                print_r("Unable to take a snatpshot");
-            }
-
-        }
-    }
 
 
 }
