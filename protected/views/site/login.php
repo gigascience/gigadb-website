@@ -45,32 +45,37 @@ $this->breadcrumbs=array(
 
 	<div class="span6">
 
-		<p><?=Yii::t('app' , 'Or login with your prefered identity provider:')?></p>
-		<div class="well well-large">
+		<p><?=Yii::t('app' , 'Or login with your preferred identity provider:')?></p>
+		<p>&nbsp;</p>
+		<div class="form well well-large">
+			<div class="row">
+				<div class="span4 offset1">
+					<div class="content-btnlog">
+					     <a class="btn btnlog facebook-log" href="/opauth/facebook">
+					         <img src="/images/icons/fb.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Facebook')?>
+					     </a>
+					    <a class="btn btnlog google-log" href="/opauth/google">
+					         <img src="/images/icons/google.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Google')?>
+					    </a>
+					 </div>
 
-			<div class="content-btnlog">
-			     <a class="btn btnlog facebook-log" href="/opauth/facebook">
-			         <img src="/images/icons/fb.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Facebook')?>
-			     </a>
-			    <a class="btn btnlog google-log" href="/opauth/google">
-			         <img src="/images/icons/google.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Google')?>
-			    </a>
-			 </div>
+					 <div class="content-btnlog">
+					    <a class="btn btnlog twitter-log" href="/opauth/twitter">
+					         <img src="/images/icons/twi.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Twitter')?>
+					    </a>
+					    <a class="btn btnlog linkedin-log" href="/opauth/linkedin">
+					        <img src="/images/icons/in.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'LinkedIn')?>
+					    </a>
+					 </div>
 
-			 <div class="content-btnlog">
-			    <a class="btn btnlog twitter-log" href="/opauth/twitter">
-			         <img src="/images/icons/twi.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Twitter')?>
-			    </a>
-			    <a class="btn btnlog linkedin-log" href="/opauth/linkedin">
-			        <img src="/images/icons/in.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'LinkedIn')?>
-			    </a>
-			 </div>
-
-			  <div class="content-btnlog">
-			    <a class="btn btnlog linkedin-log" href="/opauth/orcid">
-			        <img src="/images/icons/id.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'ORCID')?>
-			    </a>
-			 </div>
+					  <div class="content-btnlog">
+					    <a class="btn btnlog linkedin-log" href="/opauth/orcid">
+					        <img src="/images/icons/id.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'ORCID')?>
+					    </a>
+					 </div>
+					 <input type="hidden"/>
+				 </div>
+			</div>
 		</div>
 	</div>
 </div><!--login-->
