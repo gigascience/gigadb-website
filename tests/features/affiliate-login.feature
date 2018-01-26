@@ -17,7 +17,7 @@ SO THAT I can upload and manage the datasets for my papers
 		Given I have a "Facebook" account
 		And The "Facebook" account has not authorised login to GigaDB web site
 		But I don't have a Gigadb account for my "Facebook" account email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "Facebook" button
 		And I sign in to "Facebook"
 		And I authorise gigadb for "Facebook"
@@ -28,7 +28,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with Google with no existing Gigadb account
 		Given I have a "Google" account
 		But I don't have a Gigadb account for my "Google" account email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "Google" button
 		And I sign in to "Google"
 		And I authorise gigadb for "Google"
@@ -39,7 +39,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with Twitter with no existing Gigadb account
 		Given I have a "Twitter" account
 		But I don't have a Gigadb account for my "Twitter" account email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "Twitter" button
 		And I sign in to "Twitter"
 		And I authorise gigadb for "Twitter"
@@ -50,7 +50,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with LinkedIn with no existing Gigadb account
 		Given I have a "LinkedIn" account
 		But I don't have a Gigadb account for my "LinkedIn" account email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "LinkedIn" button
 		And I sign in to "LinkedIn"
 		And I authorise gigadb for "LinkedIn"
@@ -61,7 +61,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with ORCID with no existing Gigadb account
 		Given I have a "Orcid" account
 		But I don't have a Gigadb account for my "Orcid" account email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "ORCID" button
 		And I sign in to "Orcid"
 		And I authorise gigadb for "Orcid"
@@ -73,7 +73,7 @@ SO THAT I can upload and manage the datasets for my papers
 		Given I have a "Facebook" account
 		And The "Facebook" account has not authorised login to GigaDB web site
 		And I have a Gigadb account for my "Facebook" account email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "Facebook" button
 		And I sign in to "Facebook"
 		And I authorise gigadb for "Facebook"
@@ -84,7 +84,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I have a Gigadb account and I sign in with my "Google" credentials
 		Given I have a "Google" account
 		And I have a Gigadb account for my "Google" account email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "Google" button
 		And I sign in to "Google"
 		And I authorise gigadb for "Google"
@@ -95,7 +95,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I have a Gigadb account and I sign in with my "Twitter" credentials
 		Given I have a "Twitter" account
 		And I have a Gigadb account for my "Twitter" account email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "Twitter" button
 		And I sign in to "Twitter"
 		And I authorise gigadb for "Twitter"
@@ -106,7 +106,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I have a Gigadb account and I sign in with my "LinkedIn" credentials
 		And I have a "LinkedIn" account
 		And I have a Gigadb account for my "LinkedIn" account email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "LinkedIn" button
 		And I sign in to "LinkedIn"
 		And I authorise gigadb for "LinkedIn"
@@ -117,7 +117,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I have a Gigadb account associated with my ORCID id and I sign in with my "ORCID" credentials
 		Given I have a "Orcid" account
 		And I have a Gigadb account for my "Orcid" uid
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "ORCID" button
 		And I sign in to "Orcid"
 		And I authorise gigadb for "Orcid"
@@ -129,7 +129,7 @@ SO THAT I can upload and manage the datasets for my papers
 		Given I have a "Facebook" account
 		And The "Facebook" account has not authorised login to GigaDB web site
 		And I have a Gigadb account with a different email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "Facebook" button
 		And I sign in to "Facebook"
 		And I authorise gigadb for "Facebook"
@@ -140,7 +140,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with my "Google" credentials and I have a gigadb account with a different email address
 		Given I have a "Google" account
 		And I have a Gigadb account with a different email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "Google" button
 		And I sign in to "Google"
 		And I authorise gigadb for "Google"
@@ -151,7 +151,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with my "Twitter" credentials and I have a gigadb account with a different email address
 		Given I have a "Twitter" account
 		And I have a Gigadb account with a different email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "Twitter" button
 		And I sign in to "Twitter"
 		And I authorise gigadb for "Twitter"
@@ -162,7 +162,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with my "LinkedIn" credentials and I have a gigadb account with a different email address
 		Given I have a "LinkedIn" account
 		And I have a Gigadb account with a different email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "LinkedIn" button
 		And I sign in to "LinkedIn"
 		And I authorise gigadb for "LinkedIn"
@@ -173,7 +173,7 @@ SO THAT I can upload and manage the datasets for my papers
 	Scenario: I sign in with my "Orcid" credentials and I have a gigadb account with a different email address
 		Given I have a "Orcid" account
 		And I have a Gigadb account with a different email
-		When I am on "/site/chooseLogin"
+		When I am on "/site/login"
 		And I click on the "ORCID" button
 		And I sign in to "Orcid"
 		And I authorise gigadb for "Orcid"

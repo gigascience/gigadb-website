@@ -334,7 +334,7 @@ class AffiliateLoginContext extends BehatContext
     /* -------------------------------------------------------- utility functions and hooks -----------------*/
 
 
-    private function countEmailOccurencesInUserList($email=null) {
+    public function countEmailOccurencesInUserList($email=null) {
         $nb_ocurrences = 0 ;
         print_r("Querying the database for emails... ");
         exec("vagrant ssh -c 'echo \"select email from gigadb_user;\" | sudo -Hiu postgres /usr/bin/psql -qtA gigadb'", $output, $err);
@@ -412,6 +412,8 @@ class AffiliateLoginContext extends BehatContext
 
         if (true == $event->isCompleted()) {
             Self::initialize_database();
+            print_r("Reloading test data... ");
+            exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/gigadb_testdata.sql\"",$kill_output);
         }
     }
 

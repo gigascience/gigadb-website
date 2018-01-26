@@ -24,7 +24,8 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         $this->admin_login = $_ENV["GIGADB_admin_tester_email"];
         $this->admin_password = $_ENV["GIGADB_admin_tester_password"] ;
 
-        $this->useContext('issue64', new AffiliateLoginContext($parameters));
+        $this->useContext('affiliate_login', new AffiliateLoginContext($parameters));
+        $this->useContext('normal_login', new NormalLoginContext($parameters));
     }
 
 

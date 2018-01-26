@@ -4,9 +4,10 @@ $this->breadcrumbs=array(
 	'Login',
 );
 ?>
-    <h2><?=Yii::t('app' , 'Login')?></h2>
+    <p><h2><?=Yii::t('app' , 'Login')?></h2></p>
 <div class="row" id="login">
-	<div class="span6 offset3">
+
+	<div class="span6">
 	<p><?=Yii::t('app' , 'Please fill out the following form with your login credentials:')?></p>
 	<p><?=Yii::t('app' , 'Fields with <span class="required">*</span> are required.')?></p>
 		<div class="form well">
@@ -37,8 +38,39 @@ $this->breadcrumbs=array(
 		</div><!--form-->
 
 		<p class="pull-left"><?= MyHtml::link(Yii::t('app' , "Lost Password"), array('user/reset', 'username'=>$model->username)) ?></p>
-		
+
 
 		<? $this->endWidget() ?>
+	</div>
+
+	<div class="span6">
+
+		<p><?=Yii::t('app' , 'Or login with your prefered identity provider:')?></p>
+		<div class="well well-large">
+
+			<div class="content-btnlog">
+			     <a class="btn btnlog facebook-log" href="/opauth/facebook">
+			         <img src="/images/icons/fb.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Facebook')?>
+			     </a>
+			    <a class="btn btnlog google-log" href="/opauth/google">
+			         <img src="/images/icons/google.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Google')?>
+			    </a>
+			 </div>
+
+			 <div class="content-btnlog">
+			    <a class="btn btnlog twitter-log" href="/opauth/twitter">
+			         <img src="/images/icons/twi.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Twitter')?>
+			    </a>
+			    <a class="btn btnlog linkedin-log" href="/opauth/linkedin">
+			        <img src="/images/icons/in.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'LinkedIn')?>
+			    </a>
+			 </div>
+
+			  <div class="content-btnlog">
+			    <a class="btn btnlog linkedin-log" href="/opauth/orcid">
+			        <img src="/images/icons/id.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'ORCID')?>
+			    </a>
+			 </div>
+		</div>
 	</div>
 </div><!--login-->
