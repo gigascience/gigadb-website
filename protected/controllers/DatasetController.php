@@ -969,7 +969,6 @@ EO_MAIL;
 			if ( $dataset && ! in_array($dataset->upload_status, $status_array) ) {
 
 				$xml_data = $dataset->toXML();
-                                print_r($xml_data);
 				$ch= curl_init();
 				curl_setopt($ch, CURLOPT_URL, $mds_metadata_url);
 				curl_setopt($ch, CURLOPT_POST, 1);
@@ -984,9 +983,6 @@ EO_MAIL;
 				curl_close ($ch) ;
 
 			}
-                        echo 'start';
-                         print_r($result);
-                        echo 'end';
                 
 			if ( $dataset && $result['md_curl_status'] == 201) {
 				$doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=https://gigadb.org/dataset/".$dataset->identifier ;

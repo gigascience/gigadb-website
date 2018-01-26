@@ -257,6 +257,19 @@ class AdminSampleController extends Controller
 		}
                 
             $specie = Species::model()->findByPk($model->species_id);
+            
+            $model->species_id=$specie->tax_id.":";
+            $has_common_name = false;
+             if ($specie->common_name != null) {
+                        $has_common_name = true;
+                        $model->species_id.= $specie->common_name;
+                    }
+
+            if ($specie->scientific_name != null) {
+                        if ($has_common_name)
+                            $model->species_id.=",";
+                        $model->species_id.= $specie->scientific_name;
+                    }
             $this->render('update',array(
                 'model' => $model,
                 'specie' => $specie,
