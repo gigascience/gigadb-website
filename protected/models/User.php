@@ -178,7 +178,7 @@ class User extends CActiveRecord {
         #Yii::log(__FUNCTION__."> encryptPassword password after  hash = " . $this->password, 'debug');
     }
 
-    public static function generatePassword($length=8) {
+    public function generatePassword($length=8) {
         $chars = "abcdefghijkmnopqrstuvwxyz023456789";
         srand((double)microtime()*1000000);
         $i = 0;
@@ -294,7 +294,7 @@ class User extends CActiveRecord {
             }
 
             #generate some credential data
-            $user->password = User::generatePassword(32);
+            $user->password = $user->generatePassword(32);
             $user->encryptPassword();
         } else {
             # still update the uid if user exist, so session and database record still match
