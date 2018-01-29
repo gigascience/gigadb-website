@@ -983,7 +983,7 @@ EO_MAIL;
 				curl_close ($ch) ;
 
 			}
-
+                
 			if ( $dataset && $result['md_curl_status'] == 201) {
 				$doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=https://gigadb.org/dataset/".$dataset->identifier ;
 				$result['doi_data']  = $doi_data;

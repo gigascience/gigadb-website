@@ -614,6 +614,8 @@ class Dataset extends MyActiveRecord
         //<relatedIdentifiers>
         $manuscripts=$this->manuscripts;
         $internal_links=$this->relations;
+        
+        $fundings=$this->datasetFunders;
 
         $related_identifiers = $xml->addChild("relatedIdentifiers");
 
@@ -632,6 +634,24 @@ class Dataset extends MyActiveRecord
                 $related_identifier->addAttribute('relationType',$relation->relationship->name);
             }
 
+        }
+        
+        $funding_References = $xml->addChild("fundingReferences");
+        
+        if (isset($fundings)){
+            foreach($fundings as $funding){
+    
+                $funder =  Funder::model()-> findByAttributes(array('id'=>$funding->funder_id));
+                $fundingReference = $funding_References->addChild("fundingReference");
+                $fundingReference->addChild('funderName',$funder->primary_name_display);
+                $funderidentifier= $fundingReference->addChild('funderIdentifier',$funder->uri);
+                $funderidentifier->addAttribute('funderIdentifierType','Crossref Funder ID');
+                $funderaward= $fundingReference->addChild('awardNumber',$funding->grant_award);              
+                             
+
+                
+            }
+            
         }
 
         //<sizes><size>
