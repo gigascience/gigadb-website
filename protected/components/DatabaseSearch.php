@@ -88,19 +88,18 @@ class DatabaseSearch extends CApplicationComponent {
 		    left join dataset_type dt on dt.dataset_id = d.id 
 		    left join dataset_funder df on df.dataset_id = d.id 
 		    left join funder_name fn on fn.id = df.funder_id 
-                    left join dataset_attributes dat on dat.dataset_id = d.id
+                    left join (select dataset_id, value from dataset_attributes where attribute_id=455) dat on dat.dataset_id = d.id
                     left join (select t.name as name, dt.dataset_id from type t, dataset_type dt where dt.type_id=t.id) dtnames on d.id=dtnames.dataset_id
 
 		";
 
-		$command->where(array('like', 'd.identifier', '%'.$keyword.'%'));
+	    $command->where(array('like', 'd.identifier', '%'.$keyword.'%'));
 	    $command->orWhere(array('like', 'lower(d.title)', '%'.$keyword.'%'));
 	    $command->orWhere(array('like', 'lower(dauthors.author_names)', '%'.$keyword.'%'));
 	    $command->orWhere(array('like', 'lower(dnames.author_names)', '%'.$keyword.'%'));
 	    $command->orWhere(array('like', 'lower(d.description)', '%'.$keyword.'%'));
             $command->orWhere(array('like', 'lower(dtnames.name)', '%'.$keyword.'%'));
             $command->orWhere(array('like', 'lower(dat.value)', '%'.$keyword.'%'));
-            $command->orWhere("dat.attribute_id = 455");
            
 	    //$command->orWhere(array('like', 'd.ftp_site', '%'.$keyword.'%'));
 

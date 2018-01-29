@@ -44,10 +44,7 @@ HTML;
                 </p>
                 <? } ?>
 
-                <p><?= $model->description; ?> </p>
-                <?php if ( count( $model->getSemanticKeywords() ) > 0) { ?>
-                    <p><strong>Keywords:</strong> <?= MyHtml::encode(implode(', ', $model->getSemanticKeywords() )); ?></p>
-                <? } ?>
+                <p><?= $model->description; ?> </p>        
                 <span class="content-popup" <?= !Yii::app()->user->isGuest ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
                     <a class="btn btn-green <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
                         Contact Submitter
