@@ -100,6 +100,7 @@ class DatabaseSearch extends CApplicationComponent {
 	    $command->orWhere(array('like', 'lower(d.description)', '%'.$keyword.'%'));
             $command->orWhere(array('like', 'lower(dtnames.name)', '%'.$keyword.'%'));
             $command->orWhere(array('like', 'lower(dat.value)', '%'.$keyword.'%'));
+            $command->orWhere("dat.attribute_id = 455");
            
 	    //$command->orWhere(array('like', 'd.ftp_site', '%'.$keyword.'%'));
 
@@ -130,9 +131,8 @@ class DatabaseSearch extends CApplicationComponent {
 	    if($author_id)
 	    	$command->andWhere("da.author_id = :aid", array(':aid'=>$author_id));
             
-            $command->andWhere("dat.attribute_id = 455");
             
-
+            
 	    $command->andWhere("d.upload_status = 'Published'");
             $command->order(array('d.id desc'));
 	    return $command->queryAll();
