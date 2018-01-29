@@ -93,6 +93,9 @@
                             <div class="clear"></div>
                             
                             <a class="btn-green left2" title="Add/update funder" href="/funder/admin">Funder</a>
+                            <div class="clear"></div>
+                            
+                            <a class="btn-green left2" title="Add/update attribute" href="/attribute/admin">Attribute</a>
 
                             <div class="clear"></div>
                             
