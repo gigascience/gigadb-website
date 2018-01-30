@@ -79,7 +79,7 @@
 
 
 	<div class="row buttons">
-		<a href="/funder/admin" class="btn">Cancel</a>
+		<a href="/attribute/admin" class="btn">Cancel</a>
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class'=>'btn')); ?>
 	</div>
 
