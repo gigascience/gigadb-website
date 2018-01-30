@@ -1,16 +1,14 @@
-#
-# latest version available at:
-# https://github.com/shyiko/docker-vm
-#
 Vagrant.configure("2") do |config|
   config.vm.box = "gigasci/ubuntu-16.04-amd64.box"
   config.vm.box_version = "2018.01.29"
+  # Sync gigadb-website folder to /vagrant dir on VM
   config.vm.synced_folder ".", "/vagrant"
   # Allow host to access docker daemon
   config.vm.network "forwarded_port", guest: 2376, host: 9172
   # Allocate IP address to Ubuntu VM
   config.vm.network "private_network", ip: "192.168.42.10"
 
+  # Required Yii folders
   FileUtils.mkpath("./protected/runtime")
   FileUtils.chmod_R 0777, ["./protected/runtime"]
   FileUtils.mkpath("./assets")
@@ -46,41 +44,10 @@ Vagrant.configure("2") do |config|
     ####################################################
     #### Set server environment: development or aws ####
     ####################################################
-    chef.environment = "docker"
+    chef.environment = "development"
 
     # Add Chef recipes
     chef.add_recipe "docker"
-
-    # You may also specify custom JSON attributes:
-#     chef.json = {
-#       :gigadb_box => ENV['GIGADB_BOX'],
-#       :environment => "development",
-#       :docker => {
-#         :server_names => ["localhost"],
-#         :root_dir => "/vagrant",
-#         :site_dir => "/vagrant",
-#         :log_dir => "/vagrant/logs",
-#         :yii_path => "./yii-1.1.10/framework/yii.php",
-#       },
-#       :nginx => {
-#         :version => :latest,
-#       },
-#       :postgresql => {
-#         :version => '9.1',
-#         :repo_version => '9.1',
-#         #:dir => '/var/lib/pgsql/9.1/data',
-#       },
-#       :elasticsearch => {
-#         :version => '1.3.4',
-#       },
-#       :java => {
-#         #:install_flavor => 'oracle',
-#         :jdk_version => '7',
-#         :oracle => {
-#           "accept_oracle_download_terms" => true,
-#         },
-#       },
-#     }
 
     # Additional chef settings to put in solo.rb
     chef.custom_config_path = "Vagrantfile.chef"
