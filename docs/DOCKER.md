@@ -50,3 +50,30 @@ docker-compose down -v
 # Test nginx container
 docker exec -it yii2laradock_nginx_1 bash
 
+# Host access to Docker on Ubuntu VM
+
+You can access the Docker daemon that is running on the Ubuntu VM directly from
+your (host) computer without logging into the VM. For example, you can execute
+the following command when the Ubuntu VM is deployed:
+
+```bash
+$ docker -H tcp://0.0.0.0:9172 version
+Client:
+ Version:      17.05.0-ce
+ API version:  1.29
+ Go version:   go1.9.2
+ Git commit:   89658be
+ Built:        
+ OS/Arch:      darwin/amd64
+
+Server:
+ Version:      17.12.0-ce
+ API version:  1.35 (minimum version 1.12)
+ Go version:   go1.9.2
+ Git commit:   c97c6d6
+ Built:        Wed Dec 27 20:09:53 2017
+ OS/Arch:      linux/amd64
+ Experimental: false
+
+```
+

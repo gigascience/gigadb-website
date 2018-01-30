@@ -6,6 +6,8 @@ Vagrant.configure("2") do |config|
   config.vm.box = "gigasci/ubuntu-16.04-amd64.box"
   config.vm.box_version = "2018.01.29"
   config.vm.synced_folder ".", "/vagrant"
+  # Allow host to access docker daemon
+  config.vm.network "forwarded_port", guest: 2376, host: 9172
   # Allocate IP address to Ubuntu VM
   config.vm.network "private_network", ip: "192.168.42.10"
 
@@ -14,10 +16,12 @@ Vagrant.configure("2") do |config|
   FileUtils.mkpath("./assets")
   FileUtils.chmod_R 0777, ["./assets"]
 
-  # Make docker daemon accessible from the host OS (port 2376)
+  # Access docker daemon from host OS via port 9172 forwarded to port 2376 in
+  # container
   config.vm.provision :shell, inline: <<-EOT
-    echo 'DOCKER_OPTS="-H unix:// -H tcp://0.0.0.0:2376 ${DOCKER_OPTS}"' >> /etc/default/docker
-    service docker restart
+    sed -i 's|^ExecStart=/usr/bin/dockerd -H fd://|ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2376|' /lib/systemd/system/docker.service
+    systemctl daemon-reload
+    systemctl restart docker.service
   EOT
 
   config.vm.provider "virtualbox" do |v|
