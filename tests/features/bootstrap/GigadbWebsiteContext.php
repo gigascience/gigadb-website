@@ -18,6 +18,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
     private $admin_login = null;
     private $admin_password = null ;
 
+
 	public function __construct(array $parameters)
     {
 
@@ -26,6 +27,9 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
 
         $this->useContext('affiliate_login', new AffiliateLoginContext($parameters));
         $this->useContext('normal_login', new NormalLoginContext($parameters));
+
+        $this->useContext('dataset_view_context', new DatasetViewContext($parameters));
+        $this->useContext('author_edit_context', new AuthorEditContext($parameters));
     }
 
 
@@ -44,7 +48,6 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         }
         return $this->yii ;
     }
-
 
     /**
      * @AfterStep
@@ -77,7 +80,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
          $this->fillField("LoginForm_username", $this->admin_login);
          $this->fillField("LoginForm_password", $this->admin_password);
          $this->pressButton("Login");
+
+         $this->assertResponseContains("Administration");
     }
-
-
 }

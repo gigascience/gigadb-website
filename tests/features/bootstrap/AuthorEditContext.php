@@ -32,20 +32,8 @@ class AuthorEditContext extends BehatContext
     public function __construct(array $parameters)
     {
         // Initialize your context here
-        $this->login = $_ENV["GIGADB_tester_email"];
-        $this->password = $_ENV["GIGADB_tester_password"] ;
     }
 
-    /**
-     * @Given /^I sign in as an admin$/
-     */
-    public function iSignInAsAnAdmin()
-    {
-         $this->getMainContext()->visit("/site/login");
-         $this->getMainContext()->fillField("LoginForm_username", $this->login);
-         $this->getMainContext()->fillField("LoginForm_password", $this->password);
-         $this->getMainContext()->pressButton("Login"); 
-    }
 
 
 
