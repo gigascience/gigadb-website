@@ -1,9 +1,9 @@
 <phpunit bootstrap="bootstrap.php"
-		colors="false"
+		colors="true"
 		convertErrorsToExceptions="true"
 		convertNoticesToExceptions="true"
 		convertWarningsToExceptions="true"
-		stopOnFailure="false">
+		stopOnFailure="true">
 
 	<selenium>
 		<browser name="Internet Explorer" browser="*iexplore" />
