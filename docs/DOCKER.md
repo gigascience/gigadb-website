@@ -66,13 +66,26 @@ $ docker-compose up -d postgres
 If the docker-compose build and container start process is successful then the 
 gigadb-website should be visible at [http://192.168.42.10]( http://192.168.42.10).
 
+# Check log for container
+
+```bash
+$ docker-compose logs <name of container>
+```
+
+# Build images
+```bash
+$ docker-compose build <name of container>
+```
+
 # Delete containers and images
 ```bash
-docker-compose down -v
+$ docker-compose down -v
 ```
 
 # Test nginx container
-docker exec -it yii2laradock_nginx_1 bash
+```bash
+$ docker exec -it yii2laradock_nginx_1 bash
+```
 
 # Host access to Docker on Ubuntu VM
 
@@ -100,4 +113,24 @@ Server:
  Experimental: false
 
 ```
+
+# pgAdmin
+
+The PostgreSQL database can be managed using the pgAdmin tool. This container
+can be deployed using the docker-compose tool:
+
+```bash
+$ docker-compose up -d pgadmin
+```
+
+Once the pgadmin container is running, the application can be accessed from a
+browser at [http://192.168.42.10:5050](http://192.168.42.10:5050).
+
+You will see a login webpage. Enter `pgadmin4@pgadmin.org` as the email address
+and `admin` for the password.
+
+To add your database running on the postgres container, click on `Add New 
+Server` and provide a new name, e.g. `gigadb`. Click on the connection tab and
+input the hostname/address as `192.168.42.10`. Use `gigadb ` as the username and
+`vagrant` as the password to access the gigadb postgres database.
 
