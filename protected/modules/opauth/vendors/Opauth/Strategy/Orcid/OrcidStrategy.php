@@ -17,7 +17,7 @@ class OrcidStrategy extends OpauthStrategy{
 	 */
 	public $defaults = array(
 		'redirect_uri' => '{complete_url_to_strategy}oauth2callback',
-		'scope' => '/orcid-profile/read-limited',
+		'scope' => '/authenticate',
 	);
 	
 	/**
@@ -25,7 +25,8 @@ class OrcidStrategy extends OpauthStrategy{
 	 * example: https://sandbox.orcid.org/oauth/authorize?client_id=0000-0003-2736-8061&response_type=code&scope=/orcid-profile/read-limited&redirect_uri=https://developers.google.com/oauthplayground
 	 */
 	public function request(){
-		$url = 'https://sandbox.orcid.org/oauth/authorize';
+		$environment = ("sandbox" == $this->strategy['environment'] ? "sandbox."  : "") ;
+		$url = 'https://' . $environment . 'orcid.org/oauth/authorize';
 		$params = array(
 			'client_id' => $this->strategy['client_id'],
 			'response_type' => 'code',
@@ -45,9 +46,10 @@ class OrcidStrategy extends OpauthStrategy{
 	 * https://api.sandbox.orcid.org/oauth/token
 	 */
 	public function oauth2callback(){
+			$environment = ("sandbox" == $this->strategy['environment'] ? "sandbox."  : "") ;
 		if (array_key_exists('code', $_GET) && !empty($_GET['code'])){
 			$code = $_GET['code'];
-			$url = 'https://api.sandbox.orcid.org/oauth/token';
+			$url = 'https://' . $environment . 'orcid.org/oauth/token';
 			$params = array(
 				'code' => $code,
 				'client_id' => $this->strategy['client_id'],
@@ -61,7 +63,7 @@ class OrcidStrategy extends OpauthStrategy{
 			
 			if (!empty($results) && !empty($results->access_token) && !empty($results->orcid)) {
 
-				//$userinfo = $this->userinfo($results->access_token);
+				// $userinfo = $this->userinfo($results->orcid);
 				
 				$this->auth = array(
 					'provider' => 'Orcid',
@@ -71,6 +73,7 @@ class OrcidStrategy extends OpauthStrategy{
 						'token' => $results->access_token,
 						'expires' => date('c', time() + $results->expires_in)
 					),
+					// 'raw' => $userinfo,
 				);
 
 				if (!empty($results->refresh_token))
@@ -83,6 +86,8 @@ class OrcidStrategy extends OpauthStrategy{
 					$this->auth['info']['name'] = $results->name;
 				}
 				
+				$this->auth['info']['email'] = null;
+
 				$this->callback();
 			}
 			else{
@@ -111,16 +116,20 @@ class OrcidStrategy extends OpauthStrategy{
 	/**
 	 * Queries Orcid API for user info
 	 *
-	 * @param string $access_token 
+	 * @param string $uid 
 	 * @return array Parsed JSON results
 	 */
-	// private function userinfo($access_token){
-	// 	$userinfo = $this->serverGet('https://api.sandbox.orcid.org/v1.1', array('access_token' => $access_token), null, $headers);
+	// private function userinfo($uid){
+	// 	$userinfo = $this->serverPost("https://sandbox.orcid.org/v2.1/$uid/person", 
+	// 		array('access_token' => $this->strategy['public_access_token']), 
+	// 		null, 
+	// 		$headers);
 
 
 
 	// 	if (!empty($userinfo)){
-	// 		return $this->recursiveGetObjectVars(json_decode($userinfo));
+	// 		return $userinfo;
+	// 		//return $this->recursiveGetObjectVars(json_decode($userinfo));
 	// 	}
 	// 	else{
 	// 		$error = array(

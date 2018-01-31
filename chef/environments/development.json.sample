@@ -71,7 +71,8 @@
       },
       "orcid": {
         "client_id": "",
-        "client_secret": ""
+        "client_secret": "",
+        "environment":"sandbox"
       },
       "mds": {
         "mds_username": "",

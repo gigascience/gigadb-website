@@ -1,0 +1,16 @@
+default:
+  paths:
+    features:  features
+    bootstrap: features/bootstrap
+  context:
+      class:  'GigadbWebsiteContext'
+  extensions:
+    Behat\MinkExtension\Extension:
+      base_url: 'http://gigadb.cinecinetique.com:9170/'
+      goutte: ~
+      selenium2:
+        wd_host: http://localhost:8643/wd/hub
+    Behat\YiiExtension\Extension:
+      framework_script: ../Behat/vendor/yiisoft/yii/framework/yii.php
+      config_script:    ../protected/config/main.php
+      mink_driver: true

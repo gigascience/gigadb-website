@@ -263,11 +263,12 @@ class SiteController extends Controller {
 					$this->redirect('/');
 				}
 
-		                 $user = User::processAffiliateUser($auth);
+		        $user = User::processAffiliateUser($auth);
 
 				 #process to mark as logined in
 				$_SESSION['affiliate_login']['provider'] = $auth['provider'];
 				$_SESSION['affiliate_login']['uid'] = $auth['uid'];
+				$_SESSION['affiliate_login']['token'] = $auth['credentials']['token'];
 
 				#use useridentity to login
 				$model = new LoginForm;
@@ -294,6 +295,15 @@ class SiteController extends Controller {
 	 * Logs out the current user and redirect to homepage.
 	 */
 	public function actionLogout() {
+		Yii::app()->user->logout();
+		$this->redirect(Yii::app()->homeUrl);
+	}
+
+	/**
+	 * revoke  the current affiliatte user granting and redirect to homepage.
+	 */
+	public function actionRevoke() {
+		UserIdentity::revoke_token() ;
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
