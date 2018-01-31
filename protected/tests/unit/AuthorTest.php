@@ -6,14 +6,14 @@ class AuthorTest extends CDbTestCase
     protected $fixtures=array(
         'authors'=>'Author',
     );
- 
+
 
 
  	function testSurname() {
  		$expectations = array ("Muñoz",
  								 "Montana",
  								 "Martinez-Cruzado",
- 								 "Potato Genome Sequencing Consortium", 
+ 								 "Potato Genome Sequencing Consortium",
  								 "Gilbert",
  								 "Régime",
  								 "Schiøtt") ;
