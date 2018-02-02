@@ -403,20 +403,6 @@ class AffiliateLoginContext extends BehatContext
         }
     }
 
-    /**
-     * @AfterSuite
-    */
-    public static function reset_db($event) {
-
-        if (true == $event->isCompleted()) {
-            print_r("Recreate database... ");
-            exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/kill_drop_recreate.sql\"",$reload_output);
-            print_r("Reload test data... ");
-            exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/gigadb_testdata.sql\"",$reload_output);
-            // var_dump($reload_output);
-        }
-    }
-
 
 
 }

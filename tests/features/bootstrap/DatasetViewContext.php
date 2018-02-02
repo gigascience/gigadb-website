@@ -58,6 +58,7 @@ class DatasetViewContext extends BehatContext
         exec("vagrant ssh -c \"pg_restore -i -h localhost -p 5432 -U gigadb -d gigadb -v /vagrant/sql/author-names-80-81-82.pgdmp
 \"",$output);
         // var_dump($output);
+        sleep(5) ;
     }
 
     /**
@@ -97,16 +98,6 @@ class DatasetViewContext extends BehatContext
     }
 
 
-
-    public static function initialize_database()
-    {
-        print_r("Initializing the database... ");
-         exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/kill_drop_recreate.sql\"",$kill_output);
-        // var_dump($kill_output);
-        exec("vagrant ssh -c \"pg_restore -i -h localhost -p 5432 -U gigadb -d gigadb -v /vagrant/sql/author-names-80-81-82.pgdmp
-\"",$output);
-        // var_dump($output);
-    }
 
 
 }

@@ -4,16 +4,16 @@
 
 #### Preparation
 
-Install Behat with composer
+Install Behat and PHPUnit with composer
 
 ```bash
 $ cd Behat
 $ composer install
 ```
 
-Install PhantomJS 
+Install PhantomJS
 
-using NPM: 
+using NPM:
 ```bash
 $ npm install phantomjs
 ```
@@ -42,6 +42,10 @@ $ . test_users.txt
 $ ./tests/run
 
 ```
+
+
+The test runner will restore the state of the main database after running all the tests.
+It will (re)create the test database needed by Yii database fixtures and will run Behat acceptance tests and PHPUNit unit tests.
 
 #### Assisting feature development 
 
@@ -79,13 +83,21 @@ $ ./../../Behat/vendor/phpunit/phpunit/phpunit --config=phpunit.xml unit
 
 ```
 
-To generate a test coverage report, run the following command:
+To generate a test coverage report, run the following commands in vagrant:
 
 ```bash
 $ cd /vagrant/protected/tests
 $ ./../../Behat/vendor/phpunit/phpunit/phpunit --config=phpunit.xml --coverage-html ./report  unit
 
 ```
+
+The unit tests use PHPUnit 4.1.* (any more recent version will fail to work with Yii 1.1) and the configuration files are:
+* ``protected/tests/phpunit.xml``
+* ``protected/tests/bootstrap.php``
+* ``protected/config/test.php``
+* ``protected/config/db_test.json``
+
+They make use of database test fixtures which need to be dropped and recreated at every run so they use a separate ``gigadb_test`` database, so not to lose data from the main database.
 
 
 ## Functional tests with CasperJS
