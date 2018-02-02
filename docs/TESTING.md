@@ -67,6 +67,26 @@ $ Behat/bin/behat --tags @ok,@wip -v --stop-on-failure -c tests/behat.yml
 
 **Note:** Some tags have special meaning: @javascript force the scenario to run using a javascript-enabled headless browser (phantomjs or whatever WebDriver API is running on port 8643). If @javascript is not present PHP BrowserKit-based GoutteDriver is used (it is faster) (the @mink:goutte enabling this is optional as it's default behaviour)
 
+###### 4. Write unit tests for PHP functions
+
+The test runner will run all unit tests. but can also be run by themselves:
+
+(After logging into vagrant with ``vagrant ssh``)
+
+```bash
+$ cd /vagrant/protected/tests
+$ ./../../Behat/vendor/phpunit/phpunit/phpunit --config=phpunit.xml unit
+
+```
+
+To generate a test coverage report, run the following command:
+
+```bash
+$ cd /vagrant/protected/tests
+$ ./../../Behat/vendor/phpunit/phpunit/phpunit --config=phpunit.xml --coverage-html ./report  unit
+
+```
+
 
 ## Functional tests with CasperJS
 
