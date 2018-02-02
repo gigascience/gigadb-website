@@ -45,6 +45,21 @@ class DatasetViewContext extends BehatContext
 //    }
 //
 
+
+
+    /**
+     * @Given /^Gigadb web site is loaded with production-like data$/
+     */
+    public function gigadbWebSiteIsLoadedWithProductionLikeData()
+    {
+        print_r("Initializing the database... ");
+         exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/kill_drop_recreate.sql\"",$kill_output);
+        // var_dump($kill_output);
+        exec("vagrant ssh -c \"pg_restore -i -h localhost -p 5432 -U gigadb -d gigadb -v /vagrant/sql/author-names-80-81-82.pgdmp
+\"",$output);
+        // var_dump($output);
+    }
+
     /**
      * @Given /^author has surname "([^"]*)"$/
      */
@@ -72,7 +87,7 @@ class DatasetViewContext extends BehatContext
 
 
     /**
-     * @BeforeScenario
+     * @BeforeScenario @author-names-display&&@edit-display-name
      */
     public function reset()
     {
@@ -83,10 +98,7 @@ class DatasetViewContext extends BehatContext
 
 
 
-    /**
-     * @BeforeSuite
-     */
-    public static function initialize_databaes()
+    public static function initialize_database()
     {
         print_r("Initializing the database... ");
          exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/kill_drop_recreate.sql\"",$kill_output);

@@ -1,3 +1,4 @@
+@login @affiliate-login @issue-64
 Feature: sign in into the gigadb website with my social media credentials
 AS an author,
 I WANT TO sign in to the gigadb website with my social media credentials

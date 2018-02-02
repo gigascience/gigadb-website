@@ -10,6 +10,8 @@ use Behat\Gherkin\Node\PyStringNode,
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\YiiExtension\Context\YiiAwareContextInterface;
 
+use PHPUnit\Framework\Assert;
+
 /**
  * GigadbWebsiteContext Features context.
  */
@@ -70,6 +72,22 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
             }
         }
     }
+
+
+     /**
+     * @Given /^an admin user exists$/
+     */
+    public function anAdminUserExists()
+    {
+        if ( null != $this->admin_login ) {
+            $nb_ocurrences = $this->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( $this->admin_login );
+            PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "admin email exists in database");
+        }
+        else {
+            throw new PendingException();
+        }
+    }
+
 
      /**
      * @Given /^I sign in as an admin$/
