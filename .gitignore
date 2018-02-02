@@ -52,4 +52,5 @@ sql/temp_command.sql
 # Behat
 
 Behat/vendor
+Behat/composer.lock
 
