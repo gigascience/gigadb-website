@@ -17,8 +17,8 @@ use PHPUnit\Framework\Assert;
  */
 class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext implements Behat\YiiExtension\Context\YiiAwareContextInterface
 {
-    private $admin_login = null;
-    private $admin_password = null ;
+    private $admin_login;
+    private $admin_password;
 
 
 	public function __construct(array $parameters)
@@ -84,7 +84,20 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
             PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "admin email exists in database");
         }
         else {
-            throw new PendingException();
+            throw new Exception("No admin user set up");
+        }
+    }
+
+    /**
+     * @Given /^default admin user exists$/
+     */
+    public function defaultAdminUserExists()
+    {
+        $nb_ocurrences = $this->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( "admin@gigadb.org");
+        PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "default admin email exists in database");
+        if ( 1 == $nb_ocurrences  )  {
+            $this->admin_login = "admin@gigadb.org" ;
+            $this->admin_password = "gigadb";
         }
     }
 
@@ -101,4 +114,27 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
 
          $this->assertResponseContains("Administration");
     }
+
+    /**
+     * @Given /^Gigadb web site is loaded with "([^"]*)" data$/
+     */
+    public function gigadbWebSiteIsLoadedWithData($arg1)
+    {
+        print_r("Initializing the database with ${arg1}... ");
+         exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/kill_drop_recreate.sql\"",$kill_output);
+        // var_dump($kill_output);
+         if ( preg_match("/\.pgdmp$/", $arg1) ) {
+            exec("vagrant ssh -c \"pg_restore -i -h localhost -p 5432 -U gigadb -d gigadb -v /vagrant/sql/${arg1} \"",$output);
+         }
+         else if ( preg_match("/\.sql$/", $arg1) ) {
+            exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/${arg1}\"",$output);
+         }
+         else {
+            throw new Exception("cannot load database file ${arg1}");
+         }
+        // var_dump($output);
+        sleep(5) ;
+    }
+
+
 }
