@@ -22,6 +22,7 @@ $this->menu=array(
 		'name',
 		'displayName',
 		'orcid',
+		'gigadb_user_id',
 		'rank',
 	),
 )); ?>

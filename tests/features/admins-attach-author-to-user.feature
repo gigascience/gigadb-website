@@ -15,19 +15,20 @@ Scenario: populate user identity field when creating an author
 	And I sign in as an admin
 	And I am on "/adminAuthor/create"
 	When I fill in "Surname" with "Tano"
-	And I fill in "First Name" with "Ashoka"
+	And I fill in "First Name" with "Ahsoka"
 	And I fill in "Middle Name" with "Fulcrum"
-	And I fill in "User identity" with "345"
+	And I fill in "Gigadb User" with "345"
 	And press "Create"
-	Then the response should contain "User Identity"
+	Then the response should contain "Gigadb User"
 	And the response should contain "345"
+	And the response should contain "Tano AF"
 
 Scenario: populate user identity field when updating an author
 	Given default admin user exists
 	And I sign in as an admin
 	And I am on "/adminAuthor/update/id/3791"
-	And I fill in "User identity" with "345"
+	And I fill in "Gigadb User" with "345"
 	And press "Save"
-	Then the response should contain "User Identity"
+	Then the response should contain "Gigadb User"
 	And the response should contain "345"
 	And I should be on "/adminAuthor/view/id/3791"

@@ -53,6 +53,14 @@
 				</div>
 	</div>
 
+	<div class="control-group">
+		<?php echo $form->labelEx($model,'gigadb_user_id',array('class'=>'control-label')); ?>
+				<div class="controls">
+		<?php echo $form->textField($model,'gigadb_user_id',array('size'=>60,'maxlength'=>128)); ?>
+		<?php echo $form->error($model,'gigadb_user_id'); ?>
+				</div>
+	</div>
+
     <?php /*
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'rank',array('class'=>'control-label')); ?>
