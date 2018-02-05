@@ -131,6 +131,17 @@ class AdminAuthorController extends Controller
 	 */
 	public function actionAdmin()
 	{
+
+		if( isset($_GET['attach_user']) ){
+			if (preg_match("/^\d+$/", $_GET['attach_user'])) {
+				Yii::app()->session['attach_user'] = $_GET['attach_user'];
+			}
+			else if ("abort" == $_GET['attach_user']) {
+				unset(Yii::app()->session['attach_user']);
+				$this->redirect(array('admin'));
+			}
+		}
+
 		$model=new Author('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Author']))

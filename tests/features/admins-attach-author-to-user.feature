@@ -34,45 +34,44 @@ Scenario: populate user identity field when updating an author
 	And I should see "Gigadb User"
 	And I should see "345"
 
-@wip
+@ok
 Scenario: From user view, find an author to attach
 	Given default admin user exists
 	And I sign in as an admin
 	And I am on "/user/view/id/345"
-	When I press "Attach an author to this user"
-	Then I should be on "/adminAuthor/admin"
+	When I follow "Attach an author to this user"
+	Then I should be on "/adminAuthor/admin/attach_user/345"
 	And I should see "Click on a row to link that author with user John Smith"
 	And I should see "Cancel attaching author"
 
-@wip
+@ok
 Scenario: From user edit form, find an author to attach
 	Given default admin user exists
 	And I sign in as an admin
 	And I am on "/user/update/id/345"
-	When I press "Attach an author to this user"
-	Then I should be on "/adminAuthor/admin"
+	When I follow "Attach an author to this user"
+	Then I should be on "/adminAuthor/admin/attach_user/345"
 	And I should see "Click on a row to link that author with user John Smith"
 	And I should see "Cancel attaching author"
 
 
-@wip
+@ok
 Scenario: Attach an author
 	Given default admin user exists
 	And I sign in as an admin
 	And I have initiated the search of an author for Gigadb User with ID "345" 
-	And I am on "/adminAuthor/admin"
-	When I click the row of ID "3790"
-	Then I should be on "/adminAuthor/view/id/3790"
-	And I should see "Gigadb User"
-	And I should see "345"
+	And I am on "/adminAuthor/admin/attach_user/345"
+	When I click "Update" in the row for author "Wang"
+	Then I should be on "/adminAuthor/update/id/3790"
+	And the "Gigadb User" field should contain "345"
 
 
-@wip
+@ok
 Scenario: Cancel attaching an author
 	Given default admin user exists
 	And I sign in as an admin
 	And I have initiated the search of an author for Gigadb User with ID "345" 
-	And I am on "/adminAuthor/admin"
+	And I am on "/adminAuthor/admin/attach_user/345"
 	When I follow "Cancel attaching author"
 	Then I should be on "/adminAuthor/admin"
 	And I should not see "Click on a row to link that author with user John Smith"

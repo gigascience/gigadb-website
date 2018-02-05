@@ -31,7 +31,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         $this->useContext('normal_login', new NormalLoginContext($parameters));
 
         $this->useContext('dataset_view_context', new DatasetViewContext($parameters));
-        $this->useContext('author_edit_context', new AuthorEditContext($parameters));
+        $this->useContext('author_user_context', new AuthorUserContext($parameters));
     }
 
 

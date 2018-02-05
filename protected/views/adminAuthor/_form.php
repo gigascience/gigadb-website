@@ -56,7 +56,14 @@
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'gigadb_user_id',array('class'=>'control-label')); ?>
 				<div class="controls">
-		<?php echo $form->textField($model,'gigadb_user_id',array('size'=>60,'maxlength'=>128)); ?>
+		<?php
+					if ( isset(Yii::app()->session['attach_user']) && preg_match("/^\d+$/", Yii::app()->session['attach_user']) ) {
+						echo $form->textField($model,'gigadb_user_id',array('size'=>60,'maxlength'=>128, 'value' => Yii::app()->session['attach_user'] )); 
+					}
+					else {
+					 	echo $form->textField($model,'gigadb_user_id',array('size'=>60,'maxlength'=>128)); 
+					}
+		?>
 		<?php echo $form->error($model,'gigadb_user_id'); ?>
 				</div>
 	</div>
