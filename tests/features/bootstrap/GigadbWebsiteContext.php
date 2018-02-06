@@ -57,8 +57,8 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
     public function debugStep($event)
     {
         if ($event->getResult() == 4 ) {
-            $this->printCurrentUrl();
             try { # take a snapshot of web page
+                $this->printCurrentUrl();
                 $content = $this->getSession()->getDriver()->getContent();
                 $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
                 file_put_contents("/tmp/".$file_and_path.".html", $content);

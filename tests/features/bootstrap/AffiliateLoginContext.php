@@ -371,7 +371,7 @@ class AffiliateLoginContext extends BehatContext
         print_r("Initializing the database... ");
         exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/reset_user_table.sql\"",$kill_output);
         // var_dump($kill_output);
-        sleep(5) ; # pad the adminstrative operations to cater for latency in order to avoid fatal error
+        sleep(8) ; # pad the adminstrative operations to cater for latency in order to avoid fatal error
     }
 
 

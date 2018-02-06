@@ -58,7 +58,7 @@ class DatasetViewContext extends BehatContext
         exec("vagrant ssh -c \"pg_restore -i -h localhost -p 5432 -U gigadb -d gigadb -v /vagrant/sql/author-names-80-81-82.pgdmp
 \"",$output);
         // var_dump($output);
-        sleep(5) ;
+        sleep(8) ;
     }
 
     /**
