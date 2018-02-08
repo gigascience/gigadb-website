@@ -182,7 +182,7 @@ EO_SQL;
 
     public function getDisplayName() {
 
-        return rtrim($this->getSurname() . " " . $this->getInitials()," ");
+        return self::generateDisplayName($this->getSurname(), $this->first_name, $this->middle_name);
     }
 
     public function getSurname() {
