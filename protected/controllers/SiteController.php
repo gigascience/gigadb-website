@@ -95,7 +95,62 @@ class SiteController extends Controller {
 		$rss_arr = array_merge($latest_datasets , $latest_messages);
 
 		$this->sortRssArray($rss_arr);
+                
+                //Get dataset types number
+                $sql_1="select type.name, count(dataset_type.id) from dataset_type, type where dataset_type.type_id=type.id group by type.name";
+                $command = Yii::app()->db->createCommand($sql_1); 
+                $results = $command->queryAll();
+                
+                $sql_2="select dataset_sample.id from dataset_sample, dataset where dataset_sample.dataset_id=dataset.id and dataset.upload_status = 'Published'";
+                $command = Yii::app()->db->createCommand($sql_2); 
+                $count_sample = $command->queryAll();
+                
+                $sql_3="select file.id from file, dataset where file.dataset_id=dataset.id and dataset.upload_status = 'Published'";
+                $command = Yii::app()->db->createCommand($sql_3); 
+                $count_file = $command->queryAll();
+                foreach($results as $result)
+                {                  
+                    switch ($result['name']) {
+                        case "Genome-Mapping":
+                             $number_genome_mapping=$result['count'];
+                             break;
+                        case "Ecology":
+                             $number_ecology=$result['count'];
+                             break;
+                        case "ElectroEncephaloGraphy(EEG)":
+                             $number_eeg=$result['count'];
+                             break;
+                        case "Epigenomic":
+                             $number_epi=$result['count'];
+                             break;
+                        case "Genomic":
+                             $number_genomic=$result['count'];
+                             break;
+                        case "Imaging":
+                             $number_imaging=$result['count'];  
+                             break;
+                        case "Lipidomic":
+                             $number_lipi=$result['count'];  
+                             break;
+                        case "Metabarcoding":
+                             $number_metabarcoding=$result['count'];    
+                             break;
+                        case "Metagenomic":
+                             $number_metagenomic=$result['count']; 
+                             break;
+                        case "Metadata":
+                             $number_metadata=$result['count'];
+                             break;
+                        case "Metabolomic":
+                             $number_metabolomic=$result['count'];
+                             break;
+                        case "Climate":
+                             $number_climate=$result['count'];
+                             break;
 
+                    }
+                   
+                }
 		$this->render('index',array(
 			'datasets'=>$datasetModel,
 			'form'=>$form,
@@ -104,7 +159,24 @@ class SiteController extends Controller {
 			'dataset_hint'=>$datasettypes_hints ,
 			'rss_arr' => $rss_arr ,
 			'count' => count($publicIds),
-			'latest_datasets'=>$latest_datasets)
+                        'count_sample' => count($count_sample),
+                        'count_file' => count($count_file),
+			'latest_datasets'=>$latest_datasets,
+                        'number_genome_mapping'=>$number_genome_mapping,                    
+                        'number_climate' => $number_climate,                    
+                        'number_ecology'=>$number_ecology,
+                        'number_eeg'=>$number_eeg,
+                        'number_epi'=>$number_epi,                       
+                        'number_genomic'=>$number_genomic,
+                        'number_imaging'=>$number_imaging,
+                        'number_lipi'=>$number_lipi,
+                        'number_metabarcoding'=>$number_metabarcoding,
+                        'number_metabolomic'=>$number_metabolomic,
+                        'number_metadata'=>$number_metadata,
+                        'number_metagenomic'=>$number_metagenomic,
+                        )
+                        
+                        
 		);
 	}
 
