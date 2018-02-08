@@ -37,6 +37,13 @@
             <?php echo $form->error($model,'middle_name'); ?>
         </div>
     </div>
+    <div class="control-group">
+	    <?php echo $form->labelEx($model,'custom_name',array('class'=>'control-label')); ?>
+        <div class="controls">
+            <?php echo $form->textField($model,'custom_name',array('size'=>60,'maxlength'=>255)); ?>
+            <?php echo $form->error($model,'custom_name'); ?>
+        </div>
+    </div>
 
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'orcid',array('class'=>'control-label')); ?>

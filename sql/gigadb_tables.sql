@@ -188,6 +188,7 @@ CREATE TABLE author (
     surname character varying(255) NOT NULL,
     middle_name character varying(255),
     first_name character varying(255),
+    custom_name character varying(255),
     orcid character varying(255),
     gigadb_user_id integer
 );

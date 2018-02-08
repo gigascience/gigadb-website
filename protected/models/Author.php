@@ -42,11 +42,11 @@ class Author extends CActiveRecord {
         return array(
             array('surname', 'required'),
             array('gigadb_user_id', 'numerical', 'integerOnly' => true),
-            array('surname, middle_name, first_name', 'length', 'max' => 255),
+            array('surname, middle_name, first_name, custom_name', 'length', 'max' => 255),
             array('orcid', 'length', 'max' => 128),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, surname, middle_name, first_name, orcid, gigadb_user_id, dois_search', 'safe', 'on' => 'search'),
+            array('id, surname, middle_name, first_name, custom_name,orcid, gigadb_user_id, dois_search', 'safe', 'on' => 'search'),
         );
     }
 
@@ -71,6 +71,7 @@ class Author extends CActiveRecord {
             'surname' => 'Surname',
             'middle_name' => 'Middle Name',
             'first_name' => 'First Name',
+            'custom_name' => 'Display Name',
             'orcid' => 'Orcid',
             'gigadb_user_id' => 'Gigadb User',
             'dois_search' => 'DOI(s)',
@@ -182,7 +183,13 @@ EO_SQL;
 
     public function getDisplayName() {
 
-        return self::generateDisplayName($this->getSurname(), $this->first_name, $this->middle_name);
+        if (null != $this->custom_name) {
+            return $this->custom_name;
+        }
+        else {
+            return self::generateDisplayName($this->getSurname(), $this->first_name, $this->middle_name);
+        }
+
     }
 
     public function getSurname() {
