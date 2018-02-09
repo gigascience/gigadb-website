@@ -6,11 +6,9 @@
                         <div class="col-xs-10 col-xs-offset-1 text-center">
                             <h1 class="home-search-bar-title">GIGADB DATASETS</h1>
                             <p class="home-search-bar-subtitle">GigaDB contains <? echo $count ?> discoverable, trackable, and citable datasets that have been assigned DOIs and are available for public download and use.</p>
-                            <div class="form-group home-search-bar-group">
-                                    <div class="input-group search-bar-group">
+                           
                             <? $this->renderPartial('/search/_form',array('model'=>$form,'dataset'=>$dataset,'search_result'=>null)); ?>
-                                    </div>
-                            </div>
+                                  
                         </div>
                     </div>
                 </div>

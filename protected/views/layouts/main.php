@@ -109,9 +109,9 @@
     <?php endif?>
 -->
 
-<div class="container" id="wrap">
+
     <?php echo $content; ?>
-</div>
+
 <div class="base-footer-bar">
             <div class="container">
                 <div class="row">
