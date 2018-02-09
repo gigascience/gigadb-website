@@ -40,5 +40,12 @@ return array(
 		'surname'=>'Schiøtt,',
 		'first_name'=>'Morten',
 	),
+	array(
+		'id' => 8,
+		'surname'=>'Lawrence',
+		'first_name'=>'Thomas',
+		'middle_name'=>'Edward',
+		'custom_name'=>'T.E Lawrence',
+	),
 
 );

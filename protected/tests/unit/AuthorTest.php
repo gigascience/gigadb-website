@@ -37,9 +37,10 @@ class AuthorTest extends CDbTestCase
  							 "Potato Genome Sequencing Consortium",
  							 "Gilbert MTP",
  							 "Régime JÉ",
- 							 "Schiøtt M") ;
+ 							 "Schiøtt M",
+ 							 "T.E Lawrence") ;
  		foreach ($expectations as $indice => $expectation) {
-	 		$this->assertEquals($expectation, $this->authors($indice)->getDisplayName(),"First names with accentuated character display correctly (#82)");
+	 		$this->assertEquals($expectation, $this->authors($indice)->getDisplayName(),"First names with accentuated character display correctly (#82), calculated and custom names too");
  		}
  	}
 
