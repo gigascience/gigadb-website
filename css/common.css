@@ -942,3 +942,8 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
 .bootstrap-datetimepicker-widget table td.today::before {
     border-bottom-color: #099242;
 }
+.dataset-des-images {
+  max-height: 50px;
+  margin-right: 10px;
+  height: 28px;
+}

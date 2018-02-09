@@ -16,42 +16,47 @@ HTML;
 
 ?>
 
-<?php $this->renderPartial('/search/_form',array('model'=>$form,
-        'dataset'=>$dataset,
-        'search_result'=>null,
-        'previous_doi'=>$previous_doi,
-        'next_doi'=>$next_doi
-        )); ?>
+        <div class="content">
+            <div class="container">
+                <section></section>
+                <div class="subsection">
+                    <div class="media">
+                        <div class="media-left">
+                                        <?php if($model->image) {
+                $url = $model->getImageUrl() ? $model->getImageUrl(): $model->image->image('image_upload');
+                
+                ?>
+            <a href="<?= $url ?>" >
+                <?= CHtml::image($url, $url, array('class'=>'media-object',
+                    'title'=>'<ul style="text-align:left;"><li>'.$model->image->tag.'</li><li>'.'License: '.$model->image->license.'</li><li>'.'Source: '.$model->image->source.'</li><li>'.'Photographer: '.$model->image->photographer.'</li></ul>')); ?>
+            </a>
+            <?php } ?>
+                            
+                        </div>
+                        <div class="media-body">
+                            <h4 class="left-border-title left-border-title-lg"><?echo $model->title; ?></h4>
+                            <p class="dataset-release-date-text"><?= strftime("%B %d, %Y",strtotime($model->publication_date)) ?></p>
+                            <div class="color-background color-background-block dataset-color-background-block">
+                                <p><?= $model->authorNames ?>(<?=substr($model->publication_date,0,4)?>): <?= $model->title.' '.$model->publisher->name.'. '; ?><a href="http://dx.doi.org/<?= $model->identifier; ?>">http://dx.doi.org/<?= $model->identifier; ?></a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="subsection">
+                    <p><?= $model->description; ?></p>
+                </div>
+                <div class="subsection">
+                    <p>Keywords:</p>
+                    <ul class="list-inline">
+                    <? foreach ($model->datasetAttributes as $key=>$keyword){
+                        if ($keyword->attribute_id == 455)
+                            echo "<li><a href='/search/new?keyword=$keyword->value'>$keyword->value</a></li>";
 
-<div class="row first">
-    <div class="span12"><p><?= Yii::t('app' , 'Data released on')?> <?= strftime("%B %d, %Y",strtotime($model->publication_date)) ?></p></div>
-</div>
-<div class="row dataset-information">
-
-    <!--dataset content - left slidebar-->
-        <div class="span9">
-                <h3 class='dataset-title'><?echo $model->title; ?></h3>
-                <?php if (count($model->authors) > 0) { ?>
-                <p>
-                    <h4>
-                    <?= $model->authorNames ?>
-                    (<?=substr($model->publication_date,0,4)?>): <?= $model->title.' '.$model->publisher->name.'. '; ?>
-                    <a href="http://dx.doi.org/10.5524/<?= $model->identifier; ?>">http://dx.doi.org/10.5524/<?= $model->identifier ?></a>
-                    <a title="Export to Reference Manager/EndNote" href="<?= Dataset::URL_RIS . $model->identifier ?>"><span class="citation-button">RIS</span></a>
-                    <a title="Export to BibTeX" href="<?= Dataset::URL_BIBTEXT . $model->identifier ?>"><span class="citation-button">BibTeX</span></a>
-                    <a title="Export to Text" href="<?= Dataset::URL_TEXT . $model->identifier ?>"><span class="citation-button">Text</span></a>
-                    </h4>
-                </p>
-                <? } ?>
-
-                <p><?= $model->description; ?> </p>        
-                <span class="content-popup" <?= !Yii::app()->user->isGuest ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
-                    <a class="btn btn-green <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
-                        Contact Submitter
-                    </a>
-                </span>
-
-                <div class="pull-right">
+                      
+                    }
+                    ?>
+                    </ul>
+                 <div class="pull-right">
                     <p>
                         <span class="citation-popup" data-content="View citations on Google Scholar">
                             <a href="<?= $model->googleScholarLink ?>" target="_blank"><img class="dataset-des-images" src="/images/google_scholar.png"/></a>
@@ -60,10 +65,13 @@ HTML;
                             <a href="<?= $model->ePMCLink ?>" target="_blank"><img class="dataset-des-images" src="/images/ePMC.jpg"/></a>
                         </span>
                     </p>
+                </div>    
                 </div>
-                <div class="clear"></div>
-
-                <?php if($model->fairnuse) {
+                                <div class="subsection">
+                    <a class="btn background-btn background-btn-o" <?= 'href="mailto:'.$model->submitter->email.'"'?>>Contact submitter</a>
+                </div>
+                <div class="subsection">
+                  <?php if($model->fairnuse) {
                             if( (time() < strtotime($model->fairnuse))) { ?>
                     <img src="/images/fair_use2.gif" alt="policy" style=""/>
                     <p>
@@ -75,10 +83,16 @@ HTML;
                         so that you can work in collaboration rather than in competition.
                     </p>
                     <p><strong>This dataset fair use agreement is in place until <?= strftime('%d %B %Y',strtotime($model->fairnuse))?></strong></p>
-                <?php } } ?>
-
-                <?php if (count($model->manuscripts) > 0) { ?>
-                <h4><?= Yii::t('app' , 'Related manuscripts:')?></h4>
+                <?php } } ?>  
+                </div>
+                <div class="subsection">
+                    <div class="underline-title">
+                        <div>
+                            <h4>Additional details</h4>
+                        </div>
+                    </div>
+                     <?php if (count($model->manuscripts) > 0) { ?>
+                <p><?= Yii::t('app' , 'Related manuscripts:')?></p>
                 <p>
                     <? foreach ($model->manuscripts as $key=>$manuscript){
                         echo 'doi:' . MyHtml::link($manuscript->identifier, $manuscript->getDOILink());
@@ -93,7 +107,7 @@ HTML;
                 <?php } ?>
 
                 <?php if (count($model->relations) > 0) { ?>
-                <h4><?= Yii::t('app' , 'Related datasets:')?></h4>
+                <p><?= Yii::t('app' , 'Related datasets:')?></p>
                 <p>
                 <?php foreach ($model->relations as $key=>$relation){
                 if($relation->relationship->name == "IsPreviousVersionOf")
@@ -160,7 +174,7 @@ HTML;
                             $typeNameLabel = trim($typeNameLabel);
                             if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse' and $typeNameLabel !== '3 D Models')
                             {
-                               echo "<h4>$typeNameLabel:</h4>";
+                               echo "<p>$typeNameLabel:</p>";
                             }
 
                             foreach ($model->externalLinks as $key=>$externalLink){
@@ -188,7 +202,7 @@ HTML;
                             }
                         }
                             if(!empty($protocol)){
-                             echo "<h4>Protocols.io:</h4>";
+                             echo "<p>Protocols.io:</p>";
                              echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
                              echo "<a id=\"js-close-btn1\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
                              echo "<div id=\"js-logs-1\" class=\"js-logs\" style=\"display:none;\">";
@@ -202,7 +216,7 @@ HTML;
                              echo "</div>";
                         }
                             if(!empty($jb)){
-                             echo "<h4>JBrowse:</h4>";
+                             echo "<p>JBrowse:</p>";
                              echo "<a id=\"js-expand-btn2\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
                              echo "<a id=\"js-close-btn2\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
                              echo "<div id=\"js-logs-2\" class=\"js-logs\" style=\"display:none;\">";
@@ -217,7 +231,7 @@ HTML;
                              echo "</div>";
                         }
                          if(!empty($dmodel)){
-                             echo "<h4>3D Models:</h4>";
+                             echo "<p>3D Models:</p>";
                              echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
                              echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
                              echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
@@ -254,7 +268,7 @@ HTML;
                     ?>
 
                     <?php if (!empty($primary_links)) { ?>
-                    <h4><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></h4>
+                    <p><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></p>
                         <p>
                             <? foreach ($primary_links as $link) { ?>
                                 <?
@@ -270,7 +284,7 @@ HTML;
                     <?php } ?>
 
                     <?php if (!empty($secondary_links)) { ?>
-                        <h4><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></h4>
+                        <p><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></p>
                         <p>
                             <?php foreach ($secondary_links as $link) { ?>
                                 <?php
@@ -291,7 +305,497 @@ HTML;
 
                 <?php } ?>
                 <?php if (count($model->projects) > 0) { ?>
-                <h4><?=Yii::t('app' , 'Projects:')?></h4>
+                <p><?=Yii::t('app' , 'Projects:')?></p>
+                <p>
+                    <? foreach ($model->projects as $key=>$project){
+                        if ($project->image_location)
+                            echo "<a href='$project->url'><img src='$project->image_location' /></a>";
+                        else
+                            echo MyHtml::link($project->name, $project->url);
+
+                        echo "<br/>";
+                    }
+                    ?>
+                </p>
+                <? } ?>
+ 
+                </div>
+                <div class="subsection">
+                    <div class="underline-title">
+                        <div>
+                            <h4>Funding</h4>
+                        </div>
+                    </div>                    
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>Funding body</th>
+                                <th>Awardee</th>
+                                <th>Award ID</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                          <?php foreach($model->datasetFunders as $fd) { ?>                              
+                            <tr>
+                                <td><?= $fd->funder->primary_name_display ?></td>
+                                <td><?= $fd->awardee ?></td>
+                                <td><?= $fd->grant_award ?></td>
+                                <td><?= $fd->comments ?></td>
+                            </tr>
+                            <?php } ?> 
+                        </tbody>
+                    </table>
+                </div>
+                <section>
+                    <ul class="nav nav-tabs nav-border-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
+                        <li role="presentation"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
+                        <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">Funding</a></li>
+                        <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
+                        
+                    </ul>
+            <?php if($samples->getData()){?>                   
+                    <div class="tab-content">
+                      <div role="tabpanel" class="tab-pane active" id="sample">
+                                                <?php
+            $this->widget('zii.widgets.grid.CGridView', array(
+                'id' => 'sample-grid',
+                'dataProvider'=>$samples,
+                'itemsCssClass'=>'table table-bordered text-center',
+                'template' => $template,
+                'pager' => 'SiteLinkPager',
+                'pagerCssClass' => '',
+                'summaryText' => 'Displaying {start}-{end} of {count} Sample(s).',
+                'htmlOptions' => array('class'=>'tab-pane active'),
+                'columns' => array(
+                    array(
+                        'name' => 'name',
+                        'type' => 'raw',
+                        'value' => '$data->linkName',
+                        'htmlOptions' => array('class'=>'left'),
+                        'visible' => in_array('name', $columns),
+                    ),
+                    array(
+                        'name' => 'taxonomic_id',
+                        'value' => 'CHtml::link($data->species->tax_id, Species::getTaxLink($data->species->tax_id))',
+                        'type' => 'raw',
+                        'visible' => in_array('taxonomic_id', $columns),
+                    ),
+                    array(
+                        'name' => 'common_name',
+                        'value' => '$data->species->common_name',
+                        'visible' => in_array("common_name", $columns),
+                    ),
+                    array(
+                        'name' => 'genbank_name',
+                        'value' => '$data->species->genbank_name',
+                        'visible' => in_array("genbank_name", $columns),
+                    ),
+                    array(
+                        'name' => 'scientific_name',
+                        'value' => '$data->species->scientific_name',
+                        'visible' => in_array("scientific_name", $columns),
+                    ),
+                    array(
+                        'name' => 'attribute',
+                        'value' => '$data->displayAttr',
+                        'type' => 'raw',
+                        'visible' => in_array("attribute", $columns),
+                        'htmlOptions' => array('class'=>'left'),
+                    ),
+                ),
+
+            ));
+        ?>
+        <?php } ?>
+                      </div>
+                        <div role="tabpanel" class="tab-pane" id="files">
+                            <table class="table table-bordered text-center" style="margin-bottom: 40px;">
+                                <thead>
+                                    <tr>
+                                        <th>File Name</th>
+                                        <th>Sample ID</th>
+                                        <th>Data Type</th>
+                                        <th>File Format</th>
+                                        <th>Size</th>
+                                        <th>Release Date</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><a href="#">Alexa532_data_1.tar.gz</a></td>
+                                        <td>Alexa_532_data</td>
+                                        <td>Image</td>
+                                        <td>TAR</td>
+                                        <td>1.46 GB</td>
+                                        <td>2017-12-22</td>
+                                        <td><a href="#"><i class="fa fa-download"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="#">input_data.tif</a></td>
+                                        <td></td>
+                                        <td>Image</td>
+                                        <td>TIF</td>
+                                        <td>649.4 KB</td>
+                                        <td>2018-01-08</td>
+                                        <td><a href="#"><i class="fa fa-download"></i></a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-center pagination-component">
+                                <ul class="pagination">
+                                    <li class="disabled"><a href="#"><span>First</span></a></li>
+                                    <li class="disabled"><a href="#"><span>Previous</span></a></li>
+                                    <li class="active"><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#">4</a></li>
+                                    <li><a href="#">5</a></li>
+                                    <li><a href="#"><span>Next</span></a></li>
+                                    <li><a href="#"><span>Last</span></a></li>
+                                </ul>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label>Go to page</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    <button type="button" class="btn btn-default">Go</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="history">
+                            <table class="table table-bordered text-center" style="margin-bottom: 40px;">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>January 8, 2018</td>
+                                        <td>Dataset publish</td>
+                                    </tr>
+                                                        <tr>
+                                        <td>January 8, 2018</td>
+                                        <td>File maximum_likelihood_fitting.csv updated</td>
+                                    </tr>
+                                                        <tr>
+                                        <td>January 8, 2018</td>
+                                        <td>File weighted_least_squares_fitting_protocol.txt updated</td>
+                                    </tr>
+                                                        <tr>
+                                        <td>January 8, 2018</td>
+                                        <td>File input_data.tif updated</td>
+                                    </tr>
+                                                        <tr>
+                                        <td>January 8, 2018</td>
+                                        <td>File weighted_least_squares_fitting.csv updated</td>
+                                    </tr>
+                                    <tr>
+                                        <td>January 8, 2018</td>
+                                        <td>File maximum_likelihood_fitting_protocol.txt updated</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-center pagination-component">
+                                <ul class="pagination">
+                                    <li class="disabled"><a href="#"><span>First</span></a></li>
+                                    <li class="disabled"><a href="#"><span>Previous</span></a></li>
+                                    <li class="active"><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#">4</a></li>
+                                    <li><a href="#">5</a></li>
+                                    <li><a href="#"><span>Next</span></a></li>
+                                    <li><a href="#"><span>Last</span></a></li>
+                                </ul>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label>Go to page</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    <button type="button" class="btn btn-default">Go</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+<div class="row first">
+    <div class="span12"><p><?= Yii::t('app' , 'Data released on')?> <?= strftime("%B %d, %Y",strtotime($model->publication_date)) ?></p></div>
+</div>
+<div class="row dataset-information">
+
+    <!--dataset content - left slidebar-->
+        <div class="span9">
+                <h3 class='dataset-title'><?echo $model->title; ?></h3>
+                <?php if (count($model->authors) > 0) { ?>
+                <p>
+                    <h4>
+                    <?= $model->authorNames ?>
+                    (<?=substr($model->publication_date,0,4)?>): <?= $model->title.' '.$model->publisher->name.'. '; ?>
+                    <a href="http://dx.doi.org/10.5524/<?= $model->identifier; ?>">http://dx.doi.org/10.5524/<?= $model->identifier ?></a>
+                    <a title="Export to Reference Manager/EndNote" href="<?= Dataset::URL_RIS . $model->identifier ?>"><span class="citation-button">RIS</span></a>
+                    <a title="Export to BibTeX" href="<?= Dataset::URL_BIBTEXT . $model->identifier ?>"><span class="citation-button">BibTeX</span></a>
+                    <a title="Export to Text" href="<?= Dataset::URL_TEXT . $model->identifier ?>"><span class="citation-button">Text</span></a>
+                    </h4>
+                </p>
+                <? } ?>
+
+                <p><?= $model->description; ?> </p>        
+                <span class="content-popup" <?= !Yii::app()->user->isGuest ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
+                    <a class="btn btn-green <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
+                        Contact Submitter
+                    </a>
+                </span>
+
+                <div class="pull-right">
+                    <p>
+                        <span class="citation-popup" data-content="View citations on Google Scholar">
+                            <a href="<?= $model->googleScholarLink ?>" target="_blank"><img class="dataset-des-images" src="/images/google_scholar.png"/></a>
+                        </span>
+                        <span class="citation-popup" data-content="View citations on Europe PubMed Central">
+                            <a href="<?= $model->ePMCLink ?>" target="_blank"><img class="dataset-des-images" src="/images/ePMC.jpg"/></a>
+                        </span>
+                    </p>
+                </div>
+                <div class="clear"></div>
+
+                <?php if($model->fairnuse) {
+                            if( (time() < strtotime($model->fairnuse))) { ?>
+                    <img src="/images/fair_use2.gif" alt="policy" style=""/>
+                    <p>
+                        These data are made available pre-publication under the Fort Lauderdale rules.
+                        Please respect the rights of the data producers to publish their whole dataset analysis first.
+                        The data is being made available so that the research community can make use of them for more
+                        focused studies without having to wait for publication of the whole dataset analysis paper.
+                        If you wish to perform analyses on this complete dataset, please contact the authors directly
+                        so that you can work in collaboration rather than in competition.
+                    </p>
+                    <p><strong>This dataset fair use agreement is in place until <?= strftime('%d %B %Y',strtotime($model->fairnuse))?></strong></p>
+                <?php } } ?>
+
+                <?php if (count($model->manuscripts) > 0) { ?>
+                <p><?= Yii::t('app' , 'Related manuscripts:')?></p>
+                <p>
+                    <? foreach ($model->manuscripts as $key=>$manuscript){
+                        echo 'doi:' . MyHtml::link($manuscript->identifier, $manuscript->getDOILink());
+                        if ($manuscript->pmid){
+                            $pubmed = MyHtml::link($manuscript->pmid , "http://www.ncbi.nlm.nih.gov/pubmed/" . $manuscript->pmid);
+                            echo " (PubMed: $pubmed)";
+                        }
+                        echo "<br/>";
+                    }
+                    ?>
+                </p>
+                <?php } ?>
+
+                <?php if (count($model->relations) > 0) { ?>
+                <p><?= Yii::t('app' , 'Related datasets:')?></p>
+                <p>
+                <?php foreach ($model->relations as $key=>$relation){
+                if($relation->relationship->name == "IsPreviousVersionOf")
+                {
+                echo "doi:" . MyHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . MyHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi)."<b> (It is a more recent version of this dataset) </b>";
+                echo "<br/>";
+                ?>
+
+                   <?php
+            $target = 'window.location='."'".$this->createUrl('dataset/'.$relation->related_doi)."'";
+            $this->beginWidget('zii.widgets.jui.CJuiDialog', array(// the dialog
+                'id' => 'dialogDisplay1',
+                'options' => array(
+                    'title' => 'New Version Alert',
+                    'autoOpen' => true,
+                    'modal' => true,
+                    'width' => 400,
+                    'height' => 300,
+                    'buttons' => array(
+                        array('text' => 'Continue to view old version', 'click' => 'js:function(){$(this).dialog("close");}'),
+                          array('text' => 'View new version', 'click' => 'js:function(){'.$target.'}'),
+                        ),
+                ),
+            ));
+            ?>
+            <div class="divForForm">
+                <br>
+
+                    There is a new version of this dataset available at: DOI: 10.5524/<?php echo $relation->related_doi ?>
+
+
+            </div>
+
+                <?php $this->endWidget(); ?>
+
+
+
+               <?php }
+
+                else
+                {
+                echo "doi:" . MyHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . MyHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi);
+                echo "<br/>";
+                }
+             }
+            ?>
+        </p>
+
+                <?php } ?>
+
+                <?php if (count($model->externalLinks) > 0) { ?>
+                <p>
+                    <?php
+                        $types = array();
+                        $protocol = array();
+                        $jb = array();
+                        $dmodel = array();
+                        foreach ($model->externalLinks as $key=>$externalLink){
+                            $types[$externalLink->externalLinkType->name] = 1;
+                        }
+                        foreach ($types as $typeName => $value) {
+                            $typeNameLabel = preg_replace('/(?:^|_)(.?)/e',"strtoupper('$1')",$typeName);
+                            $typeNameLabel = preg_replace('/(?<=\\w)(?=[A-Z])/'," $1", $typeNameLabel);
+                            $typeNameLabel = trim($typeNameLabel);
+                            if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse' and $typeNameLabel !== '3 D Models')
+                            {
+                               echo "<p>$typeNameLabel:</p>";
+                            }
+
+                            foreach ($model->externalLinks as $key=>$externalLink){
+                                if ($externalLink->externalLinkType->name == $typeName) {
+                                    if($typeName == 'Protocols.io')
+                                    {
+                                       array_push($protocol,$externalLink->url);
+
+                                    }
+                                    elseif($typeName == 'JBrowse')
+                                    {
+                                       array_push($jb,$externalLink->url);
+                                    
+                                    }
+                                    elseif($typeName == '3D Models')
+                                    {
+                                       array_push($dmodel,$externalLink->url);
+                                    
+                                    }
+                                    else
+                                    {
+                                    echo '<p>'. MyHtml::link($externalLink->url, $externalLink->url) . '</p>';
+                                    }
+                                }
+                            }
+                        }
+                            if(!empty($protocol)){
+                             echo "<p>Protocols.io:</p>";
+                             echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                             echo "<a id=\"js-close-btn1\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                             echo "<div id=\"js-logs-1\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($protocol as $p) {
+
+                            {
+                                 echo "<iframe src=\"$p\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
+                            }
+                               
+                            }
+                             echo "</div>";
+                        }
+                            if(!empty($jb)){
+                             echo "<p>JBrowse:</p>";
+                             echo "<a id=\"js-expand-btn2\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                             echo "<a id=\"js-close-btn2\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                             echo "<div id=\"js-logs-2\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($jb as $p) {
+
+                            {    
+                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                 echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
+                            }
+                               
+                            }
+                             echo "</div>";
+                        }
+                         if(!empty($dmodel)){
+                             echo "<p>3D Models:</p>";
+                             echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                             echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                             echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($dmodel as $p) {
+
+                            {    
+                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                
+                            }
+                               
+                            }
+                             echo "</div>";
+                        }
+                        
+                    ?>
+                </p>
+
+                <?php } ?>
+
+                <?php if (count($model->links) > 0) { ?>
+
+                    <?php
+                    $primary_links = array();
+                    $secondary_links = array();
+
+                    foreach ($model->links as $key=>$link) {
+                        if ($link->is_primary) {
+                            $primary_links[] = $link;
+                        }
+                        if (!$link->is_primary) {
+                            $secondary_links[] = $link;
+                        }
+                    }
+                    ?>
+
+                    <?php if (!empty($primary_links)) { ?>
+                    <p><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></p>
+                        <p>
+                            <? foreach ($primary_links as $link) { ?>
+                                <?
+                                $tokens = explode(':', $link->link);
+                                $name = $tokens[0];
+                                $code = $tokens[1];
+                                ?>
+                                <?= $name ?>:
+                                <?= MyHtml::link($code, $link->getFullUrl($link_type), array('target'=>'_blank')); ?>
+                                <br/>
+                            <? } ?>
+                        </p>
+                    <?php } ?>
+
+                    <?php if (!empty($secondary_links)) { ?>
+                        <p><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></p>
+                        <p>
+                            <?php foreach ($secondary_links as $link) { ?>
+                                <?php
+                                $tokens = explode(':', $link->link);
+                                $name = $tokens[0];
+                                $code = $tokens[1];
+                                ?>
+                                <?php if ($name != 'http') { ?>
+                                    <?= $name ?>:
+                                    <?= MyHtml::link($code, $link->getFullUrl($link_type), array('target'=>'_blank')); ?>
+                                <?php }else { ?>
+                                    <?= MyHtml::link($link->link , $link->link,array('target'=>'_blank')); ?>
+                                <?php } ?>
+                                <br/>
+                            <?php } ?>
+                        </p>
+                    <?php } ?>
+
+                <?php } ?>
+                <?php if (count($model->projects) > 0) { ?>
+                <p><?=Yii::t('app' , 'Projects:')?></p>
                 <p>
                     <? foreach ($model->projects as $key=>$project){
                         if ($project->image_location)
@@ -356,12 +860,12 @@ HTML;
             $this->widget('zii.widgets.grid.CGridView', array(
                 'id' => 'sample-grid',
                 'dataProvider'=>$samples,
-                'itemsCssClass'=>'table table-bordered',
+                'itemsCssClass'=>'table table-bordered text-center',
                 'template' => $template,
                 'pager' => 'SiteLinkPager',
                 'pagerCssClass' => '',
                 'summaryText' => 'Displaying {start}-{end} of {count} Sample(s).',
-                'htmlOptions' => array('style'=>'padding-top: 0px'),
+                'htmlOptions' => array('class'=>'tab-pane active'),
                 'columns' => array(
                     array(
                         'name' => 'name',
