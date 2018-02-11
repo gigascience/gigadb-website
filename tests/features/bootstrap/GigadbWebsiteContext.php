@@ -19,6 +19,8 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
 {
     private $admin_login;
     private $admin_password;
+    private $user_login;
+    private $user_password;
 
 
 	public function __construct(array $parameters)
@@ -31,7 +33,8 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         $this->useContext('normal_login', new NormalLoginContext($parameters));
 
         $this->useContext('dataset_view_context', new DatasetViewContext($parameters));
-        $this->useContext('author_user_context', new AuthorUserContext($parameters));
+        $this->useContext('admins_attach_author_user', new AuthorUserContext($parameters));
+        $this->useContext('datasets_on_profile', new DatasetsOnProfileContext($parameters));
     }
 
 
@@ -101,6 +104,20 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         }
     }
 
+    /**
+     * @Given /^default user exists$/
+     */
+    public function defaultUserExists()
+    {
+       $nb_ocurrences = $this->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( "user@gigadb.org");
+        PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "default user email exists in database");
+        if ( 1 == $nb_ocurrences  )  {
+            $this->user_login = "user@gigadb.org" ;
+            $this->user_password = "gigadb";
+        }
+    }
+
+
 
      /**
      * @Given /^I sign in as an admin$/
@@ -113,6 +130,20 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
          $this->pressButton("Login");
 
          $this->assertResponseContains("Administration");
+    }
+
+     /**
+     * @Given /^I sign in as a user$/
+     */
+    public function iSignInAsAUser()
+    {
+        $this->visit("/site/login");
+        $this->fillField("LoginForm_username", $this->user_login);
+        $this->fillField("LoginForm_password", $this->user_password);
+        $this->pressButton("Login");
+
+        $this->assertResponseNotContains("Administration");
+        $this->assertResponseContains("'s GigaDB Page");
     }
 
     /**
