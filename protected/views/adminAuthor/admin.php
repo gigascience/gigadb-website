@@ -12,8 +12,10 @@
 ?>
 			<div class="alert alert-block">
 				<p>
-					<?php echo "Click on a row to link that author with user " . $user->first_name . " " . $user->last_name ; ?>
+					<?php echo "Click on a row to link that author with user " . $user->first_name . " " . $user->last_name . "." ; ?>
 				</p>
+				<p>You can also create a new author to have the user attached to by clicking on "Create a new author".</p>
+				<p>Click on "Cancel attaching author" to abort.</p>
 			</div>
 <?php
 		}

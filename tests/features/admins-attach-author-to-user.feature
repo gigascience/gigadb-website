@@ -59,7 +59,7 @@ Scenario: From user edit form, find an author to attach
 Scenario: Attach an author
 	Given default admin user exists
 	And I sign in as an admin
-	And I have initiated the search of an author for Gigadb User with ID "345" 
+	And I have initiated the search of an author for Gigadb User with ID "345"
 	And I am on "/adminAuthor/admin/attach_user/345"
 	When I click "Update" in the row for author "Wang"
 	Then I should be on "/adminAuthor/update/id/3790"
@@ -70,11 +70,21 @@ Scenario: Attach an author
 Scenario: Cancel attaching an author
 	Given default admin user exists
 	And I sign in as an admin
-	And I have initiated the search of an author for Gigadb User with ID "345" 
+	And I have initiated the search of an author for Gigadb User with ID "345"
 	And I am on "/adminAuthor/admin/attach_user/345"
 	When I follow "Cancel attaching author"
 	Then I should be on "/adminAuthor/admin"
 	And I should not see "Click on a row to link that author with user John Smith"
 	And I should not see "Cancel attaching author"
+
+@ok
+Scenario: Managing author when attaching
+	Given default admin user exists
+	And I sign in as an admin
+	When I have initiated the search of an author for Gigadb User with ID "345"
+	Then I am on "/adminAuthor/admin/attach_user/345"
+	And I should see "Click on a row to link that author with user John Smith"
+	And I should see "Click on \"Cancel attaching author\" to abort"
+	And I should see "You can also create a new author to have the user attached to by clicking on \"Create a new author\""
 
 
