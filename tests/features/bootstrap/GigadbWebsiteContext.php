@@ -117,6 +117,15 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         }
     }
 
+     /**
+     * @Given /^user "([^"]*)" is loaded$/
+     */
+    public function userIsLoaded($user)
+    {
+        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/${user}.sql\"",$output);
+        $this->user_login = "${user}@gigadb.org" ;
+        $this->user_password = "gigadb";
+    }
 
 
      /**
