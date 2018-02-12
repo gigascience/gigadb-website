@@ -1,3 +1,4 @@
+@admins-attach-author-to-user @issue-56
 Feature: a curator can fill in user id in an author record
 	As a curator,
 	I want to connect a user identity to an author record
