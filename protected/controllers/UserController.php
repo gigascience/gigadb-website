@@ -329,13 +329,18 @@ class UserController extends Controller {
             }
         }
 
-       
+        # query to return datasets authored by the user
+        $adCriteria= new CDbCriteria;
+        $adCriteria->join = "JOIN dataset_author da on da.dataset_id = t.id join author a on da.author_id = a.id join gigadb_user u on a.gigadb_user_id = u.id";
+        $adCriteria->condition = "u.id=:user_id";
+        $adCriteria->params=array(':user_id'=>Yii::app()->user->id);
+        $authoredDatasets = Dataset::model()->findAll($adCriteria);
 
         $searchRecord = SearchRecord::model()->findAllByAttributes(array('user_id' => Yii::app()->user->id));
         //Yii::log(print_r($searchRecord, true), 'debug');
 
         $uploadedDatasets = Dataset::model()->findAllByAttributes(array('submitter_id'=> Yii::app()->user->id), array('order'=>'upload_status'));
-        $this->render('view_profile',array('model'=>$model,'searchRecord'=>$searchRecord,'uploadedDatasets'=>$uploadedDatasets));
+        $this->render('view_profile',array('model'=>$model,'searchRecord'=>$searchRecord,'uploadedDatasets'=>$uploadedDatasets, 'authoredDatasets' => $authoredDatasets));
     }
 
     # Change user password
