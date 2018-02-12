@@ -17,6 +17,9 @@ class DatasetsOnProfileContext extends BehatContext
         else if("Yue, Z" == $author) {
         	exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/author_y_user_link.sql\"",$output);
         }
+        else if("Pan, S" == $author) {
+            exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/author_p_user_link.sql\"",$output);
+        }
     }
 
 
