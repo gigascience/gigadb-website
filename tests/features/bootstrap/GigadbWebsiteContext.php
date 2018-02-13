@@ -10,6 +10,8 @@ use Behat\Gherkin\Node\PyStringNode,
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\YiiExtension\Context\YiiAwareContextInterface;
 
+use PHPUnit\Framework\Assert;
+
 /**
  * GigadbWebsiteContext Features context.
  */
@@ -17,6 +19,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
 {
     private $admin_login = null;
     private $admin_password = null ;
+
 
 	public function __construct(array $parameters)
     {
@@ -26,6 +29,9 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
 
         $this->useContext('affiliate_login', new AffiliateLoginContext($parameters));
         $this->useContext('normal_login', new NormalLoginContext($parameters));
+
+        $this->useContext('dataset_view_context', new DatasetViewContext($parameters));
+        $this->useContext('author_edit_context', new AuthorEditContext($parameters));
     }
 
 
@@ -45,15 +51,14 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         return $this->yii ;
     }
 
-
     /**
      * @AfterStep
     */
     public function debugStep($event)
     {
         if ($event->getResult() == 4 ) {
-            $this->printCurrentUrl();
             try { # take a snapshot of web page
+                $this->printCurrentUrl();
                 $content = $this->getSession()->getDriver()->getContent();
                 $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
                 file_put_contents("/tmp/".$file_and_path.".html", $content);
@@ -68,6 +73,22 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         }
     }
 
+
+     /**
+     * @Given /^an admin user exists$/
+     */
+    public function anAdminUserExists()
+    {
+        if ( null != $this->admin_login ) {
+            $nb_ocurrences = $this->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( $this->admin_login );
+            PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "admin email exists in database");
+        }
+        else {
+            throw new PendingException();
+        }
+    }
+
+
      /**
      * @Given /^I sign in as an admin$/
      */
@@ -77,7 +98,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
          $this->fillField("LoginForm_username", $this->admin_login);
          $this->fillField("LoginForm_password", $this->admin_password);
          $this->pressButton("Login");
+
+         $this->assertResponseContains("Administration");
     }
-
-
 }

@@ -4,16 +4,16 @@
 
 #### Preparation
 
-Install Behat with composer
+Install Behat and PHPUnit with composer
 
 ```bash
 $ cd Behat
 $ composer install
 ```
 
-Install PhantomJS 
+Install PhantomJS
 
-using NPM: 
+using NPM:
 ```bash
 $ npm install phantomjs
 ```
@@ -43,6 +43,10 @@ $ ./tests/run
 
 ```
 
+
+The test runner will restore the state of the main database after running all the tests.
+It will (re)create the test database needed by Yii database fixtures and will run Behat acceptance tests and PHPUNit unit tests.
+
 #### Assisting feature development 
 
 ###### 1. Write feature and scenarios (acceptance tests)
@@ -66,6 +70,34 @@ $ Behat/bin/behat --tags @ok,@wip -v --stop-on-failure -c tests/behat.yml
 ```
 
 **Note:** Some tags have special meaning: @javascript force the scenario to run using a javascript-enabled headless browser (phantomjs or whatever WebDriver API is running on port 8643). If @javascript is not present PHP BrowserKit-based GoutteDriver is used (it is faster) (the @mink:goutte enabling this is optional as it's default behaviour)
+
+###### 4. Write unit tests for PHP functions
+
+The test runner will run all unit tests. but can also be run by themselves:
+
+(After logging into vagrant with ``vagrant ssh``)
+
+```bash
+$ cd /vagrant/protected/tests
+$ ./../../Behat/vendor/phpunit/phpunit/phpunit --config=phpunit.xml unit
+
+```
+
+To generate a test coverage report, run the following commands in vagrant:
+
+```bash
+$ cd /vagrant/protected/tests
+$ ./../../Behat/vendor/phpunit/phpunit/phpunit --config=phpunit.xml --coverage-html ./report  unit
+
+```
+
+The unit tests use PHPUnit 4.1.* (any more recent version will fail to work with Yii 1.1) and the configuration files are:
+* ``protected/tests/phpunit.xml``
+* ``protected/tests/bootstrap.php``
+* ``protected/config/test.php``
+* ``protected/config/db_test.json``
+
+They make use of database test fixtures which need to be dropped and recreated at every run so they use a separate ``gigadb_test`` database, so not to lose data from the main database.
 
 
 ## Functional tests with CasperJS

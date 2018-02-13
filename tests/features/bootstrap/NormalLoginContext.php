@@ -47,7 +47,7 @@ class NormalLoginContext extends BehatContext
     {
     	$email = "user@gigadb.org"; 
         $nb_ocurrences = $this->getMainContext()->getSubcontext('affiliate_login')->countEmailOccurencesInUserList($email);
-        Assert::assertTrue(1 == $nb_ocurrences, "there is a user account in db");
+        PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "there is a user account in db");
     }
 
 

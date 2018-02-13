@@ -7,8 +7,6 @@ use Behat\Behat\Context\ClosuredContextInterface,
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
-use PHPUnit\Framework\Assert;
-
 /**
  * Features context.
  */
@@ -51,7 +49,7 @@ class AffiliateLoginContext extends BehatContext
     public function testUsersAreLoaded()
     {
         foreach ($this->keys_map as $key => $value) {
-            Assert::assertTrue(null != $_ENV["${key}_tester_email"],"null != _ENV['${key}_tester_email']");
+            PHPUnit_Framework_Assert::assertTrue(null != $_ENV["${key}_tester_email"],"null != _ENV['${key}_tester_email']");
         }
     }
 
@@ -68,8 +66,8 @@ class AffiliateLoginContext extends BehatContext
         $client_key = $opauthModule['opauthParams']["Strategy"][$arg1][$this->keys_map[$arg1]['client_key']] ;
 
 
-        Assert::assertTrue('' != $api_key, "api_key for $arg1 is not empty");
-        Assert::assertTrue('' != $client_key, "client_key for $arg1 is not empty");
+        PHPUnit_Framework_Assert::assertTrue('' != $api_key, "api_key for $arg1 is not empty");
+        PHPUnit_Framework_Assert::assertTrue('' != $client_key, "client_key for $arg1 is not empty");
 
     }
 
@@ -82,8 +80,8 @@ class AffiliateLoginContext extends BehatContext
     public function iHaveAAccount($arg1)
     {
         // throw new PendingException();
-        Assert::assertTrue(null != $_ENV["${arg1}_tester_email"], "${arg1}_tester_email  is not empty");
-        Assert::assertTrue(null != $_ENV["${arg1}_tester_password"], "${arg1}_tester_password is not empty");
+        PHPUnit_Framework_Assert::assertTrue(null != $_ENV["${arg1}_tester_email"], "${arg1}_tester_email  is not empty");
+        PHPUnit_Framework_Assert::assertTrue(null != $_ENV["${arg1}_tester_password"], "${arg1}_tester_password is not empty");
 
 
     }
@@ -102,7 +100,7 @@ class AffiliateLoginContext extends BehatContext
                     ->set('access_token', $_ENV["${arg1}_access_token"]);
             $response = $facebook->send($request);
             $body = json_decode($response->getBody(true),true);
-            Assert::assertTrue("true" == $body["success"],'Test users de-authorised');
+            PHPUnit_Framework_Assert::assertTrue("true" == $body["success"],'Test users de-authorised');
 
         }
 
@@ -118,7 +116,7 @@ class AffiliateLoginContext extends BehatContext
         $expected_nb_occurrences =  0 ;
 
         $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
-        Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I don't have a gigadb account for $email");
+        PHPUnit_Framework_Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I don't have a gigadb account for $email");
 
     }
 
@@ -135,7 +133,7 @@ class AffiliateLoginContext extends BehatContext
 
 
        $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
-        Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
+        PHPUnit_Framework_Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
 
     }
 
@@ -152,7 +150,7 @@ class AffiliateLoginContext extends BehatContext
 
 
        $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
-        Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
+        PHPUnit_Framework_Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
 
     }
 
@@ -168,7 +166,7 @@ class AffiliateLoginContext extends BehatContext
 
 
        $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
-        Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
+        PHPUnit_Framework_Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "I have a gigadb account for $email");
 
     }
 
@@ -269,8 +267,8 @@ class AffiliateLoginContext extends BehatContext
         }
         else if ($arg1 == "Orcid") {
             $this->getMainContext()->getSession()->wait(15000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
-            Assert::assertTrue($this->getMainContext()->getSession()->getPage()->hasField("enablePersistentToken"), "Authorize checkbox");
-            Assert::assertTrue($this->getMainContext()->getSession()->getPage()->hasButton("authorize"), "Authorize button");
+            PHPUnit_Framework_Assert::assertTrue($this->getMainContext()->getSession()->getPage()->hasField("enablePersistentToken"), "Authorize checkbox");
+            PHPUnit_Framework_Assert::assertTrue($this->getMainContext()->getSession()->getPage()->hasButton("authorize"), "Authorize button");
             $the_checkbox = $this->getMainContext()->getSession()->getPage()->findField("enablePersistentToken");
             $the_button = $this->getMainContext()->getSession()->getPage()->findButton("authorize");
             //var_dump($the_checkbox);
@@ -310,7 +308,7 @@ class AffiliateLoginContext extends BehatContext
         $expected_nb_occurrences = 1;
 
         $nb_ocurrences = $this->countEmailOccurencesInUserList($email);
-        Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "Success creating a new gigadb account");
+        PHPUnit_Framework_Assert::assertTrue($expected_nb_occurrences == $nb_ocurrences, "Success creating a new gigadb account");
 
     }
 
@@ -373,12 +371,12 @@ class AffiliateLoginContext extends BehatContext
         print_r("Initializing the database... ");
         exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/reset_user_table.sql\"",$kill_output);
         // var_dump($kill_output);
-        sleep(5) ; # pad the adminstrative operations to cater for latency in order to avoid fatal error
+        sleep(8) ; # pad the adminstrative operations to cater for latency in order to avoid fatal error
     }
 
 
     /**
-     * @BeforeScenario
+     * @BeforeScenario @login
     */
     public function initialize_session() {
         $this->getMainContext()->visit("/site/revoke");
@@ -388,7 +386,7 @@ class AffiliateLoginContext extends BehatContext
     }
 
     /**
-     * @AfterScenario
+     * @AfterScenario @login
     */
     public function reset_stop_session($event) {
 
@@ -402,20 +400,6 @@ class AffiliateLoginContext extends BehatContext
             if (!$deleted) {
                 throw new Exception("${sqlfile} could not be deleted");
             }
-        }
-    }
-
-    /**
-     * @AfterSuite
-    */
-    public static function reset_db($event) {
-
-        if (true == $event->isCompleted()) {
-            print_r("Recreate database... ");
-            exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/kill_drop_recreate.sql\"",$reload_output);
-            print_r("Reload test data... ");
-            exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/gigadb_testdata.sql\"",$reload_output);
-            // var_dump($reload_output);
         }
     }
 

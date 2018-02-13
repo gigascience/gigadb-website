@@ -20,6 +20,7 @@ $this->menu=array(
 	'attributes'=>array(
 		'id',
 		'name',
+		'displayName',
 		'orcid',
 		'rank',
 	),
