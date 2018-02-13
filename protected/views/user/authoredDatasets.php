@@ -1,9 +1,10 @@
 <div class="tab-pane active" id="result_dataset">
     <table class="table table-bordered" id ="list">
         <tr>
-            <th colspan="9"><?= Yii::t('app', 'Your Authored Datasets') ?></th>
+            <th colspan="11"><?= Yii::t('app', 'Your Authored Datasets') ?></th>
         </tr>
         <tr>
+            <th class="span2"><?= Yii::t('app', 'Appears as') ?></th>
             <th class="span2"><?= Yii::t('app', 'DOI') ?></th>
             <th class="span6"><?= Yii::t('app', 'Title') ?></th>
             <th class="span6"><?= Yii::t('app', 'Subject') ?></th>
@@ -23,15 +24,25 @@
                 $class = 'submit-selected';
             }
             ?>
-            
+
             <tr class="<?php echo $class; ?>" id="js-dataset-row-<?=$data[$i]->id?>">
+                <td>
+                    <?php
+                    foreach ($data[$i]->authors as $author) {
+                        if ( in_array($author['id'],$linkedAuthors) ) {
+                            echo Author::Model()->findByPk($author['id'])->getDisplayName() ;
+                            break;
+                        }
+                    }
+                    ?>
+                </td>
                 <?
                 $upload_status = $data[$i]->upload_status;
-                
+
                 if ( $upload_status != 'Published' && $upload_status!='Private' ) { ?>
                     <td class="content-popup" data-content="<? echo MyHtml::encode($data[$i]->description); ?>">
                        unknown
-                        
+
                     </td>
                 <? } else { ?>
                     <td class="content-popup" data-content="<? echo MyHtml::encode($data[$i]->description); ?>">
@@ -64,7 +75,7 @@
 
     $(".js-delete-dataset").click(function(e) {
         if (!confirm('Are you sure you want to delete this item?'))
-            return false; 
+            return false;
         e.preventDefault();
         var  did = $(this).attr('did');
 
@@ -80,28 +91,28 @@
             }
           },
           error:function(){
-        }   
+        }
         });
     });
 
     $('a.delete').live('click', function(e) {
         if (!confirm('Are you sure you want to delete this item?'))
-            return false; 
+            return false;
       e.preventDefault();
       $.ajax({
            type: 'POST',
            url: $(this).attr('href'),
            success: function(){
                 window.location.reload();
-            
+
           },
           error:function(){
             alert("Failure!")
 //          $("#result").html('there is error while submit');
-      }   
-          
+      }
+
         });
-        
+
 
     });
 

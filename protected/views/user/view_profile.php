@@ -135,7 +135,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
     <div class="clear"></div>
 
     <?= $this->renderPartial('uploadedDatasets', array('uploadedDatasets' => $uploadedDatasets)); ?>
-    <?= $this->renderPartial('authoredDatasets', array('authoredDatasets' => $authoredDatasets)); ?>
+    <?= $this->renderPartial('authoredDatasets', array('authoredDatasets' => $authoredDatasets,'linkedAuthors' => $linkedAuthors)); ?>
     <?= $this->renderPartial('searches', array('searchRecord' => $searchRecord)); ?>
 
 

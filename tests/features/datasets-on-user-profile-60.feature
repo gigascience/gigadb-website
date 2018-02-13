@@ -15,6 +15,7 @@ Scenario: user is associated to an author of existing dataset
 	When I am on "/user/view_profile"
 	Then I should see "Your Authored Datasets"
 	And I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
+	And I should see "Zhang G"
 
 @ok
 Scenario: no association with dataset author made
@@ -39,3 +40,5 @@ Scenario: user is associated to two authors with datasets
 	Then I should see "Your Authored Datasets"
 	And I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
 	And I should see "Genome data from foxtail millet (Setaria italica)"
+	And I should see "Zhang G"
+	And I should see "Pan S"

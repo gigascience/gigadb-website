@@ -336,11 +336,22 @@ class UserController extends Controller {
         $adCriteria->params=array(':user_id'=>Yii::app()->user->id);
         $authoredDatasets = Dataset::model()->findAll($adCriteria);
 
+        # query to return the author ids linked ot the user
+        $linkedAuthorsResults = Yii::app()->db->createCommand()
+                    ->select('a.id')
+                    ->from('author a')
+                    ->where('gigadb_user_id = :id', array(':id' => Yii::app()->user->id))
+                    ->queryAll();
+        $idify = function($row) {
+            return $row['id'];
+        };
+        $linkedAuthors = array_map($idify,$linkedAuthorsResults);
+
         $searchRecord = SearchRecord::model()->findAllByAttributes(array('user_id' => Yii::app()->user->id));
         //Yii::log(print_r($searchRecord, true), 'debug');
 
         $uploadedDatasets = Dataset::model()->findAllByAttributes(array('submitter_id'=> Yii::app()->user->id), array('order'=>'upload_status'));
-        $this->render('view_profile',array('model'=>$model,'searchRecord'=>$searchRecord,'uploadedDatasets'=>$uploadedDatasets, 'authoredDatasets' => $authoredDatasets));
+        $this->render('view_profile',array('model'=>$model,'searchRecord'=>$searchRecord,'uploadedDatasets'=>$uploadedDatasets, 'authoredDatasets' => $authoredDatasets, 'linkedAuthors' => $linkedAuthors));
     }
 
     # Change user password
