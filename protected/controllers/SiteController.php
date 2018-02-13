@@ -7,10 +7,10 @@ class SiteController extends Controller {
 	public function actions() {
 		return array(
 			# captcha action renders the CAPTCHA image displayed on the contact page
-			#'captcha'=>array(
-			#	'class'=>'CCaptchaAction',
-			#	'backColor'=>0xFFFFFF,
-			#),
+			// 'captcha'=>array(
+			// 	'class'=>'CCaptchaAction',
+			// 	'backColor'=>0xFFFFFF,
+			// ),
 			// page action renders "static" pages stored under 'protected/views/site/pages'
 			// They can be accessed via: index.php?r=site/page&view=FileName
 			'page'=>array(
@@ -37,9 +37,13 @@ class SiteController extends Controller {
             array('allow',  // allow all users
                 'users'=>array('*'),
             ),
+            array('allow', 
+                'actions'=>array('create', 'captcha'),
+                'users'=>array('*'),
+            ),
         );
     }
-
+		
     /**
     *
     * Administration action
@@ -159,6 +163,15 @@ class SiteController extends Controller {
 		}
 		$this->render('contact',array('model'=>$model));
 	}
+	/**
+	*This methode return all dataset locations
+	*/
+	public function actionMapbrowse() {
+	    $locations = $list= Yii::app()->db->createCommand("SELECT d.title, satt.value FROM dataset as d
+	      INNER JOIN dataset_attributes as datt on d.id = datt.dataset_id
+	      INNER JOIN sample_attribute as satt on satt.attribute_id=datt.attribute_id")->queryAll();
+		$this->render('mapbrowse', array('locations' => $locations));
+	}
 
 	public function actionAbout() {
 		$this->render('about');
@@ -250,11 +263,12 @@ class SiteController extends Controller {
 					$this->redirect('/');
 				}
 
-		                 $user = User::processAffiliateUser($auth);
+		        $user = User::processAffiliateUser($auth);
 
 				 #process to mark as logined in
 				$_SESSION['affiliate_login']['provider'] = $auth['provider'];
 				$_SESSION['affiliate_login']['uid'] = $auth['uid'];
+				$_SESSION['affiliate_login']['token'] = $auth['credentials']['token'];
 
 				#use useridentity to login
 				$model = new LoginForm;
@@ -281,6 +295,15 @@ class SiteController extends Controller {
 	 * Logs out the current user and redirect to homepage.
 	 */
 	public function actionLogout() {
+		Yii::app()->user->logout();
+		$this->redirect(Yii::app()->homeUrl);
+	}
+
+	/**
+	 * revoke  the current affiliatte user granting and redirect to homepage.
+	 */
+	public function actionRevoke() {
+		UserIdentity::revoke_token() ;
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
@@ -337,6 +360,39 @@ class SiteController extends Controller {
             $returnUrl = '/';
         $this->redirect($returnUrl);
     }
+    /**
+	* This method generate captcha image
+    */
+    public function captchaGenerator($length = 7){
+		try{
+		$captchaPath = null;
+		$im = imagecreatetruecolor(600, 100);
+		// Create some colors
+		$white = imagecolorallocate($im, 255, 255, 255);
+		$grey = imagecolorallocate($im, 128, 128, 128);
 
+		$black = imagecolorallocate($im, 66, 164, 244);
+		imagefilledrectangle($im, 0, 0, 600, 100, $white);
+		// The text to draw
+		
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$charactersLength = strlen($characters);
+		$randomString = '';
+		for ($i = 0; $i < $length; $i++) {
+			$randomString .= $characters[rand(0, $charactersLength - 1)];
+		}
+			
+		$text = $randomString;
+		$font = '/fonts/times_new_yorker.ttf';		
+		imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
+		
+		imagejpeg($im, 'images/tempcaptcha/'.$text.".png");
+		imagedestroy($im);
+		$_SESSION["captcha"] = $text;
+		return $text;
+	}catch (Exception $e) {
+    echo 'Caught exception: ',  $e->getMessage(), "\n";
+	}		
+}
 
 }

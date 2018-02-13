@@ -35,7 +35,8 @@ class GoogleStrategy extends OpauthStrategy{
 	 */
 	public $defaults = array(
 		'redirect_uri' => '{complete_url_to_strategy}oauth2callback',
-		'scope' => 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
+		'scope' => 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+		'approval_prompt' => 'force'
 	);
 	
 	/**
