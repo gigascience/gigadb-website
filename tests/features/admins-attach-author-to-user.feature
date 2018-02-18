@@ -36,6 +36,17 @@ Scenario: populate user identity field when updating an author
 	And I should see "345"
 
 @ok
+Scenario: populate author form with a user id already used triggers error
+	Given default admin user exists
+	And I sign in as an admin
+	And author "3794" is associated with user "345"
+	And I am on "/adminAuthor/update/id/3791"
+	And I fill in "Gigadb User" with "345"
+	And press "Save"
+	Then I should be on "/adminAuthor/update/id/3791"
+	And I should see "Gigadb User \"345\" has already been taken"
+
+@ok
 Scenario: From user view, find an author to attach
 	Given default admin user exists
 	And I sign in as an admin

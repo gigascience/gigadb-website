@@ -1,5 +1,9 @@
 <?php
 use Behat\Behat\Context\BehatContext;
+
+use Behat\Behat\Context\Step;
+
+
 class DatasetsOnProfileContext extends BehatContext
 {
     public function __construct(array $parameters)
@@ -12,13 +16,19 @@ class DatasetsOnProfileContext extends BehatContext
     public function iAmLinkedToAuthor($author)
     {
         if ("Zhang, G" == $author) {
-        	exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/author_z_user_link.sql\"",$output);
+            return array(
+                new Step\Given("author \"3791\" is associated with user \"346\""),
+            );
         }
         else if("Yue, Z" == $author) {
-        	exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/author_y_user_link.sql\"",$output);
+            return array(
+                new Step\Given("author \"3798\" is associated with user \"346\""),
+            );
         }
         else if("Pan, S" == $author) {
-            exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/author_p_user_link.sql\"",$output);
+            return array(
+                new Step\Given("author \"3794\" is associated with user \"346\""),
+            );
         }
     }
 

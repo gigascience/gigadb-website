@@ -35,6 +35,16 @@ class AuthorUserContext extends BehatContext
         // Initialize your context here
     }
 
+
+    /**
+     * @Given /^author "([^"]*)" is associated with user "([^"]*)"$/
+     */
+    public function authorIsAssociatedWithUser($author, $user)
+    {
+        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/author_${author}_user_${user}_link.sql\"",$output);
+    }
+
+
     /**
      * @Given /^I have initiated the search of an author for Gigadb User with ID "([^"]*)"$/
     */
