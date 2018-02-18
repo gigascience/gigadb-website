@@ -167,7 +167,7 @@ CREATE TABLE author (
     first_name character varying(255),
     custom_name character varying(255),
     orcid character varying(255),
-    gigadb_user_id integer
+    gigadb_user_id integer UNIQUE
 );
 
 

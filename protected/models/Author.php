@@ -42,6 +42,7 @@ class Author extends CActiveRecord {
         return array(
             array('surname', 'required'),
             array('gigadb_user_id', 'numerical', 'integerOnly' => true),
+            array('gigadb_user_id', 'unique', 'className' => 'Author'),
             array('surname, middle_name, first_name, custom_name', 'length', 'max' => 255),
             array('orcid', 'length', 'max' => 128),
             // The following rule is used by search().
