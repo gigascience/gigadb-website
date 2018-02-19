@@ -41,7 +41,10 @@ class AuthorUserContext extends BehatContext
      */
     public function authorIsAssociatedWithUser($author, $user)
     {
-        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/author_${author}_user_${user}_link.sql\"",$output);
+        $dbconn = pg_connect("host=localhost dbname=gigadb user=gigadb port=9171") or die('Could not connect: ' . pg_last_error());
+        $query = "update author set gigadb_user_id=${user} where id=${author};";
+        pg_query($query) or die('Query failed: ' . pg_last_error());
+        pg_close($dbconn);
     }
 
 
