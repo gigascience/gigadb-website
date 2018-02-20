@@ -333,35 +333,38 @@ class AffiliateLoginContext extends BehatContext
 
 
     public function countEmailOccurencesInUserList($email=null) {
-        $nb_ocurrences = 0 ;
-        print_r("Querying the database for emails... ");
-        exec("vagrant ssh -c 'echo \"select email from gigadb_user;\" | sudo -Hiu postgres /usr/bin/psql -qtA gigadb'", $output, $err);
-        $occurrences = array_keys($output, $email);
 
-        $nb_ocurrences =  count($occurrences);
-        // print_r("Found {$nb_ocurrences} of {$email}");
-        return $nb_ocurrences;
+        $dbconn = pg_connect("host=localhost dbname=gigadb user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        $query = "select email from gigadb_user where email='${email}';";
+        $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+
+        $arr = pg_fetch_all($result);
+        pg_free_result($result);
+        pg_close($dbconn);
+        if (false == $arr ) {
+            return 0;
+        }
+        else {
+            return count($arr);
+        }
+
     }
 
     private function createNewUserAccountForEmail($email) {
-        $sql = "insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username) values(1,:'email','12345678','John','Doe','ETH','user',true,'johndoe')" ;
-        $psql_command = "sudo -Hiu postgres /usr/bin/psql -v email='$email' gigadb" ;
-        file_put_contents("sql/temp_command.sql", $sql);
-        print_r("Creating a test user account... ");
-        exec("vagrant ssh -c \"$psql_command < /vagrant/sql/temp_command.sql\"",$output);
-        // var_dump($output);
+        $sql = "insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username) values(1,'${email}','12345678','John','Doe','ETH','user',true,'johndoe')" ;
+
+        $dbconn = pg_connect("host=localhost dbname=gigadb user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        pg_query($dbconn, $sql);
+        pg_close($dbconn);
 
     }
 
     private function createNewUserAccountForUidAndEmail($provider,$uid,$email) {
-        $sql = "insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username,orcid_id) values(1,:'email','12345678','John','Doe','ETH','user',true,'johndoe',:'uid')" ;
+        $sql = "insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username,orcid_id) values(1,'${email}','12345678','John','Doe','ETH','user',true,'johndoe','${uid}')" ;
 
-       $psql_command = "sudo -Hiu postgres /usr/bin/psql -v email='$email' -v uid='$uid' gigadb" ;
-        file_put_contents("sql/temp_command.sql", $sql);
-
-        print_r("Creating a test user account... ");
-        exec("vagrant ssh -c \"$psql_command < /vagrant/sql/temp_command.sql\"",$output);
-        // var_dump($output);
+        $dbconn = pg_connect("host=localhost dbname=gigadb user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        pg_query($dbconn, $sql);
+        pg_close($dbconn);
 
     }
 
@@ -392,15 +395,8 @@ class AffiliateLoginContext extends BehatContext
 
         $this->getMainContext()->visit("/site/revoke");
         sleep(3);
-        $sqlfile = "sql/temp_command.sql" ;
-        // $this->getMainContext()->getSession()->reset();
         $this->getMainContext()->getSession()->stop();
-        if (file_exists($sqlfile) && $event->getResult() == 0) {
-            $deleted =unlink($sqlfile);
-            if (!$deleted) {
-                throw new Exception("${sqlfile} could not be deleted");
-            }
-        }
+
     }
 
 
