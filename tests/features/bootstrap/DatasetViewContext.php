@@ -10,7 +10,7 @@ use Behat\Gherkin\Node\PyStringNode,
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\YiiExtension\Context\YiiAwareContextInterface;
 
-
+use Behat\Behat\Context\Step;
 
 /**
  * AuthorWorkflow Features context.
@@ -52,13 +52,10 @@ class DatasetViewContext extends BehatContext
      */
     public function gigadbWebSiteIsLoadedWithProductionLikeData()
     {
-        print_r("Initializing the database... ");
-         exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/kill_drop_recreate.sql\"",$kill_output);
-        // var_dump($kill_output);
-        exec("vagrant ssh -c \"pg_restore -i -h localhost -p 5432 -U gigadb -d gigadb -v /vagrant/sql/author-names-80-81-82.pgdmp
-\"",$output);
-        // var_dump($output);
-        sleep(8) ;
+        $sqlfile = "author-names-80-81-82.pgdmp";
+        return array(
+            new Step\Given("Gigadb web site is loaded with \"${sqlfile}\" data"),
+        );
     }
 
     /**

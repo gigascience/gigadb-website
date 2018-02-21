@@ -161,25 +161,60 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
     public function gigadbWebSiteIsLoadedWithData($arg1)
     {
         print_r("Initializing the database with ${arg1}... ");
-         exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/kill_drop_recreate.sql\"",$kill_output);
-        // var_dump($kill_output);
-         if ( preg_match("/\.pgdmp$/", $arg1) ) {
+        $this->terminateDbBackend("gigadb");
+        $this->dropCreateDb("gigadb");
+        if ( preg_match("/\.pgdmp$/", $arg1) ) {
             exec("vagrant ssh -c \"pg_restore -i -h localhost -p 5432 -U gigadb -d gigadb -v /vagrant/sql/${arg1} \"",$output);
-         }
-         else if ( preg_match("/\.sql$/", $arg1) ) {
+        }
+        else if ( preg_match("/\.sql$/", $arg1) ) {
             exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/${arg1}\"",$output);
-         }
-         else {
+        }
+        else {
             throw new Exception("cannot load database file ${arg1}");
-         }
-        // var_dump($output);
-        sleep(10) ;
+        }
+        $this->restartPhp();
+
     }
 
 
-    // --- private utility functions 
 
-    private function loadUserData($user) {
+
+
+
+    // ---  utility functions
+
+    public function terminateDbBackend($dbname) {
+        $sql = "SELECT pg_terminate_backend(procpid) FROM pg_stat_activity WHERE datname='${dbname}' and procpid <> pg_backend_pid()";
+        $dbconn = pg_connect("host=localhost dbname=postgres user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        pg_query($dbconn, $sql);
+        pg_close($dbconn);
+
+    }
+
+    public function dropCreateDb($dbname) {
+        $sql_to_fence ="ALTER DATABASE $dbname WITH CONNECTION LIMIT 0;";
+        $sql_to_drop = "DROP DATABASE ${dbname}";
+        $sql_to_create = "CREATE DATABASE ${dbname} OWNER gigadb";
+        $dbconn = pg_connect("host=localhost dbname=postgres user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        pg_query($dbconn, $sql_to_fence);
+        pg_query($dbconn, $sql_to_drop);
+        pg_query($dbconn, $sql_to_create);
+        pg_close($dbconn);
+
+    }
+    public function truncateTable($dbname,$tablename) {
+        $sql = "TRUNCATE TABLE ${tablename} CASCADE";
+        $dbconn = pg_connect("host=localhost dbname=${dbname} user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        pg_query($dbconn, $sql);
+        pg_close($dbconn);
+    }
+
+    public function restartPhp()
+    {
+        exec("vagrant ssh -c \"sudo /etc/init.d/php-fpm restart\"",$output);
+    }
+
+    public function loadUserData($user) {
         $sql = file_get_contents("sql/${user}.sql");
         $dbconn = pg_connect("host=localhost dbname=gigadb user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);

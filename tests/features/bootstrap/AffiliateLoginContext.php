@@ -276,7 +276,7 @@ class AffiliateLoginContext extends BehatContext
             $the_checkbox->check();
             sleep(5);
             $the_button->press();
-            sleep(10);
+            sleep(5);
         }
     }
 
@@ -369,23 +369,18 @@ class AffiliateLoginContext extends BehatContext
     }
 
 
-    public static function initialize_database()
-    {
-        print_r("Initializing the database... ");
-        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/reset_user_table.sql\"",$kill_output);
-        // var_dump($kill_output);
-        sleep(8) ; # pad the adminstrative operations to cater for latency in order to avoid fatal error
-    }
-
-
     /**
      * @BeforeScenario @login
     */
     public function initialize_session() {
         $this->getMainContext()->visit("/site/revoke");
         sleep(3);
-        Self::initialize_database();
-        clearstatcache() ;
+        print_r("Initializing the gigadb_user table... ");
+        $this->getMainContext()->terminateDbBackend("gigadb");
+        $this->getMainContext()->truncateTable("gigadb","gigadb_user");
+        $this->getMainContext()->loadUserData("joe_bloggs");
+        $this->getMainContext()->loadUserData("john_smith");
+        $this->getMainContext()->restartPhp();
     }
 
     /**
