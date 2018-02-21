@@ -122,7 +122,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
      */
     public function userIsLoaded($user)
     {
-        exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/${user}.sql\"",$output);
+        $this->loadUserData($user);
         $this->user_login = "${user}@gigadb.org" ;
         $this->user_password = "gigadb";
     }
@@ -173,8 +173,19 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
             throw new Exception("cannot load database file ${arg1}");
          }
         // var_dump($output);
-        sleep(5) ;
+        sleep(10) ;
     }
+
+
+    // --- private utility functions 
+
+    private function loadUserData($user) {
+        $sql = file_get_contents("sql/${user}.sql");
+        $dbconn = pg_connect("host=localhost dbname=gigadb user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        pg_query($dbconn, $sql);
+        pg_close($dbconn);
+    }
+
 
 
 }
