@@ -52,3 +52,16 @@ when 'centos', 'ubuntu'
     action :create
   end
 end
+
+
+
+
+# update openssl and curl to make sure TLS v1.2 is supported when connecting the web from within the box
+# because the default version in Centos 6.7 doesn't support TLS v1.2 and github.com just removed support for pre-TLS v1.2 
+# see: https://github.com/blog/2507-weak-cryptographic-standards-removed
+['openssl', 'curl'].each do |pkg|
+    yum_package pkg do
+        action :upgrade
+        flush_cache [ :before ]
+    end
+end
