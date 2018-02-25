@@ -35,6 +35,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         $this->useContext('dataset_view_context', new DatasetViewContext($parameters));
         $this->useContext('admins_attach_author_user', new AuthorUserContext($parameters));
         $this->useContext('datasets_on_profile', new DatasetsOnProfileContext($parameters));
+        $this->useContext('claim_dataset', new ClaimDatasetContext($parameters));
     }
 
 

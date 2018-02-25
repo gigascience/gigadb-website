@@ -49,6 +49,11 @@ HTML;
                     <a class="btn btn-green <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
                         Contact Submitter
                     </a>
+                    <? if( ! Yii::app()->user->isGuest ) { ?>
+                    <a class="btn btn-green <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
+                        Are you an author of this dataset? claim your dataset now
+                    </a>
+                    <? } ?>
                 </span>
 
                 <div class="pull-right">
