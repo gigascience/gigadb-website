@@ -50,9 +50,33 @@ HTML;
                         Contact Submitter
                     </a>
                     <? if( ! Yii::app()->user->isGuest ) { ?>
-                    <a class="btn btn-green <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
-                        Are you an author of this dataset? claim your dataset now
-                    </a>
+                        <a href="#myModal" role="button" class="btn btn-green" data-toggle="modal">
+                            Are you an author of this dataset? claim your dataset now
+                        </a>
+                        <!-- Modal -->
+                        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 id="myModalLabel">Select your name</h3>
+                          </div>
+                          <div class="modal-body text-center span4 offset1">
+                            <?php if (count($model->authors) > 0) { ?>
+                                    <form class="well">
+                                    <?php foreach ($model->authors as $author) { ?>
+                                        <label class="radio">
+                                            <input type="radio" name="claimedAuthor" id="author_<? echo $author->id ?>" value="<? echo $author->id ?>">
+                                            <? echo $author->getDisplayName() ?>
+                                            <br/>
+                                        </label>
+                                    <? } ?>
+                                    </form>
+                            <? } ?>
+                          </div>
+                          <div class="modal-footer clear">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <button class="btn btn-primary">Claim selected author</button>
+                          </div>
+                        </div>
                     <? } ?>
                 </span>
 

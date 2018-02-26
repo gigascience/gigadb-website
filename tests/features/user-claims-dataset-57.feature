@@ -21,16 +21,16 @@ Scenario: Non logged-in visitors should not see the button
 	Then I should not see "Are you an author of this dataset? claim your dataset"
 
 
-
+@ok
 Scenario: a user can claim his/her dataset by reconcilling his/her author identity to his/her account
 	Given I sign in as a user
 	And I am on "/dataset/100002"
-	When I press "Are you an author of this dataset? claim your dataset"
+	When I follow "Are you an author of this dataset? claim your dataset now"
 	Then the response should contain "Select your name"
-	And the response should contain "Lambert, D, M"
-	And the response should contain "Wang, J"
-	And the response should contain "Zhang, G"
-	And I should see "Connect selected author to your identity"
+	And the response should contain "Lambert DM"
+	And the response should contain "Wang J"
+	And the response should contain "Zhang G"
+	And I should see "Claim selected author"
 
 
 
