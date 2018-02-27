@@ -48,6 +48,20 @@ class ClaimDatasetContext extends BehatContext
         $this->getMainContext()->visit("/site/logout");
     }
 
+    /**
+     * @When /^I check the "([^"]*)" radio button$/
+     */
+    public function iCheckTheRadioButton($labelText)
+    {
+        foreach ($this->getMainContext()->getSession()->getPage()->findAll('css', 'label') as $label) {
+            if ($labelText === $label->getText() && $label->has('css', 'input[type="radio"]')) {
+                $this->getMainContext()->fillField($label->find('css', 'input[type="radio"]')->getAttribute('name'), $label->find('css', 'input[type="radio"]')->getAttribute('value'));
+                return;
+            }
+        }
+        throw new \Exception('Radio button not found');
+    }
+
 
 
 }

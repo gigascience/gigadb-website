@@ -55,28 +55,28 @@ HTML;
                         </a>
                         <!-- Modal -->
                         <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h3 id="myModalLabel">Select your name</h3>
-                          </div>
-                          <div class="modal-body text-center span4 offset1">
-                            <?php if (count($model->authors) > 0) { ?>
-                                    <form class="well">
-                                    <?php foreach ($model->authors as $author) { ?>
-                                        <label class="radio">
-                                            <input type="radio" name="claimedAuthor" id="author_<? echo $author->id ?>" value="<? echo $author->id ?>">
-                                            <? echo $author->getDisplayName() ?>
-                                            <br/>
-                                        </label>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h3 id="myModalLabel">Select your name</h3>
+                            </div>
+                            <form class="well">
+                                <div class="modal-body text-center span4 offset1">
+                                    <?php if (count($model->authors) > 0) { ?>
+                                            <?php foreach ($model->authors as $author) { ?>
+                                                <label for="author_<? echo $author->id ?>" class="radio">
+                                                    <input type="radio" name="claimedAuthor" id="author_<? echo $author->id ?>" value="<? echo $author->id ?>">
+                                                    <? echo $author->getDisplayName() ?>
+                                                    <br/>
+                                                </label>
+                                            <? } ?>
                                     <? } ?>
-                                    </form>
-                            <? } ?>
-                          </div>
-                          <div class="modal-footer clear">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                            <button class="btn btn-primary">Claim selected author</button>
-                          </div>
-                        </div>
+                                </div>
+                                <div class="modal-footer clear">
+                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                    <button class="btn btn-primary">Claim selected author</button>
+                                </div>
+                            </form>
+                            </div>
                     <? } ?>
                 </span>
 

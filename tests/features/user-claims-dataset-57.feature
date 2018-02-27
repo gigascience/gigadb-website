@@ -22,7 +22,7 @@ Scenario: Non logged-in visitors should not see the button
 
 
 @ok
-Scenario: a user can claim his/her dataset by reconcilling his/her author identity to his/her account
+Scenario: a user is shown a modal to claim his/her dataset by reconcilling his/her author identity to his/her account
 	Given I sign in as a user
 	And I am on "/dataset/100002"
 	When I follow "Are you an author of this dataset? claim your dataset now"
@@ -32,10 +32,26 @@ Scenario: a user can claim his/her dataset by reconcilling his/her author identi
 	And the response should contain "Zhang G"
 	And I should see "Claim selected author"
 
+@wip
+Scenario: a user select an author to claim and submit the claim form
+	Given I sign in as a user
+	And I am on "/dataset/100002"
+	When I follow "Are you an author of this dataset? claim your dataset now"
+	And I check the "Zhang G" radio button
+	And I press "Claim selected author"
+	Then the response should contain "Your claim has been submitted to the administrators with reference: 1"
+
 
 
 Scenario: a user reconcile his/her author identity with the user's gigadb account
 	Given I sign in as a user
-	And I have elected to reconcile author "Zhang, G" to my gigadb account
-	When I press "Connect selected author to your identity"
-	Then the response should contain "your claim is pending"
+	And I have elected to reconcile author "Zhang G" to my gigadb account
+	When I press "Claim selected author"
+	Then the response should contain "you have an existing pending claim with reference: 1"
+
+
+Scenario: a user already associated to an author cannot claim another author
+	Given I sign in as a user
+	And author "3794" is associated with user "345"
+	When I am on "/dataset/100002"
+	Then I should not see "Are you an author of this dataset? claim your dataset"
