@@ -39,15 +39,15 @@ Scenario: a user select an author to claim and submit the claim form
 	When I follow "Are you an author of this dataset? claim your dataset now"
 	And I check the "Zhang G" radio button
 	And I press "Claim selected author"
-	Then the response should contain "Your claim has been submitted to the administrators with reference: 1"
+	Then the response should contain "Your claim has been submitted to the administrators with reference: 100"
 
 
 
-Scenario: a user reconcile his/her author identity with the user's gigadb account
+Scenario: a user with a pending claim is tryng to claim an author again
 	Given I sign in as a user
 	And I have elected to reconcile author "Zhang G" to my gigadb account
 	When I press "Claim selected author"
-	Then the response should contain "you have an existing pending claim with reference: 1"
+	Then the response should contain "you have an existing pending claim with reference: 100"
 
 
 Scenario: a user already associated to an author cannot claim another author
