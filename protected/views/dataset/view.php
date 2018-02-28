@@ -78,10 +78,10 @@ HTML;
                 <?php } } ?>
 
                 <?php if (count($model->manuscripts) > 0) { ?>
-                <h4><?= Yii::t('app' , 'Related manuscripts:')?></h4>
+                <h4><?= Yii::t('app' , 'READ THE PEER-REVIEWED PUBLICATION(S):')?></h4>
                 <p>
-                    <? foreach ($model->manuscripts as $key=>$manuscript){
-                        echo 'doi:' . MyHtml::link($manuscript->identifier, $manuscript->getDOILink());
+                    <? foreach ($model->manuscripts as $key=>$manuscript){                      
+                        echo $manuscript->getFullCitation();
                         if ($manuscript->pmid){
                             $pubmed = MyHtml::link($manuscript->pmid , "http://www.ncbi.nlm.nih.gov/pubmed/" . $manuscript->pmid);
                             echo " (PubMed: $pubmed)";
