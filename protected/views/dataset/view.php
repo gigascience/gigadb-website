@@ -44,10 +44,7 @@ HTML;
                 </p>
                 <? } ?>
 
-                <p><?= $model->description; ?> </p>
-                <?php if ( count( $model->getSemanticKeywords() ) > 0) { ?>
-                    <p><strong>Keywords:</strong> <?= MyHtml::encode(implode(', ', $model->getSemanticKeywords() )); ?></p>
-                <? } ?>
+                <p><?= $model->description; ?> </p>        
                 <span class="content-popup" <?= !Yii::app()->user->isGuest ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
                     <a class="btn btn-green <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
                         Contact Submitter
@@ -81,10 +78,10 @@ HTML;
                 <?php } } ?>
 
                 <?php if (count($model->manuscripts) > 0) { ?>
-                <h4><?= Yii::t('app' , 'Related manuscripts:')?></h4>
+                <h4><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></h4>
                 <p>
-                    <? foreach ($model->manuscripts as $key=>$manuscript){
-                        echo 'doi:' . MyHtml::link($manuscript->identifier, $manuscript->getDOILink());
+                    <? foreach ($model->manuscripts as $key=>$manuscript){                      
+                        echo $manuscript->getFullCitation();
                         if ($manuscript->pmid){
                             $pubmed = MyHtml::link($manuscript->pmid , "http://www.ncbi.nlm.nih.gov/pubmed/" . $manuscript->pmid);
                             echo " (PubMed: $pubmed)";
