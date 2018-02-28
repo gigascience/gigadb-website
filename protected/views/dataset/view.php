@@ -78,7 +78,7 @@ HTML;
                 <?php } } ?>
 
                 <?php if (count($model->manuscripts) > 0) { ?>
-                <h4><?= Yii::t('app' , 'READ THE PEER-REVIEWED PUBLICATION(S):')?></h4>
+                <h4><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></h4>
                 <p>
                     <? foreach ($model->manuscripts as $key=>$manuscript){                      
                         echo $manuscript->getFullCitation();
