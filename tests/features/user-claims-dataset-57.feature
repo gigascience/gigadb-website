@@ -51,7 +51,7 @@ Scenario: a user with a pending claim is tryng to claim an author again
 
 
 Scenario: a user already associated to an author cannot claim another author
-	Given I sign in as a user
-	And author "3794" is associated with user "345"
-	When I am on "/dataset/100002"
+	Given author "3794" is associated with default user
+	When I sign in as default user
+    And I go to "/dataset/100002"
 	Then I should not see "Are you an author of this dataset? claim your dataset"
