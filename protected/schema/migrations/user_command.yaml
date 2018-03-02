@@ -1,0 +1,21 @@
+--
+table: user_command
+from: null
+to: ram_1
+depends:
+  - [gigadb_user, bgh_1]
+sql: |
+  CREATE TABLE user_command (
+    id SERIAL NOT NULL PRIMARY KEY,
+    action_label VARCHAR(30) NOT NULL,
+    requester_id INTEGER NOT NULL REFERENCES gigadb_user(id) ON DELETE CASCADE,
+    actioner_id INTEGER REFERENCES gigadb_user(id) ON DELETE CASCADE,
+    actionable_id INTEGER NOT NULL,
+    request_date DATE,
+    action_date DATE,
+    status VARCHAR(15) NOT NULL
+  );
+
+  ALTER TABLE user_command OWNER TO gigadb;
+
+

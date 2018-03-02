@@ -57,6 +57,45 @@ CREATE TABLE "YiiSession" (
 
 ALTER TABLE public."YiiSession" OWNER TO gigadb;
 
+
+--
+-- Name: user_command; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
+--
+
+CREATE TABLE user_command (
+    id integer NOT NULL,
+    action_label character varying(32) NOT NULL,
+    requester_id integer NOT NULL,
+    actioner_id integer,
+    actionable_id integer NOT NULL,
+    request_date date,
+    action_date date,
+    status character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.user_command OWNER TO gigadb;
+
+--
+-- Name: user_command_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
+--
+
+CREATE SEQUENCE user_command_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_command_id_seq OWNER TO gigadb;
+
+--
+-- Name: user_command_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gigadb
+--
+
+ALTER SEQUENCE user_command_id_seq OWNED BY user_command.id;
+
 --
 -- Name: alternative_identifiers; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
