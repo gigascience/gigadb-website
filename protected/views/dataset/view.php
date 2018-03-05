@@ -58,13 +58,14 @@ HTML;
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                 <h3 id="myModalLabel">Select your name</h3>
+                                <div id="message" class="alert hide"></div>
                             </div>
-                            <form class="well">
+                            <?php echo MyHtml::beginForm('/userCommand/claim','GET',array('class'=>'well')); ?>
                                 <div class="modal-body text-center span4 offset1">
                                     <?php if (count($model->authors) > 0) { ?>
                                             <?php foreach ($model->authors as $author) { ?>
                                                 <label for="author_<? echo $author->id ?>" class="radio">
-                                                    <input type="radio" name="claimedAuthor" id="author_<? echo $author->id ?>" value="<? echo $author->id ?>">
+                                                    <input type="radio" name="author_id" id="author_<? echo $author->id ?>" value="<? echo $author->id ?>">
                                                     <? echo $author->getDisplayName() ?>
                                                     <br/>
                                                 </label>
@@ -72,8 +73,36 @@ HTML;
                                     <? } ?>
                                 </div>
                                 <div class="modal-footer clear">
-                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                                    <button class="btn btn-primary">Claim selected author</button>
+                                    <input type="hidden" id="dataset_id" name="dataset_id" value="<? echo $model->id ?>"/>
+                                    <button type="reset" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                    <?php
+                                        $status_array = array('Request', 'Incomplete', 'Uploaded');
+                                        echo CHtml::ajaxLink('Claim selected author',Yii::app()->createUrl('/userCommand/claim'),
+                                        array(
+                                            'type'=>'GET',
+                                            'data'=> array('dataset_id'=>'js:$("#dataset_id").val()',
+                                                'author_id' => 'js:$("input[name=author_id]:checked").val()'),
+                                            'dataType'=>'json',
+                                            'success'=>'js:function(output){
+                                                console.log(output);
+                                                $("#message").css("display", "inline");
+                                                $("#claim_button").prop("disabled",true);
+                                                if(output.status){
+                                                    $("#message").addClass("alert-success");
+                                                    $("#message").html("Your claim has been submitted to the administrators.");
+
+                                                } else {
+                                                    $("#message").addClass("alert-error");
+                                                    $("#message").html("error submitting the claim: "+ output.message );
+                                                }
+                                                // $("#claim_button").toggleClass("active");
+                                            }',
+                                        ),array('class'=>'btn btn-green',
+                                                'id' =>'claim_button',
+                                                // 'disabled'=>in_array($model->upload_status, $status_array),
+                                        ));
+
+                                        ?>
                                 </div>
                             </form>
                             </div>

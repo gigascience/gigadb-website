@@ -8,6 +8,7 @@ use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
 use PHPUnit\Framework\Assert;
+use Behat\Behat\Context\Step;
 
 /**
  * Features context.
@@ -53,16 +54,38 @@ class ClaimDatasetContext extends BehatContext
      */
     public function iCheckTheRadioButton($labelText)
     {
-        foreach ($this->getMainContext()->getSession()->getPage()->findAll('css', 'label') as $label) {
-            if ($labelText === $label->getText() && $label->has('css', 'input[type="radio"]')) {
-                $this->getMainContext()->fillField($label->find('css', 'input[type="radio"]')->getAttribute('name'), $label->find('css', 'input[type="radio"]')->getAttribute('value'));
-                return;
+        sleep(10);
+        if ( $this->getMainContext()->getSession()->getDriver() instanceof Behat\Mink\Driver\Selenium2Driver ) {
+            return array(
+                new Step\When("I fill in \"author_id\" with \"3791\""),
+            );
+        }
+        else {
+            foreach ($this->getMainContext()->getSession()->getPage()->findAll('css', 'label') as $label) {
+                if ($labelText === $label->getText() && $label->has('css', 'input[type="radio"]')) {
+                    $this->getMainContext()->fillField($label->find('css', 'input[type="radio"]')->getAttribute('name'), $label->find('css', 'input[type="radio"]')->getAttribute('value'));
+                    return;
+                }
             }
         }
         throw new \Exception('Radio button not found');
     }
 
+    /**
+     * @Given /^I wait "([^"]*)" seconds$/
+     */
+    public function iWaitSeconds($number_of_seconds)
+    {
+        sleep((int)$number_of_seconds);
+    }
 
+
+    /**
+     * @AfterScenario @user-claims-dataset
+    */
+    public function resetClaimTable() {
+        $this->getMainContext()->truncateTable("gigadb","user_command");
+    }
 
 }
 
