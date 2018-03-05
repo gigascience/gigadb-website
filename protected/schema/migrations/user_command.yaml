@@ -11,8 +11,8 @@ sql: |
     requester_id INTEGER NOT NULL REFERENCES gigadb_user(id) ON DELETE CASCADE,
     actioner_id INTEGER REFERENCES gigadb_user(id) ON DELETE CASCADE,
     actionable_id INTEGER NOT NULL,
-    request_date DATE,
-    action_date DATE,
+    request_date TIMESTAMP,
+    action_date TIMESTAMP,
     status VARCHAR(15) NOT NULL
   );
 

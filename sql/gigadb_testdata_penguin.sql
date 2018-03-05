@@ -59,7 +59,7 @@ ALTER TABLE public."YiiSession" OWNER TO gigadb;
 
 
 --
--- Name: user_command; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
+-- Name: user_command; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
 --
 
 CREATE TABLE user_command (
@@ -68,8 +68,8 @@ CREATE TABLE user_command (
     requester_id integer NOT NULL,
     actioner_id integer,
     actionable_id integer NOT NULL,
-    request_date date,
-    action_date date,
+    request_date timestamp,
+    action_date timestamp,
     status character varying(32) NOT NULL
 );
 
@@ -2075,6 +2075,14 @@ CREATE TABLE yiisession (
 
 ALTER TABLE public.yiisession OWNER TO gigadb;
 
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gigadb
+--
+
+ALTER TABLE ONLY user_command ALTER COLUMN id SET DEFAULT nextval('user_command_id_seq'::regclass);
+
+
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: gigadb
 --
@@ -2813,6 +2821,12 @@ ALTER TABLE ONLY "AuthAssignment"
 ALTER TABLE ONLY "AuthItem"
     ADD CONSTRAINT "AuthItem_pkey" PRIMARY KEY (name);
 
+--
+-- Name: user_command_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
+--
+
+ALTER TABLE ONLY user_command
+    ADD CONSTRAINT user_command_pkey PRIMARY KEY (id);
 
 --
 -- Name: YiiSession_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
