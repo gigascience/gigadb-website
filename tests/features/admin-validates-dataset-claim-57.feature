@@ -9,6 +9,11 @@ Background:
 	And default admin user exists
 	And user "joy_fox" is loaded
 
+Scenario: Admin can access pending jobs from the administration page
+	Given I sign in as an admin
+	When I visit "/site/admin/"
+	Then I should see "User Requests"
+
 Scenario: Admin can see claims on dataset authorship
 	Given I sign in as an admin
 	And user "Joy Fox" has submitted a claim on author "Zhang G" of dataset "100002"
