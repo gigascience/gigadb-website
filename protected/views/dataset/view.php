@@ -49,7 +49,8 @@ HTML;
                     <a class="btn btn-green <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
                         Contact Submitter
                     </a>
-                    <? if( ! Yii::app()->user->isGuest ) { ?>
+                    <? if( ! Yii::app()->user->isGuest && null == Author::findAttachedAuthorByUserId(Yii::app()->user->id) ) { ?>
+                        <? Yii::log(__FUNCTION__."> Author::findAttachedAuthorByUserId:".Author::findAttachedAuthorByUserId(Yii::app()->user->id) , 'warning'); ?>
                         <a href="#myModal" role="button" class="btn btn-green" data-toggle="modal">
                             Are you an author of this dataset? claim your dataset now
                         </a>
@@ -58,7 +59,7 @@ HTML;
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                 <h3 id="myModalLabel">Select your name</h3>
-                                <div id="message" class="alert hide"></div>
+                                <div id="message"></div>
                             </div>
                             <?php echo MyHtml::beginForm('/userCommand/claim','GET',array('class'=>'well')); ?>
                                 <div class="modal-body text-center span4 offset1">
@@ -73,8 +74,36 @@ HTML;
                                     <? } ?>
                                 </div>
                                 <div class="modal-footer clear">
+                                    <button type="reset" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">Close</button>
                                     <input type="hidden" id="dataset_id" name="dataset_id" value="<? echo $model->id ?>"/>
-                                    <button type="reset" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                    <?php
+                                        // "Cancel current claim" button
+                                        $status_array = array('Request', 'Incomplete', 'Uploaded');
+                                        echo CHtml::ajaxLink('Cancel current claim',Yii::app()->createUrl('/userCommand/cancelClaim'),
+                                        array(
+                                            'type'=>'GET',
+                                            'dataType'=>'json',
+                                            'success'=>'js:function(output){
+                                                console.log(output);
+                                                document.getElementById("message").removeAttribute("class");
+                                                // $("#message").toggleClass("hide");
+                                                $("#cancel_button").toggleClass("disable");
+                                                if(output.status){
+                                                    $("#message").addClass("alert").addClass("alert-success");
+                                                    $("#message").html(output.message);
+
+                                                } else {
+                                                    $("#message").addClass("alert").addClass("alert-error");
+                                                    $("#message").html(output.message);
+                                                }
+                                                $("#message").append(" You can now close the window.");
+                                            }',
+                                        ),array('class'=>'btn btn-danger',
+                                                'id' =>'cancel_button',
+                                                // 'disabled'=>in_array($model->upload_status, $status_array),
+                                        ));
+
+                                    ?>
                                     <?php
                                         $status_array = array('Request', 'Incomplete', 'Uploaded');
                                         echo CHtml::ajaxLink('Claim selected author',Yii::app()->createUrl('/userCommand/claim'),
@@ -85,16 +114,17 @@ HTML;
                                             'dataType'=>'json',
                                             'success'=>'js:function(output){
                                                 console.log(output);
-                                                $("#message").css("display", "inline");
-                                                $("#claim_button").prop("disabled",true);
+                                                document.getElementById("message").removeAttribute("class");
+                                                $("#claim_button").toggleClass("disable");
                                                 if(output.status){
-                                                    $("#message").addClass("alert-success");
-                                                    $("#message").html("Your claim has been submitted to the administrators.");
+                                                    $("#message").addClass("alert").addClass("alert-success");
+                                                    $("#message").html(output.message);
 
                                                 } else {
-                                                    $("#message").addClass("alert-error");
-                                                    $("#message").html("error submitting the claim: "+ output.message );
+                                                    $("#message").addClass("alert").addClass("alert-error");
+                                                    $("#message").html(output.message);
                                                 }
+                                                $("#message").append(" You can now close the window.");
                                                 // $("#claim_button").toggleClass("active");
                                             }',
                                         ),array('class'=>'btn btn-green',

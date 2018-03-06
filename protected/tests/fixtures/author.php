@@ -18,6 +18,7 @@ return array(
 		'surname'=>'Martinez-Cruzado',
 		'first_name'=>'Juan',
 		'middle_name'=>'carlos',
+		'gigadb_user_id' =>345,
 	),
 	array(
 		'id' => 4,

@@ -44,6 +44,18 @@ class AuthorTest extends CDbTestCase
  		}
  	}
 
+ 	function testFindAttachedAuthorByUserIdWhenAttached() {
+ 		$expectation = "Martinez-Cruzado Jc";
+ 		$this->assertEquals($expectation, Author::findAttachedAuthorByUserId(345)->getDisplayName(),
+ 							"return author attached to user");
+ 	}
+
+ 	function testFindAttachedAuthorByUserIdWhenNotAttached() {
+ 		$expectation = null;
+ 		$this->assertEquals(null, Author::findAttachedAuthorByUserId(344),
+ 							"return no author attached to user");
+ 	}
+
 
 
 }

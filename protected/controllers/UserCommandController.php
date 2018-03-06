@@ -35,7 +35,7 @@ class UserCommandController extends CController
 		return array(
 
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('claim'),
+				'actions'=>array('claim','cancelClaim'),
 				'users'=>array('*'),
 			),
 			array('deny',  // deny all users
@@ -76,7 +76,7 @@ class UserCommandController extends CController
 
                 if ($claim->save(false)) {
                     $result['status'] = true;
-                    $result['message'] = $claim->id . " is the id of the claim";
+                    $result['message'] = "Your claim has been submitted to the administrators.";
                 }
                 else {
                     Yii::log(__FUNCTION__."> create user_command failed", 'warning');
@@ -89,10 +89,10 @@ class UserCommandController extends CController
                 $errors = $claim->getErrors();
                 // Yii::log(var_dump($errors));
             	if ( isset($errors["requester_id"]) ) {
-            		$result['message'] = "There is already a pending claim";
+            		$result['message'] = "We cannot submit the claim: You already have a pending claim.";
             	}
                 else {
-                	$result['message'] = "validation problem with saving the claim to database";
+                	$result['message'] = "We cannot submit the claim: validation problems were encountered.";
                 }
                 $result['status'] = false;
             }
@@ -100,7 +100,34 @@ class UserCommandController extends CController
         }
         else {
             $result['status'] = false;
-            $result['message'] = "mismatch between author and dataset";
+            $result['message'] = "mismatch between author and dataset.";
+        }
+
+        echo json_encode($result);
+		Yii::app()->end();
+
+    }
+
+    /**
+     * Record an authorship claim by a user on the dataset.
+     * If claim is recorded successfully, the browser will be redirected to the 'view' page.
+     * @param integer $dataset_id, dataset id
+     * @param integer $author_id, dataset id
+     */
+    public function actionCancelClaim() {
+
+    	$result['status'] = false;
+        $claim = UserCommand::model()->findByAttributes( array('requester_id' => Yii::app()->user->id) );
+
+        if( null != $claim ){
+	        Yii::log(__FUNCTION__."> deleting record {$claim->id} in user_command ", 'warning');
+        	$claim->delete();
+        	$result['status'] = true;
+            $result['message'] = "Your claim has been successfully canceled.";
+        }
+        else {
+            $result['status'] = false;
+            $result['message'] = "You haven't got any current claim.";
         }
 
         echo json_encode($result);

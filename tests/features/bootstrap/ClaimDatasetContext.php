@@ -72,11 +72,39 @@ class ClaimDatasetContext extends BehatContext
     }
 
     /**
+     * @Given /^a user has a pending claim for author "([^"]*)"$/
+     */
+    public function aUserHasAPendingClaimForAuthor($arg1)
+    {
+        return array(
+                new Step\Given("I sign in as a user"),
+                new Step\Given("I am on \"/dataset/100002\""),
+                new Step\When("I follow \"Are you an author of this dataset? claim your dataset now\""),
+                new Step\When("I check the \"Zhang G\" radio button"),
+                new Step\When("I follow \"Claim selected author\""),
+                new Step\When("I wait \"5\" seconds"),
+            );
+    }
+
+    /**
      * @Given /^I wait "([^"]*)" seconds$/
      */
     public function iWaitSeconds($number_of_seconds)
     {
         sleep((int)$number_of_seconds);
+    }
+
+
+
+    /**
+     * @Given /^author "([^"]*)" is associated with a user$/
+     */
+    public function authorIsAssociatedWithAUser($author_id)
+    {
+        $sql = "update author set gigadb_user_id=346 where id=${author_id}";
+        $dbconn =pg_connect("host=localhost dbname=gigadb user=postgres port=9171") or die('Could not connect: '.pg_last_error());
+        pg_query($dbconn, $sql);
+        pg_close($dbconn);
     }
 
 

@@ -32,7 +32,7 @@ Scenario: a user is shown a modal to claim his/her dataset by reconcilling his/h
 	And the response should contain "Zhang G"
 	And the response should contain "Claim selected author"
 
-@wip @javascript
+@ok @javascript
 Scenario: a user select an author to claim and submit the claim form
 	Given I sign in as a user
 	And I am on "/dataset/100002"
@@ -41,18 +41,36 @@ Scenario: a user select an author to claim and submit the claim form
 	And I follow "Claim selected author"
 	And I wait "5" seconds
 	Then I should see "Your claim has been submitted to the administrators."
+	And the response should contain "You can now close the window."
 
 
+@ok @javascript
+Scenario: a user with a pending claim visit dataset page and attempt to claim an author
+	Given a user has a pending claim for author "3791"
+	And I sign in as a user
+	And I am on "/dataset/100002"
+	When I follow "Are you an author of this dataset? claim your dataset now"
+	And I check the "Zhang G" radio button
+	And I follow "Claim selected author"
+	And I wait "5" seconds
+	Then the response should contain "We cannot submit the claim:"
+	And the response should contain "You already have a pending claim"
+	And the response should contain "You can now close the window"
 
-Scenario: a user with a pending claim is tryng to claim an author again
-	Given I sign in as a user
-	And I have elected to reconcile author "Zhang G" to my gigadb account
-	When I press "Claim selected author"
-	Then the response should contain "Your claim has been submitted to the administrators."
-
-
+@ok
 Scenario: a user already associated to an author cannot claim another author
-	Given author "3794" is associated with default user
-	When I sign in as default user
+	Given author "3794" is associated with a user
+	When I sign in as a user
     And I go to "/dataset/100002"
 	Then I should not see "Are you an author of this dataset? claim your dataset"
+
+@wip @javascript
+Scenario: a user with a pending claim can cancel the claim
+	Given a user has a pending claim for author "3791"
+	And I sign in as a user
+	And I am on "/dataset/100002"
+	When I follow "Are you an author of this dataset? claim your dataset now"
+	And I wait "5" seconds
+	And I follow "Cancel current claim"
+	And I wait "5" seconds
+	Then I should see "Your claim has been successfully canceled"

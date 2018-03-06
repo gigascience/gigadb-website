@@ -237,6 +237,12 @@ EO_SQL;
     }
 
     public function getListOfDataset() {
-    return implode(', ', CHtml::listData($this->datasetsByOrder,'id','identifier'));
+        return implode(', ', CHtml::listData($this->datasetsByOrder,'id','identifier'));
+    }
+
+    public static function findAttachedAuthorByUserId($user_id) {
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('gigadb_user_id = '.$user_id) ;
+        return Author::model()->find($criteria);
     }
 }
