@@ -24,6 +24,20 @@
 		'status',
 		array(
 			'class'=>'CButtonColumn',
+			'template'=>'{invalidate}{confirm}',
+			'buttons'=>array
+		    (
+		        'confirm' => array
+		        (
+		            'label'=>'Validate claim',
+		            'url'=>'Yii::app()->createUrl("adminUserCommand/validate", array("id"=>$data->id))'
+		        ),
+		        'invalidate' => array
+		        (
+		            'label'=>'Reject claim',
+		            'url'=>'Yii::app()->createUrl("adminUserCommand/reject", array("id"=>$data->id))'
+		        ),
+		    ),
 		),
 	),
 )); ?>

@@ -27,7 +27,7 @@ class AdminUserCommandController extends Controller
 	{
 		return array(
 			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update'),
+				'actions'=>array('admin','delete','index','view','validate','reject','update'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -48,26 +48,61 @@ class AdminUserCommandController extends Controller
 	}
 
 	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 * Validate a claim by linking author with gigadb_user and updating user_command
 	 */
-	public function actionCreate()
+	public function actionValidate($id)
 	{
-		$model=new UserCommand;
+		$claim=$this->loadModel($id);
+		if($claim) {
+			if ("claim_author" == $claim->action_label) {
+				$author = Author::model()->findbyPk($claim->actionable_id);
+				$requester = User::model()->findbyPk($claim->requester_id);
+				$author->gigadb_user_id = $requester->id;
+				if($author->save()) {
+					Yii::log(__FUNCTION__."> author (".$author->id.")/user (".$requester->id. ") linking has been performed", 'warning');
+					$claim->status = "done";
+					$claim->actioner_id = Yii::app()->user->id;
+					if($claim->save()) {
+						Yii::log(__FUNCTION__."claim " . $claim->id . " updated as 'done'", 'warning');
+						$this->redirect(array('adminAuthor/view','id'=>$author->id));
+					}
+				}else {
+					Yii::log(__FUNCTION__."> author (".$author->id.")/user (".$requester->id. ") linking failed", 'warning');
+					$claim->status = "validation error";
+					$claim->actioner_id = Yii::app()->user->id;
+					if($claim->save()) {
+						Yii::log(__FUNCTION__."claim " . $claim->id . " updated as 'validation error'", 'warning');
+						$this->redirect(array('adminUserCommand/admin'));
+					}
+				}
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['UserCommand']))
-		{
-			$model->attributes=$_POST['UserCommand'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
+		$this->render('admin', array(
+				'model'=>new UserCommand('search'),
 		));
+
+	}
+
+		/**
+	 * Validate a claim by linking author with gigadb_user and updating user_command
+	 */
+	public function actionReject($id)
+	{
+		$claim=$this->loadModel($id);
+		if($claim) {
+			if ("claim_author" == $claim->action_label) {
+				Yii::log(__FUNCTION__."claim " . $claim->id . " has been deleted by an admin", 'warning');
+				$claim->delete();
+			}
+		}
+
+		$this->render('admin', array(
+				'model'=>new UserCommand('search'),
+		));
+
 	}
 
 	/**
