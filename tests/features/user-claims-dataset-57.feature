@@ -64,7 +64,7 @@ Scenario: a user already associated to an author cannot claim another author
     And I go to "/dataset/100002"
 	Then I should not see "Are you an author of this dataset? claim your dataset"
 
-@wip @javascript
+@ok @javascript
 Scenario: a user with a pending claim can cancel the claim
 	Given a user has a pending claim for author "3791"
 	And I sign in as a user
