@@ -101,6 +101,7 @@
                             
                             <a class="btn-green left2" title="Add/update list of logs" href="/report/index">Google Analytics</a>
 
+                            <a class="btn-green left2" title="Add/update list of logs" href="/AdminUserCommand/admin/">User Commands</a>
                         </div>
 
                     </td>

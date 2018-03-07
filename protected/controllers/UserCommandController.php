@@ -61,7 +61,7 @@ class UserCommandController extends CController
 
             $requester_id = Yii::app()->user->id;
             $actionable_id = $dataset_author->author->id ;
-            $action_label = "claim_dataset_author";
+            $action_label = "claim_author";
             $status = "pending";
             $now = new Datetime();
 
@@ -77,6 +77,7 @@ class UserCommandController extends CController
                 if ($claim->save(false)) {
                     $result['status'] = true;
                     $result['message'] = "Your claim has been submitted to the administrators.";
+                    Yii::log(__FUNCTION__."> created user_command successfully for: ". $claim->requester->id, 'warning');
                 }
                 else {
                     Yii::log(__FUNCTION__."> create user_command failed", 'warning');
