@@ -93,7 +93,7 @@
                                 </ul>
                             </li>
                             <li><a href="#">Contact</a></li>
-                            <li><a href="#">Terms of use</a></li>
+                            <li><a href="/site/term">Terms of use</a></li>
                         </ul>
                     </div>
                 </div>

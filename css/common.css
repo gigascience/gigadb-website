@@ -38,11 +38,12 @@ p {
     line-height: 22px;
     margin-bottom: 5px
 }
-ol {
+ol, ul.content-text {
     padding: 0px 0px 0px 15px;
     margin-bottom: 20px;
 }
-ol > li {
+ol > li,
+ul.content-text > li {
     color: #656565;
     line-height: 22px;
 }
@@ -60,6 +61,9 @@ hr {
 }
 section {
     margin-bottom: 40px;
+}
+section.page-title-section {
+    margin-bottom: 20px;
 }
 table.table th,
 table.table td {
@@ -87,7 +91,7 @@ table.table a {
     padding: 0px 0px 0px 10px;
 }
 .image-background {
-    background: transparent url(/images/new_interface_image/banner.png)repeat scroll center center;
+    background: transparent url(../images/new_interface_image/banner.jpg)repeat scroll center center;
 }
 .color-background {
     background-color: #f8f8f8;
@@ -192,10 +196,10 @@ table.table a {
 }
 .page-title {
     border-bottom: 1px solid #e5e5e5;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 .page-title > h4 {
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1;
     display: inline-block;
     color: #151515;
@@ -423,10 +427,10 @@ ul.base-nav-bar-main > li.dropdown:hover > ul.dropdown-menu {
 .home-search-bar-title {
     font-weight: bold;
     font-family: Arial;
-    font-size: 32px;
+    font-size: 34px;
     text-shadow: 1px 2px 2px rgba(4,0,0,.75);
     color: #fff;
-    margin: 120px 0px 24.2px 0px;
+    margin: 45px 0px 24.2px 0px;
     line-height: 1;
 }
 .home-search-bar-subtitle {
@@ -434,9 +438,10 @@ ul.base-nav-bar-main > li.dropdown:hover > ul.dropdown-menu {
     color: #fff;
     margin: 0px 0px 50px 0px;
     line-height: 1;
+    font-size: 16px;
 }
 .home-search-bar-group {
-    margin: 0px 0px 120px;
+    margin: 0px 0px 45px;
 }
 .home-text-icon-list {
     margin-bottom: 0px;
@@ -456,6 +461,13 @@ ul.base-nav-bar-main > li.dropdown:hover > ul.dropdown-menu {
 }
 .home-text-icon-list li a span {
     color: #e04f5e;
+}
+.home-rss-link,
+.home-rss-link:focus {
+    text-decoration: none;
+}
+.home-rss-link:hover {
+    text-decoration: underline;
 }
 .home-color-background-block {
     padding: 40px 0px;
@@ -571,6 +583,22 @@ p.dataset-release-date-text {
 }
 .dataset .background-btn {
     height: 44px;
+}
+.doi-badge .badge:last-child {
+    font-size: 13px;
+    font-weight: normal;
+    color: #fff;
+    background-color: #099242;
+    padding: 5px 10px;
+    border-radius: 0px 4px 4px 0px;
+    text-decoration: none;
+}
+.doi-badge .badge:first-child {
+    background-color: #aaaaaa;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 5px 10px;
+    border-radius: 4px 0px 0px 4px;
 }
 .table > thead > tr > th {
     text-align: center;
@@ -941,9 +969,4 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
 }
 .bootstrap-datetimepicker-widget table td.today::before {
     border-bottom-color: #099242;
-}
-.dataset-des-images {
-  max-height: 50px;
-  margin-right: 10px;
-  height: 28px;
 }

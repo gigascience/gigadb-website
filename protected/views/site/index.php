@@ -40,41 +40,25 @@
                                 <li><a href="#"><div class="text-icon text-icon-green"><img src="/images/new_interface_image/Metagenomic.svg"></div>Metagenomic (<span><? echo $number_metagenomic ?></span>)</a></li>
                             </ul>
                         </div>
-                        <div class="col-xs-4">
+                          <div class="col-xs-4">
                             <div class="underline-title">
                                 <div>
-                                    <h4>Popular search</h4>
+                                    <h4>RSS</h4>
                                 </div>
                             </div>
-                            <p>Replace popular search with RSS feed. Replace popular search with RSS feed. <a href="#">View More</a>.</p>
-                            <div>
-                                <div class="progress-container">
-                                    <p>Epigenomic <span class="pull-right">40%</span></p>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-green" style="width: 40%;">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="progress-container">
-                                    <p>Metadata <span class="pull-right">80%</span></p>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-blue" style="width: 80%;">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="progress-container">
-                                    <p>Epigenomic <span class="pull-right">50%</span></p>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-yellow" style="width: 50%;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <ul class="list-inline home-tags-list">
-                                <li><a href="#" class="btn btn-default">#Genomic</a></li>
-                                <li><a href="#" class="btn btn-default">#Ecology</a></li>
-                                <li><a href="#" class="btn btn-default">#Network-Analysis</a></li>
-                            </ul>
+                                  <?php $flag=1;foreach($rss_arr as $item)  {?>
+                          
+                            <? if($flag>2){break;}
+                            if(get_class($item) == 'Dataset'){?>
+                              <p style="margin-bottom: 0px;">New dataset added on <?=$item->publication_date?>: <?=MyHtml::link("10.5524/".$item->identifier, $item->shortUrl)?> <?=$item->title?></p>
+                            <?}else{?>
+                              <p style="margin-bottom: 0px;"><?= $item->publication_date ?>: <?=$item->message?></p>
+                            <?php } ?>
+                              <hr style="border-style: dashed; border-color: #e5e5e5;">
+                              <?php $flag++; } ?>
+                          
+                           
+
                         </div>
                     </div>
                 </div>
