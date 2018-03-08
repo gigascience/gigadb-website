@@ -33,6 +33,7 @@ Scenario: Admin can validate claims on dataset authorship
 	And I follow "Validate claim"
 	And I wait "2" seconds
 	Then I should be on "/adminAuthor/view/id/3791"
+	And I should see "346"
 
 @ok
 Scenario: Admin can invalidate claims on dataset authorship
