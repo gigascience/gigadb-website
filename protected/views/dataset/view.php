@@ -62,8 +62,8 @@ HTML;
                                 <div id="message"></div>
                                 <div id="advice"></div>
                             </div>
-                            <?php echo MyHtml::beginForm('/userCommand/claim','GET',array('class'=>'well well-small')); ?>
-                                <div class="modal-body text-center span4 offset2">
+                            <?php echo MyHtml::beginForm('/userCommand/claim','GET'); ?>
+                                <div class="modal-body text-center">
                                     <?php if (count($model->authors) > 0) { ?>
                                             <?php foreach ($model->authors as $author) { ?>
                                                 <label for="author_<? echo $author->id ?>" class="radio">
@@ -74,7 +74,7 @@ HTML;
                                             <? } ?>
                                     <? } ?>
                                 </div>
-                                <div class="modal-footer clear">
+                                <div class="modal-footer">
                                     <button type="reset" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">Close</button>
                                     <input type="hidden" id="dataset_id" name="dataset_id" value="<? echo $model->id ?>"/>
                                     <?php
