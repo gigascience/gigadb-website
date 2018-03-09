@@ -26,7 +26,7 @@ Scenario: a user is shown a modal to claim his/her dataset by reconcilling his/h
 	Given I sign in as a user
 	And I am on "/dataset/100002"
 	When I follow "Are you an author of this dataset? claim your dataset now"
-	Then the response should contain "Select your name"
+	Then the response should contain "Select an author to link to your Gigadb User ID"
 	And the response should contain "Lambert DM"
 	And the response should contain "Wang J"
 	And the response should contain "Zhang G"
@@ -41,7 +41,7 @@ Scenario: a user select an author to claim and submit the claim form
 	And I follow "Claim selected author"
 	And I wait "5" seconds
 	Then I should see "Your claim has been submitted to the administrators."
-	And the response should contain "You can now close the window."
+	And the response should contain "You can close this box now."
 
 
 @ok @javascript
@@ -55,7 +55,7 @@ Scenario: a user with a pending claim visit dataset page and attempt to claim an
 	And I wait "5" seconds
 	Then the response should contain "We cannot submit the claim:"
 	And the response should contain "You already have a pending claim"
-	And the response should contain "You can now close the window"
+	And the response should contain "You can close this box now."
 
 @ok
 Scenario: a user already associated to an author cannot claim another author

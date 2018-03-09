@@ -58,11 +58,12 @@ HTML;
                         <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h3 id="myModalLabel">Select your name</h3>
+                                <h3 id="myModalLabel">Select an author to link to your Gigadb User ID</h3>
                                 <div id="message"></div>
+                                <div id="advice"></div>
                             </div>
-                            <?php echo MyHtml::beginForm('/userCommand/claim','GET',array('class'=>'well')); ?>
-                                <div class="modal-body text-center span4 offset1">
+                            <?php echo MyHtml::beginForm('/userCommand/claim','GET',array('class'=>'well well-small')); ?>
+                                <div class="modal-body text-center span4 offset2">
                                     <?php if (count($model->authors) > 0) { ?>
                                             <?php foreach ($model->authors as $author) { ?>
                                                 <label for="author_<? echo $author->id ?>" class="radio">
@@ -84,9 +85,7 @@ HTML;
                                             'type'=>'GET',
                                             'dataType'=>'json',
                                             'success'=>'js:function(output){
-                                                console.log(output);
                                                 document.getElementById("message").removeAttribute("class");
-                                                // $("#message").toggleClass("hide");
                                                 $("#cancel_button").toggleClass("disable");
                                                 if(output.status){
                                                     $("#message").addClass("alert").addClass("alert-success");
@@ -96,7 +95,8 @@ HTML;
                                                     $("#message").addClass("alert").addClass("alert-error");
                                                     $("#message").html(output.message);
                                                 }
-                                                $("#message").append(" You can now close the window.");
+                                                $("#advice").addClass("alert").addClass("alert-info");
+                                                $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
                                             }',
                                         ),array('class'=>'btn btn-danger',
                                                 'id' =>'cancel_button',
@@ -113,7 +113,6 @@ HTML;
                                                 'author_id' => 'js:$("input[name=author_id]:checked").val()'),
                                             'dataType'=>'json',
                                             'success'=>'js:function(output){
-                                                console.log(output);
                                                 document.getElementById("message").removeAttribute("class");
                                                 $("#claim_button").toggleClass("disable");
                                                 if(output.status){
@@ -124,8 +123,8 @@ HTML;
                                                     $("#message").addClass("alert").addClass("alert-error");
                                                     $("#message").html(output.message);
                                                 }
-                                                $("#message").append(" You can now close the window.");
-                                                // $("#claim_button").toggleClass("active");
+                                                $("#advice").addClass("alert").addClass("alert-info");
+                                                $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
                                             }',
                                         ),array('class'=>'btn btn-green',
                                                 'id' =>'claim_button',
@@ -804,4 +803,11 @@ $(".citation-popup").popover({'placement':'top'});
         $('.js-short-'+id).toggle();
         $('.js-long-'+id).toggle();
     });
+</script>
+
+<script>
+    $('#myModal').on('hidden', function () {
+        $("#message").removeAttr("class").empty();
+        $("#advice").removeAttr("class").empty();
+    })
 </script>
