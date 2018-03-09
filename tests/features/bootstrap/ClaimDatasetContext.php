@@ -113,7 +113,7 @@ class ClaimDatasetContext extends BehatContext
     public function iClickInTheRowForClaimFrom($action, $requester_name)
     {
         $row = $this->getMainContext()->getSubContext("admins_attach_author_user")->findRowByText($requester_name);
-        if ("delete" == $action) {
+        if ("delete" == $action) { # TODO: deleting claim not tested has I haven't figured out yet how to test JS confirm with phantomjs
             $this->getMainContext()->getSession()->getDriver()->executeScript("window.confirm = function(msg){return true;};");
             $link = $row->findLink('');
         }
@@ -123,6 +123,33 @@ class ClaimDatasetContext extends BehatContext
         PHPUnit_Framework_Assert::assertNotNull($link, 'Cannot find link in row with text '.$action);
         $link->click();
     }
+
+    /**
+     * @Given /^an admin approved the claim for author "([^"]*)"$/
+     */
+    public function anAdminApprovedTheClaimForAuthor($arg1)
+    {
+        return array(
+                new Step\Given("I sign in as an admin"),
+                new Step\When("I go to \"/adminUserCommand/admin\""),
+                new Step\When("I click \"validate\" in the row for claim from \"Joy Fox (346)\""),
+                new Step\When("I wait \"2\" seconds"),
+            );
+    }
+
+    /**
+     * @Given /^an admin rejected the claim for author "([^"]*)"$/
+     */
+    public function anAdminRejectedTheClaimForAuthor($arg1)
+    {
+        return array(
+                new Step\Given("I sign in as an admin"),
+                new Step\When("I go to \"/adminUserCommand/admin\""),
+                new Step\When("I click \"reject\" in the row for claim from \"Joy Fox (346)\""),
+                new Step\When("I wait \"2\" seconds"),
+            );
+    }
+
 
     /**
      * @AfterScenario @user-claims-dataset

@@ -65,14 +65,14 @@ class AdminUserCommandController extends Controller
 					$now = new Datetime();
 					$claim->action_date = $now->format(DateTime::ISO8601);
 					if($claim->save()) {
-						Yii::log(__FUNCTION__."claim " . $claim->id . " updated as 'linked'", 'warning');
+						Yii::log(__FUNCTION__."> claim " . $claim->id . " updated as 'linked'", 'warning');
 					}
 				}else {
 					Yii::log(__FUNCTION__."> author (".$author->id.")/user (".$requester->id. ") linking failed", 'warning');
 					$claim->status = "validation error";
 					$claim->actioner_id = Yii::app()->user->id;
 					if($claim->save()) {
-						Yii::log(__FUNCTION__."claim " . $claim->id . " updated as 'validation error'", 'warning');
+						Yii::log(__FUNCTION__."> claim " . $claim->id . " updated as 'validation error'", 'warning');
 					}
 				}
 
@@ -96,9 +96,23 @@ class AdminUserCommandController extends Controller
 				$claim->actioner_id = Yii::app()->user->id;
 				$now = new Datetime();
 				$claim->action_date = $now->format(DateTime::ISO8601);
-					if($claim->save()) {
-						Yii::log(__FUNCTION__."claim " . $claim->id . " updated as 'rejected'", 'warning');
+				if($claim->save()) {
+					Yii::log(__FUNCTION__."> claim " . $claim->id . " updated as 'rejected'", 'warning');
+				}
+				$author = Author::model()->findbyPk($claim->actionable_id);
+				if( (null != $author) && ($claim->requester_id == $author->gigadb_user_id) ){
+					$author->gigadb_user_id = null;
+					if($author->save()) {
+						Yii::log(__FUNCTION__."> author ".$author->id." has been unlinked from gigadb_user_id: ".$claim->requester_id , 'warning');
 					}
+					else {
+						Yii::log(__FUNCTION__."> author couldnt be saved",'warning');
+					}
+				}
+				else {
+					Yii::log(__FUNCTION__."> author ". $claim->actionable_id . " couldnt be found", 'warning');
+					Yii::log(__FUNCTION__."> claim->requester_id == author->gigadb_user_id ? " .$claim->requester_id." == " . $author->gigadb_user_id, 'warning');
+				}
 			}
 		}
 

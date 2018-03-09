@@ -21,7 +21,7 @@
 		array(
             'name'=>'actionable_id',
             // 'value'=>'Author::model()->findByPk($data->actionable_id)->getDisplayName()." (Author ".$data->actionable_id.")"',
-            'value'=>'"claim_author" == $data->action_label ? CHtml::link(Author::model()->findByPk($data->actionable_id)->getDisplayName()." (Author ".$data->actionable_id.")",array("AdminAuthor/view","id" => $data->actionable_id ), array("data-original-title"=>"Click to view linked Author info", "rel"=>"tooltip")) : $data->actionable_id;',
+            'value'=>'"claim_author" == $data->action_label ? CHtml::link(Author::model()->findByPk($data->actionable_id)->getDisplayName()." (Author ".$data->actionable_id.")",array("AdminAuthor/view","id" => $data->actionable_id ), array("data-original-title"=>"Click to view author info", "rel"=>"tooltip")) : $data->actionable_id;',
             'type'  => 'raw',
         ),
 		array(

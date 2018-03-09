@@ -62,3 +62,12 @@ Scenario: Admin can click on author to view more info
 	And I follow "Zhang G (Author 3791)"
 	Then I should be on "/AdminAuthor/view/id/3791"
 
+
+@ok
+Scenario: if a claim is rejected after being approved, the user is unlinked from author
+	Given a user has a pending claim for author "3791"
+	And an admin approved the claim for author "3791"
+	And an admin rejected the claim for author "3791"
+	When I go to "/AdminAuthor/view/id/3791"
+	Then I should not see "346"
+
