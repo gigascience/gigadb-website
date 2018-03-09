@@ -75,7 +75,7 @@ class AuthorUserContext extends BehatContext
      * @param $rowText
      * @return \Behat\Mink\Element\NodeElement
      */
-    private function findRowByText($rowText)
+    public function findRowByText($rowText)
     {
         $row = $this->getMainContext()->getSession()->getPage()->find('css', sprintf('table tr:contains("%s")', $rowText));
         PHPUnit_Framework_Assert::assertNotNull($row, 'Cannot find a table row with this text!');

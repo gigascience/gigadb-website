@@ -60,11 +60,12 @@ class AdminUserCommandController extends Controller
 				$author->gigadb_user_id = $requester->id;
 				if($author->save()) {
 					Yii::log(__FUNCTION__."> author (".$author->id.")/user (".$requester->id. ") linking has been performed", 'warning');
-					$claim->status = "done";
+					$claim->status = "linked";
 					$claim->actioner_id = Yii::app()->user->id;
+					$now = new Datetime();
+					$claim->action_date = $now->format(DateTime::ISO8601);
 					if($claim->save()) {
-						Yii::log(__FUNCTION__."claim " . $claim->id . " updated as 'done'", 'warning');
-						$this->redirect(array('adminAuthor/view','id'=>$author->id));
+						Yii::log(__FUNCTION__."claim " . $claim->id . " updated as 'linked'", 'warning');
 					}
 				}else {
 					Yii::log(__FUNCTION__."> author (".$author->id.")/user (".$requester->id. ") linking failed", 'warning');
@@ -72,7 +73,6 @@ class AdminUserCommandController extends Controller
 					$claim->actioner_id = Yii::app()->user->id;
 					if($claim->save()) {
 						Yii::log(__FUNCTION__."claim " . $claim->id . " updated as 'validation error'", 'warning');
-						$this->redirect(array('adminUserCommand/admin'));
 					}
 				}
 
@@ -80,28 +80,29 @@ class AdminUserCommandController extends Controller
 			}
 		}
 
-		$this->render('admin', array(
-				'model'=>new UserCommand('search'),
-		));
+		$this->redirect(array('adminUserCommand/admin'));
 
 	}
 
-		/**
-	 * Validate a claim by linking author with gigadb_user and updating user_command
+	/**
+	 * Reject a claim
 	 */
 	public function actionReject($id)
 	{
 		$claim=$this->loadModel($id);
 		if($claim) {
 			if ("claim_author" == $claim->action_label) {
-				Yii::log(__FUNCTION__."claim " . $claim->id . " has been deleted by an admin", 'warning');
-				$claim->delete();
+				$claim->status = "rejected";
+				$claim->actioner_id = Yii::app()->user->id;
+				$now = new Datetime();
+				$claim->action_date = $now->format(DateTime::ISO8601);
+					if($claim->save()) {
+						Yii::log(__FUNCTION__."claim " . $claim->id . " updated as 'rejected'", 'warning');
+					}
 			}
 		}
 
-		$this->render('admin', array(
-				'model'=>new UserCommand('search'),
-		));
+		$this->redirect(array('adminUserCommand/admin'));
 
 	}
 

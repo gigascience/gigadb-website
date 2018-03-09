@@ -51,6 +51,7 @@ class UserCommand extends CActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'requester' => array(self::BELONGS_TO, 'User', 'requester_id'),
+            'approved_by' => array(self::BELONGS_TO, 'User', 'actioner_id'),
         );
     }
 
@@ -61,12 +62,12 @@ class UserCommand extends CActiveRecord
     {
         return array(
             'id' => 'ID',
-            'action_label' => 'Action Label',
-            'requester_id' => 'Requester',
-            'actioner_id' => 'Actioner',
-            'actionable_id' => 'Actionable',
+            'action_label' => 'Claim type',
+            'requester_id' => 'Claimant',
+            'actioner_id' => 'Approved by',
+            'actionable_id' => 'Claimed entity',
             'request_date' => 'Request Date',
-            'action_date' => 'Action Date',
+            'action_date' => 'Approved on',
             'status' => 'Status',
         );
     }

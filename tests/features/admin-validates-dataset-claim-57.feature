@@ -13,7 +13,7 @@ Background:
 Scenario: Admin can access pending jobs from the administration page
 	Given I sign in as an admin
 	When I go to "/site/admin/"
-	Then I should see "User Commands"
+	Then I should see "Users Claims"
 
 @ok
 Scenario: Admin can see claims on dataset authorship
@@ -22,7 +22,7 @@ Scenario: Admin can see claims on dataset authorship
 	When I go to "/adminUserCommand/admin"
 	And the response should contain "claim_author"
 	Then the response should contain "Joy Fox (346)"
-	And the response should contain "Zhang G (3791)"
+	And the response should contain "Zhang G (Author 3791)"
 	And the response should contain "pending"
 
 @ok
@@ -30,15 +30,35 @@ Scenario: Admin can validate claims on dataset authorship
 	Given a user has a pending claim for author "3791"
 	And I sign in as an admin
 	When I go to "/adminUserCommand/admin"
-	And I follow "Validate claim"
+	And I click "validate" in the row for claim from "Joy Fox (346)"
 	And I wait "2" seconds
-	Then I should be on "/adminAuthor/view/id/3791"
-	And I should see "346"
+	Then the response should contain "Joe Bloggs"
+	Then the response should contain "linked"
 
 @ok
 Scenario: Admin can invalidate claims on dataset authorship
 	Given a user has a pending claim for author "3791"
 	And I sign in as an admin
 	When I go to "/adminUserCommand/admin"
-	And I follow "Reject claim"
-	Then the response should contain "No results found"
+	And I click "reject" in the row for claim from "Joy Fox (346)"
+	And I wait "2" seconds
+	Then the response should contain "rejected"
+	Then the response should contain "Joe Bloggs"
+
+
+@ok
+Scenario: Admin can click on claimant to view more info
+	Given a user has a pending claim for author "3791"
+	And I sign in as an admin
+	When I go to "/adminUserCommand/admin"
+	And I follow "Joy Fox (346)"
+	Then I should be on "/User/view/id/346"
+
+@ok
+Scenario: Admin can click on author to view more info
+	Given a user has a pending claim for author "3791"
+	And I sign in as an admin
+	When I go to "/adminUserCommand/admin"
+	And I follow "Zhang G (Author 3791)"
+	Then I should be on "/AdminAuthor/view/id/3791"
+

@@ -107,6 +107,22 @@ class ClaimDatasetContext extends BehatContext
         pg_close($dbconn);
     }
 
+    /**
+     * @When /^I click "([^"]*)" in the row for claim from "([^"]*)"$/
+     */
+    public function iClickInTheRowForClaimFrom($action, $requester_name)
+    {
+        $row = $this->getMainContext()->getSubContext("admins_attach_author_user")->findRowByText($requester_name);
+        if ("delete" == $action) {
+            $this->getMainContext()->getSession()->getDriver()->executeScript("window.confirm = function(msg){return true;};");
+            $link = $row->findLink('');
+        }
+        else {
+            $link = $row->findById($action);
+        }
+        PHPUnit_Framework_Assert::assertNotNull($link, 'Cannot find link in row with text '.$action);
+        $link->click();
+    }
 
     /**
      * @AfterScenario @user-claims-dataset
