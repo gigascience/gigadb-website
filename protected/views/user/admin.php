@@ -70,7 +70,9 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 <script>
 function open_controls(user_id) {
     $("#controls").data('user_id', user_id);
-    $("#controls").dialog("open"); return false;
+    $("#controls").dialog( "option", "title", "Manage User Id: " + user_id);
+    $("#controls").dialog("open"); 
+    return false;
 }
 
 function goto_userview() {

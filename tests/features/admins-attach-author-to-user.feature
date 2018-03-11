@@ -59,17 +59,6 @@ Scenario: From user view, find an author to attach
 	And I should see "Cancel attaching author"
 
 @ok
-Scenario: From user edit form, find an author to attach
-	Given default admin user exists
-	And I sign in as an admin
-	And I am on "/user/update/id/345"
-	When I follow "Attach an author to this user"
-	Then I should be on "/adminAuthor/admin/attach_user/345"
-	And I should see "Click on a row to link that author with user John Smith"
-	And I should see "Cancel attaching author"
-
-
-@ok
 Scenario: Attach an author
 	Given default admin user exists
 	And I sign in as an admin
@@ -110,4 +99,26 @@ Scenario: There is a link to author button on the admin user table
 	When I click on the row for user id "345"
 	And I wait "2" seconds
 	Then I should see "Link this user to an author"
+
+
+@ok @javascript
+Scenario: On user view, a user an admin want to link to an author has pending claim
+ 	Given default admin user exists
+ 	And default user exists
+ 	And a user has a pending claim for author "3791"
+	And I sign in as an admin
+	When I go to "/user/view/id/345"
+	Then the response should not contain "Attach an author to this user"
+	And the response should contain "This user has a pending claim. Click for details"
+
+@ok
+Scenario: on user view, the linking button is not shown if the user is already attached to an author
+	Given default admin user exists
+ 	And default user exists
+ 	Given author "3794" is associated with user "345"
+ 	And I sign in as an admin
+	When I go to "/user/view/id/345"
+	Then the response should not contain "Attach an author to this user"
+	And the response should not contain "This user has a pending claim. Click for details"
+
 
