@@ -30,17 +30,17 @@ Scenario: a user is shown a modal to claim his/her dataset by reconcilling his/h
 	And the response should contain "Lambert DM"
 	And the response should contain "Wang J"
 	And the response should contain "Zhang G"
-	And the response should contain "Claim selected author"
 
-@ok @javascript
+@ok @javascript @insulate @tofix @todo
 Scenario: a user select an author to claim and submit the claim form
 	Given I sign in as a user
 	And I am on "/dataset/100002"
 	When I follow "Are you an author of this dataset? claim your dataset now"
-	And I check the "Zhang G" radio button
-	And I follow "Claim selected author"
-	And I wait "5" seconds
-	Then I should see "Your claim has been submitted to the administrators."
+	And I wait "1" seconds
+	# And I take a screenshot named "expect_modal"
+	And I click on button for author id "3791"
+	And I wait "1" seconds
+	Then the response should contain "Your claim has been submitted to the administrators."
 	And the response should contain "You can close this box now."
 
 
@@ -50,9 +50,9 @@ Scenario: a user with a pending claim visit dataset page and attempt to claim an
 	And I sign in as a user
 	And I am on "/dataset/100002"
 	When I follow "Are you an author of this dataset? claim your dataset now"
-	And I check the "Zhang G" radio button
-	And I follow "Claim selected author"
-	And I wait "5" seconds
+	And I wait "1" seconds
+	And I click on button for author id "3791"
+	And I wait "1" seconds
 	Then the response should contain "We cannot submit the claim:"
 	And the response should contain "You already have a pending claim"
 	And the response should contain "You can close this box now."

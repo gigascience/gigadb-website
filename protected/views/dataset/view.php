@@ -65,13 +65,40 @@ HTML;
                             <?php echo MyHtml::beginForm('/userCommand/claim','GET'); ?>
                                 <div class="modal-body text-center">
                                     <?php if (count($model->authors) > 0) { ?>
+                                            <ul>
                                             <?php foreach ($model->authors as $author) { ?>
-                                                <label for="author_<? echo $author->id ?>" class="radio">
-                                                    <input type="radio" name="author_id" id="author_<? echo $author->id ?>" value="<? echo $author->id ?>">
-                                                    <? echo $author->getDisplayName() ?>
-                                                    <br/>
-                                                </label>
+                                                <li>
+<?php
+                                        $status_array = array('Request', 'Incomplete', 'Uploaded');
+                                        echo CHtml::ajaxLink($author->getDisplayName()."<br/>",Yii::app()->createUrl('/userCommand/claim'),
+                                        array(
+                                            'type'=>'GET',
+                                            'data'=> array('dataset_id'=>'js:$("#dataset_id").val()',
+                                                'author_id' => $author->id),
+                                            'dataType'=>'json',
+                                            'success'=>'js:function(output){
+                                                document.getElementById("message").removeAttribute("class");
+                                                $("#claim_button").toggleClass("disable");
+                                                if(output.status){
+                                                    $("#message").addClass("alert").addClass("alert-success");
+                                                    $("#message").html(output.message);
+
+                                                } else {
+                                                    $("#message").addClass("alert").addClass("alert-error");
+                                                    $("#message").html(output.message);
+                                                }
+                                                $("#advice").addClass("alert").addClass("alert-info");
+                                                $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
+                                            }',
+                                        ),array('class'=>'btn btn-green',
+                                                'id' =>'claim_button_' . $author->id,
+                                                // 'disabled'=>in_array($model->upload_status, $status_array),
+                                        ));
+
+                                        ?>
+                                                </li>
                                             <? } ?>
+                                        </ul>
                                     <? } ?>
                                 </div>
                                 <div class="modal-footer">
@@ -104,34 +131,7 @@ HTML;
                                         ));
 
                                     ?>
-                                    <?php
-                                        $status_array = array('Request', 'Incomplete', 'Uploaded');
-                                        echo CHtml::ajaxLink('Claim selected author',Yii::app()->createUrl('/userCommand/claim'),
-                                        array(
-                                            'type'=>'GET',
-                                            'data'=> array('dataset_id'=>'js:$("#dataset_id").val()',
-                                                'author_id' => 'js:$("input[name=author_id]:checked").val()'),
-                                            'dataType'=>'json',
-                                            'success'=>'js:function(output){
-                                                document.getElementById("message").removeAttribute("class");
-                                                $("#claim_button").toggleClass("disable");
-                                                if(output.status){
-                                                    $("#message").addClass("alert").addClass("alert-success");
-                                                    $("#message").html(output.message);
 
-                                                } else {
-                                                    $("#message").addClass("alert").addClass("alert-error");
-                                                    $("#message").html(output.message);
-                                                }
-                                                $("#advice").addClass("alert").addClass("alert-info");
-                                                $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
-                                            }',
-                                        ),array('class'=>'btn btn-green',
-                                                'id' =>'claim_button',
-                                                // 'disabled'=>in_array($model->upload_status, $status_array),
-                                        ));
-
-                                        ?>
                                 </div>
                             </form>
                             </div>

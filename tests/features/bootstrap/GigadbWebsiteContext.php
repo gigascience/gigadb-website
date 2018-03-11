@@ -66,10 +66,19 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
                 $content = $this->getSession()->getDriver()->getContent();
                 $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
                 file_put_contents("/tmp/".$file_and_path.".html", $content);
-                if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
-                    // exec('open -a "Preview.app" ' . $file_and_path.".png");
-                    exec('open -a "Safari.app" ' . $file_and_path.".html");
-                }
+                // if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
+                //     // exec('open -a "Preview.app" ' . $file_and_path.".png");
+                //     exec('open -a "Safari.app" ' . $file_and_path.".html");
+                // }
+
+                // $driver = $this->getSession()->getDriver();
+                // if ($driver instanceof Behat\Mink\Driver\Selenium2Driver) {
+                //     file_put_contents('/tmp/latest.png', $this->getSession()->getDriver()->getScreenshot());
+                // }
+                // else {
+                //     print_r("cannot take screenshot with this driver");
+                //     print_r(var_dump($driver));
+                // }
             }
             catch (Behat\Mink\Exception\DriverException $e) {
                 print_r("Unable to take a snatpshot");
@@ -177,7 +186,19 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
 
     }
 
-
+    /**
+     * @Given /^I take a screenshot named "([^"]*)"$/
+     */
+    public function itakeAScreenshot($name) {
+        $driver = $this->getSession()->getDriver();
+        if ($driver instanceof Behat\Mink\Driver\Selenium2Driver) {
+            file_put_contents("/tmp/screenshot_".$name.".png", $this->getSession()->getDriver()->getScreenshot());
+        }
+        else {
+            print_r("cannot take screenshot with this driver");
+            print_r(var_dump($driver));
+        }
+    }
 
 
 
