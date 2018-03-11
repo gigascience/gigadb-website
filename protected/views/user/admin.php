@@ -126,7 +126,7 @@ function goto_userdelete() {
 
 function goto_userlinkauthor() {
 <?
-  echo 'var base_url = "'.Yii::app()->urlManager->createUrl('adminAuthor/admin',array('attach_user'=>'')).'";'
+  echo 'var base_url = "'.Yii::app()->urlManager->createUrl('adminAuthor/prepareUserLink',array('user_id'=>'')).'";'
 ?>
   var user_id = $("#controls").data('user_id');
   window.location= base_url + "/" + user_id; 

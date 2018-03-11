@@ -32,8 +32,8 @@
                                     array('class' => 'btn'));
       }
       else if ( null ==  $linked_author) {
-          echo CHtml::link('Attach an author to this user', 
-                                    array('adminAuthor/admin', 'attach_user'=>$model->id),
+          echo CHtml::link('Link this user to an author', 
+                                    array('adminAuthor/prepareUserLink', 'user_id'=>$model->id),
                                     array('class' => 'btn')); 
       }else {
 ?>

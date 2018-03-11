@@ -55,10 +55,38 @@ class AuthorUserContext extends BehatContext
     {
         return array(
             new Step\Given("I am on \"/user/view/id/${arg1}\""),
-            new Step\When("I follow \"Attach an author to this user\""),
-            new Step\Then("I should be on \"/adminAuthor/admin/attach_user/${arg1}\"")
+            new Step\When("I follow \"Link this user to an author\""),
+            new Step\When("I wait \"2\" seconds"),
+            new Step\Then("I should be on \"/adminAuthor/admin\""),
+            new Step\Then("I should see \"Click on a row to proceed with linking that author with user\""),
         );
     }
+
+
+
+     /**
+     * @Given /^I have linked user "([^"]*)" of id "([^"]*)" to author "([^"]*)"$/
+     */
+    public function iHaveLinkedUserOfIdToAuthor($user_name, $user_id, $author_id)
+    {
+        return array(
+            new Step\When("I click on the row for author id \"${author_id}\""),
+            new Step\When("I wait \"2\" seconds"),
+            new Step\When("I follow \"Link user ${user_name} to that author\""),
+            new Step\When("I wait \"2\" seconds"),
+            new Step\Then("I should be on \"/user/view/id/${user_id}\""),
+        );
+    }
+
+
+    /**
+     * @When /^I click on the row for author id "([^"]*)"$/
+     */
+    public function iClickOnTheRowForAuthorId($author_id)
+    {
+        $this->getMainContext()->getSession()->executeScript("open_controls(" . $author_id . ")");
+    }
+
 
     /**
      * @When /^I click on the row for user id "([^"]*)"$/

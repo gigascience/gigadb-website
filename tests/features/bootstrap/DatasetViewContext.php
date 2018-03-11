@@ -52,7 +52,7 @@ class DatasetViewContext extends BehatContext
      */
     public function gigadbWebSiteIsLoadedWithProductionLikeData()
     {
-        $sqlfile = "author-names-80-81-82.pgdmp";
+        $sqlfile = "production_like.pgdmp";
         return array(
             new Step\Given("Gigadb web site is loaded with \"${sqlfile}\" data"),
         );

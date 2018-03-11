@@ -46,85 +46,8 @@ Scenario: populate author form with a user id already used triggers error
 	Then I should be on "/adminAuthor/update/id/3791"
 	And I should see "Gigadb User \"345\" has already been taken"
 
-
-
-@ok
-Scenario: From user view, find an author to attach
-	Given default admin user exists
-	And I sign in as an admin
-	And I am on "/user/view/id/345"
-	When I follow "Attach an author to this user"
-	Then I should be on "/adminAuthor/admin/attach_user/345"
-	And I should see "Click on a row to link that author with user John Smith"
-	And I should see "Cancel attaching author"
-
-@ok
-Scenario: Attach an author
-	Given default admin user exists
-	And I sign in as an admin
-	And I have initiated the search of an author for Gigadb User with ID "345"
-	And I am on "/adminAuthor/admin/attach_user/345"
-	When I click "Update" in the row for author "Wang"
-	Then I should be on "/adminAuthor/update/id/3790"
-	And the "Gigadb User" field should contain "345"
-
-
-@ok
-Scenario: Cancel attaching an author
-	Given default admin user exists
-	And I sign in as an admin
-	And I have initiated the search of an author for Gigadb User with ID "345"
-	And I am on "/adminAuthor/admin/attach_user/345"
-	When I follow "Cancel attaching author"
-	Then I should be on "/adminAuthor/admin"
-	And I should not see "Click on a row to link that author with user John Smith"
-	And I should not see "Cancel attaching author"
-
-@ok
-Scenario: Managing author when attaching
-	Given default admin user exists
-	And I sign in as an admin
-	When I have initiated the search of an author for Gigadb User with ID "345"
-	Then I am on "/adminAuthor/admin/attach_user/345"
-	And I should see "Click on a row to link that author with user John Smith"
-	And I should see "Click on \"Cancel attaching author\" to abort"
-	And I should see "You can also create a new author to have the user attached to by clicking on \"Create a new author\""
-
-
-@ok @javascript
-Scenario: There is a link to author button on the admin user table
-	Given default admin user exists
-	And I sign in as an admin
-	And I am on "/user/admin"
-	When I click on the row for user id "345"
-	And I wait "2" seconds
-	Then I should see "Link this user to an author"
-
-
-@ok @javascript
-Scenario: On user view, a user that an admin wants to link to an author has pending claim
- 	Given default admin user exists
- 	And default user exists
- 	And a user has a pending claim for author "3791"
-	And I sign in as an admin
-	When I go to "/user/view/id/345"
-	Then the response should not contain "Attach an author to this user"
-	And the response should contain "This user has a pending claim. Click for details"
-
-@ok
-Scenario: on user view and the user is already attached to an author
-	Given default admin user exists
- 	And default user exists
- 	Given author "3794" is associated with user "345"
- 	And I sign in as an admin
-	When I go to "/user/view/id/345"
-	Then the response should not contain "Attach an author to this user"
-	And the response should not contain "This user has a pending claim. Click for details"
-	And the response should contain "Pan S"
-
-
-@ok @javascript
-Scenario: on author view, if there is a pending claim
+@ok @javascript @admin-author-form-add-user
+Scenario: on author view, if there is a pending claim, link to pending claims
 	Given default admin user exists
 	And default user exists
 	And a user has a pending claim for author "3791"
@@ -132,4 +55,122 @@ Scenario: on author view, if there is a pending claim
 	When I go to "/adminAuthor/view/id/3791"
 	Then I should see "There is a pending claim on this author. Click for details"
 
+
+@ok @javascript @admin-link-author-from-user
+Scenario: On user list, there is a button to start the process for linking to an author
+	Given default admin user exists
+	And I sign in as an admin
+	And I am on "/user/admin"
+	When I click on the row for user id "345"
+	And I wait "2" seconds
+	Then I should see "Link this user to an author"
+
+@ok @admin-link-author-from-user
+Scenario: On user view, there is a button to start the process for linking to an author
+	Given default admin user exists
+	And I sign in as an admin
+	When I go to "/user/view/id/345"
+	Then I should see "Link this user to an author"
+
+@ok @javascript @admin-link-author-from-user
+Scenario: On user view, if user has pending claim, link to pending claims
+ 	Given default admin user exists
+ 	And default user exists
+ 	And a user has a pending claim for author "3791"
+	And I sign in as an admin
+	When I go to "/user/view/id/345"
+	Then the response should not contain "Link this user to an author"
+	And the response should contain "This user has a pending claim. Click for details"
+
+@ok @admin-link-author-from-user
+Scenario: On user view, if user is already attached to an author, show author name
+	Given default admin user exists
+ 	And default user exists
+ 	Given author "3794" is associated with user "345"
+ 	And I sign in as an admin
+	When I go to "/user/view/id/345"
+	Then the response should not contain "Link this user to an author"
+	And the response should not contain "This user has a pending claim. Click for details"
+	And the response should contain "Pan S"
+
+@ok @admin-link-author-from-user @javascript
+Scenario: From user view, load the author list with the user specific controls to select author to link
+	Given default admin user exists
+	And I sign in as an admin
+	And I am on "/user/view/id/345"
+	When I follow "Link this user to an author"
+	And I wait "2" seconds
+	Then I should be on "/adminAuthor/admin"
+	And I should see "Click on a row to proceed with linking that author with user John Smith"
+
+@ok @admin-link-author-from-user @javascript
+Scenario: From user list, load the author list with the user specific controls to select author to link
+	Given default admin user exists
+	And I sign in as an admin
+	And I am on "/user/admin/"
+	When I click on the row for user id "345"
+	And I follow "Link this user to an author"
+	And I wait "2" seconds
+	Then I should be on "/adminAuthor/admin"
+	And I should see "Click on a row to proceed with linking that author with user John Smith"
+
+@ok @admin-link-author-from-user
+Scenario: loading the author list directly doesn't show the user specific controls for selecting author to link
+	Given default admin user exists
+	And I sign in as an admin
+	When I go to "/adminAuthor/admin"
+	Then the response should not contain "Click on a row to proceed with linking that author with user"
+	And the response should contain "Manage Authors"
+
+@ok @admin-link-author-from-user @javascript
+Scenario: From author list with the user specific controls, find and link an author
+	Given default admin user exists
+	And I sign in as an admin
+	And I have initiated the search of an author for Gigadb User with ID "345"
+	When I click on the row for author id "3791"
+	And I wait "2" seconds
+	And I follow "Link user John Smith to that author"
+	And I wait "2" seconds
+	Then I should be on "/user/view/id/345"
+	And I should see "Zhang G"
+
+@ok @admin-link-author-from-user @javascript
+Scenario: From author list with the user specific controls, click an author row, then abort the linking
+	Given default admin user exists
+	And I sign in as an admin
+	And I have initiated the search of an author for Gigadb User with ID "345"
+	When I click on the row for author id "3791"
+	And I wait "2" seconds
+	And I follow "Abort and clear selected user"
+	And I wait "2" seconds
+	Then I should be on "/user/view/id/345"
+	And I should not see "Zhang G"
+
+@ok @admin-link-author-from-user @javascript
+Scenario: After a user has been linked to an author, ensure that the session is cleaned up
+	Given default admin user exists
+	And I sign in as an admin
+	And I have initiated the search of an author for Gigadb User with ID "345"
+	And I have linked user "John Smith" of id "345" to author "3791"
+	When I go to "/adminAuthor/admin"
+	Then the response should not contain "Click on a row to proceed with linking that author with user"
+
+
+@ok @admin-link-author-from-user @javascript
+Scenario: From user list, if a user is already linked to an author, show a message rather than a linking button
+	Given default admin user exists
+	And author "3794" is associated with user "345"
+	And I sign in as an admin
+	And I am on "/user/admin/"
+	When I click on the row for author id "3791"
+	And I wait "2" seconds
+	And I follow "Link this user to an author"
+	And I wait "2" seconds
+	Then I should be on "/adminAuthor/admin"
+	# And I should see "The user John Smith is already associated to author Pan S (3794)"
+	And I should not see "Click on a row to proceed with linking that author with user"
+
+# TODO
+# @wip
+# Scenario: From author list with the user specific controls, click an alert close button, will also clear the user from session
 

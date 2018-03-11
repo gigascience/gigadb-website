@@ -27,7 +27,7 @@ class AdminAuthorController extends Controller
 	{
 		return array(
 			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update'),
+				'actions'=>array('admin','delete','index','view','create','update','prepareUserLink','linkUser'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -124,6 +124,61 @@ class AdminAuthorController extends Controller
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
+	}
+
+	/**
+	 * Create a session to allow admin to search an author to link to the session-saved user
+	 */
+	public function actionPrepareUserLink($user_id, $abort="no") {
+		if( null != $user_id && "no" == $abort ){
+			if (preg_match("/^\d+$/", $user_id)) {
+				Yii::app()->session['attach_user'] = $user_id;
+				Yii::log(__FUNCTION__."> new session var: attach_user = ". $user_id, 'info');
+			}
+			$this->redirect(array('adminAuthor/admin'));
+		}
+		else if (null != $user_id && "yes" == $abort) {
+				unset(Yii::app()->session['attach_user']);
+				Yii::log(__FUNCTION__."> unset session var: attach_user", 'info');
+				$this->redirect(array('user/view','id'=>$user_id));
+		}
+		else {
+			Yii::log(__FUNCTION__."> There is a problem with parameters received", 'error');
+		}
+	}
+
+
+	public function actionLinkUser($id) {
+		$author = $this->loadModel($id);
+		if ( isset(Yii::app()->session['attach_user']) ) {
+			$user = User::model()->findByPk(Yii::app()->session['attach_user']);
+			if (null != $user) {
+				$author->gigadb_user_id = $user->id ;
+				if( $author->save() ) {
+					Yii::log(__FUNCTION__."> author (".$author->id.")/user (.".$user->id.".) linking has been performed",
+						'info');
+					if ($user->id == Yii::app()->session['attach_user']) {
+						unset(Yii::app()->session['attach_user']);
+					}
+					$this->redirect(array('user/view','id'=>$user->id));
+				}
+				else {
+					Yii::log(__FUNCTION__."> error while updating gigadb_user_id in author. " .implode(" ",$author->getErrors()['gigadb_user_id']), 'error');
+				}
+			}
+			else {
+				Yii::app()->user->setFlash('error', "user to link doesn't exist");
+				Yii::log(__FUNCTION__."> user to link doesn't exist", 'error');
+				$this->render('view',array(
+					'model'=>$author,
+				));
+			}
+
+		}
+		else {
+			Yii::log(__FUNCTION__."> attach_user is not set in session", 'error');
+		}
+
 	}
 
 	/**
