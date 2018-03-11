@@ -10,7 +10,7 @@ Background:
 	When I go to "/dataset/100002"
 	Then I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
 
-@ok
+@ok @admin-author-form-add-user
 Scenario: populate user identity field when creating an author
 	Given default admin user exists
 	And I sign in as an admin
@@ -24,7 +24,7 @@ Scenario: populate user identity field when creating an author
 	And the response should contain "345"
 	And the response should contain "Tano AF"
 
-@ok
+@ok @admin-author-form-add-user
 Scenario: populate user identity field when updating an author
 	Given default admin user exists
 	And I sign in as an admin
@@ -35,7 +35,7 @@ Scenario: populate user identity field when updating an author
 	And I should see "Gigadb User"
 	And I should see "345"
 
-@ok
+@ok @admin-author-form-add-user
 Scenario: populate author form with a user id already used triggers error
 	Given default admin user exists
 	And I sign in as an admin
@@ -45,6 +45,8 @@ Scenario: populate author form with a user id already used triggers error
 	And press "Save"
 	Then I should be on "/adminAuthor/update/id/3791"
 	And I should see "Gigadb User \"345\" has already been taken"
+
+
 
 @ok
 Scenario: From user view, find an author to attach
@@ -99,4 +101,13 @@ Scenario: Managing author when attaching
 	And I should see "Click on \"Cancel attaching author\" to abort"
 	And I should see "You can also create a new author to have the user attached to by clicking on \"Create a new author\""
 
+
+@ok @javascript
+Scenario: There is a link to author button on the admin user table
+	Given default admin user exists
+	And I sign in as an admin
+	And I am on "/user/admin"
+	When I click on the row for user id "345"
+	And I wait "2" seconds
+	Then I should see "Link this user to an author"
 

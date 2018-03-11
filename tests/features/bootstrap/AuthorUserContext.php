@@ -60,6 +60,15 @@ class AuthorUserContext extends BehatContext
         );
     }
 
+    /**
+     * @When /^I click on the row for user id "([^"]*)"$/
+     */
+    public function iClickOnTheRowForUserId($user_id)
+    {
+        $row = $this->findRowByText($user_id);
+        $this->getMainContext()->getSession()->executeScript("open_controls(" . $user_id . ")");
+    }
+
      /**
      * @When /^I click "([^"]*)" in the row for author "([^"]*)"$/
      */
