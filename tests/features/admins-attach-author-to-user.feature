@@ -102,7 +102,7 @@ Scenario: There is a link to author button on the admin user table
 
 
 @ok @javascript
-Scenario: On user view, a user an admin want to link to an author has pending claim
+Scenario: On user view, a user that an admin wants to link to an author has pending claim
  	Given default admin user exists
  	And default user exists
  	And a user has a pending claim for author "3791"
@@ -112,7 +112,7 @@ Scenario: On user view, a user an admin want to link to an author has pending cl
 	And the response should contain "This user has a pending claim. Click for details"
 
 @ok
-Scenario: on user view, the linking button is not shown if the user is already attached to an author
+Scenario: on user view and the user is already attached to an author
 	Given default admin user exists
  	And default user exists
  	Given author "3794" is associated with user "345"
@@ -120,5 +120,16 @@ Scenario: on user view, the linking button is not shown if the user is already a
 	When I go to "/user/view/id/345"
 	Then the response should not contain "Attach an author to this user"
 	And the response should not contain "This user has a pending claim. Click for details"
+	And the response should contain "Pan S"
+
+
+@ok @javascript
+Scenario: on author view, if there is a pending claim
+	Given default admin user exists
+	And default user exists
+	And a user has a pending claim for author "3791"
+	And I sign in as an admin
+	When I go to "/adminAuthor/view/id/3791"
+	Then I should see "There is a pending claim on this author. Click for details"
 
 

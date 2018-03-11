@@ -13,6 +13,10 @@ $this->menu=array(
 );
 ?>
 
+<?php
+    $user_command = UserCommand::model()->findByAttributes(array("actionable_id" => $model->id, "action_label" => "claim_author"));
+?>
+
 <h1>View Author #<?php echo $model->id; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
@@ -26,3 +30,13 @@ $this->menu=array(
 		'rank',
 	),
 )); ?>
+
+<div class="clear"></div>
+<?php
+      if ( null != $user_command ) {
+          echo CHtml::link('There is a pending claim on this author. Click for details', 
+                                    array('AdminUserCommand/admin'),
+                                    array('class' => 'btn'));
+      }
+
+?>

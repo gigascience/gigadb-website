@@ -1,6 +1,10 @@
 <h1>View User #<?php echo $model->id; ?></h1>
 
-<div class="clear"></div>
+<?php
+      $user_command = UserCommand::model()->findByAttributes(array("requester_id" => $model->id, "status" => "pending")) ;
+      $linked_author = Author::findAttachedAuthorByUserId($model->id) ;
+
+?>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
   'data'=>$model,
@@ -21,14 +25,19 @@
 )); ?>
 
 <div class="clear"></div>
-<?php if ( null != UserCommand::model()->findByAttributes(array("requester_id" => $model->id, "status" => "pending")) ) {
+<?php
+      if ( null != $user_command ) {
           echo CHtml::link('This user has a pending claim. Click for details', 
                                     array('AdminUserCommand/admin'),
                                     array('class' => 'btn'));
       }
-      else if ( null == Author::findAttachedAuthorByUserId($model->id) ) {
+      else if ( null ==  $linked_author) {
           echo CHtml::link('Attach an author to this user', 
                                     array('adminAuthor/admin', 'attach_user'=>$model->id),
                                     array('class' => 'btn')); 
+      }else {
+?>
+        <div class="alert">This user is linked to author: <? echo $linked_author->getDisplayName() ?> (<? echo $linked_author->id ?>)</div>
+<?php
       }
 ?>
