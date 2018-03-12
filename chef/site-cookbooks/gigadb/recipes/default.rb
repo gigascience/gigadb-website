@@ -46,6 +46,13 @@ group 'gigadb-admin' do
 end
 
 
+#########################
+#### Directory admin ####
+#########################
+
+yii_framework node[:yii][:version] do
+    symlink "#{site_dir}/../yii"
+end
 
 include_recipe "gigadb::google_analytics_setup"
 
@@ -60,13 +67,6 @@ when 'debian'
     include_recipe 'gigadb::debian'
 end
 
-#########################
-#### Directory admin ####
-#########################
-
-yii_framework node[:yii][:version] do
-    symlink "#{site_dir}/../yii"
-end
 
 ####################################
 #### Set up PostgreSQL database ####
