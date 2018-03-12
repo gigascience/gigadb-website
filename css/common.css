@@ -91,7 +91,7 @@ table.table a {
     padding: 0px 0px 0px 10px;
 }
 .image-background {
-    background: transparent url(../images/new_interface_image/banner.jpg)repeat scroll center center;
+    background: transparent url(../images/banner.jpg)repeat scroll center center;
 }
 .color-background {
     background-color: #f8f8f8;
@@ -969,4 +969,38 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
 }
 .bootstrap-datetimepicker-widget table td.today::before {
     border-bottom-color: #099242;
+}
+.dataset-des-images {
+  max-height: 50px;
+  margin-right: 10px;
+  height: 28px;
+}
+.dataset-des-images:hover {
+  opacity: 0.6;
+}
+.count-btn{
+	margin-right:20px;
+	float:left;
+	margin-top: 0px;
+	iframe {
+		max-height: 25px;
+		max-width: 90px;
+	}
+}
+
+#facebook-share-btn {
+/*	position: relative;
+	top: -15px;
+	left: -90px;*/
+}
+.download-btn {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-image: url('/images/download-icon.png');
+  margin-left: auto;
+  margin-right: auto;
+}
+.download-btn:hover {
+  background-position: 0 -27px;
 }
