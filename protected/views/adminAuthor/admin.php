@@ -72,7 +72,7 @@
 
 <?php if (null != $user) { ?>
 	<a href="#" class="btn btn-active" title="link" onclick="link_to_author();">Link user <? echo $user->first_name . " " . $user->last_name ?> to that author</a>
-
+<div class="clear"></div>
 <?php echo CHtml::link('Abort and clear selected user', array('adminAuthor/prepareUserLink',
                    'user_id'=>$user->id,'abort'=>'yes'), array('class'=>'btn btn-active')); ?>
 
