@@ -12,20 +12,20 @@ Background:
 Scenario: Give users a button to claim a dataset they have authored
 	Given I sign in as a user
 	When I am on "/dataset/100002"
-	Then I should see "Are you an author of this dataset? claim your dataset"
+	Then I should see "Your dataset?"
 
 @ok
 Scenario: Non logged-in visitors should not see the button
 	Given I am not logged in to Gigadb web site
 	When I am on "/dataset/100002"
-	Then I should not see "Are you an author of this dataset? claim your dataset"
+	Then I should not see "Your dataset?"
 
 
 @ok
 Scenario: a user is shown a modal to claim his/her dataset by reconcilling his/her author identity to his/her account
 	Given I sign in as a user
 	And I am on "/dataset/100002"
-	When I follow "Are you an author of this dataset? claim your dataset now"
+	When I follow "Your dataset?"
 	Then the response should contain "Select an author to link to your Gigadb User ID"
 	And the response should contain "Lambert DM"
 	And the response should contain "Wang J"
@@ -35,7 +35,7 @@ Scenario: a user is shown a modal to claim his/her dataset by reconcilling his/h
 Scenario: a user select an author to claim and submit the claim form
 	Given I sign in as a user
 	And I am on "/dataset/100002"
-	When I follow "Are you an author of this dataset? claim your dataset now"
+	When I follow "Your dataset?"
 	And I wait "1" seconds
 	# And I take a screenshot named "expect_modal"
 	And I click on button for author id "3791"
@@ -49,7 +49,7 @@ Scenario: a user with a pending claim visit dataset page and attempt to claim an
 	Given a user has a pending claim for author "3791"
 	And I sign in as a user
 	And I am on "/dataset/100002"
-	When I follow "Are you an author of this dataset? claim your dataset now"
+	When I follow "Your dataset?"
 	And I wait "1" seconds
 	And I click on button for author id "3791"
 	And I wait "1" seconds
@@ -62,14 +62,14 @@ Scenario: a user already associated to an author cannot claim another author
 	Given author "3794" is associated with a user
 	When I sign in as a user
     And I go to "/dataset/100002"
-	Then I should not see "Are you an author of this dataset? claim your dataset"
+	Then I should not see "Your dataset?"
 
 @ok @javascript
 Scenario: a user with a pending claim can cancel the claim
 	Given a user has a pending claim for author "3791"
 	And I sign in as a user
 	And I am on "/dataset/100002"
-	When I follow "Are you an author of this dataset? claim your dataset now"
+	When I follow "Your dataset?"
 	And I wait "5" seconds
 	And I follow "Cancel current claim"
 	And I wait "5" seconds

@@ -93,7 +93,7 @@ class ClaimDatasetContext extends BehatContext
         return array(
                 new Step\Given("I sign in as a user"),
                 new Step\Given("I am on \"/dataset/100002\""),
-                new Step\When("I follow \"Are you an author of this dataset? claim your dataset now\""),
+                new Step\When("I follow \"Your dataset?\""),
                 new Step\When("I wait \"2\" seconds"),
                 new Step\When("I click on button for author id \"".$author_id."\""),
                 new Step\When("I wait \"2\" seconds"),

@@ -51,9 +51,11 @@ HTML;
                     </a>
                     <? if( ! Yii::app()->user->isGuest && null == Author::findAttachedAuthorByUserId(Yii::app()->user->id) ) { ?>
                         <? Yii::log(__FUNCTION__."> Author::findAttachedAuthorByUserId:".Author::findAttachedAuthorByUserId(Yii::app()->user->id) , 'warning'); ?>
-                        <a href="#myModal" role="button" class="btn btn-green" data-toggle="modal">
-                            Are you an author of this dataset? claim your dataset now
-                        </a>
+                        <span title="click to claim the dataset and link your user account to an author" data-toggle="tooltip" data-placement="bottom">
+                            <a href="#myModal" role="button" class="btn btn-green" data-toggle="modal">
+                                Your dataset?
+                            </a>
+                        </span>
                         <!-- Modal -->
                         <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-header">
