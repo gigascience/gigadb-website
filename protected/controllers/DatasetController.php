@@ -6,7 +6,7 @@ class DatasetController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	//public $layout='//layouts/new_column2';
 
 	/**
 	 * @return array action filters
@@ -50,6 +50,7 @@ class DatasetController extends Controller
 	public function actionView($id)	{
         $form = new SearchForm;  // Use for Form
         $dataset = new Dataset; // Use for auto suggestion
+        $this->layout='new_column2';
         $model = Dataset::model()->find("identifier=?", array($id));
         if (!$model) {
 

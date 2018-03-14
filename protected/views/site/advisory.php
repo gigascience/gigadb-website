@@ -3,91 +3,49 @@ $this->pageTitle='GigaDB - About';
 
 //echo $this->renderInternal('Yii::app()->basePath'.'/../files/html/about.html');
 ?>
-
-
 <div class="clear"></div>
-<div class="row">
-    <div class="about-tabs-container">
-        <a class="btn about-tabs" href="/site/about">General Information</a>
-        <a class="btn about-tabs tab-active" href="/site/advisory">Advisory Panel</a>
-        <a class="btn about-tabs" href="/site/faq">FAQ</a>
-    </div>
-    <div class="about1">        
-        <p>
-            On top of the excellent <a href="http://www.gigasciencejournal.com/about/edboard">Editorial Board</a> that advises 
-            <a href="http://www.gigasciencejournal.com/" target="_blank"><em>GigaScience Journal</em></a>, in order to aid 
-            <a href="/site/index" target="_blank"><em>GigaDB</em></a> in following best practices, advancing community 
-            needs, and taking advantage of novel ideas/tools that can promote innovation as the database evolves, we also have the 
-            following more focused <a href="/site/index" target="_blank"><em>GigaDB</em></a> advisory panel. 
-            To enable transparency and accountability of practice, as well as open the database for feedback and community 
-            involvement please feel free to discuss with our board and the GigaScience team (and contribute and comment through 
-            the database <a href="http://gigadb.org/site/https//github.com/gigascience">GitHub page</a>) any questions, problems 
-            or ideas you may have.
-        </p>
-
-        <br> <br>
-
-        <div class="people">
-            <p>
-                <img class="people1" title="Dr Paul Flicek" align="right" src="/images/Paul.png" alt="">
-                <b>Dr Paul Flicek</b> <br> <a href="http://www.ebi.ac.uk/about/people/paul-flicek">http://www.ebi.ac.uk/about/people/paul-flicek</a>
-            </p>
+<div class="content">
+            <div class="container">
+                <section class="page-title-section">
+                    <div class="page-title">
+                        <ol class="breadcrumb pull-right">
+                            <li><a href="#">Home</a></li>
+                            <li class="active">Advisory</li>
+                        </ol>
+                        <h4>Advisory</h4>
+                    </div>
+                </section>
+                <div class="subsection">
+                    <p>On top of the excellent <a href="http://www.gigasciencejournal.com/about/edboard">Editorial Board</a> that advises <a href="http://www.gigasciencejournal.com/" target="_blank">GigaScience Journal</a>, in order to aid <a href="/site/index" target="_blank">GigaDB</a> in following best practices, advancing community needs, and taking advantage of novel ideas/tools that can promote innovation as the database evolves, we also have the following more focused <a href="/site/index" target="_blank">GigaDB</a> advisory panel. To enable transparency and accountability of practice, as well as open the database for feedback and community involvement please feel free to discuss with our board and the GigaScience team (and contribute and comment through the database <a href="http://gigadb.org/site/https//github.com/gigascience">GitHub page</a>) any questions, problems or ideas you may have.</p>
+                </div>
+                <section>
+                    <div class="row">
+                        <div class="col-xs-2 advisory-img-block">
+                            <img src="/images/Paul.png">
+                            <p><a href="http://www.ebi.ac.uk/about/people/paul-flicek">Dr Paul Flicek</a></p>
+                        </div>
+                        <div class="col-xs-2 advisory-img-block">
+                            <img src="/images/Carole.png">
+                            <p><a href="http://www.manchester.ac.uk/research/Carole.goble/">Prof Carole Goble</a></p>
+                        </div>
+                        <div class="col-xs-2 advisory-img-block">
+                            <img src="/images/Paul.H.png">
+                            <p><a href="http://www.cbrc.jp/eng/intro/index.eng.html">Dr Paul Horton</a></p>
+                        </div>
+                        <div class="col-xs-2 advisory-img-block">
+                            <img src="/images/Francis.png">
+                            <p><a href="http://oicr.on.ca/person/researcher/francis-ouellette">Dr B F Francis Ouellette</a></p>
+                        </div>
+                        <div class="col-xs-2 advisory-img-block">
+                            <img src="/images/Jason.png">
+                            <p><a href="http://www.lifesci.dundee.ac.uk/people/jason-swedlow">Dr Jason Swedlow</a></p>
+                        </div>
+                        <div class="col-xs-2 advisory-img-block">
+                            <img src="/images/ZhouXin.png">
+                            <p><a href="https://www.linkedin.com/profile/view?id=157662709&trk=nav_responsive_tab_profile_pic">Dr Xin Zhou</a></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
-
-        <br>
-
-        <div class="people">
-            <p>
-                <img class="people2" title="Prof Carole Goble" align="right" src="/images/Carole.png" alt="">
-                <b>Prof Carole Goble</b> <br> <a href="http://www.manchester.ac.uk/research/Carole.goble/">http://www.manchester.ac.uk/research/Carole.goble/</a>
-            </p>
-        </div>
-
-        <br>
-
-        <div class="people">
-            <p>
-                <img class="people3" title="Dr Paul Horton" align="right" src="/images/Paul.H.png" alt="">
-                <b>Dr Paul Horton</b> <br> <a href="http://www.cbrc.jp/eng/intro/index.eng.html">http://www.cbrc.jp/eng/intro/index.eng.html</a>
-            </p>
-        </div>
-
-        <br>
-
-        <div class="people">
-            <p>
-                <img class="people4" title="Dr B F Francis Ouellette" align="right" src="/images/Francis.png" alt="">
-                <b>Dr B F Francis Ouellette</b> <br> <a href="http://oicr.on.ca/person/researcher/francis-ouellette">http://oicr.on.ca/person/researcher/francis-ouellette</a>
-            </p>
-        </div>
-
-        <br>
-
-        <div class="people">
-            <p>
-                <img class="people5" title="Dr Jason Swedlow" align="right" src="/images/Jason.png" alt="">
-                <b>Dr Jason Swedlow</b> <br> <a href="http://www.lifesci.dundee.ac.uk/people/jason-swedlow">http://www.lifesci.dundee.ac.uk/people/jason-swedlow</a>
-            </p>
-        </div>       
-	<br>        
-        <div class="people">
-            <p>
-                <img class="people6" title="Dr Xin Zhou" align="right" src="/images/ZhouXin.png" alt="">
-                <b>Dr Xin Zhou</b> <br> <a href="https://www.linkedin.com/profile/view?id=157662709&trk=nav_responsive_tab_profile_pic">https://www.linkedin.com/profile/view?id=157662709&trk=nav_responsive_tab_profile_pic</a>
-            </p>
-        </div>
-	<br>
-        <div class="people">
-            <p>
-                <img class="people6" title="Dr Xin Zhou" align="right" src="/ima
-ges/Guojie_Zhang.png" alt="">
-                <b>Dr Guojie Zhang</b> <br> <a href="http://www1.bio.ku.dk/engli
-sh/research/oe/staff/?pure=en%2Fpersons%2Fguojie-zhang(f5381bdc-b377-47a3-bdc0-4
-deccfda761c)%2Fpublications.html">http://www1.bio.ku.dk/english/research/oe/staf
-f/?pure=en%2Fpersons%2Fguojie-zhang(f5381bdc-b377-47a3-bdc0-4deccfda761c)%2Fpubl
-ications.html</a>
-            </p>
-        </div>          
-    </div>
-</div>
 

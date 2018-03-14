@@ -296,6 +296,7 @@ class UserController extends Controller {
 
     public function actionView_Profile() {
         $model = new EditProfileForm();
+        $this->layout="new_main";
         $model->user_id = Yii::app()->user->id;
 
         $user = $this->loadUser(Yii::app()->user->id);
@@ -340,6 +341,7 @@ class UserController extends Controller {
 
     # Change user password
     public function actionChangePassword() {
+        $this->layout="new_main";
         $model = new ChangePasswordForm();
         $model->user_id = Yii::app()->user->id;
 

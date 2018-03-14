@@ -40,7 +40,7 @@
                                 <li><a href="#"><div class="text-icon text-icon-green"><img src="/images/new_interface_image/Metagenomic.svg"></div>Metagenomic (<span><? echo $number_metagenomic ?></span>)</a></li>
                             </ul>
                         </div>
-                          <div class="col-xs-4">
+                          <div class="col-xs-4" style="height:300px;overflow:scroll;">
                             <div class="underline-title">
                                 <div>
                                     <h4>RSS</h4>
@@ -48,7 +48,7 @@
                             </div>
                                   <?php $flag=1;foreach($rss_arr as $item)  {?>
                           
-                            <? if($flag>2){break;}
+                            <? if($flag>10){break;}
                             if(get_class($item) == 'Dataset'){?>
                               <p style="margin-bottom: 0px;">New dataset added on <?=$item->publication_date?>: <?=MyHtml::link("10.5524/".$item->identifier, $item->shortUrl)?> <?=$item->title?></p>
                             <?}else{?>

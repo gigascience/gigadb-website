@@ -4,6 +4,7 @@ class SiteController extends Controller {
     /**
  	 * Declares class-based actions.
 	 */
+    //public $layout='//layouts/new_main';
 	public function actions() {
 		return array(
 			# captcha action renders the CAPTCHA image displayed on the contact page
@@ -64,7 +65,7 @@ class SiteController extends Controller {
 	#        $this->redirect(array('user/accountBalance', 'id'=>Yii::app()->user->_id));
 	#    }
 	#}
-
+                $this->layout='new_main';
 		$form=new SearchForm;  // Use for Form
 		$dataset = new Dataset; // Use for auto suggestion
 
@@ -233,22 +234,27 @@ class SiteController extends Controller {
 	}
 
 	public function actionAbout() {
+                $this->layout='new_main';
 		$this->render('about');
 	}
         
     public function actionAdvisory() {
+                $this->layout='new_main';
 		$this->render('advisory');
 	}
 	public function actionFaq() {
+                $this->layout='new_main';
 		$this->render('faq');
 	}
 
 	public function actionTerm() {
+                $this->layout='new_main';
 		$this->render('term');
 	}
 
 
 	public function actionHelp() {
+                $this->layout='new_main';
 		$this->render('help');
 	}
 

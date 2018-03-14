@@ -14,14 +14,7 @@
         <link rel="stylesheet/less" type="text/css" href="/less/site.less?time=<?= time() ?>">
         <? Yii::app()->clientScript->registerScriptFile('/js/less-1.3.0.min.js'); ?>
     <? } else { ?>
-        <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="/fonts/open_sans/v13/open_sans.css">
-        <link rel="stylesheet" type="text/css" href="/fonts/pt_sans/v8/pt_sans.css">
-        <link rel="stylesheet" type="text/css" href="/fonts/lato/v11/lato.css">
-        <link rel="stylesheet" type="text/css" href="/css/common.css"/>
-        <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/site.css"/>
     <? } ?>
 
     <?= $this->renderPartial('//shared/_google_analytics')?>
@@ -30,27 +23,25 @@
 </head>
 
 <body>
-    
-            <div class="base-top-bar">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-4">
-                        <ul class="list-inline base-top-social-bar">
-                            <li><a href="http://facebook.com/GigaScience" title="give me title text here"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="http://twitter.com/GigaScience" title="give me title text here"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="http://weibo.com/gigasciencejournal" title="give me title text here"><i class="fa fa-weibo"></i></a></li>
-                            <li><a href="https://plus.google.com/u/0/104409890199786402308" title="give me title text here"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="http://gigasciencejournal.com/blog/" title="give me title text here"><i class="fa fa-rss"></i></a></li>
-                        </ul>
-                    </div>
-                    
-                          
-                    <div class="col-xs-8">
-                        <ul class="list-inline text-right base-top-account-bar">
-                             <? if(Yii::app()->user->isGuest) { ?>
-                            <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>
-                            <li><a href="#"><i class="fa fa-envelope"></i> database@gigasciencejournal.com</a></li>
-                             <? } else { 
+<header>
+
+        <div class="container">
+            <a href="/site/index" id="logo"><img src="/images/logo.jpg" /></a>
+            <div class="navbar">
+                <ul class="nav pull-right navigation">
+                <li class="<? if(Yii::app()->controller->action->id=='index') echo "active"; ?>"><a href="/site/index"><?=Yii::t('app' , 'Home')?></a>|</li>
+                <li class="<? if(Yii::app()->controller->action->id=='about') echo "active"; ?>"><a href="/site/about"><?=Yii::t('app' , 'About')?></a>|</li>
+                <li class="<? if(Yii::app()->controller->action->id=='contact') echo "active"; ?>"><a href="/site/contact"><?=Yii::t('app' , 'Contact')?></a>|</li>
+                <li class="<? if(Yii::app()->controller->action->id=='term') echo "active"; ?>"><a href="/site/term"><?=Yii::t('app' , 'Terms of use')?></a></li>
+                </ul>
+            </div>
+            <p>
+                <?/*= Utils::languageChangingLinks() */?>
+                <a class="btn" href="/site/help"><?=Yii::t('app' , 'Help')?></a>
+                <? if(Yii::app()->user->isGuest) { ?>
+                <a class="btn" href="/site/login"><?=Yii::t('app' , 'Login')?></a>
+		<a class="btn" href="/user/create" id="btnCreateAccount" title="<?=Yii::t('app' , 'An account with GigaDB is required if you want to upload a dataset or be automatically notified of new content of interest to you')?>"><?=Yii::t('app' , 'Create account')?></a>
+                <? } else { 
                 
                         $name = Yii::app()->user->getFirst_Name();
                       
@@ -63,44 +54,15 @@
                             $name = $name . "'s";
                         }
                 ?>
-                <li><a href="/user/view_profile"><i class="fa fa-sign-in"></i><?=Yii::t('app' ,$name. " GigaDB Page")?></a></li>
+                <a class="btn" href="/user/view_profile"><?=Yii::t('app' ,$name. " GigaDB Page")?></a>
                     <? if (Yii::app()->user->checkAccess('admin')) { ?>
-                <li><a href="/site/admin"><i class="fa fa-sign-in"></i><?=Yii::t('app' , 'Administration')?></a></li>
+                    <a class="btn" href="/site/admin"><?=Yii::t('app' , 'Administration')?></a>
                     <? } ?>
-                <li><a href="/site/logout"><i class="fa fa-sign-in"></i><?=Yii::t('app' , 'LogOut')?></a></li>
+                    <a class="btn" href="/site/logout"><?=Yii::t('app' , 'LogOut')?></a>
                 <? } ?>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            </p>
         </div>
-    
-            <div class="base-nav-bar">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-4">
-                        <a href="#"><img src="/images/new_interface_image/logo.png" class="base-nav-logo-img"></a>
-                    </div>
-                    <div class="col-xs-8">
-                        <ul class="list-inline text-right base-nav-bar-main">
-                            <li class="active"><a href="#">Home</a></li>
-                            <li class="dropdown">
-                                <a href="#">About <i class="fa fa-angle-down"></i></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Our team</a></li>
-                                    <li><a href="#">Profile</a></li>
-                                    <li><a href="#">Help</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="/site/term">Terms of use</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
+</header>
 <!--
     <?php if(isset($this->breadcrumbs)):?>
         <?php $this->widget('bootstrap.widgets.BootBreadcrumbs', array(
@@ -109,32 +71,40 @@
     <?php endif?>
 -->
 
-
+<div class="container" id="wrap">
     <?php echo $content; ?>
-
-<div class="base-footer-bar">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <ul class="list-inline base-footer-logo-bar">
-                            <li><a href="https://academic.oup.com/gigascience"><img src="/images/new_interface_image/gigascience.png"></a></li>
-                            <li><a href="http://www.genomics.cn/"><img src="/images/new_interface_image/bgi-logo.png"></a></li>
-                            <li><a href="https://www.cngb.org"><img src="/images/new_interface_image/chinagenbank.png"></a></li>
-                        </ul>
-                    </div>
-                    <div class="col-xs-6 text-right">
-                        <p class="base-footer-email"><a href="#"><i class="fa fa-envelope"></i> database@gigasciencejournal.com</a></p>
-                        <ul class="list-inline base-footer-social-bar">
-                            <li><a href="http://facebook.com/GigaScience" title="give me title text here"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="http://twitter.com/GigaScience" title="give me title text here"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="http://weibo.com/gigasciencejournal" title="give me title text here"><i class="fa fa-weibo"></i></a></li>
-                            <li><a href="https://plus.google.com/u/0/104409890199786402308" title="give me title text here"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="http://gigasciencejournal.com/blog/" title="give me title text here"><i class="fa fa-rss"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div><!-- footer -->
+</div>
+<footer id="footer">
+    <div class="container">
+        <div class="pull-left">
+            <a  class="pull-left" title="(Giga)nScience" href="http://www.gigasciencejournal.com/"><img src="/images/gigascience.png" height="32" alt="GigaScience"/></a>
+            <a  class="pull-left footer-logo" title="BGI" href="http://en.genomics.cn/navigation/index.action"><img src="/images/bgi-logo.png" height="32" alt="BGI"/></a>
+            <a  class="pull-left footer-logo" title="China National Genebank" href="http://www.nationalgenebank.org/"><img src="/images/chinagenbank.png" height="32" alt="China National Genebank"/></a>
+        </div>
+        <div class="navbar">
+            <ul class="nav">
+            <li class="<? if(Yii::app()->controller->action->id=='index') echo "active"; ?>"><a href="/site/index"><?=Yii::t('app' , 'Home')?></a>|</li>
+                <? if(Yii::app()->user->isGuest) { ?>
+                <li class="<? if(Yii::app()->controller->action->id=='login') echo "active"; ?>"><a href="/site/chooseLogin"><?=Yii::t('app' , 'Login')?></a>|</li>
+                <? } else { ?>
+                <li class="<? if(Yii::app()->controller->action->id=='view_profile') echo "active"; ?>"><a href="/user/view_profile"><?=Yii::t('app' , 'My GigaDB Page')?></a>|</li>
+                <? } ?>
+                <li class="<? if(Yii::app()->controller->action->id=='about') echo "active"; ?>"><a href="/site/about"><?=Yii::t('app' , 'About')?></a>|</li>
+                <li class="<? if(Yii::app()->controller->action->id=='contact') echo "active"; ?>"><a href="/site/contact"><?=Yii::t('app' , 'Contact')?></a>|</li>
+                <li class="<? if(Yii::app()->controller->action->id=='term') echo "active"; ?>"><a href="/site/term"><?=Yii::t('app' , 'Terms of use')?></a></li>
+            </ul>
+        </div>
+        <div class="pull-right">
+            <ul class="social-links">
+            <li id="share_facebook"><a href="http://facebook.com/GigaScience"><?=Yii::t('app' , 'Be a fan on Facebook')?></a></li>
+            <li id="share_twitter"><a href="http://twitter.com/GigaScience"><?=Yii::t('app' , 'Follow us on Twitter')?></a></li>
+            <li id="share_weibo"><a href="http://weibo.com/gigasciencejournal"><?=Yii::t('app' , 'Follow us on Sina')?></a></li>
+            <li id="share_google"><a href="https://plus.google.com/u/0/104409890199786402308"><?=Yii::t('app' , 'Follow us on Google+')?></a></li>
+            <li id="share_rss"><a href="http://gigasciencejournal.com/blog/"><?=Yii::t('app' , 'GigaBlog')?></a></li>
+            </ul>
+        </div>
+    </div>
+</footer><!-- footer -->
     <!-- Le javascript
      ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
