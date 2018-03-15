@@ -21,15 +21,19 @@ Scenario: Non logged-in visitors should not see the button
 	Then I should not see "Your dataset?"
 
 
-@ok
+@ok @javascript
 Scenario: a user is shown a modal to claim his/her dataset by reconcilling his/her author identity to his/her account
 	Given I sign in as a user
+	And dataset author "stephen_h_black" is loaded
 	And I am on "/dataset/100002"
 	When I follow "Your dataset?"
-	Then the response should contain "Select an author to link to your Gigadb User ID"
-	And the response should contain "Lambert DM"
-	And the response should contain "Wang J"
-	And the response should contain "Zhang G"
+	# Then the response should contain "Select an author to link to your Gigadb User ID"
+	And I wait "2" seconds
+	Then I should see "David M Lambert"
+	And I should see "Jun Wang"
+	And I should see "Guojie Zhang"
+	And I should see "Stephen Henry Black"
+	And I should see "0000-0002-5486-853X"
 
 @ok @javascript @insulate @tofix @todo
 Scenario: a user select an author to claim and submit the claim form

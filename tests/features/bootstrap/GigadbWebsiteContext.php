@@ -137,6 +137,14 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         $this->user_password = "gigadb";
     }
 
+    /**
+     * @Given /^dataset author "([^"]*)" is loaded$/
+     */
+    public function datasetAuthorIsLoaded($author)
+    {
+        $this->loadUserData($author);
+    }
+
 
      /**
      * @Given /^I sign in as an admin$/

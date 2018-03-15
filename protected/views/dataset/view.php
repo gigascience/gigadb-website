@@ -67,12 +67,12 @@ HTML;
                             <?php echo MyHtml::beginForm('/userCommand/claim','GET'); ?>
                                 <div class="modal-body text-center">
                                     <?php if (count($model->authors) > 0) { ?>
-                                            <ul>
+                                            <table>
                                             <?php foreach ($model->authors as $author) { ?>
-                                                <li>
+                                                <tr><td>
 <?php
                                         $status_array = array('Request', 'Incomplete', 'Uploaded');
-                                        echo CHtml::ajaxLink($author->getDisplayName()."<br/>",Yii::app()->createUrl('/userCommand/claim'),
+                                        echo CHtml::ajaxLink($author->first_name." ".$author->middle_name." ".$author->surname,Yii::app()->createUrl('/userCommand/claim'),
                                         array(
                                             'type'=>'GET',
                                             'data'=> array('dataset_id'=>'js:$("#dataset_id").val()',
@@ -92,15 +92,15 @@ HTML;
                                                 $("#advice").addClass("alert").addClass("alert-info");
                                                 $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
                                             }',
-                                        ),array('class'=>'btn btn-green',
+                                        ),array('class'=>'btn btn-green btn-block',
                                                 'id' =>'claim_button_' . $author->id,
                                                 // 'disabled'=>in_array($model->upload_status, $status_array),
                                         ));
 
                                         ?>
-                                                </li>
+                                                </td><td><? echo $author->orcid ? " (orcid id:".$author->orcid.")" : "" ?> </td></tr>
                                             <? } ?>
-                                        </ul>
+                                        </table>
                                     <? } ?>
                                 </div>
                                 <div class="modal-footer">
