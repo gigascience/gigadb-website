@@ -15,7 +15,10 @@ Scenario: user is associated to an author of existing dataset
 	When I am on "/user/view_profile"
 	Then I should see "Your Authored Datasets"
 	And I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
-	And I should see "Zhang G"
+	And I should not see "Appear as"
+	And I should see "Subject" 1 time
+	And I should see "Operation" 1 time
+
 
 @ok
 Scenario: no association with dataset author made
@@ -30,3 +33,6 @@ Scenario: user is associated to an author with no existing dataset
 	When I am on "/user/view_profile"
 	Then I should see "Your Authored Datasets"
 	And I should not see "10.5524"
+	And I should not see "Appear as"
+	And I should see "Subject" 1 time
+	And I should see "Operation" 1 time

@@ -200,6 +200,22 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         }
     }
 
+    /**
+     * @Given /^I should see "([^"]*)" (\d+) time$/
+     */
+    public function iShouldSeeTime($text, $occurence)
+    {
+        $element = $this->getSession()->getPage();
+        $result = $element->findAll('xpath', "//*[contains(text(), '$text')]");
+
+        if(count($result) == $occurence) {
+            return;
+        }
+        else {
+            throw  new Exception('"' . $text . '" was supposed to appear ' . $occurence . ' times, got ' . count($result) . ' instead');
+        }
+    }
+
 
 
 
