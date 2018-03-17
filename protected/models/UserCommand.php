@@ -35,7 +35,12 @@ class UserCommand extends CActiveRecord
             array('requester_id, actioner_id, actionable_id', 'numerical', 'integerOnly'=>true),
             array('action_label, status', 'length', 'max'=>32),
             array('request_date, action_date', 'safe'),
-            array('requester_id','unique'),
+            array('requester_id', 'unique', 'criteria'=>array(
+                'condition'=>'actionable_id=:actionable_id',
+                'params'=>array(
+                    ':actionable_id'=>$this->actionable_id
+                )
+            )),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, action_label, requester_id, actioner_id, actionable_id, request_date, action_date, status', 'safe', 'on'=>'search'),

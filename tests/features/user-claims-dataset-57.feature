@@ -7,6 +7,7 @@ Feature: a user can claim his/her datasets
 Background:
 	Given Gigadb web site is loaded with "gigadb_testdata.sql" data
 	And user "joy_fox" is loaded
+	And default admin user exists
 
 @ok
 Scenario: Give users a button to claim a dataset they have authored
@@ -48,9 +49,10 @@ Scenario: a user select an author to claim and submit the claim form
 	And the response should contain "You can close this box now."
 
 
-@ok @javascript
+@ok @javascript @claim-error-path
 Scenario: a user with a pending claim visit dataset page and attempt to claim an author
 	Given a user has a pending claim for author "3791"
+	# Given a user has a "pending" claim for author "3791"
 	And I sign in as a user
 	And I am on "/dataset/100002"
 	When I follow "Your dataset?"
@@ -59,6 +61,32 @@ Scenario: a user with a pending claim visit dataset page and attempt to claim an
 	And I wait "1" seconds
 	Then the response should contain "We cannot submit the claim:"
 	And the response should contain "You already have a pending claim"
+	And the response should contain "You can close this box now."
+
+
+@ok @javascript @claim-error-path
+Scenario: a user with a rejected claim visit dataset page and attempt to claim an author
+	Given a user has a "rejected" claim for author "3791"
+	And I sign in as a user
+	And I am on "/dataset/100002"
+	When I follow "Your dataset?"
+	And I wait "1" seconds
+	And I click on button for author id "3789"
+	And I wait "1" seconds
+	Then the response should contain "Your claim has been submitted to the administrators."
+	And the response should contain "You can close this box now."
+
+@ok @javascript @claim-error-path
+Scenario: a user with a rejected claim visit dataset page and attempt to claim same author
+	Given a user has a "rejected" claim for author "3791"
+	And I sign in as a user
+	And I am on "/dataset/100002"
+	When I follow "Your dataset?"
+	And I wait "2" seconds
+	And I click on button for author id "3791"
+	And I wait "2" seconds
+	Then the response should contain "We cannot submit the claim:"
+	And the response should contain "Your claim on this author has already been rejected"
 	And the response should contain "You can close this box now."
 
 @ok

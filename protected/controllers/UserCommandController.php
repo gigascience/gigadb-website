@@ -53,56 +53,79 @@ class UserCommandController extends CController
     public function actionClaim($dataset_id, $author_id) {
 
     	$result['status'] = false;
+        $result['message'] = "there was an error";
+
         $dataset_author = DatasetAuthor::model()->findByAttributes(array('dataset_id' => $dataset_id, 
                                                                         'author_id' => $author_id));
 
 
         if( null != $dataset_author ){
-
             $requester_id = Yii::app()->user->id;
             $actionable_id = $dataset_author->author->id ;
-            $action_label = "claim_author";
-            $status = "pending";
-            $now = new Datetime();
-
-            $claim = new UserCommand;
-            $claim->action_label = $action_label;
-            $claim->requester_id = $requester_id;
-            $claim->actionable_id = $actionable_id;
-            $claim->request_date = $now->format(DateTime::ISO8601) ;
-            $claim->status = $status ;
-
-			if ($claim->validate('insert')) {
-
-                if ($claim->save(false)) {
-                    $result['status'] = true;
-                    $result['message'] = "Your claim has been submitted to the administrators.";
-                    Yii::log(__FUNCTION__."> created user_command successfully for: ". $claim->requester->id, 'warning');
-                }
-                else {
-                    Yii::log(__FUNCTION__."> create user_command failed", 'warning');
-                    $result['status'] = false;
-                    $result['message'] = $claim->getErrors();
-                }
-            }
-            else {
-                Yii::log(__FUNCTION__."> validation of user_command failed", 'warning');
-                $errors = $claim->getErrors();
-                // Yii::log(var_dump($errors));
-            	if ( isset($errors["requester_id"]) ) {
-            		$result['message'] = "We cannot submit the claim: You already have a pending claim.";
-            	}
-                else {
-                	$result['message'] = "We cannot submit the claim: validation problems were encountered.";
-                }
-                $result['status'] = false;
-            }
-
         }
         else {
-            $result['status'] = false;
             $result['message'] = "mismatch between author and dataset.";
+            echo json_encode($result);
+            Yii::app()->end();
         }
+
+        $existing_record = UserCommand::model()->findByAttributes(array('requester_id'  => $requester_id,
+                                                                'actionable_id' => $actionable_id));
+
+        if ( null != $existing_record) {
+            if  ("rejected" == $existing_record->status) {
+                $result['message'] = "We cannot submit the claim: Your claim on this author has already been rejected.";
+                echo json_encode($result);
+                Yii::app()->end();
+            }
+            else if  ("linked" == $existing_record->status) {
+                $result['message'] = "We cannot submit the claim: Your claim on this author has already been approved.";
+                echo json_encode($result);
+                Yii::app()->end();
+            }
+            else if  ("pending" == $existing_record->status) {
+                $result['message'] = "We cannot submit the claim: You already have a pending claim.";
+                echo json_encode($result);
+                Yii::app()->end();
+            }
+        }
+
+        $action_label = "claim_author";
+        $status = "pending";
+        $now = new Datetime();
+
+        $claim = new UserCommand;
+        $claim->action_label = $action_label;
+        $claim->requester_id = $requester_id;
+        $claim->actionable_id = $actionable_id;
+        $claim->request_date = $now->format(DateTime::ISO8601) ;
+        $claim->status = $status ;
+
+		if ($claim->validate('insert')) {
+
+            if ($claim->save(false)) {
+                $result['status'] = true;
+                $result['message'] = "Your claim has been submitted to the administrators.";
+                Yii::log(__FUNCTION__."> created user_command successfully for: ". $claim->requester->id, 'info');
+            }
+            else {
+                Yii::log(__FUNCTION__."> create user_command failed", 'error');
+                $result['message'] = "We cannot submit the claim: database error";
+            }
+        }
+        else {
+            Yii::log(__FUNCTION__."> validation of user_command failed:", 'error');
+            $errors = $claim->getErrors();
+            if ( isset($errors["requester_id"]) ) {
+                $result['message'] = "We cannot submit the claim: validation error on unique keys constraint";
+
+        	}
+            else {
+            	$result['message'] = "We cannot submit the claim: validation error";
+            }
+            $result['status'] = false;
+        }
+
 
         echo json_encode($result);
 		Yii::app()->end();

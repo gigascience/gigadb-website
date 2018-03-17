@@ -164,6 +164,25 @@ class ClaimDatasetContext extends BehatContext
             );
     }
 
+     /**
+     * @Given /^a user has a "([^"]*)" claim for author "([^"]*)"$/
+     */
+    public function aUserHasAClaimForAuthor($status, $author)
+    {
+        
+    // Given a user has a pending claim for author "3791"
+    // And an admin approved the claim for author "3791"
+    // And an admin rejected the claim for author "3791"
+    // When I go to "/AdminAuthor/view/id/3791"
+    // Then I should not see "346"
+        return array(
+                new Step\Given("a user has a pending claim for author \"$author\""),
+                new Step\Given("an admin $status the claim for author \"$author\""),
+                new Step\When("I go to \"/AdminAuthor/view/id/$author\""),
+                new Step\Then("I should not see \"346\""),
+            );
+    }
+
 
     /**
      * @AfterScenario @user-claims-dataset
