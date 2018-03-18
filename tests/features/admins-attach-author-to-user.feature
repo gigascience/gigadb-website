@@ -124,6 +124,16 @@ Scenario: On user edit form, if user is already attached to an author, show auth
 	And the response should not contain "This user has a pending claim. Click for details"
 	And the response should contain "Pan S"
 
+@ok @javascript @admin-link-author-from-user-edit-form @pending
+Scenario: On user view, if user has pending claim, link to pending claims
+ 	Given default admin user exists
+ 	And default user exists
+ 	And a user has a pending claim for author "3791"
+	And I sign in as an admin
+	When I go to "/user/update/id/345"
+	Then the response should not contain "Link this user to an author"
+	And the response should contain "This user has a pending claim. Click for details"
+
 @ok @admin-link-author-from-user @javascript
 Scenario: From user list, load the author list with the user specific controls to select author to link
 	Given default admin user exists
