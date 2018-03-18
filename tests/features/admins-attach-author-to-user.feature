@@ -66,10 +66,17 @@ Scenario: On user list, there is a button to start the process for linking to an
 	Then I should see "Link this user to an author"
 
 @ok @admin-link-author-from-user
-Scenario: On user view, there is a button to start the process for linking to an author
+Scenario: On user view, there is no  button to start the process for linking to an author
 	Given default admin user exists
 	And I sign in as an admin
 	When I go to "/user/view/id/345"
+	Then I should not see "Link this user to an author"
+
+@ok @admin-link-author-from-user
+Scenario: On user edit form, there is a button to start the process for linking to an author
+	Given default admin user exists
+	And I sign in as an admin
+	When I go to "/user/update/id/345"
 	Then I should see "Link this user to an author"
 
 @ok @javascript @admin-link-author-from-user @user-view
@@ -93,11 +100,11 @@ Scenario: On user view, if user is already attached to an author, show author na
 	And the response should not contain "This user has a pending claim. Click for details"
 	And the response should contain "Pan S"
 
-@ok @admin-link-author-from-user @javascript
-Scenario: From user view, load the author list with the user specific controls to select author to link
+@ok @admin-link-author-from-user-edit-form @javascript
+Scenario: From user edit-form, load the author list with the user specific controls to select author to link
 	Given default admin user exists
 	And I sign in as an admin
-	And I am on "/user/view/id/345"
+	And I am on "/user/update/id/345"
 	When I follow "Link this user to an author"
 	And I wait "2" seconds
 	Then I should be on "/adminAuthor/admin"

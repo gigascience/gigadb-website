@@ -54,7 +54,7 @@ class AuthorUserContext extends BehatContext
     public function iHaveInitiatedTheSearchOfAnAuthorForGigadbUserWithId($arg1)
     {
         return array(
-            new Step\Given("I am on \"/user/view/id/${arg1}\""),
+            new Step\Given("I am on \"/user/update/id/${arg1}\""),
             new Step\When("I follow \"Link this user to an author\""),
             new Step\When("I wait \"2\" seconds"),
             new Step\Then("I should be on \"/adminAuthor/admin\""),

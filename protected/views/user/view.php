@@ -31,11 +31,7 @@
                                     array('AdminUserCommand/admin'),
                                     array('class' => 'btn'));
       }
-      else if ( null ==  $linked_author) {
-          echo CHtml::link('Link this user to an author', 
-                                    array('adminAuthor/prepareUserLink', 'user_id'=>$model->id),
-                                    array('class' => 'btn')); 
-      }else {
+      else {
 ?>
         <div class="alert">This user is linked to author: <? echo $linked_author->getDisplayName() ?> (<? echo $linked_author->id ?>)</div>
 <?php
