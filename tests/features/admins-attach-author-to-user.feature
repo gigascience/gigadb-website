@@ -46,7 +46,7 @@ Scenario: populate author form with a user id already used triggers error
 	Then I should be on "/adminAuthor/update/id/3791"
 	And I should see "Gigadb User \"345\" has already been taken"
 
-@ok @javascript @admin-author-form-add-user
+@ok @javascript @admin-author-form-add-user @author-view
 Scenario: on author view, if there is a pending claim, link to pending claims
 	Given default admin user exists
 	And default user exists
@@ -72,7 +72,7 @@ Scenario: On user view, there is a button to start the process for linking to an
 	When I go to "/user/view/id/345"
 	Then I should see "Link this user to an author"
 
-@ok @javascript @admin-link-author-from-user
+@ok @javascript @admin-link-author-from-user @user-view
 Scenario: On user view, if user has pending claim, link to pending claims
  	Given default admin user exists
  	And default user exists
@@ -82,7 +82,7 @@ Scenario: On user view, if user has pending claim, link to pending claims
 	Then the response should not contain "Link this user to an author"
 	And the response should contain "This user has a pending claim. Click for details"
 
-@ok @admin-link-author-from-user
+@ok @admin-link-author-from-user @user-view @linked
 Scenario: On user view, if user is already attached to an author, show author name
 	Given default admin user exists
  	And default user exists
@@ -98,6 +98,16 @@ Scenario: From user view, load the author list with the user specific controls t
 	Given default admin user exists
 	And I sign in as an admin
 	And I am on "/user/view/id/345"
+	When I follow "Link this user to an author"
+	And I wait "2" seconds
+	Then I should be on "/adminAuthor/admin"
+	And I should see "Click on a row to proceed with linking that author with user John Smith"
+
+@ok @admin-link-author-from-user @javascript
+Scenario: From user edit form, load the author list with the user specific controls to select author to link
+	Given default admin user exists
+	And I sign in as an admin
+	And I am on "/user/update/id/345"
 	When I follow "Link this user to an author"
 	And I wait "2" seconds
 	Then I should be on "/adminAuthor/admin"

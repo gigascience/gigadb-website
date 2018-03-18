@@ -1,3 +1,19 @@
+<?php
+      $user_command = UserCommand::model()->findByAttributes(array("requester_id" => $model->id, "status" => "pending")) ;
+      $linked_author = Author::findAttachedAuthorByUserId($model->id) ;
+
+?>
+
+<div class="clear"></div>
+<?php
+	if ( null ==  $linked_author) {
+          echo CHtml::link('Link this user to an author', 
+                                    array('adminAuthor/prepareUserLink', 'user_id'=>$model->id),
+                                    array('class' => 'btn')); 
+     }
+?>
+        
+
 <div class="row">
 	<div class="span8 offset2">
 		<div class="clear"></div>
