@@ -103,7 +103,7 @@ Scenario: From user view, load the author list with the user specific controls t
 	Then I should be on "/adminAuthor/admin"
 	And I should see "Click on a row to proceed with linking that author with user John Smith"
 
-@ok @admin-link-author-from-user @javascript
+@ok @admin-link-author-from-user-edit-form @javascript
 Scenario: From user edit form, load the author list with the user specific controls to select author to link
 	Given default admin user exists
 	And I sign in as an admin
@@ -112,6 +112,17 @@ Scenario: From user edit form, load the author list with the user specific contr
 	And I wait "2" seconds
 	Then I should be on "/adminAuthor/admin"
 	And I should see "Click on a row to proceed with linking that author with user John Smith"
+
+@ok @admin-link-author-from-user-edit-form @linked
+Scenario: On user edit form, if user is already attached to an author, show author name
+	Given default admin user exists
+ 	And default user exists
+ 	Given author "3794" is associated with user "345"
+ 	And I sign in as an admin
+	When I go to "/user/update/id/345"
+	Then the response should not contain "Link this user to an author"
+	And the response should not contain "This user has a pending claim. Click for details"
+	And the response should contain "Pan S"
 
 @ok @admin-link-author-from-user @javascript
 Scenario: From user list, load the author list with the user specific controls to select author to link

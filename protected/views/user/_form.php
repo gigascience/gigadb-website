@@ -10,9 +10,12 @@
           echo CHtml::link('Link this user to an author', 
                                     array('adminAuthor/prepareUserLink', 'user_id'=>$model->id),
                                     array('class' => 'btn')); 
-     }
+     }else {
 ?>
-        
+        <div class="alert">This user is linked to author: <? echo $linked_author->getDisplayName() ?> (<? echo $linked_author->id ?>)</div>
+<?php
+      }
+?>
 
 <div class="row">
 	<div class="span8 offset2">
