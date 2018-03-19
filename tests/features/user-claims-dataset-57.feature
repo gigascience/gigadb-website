@@ -64,7 +64,7 @@ Scenario: a user with a pending claim visit dataset page and attempt to claim an
 	And the response should contain "You can close this box now."
 
 
-@ok @javascript @claim-error-path
+@wip @javascript @claim-error-path2
 Scenario: a user with a rejected claim visit dataset page and attempt to claim an author
 	Given a user has a "rejected" claim for author "3791"
 	And I sign in as a user

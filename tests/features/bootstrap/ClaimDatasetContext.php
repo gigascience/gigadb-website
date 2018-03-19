@@ -138,18 +138,7 @@ class ClaimDatasetContext extends BehatContext
         $link->click();
     }
 
-    /**
-     * @Given /^an admin approved the claim for author "([^"]*)"$/
-     */
-    public function anAdminApprovedTheClaimForAuthor($arg1)
-    {
-        return array(
-                new Step\Given("I sign in as an admin"),
-                new Step\When("I go to \"/adminUserCommand/admin\""),
-                new Step\When("I click \"validate\" in the row for claim from \"Joy Fox (346)\""),
-                new Step\When("I wait \"2\" seconds"),
-            );
-    }
+
 
     /**
      * @Given /^an admin rejected the claim for author "([^"]*)"$/
@@ -158,8 +147,8 @@ class ClaimDatasetContext extends BehatContext
     {
         return array(
                 new Step\Given("I sign in as an admin"),
-                new Step\When("I go to \"/adminUserCommand/admin\""),
-                new Step\When("I click \"reject\" in the row for claim from \"Joy Fox (346)\""),
+                new Step\When("I go to \"/user/update/id/346/\""),
+                new Step\When("I follow \"Reject\""),
                 new Step\When("I wait \"2\" seconds"),
             );
     }
