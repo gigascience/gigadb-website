@@ -7,9 +7,28 @@
 <div class="clear"></div>
 <?php
       if ( null != $user_command ) {
-          echo CHtml::link('This user has a pending claim. Click for details', 
-                                    array('AdminUserCommand/admin'),
+      	$claimed_author = Author::model()->findByPk($user_command->actionable_id);
+      	$message = "This user has a pending claim on author ". $claimed_author->getDisplayName() ;
+      	$validate_link = CHtml::link('Validate', 
+                                    array('AdminUserCommand/validate', 'id' => $user_command->id),
                                     array('class' => 'btn'));
+      	$reject_link = CHtml::link('Reject', 
+                                    array('AdminUserCommand/reject', 'id' => $user_command->id),
+                                    array('class' => 'btn'));
+      	$author_link = CHtml::link('Author info', 
+                                    array('AdminAuthor/view', 'id' => $user_command->actionable_id),
+                                    array('class' => 'btn'));
+?>
+	    <div class="alert alert-info">
+	    	<? echo $message ?>
+	    	<div class="btn-toolbar">
+			    <? echo $validate_link ?>
+			    <? echo $reject_link ?>
+			    <? echo $author_link ?>
+			</div>
+		</div>
+
+<?php
       }
       else if ( null ==  $linked_author) {
           echo CHtml::link('Link this user to an author', 
