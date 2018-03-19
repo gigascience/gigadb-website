@@ -20,6 +20,14 @@ Scenario: On user edit form, admin sees a message with validate/reject button af
 	And the response should contain "Author info"
 
 
+@ok
+Scenario: When admin validates, user view is shown with a messaging indicating the user is linked to an author
+	Given a user has a pending claim for author "3791"
+	And I sign in as an admin
+	And I am on "/user/update/id/346"
+	When I follow "Validate"
+	Then the response should contain "This user is linked to author: Zhang G (3791)"
+
 
 # @ok @to-remove
 # Scenario: Admin can access pending jobs from the administration page

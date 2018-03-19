@@ -80,7 +80,7 @@ class AdminUserCommandController extends Controller
 			}
 		}
 
-		$this->redirect(array('adminUserCommand/admin'));
+		$this->redirect(array('user/view/','id' => $requester->id));
 
 	}
 
