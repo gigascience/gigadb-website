@@ -35,8 +35,15 @@
                                     array('adminAuthor/prepareUserLink', 'user_id'=>$model->id),
                                     array('class' => 'btn')); 
       }else {
+      	$unlink_link =  CHtml::link('Unlink author', 
+                                    array('AdminAuthor/unlinkUser', 'id' => $linked_author->id, 'user_id'=>$model->id),
+                                    array('class' => 'btn'));
 ?>
-        <div class="alert">This user is linked to author: <? echo $linked_author->getDisplayName() ?> (<? echo $linked_author->id ?>)</div>
+        <div class="alert">This user is linked to author: <? echo $linked_author->getDisplayName() ?> (<? echo $linked_author->id ?>)
+			<div class="btn-toolbar">
+			    <? echo $unlink_link ?>
+			</div>
+        </div>
 <?php
       }
 ?>

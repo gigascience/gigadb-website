@@ -208,6 +208,27 @@ Scenario: From user list, if a user is already linked to an author, show a messa
 	# And I should see "The user John Smith is already associated to author Pan S (3794)"
 	And I should not see "Click on a row to proceed with linking that author with user"
 
+@ok
+Scenario: on the user edit form, there is an unlink button to dettach a user from an author
+	Given default admin user exists
+ 	And default user exists
+ 	Given author "3794" is associated with user "345"
+ 	And I sign in as an admin
+	When I go to "/user/update/id/345"
+	Then the response should contain "Unlink author"
+
+@ok
+Scenario: when admin click unlink button on user edit form, the user is unlinked from the author
+	Given default admin user exists
+ 	And default user exists
+ 	Given author "3794" is associated with user "345"
+ 	And I sign in as an admin
+ 	When I go to "/user/update/id/345"
+ 	And I follow "Unlink author"
+ 	Then I should be on "/user/update/id/345"
+ 	And I should not see "This user is linked to author:"
+
+
 # TODO
 # @wip
 # Scenario: From author list with the user specific controls, click an alert close button, will also clear the user from session

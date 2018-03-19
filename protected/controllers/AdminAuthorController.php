@@ -27,7 +27,7 @@ class AdminAuthorController extends Controller
 	{
 		return array(
 			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update','prepareUserLink','linkUser'),
+				'actions'=>array('admin','delete','index','view','create','update','prepareUserLink','linkUser','unlinkUser'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -179,6 +179,36 @@ class AdminAuthorController extends Controller
 			Yii::log(__FUNCTION__."> attach_user is not set in session", 'error');
 		}
 
+	}
+
+	public function actionUnlinkUser($id,$user_id) {
+		$model = $this->loadModel($id);
+		$user = User::model()->findByPk($user_id);
+		if (null == $model) {
+			Yii::log(__FUNCTION__."> no author model could be loaded",'warning');
+			$this->redirect(array('site/admin'));
+		}
+		else if (null == $user) {
+			Yii::log(__FUNCTION__."> no user model could be loaded",'warning');
+			$this->redirect(array('user/update','id'=>$user->id));
+		}
+		else if ($user_id != $model->gigadb_user_id) {
+			Yii::log(__FUNCTION__."> mismatch between loaded user and user id in author model",'warning');
+			$this->redirect(array('user/update','id'=>$user->id));
+		}
+		else {
+			$model->gigadb_user_id = null ;
+			if( $model->save() ) {
+				Yii::log(__FUNCTION__."> author (".$model->id.")/user (.".$user->id.".) linking has been removed",
+						'info');
+				$this->redirect(array('user/update','id'=>$user->id));
+			}
+			else {
+				Yii::log(__FUNCTION__."> error while updating gigadb_user_id in author. " .implode(" ",$model->getErrors()['gigadb_user_id']), 'error');
+			}
+		}
+
+		$this->redirect(array('site/admin'));
 	}
 
 	/**
