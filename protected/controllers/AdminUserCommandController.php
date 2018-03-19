@@ -67,6 +67,7 @@ class AdminUserCommandController extends Controller
 					if($claim->save()) {
 						Yii::log(__FUNCTION__."> claim " . $claim->id . " updated as 'linked'", 'warning');
 					}
+					$claim->delete(); //claim record when validated is not needed (job done) and there is log/email for audit
 				}else {
 					Yii::log(__FUNCTION__."> author (".$author->id.")/user (".$requester->id. ") linking failed", 'warning');
 					$claim->status = "validation error";
@@ -90,7 +91,7 @@ class AdminUserCommandController extends Controller
 	public function actionReject($id)
 	{
 		$claim=$this->loadModel($id);
-		if($claim) {
+		if($claim) {  //claim record when rejected needs to be kept to prevent someone repeatedly claiming despite rejection
 			if ("claim_author" == $claim->action_label) {
 				$claim->status = "rejected";
 				$claim->actioner_id = Yii::app()->user->id;
