@@ -27,6 +27,9 @@ Scenario: When admin validates, user view is shown with a messaging indicating t
 	And I am on "/user/update/id/346"
 	When I follow "Validate"
 	Then the response should contain "This user is linked to author: Zhang G (3791)"
+	And the response should not contain "Validate"
+	And the response should not contain "Reject"
+	And the response should not contain "Author info"
 
 
 # @ok @to-remove
