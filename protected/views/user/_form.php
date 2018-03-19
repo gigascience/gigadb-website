@@ -1,4 +1,9 @@
 <?php
+    foreach(Yii::app()->user->getFlashes() as $key => $message) {
+        echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
+    }
+?>
+<?php
       $user_command = UserCommand::model()->findByAttributes(array("requester_id" => $model->id, "status" => "pending")) ;
       $linked_author = Author::findAttachedAuthorByUserId($model->id) ;
 

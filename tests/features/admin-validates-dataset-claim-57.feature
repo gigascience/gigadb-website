@@ -31,6 +31,14 @@ Scenario: When admin validates, user view is shown with a messaging indicating t
 	And the response should not contain "Reject"
 	And the response should not contain "Author info"
 
+@ok
+Scenario: When admin rejects a claim, user edit form is shown with flash message
+	Given a user has a pending claim for author "3791"
+	And I sign in as an admin
+	And I am on "/user/update/id/346"
+	When I follow "Reject"
+	Then the response should contain "Claimed rejected. No linking performed"
+
 
 # @ok @to-remove
 # Scenario: Admin can access pending jobs from the administration page
