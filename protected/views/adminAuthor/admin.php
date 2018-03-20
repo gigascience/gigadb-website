@@ -43,7 +43,6 @@
 	'itemsCssClass'=>'table table-bordered',
 	'selectionChanged'=>"function(id){open_controls($.fn.yiiGridView.getSelection(id));}",
 	'filter'=>$model,
-	'selectionChanged'=>"function(id){open_controls($.fn.yiiGridView.getSelection(id));}",
 	'columns'=>array(
 		'surname',
 		'middle_name',
@@ -85,9 +84,19 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 <script>
 	function open_controls(author_id) {
-	    $("#controls").data('author_id', author_id);
-	    $("#controls").dialog( "option", "title", "Linking to author id: " + author_id);
-	    $("#controls").dialog("open");
+<?php
+	if (null != $user) {
+		echo "var want_dialog = true;";
+	} 
+	else {
+		echo "var want_dialog = false;";
+	}
+?>
+		if (true == want_dialog) {
+		    $("#controls").data('author_id', author_id);
+		    $("#controls").dialog( "option", "title", "Linking to author id: " + author_id);
+		    $("#controls").dialog("open");
+		}
 	    return false;
 	}
 

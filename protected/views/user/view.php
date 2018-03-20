@@ -25,15 +25,21 @@
 )); ?>
 
 <div class="clear"></div>
+<div class="alert alert-info">
 <?php
       if ( null != $user_command ) {
-          echo CHtml::link('This user has a pending claim. Click for details', 
-                                    array('AdminUserCommand/admin'),
+          $claimed_author = Author::model()->findByPk($user_command->actionable_id);
+          if (null != $user_command) {
+            echo "<p>This user has a pending claim on {$claimed_author->getDisplayName()} ({$claimed_author->id})</p>";
+          }
+          echo CHtml::link('Edit user to validate/reject the claim', 
+                                    array('user/update', 'id'=>$model->id),
                                     array('class' => 'btn'));
       }
       else {
 ?>
-        <div class="alert">This user is linked to author: <? echo $linked_author->getDisplayName() ?> (<? echo $linked_author->id ?>)</div>
+        This user is linked to author: <? echo $linked_author->getDisplayName() ?> (<? echo $linked_author->id ?>)
+  </div>
 <?php
       }
 ?>

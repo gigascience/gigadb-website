@@ -39,3 +39,52 @@ Scenario: When admin rejects a claim, user edit form is shown with flash message
 	When I follow "Reject"
 	Then the response should contain "Claimed rejected. No linking performed"
 
+
+@ok
+Scenario: On user view, when pending claim, admin sees a note about pending claim on author and a link to user edit form
+	Given a user has a pending claim for author "3791"
+	And I sign in as an admin
+	When I go to "/user/view/id/346"
+	Then the response should contain "This user has a pending claim"
+	And the response should contain "Edit user to validate/reject the claim"
+
+@ok
+Scenario: From user view, when pending claim, admin can click on button to go to user edit form
+	Given a user has a pending claim for author "3791"
+	And I sign in as an admin
+	And I am on "/user/view/id/346"
+	When I follow "Edit user to validate/reject the claim"
+	Then the response should contain "This user has a pending claim on author Zhang G"
+	And the response should contain "Validate"
+	And the response should contain "Reject"
+	And the response should contain "Author info"
+	And I should be on "/user/update/id/346"
+
+
+@ok
+Scenario: On author view, when pending claim, admin sees a note about pending claim on author and a link to user edit form
+	Given a user has a pending claim for author "3791"
+	And I sign in as an admin
+	When I go to "/adminAuthor/view/id/3791"
+	Then the response should contain "There is a pending claim on this author"
+	And the response should contain "Edit user to validate/reject the claim"
+
+@ok
+Scenario: From author view, when pending claim, admin can click on button to go to user edit form
+	Given a user has a pending claim for author "3791"
+	And I sign in as an admin
+	And I am on "/adminAuthor/view/id/3791"
+	When I follow "Edit user to validate/reject the claim"
+	Then the response should contain "This user has a pending claim on author Zhang G"
+	And the response should contain "Validate"
+	And the response should contain "Reject"
+	And the response should contain "Author info"
+	And I should be on "/user/update/id/346"
+
+
+@ok
+Scenario: On author view, when an author is linked to a user, a message shows the linked user name
+	Given author "3791" is associated with a user
+	And I sign in as an admin
+	When I go to "/adminAuthor/view/id/3791"
+	Then the response should contain "this author is linked to user Joy Fox (346)"

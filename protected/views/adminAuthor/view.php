@@ -34,9 +34,21 @@ $this->menu=array(
 <div class="clear"></div>
 <?php
       if ( null != $user_command ) {
-          echo CHtml::link('There is a pending claim on this author. Click for details', 
-                                    array('AdminUserCommand/admin'),
+      	echo "<div class=\alert alert-info\">";
+      	echo "There is a pending claim on this author.";
+        echo CHtml::link('Edit user to validate/reject the claim', 
+                                    array('user/update/','id' => $user_command->requester_id),
                                     array('class' => 'btn'));
+        echo "</div>";
+      }
+
+      if (null != $model->gigadb_user_id) {
+      	$user = User::model()->findByPk($model->gigadb_user_id);
+      	if (null != $user) {
+	      	echo "<div class=\"alert alert-info\">";
+	      	echo "this author is linked to user {$user->first_name} {$user->last_name} ({$model->gigadb_user_id})";
+	      	echo "</div>";
+      	}
       }
 
 ?>

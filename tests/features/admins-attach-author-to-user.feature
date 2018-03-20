@@ -46,15 +46,6 @@ Scenario: populate author form with a user id already used triggers error
 	Then I should be on "/adminAuthor/update/id/3791"
 	And I should see "Gigadb User \"345\" has already been taken"
 
-@ok @javascript @admin-author-form-add-user @author-view
-Scenario: on author view, if there is a pending claim, link to pending claims
-	Given default admin user exists
-	And default user exists
-	And a user has a pending claim for author "3791"
-	And I sign in as an admin
-	When I go to "/adminAuthor/view/id/3791"
-	Then I should see "There is a pending claim on this author. Click for details"
-
 
 @ok @javascript @admin-link-author-from-user
 Scenario: On user list, there is a button to start the process for linking to an author
@@ -79,15 +70,6 @@ Scenario: On user edit form, there is a button to start the process for linking 
 	When I go to "/user/update/id/345"
 	Then I should see "Link this user to an author"
 
-@ok @javascript @admin-link-author-from-user @user-view
-Scenario: On user view, if user has pending claim, link to pending claims
- 	Given default admin user exists
- 	And default user exists
- 	And a user has a pending claim for author "3791"
-	And I sign in as an admin
-	When I go to "/user/view/id/345"
-	Then the response should not contain "Link this user to an author"
-	And the response should contain "This user has a pending claim. Click for details"
 
 @ok @admin-link-author-from-user @user-view @linked
 Scenario: On user view, if user is already attached to an author, show author name
