@@ -58,6 +58,7 @@ class UserCommandController extends CController
         $dataset_author = DatasetAuthor::model()->findByAttributes(array('dataset_id' => $dataset_id, 
                                                                         'author_id' => $author_id));
 
+        $user = User::model()->findByPk(Yii::app()->user->id);
 
         if( null != $dataset_author ){
             $requester_id = Yii::app()->user->id;
@@ -104,6 +105,7 @@ class UserCommandController extends CController
 		if ($claim->validate('insert')) {
 
             if ($claim->save(false)) {
+                $this->sendNotificationEmail($user,$dataset_author->author,$dataset_author->dataset);
                 $result['status'] = true;
                 $result['message'] = "Your claim has been submitted to the administrators.";
                 Yii::log(__FUNCTION__."> created user_command successfully for: ". $claim->requester->id, 'info');
@@ -119,9 +121,9 @@ class UserCommandController extends CController
             if ( isset($errors["requester_id"]) ) {
                 $result['message'] = "We cannot submit the claim: validation error on unique keys constraint";
 
-        	}
+            }
             else {
-            	$result['message'] = "We cannot submit the claim: validation error";
+                $result['message'] = "We cannot submit the claim: validation error";
             }
             $result['status'] = false;
         }
@@ -157,6 +159,35 @@ class UserCommandController extends CController
         echo json_encode($result);
 		Yii::app()->end();
 
+    }
+
+      # Send notification email to admins about new user
+    private function sendNotificationEmail($user,$author,$dataset) {
+        $app_email_name = Yii::app()->params['app_email_name'];
+        $app_email = Yii::app()->params['app_email'];
+        $email_prefix = Yii::app()->params['email_prefix'];
+        $headers = "From: $app_email_name <$app_email>\r\n"; //optional header fields
+        ini_set('sendmail_from', $app_email);
+
+        $recipient = Yii::app()->params['notify_email'];
+        $subject = $email_prefix . "New claim on a dataset author";
+        $dataset_url = $this->createAbsoluteUrl('dataset/view',array('id'=>$dataset->identifier));
+        $cta_url = $this->createAbsoluteUrl('user/update', array('id'=>$user->id));
+        $body = <<<EO_MAIL
+
+New claim on an author made by user from this dataset:
+$dataset_url
+
+Claimant: {$user->first_name} {$user->last_name}
+Author claimed:  {$author->getFullAuthor()}
+
+Click the following url to validate or reject the claim:
+
+$cta_url
+
+EO_MAIL;
+        mail($recipient, $subject, $body, $headers);
+        Yii::log(__FUNCTION__."> Sent email to $recipient, about: $subject with body: $body");
     }
 
 }
