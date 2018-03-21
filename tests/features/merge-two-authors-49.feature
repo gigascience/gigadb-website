@@ -10,53 +10,65 @@ Background:
 	When I go to "/dataset/100002"
 	Then I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
 
+Scenario: On author edit form, there is a button to start the merging with another author
+	Given I sign in as an admin
+	When I go to "/adminAuthor/update/id/3791"
+	Then I should see "Merge with an author"
 
-Scenario: From author edit, merge with another author button leads to author table
+Scenario: Presssing the merge an author button leads to author table and then merging of an author
 	Given I sign in as an admin
 	And I am on "/adminAuthor/update/id/3791"
-	When I follow "Merge with another author"
+	When I follow "Merge with author"
 	And I wait "2" seconds
-	Then the response should contain "Click a row to merge Zhang G with that author" 
+	And I click on the row for author id "3794"
+	And I wait "1" seconds
+	And A dialog box reads "Confirm merging Zhang G with Pan S ?"
+	And I follow "Yes, merge with selected author"
+	And I wait "1" seconds
+	Then I should be on "/admin/Author/view/id/3791"
+	And I should see "This author is merged with author Pan S"
 
-Scenario: From a table row with an author to merge, pick another author to merge with 
-	And I have initiated the search of an author to merge with author ID "3791"
-	Given I sign in as admin
-	When I click on the row for author id "3794"
-	And I follow "Merge Zhang G to that author"
+Scenario: Abort a merge from the popup confirmation box
+	Given I sign in as an admin
+	And I am on "/adminAuthor/update/id/3791"
+	When I follow "Merge with author"
 	And I wait "2" seconds
-	And I click on "Confirm merging"
-	And I wait for "2" seconds
-	Then I should be on "/adminAuthor/view/3791"
-	And I should see "Author merged with author Pan S"
+	And I click on the row for author id "3794"
+	And I wait "1" seconds
+	And A dialog box reads "Confirm merging Zhang G with Pan S ?"
+	And I follow "No, abort merging"
+	And I wait "1" seconds
+	Then I should be on "/admin/Author/view/id/3791"
+	And I should not see "This author is merged with author"
+
+
+Scenario: There is an unmerge button to disconnect two authors from an author edit form
+	Given author "3791" is merged with author "3794"
+	And I sign in as an admin
+	When I go to "/adminAuthor/update/id/3791"
+	Then I should see "This author is merged with author Pan S"
 	And I should see "Unmerge"
-	And I should see "Go to the other author's view"
 
-Scenario: Abort the merge from the popup confirmation box from author table
-	And I have initiated the search of an author to merge with author ID "3791"
-	Given I sign in as admin
-	When I click on the row for author id "3794"
-	And I follow "Merge Zhang G to that author"
+Scenario: Cannot merge an author with himself
+	Given I sign in as an admin
+	And I am on "/adminAuthor/update/id/3791"
+	When I follow "Merge with author"
 	And I wait "2" seconds
-	And I click on "Abort the merge"
-	And I wait for "2" seconds
-	Then I should be on "/adminAuthor/update/id/3791"
-	And I should not see "Author merged with author"
+	And I click on the row for author id "3791"
+	And I wait "1" seconds
+	And A dialog box reads "Confirm merging Zhang G with Pan S ?"
+	And I follow "Yes, merge with selected author"
+	Then I should see "Cannot merge with self. Choose another author to merge with"
 
-Scenario: Abort the merge from the close button on the message on the author table
-	And I have initiated the search of an author to merge with author ID "3791"
-	Given I sign in as admin
-	When I click the close button on the message
-	And I wait "2" seconds
-	Then I should be on "/adminAuthor/update/id/3791"
-	And I should not see "Author merged with author"
+Scenario: On author view, indication of merging is bi-directional
+	Given author "3791" is merged with author "3794"
+	And I sign in as an admin
+	When I go to "/adminAuthor/view/id/3794"
+	Then I should see "This author is merged with author Zhang G"
 
-Scenario: On author view, display all authors that have been merged
-	Given author "3791" is merged with "3792"
-	And author "3791" is merged with "3793"
-	And author "3792" is merged with "3795"
-	And I sign in as admin
-	When I go to "/adminAuthor/view/id/3791"
-	Then I should see "Author merged with author Cheng S"
-	And I should see "Author merged with author Liu X"
-
-
+Scenario: On author edit form, indication of merging is bi-directional, there still an unmerge button
+	Given author "3791" is merged with author "3794"
+	And I sign in as an admin
+	When I go to "/adminAuthor/update/id/3794"
+	Then I should see "This author is merged with author Zhang G"
+	And I should see "Unmerge"
