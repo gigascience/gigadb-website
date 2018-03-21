@@ -1,8 +1,8 @@
 @issue-49 @merging-two-authors @javascript
-Feature: Merging two duplicate authors
-	In order to reduce redundancy and to increase datasets interlinking
+Feature: Merging duplicate authors
+	In order to reduce data duplication and to increase datasets interlinking
 	As an admin user
-	I want to connect two author records as identical
+	I want to merge author records that are identical
 
 Background:
 	Given Gigadb web site is loaded with "gigadb_testdata.sql" data
