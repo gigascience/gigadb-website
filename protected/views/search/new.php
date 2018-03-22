@@ -3,11 +3,13 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-10 col-xs-offset-1 text-center">
-                            <h1 class="home-search-bar-title">GIGADB DATASETS</h1>
-                     
-                           
-                            <? $this->renderPartial('_search', array('model' => $model))?>
-                                  
+                            <h1 class="home-search-bar-title">GIGADB DATASETS</h1>     
+                             <p class="home-search-bar-subtitle"></p>
+                             <br>
+                             <br>
+                             <br>
+                             <? $this->renderPartial('_search', array('model' => $model))?>   
+                                
                         </div>
                     </div>
                 </div>
@@ -33,6 +35,7 @@
                                           'list_common_names' => $list_common_names
                                              )) ?>
                             </div>
+                             </div>
                         
                     <div class="col-xs-8">
                         <div class="span9 result" id="result">
@@ -45,7 +48,7 @@
                                 'display' => $display
                                  )) ?>
                          </div>
-                        <div class="row">
+                        <div class="row1">
                             <div class="span9 offset3">
                               <ul id="search-pg" class="pagination-sm"></ul>
                             </div>
@@ -53,7 +56,7 @@
                         
                         
                     </div>
-                </div>
+             
             </div>
         </div>
 

@@ -330,7 +330,7 @@ HTML;
                         <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
                         
                     </ul>
-            <?php if($samples->getData()){?>   
+       
                    
                     <div class="tab-content">                    
                       <div role="tabpanel" class="tab-pane active" id="sample">
@@ -389,7 +389,7 @@ HTML;
 
             ));
         ?>
-        <?php } ?>
+    
                       </div>
                         <div role="tabpanel" class="tab-pane" id="files">
                             <button class="btn btn-default pull-left" type="button" data-toggle="modal" data-target="#files-modal" style="border-color: #e5e5e5; color: #656565; height: 34px; margin-bottom: -34px; background-color: #fff;"><span class="glyphicon glyphicon-adjust"></span> <?= MyHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank'))?></button>

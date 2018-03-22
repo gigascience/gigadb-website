@@ -83,16 +83,16 @@
                     </div>
                     <div class="col-xs-8">
                         <ul class="list-inline text-right base-nav-bar-main">
-                            <li class="active"><a href="#">Home</a></li>
+                            <li class="active"><a href="/">Home</a></li>
                             <li class="dropdown">
-                                <a href="#">About <i class="fa fa-angle-down"></i></a>
+                                <a href="/site/about">About <i class="fa fa-angle-down"></i></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Our team</a></li>
-                                    <li><a href="#">Profile</a></li>
-                                    <li><a href="#">Help</a></li>
+                                    <li><a href="/user/view_profile">Profile</a></li>
+                                    <li><a href="/site/help">Help</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="/site/contact">Contact</a></li>
                             <li><a href="/site/term">Terms of use</a></li>
                         </ul>
                     </div>

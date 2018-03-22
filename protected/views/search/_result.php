@@ -4,7 +4,7 @@
     <div class="search-result-container">
         <!--Dataset section-->
         <?php if(in_array('dataset', $display)) { ?>
-        <div class="row">
+        <div class="row1">
             <div class="span1 logo-container"><img src="/images/icons/G_clipart1.png"></div>
             <div class="span8 main-content">
                 <ul class="nav nav-tabs nav-stacked result-cell">
@@ -28,7 +28,7 @@
             <?php if(in_array('sample', $display)) { 
                     foreach($dsamples as $sample) { ?>
             <!--Sample section-->
-            <div class="row">
+            <div class="row1">
                 <div class="span1 logo-container"><img src="/images/icons/S_clipart1.png"></div>
                 <div class="span8 main-content">
                     <ul class="nav nav-tabs nav-stacked result-cell">
@@ -47,7 +47,7 @@
             <!--Download File list-->
             <?php if(in_array('file', $display)) {
                 foreach($dfiles as $file) { ?>
-            <div class="row file-container">
+            <div class="row1 file-container">
                 <div class="span1 logo-container-file"><img src="/images/icons/F_clipart1.png"> </div>
                 <div class="span3 file-name"><a href="<?php echo $file->location ?>"><?php echo strlen($file->name) > 20 ? substr($file->name, 0, 20). '...' : $file->name ?></a></div>
                 <div class="span2 file-type"><?php echo $file->type->name ?></div>

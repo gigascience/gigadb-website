@@ -286,6 +286,8 @@ class SiteController extends Controller {
 	 * Displays the login page
 	 */
 	public function actionLogin() {
+            
+                $this->layout="new_main";
 		$model = new LoginForm;
 		// collect user input data
 		if (isset($_POST['LoginForm'])) {

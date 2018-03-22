@@ -33,14 +33,14 @@ $(function(){
     echo MyHtml::hiddenField("tab",$model->tab,array('id'=>'filter_tab'));
     echo MyHtml::hiddenField("exclude",$model->exclude);
 
-    echo MyHtml::submitButton(Yii::t('app' ,'Apply Filters'), array('class'=>'btn background-btn'));
+    echo MyHtml::submitButton(Yii::t('app' ,'Apply Filters'), array('class'=>'span2 btn-green filter'));
 
 ?> -->
 
 <!-- FILTERS FOR DATASETS -->
     <div id="dataset_filter">
-        <div class="form form-inline">
-            <p style="color: #333;"><?=Yii::t('app' , 'Type')?></p>
+        <div class="filter">
+            <h4 class='heading'><?=Yii::t('app' , 'Type')?></h4>
             <div class='filter-content' style="<?= $model->type ? 'display:block;': 'display:none;'?>">
                 <button class="btn btn_filter" id="btn_type"><? if(empty($model->type)) echo Yii::t('app' , 'Enable All'); else echo Yii::t('app' , 'Disable'); ?></button>
                 <div class="options <? if(empty($model->type)) echo 'disabled'; ?> ">
@@ -139,7 +139,7 @@ $(function(){
 
 
     <?php
-        echo MyHtml::submitButton(Yii::t('app' ,'Apply Filters'), array('class'=>'btn background-btn'));
+        echo MyHtml::submitButton(Yii::t('app' ,'Apply Filters'), array('class'=>'span2 btn-green filter'));
         echo MyHtml::endForm();
     ?>
 <script>
