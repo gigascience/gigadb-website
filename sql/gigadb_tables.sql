@@ -260,6 +260,45 @@ ALTER SEQUENCE author_id_seq OWNED BY author.id;
 
 
 --
+-- TOC entry 252 (class 1259 OID 18403)
+-- Name: author_rel; Type: TABLE; Schema: public; Owner: gigadb
+--
+
+CREATE TABLE author_rel (
+    id integer NOT NULL,
+    author_id integer NOT NULL,
+    related_author_id integer NOT NULL,
+    relationship_id integer
+);
+
+
+ALTER TABLE author_rel OWNER TO gigadb;
+
+--
+-- TOC entry 253 (class 1259 OID 18406)
+-- Name: author_rel_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
+--
+
+CREATE SEQUENCE author_rel_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE author_rel_id_seq OWNER TO gigadb;
+
+--
+-- TOC entry 2903 (class 0 OID 0)
+-- Dependencies: 253
+-- Name: author_rel_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gigadb
+--
+
+ALTER SEQUENCE author_rel_id_seq OWNED BY author_rel.id;
+
+
+--
 -- TOC entry 180 (class 1259 OID 18143)
 -- Name: dataset; Type: TABLE; Schema: public; Owner: gigadb
 --
@@ -2041,6 +2080,12 @@ ALTER TABLE ONLY attribute ALTER COLUMN id SET DEFAULT nextval('attribute_id_seq
 
 ALTER TABLE ONLY author ALTER COLUMN id SET DEFAULT nextval('author_id_seq'::regclass);
 
+--
+-- TOC entry 2479 (class 2604 OID 18508)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gigadb
+--
+
+ALTER TABLE ONLY author_rel ALTER COLUMN id SET DEFAULT nextval('author_rel_id_seq'::regclass);
 
 --
 -- TOC entry 2418 (class 2604 OID 18473)
