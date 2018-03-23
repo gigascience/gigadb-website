@@ -22,7 +22,11 @@ Scenario: Presssing the merge an author button leads to author table and then me
 	And I wait "2" seconds
 	And I click on the row for author id "3794"
 	And I wait "1" seconds
-	And A dialog box reads "Confirm merging Zhang G with Pan S ?"
+	And A dialog box reads "Confirm merging these two authors?"
+	And I should see "Zhang Guojie"
+	And I should see "Lambert David M"
+	And I should see "ORCID: n/a"
+	And I should see "ORCID: 0000-0002-5486-853Z"
 	And I follow "Yes, merge with selected author"
 	And I wait "1" seconds
 	Then I should be on "/admin/Author/view/id/3791"
