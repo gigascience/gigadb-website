@@ -9,10 +9,10 @@
         <!--Dataset section-->
         <?php $is_display = in_array('dataset', $display) || (in_array('file', $display) && $dfiles) || (in_array('sample', $display) && $dsamples); ?>
         <?php if($is_display) { ?>
-        <div class="row">
-            <div class="span1 logo-container"><img src="/images/icons/g-new-icon.png">
+        <div class="row1">
+            <div class="span1 logo-container" style="float:left"><img src="/images/icons/g-new-icon.png">
             </div>
-            <div class="span8 main-content">
+            <div class="span8 main-content" style="float:right">
                 <ul class="nav nav-tabs nav-stacked result-cell">
                   <li><a data-content="<?php echo MyHtml::encode($dataset->description) ?>" class="result-main-link left content-popup" href="<?= $dataset->shortUrl ?>"><?= $dataset->title ?></a></li>
                   <li>
@@ -29,7 +29,7 @@
         <?php if(in_array('sample', $display)) { 
             foreach($dsamples as $sample) { ?>
             <!--Sample section-->
-            <div class="row">
+            <div class="row1">
                 <div class="span1 logo-container"><img src="/images/icons/s-new-icon.png"></div>
                 <div class="span8 main-content">
                     <ul class="nav nav-tabs nav-stacked result-cell">
@@ -51,7 +51,7 @@
             <!--Download File list-->
             <?php if(in_array('file', $display)) {
                 foreach($dfiles as $file) { ?>
-            <div class="row file-container">
+            <div class="row1 file-container">
                 <div class="span1 logo-container-file"><img src="/images/icons/f-new-icon.png"> </div>
                 <div class="span3 file-name"><a href="<?php echo $file->location ?>"><?php echo strlen($file->name) > 20 ? substr($file->name, 0, 20). '...' : $file->name ?></a></div>
                 <div class="span2 file-type"><?php echo $file->type->name ?></div>

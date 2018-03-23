@@ -1050,10 +1050,10 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
 }
 .logo-container img {
   max-width: 30px;
-  margin-left: 50px !important;
+  margin-left: 20px !important;
 }
 .main-content {
-  margin-left: 50px !important;
+  margin-left: 10px !important;
 }
 .file-container .logo-container-file {
   padding-top: 10px !important;
@@ -1061,7 +1061,7 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
 }
 .file-container .logo-container-file img {
   max-width: 30px;
-  margin-left: 50px !important;
+  margin-left: 20px !important;
 }
 .file-container .file-name,
 .file-container .file-type,
@@ -1074,7 +1074,7 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
 }
 .file-container .file-name {
   text-align: left !important;
-  margin-left: 50px !important;
+  margin-left: 20px !important;
   font-size: 15px !important;
 }
 .result .nav-tabs .active a,
@@ -1341,7 +1341,9 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
   background-color: transparent !important;
 }
 
-
-
+[class*="span"] {
+  float: left;
+  margin-left: 20px;
+}
 
 

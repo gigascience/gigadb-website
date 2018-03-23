@@ -40,7 +40,7 @@
                     <div class="col-xs-8">
                         <div class="span9 result" id="result">
         <!--<span class='pull-right'><?= Yii::t('app', 'Selected all files') ?> <input type="checkbox" class="select-all"/></span> -->
-                            <?php $this->renderPartial("_result", array(
+                            <?php $this->renderPartial("_new_result", array(
                                  'model' => $model,
                                  'datasets' => $datasets,
                                  'samples' => $samples,
@@ -49,8 +49,8 @@
                                  )) ?>
                          </div>
                         <div class="row1">
-                            <div class="span9 offset3">
-                              <ul id="search-pg" class="pagination-sm"></ul>
+                            <div class="span9 offset3" style="margin-left: 50px;height:72px;">
+                              <ul id="search-pg" class="pagination-sm" style="margin: auto;width: 100%"></ul>
                             </div>
                         </div>
                         
