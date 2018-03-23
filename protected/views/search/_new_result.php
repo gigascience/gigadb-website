@@ -31,7 +31,7 @@
             <!--Sample section-->
             <div class="row1">
                 <div class="span1 logo-container"><img src="/images/icons/s-new-icon.png"></div>
-                <div class="span8 main-content">
+                <div class="span8 main-content" style="float:right">
                     <ul class="nav nav-tabs nav-stacked result-cell">
                       <li><a class="result-main-link" href="<?= $sample->dataset->shortUrl ?>"><?php echo $sample->name ?></a></li>
                       <li>
