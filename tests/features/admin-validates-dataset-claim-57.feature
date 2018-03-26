@@ -49,6 +49,14 @@ Scenario: On user view, when pending claim, admin sees a note about pending clai
 	And the response should contain "Edit user to validate/reject the claim"
 
 @ok
+Scenario: On user view, when no pending claim, no linked author, no message is displayed
+	Given I sign in as an admin
+	When I go to "/user/view/id/344"
+	Then the response should not contain "This user has a pending claim"
+	And the response should not contain "Edit user to validate/reject the claim"
+	And the response should not contain "This user is linked to author"
+
+@ok
 Scenario: From user view, when pending claim, admin can click on button to go to user edit form
 	Given a user has a pending claim for author "3791"
 	And I sign in as an admin
