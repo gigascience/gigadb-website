@@ -16,8 +16,9 @@
             </section>
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-4 search-filter-sidebar">
-                        <h4 style="font-size: 16px; color: #999; text-transform: uppercase; margin-bottom: 20px;">Filter your result</h4>
+                    
+                    <div class="col-xs-4 search-filter-sidebar">                  
+                        <h4 class="search-result-title">Search result for <span><i><?php echo $model->keyword ?></i></span></h4>
                           <p><?php $this->renderPartial('_range', array(
                                     'total_dataset'=>$datasets['total'],
                                     'page'=>$page,
