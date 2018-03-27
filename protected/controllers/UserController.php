@@ -40,7 +40,7 @@ class UserController extends Controller {
                     'users'=>array('@'),
                 ),
             array('allow', # admins
-                'actions'=>array('list', 'show', 'delete','admin','update','view'),
+                'actions'=>array('list', 'show', 'delete','admin','update','view','newsletter'),
                 'roles'=>array('admin'),
             ),
             array('deny',  // deny all users
@@ -221,6 +221,18 @@ class UserController extends Controller {
         $this->render('admin',array(
             'model'=>$model,
         ));
+    }
+    
+    public function actionNewsletter(){
+        
+     $result = User::model()->findAllBySql("select email,first_name, last_name, affiliation from gigadb_user where newsletter=true order by id;");
+     
+                 
+     $this->render('newsletter',array(
+            'models'=>$result,
+        ));
+       
+        
     }
 
     # Confirm email works
