@@ -33,6 +33,30 @@ Scenario: Presssing the merge an author button leads to author table and then me
 	And I should see "this author is merged with author(s)"
 	And I should see "Pan S (3794)"
 
+Scenario: Merging a new author into a graph of identical author
+	Given I sign in as an admin
+	And author "3792" is merged with author "3794"
+	And author "3792" is merged with author "3789"
+	And I am on "/adminAuthor/update/id/3791"
+	When I follow "Merge with an author"
+	And I wait "2" seconds
+	And I click on the row for author id "3794"
+	And I wait "1" seconds
+	And A dialog box reads "Confirm merging these two authors?"
+	And I should see "Zhang Guojieuojie"
+	And I should see "Lambert David M"
+	And I should see "ORCID: n/a"
+	And I should see "ORCID: 0000-0002-5486-853Z"
+	And I should see "It will also be linked to the following identical authors"
+	And I should see "Cheng S"
+	And I should see "Quan S"
+	And I should see "ORCID: n/a" 2 times
+	And I follow "Yes, merge with selected author"
+	And I wait "1" seconds
+	Then I should be on "/admin/Author/view/id/3791"
+	And I should see "this author is merged with author(s)"
+	And I should see "Pan S (3794)"
+
 Scenario: Abort a merge from the popup confirmation box
 	Given I sign in as an admin
 	And I am on "/adminAuthor/update/id/3791"
