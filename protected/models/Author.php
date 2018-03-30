@@ -260,5 +260,48 @@ EO_SQL;
         return array_map($get_row,$query_result);
     }
 
+    function mergeAsIdenticalWithAuthor($author) {
+        $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"identical_to"));
+        if(null == $identicalToObj){
+            Yii::log("Error retrieving the relationship of name 'identical_to'",'error');
+            print_r("Error retrieving the relationship of name 'identical_to'");
+            return false;
+        }
+
+        $authorObj = Author::model()->findByPk($author);
+        if(null == $authorObj){
+            Yii::log("Error retrieving Author({$author}) to merge with",'error');
+            print_r("Error retrieving Author({$author}) to merge with");
+            return false;
+        }
+        else {
+            $nodes = $authorObj->getIdenticalAuthors();
+            $nodes[] = $author;
+        }
+
+        $success = true;
+        foreach ($nodes as $node) {
+
+            $author_rel = new AuthorRel();
+            $author_rel->author_id = $this->id;
+            $author_rel->related_author_id = $node ;
+            if($author_rel->save()) {
+                Yii::log("Success creating a new AuthorRel({$this->id},{$author})",'info');
+                print_r("Success creating a new AuthorRel({$this->id},{$author})");
+                $success = $success && true;
+            }
+            else {
+                Yii::log("Error creating a new AuthorRel({$this->id},{$author})",'error');
+                print_r("Error creating a new AuthorRel({$this->id},{$author})");
+                $success = $success && false;
+            }
+
+        }
+
+        return $success;
+
+
+    }
+
 
 }

@@ -6,6 +6,7 @@ class AuthorTest extends CDbTestCase
     protected $fixtures=array(
         'authors'=>'Author',
         'author_rel'=>'AuthorRel',
+        'relationship'=>'Relationship',
     );
 
 
@@ -73,24 +74,57 @@ class AuthorTest extends CDbTestCase
  		$this->assertEquals(array(11),$this->authors(9)->getIdenticalAuthors(),"return list of identical authors for A10");
  	}
 
- 	// function testCanMergeAuthorToAuthor() {
- 	// 	$graph1 = array(1);
- 	// 	$graph2 = array(9);
- 	// 	$this->assertEquals(true,false,"Can Merge an author to an author");
- 	// }
+ 	function testCanMergeAuthorToAuthor() {
+ 		$this->assertEquals(array(),$this->authors(0)->getIdenticalAuthors(),"return list of identical authors for A1");
+ 		$this->assertEquals(array(),$this->authors(8)->getIdenticalAuthors(),"return list of identical authors for A9");
+ 		$is_success = $this->authors(0)->mergeAsIdenticalWithAuthor(9);  //merging A1 with A9
+ 		$this->assertEquals(true,$is_success,"Can Merge an author to an author");
+ 		$this->assertEquals(array(9),$this->authors(0)->getIdenticalAuthors(),"return list of identical authors for A1");
+ 		$this->assertEquals(array(1),$this->authors(8)->getIdenticalAuthors(),"return list of identical authors for A9");
+ 	}
 
- 	// function testCanMergeAuthorToGraph() {
+ 	function testCanMergeAuthorToGraph() { 
+ 		//We want to merge A9 with A10, given we already have: A9, and {A10, A11}
+ 		$is_success = $this->authors(8)->mergeAsIdenticalWithAuthor(10); //merging A9 with A10
+ 		$this->assertEquals(true,$is_success,"Can Merge an author with success");
+ 		$this->assertEquals(array(10,11),$this->authors(8)->getIdenticalAuthors(),"return list(A10,A11) of identical authors for A9");
+ 		$this->assertEquals(array(9,11),$this->authors(9)->getIdenticalAuthors(),"return list(A9,A11) of identical authors for A10");
+ 		$this->assertEquals(array(9,10),$this->authors(10)->getIdenticalAuthors(),"return list(A9,A10) of identical authors for A11");
+
+ 		//We want to merge A1 with A10, given we already have: {A9, A10, A11}
+ 		$is_success = $this->authors(0)->mergeAsIdenticalWithAuthor(10); //merging A1 with A10
+ 		$this->assertEquals(true,$is_success,"Can Merge an author with success");
+ 		$this->assertEquals(array(9,10,11),$this->authors(0)->getIdenticalAuthors(),"return list(A9,A10,A11) of identical authors for A1");
+ 		$this->assertEquals(array(1,10,11),$this->authors(8)->getIdenticalAuthors(),"return list(A1,A10,A11) of identical authors for A9");
+ 		$this->assertEquals(array(1,9,11),$this->authors(9)->getIdenticalAuthors(),"return list(A1,A10,A11) of identical authors for A10");
+ 		$this->assertEquals(array(1,9,10),$this->authors(10)->getIdenticalAuthors(),"return list(A1,A9,A10) of identical authors for A11");
+ 	}
+
+ 	// function testCanMergeGraphToGraph() {
  	// 	$this->assertEquals(true,false,"Can Merge an author to a graph of identical authors");
  	// }
 
 
- 	// function testCanUnmergeTwoAuthors() {
+ 	// function testCanUnmergeAuthorFromAuthor() {
  	// 	$this->assertEquals(true,false,"Can Unmerge an author from an author");
  	// }
 
  	// function testCanUnmergeAuthorFromGraph() {
  	// 	$this->assertEquals(true,false,"Can Unmerge an author from a graph of identical authors");
  	// }
+
+
+ 	// function testAuthorRelShouldBeAnIdenticalToRelationship() {
+
+ 	// }
+
+ 	// function testCAntMergeWithNonExistentAuthor() {
+
+ 	// }
+
+
+
+
 
 }
 
