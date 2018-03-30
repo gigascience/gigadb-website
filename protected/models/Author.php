@@ -245,4 +245,20 @@ EO_SQL;
         $criteria->addCondition('gigadb_user_id = '.$user_id) ;
         return Author::model()->find($criteria);
     }
+
+    public function getIdenticalAuthors() {
+        $author = $this->id;
+        $sql = "select related_author_id as identical from author_rel where author_id=:author_id
+        UNION
+        select author_id as identical from author_rel where related_author_id=:author_id
+        ORDER BY identical";
+        $query_result = Yii::app()->db->createCommand($sql)->bindParam(":author_id",$author,PDO::PARAM_STR)->queryAll(false);
+        var_dump($query_result);
+        $get_row = function ($row) {
+            return $row[0];
+        };
+        return array_map($get_row,$query_result);
+    }
+
+
 }

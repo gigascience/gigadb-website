@@ -5,6 +5,7 @@ class AuthorTest extends CDbTestCase
 {
     protected $fixtures=array(
         'authors'=>'Author',
+        'author_rel'=>'AuthorRel',
     );
 
 
@@ -44,6 +45,7 @@ class AuthorTest extends CDbTestCase
  		}
  	}
 
+
  	function testFindAttachedAuthorByUserIdWhenAttached() {
  		$expectation = "Martinez-Cruzado Jc";
  		$this->assertEquals($expectation, Author::findAttachedAuthorByUserId(345)->getDisplayName(),
@@ -57,6 +59,38 @@ class AuthorTest extends CDbTestCase
  	}
 
 
+ 	function testCanReturnIdenticalAuthors() {
+
+ 		$this->assertEquals(array(3,4),$this->authors(1)->getIdenticalAuthors(),"return list of identical authors for A2");
+ 		$this->assertEquals(array(),$this->authors(0)->getIdenticalAuthors(),"return list of identical authors for A1");
+ 		$this->assertEquals(array(2,3),$this->authors(3)->getIdenticalAuthors(),"return list of identical authors for A4");
+ 		$this->assertEquals(array(),$this->authors(8)->getIdenticalAuthors(),"return list of identical authors for A9");
+ 		$this->assertEquals(array(6,7,8),$this->authors(4)->getIdenticalAuthors(),"return list of identical authors for A5");
+ 		$this->assertEquals(array(5,7,8),$this->authors(5)->getIdenticalAuthors(),"return list of identical authors for A6");
+ 		$this->assertEquals(array(5,6,8),$this->authors(6)->getIdenticalAuthors(),"return list of identical authors for A7");
+ 		$this->assertEquals(array(5,6,7),$this->authors(7)->getIdenticalAuthors(),"return list of identical authors for A8");
+ 		$this->assertEquals(array(10),$this->authors(10)->getIdenticalAuthors(),"return list of identical authors for A11");
+ 		$this->assertEquals(array(11),$this->authors(9)->getIdenticalAuthors(),"return list of identical authors for A10");
+ 	}
+
+ 	// function testCanMergeAuthorToAuthor() {
+ 	// 	$graph1 = array(1);
+ 	// 	$graph2 = array(9);
+ 	// 	$this->assertEquals(true,false,"Can Merge an author to an author");
+ 	// }
+
+ 	// function testCanMergeAuthorToGraph() {
+ 	// 	$this->assertEquals(true,false,"Can Merge an author to a graph of identical authors");
+ 	// }
+
+
+ 	// function testCanUnmergeTwoAuthors() {
+ 	// 	$this->assertEquals(true,false,"Can Unmerge an author from an author");
+ 	// }
+
+ 	// function testCanUnmergeAuthorFromGraph() {
+ 	// 	$this->assertEquals(true,false,"Can Unmerge an author from a graph of identical authors");
+ 	// }
 
 }
 

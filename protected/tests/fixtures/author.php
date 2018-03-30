@@ -48,5 +48,25 @@ return array(
 		'middle_name'=>'Edward',
 		'custom_name'=>'T.E Lawrence',
 	),
+	array(
+		'id' => 9,
+		'surname'=>'Tano',
+		'first_name'=>'Ashoka',
+		'middle_name'=>'F',
+		'orcid_id'=>'0000-X478-0987',
+	),
+	array(
+		'id' => 10,
+		'surname'=>'Bert',
+		'first_name'=>'Sam',
+		'middle_name'=>'H',
+		'orcid_id'=>'0000-X478-1087',
+	),
+	array(
+		'id' => 11,
+		'surname'=>'Salazar',
+		'first_name'=>'Ali',
+		'orcid_id'=>'0000-B478-0987',
+	),
 
 );
