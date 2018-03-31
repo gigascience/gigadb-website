@@ -130,9 +130,13 @@ class AuthorTest extends CDbTestCase
  	 	$this->assertFalse($is_success,"Won't merge as author already in graph");
 	 }
 
- 	// function testCanMergeGraphToGraph() {
- 	// 	$this->assertEquals(true,false,"Can Merge an author to a graph of identical authors");
- 	// }
+ 	function testCanMergeGraphToGraph() {
+ 		$is_success = $this->authors(3)->mergeAsIdenticalWithAuthor(11); // want to merge A4 of {A2,A3,A4} with A11 of {A10,A11}
+ 		$this->assertEquals(true,$is_success,"Can Merge an author to an author");
+ 		$this->assertEquals(array(2,3,10,11),$this->authors(3)->getIdenticalAuthors(),"return {A2,A3,A4,A11) of identical authors for A4");
+ 		$this->assertEquals(array(2,3,4,11),$this->authors(9)->getIdenticalAuthors(),"return {A2,A3,A4,A11) of identical authors for A10");
+ 		$this->assertEquals(array(2,3,4,10),$this->authors(10)->getIdenticalAuthors(),"return {A2,A3,A4,A11) of identical authors for A11");
+ 	}
 
 
  	// function testCanUnmergeAuthorFromAuthor() {

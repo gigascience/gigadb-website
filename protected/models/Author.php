@@ -282,33 +282,37 @@ EO_SQL;
             return false;
         }
         else {
-            $nodes = $authorObj->getIdenticalAuthors();
-            $nodes[] = $author;
+            $target_graph = $authorObj->getIdenticalAuthors();
+            $target_graph[] = $author;
         }
 
-        if( in_array($this->id, $nodes) ) {
+        if( in_array($this->id, $target_graph) ) {
             return false;
         }
-
+        $home_graph = $this->getIdenticalAuthors();
+        $home_graph[] = $this->id;
         $success = true;
-        foreach ($nodes as $node) {
+        foreach ($home_graph as $first_graph_node) {
 
-            $author_rel = new AuthorRel();
-            $author_rel->author_id = $this->id;
-            $author_rel->related_author_id = $node ;
-            $author_rel->relationship_id = $identicalToObj->id ;
+            foreach ($target_graph as $second_graph_node) {
 
-            if($author_rel->save()) {
-                Yii::log("Success creating a new AuthorRel({$this->id},{$author})",'info');
-                print_r("Success creating a new AuthorRel({$this->id},{$author})");
-                $success = $success && true;
+                $author_rel = new AuthorRel();
+                $author_rel->author_id = $first_graph_node;
+                $author_rel->related_author_id = $second_graph_node ;
+                $author_rel->relationship_id = $identicalToObj->id ;
+
+                if($author_rel->save()) {
+                    Yii::log("Success creating a new AuthorRel({$first_graph_node},{$second_graph_node})",'info');
+                    print_r("Success creating a new AuthorRel({$first_graph_node},{$second_graph_node})");
+                    $success = $success && true;
+                }
+                else {
+                    Yii::log("Error creating a new AuthorRel({$first_graph_node},{$second_graph_node})",'error');
+                    print_r("Error creating a new AuthorRel({$first_graph_node},{$second_graph_node})");
+                    $success = $success && false;
+                }
+
             }
-            else {
-                Yii::log("Error creating a new AuthorRel({$this->id},{$author})",'error');
-                print_r("Error creating a new AuthorRel({$this->id},{$author})");
-                $success = $success && false;
-            }
-
         }
 
         return $success;
