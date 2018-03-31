@@ -124,6 +124,12 @@ class AuthorTest extends CDbTestCase
  		$this->assertEquals(array(3,4),$this->authors(1)->getIdenticalAuthors(),"return set {A3,A4} of identical authors for A2");
  	}
 
+
+ 	 function testCannotMergeAuthorIfAlreadyInGraph() {
+ 	 	$is_success = $this->authors(4)->mergeAsIdenticalWithAuthor(7); //should fail as A5 is already in {A5,A6,A7,A8}
+ 	 	$this->assertFalse($is_success,"Won't merge as author already in graph");
+	 }
+
  	// function testCanMergeGraphToGraph() {
  	// 	$this->assertEquals(true,false,"Can Merge an author to a graph of identical authors");
  	// }

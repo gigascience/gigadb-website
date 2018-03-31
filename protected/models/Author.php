@@ -286,6 +286,10 @@ EO_SQL;
             $nodes[] = $author;
         }
 
+        if( in_array($this->id, $nodes) ) {
+            return false;
+        }
+
         $success = true;
         foreach ($nodes as $node) {
 
