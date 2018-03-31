@@ -100,6 +100,30 @@ class AuthorTest extends CDbTestCase
  		$this->assertEquals(array(1,9,10),$this->authors(10)->getIdenticalAuthors(),"return list(A1,A9,A10) of identical authors for A11");
  	}
 
+
+ 	function testCannotMergeWithNonExistentAuthor() {
+ 		$is_success = $this->authors(0)->mergeAsIdenticalWithAuthor(22); //merging A1 with non existing id
+ 		$this->assertEquals(false,$is_success,"Can Merge an author with success");
+ 	}
+
+	function testAuthorRelShouldBeAnIdenticalToRelationship() {
+		$is_success = $this->authors(0)->mergeAsIdenticalWithAuthor(9);  //merging A1 with A9
+		$this->assertEquals(true,$is_success,"Can Merge an author to an author");
+		$author_rel = AuthorRel::model()->findByAttributes(array("author_id"=>1,"related_author_id"=>9));
+		$this->assertNotNull($author_rel,"An AuthorRel(1,9) exists");
+		$this->assertEquals(100,$author_rel->relationship_id,"AuthorRel(1,9) is an 'identical_to' relationship");
+
+ 	}
+
+ 	function testOnlyReturnsIdenticalToAuthorRel() {
+ 		$wrong_rel = new AuthorRel();
+ 		$wrong_rel->author_id = 2;
+ 		$wrong_rel->related_author_id = 1;
+ 		$wrong_rel->relationship_id = 999 ;
+ 		$this->assertTrue($wrong_rel->save(),"saving control AuthorRel");
+ 		$this->assertEquals(array(3,4),$this->authors(1)->getIdenticalAuthors(),"return set {A3,A4} of identical authors for A2");
+ 	}
+
  	// function testCanMergeGraphToGraph() {
  	// 	$this->assertEquals(true,false,"Can Merge an author to a graph of identical authors");
  	// }
@@ -114,13 +138,11 @@ class AuthorTest extends CDbTestCase
  	// }
 
 
+
  	// function testAuthorRelShouldBeAnIdenticalToRelationship() {
 
- 	// }
+	// }
 
- 	// function testCAntMergeWithNonExistentAuthor() {
-
- 	// }
 
 
 

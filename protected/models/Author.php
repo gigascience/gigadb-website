@@ -247,12 +247,19 @@ EO_SQL;
     }
 
     public function getIdenticalAuthors() {
+        $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"identical_to"));
+        if(null == $identicalToObj){
+            Yii::log("Error retrieving the relationship of name 'identical_to'",'error');
+            print_r("Error retrieving the relationship of name 'identical_to'");
+            return false;
+        }
+        $rel_id = $identicalToObj->id;
         $author = $this->id;
-        $sql = "select related_author_id as identical from author_rel where author_id=:author_id
+        $sql = "select related_author_id as identical from author_rel where author_id=:author_id and relationship_id=:rel_id
         UNION
-        select author_id as identical from author_rel where related_author_id=:author_id
+        select author_id as identical from author_rel where related_author_id=:author_id and relationship_id=:rel_id
         ORDER BY identical";
-        $query_result = Yii::app()->db->createCommand($sql)->bindParam(":author_id",$author,PDO::PARAM_STR)->queryAll(false);
+        $query_result = Yii::app()->db->createCommand($sql)->bindParam(":author_id",$author,PDO::PARAM_STR)->bindParam(":rel_id",$rel_id,PDO::PARAM_STR)->queryAll(false);
         var_dump($query_result);
         $get_row = function ($row) {
             return $row[0];
@@ -285,6 +292,8 @@ EO_SQL;
             $author_rel = new AuthorRel();
             $author_rel->author_id = $this->id;
             $author_rel->related_author_id = $node ;
+            $author_rel->relationship_id = $identicalToObj->id ;
+
             if($author_rel->save()) {
                 Yii::log("Success creating a new AuthorRel({$this->id},{$author})",'info');
                 print_r("Success creating a new AuthorRel({$this->id},{$author})");
