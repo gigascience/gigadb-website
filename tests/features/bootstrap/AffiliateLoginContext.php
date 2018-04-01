@@ -199,6 +199,7 @@ class AffiliateLoginContext extends BehatContext
             $this->getMainContext()->fillField("pass", $password);
 
             $this->getMainContext()->pressButton("loginbutton");
+            sleep(5);
 
         }
         else if ($arg1 == "Google") {

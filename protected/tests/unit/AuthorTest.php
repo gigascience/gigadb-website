@@ -180,16 +180,6 @@ class AuthorTest extends CDbTestCase
  	}
 
 
-
- 	// function testAuthorRelShouldBeAnIdenticalToRelationship() {
-
-	// }
-
-
-
-
-
-
 }
 
 ?>
