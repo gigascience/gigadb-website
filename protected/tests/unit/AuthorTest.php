@@ -5,8 +5,8 @@ class AuthorTest extends CDbTestCase
 {
     protected $fixtures=array(
         'authors'=>'Author',
-        'author_rel'=>'AuthorRel',
         'relationship'=>'Relationship',
+        'author_rel'=>'AuthorRel',
     );
 
 
@@ -75,6 +75,10 @@ class AuthorTest extends CDbTestCase
  	}
 
  	function testCanMergeAuthorToAuthor() {
+ 			$this->getFixtureManager()
+    	->dbConnection
+        ->createCommand("SELECT setval('author_rel_id_seq', max(id)) FROM author_rel;")
+        ->execute();
  		$this->assertEquals(array(),$this->authors(0)->getIdenticalAuthors(),"return list of identical authors for A1");
  		$this->assertEquals(array(),$this->authors(8)->getIdenticalAuthors(),"return list of identical authors for A9");
  		$is_success = $this->authors(0)->mergeAsIdenticalWithAuthor(9);  //merging A1 with A9
@@ -83,7 +87,11 @@ class AuthorTest extends CDbTestCase
  		$this->assertEquals(array(1),$this->authors(8)->getIdenticalAuthors(),"return list of identical authors for A9");
  	}
 
- 	function testCanMergeAuthorToGraph() { 
+ 	function testCanMergeAuthorToGraph() {
+ 		$this->getFixtureManager()
+    	->dbConnection
+        ->createCommand("SELECT setval('author_rel_id_seq', max(id)) FROM author_rel;")
+        ->execute();
  		//We want to merge A9 with A10, given we already have: A9, and {A10, A11}
  		$is_success = $this->authors(8)->mergeAsIdenticalWithAuthor(10); //merging A9 with A10
  		$this->assertEquals(true,$is_success,"Can Merge an author with success");
@@ -107,6 +115,10 @@ class AuthorTest extends CDbTestCase
  	}
 
 	function testAuthorRelShouldBeAnIdenticalToRelationship() {
+		$this->getFixtureManager()
+    	->dbConnection
+        ->createCommand("SELECT setval('author_rel_id_seq', max(id)) FROM author_rel;")
+        ->execute();
 		$is_success = $this->authors(0)->mergeAsIdenticalWithAuthor(9);  //merging A1 with A9
 		$this->assertEquals(true,$is_success,"Can Merge an author to an author");
 		$author_rel = AuthorRel::model()->findByAttributes(array("author_id"=>1,"related_author_id"=>9));
@@ -116,6 +128,10 @@ class AuthorTest extends CDbTestCase
  	}
 
  	function testOnlyReturnsIdenticalToAuthorRel() {
+ 		$this->getFixtureManager()
+    	->dbConnection
+        ->createCommand("SELECT setval('author_rel_id_seq', max(id)) FROM author_rel;")
+        ->execute();
  		$wrong_rel = new AuthorRel();
  		$wrong_rel->author_id = 2;
  		$wrong_rel->related_author_id = 1;
@@ -131,6 +147,10 @@ class AuthorTest extends CDbTestCase
 	 }
 
  	function testCanMergeGraphToGraph() {
+ 		$this->getFixtureManager()
+    	->dbConnection
+        ->createCommand("SELECT setval('author_rel_id_seq', max(id)) FROM author_rel;")
+        ->execute();
  		$is_success = $this->authors(3)->mergeAsIdenticalWithAuthor(11); // want to merge A4 of {A2,A3,A4} with A11 of {A10,A11}
  		$this->assertEquals(true,$is_success,"Can Merge an author to an author");
  		$this->assertEquals(array(2,3,10,11),$this->authors(3)->getIdenticalAuthors(),"return {A2,A3,A4,A11) of identical authors for A4");
@@ -139,13 +159,25 @@ class AuthorTest extends CDbTestCase
  	}
 
 
- 	// function testCanUnmergeAuthorFromAuthor() {
- 	// 	$this->assertEquals(true,false,"Can Unmerge an author from an author");
- 	// }
+ 	function testCanUnmergeAuthorFromGraph() {
+ 		$this->assertEquals(array(5,7,8),$this->authors(5)->getIdenticalAuthors(),"return {A5,A7,A8} of identical authors for A6");
+ 		$is_success = $this->authors(5)->unMerge();
+ 		$this->assertEquals(true,$is_success,"Can unMerge an author from a graph");
+ 		$this->assertEquals(array(),$this->authors(5)->getIdenticalAuthors(),"return {} of identical authors for A6");
+ 		$this->assertEquals(array(7,8),$this->authors(4)->getIdenticalAuthors(),"return {A7,A8} of identical authors for A5");
+ 		$this->assertEquals(array(5,8),$this->authors(6)->getIdenticalAuthors(),"return {A5,A8} of identical authors for A7");
+ 		$this->assertEquals(array(5,7),$this->authors(7)->getIdenticalAuthors(),"return {A5,A7} of identical authors for A8");
+ 	}
 
- 	// function testCanUnmergeAuthorFromGraph() {
- 	// 	$this->assertEquals(true,false,"Can Unmerge an author from a graph of identical authors");
- 	// }
+ 	function testCanUnmergeAuthorFromAuthor() {
+ 		$this->assertEquals(array(10),$this->authors(10)->getIdenticalAuthors(),"return {A10} of identical authors for A11");
+ 		$this->assertEquals(array(11),$this->authors(9)->getIdenticalAuthors(),"return {A11} of identical authors for A10");
+ 		$is_success = $this->authors(9)->unMerge();
+ 		$this->assertEquals(true,$is_success,"Can unMerge an author from an author");
+ 		$this->assertEquals(array(),$this->authors(10)->getIdenticalAuthors(),"return {} of identical authors for A11");
+ 		$this->assertEquals(array(),$this->authors(9)->getIdenticalAuthors(),"return {} of identical authors for A10");
+
+ 	}
 
 
 

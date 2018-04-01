@@ -173,7 +173,7 @@ EO_SQL;
         $criteria->limit = 1;
         $criteria->addSearchCondition("LOWER(surname) || ' ' || LOWER(first_name)", '%' . strtolower($keyword) . '%', false);
         $result = new CActiveDataProvider('Author', array('criteria' => $criteria));
-        
+
         $data = array();
         foreach ($result->getData() as $author) {
             $data[] = $author->id;
@@ -260,7 +260,7 @@ EO_SQL;
         select author_id as identical from author_rel where related_author_id=:author_id and relationship_id=:rel_id
         ORDER BY identical";
         $query_result = Yii::app()->db->createCommand($sql)->bindParam(":author_id",$author,PDO::PARAM_STR)->bindParam(":rel_id",$rel_id,PDO::PARAM_STR)->queryAll(false);
-        var_dump($query_result);
+        // var_dump($query_result);
         $get_row = function ($row) {
             return $row[0];
         };
@@ -271,14 +271,14 @@ EO_SQL;
         $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"identical_to"));
         if(null == $identicalToObj){
             Yii::log("Error retrieving the relationship of name 'identical_to'",'error');
-            print_r("Error retrieving the relationship of name 'identical_to'");
+            // print_r("Error retrieving the relationship of name 'identical_to'");
             return false;
         }
 
         $authorObj = Author::model()->findByPk($author);
         if(null == $authorObj){
             Yii::log("Error retrieving Author({$author}) to merge with",'error');
-            print_r("Error retrieving Author({$author}) to merge with");
+            // print_r("Error retrieving Author({$author}) to merge with");
             return false;
         }
         else {
@@ -303,12 +303,12 @@ EO_SQL;
 
                 if($author_rel->save()) {
                     Yii::log("Success creating a new AuthorRel({$first_graph_node},{$second_graph_node})",'info');
-                    print_r("Success creating a new AuthorRel({$first_graph_node},{$second_graph_node})");
+                    // print_r("Success creating a new AuthorRel({$first_graph_node},{$second_graph_node})");
                     $success = $success && true;
                 }
                 else {
                     Yii::log("Error creating a new AuthorRel({$first_graph_node},{$second_graph_node})",'error');
-                    print_r("Error creating a new AuthorRel({$first_graph_node},{$second_graph_node})");
+                    // print_r("Error creating a new AuthorRel({$first_graph_node},{$second_graph_node})");
                     $success = $success && false;
                 }
 
@@ -321,4 +321,28 @@ EO_SQL;
     }
 
 
+    public function unMerge() {
+        $outward_edges_from_this_author = new CDbCriteria;
+        $outward_edges_from_this_author->addCondition("author_id={$this->id} or related_author_id={$this->id}");
+        $outward_edges = AuthorRel::model()->findAll($outward_edges_from_this_author);
+        $success = true ;
+        foreach($outward_edges as $edge) {
+            $edge_id = $edge->id;
+            if( $edge->delete() ) {
+                // var_dump(AuthorRel::model()->findByPk($edge_id));
+                Yii::log("success deleting edge {$edge_id}",'info');
+                // print_r("success deleting edge {$edge_id}\n");
+                $success = $success && true ;
+            }
+            else {
+                // var_dump($edge->getErrors());
+                Yii::log("error deleting edge {$edge_id}",'error');
+                // print_r("error deleting edge {$edge_id}\n");
+                $success = $success && false ;
+            }
+        }
+
+        return $success;
+
+    }
 }
