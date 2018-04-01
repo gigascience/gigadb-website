@@ -3337,6 +3337,14 @@ ALTER TABLE ONLY author
 
 
 --
+-- TOC entry 2496 (class 2606 OID 18532)
+-- Name: author_rel_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb
+--
+
+ALTER TABLE ONLY author_rel
+    ADD CONSTRAINT author_rel_pkey PRIMARY KEY (id);
+
+--
 -- TOC entry 2501 (class 2606 OID 18534)
 -- Name: dataset_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb
 --

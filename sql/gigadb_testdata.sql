@@ -3007,6 +3007,13 @@ ALTER TABLE ONLY attribute
 ALTER TABLE ONLY author
     ADD CONSTRAINT author_pkey PRIMARY KEY (id);
 
+--
+-- TOC entry 2496 (class 2606 OID 18532)
+-- Name: author_rel_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb
+--
+
+ALTER TABLE ONLY author_rel
+    ADD CONSTRAINT author_rel_pkey PRIMARY KEY (id);
 
 --
 -- Name: dataset_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
