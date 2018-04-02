@@ -27,7 +27,7 @@ class AdminAuthorController extends Controller
 	{
 		return array(
 			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update','prepareUserLink','prepareAuthorMerge','linkUser','unlinkUser'),
+				'actions'=>array('admin','delete','index','view','create','update','prepareUserLink','prepareAuthorMerge','linkUser','unlinkUser','mergeAuthors'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -230,6 +230,31 @@ class AdminAuthorController extends Controller
 		}
 
 		$this->redirect(array('site/admin'));
+	}
+
+	public function actionMergeAuthors($origin_author,$target_author) {
+		$origin = $this->loadModel($origin_author);
+
+		if ( isset(Yii::app()->session['merge_author']) ) {
+			$merge_author = Yii::app()->session['merge_author'];
+			if ($merge_author == $origin_author || $merge_author == $target_author) {
+				if ( $origin->mergeAsIdenticalWithAuthor($target_author) ) {
+					Yii::log(__FUNCTION__."> merging author {$origin_author} with {$target_author} was successful",'info');
+					Yii::app()->user->setFlash('success', "Merging authors completed successfully.");
+					$this->redirect(array('adminAuthor/view','id'=>$origin_author));
+				}
+				else {
+					Yii::log(__FUNCTION__."> merging author {$origin_author} with {$target_author} failed",'error');
+				}
+			}
+			else {
+				Yii::log(__FUNCTION__."> merge_author {$merge_author} doesn't match GET parameters ({$origin_author},{$target_author}) to mergeAuthors", 'error');
+			}
+		}
+		else {
+			Yii::log(__FUNCTION__."> merge_author is not set in session", 'error');
+		}
+		$this->redirect(array('adminAuthor/admin'));
 	}
 
 	/**

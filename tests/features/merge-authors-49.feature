@@ -21,17 +21,24 @@ Scenario: Presssing the merge an author button leads to author table and then me
 	When I follow "Merge with an author"
 	And I wait "2" seconds
 	And I click on the row for author id "3794"
+	And I wait "5" seconds
+	# And A dialog box reads "Confirm merging these two authors?"
+	And I should see "ID:"
+	And I should see "Surname:"
+	And I should see "First name:"
+	And I should see "Middle name:"
+	And I should see "Orcid:"
+	And I should see "3791"
+	And I should see "3794"
+	And I should see "Zhang"
+	And I should see "Guojie"
+	And I should see "Lambert"
+	And I should see "David"
+	And I should see "M"
+	And I follow "Yes, merge authors"
 	And I wait "1" seconds
-	And A dialog box reads "Confirm merging these two authors?"
-	And I should see "Zhang Guojieuojie"
-	And I should see "Lambert David M"
-	And I should see "ORCID: n/a"
-	And I should see "ORCID: 0000-0002-5486-853Z"
-	And I follow "Yes, merge with selected author"
-	And I wait "1" seconds
-	Then I should be on "/admin/Author/view/id/3791"
-	And I should see "this author is merged with author(s)"
-	And I should see "Pan S (3794)"
+	Then I should be on "/adminAuthor/view/id/3791"
+	And I should see "merging authors completed successfully"
 
 Scenario: Merging a new author into a graph of identical author
 	Given I sign in as an admin
@@ -42,18 +49,18 @@ Scenario: Merging a new author into a graph of identical author
 	And I wait "2" seconds
 	And I click on the row for author id "3794"
 	And I wait "1" seconds
-	And A dialog box reads "Confirm merging these two authors?"
-	And I should see "Zhang Guojieuojie"
+	And A dialog box reads "Confirm merging these two authors"
+	And I should see "Zhang Guojie"
 	And I should see "Lambert David M"
 	And I should see "ORCID: n/a"
-	And I should see "ORCID: 0000-0002-5486-853Z"
+	And I should see "ORCID: n/a"
 	And I should see "It will also be linked to the following identical authors"
 	And I should see "Cheng S"
 	And I should see "Quan S"
 	And I should see "ORCID: n/a" 2 times
 	And I follow "Yes, merge with selected author"
 	And I wait "1" seconds
-	Then I should be on "/admin/Author/view/id/3791"
+	Then I should be on "/adminAuthor/view/id/3791"
 	And I should see "this author is merged with author(s)"
 	And I should see "Pan S (3794)"
 
@@ -67,7 +74,7 @@ Scenario: Abort a merge from the popup confirmation box
 	And A dialog box reads "Confirm merging Zhang Guojie with Pan S ?"
 	And I follow "No, abort merging"
 	And I wait "1" seconds
-	Then I should be on "/admin/Author/view/id/3791"
+	Then I should be on "/adminAuthor/view/id/3791"
 	And I should not see "this author is merged with author(s)"
 
 

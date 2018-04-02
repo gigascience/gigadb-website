@@ -1,3 +1,5 @@
+<?php Yii::app()->clientScript->registerScript('helpers', 'baseUrl = '.CJSON::encode(Yii::app()->request->getBaseUrl(true)).';',CClientScript::POS_HEAD); ?>
+
 
 <p class="text-left">
 <h1>Manage Authors</h1>
@@ -7,6 +9,11 @@
 	$user = null;
 	if ( isset(Yii::app()->session['attach_user']) ) {
 		$user = User::model()->findByPk(Yii::app()->session['attach_user']) ;
+	}
+
+	$origin_author = null;
+	if ( isset(Yii::app()->session['merge_author']) ) {
+		$origin_author = Author::model()->findByPk(Yii::app()->session['merge_author']) ;
 	}
 ?>
 <div class="clear"></div>
@@ -28,6 +35,20 @@
 	<? } ?>
 <? } ?>
 
+
+<?php
+
+	if (!empty($origin_author)) {
+		echo "<div class=\"alert alert-info\">";
+		echo CHtml::link('&times;', array('adminAuthor/prepareAuthorMerge',
+	                   'origin_author_id'=>$origin_author->id,'abort'=>'yes'), array('class'=>'close', 'data-dismiss'=>'alert'));
+
+		echo "Click on a row to proceed with merging that author with author {$origin_author->getDisplayName()}";
+
+		echo "</div>";
+	}
+?>
+
 <div class="row">
 	<div class="span3">
 		<a href="/adminAuthor/create" class="btn">Create a new author</a>
@@ -42,6 +63,7 @@
 	'dataProvider'=>$model->search(),
 	'itemsCssClass'=>'table table-bordered',
 	'selectionChanged'=>"function(id){open_controls($.fn.yiiGridView.getSelection(id));}",
+	'rowHtmlOptionsExpression'=>'array("id"=>$data->id, "data-author-surname"=>$data->surname,  "data-author-firstname"=>$data->first_name,  "data-author-middlename"=>$data->middle_name,  "data-author-orcid"=>$data->orcid)',
 	'filter'=>$model,
 	'columns'=>array(
 		'surname',
@@ -58,7 +80,7 @@
 </div>
 
 <?php $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
-  'id'=>'controls',
+  'id'=>'user_link',
   // additional javascript options for the dialog plugin
   'options'=>array(
     'title'=>'Managing User',
@@ -82,21 +104,96 @@
 $this->endWidget('zii.widgets.jui.CJuiDialog');
 ?>
 
+<div id="author_merge" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Confirm merging these two authors?</h3>
+  </div>
+  <div class="modal-body">
+
+<?php if (!empty($origin_author)) { ?>
+
+<table id="author_compare" class="table table-condensed table-striped table-hover table-bordered">
+	<thead>
+		<tr>
+		  <th>&nbsp;</th>
+	      <th>Author to merge</th>
+	      <th>Author to be merged with</th>
+	    </tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>ID:</td>
+			<td><? echo $origin_author->id ?></td>
+			<td id="target_id">Target id</td>
+		</tr>
+		<tr">
+			<td>Surname:</td>
+			<td><? echo $origin_author->surname ?></td>
+			<td id="target_surname">Target surname</td>
+		</tr>
+		<tr>
+			<td>First name:</td>
+			<td><? echo $origin_author->first_name ?></td>
+			<td id="target_first_name">Target firstname</td>
+		</tr>
+		<tr>
+			<td>Middle name:</td>
+			<td><? echo $origin_author->middle_name ?></td>
+			<td id="target_middle_name">Target middle name</td>
+		</tr>
+		<tr>
+			<td>Orcid:</td>
+			<td><? echo $origin_author->orcid ?></td>
+			<td id="target_orcid">n/a</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<div class="modal-footer">
+	<a href="#" class="btn btn-active" title="link" onclick="merge_authors();">Yes, merge authors</a>
+	<?php echo CHtml::link('No, abort and clear merge session', array('adminAuthor/prepareAuthorMerge',
+                   'origin_author_id'=>$origin_author->id,'abort'=>'yes'), array('class'=>'btn btn-active')); ?>
+    <a href="#" class="btn">Close</a>
+  </div>
+</div>
+
+<? } ?>
+
 <script>
 	function open_controls(author_id) {
+		var want_dialog;
 <?php
-	if (null != $user) {
-		echo "var want_dialog = true;";
-	} 
-	else {
-		echo "var want_dialog = false;";
+	if ( !empty($user) ) {
+		echo "var want_dialog = 'user_link';";
+	}
+	else if ( !empty($origin_author) ){
+		echo "var want_dialog = 'author_merge';";
 	}
 ?>
-		if (true == want_dialog) {
-		    $("#controls").data('author_id', author_id);
-		    $("#controls").dialog( "option", "title", "Linking to author id: " + author_id);
-		    $("#controls").dialog("open");
+		var author_line =  document.getElementById(author_id);
+		var author_surname = author_line.getAttribute("data-author-surname");
+
+		switch(want_dialog) {
+			case 'user_link':
+				$("#user_link").data('author_id', author_id);
+			    $("#user_link").dialog( "option", "title", "Linking to author id: " + author_id);
+			    $("#user_link").dialog("open");
+			    break;
+			case 'author_merge':
+				$("#author_merge").data('author_id', author_id);
+				$('#target_id').html(author_id);
+				$('#target_surname').html(author_line.getAttribute("data-author-surname"));
+				$('#target_first_name').html(author_line.getAttribute("data-author-firstname"));
+				$('#target_middle_name').html(author_line.getAttribute("data-author-middlename"));
+				$('#target_orcid').html(author_line.getAttribute("data-author-orcid"));
+			    $("#author_merge").modal('show');
+			    break;
+			default:
+				console.log('no modal dialog specified');
 		}
+
 	    return false;
 	}
 
@@ -104,8 +201,19 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 	<?
 		echo 'var base_url = "'.Yii::app()->urlManager->createUrl('adminAuthor/linkUser',array('id'=>'')).'";'
 	?>
-		var author_id = $("#controls").data('author_id');
+		var author_id = $("#user_link").data('author_id');
 		window.location= base_url + "/" + author_id; 
+	}
+
+	function merge_authors() {
+		<?php
+			if (!empty($origin_author)) {
+				echo 'var origin_author_id = ' . $origin_author->id .';' ;
+			}
+		?>
+		var target_author_id = $("#author_merge").data('author_id');
+
+		window.location = baseUrl + "/adminAuthor/mergeAuthors?origin_author=" + origin_author_id + "&target_author="+ target_author_id; 
 	}
 
 </script>
