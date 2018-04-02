@@ -27,7 +27,7 @@ class AdminAuthorController extends Controller
 	{
 		return array(
 			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update','prepareUserLink','linkUser','unlinkUser'),
+				'actions'=>array('admin','delete','index','view','create','update','prepareUserLink','prepareAuthorMerge','linkUser','unlinkUser'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -147,6 +147,27 @@ class AdminAuthorController extends Controller
 		}
 	}
 
+
+	/**
+	 * Create a session to allow admin to search an author to link to the author
+	 */
+	public function actionPrepareAuthorMerge($origin_author_id, $abort="no") {
+		if( null != $origin_author_id && "no" == $abort ){
+			if (preg_match("/^\d+$/", $origin_author_id)) {
+				Yii::app()->session['merge_author'] = $origin_author_id;
+				Yii::log(__FUNCTION__."> new session var: merge_author = ". $origin_author_id, 'info');
+			}
+			$this->redirect(array('adminAuthor/admin'));
+		}
+		else if (null != $origin_author_id && "yes" == $abort) {
+				unset(Yii::app()->session['merge_author']);
+				Yii::log(__FUNCTION__."> unset session var: merge_author", 'info');
+				$this->redirect(array('user/view','id'=>$origin_author_id));
+		}
+		else {
+			Yii::log(__FUNCTION__."> There is a problem with parameters received", 'error');
+		}
+	}
 
 	public function actionLinkUser($id) {
 		$author = $this->loadModel($id);

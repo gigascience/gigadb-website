@@ -71,8 +71,13 @@
 	</div> */?>
 
 	<div class="pull-right">
-        <a href="/adminAuthor/admin" class="btn">Cancel</a>
+        <?php 
+			echo CHtml::link('Merge with an author',
+                                    array('adminAuthor/prepareAuthorMerge', 'origin_author_id'=>$model->id),
+                                    array('class' => 'btn'));
+        ?>
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn')); ?>
+        <a href="/adminAuthor/admin" class="btn">Cancel</a>
 	</div>
 
 <?php $this->endWidget(); ?>
