@@ -22,7 +22,7 @@ Scenario: Presssing the merge an author button leads to author table and then me
 	And I wait "2" seconds
 	And I click on the row for author id "3794"
 	And I wait "5" seconds
-	# And A dialog box reads "Confirm merging these two authors?"
+	And A dialog box reads "Confirm merging these two authors?"
 	And I should see "ID:"
 	And I should see "Surname:"
 	And I should see "First name:"

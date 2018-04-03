@@ -44,9 +44,15 @@ class AuthorMergingContext extends BehatContext
      */
     public function aDialogBoxReads($arg1)
     {
-        return array(
-                new Step\Given("I should see \"{$arg1}\""),
-        );
+    	//modal dialog are invisible by default until they are toogled by javascript
+    	//so we need to get that javascript executed by the javascript-capable headless browser
+    	 $script = "(function(){return ($('#author_merge').is(':visible'));})();";//toogle the modal dialog to visible
+    	 $result = $this->getMainContext()->getSession()->evaluateScript($script);
+    	 PHPUnit_Framework_Assert::assertTrue($result);
+    	 $script = "(function(){return $('#author_merge').html();})();"; //capture the html of the modal dialog
+    	 $result = $this->getMainContext()->getSession()->evaluateScript($script);
+    	 PHPUnit_Framework_Assert::assertEquals(1,preg_match("/$arg1/",$result));
+
     }
 
 
