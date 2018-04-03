@@ -247,10 +247,10 @@ EO_SQL;
     }
 
     public function getIdenticalAuthors() {
-        $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"identical_to"));
+        $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"IsIdenticalTo"));
         if(null == $identicalToObj){
-            Yii::log("Error retrieving the relationship of name 'identical_to'",'error');
-            print_r("Error retrieving the relationship of name 'identical_to'");
+            Yii::log("Error retrieving the relationship of name 'IsIdenticalTo'",'error');
+            // print_r("Error retrieving the relationship of name 'IsIdenticalTo'");
             return false;
         }
         $rel_id = $identicalToObj->id;
@@ -268,10 +268,10 @@ EO_SQL;
     }
 
     function mergeAsIdenticalWithAuthor($author) {
-        $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"identical_to"));
+        $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"IsIdenticalTo"));
         if(null == $identicalToObj){
-            Yii::log("Error retrieving the relationship of name 'identical_to'",'error');
-            // print_r("Error retrieving the relationship of name 'identical_to'");
+            Yii::log("Error retrieving the relationship of name 'IsIdenticalTo'",'error');
+            // print_r("Error retrieving the relationship of name 'IsIdenticalTo'");
             return false;
         }
 
