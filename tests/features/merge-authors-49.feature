@@ -50,19 +50,25 @@ Scenario: Merging a new author into a graph of identical author
 	And I click on the row for author id "3794"
 	And I wait "1" seconds
 	And A dialog box reads "Confirm merging these two authors?"
-	And I should see "Zhang Guojie"
-	And I should see "Lambert David M"
-	And I should see "ORCID: n/a"
-	And I should see "ORCID: n/a"
+	And I should see "ID:"
+	And I should see "Surname:"
+	And I should see "First name:"
+	And I should see "Middle name:"
+	And I should see "Orcid:"
+	And I should see "3791"
+	And I should see "3794"
+	And I should see "Zhang"
+	And I should see "Guojie"
+	And I should see "Lambert"
+	And I should see "David"
+	And I should see "M"
 	And I should see "It will also be linked to the following identical authors"
-	And I should see "Cheng S"
-	And I should see "Quan S"
-	And I should see "ORCID: n/a" 2 times
+	And I should see "Cheng"
+	And I should see "Quan"
 	And I follow "Yes, merge with selected author"
 	And I wait "1" seconds
 	Then I should be on "/adminAuthor/view/id/3791"
-	And I should see "this author is merged with author(s)"
-	And I should see "Pan S (3794)"
+	And I should see "merging authors completed successfully"
 
 Scenario: Abort a merge from the popup confirmation box
 	Given I sign in as an admin

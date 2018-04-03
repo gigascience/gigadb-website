@@ -48,12 +48,33 @@ class AuthorMergingContext extends BehatContext
     	//so we need to get that javascript executed by the javascript-capable headless browser
     	 $script = "(function(){return ($('#author_merge').is(':visible'));})();";//toogle the modal dialog to visible
     	 $result = $this->getMainContext()->getSession()->evaluateScript($script);
-    	 PHPUnit_Framework_Assert::assertTrue($result);
+    	 PHPUnit_Framework_Assert::assertTrue($result,"Dialog box is made visible");
     	 $script = "(function(){return $('#author_merge').html();})();"; //capture the html of the modal dialog
     	 $result = $this->getMainContext()->getSession()->evaluateScript($script);
-    	 PHPUnit_Framework_Assert::assertEquals(1,preg_match("/$arg1/",$result));
+    	 PHPUnit_Framework_Assert::assertEquals(1,preg_match("/$arg1/",$result), "Dialog box contains {$arg1}");
 
     }
+
+    /**
+     * @Given /^author "([^"]*)" is merged with author "([^"]*)"$/
+     */
+    public function authorIsMergedWithAuthor($origin_author, $target_author)
+    {
+        return array(
+                new Step\Given("I sign in as an admin"),
+                new Step\Given("I am on \"/adminAuthor/update/id/{$origin_author}\""),
+                new Step\Given("I follow \"Merge with an author\""),
+                new Step\Given("I wait \"2\" seconds"),
+                new Step\When("I click on the row for author id \"{$target_author}\""),
+                new Step\Given("I wait \"2\" seconds"),
+                new Step\When("A dialog box reads \"Confirm merging these two authors?\""),
+                new Step\When("I follow \"Yes, merge authors\""),
+                new Step\When("I wait \"1\" seconds"),
+                new Step\Then("I should be on \"/adminAuthor/view/id/{$origin_author}\""),
+                new Step\Then("I should see \"merging authors completed successfully\""),
+        );
+    }
+
 
 
 }
