@@ -228,7 +228,7 @@ class UserController extends Controller {
      $result = User::model()->findAllBySql("select email,first_name, last_name, affiliation from gigadb_user where newsletter=true order by id;");
      
                  
-     $this->render('newsletter',array(
+     $this->renderPartial('newsletter',array(
             'models'=>$result,
         ));
        
