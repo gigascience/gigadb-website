@@ -49,7 +49,7 @@ Scenario: Merging a new author into a graph of identical author
 	And I wait "2" seconds
 	And I click on the row for author id "3794"
 	And I wait "1" seconds
-	And A dialog box reads "Confirm merging these two authors"
+	And A dialog box reads "Confirm merging these two authors?"
 	And I should see "Zhang Guojie"
 	And I should see "Lambert David M"
 	And I should see "ORCID: n/a"
@@ -71,11 +71,11 @@ Scenario: Abort a merge from the popup confirmation box
 	And I wait "2" seconds
 	And I click on the row for author id "3794"
 	And I wait "1" seconds
-	And A dialog box reads "Confirm merging Zhang Guojie with Pan S ?"
-	And I follow "No, abort merging"
+	And A dialog box reads "Confirm merging these two authors?"
+	And I follow "No, abort and clear session"
 	And I wait "1" seconds
 	Then I should be on "/adminAuthor/view/id/3791"
-	And I should not see "this author is merged with author(s)"
+	And I should not see "merging authors completed successfully"
 
 
 Scenario: There is an unmerge button to disconnect two authors from an author edit form

@@ -162,7 +162,7 @@ class AdminAuthorController extends Controller
 		else if (null != $origin_author_id && "yes" == $abort) {
 				unset(Yii::app()->session['merge_author']);
 				Yii::log(__FUNCTION__."> unset session var: merge_author", 'info');
-				$this->redirect(array('user/view','id'=>$origin_author_id));
+				$this->redirect(array('adminAuthor/view','id'=>$origin_author_id));
 		}
 		else {
 			Yii::log(__FUNCTION__."> There is a problem with parameters received", 'error');
