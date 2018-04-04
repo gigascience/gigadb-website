@@ -42,7 +42,7 @@ Scenario: Presssing the merge an author button leads to author table and then me
 	Then I should be on "/adminAuthor/view/id/3791"
 	And I should see "merging authors completed successfully"
 
-@wip
+@ok
 Scenario: Merging a new author already in a graph with another author
 	Given I sign in as an admin
 	And author "3791" is merged with author "3790"
@@ -74,6 +74,7 @@ Scenario: Merging a new author already in a graph with another author
 	And I should see "merging authors completed successfully"
 
 
+@ok
 Scenario: Merging a new author into a graph of identical authors
 	Given I sign in as an admin
 	And author "3792" is merged with author "3794"
@@ -94,11 +95,10 @@ Scenario: Merging a new author into a graph of identical authors
 	And I should see "3794"
 	And I should see "Zhang"
 	And I should see "Guojie"
-	And I should see "Lambert"
-	And I should see "David"
-	And I should see "M"
+	And I should see "Pan"
+	And I should see "S"
+	And I should see "Lambert DM"
 	And I should see "Cheng S"
-	And I should see "Quan S"
 	And I follow "Yes, merge authors"
 	And I wait "1" seconds
 	Then I should be on "/adminAuthor/view/id/3791"

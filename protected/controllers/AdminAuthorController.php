@@ -27,7 +27,7 @@ class AdminAuthorController extends Controller
 	{
 		return array(
 			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update','prepareUserLink','prepareAuthorMerge','linkUser','unlinkUser','mergeAuthors'),
+				'actions'=>array('admin','delete','index','view','create','update','prepareUserLink','prepareAuthorMerge','linkUser','unlinkUser','mergeAuthors','identicalAuthorsGraph'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -255,6 +255,20 @@ class AdminAuthorController extends Controller
 			Yii::log(__FUNCTION__."> merge_author is not set in session", 'error');
 		}
 		$this->redirect(array('adminAuthor/admin'));
+	}
+
+	public function actionIdenticalAuthorsGraph($id) {
+		$author = $this->loadModel($id);
+		if( empty($author) ) {
+			echo "";
+			Yii::app()->end();
+		}
+		else {
+			$authors = $author->getIdenticalAuthorsDisplayName();
+			echo implode(", ",$authors);
+			Yii::app()->end();
+		}
+
 	}
 
 	/**

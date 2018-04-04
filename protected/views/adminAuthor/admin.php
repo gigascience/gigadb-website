@@ -1,4 +1,5 @@
 <?php Yii::app()->clientScript->registerScript('helpers', 'baseUrl = '.CJSON::encode(Yii::app()->request->getBaseUrl(true)).';',CClientScript::POS_HEAD); ?>
+<?php Yii::app()->clientScript->registerScript('graphreq', 'var httpRequest;',CClientScript::POS_HEAD); ?>
 
 
 <p class="text-left">
@@ -104,6 +105,7 @@
 $this->endWidget('zii.widgets.jui.CJuiDialog');
 ?>
 
+<!-- Modal -->
 <div id="author_merge" class="modal hide fade">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -150,7 +152,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 		<tr>
 			<td>Already merged with:</td>
 			<td><? echo implode(",",$origin_author->getIdenticalAuthorsDisplayName()) ?></td>
-			<td id="target_orcid"></td>
+			<td id="target_graph"></td>
 		</tr>
 	</tbody>
 </table>
@@ -221,4 +223,36 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 		window.location = baseUrl + "/adminAuthor/mergeAuthors?origin_author=" + origin_author_id + "&target_author="+ target_author_id; 
 	}
 
+	function makeRequest() {
+		// console.log('in makeRequest');
+		var target_author_id = $("#author_merge").data('author_id');
+	    httpRequest = new XMLHttpRequest();
+
+	    if (!httpRequest) {
+	    	console.log('Giving up ! Cannot create an XMLHTTP instance');
+	    	return false;
+	    }
+	    httpRequest.onreadystatechange = populateTargetGraph;
+	    httpRequest.open('GET', baseUrl +'/adminAuthor/identicalAuthorsGraph/id/' + target_author_id);
+	    // console.log(baseUrl +'/adminAuthor/identicalAuthorsGraph/id/' + target_author_id);
+	    httpRequest.send();
+	}
+
+	function populateTargetGraph() {
+		// console.log('in populateTargetGraph');
+	    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+		    if (httpRequest.status === 200) {
+		        $('#target_graph').html(httpRequest.responseText);
+		    } else {
+		        console.log('There was a problem with the request.');
+		    }
+	    }
+	}
+
+</script>
+
+<script>
+    $('#author_merge').on('show', function () {
+        makeRequest();
+    });
 </script>
