@@ -179,6 +179,10 @@ class AuthorTest extends CDbTestCase
 
  	}
 
+    function testCanReturnIdenticalAuthorsDisplayName() {
+        $this->assertEquals(array("Régime JÉ", "Schiøtt M", "T.E Lawrence"),$this->authors(4)->getIdenticalAuthorsDisplayName(),"return display names of identical authors for A5");
+    }
+
 
 }
 

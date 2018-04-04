@@ -345,4 +345,12 @@ EO_SQL;
         return $success;
 
     }
+
+    public function getIdenticalAuthorsDisplayName( ) {
+        $get_display_name = function ($author_id) {
+            $author = Author::model()->findByPk($author_id);
+            return !empty($author)?$author->getDisplayName():null;
+        };
+        return array_map($get_display_name,$this->getIdenticalAuthors());
+    }
 }
