@@ -125,27 +125,32 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 		<tr>
 			<td>ID:</td>
 			<td><? echo $origin_author->id ?></td>
-			<td id="target_id">Target id</td>
+			<td id="target_id"></td>
 		</tr>
 		<tr">
 			<td>Surname:</td>
 			<td><? echo $origin_author->surname ?></td>
-			<td id="target_surname">Target surname</td>
+			<td id="target_surname"></td>
 		</tr>
 		<tr>
 			<td>First name:</td>
 			<td><? echo $origin_author->first_name ?></td>
-			<td id="target_first_name">Target firstname</td>
+			<td id="target_first_name"></td>
 		</tr>
 		<tr>
 			<td>Middle name:</td>
 			<td><? echo $origin_author->middle_name ?></td>
-			<td id="target_middle_name">Target middle name</td>
+			<td id="target_middle_name"></td>
 		</tr>
 		<tr>
 			<td>Orcid:</td>
 			<td><? echo $origin_author->orcid ?></td>
-			<td id="target_orcid">n/a</td>
+			<td id="target_orcid"></td>
+		</tr>
+		<tr>
+			<td>Already merged with:</td>
+			<td><? echo implode(",",$origin_author->getIdenticalAuthorsDisplayName()) ?></td>
+			<td id="target_orcid"></td>
 		</tr>
 	</tbody>
 </table>

@@ -10,11 +10,13 @@ Background:
 	When I go to "/dataset/100002"
 	Then I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
 
+@ok
 Scenario: On author edit form, there is a button to start the merging with another author
 	Given I sign in as an admin
 	When I go to "/adminAuthor/update/id/3791"
 	Then I should see "Merge with an author"
 
+@ok
 Scenario: Presssing the merge an author button leads to author table and then merging of an author
 	Given I sign in as an admin
 	And I am on "/adminAuthor/update/id/3791"
@@ -40,7 +42,39 @@ Scenario: Presssing the merge an author button leads to author table and then me
 	Then I should be on "/adminAuthor/view/id/3791"
 	And I should see "merging authors completed successfully"
 
-Scenario: Merging a new author into a graph of identical author
+@wip
+Scenario: Merging a new author already in a graph with another author
+	Given I sign in as an admin
+	And author "3791" is merged with author "3790"
+	And author "3790" is merged with author "3789"
+	And I am on "/adminAuthor/update/id/3791"
+	When I follow "Merge with an author"
+	And I wait "2" seconds
+	And I click on the row for author id "3794"
+	And I wait "1" seconds
+	And A dialog box reads "Confirm merging these two authors?"
+	And I should see "ID:"
+	And I should see "Surname:"
+	And I should see "First name:"
+	And I should see "Middle name:"
+	And I should see "Orcid:"
+	And I should see "Already merged with:"
+	And I should see "3791"
+	And I should see "3794"
+	And I should see "Zhang"
+	And I should see "Guojie"
+	And I should see "Lambert"
+	And I should see "David"
+	And I should see "M"
+	And I should see "Lambert DM"
+	And I should see "Wang J"
+	And I follow "Yes, merge authors"
+	And I wait "1" seconds
+	Then I should be on "/adminAuthor/view/id/3791"
+	And I should see "merging authors completed successfully"
+
+
+Scenario: Merging a new author into a graph of identical authors
 	Given I sign in as an admin
 	And author "3792" is merged with author "3794"
 	And author "3792" is merged with author "3789"
@@ -55,6 +89,7 @@ Scenario: Merging a new author into a graph of identical author
 	And I should see "First name:"
 	And I should see "Middle name:"
 	And I should see "Orcid:"
+	And I should see "Already merged with:"
 	And I should see "3791"
 	And I should see "3794"
 	And I should see "Zhang"
@@ -62,14 +97,14 @@ Scenario: Merging a new author into a graph of identical author
 	And I should see "Lambert"
 	And I should see "David"
 	And I should see "M"
-	And I should see "It will also be linked to the following identical authors"
-	And I should see "Cheng"
-	And I should see "Quan"
-	And I follow "Yes, merge with selected author"
+	And I should see "Cheng S"
+	And I should see "Quan S"
+	And I follow "Yes, merge authors"
 	And I wait "1" seconds
 	Then I should be on "/adminAuthor/view/id/3791"
 	And I should see "merging authors completed successfully"
 
+@ok
 Scenario: Abort a merge from the popup confirmation box
 	Given I sign in as an admin
 	And I am on "/adminAuthor/update/id/3791"
@@ -100,7 +135,7 @@ Scenario: Cannot merge an author with himself
 	And I click on the row for author id "3791"
 	And I wait "1" seconds
 	And A dialog box reads "Confirm merging Zhang Guojie with Pan S ?"
-	And I follow "Yes, merge with selected author"
+	And I follow "Yes, merge authors"
 	Then I should see "Cannot merge with self. Choose another author to merge with"
 
 Scenario: If exists (A1 identical_to A4), attempt to merge A1 with A4 again should not be possible
@@ -112,7 +147,7 @@ Scenario: If exists (A1 identical_to A4), attempt to merge A1 with A4 again shou
 	And I click on the row for author id "3794"
 	And I wait "1" seconds
 	Then A dialog box reads "Confirm merging Zhang Guojie with Pan S ?"
-	And I follow "Yes, merge with selected author"
+	And I follow "Yes, merge authors"
 	Then I should see "Authors already merged. Choose another author to merge with"
 
 Scenario: If exists (A1 identical_to A4), attempt to merge A4 with A1 should not be possible
@@ -124,7 +159,7 @@ Scenario: If exists (A1 identical_to A4), attempt to merge A4 with A1 should not
 	And I click on the row for author id "3791"
 	And I wait "1" seconds
 	Then A dialog box reads "Confirm merging Pan S with Zhang Guojie ?"
-	And I follow "Yes, merge with selected author"
+	And I follow "Yes, merge authors"
 	Then I should see "Authors already merged. Choose another author to merge with"
 
 Scenario: If exists (A1 identical_to A4), A4 view shows link to A1
