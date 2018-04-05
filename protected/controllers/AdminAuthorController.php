@@ -27,7 +27,7 @@ class AdminAuthorController extends Controller
 	{
 		return array(
 			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update','prepareUserLink','prepareAuthorMerge','linkUser','unlinkUser','mergeAuthors','identicalAuthorsGraph'),
+				'actions'=>array('admin','delete','index','view','create','update','prepareUserLink','prepareAuthorMerge','linkUser','unlinkUser','mergeAuthors','identicalAuthorsGraph','unmerge'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -255,6 +255,18 @@ class AdminAuthorController extends Controller
 			Yii::log(__FUNCTION__."> merge_author is not set in session", 'error');
 		}
 		$this->redirect(array('adminAuthor/admin'));
+	}
+
+	public function actionUnmerge($id) {
+		$model = $this->loadModel($id);
+		if( $model->unMerge() ) {
+			Yii::app()->user->setFlash('success', "author unmerged from other authors");
+			$this->redirect(array('adminAuthor/view','id'=>$id));
+		}
+		else {
+			Yii::app()->user->setFlash('error', "unmerging from graph has encountered an error");
+			$this->redirect(array('adminAuthor/view','id'=>$id));
+		}
 	}
 
 	public function actionIdenticalAuthorsGraph($id) {

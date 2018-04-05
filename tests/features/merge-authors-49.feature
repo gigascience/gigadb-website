@@ -125,7 +125,7 @@ Scenario: There is an unmerge button to disconnect two authors from an author ed
 	When I go to "/adminAuthor/update/id/3791"
 	Then I should see "this author is merged with author(s):"
 	And I should see "Pan"
-	And I should see "Unmerge"
+	And I should see "Unmerge author from those authors"
 
 @ok
 Scenario: Cannot merge an author with himself
@@ -208,7 +208,7 @@ Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), on A1 edit form: s
 	And I should see "3792"
 	And I should see "3793"
 	And I should see "3795"
-	And I should see "Unmerge"
+	And I should see "Unmerge author from those authors"
 
 @ok
 Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), on A5 edit form: shows links and an unmerge button
@@ -221,21 +221,22 @@ Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), on A5 edit form: s
 	And I should see "3791"
 	And I should see "3792"
 	And I should see "3793"
-	And I should see "Unmerge"
+	And I should see "Unmerge author from those authors"
 
-@wip
+@ok
 Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), on A3 edit form, pressing unmerge removes A3 from graph
 	Given author "3791" is merged with author "3792"
 	And author "3791" is merged with author "3793"
 	And author "3792" is merged with author "3795"
 	And I sign in as an admin
 	When I go to "/adminAuthor/update/id/3793"
-	And I follow "Unmerge"
+	And I follow "Unmerge author from those authors"
 	And I wait "2" seconds
 	Then I should be on "/adminAuthor/view/id/3793"
+	And I should see "author unmerged from other authors"
 	And I should not see "3791"
 	And I should not see "3792"
 	And I should not see "3795"
-	And I should not see "Unmerge"
+	And I should not see "Unmerge author from those authors"
 
 

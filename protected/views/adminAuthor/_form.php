@@ -91,8 +91,8 @@
 <?php	} ?>
 
 <?php 
-			echo CHtml::link('Unmerge this author from those authors',
-                                    array('adminAuthor/unmerge', 'origin_author_id'=>$model->id),
+			echo CHtml::link('Unmerge author from those authors',
+                                    array('adminAuthor/unmerge', 'id'=>$model->id),
                                     array('class' => 'btn'));
 ?>
 </div>
