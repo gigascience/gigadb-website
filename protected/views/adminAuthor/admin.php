@@ -115,6 +115,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 <?php if (!empty($origin_author)) { ?>
 
+<div id="merge_status" class="alert">
+</div>
 <table id="author_compare" class="table table-condensed table-striped table-hover table-bordered">
 	<thead>
 		<tr>
@@ -220,7 +222,13 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 		?>
 		var target_author_id = $("#author_merge").data('author_id');
 
-		window.location = baseUrl + "/adminAuthor/mergeAuthors?origin_author=" + origin_author_id + "&target_author="+ target_author_id; 
+		if (target_author_id == origin_author_id) {
+			$('#merge_status').html("Cannot merge with self. Choose another author to merge with");
+		}
+		else {
+			window.location = baseUrl + "/adminAuthor/mergeAuthors?origin_author=" + origin_author_id + "&target_author="+ target_author_id; 
+		}
+
 	}
 
 	function makeRequest() {

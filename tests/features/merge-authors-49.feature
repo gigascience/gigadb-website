@@ -118,15 +118,16 @@ Scenario: Abort a merge from the popup confirmation box
 	Then I should be on "/adminAuthor/view/id/3791"
 	And I should not see "merging authors completed successfully"
 
-
+@ok
 Scenario: There is an unmerge button to disconnect two authors from an author edit form
 	Given author "3791" is merged with author "3794"
 	And I sign in as an admin
 	When I go to "/adminAuthor/update/id/3791"
 	Then I should see "this author is merged with author(s):"
-	And I should see "3794"
+	And I should see "Pan"
 	And I should see "Unmerge"
 
+@ok
 Scenario: Cannot merge an author with himself
 	Given I sign in as an admin
 	And I am on "/adminAuthor/update/id/3791"
@@ -134,7 +135,7 @@ Scenario: Cannot merge an author with himself
 	And I wait "2" seconds
 	And I click on the row for author id "3791"
 	And I wait "1" seconds
-	And A dialog box reads "Confirm merging Zhang Guojie with Pan S ?"
+	And A dialog box reads "Confirm merging these two authors?"
 	And I follow "Yes, merge authors"
 	Then I should see "Cannot merge with self. Choose another author to merge with"
 
