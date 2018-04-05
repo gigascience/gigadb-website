@@ -218,12 +218,16 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 		<?php
 			if (!empty($origin_author)) {
 				echo 'var origin_author_id = ' . $origin_author->id .';' ;
+				echo 'var origin_graph = '.CJSON::encode($origin_author->getIdenticalAuthors()).';' ;
 			}
 		?>
-		var target_author_id = $("#author_merge").data('author_id');
+		var target_author_id = parseInt($("#author_merge").data('author_id'),10);
 
 		if (target_author_id == origin_author_id) {
 			$('#merge_status').html("Cannot merge with self. Choose another author to merge with");
+		}
+		else if (origin_graph.includes(target_author_id)) {
+			$('#merge_status').html("Authors already merged. Choose another author to merge with");
 		}
 		else {
 			window.location = baseUrl + "/adminAuthor/mergeAuthors?origin_author=" + origin_author_id + "&target_author="+ target_author_id; 
