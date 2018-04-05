@@ -182,6 +182,10 @@ EO_SQL;
         return $data;
     }
 
+    public function getAuthorDetails() {
+        return preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', "{$this->id}. " . $this->getFirstName() ." ". $this->getMiddleName() . " " . $this->getSurname() . " (Orcid: " . ($this->orcid ? $this->orcid: "n/a") .")") ;
+    }
+
     public function getDisplayName() {
 
         if (null != $this->custom_name) {
@@ -196,6 +200,16 @@ EO_SQL;
     public function getSurname() {
 
         return self::generateDisplayName($this->surname, null, null);
+    }
+
+    public function getFirstName() {
+
+        return rtrim($this->first_name,",;  ");
+    }
+
+    public function getMiddleName() {
+
+        return rtrim($this->middle_name,",;  ");
     }
 
     public function getInitials() {

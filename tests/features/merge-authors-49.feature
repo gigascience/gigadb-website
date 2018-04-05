@@ -165,15 +165,15 @@ Scenario: If exists (A1 identical_to A4), attempt to merge A4 with A1 should not
 	And I follow "Yes, merge authors"
 	Then I should see "Authors already merged. Choose another author to merge with"
 
-@wip
+@ok
 Scenario: If exists (A1 identical_to A4), A4 view shows link to A1
 	Given author "3791" is merged with author "3794"
 	And I sign in as an admin
 	When I go to "/adminAuthor/view/id/3794"
 	Then I should see "this author is merged with author(s):"
-	Then I should see "Zhang Guojie (3791)"
+	Then I should see "3791. Guojie Zhang (Orcid: n/a)"
 
-
+@ok
 Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), on A1 view: a graph of merged authors is shown properly
 	Given author "3791" is merged with author "3792"
 	And author "3791" is merged with author "3793"
@@ -185,6 +185,7 @@ Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), on A1 view: a grap
 	Then I should see "3793"
 	Then I should see "3795"
 
+@ok
 Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), a graph of merged authors is shown properly on A5
 	Given author "3791" is merged with author "3792"
 	And author "3791" is merged with author "3793"
@@ -196,6 +197,7 @@ Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), a graph of merged 
 	Then I should see "3792"
 	Then I should see "3793"
 
+@ok
 Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), on A1 edit form: shows links and an unmerge button
 	Given author "3791" is merged with author "3792"
 	And author "3791" is merged with author "3793"
@@ -208,7 +210,7 @@ Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), on A1 edit form: s
 	And I should see "3795"
 	And I should see "Unmerge"
 
-
+@ok
 Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), on A5 edit form: shows links and an unmerge button
 	Given author "3791" is merged with author "3792"
 	And author "3791" is merged with author "3793"
@@ -221,7 +223,7 @@ Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), on A5 edit form: s
 	And I should see "3793"
 	And I should see "Unmerge"
 
-
+@wip
 Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), on A3 edit form, pressing unmerge removes A3 from graph
 	Given author "3791" is merged with author "3792"
 	And author "3791" is merged with author "3793"

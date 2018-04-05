@@ -191,6 +191,12 @@ class AuthorTest extends CDbTestCase
         $this->assertTrue($this->authors(3)->IsIdenticalTo(4),"A4 is identical to A4 (itself)");
     }
 
+    function testCanReturnedAuthorDetails() {
+        $this->assertEquals("10. Sam H Bert (Orcid: 0000-X478-1087)",$this->authors(9)->getAuthorDetails(),"Author details returned for A10");
+        $this->assertEquals("1. Ángel GG Muñoz (Orcid: n/a)",$this->authors(0)->getAuthorDetails(),"Author details returned for A1");
+        $this->assertEquals("7. Morten Schiøtt (Orcid: n/a)",$this->authors(6)->getAuthorDetails(),"Author details returned for A7");
+    }
+
 
 }
 

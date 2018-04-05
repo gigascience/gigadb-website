@@ -70,6 +70,34 @@
 				</div>
 	</div> */?>
 
+	<div class="merge_info well">
+<?php
+		$identical_authors = $model->getIdenticalAuthors() ;
+		if( !empty($identical_authors) ) {
+?>
+		<div class="alert alert-info">
+		this author is merged with author(s):
+		<ul class="unstyled">
+<?php
+			foreach ($identical_authors as $author_id) {
+				$author = Author::model()->findByPk($author_id);
+				echo "<li>".$author->getAuthorDetails()."</li>";
+			}
+?>
+		</ul>
+
+		</div>
+
+<?php	} ?>
+
+<?php 
+			echo CHtml::link('Unmerge this author from those authors',
+                                    array('adminAuthor/unmerge', 'origin_author_id'=>$model->id),
+                                    array('class' => 'btn'));
+?>
+</div>
+
+
 	<div class="pull-right">
         <?php 
 			echo CHtml::link('Merge with an author',

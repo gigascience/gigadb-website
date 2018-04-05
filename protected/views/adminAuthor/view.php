@@ -58,3 +58,25 @@ $this->menu=array(
       }
 
 ?>
+<div class="clear"></div>
+<div class="merge_info">
+<?php
+		$identical_authors = $model->getIdenticalAuthors() ;
+		if( !empty($identical_authors) ) {
+?>
+		<div class="alert alert-info">
+		this author is merged with author(s):
+		<ul class="unstyled">
+<?php
+			foreach ($identical_authors as $author_id) {
+				$author = Author::model()->findByPk($author_id);
+				echo "<li>".$author->getAuthorDetails()."</li>";
+			}
+?>
+		</ul>
+
+		</div>
+
+<?php	} ?>
+
+</div>
