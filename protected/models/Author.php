@@ -262,7 +262,7 @@ EO_SQL;
         $query_result = Yii::app()->db->createCommand($sql)->bindParam(":author_id",$author,PDO::PARAM_STR)->bindParam(":rel_id",$rel_id,PDO::PARAM_STR)->queryAll(false);
         // var_dump($query_result);
         $get_row = function ($row) {
-            return $row[0];
+            return (int) $row[0];
         };
         return array_map($get_row,$query_result);
     }
@@ -352,5 +352,9 @@ EO_SQL;
             return !empty($author)?$author->getDisplayName():null;
         };
         return array_map($get_display_name,$this->getIdenticalAuthors());
+    }
+
+    public function IsIdenticalTo($author) {
+        return $this->id == $author || in_array($author,$this->getIdenticalAuthors());
     }
 }

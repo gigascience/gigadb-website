@@ -183,6 +183,14 @@ class AuthorTest extends CDbTestCase
         $this->assertEquals(array("Régime JÉ", "Schiøtt M", "T.E Lawrence"),$this->authors(4)->getIdenticalAuthorsDisplayName(),"return display names of identical authors for A5");
     }
 
+    function testCanCompareWithAuthor() {
+        $this->assertTrue($this->authors(3)->IsIdenticalTo(3),"A4 is identical to A3");
+        $this->assertTrue($this->authors(3)->IsIdenticalTo(2),"A4 is identical to A2");
+        $this->assertFalse($this->authors(3)->IsIdenticalTo(5),"A4 is not identical to A5");
+        $this->assertFalse($this->authors(3)->IsIdenticalTo(9),"A4 is not identical to A9");
+        $this->assertTrue($this->authors(3)->IsIdenticalTo(4),"A4 is identical to A4 (itself)");
+    }
+
 
 }
 
