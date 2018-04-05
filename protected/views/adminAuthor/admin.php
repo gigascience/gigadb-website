@@ -192,6 +192,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 			    break;
 			case 'author_merge':
 				$("#author_merge").data('author_id', author_id);
+				$("#merge_status").removeAttr("class").empty();
 				$('#target_id').html(author_id);
 				$('#target_surname').html(author_line.getAttribute("data-author-surname"));
 				$('#target_first_name').html(author_line.getAttribute("data-author-firstname"));
@@ -224,10 +225,10 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 		var target_author_id = parseInt($("#author_merge").data('author_id'),10);
 
 		if (target_author_id == origin_author_id) {
-			$('#merge_status').html("Cannot merge with self. Choose another author to merge with");
+			$('#merge_status').addClass("alert").addClass("alert-error").html("Cannot merge with self. Choose another author to merge with");
 		}
 		else if (origin_graph.includes(target_author_id)) {
-			$('#merge_status').html("Authors already merged. Choose another author to merge with");
+			$('#merge_status').addClass("alert").addClass("alert-error").html("Authors already merged. Choose another author to merge with");
 		}
 		else {
 			window.location = baseUrl + "/adminAuthor/mergeAuthors?origin_author=" + origin_author_id + "&target_author="+ target_author_id; 
@@ -266,5 +267,9 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 <script>
     $('#author_merge').on('show', function () {
         makeRequest();
+    });
+
+    $('#author_merge').on('hidden', function () {
+        $("#merge_status").removeAttr("class").empty();
     });
 </script>
