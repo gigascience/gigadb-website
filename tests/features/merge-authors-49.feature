@@ -157,7 +157,7 @@ Scenario: If exists (A1 identical_to A4), attempt to merge A4 with A1 should not
 	Given author "3791" is merged with author "3794"
 	And I sign in as an admin
 	When I go to "/adminAuthor/update/id/3794"
-	When I follow "Merge with an author"
+	And I follow "Merge with an author"
 	And I wait "2" seconds
 	And I click on the row for author id "3791"
 	And I wait "1" seconds
@@ -250,4 +250,24 @@ Scenario: On user profile, show the datasets ( 100002 and 100003) of linked auth
 	Then I should see "Your Authored Datasets"
 	And I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
 	And I should see "Genome data from foxtail millet (Setaria italica)"
+
+@ok
+Scenario: cannot go through the workflow for linking author to user and for merging two authors at the same time (1)
+	Given I sign in as an admin
+	And I have initiated the search of an author for Gigadb User with ID "345"
+	When I go to "/adminAuthor/update/id/3794"
+	And I follow "Merge with an author"
+	Then I should see "Click on a row to proceed with merging that author with"
+	And I should not see "Click on a row to proceed with linking that author with user"
+
+
+@ok
+Scenario: cannot go through the workflow for linking author to user and for merging two authors at the same time (2)
+	Given I sign in as an admin
+	And I am on "/adminAuthor/update/id/3794"
+	And I follow "Merge with an author"
+	When I go to "/user/update/id/345"
+	And I follow "Link this user to an author"
+	Then I should not see "Click on a row to proceed with merging that author with"
+	And I should see "Click on a row to proceed with linking that author with user"
 

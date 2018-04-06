@@ -134,6 +134,9 @@ class AdminAuthorController extends Controller
 			if (preg_match("/^\d+$/", $user_id)) {
 				Yii::app()->session['attach_user'] = $user_id;
 				Yii::log(__FUNCTION__."> new session var: attach_user = ". $user_id, 'info');
+				if( !empty(Yii::app()->session['merge_author']) ) {
+					unset(Yii::app()->session['merge_author']);
+				}
 			}
 			$this->redirect(array('adminAuthor/admin'));
 		}
@@ -156,6 +159,9 @@ class AdminAuthorController extends Controller
 			if (preg_match("/^\d+$/", $origin_author_id)) {
 				Yii::app()->session['merge_author'] = $origin_author_id;
 				Yii::log(__FUNCTION__."> new session var: merge_author = ". $origin_author_id, 'info');
+				if( !empty(Yii::app()->session['attach_user']) ) {
+					unset(Yii::app()->session['attach_user']);
+				}
 			}
 			$this->redirect(array('adminAuthor/admin'));
 		}
