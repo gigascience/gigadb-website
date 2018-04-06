@@ -90,10 +90,12 @@
 
 <?php	} ?>
 
-<?php 
+<?php
+		if( !empty($identical_authors) ) { 
 			echo CHtml::link('Unmerge author from those authors',
                                     array('adminAuthor/unmerge', 'id'=>$model->id),
                                     array('class' => 'btn'));
+		}
 ?>
 </div>
 

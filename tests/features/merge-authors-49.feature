@@ -128,6 +128,13 @@ Scenario: There is an unmerge button to disconnect two authors from an author ed
 	And I should see "Unmerge author from those authors"
 
 @ok
+Scenario: No unmerge button appears when there is no author merged to the one being edited
+	And I sign in as an admin
+	When I go to "/adminAuthor/update/id/3791"
+	Then I should not see "this author is merged with author(s):"
+	And I should not see "Unmerge author from those authors"
+
+@ok
 Scenario: Cannot merge an author with himself
 	Given I sign in as an admin
 	And I am on "/adminAuthor/update/id/3791"
