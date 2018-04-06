@@ -329,23 +329,31 @@ class UserController extends Controller {
             }
         }
 
-        # query to return datasets authored by the user
-        $adCriteria= new CDbCriteria;
-        $adCriteria->join = "JOIN dataset_author da on da.dataset_id = t.id join author a on da.author_id = a.id join gigadb_user u on a.gigadb_user_id = u.id";
-        $adCriteria->condition = "u.id=:user_id";
-        $adCriteria->params=array(':user_id'=>Yii::app()->user->id);
-        $authoredDatasets = Dataset::model()->findAll($adCriteria);
+        // # query to return datasets authored by the user
+        // $adCriteria= new CDbCriteria;
+        // $adCriteria->join = "JOIN dataset_author da on da.dataset_id = t.id join author a on da.author_id = a.id join gigadb_user u on a.gigadb_user_id = u.id";
+        // $adCriteria->condition = "u.id=:user_id";
+        // $adCriteria->params=array(':user_id'=>Yii::app()->user->id);
+        // $authoredDatasets = Dataset::model()->findAll($adCriteria);
 
         # query to return the author ids linked ot the user
-        $linkedAuthorsResults = Yii::app()->db->createCommand()
-                    ->select('a.id')
-                    ->from('author a')
-                    ->where('gigadb_user_id = :id', array(':id' => Yii::app()->user->id))
-                    ->queryAll();
-        $idify = function($row) {
-            return $row['id'];
-        };
-        $linkedAuthors = array_map($idify,$linkedAuthorsResults);
+        $linkedAuthors = array();
+        $authoredDatasets = array();
+
+        $linked_author = $user->getLinkedAuthor();
+        // Yii::log(print_r($linked_author, true), 'debug');
+        if (!empty($linked_author)) {
+            $linkedAuthors = $linked_author->getIdenticalAuthors();
+            $linkedAuthors[] = $linked_author->id;
+            // Yii::log(print_r($linkedAuthors, true), 'debug');
+
+            # return datasets associated to linked authors
+            // Yii::log(print_r($authoredDatasets, true), 'debug');
+            foreach ($linkedAuthors as $author) {
+                $authoredDatasets = array_merge($authoredDatasets, Author::model()->findByPk($author)->datasets);
+            }
+            // Yii::log(print_r($authoredDatasets, true), 'debug');
+        }
 
         $searchRecord = SearchRecord::model()->findAllByAttributes(array('user_id' => Yii::app()->user->id));
         //Yii::log(print_r($searchRecord, true), 'debug');

@@ -10,5 +10,5 @@ sql: |
     id SERIAL NOT NULL PRIMARY KEY,
     author_id INTEGER NOT NULL REFERENCES author(id) ON DELETE CASCADE,
     related_author_id INTEGER NOT NULL REFERENCES author(id) ON DELETE CASCADE,
-    relationship_id INTEGER NOT NULL REFERENCES relation(id) ON DELETE CASCADE,
+    relationship_id INTEGER NOT NULL REFERENCES relationship(id) ON DELETE CASCADE
   );

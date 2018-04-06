@@ -240,3 +240,14 @@ Scenario: If exists (A1 i_t A2), (A1 i_t A3) and (A2 i_t A5), on A3 edit form, p
 	And I should not see "Unmerge author from those authors"
 
 
+@ok
+Scenario: On user profile, show the datasets ( 100002 and 100003) of linked author and of authors merged to the linked author
+	Given author "3791" is merged with author "3792"
+	And user "joy_fox" is loaded
+	And I sign in as a user
+	And I am linked to author "Zhang, G"
+	When I am on "/user/view_profile"
+	Then I should see "Your Authored Datasets"
+	And I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
+	And I should see "Genome data from foxtail millet (Setaria italica)"
+

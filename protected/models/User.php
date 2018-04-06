@@ -236,6 +236,13 @@ class User extends CActiveRecord {
         return $role;
     }
 
+    public function getLinkedAuthor() {
+        $criteria = new CDbCriteria;
+        $criteria->addColumnCondition(array('t.gigadb_user_id' => $this->id));
+        $author = Author::model()->find($criteria);
+        return $author;
+    }
+
 /**
   * process OAuth response after successfull authorisaion and redirection to the loginAffilate callback
   * TODO: the logic with name vs first_name+last_name may not be ideal (eg: my firstname Rija is my twitter name, it becomes last name in gigadb
