@@ -164,7 +164,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 	<a href="#" class="btn btn-active" title="link" onclick="merge_authors();">Yes, merge authors</a>
 	<?php echo CHtml::link('No, abort and clear session', array('adminAuthor/prepareAuthorMerge',
                    'origin_author_id'=>$origin_author->id,'abort'=>'yes'), array('class'=>'btn btn-active')); ?>
-    <a href="#" class="btn">Close</a>
+    <a type="button" class="btn close" data-dismiss="modal" aria-hidden="true">Close</a>
   </div>
 </div>
 
