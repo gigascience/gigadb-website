@@ -149,6 +149,20 @@ Scenario: From author list with the user specific controls, find and link an aut
 	And I have initiated the search of an author for Gigadb User with ID "345"
 	When I click on the row for author id "3791"
 	And I wait "2" seconds
+	And I should see "User to link to author"
+	And I should see "Author to be linked to user"
+	And I should see "ID:"
+	And I should see "Surname:"
+	And I should see "First name:"
+	And I should see "Middle name:"
+	And I should see "Orcid:"
+	And I should see "Already merged with:"
+	And I should see "345"
+	And I should see "3791"
+	And I should see "Smith"
+	And I should see "John"
+	And I should see "Guojie"
+	And I should see "Guojie"
 	And I follow "Link user John Smith to that author"
 	And I wait "2" seconds
 	Then I should be on "/user/view/id/345"
@@ -162,9 +176,9 @@ Scenario: From author list with the user specific controls, click an author row,
 	When I click on the row for author id "3791"
 	And I wait "2" seconds
 	And I follow "Abort and clear selected user"
-	And I wait "2" seconds
-	Then I should be on "/user/view/id/345"
-	And I should not see "Zhang G"
+	And I wait "1" seconds
+	And the response should contain "View User #345"
+	And the response should not contain "Zhang G"
 
 @ok @admin-link-author-from-user @javascript
 Scenario: After a user has been linked to an author, ensure that the session is cleaned up

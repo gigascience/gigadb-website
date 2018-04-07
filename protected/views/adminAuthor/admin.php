@@ -86,17 +86,57 @@
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	    <h3>Confirm linking this author to the user?</h3>
 	</div>
+	<?php if (!empty($user)) { ?>
 	<div class="modal-body">
+		<table id="author_compare" class="table table-condensed table-striped table-hover table-bordered">
+			<thead>
+				<tr>
+				  <th>&nbsp;</th>
+			      <th>User to link to author</th>
+			      <th>Author to be linked to user</th>
+			    </tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>ID:</td>
+					<td><? echo $user->id ?></td>
+					<td id="target_id"></td>
+				</tr>
+				<tr">
+					<td>Surname:</td>
+					<td><? echo $user->last_name ?></td>
+					<td id="target_surname"></td>
+				</tr>
+				<tr>
+					<td>First name:</td>
+					<td><? echo $user->first_name ?></td>
+					<td id="target_first_name"></td>
+				</tr>
+				<tr>
+					<td>Middle name:</td>
+					<td>&nbsp;</td>
+					<td id="target_middle_name"></td>
+				</tr>
+				<tr>
+					<td>Orcid:</td>
+					<td><? echo $user->orcid_id ?></td>
+					<td id="target_orcid"></td>
+				</tr>
+				<tr>
+					<td>Already merged with:</td>
+					<td>n/a</td>
+					<td id="target_graph"></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div class="modal-footer">
-		<?php if (null != $user) { ?>
 			<a href="#" class="btn btn-active" title="link" onclick="link_to_author();">Link user <? echo $user->first_name . " " . $user->last_name ?> to that author</a>
-		<div class="clear"></div>
 		<?php echo CHtml::link('Abort and clear selected user', array('adminAuthor/prepareUserLink',
 		                   'user_id'=>$user->id,'abort'=>'yes'), array('class'=>'btn btn-active')); ?>
-
-		<? } ?>
+		<a type="button" class="btn close" data-dismiss="modal" aria-hidden="true">Close</a>
 	</div>
+	<? } ?>
 </div>
 
 <!-- Modal -->
@@ -180,6 +220,11 @@
 		switch(want_dialog) {
 			case 'user_link':
 				$("#user_link").data('author_id', author_id);
+				$('#target_id').html(author_id);
+				$('#target_surname').html(author_line.getAttribute("data-author-surname"));
+				$('#target_first_name').html(author_line.getAttribute("data-author-firstname"));
+				$('#target_middle_name').html(author_line.getAttribute("data-author-middlename"));
+				$('#target_orcid').html(author_line.getAttribute("data-author-orcid"));
 			    $("#user_link").modal('show');
 			    break;
 			case 'author_merge':
