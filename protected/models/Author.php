@@ -298,35 +298,50 @@ EO_SQL;
         else {
             $target_graph = $authorObj->getIdenticalAuthors();
             $target_graph[] = $author;
+            $target_count = count($target_graph);
         }
 
         if( in_array($this->id, $target_graph) ) {
             return false;
         }
-        $home_graph = $this->getIdenticalAuthors();
-        $home_graph[] = $this->id;
+
+        $origin_graph = $this->getIdenticalAuthors();
+        $origin_graph[] = $this->id;
         $success = true;
-        foreach ($home_graph as $first_graph_node) {
 
-            foreach ($target_graph as $second_graph_node) {
+        foreach ($origin_graph as $origin_node) {
 
-                $author_rel = new AuthorRel();
-                $author_rel->author_id = $first_graph_node;
-                $author_rel->related_author_id = $second_graph_node ;
-                $author_rel->relationship_id = $identicalToObj->id ;
+            $id_to_record = function ($origin_id, $target_id, $relationship_id) {
+                return ["author_id"=> $origin_id, "related_author_id"=>$target_id, "relationship_id"=>$relationship_id];
+            };
+            $connection = Yii::app()->db->getSchema()->getCommandBuilder();
+            $command = $connection->createMultipleInsertCommand('author_rel', array_map( $id_to_record,
+                    array_fill(0, $target_count, $origin_node),
+                    $target_graph,
+                    array_fill(0, $target_count, $identicalToObj->id) )
+            );
+            $inserted_count = $command->execute();
+            $success = $success && ( $target_count == $inserted_count ? true : false );
 
-                if($author_rel->save()) {
-                    Yii::log("Success creating a new AuthorRel({$first_graph_node},{$second_graph_node})",'info');
-                    // print_r("Success creating a new AuthorRel({$first_graph_node},{$second_graph_node})");
-                    $success = $success && true;
-                }
-                else {
-                    Yii::log("Error creating a new AuthorRel({$first_graph_node},{$second_graph_node})",'error');
-                    // print_r("Error creating a new AuthorRel({$first_graph_node},{$second_graph_node})");
-                    $success = $success && false;
-                }
+            // foreach ($target_graph as $target_node) {
 
-            }
+            //     $author_rel = new AuthorRel();
+            //     $author_rel->author_id = $origin_node;
+            //     $author_rel->related_author_id = $target_node ;
+            //     $author_rel->relationship_id = $identicalToObj->id ;
+
+            //     if($author_rel->save()) {
+            //         Yii::log("Success creating a new AuthorRel({$origin_node},{$target_node})",'info');
+            //         // print_r("Success creating a new AuthorRel({$origin_node},{$target_node})");
+            //         $success = $success && true;
+            //     }
+            //     else {
+            //         Yii::log("Error creating a new AuthorRel({$origin_node},{$target_node})",'error');
+            //         // print_r("Error creating a new AuthorRel({$origin_node},{$target_node})");
+            //         $success = $success && false;
+            //     }
+
+            // }
         }
 
         return $success;
