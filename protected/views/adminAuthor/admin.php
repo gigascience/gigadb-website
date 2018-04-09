@@ -205,13 +205,13 @@
 
 <script>
 	function open_controls(author_id) {
-		var want_dialog;
+		var want_dialog = null;
 <?php
 	if ( !empty($user) ) {
-		echo "var want_dialog = 'user_link';";
+		echo "want_dialog = 'user_link';";
 	}
 	else if ( !empty($origin_author) ){
-		echo "var want_dialog = 'author_merge';";
+		echo "want_dialog = 'author_merge';";
 	}
 ?>
 		var author_line =  document.getElementById(author_id);
@@ -253,10 +253,12 @@
 	}
 
 	function merge_authors() {
+		var orgin_author_id = null;
+		var orgin_graph = null;
 		<?php
 			if (!empty($origin_author)) {
-				echo 'var origin_author_id = ' . $origin_author->id .';' ;
-				echo 'var origin_graph = '.CJSON::encode($origin_author->getIdenticalAuthors()).';' ;
+				echo 'origin_author_id = ' . $origin_author->id .';' ;
+				echo 'origin_graph = '.CJSON::encode($origin_author->getIdenticalAuthors()).';' ;
 			}
 		?>
 		var target_author_id = parseInt($("#author_merge").data('author_id'),10);
@@ -264,7 +266,7 @@
 		if (target_author_id == origin_author_id) {
 			$('#merge_status').addClass("alert").addClass("alert-error").html("Cannot merge with self. Choose another author to merge with");
 		}
-		else if (origin_graph.includes(target_author_id)) {
+		else if (-1 != origin_graph.indexOf(target_author_id)) {
 			$('#merge_status').addClass("alert").addClass("alert-error").html("Authors already merged. Choose another author to merge with");
 		}
 		else {
