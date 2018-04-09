@@ -9,7 +9,6 @@ Scenario: appropriate test environment
 	Given Gigadb web site is loaded with production-like data
 	And an admin user exists
 	When I am on "/dataset/100039"
-	Then I should see "Genomic data of the Puerto Rican Parrot"
 
 
 @ok
