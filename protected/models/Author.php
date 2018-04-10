@@ -309,16 +309,20 @@ EO_SQL;
         $origin_graph[] = $this->id;
         $success = true;
 
+        //proc to construct a valid db record for author_rel to pass on to createMultipleInsertCommand
+        $id_to_record = function ($origin_id, $target_id, $relationship_id) {
+            return ["author_id"=> $origin_id, "related_author_id"=>$target_id, "relationship_id"=>$relationship_id];
+        };
+
+        $connection = Yii::app()->db->getSchema()->getCommandBuilder();
+
         foreach ($origin_graph as $origin_node) {
 
-            $id_to_record = function ($origin_id, $target_id, $relationship_id) {
-                return ["author_id"=> $origin_id, "related_author_id"=>$target_id, "relationship_id"=>$relationship_id];
-            };
-            $connection = Yii::app()->db->getSchema()->getCommandBuilder();
             $command = $connection->createMultipleInsertCommand('author_rel', array_map( $id_to_record,
                     array_fill(0, $target_count, $origin_node),
                     $target_graph,
-                    array_fill(0, $target_count, $identicalToObj->id) )
+                    array_fill(0, $target_count, $identicalToObj->id)
+                )
             );
             $inserted_count = $command->execute();
             $success = $success && ( $target_count == $inserted_count ? true : false );
