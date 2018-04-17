@@ -21,6 +21,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
     private $admin_password;
     private $user_login;
     private $user_password;
+    private $time_start;
 
 
 	public function __construct(array $parameters)
@@ -266,6 +267,25 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         $dbconn = pg_connect("host=localhost dbname=gigadb user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
+    }
+
+    /**
+     * @Given /^I started the timer$/
+     */
+    public function iStartedTheTimer()
+    {
+        $this->time_start = microtime(true);
+    }
+
+    /**
+     * @Then /^the timer is stopped$/
+     */
+    public function theTimerIsStopped()
+    {
+        $time_end = microtime(true);
+        $time = $time_end - $this->time_start;
+
+        print_r("Timer stopped after $time seconds\n");
     }
 
 
