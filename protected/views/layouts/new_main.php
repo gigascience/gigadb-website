@@ -88,11 +88,12 @@
                                 <a href="/site/about">About <i class="fa fa-angle-down"></i></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Our team</a></li>
-                                    <li><a href="/user/view_profile">Profile</a></li>
+                                    <li><a href="/site/contact">Contact</a></li>
+                                    <li><a href="/site/advisory">Advisory</a></li>
                                     <li><a href="/site/help">Help</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/site/contact">Contact</a></li>
+                            <li><a href="/user/view_profile">Profile</a></li>
                             <li><a href="/site/term">Terms of use</a></li>
                         </ul>
                     </div>

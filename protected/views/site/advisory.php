@@ -9,7 +9,7 @@ $this->pageTitle='GigaDB - About';
                 <section class="page-title-section">
                     <div class="page-title">
                         <ol class="breadcrumb pull-right">
-                            <li><a href="#">Home</a></li>
+                            <li><a href="/">Home</a></li>
                             <li class="active">Advisory</li>
                         </ol>
                         <h4>Advisory</h4>
