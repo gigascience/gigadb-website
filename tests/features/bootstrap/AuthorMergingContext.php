@@ -75,6 +75,12 @@ class AuthorMergingContext extends BehatContext
         );
     }
 
-
+    /**
+     * @Given /^an existing graph of authors$/
+    */
+    public function anExistingGraphOfAuthors()
+    {
+        $this->getMainContext()->loadUserData("performances-49");
+    }
 
 }

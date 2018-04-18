@@ -10,7 +10,7 @@ Background:
 	When I am on "/dataset/100039"
 	Then I should see "Genomic data of the Puerto Rican Parrot"
 
-@wip
+@no-graph
 Scenario: loading the author table
 	Given I sign in as an admin
 	And I started the timer
@@ -25,3 +25,19 @@ Scenario: loading the author table
 	# When I follow "2"
 	# Then I should see "Chakrabarti"
 	# Then I should see "Bolser"
+
+@with-graph
+Scenario: loading the author table after some authors been merged
+	#  merged authors
+	Given an existing graph of authors
+	#  now we load the admin author table
+	And I sign in as an admin
+	And I started the timer
+	When I go to "/adminAuthor/admin"
+	Then I should see "Zhang"
+	Then I should see "Bo"
+	Then I should see "0000-0001-8890-8416"
+	Then I should see "De La Cruz"
+	Then I should see "German"
+	Then I should see "Next"
+	Then the timer is stopped
