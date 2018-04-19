@@ -350,6 +350,8 @@ end
 #### Less ####
 ##############
 
+# npm does not support its self-signed certificates - tell it to use known registrars
+execute 'npm config set ca ""'
 # Compile less files
 execute 'npm install -g less'
 if node[:gigadb_box] == 'aws'
