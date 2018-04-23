@@ -19,7 +19,7 @@
                         <div class="col-xs-8">
                             <div class="underline-title">
                                 <ol class="breadcrumb pull-right">
-                                    <li><a href="#">+ more</a></li>
+                                    <li><span>+ more</span></li>
                                 </ol>
                                 <div>
                                     <h4>Dataset types</h4>
@@ -36,11 +36,22 @@
                                 <li><a href="#"><div class="text-icon text-icon-green"><img src="/images/new_interface_image/Lipidomic.svg"></div>Lipidomic (<span><? echo $number_lipi ?></span>)</a></li>
                                 <li><a href="#"><div class="text-icon text-icon-yellow"><img src="/images/new_interface_image/Metabarcoding.svg"></div>Metabarcoding (<span><? echo $number_metabarcoding ?></span>)</a></li>
                                 <li><a href="#"><div class="text-icon text-icon-yellow"><img src="/images/new_interface_image/Metabolomic.svg"></div>Metabolomic (<span><? echo $number_metabolomic ?></span>)</a></li>
-                                <li><a href="#"><div class="text-icon text-icon-red"><img src="/images/new_interface_image/Metadata.svg"></div>Metadata (<span><? echo $number_metadata ?></span>)</a></li>
+                                <li><a href="#"><div class="text-icon text-icon-red"><img src="/images/new_interface_image/Metadata.svg"></div>Metadata (<span><? echo $number_metadata ?></span>)</a></li>  
                                 <li><a href="#"><div class="text-icon text-icon-green"><img src="/images/new_interface_image/Metagenomic.svg"></div>Metagenomic (<span><? echo $number_metagenomic ?></span>)</a></li>
                             </ul>
+                            <ul class="list-inline home-text-icon-list" style="display: none;">
+                                 <li><a href="#"><div class="text-icon text-icon-blue"><img src="/images/new_interface_image/Network-Analysis.svg"></div>Network-Analysis (<span><? echo $number_na ?></span>)</a></li>
+                                 <li><a href="#"><div class="text-icon text-icon-yellow"><img src="/imagesnew_interface_image/Neuroscience.svg"></div>Neuroscience (<span><? echo $number_ns ?></span>)</a></li>
+                                 <li><a href="#"><div class="text-icon text-icon-red"><img src="/images/new_interface_image/Phenotyping.svg"></div>Phenotyping (<span><? echo $number_pt ?></span>)</a></li>
+                                 <li><a href="#"><div class="text-icon text-icon-yellow"><img src="/images/new_interface_image/Proteomic.svg"></div>Proteomic (<span><? echo $number_proteomic ?></span>)</a></li>
+                                 <li><a href="#"><div class="text-icon text-icon-blue"><img src="/images/new_interface_image/Software.svg"></div>Software (<span><? echo $number_software ?></span>)</a></li>
+                                 <li><a href="#"><div class="text-icon text-icon-blue"><img src="/images/new_interface_image/Transcriptomic.svg"></div>Transcriptomic (<span><? echo $number_ts ?></span>)</a></li>
+                                 <li><a href="#"><div class="text-icon text-icon-green"><img src="/images/new_interface_image/Virtual-Machine.svg"></div>Virtual-Machine (<span><? echo $number_vm ?></span>)</a></li>
+                                 <li><a href="#"><div class="text-icon text-icon-red"><img src="/images/new_interface_image/Workflow.svg"></div>Workflow (<span><? echo $number_wf ?></span>)</a></li>
+                                
+                            </ul>
                         </div>
-                          <div class="col-xs-4" style="height:300px;overflow:scroll;">
+                          <div class="col-xs-4" id="rss" style="height:300px;overflow:scroll;">
                             <div class="underline-title">
                                 <div>
                                     <h4>RSS</h4>
@@ -103,4 +114,16 @@
 
 <script>
 $("#dataset-hint").popover();
+</script>
+<script type="text/javascript">
+            $(document).ready(function(){
+                $(".breadcrumb li span").click(function(){
+                    var togglediv = $(".home-text-icon-list:nth-child(3)");
+                    togglediv.toggle();
+                    if(togglediv.css("display")=='block'){
+                        $(this).text('- less');
+                        $("#rss").height("500px");
+                    }else{$(this).text('+ more'); $("#rss").height("300px");}
+                });
+            });
 </script>

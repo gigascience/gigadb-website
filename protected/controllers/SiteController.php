@@ -148,6 +148,30 @@ class SiteController extends Controller {
                         case "Climate":
                              $number_climate=$result['count'];
                              break;
+                        case "Network-Analysis":
+                             $number_na=$result['count'];
+                             break; 
+                        case "Neuroscience":
+                             $number_ns=$result['count'];
+                             break;  
+                        case "Phenotyping":
+                             $number_pt=$result['count'];
+                             break;    
+                        case "Proteomic":
+                             $number_proteomic=$result['count'];
+                             break;   
+                        case "Software":
+                             $number_software=$result['count'];
+                             break;   
+                        case "Transcriptomic":
+                             $number_ts=$result['count'];
+                             break;    
+                        case "Virtual-Machine":
+                             $number_vm=$result['count'];
+                             break;  
+                        case "Workflow":
+                             $number_wf=$result['count'];
+                             break; 
 
                     }
                    
@@ -175,6 +199,16 @@ class SiteController extends Controller {
                         'number_metabolomic'=>$number_metabolomic,
                         'number_metadata'=>$number_metadata,
                         'number_metagenomic'=>$number_metagenomic,
+                        'number_na'=>$number_na,
+                        'number_ns'=>$number_ns,
+                        'number_pt'=>$number_pt,
+                        'number_proteomic'=>$number_proteomic,
+                        'number_software'=>$number_software,
+                        'number_ts'=>$number_ts,
+                        'number_vm'=>$number_vm,
+                        'number_wf'=>$number_wf,
+                        
+                        
                         )
                         
                         
