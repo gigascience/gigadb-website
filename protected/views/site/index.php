@@ -41,7 +41,7 @@
                             </ul>
                             <ul class="list-inline home-text-icon-list" style="display: none;">
                                  <li><a href="#"><div class="text-icon text-icon-blue"><img src="/images/new_interface_image/Network-Analysis.svg"></div>Network-Analysis (<span><? echo $number_na ?></span>)</a></li>
-                                 <li><a href="#"><div class="text-icon text-icon-yellow"><img src="/imagesnew_interface_image/Neuroscience.svg"></div>Neuroscience (<span><? echo $number_ns ?></span>)</a></li>
+                                 <li><a href="#"><div class="text-icon text-icon-yellow"><img src="/images/new_interface_image/Neuroscience.svg"></div>Neuroscience (<span><? echo $number_ns ?></span>)</a></li>
                                  <li><a href="#"><div class="text-icon text-icon-red"><img src="/images/new_interface_image/Phenotyping.svg"></div>Phenotyping (<span><? echo $number_pt ?></span>)</a></li>
                                  <li><a href="#"><div class="text-icon text-icon-yellow"><img src="/images/new_interface_image/Proteomic.svg"></div>Proteomic (<span><? echo $number_proteomic ?></span>)</a></li>
                                  <li><a href="#"><div class="text-icon text-icon-blue"><img src="/images/new_interface_image/Software.svg"></div>Software (<span><? echo $number_software ?></span>)</a></li>
