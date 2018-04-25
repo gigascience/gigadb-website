@@ -49,17 +49,22 @@ class DatabaseSearch extends CApplicationComponent {
 
 	    $command->where(array('like', 'lower(s.name)', '%'.$keyword.'%'));
 	    $command->orWhere(array('like', 'lower(s.consent_document)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(s.contact_author_name)', '%'.$keyword.'%'));
+	    //$command->orWhere(array('like', 'lower(s.contact_author_name)', '%'.$keyword.'%'));
+            $command->orWhere('LOWER(s.contact_author_name) = :keyword', array(':keyword'=>$keyword)); 
 	    //$command->orWhere(array('like', 's.contact_author_email', '%'.$keyword.'%'));
 	    //$command->orWhere(array('like', 's.sampling_protocol', '%'.$keyword.'%'));
 	    //$command->orWhere(array('like', 'sattrs.definition', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(sp.common_name)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(sp.genbank_name)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(sp.scientific_name)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(sp.scientific_name)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(a.attribute_name)', '%'.$keyword.'%'));
+	    //$command->orWhere(array('like', 'lower(sp.common_name)', '%'.$keyword.'%'));
+            $command->orWhere('LOWER(sp.common_name) = :keyword', array(':keyword'=>$keyword)); 
+	    //$command->orWhere(array('like', 'lower(sp.genbank_name)', '%'.$keyword.'%'));
+            $command->orWhere('LOWER(sp.genbank_name) = :keyword', array(':keyword'=>$keyword)); 
+	    //$command->orWhere(array('like', 'lower(sp.scientific_name)', '%'.$keyword.'%'));
+            $command->orWhere('LOWER(sp.scientific_name) = :keyword', array(':keyword'=>$keyword)); 
+	    //$command->orWhere(array('like', 'lower(sp.scientific_name)', '%'.$keyword.'%'));
+	    //$command->orWhere(array('like', 'lower(a.attribute_name)', '%'.$keyword.'%'));
+            $command->orWhere('LOWER(a.attribute_name) = :keyword', array(':keyword'=>$keyword)); 
 	    $command->orWhere(array('like', 'lower(sa.value)', '%'.$keyword.'%'));
-
+           
 
 	    if($ids)
 	    	$command->orWhere(array('in', 's.id', $ids));
@@ -78,7 +83,7 @@ class DatabaseSearch extends CApplicationComponent {
 		$command->selectDistinct("d.id");
 		$command->from = "dataset d";
 		$command->join = "
-			left join (select dataset_id, string_agg(p.name, ',') as names from dataset_project dp, project p where dp.project_id = p.id group by dataset_id) dprojects on d.id = dprojects.dataset_id 
+	            left join (select dataset_id, string_agg(p.name, ',') as names from dataset_project dp, project p where dp.project_id = p.id group by dataset_id) dprojects on d.id = dprojects.dataset_id 
 		    left join (select dataset_id, string_agg(a.surname||', '||substring(a.first_name,1,1)||', '||substring(a.middle_name,1,1), ';') as author_names from dataset_author da, author a where da.author_id = a.id group by dataset_id) dauthors on d.id = dauthors.dataset_id 
    		    left join (select dataset_id, string_agg(a.surname || ' '||a.first_name||' ' || a.middle_name, ';') as author_names from dataset_author da, author a where da.author_id = a.id group by dataset_id) dnames on d.id = dnames.dataset_id 
 		    left join manuscript m on d.id = m.dataset_id 
@@ -88,18 +93,28 @@ class DatabaseSearch extends CApplicationComponent {
 		    left join dataset_type dt on dt.dataset_id = d.id 
 		    left join dataset_funder df on df.dataset_id = d.id 
 		    left join funder_name fn on fn.id = df.funder_id 
+                    left join (select dataset_id, value from dataset_attributes where attribute_id=455) dat on dat.dataset_id = d.id
+                    left join (select t.name as name, dt.dataset_id from type t, dataset_type dt where dt.type_id=t.id) dtnames on d.id=dtnames.dataset_id
 
 		";
 
-		$command->where(array('like', 'd.identifier', '%'.$keyword.'%'));
+	    $command->where(array('like', 'd.identifier', '%'.$keyword.'%'));
 	    $command->orWhere(array('like', 'lower(d.title)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(dauthors.author_names)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(dnames.author_names)', '%'.$keyword.'%'));
+	    //$command->orWhere(array('like', 'lower(dauthors.author_names)', '%'.$keyword.'%'));
+            $command->orWhere('LOWER(dauthors.author_names) = :keyword', array(':keyword'=>$keyword)); 
+	    //$command->orWhere(array('like', 'lower(dnames.author_names)', '%'.$keyword.'%'));
+            $command->orWhere('LOWER(dnames.author_names) = :keyword', array(':keyword'=>$keyword)); 
 	    $command->orWhere(array('like', 'lower(d.description)', '%'.$keyword.'%'));
+            //$command->orWhere(array('like', 'lower(dtnames.name)', '%'.$keyword.'%'));
+            $command->orWhere('LOWER(dtnames.name) = :keyword', array(':keyword'=>$keyword)); 
+            //$command->orWhere(array('like', 'lower(dat.value)', '%'.$keyword.'%'));
+            $command->orWhere('LOWER(dat.value) = :keyword', array(':keyword'=>$keyword)); 
+           
 	    //$command->orWhere(array('like', 'd.ftp_site', '%'.$keyword.'%'));
 
 	    $command->orWhere(array('like', 'lower(dprojects.names)', '%'.$keyword.'%'));	    
-	    $command->orWhere(array('like', 'm.identifier', '%'.$keyword.'%'));
+	    //$command->orWhere(array('like', 'm.identifier', '%'.$keyword.'%'));
+            $command->orWhere('LOWER(m.identifier) = :keyword', array(':keyword'=>$keyword)); 
 	    $command->orWhere(array('like', 'cast(m.pmid as varchar)', '%'.$keyword.'%'));
 	    $command->orWhere(array('like', 'lower(df.grant_award)', '%'.$keyword.'%'));
 	    $command->orWhere(array('like', 'lower(df.comments)', '%'.$keyword.'%'));
@@ -124,8 +139,11 @@ class DatabaseSearch extends CApplicationComponent {
 
 	    if($author_id)
 	    	$command->andWhere("da.author_id = :aid", array(':aid'=>$author_id));
-
+            
+            
+            
 	    $command->andWhere("d.upload_status = 'Published'");
+            $command->order(array('d.id desc'));
 	    return $command->queryAll();
 	}
 

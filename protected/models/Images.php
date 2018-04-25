@@ -49,7 +49,7 @@ class Images extends ImageHaver
         return array(
             array('image_upload', 'file', 'types'=>'jpg, gif, png', 'allowEmpty'=>true, 'on'=>'update'),
             array('license, photographer, source', 'required'),
-            array('tag', 'length', 'max'=>50),
+            array('tag', 'length', 'max'=>120),
             array('url, source', 'length', 'max'=>256),
             array('photographer', 'length', 'max'=>128),
             // The following rule is used by search().

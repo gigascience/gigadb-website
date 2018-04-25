@@ -7,6 +7,16 @@
 # All rights reserved - Do Not Redistribute
 #
 
+# To fix the SSL problem when downloading Yii from Github
+bash 'upgrade_nss_curl' do
+	user 'root'
+	cwd '/tmp'
+	code <<-EOH
+        # Fix SSL problem
+        sudo yum update -y nss curl libcurl
+	EOH
+end
+
 assets_dir = "/vagrant/assets"
 
 directory assets_dir do
@@ -17,8 +27,8 @@ end
 
 # To do: exclude Centos 6 postgres packages
 bash 'Add postgres package repositories' do
-		user 'root'
-		cwd '/tmp'
+    user 'root'
+    cwd '/tmp'
     code <<-EOH
         CHECK_RPM=$(rpm -qa | grep pgdg-centos91)
         if [ "$CHECK_RPM" != "" ]

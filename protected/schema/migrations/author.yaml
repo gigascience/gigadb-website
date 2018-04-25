@@ -26,7 +26,7 @@ sql: |
 
 ---
 table: author
-to: stpn_1
+to: stpn_4
 depends:
   - [gigadb_user, knn_6]
 sql: |
@@ -34,3 +34,8 @@ sql: |
   ALTER TABLE author ADD COLUMN middle_name varchar(45) NOT NULL;
   ALTER TABLE author ADD COLUMN first_name varchar(45) NOT NULL;
   ALTER TABLE author ADD COLUMN gigadb_user_id INTEGER NOT NULL REFERENCES gigadb_user(id) ON DELETE CASCADE;
+---
+table: author
+to: ram_5
+sql: |
+  ALTER TABLE author ADD COLUMN custom_name varchar(255);

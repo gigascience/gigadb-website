@@ -42,11 +42,11 @@ class Author extends CActiveRecord {
         return array(
             array('surname', 'required'),
             array('gigadb_user_id', 'numerical', 'integerOnly' => true),
-            array('surname, middle_name, first_name', 'length', 'max' => 255),
+            array('surname, middle_name, first_name, custom_name', 'length', 'max' => 255),
             array('orcid', 'length', 'max' => 128),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, surname, middle_name, first_name, orcid, gigadb_user_id, dois_search', 'safe', 'on' => 'search'),
+            array('id, surname, middle_name, first_name, custom_name,orcid, gigadb_user_id, dois_search', 'safe', 'on' => 'search'),
         );
     }
 
@@ -71,6 +71,7 @@ class Author extends CActiveRecord {
             'surname' => 'Surname',
             'middle_name' => 'Middle Name',
             'first_name' => 'First Name',
+            'custom_name' => 'Display Name',
             'orcid' => 'Orcid',
             'gigadb_user_id' => 'Gigadb User',
             'dois_search' => 'DOI(s)',
@@ -181,13 +182,49 @@ EO_SQL;
     }
 
     public function getDisplayName() {
-        $first_initial = ($this->first_name)? strtoupper(substr($this->first_name, 0,  1)) : "";
-        $name =  $this->surname . ', ' . $first_initial;
-        if($this->middle_name) {
-            $name .= ', ' . strtoupper(substr($this->middle_name, 0, 1));
+
+        if (null != $this->custom_name) {
+            return $this->custom_name;
+        }
+        else {
+            return self::generateDisplayName($this->getSurname(), $this->first_name, $this->middle_name);
         }
 
-        return $name; 
+    }
+
+    public function getSurname() {
+
+        return self::generateDisplayName($this->surname, null, null);
+    }
+
+    public function getInitials() {
+
+        return self::generateDisplayName(null, $this->first_name, $this->middle_name);
+    }
+
+    public static function generateDisplayName($surname, $first_name, $middle_name) {
+
+        $to_initial_func = function($value) {
+            if( mb_ereg_match("[A-Z]+$", $value) || mb_ereg_match("Jr$", $value) ) { //keep asis If it's all initials or is "Jr"
+                return $value;
+            }
+            return mb_substr($value,0,1); //otherwise get the first letter. Use mb_* functions to preserve accentuated chars
+        };
+
+        $names_array = mb_split("[\s,.]+", $first_name ." ". $middle_name);
+        $initials =  implode("", array_map($to_initial_func, $names_array));
+
+        if( null === $surname ) {
+            return $initials ;
+        }
+        else if ( null === $first_name && null === $middle_name) {
+            return rtrim($surname,",;  ") ; //Watch out: after the ";", there is a space AND an invisible non breakable space
+        }
+        else {
+            return $surname . " " . $initials ;
+        }
+
+
     }
 
     public function getDatasetsByOrder() {

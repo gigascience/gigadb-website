@@ -73,7 +73,7 @@ class DatasetController extends Controller
             }
         }
 
-		$urlToRedirect = $model->getUrlToRedirectAttribute();
+		$urlToRedirect = trim($model->getUrlToRedirectAttribute());
 		$currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
 
 		if($urlToRedirect && $currentAbsoluteFullUrl == $urlToRedirect ) {
@@ -983,7 +983,7 @@ EO_MAIL;
 				curl_close ($ch) ;
 
 			}
-
+                
 			if ( $dataset && $result['md_curl_status'] == 201) {
 				$doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=https://gigadb.org/dataset/".$dataset->identifier ;
 				$result['doi_data']  = $doi_data;

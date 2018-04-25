@@ -1,0 +1,6 @@
+{
+    "database": "gigadb_test",
+    "host"    : "localhost",
+    "user"    : "test",
+    "password": "test"
+}

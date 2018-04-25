@@ -78,6 +78,7 @@ class AdminAuthorController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+                $model->custom_name= $model->getDisplayName();
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);

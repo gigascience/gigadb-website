@@ -16,6 +16,11 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
     'last_name',
     'role',
     'affiliation',
+    'facebook_id',
+    'twitter_id',
+    'linkedin_id',
+    'google_id',
+    'username',  
     array(
         'name' => 'is_activated',
         'value' => '($data->is_activated) ? "Yes" : "No"'

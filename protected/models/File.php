@@ -70,7 +70,7 @@ class File extends MyActiveRecord
 			array('location, code', 'length', 'max'=>200),
 			array('index4blast', 'length', 'max'=>45),
 			array('extension', 'length', 'max'=>30),
-			array('description, date_stamp, code', 'safe'),
+			array('description, date_stamp, code, sample_name', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, dataset_id, name, location, extension, size, description, date_stamp, format_id, type_id , doi_search,format_search, type_search, index4blast, download_count, sample_name', 'safe', 'on'=>'search'),
@@ -110,11 +110,11 @@ class File extends MyActiveRecord
 			'description' => 'Description',
 			'date_stamp' => Yii::t('app' , 'Release Date'),
 			'format_id' => Yii::t('app' , 'File Format'),
-			'type_id' => Yii::t('app' , 'File Type'),
+			'type_id' => Yii::t('app' , 'Data Type'),
 			'code' => Yii::t('app' , 'Sample ID') ,
 			'doi_search' => 'DOI',
 			'format_search' => 'File Format',
-			'type_search' => 'File Type',
+			'type_search' => 'Data Type',
 			'index4blast' => 'Index4blast',
 			'sample_name' => Yii::t('app', 'Sample ID'),
 			'download_count' => Yii::t('app','# of Downloads'),

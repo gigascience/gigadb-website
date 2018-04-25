@@ -47,3 +47,8 @@ table: gigadb_user
 to: knn_6
 sql: |
   ALTER TABLE gigadb_user ADD CONSTRAINT email_unique UNIQUE (email);
+---
+table: gigadb_user
+to: ram_7
+sql: |
+  ALTER TABLE gigadb_user ALTER COLUMN affiliation DROP NOT NULL;
