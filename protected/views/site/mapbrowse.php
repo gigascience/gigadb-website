@@ -15,6 +15,8 @@ $this->pageTitle='GigaDB - Map Browse';
   background-color:#FFF;
   border: 1px solid #CCC;
   padding: 0.1em 1em 0.5em 0.5em;
+  max-height:200px;
+  overflow-y:auto;
   }
 </style>
 
@@ -121,7 +123,8 @@ $this->pageTitle='GigaDB - Map Browse';
   var popup_content = elem_id('popup-content');
   var olpopup = new ol.Overlay({
       element: popup,
-      autoPan: false
+      autoPan: true,
+      autoPanAnimation: {duration:250}
   });
   map.addOverlay(olpopup);
   popup_closer.onclick = function () {
@@ -147,6 +150,7 @@ $this->pageTitle='GigaDB - Map Browse';
                       popup_content.innerHTML = '<h5><b>Dataset:<a href="http://dx.doi.org/10.5524/' + cfeatures[0].get('Dataset') + '">'+cfeatures[0].get('Dataset')+'</a></b></h5>'+cfeatures[0].get('Scientific name');
                   }
               }
+              popup.scrollTop = 0;
               olpopup.setPosition(coord);
           } else {
               olpopup.setPosition(undefined);
