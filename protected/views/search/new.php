@@ -60,6 +60,9 @@
              
             </div>
         </div>
+    
+    <br>
+    <br>
 
 <script>
     $(".hint").tooltip({'placement':'left'});

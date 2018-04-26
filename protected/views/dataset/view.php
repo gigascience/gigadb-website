@@ -92,11 +92,11 @@ HTML;
                             <h4>Additional details</h4>
                         </div>
                     </div>
-                     <?php if (count($model->manuscripts) > 0) { ?>
-                <p><?= Yii::t('app' , 'Related manuscripts:')?></p>
+                    <?php if (count($model->manuscripts) > 0) { ?>
+                <p><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></p>
                 <p>
-                    <? foreach ($model->manuscripts as $key=>$manuscript){
-                        echo 'doi:' . MyHtml::link($manuscript->identifier, $manuscript->getDOILink());
+                    <? foreach ($model->manuscripts as $key=>$manuscript){                      
+                        echo $manuscript->getFullCitation();
                         if ($manuscript->pmid){
                             $pubmed = MyHtml::link($manuscript->pmid , "http://www.ncbi.nlm.nih.gov/pubmed/" . $manuscript->pmid);
                             echo " (PubMed: $pubmed)";
@@ -324,10 +324,10 @@ HTML;
               
                 <section>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
-                        <li role="presentation"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
-                        <li role="presentation"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
-                        <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
+                        <li role="presentation" id="p-sample"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
+                        <li role="presentation" id="p-file"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
+                        <li role="presentation" id="p-funding"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
+                        <li role="presentation" id="p-history"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
                         
                     </ul>
        
@@ -563,6 +563,19 @@ $(document).ready(function() {
 		var arrow = $(this).find('.tab-container__arrow')[0];
 		$(arrow).toggleClass('flip-vertical');
 	});
+        
+        var url = location.pathname;
+        
+        if (url.indexOf('File') > -1) {
+             $("#p-file").addClass("active");
+             $("#file").toggleClass("tab-pane active");
+        }
+         if (url.indexOf('Sample') > -1) {
+             $("#p-sample").addClass("active");
+        }
+        else{
+             $("#p-sample").addClass("active");           
+        }
 });
 /* ----------------------------------- */
 

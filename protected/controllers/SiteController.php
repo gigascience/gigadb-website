@@ -98,7 +98,7 @@ class SiteController extends Controller {
 		$this->sortRssArray($rss_arr);
                 
                 //Get dataset types number
-                $sql_1="select type.name, count(dataset_type.id) from dataset_type, type where dataset_type.type_id=type.id group by type.name";
+                $sql_1="select type.name, count(dataset_type.id) from dataset_type, type, dataset where dataset_type.type_id=type.id and dataset_type.dataset_id=dataset.id and dataset.upload_status = 'Published' group by type.name";
                 $command = Yii::app()->db->createCommand($sql_1); 
                 $results = $command->queryAll();
                 
