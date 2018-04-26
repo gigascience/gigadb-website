@@ -40,7 +40,7 @@ class UserController extends Controller {
                     'users'=>array('@'),
                 ),
             array('allow', # admins
-                'actions'=>array('list', 'show', 'delete','admin','update','view'),
+                'actions'=>array('list', 'show', 'delete','admin','update','view','newsletter'),
                 'roles'=>array('admin'),
             ),
             array('deny',  // deny all users
@@ -221,6 +221,18 @@ class UserController extends Controller {
         $this->render('admin',array(
             'model'=>$model,
         ));
+    }
+    
+    public function actionNewsletter(){
+        
+     $result = User::model()->findAllBySql("select email,first_name, last_name, affiliation from gigadb_user where newsletter=true order by id;");
+     
+                 
+     $this->renderPartial('newsletter',array(
+            'models'=>$result,
+        ));
+       
+        
     }
 
     # Confirm email works
@@ -500,6 +512,40 @@ EO_MAIL;
         return $model;
     }
 
+    /**
+    * This method generate captcha image
+    */
+    public function captchaGenerator($length = 7){
+        try{
+        $captchaPath = null;
+        $im = imagecreatetruecolor(420, 100);
+        // Create some colors
+        $white = imagecolorallocate($im, 255, 255, 255);
+        $grey = imagecolorallocate($im, 128, 128, 128);
+
+        $black = imagecolorallocate($im, 66, 164, 244);
+        imagefilledrectangle($im, 0, 0, 420, 100, $white);
+        // The text to draw
+        
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+            
+        $text = $randomString;
+        $font = '/fonts/times_new_yorker.ttf';
+        imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
+        
+        imagejpeg($im, 'images/tempcaptcha/'.$text.".png");
+        imagedestroy($im);
+        $_SESSION["captcha"] = $text;
+        return $text;
+    }catch (Exception $e) {
+    echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }       
+}
 }
 
 

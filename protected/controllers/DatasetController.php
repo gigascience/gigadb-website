@@ -74,7 +74,7 @@ class DatasetController extends Controller
             }
         }
 
-		$urlToRedirect = $model->getUrlToRedirectAttribute();
+		$urlToRedirect = trim($model->getUrlToRedirectAttribute());
 		$currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
 
 		if($urlToRedirect && $currentAbsoluteFullUrl == $urlToRedirect ) {

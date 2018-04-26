@@ -133,7 +133,9 @@
 
                             <div class="clear"></div>
 
+                            <a class="btn-green left2" title="Newsletter Subscribers" href="/user/newsletter">Newsletter Subscribers</a>
 
+                            <div class="clear"></div>
 
 
                             <a class="btn-green left2" title="Manage GigaDB news items to show on home page" href="/news/admin" >News Items</a>

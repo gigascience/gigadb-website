@@ -9,6 +9,8 @@
 
 include_recipe "php::fpm"
 include_recipe "php::module_pgsql"
+include_recipe "php::module_gd"
+include_recipe "php::module_mbstring"
 include_recipe "nginx"
 include_recipe "python"
 include_recipe 'nodejs'
@@ -112,6 +114,30 @@ if db[:host] == 'localhost'
             export PGPASSWORD='#{password}'; psql -U #{db_user} -h localhost gigadb < #{sql_script}
         EOH
     end
+
+    # creating the test database to run the unit tests
+    test_user = "test"
+    postgresql_user test_user do
+        password  "test"
+    end
+
+    postgresql_database "gigadb_test" do
+        owner test_user
+    end
+
+    bash 'restore test database' do
+        db_user = "test"
+        password = "test"
+        sql_script = db[:sql_script]
+
+        code <<-EOH
+            # Might need to drop database first or foreign key constraints stop database restoration
+            export PGPASSWORD='#{password}'; psql -U #{db_user} -h localhost gigadb_test < "/vagrant/sql/gigadb_tables.sql"
+        EOH
+    end
+
+
+
 end
 
 
@@ -324,6 +350,8 @@ end
 #### Less ####
 ##############
 
+# npm does not support its self-signed certificates - tell it to use known registrars
+execute 'npm config set ca ""'
 # Compile less files
 execute 'npm install -g less'
 if node[:gigadb_box] == 'aws'
