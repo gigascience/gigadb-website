@@ -40,7 +40,7 @@
                 <a class="btn" href="/site/help"><?=Yii::t('app' , 'Help')?></a>
                 <? if(Yii::app()->user->isGuest) { ?>
                 <a class="btn" href="/site/login"><?=Yii::t('app' , 'Login')?></a>
-                <a class="btn" href="/site/mapbrowse"><?=Yii::t('app' , "Browse Samples")?></a>
+                <?/* <a class="btn" href="/site/mapbrowse"><?=Yii::t('app' , "Browse Samples")?></a> */?>
 	           	<a class="btn" href="/user/create" id="btnCreateAccount" title="<?=Yii::t('app' , 'An account with GigaDB is required if you want to upload a dataset or be automatically notified of new content of interest to you')?>"><?=Yii::t('app' , 'Create account')?></a>
                 <? } else {                 
                         $name = Yii::app()->user->getFirst_Name();
@@ -56,9 +56,9 @@
                     <? if (Yii::app()->user->checkAccess('admin')) { ?>
                     <a class="btn" href="/site/admin"><?=Yii::t('app' , 'Administration')?></a>
                     <? } ?>
-                <a class="btn" href="/site/mapbrowse"><?=Yii::t('app' , "Browse Samples")?></a>  
-                    <a class="btn" href="/site/logout"><?=Yii::t('app' , 'LogOut')?></a>
                 <? } ?>
+                <a class="btn" href="/site/mapbrowse"><?=Yii::t('app' , "Browse Samples")?></a>  
+                <a class="btn" href="/site/logout"><?=Yii::t('app' , 'LogOut')?></a>
             </p>
         </div>
 </header>

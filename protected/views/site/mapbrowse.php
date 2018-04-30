@@ -143,7 +143,7 @@ $this->pageTitle='GigaDB - Map Browse';
                   if (cfeatures.length > 1) {
                       popup_content.innerHTML = '<h5><strong>"Samples"</strong></h5>';
                       for (var i = 0; i < cfeatures.length; i++) {
-                          $(popup_content).append('<article><strong><a href="'+cfeatures[i].get('Dataset')+'">'+cfeatures[i].get('Dataset') +':' + cfeatures[i].get('Scientific name') +'</a></article>');
+                          $(popup_content).append('<article><strong><a href="http://dx.doi.org/10.5524/'+cfeatures[i].get('Dataset')+'">'+cfeatures[i].get('Dataset') +':' + cfeatures[i].get('Scientific name') +'</a></article>');
                       }
                   }
                   if (cfeatures.length == 1) {

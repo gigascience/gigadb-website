@@ -18,7 +18,7 @@ protected/scripts/update_links.sh
 themes/classic/views/
 files/certs
 images/tempcaptcha/
-sql/gigadb_full.sql
+
 
 # Vagrant
 *.vagrant
