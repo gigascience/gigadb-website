@@ -21,29 +21,32 @@ $this->pageTitle='GigaDB - About';
                 <section>
                     <div class="row">
                         <div class="col-xs-2 advisory-img-block">
-                            <img src="/images/Paul.png">
+                            <img src="/images/profile/Paul.png">
                             <p><a href="http://www.ebi.ac.uk/about/people/paul-flicek">Dr Paul Flicek</a></p>
                         </div>
                         <div class="col-xs-2 advisory-img-block">
-                            <img src="/images/Carole.png">
+                            <img src="/images/profile/Carole.png">
                             <p><a href="http://www.manchester.ac.uk/research/Carole.goble/">Prof Carole Goble</a></p>
                         </div>
                         <div class="col-xs-2 advisory-img-block">
-                            <img src="/images/Paul.H.png">
+                            <img src="/images/profile/Paul.H.png">
                             <p><a href="http://www.cbrc.jp/eng/intro/index.eng.html">Dr Paul Horton</a></p>
                         </div>
                         <div class="col-xs-2 advisory-img-block">
-                            <img src="/images/Francis.png">
+                            <img src="/images/profile/Francis.png">
                             <p><a href="http://oicr.on.ca/person/researcher/francis-ouellette">Dr B F Francis Ouellette</a></p>
                         </div>
                         <div class="col-xs-2 advisory-img-block">
-                            <img src="/images/Jason.png">
+                            <img src="/images/profile/Jason.png">
                             <p><a href="http://www.lifesci.dundee.ac.uk/people/jason-swedlow">Dr Jason Swedlow</a></p>
                         </div>
-                        <div class="col-xs-2 advisory-img-block">
-                            <img src="/images/ZhouXin.png">
+                    </div>    
+                    <div class="row">    
+                        <div class="col-xs-2 advisory-img-block" style="float: left">
+                            <img src="/images/profile//ZhouXin.png">
                             <p><a href="https://www.linkedin.com/profile/view?id=157662709&trk=nav_responsive_tab_profile_pic">Dr Xin Zhou</a></p>
                         </div>
+                      
                     </div>
                 </section>
             </div>
