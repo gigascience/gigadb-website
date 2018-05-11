@@ -15,6 +15,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 HTML;
 
 ?>
+<?php $this->renderPartial('/search/_form_dataset',array('model'=>$form,
+        'dataset'=>$dataset,
+        'search_result'=>null,
+        'previous_doi'=>$previous_doi,
+        'next_doi'=>$next_doi
+        )); ?>
 
         <div class="content">
             <div class="container">
@@ -35,7 +41,7 @@ HTML;
                         </div>
                         <div class="media-body">
                             <h4 class="left-border-title left-border-title-lg"><?echo $model->title; ?></h4>
-                            <p class="dataset-release-date-text">Data released on <?= strftime("%B %d, %Y",strtotime($model->publication_date)) ?></p>
+                            <p class="dataset-release-date-text">Dataset type:  <? echo MyHtml::encode(implode(", ", $model->getDatasetTypes()));?> <br> Data released on <?= strftime("%B %d, %Y",strtotime($model->publication_date)) ?></p>
                             <div class="color-background color-background-block dataset-color-background-block">
                                 <p><?= $model->authorNames ?>(<?=substr($model->publication_date,0,4)?>): <?= $model->title.' '.$model->publisher->name.'. '; ?><a href="http://dx.doi.org/<?= $model->identifier; ?>">http://dx.doi.org/<?= $model->identifier; ?></a></p>
                                 <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?= $model->identifier; ?></span></a></p>
@@ -69,7 +75,11 @@ HTML;
                 </div>    
                 </div>
                                 <div class="subsection">
-                    <a class="btn background-btn background-btn-o" <?= 'href="mailto:'.$model->submitter->email.'"'?>>Contact submitter</a>
+                                     <span class="content-popup" <?= !Yii::app()->user->isGuest ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
+                    <a class="btn background-btn background-btn-o <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
+                        Contact Submitter
+                    </a>
+                   
                 </div>
                 <div class="subsection">
                   <?php if($model->fairnuse) {
@@ -93,7 +103,7 @@ HTML;
                         </div>
                     </div>
                     <?php if (count($model->manuscripts) > 0) { ?>
-                <p><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></p>
+                <h5><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></h5>
                 <p>
                     <? foreach ($model->manuscripts as $key=>$manuscript){                      
                         echo $manuscript->getFullCitation();
@@ -108,7 +118,7 @@ HTML;
                 <?php } ?>
 
                 <?php if (count($model->relations) > 0) { ?>
-                <p><?= Yii::t('app' , 'Related datasets:')?></p>
+                <h5><?= Yii::t('app' , 'Related datasets:')?></h5>
                 <p>
                 <?php foreach ($model->relations as $key=>$relation){
                 if($relation->relationship->name == "IsPreviousVersionOf")
@@ -175,7 +185,7 @@ HTML;
                             $typeNameLabel = trim($typeNameLabel);
                             if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse' and $typeNameLabel !== '3 D Models')
                             {
-                               echo "<p>$typeNameLabel:</p>";
+                               echo "<h5>$typeNameLabel:</h5>";
                             }
 
                             foreach ($model->externalLinks as $key=>$externalLink){
@@ -202,50 +212,7 @@ HTML;
                                 }
                             }
                         }
-                            if(!empty($protocol)){
-                             echo "<p>Protocols.io:</p>";
-                             echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                             echo "<a id=\"js-close-btn1\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                             echo "<div id=\"js-logs-1\" class=\"js-logs\" style=\"display:none;\">";
-                             foreach ($protocol as $p) {
 
-                            {
-                                 echo "<iframe src=\"$p\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
-                            }
-                               
-                            }
-                             echo "</div>";
-                        }
-                            if(!empty($jb)){
-                             echo "<p>JBrowse:</p>";
-                             echo "<a id=\"js-expand-btn2\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                             echo "<a id=\"js-close-btn2\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                             echo "<div id=\"js-logs-2\" class=\"js-logs\" style=\"display:none;\">";
-                             foreach ($jb as $p) {
-
-                            {    
-                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
-                                 echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
-                            }
-                               
-                            }
-                             echo "</div>";
-                        }
-                         if(!empty($dmodel)){
-                             echo "<p>3D Models:</p>";
-                             echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                             echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                             echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
-                             foreach ($dmodel as $p) {
-
-                            {    
-                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
-                                
-                            }
-                               
-                            }
-                             echo "</div>";
-                        }
                         
                     ?>
                 </p>
@@ -269,7 +236,7 @@ HTML;
                     ?>
 
                     <?php if (!empty($primary_links)) { ?>
-                    <p><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></p>
+                    <h5><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></h5>
                         <p>
                             <? foreach ($primary_links as $link) { ?>
                                 <?
@@ -285,7 +252,7 @@ HTML;
                     <?php } ?>
 
                     <?php if (!empty($secondary_links)) { ?>
-                        <p><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></p>
+                        <h5><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></h5>
                         <p>
                             <?php foreach ($secondary_links as $link) { ?>
                                 <?php
@@ -306,7 +273,7 @@ HTML;
 
                 <?php } ?>
                 <?php if (count($model->projects) > 0) { ?>
-                <p><?=Yii::t('app' , 'Projects:')?></p>
+                <h5><?=Yii::t('app' , 'Projects:')?></h5>
                 <p>
                     <? foreach ($model->projects as $key=>$project){
                         if ($project->image_location)
@@ -327,6 +294,7 @@ HTML;
                         <li role="presentation" id="p-sample"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
                         <li role="presentation" id="p-file"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
                         <li role="presentation" id="p-funding"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
+                        <li role="presentation" id="p-widget"><a href="#widget" aria-controls="widget" role="tab" data-toggle="tab">Widgets</a></li>
                         <li role="presentation" id="p-history"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
                         
                     </ul>
@@ -502,6 +470,100 @@ HTML;
                     </table>
                
 
+                        </div>
+                        
+                        <div role="tabpanel" class="tab-pane" id="widget">
+                            
+                            <?php if (count($model->externalLinks) > 0) { ?>
+                <p>
+                    <?php
+                        $types = array();
+                        $protocol = array();
+                        $jb = array();
+                        $dmodel = array();
+                        foreach ($model->externalLinks as $key=>$externalLink){
+                            $types[$externalLink->externalLinkType->name] = 1;
+                        }
+                        foreach ($types as $typeName => $value) {
+                            $typeNameLabel = preg_replace('/(?:^|_)(.?)/e',"strtoupper('$1')",$typeName);
+                            $typeNameLabel = preg_replace('/(?<=\\w)(?=[A-Z])/'," $1", $typeNameLabel);
+                            $typeNameLabel = trim($typeNameLabel);
+                          
+                            foreach ($model->externalLinks as $key=>$externalLink){
+                                if ($externalLink->externalLinkType->name == $typeName) {
+                                    if($typeName == 'Protocols.io')
+                                    {
+                                       array_push($protocol,$externalLink->url);
+
+                                    }
+                                    elseif($typeName == 'JBrowse')
+                                    {
+                                       array_push($jb,$externalLink->url);
+                                    
+                                    }
+                                    elseif($typeName == '3D Models')
+                                    {
+                                       array_push($dmodel,$externalLink->url);
+                                    
+                                    }
+                                    else
+                                    {
+                                       continue;
+                                    }
+                                }
+                            }
+                        }
+                            if(!empty($protocol)){
+                             echo "<p>Protocols.io:</p>";
+                             echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                             echo "<a id=\"js-close-btn1\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                             echo "<div id=\"js-logs-1\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($protocol as $p) {
+
+                            {
+                                 echo "<iframe src=\"$p\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
+                            }
+                               
+                            }
+                             echo "</div>";
+                        }
+                            if(!empty($jb)){
+                             echo "<p>JBrowse:</p>";
+                             echo "<a id=\"js-expand-btn2\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                             echo "<a id=\"js-close-btn2\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                             echo "<div id=\"js-logs-2\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($jb as $p) {
+
+                            {    
+                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                 echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
+                            }
+                               
+                            }
+                             echo "</div>";
+                        }
+                         if(!empty($dmodel)){
+                             echo "<p>3D Models:</p>";
+                             echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                             echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                             echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($dmodel as $p) {
+
+                            {    
+                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                
+                            }
+                               
+                            }
+                             echo "</div>";
+                        }
+                        
+                    ?>
+                </p>
+
+                <?php } ?>
+                            
+                            
                         </div>
                         
                                        

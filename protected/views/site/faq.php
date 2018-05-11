@@ -494,21 +494,7 @@ Files:
                                     <p>It can be used for anything by anyone, most* data is given the licence CC0 specifically to remove any restrictions on reuse. * - on occasion we host some files for convenience of our users that are already covered by other licences (e.g. more appropriate OSI-compliant licenses for software, or multiple (all open) licenses in a workflow or virtual machine), where this happens we make every effort to make users aware of the different licences.</p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab">
-                                <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel32" aria-expanded="false" aria-controls="panel32">
-                                    What is the side-bar on the right of all dataset pages?    
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="panel32" class="panel-collapse collapse" role="tabpanel">
-                                <div class="panel-body">
-                                    <p>This is the hypothes.is annotation tool bar. See what is Hypothes.is for more details.</p>
-                                </div>
-                            </div>
-                        </div>
+                        </div>                      
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">

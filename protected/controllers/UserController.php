@@ -60,6 +60,7 @@ class UserController extends Controller {
 
     # Create new account
     public function actionCreate() {
+        $this->layout='new_main';
         $user = new User;
         $this->performAjaxValidation($user);
         if (isset($_POST['User'])) {

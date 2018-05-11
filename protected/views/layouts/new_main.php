@@ -36,11 +36,11 @@
                 <div class="row">
                     <div class="col-xs-4">
                         <ul class="list-inline base-top-social-bar">
-                            <li><a href="http://facebook.com/GigaScience" title="give me title text here"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="http://twitter.com/GigaScience" title="give me title text here"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="http://weibo.com/gigasciencejournal" title="give me title text here"><i class="fa fa-weibo"></i></a></li>
-                            <li><a href="https://plus.google.com/u/0/104409890199786402308" title="give me title text here"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="http://gigasciencejournal.com/blog/" title="give me title text here"><i class="fa fa-rss"></i></a></li>
+                            <li><a href="http://facebook.com/GigaScience" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="http://twitter.com/GigaScience" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="http://weibo.com/gigasciencejournal" title="Weibo"><i class="fa fa-weibo"></i></a></li>
+                            <li><a href="https://plus.google.com/u/0/104409890199786402308" title="Google+"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="http://gigasciencejournal.com/blog/" title="GigaBlog"><i class="fa fa-rss"></i></a></li>
                         </ul>
                     </div>
                     
@@ -90,10 +90,10 @@
                                     <li><a href="#">Our team</a></li>
                                     <li><a href="/site/contact">Contact</a></li>
                                     <li><a href="/site/advisory">Advisory</a></li>
-                                    <li><a href="/site/help">Help</a></li>
+                                    <li><a href="/site/faq">FAQ</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/user/view_profile">Profile</a></li>
+                            <li><a href="/site/help">Help</a></li>
                             <li><a href="/site/term">Terms of use</a></li>
                         </ul>
                     </div>

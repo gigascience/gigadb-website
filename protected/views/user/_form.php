@@ -1,110 +1,125 @@
-<div class="row">
-	<div class="span8 offset2">
+ <div class="content">
+        <div class="container">
+              <section class="page-title-section">
+                <div class="page-title">
+                    <ol class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active">Personal details</li>
+                    </ol>
+                    <h4>Registration</h4>
+                </div>
+            </section>
+        <div class="subsection" style="margin-bottom: 130px;">
+	
 		<div class="clear"></div>
 		<?php if ($model->isNewRecord) {?>
 		<p><?=Yii::t('app' , 'GigaScience appreciates your interest in the GigaDB project. With a GigaDB account, you can submit new datasets to the database. Also, GigaDB can automatically notify you of new content which matches your interests. Please fill out the following information and register to enjoy the benefits of GigaDB membership!')?></p>
 <?}
 		?>
 		<?php $text = $this->captchaGenerator(); ?>
-		<p class="note"><?=Yii::t('app' , 'Fields with <span class="required">*</span> are required.')?></p>
-		<div class="form well">
+		<p>Fields with <span class="symbol">*</span> are required.</p>
+		<div class="create-div">
 			<? $form=$this->beginWidget('CActiveForm', array(
 				'id'=>'user-form',
 				'enableAjaxValidation'=>false,
 				'htmlOptions'=>array('class'=>'form-horizontal')
 			)) ?>
-				<div class="control-group">
-					<?= $form->labelEx($model,'email', array('class'=>'control-label')) ?>
-					<div class="controls">
-						<?= $form->textField($model,'email',array('size'=>30,'maxlength'=>128)) ?>
+				 <div class="form-group">
+					<?= $form->labelEx($model,'email', array('class'=>'col-xs-3 control-label')) ?>
+					<div class="col-xs-9">
+						<?= $form->textField($model,'email',array('class'=>'form-control')) ?>
 						<?= $form->error($model,'email') ?>
 					</div>
 				</div>
 
-				<div class="control-group">
-					<?= $form->labelEx($model,'first_name', array('class'=>'control-label')) ?>
-					<div class="controls">
-						<?= $form->textField($model,'first_name',array('size'=>30,'maxlength'=>60)) ?>
+				<div class="form-group">
+					<?= $form->labelEx($model,'first_name', array('class'=>'col-xs-3 control-label')) ?>
+					<div class="col-xs-9">
+						<?= $form->textField($model,'first_name',array('class'=>'form-control')) ?>
 						<?= $form->error($model,'first_name') ?>
 					</div>
 				</div>
 
-				<div class="control-group">
-					<?= $form->labelEx($model,'last_name', array('class'=>'control-label')) ?>
-					<div class="controls">
-						<?= $form->textField($model,'last_name',array('size'=>30,'maxlength'=>60)) ?>
+				<div class="form-group">
+					<?= $form->labelEx($model,'last_name', array('class'=>'col-xs-3 control-label')) ?>
+					<div class="col-xs-9">
+						<?= $form->textField($model,'last_name',array('class'=>'form-control')) ?>
 						<?= $form->error($model,'last_name') ?>
 					</div>
 				</div>
 
-				<div class="control-group">
-					<?= $form->labelEx($model,'password', array('class'=>'control-label')) ?>
-					<div class="controls">
-						<?= $form->passwordField($model,'password',array('size'=>30,'maxlength'=>60)) ?>
+				<div class="form-group">
+					<?= $form->labelEx($model,'password', array('class'=>'col-xs-3 control-label')) ?>
+					<div class="col-xs-9">
+						<?= $form->passwordField($model,'password',array('class'=>'form-control')) ?>
 						<?= $form->error($model,'password') ?>
 					</div>
 				</div>
 
-				<div class="control-group">
-					<?= $form->labelEx($model,'password_repeat', array('class'=>'control-label')) ?>
-					<div class="controls">
-						<?= $form->passwordField($model,'password_repeat',array('size'=>30,'maxlength'=>60)) ?>
+				<div class="form-group">
+					<?= $form->labelEx($model,'password_repeat', array('class'=>'col-xs-3 control-label')) ?>
+					<div class="col-xs-9">
+						<?= $form->passwordField($model,'password_repeat',array('class'=>'form-control')) ?>
 						<?= $form->error($model,'password_repeat') ?>
 					</div>
 				</div>
 				<? if (Yii::app()->user->checkAccess('admin')) { ?>
-					<div class="control-group">
-						<?= $form->labelEx($model,'role', array('class'=>'control-label')) ?>
-						<div class="controls">
-							<?= $form->dropDownList($model,'role',array('user'=>'user','admin'=> 'admin')) ?>
+					<div class="form-group">
+						<?= $form->labelEx($model,'role', array('class'=>'col-xs-3 control-label')) ?>
+						<div class="col-xs-9">
+							<?= $form->dropDownList($model,'role',array('user'=>'user','admin'=> 'admin','class'=>'dropdown-menu')) ?>
 							<?= $form->error($model,'role') ?>
 						</div>
 					</div>
 				<? } ?>
-				<div class="control-group">
-					<?= $form->labelEx($model,'affiliation', array('class'=>'control-label')) ?>
-					<div class="controls">
-						<?= $form->textField($model,'affiliation',array('size'=>30,'maxlength'=>60)) ?>
+				<div class="form-group">
+					<?= $form->labelEx($model,'affiliation', array('class'=>'col-xs-3 control-label')) ?>
+					<div class="col-xs-9">
+						<?= $form->textField($model,'affiliation',array('class'=>'form-control')) ?>
 						<?= $form->error($model,'affiliation') ?>
 					</div>
 				</div>
-				<div class="control-group">
-					<?= $form->labelEx($model,'preferred_link', array('class'=>'control-label')) ?>
-					<div class="controls">
+				<div class="form-group">
+					<?= $form->labelEx($model,'preferred_link', array('class'=>'col-xs-3 control-label')) ?>
+					<div class="col-xs-9">
 						<?= CHtml::activeDropDownList($model,'preferred_link', User::$linkouts, array()) ?>
 						<?= $form->error($model,'preferred_link') ?>
 					</div>
 				</div>
-			    <div class="control-group">
-				    <div class="controls">
-				    	<?php echo $form->checkbox($model,'newsletter'); ?>
-						<label><?=Yii::t('app' , 'Add me to GigaDB\'s mailing list')?></label>
+                                <div class="form-group">
+                                    <label class="col-xs-3 control-label"><?=Yii::t('app' , 'Add me to GigaDB\'s mailing list')?></label>
+                                   
+				    <div class="col-xs-9">				    	
+                                         <?php echo $form->checkbox($model,'newsletter'); ?>
 				    </div>
-			    </div>
+                                 </div>
 
 
 			<? if ($model->isNewRecord) { ?>
-			<div class="control-group">		
-					<?php echo $form->labelEx($model,'verifyCode'); ?>		
-			        <div class="controls">					
+			<div class="form-group">		
+					<?php echo $form->labelEx($model,'verifyCode', array('class'=>'col-xs-3 control-label')); ?>		
+			        <div class="col-xs-9">				
 						<div style="width:100%">	
 							<img style="width:200px;" src="/images/tempcaptcha/<?php echo $text; ?>.png">	
 						</div>
-						<?php echo $form->textField($model,'verifyCode'); ?>	
+                                    <br>
+                                    <br>
+						<?php echo $form->textField($model,'verifyCode',array('class'=>'form-control')); ?>	
 						<div class="hint">Please enter the letters as they are shown in the image above.
 						<br/>Letters are not case-sensitive.</div>
 						<?php echo $form->error($model, 'verifyCode'); ?>					
 						</div>		
 			    </div>
 			<? } ?>
-
-
+                        <hr>
+                            <div class="button-div">
+                                <?= MyHtml::submitButton($model->isNewRecord ? Yii::t('app' , 'Register') : 'Save', array('class'=>'btn background-btn')) ?>
+                            </div>
+                        <? $this->endWidget() ?>
 		</div><!--well-->
-		<div class="pull-right">
-			<?= MyHtml::submitButton($model->isNewRecord ? Yii::t('app' , 'Register') : 'Save', array('class'=>'btn-green')) ?>
-		</div>
+		
 
-	<? $this->endWidget() ?>
+
 	<?php 
 		$path = "images/tempcaptcha/".$text.".png";
 		$files = glob('images/tempcaptcha/*');
@@ -115,5 +130,6 @@
 		}
 	?>	
 	</div><!--span8-->
-</div><!-- user-form -->
+    </div><!-- user-form -->
+</div>
 

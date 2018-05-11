@@ -100,8 +100,8 @@ class DatabaseSearch extends CApplicationComponent {
 
 	    $command->where(array('like', 'd.identifier', '%'.$keyword.'%'));
 	    $command->orWhere(array('like', 'lower(d.title)', '%'.$keyword.'%'));
-	    //$command->orWhere(array('like', 'lower(dauthors.author_names)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(dauthors.author_names) = :keyword', array(':keyword'=>$keyword)); 
+	    $command->orWhere(array('like', 'lower(dauthors.author_names)', '%'.$keyword.'%'));
+            //$command->orWhere('LOWER(dauthors.author_names) = :keyword', array(':keyword'=>$keyword)); 
 	    //$command->orWhere(array('like', 'lower(dnames.author_names)', '%'.$keyword.'%'));
             $command->orWhere('LOWER(dnames.author_names) = :keyword', array(':keyword'=>$keyword)); 
 	    $command->orWhere(array('like', 'lower(d.description)', '%'.$keyword.'%'));

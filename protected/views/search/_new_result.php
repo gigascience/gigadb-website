@@ -10,8 +10,8 @@
         <?php $is_display = in_array('dataset', $display) || (in_array('file', $display) && $dfiles) || (in_array('sample', $display) && $dsamples); ?>
         <?php if($is_display) { ?>
         <div class="row1">
-            <div class="span1 logo-container" style="float:left"><img src="/images/icons/g-new-icon.png">
-            </div>
+            <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-blue" style="margin-right: 0px;">G
+            </div></div>
             <div class="span8 main-content" style="float:right">
                 <ul class="nav nav-tabs nav-stacked result-cell">
                   <li><a data-content="<?php echo MyHtml::encode($dataset->description) ?>" class="result-main-link left content-popup" href="<?= $dataset->shortUrl ?>"><?= $dataset->title ?></a></li>
@@ -30,7 +30,8 @@
             foreach($dsamples as $sample) { ?>
             <!--Sample section-->
             <div class="row1">
-                <div class="span1 logo-container"><img src="/images/icons/s-new-icon.png"></div>
+                <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-green" style="margin-right: 0px;">S
+            </div></div>
                 <div class="span8 main-content" style="float:right">
                     <ul class="nav nav-tabs nav-stacked result-cell">
                       <li><a class="result-main-link" href="<?= $sample->dataset->shortUrl ?>"><?php echo $sample->name ?></a></li>
@@ -52,7 +53,8 @@
             <?php if(in_array('file', $display)) {
                 foreach($dfiles as $file) { ?>
             <div class="row1 file-container">
-                <div class="span1 logo-container-file"><img src="/images/icons/f-new-icon.png"> </div>
+                 <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-yellow" style="margin-right: 0px;">F
+            </div></div>
                 <div class="span3 file-name"><a href="<?php echo $file->location ?>"><?php echo strlen($file->name) > 20 ? substr($file->name, 0, 20). '...' : $file->name ?></a></div>
                 <div class="span2 file-type"><?php echo $file->type->name ?></div>
                 <div class="span2 file-size"><?php echo MyHtml::encode(File::staticBytesToSize($file->size))?></div>

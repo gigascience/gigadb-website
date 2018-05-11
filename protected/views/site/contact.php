@@ -110,9 +110,9 @@
                                 </div>
                             </div>
                             <ul class="fa-ul">
-                                <li><i class="fa-li fa fa-home"></i> 58 Street, City the 5008 New Town US</li>
-                                <li><i class="fa-li fa fa-envelope"></i> info@gigadb.com</li>
-                                <li><i class="fa-li fa fa-phone"></i> 2(333) 35365744</li>
+                                <li><i class="fa-li fa fa-home"></i> BGI-HK building 4/F, 16 DaiFu Street, TaiPo, NT, Hong Kong</li>
+                                <li><i class="fa-li fa fa-envelope"></i> database@gigasciencejournal.com</li>
+                                <li><i class="fa-li fa fa-phone"></i> (852) 36103533</li>
                                 <li><i class="fa-li fa fa-globe"></i> http://www.gigadb.org</li>
                             </ul>
                         </div>
