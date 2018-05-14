@@ -19,6 +19,7 @@ themes/classic/views/
 files/certs
 images/tempcaptcha/
 
+
 # Vagrant
 *.vagrant
 vagrant.log
