@@ -18,6 +18,7 @@ return array(
 		'surname'=>'Martinez-Cruzado',
 		'first_name'=>'Juan',
 		'middle_name'=>'carlos',
+		'gigadb_user_id' =>345,
 	),
 	array(
 		'id' => 4,
@@ -46,6 +47,26 @@ return array(
 		'first_name'=>'Thomas',
 		'middle_name'=>'Edward',
 		'custom_name'=>'T.E Lawrence',
+	),
+	array(
+		'id' => 9,
+		'surname'=>'Tano',
+		'first_name'=>'Ashoka',
+		'middle_name'=>'F',
+		'orcid'=>'0000-X478-0987',
+	),
+	array(
+		'id' => 10,
+		'surname'=>'Bert',
+		'first_name'=>'Sam',
+		'middle_name'=>'H',
+		'orcid'=>'0000-X478-1087',
+	),
+	array(
+		'id' => 11,
+		'surname'=>'Salazar',
+		'first_name'=>'Ali',
+		'orcid'=>'0000-B478-0987',
 	),
 
 );

@@ -6,6 +6,7 @@
 </div>
 <? } ?>
 
+
 <?= $this->renderPartial('_form', array(
 	'model'=>$model,
     'scenario'=>'update',

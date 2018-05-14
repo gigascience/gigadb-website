@@ -42,6 +42,7 @@ class Author extends CActiveRecord {
         return array(
             array('surname', 'required'),
             array('gigadb_user_id', 'numerical', 'integerOnly' => true),
+            array('gigadb_user_id', 'unique', 'className' => 'Author'),
             array('surname, middle_name, first_name, custom_name', 'length', 'max' => 255),
             array('orcid', 'length', 'max' => 128),
             // The following rule is used by search().
@@ -172,13 +173,17 @@ EO_SQL;
         $criteria->limit = 1;
         $criteria->addSearchCondition("LOWER(surname) || ' ' || LOWER(first_name)", '%' . strtolower($keyword) . '%', false);
         $result = new CActiveDataProvider('Author', array('criteria' => $criteria));
-        
+
         $data = array();
         foreach ($result->getData() as $author) {
             $data[] = $author->id;
         }
 
         return $data;
+    }
+
+    public function getAuthorDetails() {
+        return preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', "{$this->id}. " . $this->getFirstName() ." ". $this->getMiddleName() . " " . $this->getSurname() . " (Orcid: " . ($this->orcid ? $this->orcid: "n/a") .")") ;
     }
 
     public function getDisplayName() {
@@ -195,6 +200,16 @@ EO_SQL;
     public function getSurname() {
 
         return self::generateDisplayName($this->surname, null, null);
+    }
+
+    public function getFirstName() {
+
+        return rtrim($this->first_name,",;  ");
+    }
+
+    public function getMiddleName() {
+
+        return rtrim($this->middle_name,",;  ");
     }
 
     public function getInitials() {
@@ -236,6 +251,143 @@ EO_SQL;
     }
 
     public function getListOfDataset() {
-    return implode(', ', CHtml::listData($this->datasetsByOrder,'id','identifier'));
+        return implode(', ', CHtml::listData($this->datasetsByOrder,'id','identifier'));
+    }
+
+    public static function findAttachedAuthorByUserId($user_id) {
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('gigadb_user_id = '.$user_id) ;
+        return Author::model()->find($criteria);
+    }
+
+    public function getIdenticalAuthors() {
+        $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"IsIdenticalTo"));
+        if(null == $identicalToObj){
+            Yii::log("Error retrieving the relationship of name 'IsIdenticalTo'",'error');
+            // print_r("Error retrieving the relationship of name 'IsIdenticalTo'");
+            return false;
+        }
+        $rel_id = $identicalToObj->id;
+        $author = $this->id;
+        $sql = "select related_author_id as identical from author_rel where author_id=:author_id and relationship_id=:rel_id
+        UNION
+        select author_id as identical from author_rel where related_author_id=:author_id and relationship_id=:rel_id
+        ORDER BY identical";
+        $query_result = Yii::app()->db->createCommand($sql)->bindParam(":author_id",$author,PDO::PARAM_STR)->bindParam(":rel_id",$rel_id,PDO::PARAM_STR)->queryAll(false);
+        // var_dump($query_result);
+        $get_row = function ($row) {
+            return (int) $row[0];
+        };
+        return array_map($get_row,$query_result);
+    }
+
+    function mergeAsIdenticalWithAuthor($author) {
+        $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"IsIdenticalTo"));
+        if(null == $identicalToObj){
+            Yii::log("Error retrieving the relationship of name 'IsIdenticalTo'",'error');
+            // print_r("Error retrieving the relationship of name 'IsIdenticalTo'");
+            return false;
+        }
+
+        $authorObj = Author::model()->findByPk($author);
+        if(null == $authorObj){
+            Yii::log("Error retrieving Author({$author}) to merge with",'error');
+            // print_r("Error retrieving Author({$author}) to merge with");
+            return false;
+        }
+        else {
+            $target_graph = $authorObj->getIdenticalAuthors();
+            $target_graph[] = $author;
+            $target_count = count($target_graph);
+        }
+
+        if( in_array($this->id, $target_graph) ) {
+            return false;
+        }
+
+        $origin_graph = $this->getIdenticalAuthors();
+        $origin_graph[] = $this->id;
+        $success = true;
+
+        //proc to construct a valid db record for author_rel to pass on to createMultipleInsertCommand
+        $id_to_record = function ($origin_id, $target_id, $relationship_id) {
+            return ["author_id"=> $origin_id, "related_author_id"=>$target_id, "relationship_id"=>$relationship_id];
+        };
+
+        $connection = Yii::app()->db->getSchema()->getCommandBuilder();
+
+        foreach ($origin_graph as $origin_node) {
+
+            $command = $connection->createMultipleInsertCommand('author_rel', array_map( $id_to_record,
+                    array_fill(0, $target_count, $origin_node),
+                    $target_graph,
+                    array_fill(0, $target_count, $identicalToObj->id)
+                )
+            );
+            $inserted_count = $command->execute();
+            $success = $success && ( $target_count == $inserted_count ? true : false );
+
+            // foreach ($target_graph as $target_node) {
+
+            //     $author_rel = new AuthorRel();
+            //     $author_rel->author_id = $origin_node;
+            //     $author_rel->related_author_id = $target_node ;
+            //     $author_rel->relationship_id = $identicalToObj->id ;
+
+            //     if($author_rel->save()) {
+            //         Yii::log("Success creating a new AuthorRel({$origin_node},{$target_node})",'info');
+            //         // print_r("Success creating a new AuthorRel({$origin_node},{$target_node})");
+            //         $success = $success && true;
+            //     }
+            //     else {
+            //         Yii::log("Error creating a new AuthorRel({$origin_node},{$target_node})",'error');
+            //         // print_r("Error creating a new AuthorRel({$origin_node},{$target_node})");
+            //         $success = $success && false;
+            //     }
+
+            // }
+        }
+
+        return $success;
+
+
+    }
+
+
+    public function unMerge() {
+        $outward_edges_from_this_author = new CDbCriteria;
+        $outward_edges_from_this_author->addCondition("author_id={$this->id} or related_author_id={$this->id}");
+        $outward_edges = AuthorRel::model()->findAll($outward_edges_from_this_author);
+        $success = true ;
+        foreach($outward_edges as $edge) {
+            $edge_id = $edge->id;
+            if( $edge->delete() ) {
+                // var_dump(AuthorRel::model()->findByPk($edge_id));
+                Yii::log("success deleting edge {$edge_id}",'info');
+                // print_r("success deleting edge {$edge_id}\n");
+                $success = $success && true ;
+            }
+            else {
+                // var_dump($edge->getErrors());
+                Yii::log("error deleting edge {$edge_id}",'error');
+                // print_r("error deleting edge {$edge_id}\n");
+                $success = $success && false ;
+            }
+        }
+
+        return $success;
+
+    }
+
+    public function getIdenticalAuthorsDisplayName( ) {
+        $get_display_name = function ($author_id) {
+            $author = Author::model()->findByPk($author_id);
+            return !empty($author)?$author->getDisplayName():null;
+        };
+        return array_map($get_display_name,$this->getIdenticalAuthors());
+    }
+
+    public function IsIdenticalTo($author) {
+        return $this->id == $author || in_array($author,$this->getIdenticalAuthors());
     }
 }
