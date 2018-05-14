@@ -535,7 +535,8 @@ HTML;
                              foreach ($jb as $p) {
 
                             {    
-                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                 echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                 echo "<br>";
                                  echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
                             }
                                
