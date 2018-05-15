@@ -18,7 +18,7 @@
                     <div class="row">
                         <div class="col-xs-8">
                             <div class="underline-title">
-                                <ol class="breadcrumb pull-right">
+                                <ol class="breadcrumb pull-right" style="cursor:pointer">
                                     <li><span>+ more</span></li>
                                 </ol>
                                 <div>

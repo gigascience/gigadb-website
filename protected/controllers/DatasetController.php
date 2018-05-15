@@ -190,20 +190,24 @@ class DatasetController extends Controller
             $email = $result[0]['email'];
         }
 
-        $result = Dataset::model()->findAllBySql("select identifier from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
+        $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {
-            $result = Dataset::model()->findAllBySql("select identifier from dataset where upload_status='Published' order by identifier asc limit 1;");
+            $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
             $next_doi = $result[0]->identifier;
+            $next_title = $result[0]->title;
         } else {
             $next_doi = $result[0]->identifier;
+            $next_title = $result[0]->title;
         }
 
-        $result = Dataset::model()->findAllBySql("select identifier from dataset where identifier < '" . $id . "' and upload_status='Published' order by identifier desc limit 1;");
+        $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier < '" . $id . "' and upload_status='Published' order by identifier desc limit 1;");
         if (count($result) == 0) {
-            $result = Dataset::model()->findAllBySql("select identifier from dataset where upload_status='Published' order by identifier desc limit 1;");
+            $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier desc limit 1;");
             $previous_doi = $result[0]->identifier;
+            $previous_title = $result[0]->title;
         } else {
             $previous_doi = $result[0]->identifier;
+            $previous_title = $result[0]->title;
         }
 
         $attributes = $model->attributes;
@@ -271,6 +275,8 @@ class DatasetController extends Controller
             'samples'=>$samples,
             'email' => $email,
             'previous_doi' => $previous_doi,
+            'previous_title' => $previous_title,
+            'next_title'=> $next_title,
             'next_doi' => $next_doi,
             'setting' => $setting,
             'columns' => $columns,

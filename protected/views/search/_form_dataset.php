@@ -1,19 +1,17 @@
 
-
-<div class="row">
-    <div class="container">
+<section style="margin-bottom:20px;"></section>
+<div class="search-box">
+    
     <? if (Yii::app()->user->hasFlash('keyword')) { ?>
         <div>
         <?= Yii::app()->user->getFlash('keyword'); ?>
         </div>
     <? } ?>
 
-    <?php echo MyHtml::beginForm('/search/new','GET',array('class'=>'form-search well','style'=>"margin-bottom: 0px; margin-top:10px",'onsubmit'=>'return validateForm(this);')); ?>
+    <?php echo MyHtml::beginForm('/search/new','GET',array('class'=>'search-bar clearfix','onsubmit'=>'return validateForm(this);')); ?>
     <?php echo MyHtml::errorSummary($model); ?>
 
-    <?php if(isset($previous_doi)) : ?>
-        <a class="text-icon text-icon-sm text-icon-green" style="width:35px;height:35px;margin-right: 0px;background-color: #099242" title="Previous dataset" href="/dataset/<?php echo $previous_doi ?>">&lsaquo;</a>
-    <?php endif ?>
+    
     
     <?php        
                
@@ -27,22 +25,22 @@
                              'minLength'=>'2',
                              ),
             'htmlOptions'=>array(
-                                 'class'=>'form-control',
-                                 'style'=>'width: 826px;margin-right:5px'
+                                 'class'=>'search-input'                               
                                  ),
             ));
-        echo MyHtml::submitButton(Yii::t('app' , 'Search'), array('class'=>'btn background-btn','style'=>'height:34px;margin-bottom:5px;margin-right:5px'));
+       
        
     ?>
+    <button class="btn-search" type="submit"><span class="fa fa-search"></span></button>
        
-    <?php if (isset($next_doi)) : ?>
-        <a class="text-icon text-icon-sm text-icon-green" style="width:35px;height:35px;margin-bottom:5px;background-color: #099242" title="Next dataset" href="/dataset/<?php echo $next_doi ?>">&rsaquo;</a>
-    <?php endif ?>
+   
 
     <!--
     <a data-toggle="modal" href="#how-to-use-advanced-search" class="hint advanced-search-hint"></a> -->
 
     <?php echo MyHtml::endForm(); ?>
+    <span class="fa fa-chevron-circle-left btn-left" title="Previous dataset"></span>
+    <span class="fa fa-chevron-circle-right btn-right" title="Next dataset"></span>
     <!--
     <div class="modal hide fade" id="how-to-use-advanced-search">
       <div class="modal-header">
@@ -91,7 +89,7 @@ The full meaning of this search is:
       </div>
     </div>
     -->
-</div>    
+ 
 </div>
 
 

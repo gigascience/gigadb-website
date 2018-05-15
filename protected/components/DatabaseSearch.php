@@ -87,7 +87,7 @@ class DatabaseSearch extends CApplicationComponent {
 		    left join (select dataset_id, string_agg(a.surname||', '||substring(a.first_name,1,1)||', '||substring(a.middle_name,1,1), ';') as author_names from dataset_author da, author a where da.author_id = a.id group by dataset_id) dauthors on d.id = dauthors.dataset_id 
    		    left join (select dataset_id, string_agg(a.surname || ' '||a.first_name||' ' || a.middle_name, ';') as author_names from dataset_author da, author a where da.author_id = a.id group by dataset_id) dnames on d.id = dnames.dataset_id 
 		    left join manuscript m on d.id = m.dataset_id 
-		    left join external_link el on el.dataset_id = d.id 
+		    left join (select elt.name as name, el.dataset_id as dataset_id from external_link_type elt, external_link el where elt.id=el.external_link_type_id) el on el.dataset_id = d.id 
 		    left join dataset_project dp on dp.dataset_id = d.id 
 		    left join dataset_author da on da.dataset_id = d.id 
 		    left join dataset_type dt on dt.dataset_id = d.id 
@@ -127,7 +127,7 @@ class DatabaseSearch extends CApplicationComponent {
 	    if($projects)
 	    	$command->andWhere(array('in','dp.project_id', $projects));
 	    if($links)
-	    	$command->andWhere(array('in', 'el.external_link_type_id', $links));
+	    	$command->andWhere(array('in', 'el.name', $links));
 
 	    if($pubs['start'] && $pubs['end']) {
 	    	$command->andWhere("d.publication_date >= :d and d.publication_date <= :e", array(':d'=>$pubs['start'], ':e'=>$pubs['end']));

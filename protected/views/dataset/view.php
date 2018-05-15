@@ -15,15 +15,19 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 HTML;
 
 ?>
+<div class="content">
+    <div class="container">
 <?php $this->renderPartial('/search/_form_dataset',array('model'=>$form,
         'dataset'=>$dataset,
         'search_result'=>null,
         'previous_doi'=>$previous_doi,
-        'next_doi'=>$next_doi
+        'next_doi'=>$next_doi,
+        'previous_title'=>$previous_title,
+        'next_title'=>$next_title,
+        
         )); ?>
 
-        <div class="content">
-            <div class="container">
+ 
                 <section></section>
                 <div class="subsection">
                     <div class="media">
