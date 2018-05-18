@@ -17,15 +17,7 @@ HTML;
 ?>
 <div class="content">
     <div class="container">
-<?php $this->renderPartial('/search/_form_dataset',array('model'=>$form,
-        'dataset'=>$dataset,
-        'search_result'=>null,
-        'previous_doi'=>$previous_doi,
-        'next_doi'=>$next_doi,
-        'previous_title'=>$previous_title,
-        'next_title'=>$next_title,
-        
-        )); ?>
+
 
  
                 <section></section>
@@ -107,7 +99,7 @@ HTML;
                         </div>
                     </div>
                     <?php if (count($model->manuscripts) > 0) { ?>
-                <h5><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></h5>
+                <h5><strong><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></strong></h5>
                 <p>
                     <? foreach ($model->manuscripts as $key=>$manuscript){                      
                         echo $manuscript->getFullCitation();
@@ -122,7 +114,7 @@ HTML;
                 <?php } ?>
 
                 <?php if (count($model->relations) > 0) { ?>
-                <h5><?= Yii::t('app' , 'Related datasets:')?></h5>
+                <h5><strong><?= Yii::t('app' , 'Related datasets:')?></strong></h5>
                 <p>
                 <?php foreach ($model->relations as $key=>$relation){
                 if($relation->relationship->name == "IsPreviousVersionOf")
@@ -189,7 +181,7 @@ HTML;
                             $typeNameLabel = trim($typeNameLabel);
                             if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse' and $typeNameLabel !== '3 D Models')
                             {
-                               echo "<h5>$typeNameLabel:</h5>";
+                               echo "<h5><strong>$typeNameLabel:</strong></h5>";
                             }
 
                             foreach ($model->externalLinks as $key=>$externalLink){
@@ -240,7 +232,7 @@ HTML;
                     ?>
 
                     <?php if (!empty($primary_links)) { ?>
-                    <h5><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></h5>
+                <h5><strong><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></strong></h5>
                         <p>
                             <? foreach ($primary_links as $link) { ?>
                                 <?
@@ -256,7 +248,7 @@ HTML;
                     <?php } ?>
 
                     <?php if (!empty($secondary_links)) { ?>
-                        <h5><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></h5>
+                        <h5><strong><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></strong></h5>
                         <p>
                             <?php foreach ($secondary_links as $link) { ?>
                                 <?php
@@ -277,7 +269,7 @@ HTML;
 
                 <?php } ?>
                 <?php if (count($model->projects) > 0) { ?>
-                <h5><?=Yii::t('app' , 'Projects:')?></h5>
+                <h5><strong><?=Yii::t('app' , 'Projects:')?></strong></h5>
                 <p>
                     <? foreach ($model->projects as $key=>$project){
                         if ($project->image_location)
@@ -609,6 +601,8 @@ HTML;
 
 
 <?php endif ?>
+<a href="/dataset/<?php echo $previous_doi?>"  title="Previous dataset">><span class="fa fa-angle-left fixed-btn-left"></span></a>
+<a href="/dataset/<?php echo $next_doi?>" title="Next dataset">><span class="fa fa-angle-right fixed-btn-right"></span></a>
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script>

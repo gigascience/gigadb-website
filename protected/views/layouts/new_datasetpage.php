@@ -20,6 +20,66 @@
         <link rel="stylesheet" type="text/css" href="/fonts/pt_sans/v8/pt_sans.css">
         <link rel="stylesheet" type="text/css" href="/fonts/lato/v11/lato.css">
         <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+          <style type="text/css">
+            table.dataTable {
+                margin: 0px 0px 40px 0px !important;
+            }
+            table.dataTable thead th,
+            table.dataTable tbody td,
+            table.dataTable thead > tr > th.sorting_asc, 
+            table.dataTable thead > tr > th.sorting_desc, 
+            table.dataTable thead > tr > th.sorting, 
+            table.dataTable thead > tr > td.sorting_asc, 
+            table.dataTable thead > tr > td.sorting_desc, 
+            table.dataTable thead > tr > td.sorting {
+                padding: 8px;
+                background-image: none;
+            }
+            table.dataTable thead .sorting::after, 
+            table.dataTable thead .sorting_asc::after, 
+            table.dataTable thead .sorting_desc::after, 
+            table.dataTable thead .sorting_asc_disabled::after, 
+            table.dataTable thead .sorting_desc_disabled::after {
+                content: none;
+            }
+            table.dataTable.no-footer {
+                border-bottom: 1px solid #ddd;
+            }
+            .dataTables_wrapper .dataTables_length {
+                color: #656565;
+                margin-bottom: 20px;
+            }
+            .dataTables_wrapper .dataTables_length label {
+                margin: 0px;
+            }
+            .dataTables_wrapper .dataTables_length select {
+                appearance:none;  
+                -moz-appearance:none;  
+                -webkit-appearance:none;
+                height: 34px;
+                line-height: 20px;
+            }
+            .dataTables_wrapper .dataTables_length select::-ms-expand {
+                display: none;
+            }
+            div.dataTables_wrapper div.dataTables_paginate {
+                padding: 0px;
+                float: none;
+                text-align: center;
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                padding: 0px;
+                border: 0px;
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                border: 0px;
+                background: none;
+            }
+            div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+                margin: 0px 10px 0px 0px;
+                vertical-align: top;
+            }
+        </style>
         <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
         <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <? } ?>
@@ -34,19 +94,8 @@
             <div class="base-top-bar">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-4">
-                        <ul class="list-inline base-top-social-bar">
-                            <li><a href="http://facebook.com/GigaScience" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="http://twitter.com/GigaScience" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="http://weibo.com/gigasciencejournal" title="Weibo"><i class="fa fa-weibo"></i></a></li>
-                            <li><a href="https://plus.google.com/u/0/104409890199786402308" title="Google+"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="http://gigasciencejournal.com/blog/" title="GigaBlog"><i class="fa fa-rss"></i></a></li>
-                        </ul>
-                    </div>
-                    
-                          
-                    <div class="col-xs-8">
-                        <ul class="list-inline text-right base-top-account-bar">
+                     <div class="col-xs-5">
+                        <ul class="list-inline text-left base-top-account-bar">
                              <? if(Yii::app()->user->isGuest) { ?>
                             <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>
                             <li><a href="#"><i class="fa fa-envelope"></i> database@gigasciencejournal.com</a></li>
@@ -69,7 +118,40 @@
                     <? } ?>
                 <li><a href="/site/logout"><i class="fa fa-sign-in"></i><?=Yii::t('app' , 'LogOut')?></a></li>
                 <? } ?>
+                    <li><a href="/site/contact" title="Contact us"><i class="fa fa-envelope"></i></a></li>
+                </ul>
+                    </div>
+                    <div class="col-xs-7 clearfix">
+                        <ul class="share-zone clearfix">
+                            <li><a href="http://facebook.com/GigaScience" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="http://twitter.com/GigaScience" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="http://weibo.com/gigasciencejournal" title="Weibo"><i class="fa fa-weibo"></i></a></li>
+                            <li><a href="https://plus.google.com/u/0/104409890199786402308" title="Google+"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="http://gigasciencejournal.com/blog/" title="GigaBlog"><i class="fa fa-rss"></i></a></li>
                         </ul>
+                        <div class="search-bar clearfix">
+                            <form action="/search/new" method="GET">    
+                            <?php        
+               
+                                $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+                                'name'=>'keyword',
+                                'value' =>'Search',      
+                                'source'=> array_values(array()),
+                                
+                                'options'=>array(
+                                'minLength'=>'2',
+                                    ),
+                                'htmlOptions'=>array(
+                                 'class'=>'search-input'                               
+                                    ),
+                                 ));
+       
+       
+                            ?>
+                            <button class="btn-search" type="submit"><span class="fa fa-search"></span></button>
+                            </form>
+                         
+                        </div>
                     </div>
                 </div>
             </div>
@@ -81,16 +163,19 @@
                     <div class="col-xs-4">
                         <a href="#"><img src="/images/new_interface_image/logo.png" class="base-nav-logo-img"></a>
                     </div>
-                    <div class="col-xs-8">
-                        <ul class="list-inline text-right base-nav-bar-main">
-                            <li class="active"><a href="/">Home</a></li>
+                    <div class="col-xs-4 col-xs-offset-4">
+                        <ul class="nav nav-pills main-nav-bar text-right">
+                            <li><a href="/">Home</a></li>
                             <li class="dropdown">
-                                <a href="/site/about">About <i class="fa fa-angle-down"></i></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    About&nbsp;<i class="fa fa-angle-down"></i>
+                                </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Our team</a></li>
                                     <li><a href="/site/contact">Contact</a></li>
                                     <li><a href="/site/advisory">Advisory</a></li>
                                     <li><a href="/site/faq">FAQ</a></li>
+                                    <li><a href="/site/about">About</a></li>
                                 </ul>
                             </li>
                             <li><a href="/site/help">Help</a></li>
@@ -126,11 +211,11 @@
                     <div class="col-xs-6 text-right">
                         <p class="base-footer-email"><a href="#"><i class="fa fa-envelope"></i> database@gigasciencejournal.com</a></p>
                         <ul class="list-inline base-footer-social-bar">
-                            <li><a href="http://facebook.com/GigaScience" title="give me title text here"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="http://twitter.com/GigaScience" title="give me title text here"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="http://weibo.com/gigasciencejournal" title="give me title text here"><i class="fa fa-weibo"></i></a></li>
-                            <li><a href="https://plus.google.com/u/0/104409890199786402308" title="give me title text here"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="http://gigasciencejournal.com/blog/" title="give me title text here"><i class="fa fa-rss"></i></a></li>
+                            <li><a href="http://facebook.com/GigaScience" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="http://twitter.com/GigaScience" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="http://weibo.com/gigasciencejournal" title="Weibo"><i class="fa fa-weibo"></i></a></li>
+                            <li><a href="https://plus.google.com/u/0/104409890199786402308" title="Google+"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="http://gigasciencejournal.com/blog/" title="RSS"><i class="fa fa-rss"></i></a></li>
                         </ul>
                     </div>
                 </div>
