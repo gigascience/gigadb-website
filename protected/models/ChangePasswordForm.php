@@ -38,7 +38,7 @@ class ChangePasswordForm extends CFormModel
             $user->password_repeat = $this->confirmPassword;
             $user->encryptPassword();
 
-            if($user->save()) {
+            if($user->save(false)) {
                 return true;
             }
         }

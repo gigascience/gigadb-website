@@ -269,7 +269,7 @@ class UserController extends Controller {
                 Yii::log(__FUNCTION__."> reset found user $reset_user", 'debug');
                 $user->password = $user->generatePassword(8);
                 $user->encryptPassword();                
-                if ($user->save()) {
+                if ($user->save(false)) {
                     $this->sendPasswordEmail($user);
                 }
                 else {
