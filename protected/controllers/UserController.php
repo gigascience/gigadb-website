@@ -269,7 +269,7 @@ class UserController extends Controller {
                 $user->password = $user->generatePassword(8);
                 $user->encryptPassword();
 
-                if ($user->save()) {
+                if ($user->save(false)) {
                     $this->sendPasswordEmail($user);
                 }
                 else {
