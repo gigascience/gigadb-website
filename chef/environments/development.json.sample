@@ -22,21 +22,25 @@
       "yii_path": "/opt/yii-1.1.10/framework/yii.php",
       "app_user": "gigadb",
       "admin_email": "database@gigasciencejournal.com",
-      "users": ["", "", ""],
-      "user1": "",
-      "user1_name": "",
+      "users": [
+        "user1",
+        "user2",
+        "user3"
+      ],
+      "user1": "user1",
+      "user1_name": "user1",
       "user1_public_key": "",
       "user1_group": "gigadb-admin",
-      "user2": "",
-      "user2_name": "",
+      "user2": "user2",
+      "user2_name": "user2",
       "user2_public_key": "",
       "user2_group": "gigadb-admin",
-      "user3": "",
-      "user3_name": "",
+      "user3": "user3",
+      "user3_name": "user3",
       "user3_public_key": "",
       "user3_group": "gigadb-admin",
-      "admin_user": "",
-      "admin_user_name": "",
+      "admin_user": "admin",
+      "admin_user_name": "admin",
       "admin_user_public_key": "",
       "admin_user_group": "gigadb-admin",
       "mailchimp": {
@@ -72,7 +76,7 @@
       "orcid": {
         "client_id": "",
         "client_secret": "",
-        "environment":"sandbox"
+        "environment": "sandbox"
       },
       "mds": {
         "mds_username": "",
@@ -111,20 +115,25 @@
       "mount_point": "/mnt/chef",
       "device": "/opt/chef"
     },
-	"nginx": {
-	  "log_dir": "/var/log/nginx"
-	},
-	"postgresql": {
-	  "version": "9.1",
-	  "repo_version": "8.4"
-	},
-	"iptables": {
-	  "iptables_sysconfig": {
-		"IPTABLES_SAVE_ON_STOP": "yes"
-	  }
-	},
-	"ssh": {
-	  "enable_password": "no"
+    "nginx": {
+      "version": "latest",
+      "log_dir": "/var/log/nginx"
+    },
+    "postgresql": {
+      "version": "9.1",
+      "repo_version": "8.4",
+      "dir": "/var/lib/pgsql/9.1/data"
+    },
+    "java": {
+      "jdk_version": "7"
+    },
+    "iptables": {
+      "iptables_sysconfig": {
+        "IPTABLES_SAVE_ON_STOP": "yes"
+      }
+    },
+    "ssh": {
+      "enable_password": "no"
     },
     "vsftpd": {
 	  "allowed": [

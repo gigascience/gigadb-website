@@ -24,7 +24,7 @@ end
 Vagrant.configure(2) do |config|
   # Cache packages to reduce provisioning time
   if Vagrant.has_plugin?("vagrant-cachier")
-    #Configure cached packages to be shared between instances of the same base box
+    # Share cached packages between instances of the same base box
     config.cache.scope = :box
   end
 
@@ -34,12 +34,21 @@ Vagrant.configure(2) do |config|
   	gigadb.vm.hostname = 'gigadb-server.test'
   	set_hostname(gigadb)
 
-    # Forward ports from guest to host, which allows for outside computers
-    # to access VM, whereas host only networking does not.
+    # Forward ports from guest to host to allow outside computers to access VM
   	gigadb.vm.network "forwarded_port", guest: 80, host: 9170
   	gigadb.vm.network "forwarded_port", guest: 5432, host: 9171
-	# Set up directories
-  	gigadb.vm.synced_folder ".", "/vagrant"
+  	# CentOS-specific Vagrant configuration to allow Yii assets folder
+    # to be world-readable
+    if ENV['GIGADB_BOX'] == 'aws' # For AWS instance
+      gigadb.vm.synced_folder ".", "/vagrant", rsync__args: ["--verbose", "--archive", "--delete", "-z"]
+      FileUtils.mkpath("./assets")
+      FileUtils.chmod_R 0777, ["./assets"]
+    else
+      gigadb.vm.synced_folder ".", "/vagrant"
+      FileUtils.mkpath("./assets")
+      gigadb.vm.synced_folder "./assets/", "/vagrant/assets",
+        :mount_options => ["dmode=777,fmode=777"]
+    end
   	FileUtils.mkpath("./protected/runtime")
   	FileUtils.chmod_R 0777, ["./protected/runtime"]
     FileUtils.mkpath("./images/tempcaptcha")
@@ -48,16 +57,6 @@ Vagrant.configure(2) do |config|
   	FileUtils.chmod_R 0777, ["./giga_cache"]
   	FileUtils.mkpath("./logs")
   	FileUtils.chmod_R 0777, ["./logs"]
-  	# CentOS-specific Vagrant configuration to allow Yii assets folder
-  	# to be world-readable.
-  	if ENV['GIGADB_BOX'] == 'aws' # For CentOS VM and AWS instance
-      FileUtils.mkpath("./assets")
-      FileUtils.chmod_R 0777, ["./assets"]
-    else
-      FileUtils.mkpath("./assets")
-      gigadb.vm.synced_folder "./assets/", "/vagrant/assets",
-        :mount_options => ["dmode=777,fmode=777"]
-    end
 
     ####################
     #### VirtualBox ####
@@ -65,10 +64,7 @@ Vagrant.configure(2) do |config|
     gigadb.vm.provider :virtualbox do |vb|
 	  vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//vagrant","1"]
 
-	  # Share an additional folder to the guest VM. The first argument is
-	  # an identifier, the second is the path on the guest to mount the
-	  # folder, and the third is the path on the host to the actual folder.
-	  # config.vm.share_folder "v-data", "/vagrant_data", "../data"
+	  # Share an additional folder to the guest VM
 	  apt_cache = "./apt-cache"
 	  if File.directory?(apt_cache)
 	    config.vm.share_folder "apt_cache", "/var/cache/apt/archives", apt_cache
@@ -87,27 +83,26 @@ Vagrant.configure(2) do |config|
       aws.region = ENV['AWS_DEFAULT_REGION']
       aws.instance_type = "t2.micro"
       aws.tags = {
-        'Name' => 'gigadb-website',
+        'Name' => 'gigadb-website-vagrant-test',
         'Deployment' => 'test',
       }
       aws.security_groups = ENV['AWS_SECURITY_GROUPS']
 
       override.ssh.username = "centos"
       override.ssh.private_key_path = ENV['AWS_SSH_PRIVATE_KEY_PATH']
+      override.nfs.functional = false
     end
 
-    # Enable provisioning with chef solo, specifying a cookbooks path, roles
-    # path, and data_bags path (all relative to this Vagrantfile), and adding
-    # some recipes and/or roles.
+    # Enable provisioning with chef solo
     gigadb.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = [
         "chef/site-cookbooks",
         "chef/chef-cookbooks",
       ]
       chef.environments_path = 'chef/environments'
-      ####################################################
-      #### Set server environment: development or aws ####
-      ####################################################
+      ############################################################
+      #### Set server environment: development, aws or docker ####
+      ############################################################
       chef.environment = "development"
 
       chef.data_bags_path = 'chef/data_bags'
@@ -115,42 +110,12 @@ Vagrant.configure(2) do |config|
 	    chef.encrypted_data_bag_secret_key_path = 'chef/environments/encrypted_data_bag_secret'
 	  end
 
+      # Chef recipes to be used for provisioning
       if ENV['GIGADB_BOX'] == 'aws'
         chef.add_recipe "aws"
       else
         chef.add_recipe "vagrant"
       end
-
-      # You may also specify custom JSON attributes:
-      chef.json = {
-        :gigadb_box => ENV['GIGADB_BOX'],
-        :environment => "vagrant",
-        :gigadb => {
-          :server_names => ["localhost"],
-          :root_dir => "/vagrant",
-          :site_dir => "/vagrant",
-          :log_dir => "/vagrant/logs",
-          :yii_path => "/opt/yii-1.1.10/framework/yii.php",
-        },
-        :nginx => {
-          :version => :latest,
-        },
-        :postgresql => {
-          :version => "9.1",
-          :repo_version => "8.4",
-          :dir => '/var/lib/pgsql/9.1/data',
-        },
-        :elasticsearch => {
-          :version => '1.3.4',
-        },
-        :java => {
-          #:install_flavor => 'oracle',
-          :jdk_version => '7',
-          :oracle => {
-             "accept_oracle_download_terms" => true,
-          },
-        },
-      }
 
       # Additional chef settings to put in solo.rb
       chef.custom_config_path = "Vagrantfile.chef"
