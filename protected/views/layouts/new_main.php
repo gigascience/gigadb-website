@@ -115,7 +115,7 @@
                                     <li><a href="/site/contact">Contact</a></li>
                                     <li><a href="/site/advisory">Advisory</a></li>
                                     <li><a href="/site/faq">FAQ</a></li>
-                                    <li><a href="/site/about">About</a></li>
+                                    <li><a href="/site/about">General</a></li>
                                 </ul>
                             </li>
                             <li><a href="/site/help">Help</a></li>
