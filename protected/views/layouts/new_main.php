@@ -111,7 +111,7 @@
                                     About&nbsp;<i class="fa fa-angle-down"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Our team</a></li>
+                                    <li><a href="/site/team">Our team</a></li>
                                     <li><a href="/site/contact">Contact</a></li>
                                     <li><a href="/site/advisory">Advisory</a></li>
                                     <li><a href="/site/faq">FAQ</a></li>

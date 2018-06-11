@@ -281,6 +281,12 @@ class SiteController extends Controller {
 	      INNER JOIN sample_attribute as satt on satt.attribute_id=datt.attribute_id")->queryAll();
 		$this->render('mapbrowse', array('locations' => $locations));
 	}
+        
+        public function actionTeam() {
+                $this->layout='new_main';
+		$this->render('team');
+	}
+        
 
 	public function actionAbout() {
                 $this->layout='new_main';
