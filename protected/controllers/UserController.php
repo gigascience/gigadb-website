@@ -40,7 +40,7 @@ class UserController extends Controller {
                     'users'=>array('@'),
                 ),
             array('allow', # admins
-                'actions'=>array('list', 'show', 'delete','admin','update','view'),
+                'actions'=>array('list', 'show', 'delete','admin','update','view','newsletter'),
                 'roles'=>array('admin'),
             ),
             array('deny',  // deny all users
@@ -222,6 +222,18 @@ class UserController extends Controller {
             'model'=>$model,
         ));
     }
+    
+    public function actionNewsletter(){
+        
+     $result = User::model()->findAllBySql("select email,first_name, last_name, affiliation from gigadb_user where newsletter=true order by id;");
+     
+                 
+     $this->renderPartial('newsletter',array(
+            'models'=>$result,
+        ));
+       
+        
+    }
 
     # Confirm email works
 	public function actionConfirm() {
@@ -257,7 +269,7 @@ class UserController extends Controller {
                 $user->password = $user->generatePassword(8);
                 $user->encryptPassword();
 
-                if ($user->save()) {
+                if ($user->save(false)) {
                     $this->sendPasswordEmail($user);
                 }
                 else {
