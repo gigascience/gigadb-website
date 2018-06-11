@@ -21,11 +21,11 @@ $this->pageTitle='GigaDB - Help';
                     <p>Alternatively you can use the search functions to find datasets, samples or files of interest.</p>
                 </div>
                 <section>
-                    <ul class="nav nav-tabs nav-border-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#search" aria-controls="search" role="tab" data-toggle="tab">GigaDB search</a></li>
-                        <li role="presentation"><a href="#guidelines" aria-controls="guidelines" role="tab" data-toggle="tab">Submission guidelines</a></li>
-                        <li role="presentation"><a href="#vocabulary" aria-controls="vocabulary" role="tab" data-toggle="tab">Controlled vocabulary</a></li>
-                        <li role="presentation"><a href="#interface" aria-controls="interface" role="tab" data-toggle="tab">Application programming interface</a></li>
+                    <ul class="nav nav-tabs nav-border-tabs" role="tablist" id="alltabs">
+                        <li id="lisearch" role="presentation" class="active"><a href="#search" aria-controls="search" role="tab" data-toggle="tab">GigaDB search</a></li>
+                        <li id="liguideline" role="presentation"><a href="#guidelines" aria-controls="guidelines" role="tab" data-toggle="tab">Submission guidelines</a></li>
+                        <li id="livocabulary" role="presentation"><a href="#vocabulary" aria-controls="vocabulary" role="tab" data-toggle="tab">Controlled vocabulary</a></li>
+                        <li id="liapi" role="presentation"><a href="#interface" aria-controls="interface" role="tab" data-toggle="tab">Application programming interface</a></li>
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="search">
@@ -58,7 +58,7 @@ $this->pageTitle='GigaDB - Help';
                             <p style="margin-bottom: 20px;">On the left of the search results you have the option to further refine the results by using the filters. By default all filters are disabled, allowing you to see all search results for your keyword. If you want to hide some results based on some criteria, choose the filter for your criteria, and select the options that match what you want to see.</p>
                             <p style="margin-bottom: 0px;">TFilter options for Datasets:</p>
                             <ol>
-                                <li>Dataset Type (<a href="http://gigadb.org/site/help#datasettype" target="_blank">Dataset Type</a> controlled vocabulary eg 'Genomic', 'Proteomic')</li>
+                                <li>Dataset Type (<a href="#datasettypes" onclick="DatasetFunction()">Dataset Type</a> controlled vocabulary eg 'Genomic', 'Proteomic')</li>
                                 <li>Project (eg 'Genome 10K', '1000 Genomes'</li>
                                 <li>External Link Types (Controlled vocabulary: 'Genome Browser' or 'Additional Data')</li>
                                 <li>Publication Date (From and To. Format: dd-mm-yyyy)</li>
@@ -67,8 +67,8 @@ $this->pageTitle='GigaDB - Help';
                             <ol><li>Common Name (Internally controlled eg 'Human', 'Mouse')</li></ol>
                             <p style="margin-bottom: 0px;">Filter options for Files:</p>
                             <ol>
-                                <li>File Type (<a href="http://gigadb.org/site/help#filetype" target="_blank">File Type</a> controlled vocabulary eg 'Alignments', 'Genome sequence', 'SNPs')</li>
-                                <li>File Format (<a href="http://gigadb.org/site/help#fileformat" target="_blank">File format</a> controlled vocabulary eg 'BIGWIG', 'FASTQ', 'VCF')</li>
+                                <li>File Type (<a href="#filetypes" onclick="DatasetFunction()">File Type</a> controlled vocabulary eg 'Alignments', 'Genome sequence', 'SNPs')</li>
+                                <li>File Format (<a href="#fileformats" onclick="DatasetFunction()">File format</a> controlled vocabulary eg 'BIGWIG', 'FASTQ', 'VCF')</li>
                                 <li>File Size (From and To: Format KB, MB, GB, TB)</li>
                             </ol>
                         </div>
@@ -91,20 +91,24 @@ $this->pageTitle='GigaDB - Help';
                             <p>Optional information includes sample attributes (these are automatically populated in <em>Giga</em>DB if an <a href="http://www.ncbi.nlm.nih.gov/biosample" target="_blank">NCBI BioSample ID</a> is provided).</p>
                             <h5>Files</h5>
                             <p>Required information includes a file name or path relative to your home directory and <a href="http://gigadb.org/site/help#filetype" target="_blank">file type</a> (selected from a controlled vocabulary list). A readme file must be provided.</p>
+                            <p>Please note;<br>
+                                -Filenames should be unique. <br>
+                                -Filenames should not include spaces. We recommend using the underscore (_) in place of spaces in the filenames.<br>
+                                -Filenames should only include the following characters a-z,A-Z,0-9,_,-,+,. </p>
                             <p>Optional information includes a file description and a sample ID or name.</p>
                             <p><strong>Step 3</strong> - confirm you have read our <a href="http://gigadb.org/site/term/" target="_blank">Terms of use</a> page and upload the completed Excel template file.</p>
                             <p>You can expect a response from the <a href="http://gigadb.org/" target="_blank"><em>Giga</em>DB</a> team within 5 days to verify the information in your submission and to arrange upload of your files to our FTP site.</p>
                             <p>If you have any questions, please contact us at <a href="mailto:database@gigasciencejournal.com" target="_blank">database@gigasciencejournal.com</a>.</p>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="vocabulary">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Dataset types</h4>
+                            <h4 id="datasettypes" style="color: #099242; margin-bottom: 10px;">Dataset types</h4>
                             <p><strong>Genomic</strong> - includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation. Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files)</p>
                             <p><strong>Epigenomic</strong> - includes methylation and histone modification data. Minimal requirements: Details on methylation sites/status eg qmap files OR details on histone modification sites/status.</p>
                             <p><strong>Metagenomic</strong> - includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation from environmental samples. Minimal requirements: Environmental DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</p>
                             <p><strong>Proteomic</strong> - includes all mass spec data. Minimal requirements: Peptide/protein data eg mass spec.</p>
                             <p><strong>Transcriptomic</strong> - includes all data relating to mRNA. Minimal requirements: RNA sequence data eg next-gen raw reads (fastq files) OR transcript statistics eg RNA coverage/depth.</p>
                             <p>Additional dataset types can be added, upon review, as new submissions are received.</p>
-                            <h4 style="color: #099242; margin-bottom: 10px;">File types</h4>
+                            <h4 id="filetypes" style="color: #099242; margin-bottom: 10px;">File types</h4>
                             <p>File types and examples of associated file extensions:</p>
                             <p><strong>Alignments:</strong> .bam, .chain, .maf, .net, .sam</p>
                             <p><strong>Allele frequencies:</strong> .frq</p>
@@ -124,7 +128,7 @@ $this->pageTitle='GigaDB - Help';
                             <p><strong>Other:</strong> .xls, .pdf, .txt</p>
                             <p>Additional file types can be added, upon review, as new submissions are received.</p>
                             <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">File formats</h4>
+                            <h4 id="fileformats" style="color: #099242; margin-bottom: 10px;">File formats</h4>
                             <ol style="padding-left: 22px;">
                                 <li><a href="#agp">AGP</a></li>
                                 <li><a href="#bam">BAM</a></li>
@@ -317,3 +321,21 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                 </section>
             </div>
         </div>
+<script type="text/javascript">
+
+
+
+function DatasetFunction(){
+  $('ul li').removeClass('active');  
+  $('#livocabulary').addClass('active');
+  $('#search').removeClass('active');  
+  $('#vocabulary').addClass('active');
+   var e = document.getElementById('datasettypes');
+   if (!!e && e.scrollIntoView) {
+       e.scrollIntoView();
+   }
+  
+  }
+
+</script>
+    

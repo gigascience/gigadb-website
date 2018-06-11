@@ -174,11 +174,18 @@
                                     <li><a href="/site/team">Our team</a></li>
                                     <li><a href="/site/contact">Contact</a></li>
                                     <li><a href="/site/advisory">Advisory</a></li>
-                                    <li><a href="/site/faq">FAQ</a></li>
                                     <li><a href="/site/about">General</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/site/help">Help</a></li>
+                            <li class="dropdown">
+                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    Help&nbsp;<i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                <li><a href="/site/help">Help</a></li>
+                                <li><a href="/site/faq">FAQ</a></li>
+                                </ul>
+                             </li>    
                             <li><a href="/site/term">Terms of use</a></li>
                         </ul>
                     </div>
