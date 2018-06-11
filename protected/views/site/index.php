@@ -75,6 +75,22 @@
                     </div>
                 </div>
             </section>
+            <? if(count($news)>0) {?>
+            <section> 
+                <div class="container">
+                    <div class="underline-title">
+                        <div>
+                             <h4>Latest news</h4>  
+                        </div>
+                       
+
+                    </div>
+                    <div id="news_slider" class="row">
+                        <? $this->renderPartial('news',array('news'=>$news)); ?>
+                    </div>
+                </div>
+            </section>
+            <? }?>
             <section>
                 <div class="container">
                     <div class="color-background ">
