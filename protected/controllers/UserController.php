@@ -61,6 +61,7 @@ class UserController extends Controller {
     # Create new account
     public function actionCreate() {
         $user = new User;
+        $user->newsletter=false;
         $this->performAjaxValidation($user);
         if (isset($_POST['User'])) {
             //$user->attributes = $_POST['User'];

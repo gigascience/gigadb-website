@@ -3,7 +3,7 @@
 class User extends CActiveRecord {
     public $password_repeat;
     public $password_new;
-
+    public $terms;
     # Unhashed password for account verification email
     public $passwordUnHashed;
 
@@ -57,6 +57,8 @@ class User extends CActiveRecord {
             array('affiliation','required'),
             array('newsletter','boolean'),
             array('newsletter','required'),
+            array('terms','required'),
+            array('terms','compare', 'on'=>'insert', 'compareValue' => TRUE,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
             array('role','safe'),
             array('preferred_link', 'safe'),
             array('verifyCode', 'validateCaptcha'),                
@@ -129,6 +131,7 @@ class User extends CActiveRecord {
         return array(
             'username' => 'Username',
             'email' => Yii::t('app' , 'Email'),
+            'terms'=> 'Terms and Conditions',
             'first_name' => Yii::t('app' , 'First Name'),
             'last_name' => Yii::t('app' , 'Last Name'),
             'password' => Yii::t('app' , 'Password'),
