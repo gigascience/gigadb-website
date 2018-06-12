@@ -78,9 +78,18 @@
 			    <div class="control-group">
 				    <div class="controls">
 				    	<?php echo $form->checkbox($model,'newsletter'); ?>
-						<label><?=Yii::t('app' , 'Add me to GigaDB\'s mailing list')?></label>
+						<label><?=Yii::t('app' , 'Mailing list')?></label>
+                                                <p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>        
 				    </div>
 			    </div>
+                            <div class="control-group">
+				    <div class="controls">
+				    	<?php echo $form->checkbox($model,'terms'); ?>
+						<label><?=Yii::t('app' , 'Terms and Conditions')?></label>
+                                                <p>Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p> 
+                                                <?= $form->error($model,'terms') ?>
+				    </div>
+			    </div>    
 
 
 			<? if ($model->isNewRecord) { ?>
