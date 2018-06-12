@@ -135,7 +135,7 @@ class User extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'username' => 'Username',
-            'terms'=> 'Terms of use and Privacy policy',
+            'terms'=> 'Terms and Conditions',
             'email' => Yii::t('app' , 'Email'),
             'first_name' => Yii::t('app' , 'First Name'),
             'last_name' => Yii::t('app' , 'Last Name'),

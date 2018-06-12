@@ -87,11 +87,14 @@
 					</div>
 				</div>
                                 <div class="form-group">
-                                    <label class="col-xs-3 control-label"><?=Yii::t('app' , 'Add me to GigaDB\'s mailing list')?></label>
+                                    <label class="col-xs-3 control-label"><?=Yii::t('app' , 'Mailing list')?></label>
                                    
 				    <div class="col-xs-9">				    	
                                          <?php echo $form->checkbox($model,'newsletter'); ?>
 				    </div>
+                                    <div class="col-xs-9">
+                                        <p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>   
+                                    </div>
                                  </div>
                                 <div class="form-group">
                                     <?= $form->labelEx($model,'terms', array('class'=>'col-xs-3 control-label')) ?>              
@@ -99,7 +102,9 @@
                                          <?php echo $form->checkbox($model,'terms'); ?>
                                          <font color="red"><?= $form->error($model,'terms') ?></font>
 				    </div>
-                                     <p>Please read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
+                                    <div class="col-xs-9">
+                                     <p>Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
+                                    </div>
                                  </div>
                                 
 
