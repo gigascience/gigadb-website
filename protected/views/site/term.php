@@ -21,7 +21,7 @@ $this->pageTitle='GigaDB - Terms of use';
                     <div>
                         <ul class="nav nav-tabs nav-border-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#policies" aria-controls="policies" role="tab" data-toggle="tab">GigaScience Database (GigaDB) Use Policies</a></li>
-                            <li role="presentation"><a href="#privacy" aria-controls="privacy" role="tab" data-toggle="tab">Privacy</a></li>
+                            <li role="presentation" id="privacytab"><a href="#privacy" aria-controls="privacy" role="tab" data-toggle="tab">Privacy</a></li>
                             <li role="presentation"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Collection of Web-traffic Information</a></li>
                             <li role="presentation"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal Data</a></li>
                         </ul>
@@ -119,3 +119,21 @@ $this->pageTitle='GigaDB - Terms of use';
                 
             </div>
         </div>
+<script type="text/javascript">
+
+
+
+window.onload = function AlterFunction(){
+   $url=  window.location.href;
+   console.log($url);
+  if($url.includes("privacy"))
+  {     
+  $('ul li').removeClass('active');  
+  $('#privacytab').addClass('active');
+  $('#policies').removeClass('active');  
+  $('#privacy').addClass('active');
+  }
+  
+  }
+
+</script>

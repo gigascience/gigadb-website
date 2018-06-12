@@ -94,12 +94,12 @@
 				    </div>
                                  </div>
                                 <div class="form-group">
-                                    <?= $form->labelEx($model,'terms', array('class'=>'col-xs-3 control-label')) ?>
-                                   
+                                    <?= $form->labelEx($model,'terms', array('class'=>'col-xs-3 control-label')) ?>              
 				    <div class="col-xs-9">				    	
                                          <?php echo $form->checkbox($model,'terms'); ?>
                                          <font color="red"><?= $form->error($model,'terms') ?></font>
 				    </div>
+                                     <p>Please read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
                                  </div>
                                 
 
