@@ -3,6 +3,7 @@
 class User extends CActiveRecord {
     public $password_repeat;
     public $password_new;
+    public $terms;
 
     # Unhashed password for account verification email
     public $passwordUnHashed;
@@ -50,13 +51,15 @@ class User extends CActiveRecord {
             array('password', 'compare', 'compareAttribute'=>'password_repeat', 'on'=>'insert'),
             array('password', 'checkPassword', 'on'=>'update'),
             array('password', 'unsafe'),
+            array('password_repeat','required'),
             array('first_name, last_name','length','max'=>60),
 
             array('first_name','required'),
             array('last_name','required'),
             array('affiliation','required'),
             array('newsletter','boolean'),
-            array('newsletter','required'),
+            array('terms','required'),
+            array('terms','compare', 'on'=>'insert', 'compareValue' => TRUE,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
             array('role','safe'),
             array('preferred_link', 'safe'),
             array('verifyCode', 'validateCaptcha'),                
@@ -82,6 +85,10 @@ class User extends CActiveRecord {
         }
         return true;
     }
+    
+     public function checkterms($attribute, $params){
+         
+     }
     /**
     * Validate captcha
     */
@@ -128,6 +135,7 @@ class User extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'username' => 'Username',
+            'terms'=> 'Terms of use and Privacy policy',
             'email' => Yii::t('app' , 'Email'),
             'first_name' => Yii::t('app' , 'First Name'),
             'last_name' => Yii::t('app' , 'Last Name'),

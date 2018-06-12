@@ -28,7 +28,7 @@
 					<?= $form->labelEx($model,'email', array('class'=>'col-xs-3 control-label')) ?>
 					<div class="col-xs-9">
 						<?= $form->textField($model,'email',array('class'=>'form-control')) ?>
-						<?= $form->error($model,'email') ?>
+						<font color="red"><?= $form->error($model,'email') ?></font>
 					</div>
 				</div>
 
@@ -36,7 +36,7 @@
 					<?= $form->labelEx($model,'first_name', array('class'=>'col-xs-3 control-label')) ?>
 					<div class="col-xs-9">
 						<?= $form->textField($model,'first_name',array('class'=>'form-control')) ?>
-						<?= $form->error($model,'first_name') ?>
+						<font color="red"><?= $form->error($model,'first_name') ?></font>
 					</div>
 				</div>
 
@@ -44,7 +44,7 @@
 					<?= $form->labelEx($model,'last_name', array('class'=>'col-xs-3 control-label')) ?>
 					<div class="col-xs-9">
 						<?= $form->textField($model,'last_name',array('class'=>'form-control')) ?>
-						<?= $form->error($model,'last_name') ?>
+						<font color="red"><?= $form->error($model,'last_name') ?></font>
 					</div>
 				</div>
 
@@ -52,7 +52,7 @@
 					<?= $form->labelEx($model,'password', array('class'=>'col-xs-3 control-label')) ?>
 					<div class="col-xs-9">
 						<?= $form->passwordField($model,'password',array('class'=>'form-control')) ?>
-						<?= $form->error($model,'password') ?>
+						 <font color="red"><?= $form->error($model,'password') ?></font>
 					</div>
 				</div>
 
@@ -60,7 +60,7 @@
 					<?= $form->labelEx($model,'password_repeat', array('class'=>'col-xs-3 control-label')) ?>
 					<div class="col-xs-9">
 						<?= $form->passwordField($model,'password_repeat',array('class'=>'form-control')) ?>
-						<?= $form->error($model,'password_repeat') ?>
+						<font color="red"><?= $form->error($model,'password_repeat') ?></font>
 					</div>
 				</div>
 				<? if (Yii::app()->user->checkAccess('admin')) { ?>
@@ -68,7 +68,7 @@
 						<?= $form->labelEx($model,'role', array('class'=>'col-xs-3 control-label')) ?>
 						<div class="col-xs-9">
 							<?= $form->dropDownList($model,'role',array('user'=>'user','admin'=> 'admin','class'=>'dropdown-menu')) ?>
-							<?= $form->error($model,'role') ?>
+							 <font color="red"><?= $form->error($model,'role') ?></font>
 						</div>
 					</div>
 				<? } ?>
@@ -76,14 +76,14 @@
 					<?= $form->labelEx($model,'affiliation', array('class'=>'col-xs-3 control-label')) ?>
 					<div class="col-xs-9">
 						<?= $form->textField($model,'affiliation',array('class'=>'form-control')) ?>
-						<?= $form->error($model,'affiliation') ?>
+						<font color="red"><?= $form->error($model,'affiliation') ?></font>
 					</div>
 				</div>
 				<div class="form-group">
 					<?= $form->labelEx($model,'preferred_link', array('class'=>'col-xs-3 control-label')) ?>
 					<div class="col-xs-9">
 						<?= CHtml::activeDropDownList($model,'preferred_link', User::$linkouts, array()) ?>
-						<?= $form->error($model,'preferred_link') ?>
+						<font color="red"><?= $form->error($model,'preferred_link') ?></font>
 					</div>
 				</div>
                                 <div class="form-group">
@@ -93,6 +93,15 @@
                                          <?php echo $form->checkbox($model,'newsletter'); ?>
 				    </div>
                                  </div>
+                                <div class="form-group">
+                                    <?= $form->labelEx($model,'terms', array('class'=>'col-xs-3 control-label')) ?>
+                                   
+				    <div class="col-xs-9">				    	
+                                         <?php echo $form->checkbox($model,'terms'); ?>
+                                         <font color="red"><?= $form->error($model,'terms') ?></font>
+				    </div>
+                                 </div>
+                                
 
 
 			<? if ($model->isNewRecord) { ?>
@@ -106,7 +115,7 @@
                                     <br>
 						<?php echo $form->textField($model,'verifyCode',array('class'=>'form-control')); ?>	
 						<div class="hint">Please enter the letters as they are shown in the image above.
-						<br/>Letters are not case-sensitive.</div>
+						<br/>Letters are case-sensitive.</div>
 						<?php echo $form->error($model, 'verifyCode'); ?>					
 						</div>		
 			    </div>

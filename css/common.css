@@ -1587,7 +1587,6 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
     padding-right: 12px;
 }
 .create-div label::before{
-    content: '*';
     color: red;
     line-height: initial;
     padding-right: 3px;
