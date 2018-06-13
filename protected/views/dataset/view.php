@@ -48,7 +48,9 @@ HTML;
                 <div class="subsection">
                     <p><?= $model->description; ?></p>
                 </div>
+               
                 <div class="subsection">
+                     <?php if(count($model->datasetAttributes)>0){?>
                     <p>Keywords:</p>
                     <ul class="list-inline">
                     <? foreach ($model->datasetAttributes as $key=>$keyword){
@@ -59,6 +61,7 @@ HTML;
                     }
                     ?>
                     </ul>
+                     <?php } ?>
                  <div class="pull-right">
                     <p>
                         <span class="citation-popup" data-content="View citations on Google Scholar">
@@ -287,16 +290,40 @@ HTML;
               
                 <section>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
-                        <li role="presentation" id="p-sample"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
+                        <?php if(count($model->samples) > 0) {
+                            ?>
+                           <li role="presentation" id="p-sample"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
+                        <?php }                       
+                        ?>
+                        
                         <li role="presentation" id="p-file"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
                         <li role="presentation" id="p-funding"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
-                        <li role="presentation" id="p-widget"><a href="#widget" aria-controls="widget" role="tab" data-toggle="tab">Widgets</a></li>
+                    
+                        <?php if(count($protocol) > 0) {
+                            ?>
+                           <li role="presentation" id="p-protocol"><a href="#protocol" aria-controls="protocol" role="tab" data-toggle="tab">Protocols.io</a></li>
+                        <?php }                       
+                        ?>
+                        <?php if(count($jb) > 0) {
+                            ?>
+                           <li role="presentation" id="p-jb"><a href="#jb" aria-controls="jb" role="tab" data-toggle="tab">JBrowse</a></li>
+                        <?php }                       
+                        ?> 
+                        <?php if(count($dmodel) > 0) {
+                            ?>
+                           <li role="presentation" id="p-dmodel"><a href="#demodel" aria-controls="demodel" role="tab" data-toggle="tab">3D Viewer</a></li>
+                        <?php }                       
+                        ?>      
                         <li role="presentation" id="p-history"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
                         
                     </ul>
        
-                   
-                    <div class="tab-content">                    
+            
+                    <div class="tab-content"> 
+                        
+                             <?php if(count($model->samples) > 0) {
+                            ?>   
+                        
                       <div role="tabpanel" class="tab-pane active" id="sample">
                         <button class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#files-modal" style="border-color: #e5e5e5; color: #656565; height: 34px; margin-bottom: -34px; background-color: #fff;"><span class="glyphicon glyphicon-adjust"></span> <?php $this->renderPartial('_sample_setting',array('columns'=>$columns)); ?></button>
                         <br>
@@ -355,7 +382,15 @@ HTML;
         ?>
     
                       </div>
+                            <?php }                       
+                        ?>
+                    <?php 
+                    if(count($model->samples) > 0) {
+                            ?>     
                         <div role="tabpanel" class="tab-pane" id="files">
+                         <?php }  else {?>
+                         <div role="tabpanel" class="tab-pane active" id="files">    
+                         <?php   } ?>        
                             <button class="btn btn-default pull-left" type="button" data-toggle="modal" data-target="#files-modal" style="border-color: #e5e5e5; color: #656565; height: 34px; margin-bottom: -34px; background-color: #fff;"><span class="glyphicon glyphicon-adjust"></span> <?= MyHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank'))?></button>
                             <button class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#files-modal" style="border-color: #e5e5e5; color: #656565; height: 34px; margin-bottom: -34px; background-color: #fff;"><span class="glyphicon glyphicon-adjust"></span> <?php $this->renderPartial('_display_setting',array('setting'=>$setting));?></button>
                             <br>
@@ -468,52 +503,15 @@ HTML;
 
                         </div>
                         
-                        <div role="tabpanel" class="tab-pane" id="widget">
-                            
-                            <?php if (count($model->externalLinks) > 0) { ?>
-                <p>
-                    <?php
-                        $types = array();
-                        $protocol = array();
-                        $jb = array();
-                        $dmodel = array();
-                        foreach ($model->externalLinks as $key=>$externalLink){
-                            $types[$externalLink->externalLinkType->name] = 1;
-                        }
-                        foreach ($types as $typeName => $value) {
-                            $typeNameLabel = preg_replace('/(?:^|_)(.?)/e',"strtoupper('$1')",$typeName);
-                            $typeNameLabel = preg_replace('/(?<=\\w)(?=[A-Z])/'," $1", $typeNameLabel);
-                            $typeNameLabel = trim($typeNameLabel);
-                          
-                            foreach ($model->externalLinks as $key=>$externalLink){
-                                if ($externalLink->externalLinkType->name == $typeName) {
-                                    if($typeName == 'Protocols.io')
-                                    {
-                                       array_push($protocol,$externalLink->url);
-
-                                    }
-                                    elseif($typeName == 'JBrowse')
-                                    {
-                                       array_push($jb,$externalLink->url);
-                                    
-                                    }
-                                    elseif($typeName == '3D Models')
-                                    {
-                                       array_push($dmodel,$externalLink->url);
-                                    
-                                    }
-                                    else
-                                    {
-                                       continue;
-                                    }
-                                }
-                            }
-                        }
-                            if(!empty($protocol)){
-                             echo "<p>Protocols.io:</p>";
-                             echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                             echo "<a id=\"js-close-btn1\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                             echo "<div id=\"js-logs-1\" class=\"js-logs\" style=\"display:none;\">";
+                    <?php if (count($protocol) > 0) { ?>        
+                     
+                         <div role="tabpanel" class="tab-pane" id="protocol">
+                        <?php    
+                        
+                            echo "<p>Protocols.io:</p>";
+                            // echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                            // echo "<a id=\"js-close-btn1\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                            // echo "<div id=\"js-logs-1\" class=\"js-logs\" style=\"display:none;\">";
                              foreach ($protocol as $p) {
 
                             {
@@ -521,13 +519,23 @@ HTML;
                             }
                                
                             }
-                             echo "</div>";
-                        }
-                            if(!empty($jb)){
+                            // echo "</div>"; 
+                         ?>    
+                             
+                              </div> 
+                             
+                             
+                    <?php }?>  
+                    
+                    <?php if (count($jb) > 0) { ?>        
+                     
+                         <div role="tabpanel" class="tab-pane" id="jb">
+                        <?php    
+                        
                              echo "<p>JBrowse:</p>";
-                             echo "<a id=\"js-expand-btn2\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                             echo "<a id=\"js-close-btn2\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                             echo "<div id=\"js-logs-2\" class=\"js-logs\" style=\"display:none;\">";
+                             //echo "<a id=\"js-expand-btn2\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                            // echo "<a id=\"js-close-btn2\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                             //echo "<div id=\"js-logs-2\" class=\"js-logs\" style=\"display:none;\">";
                              foreach ($jb as $p) {
 
                             {    
@@ -537,13 +545,23 @@ HTML;
                             }
                                
                             }
-                             echo "</div>";
-                        }
-                         if(!empty($dmodel)){
+                             //echo "</div>";
+                         ?>    
+                             
+                              </div> 
+                             
+                             
+                    <?php }?>   
+                    
+                    <?php if (count($dmodel) > 0) { ?>        
+                     
+                         <div role="tabpanel" class="tab-pane" id="demodel">
+                        <?php    
+                        
                              echo "<p>3D Models:</p>";
-                             echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                             echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                             echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
+                             //echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                            // echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                            // echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
                              foreach ($dmodel as $p) {
 
                             {    
@@ -552,16 +570,15 @@ HTML;
                             }
                                
                             }
-                             echo "</div>";
-                        }
-                        
-                    ?>
-                </p>
-
-                <?php } ?>
+                            // echo "</div>";
+                         ?>    
+                             
+                             </div>
+                             
+                             
+                    <?php }?>                    
                             
-                            
-                        </div>
+                           
                         
                                        
                         <div role="tabpanel" class="tab-pane" id="history">
