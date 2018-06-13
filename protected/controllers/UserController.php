@@ -357,6 +357,8 @@ class UserController extends Controller {
         $this->layout="new_main";
         $model = new ChangePasswordForm();
         $model->user_id = Yii::app()->user->id;
+        $user = User::model()->findByattributes(array('id'=> Yii::app()->user->id));
+        $model->newsletter = $user->newsletter;
 
         if(isset($_POST['ajax']) && $_POST['ajax']==='ChangePassword-form')
         {

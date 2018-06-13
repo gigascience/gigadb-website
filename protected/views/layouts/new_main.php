@@ -37,8 +37,7 @@
                     <div class="col-xs-5">
                         <ul class="list-inline text-left base-top-account-bar">
                             <? if(Yii::app()->user->isGuest) { ?>
-                            <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>
-                            <li><a href="#"><i class="fa fa-envelope"></i> database@gigasciencejournal.com</a></li>
+                            <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>                        
                             <? } else { 
 
                             $name = Yii::app()->user->getFirst_Name();
