@@ -28,6 +28,22 @@
 					<?php echo $form->error($model,'confirmPassword'); ?>
 				</div>
 			</div>
+                    
+                    <div class="control-group">
+				<label class="required control-label"><?= Yii::t('app', 'Mailing list') ?></label>
+				<div class="controls">
+					<?php echo $form->checkbox($model, 'newsletter'); ?>
+					<p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p> 
+				</div>
+			</div>
+                    <div class="control-group">
+				<?php echo $form->labelEx($model,'terms', array('class'=>'required control-label')); ?>
+				<div class="controls">
+					<?php echo $form->checkbox($model, 'terms'); ?>
+					<font color="red"><?= $form->error($model, 'terms') ?></font>
+                                        <p>Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p> 
+				</div>
+			</div>
 
 			<div class="pull-right">
 			<a href="/user/view_profile" class="btn"><?=Yii::t('app' , 'Cancel')?></a>

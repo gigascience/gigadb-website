@@ -355,6 +355,8 @@ class UserController extends Controller {
     public function actionChangePassword() {
         $model = new ChangePasswordForm();
         $model->user_id = Yii::app()->user->id;
+        $user = User::model()->findByattributes(array('id'=> Yii::app()->user->id));
+        $model->newsletter = $user->newsletter;
 
         if(isset($_POST['ajax']) && $_POST['ajax']==='ChangePassword-form')
         {
@@ -407,7 +409,9 @@ class UserController extends Controller {
         $subject = $email_prefix . "Password reset";
         $password_unhashed = $user->passwordUnHashed;
         $url = $this->createAbsoluteUrl('site/login');
-        $body = $this->renderPartial('emailReset',array('url'=>'www.gigadb.org/site/login','password_unhashed'=>$password_unhashed),true);
+        $url= $url."?username=".$user->email."&password=".$password_unhashed."&redirect=yes";
+        echo $url;
+        $body = $this->renderPartial('emailReset',array('url'=>$url,'password_unhashed'=>$password_unhashed,'user'=>$user->id),true);
         mail($recipient, $subject, $body, $headers);
         Yii::log(__FUNCTION__."> Sent email to $recipient, $subject");
     }

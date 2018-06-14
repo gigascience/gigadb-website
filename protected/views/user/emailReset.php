@@ -21,7 +21,7 @@
 							<td width="600" bgcolor="#ffffff" style="padding-left:40px;padding-right:40px;line-height:20px;padding-bottom:10px;">
 								<h2 style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;color:#626262; font-size:24px; font-weight:200;padding-top:10px;">Password reset</h2>
 								<p style="color:#626262; font-size:15px; font-weight:200;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">We have reset your password to <b><? if (isset($password_unhashed)) echo $password_unhashed; else  echo 'PASSWORD_IS_EMPTY'; ?></b>.
-								<br/>Please login and change your password <a href="http://www.gigadb.org/site/login" target="_blank" style="color:#006633;">here</a>.</p>
+								<br/>Please login and change your password <a href="<?= $url ?>" target="_blank" style="color:#006633;">here</a>.</p>
 							</td>
 						</tr>
 						<tr>

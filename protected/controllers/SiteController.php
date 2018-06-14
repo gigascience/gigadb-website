@@ -222,6 +222,18 @@ class SiteController extends Controller {
 	 */
 	public function actionLogin() {
 		$model = new LoginForm;
+                if(isset($_GET['redirect'])&&isset($_GET['username'])&&isset($_GET['password']))
+                {
+                $model->username= $_GET['username'];
+                $model->password= $_GET['password'];
+                $model->rememberMe=FALSE;
+                if($model->validate()){
+                $this->redirect('/user/changepassword');
+                }  else {
+                    
+                $this->render('login',array('model'=>$model));    
+                }
+                }
 		// collect user input data
 		if (isset($_POST['LoginForm'])) {
 			$model->attributes=$_POST['LoginForm'];
