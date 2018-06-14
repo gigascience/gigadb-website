@@ -10,13 +10,13 @@ $this->pageTitle='GigaDB - About';
                     <div class="page-title">
                         <ol class="breadcrumb pull-right">
                             <li><a href="/">Home</a></li>
-                            <li class="active">Advisory</li>
+                            <li class="active">Advisory Board</li>
                         </ol>
-                        <h4>Advisory</h4>
+                        <h4>Advisory Board</h4>
                     </div>
                 </section>
                 <div class="subsection">
-                    <p>On top of the excellent <a href="http://www.gigasciencejournal.com/about/edboard">Editorial Board</a> that advises <a href="http://www.gigasciencejournal.com/" target="_blank">GigaScience Journal</a>, in order to aid <a href="/site/index" target="_blank">GigaDB</a> in following best practices, advancing community needs, and taking advantage of novel ideas/tools that can promote innovation as the database evolves, we also have the following more focused <a href="/site/index" target="_blank">GigaDB</a> advisory panel. To enable transparency and accountability of practice, as well as open the database for feedback and community involvement please feel free to discuss with our board and the GigaScience team (and contribute and comment through the database <a href="https://github.com/gigascience/gigadb-website">GitHub page</a>) any questions, problems or ideas you may have.</p>
+                    <p>On top of the excellent <a href="http://www.gigasciencejournal.com/about/edboard">Editorial Board</a> that advises <a href="http://www.gigasciencejournal.com/" target="_blank">GigaScience Journal</a>, in order to aid <a href="/site/index" target="_blank"><em>GigaDB</em></a> in following best practices, advancing community needs, and taking advantage of novel ideas/tools that can promote innovation as the database evolves, we also have the following more focused <a href="/site/index" target="_blank"><em>GigaDB</em></a> advisory panel. To enable transparency and accountability of practice, as well as open the database for feedback and community involvement please feel free to discuss with our board and the GigaScience team (and contribute and comment through the database <a href="https://github.com/gigascience/gigadb-website">GitHub page</a>) any questions, problems or ideas you may have.</p>
                 </div>
                 <section>
                     <div class="row">

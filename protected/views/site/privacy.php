@@ -17,16 +17,16 @@ $this->pageTitle='GigaDB - Terms of use';
 		<br>
 		<br>
                 <p>
-                GigaDB has implemented appropriate technical and organisational measures to ensure a level of security which we deem appropriate, taking into account the categories of data we collect and the way we process it.        
+                <em>GigaDB</em> has implemented appropriate technical and organisational measures to ensure a level of security which we deem appropriate, taking into account the categories of data we collect and the way we process it.        
                 </p>
                 <p>
-                For the purpose of monitoring and improving online services, planning and scientific review, GigaDB will keep its own records of usage and may use services provided by other organisations. GigaDB may make information about the total volume of usage of particular software or data available to third party organisations who supply the software or databases without details of any individual’s use.    
+                For the purpose of monitoring and improving online services, planning and scientific review, <em>GigaDB</em> will keep its own records of usage and may use services provided by other organisations. <em>GigaDB</em> may make information about the total volume of usage of particular software or data available to third party organisations who supply the software or databases without details of any individual’s use.    
                 </p>
                 <p>
                 In interacting with us through our website, you may choose to give us personal data. We will keep your personal data confidential and use it for purposes connected to our mission.     
                 </p>
                 <p>
-                 GigaDB will hold your personal data on our systems for as long as is considered necessary for the purpose(s) for which you provided us with your details, or as long as required by applicable legislation. If you cancel your user account we will ensure that your personal information is either deleted or will no longer be visible to others.
+                <em>GigaDB</em> will hold your personal data on our systems for as long as is considered necessary for the purpose(s) for which you provided us with your details, or as long as required by applicable legislation. If you cancel your user account we will ensure that your personal information is either deleted or will no longer be visible to others.
 When you contribute scientific data to a database through our website or other submission tools, this information will be released at a time and in a manner consistent with the scientific data publication and we may store it permanently.
 If you post or send offensive, inappropriate or objectionable content anywhere on or to our websites or otherwise engage in any disruptive behaviour on any of our services, we may use your personal information to stop such behaviour. Where we reasonably believe that you are or may be in breach of any applicable laws, we may use your personal information to inform relevant third parties about the content and your behaviour.
                 </p>
@@ -34,7 +34,7 @@ If you post or send offensive, inappropriate or objectionable content anywhere o
                 <a name="collection"></a>  
 		<h2>Collection of Web-traffic Information </h2>
                 <p>
-                GigaDB will record the visits to the website by using cookies and page tagging without collecting any personal identifiable information of users. A cookie can be used to identify a computer, it is not used to collect any personal information. In other words, it does not have the function of identifying an individual user of the website. Cookies are used to collect statistics about the number of visits of users to GigaDB and the users’ preference of websites and online services offered. You may choose to inactivate your browser’s cookies. If you inactivate the cookies, you will not be able to use some of the functions of GigaDB.    
+                <em>GigaDB</em> will record the visits to the website by using cookies and page tagging without collecting any personal identifiable information of users. A cookie can be used to identify a computer, it is not used to collect any personal information. In other words, it does not have the function of identifying an individual user of the website. Cookies are used to collect statistics about the number of visits of users to <em>GigaDB</em> and the users’ preference of websites and online services offered. You may choose to inactivate your browser’s cookies. If you inactivate the cookies, you will not be able to use some of the functions of <em>GigaDB</em>.    
                 </p>
                 <a name="personal"></a>  
                 <h2>Personal Data</h2>

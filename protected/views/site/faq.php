@@ -23,13 +23,13 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel01" aria-expanded="true" aria-controls="panel01">
-                                    What is GigaDB?    
+                                    What is <em>GigaDB</em>?    
                                     </a>
                                 </h4>
                             </div>
                             <div id="panel01" class="panel-collapse collapse in" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>GigaDB is the home for all data/files/tools/software associated with GigaScience manuscripts. GigaDB curators will ensure the information is complete and appropriately formatted, before cataloging and publishing. Submission of data to GigaDB complements but does not serve as a replacement for community approved public repositories, supporting data and source code should still be made publicly available in a suitable public repository. GigaDB can link any and all publicly deposited data together with additional files/tools that do not have a natural home in any other public repository. </p>
+                                    <p><em>GigaDB</em> is the home for all data/files/tools/software associated with GigaScience manuscripts. <em>GigaDB</em> curators will ensure the information is complete and appropriately formatted, before cataloging and publishing. Submission of data to <em>GigaDB</em> complements but does not serve as a replacement for community approved public repositories, supporting data and source code should still be made publicly available in a suitable public repository. <em>GigaDB</em> can link any and all publicly deposited data together with additional files/tools that do not have a natural home in any other public repository. </p>
                                 </div>
                             </div>
                         </div>
@@ -37,7 +37,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel02" aria-expanded="false" aria-controls="panel02">
-                                    What journals are integrated with GigaDB?    
+                                    What journals are integrated with <em>GigaDB</em>?    
                                     </a>
                                 </h4>
                             </div>
@@ -51,13 +51,13 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel03" aria-expanded="false" aria-controls="panel03">
-                                    Why use GigaDB?    
+                                    Why use <em>GigaDB</em>?    
                                     </a>
                                 </h4>
                             </div>
                             <div id="panel03" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>GigaScience is committed to enabling reproducible science, to do this, readers need to be able to easily find and get hold off all the underlying data, methods, workflows, software and anything else that was used in the research. In the past authors of research articles have made (justified) claims that there is no way of making all their data available, now GigaDB has filled that gap. GigaDB complements but does not serve as a replacement for community approved public repositories, and can link any and all publicly deposited data together with additional files/tools that do not have a natural home in any other public repository. Any and all data/files required for reproducibility of GigaScience manuscripts should be either hosted in, or linked to from, GigaDB.</p>
+                                    <p>GigaScience is committed to enabling reproducible science, to do this, readers need to be able to easily find and get hold off all the underlying data, methods, workflows, software and anything else that was used in the research. In the past authors of research articles have made (justified) claims that there is no way of making all their data available, now <em>GigaDB</em> has filled that gap. <em>GigaDB</em> complements but does not serve as a replacement for community approved public repositories, and can link any and all publicly deposited data together with additional files/tools that do not have a natural home in any other public repository. Any and all data/files required for reproducibility of GigaScience manuscripts should be either hosted in, or linked to from, <em>GigaDB</em>.</p>
                                 </div>
                             </div>
                         </div>
@@ -65,7 +65,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel04" aria-expanded="false" aria-controls="panel04">
-                                    What kinds of data does GigaDB accept?    
+                                    What kinds of data does <em>GigaDB</em> accept?    
                                     </a>
                                 </h4>
                             </div>
@@ -79,7 +79,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel05" aria-expanded="false" aria-controls="panel05">
-                                    My research is on human subjects. Can I archive my data in GigaDB?    
+                                    My research is on human subjects. Can I archive my data in <em>GigaDB</em>?    
                                     </a>
                                 </h4>
                             </div>
@@ -121,7 +121,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel08" aria-expanded="false" aria-controls="panel08">
-                                    How can I modify files I have submitted to GigaDB while my article is in review?    
+                                    How can I modify files I have submitted to <em>GigaDB</em> while my article is in review?    
                                     </a>
                                 </h4>
                             </div>
@@ -141,7 +141,7 @@ $this->pageTitle='GigaDB - About';
                             </div>
                             <div id="panel09" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>Organise your data into logical directories/folders, name files consistently and without using spaces or special characters. Re-read you methods section to check that everything mentioned there is available, either by links to public repositories or as files you have organised to submit to GigaDB.</p>
+                                    <p>Organise your data into logical directories/folders, name files consistently and without using spaces or special characters. Re-read you methods section to check that everything mentioned there is available, either by links to public repositories or as files you have organised to submit to <em>GigaDB</em>.</p>
                                 </div>
                             </div>
                         </div>
@@ -225,7 +225,7 @@ Files:
                             </div>
                             <div id="panel13" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p><i>GigaScience</i> supports and has signed the <a href="https://www.force11.org/group/joint-declaration-data-citation-principles-final" target="_blank">FORCE 11 Joint Declaration of the Data Citation Principles</a>, feeling strongly that data should be accorded the same importance in the scholarly record as citations of publications. GigaDB datasets can and should be cited in the same manner as any other reference, although the format is journal specific based on their instructions. Following DCC and DataCite guildelines, in GigaScience journal the citation within the references section will be of the form:Author List; publication year: "Dataset title", GigaScience Database. DOI. Example.Peter E Larsen; Yang Dai; (2015): Supporting materials for "Metabolome of Human gut microbiome is predictive of host dysbiosis".; GigaScience Database. http://dx.doi.org/10.5524/100163</p>
+                                    <p><i>GigaScience</i> supports and has signed the <a href="https://www.force11.org/group/joint-declaration-data-citation-principles-final" target="_blank">FORCE 11 Joint Declaration of the Data Citation Principles</a>, feeling strongly that data should be accorded the same importance in the scholarly record as citations of publications. <em>GigaDB</em> datasets can and should be cited in the same manner as any other reference, although the format is journal specific based on their instructions. Following DCC and DataCite guildelines, in GigaScience journal the citation within the references section will be of the form:Author List; publication year: "Dataset title", GigaScience Database. DOI. Example.Peter E Larsen; Yang Dai; (2015): Supporting materials for "Metabolome of Human gut microbiome is predictive of host dysbiosis".; GigaScience Database. http://dx.doi.org/10.5524/100163</p>
                                 </div>
                             </div>
                         </div>
@@ -242,7 +242,7 @@ Files:
                                     <p>There shouldn't be, and a major rationale for data publishing is to incentivise earlier release of data in this manner. It is commonly understood throughout the publishing community that publishing data (as a Data Note or in a public archive) is a good thing to be encouraged, and as such, there are no penalties to then subsequently publishing research based on those data. <i>GigaScience</i> has published plenty of data notes and released data sets prior to the analysis papers being published, some examples are: </p>
                                     <ol>
                                         <li>3,000 Rice Genomes Project (13.4 Tb data).</li>
-                                        <li>Polar Bear genome - dataset released in GigaDB nearly 3 years before the analysis paper was published in <i>Cell</i>.</li>
+                                        <li>Polar Bear genome - dataset released in <em>GigaDB</em> nearly 3 years before the analysis paper was published in <i>Cell</i>.</li>
                                         <li>Deadly 2011 outbreak <a href="http://dx.doi.org/10.5524/100001" target="_blank"><i>E. Coli</i> genome</a> that lead to over 50 deaths in Germany (and eventually published in <i>NEJM</i>).</li>
                                     </ol>
                                     <p>Our Polar bear genome data was released nearly three years before any official publication came out from the project, and despite being used by at least 5 other studies, the analysis paper made the cover of <i>Cell</i> (see <a href="http://blogs.biomedcentral.com/gigablog/2014/05/14/the-latest-weapon-in-publishing-data-the-polar-bear/" target="_blank">the blog</a> for more). </p>
@@ -260,7 +260,7 @@ Files:
                             </div>
                             <div id="panel15" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>As early release as possible is encouraged, although the standard protocol we follow is to maintain data as private to the peer reviewers only until the associated manuscript has been formally accepted, at which point the dataset is released, this is usually several days prior to the manuscript publication due to production times of the BMC publishing system. While we cannot foresee any reason why datasets should be embargoed for extended periods we can discuss this further on a case-by-case basis.If you have major concerns about someone else publishing on your data before you, we can add a Fair Use policy statement on the GigaDB dataset page which looks like this:</p>
+                                    <p>As early release as possible is encouraged, although the standard protocol we follow is to maintain data as private to the peer reviewers only until the associated manuscript has been formally accepted, at which point the dataset is released, this is usually several days prior to the manuscript publication due to production times of the BMC publishing system. While we cannot foresee any reason why datasets should be embargoed for extended periods we can discuss this further on a case-by-case basis.If you have major concerns about someone else publishing on your data before you, we can add a Fair Use policy statement on the <em>GigaDB</em> dataset page which looks like this:</p>
                                     <img alt="policy" src="../images/fair_use2.gif">
                                     <p>These data are made available pre-publication under the recommendations of the <a href="https://www.genome.gov/10506537" target="_blank">Fort Lauderdale</a>/<a href="http://www.nature.com/nature/journal/v461/n7261/full/461168a.html">Toronto</a> meetings. Please respect the rights of the data producers to publish their whole dataset analysis first. The data is being made available so that the research community can make use of them for more focused studies without having to wait for publication of the whole dataset analysis paper. If you wish to perform analyses on this complete dataset, please contact the authors directly so that you can work in collaboration rather than in competition.</p>
                                     <p><b>This dataset fair use agreement is in place until </b><b><i>&lt;author can specify a data up to 12 months away&gt;</i></b></p>
@@ -277,7 +277,7 @@ Files:
                             </div>
                             <div id="panel16" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>There are currently no separate <u>d</u>ata <u>p</u>ublishing <u>c</u>harges (DPC's) for GigaDB as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All DPCs for <i>GigaScience </i>manuscripts are covered by the <u>a</u>rticle <u>p</u>ublishing <u>c</u>harges (APC's) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For APCs of <i>GigaScience </i>manuscripts please see <a href="http://www.gigasciencejournal.com/about/apcfaq/howmuch">here</a>.</p>
+                                    <p>There are currently no separate <u>d</u>ata <u>p</u>ublishing <u>c</u>harges (DPC's) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All DPCs for <i>GigaScience </i>manuscripts are covered by the <u>a</u>rticle <u>p</u>ublishing <u>c</u>harges (APC's) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For APCs of <i>GigaScience </i>manuscripts please see <a href="http://www.gigasciencejournal.com/about/apcfaq/howmuch">here</a>.</p>
                                 </div>
                             </div>
                         </div>
@@ -291,7 +291,7 @@ Files:
                             </div>
                             <div id="panel17" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>No. All data provided by GigaDB is free to download and use. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, GigaDB cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment. </p>
+                                    <p>No. All data provided by <em>GigaDB</em> is free to download and use. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, <em>GigaDB</em> cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment. </p>
                                 </div>
                             </div>
                         </div>
@@ -305,10 +305,10 @@ Files:
                             </div>
                             <div id="panel18" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>There are 2 ways to download data from GigaDB:</p>
+                                    <p>There are 2 ways to download data from <em>GigaDB</em>:</p>
                                     <ol>
                                         <li>FTP. This is the "normal" method, click the download button on any dataset page and this is how your data will be sent.</li>
-                                        <li>Hard drive shipment. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, GigaDB cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment.</li>
+                                        <li>Hard drive shipment. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, <em>GigaDB</em> cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment.</li>
                                     </ol>
                                 </div>
                             </div>
@@ -317,13 +317,13 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel19" aria-expanded="false" aria-controls="panel19">
-                                    How do I cite data from GigaDB?    
+                                    How do I cite data from <em>GigaDB</em>?    
                                     </a>
                                 </h4>
                             </div>
                             <div id="panel19" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p><i>GigaScience</i> supports and has signed the <a href="https://www.force11.org/group/joint-declaration-data-citation-principles-final" target="_blank">FORCE 11 Joint Declaration of the Data Citation Principles</a>, feeling strongly that data should be accorded the same importance in the scholarly record as citations of publications. GigaDB datasets can and should be cited in the same manner as any other reference, although the format is journal specific based on their instructions. Following DCC and DataCite guildelines, in GigaScience journal the citation within the references section will be of the form:Author List; publication year: "Dataset title", GigaScience Database. DOI. Example.Peter E Larsen; Yang Dai; (2015): Supporting materials for "Metabolome of Human gut microbiome is predictive of host dysbiosis".; GigaScience Database. http://dx.doi.org/10.5524/100163</p>
+                                    <p><i>GigaScience</i> supports and has signed the <a href="https://www.force11.org/group/joint-declaration-data-citation-principles-final" target="_blank">FORCE 11 Joint Declaration of the Data Citation Principles</a>, feeling strongly that data should be accorded the same importance in the scholarly record as citations of publications. <em>GigaDB</em> datasets can and should be cited in the same manner as any other reference, although the format is journal specific based on their instructions. Following DCC and DataCite guildelines, in GigaScience journal the citation within the references section will be of the form:Author List; publication year: "Dataset title", GigaScience Database. DOI. Example.Peter E Larsen; Yang Dai; (2015): Supporting materials for "Metabolome of Human gut microbiome is predictive of host dysbiosis".; GigaScience Database. http://dx.doi.org/10.5524/100163</p>
                                 </div>
                             </div>
                         </div>
@@ -351,7 +351,7 @@ Files:
                             </div>
                             <div id="panel21" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>The term dataset in GigaDB refers to a collection of related works, including but not limited to; files, software, workflows, experiments, data, metadata and results. Each dataset has its own webpage which has a DOI (digital object identifier). These datasets are permanent and citable records of research output designed to allow for a modernization of the classical publishing framework while maintaining the familiarity of citations and metrics thereof.While uncommon, it is possible for a dataset to be made-up of several other datasets in a nested fashion, for example the Avian phylogenomics project data dataset (<a href="http://dx.doi.org/10.5524/101000">http://dx.doi.org/10.5524/101000</a>) is a compilation of 48 other datasets, some of those were published before and some at the same time. This allows the original authors to cite just one dataset to cover them all, but also allows future users to cite individual datasets if they require. We will discuss the merits of such procedures on a case-by-case basis with the submitter.</p>
+                                    <p>The term dataset in <em>GigaDB</em> refers to a collection of related works, including but not limited to; files, software, workflows, experiments, data, metadata and results. Each dataset has its own webpage which has a DOI (digital object identifier). These datasets are permanent and citable records of research output designed to allow for a modernization of the classical publishing framework while maintaining the familiarity of citations and metrics thereof.While uncommon, it is possible for a dataset to be made-up of several other datasets in a nested fashion, for example the Avian phylogenomics project data dataset (<a href="http://dx.doi.org/10.5524/101000">http://dx.doi.org/10.5524/101000</a>) is a compilation of 48 other datasets, some of those were published before and some at the same time. This allows the original authors to cite just one dataset to cover them all, but also allows future users to cite individual datasets if they require. We will discuss the merits of such procedures on a case-by-case basis with the submitter.</p>
                                 </div>
                             </div>
                         </div>
@@ -359,7 +359,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel22" aria-expanded="false" aria-controls="panel22">
-                                    Does my journal work with GigaDB and how?    
+                                    Does my journal work with <em>GigaDB</em> and how?    
                                     </a>
                                 </h4>
                             </div>
@@ -373,13 +373,13 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel23" aria-expanded="false" aria-controls="panel23">
-                                    What is a GigaDB DOI?    
+                                    What is a <em>GigaDB</em> DOI?    
                                     </a>
                                 </h4>
                             </div>
                             <div id="panel23" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>A Digial Object Identifier (DOI) is a stable, citable link to an electronic resource. A GigaDB DOI is a stable and citable link to a dataset hosted by GigaDB. </p>
+                                    <p>A Digial Object Identifier (DOI) is a stable, citable link to an electronic resource. A <em>GigaDB</em> DOI is a stable and citable link to a dataset hosted by <em>GigaDB</em>. </p>
                                 </div>
                             </div>
                         </div>
@@ -387,13 +387,13 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel24" aria-expanded="false" aria-controls="panel24">
-                                    Why does GigaDB use Creative Commons Zero?    
+                                    Why does <em>GigaDB</em> use Creative Commons Zero?    
                                     </a>
                                 </h4>
                             </div>
                             <div id="panel24" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>It is widely recognized that publicly funded research data should be made publicly available for free to be used by anyone. The Creative Commons Zero (CC0) waiver provides the explicit statement of that fact, and it is transparent to all that the data hosted by GigaDB are all freely available for any use case. CC0 is thought to be the most appropriate method for dedicating data to the public domain, but for more on the rationale and practicalities <a href="http://www.biomedcentral.com/1756-0500/5/494" target="_blank">see this <i>BMC Research Notes</i> editorial</a>. Citation of data usage is greatly encouraged in order to provide the recognition to the data producers, both for their efforts in the production and in their foresight and generosity in making the data CC0.</p>
+                                    <p>It is widely recognized that publicly funded research data should be made publicly available for free to be used by anyone. The Creative Commons Zero (CC0) waiver provides the explicit statement of that fact, and it is transparent to all that the data hosted by <em>GigaDB</em> are all freely available for any use case. CC0 is thought to be the most appropriate method for dedicating data to the public domain, but for more on the rationale and practicalities <a href="http://www.biomedcentral.com/1756-0500/5/494" target="_blank">see this <i>BMC Research Notes</i> editorial</a>. Citation of data usage is greatly encouraged in order to provide the recognition to the data producers, both for their efforts in the production and in their foresight and generosity in making the data CC0.</p>
                                 </div>
                             </div>
                         </div>
@@ -401,13 +401,13 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel25" aria-expanded="false" aria-controls="panel25">
-                                    Can the GigaDB repository help me prepare a data management plan?    
+                                    Can the <em>GigaDB</em> repository help me prepare a data management plan?    
                                     </a>
                                 </h4>
                             </div>
                             <div id="panel25" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>At the present time GigaDB doesn't have the resources to assist in data management plans, but there are many useful resources available on the internet, including places like the <a href="http://www.dcc.ac.uk/resources/data-management-plans">DCC (UK focus)</a>or <a href="https://www.cic.net/projects/technology/shared-storage-services/data-management-plans">the CIC (US focus)</a>.</p>
+                                    <p>At the present time <em>GigaDB</em> doesn't have the resources to assist in data management plans, but there are many useful resources available on the internet, including places like the <a href="http://www.dcc.ac.uk/resources/data-management-plans">DCC (UK focus)</a>or <a href="https://www.cic.net/projects/technology/shared-storage-services/data-management-plans">the CIC (US focus)</a>.</p>
                                 </div>
                             </div>
                         </div>
@@ -421,7 +421,7 @@ Files:
                             </div>
                             <div id="panel26" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>There are currently no separate <u>d</u>ata <u>p</u>ublishing <u>c</u>harges (DPC's) for GigaDB as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All DPCs for <i>GigaScience </i>manuscripts are covered by the <u>a</u>rticle <u>p</u>ublishing <u>c</u>harges (APC's) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For APCs of <i>GigaScience </i>manuscripts please see <a href="http://www.gigasciencejournal.com/about/apcfaq/howmuch">here</a>.</p>
+                                    <p>There are currently no separate <u>d</u>ata <u>p</u>ublishing <u>c</u>harges (DPC's) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All DPCs for <i>GigaScience </i>manuscripts are covered by the <u>a</u>rticle <u>p</u>ublishing <u>c</u>harges (APC's) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For APCs of <i>GigaScience </i>manuscripts please see <a href="http://www.gigasciencejournal.com/about/apcfaq/howmuch">here</a>.</p>
                                 </div>
                             </div>
                         </div>
@@ -429,13 +429,13 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel27" aria-expanded="false" aria-controls="panel27">
-                                    Why is submission to GigaDB not closely integrated with submission to GigaScience?    
+                                    Why is submission to <em>GigaDB</em> not closely integrated with submission to GigaScience?    
                                     </a>
                                 </h4>
                             </div>
                             <div id="panel27" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>Due to various differences in the BMC's editorial tools and the GigaDB system, unfortunately at this time it is not possible to integrate the submission process, but our editors and curators will do everything they can to make the process as smooth as possible for authors.</p>
+                                    <p>Due to various differences in the BMC's editorial tools and the <em>GigaDB</em> system, unfortunately at this time it is not possible to integrate the submission process, but our editors and curators will do everything they can to make the process as smooth as possible for authors.</p>
                                 </div>
                             </div>
                         </div>
@@ -443,7 +443,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel28" aria-expanded="false" aria-controls="panel28">
-                                    How are datasets in GigaDB backed up?    
+                                    How are datasets in <em>GigaDB</em> backed up?    
                                     </a>
                                 </h4>
                             </div>
@@ -463,7 +463,7 @@ Files:
                             </div>
                             <div id="panel29" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>We will host your data on our private GigaDB server giving access to the reviewers, if the manuscript is accepted we will move the data to our public production server. If it is unsuccessful the data will be deleted.</p>
+                                    <p>We will host your data on our private <em>GigaDB</em> server giving access to the reviewers, if the manuscript is accepted we will move the data to our public production server. If it is unsuccessful the data will be deleted.</p>
                                 </div>
                             </div>
                         </div>
@@ -485,7 +485,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel31" aria-expanded="false" aria-controls="panel31">
-                                    How may data from GigaDB be reused?    
+                                    How may data from <em>GigaDB</em> be reused?    
                                     </a>
                                 </h4>
                             </div>

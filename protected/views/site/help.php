@@ -15,14 +15,14 @@ $this->pageTitle='GigaDB - Help';
                     </div>
                 </section>
                 <div class="subsection">
-                    <p>The <a href="http://gigadb.org/" target="_blank">GigaDB</a> website allows any user to browse, search, view datasets and access data files. If you want to submit a dataset, save searches or be alerted of new content of interest we request that you <a href="/user/create" target="_blank">create an account</a>.</p>
+                    <p>The <a href="http://gigadb.org/" target="_blank"><em>GigaDB</em></a> website allows any user to browse, search, view datasets and access data files. If you want to submit a dataset, save searches or be alerted of new content of interest we request that you <a href="/user/create" target="_blank">create an account</a>.</p>
                     <p>A 'Latest news' section will be visible to announce any updates or new features to the database and the RSS feed automatically announces each new dataset release.</p>
-                    <p>The <a href="http://gigadb.org/" target="_blank">GigaDB</a> homepage allows you to browse datasets by type eg Genomic, Metagenomic, Transcriptomic. Clicking on the DOI (digital object identifier) or image will take you directly to the webpage for the dataset of interest.</p>
+                    <p>The <a href="http://gigadb.org/" target="_blank"><em>GigaDB</em></a> homepage allows you to browse datasets by type eg Genomic, Metagenomic, Transcriptomic. Clicking on the DOI (digital object identifier) or image will take you directly to the webpage for the dataset of interest.</p>
                     <p>Alternatively you can use the search functions to find datasets, samples or files of interest.</p>
                 </div>
                 <section>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist" id="alltabs">
-                        <li id="lisearch" role="presentation" class="active"><a href="#search" aria-controls="search" role="tab" data-toggle="tab">GigaDB search</a></li>
+                        <li id="lisearch" role="presentation" class="active"><a href="#search" aria-controls="search" role="tab" data-toggle="tab"><em>GigaDB</em> search</a></li>
                         <li id="liguideline" role="presentation"><a href="#guidelines" aria-controls="guidelines" role="tab" data-toggle="tab">Submission guidelines</a></li>
                         <li id="livocabulary" role="presentation"><a href="#vocabulary" aria-controls="vocabulary" role="tab" data-toggle="tab">Controlled vocabulary</a></li>
                         <li id="liapi" role="presentation"><a href="#interface" aria-controls="interface" role="tab" data-toggle="tab">Application programming interface</a></li>
@@ -30,11 +30,11 @@ $this->pageTitle='GigaDB - Help';
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="search">
                             <h4 style="color: #099242; margin-bottom: 10px;">Search operation</h4>
-                            <p>To search across all Dataset, Sample and File records in GigaDB, simply enter a search term in the search bar found at the top of all GigaDB pages.</p>
+                            <p>To search across all Dataset, Sample and File records in <em>GigaDB</em>, simply enter a search term in the search bar found at the top of all <em>GigaDB</em> pages.</p>
                             <p>The search is case insensitive which means both uppercase and lowercase keywords will have the same result.</p>
                             <hr style="border-top-style: dashed;">
                             <h4 style="color: #099242; margin-bottom: 10px;">Search result</h4>
-                            <p>The search results are grouped by GigaDB Datasets (G), Samples (S) and Files (F).</p>
+                            <p>The search results are grouped by <em>GigaDB</em> Datasets (G), Samples (S) and Files (F).</p>
                             <table class="table">
                                 <tbody>
                                     <tr>
@@ -43,7 +43,7 @@ $this->pageTitle='GigaDB - Help';
                                     </tr>
                                     <tr>
                                         <td><div class="text-icon text-icon-sm text-icon-green">S</div></td>
-                                        <td><p>For each sample result, the sample name, species name and species ID are displayed with links to the NCBI taxonomy page for the species and to the GigaDB dataset page.</p></td>
+                                        <td><p>For each sample result, the sample name, species name and species ID are displayed with links to the NCBI taxonomy page for the species and to the <em>GigaDB</em> dataset page.</p></td>
                                     </tr>
                                     <tr>
                                         <td><div class="text-icon text-icon-sm text-icon-yellow">F</div></td>
@@ -73,8 +73,8 @@ $this->pageTitle='GigaDB - Help';
                             </ol>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="guidelines">
-                            <p><a href="http://gigadb.org/"><em>Giga</em>DB</a> is an open-access database. As such, all data submitted to <em>Giga</em>DB must be fully consented for public release (for more information about our data policies, please see our <a href="http://gigadb.org/site/term/" target="_blank">Terms of use page</a>).</p>
-                            <p>All sequence, assembly, variation, and microarray data must be deposited in a public database at <a href="http://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a>, <a href="http://www.ebi.ac.uk/" target="_blank">EBI</a>, or <a href="http://www.ddbj.nig.ac.jp/" target="_blank">DDBJ</a> before you submit them to <a href="http://gigadb.org/" target="_blank"><em>Giga</em>DB</a>. In the cases where you would like <em>Giga</em>DB to host files associated with genomic data not fully consented for public release, you must first submit the non-public data to <a href="http://www.ncbi.nlm.nih.gov/gap/" target="_blank">dbGaP</a> or <a href="http://ega-archive.org" target="_blank">EGA</a>.</p>
+                            <p><a href="http://gigadb.org/"><em>GigaDB</em></a> is an open-access database. As such, all data submitted to <em>GigaDB</em> must be fully consented for public release (for more information about our data policies, please see our <a href="http://gigadb.org/site/term/" target="_blank">Terms of use page</a>).</p>
+                            <p>All sequence, assembly, variation, and microarray data must be deposited in a public database at <a href="http://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a>, <a href="http://www.ebi.ac.uk/" target="_blank">EBI</a>, or <a href="http://www.ddbj.nig.ac.jp/" target="_blank">DDBJ</a> before you submit them to <a href="http://gigadb.org/" target="_blank"><em>GigaDB</em></a>. In the cases where you would like <em>Giga</em>DB to host files associated with genomic data not fully consented for public release, you must first submit the non-public data to <a href="http://www.ncbi.nlm.nih.gov/gap/" target="_blank">dbGaP</a> or <a href="http://ega-archive.org" target="_blank">EGA</a>.</p>
                             <p><strong>Step 1</strong> - <a href="http://gigadb.org/user/create" target="_blank">Create an account</a> or <a href="http://gigadb.org/site/login" target="_blank">log in</a> to <a href="http://gigadb.org/" target="_blank"><em>Giga</em>DB</a></p>
                             <p><strong>Step 2</strong> - Download and complete the <a href="http://gigadb.org/files/GigaDBUploadForm.xls" target="_blank">Excel template file</a>. Completed example files for the <a href="http://gigadb.org/files/GigaDBUploadForm-example1.xls">E. coli</a> (<a href="http://gigadb.org/dataset/100001" target="_blank">10.5524/100001</a>) and <a href="http://gigadb.org/files/GigaDBUploadForm-example2.xls">Sorghum</a> (<a href="http://gigadb.org/dataset/100012" target="_blank">10.5524/100012</a>) datasets are available.</p>
                             <p>The template file contains:</p>
@@ -242,7 +242,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                         <div role="tabpanel" class="tab-pane" id="interface">
                             <h4 style="color: #099242; margin-bottom: 10px;">Availability</h4>
                             <p>The current API version is available on our main production database. This version will be periodically updated with new additional functionality, we will whenever possible maintain backwards compatability, but occassionally this may not be possible, for this reason we recomend regularly checking and updating you usage of our API. </p>
-                            <p>The basic functionality of the API is to retrieve dataset metadata held in GigaDB. The actual data files will still need to be pulled by FTP, but you can gather the exact FTP locations from the metadata using the API, then use that to pull only the files you actually need/want.</p>
+                            <p>The basic functionality of the API is to retrieve dataset metadata held in <em>GigaDB</em>. The actual data files will still need to be pulled by FTP, but you can gather the exact FTP locations from the metadata using the API, then use that to pull only the files you actually need/want.</p>
                             <p>Search function is based on the web-search function and will therefore give the same results.</p>
                             <hr style="border-top-style: dashed;">
                             <h4 style="color: #099242; margin-bottom: 10px;">Comments and Bug reporting</h4>
@@ -265,7 +265,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                             <p><strong>taxname</strong> = species name (nb must exact spelling, no synonyms searched)</p>
                             <p><strong>author</strong> = restricts search to the author table</p>
                             <p><strong>datasettype</strong> = restricts search to the types of datasets, e.g. metagenomic, genomic, transcriptomic etc..</p>
-                            <p><strong>manuscript</strong> = restricts search to the manuscript ID associated with GigaDB dataset(s) e.g. search?manuscript=10.1186/2047-217X-3-21</p>
+                            <p><strong>manuscript</strong> = restricts search to the manuscript ID associated with <em>GigaDB</em> dataset(s) e.g. search?manuscript=10.1186/2047-217X-3-21</p>
                             <p><strong>project</strong> = restricts search to the project name, e.g. Genome 10K</p>
                             <p>eg..../search?taxno=9606</p>
                             <p>To specify results to be returned are ONLY a particular level of data, add the phrase <strong>&amp;results=dataset</strong> ,or file or sample: </p>e.g.
@@ -280,11 +280,11 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                             <p><a href="http://gigadb.org/api/sample?doi=100051" target="_blank">http://gigadb.org/api/sample?doi=100051</a></p>
                             <p>3. retrieve file information from a known DOI</p>
                             <p><a href="http://gigadb.org/api/file?doi=100051" target="_blank">http://gigadb.org/api/file?doi=100051</a></p>
-                            <p>4. Search all GigaDB by keyword, return only the top level dataset metadata</p>
+                            <p>4. Search all <em>GigaDB</em> by keyword, return only the top level dataset metadata</p>
                             <p><a href="http://gigadb.org/api/search?keyword=chimp&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=dataset</a></p>
-                            <p>5.Search all GigaDB by keyword, return only the sample level metadata</p>
+                            <p>5.Search all <em>GigaDB</em> by keyword, return only the sample level metadata</p>
                             <p><a href="http://gigadb.org/api/search?keyword=chimp&amp;result=sample" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=sample</a></p>
-                            <p>6.Search all GigaDB by keyword, return only the file level metadata</p>
+                            <p>6.Search all <em>GigaDB</em> by keyword, return only the file level metadata</p>
                             <p><a href="http://gigadb.org/api/search?keyword=chimp&amp;result=file" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=file</a></p>
                             <p>7. refine search to just the title of the dataset</p>
                             <p><a href="http://gigadb.org/api/search?keyword=title:human&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=title:human&amp;result=dataset</a></p>

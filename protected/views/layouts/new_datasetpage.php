@@ -160,7 +160,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-4">
-                        <a href="#"><img src="/images/new_interface_image/logo.png" class="base-nav-logo-img"></a>
+                        <a href="/"><img src="/images/new_interface_image/logo.png" class="base-nav-logo-img"></a>
                     </div>
                     <div class="col-xs-4 col-xs-offset-4">
                         <ul class="nav nav-pills main-nav-bar text-right">
@@ -172,7 +172,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="/site/team">Our team</a></li>
                                     <li><a href="/site/contact">Contact</a></li>
-                                    <li><a href="/site/advisory">Advisory</a></li>
+                                    <li><a href="/site/advisory">Advisory Board</a></li>
                                     <li><a href="/site/about">General</a></li>
                                 </ul>
                             </li>
