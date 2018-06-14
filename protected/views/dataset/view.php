@@ -168,13 +168,15 @@ HTML;
 
                 <?php } ?>
 
-                <?php if (count($model->externalLinks) > 0) { ?>
-                <p>
-                    <?php
+                <?php 
                         $types = array();
                         $protocol = array();
                         $jb = array();
                         $dmodel = array();
+                        if (count($model->externalLinks) > 0) { ?>
+                <p>
+                    <?php
+                        
                         foreach ($model->externalLinks as $key=>$externalLink){
                             $types[$externalLink->externalLinkType->name] = 1;
                         }
