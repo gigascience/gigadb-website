@@ -411,7 +411,8 @@ class UserController extends Controller {
         $subject = $email_prefix . "Password reset";
         $password_unhashed = $user->passwordUnHashed;
         $url = $this->createAbsoluteUrl('site/login');
-        $body = $this->renderPartial('emailReset',array('url'=>'www.gigadb.org/user/changePassword','password_unhashed'=>$password_unhashed),true);
+        $url= $url."?username=".$user->email."&password=".$password_unhashed."&redirect=yes";
+        $body = $this->renderPartial('emailReset',array('url'=>$url,'password_unhashed'=>$password_unhashed,'user'=>$user->id),true);
         mail($recipient, $subject, $body, $headers);
         Yii::log(__FUNCTION__."> Sent email to $recipient, $subject");
     }

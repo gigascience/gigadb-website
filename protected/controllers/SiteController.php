@@ -341,22 +341,33 @@ class SiteController extends Controller {
 	 * Displays the login page
 	 */
 	public function actionLogin() {
-            
-                $this->layout="new_main";
-		$model = new LoginForm;
-		// collect user input data
-		if (isset($_POST['LoginForm'])) {
-			$model->attributes=$_POST['LoginForm'];
-            		$model->username = strtolower($_POST['LoginForm']['username']);
-			// validate user input and redirect to the previous page if valid
-			if($model->validate())
-				$this->redirect(Yii::app()->user->returnUrl);
-		}
-		// display the login form
-		$this->render('login',array('model'=>$model));
-	}
 
-	public function actionChooseLogin() {
+        $this->layout = "new_main";
+        $model = new LoginForm;
+        if (isset($_GET['redirect']) && isset($_GET['username']) && isset($_GET['password'])) {
+            $model->username = $_GET['username'];
+            $model->password = $_GET['password'];
+            $model->rememberMe = FALSE;
+            if ($model->validate()) {
+                $this->redirect('/user/changepassword');
+            } else {
+
+                $this->render('login', array('model' => $model));
+            }
+        }
+        // collect user input data
+        if (isset($_POST['LoginForm'])) {
+            $model->attributes = $_POST['LoginForm'];
+            $model->username = strtolower($_POST['LoginForm']['username']);
+            // validate user input and redirect to the previous page if valid
+            if ($model->validate())
+                $this->redirect(Yii::app()->user->returnUrl);
+        }
+        // display the login form
+        $this->render('login', array('model' => $model));
+    }
+
+    public function actionChooseLogin() {
 		$this->render('chooseLogin');
 	}
 
