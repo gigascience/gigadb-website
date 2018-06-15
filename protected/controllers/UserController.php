@@ -410,7 +410,6 @@ class UserController extends Controller {
         $password_unhashed = $user->passwordUnHashed;
         $url = $this->createAbsoluteUrl('site/login');
         $url= $url."?username=".$user->email."&password=".$password_unhashed."&redirect=yes";
-        echo $url;
         $body = $this->renderPartial('emailReset',array('url'=>$url,'password_unhashed'=>$password_unhashed,'user'=>$user->id),true);
         mail($recipient, $subject, $body, $headers);
         Yii::log(__FUNCTION__."> Sent email to $recipient, $subject");
