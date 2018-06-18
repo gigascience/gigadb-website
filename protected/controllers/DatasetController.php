@@ -390,7 +390,7 @@ class DatasetController extends Controller
 
 
 					// remove existing dataset attributes
-					$datasetAttributes = datasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$id,'attribute_id'=>$sKeywordAttr->id));
+					$datasetAttributes = DatasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$id,'attribute_id'=>$sKeywordAttr->id));
 
 					foreach ($datasetAttributes as $key => $keyword) {
 						$keyword->delete();

@@ -298,7 +298,7 @@ class SiteController extends Controller {
 		$this->render('advisory');
 	}
 	public function actionFaq() {
-                $this->layout='new_main';
+                $this->layout='new_faq';
 		$this->render('faq');
 	}
 

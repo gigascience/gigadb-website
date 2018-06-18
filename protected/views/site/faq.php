@@ -22,12 +22,12 @@ $this->pageTitle='GigaDB - About';
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel01" aria-expanded="true" aria-controls="panel01">
+                                    <a role="button" data-toggle="collapse" data-target="#panel01"  aria-expanded="true" aria-controls="panel01">
                                     What is <em>GigaDB</em>?    
                                     </a>
                                 </h4>
                             </div>
-                            <div id="panel01" class="panel-collapse collapse in" role="tabpanel">
+                            <div id="panel01" class="panel-collapse collapse in" aria-labelledby="headingOne" role="tabpanel" data-parent="#accordion">
                                 <div class="panel-body">
                                     <p><em>GigaDB</em> is the home for all data/files/tools/software associated with GigaScience manuscripts. <em>GigaDB</em> curators will ensure the information is complete and appropriately formatted, before cataloging and publishing. Submission of data to <em>GigaDB</em> complements but does not serve as a replacement for community approved public repositories, supporting data and source code should still be made publicly available in a suitable public repository. <em>GigaDB</em> can link any and all publicly deposited data together with additional files/tools that do not have a natural home in any other public repository. </p>
                                 </div>
@@ -36,7 +36,7 @@ $this->pageTitle='GigaDB - About';
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel02" aria-expanded="false" aria-controls="panel02">
+                                    <a role="button" data-toggle="collapse" data-target="#panel02" aria-expanded="false" aria-controls="panel02">
                                     What journals are integrated with <em>GigaDB</em>?    
                                     </a>
                                 </h4>
