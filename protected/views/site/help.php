@@ -115,7 +115,7 @@ $this->pageTitle='GigaDB - Help';
                             <p><strong>Annotation:</strong> .gff, .ipr, .kegg, .wego</p>
                             <p><strong>Coding sequence:</strong> .cds, .fa</p>
                             <p><strong>InDels:</strong> .gff, .txt, .vcf</p>
-                            <p><strong>ISA-Tab:</strong> see <a href="http://isatab.sourceforge.net/format.html" target="_blank">ISA tools</a></p>
+                            <p><strong>ISA-Tab:</strong> see <a href="http://isa-tools.org/format/specification.html" target="_blank">ISA tools</a></p>
                             <p><strong>Genome assembly:</strong> .agp, .contig, .depth, .fa, .length, .scafseq</p>
                             <p><strong>Genome sequence:</strong> .fastq, .fq</p>
                             <p><strong>Haplotypes:</strong> .haplotype</p>
