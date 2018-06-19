@@ -268,6 +268,7 @@ class UserController extends Controller {
             if ($user !== null) {
                 Yii::log(__FUNCTION__."> reset found user $reset_user", 'debug');
                 $user->password = $user->generatePassword(8);
+                $user->is_activated=true;
                 $user->encryptPassword();
 
                 if ($user->save(false)) {
@@ -391,6 +392,7 @@ class UserController extends Controller {
         if(isset($_POST['ChangePasswordForm']))
         {
             $model->attributes=$_POST['ChangePasswordForm'];
+            $model->newsletter=$_POST['ChangePasswordForm']['newsletter'];
             if($model->validate() && $model->changePass())
                 $this->redirect('/user/view_profile');
         }
