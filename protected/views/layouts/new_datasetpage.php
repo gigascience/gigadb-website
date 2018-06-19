@@ -170,10 +170,10 @@
                                     About&nbsp;<i class="fa fa-angle-down"></i>
                                 </a>
                                 <ul class="dropdown-menu">
+                                    <li><a href="/site/about">General</a></li>
                                     <li><a href="/site/team">Our team</a></li>
                                     <li><a href="/site/contact">Contact</a></li>
                                     <li><a href="/site/advisory">Advisory Board</a></li>
-                                    <li><a href="/site/about">General</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -215,7 +215,7 @@
                         </ul>
                     </div>
                     <div class="col-xs-6 text-right">
-                        <p class="base-footer-email"><a href="#"><i class="fa fa-envelope"></i> database@gigasciencejournal.com</a></p>
+                        <p class="base-footer-email"><a href="/site/contact"><i class="fa fa-envelope"></i> database@gigasciencejournal.com</a></p>
                         <ul class="list-inline base-footer-social-bar">
                             <li><a href="http://facebook.com/GigaScience" title="Facebook"><i class="fa fa-facebook"></i></a></li>
                             <li><a href="http://twitter.com/GigaScience" title="Twitter"><i class="fa fa-twitter"></i></a></li>

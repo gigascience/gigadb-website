@@ -297,10 +297,16 @@ HTML;
                            <li role="presentation" id="p-sample"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
                         <?php }                       
                         ?>
-                        
+                        <?php if(count($model->files) > 0) {
+                            ?>
                         <li role="presentation" id="p-file"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
-                        <li role="presentation" id="p-funding"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
-                    
+                        <?php }                       
+                        ?>
+                         <?php if(count($model->datasetFunders) > 0) {
+                            ?>
+                            <li role="presentation" id="p-funding"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
+                        <?php }                       
+                        ?>
                         <?php if(count($protocol) > 0) {
                             ?>
                            <li role="presentation" id="p-protocol"><a href="#protocol" aria-controls="protocol" role="tab" data-toggle="tab">Protocols.io</a></li>
@@ -393,6 +399,8 @@ HTML;
                             <?php }                       
                         ?>
                     <?php 
+                 if(count($model->files) > 0) {
+                            
                     if(count($model->samples) > 0) {
                             ?>     
                         <div role="tabpanel" class="tab-pane" id="files">
@@ -490,6 +498,10 @@ HTML;
         ?>
 
                         </div>
+                            <?php }                       
+                        ?>
+                             <?php if(count($model->datasetFunders) > 0) {
+                            ?>
                         
                         <div role="tabpanel" class="tab-pane" id="funding">
                            
@@ -518,6 +530,8 @@ HTML;
                
 
                         </div>
+                    <?php }                       
+                        ?>   
                         
                     <?php if (count($protocol) > 0) { ?>        
                      
