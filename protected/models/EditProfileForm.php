@@ -46,11 +46,11 @@ class EditProfileForm extends CFormModel
             $user->affiliation = $this->affiliation;
             $user->password_repeat ='NoNeed';
             $user->email = $this->email;
-	   $user->previous_newsletter_state = $user->newsletter;
+	    $user->previous_newsletter_state = $user->newsletter;
             $user->newsletter = $this->newsletter;
             $user->preferred_link = $this->preferred_link;
 
-            if($user->save()) {
+            if($user->save(false)) {
                 return true;
             }         
         }
