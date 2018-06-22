@@ -173,6 +173,7 @@ HTML;
                         $protocol = array();
                         $jb = array();
                         $dmodel = array();
+                        $codeocean = array();
                         if (count($model->externalLinks) > 0) { ?>
                 <p>
                     <?php
@@ -184,7 +185,7 @@ HTML;
                             $typeNameLabel = preg_replace('/(?:^|_)(.?)/e',"strtoupper('$1')",$typeName);
                             $typeNameLabel = preg_replace('/(?<=\\w)(?=[A-Z])/'," $1", $typeNameLabel);
                             $typeNameLabel = trim($typeNameLabel);
-                            if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse' and $typeNameLabel !== '3 D Models')
+                            if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse' and $typeNameLabel !== '3 D Models' and $typeNameLabel !== 'Code Ocean')
                             {
                                echo "<h5><strong>$typeNameLabel:</strong></h5>";
                             }
@@ -204,6 +205,11 @@ HTML;
                                     elseif($typeName == '3D Models')
                                     {
                                        array_push($dmodel,$externalLink->url);
+                                    
+                                    }
+                                    elseif($typeName == 'Code Ocean')
+                                    {
+                                       array_push($codeocean,$externalLink->url);
                                     
                                     }
                                     else
@@ -321,7 +327,12 @@ HTML;
                             ?>
                            <li role="presentation" id="p-dmodel"><a href="#demodel" aria-controls="demodel" role="tab" data-toggle="tab">3D Viewer</a></li>
                         <?php }                       
-                        ?>      
+                        ?> 
+                        <?php if(count($codeocean) > 0) {
+                            ?>
+                           <li role="presentation" id="p-codeocean"><a href="#codeocean" aria-controls="codeocean" role="tab" data-toggle="tab">Code Ocean</a></li>
+                        <?php }                       
+                        ?>    
                         <li role="presentation" id="p-history"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
                         
                     </ul>
@@ -606,7 +617,32 @@ HTML;
                              </div>
                              
                              
-                    <?php }?>                    
+                    <?php }?>  
+                            
+                     <?php if (count($codeocean) > 0) { ?>        
+                     
+                         <div role="tabpanel" class="tab-pane" id="codeocean">
+                        <?php    
+                        
+                             echo "<p>Code Ocean:</p>";
+                             //echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                            // echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                            // echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($codeocean as $p) {
+
+                            {    
+                                 echo "<p>$p</p>";
+                                
+                            }
+                               
+                            }
+                            // echo "</div>";
+                         ?>    
+                             
+                             </div>
+                             
+                             
+                    <?php }?>        
                             
                            
                         

@@ -53,14 +53,15 @@
                             ?>
                             <li><a href="/user/view_profile"><i class="fa fa-sign-in"></i><?= Yii::t('app', $name . " GigaDB Page") ?></a></li>
                             <? if (Yii::app()->user->checkAccess('admin')) { ?>
-                            <li><a href="/site/admin"><i class="fa fa-sign-in"></i><?= Yii::t('app', 'Administration') ?></a></li>
+                            <li><a href="/site/admin"><?= Yii::t('app', 'Admin') ?></a></li>
                             <? } ?>
                             <li><a href="/site/logout"><i class="fa fa-sign-in"></i><?= Yii::t('app', 'LogOut') ?></a></li>
-                            <? } ?>
-                            <li><a href="/site/contact" title="Contact us"><i class="fa fa-envelope"></i></a></li>
+                            <li><a href="/site/mapbrowse"><i class="fa fa-sign-in"></i><?=Yii::t('app' , "Browse Samples")?></a></li>
+                            <? } ?>                            
                         </ul>
                     </div>
                     <div class="col-xs-7 clearfix">
+                                                
                         <ul class="share-zone clearfix">
                             <li><a href="http://facebook.com/GigaScience" title="Facebook"><i class="fa fa-facebook"></i></a></li>
                             <li><a href="http://twitter.com/GigaScience" title="Twitter"><i class="fa fa-twitter"></i></a></li>
@@ -85,8 +86,8 @@
                                 ?>
                                 <button class="btn-search" type="submit"><span class="fa fa-search"></span></button>
                             </form>
-
-                        </div>
+                           
+                        </div>                      
                     </div>
                 </div>
             </div>

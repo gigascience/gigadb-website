@@ -69,7 +69,7 @@ class DatabaseSearch extends CApplicationComponent {
 	    if($ids)
 	    	$command->orWhere(array('in', 's.id', $ids));
 	    if($names)
-	    	$command->andWhere(array('in', 'sp.id', $names));
+	    	$command->andWhere(array('in', 'sp.scientific_name', $names));
 	    $command->andWhere("d.upload_status = 'Published'", array());
 
 	    return $command->queryAll();
