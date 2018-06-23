@@ -304,9 +304,15 @@ HTML;
                         <?php }                       
                         ?>
                         <?php if(count($model->files) > 0) {
-                            ?>
+                            
+                              if(count($model->samples) < 1)  
+                              { 
+                                  ?>
+                        <li role="presentation" id="p-file" class="active"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>  
+                              <?php } else { 
+                              ?>
                         <li role="presentation" id="p-file"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
-                        <?php }                       
+                        <?php }}                       
                         ?>
                          <?php if(count($model->datasetFunders) > 0) {
                             ?>

@@ -9,12 +9,12 @@
 						</tr>
 						<tr>
 							<td height="6" width="600">
-								<img src="<?=$this->createAbsoluteUrl('/images/email/top.gif')?>" width="600" height="50" alt="Banner" border="0" valign="bottom" style="vertical-align:bottom;">
+								<img src="cid:top" width="600" height="50" alt="Banner" border="0" valign="bottom" style="vertical-align:bottom;">
 							</td>
 						</tr>
 						<tr>
 							<td align="left" width="600" bgcolor="#ffffff;" style="background-color:#ffffff;border-bottom:1px solid #D7E1EE; padding-bottom: 10px; padding-left:40px; padding-top:10px;">
-								<img src="<?=$this->createAbsoluteUrl('/images/email/logo.gif')?>" width="250" height="39" alt="GigaScience's logo" border="0">
+								<img src="cid:logo" width="250" height="39" alt="GigaScience's logo" border="0">
 							</td>
 						</tr>
 						<tr>
@@ -26,7 +26,7 @@
 						</tr>
 						<tr>
 							<td height="6" width="600">
-								<img src="<?=$this->createAbsoluteUrl('/images/email/bottom.gif')?>" width="600" height="70" alt="Footer" border="0">
+								<img src="cid:bottom" width="600" height="70" alt="Footer" border="0">
 							</td>
 						</tr>
 						<tr>
