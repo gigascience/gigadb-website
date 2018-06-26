@@ -715,17 +715,65 @@ $(document).ready(function() {
 	});
         
         var url = location.pathname;
+        var sample_index = url.lastIndexOf('Sample_');
+        var file_index = url.lastIndexOf('File_');
         
-        if (url.indexOf('File') > -1) {
-             $("#p-file").addClass("active");
-             $("#file").toggleClass("tab-pane active");
-        }
-         if (url.indexOf('Sample') > -1) {
+         if (/Sample/.test(window.location.href)) {
              $("#p-sample").addClass("active");
+              var e = document.getElementById('p-sample');
+              if (!!e && e.scrollIntoView) {
+                   e.scrollIntoView();
+              }
+             
         }
         else{
              $("#p-sample").addClass("active");           
         }
+         if (/File/.test(window.location.href)) {
+            
+             $("#p-sample").removeClass("active");
+             $("#sample").removeClass("tab-pane active");
+             $("#sample").addClass("tab-pane");
+             $("#p-file").addClass("active");
+             $("#files").addClass("active");
+             
+             var e = document.getElementById('p-file');
+             if (!!e && e.scrollIntoView) {
+             e.scrollIntoView();
+            }
+            
+             
+        }
+   
+        if(sample_index > 0 && file_index>0)
+        {
+        if(sample_index > file_index)
+        {
+            $("#p-file").removeClass("active");
+            $("#files").removeClass("tab-pane active");
+            $("#files").addClass("tab-pane");
+            $("#p-sample").addClass("active");
+            $("#sample").addClass("active");
+              var e = document.getElementById('p-sample');
+              if (!!e && e.scrollIntoView) {
+                   e.scrollIntoView();
+              }   
+        }
+       else
+        {
+             $("#p-sample").removeClass("active");
+             $("#sample").removeClass("tab-pane active");
+             $("#sample").addClass("tab-pane");
+             $("#p-file").addClass("active");
+             $("#files").addClass("active");
+             
+             var e = document.getElementById('p-file');
+             if (!!e && e.scrollIntoView) {
+             e.scrollIntoView();
+            }
+        }
+    }
+        
 });
 /* ----------------------------------- */
 

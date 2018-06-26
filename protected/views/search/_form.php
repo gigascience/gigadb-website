@@ -23,7 +23,8 @@
                              'minLength'=>'2',
                              ),
             'htmlOptions'=>array(
-                                 'class'=>'form-control'
+                                 'class'=>'form-control',
+                                 'placeholder'=>'e.g. Chicken, brain etc...',
                                  ),
             ));
         ?>
