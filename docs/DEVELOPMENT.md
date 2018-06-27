@@ -124,14 +124,34 @@ To quit from the pgsql session, use `\q`:
 ```bash
 gigadb=> \q
 [vagrant@localhost ~]$
-
 ```
+
+#### Import database dump into PostgreSQL RDBMS
+
+For testing purposes, it might be more appropriate to test your gigadb-website
+code with a more up to date version of the GigaDB PostgreSQL database. To do
+this, copy the SQL dump of the GigaDB database you want to use into the sql
+directory then:
+```bash
+# Log into the gigadb-website VM
+$ vagrant ssh
+$ cd /vagrant/sql
+# Use vagrant as password when logging into DB with postgresl client
+$ psql -U postgres -h localhost -W
+# Load production data
+$ drop database gigadb;
+$ create database gigadb;
+$ alter user gigadb with superuser;
+$ \q
+# Use psql tool to import SQL data
+$ psql -h 127.0.0.1 -d gigadb -U gigadb -f gigadb_testdata.sql
+```
+#### Import database dump into PostgreSQL RDBMS
 
 It is sometimes useful to make a backup of the PostgreSQL database
 that contains GigaDB's dataset metadata. This can be done using the
 `pg_dump` tool in the guest VM and using `vagrant` when requested for
 the password:
-
 ```bash
 $ vagrant ssh
 $ cd /vagrant/sql

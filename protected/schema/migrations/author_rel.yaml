@@ -1,0 +1,14 @@
+---
+table: author_rel
+from: null
+to: ram_1
+depends:
+  - [author, stpn_1]
+  - [relation, stpn_1]
+sql: |
+  CREATE TABLE author_rel (
+    id SERIAL NOT NULL PRIMARY KEY,
+    author_id INTEGER NOT NULL REFERENCES author(id) ON DELETE CASCADE,
+    related_author_id INTEGER NOT NULL REFERENCES author(id) ON DELETE CASCADE,
+    relationship_id INTEGER NOT NULL REFERENCES relationship(id) ON DELETE CASCADE
+  );

@@ -53,6 +53,14 @@
 				</div>
 	</div>
 
+	<div class="control-group">
+		<?php echo $form->labelEx($model,'gigadb_user_id',array('class'=>'control-label')); ?>
+				<div class="controls">
+		<?php echo $form->textField($model,'gigadb_user_id',array('size'=>60,'maxlength'=>128)); ?>
+		<?php echo $form->error($model,'gigadb_user_id'); ?>
+				</div>
+	</div>
+
     <?php /*
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'rank',array('class'=>'control-label')); ?>
@@ -62,9 +70,44 @@
 				</div>
 	</div> */?>
 
+	<div class="merge_info well">
+<?php
+		$identical_authors = $model->getIdenticalAuthors() ;
+		if( !empty($identical_authors) ) {
+?>
+		<div class="alert alert-info">
+		this author is merged with author(s):
+		<ul class="unstyled">
+<?php
+			foreach ($identical_authors as $author_id) {
+				$author = Author::model()->findByPk($author_id);
+				echo "<li>".$author->getAuthorDetails()."</li>";
+			}
+?>
+		</ul>
+
+		</div>
+
+<?php	} ?>
+
+<?php
+		if( !empty($identical_authors) ) { 
+			echo CHtml::link('Unmerge author from those authors',
+                                    array('adminAuthor/unmerge', 'id'=>$model->id),
+                                    array('class' => 'btn'));
+		}
+?>
+</div>
+
+
 	<div class="pull-right">
-        <a href="/adminAuthor/admin" class="btn">Cancel</a>
+        <?php 
+			echo CHtml::link('Merge with an author',
+                                    array('adminAuthor/prepareAuthorMerge', 'origin_author_id'=>$model->id),
+                                    array('class' => 'btn'));
+        ?>
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn')); ?>
+        <a href="/adminAuthor/admin" class="btn">Cancel</a>
 	</div>
 
 <?php $this->endWidget(); ?>

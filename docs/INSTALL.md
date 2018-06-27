@@ -6,9 +6,9 @@ A test instance of GigaDB can be automatically installed in a virtual
 machine (VM) using [Vagrant](https://www.vagrantup.com) and [Chef Solo](https://docs.chef.io/chef_solo.html).
 
 Vagrant is a command line utility for creating VMs. To get started,
-download and install Vagrant using the appropriate installer or
-package for your platform which is available from the
-[Vagrant download page](https://www.vagrantup.com/downloads.html).
+download and install Vagrant 
+([version 2.0.1](https://releases.hashicorp.com/vagrant/2.0.1/)) 
+using the appropriate installer or package for your platform.
 There is no need to install any software for Chef-Solo since the base
 Vagrant VMs that we will be using to deploy GigaDB on will come with
 Chef pre-installed.

@@ -39,3 +39,8 @@ table: author
 to: ram_5
 sql: |
   ALTER TABLE author ADD COLUMN custom_name varchar(255);
+---
+table: author
+to: ram_6
+sql: |
+  ALTER TABLE author ADD CONSTRAINT user_has_one_author_only UNIQUE (gigadb_user_id);

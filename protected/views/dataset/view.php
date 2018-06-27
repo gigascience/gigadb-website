@@ -49,6 +49,95 @@ HTML;
                     <a class="btn btn-green <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
                         Contact Submitter
                     </a>
+                    <? if( ! Yii::app()->user->isGuest && null == Author::findAttachedAuthorByUserId(Yii::app()->user->id) ) { ?>
+                        <? Yii::log(__FUNCTION__."> Author::findAttachedAuthorByUserId:".Author::findAttachedAuthorByUserId(Yii::app()->user->id) , 'warning'); ?>
+                        <span title="click to claim the dataset and link your user account to an author" data-toggle="tooltip" data-placement="bottom">
+                            <a href="#myModal" role="button" class="btn btn-green" data-toggle="modal">
+                                Your dataset?
+                            </a>
+                        </span>
+                        <!-- Modal -->
+                        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h3 id="myModalLabel">Select an author to link to your Gigadb User ID</h3>
+                                <div id="message"></div>
+                                <div id="advice"></div>
+                            </div>
+                            <?php echo MyHtml::beginForm('/userCommand/claim','GET'); ?>
+                                <div class="modal-body text-center">
+                                    <?php if (count($model->authors) > 0) { ?>
+                                            <table>
+                                            <?php foreach ($model->authors as $author) { ?>
+                                                <tr><td>
+<?php
+                                        $status_array = array('Request', 'Incomplete', 'Uploaded');
+                                        echo CHtml::ajaxLink($author->first_name." ".$author->middle_name." ".$author->surname,Yii::app()->createUrl('/userCommand/claim'),
+                                        array(
+                                            'type'=>'GET',
+                                            'data'=> array('dataset_id'=>'js:$("#dataset_id").val()',
+                                                'author_id' => $author->id),
+                                            'dataType'=>'json',
+                                            'success'=>'js:function(output){
+                                                document.getElementById("message").removeAttribute("class");
+                                                $("#claim_button").toggleClass("disable");
+                                                if(output.status){
+                                                    $("#message").addClass("alert").addClass("alert-success");
+                                                    $("#message").html(output.message);
+
+                                                } else {
+                                                    $("#message").addClass("alert").addClass("alert-error");
+                                                    $("#message").html(output.message);
+                                                }
+                                                $("#advice").addClass("alert").addClass("alert-info");
+                                                $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
+                                            }',
+                                        ),array('class'=>'btn btn-green btn-block',
+                                                'id' =>'claim_button_' . $author->id,
+                                                // 'disabled'=>in_array($model->upload_status, $status_array),
+                                        ));
+
+                                        ?>
+                                                </td><td><? echo $author->orcid ? " (orcid id:".$author->orcid.")" : "" ?> </td></tr>
+                                            <? } ?>
+                                        </table>
+                                    <? } ?>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="reset" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">Close</button>
+                                    <input type="hidden" id="dataset_id" name="dataset_id" value="<? echo $model->id ?>"/>
+                                    <?php
+                                        // "Cancel current claim" button
+                                        $status_array = array('Request', 'Incomplete', 'Uploaded');
+                                        echo CHtml::ajaxLink('Cancel current claim',Yii::app()->createUrl('/userCommand/cancelClaim'),
+                                        array(
+                                            'type'=>'GET',
+                                            'dataType'=>'json',
+                                            'success'=>'js:function(output){
+                                                document.getElementById("message").removeAttribute("class");
+                                                $("#cancel_button").toggleClass("disable");
+                                                if(output.status){
+                                                    $("#message").addClass("alert").addClass("alert-success");
+                                                    $("#message").html(output.message);
+
+                                                } else {
+                                                    $("#message").addClass("alert").addClass("alert-error");
+                                                    $("#message").html(output.message);
+                                                }
+                                                $("#advice").addClass("alert").addClass("alert-info");
+                                                $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
+                                            }',
+                                        ),array('class'=>'btn btn-danger',
+                                                'id' =>'cancel_button',
+                                                // 'disabled'=>in_array($model->upload_status, $status_array),
+                                        ));
+
+                                    ?>
+
+                                </div>
+                            </form>
+                            </div>
+                    <? } ?>
                 </span>
 
                 <div class="pull-right">
@@ -716,4 +805,11 @@ $(".citation-popup").popover({'placement':'top'});
         $('.js-short-'+id).toggle();
         $('.js-long-'+id).toggle();
     });
+</script>
+
+<script>
+    $('#myModal').on('hidden', function () {
+        $("#message").removeAttr("class").empty();
+        $("#advice").removeAttr("class").empty();
+    })
 </script>

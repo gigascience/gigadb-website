@@ -19,6 +19,7 @@ themes/classic/views/
 files/certs
 images/tempcaptcha/
 
+
 # Vagrant
 *.vagrant
 vagrant.log
@@ -26,6 +27,8 @@ vagrant.log
 # Chef
 chef/environments/development.json
 chef/environments/production.json
+chef/environments/aws.json
+chef/environments/docker.json
 **/encrypted_data_bag_secret
 chef/nodes/*.json
 

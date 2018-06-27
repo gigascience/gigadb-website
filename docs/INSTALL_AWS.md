@@ -44,27 +44,36 @@ AWS_KEYPAIR_NAME="Name of keypair used to bootstrap AMIs"
 ```
 
 The above environment variables can be set and managed in your
-`~/.bash_profile` file. Once these additions have been made then the
-.bash_profile should be sourced to load the AWS variables into your 
-environment:
+`~/.bash_profile` file. 
 
+Also in your `~/.bash_profile` file, the `GIGADB_BOX` env variable needs to be 
+set to `aws` as follows:
+```
+export GIGADB_BOX='aws'
+```
+
+Once these additions have been made then `~/.bash_profile` should be sourced to 
+load the AWS variables into your environment:
 ```bash
 $ source ~/.bash_profile
 ```
 
 In order for Vagrant to control and provision machines hosted on EC2
 instances, the AWS provider plugin for Vagrant needs to be installed:
-
 ```bash
 $ vagrant plugin install vagrant-aws
 ```
+
+Finally, find the line `chef.environment = "development"` in `Vagrantfile`. This
+variable should be changed to `chef.environment = "aws"`.
+
+This Vagrant AWS functionality is tested with Vagrant version 2.0.1.
 
 ## Deployment
 
 To deploy GigaDB on an AWS virtual server, you need to download the 
 gigadb-website GitHub source code repository with its chef-cookbooks 
 submodule:
-
 ```bash
 $ git clone https://github.com/gigascience/gigadb-website.git
 $ git submodule init

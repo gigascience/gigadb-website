@@ -164,12 +164,15 @@ class SiteController extends Controller {
 		$this->render('contact',array('model'=>$model));
 	}
 	/**
-	*This methode return all dataset locations
+	*This method returns all dataset locations
 	*/
 	public function actionMapbrowse() {
-	    $locations = $list= Yii::app()->db->createCommand("SELECT d.title, satt.value FROM dataset as d
-	      INNER JOIN dataset_attributes as datt on d.id = datt.dataset_id
-	      INNER JOIN sample_attribute as satt on satt.attribute_id=datt.attribute_id")->queryAll();
+	    $locations = $list= Yii::app()->db->createCommand("SELECT d.identifier,  d.title, satt.value, sp.scientific_name as sciname, s.id as sampleId FROM dataset as d
+					      INNER JOIN dataset_sample as dsam on dsam.dataset_id = d.id
+						  INNER JOIN sample as s on s.id = dsam.sample_id
+					      INNER JOIN sample_attribute as satt on satt.sample_id=s.id 
+						  INNER JOIN species as sp on sp.id = s.species_id		
+						  where satt.attribute_id = 269")->queryAll();
 		$this->render('mapbrowse', array('locations' => $locations));
 	}
 

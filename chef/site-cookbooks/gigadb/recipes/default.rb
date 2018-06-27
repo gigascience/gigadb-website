@@ -352,6 +352,8 @@ end
 
 # npm does not support its self-signed certificates - tell it to use known registrars
 execute 'npm config set ca ""'
+# npm will throw error CERT_UNTRUSTED so bypass https
+execute 'npm config set strict-ssl false'
 # Compile less files
 execute 'npm install -g less'
 if node[:gigadb_box] == 'aws'

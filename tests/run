@@ -1,10 +1,12 @@
+#!/bin/bash
+
 echo "About to run  automated tests..."
 
 echo "First, backup the main database..."
 vagrant ssh -c 'pg_dump gigadb -U gigadb -h localhost -p 5432 -w -F custom  -f /vagrant/sql/before-run.pgdmp > /vagrant/protected/runtime/pg_dump.log 2>&1'
 
 echo "Running acceptance tests"
-Behat/bin/behat -v --stop-on-failure -c tests/behat.yml
+Behat/bin/behat --tags @ok -v --stop-on-failure -c tests/behat.yml
 
 echo "Preparing the test database..."
 vagrant ssh -c 'sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/gigadb_unit_tests.sql > /vagrant/protected/runtime/setup_test_database.log 2>&1'

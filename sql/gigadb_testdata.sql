@@ -57,6 +57,45 @@ CREATE TABLE "YiiSession" (
 
 ALTER TABLE public."YiiSession" OWNER TO gigadb;
 
+
+--
+-- Name: user_command; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
+--
+
+CREATE TABLE user_command (
+    id integer NOT NULL,
+    action_label character varying(32) NOT NULL,
+    requester_id integer NOT NULL,
+    actioner_id integer,
+    actionable_id integer NOT NULL,
+    request_date timestamp,
+    action_date timestamp,
+    status character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.user_command OWNER TO gigadb;
+
+--
+-- Name: user_command_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
+--
+
+CREATE SEQUENCE user_command_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_command_id_seq OWNER TO gigadb;
+
+--
+-- Name: user_command_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gigadb
+--
+
+ALTER SEQUENCE user_command_id_seq OWNED BY user_command.id;
+
 --
 -- Name: alternative_identifiers; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
 --
@@ -167,7 +206,7 @@ CREATE TABLE author (
     first_name character varying(255),
     custom_name character varying(255),
     orcid character varying(255),
-    gigadb_user_id integer
+    gigadb_user_id integer UNIQUE
 );
 
 
@@ -199,6 +238,44 @@ ALTER SEQUENCE author_id_seq OWNED BY author.id;
 --
 
 SELECT pg_catalog.setval('author_id_seq', 3809, true);
+
+--
+-- TOC entry 252 (class 1259 OID 18403)
+-- Name: author_rel; Type: TABLE; Schema: public; Owner: gigadb
+--
+
+CREATE TABLE author_rel (
+    id integer NOT NULL,
+    author_id integer NOT NULL,
+    related_author_id integer NOT NULL,
+    relationship_id integer
+);
+
+
+ALTER TABLE author_rel OWNER TO gigadb;
+
+--
+-- TOC entry 253 (class 1259 OID 18406)
+-- Name: author_rel_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
+--
+
+CREATE SEQUENCE author_rel_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE author_rel_id_seq OWNER TO gigadb;
+
+--
+-- TOC entry 2903 (class 0 OID 0)
+-- Dependencies: 253
+-- Name: author_rel_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gigadb
+--
+
+ALTER SEQUENCE author_rel_id_seq OWNED BY author_rel.id;
 
 
 --
@@ -2045,6 +2122,14 @@ CREATE TABLE yiisession (
 
 ALTER TABLE public.yiisession OWNER TO gigadb;
 
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gigadb
+--
+
+ALTER TABLE ONLY user_command ALTER COLUMN id SET DEFAULT nextval('user_command_id_seq'::regclass);
+
+
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: gigadb
 --
@@ -2065,6 +2150,12 @@ ALTER TABLE ONLY attribute ALTER COLUMN id SET DEFAULT nextval('attribute_id_seq
 
 ALTER TABLE ONLY author ALTER COLUMN id SET DEFAULT nextval('author_id_seq'::regclass);
 
+--
+-- TOC entry 2479 (class 2604 OID 18508)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gigadb
+--
+
+ALTER TABLE ONLY author_rel ALTER COLUMN id SET DEFAULT nextval('author_rel_id_seq'::regclass);
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: gigadb
@@ -2380,6 +2471,7 @@ COPY attribute (id, attribute_name, definition, model, structured_comment_name, 
 422	Source material identifiers	\N	\N	\N	\N	\N	\N	\N	\N
 497	urltoredirect	\N	\N	urltoredirect	\N	\N	\N	\N	\N
 455	keyword	\N	\N	keywords	\N	\N	\N	\N	\N
+269	Geographic location (latitude and longitude)	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -2782,6 +2874,8 @@ COPY sample (id, species_id, name, consent_document, submitted_id, submission_da
 
 COPY sample_attribute (id, sample_id, attribute_id, value, unit_id) FROM stdin;
 30060	4346	422	David Lambert & BGI	\N
+30061	4346	269	35.904731, 127.162202	\N
+30062	4347	269	16.606667,  49.259444	\N
 \.
 
 
@@ -2877,6 +2971,13 @@ ALTER TABLE ONLY "AuthAssignment"
 ALTER TABLE ONLY "AuthItem"
     ADD CONSTRAINT "AuthItem_pkey" PRIMARY KEY (name);
 
+--
+-- Name: user_command_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
+--
+
+ALTER TABLE ONLY user_command
+    ADD CONSTRAINT user_command_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: YiiSession_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
@@ -2909,6 +3010,13 @@ ALTER TABLE ONLY attribute
 ALTER TABLE ONLY author
     ADD CONSTRAINT author_pkey PRIMARY KEY (id);
 
+--
+-- TOC entry 2496 (class 2606 OID 18532)
+-- Name: author_rel_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb
+--
+
+ALTER TABLE ONLY author_rel
+    ADD CONSTRAINT author_rel_pkey PRIMARY KEY (id);
 
 --
 -- Name: dataset_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 

@@ -3,9 +3,9 @@
 <div class="row">
     <div class="span8 offset2">
         <div class="form well">
-            <table class="admin"> 
+            <table class="admin">
                 <tr>
-                    <td style="vertical-align: top;">    
+                    <td style="vertical-align: top;">
 
                         <div class="form well height1">
 
@@ -41,14 +41,14 @@
                             <div class="clear"></div>
 
                             <a class="btn-green left2" title="Manage DOI:Funder" href="/datasetFunder/admin">Dataset:Funder</a>
-                            
+
                             <div class="clear"></div>
-                            
+
                             <a class="btn-green left2" href="/adminManuscript/admin"  title="Add/update links to manuscriptions citing our DOIs" tilte="Add/update links to manuscriptions citing our DOIs" >Dataset:Manuscript</a>
 
                             <!--
                             <div class="clear"></div>
-                            
+
                             <a class="btn-green left2" title="Fairly use policy" href="/policy/create">Fairly Use Policy</a> -->
 
 
@@ -67,7 +67,7 @@
                     </td>
                     <td style="vertical-align: top;">
                         <div class="form well height1">
-                                                        
+
                             <a class="btn-green left2" title=" List all authors cited in GigaDB, update ORCID for authors" href="/adminAuthor/admin">Authors</a>
 
                             <div class="clear"></div>
@@ -91,16 +91,15 @@
                             <a class="btn-green left2" title="Add/update prefixes of links supported by GigaDB" href="/adminLinkPrefix/admin">Link Prefixes</a>
 
                             <div class="clear"></div>
-                            
+
                             <a class="btn-green left2" title="Add/update funder" href="/funder/admin">Funder</a>
                             <div class="clear"></div>
-                            
+
                             <a class="btn-green left2" title="Add/update attribute" href="/attribute/admin">Attribute</a>
 
                             <div class="clear"></div>
-                            
-                            <a class="btn-green left2" title="Add/update list of logs" href="/report/index">Google Analytics</a>
 
+                            <a class="btn-green left2" title="Add/update list of logs" href="/report/index">Google Analytics</a>
                         </div>
 
                     </td>
