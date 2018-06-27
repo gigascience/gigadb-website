@@ -416,7 +416,7 @@ class UserController extends Controller {
         $url = $this->createAbsoluteUrl('site/login');
         $url= $url."?username=".$user->email."&password=".$password_unhashed."&redirect=yes";
         $body = $this->renderPartial('emailReset',array('url'=>$url,'password_unhashed'=>$password_unhashed,'user'=>$user->id),true);
-        $this->mailsend($recipient,'jesse@gigasciencejournal.com',$subject,$body);
+        $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
         Yii::log(__FUNCTION__."> Sent email to $recipient, $subject");
     }
 
