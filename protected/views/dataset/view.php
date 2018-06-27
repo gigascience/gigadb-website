@@ -773,6 +773,28 @@ $(document).ready(function() {
             }
         }
     }
+    var MyJSStringVar = "<?php Print($flag); ?>"
+    if(MyJSStringVar == 'file')
+    {
+             $("#p-sample").removeClass("active");
+             $("#sample").removeClass("tab-pane active");
+             $("#sample").addClass("tab-pane");
+             $("#p-file").addClass("active");
+             $("#files").addClass("active");
+             
+             var e = document.getElementById('p-file');
+             if (!!e && e.scrollIntoView) {
+             e.scrollIntoView();
+            }
+    }
+    if(MyJSStringVar == 'sample')
+    {
+              var e = document.getElementById('p-sample');
+              if (!!e && e.scrollIntoView) {
+                   e.scrollIntoView();
+              }   
+    }
+    
         
 });
 /* ----------------------------------- */

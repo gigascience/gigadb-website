@@ -94,6 +94,7 @@ class DatasetController extends Controller
         // file
         $setting = array('name','size', 'type_id', 'format_id', 'location', 'date_stamp','sample_id'); // 'description','attribute' are hidden by default
         $pageSize = 10;
+        $flag=null;
 
         if(isset($cookies['file_setting'])) {
             //$ss = json_decode($cookies['sample_setting']);
@@ -114,6 +115,7 @@ class DatasetController extends Controller
             $nc = new CHttpCookie('file_setting', json_encode(array('setting'=> $setting, 'page'=>$pageSize)));
             $nc->expire = time() + (60*60*24*30);
             Yii::app()->request->cookies['file_setting'] = $nc;
+            $flag="file";
         }
 
 
@@ -146,7 +148,7 @@ class DatasetController extends Controller
         if(isset($_POST['columns'])) {
             $columns = $_POST['columns'];
             $perPage = $_POST['perPage'];
-
+            $flag="sample";
             if(isset($cookies['sample_setting']))
                 unset(Yii::app()->request->cookies['sample_setting']);
 
@@ -283,7 +285,8 @@ class DatasetController extends Controller
             'logs'=>$model->datasetLogs,
             'relates' => $relates,
             'scholar' => $scholar,
-            'link_type' => $link_type
+            'link_type' => $link_type,
+            'flag' => $flag,
         ));
     }
 
