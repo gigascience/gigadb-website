@@ -1,8 +1,6 @@
-
 <?
 $this->pageTitle='GigaDB - Map Browse';
 ?>
-
 <div class="mapcontainer" id="map"></div> 
 <div id="popup" class="popup">
   <a href="/" id="popup-closer">Close</a>
@@ -24,55 +22,73 @@ $this->pageTitle='GigaDB - Map Browse';
 <script src="https://openlayers.org/en/v4.6.4/build/ol.js"></script>
 
 <script>
-
   var geojson_features = {"type":"FeatureCollection",
                   "features":[
 <?php
-	$locationsLength = count($locations);
+  $locationsLength = count($locations);
   if ($locationsLength > 0) {
-
-    foreach ($locations as $location) {   
+    $i=1;  
+    foreach ($locations as $location) {
+        $i++;
+        if($i>50000)
+        {
+            break 1;
+        }
         $locationValue = $location["value"];  
         $locationValue = preg_replace('/\s+/', '', $locationValue);   
         $formatCheck = preg_match('/-?[0-9]*[.][0-9]*[,]-?[0-9]*[.][0-9]*/',$locationValue);
         if (!$formatCheck==1){
           continue;
         }     
-        $val = explode(',', $locationValue);    
+        $val = explode(',', $locationValue); 
+        if(strpos($val[0],'.') == false || !is_numeric($val[0])){
+            continue;
+        }
+        if(strpos($val[1],'.') == false || !is_numeric($val[1])){
+            continue;
+        }
+        if($val[1]>180 || $val[1] < -180)
+        {
+            continue;
+        }
+        if($val[0]>85.05112878 || $val[0] < -85.05112878)
+        {
+            continue;
+        }
+        $location["sciname"]=str_replace(",","",$location["sciname"]);
+       
+   
 ?>
                     {"type":"Feature",
                       "properties":{
-                        "Sample ID": <?php echo $location["sampleid"] ?>,
+                        "Sample ID": <?php echo $location["sampleid"]; ?>,
                         "Scientific name": <?php echo '"'. trim($location["sciname"]) .'"' ; ?>,
-                        "Dataset": <?php echo trim($location["identifier"]) ?>
+                        "Dataset": <?php echo trim($location["identifier"]); ?>
                         },
                         "geometry":{
                           "type":"Point",
-                          "coordinates":[<?php echo $val[1] ?> ,<?php echo $val[0] ?>]
+                          "coordinates":[<?php echo trim($val[1]); ?> ,<?php echo trim($val[0]); ?>]
                         }
                       },
 <?php
-    }
+  }
   }
 ?>
                     ]
                   }
 </script>
-
 <script>
+    console.log(geojson_features);
   var distance = document.getElementById('distance');
   var source = new ol.source.Vector({
       features: (new ol.format.GeoJSON()).readFeatures(geojson_features, { featureProjection: 'EPSG:3857' })
   });
-
-
+      
   var clusterSource = new ol.source.Cluster({
     distance: 10,
     source: source
   });
-
   var styleCache = {};
-
   var clusters = new ol.layer.Vector({
     source: clusterSource,
     style: function(feature) {
@@ -101,11 +117,9 @@ $this->pageTitle='GigaDB - Map Browse';
       return style;
     }
   });
-
   var raster = new ol.layer.Tile({
     source: new ol.source.OSM()
   });
-
   var map = new ol.Map({
     layers: [raster, clusters],
     target: 'map',
@@ -114,7 +128,6 @@ $this->pageTitle='GigaDB - Map Browse';
       zoom: 2
     })
   });
-
   function elem_id(id) {
     return document.getElementById(id);
   }
@@ -132,6 +145,7 @@ $this->pageTitle='GigaDB - Map Browse';
       return false;
   };
   var OpenPopup = function (evt) {
+      console.log("2222");
       var feature = map.forEachFeatureAtPixel(evt.pixel,
       function (feature, layer) {
           if (feature) {
@@ -151,20 +165,14 @@ $this->pageTitle='GigaDB - Map Browse';
                   }
               }
               popup.scrollTop = 0;
+              console.log(coord);
               olpopup.setPosition(coord);
           } else {
+              console.log("11111");  
               olpopup.setPosition(undefined);
           }
       });
   };
   map.on('click', OpenPopup);
-
-
-
-
 </script>
-
-
-
 </div>
-

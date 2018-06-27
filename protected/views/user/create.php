@@ -3,7 +3,6 @@
 [<?= MyHtml::link('Manage Users', array('admin')); ?>]
 <? } ?>
 </div>
-<h2> <?=Yii::t('app' , 'Registration')?></h2>
 
 <?= $this->renderPartial('_form', array(
 	'model'=>$model,

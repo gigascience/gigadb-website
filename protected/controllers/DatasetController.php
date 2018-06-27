@@ -6,7 +6,7 @@ class DatasetController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	//public $layout='//layouts/new_column2';
 
 	/**
 	 * @return array action filters
@@ -50,6 +50,7 @@ class DatasetController extends Controller
 	public function actionView($id)	{
         $form = new SearchForm;  // Use for Form
         $dataset = new Dataset; // Use for auto suggestion
+        $this->layout='new_column2';
         $model = Dataset::model()->find("identifier=?", array($id));
         if (!$model) {
 
@@ -93,6 +94,7 @@ class DatasetController extends Controller
         // file
         $setting = array('name','size', 'type_id', 'format_id', 'location', 'date_stamp','sample_id'); // 'description','attribute' are hidden by default
         $pageSize = 10;
+        $flag=null;
 
         if(isset($cookies['file_setting'])) {
             //$ss = json_decode($cookies['sample_setting']);
@@ -113,6 +115,7 @@ class DatasetController extends Controller
             $nc = new CHttpCookie('file_setting', json_encode(array('setting'=> $setting, 'page'=>$pageSize)));
             $nc->expire = time() + (60*60*24*30);
             Yii::app()->request->cookies['file_setting'] = $nc;
+            $flag="file";
         }
 
 
@@ -145,7 +148,7 @@ class DatasetController extends Controller
         if(isset($_POST['columns'])) {
             $columns = $_POST['columns'];
             $perPage = $_POST['perPage'];
-
+            $flag="sample";
             if(isset($cookies['sample_setting']))
                 unset(Yii::app()->request->cookies['sample_setting']);
 
@@ -189,20 +192,24 @@ class DatasetController extends Controller
             $email = $result[0]['email'];
         }
 
-        $result = Dataset::model()->findAllBySql("select identifier from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
+        $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {
-            $result = Dataset::model()->findAllBySql("select identifier from dataset where upload_status='Published' order by identifier asc limit 1;");
+            $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
             $next_doi = $result[0]->identifier;
+            $next_title = $result[0]->title;
         } else {
             $next_doi = $result[0]->identifier;
+            $next_title = $result[0]->title;
         }
 
-        $result = Dataset::model()->findAllBySql("select identifier from dataset where identifier < '" . $id . "' and upload_status='Published' order by identifier desc limit 1;");
+        $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier < '" . $id . "' and upload_status='Published' order by identifier desc limit 1;");
         if (count($result) == 0) {
-            $result = Dataset::model()->findAllBySql("select identifier from dataset where upload_status='Published' order by identifier desc limit 1;");
+            $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier desc limit 1;");
             $previous_doi = $result[0]->identifier;
+            $previous_title = $result[0]->title;
         } else {
             $previous_doi = $result[0]->identifier;
+            $previous_title = $result[0]->title;
         }
 
         $attributes = $model->attributes;
@@ -270,13 +277,16 @@ class DatasetController extends Controller
             'samples'=>$samples,
             'email' => $email,
             'previous_doi' => $previous_doi,
+            'previous_title' => $previous_title,
+            'next_title'=> $next_title,
             'next_doi' => $next_doi,
             'setting' => $setting,
             'columns' => $columns,
             'logs'=>$model->datasetLogs,
             'relates' => $relates,
             'scholar' => $scholar,
-            'link_type' => $link_type
+            'link_type' => $link_type,
+            'flag' => $flag,
         ));
     }
 
@@ -383,7 +393,7 @@ class DatasetController extends Controller
 
 
 					// remove existing dataset attributes
-					$datasetAttributes = datasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$id,'attribute_id'=>$sKeywordAttr->id));
+					$datasetAttributes = DatasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$id,'attribute_id'=>$sKeywordAttr->id));
 
 					foreach ($datasetAttributes as $key => $keyword) {
 						$keyword->delete();

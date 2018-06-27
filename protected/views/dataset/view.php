@@ -15,44 +15,73 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 HTML;
 
 ?>
+<div class="content">
+    <div class="container">
 
-<?php $this->renderPartial('/search/_form',array('model'=>$form,
-        'dataset'=>$dataset,
-        'search_result'=>null,
-        'previous_doi'=>$previous_doi,
-        'next_doi'=>$next_doi
-        )); ?>
 
-<div class="row first">
-    <div class="span12"><p><?= Yii::t('app' , 'Data released on')?> <?= strftime("%B %d, %Y",strtotime($model->publication_date)) ?></p></div>
-</div>
-<div class="row dataset-information">
+ 
+                <section></section>
+                <div class="subsection">
+                    <div class="media">
+                        <div class="media-left">
+                                        <?php if($model->image) {
+                $url = $model->getImageUrl() ? $model->getImageUrl(): $model->image->image('image_upload');
+                
+                ?>
+            <a href="<?= $url ?>" >
+                <?= CHtml::image($url, $url, array('class'=>'media-object',
+                    'title'=>'<ul style="text-align:left;"><li>'.$model->image->tag.'</li><li>'.'License: '.$model->image->license.'</li><li>'.'Source: '.$model->image->source.'</li><li>'.'Photographer: '.$model->image->photographer.'</li></ul>')); ?>
+            </a>
+            <?php } ?>
+                            
+                        </div>
+                        <div class="media-body">
+                            <h4 class="left-border-title left-border-title-lg"><?echo $model->title; ?></h4>
+                            <p class="dataset-release-date-text">Dataset type:  <? echo MyHtml::encode(implode(", ", $model->getDatasetTypes()));?> <br> Data released on <?= strftime("%B %d, %Y",strtotime($model->publication_date)) ?></p>
+                            <div class="color-background color-background-block dataset-color-background-block">
+                                <p><?= $model->authorNames ?>(<?=substr($model->publication_date,0,4)?>): <?= $model->title.' '.$model->publisher->name.'. '; ?><a href="http://dx.doi.org/<?= $model->identifier; ?>">http://dx.doi.org/<?= $model->identifier; ?></a></p>
+                                <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?= $model->identifier; ?></span></a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="subsection">
+                    <p><?= $model->description; ?></p>
+                </div>
+               
+                <div class="subsection">
+                     <?php if(count($model->datasetAttributes)>0){?>
+                    <p>Keywords:</p>
+                    <ul class="list-inline">
+                    <? foreach ($model->datasetAttributes as $key=>$keyword){
+                        if ($keyword->attribute_id == 455)
+                            echo "<li><a href='/search/new?keyword=$keyword->value'>$keyword->value</a></li>";
 
-    <!--dataset content - left slidebar-->
-        <div class="span9">
-                <h3 class='dataset-title'><?echo $model->title; ?></h3>
-                <?php if (count($model->authors) > 0) { ?>
-                <p>
-                    <h4>
-                    <?= $model->authorNames ?>
-                    (<?=substr($model->publication_date,0,4)?>): <?= $model->title.' '.$model->publisher->name.'. '; ?>
-                    <a href="http://dx.doi.org/10.5524/<?= $model->identifier; ?>">http://dx.doi.org/10.5524/<?= $model->identifier ?></a>
-                    <a title="Export to Reference Manager/EndNote" href="<?= Dataset::URL_RIS . $model->identifier ?>"><span class="citation-button">RIS</span></a>
-                    <a title="Export to BibTeX" href="<?= Dataset::URL_BIBTEXT . $model->identifier ?>"><span class="citation-button">BibTeX</span></a>
-                    <a title="Export to Text" href="<?= Dataset::URL_TEXT . $model->identifier ?>"><span class="citation-button">Text</span></a>
-                    </h4>
-                </p>
-                <? } ?>
-
-                <p><?= $model->description; ?> </p>        
-                <span class="content-popup" <?= !Yii::app()->user->isGuest ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
-                    <a class="btn btn-green <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
+                      
+                    }
+                    ?>
+                    </ul>
+                     <?php } ?>
+                 <div class="pull-right">
+                    <p>
+                        <span class="citation-popup" data-content="View citations on Google Scholar">
+                            <a href="<?= $model->googleScholarLink ?>" target="_blank"><img class="dataset-des-images" src="/images/google_scholar.png"/></a>
+                        </span>
+                        <span class="citation-popup" data-content="View citations on Europe PubMed Central">
+                            <a href="<?= $model->ePMCLink ?>" target="_blank"><img class="dataset-des-images" src="/images/ePMC.jpg"/></a>
+                        </span>
+                    </p>
+                </div>    
+                </div>
+                                <div class="subsection">
+                                     <span class="content-popup" <?= !Yii::app()->user->isGuest ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
+                    <a class="btn background-btn background-btn-o <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
                         Contact Submitter
                     </a>
                     <? if( ! Yii::app()->user->isGuest && null == Author::findAttachedAuthorByUserId(Yii::app()->user->id) ) { ?>
                         <? Yii::log(__FUNCTION__."> Author::findAttachedAuthorByUserId:".Author::findAttachedAuthorByUserId(Yii::app()->user->id) , 'warning'); ?>
                         <span title="click to claim the dataset and link your user account to an author" data-toggle="tooltip" data-placement="bottom">
-                            <a href="#myModal" role="button" class="btn btn-green" data-toggle="modal">
+                            <a href="#myModal" role="button" class="btn background-btn background-btn-o" data-toggle="modal">
                                 Your dataset?
                             </a>
                         </span>
@@ -84,7 +113,6 @@ HTML;
                                                 if(output.status){
                                                     $("#message").addClass("alert").addClass("alert-success");
                                                     $("#message").html(output.message);
-
                                                 } else {
                                                     $("#message").addClass("alert").addClass("alert-error");
                                                     $("#message").html(output.message);
@@ -96,7 +124,6 @@ HTML;
                                                 'id' =>'claim_button_' . $author->id,
                                                 // 'disabled'=>in_array($model->upload_status, $status_array),
                                         ));
-
                                         ?>
                                                 </td><td><? echo $author->orcid ? " (orcid id:".$author->orcid.")" : "" ?> </td></tr>
                                             <? } ?>
@@ -119,7 +146,6 @@ HTML;
                                                 if(output.status){
                                                     $("#message").addClass("alert").addClass("alert-success");
                                                     $("#message").html(output.message);
-
                                                 } else {
                                                     $("#message").addClass("alert").addClass("alert-error");
                                                     $("#message").html(output.message);
@@ -131,28 +157,18 @@ HTML;
                                                 'id' =>'cancel_button',
                                                 // 'disabled'=>in_array($model->upload_status, $status_array),
                                         ));
-
                                     ?>
 
                                 </div>
                             </form>
                             </div>
                     <? } ?>
-                </span>
-
-                <div class="pull-right">
-                    <p>
-                        <span class="citation-popup" data-content="View citations on Google Scholar">
-                            <a href="<?= $model->googleScholarLink ?>" target="_blank"><img class="dataset-des-images" src="/images/google_scholar.png"/></a>
-                        </span>
-                        <span class="citation-popup" data-content="View citations on Europe PubMed Central">
-                            <a href="<?= $model->ePMCLink ?>" target="_blank"><img class="dataset-des-images" src="/images/ePMC.jpg"/></a>
-                        </span>
-                    </p>
+                    </span>
+                    
+                   
                 </div>
-                <div class="clear"></div>
-
-                <?php if($model->fairnuse) {
+                <div class="subsection">
+                  <?php if($model->fairnuse) {
                             if( (time() < strtotime($model->fairnuse))) { ?>
                     <img src="/images/fair_use2.gif" alt="policy" style=""/>
                     <p>
@@ -164,10 +180,16 @@ HTML;
                         so that you can work in collaboration rather than in competition.
                     </p>
                     <p><strong>This dataset fair use agreement is in place until <?= strftime('%d %B %Y',strtotime($model->fairnuse))?></strong></p>
-                <?php } } ?>
-
-                <?php if (count($model->manuscripts) > 0) { ?>
-                <h4><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></h4>
+                <?php } } ?>  
+                </div>
+                <div class="subsection">
+                    <div class="underline-title">
+                        <div>
+                            <h4>Additional details</h4>
+                        </div>
+                    </div>
+                    <?php if (count($model->manuscripts) > 0) { ?>
+                <h5><strong><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></strong></h5>
                 <p>
                     <? foreach ($model->manuscripts as $key=>$manuscript){                      
                         echo $manuscript->getFullCitation();
@@ -182,7 +204,7 @@ HTML;
                 <?php } ?>
 
                 <?php if (count($model->relations) > 0) { ?>
-                <h4><?= Yii::t('app' , 'Related datasets:')?></h4>
+                <h5><strong><?= Yii::t('app' , 'Related datasets:')?></strong></h5>
                 <p>
                 <?php foreach ($model->relations as $key=>$relation){
                 if($relation->relationship->name == "IsPreviousVersionOf")
@@ -233,13 +255,16 @@ HTML;
 
                 <?php } ?>
 
-                <?php if (count($model->externalLinks) > 0) { ?>
-                <p>
-                    <?php
+                <?php 
                         $types = array();
                         $protocol = array();
                         $jb = array();
                         $dmodel = array();
+                        $codeocean = array();
+                        if (count($model->externalLinks) > 0) { ?>
+                <p>
+                    <?php
+                        
                         foreach ($model->externalLinks as $key=>$externalLink){
                             $types[$externalLink->externalLinkType->name] = 1;
                         }
@@ -247,9 +272,9 @@ HTML;
                             $typeNameLabel = preg_replace('/(?:^|_)(.?)/e',"strtoupper('$1')",$typeName);
                             $typeNameLabel = preg_replace('/(?<=\\w)(?=[A-Z])/'," $1", $typeNameLabel);
                             $typeNameLabel = trim($typeNameLabel);
-                            if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse' and $typeNameLabel !== '3 D Models')
+                            if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse' and $typeNameLabel !== '3 D Models' and $typeNameLabel !== 'Code Ocean')
                             {
-                               echo "<h4>$typeNameLabel:</h4>";
+                               echo "<h5><strong>$typeNameLabel:</strong></h5>";
                             }
 
                             foreach ($model->externalLinks as $key=>$externalLink){
@@ -269,6 +294,11 @@ HTML;
                                        array_push($dmodel,$externalLink->url);
                                     
                                     }
+                                    elseif($typeName == 'Code Ocean')
+                                    {
+                                       array_push($codeocean,$externalLink->url);
+                                    
+                                    }
                                     else
                                     {
                                     echo '<p>'. MyHtml::link($externalLink->url, $externalLink->url) . '</p>';
@@ -276,50 +306,7 @@ HTML;
                                 }
                             }
                         }
-                            if(!empty($protocol)){
-                             echo "<h4>Protocols.io:</h4>";
-                             echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                             echo "<a id=\"js-close-btn1\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                             echo "<div id=\"js-logs-1\" class=\"js-logs\" style=\"display:none;\">";
-                             foreach ($protocol as $p) {
 
-                            {
-                                 echo "<iframe src=\"$p\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
-                            }
-                               
-                            }
-                             echo "</div>";
-                        }
-                            if(!empty($jb)){
-                             echo "<h4>JBrowse:</h4>";
-                             echo "<a id=\"js-expand-btn2\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                             echo "<a id=\"js-close-btn2\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                             echo "<div id=\"js-logs-2\" class=\"js-logs\" style=\"display:none;\">";
-                             foreach ($jb as $p) {
-
-                            {    
-                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
-                                 echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
-                            }
-                               
-                            }
-                             echo "</div>";
-                        }
-                         if(!empty($dmodel)){
-                             echo "<h4>3D Models:</h4>";
-                             echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                             echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                             echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
-                             foreach ($dmodel as $p) {
-
-                            {    
-                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
-                                
-                            }
-                               
-                            }
-                             echo "</div>";
-                        }
                         
                     ?>
                 </p>
@@ -343,7 +330,7 @@ HTML;
                     ?>
 
                     <?php if (!empty($primary_links)) { ?>
-                    <h4><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></h4>
+                <h5><strong><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></strong></h5>
                         <p>
                             <? foreach ($primary_links as $link) { ?>
                                 <?
@@ -359,7 +346,7 @@ HTML;
                     <?php } ?>
 
                     <?php if (!empty($secondary_links)) { ?>
-                        <h4><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></h4>
+                        <h5><strong><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></strong></h5>
                         <p>
                             <?php foreach ($secondary_links as $link) { ?>
                                 <?php
@@ -380,7 +367,7 @@ HTML;
 
                 <?php } ?>
                 <?php if (count($model->projects) > 0) { ?>
-                <h4><?=Yii::t('app' , 'Projects:')?></h4>
+                <h5><strong><?=Yii::t('app' , 'Projects:')?></strong></h5>
                 <p>
                     <? foreach ($model->projects as $key=>$project){
                         if ($project->image_location)
@@ -393,55 +380,69 @@ HTML;
                     ?>
                 </p>
                 <? } ?>
-                <?php if (count($model->datasetAttributes) > 0) { ?>
-                <h4><?=Yii::t('app' , 'Keywords:')?></h4>
-                <p>
-                    <? foreach ($model->datasetAttributes as $key=>$keyword){
-                        if ($keyword->attribute_id == 455)
-                            echo "<a href='/search/new?keyword=$keyword->value'>$keyword->value</a>&nbsp";
-
-                      
-                    }
-                    ?>
-                </p>
-                <? } ?>
-        </div>
-
-
-        <!--dataset Image - right slidebar-->
-        <div class="span3 data-img">
-            <h3><? echo MyHtml::encode(implode(", ", $model->getDatasetTypes()));?></h3>
-            <?php if($model->image) {
-                $url = $model->getImageUrl() ? $model->getImageUrl(): $model->image->image('image_upload');
-                ?>
-            <a href="<?= $url ?>" >
-                <?= CHtml::image($url, $url, array('class'=>'image-hint',
-                    'title'=>'<ul style="text-align:left;"><li>'.$model->image->tag.'</li><li>'.'License: '.$model->image->license.'</li><li>'.'Source: '.$model->image->source.'</li><li>'.'Photographer: '.$model->image->photographer.'</li></ul>')); ?>
-            </a>
-            <?php } ?>
-            <br/>
-            <?php if($model->datasetFunders) { ?>
-            <div style="margin-top:20px;height:220px;overflow: scroll;" >
-                <h4>Funding:</h4>
-                <!--get information for Funding-->
-                    <?php foreach($model->datasetFunders as $fd) { ?>
-                    <ul class="funding-list">
-                        <li>Funding body - <?= $fd->funder->primary_name_display ?></li>
-                        <?php if($fd->funder->country) { ?><li>Location - <?= $fd->funder->country ?></li><?php } ?>
-                        <?php if($fd->grant_award) { ?><li>Award ID - <?= $fd->grant_award ?></li><?php } ?>
-                        <?php if($fd->comments) { ?><li>Comment - <?= $fd->comments ?></li><?php } ?>
+ 
+                </div>
+              
+                <section>
+                    <ul class="nav nav-tabs nav-border-tabs" role="tablist">
+                        <?php if(count($model->samples) > 0) {
+                            ?>
+                           <li role="presentation" id="p-sample"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
+                        <?php }                       
+                        ?>
+                        <?php if(count($model->files) > 0) {
+                            
+                              if(count($model->samples) < 1)  
+                              { 
+                                  ?>
+                        <li role="presentation" id="p-file" class="active"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>  
+                              <?php } else { 
+                              ?>
+                        <li role="presentation" id="p-file"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
+                        <?php }}                       
+                        ?>
+                         <?php if(count($model->datasetFunders) > 0) {
+                            ?>
+                            <li role="presentation" id="p-funding"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
+                        <?php }                       
+                        ?>
+                        <?php if(count($protocol) > 0) {
+                            ?>
+                           <li role="presentation" id="p-protocol"><a href="#protocol" aria-controls="protocol" role="tab" data-toggle="tab">Protocols.io</a></li>
+                        <?php }                       
+                        ?>
+                        <?php if(count($jb) > 0) {
+                            ?>
+                           <li role="presentation" id="p-jb"><a href="#jb" aria-controls="jb" role="tab" data-toggle="tab">JBrowse</a></li>
+                        <?php }                       
+                        ?> 
+                        <?php if(count($dmodel) > 0) {
+                            ?>
+                           <li role="presentation" id="p-dmodel"><a href="#demodel" aria-controls="demodel" role="tab" data-toggle="tab">3D Viewer</a></li>
+                        <?php }                       
+                        ?> 
+                        <?php if(count($codeocean) > 0) {
+                            ?>
+                           <li role="presentation" id="p-codeocean"><a href="#codeocean" aria-controls="codeocean" role="tab" data-toggle="tab">Code Ocean</a></li>
+                        <?php }                       
+                        ?>    
+                        <li role="presentation" id="p-history"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
+                        
                     </ul>
-                    <?php } ?>
-            </div>
-            <?php } ?>
-        </div>
-</div>
-
-<div class="row">
-    <div class="span12">
-        <?php if($samples->getData()){?>
-        <h4><?=Yii::t('app' , 'Samples:')?> <?php $this->renderPartial('_sample_setting',array('columns'=>$columns)); ?></h4>
-        <?php
+       
+            
+                    <div class="tab-content"> 
+                        
+                             <?php if(count($model->samples) > 0) {
+                            ?>   
+                        
+                      <div role="tabpanel" class="tab-pane active" id="sample">
+                        <button class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#files-modal" style="border-color: #e5e5e5; color: #656565; height: 34px; margin-bottom: -34px; background-color: #fff;"><span class="glyphicon glyphicon-adjust"></span> <?php $this->renderPartial('_sample_setting',array('columns'=>$columns)); ?></button>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                                                <?php
             $this->widget('zii.widgets.grid.CGridView', array(
                 'id' => 'sample-grid',
                 'dataProvider'=>$samples,
@@ -458,27 +459,32 @@ HTML;
                         'value' => '$data->linkName',
                         'htmlOptions' => array('class'=>'left'),
                         'visible' => in_array('name', $columns),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'name' => 'taxonomic_id',
                         'value' => 'CHtml::link($data->species->tax_id, Species::getTaxLink($data->species->tax_id))',
                         'type' => 'raw',
                         'visible' => in_array('taxonomic_id', $columns),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'name' => 'common_name',
                         'value' => '$data->species->common_name',
                         'visible' => in_array("common_name", $columns),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'name' => 'genbank_name',
                         'value' => '$data->species->genbank_name',
                         'visible' => in_array("genbank_name", $columns),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'name' => 'scientific_name',
                         'value' => '$data->species->scientific_name',
                         'visible' => in_array("scientific_name", $columns),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'name' => 'attribute',
@@ -486,28 +492,32 @@ HTML;
                         'type' => 'raw',
                         'visible' => in_array("attribute", $columns),
                         'htmlOptions' => array('class'=>'left'),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                 ),
 
             ));
         ?>
-        <?php } ?>
-
-        <div class="clear"></div>
-
-        <?php
-            $aspera = null;
-            if($model->ftp_site){
-                $aspera = strstr( $model->ftp_site , 'pub/');
-                if($aspera)
-                    $aspera = 'http://aspera.gigadb.org/?B=' . $aspera;
-            }
-
-        ?>
-        <h4><?=Yii::t('app' , 'Files:')?> <?= MyHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank'))?>
-        <?php $this->renderPartial('_display_setting',array('setting'=>$setting));?>
-        </h4>
-        <?php
+    
+                      </div>
+                            <?php }                       
+                        ?>
+                    <?php 
+                 if(count($model->files) > 0) {
+                            
+                    if(count($model->samples) > 0) {
+                            ?>     
+                        <div role="tabpanel" class="tab-pane" id="files">
+                         <?php }  else {?>
+                         <div role="tabpanel" class="tab-pane active" id="files">    
+                         <?php   } ?>        
+                            <button class="btn btn-default pull-left" type="button" data-toggle="modal" data-target="#files-modal" style="border-color: #e5e5e5; color: #656565; height: 34px; margin-bottom: -34px; background-color: #fff;"><span class="glyphicon glyphicon-adjust"></span> <?= MyHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank'))?></button>
+                            <button class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#files-modal" style="border-color: #e5e5e5; color: #656565; height: 34px; margin-bottom: -34px; background-color: #fff;"><span class="glyphicon glyphicon-adjust"></span> <?php $this->renderPartial('_display_setting',array('setting'=>$setting));?></button>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <?php
             $this->widget('zii.widgets.grid.CGridView', array(
                 'id' => 'file-grid',
                 'dataProvider'=>$files,
@@ -523,43 +533,51 @@ HTML;
                         'type' => 'raw',
                         'value' => '$data->nameHtml',
                         'visible' => in_array('name', $setting),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'name' => 'description',
                         'value' => '$data->description',
                         'visible' => in_array('description', $setting),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'name' => 'sample_name',
                         'type' => 'raw',
                         'value' => '$data->getallsample($data->id)',
                         'visible' => in_array('sample_id', $setting),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'name' => 'type_id',
                         'value' => '$data->type->name',
                         'visible' => in_array("type_id", $setting),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'name' => 'format_id',
                         'value' => '$data->format->name',
                         'visible' => in_array("format_id", $setting),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'name' => 'size',
                         'value' => 'File::staticBytesToSize($data->size)',
                         'visible' => in_array("size", $setting),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'name' => 'date_stamp',
                         'value' => '$data->date_stamp',
                         'visible' => in_array("date_stamp", $setting),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'name' => 'attribute',
                         'type' => 'raw',
                         'value' => '$data->attrDesc',
                         'visible' => in_array("attribute", $setting),
+                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
                     ),
                     array(
                         'class'=>'CButtonColumn',
@@ -582,124 +600,185 @@ HTML;
 
             ));
         ?>
-    </div>
-</div>
 
-<!-- HISTORY LOG  -->
-<?php if ($model->isPublic && $logs) : ?>
-    <div class="dataset_log">
-        <h4><?= Yii::t('app' , 'History:')?></h4>
-        <a id="js-expand-btn" class="btn btn-expand"><div class="history-status"> + </div></a>
-        <a id="js-close-btn" class="btn btn-collapse" style='display:none;'><div class="history-status"> - </div></a>
-        <div id="js-logs-2"class="js-logs" style='display:none;'>
-            <table class="table table-bordered">
-                <thead><tr><th class="span3">Date</th><th class="span8">Action</th></tr></thead>
-                <tbody>
-                    <?php foreach($logs as $log) : ?>
+                        </div>
+                            <?php }                       
+                        ?>
+                             <?php if(count($model->datasetFunders) > 0) {
+                            ?>
+                        
+                        <div role="tabpanel" class="tab-pane" id="funding">
+                           
+                                
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>Funding body</th>
+                                <th>Awardee</th>
+                                <th>Award ID</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                          <?php foreach($model->datasetFunders as $fd) { ?>                              
+                            <tr>
+                                <td><?= $fd->funder->primary_name_display ?></td>
+                                <td><?= $fd->awardee ?></td>
+                                <td><?= $fd->grant_award ?></td>
+                                <td><?= $fd->comments ?></td>
+                            </tr>
+                            <?php } ?> 
+                        </tbody>
+                    </table>
+               
+
+                        </div>
+                    <?php }                       
+                        ?>   
+                        
+                    <?php if (count($protocol) > 0) { ?>        
+                     
+                         <div role="tabpanel" class="tab-pane" id="protocol">
+                        <?php    
+                        
+                            echo "<p>Protocols.io:</p>";
+                            // echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                            // echo "<a id=\"js-close-btn1\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                            // echo "<div id=\"js-logs-1\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($protocol as $p) {
+
+                            {
+                                 echo "<iframe src=\"$p\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
+                            }
+                               
+                            }
+                            // echo "</div>"; 
+                         ?>    
+                             
+                              </div> 
+                             
+                             
+                    <?php }?>  
+                    
+                    <?php if (count($jb) > 0) { ?>        
+                     
+                         <div role="tabpanel" class="tab-pane" id="jb">
+                        <?php    
+                        
+                             echo "<p>JBrowse:</p>";
+                             //echo "<a id=\"js-expand-btn2\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                            // echo "<a id=\"js-close-btn2\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                             //echo "<div id=\"js-logs-2\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($jb as $p) {
+
+                            {    
+                                 echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                 echo "<br>";
+                                 echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
+                            }
+                               
+                            }
+                             //echo "</div>";
+                         ?>    
+                             
+                              </div> 
+                             
+                             
+                    <?php }?>   
+                    
+                    <?php if (count($dmodel) > 0) { ?>        
+                     
+                         <div role="tabpanel" class="tab-pane" id="demodel">
+                        <?php    
+                        
+                             echo "<p>3D Models:</p>";
+                             //echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                            // echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                            // echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($dmodel as $p) {
+
+                            {    
+                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                
+                            }
+                               
+                            }
+                            // echo "</div>";
+                         ?>    
+                             
+                             </div>
+                             
+                             
+                    <?php }?>  
+                            
+                     <?php if (count($codeocean) > 0) { ?>        
+                     
+                         <div role="tabpanel" class="tab-pane" id="codeocean">
+                        <?php    
+                        
+                             echo "<p>Code Ocean:</p>";
+                             //echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
+                            // echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
+                            // echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
+                             foreach ($codeocean as $p) {
+
+                            {    
+                                 echo "<p>$p</p>";
+                                
+                            }
+                               
+                            }
+                            // echo "</div>";
+                         ?>    
+                             
+                             </div>
+                             
+                             
+                    <?php }?>        
+                            
+                           
+                        
+                                       
+                        <div role="tabpanel" class="tab-pane" id="history">
+                            
+                          <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Action</th>                               
+                            </tr>
+                        </thead>
+                        <tbody>                            
+                        <?php foreach($logs as $log) : ?>
                         <tr>
                             <td><?= date('F j, Y', strtotime($log->created_at)) ?></td>
                             <td><?= $log->message ?></td>
                         </tr>
-                    <?php endforeach ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-<?php endif ?>
-<!-- /HISTORY LOG  -->
-
-<div class="clear"></div>
-<div class="row">
-    <div class="pull-right">
-        <div class="count-btn" id="facebook-share-btn">
-            <script>(function(d){
-                var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-                    js = d.createElement('script'); js.id = id; js.async = true;
-                js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-                d.getElementsByTagName('head')[0].appendChild(js);
-                }(document));
-            </script>
-          <fb:share-button href="<?=Yii::app()->createUrl('dataset/'.$model->identifier)?>" type="button_count">
-          </fb:share-button>
-        </div>
-        <div class="count-btn">
-            <div class="g-plus" data-action="share" data-annotation="bubble"></div>
-        </div>
-        <div class="count-btn">
-            <a href="https://twitter.com/share" class="twitter-share-button" data-via="GigaScience">Tweet</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-            </script>
-        </div>
-    </div>
-
-</div>
-
-<?php if (count($relates)) : ?>
-
-<div class="container">
-<h4><?= Yii::t('app' , 'Other datasets you might like:')?></h4>
-  <div class="span10 offset1 content-carousel">
-
-    <div class="well">
-
-        <div id="myCarousel" class="carousel slide giga-carousel" data-total="<?php echo count($relates) ?>">
-
-            <ol class="carousel-indicators hide-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-
-                <?php if (count($relates) > 3) : ?>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                <?php endif ?>
-
-                <?php if (count($relates) > 6) : ?>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
-                <?php endif ?>
-            </ol>
-
-            <!-- Carousel items -->
-            <div class="carousel-inner giga-carousel-inner">
-
-                <?php foreach (array_chunk($relates, 3) as $key => $relateByTree) : ?>
-
-                    <div class="item <?= $key == 0 ? 'active' : ''?>" >
-                        <div class="row-fluid">
-
-                            <?php foreach ($relateByTree as $relate) : ?>
-
-                                <?php $title = strip_tags($relate->title) ?>
-                                <?php $url = $relate->getImageUrl() ? $relate->getImageUrl() : $relate->image->image('image_upload') ?>
-                                <div class="span4">
-                                    <a href="<?= $relate->shortUrl ?>" class="thumbnail">
-                                        <img src="<?= $url ? $url : 'http://placehold.it/250x250'?>" alt="Image">
-                                    </a>
-                                    <a class="link-doi" href="http://dx.doi.org/10.5524/<?= $relate->identifier; ?>">
-                                        DOI: 10.5524/<?= $relate->identifier ?>
-                                    </a>
-                                    <p><?= CHtml::encode(strlen($title) > 50 ? substr($title, 0,50)."...": $title)?></p>
-                                    <p><?= strftime('%Y-%m-%d', strtotime($relate->publication_date))?></p>
-                                </div>
-
-                            <?php endforeach ?>
+                        <?php endforeach ?>
+                        </tbody>
+                       </table>
 
                         </div>
                     </div>
+                </section>
+            </div>
+        </div>
 
-                <?php endforeach ?>
 
-            </div><!--/carousel-inner-->
 
-            <?php if (count($relates) > 3) : ?>
-                <a class="carousel-control left homepage-carousel-control gigadb-arrow-button" href="#myCarousel" data-slide="prev">‹</a>
-                <a class="carousel-control right homepage-carousel-control gigadb-arrow-button" href="#myCarousel" data-slide="next">›</a>
-            <?php endif ?>
 
-        </div><!--/myCarousel-->
 
-    </div><!--/well-->
-  </div>
-</div>
+<div class="clear"></div>
+
+
+<?php if (count($relates)) : ?>
+
+
 
 <?php endif ?>
+<a href="/dataset/<?php echo $previous_doi?>"  title="Previous dataset">><span class="fa fa-angle-left fixed-btn-left"></span></a>
+<a href="/dataset/<?php echo $next_doi?>" title="Next dataset">><span class="fa fa-angle-right fixed-btn-right"></span></a>
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script>
@@ -721,6 +800,89 @@ $(document).ready(function() {
 		var arrow = $(this).find('.tab-container__arrow')[0];
 		$(arrow).toggleClass('flip-vertical');
 	});
+        
+        var url = location.pathname;
+        var sample_index = url.lastIndexOf('Sample_');
+        var file_index = url.lastIndexOf('File_');
+        
+         if (/Sample/.test(window.location.href)) {
+             $("#p-sample").addClass("active");
+              var e = document.getElementById('p-sample');
+              if (!!e && e.scrollIntoView) {
+                   e.scrollIntoView();
+              }
+             
+        }
+        else{
+             $("#p-sample").addClass("active");           
+        }
+         if (/File/.test(window.location.href)) {
+            
+             $("#p-sample").removeClass("active");
+             $("#sample").removeClass("tab-pane active");
+             $("#sample").addClass("tab-pane");
+             $("#p-file").addClass("active");
+             $("#files").addClass("active");
+             
+             var e = document.getElementById('p-file');
+             if (!!e && e.scrollIntoView) {
+             e.scrollIntoView();
+            }
+            
+             
+        }
+   
+        if(sample_index > 0 && file_index>0)
+        {
+        if(sample_index > file_index)
+        {
+            $("#p-file").removeClass("active");
+            $("#files").removeClass("tab-pane active");
+            $("#files").addClass("tab-pane");
+            $("#p-sample").addClass("active");
+            $("#sample").addClass("active");
+              var e = document.getElementById('p-sample');
+              if (!!e && e.scrollIntoView) {
+                   e.scrollIntoView();
+              }   
+        }
+       else
+        {
+             $("#p-sample").removeClass("active");
+             $("#sample").removeClass("tab-pane active");
+             $("#sample").addClass("tab-pane");
+             $("#p-file").addClass("active");
+             $("#files").addClass("active");
+             
+             var e = document.getElementById('p-file');
+             if (!!e && e.scrollIntoView) {
+             e.scrollIntoView();
+            }
+        }
+    }
+    var MyJSStringVar = "<?php Print($flag); ?>"
+    if(MyJSStringVar == 'file')
+    {
+             $("#p-sample").removeClass("active");
+             $("#sample").removeClass("tab-pane active");
+             $("#sample").addClass("tab-pane");
+             $("#p-file").addClass("active");
+             $("#files").addClass("active");
+             
+             var e = document.getElementById('p-file');
+             if (!!e && e.scrollIntoView) {
+             e.scrollIntoView();
+            }
+    }
+    if(MyJSStringVar == 'sample')
+    {
+              var e = document.getElementById('p-sample');
+              if (!!e && e.scrollIntoView) {
+                   e.scrollIntoView();
+              }   
+    }
+    
+        
 });
 /* ----------------------------------- */
 

@@ -17,14 +17,34 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
     </font>
 <? } ?>
 
-<h2><?= Yii::t('app', 'Your Profile Page') ?></h2>
-<div class="clear"></div>
-<table align="center">
-    <tr >
-        <td style="left:50px">
-            <div class="row">
-                <div>
-                    <div class="form well user-profile-box">
+<div class="content">
+            <div class="container">
+                <section class="page-title-section">
+                    <div class="page-title">
+                        <ol class="breadcrumb pull-right">
+                            <li><a href="/">Home</a></li>
+                            <li class="active">Your profile</li>
+                        </ol>
+                        <h4>Your profile page</h4>
+                    </div>
+                </section>
+                <section>
+                    <div style="padding-top: 1px;">
+                        <ul class="nav nav-tabs nav-border-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#edit" aria-controls="edit" role="tab" data-toggle="tab">Personal details</a></li>                          
+                            <li role="presentation"><a href="#submitted" aria-controls="submitted" role="tab" data-toggle="tab">Your datasets</a></li>
+                            <li role="presentation"><a href="#saved" aria-controls="saved" role="tab" data-toggle="tab">Saved search</a></li>
+
+                        </ul>
+                    </div>
+                </section>
+                <section>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="edit">
+                            <div class="row">
+                                <div class="col-xs-8 col-xs-offset-2">
+                                 
+                                        <div class="form well user-profile-box">
                         <?php
                         $form = $this->beginWidget('CActiveForm', array(
                             'id' => 'EditProfile-form',
@@ -32,107 +52,94 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                             'htmlOptions' => array('class' => 'form-horizontal'),
                         ));
                         ?>
-                        <div class="control-group">
-                            <?= $form->label($model, 'email', array('class' => 'control-label')) ?>
-                            <div class="controls">
-                                <label class="profile-label"><?= $model->email ?></label>
+                        <div class="form-group">
+                            <?= $form->label($model, 'email', array('class' => 'col-xs-5 control-label')) ?>
+                            <div class="col-xs-5">
+                                <label class="profile-label" style="padding-right: 0px;"><?= $model->email ?></label>
+                             
                                 <?= $form->textField($model, 'email', array('size' => 30, 'maxlength' => 128, 'class' => 'profile-textbox', 'style' => 'display:none')) ?>
                                 <?= $form->error($model, 'email') ?>
                             </div>
                         </div>
 
-                        <div class="control-group">
-                            <?= $form->label($model, 'first_name', array('class' => 'control-label')) ?>
-                            <div class="controls">
-                                <label class="profile-label"><?= $model->first_name ?></label>
+                        <div class="form-group">
+                            <?= $form->label($model, 'first_name', array('class' => 'col-xs-5 control-label')) ?>
+                            <div class="col-xs-5">
+                                <label class="profile-label" style="padding-right: 0px;"><?= $model->first_name ?></label>
+                               
                                 <?= $form->textField($model, 'first_name', array('size' => 30, 'maxlength' => 60, 'class' => 'profile-textbox', 'style' => 'display:none')) ?>
                                 <?= $form->error($model, 'first_name') ?>
                             </div>
                         </div>
 
-                        <div class="control-group">
-                            <?= $form->label($model, 'last_name', array('class' => 'control-label')) ?>
-                            <div class="controls">
-                                <label class="profile-label"><?= $model->last_name ?></label>
+                        <div class="form-group">
+                            <?= $form->label($model, 'last_name', array('class' => 'col-xs-5 control-label')) ?>
+                            <div class="col-xs-5">
+                                <label class="profile-label" style="padding-right: 0px;"><?= $model->last_name ?></label>
+                                
                                 <?= $form->textField($model, 'last_name', array('size' => 30, 'maxlength' => 60, 'class' => 'profile-textbox', 'style' => 'display:none')) ?>
                                 <?= $form->error($model, 'last_name') ?>
                             </div>
                         </div>
 
-                        <div class="control-group">
-                            <?= $form->label($model, 'affiliation', array('class' => 'control-label')) ?>
-                            <div class="controls">
-                                <label class="profile-label"><?= $model->affiliation ?></label>
-                                <?= $form->textField($model, 'affiliation', array('size' => 30, 'maxlength' => 60, 'class' => 'profile-textbox', 'style' => 'display:none')) ?>
+                        <div class="form-group">
+                            <?= $form->label($model, 'affiliation', array('class' => 'col-xs-5 control-label')) ?>
+                            <div class="col-xs-5">
+                                <label class="profile-label" style="padding-right: 0px;"><?= $model->affiliation ?></label>
+                                
+                                <?= $form->textField($model, 'affiliation', array('size' => 30, 'maxlength' => 60, 'class' => 'profile-textbox', 'style' => 'display:none')) ?>                               
                                 <?= $form->error($model, 'affiliation') ?>
                             </div>
                         </div>
 
-                        <div class="control-group">
-                            <?= $form->labelEx($model,'preferred_link', array('class'=>'control-label')) ?>
-                            <div class="controls">
-                                <label class="profile-label"><?= $model->preferred_link ?></label>
+                        <div class="form-group">
+                            <?= $form->labelEx($model,'preferred_link', array('class'=>'col-xs-5 control-label')) ?>
+                            <div class="col-xs-5">
+                                <label class="profile-label" style="padding-right: 0px;"><?= $model->preferred_link ?></label>
                                 <?= CHtml::activeDropDownList($model,'preferred_link', User::$linkouts, array('class'=>'profile-textbox','style'=>'display:none')) ?>
                                 <?= $form->error($model,'preferred_link') ?>
                             </div>
                         </div>
 
-                        <div class="control-group">
-                            <div class="controls">
-                                <?php echo $form->checkbox($model, 'newsletter', array('disabled' => 'disabled;', 'class' => 'profile-checkbox')); ?>
-                                <label disabled="disabled"><?= Yii::t('app', 'Add me to GigaDB\'s mailing list') ?></label>
+                        <div class="form-group">
+                            <div class="text-center">
+                                <?php echo $form->checkbox($model, 'newsletter', array('disabled' => 'disabled;', 'class' => 'checkbox','style' =>'position: relative; display: inline-block')); ?>
+                                <label disabled="disabled" ><?= Yii::t('app', 'Add me to GigaDB\'s mailing list') ?></label>
                             </div>
                         </div>
 
-                        <div class="control-group">
+                        <div class="form-group">
+                            <div class="text-center">
                             <div class="controls">
-                                <a id="cancel-btn" class="btn" style="display:none"><?= Yii::t('app', 'Cancel') ?></a>
-                                <?= MyHtml::submitButton(Yii::t('app', 'Save'), array('id' => 'save-btn', 'class' => 'btn-green', 'style' => 'display:none')) ?>
+                                <a id="cancel-btn" class="btn background-btn" style="display:none"><?= Yii::t('app', 'Cancel') ?></a>
+                                <?= MyHtml::submitButton(Yii::t('app', 'Save'), array('id' => 'save-btn', 'class' => 'btn background-btn', 'style' => 'display:none')) ?>
                             </div>
+                            <br>
+                            <button id="edit-btn" type="button" class="btn background-btn">Edit</button>
+                            <a href="/user/changePassword" class="btn background-btn"><?= Yii::t('app', 'Change Password') ?></a>
+                            <a href="/dataset/upload" class="btn background-btn"><?= Yii::t('app', 'Submit new dataset') ?></a>
+                        </div>
                         </div>
                     </div><!--well-->
 
                     <? $this->endWidget() ?>
-                </div><!--span8-->
-            </div><!-- user-form -->
-        </td>
-        <td style="padding-left: 50px;">
-            <div class="row">
-                <div class="form">
-                    <div class="left4">
-
-
-                        <div class="control-group">
-                            <div class="controles">
-                                <a id="edit-btn" class="btn-green"><?= Yii::t('app', 'Edit Personal Details') ?></a>
-
+                                    </div>
+                                
                             </div>
+                        </div>     
+                        <div role="tabpanel" class="tab-pane" id="submitted">
+                         <?= $this->renderPartial('uploadedDatasets', array('uploadedDatasets' => $uploadedDatasets)); ?>
                         </div>
-
-                        <div class="control-group">
-                            <div class="controls">
-                                <a href="/user/changePassword" class="btn-green"><?= Yii::t('app', 'Change Password') ?></a>
-                            </div>
+                        <div role="tabpanel" class="tab-pane" id="saved">
+                         <?= $this->renderPartial('searches', array('searchRecord' => $searchRecord)); ?>
                         </div>
-
-                        <div class="control-group">
-                            <div class="controls">
-                                <a class="btn-green" href="/dataset/upload" >
-                                    Submit new dataset</a>
-
-                            </div>
-                        </div>
-
-
+                        
                     </div>
-                </div>
+                </section>
             </div>
+        </div>
 
-        </td>
-    </tr>
-</table>
 
-    <div class="clear"></div>
 
     <?= $this->renderPartial('uploadedDatasets', array('uploadedDatasets' => $uploadedDatasets)); ?>
     <?= $this->renderPartial('authoredDatasets', array('authoredDatasets' => $authoredDatasets,'linkedAuthors' => $linkedAuthors)); ?>

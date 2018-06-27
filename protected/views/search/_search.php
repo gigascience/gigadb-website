@@ -1,7 +1,9 @@
-<div class="row">
-    <div class="span12">
-    <?php echo MyHtml::beginForm('/search/new','GET',array('class'=>'form-search well','onsubmit'=>'return validateForm(this);')); ?>
+
+    <?php echo MyHtml::beginForm('/search/new','GET',array('class'=>'form','onsubmit'=>'return validateForm(this);')); ?>
     <?php echo MyHtml::errorSummary($model); ?>
+
+   <div class="form-group home-search-bar-group">
+       <div class="input-group search-bar-group">
     <?php
 
         $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
@@ -14,12 +16,18 @@
                  'minLength'=>'2',
              ),
             'htmlOptions'=>array(
-                 'class'=>'span7 offset1',
+                 'class'=>'form-control',
              ),
              'value'=>$model->keyword
         ));
-
-        echo MyHtml::submitButton(Yii::t('app' , 'Search again'), array('class'=>'span2 btn-green'));
+          ?>
+           
+        <span class="input-group-btn">
+       <button class="btn background-btn" type="submit">
+                                                <i class="fa fa-search"></i> Search again
+                                            </button>
+          
+             <?
         if(!Yii::app()->user->isGuest) {
             
             echo MyHtml::ajaxButton(Yii::t('app' , 'Save current search criteria'),array("/search/save"),array('type'=>'POST','dataType'=>'json','data'=>array('criteria'=>$model->criteria, 'result'=>$model->query_result) ,'success'=>"function(data){
@@ -28,15 +36,17 @@
                 }else {
                     alert('Successfully save search query');
                 }
-            }") ,array('class'=>'span3 btn'));
+            }") ,array('class'=>'btn background-btn'));
         }
     ?>
-
+        </span>   
+      
+ </div>
+</div>
 
     <?php echo MyHtml::endForm(); ?>
 
-    </div>
-</div>
+   
 
 <div id="saveSearchStatus" >
     <div id="saveSearchSuccess" style="display:none">
