@@ -1,19 +1,15 @@
 
-<div class="row">
-    <div class="span12">
-
     <? if (Yii::app()->user->hasFlash('keyword')) { ?>
         <div>
         <?= Yii::app()->user->getFlash('keyword'); ?>
         </div>
     <? } ?>
 
-    <?php echo MyHtml::beginForm('/search/new','GET',array('class'=>'form-search well','onsubmit'=>'return validateForm(this);')); ?>
+    <?php echo MyHtml::beginForm('/search/new','GET',array('class'=>'form','onsubmit'=>'return validateForm(this);')); ?>
     <?php echo MyHtml::errorSummary($model); ?>
 
-    <?php if(isset($previous_doi)) : ?>
-        <a class="carousel-doi gigadb-arrow-button left" href="/dataset/<?php echo $previous_doi ?>">&lsaquo;</a>
-    <?php endif ?>
+   <div class="form-group home-search-bar-group">
+       <div class="input-group search-bar-group">
     
     <?php        
                
@@ -27,15 +23,20 @@
                              'minLength'=>'2',
                              ),
             'htmlOptions'=>array(
-                                 'class'=>'span8 offset1'
+                                 'class'=>'form-control',
+                                 'placeholder'=>'e.g. Chicken, brain etc...',
                                  ),
             ));
-        echo MyHtml::submitButton(Yii::t('app' , 'Search'), array('class'=>'span2 btn-green'));
-    ?>
+        ?>
+    
+     <span class="input-group-btn">
+       <button class="btn background-btn" type="submit">
+                                                <i class="fa fa-search"></i> Search
+                                            </button>
+    </span>
 
-    <?php if (isset($next_doi)) : ?>
-        <a class="carousel-doi gigadb-arrow-button right" href="/dataset/<?php echo $next_doi ?>">&rsaquo;</a>
-    <?php endif ?>
+  </div>
+</div>
 
     <!--
     <a data-toggle="modal" href="#how-to-use-advanced-search" class="hint advanced-search-hint"></a> -->
@@ -89,8 +90,7 @@ The full meaning of this search is:
       </div>
     </div>
     -->
-    </div>
-</div>
+
 
 
 

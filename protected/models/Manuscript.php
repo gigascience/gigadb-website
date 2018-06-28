@@ -108,7 +108,7 @@ class Manuscript extends MyActiveRecord
     	$url= "http://dx.doi.org/".$this->identifier;
         $ch= curl_init($url);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: text/x-bibliography','style=apa'));	
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	$curl_response = curl_exec($ch);
@@ -122,8 +122,6 @@ class Manuscript extends MyActiveRecord
         return $curl_response;
         
     }
-    
-    
 
     public function behaviors() {
         return array(

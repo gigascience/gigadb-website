@@ -27,15 +27,8 @@ $(function(){
     <a href="#" class="btn" data-dismiss="modal">Close</a>
   </div>
 </div>-->
-<!-- <?php
-    echo MyHtml::beginForm('/search/index','GET',array('id'=>'filter_form'));
-    echo MyHtml::hiddenField("keyword",$model->keyword);
-    echo MyHtml::hiddenField("tab",$model->tab,array('id'=>'filter_tab'));
-    echo MyHtml::hiddenField("exclude",$model->exclude);
-
-    echo MyHtml::submitButton(Yii::t('app' ,'Apply Filters'), array('class'=>'span2 btn-green filter'));
-
-?> -->
+<form id="filter_form" method="GET">
+<input type="hidden" name="keyword" value="<?= $model->keyword ?>"/>
 
 <!-- FILTERS FOR DATASETS -->
     <div id="dataset_filter">
@@ -58,12 +51,12 @@ $(function(){
                 </div>
             </div>
         </div>
-        <div class="filter">
+      <div class="filter">
             <h4 class='heading'><?=Yii::t('app' , 'Dataset Type')?></h4>
             <div class='filter-content' style="<?= $model->dataset_type ? 'display:block;': 'display:none;'?>">
                 <button class="btn btn_filter" id="btn_dataset_type"><? if(empty($model->dataset_type)) echo Yii::t('app' , 'Enable All'); else echo Yii::t('app' , 'Disable'); ?></button>
                 <div class="options <? if(empty($model->dataset_type)) echo 'disabled'; ?>">
-                    <? echo MyHtml::checkBoxList("dataset_type",$model->dataset_type, CHtml::listData($list_dataset_types, 'name', 'name'),array('class'=>'dataset_type')); ?>
+                    <? echo MyHtml::checkBoxList("dataset_type",$model->dataset_type, CHtml::listData($list_dataset_types, 'id', 'name'),array('class'=>'dataset_type')); ?>
                 </div>
             </div>
         </div>

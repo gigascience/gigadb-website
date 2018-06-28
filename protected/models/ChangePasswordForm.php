@@ -17,9 +17,10 @@ class ChangePasswordForm extends CFormModel
 	{
 		return array(
 			// username and password are required
-			array('password, confirmPassword, user_id', 'required'),
+			array('password, confirmPassword, user_id, terms', 'required'),
                         array('password', 'compare', 'compareAttribute'=>'confirmPassword'),
                         array('terms','compare', 'compareValue' => TRUE,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
+                    
 		);
 	}
 

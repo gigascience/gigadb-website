@@ -109,7 +109,8 @@ class SearchController extends Controller
 	}
 
     
-    public function actionNew($keyword = '') {       
+    public function actionNew($keyword = '') {   
+        $this->layout="new_main";
         $ds = new DatabaseSearch();        
         $offset = 0;
         $limit = 10;

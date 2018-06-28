@@ -1,14 +1,15 @@
-<div class="tab-pane active">
-	<table class="table table border">
+<section>
+
+	<table class="table table-bordered saved-table text-center">
 		<thead>
 			<tr>
             	<th colspan="9"><?= Yii::t('app', 'Your Saved Search') ?></th>
         	</tr>
 			<tr>
-				<th class="span3">
+				<th>
 					Keyword
 				</th>
-				<th class="span4">
+				<th>
 					Result
 				</th>
 			</tr>
@@ -27,4 +28,5 @@
 			<?php } ?>
 		</tbody>
 	</table>
-</div>
+
+</section>

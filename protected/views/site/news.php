@@ -1,7 +1,13 @@
-<div id="myNews" class="carousel slide span12" >
+<div id="myNews" class="carousel slide span12" style="width:1100px" >
   <!-- Carousel items -->
+ 
+  
+  
   <div class="module-box">
-    <h2>Latest news</h2>
+
+      <br>
+      <br>
+      <br>
       <div class="carousel-inner module-inner">
         <?php
         $active="active";
@@ -12,9 +18,9 @@
             <div class="<? echo $active; ?> item">
             <? }?> 
                 <div class="data-block">
-                  <h4><?php $temp_news->title; ?></h4>
+                  <h5><?php echo $temp_news->title; ?></h5>
                   <p>
-                    <? echo '<br/>';
+                    <? 
 
                     if(strlen($temp_news->body) > 100){
                       echo substr($temp_news->body,0,100)." ...";
@@ -25,6 +31,7 @@
                   </p>
                   <?
                   echo MyHtml::link("See More", array("news/view",'id'=>$temp_news->id));
+                  echo '<br/>';
                   ?>
                 </div>
             <?php
@@ -37,8 +44,9 @@
       </div>
   </div>
   <!-- Carousel nav -->
-  <a class="carousel-control left gigadb-arrow-button" href="#myNews" data-slide="prev">&lsaquo;</a>
-  <a class="carousel-control right gigadb-arrow-button" href="#myNews" data-slide="next">&rsaquo;</a>
+  <a class="carousel-control left gigadb-arrow-button" style="padding-top: 0px !important;background: #099242"ref="#myNews" href="#myNews" data-slide="prev">&lsaquo;</a>
+  <a class="carousel-control right gigadb-arrow-button" style="padding-top: 0px !important;background: #099242"ref="#myNews" href="#myNews" data-slide="next">&rsaquo;</a>
+
 </div>
 <script>
 $('#myNews').carousel({ interval: 60000});

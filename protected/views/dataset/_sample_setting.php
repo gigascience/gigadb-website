@@ -12,7 +12,7 @@
             'autoOpen' => false,
             'modal' => true,
             'width' => 800,
-            'height' => 320,
+            'height' => 220,
             'buttons' => array(
                 array('text' => 'Submit', 'click' => 'js:function(){ document.sampleSetting.submit();}'),
                 array('text' => 'Cancel', 'click' => 'js:function(){$(this).dialog("close");}')),
@@ -35,52 +35,40 @@
                 </select>
             </div>
 
-            <div class="attribute-setting-content">
+            <div class="modal-body" style="padding: 30px;">
 
-                <div class="row">
-                    <div ><h3>Columns:</h3></div>
-                    <div class="span4">
-                        <div class="row">
-                            <div class="span3"><?= Yii::t('app','Common Name') ?></div>
-                            <div class="span1">
-                                <input type="checkbox" name="columns[]" value="common_name"
-                                <?= (in_array("common_name", $columns))? "checked" : ""?>/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="span3"><?= Yii::t('app','Scienfic Name') ?></div>
-                            <div class="span1">
-                                <input type="checkbox" name="columns[]" value="scientific_name"
-                                <?= (in_array("scientific_name", $columns))? "checked" : ""?>/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="span3"><?= Yii::t('app','Sample Attributes') ?></div>
-                            <div class="span1">
-                                <input type="checkbox" name="columns[]" value="attribute"
-                                <?= (in_array("attribute", $columns))? "checked" : ""?>/>
-                            </div>
-                        </div>
+                <div class="form form-inline" style="margin-bottom: 60px;">
+                   
+                    
+                       
+                         
+                            <input type="checkbox" name="columns[]" value="common_name"
+                            <?= (in_array("common_name", $columns))? "checked" : ""?>/><label for="sample_col1"><?= Yii::t('app','Common Name') ?></label>
+                       
+                    
+                       
+                            <input type="checkbox" name="columns[]" value="scientific_name"
+                            <?= (in_array("scientific_name", $columns))? "checked" : ""?>/><label for="sample_col2"><?= Yii::t('app','Scienfic Name') ?></label>
+                        
+                    
+                        
+                            <input type="checkbox" name="columns[]" value="attribute"
+                            <?= (in_array("attribute", $columns))? "checked" : ""?>/><label for="sample_col3"><?= Yii::t('app','Sample Attributes') ?></label>
+                       
+                  
+                        
+                            <input type="checkbox" name="columns[]" value="taxonomic_id"
+                            <?= (in_array("taxonomic_id", $columns))? "checked" : ""?>/><label for="sample_col4"><?= Yii::t('app','Taxonomic ID') ?></label>
+                      
+                       
+                            <input type="checkbox" name="columns[]" value="genbank_name"
+                            <?= (in_array("genbank_name", $columns))? "checked" : ""?>/><label for="sample_col5"><?= Yii::t('app','Genbank Name') ?></label>
+                     
                     </div>
 
-                    <div class="span4">
-                         <div class="row">
-                            <div class="span3"><?= Yii::t('app','Taxonomic ID') ?></div>
-                            <div class="span1">
-                                <input type="checkbox" name="columns[]" value="taxonomic_id"
-                                <?= (in_array("taxonomic_id", $columns))? "checked" : ""?>/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="span3"><?= Yii::t('app','Genbank Name') ?></div>
-                            <div class="span1">
-                                <input type="checkbox" name="columns[]" value="genbank_name"
-                                <?= (in_array("genbank_name", $columns))? "checked" : ""?>/>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
-            <div>
+           
 
         </form>
     </div>    

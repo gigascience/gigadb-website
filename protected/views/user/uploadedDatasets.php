@@ -1,20 +1,19 @@
-<div class="tab-pane active" id="result_dataset">
-    <table class="table table-bordered" id ="list">
+ <section>
+    <table class="table table-bordered submitted-table" id ="list">
+        <thead>
         <tr>
-            <th colspan="9"><?= Yii::t('app', 'Your Submitted Datasets') ?></th>
+            <th style="width: 1%;"><?= Yii::t('app', 'DOI') ?></th>
+            <th><?= Yii::t('app', 'Title') ?></th>
+            <th><?= Yii::t('app', 'Subject') ?></th>
+            <th><?= Yii::t('app', 'Dataset Type') ?></th>
+            <th><?= Yii::t('app', 'Status') ?></th>
+            <th style="width: 1%;"><?= Yii::t('app', 'Publication Date') ?></th>
+            <th style="width: 1%;"><?= Yii::t('app', 'Modification Date') ?></th>
+            <th style="width: 1%;"><?= Yii::t('app','File Count') ?></th>
+            <th style="width: 1%;"><?= Yii::t('app', 'Operation') ?></th>
         </tr>
-        <tr>
-            <th class="span2"><?= Yii::t('app', 'DOI') ?></th>
-            <th class="span6"><?= Yii::t('app', 'Title') ?></th>
-            <th class="span6"><?= Yii::t('app', 'Subject') ?></th>
-            <th class="span2"><?= Yii::t('app', 'Dataset Type') ?></th>
-            <th class="span2"><?= Yii::t('app', 'Status') ?></th>
-            <th class="span2"><?= Yii::t('app', 'Publication Date') ?></th>
-            <th class="span2"><?= Yii::t('app', 'Modification Date') ?></th>
-            <th class="span2"><?= Yii::t('app','File Count') ?></th>
-            <th class="span2"><?= Yii::t('app', 'Operation') ?></th>
-        </tr>
-
+        </thead>
+        <tbody>
         <?php $data = $uploadedDatasets; ?>
         <?php
         for ($i = 0; $i < count($uploadedDatasets); $i++) {
@@ -57,8 +56,9 @@
                   <? } ?>
                 </tr>
             <? } ?>
+            </tbody>
     </table>
-</div>
+ </section>
 <script>
     $(".hint").tooltip({'placement': 'left'});
 

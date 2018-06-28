@@ -523,7 +523,7 @@ class Dataset extends MyActiveRecord
 
         $urlToRedirectAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
 
-        $urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$this->id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
+        $urlToRedirectDatasetAttribute = DatasetAttributes::model()->findByAttributes(array('dataset_id'=>$this->id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
 
         return isset($urlToRedirectDatasetAttribute) ? $urlToRedirectDatasetAttribute->value : '';
     }

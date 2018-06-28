@@ -60,6 +60,7 @@ class UserController extends Controller {
 
     # Create new account
     public function actionCreate() {
+        $this->layout='new_main';
         $user = new User;
         $user->newsletter=false;
         $this->performAjaxValidation($user);
@@ -311,6 +312,7 @@ class UserController extends Controller {
 
     public function actionView_Profile() {
         $model = new EditProfileForm();
+        $this->layout="new_main";
         $model->user_id = Yii::app()->user->id;
 
         $user = $this->loadUser(Yii::app()->user->id);
@@ -379,6 +381,7 @@ class UserController extends Controller {
 
     # Change user password
     public function actionChangePassword() {
+        $this->layout="new_main";
         $model = new ChangePasswordForm();
         $model->user_id = Yii::app()->user->id;
         $user = User::model()->findByattributes(array('id'=> Yii::app()->user->id));
@@ -439,8 +442,7 @@ class UserController extends Controller {
         $url = $this->createAbsoluteUrl('site/login');
         $url= $url."?username=".$user->email."&password=".$password_unhashed."&redirect=yes";
         $body = $this->renderPartial('emailReset',array('url'=>$url,'password_unhashed'=>$password_unhashed,'user'=>$user->id),true);
-
-        mail($recipient, $subject, $body, $headers);
+        $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
         Yii::log(__FUNCTION__."> Sent email to $recipient, $subject");
     }
 
@@ -523,6 +525,39 @@ EO_MAIL;
             $this->refresh();
         }
     }
+        public function mailsend($to,$from,$subject,$message){
+        ob_start();
+        Yii::log( __FUNCTION__."mail send function");
+        $mail = new PHPMailer();
+        Yii::log( __FUNCTION__."mail send function.......1");
+        //$mail->SMTPDebug = 2;  
+        $mail->IsSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = 'tls';  
+        
+        $mail->Port = '587'; 
+        Yii::log( __FUNCTION__."mail send function2");
+        
+        $mail->Username = Yii::app()->params['app_email'];
+        $mail->Password = Yii::app()->params['email_password'];;
+        $mail->SetFrom('database@gigasciencejournal.com','GigaDB');
+        $mail->Subject = $subject;
+        $mail->MsgHTML($message);
+        $mail->addAddress($to, "");
+        $mail->isHTML(true);  
+        $mail->addEmbeddedImage('images/email/top.gif', 'top');
+        $mail->addEmbeddedImage('images/email/logo.gif', 'logo');
+        $mail->addEmbeddedImage('images/email/bottom.gif', 'bottom');
+        
+        
+        Yii::log( __FUNCTION__."mail send function3");
+        if(!$mail->Send()) {
+            Yii::log( __FUNCTION__."Mailer Error: " . $mail->ErrorInfo);
+        }
+        $mail->ClearAddresses(); //clear addresses for next email sendin
+        ob_end_flush();
+    }
 
     /**
      * Displays a particular model.
@@ -546,42 +581,6 @@ EO_MAIL;
     /**
     * This method generate captcha image
     */
-    public function mailsend($to,$from,$subject,$message){
-        ob_start();
-        Yii::log( __FUNCTION__."mail send function");
-        $mail = new PHPMailer();
-        Yii::log( __FUNCTION__."mail send function.......1");
-        //$mail->SMTPDebug = 2;  
-        $mail->IsSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = 'tls';  
-        
-        $mail->Port = '587'; 
-
-        Yii::log( __FUNCTION__."mail send function2");
-        
-        $mail->Username = 'database@gigasciencejournal.com';
-        $mail->Password = 'GigaDB2012';
-        $mail->SetFrom('database@gigasciencejournal.com','GigaDB');
-        $mail->Subject = $subject;
-        $mail->MsgHTML($message);
-        $mail->addAddress($to, "");
-        $mail->isHTML(true);  
-        $mail->addEmbeddedImage('images/email/top.gif', 'top');
-        $mail->addEmbeddedImage('images/email/logo.gif', 'logo');
-        $mail->addEmbeddedImage('images/email/bottom.gif', 'bottom');
-        
-        
-        Yii::log( __FUNCTION__."mail send function3");
-
-        if(!$mail->Send()) {
-            Yii::log( __FUNCTION__."Mailer Error: " . $mail->ErrorInfo);
-        }
-        $mail->ClearAddresses(); //clear addresses for next email sendin
-        ob_end_flush();
-    }
-    
     public function captchaGenerator($length = 7){
         try{
         $captchaPath = null;

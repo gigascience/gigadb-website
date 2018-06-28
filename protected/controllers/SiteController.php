@@ -4,6 +4,7 @@ class SiteController extends Controller {
     /**
  	 * Declares class-based actions.
 	 */
+    //public $layout='//layouts/new_main';
 	public function actions() {
 		return array(
 			# captcha action renders the CAPTCHA image displayed on the contact page
@@ -68,7 +69,7 @@ class SiteController extends Controller {
 	#        $this->redirect(array('user/accountBalance', 'id'=>Yii::app()->user->_id));
 	#    }
 	#}
-
+                $this->layout='new_main';
 		$form=new SearchForm;  // Use for Form
 		$dataset = new Dataset; // Use for auto suggestion
 
@@ -99,7 +100,107 @@ class SiteController extends Controller {
 		$rss_arr = array_merge($latest_datasets , $latest_messages);
 
 		$this->sortRssArray($rss_arr);
+                
+                //Get dataset types number
+                $sql_1="select type.name, count(dataset_type.id) from dataset_type, type, dataset where dataset_type.type_id=type.id and dataset_type.dataset_id=dataset.id and dataset.upload_status = 'Published' group by type.name";
+                $command = Yii::app()->db->createCommand($sql_1); 
+                $results = $command->queryAll();
+                
+                $sql_2="select dataset_sample.id from dataset_sample, dataset where dataset_sample.dataset_id=dataset.id and dataset.upload_status = 'Published'";
+                $command = Yii::app()->db->createCommand($sql_2); 
+                $count_sample = $command->queryAll();
+                
+                $sql_3="select file.id from file, dataset where file.dataset_id=dataset.id and dataset.upload_status = 'Published'";
+                $command = Yii::app()->db->createCommand($sql_3); 
+                $count_file = $command->queryAll();
+                $number_genome_mapping=0;
+                $number_ecology=0;
+                $number_eeg=0;
+                $number_epi=0;
+                $number_genomic=0;
+                $number_imaging=0;
+                $number_lipi=0;
+                $number_metabarcoding=0;
+                $number_metagenomic=0;
+                $number_metadata=0;
+                $number_metabolomic=0;
+                $number_climate=0;
+                $number_na=0;
+                $number_ns=0;
+                $number_pt=0;
+                $number_proteomic=0;
+                $number_software=0;
+                $number_ts=0;
+                $number_vm=0;
+                $number_wf=0;
+                              
+                foreach($results as $result)
+                {                  
+                    switch ($result['name']) {
+                        case "Genome-Mapping":
+                             $number_genome_mapping=$result['count'];
+                             break;
+                        case "Ecology":
+                             $number_ecology=$result['count'];
+                             break;
+                        case "ElectroEncephaloGraphy(EEG)":
+                             $number_eeg=$result['count'];
+                             break;
+                        case "Epigenomic":
+                             $number_epi=$result['count'];
+                             break;
+                        case "Genomic":
+                             $number_genomic=$result['count'];
+                             break;
+                        case "Imaging":
+                             $number_imaging=$result['count'];  
+                             break;
+                        case "Lipidomic":
+                             $number_lipi=$result['count'];  
+                             break;
+                        case "Metabarcoding":
+                             $number_metabarcoding=$result['count'];    
+                             break;
+                        case "Metagenomic":
+                             $number_metagenomic=$result['count']; 
+                             break;
+                        case "Metadata":
+                             $number_metadata=$result['count'];
+                             break;
+                        case "Metabolomic":
+                             $number_metabolomic=$result['count'];
+                             break;
+                        case "Climate":
+                             $number_climate=$result['count'];
+                             break;
+                        case "Network-Analysis":
+                             $number_na=$result['count'];
+                             break; 
+                        case "Neuroscience":
+                             $number_ns=$result['count'];
+                             break;  
+                        case "Phenotyping":
+                             $number_pt=$result['count'];
+                             break;    
+                        case "Proteomic":
+                             $number_proteomic=$result['count'];
+                             break;   
+                        case "Software":
+                             $number_software=$result['count'];
+                             break;   
+                        case "Transcriptomic":
+                             $number_ts=$result['count'];
+                             break;    
+                        case "Virtual-Machine":
+                             $number_vm=$result['count'];
+                             break;  
+                        case "Workflow":
+                             $number_wf=$result['count'];
+                             break; 
 
+                    }
+                   
+                }
 		$this->render('index',array(
 			'datasets'=>$datasetModel,
 			'form'=>$form,
@@ -108,7 +209,34 @@ class SiteController extends Controller {
 			'dataset_hint'=>$datasettypes_hints ,
 			'rss_arr' => $rss_arr ,
 			'count' => count($publicIds),
-			'latest_datasets'=>$latest_datasets)
+                        'count_sample' => count($count_sample),
+                        'count_file' => count($count_file),
+			'latest_datasets'=>$latest_datasets,
+                        'number_genome_mapping'=>$number_genome_mapping,                    
+                        'number_climate' => $number_climate,                    
+                        'number_ecology'=>$number_ecology,
+                        'number_eeg'=>$number_eeg,
+                        'number_epi'=>$number_epi,                       
+                        'number_genomic'=>$number_genomic,
+                        'number_imaging'=>$number_imaging,
+                        'number_lipi'=>$number_lipi,
+                        'number_metabarcoding'=>$number_metabarcoding,
+                        'number_metabolomic'=>$number_metabolomic,
+                        'number_metadata'=>$number_metadata,
+                        'number_metagenomic'=>$number_metagenomic,
+                        'number_na'=>$number_na,
+                        'number_ns'=>$number_ns,
+                        'number_pt'=>$number_pt,
+                        'number_proteomic'=>$number_proteomic,
+                        'number_software'=>$number_software,
+                        'number_ts'=>$number_ts,
+                        'number_vm'=>$number_vm,
+                        'number_wf'=>$number_wf,
+                        
+                        
+                        )
+                        
+                        
 		);
 	}
 
@@ -151,6 +279,8 @@ class SiteController extends Controller {
 	 * Displays the contact page
 	 */
 	public function actionContact() {
+            
+            $this->layout='new_main';
 		$model = new ContactForm;
 		if (isset($_POST['ContactForm'])) {
 			$model->attributes=$_POST['ContactForm'];
@@ -167,32 +297,70 @@ class SiteController extends Controller {
 	*This method returns all dataset locations
 	*/
 	public function actionMapbrowse() {
-	    $locations = $list= Yii::app()->db->createCommand("SELECT d.identifier,  d.title, satt.value, sp.scientific_name as sciname, s.id as sampleId FROM dataset as d
+            
+             $this->layout='new_main';
+	     $locations = $list= Yii::app()->db->createCommand("SELECT d.identifier,  d.title, satt.value, sp.scientific_name as sciname, s.id as sampleid FROM dataset as d
 					      INNER JOIN dataset_sample as dsam on dsam.dataset_id = d.id
 						  INNER JOIN sample as s on s.id = dsam.sample_id
 					      INNER JOIN sample_attribute as satt on satt.sample_id=s.id 
 						  INNER JOIN species as sp on sp.id = s.species_id		
-						  where satt.attribute_id = 269")->queryAll();
-		$this->render('mapbrowse', array('locations' => $locations));
+						  where satt.attribute_id = 269 and d.upload_status='Published' order by sampleid")
+                                              ->queryAll();
+           
+                foreach ($locations as $location) {
+      
+        $locationValue = $location["value"];  
+        $locationValue = preg_replace('/\s+/', '', $locationValue);   
+        $formatCheck = preg_match('/-?[0-9]*[.][0-9]*[,]-?[0-9]*[.][0-9]*/',$locationValue);
+        if (!$formatCheck==1){
+          continue;
+        }     
+        $val = explode(',', $locationValue); 
+        if(strpos($val[0],'.') == false || !is_numeric($val[0])){
+            continue;
+        }
+        if(strpos($val[1],'.') == false || !is_numeric($val[1])){
+            continue;
+        }
+        $location["sciname"]=str_replace(",","",$location["sciname"]);
+     
+      
+                  
+
+  } 
+
+             
+            $this->render('mapbrowse', array('locations' => $locations));
 	}
+        
+        public function actionTeam() {
+                $this->layout='new_main';
+		$this->render('team');
+	}
+        
 
 	public function actionAbout() {
+                $this->layout='new_main';
 		$this->render('about');
 	}
         
     public function actionAdvisory() {
+                $this->layout='new_main';
 		$this->render('advisory');
 	}
 	public function actionFaq() {
+                $this->layout='new_faq';
 		$this->render('faq');
 	}
 
 	public function actionTerm() {
+                $this->layout='new_main';
 		$this->render('term');
 	}
 
 
 	public function actionHelp() {
+                $this->layout='new_main';
 		$this->render('help');
 	}
 
@@ -224,32 +392,33 @@ class SiteController extends Controller {
 	 * Displays the login page
 	 */
 	public function actionLogin() {
-		$model = new LoginForm;
-                if(isset($_GET['redirect'])&&isset($_GET['username'])&&isset($_GET['password']))
-                {
-                $model->username= $_GET['username'];
-                $model->password= $_GET['password'];
-                $model->rememberMe=FALSE;
-                if($model->validate()){
-                $this->redirect('/user/changepassword');
-                }  else {
-                    
-                $this->render('login',array('model'=>$model));    
-                }
-                }
-		// collect user input data
-		if (isset($_POST['LoginForm'])) {
-			$model->attributes=$_POST['LoginForm'];
-            		$model->username = strtolower($_POST['LoginForm']['username']);
-			// validate user input and redirect to the previous page if valid
-			if($model->validate())
-				$this->redirect(Yii::app()->user->returnUrl);
-		}
-		// display the login form
-		$this->render('login',array('model'=>$model));
-	}
 
-	public function actionChooseLogin() {
+        $this->layout = "new_main";
+        $model = new LoginForm;
+        if (isset($_GET['redirect']) && isset($_GET['username']) && isset($_GET['password'])) {
+            $model->username = $_GET['username'];
+            $model->password = $_GET['password'];
+            $model->rememberMe = FALSE;
+            if ($model->validate()) {
+                $this->redirect('/user/changepassword');
+            } else {
+
+                $this->render('login', array('model' => $model));
+            }
+        }
+        // collect user input data
+        if (isset($_POST['LoginForm'])) {
+            $model->attributes = $_POST['LoginForm'];
+            $model->username = strtolower($_POST['LoginForm']['username']);
+            // validate user input and redirect to the previous page if valid
+            if ($model->validate())
+                $this->redirect(Yii::app()->user->returnUrl);
+        }
+        // display the login form
+        $this->render('login', array('model' => $model));
+    }
+
+    public function actionChooseLogin() {
 		$this->render('chooseLogin');
 	}
 

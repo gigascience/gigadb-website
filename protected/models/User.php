@@ -50,13 +50,13 @@ class User extends CActiveRecord {
             array('password', 'compare', 'compareAttribute'=>'password_repeat', 'on'=>'insert'),
             array('password', 'checkPassword', 'on'=>'update'),
             array('password', 'unsafe'),
+            array('password_repeat','required'),
             array('first_name, last_name','length','max'=>60),
 
             array('first_name','required'),
             array('last_name','required'),
             array('affiliation','required'),
             array('newsletter','boolean'),
-            array('newsletter','required'),
             array('terms','required'),
             array('terms','compare', 'on'=>'insert', 'compareValue' => TRUE,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
             array('role','safe'),
@@ -84,6 +84,10 @@ class User extends CActiveRecord {
         }
         return true;
     }
+    
+     public function checkterms($attribute, $params){
+         
+     }
     /**
     * Validate captcha
     */
@@ -130,6 +134,7 @@ class User extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'username' => 'Username',
+            'terms'=> 'Terms and Conditions',
             'email' => Yii::t('app' , 'Email'),
             'terms'=> 'Terms and Conditions',
             'first_name' => Yii::t('app' , 'First Name'),
