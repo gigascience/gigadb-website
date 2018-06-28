@@ -113,6 +113,27 @@ class SiteController extends Controller {
                 $sql_3="select file.id from file, dataset where file.dataset_id=dataset.id and dataset.upload_status = 'Published'";
                 $command = Yii::app()->db->createCommand($sql_3); 
                 $count_file = $command->queryAll();
+                $number_genome_mapping=0;
+                $number_ecology=0;
+                $number_eeg=0;
+                $number_epi=0;
+                $number_genomic=0;
+                $number_imaging=0;
+                $number_lipi=0;
+                $number_metabarcoding=0;
+                $number_metagenomic=0;
+                $number_metadata=0;
+                $number_metabolomic=0;
+                $number_climate=0;
+                $number_na=0;
+                $number_ns=0;
+                $number_pt=0;
+                $number_proteomic=0;
+                $number_software=0;
+                $number_ts=0;
+                $number_vm=0;
+                $number_wf=0;
+                              
                 foreach($results as $result)
                 {                  
                     switch ($result['name']) {
