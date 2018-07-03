@@ -42,7 +42,7 @@ class DatasetFunder extends CActiveRecord
 			array('dataset_id, funder_id', 'required'),
 			array('dataset_id, funder_id', 'numerical', 'integerOnly'=>true),
 			array('grant_award, comments', 'safe'),
-			array('funder_id', 'checkIsFunderDuplicate', 'on'=>'insert'),
+			//array('funder_id', 'checkIsFunderDuplicate', 'on'=>'insert'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, dataset_id, funder_id, grant_award, awardee, comments, doi_search, funder_search', 'safe', 'on'=>'search'),
