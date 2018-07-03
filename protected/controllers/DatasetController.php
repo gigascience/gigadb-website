@@ -995,7 +995,7 @@ EO_MAIL;
 			}
                 
 			if ( $dataset && $result['md_curl_status'] == 201) {
-				$doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=https://gigadb.org/dataset/".$dataset->identifier ;
+				$doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=http://gigadb.org/dataset/".$dataset->identifier ;
 				$result['doi_data']  = $doi_data;
 				$ch2= curl_init();
 				curl_setopt($ch2, CURLOPT_URL, $mds_doi_url);
