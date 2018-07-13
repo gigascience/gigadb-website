@@ -95,7 +95,7 @@ class DatasetController extends Controller
         $setting = array('name','size', 'type_id', 'format_id', 'location', 'date_stamp','sample_id'); // 'description','attribute' are hidden by default
         $pageSize = 10;
         $flag=null;
-
+        
         if(isset($cookies['file_setting'])) {
             //$ss = json_decode($cookies['sample_setting']);
             $fcookie = $cookies['file_setting'];
@@ -118,7 +118,10 @@ class DatasetController extends Controller
             $flag="file";
         }
 
-
+        if($model->id == 629)
+        {             
+        $files=null;           
+        }else{          
         $files = new CActiveDataProvider('File' , array(
             'criteria'=> $crit,
             'sort' => array('defaultOrder'=>'name ASC',
@@ -132,6 +135,7 @@ class DatasetController extends Controller
                             )),
             'pagination' => array('pageSize'=>$pageSize)
         ));
+        }
 
         //Sample
         $columns = array('name', 'taxonomic_id', 'genbank_name', 'scientific_name', 'common_name', 'attribute');
@@ -268,7 +272,31 @@ class DatasetController extends Controller
 
         // Page private ? Disable robot to index
         $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $model->upload_status);
-
+               
+        if($model->id == 629)
+        {
+            
+            $this->render('viewfiles',array(
+            'model'=>$model,
+            'form'=>$form,
+            'dataset'=>$dataset,
+            'files'=>$files,
+            'samples'=>$samples,
+            'email' => $email,
+            'previous_doi' => $previous_doi,
+            'previous_title' => $previous_title,
+            'next_title'=> $next_title,
+            'next_doi' => $next_doi,
+            'setting' => $setting,
+            'columns' => $columns,
+            'logs'=>$model->datasetLogs,
+            'relates' => $relates,
+            'scholar' => $scholar,
+            'link_type' => $link_type,
+            'flag' => $flag,
+        ));
+            
+        }else{
         $this->render('view',array(
             'model'=>$model,
             'form'=>$form,
@@ -288,6 +316,7 @@ class DatasetController extends Controller
             'link_type' => $link_type,
             'flag' => $flag,
         ));
+        }
     }
 
 
