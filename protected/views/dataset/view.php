@@ -224,8 +224,8 @@ HTML;
                     'width' => 400,
                     'height' => 300,
                     'buttons' => array(
+                        array('text' => 'View new version', 'click' => 'js:function(){'.$target.'}'),
                         array('text' => 'Continue to view old version', 'click' => 'js:function(){$(this).dialog("close");}'),
-                          array('text' => 'View new version', 'click' => 'js:function(){'.$target.'}'),
                         ),
                 ),
             ));
