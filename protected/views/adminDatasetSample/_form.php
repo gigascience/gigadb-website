@@ -20,7 +20,7 @@
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'sample_id',array('class'=>'control-label')); ?>
 				<div class="controls">
-        <?= CHtml::activeDropDownList($model,'sample_id',CHtml::listData(Sample::model()->findAll(),'id','id')); ?>
+        <?= CHtml::activeDropDownList($model,'sample_id',CHtml::listData(Sample::model()->findAll(array('limit' => 10000,'order'=>'id DESC')),'id','id')); ?>
 		<?php echo $form->error($model,'sample_id'); ?>
 				</div>
 	</div>
