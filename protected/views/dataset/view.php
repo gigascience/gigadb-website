@@ -39,7 +39,7 @@ HTML;
                             <h4 class="left-border-title left-border-title-lg"><?echo $model->title; ?></h4>
                             <p class="dataset-release-date-text">Dataset type:  <? echo MyHtml::encode(implode(", ", $model->getDatasetTypes()));?> <br> Data released on <?= strftime("%B %d, %Y",strtotime($model->publication_date)) ?></p>
                             <div class="color-background color-background-block dataset-color-background-block">
-                                <p><?= $model->authorNames ?>(<?=substr($model->publication_date,0,4)?>): <?= $model->title.' '.$model->publisher->name.'. '; ?><a href="http://dx.doi.org/<?= $model->identifier; ?>">http://dx.doi.org/<?= $model->identifier; ?></a></p>
+                                <p><?= $model->authorNames ?> (<?=substr($model->publication_date,0,4)?>): <?= $model->title.' '.$model->publisher->name.'. '; ?><a href="http://dx.doi.org/<?= $model->identifier; ?>">http://dx.doi.org/<?= $model->identifier; ?></a></p>
                                 <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?= $model->identifier; ?></span></a></p>
                             </div>
                         </div>
