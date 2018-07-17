@@ -224,8 +224,8 @@ HTML;
                     'width' => 400,
                     'height' => 300,
                     'buttons' => array(
-                        array('text' => 'View new version', 'click' => 'js:function(){'.$target.'}'),
                         array('text' => 'Continue to view old version', 'click' => 'js:function(){$(this).dialog("close");}'),
+                          array('text' => 'View new version', 'click' => 'js:function(){'.$target.'}'),
                         ),
                 ),
             ));
@@ -390,8 +390,8 @@ HTML;
                            <li role="presentation" id="p-sample"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
                         <?php }                       
                         ?>
-                        <?php if(count($model->files) > 0) {
-                            
+                        
+                            <?php
                               if(count($model->samples) < 1)  
                               { 
                                   ?>
@@ -399,7 +399,7 @@ HTML;
                               <?php } else { 
                               ?>
                         <li role="presentation" id="p-file"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
-                        <?php }}                       
+                        <?php }                     
                         ?>
                          <?php if(count($model->datasetFunders) > 0) {
                             ?>
@@ -503,7 +503,7 @@ HTML;
                             <?php }                       
                         ?>
                     <?php 
-                 if(count($model->files) > 0) {
+                
                             
                     if(count($model->samples) > 0) {
                             ?>     
@@ -517,93 +517,10 @@ HTML;
                             <br>
                             <br>
                             <br>
-                            <?php
-            $this->widget('zii.widgets.grid.CGridView', array(
-                'id' => 'file-grid',
-                'dataProvider'=>$files,
-                'itemsCssClass'=>'table table-bordered',
-                'template' => $template,
-                'pager' => 'SiteLinkPager',
-                'pagerCssClass' => '',
-                'summaryText' => 'Displaying {start}-{end} of {count} File(s).',
-                'htmlOptions' => array('style'=>'padding-top: 0px'),
-                'columns' => array(
-                    array(
-                        'name' => 'name',
-                        'type' => 'raw',
-                        'value' => '$data->nameHtml',
-                        'visible' => in_array('name', $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'description',
-                        'value' => '$data->description',
-                        'visible' => in_array('description', $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'sample_name',
-                        'type' => 'raw',
-                        'value' => '$data->getallsample($data->id)',
-                        'visible' => in_array('sample_id', $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'type_id',
-                        'value' => '$data->type->name',
-                        'visible' => in_array("type_id", $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'format_id',
-                        'value' => '$data->format->name',
-                        'visible' => in_array("format_id", $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'size',
-                        'value' => 'File::staticBytesToSize($data->size)',
-                        'visible' => in_array("size", $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'date_stamp',
-                        'value' => '$data->date_stamp',
-                        'visible' => in_array("date_stamp", $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'attribute',
-                        'type' => 'raw',
-                        'value' => '$data->attrDesc',
-                        'visible' => in_array("attribute", $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'class'=>'CButtonColumn',
-                        'template' => '{download}',
-                        'buttons' => array(
-                            'download' => array(
-                                'label'=>'',
-                                'url' => '$data->location',
-                                'imageUrl' => '',
-                                'options' => array(
-                                    'target' => '_blank',
-                                    'class' => 'download-btn js-download-count',
-                                ),
-                            )
-                        ),
-                        'visible' => in_array("location", $setting),
-                    ),
-
-                ),
-
-            ));
-        ?>
+                            <a href="/files/100396.csv" download="viewfiles">Download to see all files</a>    
 
                         </div>
-                            <?php }                       
-                        ?>
+                  
                              <?php if(count($model->datasetFunders) > 0) {
                             ?>
                         
