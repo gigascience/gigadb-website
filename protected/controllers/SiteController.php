@@ -110,9 +110,10 @@ class SiteController extends Controller {
                 $command = Yii::app()->db->createCommand($sql_2); 
                 $count_sample = $command->queryAll();
                 
-                $sql_3="select file.id from file, dataset where file.dataset_id=dataset.id and dataset.upload_status = 'Published'";
+                $sql_3="select * from file_number";
                 $command = Yii::app()->db->createCommand($sql_3); 
                 $count_file = $command->queryAll();
+                
                 $number_genome_mapping=0;
                 $number_ecology=0;
                 $number_eeg=0;
@@ -210,7 +211,7 @@ class SiteController extends Controller {
 			'rss_arr' => $rss_arr ,
 			'count' => count($publicIds),
                         'count_sample' => count($count_sample),
-                        'count_file' => count($count_file),
+                        'count_file' => $count_file[0]['count'],
 			'latest_datasets'=>$latest_datasets,
                         'number_genome_mapping'=>$number_genome_mapping,                    
                         'number_climate' => $number_climate,                    
