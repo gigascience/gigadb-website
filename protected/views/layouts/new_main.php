@@ -74,13 +74,13 @@
                                 <?php
                                 $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
                                     'name' => 'keyword',
-                                    'value' => 'Search',
                                     'source' => array_values(array()),
                                     'options' => array(
                                         'minLength' => '2',
                                     ),
                                     'htmlOptions' => array(
-                                        'class' => 'search-input'
+                                        'class' => 'search-input',
+                                        'placeholder'=>'e.g. Chicken, brain etc...',
                                     ),
                                 ));
                                 ?>

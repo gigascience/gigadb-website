@@ -417,12 +417,12 @@ class UserController extends Controller {
         $headers .= "Content-type: text/html\r\n";
         ini_set('sendmail_from', $app_email);
 
-        $recipient = $user->email.',';
-        $recipient.='database@gigasciencejournal.com';
+        $recipient = $user->email;        
         $subject = $email_prefix . "Welcome to " . Yii::app()->name;
         $url = $this->createAbsoluteUrl('user/confirm', array('key' => $user->id));
         $body = $this->renderPartial('emailWelcome',array('url'=>$url),true);
-        mail($recipient, $subject, $body, $headers);
+        $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
+        //mail($recipient, $subject, $body, $headers);
         Yii::log("Sent email to $recipient, $subject");
     }
 
@@ -480,7 +480,8 @@ Name:  {$user->first_name} {$user->last_name}
 $url
 
 EO_MAIL;
-        mail($recipient, $subject, $body, $headers);
+        $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
+        //mail($recipient, $subject, $body, $headers);
         Yii::log(__FUNCTION__."> Sent email to $recipient, $subject");
     }
 
