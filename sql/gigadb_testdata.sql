@@ -3845,6 +3845,20 @@ GRANT ALL ON TABLE prefix TO gigadb;
 GRANT ALL ON TABLE prefix TO PUBLIC;
 
 
+CREATE VIEW file_number AS (SELECT count (id) AS count FROM file);
+
+CREATE VIEW sample_number AS (SELECT count (id) AS count FROM sample);
+
+CREATE VIEW homepage_dataset_type AS (SELECT type.name, count(dataset_type.id) FROM dataset_type, type, dataset where dataset_type.type_id=type.id and dataset_type.dataset_id=dataset.id and dataset.upload_status = 'Published' group by type.name);
+
+GRANT SELECT ON TABLE file_number TO public;
+
+GRANT SELECT ON TABLE homepage_dataset_type TO public;
+
+GRANT SELECT ON TABLE sample_number TO public;
+
+
+
 --
 -- PostgreSQL database dump complete
 --
