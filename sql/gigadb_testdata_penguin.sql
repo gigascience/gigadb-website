@@ -1086,6 +1086,13 @@ ALTER TABLE public.file_relationship OWNER TO gigadb;
 -- Name: file_relationship_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
 --
 
+CREATE VIEW file_number AS (SELECT count (file.id) AS count from file);
+CREATE VIEW sample_number AS (SELECT count (sample.id) AS count from sample);
+CREATE VIEW homepage_dataset_type AS (SELECT type.name, count(dataset_type.id) from dataset_type, type, dataset where dataset_type.type_id=type.id and dataset_type.dataset_id=dataset.id and dataset.upload_status = 'Published' group by type.name);
+GRANT SELECT ON TABLE file_number TO public;
+GRANT SELECT ON TABLE homepage_dataset_type TO public;
+GRANT SELECT ON TABLE sample_number TO public;
+
 CREATE SEQUENCE file_relationship_id_seq
     START WITH 1
     INCREMENT BY 1

@@ -102,11 +102,11 @@ class SiteController extends Controller {
 		$this->sortRssArray($rss_arr);
                 
                 //Get dataset types number
-                $sql_1="select type.name, count(dataset_type.id) from dataset_type, type, dataset where dataset_type.type_id=type.id and dataset_type.dataset_id=dataset.id and dataset.upload_status = 'Published' group by type.name";
+                $sql_1="select * from homepage_dataset_type";
                 $command = Yii::app()->db->createCommand($sql_1); 
                 $results = $command->queryAll();
                 
-                $sql_2="select dataset_sample.id from dataset_sample, dataset where dataset_sample.dataset_id=dataset.id and dataset.upload_status = 'Published'";
+                $sql_2="select * from sample_number";
                 $command = Yii::app()->db->createCommand($sql_2); 
                 $count_sample = $command->queryAll();
                 
@@ -210,7 +210,7 @@ class SiteController extends Controller {
 			'dataset_hint'=>$datasettypes_hints ,
 			'rss_arr' => $rss_arr ,
 			'count' => count($publicIds),
-                        'count_sample' => count($count_sample),
+                        'count_sample' => $count_sample[0]['count'],
                         'count_file' => $count_file[0]['count'],
 			'latest_datasets'=>$latest_datasets,
                         'number_genome_mapping'=>$number_genome_mapping,                    
