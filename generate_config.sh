@@ -83,94 +83,94 @@ cp $SOURCE $TARGET \
 SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-index.php.erb
 TARGET=${APPLICATION}/index.php
 cp $SOURCE $TARGET \
-    && sed "/<% path = node\[:yii\]\[:path\] -%>/d" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= path %>|${YII_PATH}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && rm $TARGET.bak
+    && sed -e "/<% path = node\[:yii\]\[:path\] -%>/d" \
+    -e "s|<%= path %>|${YII_PATH}|g" \
+    $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET && rm $TARGET.bak
 
 SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yiic.php.erb
 TARGET=${APPLICATION}/protected/yiic.php
 cp $SOURCE $TARGET \
-    && sed "/<% path = node\[:yii\]\[:path\] -%>/d" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= path %>|${YII_PATH}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && rm $TARGET.bak
+    && sed -e "/<% path = node\[:yii\]\[:path\] -%>/d" \
+    -e "s|<%= path %>|${YII_PATH}|g" \
+    $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET && rm $TARGET.bak
 
 SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-local.php.erb
 TARGET=${APPLICATION}/protected/config/local.php
 cp $SOURCE $TARGET \
-    && sed "/<% home_url = node\[:gigadb\]\[:server_names\] -%>/d" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "/<% server_email = node\[:gigadb\]\[:admin_email\] -%>/d" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:mailchimp\]\[:mailchimp_api_key\] %>|${MAILCHIMP_API_KEY}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:mailchimp\]\[:mailchimp_list_id\] %>|${MAILCHIMP_LIST_ID}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:analytics\]\[:analytics_client_email\] %>|${ANALYTICS_CLIENT_EMAIL}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:analytics\]\[:analytics_client_id\] %>|${ANALYTICS_CLIENT_ID}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:analytics\]\[:analytics_keyfile_path\] %>|${ANALYTICS_KEYFILE_PATH}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= home_url %>|${HOME_URL}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= home_url %>|${SERVER_EMAIL}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:recaptcha\]\[:recaptcha_publickey\] %>|${RECAPTCHA_PUBLICKEY}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:recaptcha\]\[:recaptcha_privatekey\] %>|${RECAPTCHA_PRIVATEKEY}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:analytics\]\[:google_analytics_profile\] %>|${GOOGLE_ANALYTICS_PROFILE}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:mds\]\[:mds_username\] %>|${MDS_USERNAME}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:mds\]\[:mds_password\] %>|${MDS_PASSWORD}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:mds\]\[:mds_prefix\] %>|${MDS_PREFIX}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && rm $TARGET.bak
+    && sed -e "/<% home_url = node\[:gigadb\]\[:server_names\] -%>/d" \
+    -e "/<% server_email = node\[:gigadb\]\[:admin_email\] -%>/d" \
+    -e "s|<%= node\[:gigadb\]\[:mailchimp\]\[:mailchimp_api_key\] %>|${MAILCHIMP_API_KEY}|g" \
+    -e "s|<%= node\[:gigadb\]\[:mailchimp\]\[:mailchimp_list_id\] %>|${MAILCHIMP_LIST_ID}|g" \
+    -e "s|<%= node\[:gigadb\]\[:analytics\]\[:analytics_client_email\] %>|${ANALYTICS_CLIENT_EMAIL}|g" \
+    -e "s|<%= node\[:gigadb\]\[:analytics\]\[:analytics_client_id\] %>|${ANALYTICS_CLIENT_ID}|g" \
+    -e "s|<%= node\[:gigadb\]\[:analytics\]\[:analytics_keyfile_path\] %>|${ANALYTICS_KEYFILE_PATH}|g" \
+    -e "s|<%= home_url %>|${HOME_URL}|g" \
+    -e "s|<%= home_url %>|${SERVER_EMAIL}|g" \
+    -e "s|<%= node\[:gigadb\]\[:recaptcha\]\[:recaptcha_publickey\] %>|${RECAPTCHA_PUBLICKEY}|g" \
+    -e "s|<%= node\[:gigadb\]\[:recaptcha\]\[:recaptcha_privatekey\] %>|${RECAPTCHA_PRIVATEKEY}|g" \
+    -e "s|<%= node\[:gigadb\]\[:analytics\]\[:google_analytics_profile\] %>|${GOOGLE_ANALYTICS_PROFILE}|g" \
+    -e "s|<%= node\[:gigadb\]\[:mds\]\[:mds_username\] %>|${MDS_USERNAME}|g" \
+    -e "s|<%= node\[:gigadb\]\[:mds\]\[:mds_password\] %>|${MDS_PASSWORD}|g" \
+    -e "s|<%= node\[:gigadb\]\[:mds\]\[:mds_prefix\] %>|${MDS_PREFIX}|g" \
+    $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET && rm $TARGET.bak
 
 SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-main.php.erb
 TARGET=${APPLICATION}/protected/config/main.php
 cp $SOURCE $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:facebook\]\[:app_id\] %>|${FACEBOOK_APP_ID}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:facebook\]\[:app_secret\] %>|${FACEBOOK_APP_SECRET}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:linkedin\]\[:api_key\] %>|${LINKEDIN_API_KEY}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:linkedin\]\[:secret_key\] %>|${LINKEDIN_SECRET_KEY}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:google\]\[:client_id\] %>|${GOOGLE_CLIENT_ID}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:google\]\[:client_secret\] %>|${GOOGLE_SECRET}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:twitter\]\[:key\] %>|${TWITTER_KEY}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:twitter\]\[:secret\] %>|${TWITTER_SECRET}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:orcid\]\[:client_id\] %>|${ORCID_CLIENT_ID}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:orcid\]\[:client_secret\] %>|${ORCID_CLIENT_SECRET}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:ftp\]\[:connection_url\] %>|${FTP_CONNECTION_URL}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:redis\]\[:server\] %>|${REDIS_SERVER_HOST}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:beanstalk\]\[:host\] %>|${BEANSTALK_SERVER_HOST}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:mfr\]\[:preview_server\] %>|${PREVIEW_SERVER_HOST}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && rm $TARGET.bak
+    && sed -e "s|<%= node\[:gigadb\]\[:facebook\]\[:app_id\] %>|${FACEBOOK_APP_ID}|g" \
+    -e "s|<%= node\[:gigadb\]\[:facebook\]\[:app_secret\] %>|${FACEBOOK_APP_SECRET}|g" \
+    -e "s|<%= node\[:gigadb\]\[:linkedin\]\[:api_key\] %>|${LINKEDIN_API_KEY}|g" \
+    -e "s|<%= node\[:gigadb\]\[:linkedin\]\[:secret_key\] %>|${LINKEDIN_SECRET_KEY}|g" \
+    -e "s|<%= node\[:gigadb\]\[:google\]\[:client_id\] %>|${GOOGLE_CLIENT_ID}|g" \
+    -e "s|<%= node\[:gigadb\]\[:google\]\[:client_secret\] %>|${GOOGLE_SECRET}|g" \
+    -e "s|<%= node\[:gigadb\]\[:twitter\]\[:key\] %>|${TWITTER_KEY}|g" \
+    -e "s|<%= node\[:gigadb\]\[:twitter\]\[:secret\] %>|${TWITTER_SECRET}|g" \
+    -e "s|<%= node\[:gigadb\]\[:orcid\]\[:client_id\] %>|${ORCID_CLIENT_ID}|g" \
+    -e "s|<%= node\[:gigadb\]\[:orcid\]\[:client_secret\] %>|${ORCID_CLIENT_SECRET}|g" \
+    -e "s|<%= node\[:gigadb\]\[:ftp\]\[:connection_url\] %>|${FTP_CONNECTION_URL}|g" \
+    -e "s|<%= node\[:gigadb\]\[:redis\]\[:server\] %>|${REDIS_SERVER_HOST}|g" \
+    -e "s|<%= node\[:gigadb\]\[:beanstalk\]\[:host\] %>|${BEANSTALK_SERVER_HOST}|g" \
+    -e "s|<%= node\[:gigadb\]\[:mfr\]\[:preview_server\] %>|${PREVIEW_SERVER_HOST}|g" \
+    $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET && rm $TARGET.bak
 
 SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-db.json.erb
 TARGET=${APPLICATION}/protected/config/db.json
 cp $SOURCE $TARGET \
-    && sed "/<% db = node\[:gigadb\]\[:db\] -%>/d" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= db\[:database\] %>|gigadb|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= db\[:host\] %>|${GIGADB_HOST}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= db\[:user\] %>|${GIGADB_USER}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= db\[:password\] %>|${GIGADB_PASSWORD}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && rm $TARGET.bak
+    && sed -e "/<% db = node\[:gigadb\]\[:db\] -%>/d" \
+    -e "s|<%= db\[:database\] %>|gigadb|g" \
+    -e "s|<%= db\[:host\] %>|${GIGADB_HOST}|g" \
+    -e "s|<%= db\[:user\] %>|${GIGADB_USER}|g" \
+    -e "s|<%= db\[:password\] %>|${GIGADB_PASSWORD}|g" \
+    $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET && rm $TARGET.bak
 
 SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/set_env.sh.erb
 TARGET=${APPLICATION}/protected/scripts/set_env.sh
 cp $SOURCE $TARGET \
-    && sed "/<% db = node\[:gigadb\]\[:db\] -%>/d" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= db\[:database\] %>|${GIGADB_DATABASE}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= db\[:host\] %>|${GIGADB_HOST}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= db\[:user\] %>|${GIGADB_USER}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= db\[:password\] %>|${GIGADB_PASSWORD}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && rm $TARGET.bak
+    && sed -e "/<% db = node\[:gigadb\]\[:db\] -%>/d" \
+    -e "s|<%= db\[:database\] %>|${GIGADB_DATABASE}|g" \
+    -e "s|<%= db\[:host\] %>|${GIGADB_HOST}|g" \
+    -e "s|<%= db\[:user\] %>|${GIGADB_USER}|g" \
+    -e "s|<%= db\[:password\] %>|${GIGADB_PASSWORD}|g" \
+    $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET && rm $TARGET.bak
 
 SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/es.json.erb
 TARGET=${APPLICATION}/protected/config/es.json
 cp $SOURCE $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:es_port\] %>|${GIGADB_ES_PORT}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && rm $TARGET.bak
+    && sed -e "s|<%= node\[:gigadb\]\[:es_port\] %>|${GIGADB_ES_PORT}|g" \
+    $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET && rm $TARGET.bak
 
 SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/update_links.sh.erb
 TARGET=${APPLICATION}/protected/scripts/update_links.sh
 cp $SOURCE $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:db\]\[:password\] %>|${GIGADB_PASSWORD}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && rm $TARGET.bak
+    && sed -e "s|<%= node\[:gigadb\]\[:db\]\[:password\] %>|${GIGADB_PASSWORD}|g" \
+    $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET && rm $TARGET.bak
 
 SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-help.html.erb
 TARGET=${APPLICATION}/files/html/help.html
 cp $SOURCE $TARGET \
-    && sed "/<% path = node\[:yii\]\[:ip_address\] -%>/d" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= path %>|${HOME_URL}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && rm $TARGET.bak
+    && sed -e "/<% path = node\[:yii\]\[:ip_address\] -%>/d" \
+    -e "s|<%= path %>|${HOME_URL}|g" \
+    $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET && rm $TARGET.bak
 
 # Download Yii version $YII_VERSION if not yet downloaded
 YII_URL=$(curl -s https://github.com/yiisoft/yii/releases/tag/${YII_VERSION} | grep "yii-${YII_VERSION}" | grep "tar.gz" | sed -n 's/.*href="\([^"]*\).*/\1/p')

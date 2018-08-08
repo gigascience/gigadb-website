@@ -61,3 +61,5 @@ Behat/composer.lock
 
 .env
 .data
+vsftpd
+files/html/help.html
