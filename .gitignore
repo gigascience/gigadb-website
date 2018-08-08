@@ -57,3 +57,7 @@ sql/temp_command.sql
 Behat/vendor
 Behat/composer.lock
 
+# deployment
+
+.env
+.data
