@@ -22,7 +22,7 @@ public static function returnJSON($data) {
         $dois = Yii::app()->db->createCommand()
                 ->select("id, identifier")
                 ->from("dataset")
-                ->order("identifier asc")
+                ->order("id DESC")
                 ->queryAll();
 
         return $dois;

@@ -39,6 +39,24 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         </div>
                     </div>
                     <div class="control-group">
+                        <?php echo $form->labelEx($model,'curator_id',array('class'=>'control-label')); ?>
+                        <div class="controls">
+                            <?php
+                            $criteria = new CDbCriteria;
+                            $criteria->condition='id=988 or id=989 or id=38 or id=37'; 
+                            ?>
+                            <?php echo $form->dropDownList($model,'curator_id',MyHtml::listData(User::model()->findAll($criteria),'id','email')); ?>
+                            <?php echo $form->error($model,'curator_id'); ?>
+                        </div>
+                    </div>
+                     <div class="control-group">
+                        <?php echo $form->labelEx($model,'manuscript_id',array('class'=>'control-label')); ?>
+                        <div class="controls">
+                            <?php echo $form->textField($model,'manuscript_id',array('size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->error($model,'manuscript_id'); ?>
+                        </div>
+                    </div>
+                    <div class="control-group">
                         <?php echo $form->labelEx($model,'upload_status',array('class'=>'control-label')); ?>
                         <div class="controls">
                             <?php echo $form->dropDownList($model,'upload_status',Dataset::$statusList,
@@ -272,6 +290,8 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     </div>
                 </div>
             </div> <!-- end of row of one column -->
+            
+            <?php echo CHtml::link('Curation Log', $this->createAbsoluteUrl('curationlog/admin',array('id'=>$model->id))); ?>
 
         </div> <!-- end of container -->
 

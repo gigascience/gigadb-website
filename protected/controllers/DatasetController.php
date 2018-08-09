@@ -344,6 +344,21 @@ class DatasetController extends Controller
 	public function actionUpdate($id) {
         $model = $this->loadModel($id);
         if (isset($_POST['Dataset'])) {
+            
+            if($_POST['Dataset']['upload_status'] != $model->upload_status)
+                
+            {
+                $curationlog = new CurationLog;
+                $curationlog->creation_date=date("Y-m-d");
+                $curationlog->last_modified_date=null;
+                $curationlog->dataset_id=$id;
+                $curationlog->created_by="System";
+                $curationlog->action="Status changed to ".$_POST['Dataset']['upload_status'];
+                if (!$curationlog->save())
+                    return false;
+                
+            }
+            
             $datasetAttr = $_POST['Dataset'];
 
             $model->setAttributes($datasetAttr, true);
