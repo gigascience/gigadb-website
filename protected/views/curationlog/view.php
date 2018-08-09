@@ -27,4 +27,4 @@ $this->widget('zii.widgets.CDetailView', array(
 )); ?>
 
 
-<?php echo CHtml::link('Back to this Dataset Curation Log', $this->createAbsoluteUrl('curationlog/admin',array('id'=>$model->dataset_id))); ?>
+<?php echo CHtml::link('Back to this Dataset Curation Log', $this->createAbsoluteUrl('dataset/update',array('id'=>$model->dataset_id))); ?>

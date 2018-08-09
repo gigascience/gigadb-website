@@ -343,6 +343,13 @@ class DatasetController extends Controller
 	 */
 	public function actionUpdate($id) {
         $model = $this->loadModel($id);
+
+        $dataProvider = new CActiveDataProvider('CurationLog', array(
+            'criteria' => array(
+                'condition' => "dataset_id=$id",
+                'order' => 'id DESC',
+            ),
+        ));
         if (isset($_POST['Dataset'])) {
             
             if($_POST['Dataset']['upload_status'] != $model->upload_status)
@@ -503,6 +510,8 @@ class DatasetController extends Controller
 
         $this->render('update', array(
             'model' => $model,
+            'curationlog'=>$dataProvider,
+            'dataset_id'=>$id,
         ));
     }
 

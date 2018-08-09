@@ -291,7 +291,10 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                 </div>
             </div> <!-- end of row of one column -->
             
-            <?php echo CHtml::link('Curation Log', $this->createAbsoluteUrl('curationlog/admin',array('id'=>$model->id))); ?>
+           <!-- <?php echo CHtml::link('Curation Log', $this->createAbsoluteUrl('curationlog/admin',array('id'=>$model->id))); ?> -->
+            
+            
+            <?php echo $this->renderPartial("curationlog",array('dataset_id'=>$dataset_id,'model'=>$curationlog)); ?>
 
         </div> <!-- end of container -->
 

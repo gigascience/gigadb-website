@@ -3,13 +3,7 @@
 $dataset = Dataset::model()->find('id=:dataset_id', array(':dataset_id'=>$dataset_id));
 
 ?>
-
-<h2>Dataset <?php echo $dataset->identifier?> Curation Log</h2>
-
-<br>
-
 <a href="/curationlog/create/id/<?php echo $dataset_id ?>" class="btn">Create New Log</a>
-
 <div class="clear"></div>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
@@ -35,7 +29,7 @@ $dataset = Dataset::model()->find('id=:dataset_id', array(':dataset_id'=>$datase
                         ),   
                 'delete' => array(
                         'url' => 'Yii::app()->createUrl("curationlog/delete" , array("id" => $data->id))'
-                        )         
+                        )          
                 ),
 		),
             
