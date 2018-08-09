@@ -365,6 +365,29 @@ class DatasetController extends Controller
                     return false;
                 
             }
+             if($_POST['Dataset']['curator_id'] != $model->curator_id)
+                
+            {
+                $curationlog = new CurationLog;
+                $curationlog->creation_date=date("Y-m-d");
+                $curationlog->last_modified_date=null;
+                $curationlog->dataset_id=$id;
+                $User1 = User::model()-> find('id=:id',array(':id'=>Yii::app()->user->id));
+                $username1 = $User1->first_name." ".$User1->last_name;
+                $curationlog->created_by=$username1;
+                $User = User::model()-> find('id=:id',array(':id'=>$_POST['Dataset']['curator_id']));
+                $username = $User->first_name." ".$User->last_name;
+                $curationlog->action="Curator Assigned"." $username";
+                $model->curator_id = $_POST['Dataset']['curator_id'];
+                if (!$curationlog->save())
+                    return false;
+                
+            }
+            
+            if($_POST['Dataset']['manuscript_id'])
+            {
+                $model->manuscript_id = $_POST['Dataset']['manuscript_id'];
+            }
             
             $datasetAttr = $_POST['Dataset'];
 

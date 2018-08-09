@@ -27,39 +27,7 @@ Yii::app()->clientScript->registerScriptFile('/js/jquery-migrate-1.2.1.js', CCli
 			</div>
 		</div>
 
-                <div class="control-group">
-			<?php echo $form->labelEx($model,'creation_date',array('class'=>'control-label')); ?>
-			<div class="controls">
-				<?php echo $form->textField($model,'creation_date' , array('class' => 'date')); ?>
-				<?php echo $form->error($model,'creation_date'); ?>
-			</div>
-		</div>
-                
-               
-		<div class="control-group">
-			<?php echo $form->labelEx($model,'created_by',array('class'=>'control-label')); ?>
-			<div class="controls">
-				<?php echo $form->textField($model,'created_by',array('size'=>20,'maxlength'=>100)); ?>
-				<?php echo $form->error($model,'created_by'); ?>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<?php echo $form->labelEx($model,'last_modified_date',array('class'=>'control-label')); ?>
-			<div class="controls">
-				<?php echo $form->textField($model,'last_modified_date', array('class' => 'date')); ?>
-				<?php echo $form->error($model,'last_modified_date'); ?>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<?php echo $form->labelEx($model,'last_modified_by',array('class'=>'control-label')); ?>
-			<div class="controls">
-				<?php echo $form->textField($model,'last_modified_by',array('size'=>20,'maxlength'=>100)); ?>
-				<?php echo $form->error($model,'last_modified_by'); ?>
-			</div>
-		</div>
-                
+		
                 <div class="control-group">
 			<?php echo $form->labelEx($model,'action',array('class'=>'control-label')); ?>
 			<div class="controls">

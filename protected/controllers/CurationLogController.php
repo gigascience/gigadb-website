@@ -89,6 +89,7 @@ class CurationLogController extends Controller
 
 		$this->render('create',array(
 			'model'=>$model,
+                        'dataset_id'=>$id,
 		));
 	}
 

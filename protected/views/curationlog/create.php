@@ -5,5 +5,5 @@
 </div>
 <? } ?>
 
-<?php echo $this->renderPartial('_form1', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form1', array('model'=>$model,'dataset_id'=>$dataset_id)); ?>
 
