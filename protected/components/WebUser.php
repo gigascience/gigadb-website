@@ -9,7 +9,7 @@ class WebUser extends CWebUser
  *                     * @param mixed $params (opt) Parameters for this operation, usually the object to access.
  *                          * @return bool Permission granted?
  *                               */
-    public function checkAccess($operation, $params=array())
+    public function checkAccess($operation, $params=array(), $allowCaching=true)
     {
         if (empty($this->id)) {
             // Not identified => no rights
