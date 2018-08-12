@@ -269,7 +269,10 @@ HTML;
                             $types[$externalLink->externalLinkType->name] = 1;
                         }
                         foreach ($types as $typeName => $value) {
-                            $typeNameLabel = preg_replace('/(?:^|_)(.?)/e',"strtoupper('$1')",$typeName);
+                            $typeNameLabel = preg_replace_callback('/(?:^|_)(.?)/',
+                                            function($m) { return mb_strtoupper($m[1]); },
+                                            $typeName);
+
                             $typeNameLabel = preg_replace('/(?<=\\w)(?=[A-Z])/'," $1", $typeNameLabel);
                             $typeNameLabel = trim($typeNameLabel);
                             if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse' and $typeNameLabel !== '3 D Models' and $typeNameLabel !== 'Code Ocean')
