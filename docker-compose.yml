@@ -25,6 +25,8 @@ services:
     volumes:
       - ./:/var/www
       - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/yii:${YII_PATH}
+      - ./php-conf/php-${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+      - ./php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
       - ./php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
       - ./php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
     expose:
@@ -37,7 +39,7 @@ services:
     image: postgres:${POSTGRES_VERSION}-alpine
     env_file: container-env.dev
     volumes:
-      - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/postgres:/var/lib/postgresql
+      - pgdata:/var/lib/postgresql/data
       - ./sql/gigadb_testdata.sql:/docker-entrypoint-initdb.d/1-gigadb_testdata.sql
     networks:
       - db-tier
@@ -59,3 +61,6 @@ services:
 networks:
   web-tier:
   db-tier:
+
+volumes:
+  pgdata:
