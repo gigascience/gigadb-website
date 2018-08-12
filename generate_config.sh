@@ -62,23 +62,23 @@ sed "s|192.168.42.10|${HOME_URL}|" $THIS_SCRIPT_DIR/nginx-conf/sites/gigadb.conf
 SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-aws.json.erb
 TARGET=${APPLICATION}/protected/config/aws.json
 cp $SOURCE $TARGET \
-    && sed "/<% aws = node\[:aws\] -%>/d" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= aws\[:aws_access_key_id\] %>|${AWS_ACCESS_KEY_ID}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= aws\[:aws_secret_access_key\] %>|${AWS_SECRET_ACCESS_KEY}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= aws\[:s3_bucket_for_file_bundles\] %>|${AWS_S3_BUCKET_FOR_FILE_BUNDLES}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= aws\[:s3_bucket_for_file_previews\] %>|${AWS_S3_BUCKET_FOR_FILE_PREVIEWS}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= aws\[:aws_default_region\] %>|${AWS_DEFAULT_REGION}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && rm $TARGET.bak
+    && sed "/<% aws = node\[:aws\] -%>/d" \
+    -e "s|<%= aws\[:aws_access_key_id\] %>|${AWS_ACCESS_KEY_ID}|g" \
+    -e "s|<%= aws\[:aws_secret_access_key\] %>|${AWS_SECRET_ACCESS_KEY}|g" \
+    -e "s|<%= aws\[:s3_bucket_for_file_bundles\] %>|${AWS_S3_BUCKET_FOR_FILE_BUNDLES}|g" \
+    -e "s|<%= aws\[:s3_bucket_for_file_previews\] %>|${AWS_S3_BUCKET_FOR_FILE_PREVIEWS}|g" \
+    -e "s|<%= aws\[:aws_default_region\] %>|${AWS_DEFAULT_REGION}|g" \
+    $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \ && rm $TARGET.bak
 
 SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-console.php.erb
 TARGET=${APPLICATION}/protected/config/console.php
 cp $SOURCE $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:mfr\]\[:preview_server\] %>|${PREVIEW_SERVER_HOST}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:ftp\]\[:connection_url\] %>|${FTP_CONNECTION_URL}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:multidownload\]\[:download_host\] %>|${MULTIDOWNLOAD_SERVER_HOST}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:redis\]\[:server\] %>|${REDIS_SERVER_HOST}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && sed "s|<%= node\[:gigadb\]\[:beanstalk\]\[:host\] %>|${BEANSTALK_SERVER_HOST}|g" $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \
-    && rm $TARGET.bak
+    && sed "s|<%= node\[:gigadb\]\[:mfr\]\[:preview_server\] %>|${PREVIEW_SERVER_HOST}|g" \
+    -e "s|<%= node\[:gigadb\]\[:ftp\]\[:connection_url\] %>|${FTP_CONNECTION_URL}|g" \
+    -e "s|<%= node\[:gigadb\]\[:multidownload\]\[:download_host\] %>|${MULTIDOWNLOAD_SERVER_HOST}|g" \
+    -e "s|<%= node\[:gigadb\]\[:redis\]\[:server\] %>|${REDIS_SERVER_HOST}|g" \
+    -e "s|<%= node\[:gigadb\]\[:beanstalk\]\[:host\] %>|${BEANSTALK_SERVER_HOST}|g" \
+    $TARGET > $TARGET.new && mv $TARGET $TARGET.bak && mv $TARGET.new $TARGET \ && rm $TARGET.bak
 
 SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-index.php.erb
 TARGET=${APPLICATION}/index.php
