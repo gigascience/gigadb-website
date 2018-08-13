@@ -5,7 +5,7 @@ Feature: shows datasets authored by a user on his/her profile
 	So that I can manage them conveniently from one place
 
 Background:
-	Given Gigadb web site is loaded with "gigadb_testdata.sql" data
+	Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 	And user "joy_fox" is loaded
 
 @ok

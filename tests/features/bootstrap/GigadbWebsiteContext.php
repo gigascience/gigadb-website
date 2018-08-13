@@ -27,8 +27,8 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
 	public function __construct(array $parameters)
     {
 
-        $this->admin_login = $_ENV["GIGADB_admin_tester_email"];
-        $this->admin_password = $_ENV["GIGADB_admin_tester_password"] ;
+        $this->admin_login = getenv("GIGADB_admin_tester_email");
+        $this->admin_password = getenv("GIGADB_admin_tester_password") ;
 
         $this->useContext('affiliate_login', new AffiliateLoginContext($parameters));
         $this->useContext('normal_login', new NormalLoginContext($parameters));
@@ -158,7 +158,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
          $this->fillField("LoginForm_password", $this->admin_password);
          $this->pressButton("Login");
 
-         $this->assertResponseContains("Administration");
+         $this->assertResponseContains("Admin");
     }
 
      /**
@@ -184,15 +184,13 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         $this->terminateDbBackend("gigadb");
         $this->dropCreateDb("gigadb");
         if ( preg_match("/\.pgdmp$/", $arg1) ) {
-            exec("vagrant ssh -c \"pg_restore -i -h localhost -p 5432 -U gigadb -d gigadb -v /vagrant/sql/${arg1} \"",$output);
-        }
-        else if ( preg_match("/\.sql$/", $arg1) ) {
-            exec("vagrant ssh -c \"sudo -Hiu postgres /usr/bin/psql gigadb < /vagrant/sql/${arg1}\"",$output);
+            exec("pg_restore -i -h database -p 5432 -U gigadb -d gigadb -v /var/www/sql/${arg1}",$output);
+            $this->restartPhp();
         }
         else {
             throw new Exception("cannot load database file ${arg1}");
         }
-        $this->restartPhp();
+
 
     }
 
@@ -232,8 +230,8 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
     // ---  utility functions
 
     public function terminateDbBackend($dbname) {
-        $sql = "SELECT pg_terminate_backend(procpid) FROM pg_stat_activity WHERE datname='${dbname}' and procpid <> pg_backend_pid()";
-        $dbconn = pg_connect("host=localhost dbname=postgres user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        $sql = "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='${dbname}' and pid <> pg_backend_pid()";
+        $dbconn = pg_connect("host=database dbname=postgres user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
 
@@ -243,7 +241,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
         $sql_to_fence ="ALTER DATABASE $dbname WITH CONNECTION LIMIT 0;";
         $sql_to_drop = "DROP DATABASE ${dbname}";
         $sql_to_create = "CREATE DATABASE ${dbname} OWNER gigadb";
-        $dbconn = pg_connect("host=localhost dbname=postgres user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host=database dbname=postgres user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql_to_fence);
         pg_query($dbconn, $sql_to_drop);
         pg_query($dbconn, $sql_to_create);
@@ -252,19 +250,22 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
     }
     public function truncateTable($dbname,$tablename) {
         $sql = "TRUNCATE TABLE ${tablename} CASCADE";
-        $dbconn = pg_connect("host=localhost dbname=${dbname} user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host=database dbname=${dbname} user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
     }
 
     public function restartPhp()
     {
-        exec("vagrant ssh -c \"sudo /etc/init.d/php-fpm restart\"",$output);
+        $compose_name=getenv("COMPOSE_PROJECT_NAME");
+        print_r("Restarting php container for ${compose_name} project".PHP_EOL);
+        exec("/var/www/restart_php.sh",$output);
+        sleep(2);
     }
 
     public function loadUserData($user) {
         $sql = file_get_contents("sql/${user}.sql");
-        $dbconn = pg_connect("host=localhost dbname=gigadb user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
     }

@@ -1,4 +1,4 @@
-@login @normal-login
+@login @normal-login @ok-docker
 Feature: sign in into the gigadb website with my Gigadb credentials
 	AS a user,
 	I WANT TO sign in to the gigadb website with my credentials

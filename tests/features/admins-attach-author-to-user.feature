@@ -5,7 +5,7 @@ Feature: a curator can fill in user id in an author record
 	So that I can enable gigadb users direct access to the dataset they have authored
 
 Background:
-	Given Gigadb web site is loaded with "gigadb_testdata.sql" data
+	Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 	And default admin user exists
 	When I go to "/dataset/100002"
 	Then I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"

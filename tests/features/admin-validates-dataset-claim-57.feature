@@ -5,7 +5,7 @@ Feature: Upon notification of a dataset claim, an admin to validate the claim
 	So that I can confirm or invalidate the claim
 
 Background:
-	Given Gigadb web site is loaded with "gigadb_testdata.sql" data
+	Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 	And default admin user exists
 	And user "joy_fox" is loaded
 

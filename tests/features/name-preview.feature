@@ -1,4 +1,4 @@
-@edit-display-name @issue-81
+@edit-display-name @issue-81 @ok-docker
 Feature: Adjusting how an author's name is displayed on a dataset page
 As a paper author,
 I want to be able to set up how my name appears on gigadb paper's page.

@@ -116,7 +116,7 @@ class ClaimDatasetContext extends BehatContext
     public function authorIsAssociatedWithAUser($author_id)
     {
         $sql = "update author set gigadb_user_id=346 where id=${author_id}";
-        $dbconn =pg_connect("host=localhost dbname=gigadb user=postgres port=9171") or die('Could not connect: '.pg_last_error());
+        $dbconn =pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: '.pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
     }

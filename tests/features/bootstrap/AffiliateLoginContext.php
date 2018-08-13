@@ -335,7 +335,7 @@ class AffiliateLoginContext extends BehatContext
 
     public function countEmailOccurencesInUserList($email=null) {
 
-        $dbconn = pg_connect("host=localhost dbname=gigadb user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         $query = "select email from gigadb_user where email='${email}';";
         $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 
@@ -354,7 +354,7 @@ class AffiliateLoginContext extends BehatContext
     private function createNewUserAccountForEmail($email) {
         $sql = "insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username) values(1,'${email}','12345678','John','Doe','ETH','user',true,'johndoe')" ;
 
-        $dbconn = pg_connect("host=localhost dbname=gigadb user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
 
@@ -363,7 +363,7 @@ class AffiliateLoginContext extends BehatContext
     private function createNewUserAccountForUidAndEmail($provider,$uid,$email) {
         $sql = "insert into gigadb_user(id, email,password,first_name, last_name, affiliation,role,is_activated,username,orcid_id) values(1,'${email}','12345678','John','Doe','ETH','user',true,'johndoe','${uid}')" ;
 
-        $dbconn = pg_connect("host=localhost dbname=gigadb user=postgres port=9171") or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
 

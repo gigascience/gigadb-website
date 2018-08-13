@@ -41,7 +41,7 @@ class AuthorUserContext extends BehatContext
      */
     public function authorIsAssociatedWithUser($author, $user)
     {
-        $dbconn = pg_connect("host=localhost dbname=gigadb user=gigadb port=9171") or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host=database dbname=gigadb user=gigadb port=5432") or die('Could not connect: ' . pg_last_error());
         $query = "update author set gigadb_user_id=${user} where id=${author};";
         pg_query($query) or die('Query failed: ' . pg_last_error());
         pg_close($dbconn);

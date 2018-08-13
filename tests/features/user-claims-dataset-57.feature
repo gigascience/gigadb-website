@@ -5,7 +5,7 @@ Feature: a user can claim his/her datasets
 	So I can manage them
 
 Background:
-	Given Gigadb web site is loaded with "gigadb_testdata.sql" data
+	Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 	And user "joy_fox" is loaded
 	And default admin user exists
 

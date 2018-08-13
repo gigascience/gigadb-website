@@ -1,17 +1,18 @@
-@author-names-display @issue-80 @issue-81 @issue-82
+@author-names-display @issue-80 @issue-81 @issue-82 @ok-docker
 Feature: Standardizing the display of names of a paper's authors
 	As a Gigascience editor,
 	I want the name of the authors of papers to be the same between Gigascience Journal and GigaDB.org
 	So that web visitors and researchers have a consistent experience navigating between the journal and the datasets
 
-Scenario: appropriate test environment 
+@ok
+Scenario: appropriate test environment
 	Given Gigadb web site is loaded with production-like data
 	And an admin user exists
 	When I am on "/dataset/100039"
 	Then I should see "Genomic data of the Puerto Rican Parrot"
 
-
-Scenario Outline: 
+@ok
+Scenario Outline:
 	Given author has surname "<surname>"
 	And author has first name "<first_name>"
 	And author has middle name "<middle_name>"
