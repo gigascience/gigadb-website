@@ -2,6 +2,12 @@
 # General Setup
 ###########################################################
 
+### Application name  ###################################################################################################
+# It's docker compose special environment variable. When set, its used to prefix the name of the containers instantiated
+# by compose. It doesn't have the problems that container_name: compose directive has.
+
+COMPOSE_PROJECT_NAME=gigadb
+
 ### PHP Version ########################################################################################################
 # Select a PHP version of the Workspace and PHP-FPM containers (Does not apply to HHVM). Accepted values: 71 - 70 - 56
 

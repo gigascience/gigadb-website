@@ -58,6 +58,35 @@ RUN if [ ${INSTALL_INTL} = true ]; then \
 ;fi
 
 
+ARG INSTALL_PGSQL=false
+
+RUN if [ ${INSTALL_PGSQL} = true ]; then \
+    # Install the pgsql extension
+    docker-php-ext-install pgsql \
+;fi
+
+ARG INSTALL_PG_CLIENT=false
+ARG PG_CLIENT_VERSION=10.5
+
+RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
+    # Create folders if not exists (https://github.com/tianon/docker-brew-debian/issues/65)
+    mkdir -p /usr/share/man/man1 && \
+    mkdir -p /usr/share/man/man7 && \
+    # Install the pgsql client
+    apt-get install -y postgresql-client-${PG_CLIENT_VERSION} \
+;fi
+
+ARG INSTALL_NETCAT_JQ=false
+
+RUN if [ ${INSTALL_NETCAT_JQ} = true ]; then \
+    # Create folders if not exists (https://github.com/tianon/docker-brew-debian/issues/65)
+    mkdir -p /usr/share/man/man1 && \
+    mkdir -p /usr/share/man/man7 && \
+    # Install netcat-openbsd and jq
+    apt-get install -y netcat-openbsd jq \
+;fi
+
+
 RUN usermod -u 1000 www-data
 
 WORKDIR /var/www

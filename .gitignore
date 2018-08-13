@@ -50,6 +50,7 @@ nbproject/project.properties
 # Testing
 tests/fixtures/affiliate_users_credentials
 sql/temp_command.sql
+test_users.txt
 
 
 # Behat

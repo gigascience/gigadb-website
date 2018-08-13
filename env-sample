@@ -42,7 +42,7 @@ SERVER_CONFIG_ALLOWED_PROVIDER_DOMAINS=https://fpreviewstest.s3.amazonaws.com
 ### gigadb-website configuration #######################################################################################
 
 YII_PATH=/opt/yii-1.1
-HOME_URL=ggdb.test
+HOME_URL=gigadb.gigasciencejournal.com
 SERVER_EMAIL=database@gigasciencejournal.com
 PUBLIC_HTTP_PORT=8088
 PUBLIC_HTTPS_PORT=8043
