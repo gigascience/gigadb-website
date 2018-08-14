@@ -1,11 +1,11 @@
-@issue-49 @merging-two-authors @javascript
+@issue-49 @merging-two-authors @javascript @ok-docker
 Feature: Merging duplicate authors
 	In order to reduce data duplication and to increase datasets interlinking
 	As an admin user
 	I want to merge author records that are identical
 
 Background:
-	Given Gigadb web site is loaded with "gigadb_testdata.sql" data
+	Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 	And default admin user exists
 	When I go to "/dataset/100002"
 	Then I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"

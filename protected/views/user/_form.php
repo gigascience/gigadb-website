@@ -1,4 +1,60 @@
  <div class="content">
+
+<?php
+    foreach(Yii::app()->user->getFlashes() as $key => $message) {
+        echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
+    }
+?>
+<?php
+      $user_command = UserCommand::model()->findByAttributes(array("requester_id" => $model->id, "status" => "pending")) ;
+      $linked_author = Author::findAttachedAuthorByUserId($model->id) ;
+
+?>
+
+<div class="clear"></div>
+<?php
+      if ( null != $user_command ) {
+      	$claimed_author = Author::model()->findByPk($user_command->actionable_id);
+      	$message = "This user has a pending claim on author ". $claimed_author->getDisplayName() ;
+      	$validate_link = CHtml::link('Validate', 
+                                    array('AdminUserCommand/validate', 'id' => $user_command->id),
+                                    array('class' => 'btn'));
+      	$reject_link = CHtml::link('Reject', 
+                                    array('AdminUserCommand/reject', 'id' => $user_command->id),
+                                    array('class' => 'btn'));
+      	$author_link = CHtml::link('Author info', 
+                                    array('AdminAuthor/view', 'id' => $user_command->actionable_id),
+                                    array('class' => 'btn'));
+?>
+	    <div class="alert alert-info">
+	    	<? echo $message ?>
+	    	<div class="btn-toolbar">
+			    <? echo $validate_link ?>
+			    <? echo $reject_link ?>
+			    <? echo $author_link ?>
+			</div>
+		</div>
+
+<?php
+      }
+      else if ( null ==  $linked_author) {
+          echo CHtml::link('Link this user to an author', 
+                                    array('adminAuthor/prepareUserLink', 'user_id'=>$model->id),
+                                    array('class' => 'btn')); 
+      }else {
+      	$unlink_link =  CHtml::link('Unlink author', 
+                                    array('AdminAuthor/unlinkUser', 'id' => $linked_author->id, 'user_id'=>$model->id),
+                                    array('class' => 'btn'));
+?>
+        <div class="alert">This user is linked to author: <? echo $linked_author->getDisplayName() ?> (<? echo $linked_author->id ?>)
+			<div class="btn-toolbar">
+			    <? echo $unlink_link ?>
+			</div>
+        </div>
+<?php
+      }
+?>
+ 	
         <div class="container">
               <section class="page-title-section">
                 <div class="page-title">
