@@ -253,6 +253,24 @@ class Dataset extends MyActiveRecord
             'criteria'=>$criteria,
         ));
     }
+    
+    public static function getCuratorname($id){
+        
+      $curator = User::model()->find('id=:user_id', array(':user_id'=>$id));
+      
+      if(isset($curator))
+      {
+        $curator_name = $curator->first_name." ".$curator->last_name;    
+          
+      }
+      else
+      {
+        $curator_name = "";  
+      }
+      
+      return $curator_name;
+        
+    }
 
     public static function getTypeList($ids) {
         $crit = new CDbCriteria;

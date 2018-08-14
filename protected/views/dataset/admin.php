@@ -48,7 +48,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		// 'excelfile',
 		// 'excelfile_md5',
 		'publication_date',
-		'curator_id',
+		array('name'=> 'curator_id', 'value'=>'Dataset::getCuratorname($data->curator_id)'),
                 'modification_date',
                 'upload_status',
 
