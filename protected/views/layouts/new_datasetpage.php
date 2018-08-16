@@ -80,7 +80,8 @@
                 vertical-align: top;
             }
         </style>
-        <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
         <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <? } ?>
 
@@ -224,7 +225,7 @@
     <!-- Le javascript
      ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-     <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+     <!-- <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script> -->
      <!-- <script src="/js/jquery.js"></script>-->
      <!-- <script src="/js/google-code-prettify/prettify.js"></script>-->
      <!-- <script src="/js/bootstrap-transition.js"></script>

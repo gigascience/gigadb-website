@@ -48,7 +48,7 @@ HTML;
                 <div class="subsection">
                     <p><?= $model->description; ?></p>
                 </div>
-               
+
                 <div class="subsection">
                      <?php if(count($model->datasetAttributes)>0){?>
                     <p>Keywords:</p>
@@ -56,8 +56,6 @@ HTML;
                     <? foreach ($model->datasetAttributes as $key=>$keyword){
                         if ($keyword->attribute_id == 455)
                             echo "<li><a href='/search/new?keyword=$keyword->value'>$keyword->value</a></li>";
-
-                      
                     }
                     ?>
                     </ul>
@@ -71,13 +69,14 @@ HTML;
                             <a href="<?= $model->ePMCLink ?>" target="_blank"><img class="dataset-des-images" src="/images/ePMC.jpg"/></a>
                         </span>
                     </p>
-                </div>    
+                </div>
                 </div>
                                 <div class="subsection">
                                      <span class="content-popup" <?= !Yii::app()->user->isGuest ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
                     <a class="btn background-btn background-btn-o <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
                         Contact Submitter
                     </a>
+                    </span>
                     <? if( ! Yii::app()->user->isGuest && null == Author::findAttachedAuthorByUserId(Yii::app()->user->id) ) { ?>
                         <? Yii::log(__FUNCTION__."> Author::findAttachedAuthorByUserId:".Author::findAttachedAuthorByUserId(Yii::app()->user->id) , 'warning'); ?>
                         <span title="click to claim the dataset and link your user account to an author" data-toggle="tooltip" data-placement="bottom">
@@ -86,87 +85,89 @@ HTML;
                             </a>
                         </span>
                         <!-- Modal -->
-                        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h3 id="myModalLabel">Select an author to link to your Gigadb User ID</h3>
-                                <div id="message"></div>
-                                <div id="advice"></div>
-                            </div>
-                            <?php echo MyHtml::beginForm('/userCommand/claim','GET'); ?>
-                                <div class="modal-body text-center">
-                                    <?php if (count($model->authors) > 0) { ?>
-                                            <table>
-                                            <?php foreach ($model->authors as $author) { ?>
-                                                <tr><td>
-<?php
-                                        $status_array = array('Request', 'Incomplete', 'Uploaded');
-                                        echo CHtml::ajaxLink($author->first_name." ".$author->middle_name." ".$author->surname,Yii::app()->createUrl('/userCommand/claim'),
-                                        array(
-                                            'type'=>'GET',
-                                            'data'=> array('dataset_id'=>'js:$("#dataset_id").val()',
-                                                'author_id' => $author->id),
-                                            'dataType'=>'json',
-                                            'success'=>'js:function(output){
-                                                document.getElementById("message").removeAttribute("class");
-                                                $("#claim_button").toggleClass("disable");
-                                                if(output.status){
-                                                    $("#message").addClass("alert").addClass("alert-success");
-                                                    $("#message").html(output.message);
-                                                } else {
-                                                    $("#message").addClass("alert").addClass("alert-error");
-                                                    $("#message").html(output.message);
-                                                }
-                                                $("#advice").addClass("alert").addClass("alert-info");
-                                                $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
-                                            }',
-                                        ),array('class'=>'btn btn-green btn-block',
-                                                'id' =>'claim_button_' . $author->id,
-                                                // 'disabled'=>in_array($model->upload_status, $status_array),
-                                        ));
-                                        ?>
-                                                </td><td><? echo $author->orcid ? " (orcid id:".$author->orcid.")" : "" ?> </td></tr>
+                        <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title" id="myModalLabel">Select an author to link to your Gigadb User ID</h4>
+                                        <div id="message"></div>
+                                        <div id="advice"></div>
+                                    </div>
+                                    <?php echo MyHtml::beginForm('/userCommand/claim','GET'); ?>
+                                        <div class="modal-body text-center">
+                                            <?php if (count($model->authors) > 0) { ?>
+                                                    <table>
+                                                    <?php foreach ($model->authors as $author) { ?>
+                                                        <tr><td>
+            <?php
+                                                $status_array = array('Request', 'Incomplete', 'Uploaded');
+                                                echo CHtml::ajaxLink($author->first_name." ".$author->middle_name." ".$author->surname,Yii::app()->createUrl('/userCommand/claim'),
+                                                array(
+                                                    'type'=>'GET',
+                                                    'data'=> array('dataset_id'=>'js:$("#dataset_id").val()',
+                                                        'author_id' => $author->id),
+                                                    'dataType'=>'json',
+                                                    'success'=>'js:function(output){
+                                                        document.getElementById("message").removeAttribute("class");
+                                                        $("#claim_button").toggleClass("disable");
+                                                        if(output.status){
+                                                            $("#message").addClass("alert").addClass("alert-success");
+                                                            $("#message").html(output.message);
+                                                        } else {
+                                                            $("#message").addClass("alert").addClass("alert-error");
+                                                            $("#message").html(output.message);
+                                                        }
+                                                        $("#advice").addClass("alert").addClass("alert-info");
+                                                        $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
+                                                    }',
+                                                ),array('class'=>'btn btn-green btn-block',
+                                                        'id' =>'claim_button_' . $author->id,
+                                                        // 'disabled'=>in_array($model->upload_status, $status_array),
+                                                ));
+                                                ?>
+                                                        </td><td><? echo $author->orcid ? " (orcid id:".$author->orcid.")" : "" ?> </td></tr>
+                                                    <? } ?>
+                                                </table>
                                             <? } ?>
-                                        </table>
-                                    <? } ?>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="reset" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">Close</button>
+                                            <input type="hidden" id="dataset_id" name="dataset_id" value="<? echo $model->id ?>"/>
+                                            <?php
+                                                // "Cancel current claim" button
+                                                $status_array = array('Request', 'Incomplete', 'Uploaded');
+                                                echo CHtml::ajaxLink('Cancel current claim',Yii::app()->createUrl('/userCommand/cancelClaim'),
+                                                array(
+                                                    'type'=>'GET',
+                                                    'dataType'=>'json',
+                                                    'success'=>'js:function(output){
+                                                        document.getElementById("message").removeAttribute("class");
+                                                        $("#cancel_button").toggleClass("disable");
+                                                        if(output.status){
+                                                            $("#message").addClass("alert").addClass("alert-success");
+                                                            $("#message").html(output.message);
+                                                        } else {
+                                                            $("#message").addClass("alert").addClass("alert-error");
+                                                            $("#message").html(output.message);
+                                                        }
+                                                        $("#advice").addClass("alert").addClass("alert-info");
+                                                        $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
+                                                    }',
+                                                ),array('class'=>'btn btn-danger',
+                                                        'id' =>'cancel_button',
+                                                        // 'disabled'=>in_array($model->upload_status, $status_array),
+                                                ));
+                                            ?>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="reset" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">Close</button>
-                                    <input type="hidden" id="dataset_id" name="dataset_id" value="<? echo $model->id ?>"/>
-                                    <?php
-                                        // "Cancel current claim" button
-                                        $status_array = array('Request', 'Incomplete', 'Uploaded');
-                                        echo CHtml::ajaxLink('Cancel current claim',Yii::app()->createUrl('/userCommand/cancelClaim'),
-                                        array(
-                                            'type'=>'GET',
-                                            'dataType'=>'json',
-                                            'success'=>'js:function(output){
-                                                document.getElementById("message").removeAttribute("class");
-                                                $("#cancel_button").toggleClass("disable");
-                                                if(output.status){
-                                                    $("#message").addClass("alert").addClass("alert-success");
-                                                    $("#message").html(output.message);
-                                                } else {
-                                                    $("#message").addClass("alert").addClass("alert-error");
-                                                    $("#message").html(output.message);
-                                                }
-                                                $("#advice").addClass("alert").addClass("alert-info");
-                                                $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
-                                            }',
-                                        ),array('class'=>'btn btn-danger',
-                                                'id' =>'cancel_button',
-                                                // 'disabled'=>in_array($model->upload_status, $status_array),
-                                        ));
-                                    ?>
-
-                                </div>
-                            </form>
                             </div>
+                        </div>
                     <? } ?>
-                    </span>
-                    
-                   
                 </div>
+
+
                 <div class="subsection">
                   <?php if($model->fairnuse) {
                             if( (time() < strtotime($model->fairnuse))) { ?>
@@ -445,62 +446,7 @@ HTML;
                         <br>
                         <br>
                         <br>
-                                                <?php
-            $this->widget('zii.widgets.grid.CGridView', array(
-                'id' => 'sample-grid',
-                'dataProvider'=>$samples,
-                'itemsCssClass'=>'table table-bordered',
-                'template' => $template,
-                'pager' => 'SiteLinkPager',
-                'pagerCssClass' => '',
-                'summaryText' => 'Displaying {start}-{end} of {count} Sample(s).',
-                'htmlOptions' => array('style'=>'padding-top: 0px'),
-                'columns' => array(
-                    array(
-                        'name' => 'name',
-                        'type' => 'raw',
-                        'value' => '$data->linkName',
-                        'htmlOptions' => array('class'=>'left'),
-                        'visible' => in_array('name', $columns),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'taxonomic_id',
-                        'value' => 'CHtml::link($data->species->tax_id, Species::getTaxLink($data->species->tax_id))',
-                        'type' => 'raw',
-                        'visible' => in_array('taxonomic_id', $columns),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'common_name',
-                        'value' => '$data->species->common_name',
-                        'visible' => in_array("common_name", $columns),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'genbank_name',
-                        'value' => '$data->species->genbank_name',
-                        'visible' => in_array("genbank_name", $columns),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'scientific_name',
-                        'value' => '$data->species->scientific_name',
-                        'visible' => in_array("scientific_name", $columns),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'attribute',
-                        'value' => '$data->displayAttr',
-                        'type' => 'raw',
-                        'visible' => in_array("attribute", $columns),
-                        'htmlOptions' => array('class'=>'left'),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                ),
-
-            ));
-        ?>
+                                                <!-- TODO: javascript broke samples. Will fix later. -->
     
                       </div>
                             <?php }                       
@@ -520,90 +466,7 @@ HTML;
                             <br>
                             <br>
                             <br>
-                            <?php
-            $this->widget('zii.widgets.grid.CGridView', array(
-                'id' => 'file-grid',
-                'dataProvider'=>$files,
-                'itemsCssClass'=>'table table-bordered',
-                'template' => $template,
-                'pager' => 'SiteLinkPager',
-                'pagerCssClass' => '',
-                'summaryText' => 'Displaying {start}-{end} of {count} File(s).',
-                'htmlOptions' => array('style'=>'padding-top: 0px'),
-                'columns' => array(
-                    array(
-                        'name' => 'name',
-                        'type' => 'raw',
-                        'value' => '$data->nameHtml',
-                        'visible' => in_array('name', $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'description',
-                        'value' => '$data->description',
-                        'visible' => in_array('description', $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'sample_name',
-                        'type' => 'raw',
-                        'value' => '$data->getallsample($data->id)',
-                        'visible' => in_array('sample_id', $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'type_id',
-                        'value' => '$data->type->name',
-                        'visible' => in_array("type_id", $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'format_id',
-                        'value' => '$data->format->name',
-                        'visible' => in_array("format_id", $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'size',
-                        'value' => 'File::staticBytesToSize($data->size)',
-                        'visible' => in_array("size", $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'date_stamp',
-                        'value' => '$data->date_stamp',
-                        'visible' => in_array("date_stamp", $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'name' => 'attribute',
-                        'type' => 'raw',
-                        'value' => '$data->attrDesc',
-                        'visible' => in_array("attribute", $setting),
-                        'headerHtmlOptions'=>array('style'=>'color: #099242'),
-                    ),
-                    array(
-                        'class'=>'CButtonColumn',
-                        'template' => '{download}',
-                        'buttons' => array(
-                            'download' => array(
-                                'label'=>'',
-                                'url' => '$data->location',
-                                'imageUrl' => '',
-                                'options' => array(
-                                    'target' => '_blank',
-                                    'class' => 'download-btn js-download-count',
-                                ),
-                            )
-                        ),
-                        'visible' => in_array("location", $setting),
-                    ),
-
-                ),
-
-            ));
-        ?>
-
+                            <!-- TODO: javascript broke files. Will fix later. -->
                         </div>
                             <?php }                       
                         ?>

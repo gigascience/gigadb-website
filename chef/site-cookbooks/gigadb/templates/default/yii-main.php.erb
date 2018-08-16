@@ -19,7 +19,6 @@ return CMap::mergeArray(array(
 
     'preload'=>array(
         'log',
-        'bootstrap',
     ),
 
     'import'=>array(
@@ -87,9 +86,17 @@ return CMap::mergeArray(array(
             //'enableCookieValidation' => true,
         ),
 
-        'bootstrap'=>array(
-            'class'=>'ext.bootstrap.components.Bootstrap',
-        ),
+        'clientScript'=>array(
+               'scriptMap'=> array(
+                   'jquery.js' => false,
+                    'jquery.ba-bbq.js' => false,
+                    'jquery-ui.min.js' => false,
+                    'jquery-ui.css' => false,
+                ),
+       ),
+
+
+
         'cache' => array(
             'class' => 'system.caching.CFileCache'
         ),

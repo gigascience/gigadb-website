@@ -1,4 +1,4 @@
-@issue-57 @admin-manages-dataset-claim @javascript
+@issue-57 @admin-manages-dataset-claim @javascript @ok-docker
 Feature: Upon notification of a dataset claim, an admin to validate the claim
 	As a an admin
 	I want to receive an notification when another gigadb user claim authorship on a dataset
