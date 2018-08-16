@@ -45,7 +45,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                             $criteria = new CDbCriteria;
                             $criteria->condition='id=988 or id=989 or id=38 or id=37'; 
                             ?>
-                            <?php echo $form->dropDownList($model,'curator_id',MyHtml::listData(User::model()->findAll($criteria),'id','email')); ?>
+                            <?php echo $form->dropDownList($model,'curator_id',MyHtml::listData(User::model()->findAll($criteria),'id','email'),array('prompt'=>'')); ?>
                             <?php echo $form->error($model,'curator_id'); ?>
                         </div>
                     </div>
