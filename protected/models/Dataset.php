@@ -661,7 +661,7 @@ class Dataset extends MyActiveRecord
     
                 $funder =  Funder::model()-> findByAttributes(array('id'=>$funding->funder_id));
                 $fundingReference = $funding_References->addChild("fundingReference");
-                $fundingReference->addChild('funderName',$funder->primary_name_display);
+                $fundingReference->addChild('funderName',str_replace(array('&','>','<','"'), array('&amp;','&gt;','&lt;','&quot;'), $funder->primary_name_display));
                 $funderidentifier= $fundingReference->addChild('funderIdentifier',$funder->uri);
                 $funderidentifier->addAttribute('funderIdentifierType','Crossref Funder ID');
                 $funderaward= $fundingReference->addChild('awardNumber',$funding->grant_award);              
@@ -696,7 +696,7 @@ class Dataset extends MyActiveRecord
 
         //<descriptions><description xml:lang="en-US" descriptionType="Abstract">
         $descriptions = $xml->addChild("descriptions");
-        $description = $descriptions->addChild('description',$this->description);
+        $description = $descriptions->addChild('description',str_replace(array('&','>','<','"'), array('&amp;','&gt;','&lt;','&quot;'), $this->description));
         $description->addAttribute('xml:lang','en-US','http://www.w3.org/XML/1998/namespace');
         $description->addAttribute('descriptionType','Abstract');
 
