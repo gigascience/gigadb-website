@@ -62,13 +62,6 @@
             </p>
         </div>
 </header>
-<!--
-    <?php if(isset($this->breadcrumbs)):?>
-        <?php $this->widget('bootstrap.widgets.BootBreadcrumbs', array(
-            'links'=>$this->breadcrumbs,
-        )); ?>
-    <?php endif?>
--->
 
 <div class="container" id="wrap">
     <?php echo $content; ?>

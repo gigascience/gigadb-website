@@ -130,15 +130,6 @@
         </div>
 
 
-        <!--
-<?php if (isset($this->breadcrumbs)): ?>
-    <?php
-    $this->widget('bootstrap.widgets.BootBreadcrumbs', array(
-        'links' => $this->breadcrumbs,
-    ));
-    ?>
-        <?php endif ?>
-        -->
 
 
 <?php echo $content; ?>
