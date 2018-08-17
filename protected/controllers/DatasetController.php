@@ -358,12 +358,19 @@ class DatasetController extends Controller
             }
              if($_POST['Dataset']['curator_id'] != $model->curator_id)            
             {
-                $User1 = User::model()-> find('id=:id',array(':id'=>Yii::app()->user->id));
-                $username1 = $User1->first_name." ".$User1->last_name;
-                $User = User::model()-> find('id=:id',array(':id'=>$_POST['Dataset']['curator_id']));
-                $username = $User->first_name." ".$User->last_name;            
-                CurationLog::createlog_assign_curator($id,$username1,$username);                  
-                $model->curator_id = $_POST['Dataset']['curator_id'];
+                if($_POST['Dataset']['curator_id'] != "")
+                {
+                    $User1 = User::model()-> find('id=:id',array(':id'=>Yii::app()->user->id));
+                    $username1 = $User1->first_name." ".$User1->last_name;
+                    $User = User::model()-> find('id=:id',array(':id'=>$_POST['Dataset']['curator_id']));
+                    $username = $User->first_name." ".$User->last_name;            
+                    CurationLog::createlog_assign_curator($id,$username1,$username);                  
+                    $model->curator_id = $_POST['Dataset']['curator_id'];
+                }
+                else{
+                    
+                    $model->curator_id = null;
+                }
 
             }
             
@@ -371,6 +378,11 @@ class DatasetController extends Controller
             
             {
                 $model->manuscript_id = $_POST['Dataset']['manuscript_id'];
+                
+            }else
+            {
+            
+                $model->manuscript_id = "";
             }
             
             $datasetAttr = $_POST['Dataset'];
