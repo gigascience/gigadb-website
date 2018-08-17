@@ -81,6 +81,30 @@ class CurationLog extends CActiveRecord
             'last_modified_by' => 'Last Modified By',
         );
     }
+    
+    public static function createlog($status,$id) {
+       
+        $curationlog = new CurationLog;
+        $curationlog->creation_date = date("Y-m-d");
+        $curationlog->last_modified_date = null;
+        $curationlog->dataset_id = $id;
+        $curationlog->created_by = "System";
+        $curationlog->action = "Status changed to ".$status;
+        if (!$curationlog->save())
+            return false;
+    }
+    
+    public static function createlog_assign_curator($id,$creator,$username) {
+
+        $curationlog = new CurationLog;
+        $curationlog->creation_date = date("Y-m-d");
+        $curationlog->last_modified_date = null;
+        $curationlog->dataset_id = $id;
+        $curationlog->created_by = $creator;
+        $curationlog->action = "Curator Assigned"." $username";
+        if (!$curationlog->save())
+            return false;
+    }
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.

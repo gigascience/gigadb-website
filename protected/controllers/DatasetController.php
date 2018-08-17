@@ -352,39 +352,23 @@ class DatasetController extends Controller
         ));
         if (isset($_POST['Dataset'])) {
             
-            if($_POST['Dataset']['upload_status'] != $model->upload_status)
-                
+            if(isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status)            
             {
-                $curationlog = new CurationLog;
-                $curationlog->creation_date=date("Y-m-d");
-                $curationlog->last_modified_date=null;
-                $curationlog->dataset_id=$id;
-                $curationlog->created_by="System";
-                $curationlog->action="Status changed to ".$_POST['Dataset']['upload_status'];
-                if (!$curationlog->save())
-                    return false;
-                
+                CurationLog::createlog($_POST['Dataset']['upload_status'],$id);              
             }
-             if($_POST['Dataset']['curator_id'] != $model->curator_id)
-                
+             if($_POST['Dataset']['curator_id'] != $model->curator_id)            
             {
-                $curationlog = new CurationLog;
-                $curationlog->creation_date=date("Y-m-d");
-                $curationlog->last_modified_date=null;
-                $curationlog->dataset_id=$id;
                 $User1 = User::model()-> find('id=:id',array(':id'=>Yii::app()->user->id));
                 $username1 = $User1->first_name." ".$User1->last_name;
-                $curationlog->created_by=$username1;
                 $User = User::model()-> find('id=:id',array(':id'=>$_POST['Dataset']['curator_id']));
-                $username = $User->first_name." ".$User->last_name;
-                $curationlog->action="Curator Assigned"." $username";
+                $username = $User->first_name." ".$User->last_name;            
+                CurationLog::createlog_assign_curator($id,$username1,$username);                  
                 $model->curator_id = $_POST['Dataset']['curator_id'];
-                if (!$curationlog->save())
-                    return false;
-                
+
             }
             
             if($_POST['Dataset']['manuscript_id'])
+            
             {
                 $model->manuscript_id = $_POST['Dataset']['manuscript_id'];
             }
@@ -713,24 +697,10 @@ EO_MAIL;
                 $fileLink .= 'Files:<br/>';
                 $fileLink = $link = Yii::app()->params['home_url'] . "/dataset/updateFile/?id=" . $dataset_id;
                   $dataset->upload_status = 'Pending';
-                  $curationlog = new CurationLog;
-                  $curationlog->creation_date=date("Y-m-d");
-                  $curationlog->last_modified_date=null;
-                  $curationlog->dataset_id=$dataset->id;
-                  $curationlog->created_by="System";
-                  $curationlog->action="Status changed to Pending";
-                  if (!$curationlog->save())
-                     return false;
+                  CurationLog::createlog($dataset->upload_status,$dataset->id);
             } else {
                   $dataset->upload_status = 'Request';
-                  $curationlog = new CurationLog;
-                  $curationlog->creation_date=date("Y-m-d");
-                  $curationlog->last_modified_date=null;
-                  $curationlog->dataset_id=$dataset->id;
-                  $curationlog->created_by="System";
-                  $curationlog->action="Status changed to Request";
-                  if (!$curationlog->save())
-                     return false;
+                  CurationLog::createlog($dataset->upload_status,$dataset->id);
             }
 
             if (!$dataset->save()){

@@ -43,7 +43,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         <div class="controls">
                             <?php
                             $criteria = new CDbCriteria;
-                            $criteria->condition='id=988 or id=989 or id=38 or id=37'; 
+                            $criteria->condition='role=\'admin\' and email like \'%gigasciencejournal.com\''; 
                             ?>
                             <?php echo $form->dropDownList($model,'curator_id',MyHtml::listData(User::model()->findAll($criteria),'id','email'),array('prompt'=>'')); ?>
                             <?php echo $form->error($model,'curator_id'); ?>
