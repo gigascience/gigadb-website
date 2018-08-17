@@ -22,7 +22,7 @@ Yii::app()->clientScript->registerScriptFile('/js/jquery-migrate-1.2.1.js', CCli
                 <div class="control-group">
 			<?php echo $form->labelEx($model,'action',array('class'=>'control-label')); ?>
 			<div class="controls">
-                                <?php $data=['Comment','Curator assigned, ChrisA','Curator assigned, MaryAnn','Curator assigned, Chris','Curator assigned, Jesse','Status changed to Request','Status changed to uploaded']   ?>
+                                <?php $data = array('Comment'=>'Comment','Curator assigned, ChrisA'=>'Curator assigned, ChrisA','Curator assigned, MaryAnn'=>'Curator assigned, MaryAnn','Curator assigned, Chris'=>'Curator assigned, Chris','Curator assigned, Jesse'=>'Curator assigned, Jesse','Status changed to Request'=>'Status changed to Request','Status changed to Uploaded'=>'Status changed to Uploaded','Status changed to Published'=>'Status changed to Published')   ?>
 				<?php echo $form->dropDownList($model,'action',$data, array('class'=>'span4')); ?>
 				<?php echo $form->error($model,'action'); ?>
 			</div>

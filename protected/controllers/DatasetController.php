@@ -713,8 +713,24 @@ EO_MAIL;
                 $fileLink .= 'Files:<br/>';
                 $fileLink = $link = Yii::app()->params['home_url'] . "/dataset/updateFile/?id=" . $dataset_id;
                   $dataset->upload_status = 'Pending';
+                  $curationlog = new CurationLog;
+                  $curationlog->creation_date=date("Y-m-d");
+                  $curationlog->last_modified_date=null;
+                  $curationlog->dataset_id=$dataset->id;
+                  $curationlog->created_by="System";
+                  $curationlog->action="Status changed to Pending";
+                  if (!$curationlog->save())
+                     return false;
             } else {
-                $dataset->upload_status = 'Request';
+                  $dataset->upload_status = 'Request';
+                  $curationlog = new CurationLog;
+                  $curationlog->creation_date=date("Y-m-d");
+                  $curationlog->last_modified_date=null;
+                  $curationlog->dataset_id=$dataset->id;
+                  $curationlog->created_by="System";
+                  $curationlog->action="Status changed to Request";
+                  if (!$curationlog->save())
+                     return false;
             }
 
             if (!$dataset->save()){
