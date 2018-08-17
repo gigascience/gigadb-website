@@ -260,16 +260,22 @@ class UserController extends Controller {
 
     # Look up user and reset password
     public function actionReset() {
-    	$email='';
+        $this->layout='new_main';
+        $user = new User;
+        $user->newsletter=false;
+    	$user->email='';
+        $user->terms=false;
         //$this->render('reset',array('user'=>$this->loadUser())) ;
-        if (isset($_REQUEST["reset_user"])) {
-            $reset_user = $_REQUEST["reset_user"];
-            Yii::log("reset $reset_user", 'debug');
-            $user = User::model()->findByAttributes(array('email' => $reset_user));
+        if (isset($_POST['User'])) {
+        
+            $attrs = $_POST['User'];
+            $user = User::model()->findByAttributes(array('email' => trim($attrs['email'])));
             if ($user !== null) {
-                Yii::log(__FUNCTION__."> reset found user $reset_user", 'debug');
+                Yii::log(__FUNCTION__."> reset found user $user->email", 'debug');
                 $user->password = $user->generatePassword(8);
                 $user->is_activated=true;
+                $user->terms= $attrs['terms'];
+                $user->newsletter= $attrs['newsletter'];
                 $user->encryptPassword();
 
                 if ($user->save(false)) {
@@ -281,11 +287,11 @@ class UserController extends Controller {
                 }
             }
             else {
-                Yii::log(__FUNCTION__."> User account not found for user $reset_user", 'error');
+                Yii::log(__FUNCTION__."> User account not found for user ", 'error');
             }
             $this->redirect(array('user/resetThanks'));
         }
-        $this->render('reset', array('email'=>$email));
+        $this->render('reset', array('model'=>$user));
     }
 
     public function actionResetThanks() {
