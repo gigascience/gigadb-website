@@ -81,123 +81,131 @@
 </div>
 
 <!-- Modal -->
-<div id="user_link" class="modal hide fade">
-	<div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	    <h3>Confirm linking this author to the user?</h3>
+<div id="user_link" class="modal fade">
+	<div class="modal-dialog" role="document">
+	    <div class="modal-content">
+			<div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			    <h4 class="modal-title">Confirm linking this author to the user?</h4>
+			</div>
+			<?php if (!empty($user)) { ?>
+			<div class="modal-body">
+				<table id="author_compare" class="table table-condensed table-striped table-hover table-bordered">
+					<thead>
+						<tr>
+						  <th>&nbsp;</th>
+					      <th>User to link to author</th>
+					      <th>Author to be linked to user</th>
+					    </tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>ID:</td>
+							<td><? echo $user->id ?></td>
+							<td id="target_id"></td>
+						</tr>
+						<tr">
+							<td>Surname:</td>
+							<td><? echo $user->last_name ?></td>
+							<td id="target_surname"></td>
+						</tr>
+						<tr>
+							<td>First name:</td>
+							<td><? echo $user->first_name ?></td>
+							<td id="target_first_name"></td>
+						</tr>
+						<tr>
+							<td>Middle name:</td>
+							<td>&nbsp;</td>
+							<td id="target_middle_name"></td>
+						</tr>
+						<tr>
+							<td>Orcid:</td>
+							<td><? echo $user->orcid_id ?></td>
+							<td id="target_orcid"></td>
+						</tr>
+						<tr>
+							<td>Already merged with:</td>
+							<td>n/a</td>
+							<td id="target_graph"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+					<a href="#" class="btn btn-active" title="link" onclick="link_to_author();">Link user <? echo $user->first_name . " " . $user->last_name ?> to that author</a>
+				<?php echo CHtml::link('Abort and clear selected user', array('adminAuthor/prepareUserLink',
+				                   'user_id'=>$user->id,'abort'=>'yes'), array('class'=>'btn btn-active')); ?>
+				<a type="button" class="btn close" data-dismiss="modal" aria-hidden="true">Close</a>
+			</div>
+			<? } ?>
+		</div>
 	</div>
-	<?php if (!empty($user)) { ?>
-	<div class="modal-body">
-		<table id="author_compare" class="table table-condensed table-striped table-hover table-bordered">
-			<thead>
-				<tr>
-				  <th>&nbsp;</th>
-			      <th>User to link to author</th>
-			      <th>Author to be linked to user</th>
-			    </tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>ID:</td>
-					<td><? echo $user->id ?></td>
-					<td id="target_id"></td>
-				</tr>
-				<tr">
-					<td>Surname:</td>
-					<td><? echo $user->last_name ?></td>
-					<td id="target_surname"></td>
-				</tr>
-				<tr>
-					<td>First name:</td>
-					<td><? echo $user->first_name ?></td>
-					<td id="target_first_name"></td>
-				</tr>
-				<tr>
-					<td>Middle name:</td>
-					<td>&nbsp;</td>
-					<td id="target_middle_name"></td>
-				</tr>
-				<tr>
-					<td>Orcid:</td>
-					<td><? echo $user->orcid_id ?></td>
-					<td id="target_orcid"></td>
-				</tr>
-				<tr>
-					<td>Already merged with:</td>
-					<td>n/a</td>
-					<td id="target_graph"></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="modal-footer">
-			<a href="#" class="btn btn-active" title="link" onclick="link_to_author();">Link user <? echo $user->first_name . " " . $user->last_name ?> to that author</a>
-		<?php echo CHtml::link('Abort and clear selected user', array('adminAuthor/prepareUserLink',
-		                   'user_id'=>$user->id,'abort'=>'yes'), array('class'=>'btn btn-active')); ?>
-		<a type="button" class="btn close" data-dismiss="modal" aria-hidden="true">Close</a>
-	</div>
-	<? } ?>
 </div>
 
 <!-- Modal -->
-<div id="author_merge" class="modal hide fade">
-	<div class="modal-header">
-		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		    <h3>Confirm merging these two authors?</h3>
-	</div>
-	<div class="modal-body">
+<div id="author_merge" class="modal fade">
+	<div class="modal-dialog" role="document">
+	    <div class="modal-content">
+			<div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				    <h4 class="modal-title">Confirm merging these two authors?</h4>
+			</div>
+			<div class="modal-body">
 
-		<?php if (!empty($origin_author)) { ?>
+				<?php if (!empty($origin_author)) { ?>
 
-		<div id="merge_status" class="alert">
+				<div id="merge_status" class="alert">
+				</div>
+				<table id="author_compare" class="table table-condensed table-striped table-hover table-bordered">
+					<thead>
+						<tr>
+						  <th>&nbsp;</th>
+					      <th>Author to merge</th>
+					      <th>Author to be merged with</th>
+					    </tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>ID:</td>
+							<td><? echo $origin_author->id ?></td>
+							<td id="target_id"></td>
+						</tr>
+						<tr">
+							<td>Surname:</td>
+							<td><? echo $origin_author->surname ?></td>
+							<td id="target_surname"></td>
+						</tr>
+						<tr>
+							<td>First name:</td>
+							<td><? echo $origin_author->first_name ?></td>
+							<td id="target_first_name"></td>
+						</tr>
+						<tr>
+							<td>Middle name:</td>
+							<td><? echo $origin_author->middle_name ?></td>
+							<td id="target_middle_name"></td>
+						</tr>
+						<tr>
+							<td>Orcid:</td>
+							<td><? echo $origin_author->orcid ?></td>
+							<td id="target_orcid"></td>
+						</tr>
+						<tr>
+							<td>Already merged with:</td>
+							<td><? echo implode(",",$origin_author->getIdenticalAuthorsDisplayName()) ?></td>
+							<td id="target_graph"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+					<a href="#" class="btn btn-active" title="link" onclick="merge_authors();">Yes, merge authors</a>
+					<?php echo CHtml::link('No, abort and clear session', array('adminAuthor/prepareAuthorMerge',
+				                   'origin_author_id'=>$origin_author->id,'abort'=>'yes'), array('class'=>'btn btn-active')); ?>
+				    <a type="button" class="btn close" data-dismiss="modal" aria-hidden="true">Close</a>
+			</div>
 		</div>
-		<table id="author_compare" class="table table-condensed table-striped table-hover table-bordered">
-			<thead>
-				<tr>
-				  <th>&nbsp;</th>
-			      <th>Author to merge</th>
-			      <th>Author to be merged with</th>
-			    </tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>ID:</td>
-					<td><? echo $origin_author->id ?></td>
-					<td id="target_id"></td>
-				</tr>
-				<tr">
-					<td>Surname:</td>
-					<td><? echo $origin_author->surname ?></td>
-					<td id="target_surname"></td>
-				</tr>
-				<tr>
-					<td>First name:</td>
-					<td><? echo $origin_author->first_name ?></td>
-					<td id="target_first_name"></td>
-				</tr>
-				<tr>
-					<td>Middle name:</td>
-					<td><? echo $origin_author->middle_name ?></td>
-					<td id="target_middle_name"></td>
-				</tr>
-				<tr>
-					<td>Orcid:</td>
-					<td><? echo $origin_author->orcid ?></td>
-					<td id="target_orcid"></td>
-				</tr>
-				<tr>
-					<td>Already merged with:</td>
-					<td><? echo implode(",",$origin_author->getIdenticalAuthorsDisplayName()) ?></td>
-					<td id="target_graph"></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="modal-footer">
-			<a href="#" class="btn btn-active" title="link" onclick="merge_authors();">Yes, merge authors</a>
-			<?php echo CHtml::link('No, abort and clear session', array('adminAuthor/prepareAuthorMerge',
-		                   'origin_author_id'=>$origin_author->id,'abort'=>'yes'), array('class'=>'btn btn-active')); ?>
-		    <a type="button" class="btn close" data-dismiss="modal" aria-hidden="true">Close</a>
 	</div>
 </div>
 
