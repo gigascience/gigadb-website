@@ -13,7 +13,8 @@ services:
       - "${PUBLIC_HTTP_PORT}:80"
       - "${PUBLIC_HTTPS_PORT}:443"
     networks:
-      - web-tier
+      web-tier:
+        ipv4_address: 172.16.238.10
 
   application:
     env_file: container-env.dev
@@ -77,12 +78,15 @@ services:
       - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/yii:${YII_PATH}
       - /var/run/docker.sock:/var/run/docker.sock
       - ./php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+      - ./tmp:/tmp
     command: bash
     networks:
       - web-tier
       - db-tier
     depends_on:
       - phantomjs
+    extra_hosts:
+      - "gigadb.dev:172.16.238.10"
 
   phantomjs:
     image: wernight/phantomjs:2.1.1
@@ -91,9 +95,16 @@ services:
       - "8910"
     networks:
       - web-tier
+    extra_hosts:
+      - "gigadb.dev:172.16.238.10"
 
 networks:
   web-tier:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.238.0/24
   db-tier:
 
 volumes:

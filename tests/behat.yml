@@ -6,7 +6,7 @@ default:
       class:  'GigadbWebsiteContext'
   extensions:
     Behat\MinkExtension\Extension:
-      base_url: 'http://web/'
+      base_url: 'http://gigadb.dev/'
       goutte: ~
       selenium2:
         wd_host: http://phantomjs:8910/wd/hub
