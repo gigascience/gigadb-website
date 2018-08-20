@@ -123,8 +123,8 @@
                     </div>
                     <div class="col-xs-7 clearfix">
                         <ul class="share-zone clearfix">
-                            <li><a href="http://facebook.com/GigaScience" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="http://twitter.com/GigaScience" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="http://facebook.com/GigaScience" title="GigaScience on Facebook"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="http://twitter.com/GigaScience" title="GigaScience on Twitter"><i class="fa fa-twitter"></i></a></li>
                             <li><a href="http://weibo.com/gigasciencejournal" title="Weibo"><i class="fa fa-weibo"></i></a></li>
                             <li><a href="https://plus.google.com/u/0/104409890199786402308" title="Google+"><i class="fa fa-google-plus"></i></a></li>
                             <li><a href="http://gigasciencejournal.com/blog/" title="GigaBlog"><i class="fa fa-rss"></i></a></li>
