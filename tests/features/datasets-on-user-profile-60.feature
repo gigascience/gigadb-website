@@ -1,4 +1,4 @@
-@datasets-on-user-profile @issue-60
+@datasets-on-user-profile @issue-60 @ok-docker
 Feature: shows datasets authored by a user on his/her profile
 	As a gigadb user,
 	I want to see on my profile the datasets that I have authored

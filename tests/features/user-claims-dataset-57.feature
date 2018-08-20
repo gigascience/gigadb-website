@@ -1,4 +1,4 @@
-@issue-57 @user-claims-dataset
+@issue-57 @user-claims-dataset @ok-docker
 Feature: a user can claim his/her datasets
 	As a gigadb user,
 	I want to claim datasets that I've authored
