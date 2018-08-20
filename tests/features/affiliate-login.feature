@@ -1,4 +1,4 @@
-@login @affiliate-login @issue-64
+@login @affiliate-login @issue-64 @ok-docker
 Feature: sign in into the gigadb website with my social media credentials
 AS an author,
 I WANT TO sign in to the gigadb website with my social media credentials
@@ -47,7 +47,7 @@ SO THAT I can upload and manage the datasets for my papers
 		Then I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "Twitter" details
 
-	@ok @linkedin @done
+	@ok @linkedin @javascript @done
 	Scenario: I sign in with LinkedIn with no existing Gigadb account
 		Given I have a "LinkedIn" account
 		But I don't have a Gigadb account for my "LinkedIn" account email
@@ -103,7 +103,7 @@ SO THAT I can upload and manage the datasets for my papers
 		Then I'm logged in into the Gigadb web site
 		And no new gigadb account is created for my "Twitter" account email
 
-	@ok @linkedin @done
+	@ok @linkedin @javascript @done
 	Scenario: I have a Gigadb account and I sign in with my "LinkedIn" credentials
 		And I have a "LinkedIn" account
 		And I have a Gigadb account for my "LinkedIn" account email
@@ -159,7 +159,7 @@ SO THAT I can upload and manage the datasets for my papers
 		Then I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "Twitter" details
 
-	@ok @differentemails @linkedin @done
+	@ok @differentemails @linkedin  @javascript @done
 	Scenario: I sign in with my "LinkedIn" credentials and I have a gigadb account with a different email address
 		Given I have a "LinkedIn" account
 		And I have a Gigadb account with a different email

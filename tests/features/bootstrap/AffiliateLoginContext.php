@@ -49,7 +49,7 @@ class AffiliateLoginContext extends BehatContext
     public function testUsersAreLoaded()
     {
         foreach ($this->keys_map as $key => $value) {
-            PHPUnit_Framework_Assert::assertTrue(null != $_ENV["${key}_tester_email"],"null != _ENV['${key}_tester_email']");
+            PHPUnit_Framework_Assert::assertTrue(null != getenv("${key}_tester_email"),"null != getenv('${key}_tester_email')");
         }
     }
 
@@ -198,7 +198,7 @@ class AffiliateLoginContext extends BehatContext
             $this->getMainContext()->fillField("email", $login);
             $this->getMainContext()->fillField("pass", $password);
 
-            $this->getMainContext()->pressButton("loginbutton");
+            $this->getMainContext()->pressButton("login");
             sleep(5);
 
         }
@@ -213,7 +213,7 @@ class AffiliateLoginContext extends BehatContext
         else if ($arg1 == "LinkedIn") {
             $this->getMainContext()->fillField("session_key", $login);
             $this->getMainContext()->fillField("session_password", $password);
-            $this->getMainContext()->pressButton("Allow access");
+            $this->getMainContext()->pressButton("Sign In");
 
         }
         else if ($arg1 == "Orcid") {
@@ -243,7 +243,7 @@ class AffiliateLoginContext extends BehatContext
         }
         else if ($arg1 == "Facebook") {
 
-            $xpath = '//button[@type="submit" and contains(., "Continue")]' ;
+            $xpath = '//input[@type="submit" and @value="Continue as Elizabeth"]' ;
             $elements = $driver->find($xpath) ;
 
             if( 0 == count($elements) ) {
@@ -268,13 +268,13 @@ class AffiliateLoginContext extends BehatContext
         }
         else if ($arg1 == "Orcid") {
             $this->getMainContext()->getSession()->wait(15000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
-            PHPUnit_Framework_Assert::assertTrue($this->getMainContext()->getSession()->getPage()->hasField("enablePersistentToken"), "Authorize checkbox");
+            // PHPUnit_Framework_Assert::assertTrue($this->getMainContext()->getSession()->getPage()->hasField("enablePersistentToken"), "Authorize checkbox");
             PHPUnit_Framework_Assert::assertTrue($this->getMainContext()->getSession()->getPage()->hasButton("authorize"), "Authorize button");
             $the_checkbox = $this->getMainContext()->getSession()->getPage()->findField("enablePersistentToken");
             $the_button = $this->getMainContext()->getSession()->getPage()->findButton("authorize");
             //var_dump($the_checkbox);
             //var_dump($the_button);
-            $the_checkbox->check();
+            // $the_checkbox->check();
             sleep(5);
             $the_button->press();
             sleep(5);

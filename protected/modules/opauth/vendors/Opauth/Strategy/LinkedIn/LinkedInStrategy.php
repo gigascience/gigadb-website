@@ -43,7 +43,7 @@ class LinkedInStrategy extends OpauthStrategy{
 	 * Auth request
 	 */
 	public function request(){
-		$url = 'https://www.linkedin.com/uas/oauth2/authorization';
+		$url = 'https://www.linkedin.com/oauth/v2/authorization';
 
 		$params = array();
 
