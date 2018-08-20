@@ -125,8 +125,9 @@ cp $SOURCE $TARGET \
     -e "s|<%= node\[:gigadb\]\[:google\]\[:client_secret\] %>|${GOOGLE_SECRET}|g" \
     -e "s|<%= node\[:gigadb\]\[:twitter\]\[:key\] %>|${TWITTER_KEY}|g" \
     -e "s|<%= node\[:gigadb\]\[:twitter\]\[:secret\] %>|${TWITTER_SECRET}|g" \
-    -e "s|<%= node\[:gigadb\]\[:orcid\]\[:client_id\] %>|${ORCID_CLIENT_ID}|g" \
+    -e "s|<%= node\[:gigadb\]\[:orcid\]\[:client_id\]  %>|${ORCID_CLIENT_ID}|g" \
     -e "s|<%= node\[:gigadb\]\[:orcid\]\[:client_secret\] %>|${ORCID_CLIENT_SECRET}|g" \
+    -e "s|<%= node\[:gigadb\]\[:orcid\]\[:environment\] %>|${ORCID_CLIENT_ENVIRONMENT}|g" \
     -e "s|<%= node\[:gigadb\]\[:ftp\]\[:connection_url\] %>|${FTP_CONNECTION_URL}|g" \
     -e "s|<%= node\[:gigadb\]\[:redis\]\[:server\] %>|${REDIS_SERVER_HOST}|g" \
     -e "s|<%= node\[:gigadb\]\[:beanstalk\]\[:host\] %>|${BEANSTALK_SERVER_HOST}|g" \
