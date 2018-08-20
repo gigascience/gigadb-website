@@ -31,9 +31,10 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                 <section>
                     <div style="padding-top: 1px;">
                         <ul class="nav nav-tabs nav-border-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#edit" aria-controls="edit" role="tab" data-toggle="tab">Personal details</a></li>                          
-                            <li role="presentation"><a href="#submitted" aria-controls="submitted" role="tab" data-toggle="tab">Your datasets</a></li>
-                            <li role="presentation"><a href="#saved" aria-controls="saved" role="tab" data-toggle="tab">Saved search</a></li>
+                            <li role="presentation" class="active"><a href="#edit" aria-controls="edit" role="tab" data-toggle="tab">Personal details</a></li>
+                            <li role="presentation"><a href="#submitted" aria-controls="submitted" role="tab" data-toggle="tab">Your Uploaded Datasets</a></li>
+                            <li role="presentation"><a href="#submitted" aria-controls="authored" role="tab" data-toggle="tab">Your Authored Datasets</a></li>
+                            <li role="presentation"><a href="#saved" aria-controls="saved" role="tab" data-toggle="tab">Your Saved Search</a></li>
 
                         </ul>
                     </div>
@@ -124,27 +125,22 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
 
                     <? $this->endWidget() ?>
                                     </div>
-                                
                             </div>
-                        </div>     
+                        </div>
                         <div role="tabpanel" class="tab-pane" id="submitted">
                          <?= $this->renderPartial('uploadedDatasets', array('uploadedDatasets' => $uploadedDatasets)); ?>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="authored">
+                         <?= $this->renderPartial('authoredDatasets', array('authoredDatasets' => $authoredDatasets,'linkedAuthors' => $linkedAuthors)); ?>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="saved">
                          <?= $this->renderPartial('searches', array('searchRecord' => $searchRecord)); ?>
                         </div>
-                        
+
                     </div>
                 </section>
             </div>
         </div>
-
-
-
-
-
-
-
 
 
 
