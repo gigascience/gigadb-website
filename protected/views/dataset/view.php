@@ -15,25 +15,30 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 HTML;
 
 ?>
+
+<?php $this->renderPartial('_sample_setting',array('columns' => $columns)); ?>
+<?php $this->renderPartial('_files_setting',array('setting' => $setting));?>
+
+
 <div class="content">
     <div class="container">
 
 
- 
+
                 <section></section>
                 <div class="subsection">
                     <div class="media">
                         <div class="media-left">
                                         <?php if($model->image) {
                 $url = $model->getImageUrl() ? $model->getImageUrl(): $model->image->image('image_upload');
-                
+
                 ?>
             <a href="<?= $url ?>" >
                 <?= CHtml::image($url, $url, array('class'=>'media-object',
                     'title'=>'<ul style="text-align:left;"><li>'.$model->image->tag.'</li><li>'.'License: '.$model->image->license.'</li><li>'.'Source: '.$model->image->source.'</li><li>'.'Photographer: '.$model->image->photographer.'</li></ul>')); ?>
             </a>
             <?php } ?>
-                            
+
                         </div>
                         <div class="media-body">
                             <h4 class="left-border-title left-border-title-lg"><?echo $model->title; ?></h4>
@@ -168,6 +173,7 @@ HTML;
                 </div>
 
 
+
                 <div class="subsection">
                   <?php if($model->fairnuse) {
                             if( (time() < strtotime($model->fairnuse))) { ?>
@@ -192,7 +198,7 @@ HTML;
                     <?php if (count($model->manuscripts) > 0) { ?>
                 <h5><strong><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></strong></h5>
                 <p>
-                    <? foreach ($model->manuscripts as $key=>$manuscript){                      
+                    <? foreach ($model->manuscripts as $key=>$manuscript){
                         echo $manuscript->getFullCitation();
                         if ($manuscript->pmid){
                             $pubmed = MyHtml::link($manuscript->pmid , "http://www.ncbi.nlm.nih.gov/pubmed/" . $manuscript->pmid);
@@ -265,7 +271,7 @@ HTML;
                         if (count($model->externalLinks) > 0) { ?>
                 <p>
                     <?php
-                        
+
                         foreach ($model->externalLinks as $key=>$externalLink){
                             $types[$externalLink->externalLinkType->name] = 1;
                         }
@@ -291,17 +297,17 @@ HTML;
                                     elseif($typeName == 'JBrowse')
                                     {
                                        array_push($jb,$externalLink->url);
-                                    
+
                                     }
                                     elseif($typeName == '3D Models')
                                     {
                                        array_push($dmodel,$externalLink->url);
-                                    
+
                                     }
                                     elseif($typeName == 'Code Ocean')
                                     {
                                        array_push($codeocean,$externalLink->url);
-                                    
+
                                     }
                                     else
                                     {
@@ -311,7 +317,7 @@ HTML;
                             }
                         }
 
-                        
+
                     ?>
                 </p>
 
@@ -384,98 +390,99 @@ HTML;
                     ?>
                 </p>
                 <? } ?>
- 
+
                 </div>
-              
+
                 <section>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
                         <?php if(count($model->samples) > 0) {
                             ?>
                            <li role="presentation" id="p-sample"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
-                        <?php }                       
+                        <?php }
                         ?>
                         <?php if(count($model->files) > 0) {
-                            
-                              if(count($model->samples) < 1)  
-                              { 
+
+                              if(count($model->samples) < 1)
+                              {
                                   ?>
-                        <li role="presentation" id="p-file" class="active"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>  
+                        <li role="presentation" id="p-file" class="active"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
                               <?php } else { 
                               ?>
                         <li role="presentation" id="p-file"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
-                        <?php }}                       
+                        <?php }}
                         ?>
                          <?php if(count($model->datasetFunders) > 0) {
                             ?>
                             <li role="presentation" id="p-funding"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
-                        <?php }                       
+                        <?php }
                         ?>
                         <?php if(count($protocol) > 0) {
                             ?>
                            <li role="presentation" id="p-protocol"><a href="#protocol" aria-controls="protocol" role="tab" data-toggle="tab">Protocols.io</a></li>
-                        <?php }                       
+                        <?php }
                         ?>
                         <?php if(count($jb) > 0) {
                             ?>
                            <li role="presentation" id="p-jb"><a href="#jb" aria-controls="jb" role="tab" data-toggle="tab">JBrowse</a></li>
-                        <?php }                       
+                        <?php }
                         ?> 
                         <?php if(count($dmodel) > 0) {
                             ?>
                            <li role="presentation" id="p-dmodel"><a href="#demodel" aria-controls="demodel" role="tab" data-toggle="tab">3D Viewer</a></li>
-                        <?php }                       
+                        <?php }
                         ?> 
                         <?php if(count($codeocean) > 0) {
                             ?>
                            <li role="presentation" id="p-codeocean"><a href="#codeocean" aria-controls="codeocean" role="tab" data-toggle="tab">Code Ocean</a></li>
-                        <?php }                       
-                        ?>    
+                        <?php }
+                        ?>
                         <li role="presentation" id="p-history"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
-                        
+
                     </ul>
-       
-            
-                    <div class="tab-content"> 
-                        
+
+
+                    <div class="tab-content">
+
                              <?php if(count($model->samples) > 0) {
-                            ?>   
-                        
+                            ?>
+
                       <div role="tabpanel" class="tab-pane active" id="sample">
-                        <button class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#files-modal" style="border-color: #e5e5e5; color: #656565; height: 34px; margin-bottom: -34px; background-color: #fff;"><span class="glyphicon glyphicon-adjust"></span> <?php $this->renderPartial('_sample_setting',array('columns'=>$columns)); ?></button>
+                        <button class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#samples_settings"><span class="glyphicon glyphicon-adjust"></span>Table Settings</button>
                         <br>
                         <br>
                         <br>
                         <br>
                                                 <!-- TODO: javascript broke samples. Will fix later. -->
-    
+
                       </div>
-                            <?php }                       
+                            <?php }
                         ?>
-                    <?php 
+                    <?php
                  if(count($model->files) > 0) {
-                            
+
                     if(count($model->samples) > 0) {
-                            ?>     
+                            ?>
                         <div role="tabpanel" class="tab-pane" id="files">
                          <?php }  else {?>
-                         <div role="tabpanel" class="tab-pane active" id="files">    
-                         <?php   } ?>        
-                            <button class="btn btn-default pull-left" type="button" data-toggle="modal" data-target="#files-modal" style="border-color: #e5e5e5; color: #656565; height: 34px; margin-bottom: -34px; background-color: #fff;"><span class="glyphicon glyphicon-adjust"></span> <?= MyHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank'))?></button>
-                            <button class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#files-modal" style="border-color: #e5e5e5; color: #656565; height: 34px; margin-bottom: -34px; background-color: #fff;"><span class="glyphicon glyphicon-adjust"></span> <?php $this->renderPartial('_display_setting',array('setting'=>$setting));?></button>
+                         <div role="tabpanel" class="tab-pane active" id="files">
+                         <?php   } ?>
+                            <span class="glyphicon glyphicon-adjust"></span> <?= MyHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank', 'class'=>'button'))?>
+
+                            <button class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#files_settings"><span class="glyphicon glyphicon-adjust"></span>Table Settings</button>
                             <br>
                             <br>
                             <br>
                             <br>
                             <!-- TODO: javascript broke files. Will fix later. -->
                         </div>
-                            <?php }                       
+                            <?php }
                         ?>
                              <?php if(count($model->datasetFunders) > 0) {
                             ?>
-                        
+
                         <div role="tabpanel" class="tab-pane" id="funding">
-                           
-                                
+
+
                     <table class="table table-bordered text-center">
                         <thead>
                             <tr>
@@ -486,28 +493,28 @@ HTML;
                             </tr>
                         </thead>
                         <tbody>
-                            
-                          <?php foreach($model->datasetFunders as $fd) { ?>                              
+
+                          <?php foreach($model->datasetFunders as $fd) { ?>
                             <tr>
                                 <td><?= $fd->funder->primary_name_display ?></td>
                                 <td><?= $fd->awardee ?></td>
                                 <td><?= $fd->grant_award ?></td>
                                 <td><?= $fd->comments ?></td>
                             </tr>
-                            <?php } ?> 
+                            <?php } ?>
                         </tbody>
                     </table>
-               
+
 
                         </div>
-                    <?php }                       
-                        ?>   
-                        
-                    <?php if (count($protocol) > 0) { ?>        
-                     
+                    <?php }
+                        ?>
+
+                    <?php if (count($protocol) > 0) { ?>
+
                          <div role="tabpanel" class="tab-pane" id="protocol">
-                        <?php    
-                        
+                        <?php
+
                             echo "<p>Protocols.io:</p>";
                             // echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
                             // echo "<a id=\"js-close-btn1\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
@@ -517,105 +524,105 @@ HTML;
                             {
                                  echo "<iframe src=\"$p\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
                             }
-                               
+
                             }
-                            // echo "</div>"; 
-                         ?>    
-                             
-                              </div> 
-                             
-                             
-                    <?php }?>  
-                    
-                    <?php if (count($jb) > 0) { ?>        
-                     
+                            // echo "</div>";
+                         ?>
+
+                              </div>
+
+
+                    <?php }?>
+
+                    <?php if (count($jb) > 0) { ?>
+
                          <div role="tabpanel" class="tab-pane" id="jb">
-                        <?php    
-                        
+                        <?php
+
                              echo "<p>JBrowse:</p>";
                              //echo "<a id=\"js-expand-btn2\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
                             // echo "<a id=\"js-close-btn2\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
                              //echo "<div id=\"js-logs-2\" class=\"js-logs\" style=\"display:none;\">";
                              foreach ($jb as $p) {
 
-                            {    
+                            {
                                  echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
                                  echo "<br>";
                                  echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
                             }
-                               
+
                             }
                              //echo "</div>";
-                         ?>    
-                             
-                              </div> 
-                             
-                             
-                    <?php }?>   
-                    
-                    <?php if (count($dmodel) > 0) { ?>        
-                     
+                         ?>
+
+                              </div>
+
+
+                    <?php }?>
+
+                    <?php if (count($dmodel) > 0) { ?>
+
                          <div role="tabpanel" class="tab-pane" id="demodel">
-                        <?php    
-                        
+                        <?php
+
                              echo "<p>3D Models:</p>";
                              //echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
                             // echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
                             // echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
                              foreach ($dmodel as $p) {
 
-                            {    
+                            {
                                  echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
-                                
+
                             }
-                               
+
                             }
                             // echo "</div>";
-                         ?>    
-                             
+                         ?>
+
                              </div>
-                             
-                             
-                    <?php }?>  
-                            
-                     <?php if (count($codeocean) > 0) { ?>        
-                     
+
+
+                    <?php }?>
+
+                     <?php if (count($codeocean) > 0) { ?>
+
                          <div role="tabpanel" class="tab-pane" id="codeocean">
-                        <?php    
-                        
+                        <?php
+
                              echo "<p>Code Ocean:</p>";
                              //echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
                             // echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
                             // echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
                              foreach ($codeocean as $p) {
 
-                            {    
+                            {
                                  echo "<p>$p</p>";
-                                
+
                             }
-                               
+
                             }
                             // echo "</div>";
-                         ?>    
-                             
+                         ?>
+
                              </div>
-                             
-                             
-                    <?php }?>        
-                            
-                           
-                        
-                                       
+
+
+                    <?php }?>
+
+
+
+
                         <div role="tabpanel" class="tab-pane" id="history">
-                            
+
                           <table class="table table-bordered text-center">
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Action</th>                               
+                                <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>                            
+                        <tbody>
                         <?php foreach($logs as $log) : ?>
                         <tr>
                             <td><?= date('F j, Y', strtotime($log->created_at)) ?></td>
@@ -666,38 +673,38 @@ $(document).ready(function() {
 		var arrow = $(this).find('.tab-container__arrow')[0];
 		$(arrow).toggleClass('flip-vertical');
 	});
-        
+
         var url = location.pathname;
         var sample_index = url.lastIndexOf('Sample_');
         var file_index = url.lastIndexOf('File_');
-        
+
          if (/Sample/.test(window.location.href)) {
              $("#p-sample").addClass("active");
               var e = document.getElementById('p-sample');
               if (!!e && e.scrollIntoView) {
                    e.scrollIntoView();
               }
-             
+
         }
         else{
-             $("#p-sample").addClass("active");           
+             $("#p-sample").addClass("active");
         }
          if (/File/.test(window.location.href)) {
-            
+
              $("#p-sample").removeClass("active");
              $("#sample").removeClass("tab-pane active");
              $("#sample").addClass("tab-pane");
              $("#p-file").addClass("active");
              $("#files").addClass("active");
-             
+
              var e = document.getElementById('p-file');
              if (!!e && e.scrollIntoView) {
              e.scrollIntoView();
             }
-            
-             
+
+
         }
-   
+
         if(sample_index > 0 && file_index>0)
         {
         if(sample_index > file_index)
@@ -710,7 +717,7 @@ $(document).ready(function() {
               var e = document.getElementById('p-sample');
               if (!!e && e.scrollIntoView) {
                    e.scrollIntoView();
-              }   
+              }
         }
        else
         {
@@ -719,7 +726,6 @@ $(document).ready(function() {
              $("#sample").addClass("tab-pane");
              $("#p-file").addClass("active");
              $("#files").addClass("active");
-             
              var e = document.getElementById('p-file');
              if (!!e && e.scrollIntoView) {
              e.scrollIntoView();
@@ -734,7 +740,7 @@ $(document).ready(function() {
              $("#sample").addClass("tab-pane");
              $("#p-file").addClass("active");
              $("#files").addClass("active");
-             
+
              var e = document.getElementById('p-file');
              if (!!e && e.scrollIntoView) {
              e.scrollIntoView();
@@ -745,10 +751,10 @@ $(document).ready(function() {
               var e = document.getElementById('p-sample');
               if (!!e && e.scrollIntoView) {
                    e.scrollIntoView();
-              }   
+              }
     }
-    
-        
+
+
 });
 /* ----------------------------------- */
 
