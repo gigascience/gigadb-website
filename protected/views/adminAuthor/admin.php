@@ -312,7 +312,7 @@
 </script>
 
 <script>
-    $('#author_merge').on('show', function () {
+    $('#author_merge').on('shown.bs.modal', function () {
         makeRequest();
     });
 

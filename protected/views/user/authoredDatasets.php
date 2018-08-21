@@ -1,17 +1,16 @@
-<div class="tab-pane active" id="result_dataset">
+ <section>
     <table class="table table-bordered" id ="list">
-        <tr>
-            <th colspan="11"><?= Yii::t('app', 'Your Authored Datasets') ?></th>
-        </tr>
-        <tr>
-            <th class="span2"><?= Yii::t('app', 'DOI') ?></th>
-            <th class="span6"><?= Yii::t('app', 'Title') ?></th>
-            <th class="span2"><?= Yii::t('app', 'Dataset Type') ?></th>
-            <th class="span2"><?= Yii::t('app', 'Status') ?></th>
-            <th class="span2"><?= Yii::t('app', 'Publication Date') ?></th>
-            <th class="span2"><?= Yii::t('app', 'Modification Date') ?></th>
-            <th class="span2"><?= Yii::t('app','File Count') ?></th>
-        </tr>
+        <thead>
+            <tr>
+                <th><?= Yii::t('app', 'DOI') ?></th>
+                <th><?= Yii::t('app', 'Title') ?></th>
+                <th><?= Yii::t('app', 'Dataset Type') ?></th>
+                <th><?= Yii::t('app', 'Status') ?></th>
+                <th><?= Yii::t('app', 'Publication Date') ?></th>
+                <th><?= Yii::t('app', 'Modification Date') ?></th>
+                <th><?= Yii::t('app','File Count') ?></th>
+            </tr>
+        </thead>
 
         <?php $data = $authoredDatasets; ?>
         <?php
@@ -50,7 +49,7 @@
                 </tr>
             <? } ?>
     </table>
-</div>
+</section>
 <script>
     $(".hint").tooltip({'placement': 'left'});
 

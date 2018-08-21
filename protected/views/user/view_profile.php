@@ -33,7 +33,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                         <ul class="nav nav-tabs nav-border-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#edit" aria-controls="edit" role="tab" data-toggle="tab">Personal details</a></li>
                             <li role="presentation"><a href="#submitted" aria-controls="submitted" role="tab" data-toggle="tab">Your Uploaded Datasets</a></li>
-                            <li role="presentation"><a href="#submitted" aria-controls="authored" role="tab" data-toggle="tab">Your Authored Datasets</a></li>
+                            <li role="presentation"><a href="#authored" aria-controls="authored" role="tab" data-toggle="tab">Your Authored Datasets</a></li>
                             <li role="presentation"><a href="#saved" aria-controls="saved" role="tab" data-toggle="tab">Your Saved Search</a></li>
 
                         </ul>

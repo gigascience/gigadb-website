@@ -254,8 +254,8 @@ Scenario: On user profile, show the datasets ( 100002 and 100003) of linked auth
 	And I sign in as a user
 	And I am linked to author "Zhang, G"
 	When I am on "/user/view_profile"
-	Then I should see "Your Authored Datasets"
-	And I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
+	And I follow "Your Authored Datasets"
+	Then I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
 	And I should see "Genome data from foxtail millet (Setaria italica)"
 
 @ok
