@@ -48,7 +48,8 @@ class GoogleStrategy extends OpauthStrategy{
 			'client_id' => $this->strategy['client_id'],
 			'redirect_uri' => $this->strategy['redirect_uri'],
 			'response_type' => 'code',
-			'scope' => $this->strategy['scope']
+			'scope' => $this->strategy['scope'],
+			'hl' => 'en-GB'
 		);
 
 		foreach ($this->optionals as $key){
