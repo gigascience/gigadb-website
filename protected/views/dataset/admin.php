@@ -39,8 +39,8 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'columns'=>array(
 		'id',
 		'identifier',
-		'title',
-		'description',
+		'manuscript_id',
+                'title',
 		// 'publisher',
 		// 'dataset_size',
 		// 'ftp_site',
@@ -48,8 +48,9 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		// 'excelfile',
 		// 'excelfile_md5',
 		'publication_date',
-		'modification_date',
-        'upload_status',
+		array('name'=> 'curator_id', 'value'=>'Dataset::getCuratorname($data->curator_id)'),
+                'modification_date',
+                'upload_status',
 
 		array(
 			'class'=>'CButtonColumn',
