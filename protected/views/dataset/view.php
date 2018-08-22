@@ -262,7 +262,7 @@ HTML;
 
                 <?php } ?>
 
-                <?php 
+                <?php
                         $types = array();
                         $protocol = array();
                         $jb = array();
@@ -406,7 +406,7 @@ HTML;
                               {
                                   ?>
                         <li role="presentation" id="p-file" class="active"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
-                              <?php } else { 
+                              <?php } else {
                               ?>
                         <li role="presentation" id="p-file"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
                         <?php }}
@@ -425,12 +425,12 @@ HTML;
                             ?>
                            <li role="presentation" id="p-jb"><a href="#jb" aria-controls="jb" role="tab" data-toggle="tab">JBrowse</a></li>
                         <?php }
-                        ?> 
+                        ?>
                         <?php if(count($dmodel) > 0) {
                             ?>
                            <li role="presentation" id="p-dmodel"><a href="#demodel" aria-controls="demodel" role="tab" data-toggle="tab">3D Viewer</a></li>
                         <?php }
-                        ?> 
+                        ?>
                         <?php if(count($codeocean) > 0) {
                             ?>
                            <li role="presentation" id="p-codeocean"><a href="#codeocean" aria-controls="codeocean" role="tab" data-toggle="tab">Code Ocean</a></li>
@@ -452,7 +452,34 @@ HTML;
                         <br>
                         <br>
                         <br>
-                                                <!-- TODO: javascript broke samples. Will fix later. -->
+                        <table id="samples_table" class="table table-striped table-bordered" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Sample ID</th>
+                                    <th>Common Name</th>
+                                    <th>Scientific Name</th>
+                                    <th>Sample Attributes</th>
+                                    <th>Taxonomic ID</th>
+                                    <th>Genbank Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               <?php $sample_models = $samples->getData();
+
+                                foreach($sample_models as $sample)
+                                { ?>
+                                 <tr>
+                                    <td><?= $sample->linkName ?></td>
+                                    <td><?= $sample->species->common_name ?></td>
+                                    <td><?= $sample->species->scientific_name ?></td>
+                                    <td><?= $sample->displayAttr ?></td>
+                                    <td><?= CHtml::link($sample->species->tax_id, Species::getTaxLink($sample->species->tax_id)) ?></td>
+                                    <td><?= $sample->species->genbank_name ?></td>
+                                </tr>
+                                <?php } ?>
+
+                            </tbody>
+                        </table>
 
                       </div>
                             <?php }
@@ -473,7 +500,39 @@ HTML;
                             <br>
                             <br>
                             <br>
-                            <!-- TODO: javascript broke files. Will fix later. -->
+                            <table id="files_table" class="table table-striped table-bordered" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>File Name</th>
+                                        <th>Description</th>
+                                        <th>Sample ID</th>
+                                        <th>Data Type</th>
+                                        <th>File Format</th>
+                                        <th>Size</th>
+                                        <th>Release Date</th>
+                                        <th>File Attributes</th>
+                                        <th>Download</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   <?php $file_models = $files->getData();
+
+                                    foreach($file_models as $file)
+                                    { ?>
+                                     <tr>
+                                        <td><?= $file->nameHtml ?></td>
+                                        <td><?= $file->description ?></td>
+                                        <td><?= $file->getallsample($file->id) ?></td>
+                                        <td><?= $file->type->name ?></td>
+                                        <td><?= $file->format->name ?></td>
+                                        <td><?= File::staticBytesToSize($file->size) ?></td>
+                                        <td><?= $file->date_stamp ?></td>
+                                        <td><?= $file->attrDesc ?></td>
+                                        <td><a class="download-btn js-download-count" href="<?= $file->location ?>">&nbsp;</a></td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
                         </div>
                             <?php }
                         ?>
@@ -754,6 +813,37 @@ $(document).ready(function() {
               }
     }
 
+    $('#samples_table').DataTable({
+        "paging":   true,
+        "ordering": true,
+        "info":     true,
+        "columns": [
+            { "visible": <?= in_array('name', $columns)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('common_name', $columns)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('scientific_name', $columns)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('attribute', $columns)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('taxonomic_id', $columns)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('genbank_name', $columns)? 'true' : 'false' ?> },
+          ]
+    } );
+
+
+    $('#files_table').DataTable({
+        "paging":   true,
+        "ordering": true,
+        "info":     true,
+        "columns": [
+            { "visible": <?= in_array('name', $setting)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('description', $setting)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('sample_id', $setting)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('type_id', $setting)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('format_id', $setting)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('size', $setting)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('date_stamp', $setting)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('attribute', $setting)? 'true' : 'false' ?> },
+            { "visible": <?= in_array('location', $setting)? 'true' : 'false' ?> },
+          ]
+    } );
 
 });
 /* ----------------------------------- */

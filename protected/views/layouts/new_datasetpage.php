@@ -20,69 +20,14 @@
         <link rel="stylesheet" type="text/css" href="/fonts/pt_sans/v8/pt_sans.css">
         <link rel="stylesheet" type="text/css" href="/fonts/lato/v11/lato.css">
         <link rel="stylesheet" type="text/css" href="/css/common.css"/>
-          <style type="text/css">
-            table.dataTable {
-                margin: 0px 0px 40px 0px !important;
-            }
-            table.dataTable thead th,
-            table.dataTable tbody td,
-            table.dataTable thead > tr > th.sorting_asc, 
-            table.dataTable thead > tr > th.sorting_desc, 
-            table.dataTable thead > tr > th.sorting, 
-            table.dataTable thead > tr > td.sorting_asc, 
-            table.dataTable thead > tr > td.sorting_desc, 
-            table.dataTable thead > tr > td.sorting {
-                padding: 8px;
-                background-image: none;
-            }
-            table.dataTable thead .sorting::after, 
-            table.dataTable thead .sorting_asc::after, 
-            table.dataTable thead .sorting_desc::after, 
-            table.dataTable thead .sorting_asc_disabled::after, 
-            table.dataTable thead .sorting_desc_disabled::after {
-                content: none;
-            }
-            table.dataTable.no-footer {
-                border-bottom: 1px solid #ddd;
-            }
-            .dataTables_wrapper .dataTables_length {
-                color: #656565;
-                margin-bottom: 20px;
-            }
-            .dataTables_wrapper .dataTables_length label {
-                margin: 0px;
-            }
-            .dataTables_wrapper .dataTables_length select {
-                appearance:none;  
-                -moz-appearance:none;  
-                -webkit-appearance:none;
-                height: 34px;
-                line-height: 20px;
-            }
-            .dataTables_wrapper .dataTables_length select::-ms-expand {
-                display: none;
-            }
-            div.dataTables_wrapper div.dataTables_paginate {
-                padding: 0px;
-                float: none;
-                text-align: center;
-            }
-            .dataTables_wrapper .dataTables_paginate .paginate_button {
-                padding: 0px;
-                border: 0px;
-            }
-            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-                border: 0px;
-                background: none;
-            }
-            div.dataTables_wrapper div.dataTables_paginate ul.pagination {
-                margin: 0px 10px 0px 0px;
-                vertical-align: top;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/datatables.css" />
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
         <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <? } ?>
 
     <?= $this->renderPartial('//shared/_google_analytics')?>
@@ -91,18 +36,18 @@
 </head>
 
 <body>
-    
+
             <div class="base-top-bar">
             <div class="container">
                 <div class="row">
                      <div class="col-xs-5">
                         <ul class="list-inline text-left base-top-account-bar">
                              <? if(Yii::app()->user->isGuest) { ?>
-                            <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>                         
-                             <? } else { 
-                
+                            <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>
+                             <? } else {
+
                         $name = Yii::app()->user->getFirst_Name();
-                      
+
                 // var_dump($name);
 
                         if (substr($name, -1) === 's') {
@@ -118,7 +63,7 @@
                             <? } ?>
                 <li><a href="/site/logout"><i class="fa fa-sign-in"></i><?= Yii::t('app', 'LogOut') ?></a></li>
                 <li><a href="/site/mapbrowse"><i class="fa fa-sign-in"></i><?=Yii::t('app' , "Browse Samples")?></a></li>
-                            <? } ?>       
+                            <? } ?>
                 </ul>
                     </div>
                     <div class="col-xs-7 clearfix">
@@ -130,33 +75,33 @@
                             <li><a href="http://gigasciencejournal.com/blog/" title="GigaBlog"><i class="fa fa-rss"></i></a></li>
                         </ul>
                         <div class="search-bar clearfix">
-                            <form action="/search/new" method="GET">    
-                            <?php        
-               
+                            <form action="/search/new" method="GET">
+                            <?php
+
                                 $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
-                                'name'=>'keyword', 
+                                'name'=>'keyword',
                                 'source'=> array_values(array()),
-                                
+
                                 'options'=>array(
                                 'minLength'=>'2',
                                     ),
                                 'htmlOptions'=>array(
                                  'class'=>'search-input',
-                                 'placeholder'=>'e.g. Chicken, brain etc...',   
+                                 'placeholder'=>'e.g. Chicken, brain etc...',
                                     ),
                                  ));
-       
-       
+
+
                             ?>
                             <button class="btn-search" type="submit"><span class="fa fa-search"></span></button>
                             </form>
-                         
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    
+
             <div class="base-nav-bar">
             <div class="container">
                 <div class="row">
@@ -185,7 +130,7 @@
                                 <li><a href="/site/help">Help</a></li>
                                 <li><a href="/site/faq">FAQ</a></li>
                                 </ul>
-                             </li>    
+                             </li>
                             <li><a href="/site/term">Terms of use</a></li>
                         </ul>
                     </div>
@@ -241,9 +186,9 @@
      <script src="/js/bootstrap-carousel.js"></script>
      <script src="/js/bootstrap-typeahead.js"></script>-->
      <!-- <script src="/js/application.js"></script>-->
-     
+
      <?php if (Yii::app()->user->isGuest) : ?>
-     
+
         <div class="popover-login" style="display: none;">
             <div class="content-btnlog">
                 <!--<a class="btn btnlog orcid-log" href="/opauth/orcid">
@@ -270,13 +215,13 @@
                 </a>
              </div>
         </div>
-     
+
      <?php endif ?>
-    
+
      <script>
     $(function() {
         $("#btnCreateAccount").tooltip({'placement':'left'});
-        
+
         <?php if (Yii::app()->user->isGuest) : ?>
             $('#btnLogin').attr('data-content', $('.popover-login').html()).popover({
                 trigger: 'manual',
@@ -288,7 +233,7 @@
                 return false;
             }).mouseenter(function(e) {
                 $(this).popover('show');
-                
+
                 $('.popover').one('mouseleave', function() {
                     $('#btnLogin').popover('hide');
                 });
@@ -296,7 +241,7 @@
         <?php endif ?>
     });
     </script>
-     
+
 </body>
 </html>
 <script type="application/ld+json"> { "@context": "http://schema.org", "@type": "DataCatalog", "name": "GigaDB.org", "description": "GigaDB primarily serves as a repository to host data and tools associated with articles in GigaScience; however, it also includes a subset of datasets that are not associated with GigaScience articles. GigaDB defines a dataset as a group of files (e.g., sequencing data, analyses, imaging files, software programs) that are related to and support an article or study. Through our association with DataCite, each dataset in GigaDB will be assigned a DOI that can be used as a standard citation for future use of these data in other articles by the authors and other researchers. Datasets in GigaDB all require a title that is specific to the dataset, an author list, and an abstract that provides information specific to the data included within the set. We encourage detailed information about the data we host to be submitted by their creators in ISA-Tab, a format used by the BioSharing and ISA Commons communities that we work with to maintain the highest data and metadata standards in our journal. To maximize its utility to the research community, all datasets in GigaDB are placed under a CC0 waiver (for more information on the issues surrounding CC0 and data see Hrynaszkiewicz and Cockerill, 2012).Datasets that are not affiliated with a GigaScience article are approved for inclusion by the Editors of GigaScience. The majority of such datasets are from internal projects at the BGI, given their sponsorship of GigaDB. Many of these datasets may not have another discipline-specific repository suitably able to host them or have been rapidly released prior to any publications for use by the research community, whilst enabling their producers to obtain credit through data citation. The GigaScience Editors may also consider the inclusion of particularly interesting, previously unpublished datasets in GigaDB, especially if they meet our criteria and inclusion as Data Note articles in the journal.", "alternateName":"GigaScience Journal Database", "license":"Public Domain", "citation":"Tam P. Sneddon, Xiao Si Zhe, Scott C. Edmunds, Peter Li, Laurie Goodman, Christopher I. Hunter; GigaDB: promoting data dissemination and reproducibility, Database, Volume 2014, 1 January 2014, bau018, https://doi.org/10.1093/database/bau018", "url": "https://GigaDB.org/", "keywords": ["registry","life science","GigaScience Journal"], "provider": [ { "@type":"Person", "name": "GigaDB.org support", "email": "database@gigasciencejournal.com" } ] } </script>
