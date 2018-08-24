@@ -17,12 +17,11 @@
                     <div class="attribute-setting-item">
                         <label><strong>Items per page:</strong></label>
                         <select name="perPage" class="selectPageSize">
-                            <option value="5">5</option>
-                            <option value="10" selected>10</option>
-                            <option value="20">20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                            <option value="200">200</option>
+                        <?php $options = [5,10,20,50,100,200];
+                            foreach ($options as $option) {
+                        ?>
+                                <option value="<?= $option ?>" <?= $option == $pageSize ? "selected":"" ?> ><?= $option ?></option>
+                         <?php   } ?>
                         </select>
                     </div>
 

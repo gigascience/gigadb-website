@@ -16,8 +16,8 @@ HTML;
 
 ?>
 
-<?php $this->renderPartial('_sample_setting',array('columns' => $columns)); ?>
-<?php $this->renderPartial('_files_setting',array('setting' => $setting));?>
+<?php $this->renderPartial('_sample_setting',array('columns' => $columns, 'pageSize' => $samples->getPagination()->getPageSize() )); ?>
+<?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' => $files->getPagination()->getPageSize()));?>
 
 
 <div class="content">
