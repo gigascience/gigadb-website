@@ -354,7 +354,7 @@ class DatasetController extends Controller
             
             if(isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status)            
             {
-                CurationLog::createlog($_POST['Dataset']['upload_status'],$id);              
+                CurationLog::createlog($_POST['Dataset']['upload_status'],$id,Yii::app()->user->id);              
             }
              if($_POST['Dataset']['curator_id'] != $model->curator_id)            
             {
@@ -382,7 +382,7 @@ class DatasetController extends Controller
             }else
             {
             
-                $model->manuscript_id = "";
+                $model->manuscript_id = null;
             }
             
             $datasetAttr = $_POST['Dataset'];
@@ -709,10 +709,10 @@ EO_MAIL;
                 $fileLink .= 'Files:<br/>';
                 $fileLink = $link = Yii::app()->params['home_url'] . "/dataset/updateFile/?id=" . $dataset_id;
                   $dataset->upload_status = 'Pending';
-                  CurationLog::createlog($dataset->upload_status,$dataset->id);
+                  CurationLog::createlog($dataset->upload_status,$dataset->id,Yii::app()->user->id);
             } else {
                   $dataset->upload_status = 'Request';
-                  CurationLog::createlog($dataset->upload_status,$dataset->id);
+                  CurationLog::createlog($dataset->upload_status,$dataset->id,Yii::app()->user->id);
             }
 
             if (!$dataset->save()){

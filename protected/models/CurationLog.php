@@ -82,13 +82,15 @@ class CurationLog extends CActiveRecord
         );
     }
     
-    public static function createlog($status,$id) {
+    public static function createlog($status,$id,$userid) {
        
         $curationlog = new CurationLog;
+        $User = User::model()-> find('id=:id',array(':id'=>$userid));
+        $username = $User->first_name." ".$User->last_name;       
         $curationlog->creation_date = date("Y-m-d");
         $curationlog->last_modified_date = null;
         $curationlog->dataset_id = $id;
-        $curationlog->created_by = "System";
+        $curationlog->created_by = $username;
         $curationlog->action = "Status changed to ".$status;
         if (!$curationlog->save())
             return false;
