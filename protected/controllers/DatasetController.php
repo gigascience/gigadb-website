@@ -95,7 +95,7 @@ class DatasetController extends Controller
         $setting = array('name','size', 'type_id', 'format_id', 'location', 'date_stamp','sample_id'); // 'description','attribute' are hidden by default
         $pageSize = 10;
         $flag=null;
-        
+
         if(isset($cookies['file_setting'])) {
             //$ss = json_decode($cookies['sample_setting']);
             $fcookie = $cookies['file_setting'];
@@ -118,10 +118,7 @@ class DatasetController extends Controller
             $flag="file";
         }
 
-        if($model->id == 629)
-        {             
-        $files=null;           
-        }else{          
+
         $files = new CActiveDataProvider('File' , array(
             'criteria'=> $crit,
             'sort' => array('defaultOrder'=>'name ASC',
@@ -133,9 +130,16 @@ class DatasetController extends Controller
                                 'format_id' => array('asc'=>'ff.name asc', 'desc'=>'ff.name desc'),
                                 'date_stamp',
                             )),
-            'pagination' => array('pageSize'=>$pageSize)
+            'pagination' => false,
         ));
-        }
+
+        $files_pagination = new CPagination($files->getTotalItemCount());
+        $files_pagination->setPageSize($pageSize);
+        $files_pagination->pageVar = "Files_page";
+        // Yii::log("files pageVar: ". $files_pagination->pageVar,CLogger::LEVEL_ERROR,"DatasetController");
+        $files->setPagination($files_pagination);
+
+
 
         //Sample
         $columns = array('name', 'taxonomic_id', 'genbank_name', 'scientific_name', 'common_name', 'attribute');
@@ -167,7 +171,7 @@ class DatasetController extends Controller
         $scrit->params = array(':id' => $model->id);
         $samples = new CActiveDataProvider('Sample' , array(
             'criteria'=> $scrit,
-            'pagination' => array('pageSize'=>$perPage),
+            'pagination' => false,
             'sort' => array('defaultOrder'=>'t.name ASC',
                             'attributes' => array(
                                     'name',
@@ -189,6 +193,13 @@ class DatasetController extends Controller
                                         ),
                                 )),
         ));
+
+
+        $samples_pagination = new CPagination($samples->getTotalItemCount());
+        $samples_pagination->setPageSize($perPage);
+        $samples_pagination->pageVar = "Samples_page";
+        // Yii::log("samples pageVar: ". $samples_pagination->pageVar,CLogger::LEVEL_ERROR,"DatasetController");
+        $samples->setPagination($samples_pagination);
 
         $email = 'no_submitter@bgi.com';
         $result = Dataset::model()->findAllBySql("select email from gigadb_user g,dataset d where g.id=d.submitter_id and d.identifier='" . $id . "';");
@@ -272,31 +283,8 @@ class DatasetController extends Controller
 
         // Page private ? Disable robot to index
         $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $model->upload_status);
-               
-        if($model->id == 629)
-        {
-            
-            $this->render('viewfiles',array(
-            'model'=>$model,
-            'form'=>$form,
-            'dataset'=>$dataset,
-            'files'=>$files,
-            'samples'=>$samples,
-            'email' => $email,
-            'previous_doi' => $previous_doi,
-            'previous_title' => $previous_title,
-            'next_title'=> $next_title,
-            'next_doi' => $next_doi,
-            'setting' => $setting,
-            'columns' => $columns,
-            'logs'=>$model->datasetLogs,
-            'relates' => $relates,
-            'scholar' => $scholar,
-            'link_type' => $link_type,
-            'flag' => $flag,
-        ));
-            
-        }else{
+        // Yii::log("ActionView: about to render",CLogger::LEVEL_ERROR,"DatasetController");
+
         $this->render('view',array(
             'model'=>$model,
             'form'=>$form,
@@ -316,7 +304,7 @@ class DatasetController extends Controller
             'link_type' => $link_type,
             'flag' => $flag,
         ));
-        }
+
     }
 
 
@@ -1067,7 +1055,7 @@ EO_MAIL;
 				curl_close ($ch) ;
 
 			}
-                
+
 			if ( $dataset && $result['md_curl_status'] == 201) {
 				$doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=http://gigadb.org/dataset/".$dataset->identifier ;
 				$result['doi_data']  = $doi_data;
@@ -1457,7 +1445,7 @@ EO_MAIL;
                     $dataset->description = $attrs['description'];
                     $dataset->upload_status = "Incomplete";
                     $dataset->ftp_site = "''";
-                                     
+
                     // save dataset types
                     if (isset($_POST['datasettypes'])) {
                         $dataset->types = $_POST['datasettypes'];
@@ -1509,7 +1497,7 @@ EO_MAIL;
 
                         $dataset->image_id = $image->id;
                         $dataset->save(false);
-                        
+
                                             // semantic kewyords update, using remove all and re-create approach
                         if( isset($_POST['keywords']) ){
 
@@ -1632,7 +1620,7 @@ EO_MAIL;
                         }
 
                         if($dataset->save() && $image->save()) {
-                            
+
                             if( isset($_POST['keywords']) ){
 
 		        $sKeywordAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));

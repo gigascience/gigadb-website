@@ -187,7 +187,7 @@ HTML;
                         so that you can work in collaboration rather than in competition.
                     </p>
                     <p><strong>This dataset fair use agreement is in place until <?= strftime('%d %B %Y',strtotime($model->fairnuse))?></strong></p>
-                <?php } } ?>  
+                <?php } } ?>
                 </div>
                 <div class="subsection">
                     <div class="underline-title">
@@ -448,10 +448,6 @@ HTML;
 
                       <div role="tabpanel" class="tab-pane active" id="sample">
                         <button class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#samples_settings"><span class="glyphicon glyphicon-adjust"></span>Table Settings</button>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
                         <table id="samples_table" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
@@ -480,24 +476,27 @@ HTML;
 
                             </tbody>
                         </table>
-
+                        <?php
+                            $this->widget('SiteLinkPager', array(
+                                'id' => 'samples-pager',
+                                'pages'=>$samples->getPagination(),
+                            ));
+                        ?>
                       </div>
                             <?php }
                         ?>
                     <?php
-                 if(count($model->files) > 0) {
+                    if(count($model->files) > 0) {
 
-                    if(count($model->samples) > 0) {
+                        if(count($model->samples) > 0) {
                             ?>
                         <div role="tabpanel" class="tab-pane" id="files">
                          <?php }  else {?>
-                         <div role="tabpanel" class="tab-pane active" id="files">
+                        <div role="tabpanel" class="tab-pane active" id="files">
                          <?php   } ?>
                             <span class="glyphicon glyphicon-adjust"></span> <?= MyHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank', 'class'=>'button'))?>
 
                             <button class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#files_settings"><span class="glyphicon glyphicon-adjust"></span>Table Settings</button>
-                            <br>
-                            <br>
                             <br>
                             <br>
                             <table id="files_table" class="table table-striped table-bordered" style="width:100%">
@@ -533,10 +532,17 @@ HTML;
                                     <?php } ?>
                                 </tbody>
                             </table>
+                            <?php
+                                $this->widget('SiteLinkPager', array(
+                                    'id' => 'files-pager',
+                                    'pages'=>$files->getPagination(),
+                            ));
+
+                            ?>
                         </div>
-                            <?php }
-                        ?>
-                             <?php if(count($model->datasetFunders) > 0) {
+                    <?php } ?>
+
+                    <?php if(count($model->datasetFunders) > 0) {
                             ?>
 
                         <div role="tabpanel" class="tab-pane" id="funding">
@@ -814,9 +820,13 @@ $(document).ready(function() {
     }
 
     $('#samples_table').DataTable({
-        "paging":   true,
+        "paging":   false,
         "ordering": true,
-        "info":     true,
+        "info":     false,
+        "searching": false,
+        "lengthChange": false,
+        "pageLength": <?= $samples->getPagination()->getPageSize() ?>,
+        "pagingType": "simple_numbers",
         "columns": [
             { "visible": <?= in_array('name', $columns)? 'true' : 'false' ?> },
             { "visible": <?= in_array('common_name', $columns)? 'true' : 'false' ?> },
@@ -829,9 +839,13 @@ $(document).ready(function() {
 
 
     $('#files_table').DataTable({
-        "paging":   true,
+        "paging":   false,
         "ordering": true,
-        "info":     true,
+        "info":     false,
+        "searching": false,
+        "lengthChange": false,
+        "pageLength": <?= $files->getPagination()->getPageSize() ?>,
+        "pagingType": "simple_numbers",
         "columns": [
             { "visible": <?= in_array('name', $setting)? 'true' : 'false' ?> },
             { "visible": <?= in_array('description', $setting)? 'true' : 'false' ?> },
