@@ -72,12 +72,14 @@ services:
         - INSTALL_PGSQL=true
         - INSTALL_PG_CLIENT=true
         - PG_CLIENT_VERSION=${POSTGRES_VERSION}
+        - INSTALL_XDEBUG=true
         - INSTALL_NETCAT_JQ=true
     volumes:
       - ./:/var/www
       - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/yii:${YII_PATH}
       - /var/run/docker.sock:/var/run/docker.sock
       - ./php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+      - ./php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ./tmp:/tmp
     command: bash
     networks:
