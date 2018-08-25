@@ -4,6 +4,8 @@ services:
 
   web:
     image: nginx:${NGINX_VERSION}-alpine
+    environment:
+      YII_PATH: ${YII_PATH}
     volumes:
       - ./:/var/www
       - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/nginx/sites-available:/etc/nginx/sites-available
@@ -17,7 +19,8 @@ services:
         ipv4_address: 172.16.238.10
 
   application:
-    env_file: container-env.dev
+    environment:
+      YII_PATH: ${YII_PATH}
     build:
       context: .
       args:
@@ -38,7 +41,10 @@ services:
 
   database:
     image: postgres:${POSTGRES_VERSION}-alpine
-    env_file: container-env.dev
+    environment:
+      POSTGRES_DB: gigadb
+      POSTGRES_USER: gigadb
+      POSTGRES_PASSWORD: vagrant
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./sql/gigadb_testdata.sql:/docker-entrypoint-initdb.d/1-gigadb_testdata.sql
