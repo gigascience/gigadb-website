@@ -81,7 +81,6 @@ services:
       - ./php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
       - ./php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ./tmp:/tmp
-    command: bash
     networks:
       - web-tier
       - db-tier
@@ -89,6 +88,7 @@ services:
       - phantomjs
     extra_hosts:
       - "gigadb.dev:172.16.238.10"
+    command: ./tests/run
 
   phantomjs:
     image: wernight/phantomjs:2.1.1
