@@ -1,21 +1,26 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -e
 
 echo "About to run  automated tests..."
 
 echo "First, backup the main database..."
-vagrant ssh -c 'pg_dump gigadb -U gigadb -h localhost -p 5432 -w -F custom  -f /vagrant/sql/before-run.pgdmp > /vagrant/protected/runtime/pg_dump.log 2>&1'
+pg_dump gigadb -U gigadb -h database -p 5432 -F custom  -f /var/www/sql/before-run.pgdmp > /var/www/protected/runtime/pg_dump.log 2>&1
+
+echo "Loading test users"
+source test_users.txt
 
 echo "Running acceptance tests"
 Behat/bin/behat --tags @ok -v --stop-on-failure -c tests/behat.yml
 
 echo "Preparing the test database..."
-vagrant ssh -c 'sudo -Hiu postgres /usr/bin/psql < /vagrant/sql/gigadb_unit_tests.sql > /vagrant/protected/runtime/setup_test_database.log 2>&1'
+psql -U gigadb -h database < /var/www/sql/gigadb_unit_tests.sql > /var/www/protected/runtime/setup_test_database.log 2>&1
 
 
 echo "Running unit tests"
-vagrant ssh -c 'cd /vagrant/protected/tests && ./../../Behat/vendor/phpunit/phpunit/phpunit --config=phpunit.xml unit'
+cd /var/www/protected/tests && ./../../Behat/vendor/phpunit/phpunit/phpunit --config=phpunit.xml unit
 
 echo "...all automated tests have run"
 
 echo "Lastly, restoring the main database..."
-vagrant ssh -c 'pg_restore -i -h localhost -p 5432 -U gigadb -d gigadb -c -v /vagrant/sql/before-run.pgdmp > /vagrant/protected/runtime/pg_restore.log 2>&1'
+pg_restore -i -h database -p 5432 -U gigadb -d gigadb -c -v /var/www/sql/before-run.pgdmp > /var/www/protected/runtime/pg_restore.log 2>&1
