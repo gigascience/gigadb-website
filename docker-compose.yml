@@ -92,6 +92,7 @@ services:
     volumes:
       - ${APPLICATION}/:/var/www
       - ${DATA_SAVE_PATH}/yii:${YII_PATH}
+      - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
       - /var/run/docker.sock:/var/run/docker.sock
       - ${APPLICATION}/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
       - ${APPLICATION}/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
