@@ -55,7 +55,14 @@ services:
     networks:
       - db-tier
 
-  init:
+  config:
+    image: cfmanteiga/alpine-bash-curl-jq:latest
+    volumes:
+      - ./:/var/www
+      - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/yii:${YII_PATH}
+    command: /var/www/generate_config.sh
+
+  webapp:
     image: php:${PHP_VERSION}-cli
     volumes:
       - ./:/var/www

@@ -61,6 +61,7 @@ Behat/composer.lock
 # deployment
 
 .env
+.secrets
 .data
 vsftpd
 tmp
