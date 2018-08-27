@@ -8,7 +8,9 @@ echo "First, backup the main database..."
 pg_dump gigadb -U gigadb -h database -p 5432 -F custom  -f /var/www/sql/before-run.pgdmp > /var/www/protected/runtime/pg_dump.log 2>&1
 
 echo "Loading test users"
-source test_users.txt
+set -a
+source /var/www/.secrets
+set +a
 
 # echo "Running acceptance tests"
 Behat/bin/behat --tags @ok -v --stop-on-failure -c tests/behat.yml

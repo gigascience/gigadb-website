@@ -9,9 +9,13 @@ set -u
 # display the lines of this script as they are executed for debugging
 # set -x
 
+# Setting up in-container application source variable (APP_SOURCE).
+# It's the counterpart of the host variable APPLICATION
+APP_SOURCE=/var/www
+
 # read env variables in same directory, from a file called .env.
 # They are shared by both this script and Docker compose files.
-cd /var/www
+cd $APP_SOURCE
 echo "Current working directory: $PWD"
 if ! [ -f  ./.env ];then
     echo "ERROR: There is no .env file in this directory. Cannot run the configuration."
@@ -28,46 +32,40 @@ echo "* ---------------------------------------------- *"
 
 
 # for diagnostics purpose, print the value of .env variables
-echo "COMPOSE_PROJECT_NAME: $COMPOSE_PROJECT_NAME"
-echo "Application path: $APPLICATION"
-echo "Data path: $DATA_SAVE_PATH"
-
 echo "HOME_URL: $HOME_URL"
-echo "SERVER_EMAIL: $SERVER_EMAIL"
 echo "PUBLIC_HTTP_PORT: $PUBLIC_HTTP_PORT"
 echo "PUBLIC_HTTPS_PORT: $PUBLIC_HTTPS_PORT"
 
 
 # fetch and set environment variables from GitLab
-# Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to the deploy process
+# Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to build environment
 
 if [[ "$GIGADB_ENV" == "DEV" ]];then
     echo "Retrieving variables from GitLab"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${JSON_VARIABLES_URL}" | jq -r '.[] | select(.key|startswith("DEV")) |  .key + "=\"" + .value + "\""' > .secrets
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${DEV_VARIABLES_URL}" | jq -r '.[] | .key + "=\"" + .value + "\""' > .secrets
 
-    echo "Sourcing secrets"
+    echo "Sourcing secrets from ${DEV_VARIABLES_URL}"
     source "./.secrets"
 fi
 
 echo "* ---------------------------------------------- *"
 
 # do the stuff that vagrant would normally do. Even if vagrant is used, doing this stuff regardless is still ok.
-mkdir -p ${APPLICATION}/protected/runtime
-mkdir -p ${APPLICATION}/assets
-mkdir -p ${APPLICATION}/images/tempcaptcha
-chmod 777 ${APPLICATION}/protected/runtime
-chmod 777 ${APPLICATION}/assets
-chmod 777 ${APPLICATION}/images/tempcaptcha
+mkdir -p ${APP_SOURCE}/protected/runtime
+mkdir -p ${APP_SOURCE}/assets
+mkdir -p ${APP_SOURCE}/images/tempcaptcha
+chmod 777 ${APP_SOURCE}/protected/runtime
+chmod 777 ${APP_SOURCE}/assets
+chmod 777 ${APP_SOURCE}/images/tempcaptcha
 
 # Generate nginx site config
 
-mkdir -p ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/nginx/sites-available
-sed "s|192.168.42.10|${HOME_URL}|" $THIS_SCRIPT_DIR/nginx-conf/sites/gigadb.conf > ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/nginx/sites-available/${COMPOSE_PROJECT_NAME}.conf
+sed "s|192.168.42.10|${HOME_URL}|" $THIS_SCRIPT_DIR/nginx-conf/sites/gigadb.conf > /etc/nginx/sites-available/gigadb.conf
 
 # Generate config files for gigadb-website application using sed
 
-SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-aws.json.erb
-TARGET=${APPLICATION}/protected/config/aws.json
+SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-aws.json.erb
+TARGET=${APP_SOURCE}/protected/config/aws.json
 cp $SOURCE $TARGET \
     && sed -i \
     -e "/<% aws = node\[:aws\] -%>/d" \
@@ -78,8 +76,8 @@ cp $SOURCE $TARGET \
     -e "s|<%= aws\[:aws_default_region\] %>|${AWS_DEFAULT_REGION}|g" \
     $TARGET
 
-SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-console.php.erb
-TARGET=${APPLICATION}/protected/config/console.php
+SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-console.php.erb
+TARGET=${APP_SOURCE}/protected/config/console.php
 cp $SOURCE $TARGET \
     && sed -i \
     -e "s|<%= node\[:gigadb\]\[:mfr\]\[:preview_server\] %>|${PREVIEW_SERVER_HOST}|g" \
@@ -89,24 +87,24 @@ cp $SOURCE $TARGET \
     -e "s|<%= node\[:gigadb\]\[:beanstalk\]\[:host\] %>|${BEANSTALK_SERVER_HOST}|g" \
     $TARGET
 
-SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-index.php.erb
-TARGET=${APPLICATION}/index.php
+SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-index.php.erb
+TARGET=${APP_SOURCE}/index.php
 cp $SOURCE $TARGET \
     && sed -i \
     -e "/<% path = node\[:yii\]\[:path\] -%>/d" \
     -e "s|<%= path %>|${YII_PATH}|g" \
     $TARGET
 
-SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yiic.php.erb
-TARGET=${APPLICATION}/protected/yiic.php
+SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yiic.php.erb
+TARGET=${APP_SOURCE}/protected/yiic.php
 cp $SOURCE $TARGET \
     && sed -i \
     -e "/<% path = node\[:yii\]\[:path\] -%>/d" \
     -e "s|<%= path %>|${YII_PATH}|g" \
     $TARGET
 
-SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-local.php.erb
-TARGET=${APPLICATION}/protected/config/local.php
+SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-local.php.erb
+TARGET=${APP_SOURCE}/protected/config/local.php
 cp $SOURCE $TARGET \
     && sed -i \
     -e "/<% home_url = node\[:gigadb\]\[:server_names\] -%>/d" \
@@ -126,8 +124,8 @@ cp $SOURCE $TARGET \
     -e "s|<%= node\[:gigadb\]\[:mds\]\[:mds_prefix\] %>|${MDS_PREFIX}|g" \
     $TARGET
 
-SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-main.php.erb
-TARGET=${APPLICATION}/protected/config/main.php
+SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-main.php.erb
+TARGET=${APP_SOURCE}/protected/config/main.php
 cp $SOURCE $TARGET \
     && sed -i \
     -e "s|<%= node\[:gigadb\]\[:facebook\]\[:app_id\] %>|${FACEBOOK_APP_ID}|g" \
@@ -147,8 +145,8 @@ cp $SOURCE $TARGET \
     -e "s|<%= node\[:gigadb\]\[:mfr\]\[:preview_server\] %>|${PREVIEW_SERVER_HOST}|g" \
     $TARGET
 
-SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-db.json.erb
-TARGET=${APPLICATION}/protected/config/db.json
+SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-db.json.erb
+TARGET=${APP_SOURCE}/protected/config/db.json
 cp $SOURCE $TARGET \
     && sed -i \
     -e "/<% db = node\[:gigadb\]\[:db\] -%>/d" \
@@ -158,8 +156,8 @@ cp $SOURCE $TARGET \
     -e "s|<%= db\[:password\] %>|${GIGADB_PASSWORD}|g" \
     $TARGET
 
-SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/set_env.sh.erb
-TARGET=${APPLICATION}/protected/scripts/set_env.sh
+SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/set_env.sh.erb
+TARGET=${APP_SOURCE}/protected/scripts/set_env.sh
 cp $SOURCE $TARGET \
     && sed -i \
     -e "/<% db = node\[:gigadb\]\[:db\] -%>/d" \
@@ -169,22 +167,22 @@ cp $SOURCE $TARGET \
     -e "s|<%= db\[:password\] %>|${GIGADB_PASSWORD}|g" \
     $TARGET
 
-SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/es.json.erb
-TARGET=${APPLICATION}/protected/config/es.json
+SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/es.json.erb
+TARGET=${APP_SOURCE}/protected/config/es.json
 cp $SOURCE $TARGET \
     && sed -i \
     -e "s|<%= node\[:gigadb\]\[:es_port\] %>|${GIGADB_ES_PORT}|g" \
     $TARGET
 
-SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/update_links.sh.erb
-TARGET=${APPLICATION}/protected/scripts/update_links.sh
+SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/update_links.sh.erb
+TARGET=${APP_SOURCE}/protected/scripts/update_links.sh
 cp $SOURCE $TARGET \
     && sed -i \
     -e "s|<%= node\[:gigadb\]\[:db\]\[:password\] %>|${GIGADB_PASSWORD}|g" \
     $TARGET
 
-SOURCE=${APPLICATION}/chef/site-cookbooks/gigadb/templates/default/yii-help.html.erb
-TARGET=${APPLICATION}/files/html/help.html
+SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-help.html.erb
+TARGET=${APP_SOURCE}/files/html/help.html
 cp $SOURCE $TARGET \
     && sed -i \
     -e "/<% path = node\[:yii\]\[:ip_address\] -%>/d" \
@@ -201,22 +199,20 @@ fi
 # Install Yii of version $YII_VERSION in the ~/.laradock/data directory for persistent container data, if not yet installed
 if ! [ -f "$YII_PATH/version-${YII_VERSION}" ]; then
     echo "Installing the Yii framework ${YII_VERSION} to $YII_PATH"
-    mkdir -p $YII_PATH
-    rm "$YII_PATH/version-${YII_VERSION}"
-    tar xvzf yiirelease-${YII_VERSION}.tar.gz && mv $YII_PATH ${YII_PATH}.bak
-    mv yii-1.1.* $YII_PATH && rm -rf ${YII_PATH}.bak
+    tar xvzf yiirelease-${YII_VERSION}.tar.gz
+    mv yii-1.1.*/* $YII_PATH/
     touch $YII_PATH/version-${YII_VERSION}
 fi
 
 
 # Download example dataset files
-mkdir -p ${APPLICATION}/vsftpd/files
-if ! [ -f ${APPLICATION}/vsftpd/files/ftpexamples4.tar.gz ]; then
-  curl -o ${APPLICATION}/vsftpd/files/ftpexamples4.tar.gz https://s3-ap-southeast-1.amazonaws.com/gigadb-ftp-sample-data/ftpexamples4.tar.gz
+mkdir -p ${APP_SOURCE}/vsftpd/files
+if ! [ -f ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz ]; then
+  curl -o ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz https://s3-ap-southeast-1.amazonaws.com/gigadb-ftp-sample-data/ftpexamples4.tar.gz
 fi
-files_count=$(ls -1 ${APPLICATION}/vsftpd/files | wc -l)
+files_count=$(ls -1 ${APP_SOURCE}/vsftpd/files | wc -l)
 if ! [ $files_count -eq 11 ]; then
-  tar -xzvf ${APPLICATION}/vsftpd/files/ftpexamples4.tar.gz -C ${APPLICATION}/vsftpd/files
+  tar -xzvf ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz -C ${APP_SOURCE}/vsftpd/files
 fi
 
 

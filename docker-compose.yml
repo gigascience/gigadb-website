@@ -7,10 +7,10 @@ services:
     environment:
       YII_PATH: ${YII_PATH}
     volumes:
-      - ./:/var/www
-      - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/nginx/sites-available:/etc/nginx/sites-available
-      - ./nginx-conf/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx-conf/upstream.conf:/etc/nginx/conf.d/upstream.conf:ro
+      - ${APPLICATION}/:/var/www
+      - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
+      - ${APPLICATION}/nginx-conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${APPLICATION}/nginx-conf/upstream.conf:/etc/nginx/conf.d/upstream.conf:ro
     ports:
       - "${PUBLIC_HTTP_PORT}:80"
       - "${PUBLIC_HTTPS_PORT}:443"
@@ -27,12 +27,12 @@ services:
         - PHP_VERSION=${PHP_VERSION}
         - INSTALL_OPCACHE=true
     volumes:
-      - ./:/var/www
-      - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/yii:${YII_PATH}
-      - ./php-conf/php-${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
-      - ./php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
-      - ./php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
-      - ./php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+      - ${APPLICATION}/:/var/www
+      - ${DATA_SAVE_PATH}/yii:${YII_PATH}
+      - ${APPLICATION}/php-conf/php-${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+      - ${APPLICATION}/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
+      - ${APPLICATION}/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+      - ${APPLICATION}/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
     expose:
       - "9000"
     networks:
@@ -46,9 +46,9 @@ services:
       POSTGRES_USER: gigadb
       POSTGRES_PASSWORD: vagrant
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./sql/gigadb_testdata.sql:/docker-entrypoint-initdb.d/1-gigadb_testdata.sql
-      - ./postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
+      - ${APPLICATION}/sql/gigadb_testdata.sql:/docker-entrypoint-initdb.d/1-gigadb_testdata.sql
+      - ${APPLICATION}/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf'
     expose:
       - "5432"
@@ -58,15 +58,16 @@ services:
   config:
     image: cfmanteiga/alpine-bash-curl-jq:latest
     volumes:
-      - ./:/var/www
-      - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/yii:${YII_PATH}
+      - ${APPLICATION}/:/var/www
+      - ${DATA_SAVE_PATH}/yii:${YII_PATH}
+      - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
     command: /var/www/generate_config.sh
 
   webapp:
     image: php:${PHP_VERSION}-cli
     volumes:
-      - ./:/var/www
-      - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/yii:${YII_PATH}
+      - ${APPLICATION}/:/var/www
+      - ${DATA_SAVE_PATH}/yii:${YII_PATH}
     depends_on:
       - application
       - web
@@ -89,12 +90,12 @@ services:
     environment:
       YII_PATH: ${YII_PATH}
     volumes:
-      - ./:/var/www
-      - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/yii:${YII_PATH}
+      - ${APPLICATION}/:/var/www
+      - ${DATA_SAVE_PATH}/yii:${YII_PATH}
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
-      - ./php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-      - ./tmp:/tmp
+      - ${APPLICATION}/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+      - ${APPLICATION}/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ${APPLICATION}/tmp:/tmp
     networks:
       - web-tier
       - db-tier
@@ -102,7 +103,7 @@ services:
       - phantomjs
     extra_hosts:
       - "gigadb.dev:172.16.238.10"
-    command: ./tests/run
+    command: ${APPLICATION}/tests/run
 
   phantomjs:
     image: wernight/phantomjs:2.1.1
@@ -123,5 +124,4 @@ networks:
       - subnet: 172.16.238.0/24
   db-tier:
 
-volumes:
-  pgdata:
+
