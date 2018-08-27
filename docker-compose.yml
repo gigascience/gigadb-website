@@ -25,7 +25,7 @@ services:
       context: .
       args:
         - PHP_VERSION=${PHP_VERSION}
-        - INSTALL_OPCACHE=${PHP_FPM_INSTALL_OPCACHE}
+        - INSTALL_OPCACHE=true
     volumes:
       - ./:/var/www
       - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/yii:${YII_PATH}
@@ -69,17 +69,18 @@ services:
       - web-tier
 
   test:
-    env_file: container-env.dev
     build:
       context: .
       args:
         - PHP_VERSION=${PHP_VERSION}
-        - INSTALL_OPCACHE=${PHP_FPM_INSTALL_OPCACHE}
+        - INSTALL_OPCACHE=true
         - INSTALL_PGSQL=true
         - INSTALL_PG_CLIENT=true
         - PG_CLIENT_VERSION=${POSTGRES_VERSION}
         - INSTALL_XDEBUG=true
         - INSTALL_NETCAT_JQ=true
+    environment:
+      YII_PATH: ${YII_PATH}
     volumes:
       - ./:/var/www
       - ${DATA_SAVE_PATH}/${COMPOSE_PROJECT_NAME}/yii:${YII_PATH}
