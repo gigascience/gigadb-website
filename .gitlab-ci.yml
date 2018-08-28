@@ -1,0 +1,60 @@
+stages:
+  - build
+  - test
+  - deploy
+
+image: docker:stable
+
+
+cache:
+  paths:
+    - vendor/
+
+variables:
+  # When using dind service we need to instruct docker, to talk with the
+  # daemon started inside of the service. The daemon is available with
+  # a network connection instead of the default /var/run/docker.sock socket.
+  #
+  # The 'docker' hostname is the alias of the service container as described at
+  # https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#accessing-the-services
+  #
+  # Note that if you're using Kubernetes executor, the variable should be set to
+  # tcp://localhost:2375 because of how Kubernetes executor connects services
+  # to the job container
+  DOCKER_HOST: tcp://docker:2375/
+  # When using dind, it's wise to use the overlayfs driver for
+  # improved performance.
+  DOCKER_DRIVER: overlay2
+  # the configuration script needs to know that we are not in DEV environment anymore
+  # so it doesn't try to access
+  GIGADB_ENV: CI
+  # .env is only for dev, elsewhere we just list the variables here
+  APPLICATION: "/builds/$CI_PROJECT_PATH"
+  YII_PATH: "/opt/yii-1.1"
+  DATA_SAVE_PATH: "~/.containers-data/gigadb"
+  NGINX_VERSION: "1.15"
+  PHP_VERSION: "5.6"
+  YII_VERSION: "1.1.16"
+  POSTGRES_VERSION: "9.4"
+  HOME_URL: "gigadb.gigasciencejournal.com"
+  PUBLIC_HTTP_PORT: "9170"
+  PUBLIC_HTTPS_PORT: "8043"
+
+services:
+  - docker:dind
+
+before_script:
+  - docker info
+
+build_application:
+  stage: build
+  script:
+    - docker-compose build application
+    - docker-compose build test
+    - docker-compose run --rm config
+    - docker-compose up --detach webapp
+
+all_tests:
+  stage: test
+  script:
+    - docker-compose run test
