@@ -17,12 +17,15 @@ APP_SOURCE=/var/www
 # They are shared by both this script and Docker compose files.
 cd $APP_SOURCE
 echo "Current working directory: $PWD"
-if ! [ -f  ./.env ];then
-    echo "ERROR: There is no .env file in this directory. Cannot run the configuration."
-    echo "Please, switch to a directory with an .env file before running the configuration"
-    exit 1
+
+if [[ "$GIGADB_ENV" == "dev" ]];then
+    if ! [ -f  ./.env ];then
+        echo "ERROR: There is no .env file in this directory. Cannot run the configuration."
+        echo "Please, switch to a directory with an .env file before running the configuration"
+        exit 1
+    fi
+    source "./.env"
 fi
-source "./.env"
 
 # Print directory of this script. We will need it to find nginx config
 THIS_SCRIPT_DIR=`dirname "$BASH_SOURCE"`
