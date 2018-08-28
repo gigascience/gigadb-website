@@ -14,10 +14,10 @@
 DEV_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
 
 ### Deployment Environment  #############################################################################################
-# DEV, STG or PROD
-# determine which variables are pulled from GitLab, as well as other environment specifics settings, scripts
+# dev, ci,  staging or production
+# determine whether we need to pull variables from GitLab
 
-GIGADB_ENV=DEV
+GIGADB_ENV=dev
 
 ### Application, Framework and Data Path #################################################################################
 # Choose storage path on your machine. For all storage systems.

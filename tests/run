@@ -1,22 +1,28 @@
 #!/usr/bin/env bash
 
 set -e
+set -u
 
 echo "About to run  automated tests..."
 
-echo "First, backup the main database..."
-pg_dump gigadb -U gigadb -h database -p 5432 -F custom  -f /var/www/sql/before-run.pgdmp > /var/www/protected/runtime/pg_dump.log 2>&1
+echo "Loading environment..."
+source "./.env"
 
-echo "Loading test users"
-set -a
-source /var/www/.secrets
-set +a
+if [[ "$GIGADB_ENV" == "dev" ]];then
+	echo "Loading test users"
+	set -a
+	source /var/www/.secrets
+	set +a
+fi
+
+echo "First, backup the main database..."
+pg_dump $GIGADB_DB -U $GIGADB_USER -h $GIGADB_HOST -F custom  -f /var/www/sql/before-run.pgdmp > /var/www/protected/runtime/pg_dump.log 2>&1
 
 # echo "Running acceptance tests"
 Behat/bin/behat --tags @ok -v --stop-on-failure -c tests/behat.yml
 
 echo "Preparing the test database..."
-psql -U gigadb -h database < /var/www/sql/gigadb_unit_tests.sql > /var/www/protected/runtime/setup_test_database.log 2>&1
+psql -U $GIGADB_USER -h $GIGADB_HOST < /var/www/sql/gigadb_unit_tests.sql > /var/www/protected/runtime/setup_test_database.log 2>&1
 
 
 echo "Running unit tests"
@@ -25,4 +31,4 @@ cd /var/www/protected/tests && ./../../Behat/vendor/phpunit/phpunit/phpunit --co
 echo "...all automated tests have run"
 
 echo "Lastly, restoring the main database..."
-pg_restore -i -h database -p 5432 -U gigadb -d gigadb -c -v /var/www/sql/before-run.pgdmp > /var/www/protected/runtime/pg_restore.log 2>&1
+pg_restore -i -h $GIGADB_HOST  -U $GIGADB_USER -d $GIGADB_DB -c -v /var/www/sql/before-run.pgdmp > /var/www/protected/runtime/pg_restore.log 2>&1

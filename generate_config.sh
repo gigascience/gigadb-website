@@ -40,7 +40,7 @@ echo "PUBLIC_HTTPS_PORT: $PUBLIC_HTTPS_PORT"
 # fetch and set environment variables from GitLab
 # Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to build environment
 
-if [[ "$GIGADB_ENV" == "DEV" ]];then
+if [[ "$GIGADB_ENV" == "dev" ]];then
     echo "Retrieving variables from GitLab"
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${DEV_VARIABLES_URL}" | jq -r '.[] | .key + "=\"" + .value + "\""' > .secrets
 
