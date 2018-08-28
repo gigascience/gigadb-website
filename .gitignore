@@ -58,6 +58,11 @@ test_users.txt
 Behat/vendor
 Behat/composer.lock
 
+# Composer
+
+vendor
+composer.lock
+
 # deployment
 
 .env
