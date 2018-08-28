@@ -44,7 +44,7 @@ services:
   - docker:dind
 
 before_script:
-  - docker info
+  - env
 
 build_application:
   stage: build
