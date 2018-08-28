@@ -60,8 +60,10 @@ Behat/composer.lock
 
 # Composer
 
+bin
 vendor
 composer.lock
+composer.json
 
 # deployment
 

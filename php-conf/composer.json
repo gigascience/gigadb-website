@@ -12,10 +12,13 @@
         "phpunit/phpunit-selenium": "1.4.2",
         "phpunit/php-code-coverage": "*",
         "phpunit/phpunit-mock-objects": "*",
-        "yiisoft/yii": "*"
+        "yiisoft/yii": "CHANGE_ME_YII"
     },
     "minimum-stability": "stable",
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "platform": {
+            "php": "CHANGE_ME_PHP"
+        }
     }
 }

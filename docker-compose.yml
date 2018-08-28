@@ -28,7 +28,7 @@ services:
         - INSTALL_OPCACHE=true
     volumes:
       - ${APPLICATION}/:/var/www
-      - ${DATA_SAVE_PATH}/yii:${YII_PATH}
+      - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
       - ${APPLICATION}/php-conf/php-${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
       - ${APPLICATION}/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
       - ${APPLICATION}/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
@@ -59,20 +59,21 @@ services:
     image: cfmanteiga/alpine-bash-curl-jq:latest
     volumes:
       - ${APPLICATION}/:/var/www
-      - ${DATA_SAVE_PATH}/yii:${YII_PATH}
+      - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
       - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
     command: /var/www/generate_config.sh
 
   webapp:
-    image: php:${PHP_VERSION}-cli
+    image: composer:1.5
     volumes:
       - ${APPLICATION}/:/var/www
-      - ${DATA_SAVE_PATH}/yii:${YII_PATH}
+      - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
+      - ${APPLICATION}:/app
     depends_on:
       - application
       - web
       - database
-    command: /var/www/protected/yiic lesscompiler
+    command: composer install
     networks:
       - web-tier
 
@@ -91,7 +92,7 @@ services:
       YII_PATH: ${YII_PATH}
     volumes:
       - ${APPLICATION}/:/var/www
-      - ${DATA_SAVE_PATH}/yii:${YII_PATH}
+      - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
       - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
       - /var/run/docker.sock:/var/run/docker.sock
       - ${APPLICATION}/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini

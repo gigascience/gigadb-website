@@ -60,7 +60,22 @@ chmod 777 ${APP_SOURCE}/images/tempcaptcha
 
 # Generate nginx site config
 
-sed "s|192.168.42.10|${HOME_URL}|" $THIS_SCRIPT_DIR/nginx-conf/sites/gigadb.conf > /etc/nginx/sites-available/gigadb.conf
+SOURCE=$THIS_SCRIPT_DIR/nginx-conf/sites/gigadb.conf
+TARGET=/etc/nginx/sites-available/gigadb.conf
+cp $SOURCE $TARGET \
+    && sed -i \
+    -e "s|192.168.42.10|${HOME_URL}|" \
+    $TARGET
+
+# Configure composer.json with dependency versions
+
+SOURCE=${APP_SOURCE}/php-conf/composer.json
+TARGET=${APP_SOURCE}/composer.json
+cp $SOURCE $TARGET \
+    && sed -i \
+    -e "s|CHANGE_ME_YII|${YII_VERSION}|" \
+    -e "s|CHANGE_ME_PHP|${PHP_VERSION}|" \
+    $TARGET
 
 # Generate config files for gigadb-website application using sed
 
@@ -188,22 +203,6 @@ cp $SOURCE $TARGET \
     -e "/<% path = node\[:yii\]\[:ip_address\] -%>/d" \
     -e "s|<%= path %>|${HOME_URL}|g" \
     $TARGET
-
-# Download Yii version $YII_VERSION if not yet downloaded
-YII_URL=$(curl -s https://github.com/yiisoft/yii/releases/tag/${YII_VERSION} | grep "yii-${YII_VERSION}" | grep "tar.gz" | sed -n 's/.*href="\([^"]*\).*/\1/p')
-if ! [ -f  yiirelease-${YII_VERSION}.tar.gz ];then
-    echo "Downloading the Yii framework ${YII_VERSION}"
-	curl -o yiirelease-${YII_VERSION}.tar.gz -L "https://github.com${YII_URL}"
-fi
-
-# Install Yii of version $YII_VERSION in the ~/.laradock/data directory for persistent container data, if not yet installed
-if ! [ -f "$YII_PATH/version-${YII_VERSION}" ]; then
-    echo "Installing the Yii framework ${YII_VERSION} to $YII_PATH"
-    tar xvzf yiirelease-${YII_VERSION}.tar.gz
-    mv yii-1.1.*/* $YII_PATH/
-    touch $YII_PATH/version-${YII_VERSION}
-fi
-
 
 # Download example dataset files
 mkdir -p ${APP_SOURCE}/vsftpd/files
