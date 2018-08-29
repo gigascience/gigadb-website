@@ -44,7 +44,7 @@ services:
   - docker:dind
 
 before_script:
-  - env | grep -v "^DOCKER" | grep -v "^CI" | grep "=" > $APPLICATION/.env
+  - env | grep -v "^DOCKER" | grep -v "^CI" | grep -E "^[a-zA-Z0-9_]+=.+" > $APPLICATION/.env
 
 build_webapp:
   stage: build
