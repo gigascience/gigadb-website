@@ -23,6 +23,9 @@ echo "Current working directory: $PWD"
 
 if [ -f  ./.env ];then
     echo "An .env file is present, sourcing it"
+    echo "* ---------------------------------------------- *"
+    cat .env
+    echo "* ---------------------------------------------- *"
     source "./.env"
 fi
 
@@ -30,7 +33,6 @@ fi
 THIS_SCRIPT_DIR=`dirname "$BASH_SOURCE"`
 echo "Running ${THIS_SCRIPT_DIR}/generate_config.sh for environment: $GIGADB_ENV"
 
-echo "* ---------------------------------------------- *"
 
 # fetch and set environment variables from GitLab
 # Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to build environment
