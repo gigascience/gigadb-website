@@ -44,7 +44,7 @@ services:
   - docker:dind
 
 before_script:
-  - env
+  - env > $APPLICATION/.env
 
 build_application:
   stage: build
@@ -53,7 +53,7 @@ build_application:
     - pip install docker-compose
     - docker-compose build application
     - docker-compose build test
-    - docker-compose run -e GIGADB_ENV=$GIGADB_ENV -e APPLICATION=$APPLICATION -e YII_VERSION=$YII_VERSION -e PHP_VERSION=$PHP_VERSION -e HOME_URL=$HOME_URL --rm config
+    - docker-compose run --rm config
     - docker-compose up --detach webapp
 
 all_tests:
