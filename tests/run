@@ -6,7 +6,9 @@ set -u
 echo "About to run  automated tests..."
 
 echo "Loading environment..."
+set -a
 source "./.env"
+set +a
 
 if [[ "$GIGADB_ENV" == "dev" ]];then
 	echo "Loading test users"
