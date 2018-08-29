@@ -105,7 +105,7 @@ services:
       - phantomjs
     extra_hosts:
       - "gigadb.dev:172.16.238.10"
-    command: ${APPLICATION}/tests/run
+    command: ./tests/run
 
   phantomjs:
     image: wernight/phantomjs:2.1.1
