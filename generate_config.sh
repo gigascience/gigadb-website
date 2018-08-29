@@ -23,9 +23,6 @@ echo "Current working directory: $PWD"
 
 if [ -f  ./.env ];then
     echo "An .env file is present, sourcing it"
-    echo "* ---------------------------------------------- *"
-    cat .env
-    echo "* ---------------------------------------------- *"
     source "./.env"
 fi
 

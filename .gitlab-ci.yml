@@ -57,6 +57,5 @@ build_webapp:
 run_all_tests:
   stage: test
   script:
-    - pwd
-    - ls -alrt protected/runtime/
+    - docker-compose run --rm config
     - docker-compose run test
