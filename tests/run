@@ -21,7 +21,7 @@ echo "First, backup the main database..."
 pg_dump $GIGADB_DB -U $GIGADB_USER -h $GIGADB_HOST -F custom  -f /var/www/sql/before-run.pgdmp > /var/www/protected/runtime/pg_dump.log 2>&1
 
 # echo "Running acceptance tests"
-bin/behat --tags @ok -v --stop-on-failure -c tests/behat.yml
+bin/behat --tags "@ok&&~@google" -v --stop-on-failure -c tests/behat.yml
 
 echo "Preparing the test database..."
 psql -U $GIGADB_USER -h $GIGADB_HOST < /var/www/sql/gigadb_unit_tests.sql > /var/www/protected/runtime/setup_test_database.log 2>&1
