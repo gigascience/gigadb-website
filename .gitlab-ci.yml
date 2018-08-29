@@ -58,5 +58,5 @@ run_all_tests:
   stage: test
   script:
     - pwd
-    - ls -alrt $APPLICATION
+    - ls -alrt protected/runtime/
     - docker-compose run test
