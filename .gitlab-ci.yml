@@ -45,12 +45,12 @@ services:
 
 before_script:
   - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -E "^[a-zA-Z0-9_]+=.+" > $APPLICATION/.env
+  - apk add --no-cache py-pip
+  - pip install docker-compose
 
 build_webapp:
   stage: build
   script:
-    - apk add --no-cache py-pip
-    - pip install docker-compose
     - docker-compose run --rm config
     - docker-compose up --detach webapp
 
