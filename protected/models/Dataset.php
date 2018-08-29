@@ -79,7 +79,7 @@ class Dataset extends MyActiveRecord
             array('description, publication_date, modification_date, image_id, fairnuse, types', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, submitter_id, image_id, identifier, title, description, publisher, dataset_size, ftp_site, upload_status, excelfile, excelfile_md5, publication_date, modification_date', 'safe', 'on'=>'search'),
+            array('id, submitter_id, image_id, identifier, title, description, publisher, dataset_size, ftp_site, upload_status, excelfile, excelfile_md5, publication_date, modification_date, manuscript_id', 'safe', 'on'=>'search'),
 #            array('projectIDs , sampleIDs , authorIDs , datasetTypeIDs' , 'safe'),
         );
     }
@@ -219,6 +219,7 @@ class Dataset extends MyActiveRecord
             'modification_date' => Yii::t('app' , 'Modification Date'),
             'new_image_url' => 'Image URL',
             'new_image_location' => 'Image Location',
+            'manuscript_id' => 'Manuscript ID',
             'fairnuse' => 'Fair Use Policy',
         );
     }
@@ -246,6 +247,7 @@ class Dataset extends MyActiveRecord
         $criteria->compare('LOWER(upload_status)', strtolower($this->upload_status),true);
         $criteria->compare('LOWER(excelfile)',strtolower($this->excelfile),true);
         $criteria->compare('LOWER(excelfile_md5)',strtolower($this->excelfile_md5),true);
+        $criteria->compare('LOWER(manuscript_id)',strtolower($this->manuscript_id),true);
         $criteria->compare('publication_date',$this->publication_date);
         $criteria->compare('modification_date',$this->modification_date);
 

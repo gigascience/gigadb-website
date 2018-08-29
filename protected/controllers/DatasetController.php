@@ -711,8 +711,11 @@ EO_MAIL;
                   $dataset->upload_status = 'Pending';
                   CurationLog::createlog($dataset->upload_status,$dataset->id,Yii::app()->user->id);
             } else {
-                  $dataset->upload_status = 'Request';
-                  CurationLog::createlog($dataset->upload_status,$dataset->id,Yii::app()->user->id);
+                  if($dataset->upload_status !== 'Request')
+                    {
+                        $dataset->upload_status = 'Request';
+                        CurationLog::createlog($dataset->upload_status,$dataset->id,Yii::app()->user->id);
+                    }
             }
 
             if (!$dataset->save()){
@@ -1640,7 +1643,7 @@ EO_MAIL;
 
 
 			// remove existing dataset attributes
-			$datasetAttributes = datasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$dataset->id,'attribute_id'=>$sKeywordAttr->id));
+			$datasetAttributes = DatasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$dataset->id,'attribute_id'=>$sKeywordAttr->id));
 
 			foreach ($datasetAttributes as $key => $keyword) {
                             $keyword->delete();
