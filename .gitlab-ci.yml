@@ -27,7 +27,7 @@ variables:
   DOCKER_DRIVER: overlay2
   # the configuration script needs to know that we are not in DEV environment anymore
   # so it doesn't try to access
-  GIGADB_ENV: CI
+  GIGADB_ENV: GLCI
   # .env is only for dev, elsewhere we just list the variables here
   APPLICATION: "/builds/$CI_PROJECT_PATH"
   YII_PATH: "/opt/yii-1.1"

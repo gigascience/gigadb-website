@@ -17,13 +17,11 @@ APP_SOURCE=/var/www
 # They are shared by both this script and Docker compose files.
 cd $APP_SOURCE
 echo "Current working directory: $PWD"
-
-if [[ "$GIGADB_ENV" == "dev" ]];then
-    if ! [ -f  ./.env ];then
-        echo "ERROR: There is no .env file in this directory. Cannot run the configuration."
-        echo "Please, switch to a directory with an .env file before running the configuration"
-        exit 1
-    fi
+if ! [ -f  ./.env ];then
+    GIGADB_ENV="NOTDEV"
+    echo "GIGADB_ENV: $GIGADB_ENV"
+    echo "DOCKER_ENV_GIGADB_ENV: $DOCKER_ENV_GIGADB_ENV"
+else
     source "./.env"
 fi
 
