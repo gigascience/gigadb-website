@@ -27,11 +27,11 @@ variables:
   DOCKER_DRIVER: overlay2
   # the configuration script needs to know that we are not in DEV environment anymore
   # so it doesn't try to access
-  GIGADB_ENV: GLCI
+  GIGADB_ENV: CI
   # .env is only for dev, elsewhere we just list the variables here
   APPLICATION: "/builds/$CI_PROJECT_PATH"
   YII_PATH: "/opt/yii-1.1"
-  DATA_SAVE_PATH: "~/.containers-data/gigadb"
+  DATA_SAVE_PATH: "/builds/.containers-data/gigadb"
   NGINX_VERSION: "1.15"
   PHP_VERSION: "5.6"
   YII_VERSION: "1.1.16"
@@ -53,7 +53,7 @@ build_application:
     - pip install docker-compose
     - docker-compose build application
     - docker-compose build test
-    - docker-compose run --rm config
+    - docker-compose run -e GIGADB_ENV=$GIGADB_ENV -e APPLICATION=$APPLICATION -e YII_VERSION=$YII_VERSION -e PHP_VERSION=$PHP_VERSION -e HOME_URL=$HOME_URL --rm config
     - docker-compose up --detach webapp
 
 all_tests:

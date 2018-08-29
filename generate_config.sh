@@ -13,15 +13,16 @@ set -u
 # It's the counterpart of the host variable APPLICATION
 APP_SOURCE=/var/www
 
+# setting up the in-container path to Yii 1.1 framework
+YII_PATH="/opt/yii-1.1"
+
 # read env variables in same directory, from a file called .env.
 # They are shared by both this script and Docker compose files.
 cd $APP_SOURCE
 echo "Current working directory: $PWD"
-if ! [ -f  ./.env ];then
-    GIGADB_ENV="NOTDEV"
-    echo "GIGADB_ENV: $GIGADB_ENV"
-    echo "DOCKER_ENV_GIGADB_ENV: $DOCKER_ENV_GIGADB_ENV"
-else
+
+if [ -f  ./.env ];then
+    echo "An .env file is present, sourcing it"
     source "./.env"
 fi
 
@@ -30,13 +31,6 @@ THIS_SCRIPT_DIR=`dirname "$BASH_SOURCE"`
 echo "Running ${THIS_SCRIPT_DIR}/generate_config.sh for environment: $GIGADB_ENV"
 
 echo "* ---------------------------------------------- *"
-
-
-# for diagnostics purpose, print the value of .env variables
-echo "HOME_URL: $HOME_URL"
-echo "PUBLIC_HTTP_PORT: $PUBLIC_HTTP_PORT"
-echo "PUBLIC_HTTPS_PORT: $PUBLIC_HTTPS_PORT"
-
 
 # fetch and set environment variables from GitLab
 # Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to build environment
@@ -52,12 +46,10 @@ fi
 echo "* ---------------------------------------------- *"
 
 # do the stuff that vagrant would normally do. Even if vagrant is used, doing this stuff regardless is still ok.
-mkdir -p ${APP_SOURCE}/protected/runtime
-mkdir -p ${APP_SOURCE}/assets
-mkdir -p ${APP_SOURCE}/images/tempcaptcha
-chmod 777 ${APP_SOURCE}/protected/runtime
-chmod 777 ${APP_SOURCE}/assets
-chmod 777 ${APP_SOURCE}/images/tempcaptcha
+mkdir -p ${APP_SOURCE}/protected/runtime && chmod 777 ${APP_SOURCE}/protected/runtime
+mkdir -p ${APP_SOURCE}/assets && chmod 777 ${APP_SOURCE}/assets
+mkdir -p ${APP_SOURCE}/images/tempcaptcha && chmod 777 ${APP_SOURCE}/images/tempcaptcha
+
 
 # Generate nginx site config
 
@@ -206,14 +198,14 @@ cp $SOURCE $TARGET \
     $TARGET
 
 # Download example dataset files
-mkdir -p ${APP_SOURCE}/vsftpd/files
-if ! [ -f ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz ]; then
-  curl -o ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz https://s3-ap-southeast-1.amazonaws.com/gigadb-ftp-sample-data/ftpexamples4.tar.gz
-fi
-files_count=$(ls -1 ${APP_SOURCE}/vsftpd/files | wc -l)
-if ! [ $files_count -eq 11 ]; then
-  tar -xzvf ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz -C ${APP_SOURCE}/vsftpd/files
-fi
+# mkdir -p ${APP_SOURCE}/vsftpd/files
+# if ! [ -f ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz ]; then
+#   curl -o ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz https://s3-ap-southeast-1.amazonaws.com/gigadb-ftp-sample-data/ftpexamples4.tar.gz
+# fi
+# files_count=$(ls -1 ${APP_SOURCE}/vsftpd/files | wc -l)
+# if ! [ $files_count -eq 11 ]; then
+#   tar -xzvf ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz -C ${APP_SOURCE}/vsftpd/files
+# fi
 
 
 echo "done."
