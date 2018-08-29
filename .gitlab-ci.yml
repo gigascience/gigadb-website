@@ -32,7 +32,7 @@ variables:
   APPLICATION: "/builds/$CI_PROJECT_PATH"
   YII_PATH: "/opt/yii-1.1"
   DATA_SAVE_PATH: "/builds/.containers-data/gigadb"
-  NGINX_VERSION: "1.15"
+  NGINX_VERSION: "1.15.2"
   PHP_VERSION: "5.6"
   YII_VERSION: "1.1.16"
   POSTGRES_VERSION: "9.4"
