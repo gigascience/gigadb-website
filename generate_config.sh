@@ -36,7 +36,7 @@ echo "Running ${THIS_SCRIPT_DIR}/generate_config.sh for environment: $GIGADB_ENV
 
 if [[ "$GIGADB_ENV" == "dev" ]];then
     echo "Retrieving variables from GitLab"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${DEV_VARIABLES_URL}" | jq -r '.[] | .key + "=\"" + .value + "\""' > .secrets
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${DEV_VARIABLES_URL}" | jq -r '.[] | .key + "=" + .value ' > .secrets
 
     echo "Sourcing secrets from ${DEV_VARIABLES_URL}"
     source "./.secrets"
