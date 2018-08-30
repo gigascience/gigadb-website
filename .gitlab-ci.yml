@@ -52,7 +52,7 @@ before_script:
 
 after_script:
   - ls -al
-  - docker-compose logs
+  - docker-compose logs webapp
 
 build_webapp:
   stage: build
