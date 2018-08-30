@@ -39,24 +39,32 @@ variables:
   HOME_URL: "gigadb.gigasciencejournal.com"
   PUBLIC_HTTP_PORT: "9170"
   PUBLIC_HTTPS_PORT: "8043"
+  COMPOSE_FILE: "docker-compose.yml:docker-compose.ci.yml"
 
 services:
   - docker:dind
 
 before_script:
-  - env
   - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" > $APPLICATION/.env
   - apk add --no-cache py-pip
   - pip install docker-compose
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
 
 build_webapp:
   stage: build
   script:
-    - docker-compose run --rm config
+    - docker pull ${CI_PROJECT_NAME}_application:latest || true
+    - docker pull ${CI_PROJECT_NAME}_test:latest || true
+    - docker-compose build application
+    - docker-compose build test
+    - docker push ${CI_PROJECT_NAME}_application:latest
+    - docker push ${CI_PROJECT_NAME}_test:latest
 
 run_all_tests:
   stage: test
   script:
+    - docker pull ${CI_PROJECT_NAME}_application:latest || true
+    - docker pull ${CI_PROJECT_NAME}_test:latest || true
     - docker-compose run --rm config
     - docker-compose up --detach webapp
     - docker-compose run test
