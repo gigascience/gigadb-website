@@ -36,7 +36,7 @@ echo "Running unit tests"
 if [[ "$GIGADB_ENV" == "dev" ]];then
 	cd /var/www/protected/tests && ./../../bin/phpunit --config=phpunit.xml --coverage-html /var/www/protected/runtime/coverage  unit
 else
-	cd /var/www/protected/tests && ./../../bin/phpunit --config=phpunit.xml --coverage-text --colors=never  unit
+	cd /var/www/protected/tests && ./../../bin/phpunit --config=phpunit.xml --coverage-text unit
 fi
 
 echo "...all automated tests have run"
