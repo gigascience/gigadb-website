@@ -50,9 +50,6 @@ before_script:
   - pip install docker-compose
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
 
-after_script:
-  - ls -al
-  - docker-compose logs webapp
 
 build_webapp:
   stage: build
@@ -68,6 +65,14 @@ build_webapp:
 
 run_all_tests:
   stage: test
+  cache:
+    paths:
+      - vendor/
+      - bin/
+      - composer.lock
+  artifacts:
+    paths:
+      - protected/runtime/coverage/
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
