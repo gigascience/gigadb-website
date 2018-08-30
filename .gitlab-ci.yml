@@ -45,7 +45,7 @@ services:
 
 before_script:
   - env
-  - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -E "^[a-zA-Z0-9_]+=.+" > $APPLICATION/.env
+  - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" > $APPLICATION/.env
   - apk add --no-cache py-pip
   - pip install docker-compose
 
