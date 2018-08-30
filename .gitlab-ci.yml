@@ -53,18 +53,20 @@ before_script:
 build_webapp:
   stage: build
   script:
-    - docker pull ${CI_PROJECT_NAME}_application:latest || true
-    - docker pull ${CI_PROJECT_NAME}_test:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker-compose build application
     - docker-compose build test
-    - docker push ${CI_PROJECT_NAME}_application:latest
-    - docker push ${CI_PROJECT_NAME}_test:latest
+    - docker tag ${CI_PROJECT_NAME}_application:latest registry.gitlab.com/$CI_PROJECT_PATH/application:latest
+    - docker tag ${CI_PROJECT_NAME}_test:latest registry.gitlab.com/$CI_PROJECT_PATH/test:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/application:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/test:latest
 
 run_all_tests:
   stage: test
   script:
-    - docker pull ${CI_PROJECT_NAME}_application:latest || true
-    - docker pull ${CI_PROJECT_NAME}_test:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker-compose run --rm config
     - docker-compose up --detach webapp
     - docker-compose run test

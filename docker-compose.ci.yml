@@ -5,9 +5,9 @@ services:
   application:
     build:
       cache_from:
-        - "${CI_PROJECT_NAME}_application:latest"
+        - "registry.gitlab.com/$CI_PROJECT_PATH/application:latest"
 
   test:
     build:
       cache_from:
-        - "${CI_PROJECT_NAME}_test:latest"
+        - "registry.gitlab.com/$CI_PROJECT_PATH/test:latest"
