@@ -72,5 +72,5 @@ run_all_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker-compose run --rm config
-    - docker-compose up --detach webapp
+    - docker-compose run --rm webapp
     - docker-compose run test
