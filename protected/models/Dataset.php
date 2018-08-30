@@ -181,18 +181,20 @@ class Dataset extends MyActiveRecord
     }
 
     public function getAuthorNames() {
-        $criteria = new CDbCriteria;
-        $criteria->join = 'left join author a on a.id = t.author_id';
-        $criteria->addCondition('t.dataset_id ='.$this->id);
-        $criteria->order= 't.rank ASC, a.surname ASC, a.first_name ASC, a.middle_name ASC';
-        $das = DatasetAuthor::model()->findAll($criteria);
+        
+        $das = Yii::app()->db->createCommand()
+            ->select('a.id')
+            ->from('dataset_author')
+            ->leftJoin('author a','a.id = author_id')
+            ->where('dataset_id = :id', array(':id'=>$this->id))
+            ->order(array('rank ASC', 'a.surname ASC', 'a.first_name ASC', 'a.middle_name ASC'))
+            ->queryAll();
 
         $l = array();
         foreach($das as $da) {
-            $author = $da->author;
+            $author = Author::model()->findByPk($da['id']);
             $name = $author->displayName;
-            $id = $author->id;
-            $l[] = CHtml::link($name, "/search/new?keyword=$name&author_id=$id", array('class'=>'result-sub-links'));
+            $l[] = CHtml::link($name, "/search/new?keyword=$name&author_id=".$da['id'], array('class'=>'result-sub-links'));
         }
         return implode('; ', $l);
     }
