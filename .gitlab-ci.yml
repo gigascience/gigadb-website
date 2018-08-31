@@ -122,7 +122,7 @@ check_PHPDoc:
     - docker-compose run test ./bin/phpcs --report=source --report-file=protected/runtime/phpcs-phpdoc-source.txt --report-summary=protected/runtime/phpcs-phpdoc-summary.txt --report-full=protected/runtime/phpcs-phpdoc-full.txt --standard=Generic --sniffs=Generic.Commenting.DocComment  --colors protected
 
 
-sast:
+check_SAST:
   stage: security
   allow_failure: true
   script:
@@ -134,3 +134,32 @@ sast:
         "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
   artifacts:
     paths: [gl-sast-report.json]
+
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "The plan is, once this config is on develop branch:"
+    - echo "to commit a new container with the source code using 'docker commit'"
+    - echo "then push to registry as 'registry.gitlab.com/$CI_PROJECT_PATH/application:new_release' "
+    - echo "then we use Terraform to remote deploy to Play-with-docker (free playground, reset every 4 hours)"
+    - echo "may be accessible at url like http://gigadb-staging.play-with-docker.com"
+  environment:
+    name: staging
+    url: http://gigadb-staging.play-with-docker.com
+  # only:
+  #   - develop
+
+deploy_production:
+  stage: deploy
+  script:
+    - echo "The plan is, once this config is on develop branch:"
+    - echo "to commit a new container with the source code using 'docker commit'"
+    - echo "then push to registry as 'registry.gitlab.com/$CI_PROJECT_PATH/application:new_release' "
+    - echo "then we use Terraform to remote deploy to CNGB/AWS/Alyiun"
+    - echo "accessible at url like http://gigadb-staging.gigasciencejournal.com"
+  environment:
+    name: production
+    url: http://gigadb.org
+  # only:
+  #   - develop
+  when: manual
