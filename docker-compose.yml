@@ -73,7 +73,7 @@ services:
       - application
       - web
       - database
-    command: composer install
+    command: composer update
     networks:
       - web-tier
 
