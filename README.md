@@ -40,7 +40,7 @@ $ cd gigadb-website						# your cloned git repository for Gigadb website
 $ git checkout nolegacy-dep-ux-php7		# currently the only branch for which this work
 $ cp env-sample .env 					# make sure GITLAB_PRIVATE_TOKEN is set to your personal access token
 $ docker-compose run --rm config 		# generate the configuration files with variables in .env, GitLab, then exit
-$ docker-compose up --detach webapp		# run some initialisation, then spin up the web application's services, then exit
+$ docker-compose run --rm webapp		# run compose update, then spin up the web application's services, then exit
 ```
 
 Three (for now) services will be started in detached mode (named **web**, **application** and **database**) on two different networks (**web-tier** and **db-tier**).
