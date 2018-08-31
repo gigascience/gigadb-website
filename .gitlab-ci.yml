@@ -72,7 +72,10 @@ run_all_tests:
       - composer.lock
   artifacts:
     paths:
-      - protected/runtime/coverage/
+      - tmp/
+      - protected/runtime/
+    when: on_failure
+    expire_in: 1 week
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
