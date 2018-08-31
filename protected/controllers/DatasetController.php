@@ -573,7 +573,14 @@ class DatasetController extends Controller
 		$model=new Dataset('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Dataset'])) {
-            $model->setAttributes($_GET['Dataset']);
+                  if($_GET['Dataset']['curator_id'] !== "")  {
+                  $curator_id= Dataset::model()->getCuratorid($_GET['Dataset']['curator_id']);
+                  $model->setAttributes($_GET['Dataset']);
+                  $model->curator_id=$curator_id;
+                  }
+                else {
+                    $model->setAttributes($_GET['Dataset']);
+                  }
         }
 
 		$this->render('admin',array(

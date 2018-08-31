@@ -36,7 +36,7 @@ class Dataset extends MyActiveRecord
 
     public $new_ext_acc_mirror;
     public $new_ext_acc_link;
-
+        
 #    public $projectIDs = array();
 #    public $authorIDs = array();
 #    public $sampleIDs = array();
@@ -79,7 +79,7 @@ class Dataset extends MyActiveRecord
             array('description, publication_date, modification_date, image_id, fairnuse, types', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, submitter_id, image_id, identifier, title, description, publisher, dataset_size, ftp_site, upload_status, excelfile, excelfile_md5, publication_date, modification_date, manuscript_id', 'safe', 'on'=>'search'),
+            array('id, submitter_id, image_id, identifier, title, description, publisher, dataset_size, ftp_site, upload_status, excelfile, excelfile_md5, publication_date, modification_date, manuscript_id, curator_id', 'safe', 'on'=>'search'),
 #            array('projectIDs , sampleIDs , authorIDs , datasetTypeIDs' , 'safe'),
         );
     }
@@ -196,6 +196,40 @@ class Dataset extends MyActiveRecord
         }
         return implode('; ', $l);
     }
+    
+    
+    public function getCuratorid($name) {
+        
+        $names= explode(" ", $name);
+        if(count($names)<2)
+        {
+        $curator = User::model()->find('lower(first_name)=:firstname and email like :email', array(':firstname'=>strtolower($names[0]),':email'=>'%gigasciencejournal.com'));
+      
+        if(isset($curator))
+        {
+            $curator_id = $curator->id;             
+        }
+        else
+        {
+            $curator_id = null;  
+        }    
+            
+        }else{
+        $curator = User::model()->find('lower(first_name)=:firstname and lower(last_name)=:lastname and email like :email', array(':firstname'=>strtolower($names[0]),':lastname'=>strtolower($names[1]),':email'=>'%gigasciencejournal.com'));
+      
+        if(isset($curator))
+        {
+            $curator_id = $curator->id;             
+        }
+        else
+        {
+            $curator_id = null;  
+        }
+        }
+
+        return $curator_id;
+  
+    }
 
     /**
      * @return array customized attribute labels (name=>label)
@@ -220,6 +254,7 @@ class Dataset extends MyActiveRecord
             'new_image_url' => 'Image URL',
             'new_image_location' => 'Image Location',
             'manuscript_id' => 'Manuscript ID',
+            'curator_id' => 'Curator ID',
             'fairnuse' => 'Fair Use Policy',
         );
     }
@@ -248,6 +283,7 @@ class Dataset extends MyActiveRecord
         $criteria->compare('LOWER(excelfile)',strtolower($this->excelfile),true);
         $criteria->compare('LOWER(excelfile_md5)',strtolower($this->excelfile_md5),true);
         $criteria->compare('LOWER(manuscript_id)',strtolower($this->manuscript_id),true);
+        $criteria->compare('curator_id',$this->curator_id);
         $criteria->compare('publication_date',$this->publication_date);
         $criteria->compare('modification_date',$this->modification_date);
 
