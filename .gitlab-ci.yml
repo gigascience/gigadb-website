@@ -1,5 +1,6 @@
 stages:
   - build
+  - security
   - test
   - deploy
 
@@ -101,3 +102,17 @@ check_code_style:
     - docker-compose run --rm config
     - docker-compose run --rm webapp
     - docker-compose run test ./bin/phpcs --report=source --report-file=protected/runtime/phpcs-psr2-source.txt --report-summary=protected/runtime/phpcs-psr2-summary.txt --report-full=protected/runtime/phpcs-psr2-full.txt --standard=PSR2 --colors protected
+
+
+sast:
+  stage: security
+  allow_failure: true
+  script:
+    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
+    - docker run
+        --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}"
+        --volume "$PWD:/code"
+        --volume /var/run/docker.sock:/var/run/docker.sock
+        "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
+  artifacts:
+    paths: [gl-sast-report.json]

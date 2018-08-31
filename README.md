@@ -1,5 +1,14 @@
 # GigaDB
 
+
+
+[![pipeline status](https://gitlab.com/gigascience/forks/rija-gigadb-website/badges/nolegacy-dep-ux-php7/pipeline.svg)](https://gitlab.com/gigascience/forks/rija-gigadb-website/commits/nolegacy-dep-ux-php7)
+
+
+
+[![coverage report](https://gitlab.com/gigascience/forks/rija-gigadb-website/badges/nolegacy-dep-ux-php7/coverage.svg)](https://gitlab.com/gigascience/forks/rija-gigadb-website/commits/nolegacy-dep-ux-php7)
+
+
 ## What is it?
 
 [GigaDB](http://gigadb.org) is a database which provides information
