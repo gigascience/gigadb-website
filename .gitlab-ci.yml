@@ -67,6 +67,19 @@ build_webapp:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/test:latest
 
+build_phpdocs:
+  stage: build
+  cache:
+    paths:
+      - docs/apidocs
+  script:
+    - docker pull phpdoc/phpdoc
+    - docker run --rm -v $(pwd):/data phpdoc/phpdoc -d /data/protected/,/data/tests/ -t /data/docs/apidocs/
+  artifacts:
+    paths:
+      - docs/apidocs
+  when: manual
+
 run_all_tests:
   stage: test
   cache:

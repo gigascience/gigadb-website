@@ -73,3 +73,7 @@ composer.json
 vsftpd
 tmp
 files/html/help.html
+
+# docs
+
+docs/apidocs/phpdoc-cache-*
