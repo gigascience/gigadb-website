@@ -50,9 +50,9 @@ $ docker-compose run --rm config 		# generate the configuration using variables 
 >If not member of the Gigascience's Forks GitLab group, you will have to provide your own values for the necessary variables using ``ops/configuration/variables/secrets-sample`` as starting point:
 
 >```
-$ cp ops/configuration/variables/secrets-sample .secrets
-$ vi .secrets
-```
+>$ cp ops/configuration/variables/secrets-sample .secrets
+>$ vi .secrets
+>```
 
 **(2)** To start the web application, run the following command:
 
