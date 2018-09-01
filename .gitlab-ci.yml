@@ -48,7 +48,6 @@ services:
   - docker:dind
 
 before_script:
-  - env
   - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id)" > $APPLICATION/.env
   - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id)" > $APPLICATION/.secrets
   - apk add --no-cache py-pip
@@ -71,6 +70,7 @@ build_webapp:
   artifacts:
     untracked: true
     when: on_failure
+    expire_in: 1 week
     
 run_all_tests:
   stage: test
