@@ -111,7 +111,7 @@ $ docker-compose run --rm test bash
 
 Both containers have access to the application source files, the Yii framework and Nginx site configuration (so they can be used to debug the running web application too).
 
-The **test** container has also the PostgreSQL admin tools installed (pg\_dump, pg\_store, psql), so it's a good place for debugging database issues. For further investigation, check out the [docker-compose.yml](ops/deployment/docker-compose.yml) to see how the services are assembled and what scripts they run.
+The **test** container has also the PostgreSQL admin tools installed (pg\_dump, pg\_restore, psql), so it's a good place for debugging database issues. For further investigation, check out the [docker-compose.yml](ops/deployment/docker-compose.yml) to see how the services are assembled and what scripts they run.
 
 >**Note:**
 >Only the **test** and **application** containers have access to the **database** container.
