@@ -75,7 +75,7 @@ build_apidocs:
       - docs/cache
   script:
     - docker pull phpdoc/phpdoc
-    - docker run --rm -v $(pwd):/data phpdoc/phpdoc --visibility "public,protected" --cache-folder "docs/cache" --directory "/data/protected/models,/data/protected/views,/data/protected/controllers,/data/tests/features/bootstrap/" --target "/data/docs/apidocs/"
+    - docker run --rm -v $(pwd):/data phpdoc/phpdoc --visibility "public,protected" --cache-folder "docs/cache" --directory "/data/protected/models,/data/protected/views,/data/protected/tests,/data/protected/components,/data/protected/commands,/data/protected/behaviors,/data/protected/controllers,/data/tests/features/bootstrap/" --target "/data/docs/apidocs/"
   artifacts:
     paths:
       - docs/apidocs
