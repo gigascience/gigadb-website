@@ -77,3 +77,4 @@ files/html/help.html
 # docs
 
 docs/apidocs/phpdoc-cache-*
+docs/cache
