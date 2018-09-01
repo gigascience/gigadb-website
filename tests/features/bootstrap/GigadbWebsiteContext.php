@@ -259,7 +259,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext imple
     {
         $compose_name=getenv("COMPOSE_PROJECT_NAME");
         print_r("Restarting php container for ${compose_name} project".PHP_EOL);
-        exec("/var/www/restart_php.sh",$output);
+        exec("/var/www/ops/scripts/restart_php.sh",$output);
         sleep(2);
     }
 

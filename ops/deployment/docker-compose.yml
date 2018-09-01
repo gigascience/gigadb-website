@@ -9,8 +9,8 @@ services:
     volumes:
       - ${APPLICATION}/:/var/www
       - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
-      - ${APPLICATION}/nginx-conf/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ${APPLICATION}/nginx-conf/upstream.conf:/etc/nginx/conf.d/upstream.conf:ro
+      - ${APPLICATION}/ops/configuration/nginx-conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ${APPLICATION}/ops/configuration/nginx-conf/upstream.conf:/etc/nginx/conf.d/upstream.conf:ro
     ports:
       - "${PUBLIC_HTTP_PORT}:80"
       - "${PUBLIC_HTTPS_PORT}:443"
@@ -23,16 +23,17 @@ services:
       YII_PATH: ${YII_PATH}
     build:
       context: .
+      dockerfile: ../packaging/Dockerfile
       args:
         - PHP_VERSION=${PHP_VERSION}
         - INSTALL_OPCACHE=true
     volumes:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
-      - ${APPLICATION}/php-conf/php-${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
-      - ${APPLICATION}/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
-      - ${APPLICATION}/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
-      - ${APPLICATION}/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+      - ${APPLICATION}/ops/configuration/php-conf/php-${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+      - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
+      - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+      - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
     expose:
       - "9000"
     networks:
@@ -48,7 +49,7 @@ services:
     volumes:
       - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
       - ${APPLICATION}/sql/gigadb_testdata.sql:/docker-entrypoint-initdb.d/1-gigadb_testdata.sql
-      - ${APPLICATION}/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf'
     expose:
       - "5432"
@@ -61,7 +62,7 @@ services:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
       - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
-    command: /var/www/generate_config.sh
+    command: /var/www/ops/scripts/generate_config.sh
 
   webapp:
     image: composer:1.5
@@ -80,6 +81,7 @@ services:
   test:
     build:
       context: .
+      dockerfile: ../packaging/Dockerfile
       args:
         - PHP_VERSION=${PHP_VERSION}
         - INSTALL_OPCACHE=true
@@ -95,8 +97,8 @@ services:
       - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
       - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${APPLICATION}/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
-      - ${APPLICATION}/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+      - ${APPLICATION}/ops/configuration/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ${APPLICATION}/tmp:/tmp
     networks:
       - web-tier

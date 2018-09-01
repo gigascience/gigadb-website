@@ -34,13 +34,12 @@ echo "Running ${THIS_SCRIPT_DIR}/generate_config.sh for environment: $GIGADB_ENV
 # fetch and set environment variables from GitLab
 # Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to build environment
 
-if [[ "$GIGADB_ENV" == "dev" ]];then
-    echo "Retrieving variables from GitLab"
+if ! [ -f  ./.secrets ];then
+    echo "Retrieving variables from ${DEV_VARIABLES_URL}"
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${DEV_VARIABLES_URL}" | jq -r '.[] | .key + "=" + .value ' > .secrets
-
-    echo "Sourcing secrets from ${DEV_VARIABLES_URL}"
-    source "./.secrets"
 fi
+echo "Sourcing secrets"
+source "./.secrets"
 
 echo "* ---------------------------------------------- *"
 
@@ -52,7 +51,7 @@ mkdir -p ${APP_SOURCE}/images/tempcaptcha && chmod 777 ${APP_SOURCE}/images/temp
 
 # Generate nginx site config
 
-SOURCE=$THIS_SCRIPT_DIR/nginx-conf/sites/gigadb.conf
+SOURCE=${APP_SOURCE}/ops/configuration/nginx-conf/sites/gigadb.conf
 TARGET=/etc/nginx/sites-available/gigadb.conf
 cp $SOURCE $TARGET \
     && sed -i \
@@ -61,7 +60,7 @@ cp $SOURCE $TARGET \
 
 # Configure composer.json with dependency versions
 
-SOURCE=${APP_SOURCE}/php-conf/composer.json
+SOURCE=${APP_SOURCE}/ops/configuration/php-conf/composer.json
 TARGET=${APP_SOURCE}/composer.json
 cp $SOURCE $TARGET \
     && sed -i \

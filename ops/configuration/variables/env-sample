@@ -2,6 +2,11 @@
 # General Setup
 ###########################################################
 
+### Compose files  ###############################################################################################
+# The file paths where docker-compose can file its YAML file
+
+COMPOSE_FILE=ops/deployment/docker-compose.yml
+
 ### GitLab Private Token  ###############################################################################################
 # This token allows access to the secret variables stored on GitLab.com for logins, passwords, api keys and secrets
 # required by the project. If you don't have one, generate from your user account setting on Gitlab.com.

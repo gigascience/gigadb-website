@@ -41,13 +41,14 @@ variables:
   HOME_URL: "gigadb.gigasciencejournal.com"
   PUBLIC_HTTP_PORT: "9170"
   PUBLIC_HTTPS_PORT: "8043"
-  COMPOSE_FILE: "docker-compose.yml:docker-compose.ci.yml"
+  COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml"
 
 services:
   - docker:dind
 
 before_script:
-  - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" > $APPLICATION/.env
+  - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id)" > $APPLICATION/.env
+  - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id)" > $APPLICATION/.secrets
   - apk add --no-cache py-pip
   - pip install docker-compose
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com

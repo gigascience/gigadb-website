@@ -27,8 +27,9 @@ website. This current release is version 3.1.
 ### Getting started
 
 Requirements:
+
 * Docker (18 or more recent) is [installed](https://www.docker.com/products/docker-desktop) on your machine (Windows or macOS)
-* You have a [GitLab account](https://gitlab.com/), are a member of the [Gigascience group](https://gitlab.com/gigascience), so you can access the application's [secret variables](https://docs.gitlab.com/ee/api/README.html)
+* You have a [GitLab account](https://gitlab.com/), which is  a member of the [Gigascience Forks group](https://gitlab.com/gigascience/forks), so you can access the application's [secret variables](https://docs.gitlab.com/ee/api/README.html)
 * You have generated a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) from your GitLab user settings so your local setup can access the secret variables
 * You have git cloned [my fork](https://github.com/rija/gigadb-website/) of Gigadb Website project locally under ``gigadb-website``
 
@@ -38,12 +39,18 @@ To start the n-tier website locally at ``http://gigadb.gigasciencejournal.com:91
 ```
 $ cd gigadb-website						# your cloned git repository for Gigadb website
 $ git checkout nolegacy-dep-ux-php7		# currently the only branch for which this work
-$ cp env-sample .env 					# make sure GITLAB_PRIVATE_TOKEN is set to your personal access token
+$ cp ops/configuration/variables/env-sample .env  # make sure GITLAB_PRIVATE_TOKEN is set to your personal access token
 $ docker-compose run --rm config 		# generate the configuration files with variables in .env, GitLab, then exit
 $ docker-compose run --rm webapp		# run compose update, then spin up the web application's services, then exit
 ```
+If not member of the Gigascience's Forks GitLab group, you will have to provide your own values for the necessary variables (including an empty value for GITLAB_PRIVATE_TOKEN in .env):
 
-Three (for now) services will be started in detached mode (named **web**, **application** and **database**) on two different networks (**web-tier** and **db-tier**).
+```
+$ cp ops/configuration/variables/secrets-sample .secrets
+$ vi .secrets
+```
+
+Upon success, three (for now) services will be started in detached mode (named **web**, **application** and **database**) on two different networks (**web-tier** and **db-tier**).
 
 **Note**:
 >The first time, it will take longer to start the services as the **application** container needs to be built first.
