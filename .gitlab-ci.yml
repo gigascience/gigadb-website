@@ -48,6 +48,7 @@ services:
   - docker:dind
 
 before_script:
+  - env
   - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id)" > $APPLICATION/.env
   - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id)" > $APPLICATION/.secrets
   - apk add --no-cache py-pip
@@ -58,6 +59,7 @@ before_script:
 build_webapp:
   stage: build
   script:
+    - echo "Building app"
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker-compose build application
@@ -66,7 +68,10 @@ build_webapp:
     - docker tag ${CI_PROJECT_NAME}_test:latest registry.gitlab.com/$CI_PROJECT_PATH/test:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/test:latest
-
+  artifacts:
+    untracked: true
+    when: on_failure
+    
 run_all_tests:
   stage: test
   cache:
