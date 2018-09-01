@@ -10,12 +10,10 @@ set -a
 source "./.env"
 set +a
 
-if [[ "$GIGADB_ENV" == "dev" ]];then
-	echo "Loading test users"
-	set -a
-	source /var/www/.secrets
-	set +a
-fi
+echo "Loading test users"
+set -a
+source /var/www/.secrets
+set +a
 
 echo "First, backup the main database..."
 pg_dump $GIGADB_DB -U $GIGADB_USER -h $GIGADB_HOST -F custom  -f /var/www/sql/before-run.pgdmp
