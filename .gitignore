@@ -51,12 +51,9 @@ nbproject/project.properties
 tests/fixtures/affiliate_users_credentials
 sql/temp_command.sql
 test_users.txt
-
-
-# Behat
-
-Behat/vendor
-Behat/composer.lock
+protected/runtime/phpunit-coverage.txt
+protected/runtime/clover.xml
+protected/runtime/previous_coverage_level.txt
 
 # Composer
 
