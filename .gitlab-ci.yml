@@ -103,6 +103,9 @@ check_coverage:
       - protected/runtime/previous_coverage_level.txt
   script:
     - docker-compose run test ./tests/coverage
+  dependencies:
+    - run_all_tests
+
 
 check_PSR2:
   stage: conformance
