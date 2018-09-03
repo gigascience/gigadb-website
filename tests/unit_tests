@@ -6,7 +6,7 @@ set -u
 set -a
 echo "Loading environment..."
 source "./.env"
-echo "Loading test users"
+echo "Loading credentials data"
 source "/var/www/.secrets"
 set +a
 
@@ -16,3 +16,5 @@ psql -U $GIGADB_USER -h $GIGADB_HOST < /var/www/sql/gigadb_unit_tests.sql
 
 echo "Running unit tests"
 cd /var/www/protected/tests && ./../../bin/phpunit --config=phpunit.xml unit
+
+cat /var/www/protected/runtime/phpunit-coverage.txt
