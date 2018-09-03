@@ -1,8 +1,8 @@
 stages:
   - build
   - security
-  - conformance
   - test
+  - conformance
   - deploy
 
 image: docker:stable
@@ -97,7 +97,7 @@ run_all_tests:
     - docker-compose run test
 
 check_coverage:
-  stage: test
+  stage: conformance
   cache:
     paths:
       - protected/runtime/previous_coverage_level.txt
