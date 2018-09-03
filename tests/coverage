@@ -17,7 +17,6 @@ fi
 
 current_coverage_value=`head -9 $text_cov | tail -1 | cut -d':' -f 2 | cut -d'%' -f 1 | cut -d' ' -f 4`
 
-echo $current_coverage_value > $previous_coverage_file
 
 compare=`echo $current_coverage_value'<'$previous_coverage_value | bc -l`
 
@@ -26,6 +25,7 @@ if [[ $compare -eq 1 ]];then
 	exit 1
 else
 	echo "Coverage OK"
+	echo $current_coverage_value > $previous_coverage_file
 	exit 0
 fi
 
