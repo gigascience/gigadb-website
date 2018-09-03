@@ -8,10 +8,6 @@ stages:
 image: docker:stable
 
 
-# cache:
-#   paths:
-#     - vendor/
-
 variables:
   # When using dind service we need to instruct docker, to talk with the
   # daemon started inside of the service. The daemon is available with

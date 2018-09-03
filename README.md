@@ -80,10 +80,16 @@ The project can be configured using *deployment variables* managed in ``.env``, 
 
 To run the tests:
 ```
-$ docker-compose run test
+$ docker-compose run --rm test
 ```
 
 This will run all the tests and generate a test coverage report. An headless Selenium web browser (currently PhantomJS) will be automatically spun-off into its own container. If an acceptance test fails, it will leave a screenshot under the ``./tmp`` directory.
+
+
+To only run unit tests, use the command:
+```
+$ docker-compose run --rm test ./tests/unit_tests
+```
 
 ## Troubleshooting
 
