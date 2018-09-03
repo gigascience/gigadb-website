@@ -2,8 +2,9 @@
 
 set -e
 set -u
+# set -x
 
-echo "Checking coverage"
+echo "Checking coverage..."
 text_cov="/var/www/protected/runtime/phpunit-coverage.txt"
 xml_cov="/var/www/protected/runtime/clover.xml"
 previous_coverage_file="/var/www/protected/runtime/previous_coverage_level.txt"
@@ -12,11 +13,17 @@ min_coverage_level=27.18
 if [[ -s $previous_coverage_file ]];then
 	previous_coverage_value=`cat $previous_coverage_file`
 else
+	echo "Previous coverage value not found, using default minimum threshold: $min_coverage_level"
 	previous_coverage_value=$min_coverage_level
 fi
 
-current_coverage_value=`head -9 $text_cov | tail -1 | cut -d':' -f 2 | cut -d'%' -f 1 | cut -d' ' -f 4`
-
+if [[ -s $text_cov ]];then
+	current_coverage_value=`head -6 $text_cov | tail -1 | cut -d':' -f 2 | cut -d'%' -f 1 | cut -d' ' -f 4`
+else
+	echo "Test Coverage report not fount at: $text_cov"
+	echo "Ensure the PHPUnit tests have run"
+	exit 1
+fi
 
 compare=`echo $current_coverage_value'<'$previous_coverage_value | bc -l`
 
@@ -24,7 +31,7 @@ if [[ $compare -eq 1 ]];then
 	echo "Coverage has decreased! ($current_coverage_value < $previous_coverage_value)"
 	exit 1
 else
-	echo "Coverage OK"
+	echo "Coverage OK! ($current_coverage_value >= $previous_coverage_value)"
 	echo $current_coverage_value > $previous_coverage_file
 	exit 0
 fi

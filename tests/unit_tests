@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+
+set -a
+echo "Loading environment..."
+source "./.env"
+echo "Loading test users"
+source "/var/www/.secrets"
+set +a
+
+echo "Preparing the test database..."
+psql -U $GIGADB_USER -h $GIGADB_HOST < /var/www/sql/gigadb_unit_tests.sql
+
+
+echo "Running unit tests"
+cd /var/www/protected/tests && ./../../bin/phpunit --config=phpunit.xml unit
