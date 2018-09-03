@@ -95,7 +95,6 @@ run_all_tests:
     - docker-compose run --rm config
     - docker-compose run --rm webapp
     - docker-compose run test
-  coverage: "/\ \ Lines:\s*(\d+.\d+\%)/"
 
 check_coverage:
   stage: test
