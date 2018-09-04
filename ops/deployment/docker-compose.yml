@@ -96,10 +96,10 @@ services:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
       - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
-      - /var/run/docker.sock:/var/run/docker.sock
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
       - ${APPLICATION}/ops/configuration/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ${APPLICATION}/tmp:/tmp
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - web-tier
       - db-tier

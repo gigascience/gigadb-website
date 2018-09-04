@@ -57,7 +57,7 @@ $ docker-compose run --rm config 		# generate the configuration using variables 
 **(2)** To start the web application, run the following command:
 
 ```
-$ docker-compose run --rm webapp		# run compose update, then spin up the web application's services, then exit
+$ docker-compose run --rm webapp		# run composer update, then spin up the web application's services, then exit
 ```
 
 The **webapp** container will run composer update using the ``composer.json`` generated in the previous step, and will launch three containers named **web**, **application** and **database**, then it will exit. It's ok to run the command repeatedly.
