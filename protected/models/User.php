@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * User
+ * An ActiveRecord model class to handle data related to users of the system.
+ */
 class User extends CActiveRecord {
     public $password_repeat;
     public $password_new;
@@ -251,6 +255,15 @@ class User extends CActiveRecord {
         return $author;
     }
 
+    /**
+    * Return the full name of the user
+    *
+    *
+    * @return string
+    */
+    public function getFullName() {
+        return $this->first_name." ".$this->last_name;
+    }
 /**
   * process OAuth response after successfull authorisaion and redirection to the loginAffilate callback
   * TODO: the logic with name vs first_name+last_name may not be ideal (eg: my firstname Rija is my twitter name, it becomes last name in gigadb

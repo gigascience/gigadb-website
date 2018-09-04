@@ -255,23 +255,28 @@ class Dataset extends MyActiveRecord
             'criteria'=>$criteria,
         ));
     }
-    
-    public static function getCuratorname($id){
-        
-      $curator = User::model()->find('id=:user_id', array(':user_id'=>$id));
-      
-      if(isset($curator))
-      {
-        $curator_name = $curator->first_name." ".$curator->last_name;    
-          
+
+    /**
+     * Return the name of the curator associated to this dataset
+     *
+     * If no curator is associated, an empty string is returned.
+     * Otherwise, the full name is returned as a string.
+     *
+     * @return string
+     */
+    public function getCuratorName(){
+
+      $curator = User::model()->findByPk($this->curator_id);
+
+      if( isset($curator) ) {
+        $curator_name = $curator->getFullName();
       }
-      else
-      {
-        $curator_name = "";  
+      else {
+        $curator_name = "";
       }
-      
+
       return $curator_name;
-        
+
     }
 
     public static function getTypeList($ids) {

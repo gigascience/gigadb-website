@@ -20,6 +20,11 @@ class DatasetTest extends CDbTestCase
  		$this->assertEquals($authorNames, $this->datasets(0)->authorNames, "dataset returns formatted authors name");
  	}
 
+ 	function testGetCuratorName() {
+ 		$this->assertEquals("", $this->datasets(0)->getCuratorName(),"No curator, so empty string returned on getCuratorName()");
+ 		$this->assertEquals("Joe Bloggs", $this->datasets(1)->getCuratorName(),"Full name returned on getCuratorName()");
+ 	}
+
  }
 
  ?>
