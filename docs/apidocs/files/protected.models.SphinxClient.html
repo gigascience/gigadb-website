@@ -24,7 +24,7 @@
         <script type="text/javascript">
         function loadExternalCodeSnippets() {
             Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
-                var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+                var src = pre.getAttribute('data-src');
                 var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
                 var language = 'php';
 
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1936326432"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-322754212"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1936326432" class="accordion-body collapse in">
+            <div id="namespace-322754212" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -304,7 +304,7 @@
             <a id="constant_SEARCHD_COMMAND_SEARCH" name="constant_SEARCHD_COMMAND_SEARCH" class="anchor"></a>
             <article id="constant_SEARCHD_COMMAND_SEARCH" class="constant">
                 <h3 class="">SEARCHD_COMMAND_SEARCH</h3>
-                <pre class="signature">SEARCHD_COMMAND_SEARCH = 0</pre>
+                <pre class="signature">SEARCHD_COMMAND_SEARCH</pre>
                 <p><em></em></p>
                 
             </article>
@@ -322,7 +322,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -334,7 +334,7 @@
             <a id="constant_SEARCHD_COMMAND_EXCERPT" name="constant_SEARCHD_COMMAND_EXCERPT" class="anchor"></a>
             <article id="constant_SEARCHD_COMMAND_EXCERPT" class="constant">
                 <h3 class="">SEARCHD_COMMAND_EXCERPT</h3>
-                <pre class="signature">SEARCHD_COMMAND_EXCERPT = 1</pre>
+                <pre class="signature">SEARCHD_COMMAND_EXCERPT</pre>
                 <p><em></em></p>
                 
             </article>
@@ -352,7 +352,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -364,7 +364,7 @@
             <a id="constant_SEARCHD_COMMAND_UPDATE" name="constant_SEARCHD_COMMAND_UPDATE" class="anchor"></a>
             <article id="constant_SEARCHD_COMMAND_UPDATE" class="constant">
                 <h3 class="">SEARCHD_COMMAND_UPDATE</h3>
-                <pre class="signature">SEARCHD_COMMAND_UPDATE = 2</pre>
+                <pre class="signature">SEARCHD_COMMAND_UPDATE</pre>
                 <p><em></em></p>
                 
             </article>
@@ -382,7 +382,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -394,7 +394,7 @@
             <a id="constant_SEARCHD_COMMAND_KEYWORDS" name="constant_SEARCHD_COMMAND_KEYWORDS" class="anchor"></a>
             <article id="constant_SEARCHD_COMMAND_KEYWORDS" class="constant">
                 <h3 class="">SEARCHD_COMMAND_KEYWORDS</h3>
-                <pre class="signature">SEARCHD_COMMAND_KEYWORDS = 3</pre>
+                <pre class="signature">SEARCHD_COMMAND_KEYWORDS</pre>
                 <p><em></em></p>
                 
             </article>
@@ -412,7 +412,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -424,7 +424,7 @@
             <a id="constant_SEARCHD_COMMAND_PERSIST" name="constant_SEARCHD_COMMAND_PERSIST" class="anchor"></a>
             <article id="constant_SEARCHD_COMMAND_PERSIST" class="constant">
                 <h3 class="">SEARCHD_COMMAND_PERSIST</h3>
-                <pre class="signature">SEARCHD_COMMAND_PERSIST = 4</pre>
+                <pre class="signature">SEARCHD_COMMAND_PERSIST</pre>
                 <p><em></em></p>
                 
             </article>
@@ -442,7 +442,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -454,7 +454,7 @@
             <a id="constant_SEARCHD_COMMAND_STATUS" name="constant_SEARCHD_COMMAND_STATUS" class="anchor"></a>
             <article id="constant_SEARCHD_COMMAND_STATUS" class="constant">
                 <h3 class="">SEARCHD_COMMAND_STATUS</h3>
-                <pre class="signature">SEARCHD_COMMAND_STATUS = 5</pre>
+                <pre class="signature">SEARCHD_COMMAND_STATUS</pre>
                 <p><em></em></p>
                 
             </article>
@@ -472,7 +472,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -484,7 +484,7 @@
             <a id="constant_SEARCHD_COMMAND_FLUSHATTRS" name="constant_SEARCHD_COMMAND_FLUSHATTRS" class="anchor"></a>
             <article id="constant_SEARCHD_COMMAND_FLUSHATTRS" class="constant">
                 <h3 class="">SEARCHD_COMMAND_FLUSHATTRS</h3>
-                <pre class="signature">SEARCHD_COMMAND_FLUSHATTRS = 7</pre>
+                <pre class="signature">SEARCHD_COMMAND_FLUSHATTRS</pre>
                 <p><em></em></p>
                 
             </article>
@@ -502,7 +502,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -514,7 +514,7 @@
             <a id="constant_VER_COMMAND_SEARCH" name="constant_VER_COMMAND_SEARCH" class="anchor"></a>
             <article id="constant_VER_COMMAND_SEARCH" class="constant">
                 <h3 class="">VER_COMMAND_SEARCH</h3>
-                <pre class="signature">VER_COMMAND_SEARCH = 281</pre>
+                <pre class="signature">VER_COMMAND_SEARCH</pre>
                 <p><em></em></p>
                 
             </article>
@@ -532,7 +532,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -544,7 +544,7 @@
             <a id="constant_VER_COMMAND_EXCERPT" name="constant_VER_COMMAND_EXCERPT" class="anchor"></a>
             <article id="constant_VER_COMMAND_EXCERPT" class="constant">
                 <h3 class="">VER_COMMAND_EXCERPT</h3>
-                <pre class="signature">VER_COMMAND_EXCERPT = 260</pre>
+                <pre class="signature">VER_COMMAND_EXCERPT</pre>
                 <p><em></em></p>
                 
             </article>
@@ -562,7 +562,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -574,7 +574,7 @@
             <a id="constant_VER_COMMAND_UPDATE" name="constant_VER_COMMAND_UPDATE" class="anchor"></a>
             <article id="constant_VER_COMMAND_UPDATE" class="constant">
                 <h3 class="">VER_COMMAND_UPDATE</h3>
-                <pre class="signature">VER_COMMAND_UPDATE = 258</pre>
+                <pre class="signature">VER_COMMAND_UPDATE</pre>
                 <p><em></em></p>
                 
             </article>
@@ -592,7 +592,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -604,7 +604,7 @@
             <a id="constant_VER_COMMAND_KEYWORDS" name="constant_VER_COMMAND_KEYWORDS" class="anchor"></a>
             <article id="constant_VER_COMMAND_KEYWORDS" class="constant">
                 <h3 class="">VER_COMMAND_KEYWORDS</h3>
-                <pre class="signature">VER_COMMAND_KEYWORDS = 256</pre>
+                <pre class="signature">VER_COMMAND_KEYWORDS</pre>
                 <p><em></em></p>
                 
             </article>
@@ -622,7 +622,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -634,7 +634,7 @@
             <a id="constant_VER_COMMAND_STATUS" name="constant_VER_COMMAND_STATUS" class="anchor"></a>
             <article id="constant_VER_COMMAND_STATUS" class="constant">
                 <h3 class="">VER_COMMAND_STATUS</h3>
-                <pre class="signature">VER_COMMAND_STATUS = 256</pre>
+                <pre class="signature">VER_COMMAND_STATUS</pre>
                 <p><em></em></p>
                 
             </article>
@@ -652,7 +652,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -664,7 +664,7 @@
             <a id="constant_VER_COMMAND_QUERY" name="constant_VER_COMMAND_QUERY" class="anchor"></a>
             <article id="constant_VER_COMMAND_QUERY" class="constant">
                 <h3 class="">VER_COMMAND_QUERY</h3>
-                <pre class="signature">VER_COMMAND_QUERY = 256</pre>
+                <pre class="signature">VER_COMMAND_QUERY</pre>
                 <p><em></em></p>
                 
             </article>
@@ -682,7 +682,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -694,7 +694,7 @@
             <a id="constant_VER_COMMAND_FLUSHATTRS" name="constant_VER_COMMAND_FLUSHATTRS" class="anchor"></a>
             <article id="constant_VER_COMMAND_FLUSHATTRS" class="constant">
                 <h3 class="">VER_COMMAND_FLUSHATTRS</h3>
-                <pre class="signature">VER_COMMAND_FLUSHATTRS = 256</pre>
+                <pre class="signature">VER_COMMAND_FLUSHATTRS</pre>
                 <p><em></em></p>
                 
             </article>
@@ -712,7 +712,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -724,7 +724,7 @@
             <a id="constant_SEARCHD_OK" name="constant_SEARCHD_OK" class="anchor"></a>
             <article id="constant_SEARCHD_OK" class="constant">
                 <h3 class="">SEARCHD_OK</h3>
-                <pre class="signature">SEARCHD_OK = 0</pre>
+                <pre class="signature">SEARCHD_OK</pre>
                 <p><em></em></p>
                 
             </article>
@@ -742,7 +742,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -754,7 +754,7 @@
             <a id="constant_SEARCHD_ERROR" name="constant_SEARCHD_ERROR" class="anchor"></a>
             <article id="constant_SEARCHD_ERROR" class="constant">
                 <h3 class="">SEARCHD_ERROR</h3>
-                <pre class="signature">SEARCHD_ERROR = 1</pre>
+                <pre class="signature">SEARCHD_ERROR</pre>
                 <p><em></em></p>
                 
             </article>
@@ -772,7 +772,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -784,7 +784,7 @@
             <a id="constant_SEARCHD_RETRY" name="constant_SEARCHD_RETRY" class="anchor"></a>
             <article id="constant_SEARCHD_RETRY" class="constant">
                 <h3 class="">SEARCHD_RETRY</h3>
-                <pre class="signature">SEARCHD_RETRY = 2</pre>
+                <pre class="signature">SEARCHD_RETRY</pre>
                 <p><em></em></p>
                 
             </article>
@@ -802,7 +802,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -814,7 +814,7 @@
             <a id="constant_SEARCHD_WARNING" name="constant_SEARCHD_WARNING" class="anchor"></a>
             <article id="constant_SEARCHD_WARNING" class="constant">
                 <h3 class="">SEARCHD_WARNING</h3>
-                <pre class="signature">SEARCHD_WARNING = 3</pre>
+                <pre class="signature">SEARCHD_WARNING</pre>
                 <p><em></em></p>
                 
             </article>
@@ -832,7 +832,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -844,7 +844,7 @@
             <a id="constant_SPH_MATCH_ALL" name="constant_SPH_MATCH_ALL" class="anchor"></a>
             <article id="constant_SPH_MATCH_ALL" class="constant">
                 <h3 class="">SPH_MATCH_ALL</h3>
-                <pre class="signature">SPH_MATCH_ALL = 0</pre>
+                <pre class="signature">SPH_MATCH_ALL</pre>
                 <p><em></em></p>
                 
             </article>
@@ -862,7 +862,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -874,7 +874,7 @@
             <a id="constant_SPH_MATCH_ANY" name="constant_SPH_MATCH_ANY" class="anchor"></a>
             <article id="constant_SPH_MATCH_ANY" class="constant">
                 <h3 class="">SPH_MATCH_ANY</h3>
-                <pre class="signature">SPH_MATCH_ANY = 1</pre>
+                <pre class="signature">SPH_MATCH_ANY</pre>
                 <p><em></em></p>
                 
             </article>
@@ -892,7 +892,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -904,7 +904,7 @@
             <a id="constant_SPH_MATCH_PHRASE" name="constant_SPH_MATCH_PHRASE" class="anchor"></a>
             <article id="constant_SPH_MATCH_PHRASE" class="constant">
                 <h3 class="">SPH_MATCH_PHRASE</h3>
-                <pre class="signature">SPH_MATCH_PHRASE = 2</pre>
+                <pre class="signature">SPH_MATCH_PHRASE</pre>
                 <p><em></em></p>
                 
             </article>
@@ -922,7 +922,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -934,7 +934,7 @@
             <a id="constant_SPH_MATCH_BOOLEAN" name="constant_SPH_MATCH_BOOLEAN" class="anchor"></a>
             <article id="constant_SPH_MATCH_BOOLEAN" class="constant">
                 <h3 class="">SPH_MATCH_BOOLEAN</h3>
-                <pre class="signature">SPH_MATCH_BOOLEAN = 3</pre>
+                <pre class="signature">SPH_MATCH_BOOLEAN</pre>
                 <p><em></em></p>
                 
             </article>
@@ -952,7 +952,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -964,7 +964,7 @@
             <a id="constant_SPH_MATCH_EXTENDED" name="constant_SPH_MATCH_EXTENDED" class="anchor"></a>
             <article id="constant_SPH_MATCH_EXTENDED" class="constant">
                 <h3 class="">SPH_MATCH_EXTENDED</h3>
-                <pre class="signature">SPH_MATCH_EXTENDED = 4</pre>
+                <pre class="signature">SPH_MATCH_EXTENDED</pre>
                 <p><em></em></p>
                 
             </article>
@@ -982,7 +982,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -994,7 +994,7 @@
             <a id="constant_SPH_MATCH_FULLSCAN" name="constant_SPH_MATCH_FULLSCAN" class="anchor"></a>
             <article id="constant_SPH_MATCH_FULLSCAN" class="constant">
                 <h3 class="">SPH_MATCH_FULLSCAN</h3>
-                <pre class="signature">SPH_MATCH_FULLSCAN = 5</pre>
+                <pre class="signature">SPH_MATCH_FULLSCAN</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1012,7 +1012,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1024,7 +1024,7 @@
             <a id="constant_SPH_MATCH_EXTENDED2" name="constant_SPH_MATCH_EXTENDED2" class="anchor"></a>
             <article id="constant_SPH_MATCH_EXTENDED2" class="constant">
                 <h3 class="">SPH_MATCH_EXTENDED2</h3>
-                <pre class="signature">SPH_MATCH_EXTENDED2 = 6</pre>
+                <pre class="signature">SPH_MATCH_EXTENDED2</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1042,7 +1042,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1054,7 +1054,7 @@
             <a id="constant_SPH_RANK_PROXIMITY_BM25" name="constant_SPH_RANK_PROXIMITY_BM25" class="anchor"></a>
             <article id="constant_SPH_RANK_PROXIMITY_BM25" class="constant">
                 <h3 class="">SPH_RANK_PROXIMITY_BM25</h3>
-                <pre class="signature">SPH_RANK_PROXIMITY_BM25 = 0</pre>
+                <pre class="signature">SPH_RANK_PROXIMITY_BM25</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1072,7 +1072,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1084,7 +1084,7 @@
             <a id="constant_SPH_RANK_BM25" name="constant_SPH_RANK_BM25" class="anchor"></a>
             <article id="constant_SPH_RANK_BM25" class="constant">
                 <h3 class="">SPH_RANK_BM25</h3>
-                <pre class="signature">SPH_RANK_BM25 = 1</pre>
+                <pre class="signature">SPH_RANK_BM25</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1102,7 +1102,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1114,7 +1114,7 @@
             <a id="constant_SPH_RANK_NONE" name="constant_SPH_RANK_NONE" class="anchor"></a>
             <article id="constant_SPH_RANK_NONE" class="constant">
                 <h3 class="">SPH_RANK_NONE</h3>
-                <pre class="signature">SPH_RANK_NONE = 2</pre>
+                <pre class="signature">SPH_RANK_NONE</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1132,7 +1132,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1144,7 +1144,7 @@
             <a id="constant_SPH_RANK_WORDCOUNT" name="constant_SPH_RANK_WORDCOUNT" class="anchor"></a>
             <article id="constant_SPH_RANK_WORDCOUNT" class="constant">
                 <h3 class="">SPH_RANK_WORDCOUNT</h3>
-                <pre class="signature">SPH_RANK_WORDCOUNT = 3</pre>
+                <pre class="signature">SPH_RANK_WORDCOUNT</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1162,7 +1162,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1174,7 +1174,7 @@
             <a id="constant_SPH_RANK_PROXIMITY" name="constant_SPH_RANK_PROXIMITY" class="anchor"></a>
             <article id="constant_SPH_RANK_PROXIMITY" class="constant">
                 <h3 class="">SPH_RANK_PROXIMITY</h3>
-                <pre class="signature">SPH_RANK_PROXIMITY = 4</pre>
+                <pre class="signature">SPH_RANK_PROXIMITY</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1192,7 +1192,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1204,7 +1204,7 @@
             <a id="constant_SPH_RANK_MATCHANY" name="constant_SPH_RANK_MATCHANY" class="anchor"></a>
             <article id="constant_SPH_RANK_MATCHANY" class="constant">
                 <h3 class="">SPH_RANK_MATCHANY</h3>
-                <pre class="signature">SPH_RANK_MATCHANY = 5</pre>
+                <pre class="signature">SPH_RANK_MATCHANY</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1222,7 +1222,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1234,7 +1234,7 @@
             <a id="constant_SPH_RANK_FIELDMASK" name="constant_SPH_RANK_FIELDMASK" class="anchor"></a>
             <article id="constant_SPH_RANK_FIELDMASK" class="constant">
                 <h3 class="">SPH_RANK_FIELDMASK</h3>
-                <pre class="signature">SPH_RANK_FIELDMASK = 6</pre>
+                <pre class="signature">SPH_RANK_FIELDMASK</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1252,7 +1252,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1264,7 +1264,7 @@
             <a id="constant_SPH_RANK_SPH04" name="constant_SPH_RANK_SPH04" class="anchor"></a>
             <article id="constant_SPH_RANK_SPH04" class="constant">
                 <h3 class="">SPH_RANK_SPH04</h3>
-                <pre class="signature">SPH_RANK_SPH04 = 7</pre>
+                <pre class="signature">SPH_RANK_SPH04</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1282,7 +1282,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1294,7 +1294,7 @@
             <a id="constant_SPH_RANK_EXPR" name="constant_SPH_RANK_EXPR" class="anchor"></a>
             <article id="constant_SPH_RANK_EXPR" class="constant">
                 <h3 class="">SPH_RANK_EXPR</h3>
-                <pre class="signature">SPH_RANK_EXPR = 8</pre>
+                <pre class="signature">SPH_RANK_EXPR</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1312,7 +1312,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1324,7 +1324,7 @@
             <a id="constant_SPH_RANK_TOTAL" name="constant_SPH_RANK_TOTAL" class="anchor"></a>
             <article id="constant_SPH_RANK_TOTAL" class="constant">
                 <h3 class="">SPH_RANK_TOTAL</h3>
-                <pre class="signature">SPH_RANK_TOTAL = 9</pre>
+                <pre class="signature">SPH_RANK_TOTAL</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1342,7 +1342,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1354,7 +1354,7 @@
             <a id="constant_SPH_SORT_RELEVANCE" name="constant_SPH_SORT_RELEVANCE" class="anchor"></a>
             <article id="constant_SPH_SORT_RELEVANCE" class="constant">
                 <h3 class="">SPH_SORT_RELEVANCE</h3>
-                <pre class="signature">SPH_SORT_RELEVANCE = 0</pre>
+                <pre class="signature">SPH_SORT_RELEVANCE</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1372,7 +1372,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1384,7 +1384,7 @@
             <a id="constant_SPH_SORT_ATTR_DESC" name="constant_SPH_SORT_ATTR_DESC" class="anchor"></a>
             <article id="constant_SPH_SORT_ATTR_DESC" class="constant">
                 <h3 class="">SPH_SORT_ATTR_DESC</h3>
-                <pre class="signature">SPH_SORT_ATTR_DESC = 1</pre>
+                <pre class="signature">SPH_SORT_ATTR_DESC</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1402,7 +1402,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1414,7 +1414,7 @@
             <a id="constant_SPH_SORT_ATTR_ASC" name="constant_SPH_SORT_ATTR_ASC" class="anchor"></a>
             <article id="constant_SPH_SORT_ATTR_ASC" class="constant">
                 <h3 class="">SPH_SORT_ATTR_ASC</h3>
-                <pre class="signature">SPH_SORT_ATTR_ASC = 2</pre>
+                <pre class="signature">SPH_SORT_ATTR_ASC</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1432,7 +1432,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1444,7 +1444,7 @@
             <a id="constant_SPH_SORT_TIME_SEGMENTS" name="constant_SPH_SORT_TIME_SEGMENTS" class="anchor"></a>
             <article id="constant_SPH_SORT_TIME_SEGMENTS" class="constant">
                 <h3 class="">SPH_SORT_TIME_SEGMENTS</h3>
-                <pre class="signature">SPH_SORT_TIME_SEGMENTS = 3</pre>
+                <pre class="signature">SPH_SORT_TIME_SEGMENTS</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1462,7 +1462,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1474,7 +1474,7 @@
             <a id="constant_SPH_SORT_EXTENDED" name="constant_SPH_SORT_EXTENDED" class="anchor"></a>
             <article id="constant_SPH_SORT_EXTENDED" class="constant">
                 <h3 class="">SPH_SORT_EXTENDED</h3>
-                <pre class="signature">SPH_SORT_EXTENDED = 4</pre>
+                <pre class="signature">SPH_SORT_EXTENDED</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1492,7 +1492,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1504,7 +1504,7 @@
             <a id="constant_SPH_SORT_EXPR" name="constant_SPH_SORT_EXPR" class="anchor"></a>
             <article id="constant_SPH_SORT_EXPR" class="constant">
                 <h3 class="">SPH_SORT_EXPR</h3>
-                <pre class="signature">SPH_SORT_EXPR = 5</pre>
+                <pre class="signature">SPH_SORT_EXPR</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1522,7 +1522,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1534,7 +1534,7 @@
             <a id="constant_SPH_FILTER_VALUES" name="constant_SPH_FILTER_VALUES" class="anchor"></a>
             <article id="constant_SPH_FILTER_VALUES" class="constant">
                 <h3 class="">SPH_FILTER_VALUES</h3>
-                <pre class="signature">SPH_FILTER_VALUES = 0</pre>
+                <pre class="signature">SPH_FILTER_VALUES</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1552,7 +1552,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1564,7 +1564,7 @@
             <a id="constant_SPH_FILTER_RANGE" name="constant_SPH_FILTER_RANGE" class="anchor"></a>
             <article id="constant_SPH_FILTER_RANGE" class="constant">
                 <h3 class="">SPH_FILTER_RANGE</h3>
-                <pre class="signature">SPH_FILTER_RANGE = 1</pre>
+                <pre class="signature">SPH_FILTER_RANGE</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1582,7 +1582,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1594,7 +1594,7 @@
             <a id="constant_SPH_FILTER_FLOATRANGE" name="constant_SPH_FILTER_FLOATRANGE" class="anchor"></a>
             <article id="constant_SPH_FILTER_FLOATRANGE" class="constant">
                 <h3 class="">SPH_FILTER_FLOATRANGE</h3>
-                <pre class="signature">SPH_FILTER_FLOATRANGE = 2</pre>
+                <pre class="signature">SPH_FILTER_FLOATRANGE</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1612,7 +1612,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1624,7 +1624,7 @@
             <a id="constant_SPH_ATTR_INTEGER" name="constant_SPH_ATTR_INTEGER" class="anchor"></a>
             <article id="constant_SPH_ATTR_INTEGER" class="constant">
                 <h3 class="">SPH_ATTR_INTEGER</h3>
-                <pre class="signature">SPH_ATTR_INTEGER = 1</pre>
+                <pre class="signature">SPH_ATTR_INTEGER</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1642,7 +1642,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1654,7 +1654,7 @@
             <a id="constant_SPH_ATTR_TIMESTAMP" name="constant_SPH_ATTR_TIMESTAMP" class="anchor"></a>
             <article id="constant_SPH_ATTR_TIMESTAMP" class="constant">
                 <h3 class="">SPH_ATTR_TIMESTAMP</h3>
-                <pre class="signature">SPH_ATTR_TIMESTAMP = 2</pre>
+                <pre class="signature">SPH_ATTR_TIMESTAMP</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1672,7 +1672,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1684,7 +1684,7 @@
             <a id="constant_SPH_ATTR_ORDINAL" name="constant_SPH_ATTR_ORDINAL" class="anchor"></a>
             <article id="constant_SPH_ATTR_ORDINAL" class="constant">
                 <h3 class="">SPH_ATTR_ORDINAL</h3>
-                <pre class="signature">SPH_ATTR_ORDINAL = 3</pre>
+                <pre class="signature">SPH_ATTR_ORDINAL</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1702,7 +1702,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1714,7 +1714,7 @@
             <a id="constant_SPH_ATTR_BOOL" name="constant_SPH_ATTR_BOOL" class="anchor"></a>
             <article id="constant_SPH_ATTR_BOOL" class="constant">
                 <h3 class="">SPH_ATTR_BOOL</h3>
-                <pre class="signature">SPH_ATTR_BOOL = 4</pre>
+                <pre class="signature">SPH_ATTR_BOOL</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1732,7 +1732,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1744,7 +1744,7 @@
             <a id="constant_SPH_ATTR_FLOAT" name="constant_SPH_ATTR_FLOAT" class="anchor"></a>
             <article id="constant_SPH_ATTR_FLOAT" class="constant">
                 <h3 class="">SPH_ATTR_FLOAT</h3>
-                <pre class="signature">SPH_ATTR_FLOAT = 5</pre>
+                <pre class="signature">SPH_ATTR_FLOAT</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1762,7 +1762,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1774,7 +1774,7 @@
             <a id="constant_SPH_ATTR_BIGINT" name="constant_SPH_ATTR_BIGINT" class="anchor"></a>
             <article id="constant_SPH_ATTR_BIGINT" class="constant">
                 <h3 class="">SPH_ATTR_BIGINT</h3>
-                <pre class="signature">SPH_ATTR_BIGINT = 6</pre>
+                <pre class="signature">SPH_ATTR_BIGINT</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1792,7 +1792,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1804,7 +1804,7 @@
             <a id="constant_SPH_ATTR_STRING" name="constant_SPH_ATTR_STRING" class="anchor"></a>
             <article id="constant_SPH_ATTR_STRING" class="constant">
                 <h3 class="">SPH_ATTR_STRING</h3>
-                <pre class="signature">SPH_ATTR_STRING = 7</pre>
+                <pre class="signature">SPH_ATTR_STRING</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1822,7 +1822,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1834,7 +1834,7 @@
             <a id="constant_SPH_ATTR_MULTI" name="constant_SPH_ATTR_MULTI" class="anchor"></a>
             <article id="constant_SPH_ATTR_MULTI" class="constant">
                 <h3 class="">SPH_ATTR_MULTI</h3>
-                <pre class="signature">SPH_ATTR_MULTI = 1073741825</pre>
+                <pre class="signature">SPH_ATTR_MULTI</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1852,7 +1852,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1864,7 +1864,7 @@
             <a id="constant_SPH_ATTR_MULTI64" name="constant_SPH_ATTR_MULTI64" class="anchor"></a>
             <article id="constant_SPH_ATTR_MULTI64" class="constant">
                 <h3 class="">SPH_ATTR_MULTI64</h3>
-                <pre class="signature">SPH_ATTR_MULTI64 = 1073741826</pre>
+                <pre class="signature">SPH_ATTR_MULTI64</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1882,7 +1882,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1894,7 +1894,7 @@
             <a id="constant_SPH_GROUPBY_DAY" name="constant_SPH_GROUPBY_DAY" class="anchor"></a>
             <article id="constant_SPH_GROUPBY_DAY" class="constant">
                 <h3 class="">SPH_GROUPBY_DAY</h3>
-                <pre class="signature">SPH_GROUPBY_DAY = 0</pre>
+                <pre class="signature">SPH_GROUPBY_DAY</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1912,7 +1912,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1924,7 +1924,7 @@
             <a id="constant_SPH_GROUPBY_WEEK" name="constant_SPH_GROUPBY_WEEK" class="anchor"></a>
             <article id="constant_SPH_GROUPBY_WEEK" class="constant">
                 <h3 class="">SPH_GROUPBY_WEEK</h3>
-                <pre class="signature">SPH_GROUPBY_WEEK = 1</pre>
+                <pre class="signature">SPH_GROUPBY_WEEK</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1942,7 +1942,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1954,7 +1954,7 @@
             <a id="constant_SPH_GROUPBY_MONTH" name="constant_SPH_GROUPBY_MONTH" class="anchor"></a>
             <article id="constant_SPH_GROUPBY_MONTH" class="constant">
                 <h3 class="">SPH_GROUPBY_MONTH</h3>
-                <pre class="signature">SPH_GROUPBY_MONTH = 2</pre>
+                <pre class="signature">SPH_GROUPBY_MONTH</pre>
                 <p><em></em></p>
                 
             </article>
@@ -1972,7 +1972,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -1984,7 +1984,7 @@
             <a id="constant_SPH_GROUPBY_YEAR" name="constant_SPH_GROUPBY_YEAR" class="anchor"></a>
             <article id="constant_SPH_GROUPBY_YEAR" class="constant">
                 <h3 class="">SPH_GROUPBY_YEAR</h3>
-                <pre class="signature">SPH_GROUPBY_YEAR = 3</pre>
+                <pre class="signature">SPH_GROUPBY_YEAR</pre>
                 <p><em></em></p>
                 
             </article>
@@ -2002,7 +2002,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -2014,7 +2014,7 @@
             <a id="constant_SPH_GROUPBY_ATTR" name="constant_SPH_GROUPBY_ATTR" class="anchor"></a>
             <article id="constant_SPH_GROUPBY_ATTR" class="constant">
                 <h3 class="">SPH_GROUPBY_ATTR</h3>
-                <pre class="signature">SPH_GROUPBY_ATTR = 4</pre>
+                <pre class="signature">SPH_GROUPBY_ATTR</pre>
                 <p><em></em></p>
                 
             </article>
@@ -2032,7 +2032,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -2044,7 +2044,7 @@
             <a id="constant_SPH_GROUPBY_ATTRPAIR" name="constant_SPH_GROUPBY_ATTRPAIR" class="anchor"></a>
             <article id="constant_SPH_GROUPBY_ATTRPAIR" class="constant">
                 <h3 class="">SPH_GROUPBY_ATTRPAIR</h3>
-                <pre class="signature">SPH_GROUPBY_ATTRPAIR = 5</pre>
+                <pre class="signature">SPH_GROUPBY_ATTRPAIR</pre>
                 <p><em></em></p>
                 
             </article>
@@ -2062,7 +2062,7 @@
                             package
                         </th>
                         <td>
-                                                                                            <p>Default</p>
+                                                            <p>Default</p>
                                                     </td>
                     </tr>
                             </table>
@@ -2097,18 +2097,14 @@
                                             </table>
                 
                 
-Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
-
-Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
-
-                
+                				
                             </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
                                     <dt>File</dt>
-                    <dd><a href="../files/protected.models.SphinxClient.html"><div class="path-wrapper">protected/models/SphinxClient.php</div></a></dd>
+                    <dd><a href=""><div class="path-wrapper">protected/models/SphinxClient.php</div></a></dd>
                                                                             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
@@ -2144,18 +2140,14 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                                             </table>
                 
                 
-Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
-
-Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
-
-                
+                				
                             </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
                                     <dt>File</dt>
-                    <dd><a href="../files/protected.models.SphinxClient.html"><div class="path-wrapper">protected/models/SphinxClient.php</div></a></dd>
+                    <dd><a href=""><div class="path-wrapper">protected/models/SphinxClient.php</div></a></dd>
                                                                             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
@@ -2191,18 +2183,14 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                                             </table>
                 
                 
-Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
-
-Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
-
-                
+                				
                             </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
                                     <dt>File</dt>
-                    <dd><a href="../files/protected.models.SphinxClient.html"><div class="path-wrapper">protected/models/SphinxClient.php</div></a></dd>
+                    <dd><a href=""><div class="path-wrapper">protected/models/SphinxClient.php</div></a></dd>
                                                                             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
@@ -2238,18 +2226,14 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                                             </table>
                 
                 
-Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
-
-Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
-
-                
+                				
                             </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
                                     <dt>File</dt>
-                    <dd><a href="../files/protected.models.SphinxClient.html"><div class="path-wrapper">protected/models/SphinxClient.php</div></a></dd>
+                    <dd><a href=""><div class="path-wrapper">protected/models/SphinxClient.php</div></a></dd>
                                                                             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
@@ -2285,18 +2269,14 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                                             </table>
                 
                 
-Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
-
-Warning: count(): Parameter must be an array or an object that implements Countable in /opt/phpdoc/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
-
-                
+                				
                             </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
                                     <dt>File</dt>
-                    <dd><a href="../files/protected.models.SphinxClient.html"><div class="path-wrapper">protected/models/SphinxClient.php</div></a></dd>
+                    <dd><a href=""><div class="path-wrapper">protected/models/SphinxClient.php</div></a></dd>
                                                                             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
@@ -2362,7 +2342,7 @@ Warning: count(): Parameter must be an array or an object that implements Counta
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on September 5th, 2018 at 09:53.
+                    on September 5th, 2018 at 12:22.
                 </section>
             </section>
         </section>
