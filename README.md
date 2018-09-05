@@ -158,7 +158,7 @@ $ docker-compose pull
 To update the browsable API Docs (PHPDoc), run the command below and then commit the changes:
 
 ```
-$ docker-compose run --rm make_apidocs
+$ docker-compose run --rm test ./docs/make_phpdoc
 ```
 
 ## Licensing

@@ -90,6 +90,7 @@ services:
         - PG_CLIENT_VERSION=${POSTGRES_VERSION}
         - INSTALL_XDEBUG=true
         - INSTALL_NETCAT_JQ=true
+        - INSTALL_GRAPHVIZ=true
     environment:
       YII_PATH: ${YII_PATH}
     volumes:
@@ -118,12 +119,6 @@ services:
       - web-tier
     extra_hosts:
       - "gigadb.dev:172.16.238.10"
-
-  make_apidocs:
-    image: phpdoc/phpdoc:latest
-    volumes:
-      - ${APPLICATION}:/data
-    command: --visibility "public,protected" --cache-folder "/data/docs/cache" --directory "/data/protected/models,/data/protected/views,/data/protected/tests/unit,/data/protected/controllers,/data/tests/features/bootstrap/" --target "/data/docs/apidocs/"
 
 networks:
   web-tier:

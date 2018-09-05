@@ -101,6 +101,12 @@ RUN if [ ${INSTALL_NETCAT_JQ} = true ]; then \
     apt-get install -y netcat-openbsd jq \
 ;fi
 
+ARG INSTALL_GRAPHVIZ=false
+
+RUN if [ ${INSTALL_GRAPHVIZ} = true ]; then \
+    apt-get install -y graphviz \
+;fi
+
 
 RUN usermod -u 1000 www-data
 
