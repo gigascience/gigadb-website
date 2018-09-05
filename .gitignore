@@ -50,6 +50,7 @@ nbproject/project.properties
 # Testing
 tests/fixtures/affiliate_users_credentials
 sql/temp_command.sql
+sql/before-run.pgdmp
 test_users.txt
 protected/runtime/phpunit-coverage.txt
 protected/runtime/clover.xml
