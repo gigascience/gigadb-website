@@ -97,7 +97,11 @@ check_coverage:
     paths:
       - protected/runtime/previous_coverage_level.txt
   script:
-    - docker-compose run test ./tests/coverage
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker-compose run --rm config
+    - docker-compose run --rm webapp
+    - docker-compose run --rm test ./tests/coverage
   dependencies:
     - run_all_tests
 
