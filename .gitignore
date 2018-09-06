@@ -52,9 +52,6 @@ tests/fixtures/affiliate_users_credentials
 sql/temp_command.sql
 sql/before-run.pgdmp
 test_users.txt
-protected/runtime/phpunit-coverage.txt
-protected/runtime/clover.xml
-protected/runtime/previous_coverage_level.txt
 
 # Composer
 
