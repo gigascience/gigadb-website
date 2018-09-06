@@ -5,11 +5,6 @@
 		convertWarningsToExceptions="true"
 		stopOnFailure="true">
 
-	<selenium>
-		<browser name="Internet Explorer" browser="*iexplore" />
-		<browser name="Firefox" browser="*firefox" />
-	</selenium>
-
 	<logging>
 		<log type="coverage-clover" target="/var/www/protected/runtime/clover.xml"/>
 		<log type="coverage-text" target="php://stdout" showOnlySummary="true"/>
