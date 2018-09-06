@@ -12,11 +12,11 @@ use Behat\Gherkin\Node\PyStringNode,
  */
 class AffiliateLoginContext extends BehatContext
 {
-    private $keys_map = array('Facebook' => array('api_key' => 'app_id', 'client_key' => 'app_secret'),
-                               'Google' => array('api_key' => 'client_id', 'client_key' => 'client_secret'),
-                               'Twitter' => array('api_key' => 'key', 'client_key' => 'secret'),
-                               'LinkedIn' => array('api_key' => 'api_key', 'client_key' => 'secret_key'),
-                               'Orcid' => array('api_key' => 'client_id', 'client_key' => 'client_secret'),
+    private $keys_map = array('Facebook' => array('api_key' => 'FACEBOOK_APP_ID', 'client_key' => 'FACEBOOK_APP_SECRET'),
+                               'Google' => array('api_key' => 'GOOGLE_CLIENT_ID', 'client_key' => 'GOOGLE_SECRET'),
+                               'Twitter' => array('api_key' => 'TWITTER_KEY', 'client_key' => 'TWITTER_SECRET'),
+                               'LinkedIn' => array('api_key' => 'LINKEDIN_API_KEY', 'client_key' => 'LINKEDIN_SECRET_KEY'),
+                               'Orcid' => array('api_key' => 'ORCID_CLIENT_ID', 'client_key' => 'ORCID_CLIENT_SECRET'),
                            ); //TODO: extract this map into a module as it is also going to be used in UserIdentity's revoke_token
 
     /**
@@ -61,10 +61,9 @@ class AffiliateLoginContext extends BehatContext
     {
         $_SERVER['REQUEST_URI'] = 'foobar';
         $_SERVER['HTTP_HOST'] = 'foobar';
-        $opauthModule = $this->getMainContext()->getYii()->getModules()['opauth'];
-        $api_key = $opauthModule['opauthParams']["Strategy"][$arg1][$this->keys_map[$arg1]['api_key']] ;
-        $client_key = $opauthModule['opauthParams']["Strategy"][$arg1][$this->keys_map[$arg1]['client_key']] ;
 
+        $api_key = getenv($this->keys_map[$arg1]['api_key']);
+        $client_key = getenv($this->keys_map[$arg1]['client_key']);
 
         PHPUnit_Framework_Assert::assertTrue('' != $api_key, "api_key for $arg1 is not empty");
         PHPUnit_Framework_Assert::assertTrue('' != $client_key, "client_key for $arg1 is not empty");

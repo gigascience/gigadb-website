@@ -15,7 +15,7 @@ use PHPUnit\Framework\Assert;
 /**
  * GigadbWebsiteContext Features context.
  */
-class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext implements Behat\YiiExtension\Context\YiiAwareContextInterface
+class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext
 {
     private $admin_login;
     private $admin_password;

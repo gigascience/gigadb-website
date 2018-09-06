@@ -10,7 +10,4 @@ default:
       goutte: ~
       selenium2:
         wd_host: http://phantomjs:8910/wd/hub
-    Behat\YiiExtension\Extension:
-      framework_script: ../vendor/yiisoft/yii/framework/yii.php
-      config_script:    ../protected/config/main.php
-      mink_driver: true
+
