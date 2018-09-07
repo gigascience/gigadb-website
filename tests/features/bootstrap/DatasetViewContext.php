@@ -10,7 +10,7 @@ use Behat\Gherkin\Node\PyStringNode,
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\YiiExtension\Context\YiiAwareContextInterface;
 
-use Behat\Behat\Context\Step;
+//use Behat\Behat\Context\Step;
 
 /**
  * AuthorWorkflow Features context.
@@ -53,9 +53,10 @@ class DatasetViewContext extends BehatContext
     public function gigadbWebSiteIsLoadedWithProductionLikeData()
     {
         $sqlfile = "production_like.pgdmp";
-        return array(
-            new Step\Given("Gigadb web site is loaded with \"${sqlfile}\" data"),
-        );
+        // return array(
+        //     new Step\Given("Gigadb web site is loaded with \"${sqlfile}\" data"),
+        // );
+        $this->getMainContext()->gigadbWebSiteIsLoadedWithData($sqlfile);
     }
 
     /**

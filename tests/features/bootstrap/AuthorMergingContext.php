@@ -8,7 +8,7 @@ use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
 use PHPUnit\Framework\Assert;
-use Behat\Behat\Context\Step;
+//use Behat\Behat\Context\Step;
 
 /**
  * Features context.
@@ -60,19 +60,33 @@ class AuthorMergingContext extends BehatContext
      */
     public function authorIsMergedWithAuthor($origin_author, $target_author)
     {
-        return array(
-                new Step\Given("I sign in as an admin"),
-                new Step\Given("I am on \"/adminAuthor/update/id/{$origin_author}\""),
-                new Step\Given("I follow \"Merge with an author\""),
-                new Step\Given("I wait \"2\" seconds"),
-                new Step\When("I click on the row for author id \"{$target_author}\""),
-                new Step\Given("I wait \"2\" seconds"),
-                new Step\When("A dialog box reads \"Confirm merging these two authors?\""),
-                new Step\When("I follow \"Yes, merge authors\""),
-                new Step\When("I wait \"1\" seconds"),
-                new Step\Then("I should be on \"/adminAuthor/view/id/{$origin_author}\""),
-                new Step\Then("I should see \"merging authors completed successfully\""),
-        );
+
+        // return array(
+        //         // new Step\Given("I sign in as an admin"),
+        //         // new Step\Given("I am on \"/adminAuthor/update/id/{$origin_author}\""),
+        //         // new Step\Given("I follow \"Merge with an author\""),
+        //         // new Step\Given("I wait \"2\" seconds"),
+        //         // new Step\When("I click on the row for author id \"{$target_author}\""),
+        //         // new Step\Given("I wait \"2\" seconds"),
+        //         // new Step\When("A dialog box reads \"Confirm merging these two authors?\""),
+        //         // new Step\When("I follow \"Yes, merge authors\""),
+        //         // new Step\When("I wait \"1\" seconds"),
+        //         // new Step\Then("I should be on \"/adminAuthor/view/id/{$origin_author}\""),
+        //         // new Step\Then("I should see \"merging authors completed successfully\""),
+        // );
+
+        $this->getMainContext()->iSignInAsAnAdmin();
+        $this->getMainContext()->visit("/adminAuthor/update/id/{$origin_author}");
+        $this->getMainContext()->clickLink("Merge with an author");
+        $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
+        $this->getMainContext()->getSubContext("admins_attach_author_user")->iClickOnTheRowForAuthorId($target_author);
+        $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
+        $this->aDialogBoxReads("Confirm merging these two authors?");
+        $this->getMainContext()->clickLink("Yes, merge authors");
+        $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(1);
+        $this->getMainContext()->assertPageAddress("/adminAuthor/view/id/{$origin_author}");
+        $this->getMainContext()->assertPageContainsText("merging authors completed successfully");
+
     }
 
     /**

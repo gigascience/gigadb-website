@@ -8,7 +8,7 @@ use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
 use PHPUnit\Framework\Assert;
-use Behat\Behat\Context\Step;
+//use Behat\Behat\Context\Step;
 
 /**
  * Features context.
@@ -80,9 +80,10 @@ class ClaimDatasetContext extends BehatContext
      */
     public function iClickOnButtonForAuthorId($author_id)
     {
-        return array(
-                new Step\When("I follow \"claim_button_".$author_id."\""),
-        );
+        // return array(
+        //         new Step\When("I follow \"claim_button_".$author_id."\""),
+        // );
+        $this->getMainContext()->clickLink("claim_button_".$author_id);
     }
 
     /**
@@ -90,14 +91,23 @@ class ClaimDatasetContext extends BehatContext
      */
     public function aUserHasAPendingClaimForAuthor($author_id)
     {
-        return array(
-                new Step\Given("I sign in as a user"),
-                new Step\Given("I am on \"/dataset/100002\""),
-                new Step\When("I follow \"Your dataset?\""),
-                new Step\When("I wait \"2\" seconds"),
-                new Step\When("I click on button for author id \"".$author_id."\""),
-                new Step\When("I wait \"2\" seconds"),
-            );
+
+        $this->getMainContext()->iSignInAsAUser();
+        $this->getMainContext()->visit("/dataset/100002");
+        $this->getMainContext()->clickLink("Your dataset?");
+        $this->iWaitSeconds(2);
+        $this->iClickOnButtonForAuthorId($author_id);
+        $this->iWaitSeconds(2);
+
+        // return array(
+        //     // new Step\Given("I sign in as a user"),
+        //     // new Step\Given("I am on \"/dataset/100002\""),
+        //     // new Step\When("I follow \"Your dataset?\""),
+        //     // new Step\When("I wait \"2\" seconds"),
+        //     // new Step\When("I click on button for author id \"".$author_id."\""),
+        //     // new Step\When("I wait \"2\" seconds"),
+        // );
+
     }
 
     /**
@@ -145,12 +155,17 @@ class ClaimDatasetContext extends BehatContext
      */
     public function anAdminRejectedTheClaimForAuthor($arg1)
     {
-        return array(
-                new Step\Given("I sign in as an admin"),
-                new Step\When("I go to \"/user/update/id/346/\""),
-                new Step\When("I follow \"Reject\""),
-                new Step\When("I wait \"2\" seconds"),
-            );
+        // return array(
+        //         new Step\Given("I sign in as an admin"),
+        //         new Step\When("I go to \"/user/update/id/346/\""),
+        //         new Step\When("I follow \"Reject\""),
+        //         new Step\When("I wait \"2\" seconds"),
+        //     );
+
+        $this->getMainContext()->iSignInAsAnAdmin();
+        $this->getMainContext()->visit("/user/update/id/346/");
+        $this->getMainContext()->clickLink("Reject");
+        $this->iWaitSeconds(2);
     }
 
      /**
@@ -158,18 +173,32 @@ class ClaimDatasetContext extends BehatContext
      */
     public function aUserHasAClaimForAuthor($status, $author)
     {
-        
+        // return array(
+        //         // new Step\Given("a user has a pending claim for author \"$author\""),
+        //         // new Step\Given("an admin $status the claim for author \"$author\""),
+        //         // new Step\When("I go to \"/AdminAuthor/view/id/$author\""),
+        //         // new Step\Then("I should not see \"346\""),
+        //     );
+
     // Given a user has a pending claim for author "3791"
+        $this->getMainContext()->iSignInAsAUser();
+        $this->getMainContext()->visit("/dataset/100002");
+        $this->getMainContext()->clickLink("Your dataset?");
+        $this->iWaitSeconds(2);
+        $this->iClickOnButtonForAuthorId($author);
+        $this->iWaitSeconds(2);
+
     // And an admin approved the claim for author "3791"
     // And an admin rejected the claim for author "3791"
+        if("rejected" == $status) {
+            $this->anAdminRejectedTheClaimForAuthor($author);
+        }
+
     // When I go to "/AdminAuthor/view/id/3791"
+        $this->getMainContext()->visit("/AdminAuthor/view/id/$author");
+
     // Then I should not see "346"
-        return array(
-                new Step\Given("a user has a pending claim for author \"$author\""),
-                new Step\Given("an admin $status the claim for author \"$author\""),
-                new Step\When("I go to \"/AdminAuthor/view/id/$author\""),
-                new Step\Then("I should not see \"346\""),
-            );
+        $this->getMainContext()->assertPageNotContainsText("346");
     }
 
 

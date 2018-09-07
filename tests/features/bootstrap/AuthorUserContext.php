@@ -10,7 +10,7 @@ use Behat\Gherkin\Node\PyStringNode,
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\YiiExtension\Context\YiiAwareContextInterface;
 
-use Behat\Behat\Context\Step;
+//use Behat\Behat\Context\Step;
 
 
 /**
@@ -53,13 +53,20 @@ class AuthorUserContext extends BehatContext
     */
     public function iHaveInitiatedTheSearchOfAnAuthorForGigadbUserWithId($arg1)
     {
-        return array(
-            new Step\Given("I am on \"/user/update/id/${arg1}\""),
-            new Step\When("I follow \"Link this user to an author\""),
-            new Step\When("I wait \"2\" seconds"),
-            new Step\Then("I should be on \"/adminAuthor/admin\""),
-            new Step\Then("I should see \"Click on a row to proceed with linking that author with user\""),
-        );
+        // return array(
+        //     new Step\Given("I am on \"/user/update/id/${arg1}\""),
+        //     new Step\When("I follow \"Link this user to an author\""),
+        //     new Step\When("I wait \"2\" seconds"),
+        //     new Step\Then("I should be on \"/adminAuthor/admin\""),
+        //     new Step\Then("I should see \"Click on a row to proceed with linking that author with user\""),
+        // );
+
+        $this->getMainContext()->visit("/user/update/id/${arg1}");
+        $this->getMainContext()->clickLink("Link this user to an author");
+        $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
+        $this->getMainContext()->assertPageAddress("/adminAuthor/admin");
+        $this->getMainContext()->assertPageContainsText("Click on a row to proceed with linking that author with user");
+
     }
 
 
@@ -69,13 +76,19 @@ class AuthorUserContext extends BehatContext
      */
     public function iHaveLinkedUserOfIdToAuthor($user_name, $user_id, $author_id)
     {
-        return array(
-            new Step\When("I click on the row for author id \"${author_id}\""),
-            new Step\When("I wait \"2\" seconds"),
-            new Step\When("I follow \"Link user ${user_name} to that author\""),
-            new Step\When("I wait \"2\" seconds"),
-            new Step\Then("I should be on \"/user/view/id/${user_id}\""),
-        );
+        // return array(
+        //     new Step\When("I click on the row for author id \"${author_id}\""),
+        //     new Step\When("I wait \"2\" seconds"),
+        //     new Step\When("I follow \"Link user ${user_name} to that author\""),
+        //     new Step\When("I wait \"2\" seconds"),
+        //     new Step\Then("I should be on \"/user/view/id/${user_id}\""),
+        // );
+
+        $this->iClickOnTheRowForAuthorId("${author_id}");
+        $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
+        $this->getMainContext()->clickLink("Link user ${user_name} to that author");
+        $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
+        $this->getMainContext()->assertPageAddress("/user/view/id/${user_id}");
     }
 
 
