@@ -1,21 +1,11 @@
 <?php
 
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
-
-use Behat\MinkExtension\Context\MinkContext;
-use Behat\YiiExtension\Context\YiiAwareContextInterface;
-
-use PHPUnit\Framework\Assert;
+use Behat\Behat\Context\BehatContext;
 
 /**
  * GigadbWebsiteContext Features context.
  */
-class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext
+class GigadbWebsiteContext extends BehatContext
 {
     private $admin_login;
     private $admin_password;
@@ -26,36 +16,10 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext
 
 	public function __construct(array $parameters)
     {
-
         $this->admin_login = getenv("GIGADB_admin_tester_email");
         $this->admin_password = getenv("GIGADB_admin_tester_password") ;
-
-        $this->useContext('affiliate_login', new AffiliateLoginContext($parameters));
-        $this->useContext('normal_login', new NormalLoginContext($parameters));
-
-        $this->useContext('dataset_view_context', new DatasetViewContext($parameters));
-        $this->useContext('admins_attach_author_user', new AuthorUserContext($parameters));
-        $this->useContext('datasets_on_profile', new DatasetsOnProfileContext($parameters));
-        $this->useContext('claim_dataset', new ClaimDatasetContext($parameters));
-        $this->useContext('merge_authors', new AuthorMergingContext($parameters));
     }
 
-
-    public function setYiiWebApplication(\CWebApplication $yii)
-    {
-        $this->yii = $yii ;
-    }
-
-    public function getYii()
-    {
-        if (null === $this->yii) {
-            throw new \RuntimeException(
-                'Yii instance has not been set on Yii context class. ' .
-                'Have you enabled the Yii Extension?'
-            );
-        }
-        return $this->yii ;
-    }
 
     /**
      * @AfterStep
@@ -64,8 +28,8 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext
     {
         if ($event->getResult() == 4 ) {
             try { # take a snapshot of web page
-                $this->printCurrentUrl();
-                $content = $this->getSession()->getDriver()->getContent();
+                $this->getMainContext()->printCurrentUrl();
+                $content = $this->getMainContext()->getSession()->getDriver()->getContent();
                 $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
                 file_put_contents("/tmp/".$file_and_path.".html", $content);
                 // if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
@@ -95,7 +59,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext
     public function anAdminUserExists()
     {
         if ( null != $this->admin_login ) {
-            $nb_ocurrences = $this->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( $this->admin_login );
+            $nb_ocurrences = $this->getMainContext()->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( $this->admin_login );
             PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "admin email exists in database");
         }
         else {
@@ -108,7 +72,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function defaultAdminUserExists()
     {
-        $nb_ocurrences = $this->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( "admin@gigadb.org");
+        $nb_ocurrences = $this->getMainContext()->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( "admin@gigadb.org");
         PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "default admin email exists in database");
         if ( 1 == $nb_ocurrences  )  {
             $this->admin_login = "admin@gigadb.org" ;
@@ -121,7 +85,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function defaultUserExists()
     {
-       $nb_ocurrences = $this->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( "user@gigadb.org");
+       $nb_ocurrences = $this->getMainContext()->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( "user@gigadb.org");
         PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "default user email exists in database");
         if ( 1 == $nb_ocurrences  )  {
             $this->user_login = "user@gigadb.org" ;
@@ -153,12 +117,12 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iSignInAsAnAdmin()
     {
-         $this->visit("/site/login");
-         $this->fillField("LoginForm_username", $this->admin_login);
-         $this->fillField("LoginForm_password", $this->admin_password);
-         $this->pressButton("Login");
+         $this->getMainContext()->visit("/site/login");
+         $this->getMainContext()->fillField("LoginForm_username", $this->admin_login);
+         $this->getMainContext()->fillField("LoginForm_password", $this->admin_password);
+         $this->getMainContext()->pressButton("Login");
 
-         $this->assertResponseContains("Admin");
+         $this->getMainContext()->assertResponseContains("Admin");
     }
 
      /**
@@ -166,13 +130,13 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iSignInAsAUser()
     {
-        $this->visit("/site/login");
-        $this->fillField("LoginForm_username", $this->user_login);
-        $this->fillField("LoginForm_password", $this->user_password);
-        $this->pressButton("Login");
+        $this->getMainContext()->visit("/site/login");
+        $this->getMainContext()->fillField("LoginForm_username", $this->user_login);
+        $this->getMainContext()->fillField("LoginForm_password", $this->user_password);
+        $this->getMainContext()->pressButton("Login");
 
-        $this->assertResponseNotContains("Administration");
-        $this->assertResponseContains("'s GigaDB Page");
+        $this->getMainContext()->assertResponseNotContains("Administration");
+        $this->getMainContext()->assertResponseContains("'s GigaDB Page");
     }
 
     /**
@@ -198,9 +162,9 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext
      * @Given /^I take a screenshot named "([^"]*)"$/
      */
     public function itakeAScreenshot($name) {
-        $driver = $this->getSession()->getDriver();
+        $driver = $this->getMainContext()->getSession()->getDriver();
         if ($driver instanceof Behat\Mink\Driver\Selenium2Driver) {
-            file_put_contents("/tmp/screenshot_".$name.".png", $this->getSession()->getDriver()->getScreenshot());
+            file_put_contents("/tmp/screenshot_".$name.".png", $this->getMainContext()->getSession()->getDriver()->getScreenshot());
         }
         else {
             print_r("cannot take screenshot with this driver");
@@ -213,7 +177,7 @@ class GigadbWebsiteContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iShouldSeeTime($text, $occurence)
     {
-        $element = $this->getSession()->getPage();
+        $element = $this->getMainContext()->getSession()->getPage();
         $result = $element->findAll('xpath', "//*[contains(text(), '$text')]");
 
         if(count($result) == $occurence) {

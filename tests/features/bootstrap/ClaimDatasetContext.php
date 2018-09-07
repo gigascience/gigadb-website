@@ -1,14 +1,6 @@
 <?php
 
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
-
-use PHPUnit\Framework\Assert;
-//use Behat\Behat\Context\Step;
+use Behat\Behat\Context\BehatContext;
 
 /**
  * Features context.
@@ -92,7 +84,7 @@ class ClaimDatasetContext extends BehatContext
     public function aUserHasAPendingClaimForAuthor($author_id)
     {
 
-        $this->getMainContext()->iSignInAsAUser();
+        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->iSignInAsAUser();
         $this->getMainContext()->visit("/dataset/100002");
         $this->getMainContext()->clickLink("Your dataset?");
         $this->iWaitSeconds(2);
@@ -162,7 +154,7 @@ class ClaimDatasetContext extends BehatContext
         //         new Step\When("I wait \"2\" seconds"),
         //     );
 
-        $this->getMainContext()->iSignInAsAnAdmin();
+        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->iSignInAsAnAdmin();
         $this->getMainContext()->visit("/user/update/id/346/");
         $this->getMainContext()->clickLink("Reject");
         $this->iWaitSeconds(2);
@@ -181,7 +173,7 @@ class ClaimDatasetContext extends BehatContext
         //     );
 
     // Given a user has a pending claim for author "3791"
-        $this->getMainContext()->iSignInAsAUser();
+        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->iSignInAsAUser();
         $this->getMainContext()->visit("/dataset/100002");
         $this->getMainContext()->clickLink("Your dataset?");
         $this->iWaitSeconds(2);
@@ -206,7 +198,7 @@ class ClaimDatasetContext extends BehatContext
      * @AfterScenario @user-claims-dataset
     */
     public function resetClaimTable() {
-        $this->getMainContext()->truncateTable("gigadb","user_command");
+        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->truncateTable("gigadb","user_command");
     }
 
 }

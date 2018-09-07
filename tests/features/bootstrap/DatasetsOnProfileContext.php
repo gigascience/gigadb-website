@@ -1,8 +1,6 @@
 <?php
+
 use Behat\Behat\Context\BehatContext;
-
-//use Behat\Behat\Context\Step;
-
 
 class DatasetsOnProfileContext extends BehatContext
 {

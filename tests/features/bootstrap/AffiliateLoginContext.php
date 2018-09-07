@@ -1,11 +1,6 @@
 <?php
 
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\BehatContext;
 
 /**
  * Features context.
@@ -376,11 +371,11 @@ class AffiliateLoginContext extends BehatContext
         $this->getMainContext()->visit("/site/revoke");
         sleep(3);
         print_r("Initializing the gigadb_user table... ");
-        $this->getMainContext()->terminateDbBackend("gigadb");
-        $this->getMainContext()->truncateTable("gigadb","gigadb_user");
-        $this->getMainContext()->loadUserData("joe_bloggs");
-        $this->getMainContext()->loadUserData("john_smith");
-        $this->getMainContext()->restartPhp();
+        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->terminateDbBackend("gigadb");
+        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->truncateTable("gigadb","gigadb_user");
+        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->loadUserData("joe_bloggs");
+        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->loadUserData("john_smith");
+        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->restartPhp();
     }
 
     /**

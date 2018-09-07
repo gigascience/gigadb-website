@@ -1,14 +1,6 @@
 <?php
 
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
-
-use PHPUnit\Framework\Assert;
-//use Behat\Behat\Context\Step;
+use Behat\Behat\Context\BehatContext;
 
 /**
  * Features context.
@@ -75,7 +67,7 @@ class AuthorMergingContext extends BehatContext
         //         // new Step\Then("I should see \"merging authors completed successfully\""),
         // );
 
-        $this->getMainContext()->iSignInAsAnAdmin();
+        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->iSignInAsAnAdmin();
         $this->getMainContext()->visit("/adminAuthor/update/id/{$origin_author}");
         $this->getMainContext()->clickLink("Merge with an author");
         $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
@@ -94,7 +86,7 @@ class AuthorMergingContext extends BehatContext
     */
     public function anExistingGraphOfAuthors()
     {
-        $this->getMainContext()->loadUserData("performances-49");
+        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->loadUserData("performances-49");
     }
 
 }
