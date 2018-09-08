@@ -50,11 +50,11 @@ class AuthorUserContext extends BehatContext
         //     new Step\Then("I should see \"Click on a row to proceed with linking that author with user\""),
         // );
 
-        $this->getMainContext()->visit("/user/update/id/${arg1}");
-        $this->getMainContext()->clickLink("Link this user to an author");
+        $this->getMainContext()->getSubContext("MinkContext")->visit("/user/update/id/${arg1}");
+        $this->getMainContext()->getSubContext("MinkContext")->clickLink("Link this user to an author");
         $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
-        $this->getMainContext()->assertPageAddress("/adminAuthor/admin");
-        $this->getMainContext()->assertPageContainsText("Click on a row to proceed with linking that author with user");
+        $this->getMainContext()->getSubContext("MinkContext")->assertPageAddress("/adminAuthor/admin");
+        $this->getMainContext()->getSubContext("MinkContext")->assertPageContainsText("Click on a row to proceed with linking that author with user");
 
     }
 
@@ -75,9 +75,9 @@ class AuthorUserContext extends BehatContext
 
         $this->iClickOnTheRowForAuthorId("${author_id}");
         $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
-        $this->getMainContext()->clickLink("Link user ${user_name} to that author");
+        $this->getMainContext()->getSubContext("MinkContext")->clickLink("Link user ${user_name} to that author");
         $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
-        $this->getMainContext()->assertPageAddress("/user/view/id/${user_id}");
+        $this->getMainContext()->getSubContext("MinkContext")->assertPageAddress("/user/view/id/${user_id}");
     }
 
 
@@ -86,7 +86,7 @@ class AuthorUserContext extends BehatContext
      */
     public function iClickOnTheRowForAuthorId($author_id)
     {
-        $this->getMainContext()->getSession()->executeScript("open_controls(" . $author_id . ")");
+        $this->getMainContext()->getSubContext("MinkContext")->getSession()->executeScript("open_controls(" . $author_id . ")");
     }
 
 
@@ -96,7 +96,7 @@ class AuthorUserContext extends BehatContext
     public function iClickOnTheRowForUserId($user_id)
     {
         $row = $this->findRowByText($user_id);
-        $this->getMainContext()->getSession()->executeScript("open_controls(" . $user_id . ")");
+        $this->getMainContext()->getSubContext("MinkContext")->getSession()->executeScript("open_controls(" . $user_id . ")");
     }
 
      /**
@@ -116,7 +116,7 @@ class AuthorUserContext extends BehatContext
      */
     public function findRowByText($rowText)
     {
-        $row = $this->getMainContext()->getSession()->getPage()->find('css', sprintf('table tr:contains("%s")', $rowText));
+        $row = $this->getMainContext()->getSubContext("MinkContext")->getSession()->getPage()->find('css', sprintf('table tr:contains("%s")', $rowText));
         PHPUnit_Framework_Assert::assertNotNull($row, 'Cannot find a table row with this text!');
         return $row;
     }

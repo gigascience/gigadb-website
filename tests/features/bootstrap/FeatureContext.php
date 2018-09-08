@@ -7,7 +7,7 @@ use Behat\MinkExtension\Context\MinkContext;
 /**
  * GigadbWebsiteContext Features context.
  */
-class FeatureContext extends Behat\MinkExtension\Context\MinkContext
+class FeatureContext extends BehatContext
 {
     private $admin_login;
     private $admin_password;
@@ -31,7 +31,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
         $this->useContext('claim_dataset', new ClaimDatasetContext($parameters));
         $this->useContext('merge_authors', new AuthorMergingContext($parameters));
         $this->useContext('GigadbWebsiteContext', new GigadbWebsiteContext($parameters));
-        // $this->useContext('minkContext', new Behat\MinkExtension\Context\MinkContext($parameters));
+        $this->useContext('MinkContext', new Behat\MinkExtension\Context\MinkContext($parameters));
     }
 
 }

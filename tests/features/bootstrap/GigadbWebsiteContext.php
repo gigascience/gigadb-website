@@ -28,8 +28,8 @@ class GigadbWebsiteContext extends BehatContext
     {
         if ($event->getResult() == 4 ) {
             try { # take a snapshot of web page
-                $this->getMainContext()->printCurrentUrl();
-                $content = $this->getMainContext()->getSession()->getDriver()->getContent();
+                $this->getMainContext()->getSubContext("MinkContext")->printCurrentUrl();
+                $content = $this->getMainContext()->getSubContext("MinkContext")->getSession()->getDriver()->getContent();
                 $file_and_path = sprintf('%s_%s_%s',"content", date('U'), uniqid('', true)) ;
                 file_put_contents("/tmp/".$file_and_path.".html", $content);
                 // if (PHP_OS === "Darwin" && PHP_SAPI === "cli") {
@@ -117,12 +117,12 @@ class GigadbWebsiteContext extends BehatContext
      */
     public function iSignInAsAnAdmin()
     {
-         $this->getMainContext()->visit("/site/login");
-         $this->getMainContext()->fillField("LoginForm_username", $this->admin_login);
-         $this->getMainContext()->fillField("LoginForm_password", $this->admin_password);
-         $this->getMainContext()->pressButton("Login");
+         $this->getMainContext()->getSubContext("MinkContext")->visit("/site/login");
+         $this->getMainContext()->getSubContext("MinkContext")->fillField("LoginForm_username", $this->admin_login);
+         $this->getMainContext()->getSubContext("MinkContext")->fillField("LoginForm_password", $this->admin_password);
+         $this->getMainContext()->getSubContext("MinkContext")->pressButton("Login");
 
-         $this->getMainContext()->assertResponseContains("Admin");
+         $this->getMainContext()->getSubContext("MinkContext")->assertResponseContains("Admin");
     }
 
      /**
@@ -130,13 +130,13 @@ class GigadbWebsiteContext extends BehatContext
      */
     public function iSignInAsAUser()
     {
-        $this->getMainContext()->visit("/site/login");
-        $this->getMainContext()->fillField("LoginForm_username", $this->user_login);
-        $this->getMainContext()->fillField("LoginForm_password", $this->user_password);
-        $this->getMainContext()->pressButton("Login");
+        $this->getMainContext()->getSubContext("MinkContext")->visit("/site/login");
+        $this->getMainContext()->getSubContext("MinkContext")->fillField("LoginForm_username", $this->user_login);
+        $this->getMainContext()->getSubContext("MinkContext")->fillField("LoginForm_password", $this->user_password);
+        $this->getMainContext()->getSubContext("MinkContext")->pressButton("Login");
 
-        $this->getMainContext()->assertResponseNotContains("Administration");
-        $this->getMainContext()->assertResponseContains("'s GigaDB Page");
+        $this->getMainContext()->getSubContext("MinkContext")->assertResponseNotContains("Administration");
+        $this->getMainContext()->getSubContext("MinkContext")->assertResponseContains("'s GigaDB Page");
     }
 
     /**
@@ -162,9 +162,9 @@ class GigadbWebsiteContext extends BehatContext
      * @Given /^I take a screenshot named "([^"]*)"$/
      */
     public function itakeAScreenshot($name) {
-        $driver = $this->getMainContext()->getSession()->getDriver();
+        $driver = $this->getMainContext()->getSubContext("MinkContext")->getSession()->getDriver();
         if ($driver instanceof Behat\Mink\Driver\Selenium2Driver) {
-            file_put_contents("/tmp/screenshot_".$name.".png", $this->getMainContext()->getSession()->getDriver()->getScreenshot());
+            file_put_contents("/tmp/screenshot_".$name.".png", $this->getMainContext()->getSubContext("MinkContext")->getSession()->getDriver()->getScreenshot());
         }
         else {
             print_r("cannot take screenshot with this driver");
@@ -177,7 +177,7 @@ class GigadbWebsiteContext extends BehatContext
      */
     public function iShouldSeeTime($text, $occurence)
     {
-        $element = $this->getMainContext()->getSession()->getPage();
+        $element = $this->getMainContext()->getSubContext("MinkContext")->getSession()->getPage();
         $result = $element->findAll('xpath', "//*[contains(text(), '$text')]");
 
         if(count($result) == $occurence) {

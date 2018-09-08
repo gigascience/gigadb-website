@@ -39,10 +39,10 @@ class AuthorMergingContext extends BehatContext
     	//modal dialog are invisible by default until they are toogled by javascript
     	//so we need to get that javascript executed by the javascript-capable headless browser
     	 $script = "(function(){return ($('#author_merge').is(':visible'));})();";//toogle the modal dialog to visible
-    	 $result = $this->getMainContext()->getSession()->evaluateScript($script);
+    	 $result = $this->getMainContext()->getSubContext("MinkContext")->getSession()->evaluateScript($script);
     	 PHPUnit_Framework_Assert::assertTrue($result,"Dialog box is made visible");
     	 $script = "(function(){return $('#author_merge').html();})();"; //capture the html of the modal dialog
-    	 $result = $this->getMainContext()->getSession()->evaluateScript($script);
+    	 $result = $this->getMainContext()->getSubContext("MinkContext")->getSession()->evaluateScript($script);
     	 PHPUnit_Framework_Assert::assertEquals(1,preg_match("/$arg1/",$result), "Dialog box contains {$arg1}");
 
     }
@@ -68,16 +68,16 @@ class AuthorMergingContext extends BehatContext
         // );
 
         $this->getMainContext()->getSubContext("GigadbWebsiteContext")->iSignInAsAnAdmin();
-        $this->getMainContext()->visit("/adminAuthor/update/id/{$origin_author}");
-        $this->getMainContext()->clickLink("Merge with an author");
+        $this->getMainContext()->getSubContext("MinkContext")->visit("/adminAuthor/update/id/{$origin_author}");
+        $this->getMainContext()->getSubContext("MinkContext")->clickLink("Merge with an author");
         $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
         $this->getMainContext()->getSubContext("admins_attach_author_user")->iClickOnTheRowForAuthorId($target_author);
         $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
         $this->aDialogBoxReads("Confirm merging these two authors?");
-        $this->getMainContext()->clickLink("Yes, merge authors");
+        $this->getMainContext()->getSubContext("MinkContext")->clickLink("Yes, merge authors");
         $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(1);
-        $this->getMainContext()->assertPageAddress("/adminAuthor/view/id/{$origin_author}");
-        $this->getMainContext()->assertPageContainsText("merging authors completed successfully");
+        $this->getMainContext()->getSubContext("MinkContext")->assertPageAddress("/adminAuthor/view/id/{$origin_author}");
+        $this->getMainContext()->getSubContext("MinkContext")->assertPageContainsText("merging authors completed successfully");
 
     }
 
