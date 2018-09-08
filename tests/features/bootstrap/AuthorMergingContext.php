@@ -70,12 +70,12 @@ class AuthorMergingContext extends BehatContext
         $this->getMainContext()->getSubContext("GigadbWebsiteContext")->iSignInAsAnAdmin();
         $this->getMainContext()->getSubContext("MinkContext")->visit("/adminAuthor/update/id/{$origin_author}");
         $this->getMainContext()->getSubContext("MinkContext")->clickLink("Merge with an author");
-        $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
-        $this->getMainContext()->getSubContext("admins_attach_author_user")->iClickOnTheRowForAuthorId($target_author);
-        $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
+        $this->getMainContext()->getSubContext("ClaimDatasetContext")->iWaitSeconds(2);
+        $this->getMainContext()->getSubContext("AuthorUserContext")->iClickOnTheRowForAuthorId($target_author);
+        $this->getMainContext()->getSubContext("ClaimDatasetContext")->iWaitSeconds(2);
         $this->aDialogBoxReads("Confirm merging these two authors?");
         $this->getMainContext()->getSubContext("MinkContext")->clickLink("Yes, merge authors");
-        $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(1);
+        $this->getMainContext()->getSubContext("ClaimDatasetContext")->iWaitSeconds(1);
         $this->getMainContext()->getSubContext("MinkContext")->assertPageAddress("/adminAuthor/view/id/{$origin_author}");
         $this->getMainContext()->getSubContext("MinkContext")->assertPageContainsText("merging authors completed successfully");
 

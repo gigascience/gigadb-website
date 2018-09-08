@@ -128,7 +128,7 @@ class ClaimDatasetContext extends BehatContext
      */
     public function iClickInTheRowForClaimFrom($action, $requester_name)
     {
-        $row = $this->getMainContext()->getSubContext("admins_attach_author_user")->findRowByText($requester_name);
+        $row = $this->getMainContext()->getSubContext("AuthorUserContext")->findRowByText($requester_name);
         if ("delete" == $action) { # TODO: deleting claim not tested has I haven't figured out yet how to test JS confirm with phantomjs
             $this->getMainContext()->getSubContext("MinkContext")->getSession()->getDriver()->executeScript("window.confirm = function(msg){return true;};");
             $link = $row->findLink('');

@@ -22,14 +22,13 @@ class FeatureContext extends BehatContext
         $this->admin_login = getenv("GIGADB_admin_tester_email");
         $this->admin_password = getenv("GIGADB_admin_tester_password") ;
 
-        $this->useContext('affiliate_login', new AffiliateLoginContext($parameters));
-        $this->useContext('normal_login', new NormalLoginContext($parameters));
-
-        $this->useContext('dataset_view_context', new DatasetViewContext($parameters));
-        $this->useContext('admins_attach_author_user', new AuthorUserContext($parameters));
-        $this->useContext('datasets_on_profile', new DatasetsOnProfileContext($parameters));
-        $this->useContext('claim_dataset', new ClaimDatasetContext($parameters));
-        $this->useContext('merge_authors', new AuthorMergingContext($parameters));
+        $this->useContext('AffiliateLoginContext', new AffiliateLoginContext($parameters));
+        $this->useContext('NormalLoginContext', new NormalLoginContext($parameters));
+        $this->useContext('DatasetViewContext', new DatasetViewContext($parameters));
+        $this->useContext('AuthorUserContext', new AuthorUserContext($parameters));
+        $this->useContext('DatasetsOnProfileContext', new DatasetsOnProfileContext($parameters));
+        $this->useContext('ClaimDatasetContext', new ClaimDatasetContext($parameters));
+        $this->useContext('AuthorMergingContext', new AuthorMergingContext($parameters));
         $this->useContext('GigadbWebsiteContext', new GigadbWebsiteContext($parameters));
         $this->useContext('MinkContext', new Behat\MinkExtension\Context\MinkContext($parameters));
     }

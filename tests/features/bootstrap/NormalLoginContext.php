@@ -39,7 +39,7 @@ class NormalLoginContext extends BehatContext
     public function iHaveAGigadbAccountWithRole($arg1)
     {
     	$email = "user@gigadb.org"; 
-        $nb_ocurrences = $this->getMainContext()->getSubcontext('affiliate_login')->countEmailOccurencesInUserList($email);
+        $nb_ocurrences = $this->getMainContext()->getSubcontext('AffiliateLoginContext')->countEmailOccurencesInUserList($email);
         PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "there is a user account in db");
     }
 

@@ -59,7 +59,7 @@ class GigadbWebsiteContext extends BehatContext
     public function anAdminUserExists()
     {
         if ( null != $this->admin_login ) {
-            $nb_ocurrences = $this->getMainContext()->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( $this->admin_login );
+            $nb_ocurrences = $this->getMainContext()->getSubcontext('AffiliateLoginContext')->countEmailOccurencesInUserList( $this->admin_login );
             PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "admin email exists in database");
         }
         else {
@@ -72,7 +72,7 @@ class GigadbWebsiteContext extends BehatContext
      */
     public function defaultAdminUserExists()
     {
-        $nb_ocurrences = $this->getMainContext()->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( "admin@gigadb.org");
+        $nb_ocurrences = $this->getMainContext()->getSubcontext('AffiliateLoginContext')->countEmailOccurencesInUserList( "admin@gigadb.org");
         PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "default admin email exists in database");
         if ( 1 == $nb_ocurrences  )  {
             $this->admin_login = "admin@gigadb.org" ;
@@ -85,7 +85,7 @@ class GigadbWebsiteContext extends BehatContext
      */
     public function defaultUserExists()
     {
-       $nb_ocurrences = $this->getMainContext()->getSubcontext('affiliate_login')->countEmailOccurencesInUserList( "user@gigadb.org");
+       $nb_ocurrences = $this->getMainContext()->getSubcontext('AffiliateLoginContext')->countEmailOccurencesInUserList( "user@gigadb.org");
         PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "default user email exists in database");
         if ( 1 == $nb_ocurrences  )  {
             $this->user_login = "user@gigadb.org" ;

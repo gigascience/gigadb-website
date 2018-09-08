@@ -52,7 +52,7 @@ class AuthorUserContext extends BehatContext
 
         $this->getMainContext()->getSubContext("MinkContext")->visit("/user/update/id/${arg1}");
         $this->getMainContext()->getSubContext("MinkContext")->clickLink("Link this user to an author");
-        $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
+        $this->getMainContext()->getSubContext("ClaimDatasetContext")->iWaitSeconds(2);
         $this->getMainContext()->getSubContext("MinkContext")->assertPageAddress("/adminAuthor/admin");
         $this->getMainContext()->getSubContext("MinkContext")->assertPageContainsText("Click on a row to proceed with linking that author with user");
 
@@ -74,9 +74,9 @@ class AuthorUserContext extends BehatContext
         // );
 
         $this->iClickOnTheRowForAuthorId("${author_id}");
-        $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
+        $this->getMainContext()->getSubContext("ClaimDatasetContext")->iWaitSeconds(2);
         $this->getMainContext()->getSubContext("MinkContext")->clickLink("Link user ${user_name} to that author");
-        $this->getMainContext()->getSubContext("claim_dataset")->iWaitSeconds(2);
+        $this->getMainContext()->getSubContext("ClaimDatasetContext")->iWaitSeconds(2);
         $this->getMainContext()->getSubContext("MinkContext")->assertPageAddress("/user/view/id/${user_id}");
     }
 
