@@ -23,10 +23,10 @@ exec 1>&3
 
 echo "Running acceptance tests"
 if [[ "$GIGADB_ENV" == "dev" ]];then
-	bin/behat --tags "@ok" -v --stop-on-failure -c tests/behat.yml
+	bin/behat --tags "@ok" -v --stop-on-failure -c behat.yml
 else
 	# we are on CI with remote runner, affilate login tests don't work becasause Google and Twitter block it
-	bin/behat --tags "@ok&&~@affiliate-login" -v --stop-on-failure -c tests/behat.yml --format=html --out=/var/www/protected/runtime/features.html
+	bin/behat --tags "@ok&&~@affiliate-login" -v --stop-on-failure -c behat.yml --format=html --out=/var/www/protected/runtime/features.html
 fi
 
 ./tests/unit_tests
