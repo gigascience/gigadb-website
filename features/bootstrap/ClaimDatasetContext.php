@@ -1,24 +1,34 @@
 <?php
 
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
  * Features context.
  */
-class ClaimDatasetContext extends BehatContext
+class ClaimDatasetContext implements Context
 {
 
 
-    /**
-     * Initializes context.
-     * Every scenario gets it's own context object.
-     *
-     * @param array $parameters context parameters (set them up through behat.yml)
-     */
-    public function __construct(array $parameters)
+    /** @var \Behat\MinkExtension\Context\MinkContext */
+    private $minkContext;
+
+    /** @var GigadbWebsiteContext */
+    private $gigadbWebsiteContext;
+
+    /** @var AuthorUserContext */
+    private $authorUserContext;
+
+    /** @BeforeScenario */
+    public function gatherContexts(BeforeScenarioScope $scope)
     {
-        // Initialize your context here
+        $environment = $scope->getEnvironment();
+
+        $this->minkContext = $environment->getContext('Behat\MinkExtension\Context\MinkContext');
+        $this->gigadbWebsiteContext = $environment->getContext('GigadbWebsiteContext');
+        $this->authorUserContext = $environment->getContext('AuthorUserContext');
     }
+
 
 
 //
@@ -38,7 +48,7 @@ class ClaimDatasetContext extends BehatContext
      */
     public function iAmNotLoggedInToGigadbWebSite()
     {
-        $this->getMainContext()->getSubContext("MinkContext")->visit("/site/logout");
+        $this->minkContext->visit("/site/logout");
     }
 
     /**
@@ -51,15 +61,15 @@ class ClaimDatasetContext extends BehatContext
         // See: https://github.com/Behat/Behat/issues/973
         // for now I "cheat" and make sure there radio buttons are set as "checked" on html side
         // and in the scenario, select the last option (Wang J).
-        if ( $this->getMainContext()->getSubContext("MinkContext")->getSession()->getDriver() instanceof Behat\Mink\Driver\Selenium2Driver ) {
+        if ( $this->minkContext->getSession()->getDriver() instanceof Behat\Mink\Driver\Selenium2Driver ) {
             return array(
                 new Step\When("I fill in \"author_id\" with \"3791\""),
             );
         }
         else { //this branch (that use GoutteDriver works but we cannot use as the feature needs ajax)
-            foreach ($this->getMainContext()->getSubContext("MinkContext")->getSession()->getPage()->findAll('css', 'label') as $label) {
+            foreach ($this->minkContext->getSession()->getPage()->findAll('css', 'label') as $label) {
                 if ($labelText === $label->getText() && $label->has('css', 'input[type="radio"]')) {
-                    $this->getMainContext()->getSubContext("MinkContext")->fillField($label->find('css', 'input[type="radio"]')->getAttribute('name'), $label->find('css', 'input[type="radio"]')->getAttribute('value'));
+                    $this->minkContext->fillField($label->find('css', 'input[type="radio"]')->getAttribute('name'), $label->find('css', 'input[type="radio"]')->getAttribute('value'));
                     return;
                 }
             }
@@ -75,7 +85,7 @@ class ClaimDatasetContext extends BehatContext
         // return array(
         //         new Step\When("I follow \"claim_button_".$author_id."\""),
         // );
-        $this->getMainContext()->getSubContext("MinkContext")->clickLink("claim_button_".$author_id);
+        $this->minkContext->clickLink("claim_button_".$author_id);
     }
 
     /**
@@ -84,9 +94,9 @@ class ClaimDatasetContext extends BehatContext
     public function aUserHasAPendingClaimForAuthor($author_id)
     {
 
-        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->iSignInAsAUser();
-        $this->getMainContext()->getSubContext("MinkContext")->visit("/dataset/100002");
-        $this->getMainContext()->getSubContext("MinkContext")->clickLink("Your dataset?");
+        $this->gigadbWebsiteContext->iSignInAsAUser();
+        $this->minkContext->visit("/dataset/100002");
+        $this->minkContext->clickLink("Your dataset?");
         $this->iWaitSeconds(2);
         $this->iClickOnButtonForAuthorId($author_id);
         $this->iWaitSeconds(2);
@@ -128,9 +138,9 @@ class ClaimDatasetContext extends BehatContext
      */
     public function iClickInTheRowForClaimFrom($action, $requester_name)
     {
-        $row = $this->getMainContext()->getSubContext("AuthorUserContext")->findRowByText($requester_name);
+        $row = $this->authorUserContext->findRowByText($requester_name);
         if ("delete" == $action) { # TODO: deleting claim not tested has I haven't figured out yet how to test JS confirm with phantomjs
-            $this->getMainContext()->getSubContext("MinkContext")->getSession()->getDriver()->executeScript("window.confirm = function(msg){return true;};");
+            $this->minkContext->getSession()->getDriver()->executeScript("window.confirm = function(msg){return true;};");
             $link = $row->findLink('');
         }
         else {
@@ -154,9 +164,9 @@ class ClaimDatasetContext extends BehatContext
         //         new Step\When("I wait \"2\" seconds"),
         //     );
 
-        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->iSignInAsAnAdmin();
-        $this->getMainContext()->getSubContext("MinkContext")->visit("/user/update/id/346/");
-        $this->getMainContext()->getSubContext("MinkContext")->clickLink("Reject");
+        $this->gigadbWebsiteContext->iSignInAsAnAdmin();
+        $this->minkContext->visit("/user/update/id/346/");
+        $this->minkContext->clickLink("Reject");
         $this->iWaitSeconds(2);
     }
 
@@ -173,9 +183,9 @@ class ClaimDatasetContext extends BehatContext
         //     );
 
     // Given a user has a pending claim for author "3791"
-        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->iSignInAsAUser();
-        $this->getMainContext()->getSubContext("MinkContext")->visit("/dataset/100002");
-        $this->getMainContext()->getSubContext("MinkContext")->clickLink("Your dataset?");
+        $this->gigadbWebsiteContext->iSignInAsAUser();
+        $this->minkContext->visit("/dataset/100002");
+        $this->minkContext->clickLink("Your dataset?");
         $this->iWaitSeconds(2);
         $this->iClickOnButtonForAuthorId($author);
         $this->iWaitSeconds(2);
@@ -187,10 +197,10 @@ class ClaimDatasetContext extends BehatContext
         }
 
     // When I go to "/AdminAuthor/view/id/3791"
-        $this->getMainContext()->getSubContext("MinkContext")->visit("/AdminAuthor/view/id/$author");
+        $this->minkContext->visit("/AdminAuthor/view/id/$author");
 
     // Then I should not see "346"
-        $this->getMainContext()->getSubContext("MinkContext")->assertPageNotContainsText("346");
+        $this->minkContext->assertPageNotContainsText("346");
     }
 
 
@@ -198,7 +208,7 @@ class ClaimDatasetContext extends BehatContext
      * @AfterScenario @user-claims-dataset
     */
     public function resetClaimTable() {
-        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->truncateTable("gigadb","user_command");
+        $this->gigadbWebsiteContext->truncateTable("gigadb","user_command");
     }
 
 }

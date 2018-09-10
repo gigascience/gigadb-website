@@ -1,27 +1,28 @@
 <?php
 
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
  * AuthorWorkflow Features context.
  */
-class DatasetViewContext extends BehatContext
+class DatasetViewContext implements Context
 {
     private $surname = null;
     private $first_name = null;
     private $middle_name =  null;
 
-	    /**
-     * Initializes context.
-     * Every scenario gets it's own context object.
-     *
-     * @param array $parameters context parameters (set them up through behat.yml)
-     */
-    public function __construct(array $parameters)
-    {
-        // Initialize your context here
-    }
 
+    /** @var GigadbWebsiteContext */
+    private $gigadbWebsiteContext;
+
+    /** @BeforeScenario */
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        $environment = $scope->getEnvironment();
+
+        $this->gigadbWebsiteContext = $environment->getContext('GigadbWebsiteContext');
+    }
 
 //
 // Place your definition and hook methods here:
@@ -46,7 +47,7 @@ class DatasetViewContext extends BehatContext
         // return array(
         //     new Step\Given("Gigadb web site is loaded with \"${sqlfile}\" data"),
         // );
-        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->gigadbWebSiteIsLoadedWithData($sqlfile);
+        $this->gigadbWebsiteContext->gigadbWebSiteIsLoadedWithData($sqlfile);
     }
 
     /**

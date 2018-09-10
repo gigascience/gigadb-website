@@ -1,13 +1,22 @@
 default:
-  paths:
-    features:  features
-    bootstrap: features/bootstrap
-  context:
-      class:  'FeatureContext'
+  suites:
+    default:
+      filters:
+        tags: "@ok"
+      contexts:
+        - AffiliateLoginContext
+        - GigadbWebsiteContext
+        - AuthorMergingContext
+        - AuthorUserContext
+        - ClaimDatasetContext
+        - DatasetsOnProfileContext
+        - DatasetViewContext
+        - NormalLoginContext
+        - Behat\MinkExtension\Context\MinkContext
   extensions:
-    Behat\MinkExtension\Extension:
-      base_url: 'http://gigadb.dev/'
-      goutte: ~
-      selenium2:
-        wd_host: http://phantomjs:8910/wd/hub
+      Behat\MinkExtension:
+          base_url: "http://gigadb.dev/"
+          goutte: ~
+          selenium2:
+            wd_host: http://phantomjs:8910/wd/hub
 

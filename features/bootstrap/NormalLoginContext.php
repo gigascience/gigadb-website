@@ -1,23 +1,24 @@
 <?php
 
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
  * Features context.
  */
-class NormalLoginContext extends BehatContext
+class NormalLoginContext implements Context
 {
 
 
-    /**
-     * Initializes context.
-     * Every scenario gets it's own context object.
-     *
-     * @param array $parameters context parameters (set them up through behat.yml)
-     */
-    public function __construct(array $parameters)
+    /** @var GigadbWebsiteContext */
+    private $affiliateLoginContext;
+
+    /** @BeforeScenario */
+    public function gatherContexts(BeforeScenarioScope $scope)
     {
-        // Initialize your context here
+        $environment = $scope->getEnvironment();
+
+        $this->affiliateLoginContext = $environment->getContext('AffiliateLoginContext');
     }
 
 
@@ -39,7 +40,7 @@ class NormalLoginContext extends BehatContext
     public function iHaveAGigadbAccountWithRole($arg1)
     {
     	$email = "user@gigadb.org"; 
-        $nb_ocurrences = $this->getMainContext()->getSubcontext('AffiliateLoginContext')->countEmailOccurencesInUserList($email);
+        $nb_ocurrences = $this->affiliateLoginContext->countEmailOccurencesInUserList($email);
         PHPUnit_Framework_Assert::assertTrue(1 == $nb_ocurrences, "there is a user account in db");
     }
 

@@ -1,11 +1,12 @@
 <?php
 
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
  * Features context.
  */
-class AffiliateLoginContext extends BehatContext
+class AffiliateLoginContext implements Context
 {
     private $keys_map = array('Facebook' => array('api_key' => 'FACEBOOK_APP_ID', 'client_key' => 'FACEBOOK_APP_SECRET'),
                                'Google' => array('api_key' => 'GOOGLE_CLIENT_ID', 'client_key' => 'GOOGLE_SECRET'),
@@ -14,17 +15,20 @@ class AffiliateLoginContext extends BehatContext
                                'Orcid' => array('api_key' => 'ORCID_CLIENT_ID', 'client_key' => 'ORCID_CLIENT_SECRET'),
                            ); //TODO: extract this map into a module as it is also going to be used in UserIdentity's revoke_token
 
-    /**
-     * Initializes context.
-     * Every scenario gets it's own context object.
-     *
-     * @param array $parameters context parameters (set them up through behat.yml)
-     */
-    public function __construct(array $parameters)
-    {
-        // Initialize your context here
-    }
+    /** @var \Behat\MinkExtension\Context\MinkContext */
+    private $minkContext;
 
+    /** @var GigadbWebsiteContext */
+    private $gigadbWebsiteContext;
+
+    /** @BeforeScenario ~@login*/
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        $environment = $scope->getEnvironment();
+
+        $this->minkContext = $environment->getContext('Behat\MinkExtension\Context\MinkContext');
+        $this->gigadbWebsiteContext = $environment->getContext('GigadbWebsiteContext');
+    }
 
 //
 // Place your definition and hook methods here:
@@ -87,12 +91,17 @@ class AffiliateLoginContext extends BehatContext
     public function theAccountHasNotAuthorisedLoginToGigadbWebSite($arg1)
     {
         if ("Facebook" == $arg1) {
-            $facebook = new Guzzle\Http\Client("https://graph.facebook.com");
-            $request = $facebook->createRequest("DELETE");
-            $request->setPath('/102733567195512/permissions');
-             $request->getQuery()
-                    ->set('access_token', $_ENV["${arg1}_access_token"]);
-            $response = $facebook->send($request);
+            $client = new \GuzzleHttp\Client([
+                // Base URI is used with relative requests
+                'base_uri' => 'https://graph.facebook.com',
+                // You can set any number of default request options.
+                'timeout'  => 2.0,
+            ]);
+            $response = $client->request("DELETE", "/102733567195512/permissions", ['query' => ['access_token' => getenv("${arg1}_access_token")]]);
+            // $request->setPath('/102733567195512/permissions');
+            //  $request->getQuery()
+            //         ->set('access_token', $_ENV["${arg1}_access_token"]);
+            // $response = $facebook->send($request);
             $body = json_decode($response->getBody(true),true);
             PHPUnit_Framework_Assert::assertTrue("true" == $body["success"],'Test users de-authorised');
 
@@ -171,7 +180,7 @@ class AffiliateLoginContext extends BehatContext
      */
     public function iClickOnTheButton($arg1)
     {
-        $this->getMainContext()->getSubContext("MinkContext")->clickLink($arg1);
+        $this->minkContext->clickLink($arg1);
     }
 
      /**
@@ -183,37 +192,37 @@ class AffiliateLoginContext extends BehatContext
         $password = $_ENV["${arg1}_tester_password"];
 
         if ($arg1 == "Twitter") {
-            $this->getMainContext()->getSubContext("MinkContext")->fillField("username_or_email", $login);
-            $this->getMainContext()->getSubContext("MinkContext")->fillField("password", $password);
+            $this->minkContext->fillField("username_or_email", $login);
+            $this->minkContext->fillField("password", $password);
 
-            $this->getMainContext()->getSubContext("MinkContext")->pressButton("Sign In");
+            $this->minkContext->pressButton("Sign In");
         }
         else if ($arg1 == "Facebook") {
-            $this->getMainContext()->getSubContext("MinkContext")->fillField("email", $login);
-            $this->getMainContext()->getSubContext("MinkContext")->fillField("pass", $password);
+            $this->minkContext->fillField("email", $login);
+            $this->minkContext->fillField("pass", $password);
 
-            $this->getMainContext()->getSubContext("MinkContext")->pressButton("login");
+            $this->minkContext->pressButton("login");
             sleep(5);
 
         }
         else if ($arg1 == "Google") {
-            $this->getMainContext()->getSubContext("MinkContext")->fillField("Email", $login);
-            $this->getMainContext()->getSubContext("MinkContext")->pressButton("Next");
+            $this->minkContext->fillField("Email", $login);
+            $this->minkContext->pressButton("Next");
             sleep(5);
-            $this->getMainContext()->getSubContext("MinkContext")->fillField("Passwd", $password);
-            $this->getMainContext()->getSubContext("MinkContext")->pressButton("Sign in");
+            $this->minkContext->fillField("Passwd", $password);
+            $this->minkContext->pressButton("Sign in");
 
         }
         else if ($arg1 == "LinkedIn") {
-            $this->getMainContext()->getSubContext("MinkContext")->fillField("session_key", $login);
-            $this->getMainContext()->getSubContext("MinkContext")->fillField("session_password", $password);
-            $this->getMainContext()->getSubContext("MinkContext")->pressButton("Sign In");
+            $this->minkContext->fillField("session_key", $login);
+            $this->minkContext->fillField("session_password", $password);
+            $this->minkContext->pressButton("Sign In");
 
         }
         else if ($arg1 == "Orcid") {
-            $this->getMainContext()->getSubContext("MinkContext")->fillField("userId", $login);
-            $this->getMainContext()->getSubContext("MinkContext")->fillField("password", $password);
-            $this->getMainContext()->getSubContext("MinkContext")->pressButton("Sign into ORCID");
+            $this->minkContext->fillField("userId", $login);
+            $this->minkContext->fillField("password", $password);
+            $this->minkContext->pressButton("Sign into ORCID");
             sleep(15);
 
         }
@@ -229,11 +238,11 @@ class AffiliateLoginContext extends BehatContext
      */
     public function iAuthoriseGigadbFor($arg1)
     {
-        $session = $this->getMainContext()->getSubContext("MinkContext")->getSession();
+        $session = $this->minkContext->getSession();
         $driver = $session->getDriver();
 
         if ($arg1 == "Twitter") {
-            $this->getMainContext()->getSubContext("MinkContext")->clickLink('click here to continue');
+            $this->minkContext->clickLink('click here to continue');
         }
         else if ($arg1 == "Facebook") {
 
@@ -249,23 +258,23 @@ class AffiliateLoginContext extends BehatContext
             }
 
             // sleep(10);
-            $this->getMainContext()->getSubContext("MinkContext")->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
+            $this->minkContext->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
 
 
 
         }
         else if ($arg1 == "Google") {
 
-            $this->getMainContext()->getSubContext("MinkContext")->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
-            $this->getMainContext()->getSubContext("MinkContext")->pressButton("Allow");
+            $this->minkContext->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
+            $this->minkContext->pressButton("Allow");
 
         }
         else if ($arg1 == "Orcid") {
-            $this->getMainContext()->getSubContext("MinkContext")->getSession()->wait(15000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
-            // PHPUnit_Framework_Assert::assertTrue($this->getMainContext()->getSubContext("MinkContext")->getSession()->getPage()->hasField("enablePersistentToken"), "Authorize checkbox");
-            PHPUnit_Framework_Assert::assertTrue($this->getMainContext()->getSubContext("MinkContext")->getSession()->getPage()->hasButton("authorize"), "Authorize button");
-            $the_checkbox = $this->getMainContext()->getSubContext("MinkContext")->getSession()->getPage()->findField("enablePersistentToken");
-            $the_button = $this->getMainContext()->getSubContext("MinkContext")->getSession()->getPage()->findButton("authorize");
+            $this->minkContext->getSession()->wait(15000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
+            // PHPUnit_Framework_Assert::assertTrue($this->minkContext->getSession()->getPage()->hasField("enablePersistentToken"), "Authorize checkbox");
+            PHPUnit_Framework_Assert::assertTrue($this->minkContext->getSession()->getPage()->hasButton("authorize"), "Authorize button");
+            $the_checkbox = $this->minkContext->getSession()->getPage()->findField("enablePersistentToken");
+            $the_button = $this->minkContext->getSession()->getPage()->findButton("authorize");
             //var_dump($the_checkbox);
             //var_dump($the_button);
             // $the_checkbox->check();
@@ -282,7 +291,7 @@ class AffiliateLoginContext extends BehatContext
      */
     public function iMLoggedInIntoTheGigadbWebSite()
     {
-        $this->getMainContext()->getSubContext("MinkContext")->assertPageContainsText("GigaDB Page");
+        $this->minkContext->assertPageContainsText("GigaDB Page");
 
     }
 
@@ -367,15 +376,21 @@ class AffiliateLoginContext extends BehatContext
     /**
      * @BeforeScenario @login
     */
-    public function initialize_session() {
-        $this->getMainContext()->getSubContext("MinkContext")->visit("/site/revoke");
+    public function initialize_session(BeforeScenarioScope $scope) {
+
+        $environment = $scope->getEnvironment();
+
+        $this->minkContext = $environment->getContext('Behat\MinkExtension\Context\MinkContext');
+        $this->gigadbWebsiteContext = $environment->getContext('GigadbWebsiteContext');
+
+        $this->minkContext->visit("/site/revoke");
         sleep(3);
         print_r("Initializing the gigadb_user table... ");
-        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->terminateDbBackend("gigadb");
-        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->truncateTable("gigadb","gigadb_user");
-        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->loadUserData("joe_bloggs");
-        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->loadUserData("john_smith");
-        $this->getMainContext()->getSubContext("GigadbWebsiteContext")->restartPhp();
+        $this->gigadbWebsiteContext->terminateDbBackend("gigadb");
+        $this->gigadbWebsiteContext->truncateTable("gigadb","gigadb_user");
+        $this->gigadbWebsiteContext->loadUserData("joe_bloggs");
+        $this->gigadbWebsiteContext->loadUserData("john_smith");
+        $this->gigadbWebsiteContext->restartPhp();
     }
 
     /**
@@ -383,9 +398,9 @@ class AffiliateLoginContext extends BehatContext
     */
     public function reset_stop_session($event) {
 
-        $this->getMainContext()->getSubContext("MinkContext")->visit("/site/revoke");
+        $this->minkContext->visit("/site/revoke");
         sleep(3);
-        $this->getMainContext()->getSubContext("MinkContext")->getSession()->stop();
+        $this->minkContext->getSession()->stop();
 
     }
 
