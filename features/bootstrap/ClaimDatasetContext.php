@@ -4,8 +4,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
- * ClaimDatasetContext
- *
  * Contains the steps definitions used in dataset claim workflow
  * (admin-validates-dataset-claim-57.feature, admins-attach-author-to-user.feature, user-claims-dataset-57.feature)
  *

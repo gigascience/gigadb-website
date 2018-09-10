@@ -5,8 +5,6 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 
 /**
- * GigadbWebsiteContext
- *
  * Contains steps definitions and utility functions to be used in all Context classes
  *
  *
@@ -257,9 +255,8 @@ class GigadbWebsiteContext implements Context
     // ---  utility functions
 
     /**
-     * terminateDbBackend
+     * Kill backend processes connected to the PostgreSQL database.
      *
-     * kill backend processes connected to the PostgreSQL database.
      * This is necessary, because we cannot restore when processes are still connected to the database.
      * This function requires the pgsql PHP extension to be installed.
      *
@@ -275,9 +272,8 @@ class GigadbWebsiteContext implements Context
     }
 
     /**
-     * dropCreateDb
-     *
      * Drop the database and recreate it.
+     *
      * This function requires the pgsql PHP extension to be installed.
      *
      * @param string $dbname name of database to operate on
@@ -296,9 +292,8 @@ class GigadbWebsiteContext implements Context
     }
 
     /**
-     * truncateTable
-     *
      * truncate a table. Used by some Context class to reset the gigadb_user table.
+     *
      * This function requires the pgsql PHP extension to be installed.
      *
      * @param string $dbname name of database to operate on
@@ -313,7 +308,7 @@ class GigadbWebsiteContext implements Context
     }
 
     /**
-     * restartPhp
+     * Restart the php-fpm docker container
      *
      * After the database has been recreated, we need to restart php-fpm
      * So it create a new valid connection. Not doing so will generate database errors on frontend.
@@ -333,9 +328,8 @@ class GigadbWebsiteContext implements Context
     }
 
     /**
-     * loadUserData
-     *
      * Used to load a new user record into the database.
+     *
      * This function requires the pgsql PHP extension to be installed.
      *
      * @param string $user file name (without the .sql extension) to load.

@@ -4,8 +4,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
- * AuthorUserContext
- *
  * Contains the steps definitions used in author workflows
  * (merge-authors, admins-attach-author-to-user, admin-validates-dataset-claim)
  *
@@ -134,6 +132,8 @@ class AuthorUserContext implements Context
     }
 
     /**
+     * Find a text in a table and return the row containing the text
+     *
      * @param $rowText
      * @return \Behat\Mink\Element\NodeElement
      */

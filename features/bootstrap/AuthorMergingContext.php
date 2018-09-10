@@ -4,8 +4,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
- * AuthorMergingContext
- *
  * Contains the steps definitions used in merge-authors.feature
  *
  * @author Rija Menage <rija+git@cinecinetique.com>

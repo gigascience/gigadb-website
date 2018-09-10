@@ -4,8 +4,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
- * AffiliateLoginContext
- *
  * Contains the steps definitions used in affiliate-login.feature
  *
  * @author Rija Menage <rija+git@cinecinetique.com>

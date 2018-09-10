@@ -4,8 +4,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
- * DatasetsOnProfileContext
- *
  * Contains the steps definitions used in datasets-on-user-profile-60.feature
  *
  *

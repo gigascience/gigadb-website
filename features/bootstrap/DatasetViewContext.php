@@ -4,8 +4,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
- * DatasetViewContext
- *
  * Contains the steps definitions used in author-names.feature and name-preview.feature
  *
  *
