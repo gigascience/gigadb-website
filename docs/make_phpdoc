@@ -3,4 +3,4 @@
 set -e
 set -u
 
-php docs/phpdoc.phar --visibility "public,protected" --cache-folder "docs/cache" --directory "protected/models,protected/views,protected/tests/unit,protected/controllers,tests/features/bootstrap/" --target "docs/apidocs/"
+php docs/phpdoc.phar --visibility "public,protected" --cache-folder "docs/cache" --directory "protected/models,protected/views,protected/tests/unit,protected/controllers,features/bootstrap/" --target "docs/apidocs/"

@@ -4,7 +4,16 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
- * AuthorWorkflow Features context.
+ * DatasetViewContext
+ *
+ * Contains the steps definitions used in author-names.feature and name-preview.feature
+ *
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ * @see http://docs.behat.org/en/latest/quick_start.html#defining-steps
+ *
+ * @uses GigadbWebsiteContext For loading production like data
  */
 class DatasetViewContext implements Context
 {
@@ -13,30 +22,25 @@ class DatasetViewContext implements Context
     private $middle_name =  null;
 
 
-    /** @var GigadbWebsiteContext */
+    /**
+     * @var GigadbWebsiteContext
+     */
     private $gigadbWebsiteContext;
 
-    /** @BeforeScenario */
+    /**
+     * The method to retrieve needed contexts from the Behat environment
+     *
+     * @param BeforeScenarioScope $scope parameter needed to retrieve contexts from the environment
+     *
+     * @BeforeScenario
+     *
+    */
     public function gatherContexts(BeforeScenarioScope $scope)
     {
         $environment = $scope->getEnvironment();
 
         $this->gigadbWebsiteContext = $environment->getContext('GigadbWebsiteContext');
     }
-
-//
-// Place your definition and hook methods here:
-//
-//    /**
-//     * @Given /^I have done something with "([^"]*)"$/
-//     */
-//    public function iHaveDoneSomethingWith($argument)
-//    {
-//        doSomethingWith($argument);
-//    }
-//
-
-
 
     /**
      * @Given /^Gigadb web site is loaded with production-like data$/
@@ -77,6 +81,8 @@ class DatasetViewContext implements Context
 
 
     /**
+     * Ensure name fields are reset before scenario run for author-names.feature and name-preview.feature
+     *
      * @BeforeScenario @author-names-display&&@edit-display-name
      */
     public function reset()

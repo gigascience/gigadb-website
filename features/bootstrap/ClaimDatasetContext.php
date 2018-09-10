@@ -4,22 +4,51 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
- * Features context.
+ * ClaimDatasetContext
+ *
+ * Contains the steps definitions used in dataset claim workflow
+ * (admin-validates-dataset-claim-57.feature, admins-attach-author-to-user.feature, user-claims-dataset-57.feature)
+ *
+ * Also used by other Context classes for the sleep timer function
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ * @see http://docs.behat.org/en/latest/quick_start.html#defining-steps
+ *
+ * @uses GigadbWebsiteContext For resetting the database
+ * @uses GigadbWebsiteContext::iSignInAsAUser For signing in as a user
+ * @uses GigadbWebsiteContext::iSignInAsAnAdmin For signing in as a admin
+ * @uses AuthorUserContext For clicking on a row from Author table in admin view
+ * @uses \Behat\MinkExtension\Context\MinkContext For controlling the web browser
+ * @uses \PHPUnit_Framework_Assert
  */
 class ClaimDatasetContext implements Context
 {
 
 
-    /** @var \Behat\MinkExtension\Context\MinkContext */
+    /**
+     * @var \Behat\MinkExtension\Context\MinkContext
+     */
     private $minkContext;
 
-    /** @var GigadbWebsiteContext */
+    /**
+     * @var GigadbWebsiteContext
+     */
     private $gigadbWebsiteContext;
 
-    /** @var AuthorUserContext */
+    /**
+     * @var AuthorUserContext
+     */
     private $authorUserContext;
 
-    /** @BeforeScenario */
+    /**
+     * The method to retrieve needed contexts from the Behat environment
+     *
+     * @param BeforeScenarioScope $scope parameter needed to retrieve contexts from the environment
+     *
+     * @BeforeScenario
+     *
+    */
     public function gatherContexts(BeforeScenarioScope $scope)
     {
         $environment = $scope->getEnvironment();
@@ -28,20 +57,6 @@ class ClaimDatasetContext implements Context
         $this->gigadbWebsiteContext = $environment->getContext('GigadbWebsiteContext');
         $this->authorUserContext = $environment->getContext('AuthorUserContext');
     }
-
-
-
-//
-// Place your definition and hook methods here:
-//
-//    /**
-//     * @Given /^I have done something with "([^"]*)"$/
-//     */
-//    public function iHaveDoneSomethingWith($argument)
-//    {
-//        doSomethingWith($argument);
-//    }
-//
 
     /**
      * @Given /^I am not logged in to Gigadb web site$/
@@ -113,6 +128,11 @@ class ClaimDatasetContext implements Context
     }
 
     /**
+     * The method to generate a waiting period using php sleep function
+     *
+     * @param int $number_of_seconds number of seconds to wait
+     *
+     *
      * @Given /^I wait "([^"]*)" seconds$/
      */
     public function iWaitSeconds($number_of_seconds)
@@ -205,6 +225,8 @@ class ClaimDatasetContext implements Context
 
 
     /**
+     * Make sure the claims table is reset after scenario run
+     *
      * @AfterScenario @user-claims-dataset
     */
     public function resetClaimTable() {

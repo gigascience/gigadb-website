@@ -83,7 +83,7 @@ run_all_tests:
       - protected/runtime/features.txt
       - protected/runtime/phpunit-coverage.txt
     reports:
-      junit: protected/runtime/features.xml
+      junit: protected/runtime/xml/default.xml
     when: always
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true

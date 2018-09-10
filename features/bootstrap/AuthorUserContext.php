@@ -4,19 +4,41 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
- * AuthorWorkflow Features context.
+ * AuthorUserContext
+ *
+ * Contains the steps definitions used in author workflows
+ * (merge-authors, admins-attach-author-to-user, admin-validates-dataset-claim)
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ * @see http://docs.behat.org/en/latest/quick_start.html#defining-steps
+ *
+ * @uses ClaimDatasetContext For the sleep timer function
+ * @uses \Behat\MinkExtension\Context\MinkContext For controlling the web browser
+ * @uses \PHPUnit_Framework_Assert
  */
 class AuthorUserContext implements Context
 {
 
-    /** @var \Behat\MinkExtension\Context\MinkContext */
+    /**
+     * @var \Behat\MinkExtension\Context\MinkContext
+     */
     private $minkContext;
 
-    /** @var ClaimDatasetContext */
+    /**
+     * @var ClaimDatasetContext
+     */
     private $claimDatasetContext;
 
 
-    /** @BeforeScenario */
+    /**
+     * The method to retrieve needed contexts from the Behat environment
+     *
+     * @param BeforeScenarioScope $scope parameter needed to retrieve contexts from the environment
+     *
+     * @BeforeScenario
+     *
+    */
     public function gatherContexts(BeforeScenarioScope $scope)
     {
         $environment = $scope->getEnvironment();

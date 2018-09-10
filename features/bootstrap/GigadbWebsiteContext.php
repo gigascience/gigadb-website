@@ -5,20 +5,54 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 
 /**
- * GigadbWebsiteContext Features context.
+ * GigadbWebsiteContext
+ *
+ * Contains steps definitions and utility functions to be used in all Context classes
+ *
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ * @see http://docs.behat.org/en/latest/quick_start.html#defining-steps
+ *
+ * @uses AffiliateLoginContext For checking user exists in database from email
+ * @uses \Behat\MinkExtension\Context\MinkContext For controlling the web browser
+ * @uses \PHPUnit_Framework_Assert
  */
 class GigadbWebsiteContext implements Context
 {
+    /**
+     * @var string $admin_login login of a valid admin user, by default from env "GIGADB_admin_tester_email"
+     */
     private $admin_login;
+
+    /**
+     * @var string $admin_password passsword of a valid admin user, by default from env "GIGADB_admin_tester_password"
+    */
     private $admin_password;
+
+    /**
+     * @var string $user_login login of a valid user, no default
+     */
     private $user_login;
+
+    /**
+     * @var string $user_password password of a valid user, no default
+     */
     private $user_password;
+
+    /**
+     * @var int $time_start used by the timer steps
+     */
     private $time_start;
 
-    /** @var \Behat\MinkExtension\Context\MinkContext */
+    /**
+     * @var \Behat\MinkExtension\Context\MinkContext
+     */
     private $minkContext;
 
-    /** @var GigadbWebsiteContext */
+    /**
+     * @var AffiliateLoginContext
+     */
     private $affiliateLoginContext;
 
     public function __construct()
@@ -28,7 +62,14 @@ class GigadbWebsiteContext implements Context
     }
 
 
-    /** @BeforeScenario */
+    /**
+     * The method to retrieve needed contexts from the Behat environment
+     *
+     * @param BeforeScenarioScope $scope parameter needed to retrieve contexts from the environment
+     *
+     * @BeforeScenario
+     *
+    */
     public function gatherContexts(BeforeScenarioScope $scope)
     {
         $environment = $scope->getEnvironment();
@@ -38,6 +79,12 @@ class GigadbWebsiteContext implements Context
     }
 
     /**
+     * debugStep
+     *
+     * utility hook that create a screenshot of the browser screen when a step fails
+     *
+     * @param AfterStepScope $scope parameter needed to retrieve step result
+     *
      * @AfterStep
     */
     public function debugStep(AfterStepScope $scope)
@@ -209,6 +256,16 @@ class GigadbWebsiteContext implements Context
 
     // ---  utility functions
 
+    /**
+     * terminateDbBackend
+     *
+     * kill backend processes connected to the PostgreSQL database.
+     * This is necessary, because we cannot restore when processes are still connected to the database.
+     * This function requires the pgsql PHP extension to be installed.
+     *
+     * @param string $dbname name of database to operate on
+     *
+    */
     public function terminateDbBackend($dbname) {
         $sql = "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='${dbname}' and pid <> pg_backend_pid()";
         $dbconn = pg_connect("host=database dbname=postgres user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
@@ -217,8 +274,17 @@ class GigadbWebsiteContext implements Context
 
     }
 
+    /**
+     * dropCreateDb
+     *
+     * Drop the database and recreate it.
+     * This function requires the pgsql PHP extension to be installed.
+     *
+     * @param string $dbname name of database to operate on
+     *
+    */
     public function dropCreateDb($dbname) {
-        $sql_to_fence ="ALTER DATABASE $dbname WITH CONNECTION LIMIT 0;";
+        $sql_to_fence ="ALTER DATABASE $dbname WITH CONNECTION LIMIT 0;"; //avoid new connection during this process
         $sql_to_drop = "DROP DATABASE ${dbname}";
         $sql_to_create = "CREATE DATABASE ${dbname} OWNER gigadb";
         $dbconn = pg_connect("host=database dbname=postgres user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
@@ -228,6 +294,17 @@ class GigadbWebsiteContext implements Context
         pg_close($dbconn);
 
     }
+
+    /**
+     * truncateTable
+     *
+     * truncate a table. Used by some Context class to reset the gigadb_user table.
+     * This function requires the pgsql PHP extension to be installed.
+     *
+     * @param string $dbname name of database to operate on
+     * @param string $tablename name of the table to truncate
+     *
+    */
     public function truncateTable($dbname,$tablename) {
         $sql = "TRUNCATE TABLE ${tablename} CASCADE";
         $dbconn = pg_connect("host=database dbname=${dbname} user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
@@ -235,6 +312,18 @@ class GigadbWebsiteContext implements Context
         pg_close($dbconn);
     }
 
+    /**
+     * restartPhp
+     *
+     * After the database has been recreated, we need to restart php-fpm
+     * So it create a new valid connection. Not doing so will generate database errors on frontend.
+     *
+     * This function requires to be run in a container that has bind-mount
+     * the Docker daemon UNIX socker: /var/run/docker.sock
+     * So that we can send to it the API command to restart a container
+     *
+     *
+    */
     public function restartPhp()
     {
         $compose_name=getenv("COMPOSE_PROJECT_NAME");
@@ -243,6 +332,15 @@ class GigadbWebsiteContext implements Context
         sleep(2);
     }
 
+    /**
+     * loadUserData
+     *
+     * Used to load a new user record into the database.
+     * This function requires the pgsql PHP extension to be installed.
+     *
+     * @param string $user file name (without the .sql extension) to load.
+     *
+    */
     public function loadUserData($user) {
         $sql = file_get_contents("sql/${user}.sql");
         $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());

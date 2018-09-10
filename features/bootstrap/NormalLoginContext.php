@@ -4,16 +4,35 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
- * Features context.
+ * NormalLoginContext
+ *
+ * Contains steps definitions used by login.feature
+ *
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ * @see http://docs.behat.org/en/latest/quick_start.html#defining-steps
+ *
+ * @uses AffiliateLoginContext For checking user exists in database from email
+ * @uses \PHPUnit_Framework_Assert
  */
 class NormalLoginContext implements Context
 {
 
 
-    /** @var GigadbWebsiteContext */
+    /**
+     * @var AffiliateLoginContext
+     */
     private $affiliateLoginContext;
 
-    /** @BeforeScenario */
+    /**
+     * The method to retrieve needed contexts from the Behat environment
+     *
+     * @param BeforeScenarioScope $scope parameter needed to retrieve contexts from the environment
+     *
+     * @BeforeScenario
+     *
+    */
     public function gatherContexts(BeforeScenarioScope $scope)
     {
         $environment = $scope->getEnvironment();
@@ -21,18 +40,6 @@ class NormalLoginContext implements Context
         $this->affiliateLoginContext = $environment->getContext('AffiliateLoginContext');
     }
 
-
-//
-// Place your definition and hook methods here:
-//
-//    /**
-//     * @Given /^I have done something with "([^"]*)"$/
-//     */
-//    public function iHaveDoneSomethingWith($argument)
-//    {
-//        doSomethingWith($argument);
-//    }
-//
 
     /**
      * @Given /^I have a gigadb account with "([^"]*)" role$/

@@ -4,24 +4,50 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
- * Features context.
+ * AffiliateLoginContext
+ *
+ * Contains the steps definitions used in affiliate-login.feature
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ * @see http://docs.behat.org/en/latest/quick_start.html#defining-steps
+ *
+ * @uses \GigadbWebsiteContext For resetting the database
+ * @uses \Behat\MinkExtension\Context\MinkContext For controlling the web browser
+ * @uses \PHPUnit_Framework_Assert
  */
 class AffiliateLoginContext implements Context
 {
+    /**
+     * @var array $keys_map 2-dimensional associate array to access en variables for API credentials
+     *
+     * @todo extract this map into a module as it is also going to be used in UserIdentity's revoke_token
+    */
     private $keys_map = array('Facebook' => array('api_key' => 'FACEBOOK_APP_ID', 'client_key' => 'FACEBOOK_APP_SECRET'),
                                'Google' => array('api_key' => 'GOOGLE_CLIENT_ID', 'client_key' => 'GOOGLE_SECRET'),
                                'Twitter' => array('api_key' => 'TWITTER_KEY', 'client_key' => 'TWITTER_SECRET'),
                                'LinkedIn' => array('api_key' => 'LINKEDIN_API_KEY', 'client_key' => 'LINKEDIN_SECRET_KEY'),
                                'Orcid' => array('api_key' => 'ORCID_CLIENT_ID', 'client_key' => 'ORCID_CLIENT_SECRET'),
-                           ); //TODO: extract this map into a module as it is also going to be used in UserIdentity's revoke_token
+                           );
 
-    /** @var \Behat\MinkExtension\Context\MinkContext */
+    /**
+     * @var \Behat\MinkExtension\Context\MinkContext
+     */
     private $minkContext;
 
-    /** @var GigadbWebsiteContext */
+    /**
+     * @var GigadbWebsiteContext
+     */
     private $gigadbWebsiteContext;
 
-    /** @BeforeScenario ~@login*/
+    /**
+     * The method to retrieve needed contexts from the Behat environment for non-login features
+     *
+     * @param BeforeScenarioScope $scope parameter needed to retrieve contexts from the environment
+     *
+     * @BeforeScenario ~@login
+     *
+    */
     public function gatherContexts(BeforeScenarioScope $scope)
     {
         $environment = $scope->getEnvironment();
@@ -30,17 +56,6 @@ class AffiliateLoginContext implements Context
         $this->gigadbWebsiteContext = $environment->getContext('GigadbWebsiteContext');
     }
 
-//
-// Place your definition and hook methods here:
-//
-//    /**
-//     * @Given /^I have done something with "([^"]*)"$/
-//     */
-//    public function iHaveDoneSomethingWith($argument)
-//    {
-//        doSomethingWith($argument);
-//    }
-//
 
     /**
      * @Given /^test users are loaded$/
@@ -235,7 +250,7 @@ class AffiliateLoginContext implements Context
 
     /**
      * @When /^I authorise gigadb for "([^"]*)"$/
-     */
+    */
     public function iAuthoriseGigadbFor($arg1)
     {
         $session = $this->minkContext->getSession();
@@ -374,12 +389,20 @@ class AffiliateLoginContext implements Context
 
 
     /**
+     * Initialize the database when running tests for affiliate-login.feature and login.feature
+     *
      * @BeforeScenario @login
+     *
+     * @param BeforeScenarioScope $scope parameter needed to retrieve contexts from the environment
+     *
+     * @uses GigadbWebsiteContext::terminateDbBackend
+     * @uses GigadbWebsiteContext::truncateTable
+     * @uses GigadbWebsiteContext::loadUserData
+     * @uses GigadbWebsiteContext::restartPhp
     */
     public function initialize_session(BeforeScenarioScope $scope) {
 
         $environment = $scope->getEnvironment();
-
         $this->minkContext = $environment->getContext('Behat\MinkExtension\Context\MinkContext');
         $this->gigadbWebsiteContext = $environment->getContext('GigadbWebsiteContext');
 

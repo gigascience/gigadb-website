@@ -3,14 +3,35 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
+/**
+ * DatasetsOnProfileContext
+ *
+ * Contains the steps definitions used in datasets-on-user-profile-60.feature
+ *
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ * @see http://docs.behat.org/en/latest/quick_start.html#defining-steps
+ *
+ * @uses AuthorUserContext For the step "author x is associated with user y"
+ */
 class DatasetsOnProfileContext implements Context
 {
 
 
-    /** @var AuthorUserContext */
+    /**
+     * @var AuthorUserContext
+     */
     private $authorUserContext;
 
-    /** @BeforeScenario */
+    /**
+     * The method to retrieve needed contexts from the Behat environment
+     *
+     * @param BeforeScenarioScope $scope parameter needed to retrieve contexts from the environment
+     *
+     * @BeforeScenario
+     *
+    */
     public function gatherContexts(BeforeScenarioScope $scope)
     {
         $environment = $scope->getEnvironment();

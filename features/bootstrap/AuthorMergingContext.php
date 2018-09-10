@@ -4,24 +4,52 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 /**
- * Features context.
+ * AuthorMergingContext
+ *
+ * Contains the steps definitions used in merge-authors.feature
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ * @see http://docs.behat.org/en/latest/quick_start.html#defining-steps
+ *
+ * @uses GigadbWebsiteContext::loadUserData For loading author relationship fixture data
+ * @uses GigadbWebsiteContext::iSignInAsAnAdmin For signing in as a admin
+ * @uses ClaimDatasetContext For the sleep timer function
+ * @uses AuthorUserContext For clicking on a row from Author table in admin view
+ * @uses \Behat\MinkExtension\Context\MinkContext For controlling the web browser
+ * @uses \PHPUnit_Framework_Assert
  */
 class AuthorMergingContext implements Context
 {
 
-    /** @var \Behat\MinkExtension\Context\MinkContext */
+    /**
+     * @var \Behat\MinkExtension\Context\MinkContext
+     */
     private $minkContext;
 
-    /** @var GigadbWebsiteContext */
+    /**
+     * @var GigadbWebsiteContext
+     */
     private $gigadbWebsiteContext;
 
-    /** @var ClaimDatasetContext */
+    /**
+     * @var ClaimDatasetContext
+     */
     private $claimDatasetContext;
 
-    /** @var AuthorUserContext */
+    /**
+     * @var AuthorUserContext
+     */
     private $authorUserContext;
 
-    /** @BeforeScenario */
+     /**
+     * The method to retrieve needed contexts from the Behat environment
+     *
+     * @param BeforeScenarioScope $scope parameter needed to retrieve contexts from the environment
+     *
+     * @BeforeScenario
+     *
+    */
     public function gatherContexts(BeforeScenarioScope $scope)
     {
         $environment = $scope->getEnvironment();
@@ -32,18 +60,6 @@ class AuthorMergingContext implements Context
         $this->authorUserContext = $environment->getContext('AuthorUserContext');
     }
 
-
-//
-// Place your definition and hook methods here:
-//
-//    /**
-//     * @Given /^I have done something with "([^"]*)"$/
-//     */
-//    public function iHaveDoneSomethingWith($argument)
-//    {
-//        doSomethingWith($argument);
-//    }
-//
 
      /**
      * @Given /^A dialog box reads "([^"]*)"$/
