@@ -26,7 +26,7 @@ if [[ "$GIGADB_ENV" == "dev" ]];then
 	bin/behat -v --stop-on-failure -c behat.yml
 else
 	# we are on CI with remote runner, affilate login tests don't work becasause Google and Twitter block it
-	bin/behat --tags "@ok&&~@affiliate-login" -v --stop-on-failure -c behat.yml --format=html --out=/var/www/protected/runtime/features.html
+	bin/behat --tags "@ok&&~@affiliate-login" -v --stop-on-failure -c behat.yml --format progress --format pretty --out=/var/www/protected/runtime/features.txt --format junit --out=/var/www/protected/runtime/features.xml
 fi
 
 ./tests/unit_tests

@@ -68,6 +68,8 @@ composer.json
 vsftpd
 tmp
 files/html/help.html
+features.txt
+features.xml
 
 # docs
 
