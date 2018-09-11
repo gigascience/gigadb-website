@@ -52,6 +52,8 @@ tests/fixtures/affiliate_users_credentials
 sql/temp_command.sql
 sql/before-run.pgdmp
 test_users.txt
+.php_cs.cache
+phpcs.xml
 
 # Composer
 

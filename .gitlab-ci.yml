@@ -122,7 +122,7 @@ check_PSR2:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker-compose run --rm config
     - docker-compose run --rm webapp
-    - docker-compose run test ./bin/phpcs --report=source --report-file=protected/runtime/phpcs-psr2-source.txt --report-summary=protected/runtime/phpcs-psr2-summary.txt --report-full=protected/runtime/phpcs-psr2-full.txt --standard=PSR2 --colors protected
+    - docker-compose run --rm test ops/scripts/check_codestyle.sh
 
 check_PHPDoc:
   stage: conformance
@@ -139,7 +139,7 @@ check_PHPDoc:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker-compose run --rm config
     - docker-compose run --rm webapp
-    - docker-compose run test ./bin/phpcs --report=source --report-file=protected/runtime/phpcs-phpdoc-source.txt --report-summary=protected/runtime/phpcs-phpdoc-summary.txt --report-full=protected/runtime/phpcs-phpdoc-full.txt --standard=Generic --sniffs=Generic.Commenting.DocComment  --colors protected
+    - docker-compose run --rm test ops/scripts/check_phpdoc.sh
 
 
 check_SAST:
