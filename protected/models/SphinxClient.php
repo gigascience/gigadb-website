@@ -1067,7 +1067,7 @@ class SphinxClient
 
 		// attribute overrides
 		$req .= pack ( "N", count($this->_overrides) );
-		foreach ( $this->_overrides as $key => $entry )
+		foreach ( array_values($this->_overrides) as $entry )
 		{
 			$req .= pack ( "N", strlen($entry["attr"]) ) . $entry["attr"];
 			$req .= pack ( "NN", $entry["type"], count($entry["values"]) );

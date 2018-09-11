@@ -258,10 +258,6 @@ class SiteController extends Controller {
         }
     }
 
-	private function loadUser() {
-	  return User::model()->findbyPk(Yii::app()->user->_id);
-	}
-
 	/**
 	 * This is the action to handle external exceptions.
 	 */
@@ -300,7 +296,7 @@ class SiteController extends Controller {
 	public function actionMapbrowse() {
             
              $this->layout='new_main';
-	     $locations = $list= Yii::app()->db->createCommand("SELECT d.identifier,  d.title, satt.value, sp.scientific_name as sciname, s.id as sampleid FROM dataset as d
+	     $locations = Yii::app()->db->createCommand("SELECT d.identifier,  d.title, satt.value, sp.scientific_name as sciname, s.id as sampleid FROM dataset as d
 					      INNER JOIN dataset_sample as dsam on dsam.dataset_id = d.id
 						  INNER JOIN sample as s on s.id = dsam.sample_id
 					      INNER JOIN sample_attribute as satt on satt.sample_id=s.id 
@@ -430,7 +426,7 @@ class SiteController extends Controller {
 				$response = unserialize(base64_decode($opauth_code));
 
 				// Check if it's an error callback
-				if (array_key_exists('error', $response) or !isset($response['auth'])) {  
+				if (array_key_exists('error', $response) or !isset($response['auth'])) {
 					MyLog::Error('Error get info!');
 					$this->redirect('/');
 				}
@@ -448,7 +444,7 @@ class SiteController extends Controller {
 					$this->redirect('/');
 				}
 
-		        $user = User::processAffiliateUser($auth);
+		        User::processAffiliateUser($auth);
 
 				 #process to mark as logined in
 				$_SESSION['affiliate_login']['provider'] = $auth['provider'];
@@ -466,7 +462,7 @@ class SiteController extends Controller {
 				} else {
 					Yii::log("FAILED VALIDATION: " . print_r($model->getErrors(), true) , "error");
 				}
-					
+
 		        } catch (Exception $e) {
 		                MyLog::error(print_r($e, true));
 		                exit;
@@ -550,34 +546,33 @@ class SiteController extends Controller {
     */
     public function captchaGenerator($length = 7){
 		try{
-		$captchaPath = null;
-		$im = imagecreatetruecolor(600, 100);
-		// Create some colors
-		$white = imagecolorallocate($im, 255, 255, 255);
-		$grey = imagecolorallocate($im, 128, 128, 128);
+    		$im = imagecreatetruecolor(600, 100);
+    		// Create some colors
+    		$white = imagecolorallocate($im, 255, 255, 255);
+    		// $grey = imagecolorallocate($im, 128, 128, 128);
 
-		$black = imagecolorallocate($im, 66, 164, 244);
-		imagefilledrectangle($im, 0, 0, 600, 100, $white);
-		// The text to draw
-		
-		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$charactersLength = strlen($characters);
-		$randomString = '';
-		for ($i = 0; $i < $length; $i++) {
-			$randomString .= $characters[rand(0, $charactersLength - 1)];
-		}
-			
-		$text = $randomString;
-		$font = '/fonts/times_new_yorker.ttf';		
-		imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
-		
-		imagejpeg($im, 'images/tempcaptcha/'.$text.".png");
-		imagedestroy($im);
-		$_SESSION["captcha"] = $text;
-		return $text;
+    		$black = imagecolorallocate($im, 66, 164, 244);
+    		imagefilledrectangle($im, 0, 0, 600, 100, $white);
+    		// The text to draw
+
+    		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    		$charactersLength = strlen($characters);
+    		$randomString = '';
+    		for ($i = 0; $i < $length; $i++) {
+    			$randomString .= $characters[rand(0, $charactersLength - 1)];
+    		}
+
+    		$text = $randomString;
+    		$font = '/fonts/times_new_yorker.ttf';
+    		imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
+
+    		imagejpeg($im, 'images/tempcaptcha/'.$text.".png");
+    		imagedestroy($im);
+    		$_SESSION["captcha"] = $text;
+    		return $text;
 	}catch (Exception $e) {
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
-	}		
+        echo 'Caught exception: ',  $e->getMessage(), "\n";
+	}
 }
 
 }

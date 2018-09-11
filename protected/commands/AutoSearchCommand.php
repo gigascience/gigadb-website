@@ -8,7 +8,7 @@ class AutoSearchCommand extends CConsoleCommand {
 
     public function actionSearch(){
         $searches = SearchRecord::model()->findAll();
-        foreach ($searches as $key => $search) {
+        foreach (array_values($searches) as $search) {
             $criteria=json_decode($search->query,true);
             $oldResult=json_decode($search->result,true);
             $newResult = Dataset::sphinxSearch($criteria);
@@ -35,7 +35,6 @@ class AutoSearchCommand extends CConsoleCommand {
     private function sendNotificationEmail($list,$user,$criteria){
         $app_email_name = Yii::app()->params['app_email_name'];
         $app_email = Yii::app()->params['app_email'];
-        $email_prefix = Yii::app()->params['email_prefix'];
         $headers = "From: $app_email_name <$app_email>\r\n"; //optional header fields
         $headers .= "Content-type: text/html\r\n";
         ini_set('sendmail_from', $app_email);

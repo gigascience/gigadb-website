@@ -1,7 +1,7 @@
 <?php
 Yii::import('application.extensions.CAdvancedArBehavior');
 
-class Dataset extends MyActiveRecord
+class Dataset extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
@@ -399,7 +399,7 @@ class Dataset extends MyActiveRecord
                 'distinct'=>true,
             ));
         $list=array();
-        foreach ($models as $key=>$model){
+        foreach (array_values($models) as $model){
             $list[] = $model->title;
         }
         return $list;
@@ -408,7 +408,7 @@ class Dataset extends MyActiveRecord
     public function getDatasetTypes(){
         $list=array();
 
-        foreach ($this->datasetTypes as $key => $type) {
+        foreach (array_values($this->datasetTypes) as $type) {
             $list[]=$type->name;
         }
         return $list;
@@ -536,7 +536,7 @@ class Dataset extends MyActiveRecord
 
         $list=array();
 
-        foreach ($sk as $key => $keyword) {
+        foreach (array_values($sk) as $keyword) {
             $list[]=$keyword->value;
         }
         return $list;
@@ -660,23 +660,21 @@ class Dataset extends MyActiveRecord
             }
 
         }
-        
+
         $funding_References = $xml->addChild("fundingReferences");
-        
+
         if (isset($fundings)){
             foreach($fundings as $funding){
-    
+
                 $funder =  Funder::model()-> findByAttributes(array('id'=>$funding->funder_id));
                 $fundingReference = $funding_References->addChild("fundingReference");
                 $fundingReference->addChild('funderName',str_replace(array('&','>','<','"'), array('&amp;','&gt;','&lt;','&quot;'), $funder->primary_name_display));
                 $funderidentifier= $fundingReference->addChild('funderIdentifier',$funder->uri);
                 $funderidentifier->addAttribute('funderIdentifierType','Crossref Funder ID');
-                $funderaward= $fundingReference->addChild('awardNumber',$funding->grant_award);              
-                             
+                $fundingReference->addChild('awardNumber',$funding->grant_award);
 
-                
             }
-            
+
         }
 
         //<sizes><size>

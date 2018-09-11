@@ -12,22 +12,6 @@ class SearchController extends Controller
         $this->render('emailMatchedSearches');
     }
 
-    /* return CActiveRecords */
-    private function getFullFileResultByKeyword($fileIds) {
-        $temp_file_criteria = new CDbCriteria();
-        $temp_file_criteria->addInCondition("id", $fileIds);
-        return File::model()->findAll($temp_file_criteria);
-    }
-
-    private function getFullDatasetResultByKeyword($keyword) {
-        $wordCriteria=array();
-        $wordCriteria['keyword']=$keyword;
-        $list_result_dataset_criteria = $this->searchDataset($wordCriteria);
-        $temp_dataset_criteria = new CDbCriteria();
-        $temp_dataset_criteria->addInCondition("id", $list_result_dataset_criteria);
-        return Dataset::model()->findAll($temp_dataset_criteria);
-    }
-
     public function actionRedirect($id){
         $criteria = SearchRecord::model()->findByPk($id);
         if($criteria==null){
@@ -58,7 +42,7 @@ class SearchController extends Controller
 			$criteriaStr = $_POST['criteria'];
 			$criteria = CJSON::decode($criteriaStr, true);
 			if (isset($criteria['keyword']) && strlen($criteria['keyword']) > 0) {
-				
+
 				$search = new SearchRecord;
 				$search->user_id = Yii::app()->user->_id;
 				$search->name = $criteria['keyword'];
@@ -108,36 +92,35 @@ class SearchController extends Controller
 		echo json_encode($result);
 	}
 
-    
-    public function actionNew($keyword = '') {   
+    public function actionNew($keyword = '') {
         $this->layout="new_main";
-        $ds = new DatabaseSearch();        
+        $ds = new DatabaseSearch();
         $offset = 0;
         $limit = 10;
         $page = 1;
         $data = $ds->searchByKey($keyword);
 
-        if(!Yii::app()->request->isPostRequest) {          
+        if(!Yii::app()->request->isPostRequest) {
             $datasets = $data['datasets'];
             $datasets['data'] = array_slice($datasets['data'], $offset, $limit);
             $data['datasets'] = $datasets;
             $this->render('new', $data);
         }
 
-        else {            
+        else {
             try {
                 $page = intVal($_POST['page']);
             }
             catch (Exception $e) {
                 $page = 1;
             }
-            
+
 
             $offset = ($page-1)*$limit;
             $datasets = $data['datasets'];
             $datasets['data'] = array_slice($datasets['data'], $offset, $limit);
             $data['datasets'] = $datasets;
-            $data['page'] = $page;           
+            $data['page'] = $page;
 
             $result = $this->renderPartial('_new_result', array(
                 'model' => $data['model'],
@@ -145,7 +128,7 @@ class SearchController extends Controller
                 'samples' => $data['samples'],
                 'files' => $data['files'],
                 'display' => $data['display']
-            ), true, false); 
+            ), true, false);
 
             $filter = $this->renderPartial('_new_filter', array(
                 'model' => $data['model'],
@@ -165,7 +148,7 @@ class SearchController extends Controller
 
             echo CJSON::encode(array('success'=>true, 'filter'=>$filter, 'result'=>$result, 'range'=>$range));
             Yii::app()->end();
-        }    
+        }
     }
 
 }

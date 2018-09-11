@@ -210,7 +210,7 @@ class DatabaseSearch extends CApplicationComponent {
 
 	}
 
-	public function searchByKey($keyword, $page = 1) {
+	public function searchByKey($keyword) {
 		if(!$_GET['keyword']) {
             Yii::app()->user->setFlash('keyword','Keyword can not be blank');
             $this->redirect(array("/site/index"));
@@ -229,7 +229,6 @@ class DatabaseSearch extends CApplicationComponent {
                 , 'size_from' , 'size_to' , 'exclude' , 'external_link_type' ,
                 'size_from_unit' , 'size_to_unit');
 
-        $dates = array('pubdate_from', 'pubdate_to');
         foreach($_GET as $key => $value){
             if(in_array($key , $params) && $value){ 
             	$model->$key = $value;

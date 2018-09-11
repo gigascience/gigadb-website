@@ -102,7 +102,7 @@ class Species extends CActiveRecord
 	public static function getListCommonNames(){
         $models=Species::model()->findAll(array('limit'=>10));
         $list=array();
-        foreach ($models as $key=>$model){
+        foreach (array_values($models) as $model){
             $list[$model->id] = $model->common_name;
         }
         return $list;

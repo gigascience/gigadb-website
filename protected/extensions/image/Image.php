@@ -365,7 +365,7 @@ class Image {
 		$dir = str_replace('\\', '/', realpath($dir)).'/';
 
 		// Process the image with the driver
-		$status = $this->driver->process($this->image, $this->actions, $dir, $file, $render = TRUE);
+		$status = $this->driver->process($this->image, $this->actions, $dir, $file, TRUE);
 
 		// Reset actions. Subsequent save() or render() will not apply previous actions.
 		if ($keep_actions === FALSE)

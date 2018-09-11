@@ -26,7 +26,7 @@
  * @property FileExperiment[] $fileExperiments
  * @property FileAttributes[] $fileAttributes
  */
-class File extends MyActiveRecord
+class File extends CActiveRecord
 {
     public $doi_search;
     public $format_search;

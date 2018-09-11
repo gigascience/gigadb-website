@@ -151,7 +151,7 @@ class AdminSampleController extends Controller
                     // link datatypes
                     if (isset($_SESSION['datasettypes'])) {
                         $datasettypes = $_SESSION['datasettypes'];
-                        foreach ($datasettypes as $id => $datasettype) {
+                        foreach (array_keys($datasettypes) as $id) {
                             $newDatasetTypeRelationship = new DatasetType;
                             $newDatasetTypeRelationship->dataset_id = $dataset->id;
                             $newDatasetTypeRelationship->type_id = $id;
@@ -176,12 +176,12 @@ class AdminSampleController extends Controller
             $samples_array = explode(",", $samples_id);
 
 
-            foreach ($samples_array as $key => $value) {
+            foreach (array_values($samples_array) as $value) {
                 $datasetSample = new DatasetSample;
                 $datasetSample->dataset_id = $dataset_id;
                 $datasetSample->sample_id = $value;
                 if ($datasetSample->save()) {
-                    
+
                 }
             }
 

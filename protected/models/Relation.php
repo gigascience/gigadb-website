@@ -12,7 +12,7 @@
  * The followings are the available model relations:
  * @property Dataset $dataset
  */
-class Relation extends MyActiveRecord
+class Relation extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.

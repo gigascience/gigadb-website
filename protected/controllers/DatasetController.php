@@ -60,7 +60,7 @@ class DatasetController extends Controller
             return;
         }
         $this->metaData['description'] = $model->description;
-        $status_array = array('Request', 'Incomplete', 'Uploaded');
+        // $status_array = array('Request', 'Incomplete', 'Uploaded');
 
         if ($model->upload_status != "Published") {
             if (isset($_GET['token']) && $model->token == $_GET['token']) {
@@ -432,7 +432,7 @@ class DatasetController extends Controller
                 }
 
                 if (isset($datasettypes)) {
-                    foreach ($datasettypes as $datasetTypeId => $datasettype) {
+                    foreach (array_keys($datasettypes) as $datasetTypeId) {
                         $currDatasetTypeMap = DatasetType::model()->findByAttributes(array('dataset_id' => $model->id, 'type_id' => $datasetTypeId));
                         if (!$currDatasetTypeMap) {
                             $newDatasetTypeRelationship = new DatasetType;
@@ -453,7 +453,7 @@ class DatasetController extends Controller
 					// remove existing dataset attributes
 					$datasetAttributes = DatasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$id,'attribute_id'=>$sKeywordAttr->id));
 
-					foreach ($datasetAttributes as $key => $keyword) {
+					foreach (array_values($datasetAttributes) as $keyword) {
 						$keyword->delete();
 					}
 
@@ -940,7 +940,7 @@ EO_MAIL;
                     // link datatypes
                     if (isset($_POST['datasettypes'])) {
                         $datasettypes = $_POST['datasettypes'];
-                        foreach ($datasettypes as $id => $datasettype) {
+                        foreach (array_keys($datasettypes) as $id) {
                             $newDatasetTypeRelationship = new DatasetType;
                             $newDatasetTypeRelationship->dataset_id = $dataset->id;
                             $newDatasetTypeRelationship->type_id = $id;
@@ -1138,7 +1138,7 @@ EO_MAIL;
                         if (isset($_SESSION['datasettypes'])) {
                             $datasettypes = $_SESSION['datasettypes'];
                             if (count($datasettypes) == 1) {
-                                foreach ($datasettypes as $id => $datasettype)
+                                foreach (array_keys($datasettypes) as $id)
                                     $type_id = $id;
                                 //workflow
                                 if ($type_id == 5) {
@@ -1184,7 +1184,7 @@ EO_MAIL;
                         $dataset_id = $dataset->id;
                         if (isset($_SESSION['datasettypes'])) {
                             $datasettypes = $_SESSION['datasettypes'];
-                            foreach ($datasettypes as $id => $datasettype) {
+                            foreach (array_keys($datasettypes) as $id) {
                                 $newDatasetTypeRelationship = new DatasetType;
                                 $newDatasetTypeRelationship->dataset_id = $dataset->id;
                                 $newDatasetTypeRelationship->type_id = $id;
@@ -1207,167 +1207,6 @@ EO_MAIL;
         }
     }
 
-    private function createManuScript($dataset_id , $doi , $pmid){
-
-        if(empty($doi) && empty($pmid)){
-            return ;
-        }
-
-        $manuscript = new Manuscript;
-        if(!empty($doi)){
-            $manuscript->identifier = $doi;
-        }else{
-            $manuscript->identifier = " ";
-        }
-
-        if(!empty($pmid)){
-            $manuscript->pmid = $pmid;
-        }
-
-        $manuscript->dataset_id = $dataset_id;
-
-        $manuscript->save(false);
-    }
-
-    private function setProject($dataset_id,$project){
-
-        $new_project_url = $project['new_project_url'];
-        $new_project_name = $project['new_project_name'];
-        $new_project_image = $project['new_project_image'];
-
-        $rows = max (count($new_project_url) , count($new_project_name) , count($new_project_image));
-        for($i = 1; $i < $rows;$i++){
-            $project_url = isset($new_project_url[$i])?$new_project_url[$i]:" ";
-            $project_name = isset($new_project_name[$i])?$new_project_name[$i]:" ";
-            $project_image = isset($new_project_image[$i])?$new_project_image[$i]:" ";
-
-            $project = new Project;
-            $project->url = $project_url;
-            $project->name = $project_name;
-            $project->image_location = $project_image;
-
-            if($project->save(false)){
-                $dataset_project = new DatasetProject;
-                $dataset_project->dataset_id = $dataset_id;
-                $dataset_project->project_id = $project->id;
-                $dataset_project->save(false);
-            }
-
-        }
-
-    }
-
-    private function setAuthorList($dataset_id,$authors){
-
-
-        $temp = explode(";", $authors);
-
-        foreach ($temp as $key => $value) {
-            $value=trim($value);
-
-            if(strlen($value)>0){
-                $author = Author::model()->find("name=?",array($value));
-                if(!$author){ //  Author not found
-                    $author = new Author;
-                    $author->name =$value;
-                    $author->orcid ="orcid";
-                    $author->rank=0;
-                    $author->save(true);
-                }
-
-
-
-                $dataset_author = new DatasetAuthor;
-                $dataset_author->dataset_id = $dataset_id;
-                $dataset_author->author_id = $author->id;
-
-                $dataset_author->save(true);
-            }
-        }
-    }
-
-    private function setDatesetType($dataset_id,$dataset_types){
-        $temp = explode(",", $dataset_types);
-
-        foreach ($temp as $key => $value) {
-            $value=trim($value);
-            if(strlen($value)>0){
-                $type = Type::model()->find("name=?",array($value));
-                if(!$type){ // Type not found
-                    $type = new Type;
-                    $type->name = $value;
-                    $type->description="description";
-                    $type->save(true);
-
-                }
-
-                $dataset_type = new DatasetType;
-                $dataset_type->dataset_id = $dataset_id;
-                $dataset_type->type_id = $type->id;
-                $dataset_type->save(false);
-
-            }
-        }
-
-    }
-
-    private function addExternalLink($dataset_id,$additional_information,$genome_browser){
-        if(!empty($additional_information)){
-            $external_link_type = ExternalLinkType::model()->find("name=?",array("additional_information"));
-
-            $external_link = new ExternalLink;
-            $external_link->dataset_id = $dataset_id;
-            $external_link->external_link_type_id = $external_link_type->id;
-            $external_link->url = $additional_information;
-
-            $external_link->save(false);
-
-
-        }
-
-        if(!empty($genome_browser)){
-            $external_link_type = ExternalLinkType::model()->find("name=?",array("genome_browser"));
-            $external_link = new ExternalLink;
-            $external_link->dataset_id = $dataset_id;
-            $external_link->external_link_type_id = $external_link_type->id;
-            $external_link->url = $genome_browser;
-
-            $external_link->save(false);
-
-        }
-
-    }
-
-    private function getFileType($type){
-
-        $file_type = FileType::model()->find("name=?",array($type));
-        if($file_type == null){
-            $file_type = new FileType;
-
-            $file_type->name= $type;
-            $file_type->description = " ";
-
-            $file_type->save(false);
-        }
-
-        return $file_type->id;
-    }
-
-    private function getFileFormat($format){
-
-        $file_format = FileFormat::model()->find("name=?",array($format));
-        if($file_format == null){
-            $file_format = new FileFormat;
-
-            $file_format->name= $format;
-            $file_format->description = " ";
-
-            $file_format->save(false);
-        }
-
-        return $file_format->id;
-    }
-
     public function actioncheckDOIExist(){
 
         $result = array();
@@ -1387,19 +1226,6 @@ EO_MAIL;
             }
         }
         echo json_encode($result);
-    }
-
-    private function userExist($email){
-        $model = User::model()->find("email=?",array($email));
-        if($model){
-            return $model->id;
-        }else {
-            return false;
-        }
-    }
-
-    private function sendHtmlEmailWithAttachment() {
-
     }
 
     /**
@@ -1508,7 +1334,7 @@ EO_MAIL;
 			// remove existing dataset attributes
 			$datasetAttributes = datasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$dataset->id,'attribute_id'=>$sKeywordAttr->id));
 
-			foreach ($datasetAttributes as $key => $keyword) {
+			foreach (array_values($datasetAttributes) as $keyword) {
                             $keyword->delete();
 			}
 
@@ -1630,7 +1456,7 @@ EO_MAIL;
 			// remove existing dataset attributes
 			$datasetAttributes = datasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$dataset->id,'attribute_id'=>$sKeywordAttr->id));
 
-			foreach ($datasetAttributes as $key => $keyword) {
+			foreach (array_values($datasetAttributes) as $keyword) {
                             $keyword->delete();
 			}
 

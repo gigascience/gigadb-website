@@ -200,7 +200,7 @@ class AdminRelationController extends Controller
             if ($this->storeRelation($model, $id)) {
                 $newItem = array('id' => $id, 'related_doi' => $related_doi, 'relationship' => $relationship);
 
-                 if($relationship=="IsSupplementTo") 
+                 if($relationship=="IsSupplementTo")
                {
                 $model1=  new Relation;
                 $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
@@ -208,7 +208,7 @@ class AdminRelationController extends Controller
                 $model1->relationship='IsSupplementedBy';
                 $model1->save();
                }
-                 if($relationship=="IsSupplementedBy") 
+                 if($relationship=="IsSupplementedBy")
                {
                  $model1=  new Relation;
                 $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
@@ -216,7 +216,7 @@ class AdminRelationController extends Controller
                 $model1->relationship='IsSupplementedTo';
                 $model1->save();
                }
-                 if($relationship=="IsNewVersionOf") 
+                 if($relationship=="IsNewVersionOf")
                {
                 $model1=  new Relation;
                 $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
@@ -224,7 +224,7 @@ class AdminRelationController extends Controller
                 $model1->relationship='IsPreviousVersionOf';
                 $model1->save();
                }
-               if($relationship=="IsPreviousVersionOf") 
+               if($relationship=="IsPreviousVersionOf")
                {
                 $model1=  new Relation;
                 $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
@@ -232,7 +232,7 @@ class AdminRelationController extends Controller
                 $model1->relationship='IsNewVersionOf';
                 $model1->save();
                }
-               if($relationship=="IsPartOf") 
+               if($relationship=="IsPartOf")
                {
                 $model1=  new Relation;
                 $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
@@ -240,7 +240,7 @@ class AdminRelationController extends Controller
                 $model1->relationship='HasPart';
                 $model1->save();
                }
-                if($relationship=="HasPartOf") 
+                if($relationship=="HasPartOf")
                {
                 $model1=  new Relation;
                 $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
@@ -248,7 +248,7 @@ class AdminRelationController extends Controller
                 $model1->relationship='IsPartOf';
                 $model1->save();
                }
-                  if($relationship=="IsReferencedBy") 
+                  if($relationship=="IsReferencedBy")
                {
                 $model1=  new Relation;
                 $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
@@ -256,7 +256,7 @@ class AdminRelationController extends Controller
                 $model1->relationship='References';
                 $model1->save();
                }
-                   if($relationship=="References") 
+                   if($relationship=="References")
                {
                 $model1=  new Relation;
                 $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
@@ -264,12 +264,12 @@ class AdminRelationController extends Controller
                 $model1->relationship='IsReferencedBy';
                 $model1->save();
                }
-               
+
                 array_push($relations, $newItem);
 
                 $_SESSION['relations'] = $relations;
 
-                $vars = array('relations');
+                // $vars = array('relations');
                 //Dataset::storeSession($vars);
                 $model = new Relation;
             }
@@ -331,16 +331,16 @@ class AdminRelationController extends Controller
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
-        
-        
-          public function actionDelete1($id) {
+
+
+  public function actionDelete1($id) {
         if (isset($_SESSION['relations'])) {
             $info = $_SESSION['relations'];
             foreach ($info as $key => $value) {
                 if ($value['id'] == $id) {
                     unset($info[$key]);
                     $_SESSION['relations'] = $info;
-                    $vars = array('relations');
+                    // $vars = array('relations');
                     //Dataset::storeSession($vars);
                     $condition = 'id=' . $id;
                     Relation::model()->deleteAll($condition);

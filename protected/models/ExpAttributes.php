@@ -15,7 +15,7 @@
  * @property Experiment $exp
  * @property Unit $units
  */
-class ExpAttributes extends MyActiveRecord
+class ExpAttributes extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.

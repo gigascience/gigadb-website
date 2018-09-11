@@ -68,7 +68,7 @@ class RssController extends Controller {
 		$feed->addChannelTag('pubDate', date(DATE_RSS, time()));
 		$feed->addChannelTag('link', 'http://www.gigadb.org' );
 		$feed->addChannelTag('title', 'GigaDB' );
-		foreach ($datasets as $key => $dataset) {
+		foreach (array_values($datasets) as $dataset) {
             $title = $this->isDataset($dataset) ? $dataset->title : $dataset->message;
             $link = $this->isDataset($dataset) ? Yii::app()->request->hostInfo."/dataset/".$dataset->identifier : Yii::app()->request->hostInfo;
             $desc = $this->isDataset($dataset) ? $dataset->description : $dataset->message;

@@ -55,7 +55,7 @@ class AuthorTest extends CDbTestCase
 
  	function testFindAttachedAuthorByUserIdWhenNotAttached() {
  		$expectation = null;
- 		$this->assertEquals(null, Author::findAttachedAuthorByUserId(344),
+ 		$this->assertEquals($expectation, Author::findAttachedAuthorByUserId(344),
  							"return no author attached to user");
  	}
 

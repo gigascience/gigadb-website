@@ -91,7 +91,7 @@ class ExternalLinkType extends CActiveRecord
 	public static function getListTypes(){
         $models=ExternalLinkType::model()->findAll();
         $list=array();
-        foreach ($models as $key=>$model){
+        foreach (array_values($models) as $model){
             $list[$model->id] = $model->name;
         }
         return $list;

@@ -73,7 +73,7 @@ class AdminDatasetAuthorController extends Controller
 			'model'=>$model,
 		));
 	}
-        
+
     public function actionCreate1() {
         $model = new DatasetAuthor;
 
@@ -81,16 +81,14 @@ class AdminDatasetAuthorController extends Controller
         // $this->performAjaxValidation($model);
         //this is fake information
         $model->dataset_id = 1;
-        //update 
+        //update
         if (!isset($_SESSION['authors']))
             $_SESSION['authors'] = array();
 
         $authors = $_SESSION['authors'];
 
         if (isset($_POST['DatasetAuthor'])) {
- 
-           
-            
+
             $ranks = trim($_POST['DatasetAuthor']['rank']);
             $names = trim($_POST['DatasetAuthor']['author_name']);
             if (substr($names, -1) == ";")
@@ -142,7 +140,7 @@ class AdminDatasetAuthorController extends Controller
                         $rank = $rankarray[$index];
                     } else {
                         $rank = 1;
-                       
+
                         while (true) {
                              $found = true;
                             //find the maximum one in the authors array
@@ -154,17 +152,17 @@ class AdminDatasetAuthorController extends Controller
                             }
                             if($found)
                                 break;
-                            
+
                             $rank++;
                         }
 
-                      
+
                     }
 
                     $valid = true;
 
-                    //check if there is duplicate input                 
-                    foreach ($authors as $key => $author) {
+                    //check if there is duplicate input
+                    foreach (array_values($authors) as $author) {
                         if ($author['rank'] == $rank && $author['name'] == $name) {
                             $model->addError("author_id", "Duplicate input");
                             $valid = false;
@@ -245,15 +243,15 @@ class AdminDatasetAuthorController extends Controller
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
-        
-            public function actionDelete1($id) {
+
+    public function actionDelete1($id) {
         if (isset($_SESSION['authors'])) {
             $authors = $_SESSION['authors'];
             foreach ($authors as $key => $author) {
                 if ($author['id'] == $id) {
                     unset($authors[$key]);
                     $_SESSION['authors'] = $authors;
-                    $vars = array('authors');
+                    // $vars = array('authors');
                     //Dataset::storeSession($vars);
                     //delete the record in table dataset_author
                     $condition = "id=" . $id;
@@ -290,8 +288,8 @@ class AdminDatasetAuthorController extends Controller
 			'model'=>$model,
 		));
 	}
-        
-        public function actionSearch($term) {
+
+    public function actionSearch($term) {
 
         if (Yii::app()->request->isAjaxRequest && !empty($term)) {
             $variants = array();
@@ -312,12 +310,11 @@ class AdminDatasetAuthorController extends Controller
         else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
-    
-        public function actionAutocomplete() {
+
+    public function actionAutocomplete() {
         $res = array();
         $result = array();
         if (isset($_GET['term'])) {
-            $connection = Yii::app()->db;
             $sql = "Select distinct name from author where name like :name";
             $command = Yii::app()->db->createCommand($sql);
             $parts = explode(";", $_GET['term']);
@@ -332,8 +329,8 @@ class AdminDatasetAuthorController extends Controller
             Yii::app()->end();
         }
     }
-        
-            public function storeAuthor(&$datasetAuthor, &$id) {
+
+    public function storeAuthor(&$datasetAuthor, &$id) {
 
         if (isset($_SESSION['dataset_id'])) {
             $dataset_id = $_SESSION['dataset_id'];
@@ -447,7 +444,6 @@ class AdminDatasetAuthorController extends Controller
             if(isset($_POST['da_id'])) {
                 $da = DatasetAuthor::model()->findByPk($_POST['da_id']);
                 $rank = $da->rank;
-                $author = $da->author;
                 if($da->delete()) {
                     $da->author->delete();
 
@@ -471,7 +467,6 @@ class AdminDatasetAuthorController extends Controller
             if(isset($_POST['da_id']) && isset($_POST['rank'])) {
                 $transaction = Yii::app()->db->beginTransaction();
                 try {
-                    $is_exchange = false;
                     $da = DatasetAuthor::model()->findByPk($_POST['da_id']);
                     $rank = $da->rank;
                     $changeRank = intval($_POST['rank']);
@@ -493,7 +488,7 @@ class AdminDatasetAuthorController extends Controller
                         $criteria->addCondition('t.rank > '.min($rank,$changeRank));
                         $criteria->addCondition('t.rank <= '.max($rank,$changeRank));
                         $criteria->addCondition('t.dataset_id = '.$da->dataset_id);
-                        $das = DatasetAuthor::model()->findAll($criteria); 
+                        $das = DatasetAuthor::model()->findAll($criteria);
                         foreach($das as $updateDa) {
                             $updateDa->rank = $updateDa->rank - 1;
                         }

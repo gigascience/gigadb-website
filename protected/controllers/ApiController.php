@@ -9,15 +9,11 @@ class ApiController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
-	/**
-	 * @var CActiveRecord the currently loaded data model instance.
-	 */
-	private $_model;
 
 	/**
 	 * @return array action filters
 	 */
-	
+
         public function filters()
 	{
 		return array(
@@ -33,7 +29,7 @@ class ApiController extends Controller
 	public function accessRules()
 	{
 		return array(
-			
+
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('Dataset','File' , 'Sample','Search','Dump','List','Listsampleh'),
 				'users'=>array('*'),
@@ -43,7 +39,7 @@ class ApiController extends Controller
 			),
 		);
 	}
-        
+
         public function actionDump()
         {
             $fileName = Yii::app()->basePath.'/../files/gigadb_dump.xml';
@@ -53,7 +49,7 @@ class ApiController extends Controller
 
 else
                         throw new CHttpException(404, 'The requested page does not exist.');
-            
+
         }
         public function actionDataset()
 	{
@@ -63,7 +59,7 @@ else
                 $result= Yii::app()->request->getParam('result');
                 if(!isset($result))
                 {
-                  $result='all'; 
+                  $result='all';
                 }
                 if(isset($id))
                 {
@@ -72,13 +68,13 @@ else
                    catch(CDbException $e)
                    {
                              ob_end_clean();
-                            $this->_sendResponse(404, 
+                            $this->_sendResponse(404,
                             sprintf('No items where found for dataset id <b>%s</b>',$id) );
                    }
                     if(!isset($model))
                    {
                         ob_end_clean();
-                        $this->_sendResponse(404, 
+                        $this->_sendResponse(404,
                             sprintf('No items where found for dataset id <b>%s</b>',$id) );
                    }
                 }
@@ -88,20 +84,20 @@ else
                     catch(CDbException $e)
                    {
                              ob_end_clean();
-                            $this->_sendResponse(404, 
+                            $this->_sendResponse(404,
                             sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
                    }
                    if(!isset($model))
                    {
-                        ob_end_clean(); 
-                       $this->_sendResponse(404, 
+                        ob_end_clean();
+                       $this->_sendResponse(404,
                             sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
                    }
-                   
+
                 }
-                
+
                 ob_end_clean();
-                
+
                  switch ($result) {
                         case "dataset":
                             

@@ -331,10 +331,9 @@ EO_SQL;
 	 * SphinxSearch search sample
 	 * 
 	 * @param  array $criteria
-	 * @param  array $extraSampleIds
 	 * @return array
 	 */
-	public function sphinxSearch($criteria, $extraSampleIds)
+	public function sphinxSearch($criteria)
 	{
 		$s = Utils::newSphinxClient();
 		$keyword = isset($criteria['keyword']) ? $criteria['keyword'] : "";

@@ -423,7 +423,7 @@ class UserController extends Controller {
         $headers .= "Content-type: text/html\r\n";
         ini_set('sendmail_from', $app_email);
 
-        $recipient = $user->email;        
+        $recipient = $user->email;
         $subject = $email_prefix . "Welcome to " . Yii::app()->name;
         $url = $this->createAbsoluteUrl('user/confirm', array('key' => $user->id));
         $body = $this->renderPartial('emailWelcome',array('url'=>$url),true);
@@ -469,10 +469,10 @@ class UserController extends Controller {
 
     # Send notification email to admins about new user
     private function sendNotificationEmail($user) {
-        $app_email_name = Yii::app()->params['app_email_name'];
+        // $app_email_name = Yii::app()->params['app_email_name'];
         $app_email = Yii::app()->params['app_email'];
         $email_prefix = Yii::app()->params['email_prefix'];
-        $headers = "From: $app_email_name <$app_email>\r\n"; //optional header fields
+        // $headers = "From: $app_email_name <$app_email>\r\n"; //optional header fields
         ini_set('sendmail_from', $app_email);
 
         $recipient = Yii::app()->params['notify_email'];
@@ -508,19 +508,7 @@ EO_MAIL;
     }
 
 
-    # Like loadUser, but expects unique_id in id field
-    private function loadUserByUnique($id=null) {
-        if ($this->_user===null) {
-            if ($id!==null || isset($_GET['id'])) {
-                #$this->_user=User::model()->findbyPk($id!==null ? $id : $_GET['id']) ;
-                $value = $id!==null ? $id : $_GET['id'];
-                $this->_user=User::model()->findByAttributes(array('unique_id' => $value));
-            }
-            if ($this->_user===null)
-                throw new CHttpException(500,'The requested user does not exist.');
-        }
-        return $this->_user;
-    }
+
 
     /**
      * Executes any command triggered on the admin page.
@@ -532,32 +520,33 @@ EO_MAIL;
             $this->refresh();
         }
     }
-        public function mailsend($to,$from,$subject,$message){
+
+    public function mailsend($to,$from,$subject,$message){
         ob_start();
         Yii::log( __FUNCTION__."mail send function");
         $mail = new PHPMailer();
         Yii::log( __FUNCTION__."mail send function.......1");
-        //$mail->SMTPDebug = 2;  
+        //$mail->SMTPDebug = 2;
         $mail->IsSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->SMTPSecure = 'tls';  
-        
-        $mail->Port = '587'; 
+        $mail->SMTPSecure = 'tls';
+
+        $mail->Port = '587';
         Yii::log( __FUNCTION__."mail send function2");
-        
+
         $mail->Username = Yii::app()->params['app_email'];
         $mail->Password = Yii::app()->params['email_password'];;
-        $mail->SetFrom('database@gigasciencejournal.com','GigaDB');
+        $mail->SetFrom($from,'GigaDB');
         $mail->Subject = $subject;
         $mail->MsgHTML($message);
         $mail->addAddress($to, "");
-        $mail->isHTML(true);  
+        $mail->isHTML(true);
         $mail->addEmbeddedImage('images/email/top.gif', 'top');
         $mail->addEmbeddedImage('images/email/logo.gif', 'logo');
         $mail->addEmbeddedImage('images/email/bottom.gif', 'bottom');
-        
-        
+
+
         Yii::log( __FUNCTION__."mail send function3");
         if(!$mail->Send()) {
             Yii::log( __FUNCTION__."Mailer Error: " . $mail->ErrorInfo);
@@ -590,34 +579,33 @@ EO_MAIL;
     */
     public function captchaGenerator($length = 7){
         try{
-        $captchaPath = null;
-        $im = imagecreatetruecolor(420, 100);
-        // Create some colors
-        $white = imagecolorallocate($im, 255, 255, 255);
-        $grey = imagecolorallocate($im, 128, 128, 128);
+            $im = imagecreatetruecolor(420, 100);
+            // Create some colors
+            $white = imagecolorallocate($im, 255, 255, 255);
+            // $grey = imagecolorallocate($im, 128, 128, 128);
 
-        $black = imagecolorallocate($im, 66, 164, 244);
-        imagefilledrectangle($im, 0, 0, 420, 100, $white);
-        // The text to draw
-        
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-            
-        $text = $randomString;
-        $font = '/fonts/times_new_yorker.ttf';
-        imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
-        
-        imagejpeg($im, 'images/tempcaptcha/'.$text.".png");
-        imagedestroy($im);
-        $_SESSION["captcha"] = $text;
-        return $text;
+            $black = imagecolorallocate($im, 66, 164, 244);
+            imagefilledrectangle($im, 0, 0, 420, 100, $white);
+            // The text to draw
+
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $charactersLength = strlen($characters);
+            $randomString = '';
+            for ($i = 0; $i < $length; $i++) {
+                $randomString .= $characters[rand(0, $charactersLength - 1)];
+            }
+
+            $text = $randomString;
+            $font = '/fonts/times_new_yorker.ttf';
+            imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
+
+            imagejpeg($im, 'images/tempcaptcha/'.$text.".png");
+            imagedestroy($im);
+            $_SESSION["captcha"] = $text;
+            return $text;
     }catch (Exception $e) {
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
-    }       
+        echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }
 }
 }
 

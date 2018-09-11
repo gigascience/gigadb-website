@@ -102,7 +102,7 @@ class Project extends CActiveRecord
 	public static function getListProjects(){
         $models=Species::model()->findAll();
         $list=array();
-        foreach ($models as $key=>$model){
+        foreach (array_values($models) as $model){
             $list[$model->id] = $model->common_name;
         }
         return $list;

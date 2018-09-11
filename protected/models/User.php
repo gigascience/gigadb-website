@@ -65,7 +65,7 @@ class User extends CActiveRecord {
             array('terms','compare', 'on'=>'insert', 'compareValue' => TRUE,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
             array('role','safe'),
             array('preferred_link', 'safe'),
-            array('verifyCode', 'validateCaptcha'),                
+            array('verifyCode', 'validateCaptcha'),
         );
     }
 
@@ -77,7 +77,7 @@ class User extends CActiveRecord {
             $password_repeat = $this->password_repeat;
 
             if ($password != $password_repeat) {
-                $this->addError('password',"Password and confirm don't match");
+                $this->addError($attribute,"Password and confirm don't match");
                 return false;
             }
             else {
@@ -88,39 +88,37 @@ class User extends CActiveRecord {
         }
         return true;
     }
-    
-     public function checkterms($attribute, $params){
-         
-     }
+
+
     /**
     * Validate captcha
     */
     public function validateCaptcha($attribute, $params){
         $file = "images/tempcaptcha/".$_SESSION["captcha"].".png";
-        
-        if (empty($this->$attribute)){          
+
+        if (empty($this->$attribute)){
             //Check if file exist
             if(file_exists($file)){
-                //Delete file               
+                //Delete file
                  unlink($file);
                  $this->addError($attribute, 'Captcha is required');
             }
         }
         else if (!empty($this->$attribute)){
           if($this->$attribute == $_SESSION["captcha"]){
-            //Delete file               
-            unlink($file);          
+            //Delete file
+            unlink($file);
           }else{
-            //Delete file               
+            //Delete file
             unlink($file);
             $this->addError($attribute, 'Captcha is incorrect!');
           }
         }
         else{
-            //  Delete file                 
+            //  Delete file
             unlink($file);
           $this->addError($attribute, 'Captcha is required');
-        }   
+        }
     }
 
     /**
@@ -145,7 +143,7 @@ class User extends CActiveRecord {
             'last_name' => Yii::t('app' , 'Last Name'),
             'password' => Yii::t('app' , 'Password'),
             'affiliation' => Yii::t('app' , 'Affiliation'),
-            'password_repeat' => Yii::t('app' ,'Confirm Password'),          
+            'password_repeat' => Yii::t('app' ,'Confirm Password'),
         );
     }
 

@@ -95,7 +95,7 @@ class Publisher extends CActiveRecord
 	public static function getListPublishers(){
         $models=Publisher::model()->findAll();
         $list=array();
-        foreach ($models as $key=>$model){
+        foreach (array_values($models) as $model){
             $list[$model->id] = $model->name;
         }
         return $list;

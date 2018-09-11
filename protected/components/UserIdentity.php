@@ -46,10 +46,10 @@ class UserIdentity extends CUserIdentity {
     }
 
 
-    /** 
+    /**
      * revoke affilate login token
     **/
-    public static function revoke_token() {  
+    public static function revoke_token() {
         $provider = null;
         $token = null;
 
@@ -74,14 +74,14 @@ class UserIdentity extends CUserIdentity {
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($curl_post_data) );
-            $http_response = curl_exec($curl);
-            $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
+            curl_exec($curl);
+            curl_getinfo($curl, CURLINFO_HTTP_CODE);
             curl_close($curl);
 
         }
-        //TODO:add Google, Facebook, Twitter
-        //TODO:refactor most of the curl stuff into its own function as likely common to all providers
+        //TODO: add Google, Facebook, Twitter
+        //TODO: refactor most of the curl stuff into its own function as likely common to all providers
     }
-    
+
 
 }

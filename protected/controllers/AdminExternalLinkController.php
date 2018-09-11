@@ -81,7 +81,7 @@ class AdminExternalLinkController extends Controller
                 if ($value['id'] == $id) {
                     unset($info[$key]);
                     $_SESSION['externalLinks'] = $info;
-                    $vars = array('externelLinks');
+                    // $vars = array('externelLinks');
                     //Dataset::storeSession($vars);
                     $condition = 'id=' . $id;
                     ExternalLink::model()->deleteAll($condition);
@@ -153,7 +153,7 @@ class AdminExternalLinkController extends Controller
                     array_push($externalLinks, $newItem);
 
                     $_SESSION['externalLinks'] = $externalLinks;
-                    $vars = array('externalLinks');
+                    // $vars = array('externalLinks');
                     //Dataset::storeSession($vars);
                     $model = new ExternalLink;
                 }
@@ -176,7 +176,6 @@ class AdminExternalLinkController extends Controller
 
         if (isset($_GET['term'])) {
             $term = $_GET['term'];
-            $connection = Yii::app()->db;
             if (is_numeric($term)) {
                 $sql = "select tax_id,common_name,scientific_name from species where cast(tax_id as text) like :name";
                 $command = Yii::app()->db->createCommand($sql);

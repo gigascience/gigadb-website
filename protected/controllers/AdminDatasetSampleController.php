@@ -81,15 +81,14 @@ class AdminDatasetSampleController extends Controller
 
         if (isset($_GET['term'])) {
             $term = $_GET['term'];
-            $connection = Yii::app()->db;
             if (is_numeric($term)) {
 //                $sql = "
-//                    
+//
 //                    (select distinct scientific_name as name,tax_id from species where cast(tax_id as text) like :name)
 //                    union
 //                    (select distinct common_name as name,tax_id from species where cast(tax_id as text) like :name)
 //                    order by name;
-//                   
+//
 //";
                 $sql = "select tax_id,common_name,scientific_name from species where cast(tax_id as text) like :name";
                 $command = Yii::app()->db->createCommand($sql);
@@ -97,8 +96,8 @@ class AdminDatasetSampleController extends Controller
                 $res = $command->queryAll();
             } else {
 //                $sql = "select (p.tax_id || '-' || p.common_name || ',' || p.scientific_name) as name from (
-//                    select distinct on (tax_id) * from 
-//                    species where common_name ilike :name or scientific_name ilike :name ) p 
+//                    select distinct on (tax_id) * from
+//                    species where common_name ilike :name or scientific_name ilike :name ) p
 //                    order by length(p.common_name)";
                 $sql = "select tax_id , common_name ,scientific_name from
                     species where common_name ilike :name or scientific_name ilike :name
@@ -148,15 +147,15 @@ class AdminDatasetSampleController extends Controller
             Yii::app()->end();
         }
     }
-    
-     public function actionDelete1($id) {
+
+    public function actionDelete1($id) {
         if (isset($_SESSION['samples'])) {
             $info = $_SESSION['samples'];
             foreach ($info as $key => $value) {
                 if ($value['id'] == $id) {
                     unset($info[$key]);
                     $_SESSION['samples'] = $info;
-                    $vars = array('samples');
+                    // $vars = array('samples');
                     //Dataset::storeSession($vars);
                     $condition = 'id=' . $id;
 
@@ -172,7 +171,7 @@ class AdminDatasetSampleController extends Controller
 
     public function storeSample(&$model, &$id) {
 
-        
+
         if (isset($_SESSION['dataset_id'])) {
             $dataset_id = $_SESSION['dataset_id'];
             //1) find species id
@@ -329,7 +328,7 @@ class AdminDatasetSampleController extends Controller
 
                 array_push($samples, $newItem);
                 $_SESSION['samples'] = $samples;
-                $vars = array('samples');
+                // $vars = array('samples');
                 //Dataset::storeSession($vars);
                 $model = new DatasetSample;
             }
