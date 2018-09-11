@@ -15,7 +15,8 @@
         "phpunit/phpunit-mock-objects": "*",
         "squizlabs/php_codesniffer": "3.*",
         "phpdocumentor/phpdocumentor": "2.9.0",
-        "friendsofphp/php-cs-fixer": "*"
+        "friendsofphp/php-cs-fixer": "*",
+        "phpmd/phpmd": "2.6.0"
     },
     "minimum-stability": "stable",
     "config": {
