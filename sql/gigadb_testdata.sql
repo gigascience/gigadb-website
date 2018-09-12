@@ -3877,12 +3877,12 @@ ALTER TABLE ONLY search
 
 
 --
--- Name: public; Type: ACL; Schema: -; Owner: postgres
+-- Name: public; Type: ACL; Schema: -; Owner: gigadb
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM postgres;
-GRANT ALL ON SCHEMA public TO postgres;
+REVOKE ALL ON SCHEMA public FROM gigadb;
+GRANT ALL ON SCHEMA public TO gigadb;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
