@@ -13,6 +13,7 @@
         "phpunit/phpunit": "^5.7",
         "phpunit/php-code-coverage": "*",
         "phpunit/phpunit-mock-objects": "*",
+        "aik099/phpunit-mink": "~2.0",
         "squizlabs/php_codesniffer": "3.*",
         "phpdocumentor/phpdocumentor": "2.9.0",
         "friendsofphp/php-cs-fixer": "*",
