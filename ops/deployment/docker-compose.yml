@@ -57,7 +57,7 @@ services:
       - db-tier
 
   config:
-    image: cfmanteiga/alpine-bash-curl-jq:latest
+    image: rija/docker-alpine-shell-tools:1.0.1
     volumes:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}

@@ -1,22 +1,22 @@
 {
     "require": {
-        "yiisoft/yii": "CHANGE_ME_YII",
+        "yiisoft/yii": "${YII_VERSION}",
         "phpmailer/phpmailer": "^6.0"
     },
     "require-dev": {
         "behat/behat":  "^3.5",
         "behat/mink":   "^1.7",
-        "behat/mink-extension":  "^2.3",
-        "fabpot/goutte":    "^3.2",
+        "behat/mink-extension":  "*",
         "behat/mink-goutte-driver":     "*",
         "behat/mink-selenium2-driver":  "*",
+        "fabpot/goutte":    "^3.2",
         "phpunit/phpunit": "^5.7",
         "phpunit/php-code-coverage": "*",
         "phpunit/phpunit-mock-objects": "*",
         "aik099/phpunit-mink": "~2.0",
-        "squizlabs/php_codesniffer": "3.*",
-        "phpdocumentor/phpdocumentor": "2.9.0",
-        "friendsofphp/php-cs-fixer": "*",
+        "squizlabs/php_codesniffer": "~3.0",
+        "phpdocumentor/phpdocumentor": "^2.9",
+        "friendsofphp/php-cs-fixer": "^v2.2",
         "sebastian/phpcpd": "^3.0",
         "phpmd/phpmd": "2.6.0"
     },
@@ -24,7 +24,7 @@
     "config": {
         "bin-dir": "bin",
         "platform": {
-            "php": "CHANGE_ME_PHP"
+            "php": "${PHP_VERSION}"
         }
     }
 }

@@ -9,12 +9,15 @@ set -u
 # display the lines of this script as they are executed for debugging
 # set -x
 
+# export all variables that need to be substitued in templates
+set -a
 # Setting up in-container application source variable (APP_SOURCE).
 # It's the counterpart of the host variable APPLICATION
 APP_SOURCE=/var/www
 
 # setting up the in-container path to Yii 1.1 framework
 YII_PATH="/opt/yii-1.1"
+
 
 # read env variables in same directory, from a file called .env.
 # They are shared by both this script and Docker compose files.
@@ -41,6 +44,9 @@ fi
 echo "Sourcing secrets"
 source "./.secrets"
 
+# restore default settings for variables
+set +a
+
 echo "* ---------------------------------------------- *"
 
 # do the stuff that vagrant would normally do. Even if vagrant is used, doing this stuff regardless is still ok.
@@ -51,22 +57,17 @@ mkdir -p ${APP_SOURCE}/images/tempcaptcha && chmod 777 ${APP_SOURCE}/images/temp
 
 # Generate nginx site config
 
-SOURCE=${APP_SOURCE}/ops/configuration/nginx-conf/sites/gigadb.conf
+SOURCE=${APP_SOURCE}/ops/configuration/nginx-conf/sites/gigadb.conf.dist
 TARGET=/etc/nginx/sites-available/gigadb.conf
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "s|192.168.42.10|${HOME_URL}|" \
-    $TARGET
+VARS='$HOME_URL'
+envsubst $VARS < $SOURCE > $TARGET
 
 # Configure composer.json with dependency versions
 
-SOURCE=${APP_SOURCE}/ops/configuration/php-conf/composer.json
+SOURCE=${APP_SOURCE}/ops/configuration/php-conf/composer.json.dist
 TARGET=${APP_SOURCE}/composer.json
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "s|CHANGE_ME_YII|${YII_VERSION}|" \
-    -e "s|CHANGE_ME_PHP|${PHP_VERSION}|" \
-    $TARGET
+VARS='$YII_VERSION:$PHP_VERSION'
+envsubst $VARS < $SOURCE > $TARGET
 
 # Generate config files for gigadb-website application using sed
 
@@ -93,21 +94,15 @@ cp $SOURCE $TARGET \
     -e "s|<%= node\[:gigadb\]\[:beanstalk\]\[:host\] %>|${BEANSTALK_SERVER_HOST}|g" \
     $TARGET
 
-SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-index.php.erb
+SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/index.${GIGADB_ENV}.php.dist
 TARGET=${APP_SOURCE}/index.php
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "/<% path = node\[:yii\]\[:path\] -%>/d" \
-    -e "s|<%= path %>|${YII_PATH}|g" \
-    $TARGET
+VARS='$YII_PATH:$APP_SOURCE'
+envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yiic.php.erb
+SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/yii.php.dist
 TARGET=${APP_SOURCE}/protected/yiic.php
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "/<% path = node\[:yii\]\[:path\] -%>/d" \
-    -e "s|<%= path %>|${YII_PATH}|g" \
-    $TARGET
+VARS='$YII_PATH'
+envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-local.php.erb
 TARGET=${APP_SOURCE}/protected/config/local.php
