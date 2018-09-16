@@ -119,4 +119,52 @@ class Relation extends CActiveRecord
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );
     }
+
+    /**
+	 *
+	 * @return string $doi
+	 **/
+    public function getRelatedDOI() {
+    	return $this->related_doi;
+    }
+
+    /**
+	 *
+	 * @return int $dataset_id
+	 **/
+    public function getDatasetID() {
+    	return $this->dataset_id;
+    }
+
+    /**
+	 *
+	 * @return string $relationship
+	 **/
+    public function getRelationship() {
+    	return $this->relationship;
+    }
+
+    /**
+	 *
+	 * @param string $doi
+	 **/
+    public function setRelatedDOI($doi) {
+    	$this->related_doi = $doi;
+    }
+
+    /**
+	 *
+	 * @param int $dataset_id
+	 **/
+    public function setDatasetID($dataset_id) {
+    	$this->dataset_id = $dataset_id;
+    }
+
+    /**
+	 *
+	 * @param string $relationship
+	 **/
+    public function setRelationship($relationship) {
+    	$this->relationship_id = Relationship::model()->findByAttributes(array("name" => $relationship))->id;
+    }
 }
