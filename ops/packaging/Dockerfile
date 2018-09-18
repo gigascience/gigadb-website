@@ -109,13 +109,19 @@ RUN if [ ${INSTALL_GRAPHVIZ} = true ]; then \
     apt-get install -y graphviz \
 ;fi
 
-ARG INSTALL_ZIP=false
-
-RUN if [ ${INSTALL_ZIP} = true ]; then \
-    docker-php-ext-install zip && apt-get install -y unzip \
+ARG INSTALL_COMPOSER=false
+ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_HOME /tmp
+RUN if [ ${INSTALL_COMPOSER} = true ]; then \
+    docker-php-ext-install zip \
+    && apt-get install -y unzip wget \
+    && EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" \
+    && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && ACTUAL_SIGNATURE="$(php -r "echo hash_file('SHA384', 'composer-setup.php');")" \
+    && test $EXPECTED_SIGNATURE = $ACTUAL_SIGNATURE  \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer --quiet \
+    && rm composer-setup.php \
 ;fi
-
-COPY --from=composer:1.5 /usr/bin/composer /usr/bin/composer
 
 RUN usermod -u 1000 www-data
 
