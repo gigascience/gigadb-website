@@ -37,6 +37,8 @@ PHP_VERSION=5.6
 POSTGRES_VERSION=9.4
 YII_VERSION=1.1.16
 
+### prefix for local container ##############################################################################
+CI_PROJECT_PATH="deployment"
 
 ### Application Access variables ########################################################################################
 # Point to your code
