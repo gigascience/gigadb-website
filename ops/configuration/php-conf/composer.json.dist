@@ -1,7 +1,8 @@
 {
     "require": {
         "yiisoft/yii": "${YII_VERSION}",
-        "phpmailer/phpmailer": "^6.0"
+        "phpmailer/phpmailer": "^6.0",
+        "gabrielelana/byte-units": "^0.5"
     },
     "require-dev": {
         "behat/behat":  "^3.5",

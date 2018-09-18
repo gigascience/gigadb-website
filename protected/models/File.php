@@ -240,6 +240,26 @@ class File extends CActiveRecord
 		));
 	}
 
+
+	/**
+	 * return the size of the file formatted for display
+	 *
+	 * @param string $unit kB, MB, GB, TB, B or null
+	 * @param int $precision number of decimals after the dot
+	 *
+	 * @return string formatted size
+	 *
+	 **/
+	public function getSizeWithFormat($unit = null, $precision = 2)
+	{
+
+		if ( null == $precision ) {
+			$precision = 2;
+		}
+		return ByteUnits\bytes($this->size)->format("$unit/$precision");
+
+	}
+
 	    /**
 	 * Convert bytes to human readable format
 	 *
