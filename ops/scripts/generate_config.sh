@@ -71,28 +71,11 @@ envsubst $VARS < $SOURCE > $TARGET
 
 # Generate config files for gigadb-website application using sed
 
-SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-aws.json.erb
-TARGET=${APP_SOURCE}/protected/config/aws.json
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "/<% aws = node\[:aws\] -%>/d" \
-    -e "s|<%= aws\[:aws_access_key_id\] %>|${AWS_ACCESS_KEY_ID}|g" \
-    -e "s|<%= aws\[:aws_secret_access_key\] %>|${AWS_SECRET_ACCESS_KEY}|g" \
-    -e "s|<%= aws\[:s3_bucket_for_file_bundles\] %>|${AWS_S3_BUCKET_FOR_FILE_BUNDLES}|g" \
-    -e "s|<%= aws\[:s3_bucket_for_file_previews\] %>|${AWS_S3_BUCKET_FOR_FILE_PREVIEWS}|g" \
-    -e "s|<%= aws\[:aws_default_region\] %>|${AWS_DEFAULT_REGION}|g" \
-    $TARGET
 
-SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-console.php.erb
+SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/console.php.dist
 TARGET=${APP_SOURCE}/protected/config/console.php
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "s|<%= node\[:gigadb\]\[:mfr\]\[:preview_server\] %>|${PREVIEW_SERVER_HOST}|g" \
-    -e "s|<%= node\[:gigadb\]\[:ftp\]\[:connection_url\] %>|${FTP_CONNECTION_URL}|g" \
-    -e "s|<%= node\[:gigadb\]\[:multidownload\]\[:download_host\] %>|${MULTIDOWNLOAD_SERVER_HOST}|g" \
-    -e "s|<%= node\[:gigadb\]\[:redis\]\[:server\] %>|${REDIS_SERVER_HOST}|g" \
-    -e "s|<%= node\[:gigadb\]\[:beanstalk\]\[:host\] %>|${BEANSTALK_SERVER_HOST}|g" \
-    $TARGET
+VARS='$NONE'
+envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/index.${GIGADB_ENV}.php.dist
 TARGET=${APP_SOURCE}/index.php
@@ -104,91 +87,32 @@ TARGET=${APP_SOURCE}/protected/yiic.php
 VARS='$YII_PATH'
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-local.php.erb
+SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/local.php.dist
 TARGET=${APP_SOURCE}/protected/config/local.php
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "/<% home_url = node\[:gigadb\]\[:server_names\] -%>/d" \
-    -e "/<% server_email = node\[:gigadb\]\[:admin_email\] -%>/d" \
-    -e "s|<%= node\[:gigadb\]\[:mailchimp\]\[:mailchimp_api_key\] %>|${MAILCHIMP_API_KEY}|g" \
-    -e "s|<%= node\[:gigadb\]\[:mailchimp\]\[:mailchimp_list_id\] %>|${MAILCHIMP_LIST_ID}|g" \
-    -e "s|<%= node\[:gigadb\]\[:analytics\]\[:analytics_client_email\] %>|${ANALYTICS_CLIENT_EMAIL}|g" \
-    -e "s|<%= node\[:gigadb\]\[:analytics\]\[:analytics_client_id\] %>|${ANALYTICS_CLIENT_ID}|g" \
-    -e "s|<%= node\[:gigadb\]\[:analytics\]\[:analytics_keyfile_path\] %>|${ANALYTICS_KEYFILE_PATH}|g" \
-    -e "s|<%= home_url %>|${HOME_URL}|g" \
-    -e "s|<%= home_url %>|${SERVER_EMAIL}|g" \
-    -e "s|<%= node\[:gigadb\]\[:recaptcha\]\[:recaptcha_publickey\] %>|${RECAPTCHA_PUBLICKEY}|g" \
-    -e "s|<%= node\[:gigadb\]\[:recaptcha\]\[:recaptcha_privatekey\] %>|${RECAPTCHA_PRIVATEKEY}|g" \
-    -e "s|<%= node\[:gigadb\]\[:analytics\]\[:google_analytics_profile\] %>|${GOOGLE_ANALYTICS_PROFILE}|g" \
-    -e "s|<%= node\[:gigadb\]\[:mds\]\[:mds_username\] %>|${MDS_USERNAME}|g" \
-    -e "s|<%= node\[:gigadb\]\[:mds\]\[:mds_password\] %>|${MDS_PASSWORD}|g" \
-    -e "s|<%= node\[:gigadb\]\[:mds\]\[:mds_prefix\] %>|${MDS_PREFIX}|g" \
-    $TARGET
+VARS='$MAILCHIMP_API_KEY:$MAILCHIMP_LIST_ID:$ANALYTICS_CLIENT_EMAIL:$ANALYTICS_CLIENT_ID:$ANALYTICS_KEYFILE_PATH:$HOME_URL:$SERVER_EMAIL:$RECAPTCHA_PUBLICKEY:$RECAPTCHA_PRIVATEKEY:$GOOGLE_ANALYTICS_PROFILE:$MDS_USERNAME:$MDS_PASSWORD:$MDS_PREFIX'
+envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-main.php.erb
+SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/main.php.dist
 TARGET=${APP_SOURCE}/protected/config/main.php
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "s|<%= node\[:gigadb\]\[:facebook\]\[:app_id\] %>|${FACEBOOK_APP_ID}|g" \
-    -e "s|<%= node\[:gigadb\]\[:facebook\]\[:app_secret\] %>|${FACEBOOK_APP_SECRET}|g" \
-    -e "s|<%= node\[:gigadb\]\[:linkedin\]\[:api_key\] %>|${LINKEDIN_API_KEY}|g" \
-    -e "s|<%= node\[:gigadb\]\[:linkedin\]\[:secret_key\] %>|${LINKEDIN_SECRET_KEY}|g" \
-    -e "s|<%= node\[:gigadb\]\[:google\]\[:client_id\] %>|${GOOGLE_CLIENT_ID}|g" \
-    -e "s|<%= node\[:gigadb\]\[:google\]\[:client_secret\] %>|${GOOGLE_SECRET}|g" \
-    -e "s|<%= node\[:gigadb\]\[:twitter\]\[:key\] %>|${TWITTER_KEY}|g" \
-    -e "s|<%= node\[:gigadb\]\[:twitter\]\[:secret\] %>|${TWITTER_SECRET}|g" \
-    -e "s|<%= node\[:gigadb\]\[:orcid\]\[:client_id\]  %>|${ORCID_CLIENT_ID}|g" \
-    -e "s|<%= node\[:gigadb\]\[:orcid\]\[:client_secret\] %>|${ORCID_CLIENT_SECRET}|g" \
-    -e "s|<%= node\[:gigadb\]\[:orcid\]\[:environment\] %>|${ORCID_CLIENT_ENVIRONMENT}|g" \
-    -e "s|<%= node\[:gigadb\]\[:ftp\]\[:connection_url\] %>|${FTP_CONNECTION_URL}|g" \
-    -e "s|<%= node\[:gigadb\]\[:redis\]\[:server\] %>|${REDIS_SERVER_HOST}|g" \
-    -e "s|<%= node\[:gigadb\]\[:beanstalk\]\[:host\] %>|${BEANSTALK_SERVER_HOST}|g" \
-    -e "s|<%= node\[:gigadb\]\[:mfr\]\[:preview_server\] %>|${PREVIEW_SERVER_HOST}|g" \
-    $TARGET
+VARS='$FACEBOOK_APP_ID:$FACEBOOK_APP_SECRET:$LINKEDIN_API_KEY:$LINKEDIN_SECRET_KEY:$GOOGLE_CLIENT_ID:$GOOGLE_SECRET:$TWITTER_KEY:$TWITTER_SECRET:$ORCID_CLIENT_ID:$ORCID_CLIENT_SECRET:$ORCID_CLIENT_ENVIRONMENT:$FTP_CONNECTION_URL'
+envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-db.json.erb
+SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/db.json.dist
 TARGET=${APP_SOURCE}/protected/config/db.json
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "/<% db = node\[:gigadb\]\[:db\] -%>/d" \
-    -e "s|<%= db\[:database\] %>|${GIGADB_DB}|g" \
-    -e "s|<%= db\[:host\] %>|${GIGADB_HOST}|g" \
-    -e "s|<%= db\[:user\] %>|${GIGADB_USER}|g" \
-    -e "s|<%= db\[:password\] %>|${GIGADB_PASSWORD}|g" \
-    $TARGET
+VARS='$GIGADB_DB:$GIGADB_HOST:$GIGADB_USER:$GIGADB_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/set_env.sh.erb
-TARGET=${APP_SOURCE}/protected/scripts/set_env.sh
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "/<% db = node\[:gigadb\]\[:db\] -%>/d" \
-    -e "s|<%= db\[:database\] %>|${GIGADB_DB}|g" \
-    -e "s|<%= db\[:host\] %>|${GIGADB_HOST}|g" \
-    -e "s|<%= db\[:user\] %>|${GIGADB_USER}|g" \
-    -e "s|<%= db\[:password\] %>|${GIGADB_PASSWORD}|g" \
-    $TARGET
-
-SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/es.json.erb
+SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/es.json.dist
 TARGET=${APP_SOURCE}/protected/config/es.json
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "s|<%= node\[:gigadb\]\[:es_port\] %>|${GIGADB_ES_PORT}|g" \
-    $TARGET
+VARS='$GIGADB_ES_PORT'
+envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/update_links.sh.erb
-TARGET=${APP_SOURCE}/protected/scripts/update_links.sh
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "s|<%= node\[:gigadb\]\[:db\]\[:password\] %>|${GIGADB_PASSWORD}|g" \
-    $TARGET
-
-SOURCE=${APP_SOURCE}/chef/site-cookbooks/gigadb/templates/default/yii-help.html.erb
+SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/help.html.dist
 TARGET=${APP_SOURCE}/files/html/help.html
-cp $SOURCE $TARGET \
-    && sed -i \
-    -e "/<% path = node\[:yii\]\[:ip_address\] -%>/d" \
-    -e "s|<%= path %>|${HOME_URL}|g" \
-    $TARGET
+VARS='$HOME_URL'
+envsubst $VARS < $SOURCE > $TARGET
+
+
 
 # Download example dataset files
 # mkdir -p ${APP_SOURCE}/vsftpd/files

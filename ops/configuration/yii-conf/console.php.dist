@@ -17,8 +17,6 @@ Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.p
 // Any writable CConsoleApplication properties can be configured here.
 return CMap::mergeArray($pre_config, array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Music',
-    
     # preloading 'log' component
     'preload'=>array('log'),
 

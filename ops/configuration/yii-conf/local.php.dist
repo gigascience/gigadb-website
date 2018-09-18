@@ -1,0 +1,51 @@
+<?php
+
+return array(
+    'components' => array(
+        'mailchimp' => array(
+            'class'     => 'ext.mailchimp.EMailChimp2',
+            'apikey'    => '${MAILCHIMP_API_KEY}',
+            'listId'    => '${MAILCHIMP_LIST_ID}',
+            'ecommerce360Enabled' => false,
+            'devMode'   => false
+        ),
+        'analytics' => array(
+            "class" => "Analytics",
+            "client_email" => "${ANALYTICS_CLIENT_EMAIL}",
+            "client_id" => "${ANALYTICS_CLIENT_ID}",
+            "keyfile" => realpath(dirname(__FILE__)."${ANALYTICS_KEYFILE_PATH}"),
+            "app_name" => "GigaDB",
+        ),
+    ),
+    'params'=>array(
+        'home_url' => 'http://${HOME_URL}', // Where top level link goes to
+
+        // Used in the contact page
+        'adminEmail'=> '${SERVER_EMAIL}',
+
+        // This is used as the sender of emails
+        'app_email_name' => 'Giga DB',
+        'app_email' => '${SERVER_EMAIL}',
+        'email_prefix' => '[Giga DB] ',
+
+        'support_email' => '${SERVER_EMAIL}',
+        'email_prefix' => '', // put at the beginning of the subject line
+
+        // Notified when a new user signs up
+        'notify_email' => '${SERVER_EMAIL}',
+
+        // Cogini
+        'recaptcha_publickey' => '${RECAPTCHA_PUBLICKEY}',
+        'recaptcha_privatekey' => '${RECAPTCHA_PRIVATEKEY}',
+        "google_analytics_profile" => "${GOOGLE_ANALYTICS_PROFILE}",
+
+        // Sphinx params
+        'sphinx_servername' => 'localhost',
+        'sphinx_port' => 9312,
+
+        // MDS params
+        'mds_username' => '${MDS_USERNAME}',
+        'mds_password' => '${MDS_PASSWORD}',
+        'mds_prefix' => '${MDS_PREFIX}',
+    ),
+);

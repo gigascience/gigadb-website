@@ -1,0 +1,174 @@
+<?php
+
+//Enable multibyte unicode aware string functions. Only needed for PHP < 5.6. Requires php-mbstring module.
+
+$esConfig = json_decode(file_get_contents(dirname(__FILE__).'/es.json'), true);
+$dbConfig = json_decode(file_get_contents(dirname(__FILE__).'/db.json'), true);
+$pre_config = require(dirname(__FILE__).'/local.php');
+
+// Location where user images are stored
+Yii::setPathOfAlias('uploadPath',dirname(__FILE__).DIRECTORY_SEPARATOR.'../../images/uploads');
+Yii::setPathOfAlias('uploadURL', '/images/uploads/');
+Yii::setPathOfAlias('Elastica', realpath(dirname(__FILE__). '/../../Elastica/lib'));
+Yii::setPathOfAlias('googleAPI', realpath(dirname(__FILE__).'/../../google-api-php-client/src'));
+Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.py'));
+
+return CMap::mergeArray(array(
+    'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+    'name'=>'GigaDB',
+
+    'preload'=>array(
+        'log',
+    ),
+
+    'import'=>array(
+        'application.models.*',
+        'application.components.*',
+        'application.behaviors.*',
+        'application.vendors.*',
+        'application.helpers.*',
+    ),
+
+    'modules'=>array(
+        'gii'=>array(
+            'class'=>'system.gii.GiiModule',
+            'password'=>'gigadbyii',
+            'ipFilters'=>array('*.*.*.*'),
+        ),
+        'opauth' => array(
+            'opauthParams' => array(
+                'Security.salt' => '1234',
+                'Strategy' => array(
+                    'Facebook' => array(
+                        'app_id' => '${FACEBOOK_APP_ID}',
+                        'app_secret' => '${FACEBOOK_APP_SECRET}',
+                    ),
+                    'LinkedIn' => array(
+                        'api_key' => '${LINKEDIN_API_KEY}',
+                        'secret_key' => '${LINKEDIN_SECRET_KEY}',
+                    ),
+                    'Google' => array(
+                        'client_id' => '${GOOGLE_CLIENT_ID}',
+                        'client_secret' => '${GOOGLE_SECRET}',
+                    ),
+                    'Twitter' => array(
+                        'key' => '${TWITTER_KEY}',
+                        'secret' => '${TWITTER_SECRET}',
+                    ),
+                    'Orcid' => array(
+                        'client_id' => '${ORCID_CLIENT_ID}',
+                        'client_secret' => '${ORCID_CLIENT_SECRET}',
+                        'environment' => '${ORCID_CLIENT_ENVIRONMENT}',
+                    ),
+                ),
+            ),
+        ),
+    ),
+
+    'components'=>array(
+        'db'=>array(
+            'class'=>'system.db.CDbConnection',
+            'connectionString'=>"pgsql:dbname={$dbConfig['database']};host={$dbConfig['host']}",
+            'username'=>$dbConfig['user'],
+            'password'=>$dbConfig['password'],
+            'charset'=>'utf8',
+            'persistent'=>true,
+            'enableParamLogging'=>true,
+            'schemaCachingDuration'=>30
+        ),
+        'ftp' => array(
+			'class' => 'ext.GFtp.GFtpApplicationComponent',
+			'connectionString' => '${FTP_CONNECTION_URL}',
+			'timeout' => 120,
+			'passive' => true
+		),
+        'request' => array(
+            //'enableCookieValidation' => true,
+        ),
+
+        'clientScript'=>array(
+               'scriptMap'=> array(
+                   'jquery.js' => false,
+                    'jquery.ba-bbq.js' => false,
+                    'jquery-ui.min.js' => false,
+                    'jquery-ui.css' => false,
+                ),
+       ),
+
+
+
+        'cache' => array(
+            'class' => 'system.caching.CFileCache'
+        ),
+        'session' => array(
+            'class' => 'system.web.CDbHttpSession',
+            'connectionID' => 'db',
+            'timeout' => 3600,
+        ),
+        'errorHandler'=>array(
+            'errorAction'=>'site/error',
+        ),
+        'urlManager'=>array(
+            'urlFormat'=>'path',
+            'showScriptName'=>false,
+            'rules'=>array(
+                '/dataset/<id:\d+>'=>'dataset/view/id/<id>',
+                '/dataset/<id:\d+>/<slug:.+>'=>'dataset/view/id/<id>',
+                '.*'=>'site/index',
+            ),
+        ),
+        'log'=>array(
+            'class'=>'CLogRouter',
+            'routes'=>array(
+                array(
+                    'class'=>'CFileLogRoute',
+                    'levels'=>'error, warning, info, debug',
+                ),
+            ),
+        ),
+        'elastic' => array(
+            'class' => 'Elastic',
+            'host' => $esConfig['host'],
+            'port' => $esConfig['port']
+        ),
+
+        'messages'=>array(
+            'class'=>'CPhpMessageSource',
+        ),
+        'user'=>array(
+            // enable cookie-based authentication
+            'allowAutoLogin'=>true,
+            //User WebUser
+            'class'=>'WebUser',
+        ),
+        'authManager'=>array(
+            'class'=>'CDbAuthManager',
+            'connectionID'=>'db',
+        ),
+        'image'=>array(
+            'class'=>'application.extensions.image.CImageComponent',
+            // GD or ImageMagick
+            'driver'=>'GD',
+        ),
+    ),
+
+    'params' => array(
+        # ES search
+        'es_search' => array(
+            'limits' => array(
+                'default' => 10,
+                'dataset' => 20,
+                'file' => 20,
+            ),
+        ),
+        'scholar_query' => 'http://scholar.google.com/scholar?q=',
+        'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=",
+        // date formats
+        'js_date_format' => 'dd-mm-yy',
+        'db_date_format' => "%Y-%m-%d",
+        'display_date_format' => "%gggggggd-%m-%Y",
+        'display_short_date_format' => "%d-%m",
+        'language' => 'en' ,
+        'languages' => array('en' => 'EN', 'zh_tw' => 'TW'),
+    ),
+), $pre_config);

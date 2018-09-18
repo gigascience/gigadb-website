@@ -10,6 +10,7 @@ protected/config/es.json
 protected/config/aws.json
 protected/config/local.php
 protected/config/main.php
+protected/config/console.php
 protected/yiic.php
 !protected/runtime/.gitignore
 protected/data/*.db
