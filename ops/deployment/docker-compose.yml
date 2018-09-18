@@ -27,6 +27,7 @@ services:
       args:
         - PHP_VERSION=${PHP_VERSION}
         - INSTALL_OPCACHE=true
+        - INSTALL_ZIP=true
     volumes:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
@@ -65,7 +66,7 @@ services:
     command: /var/www/ops/scripts/generate_config.sh
 
   webapp:
-    image: composer:1.5
+    image: deployment_application:latest
     volumes:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
@@ -91,6 +92,7 @@ services:
         - INSTALL_XDEBUG=true
         - INSTALL_NETCAT_JQ=true
         - INSTALL_GRAPHVIZ=true
+        - INSTALL_ZIP=true
     environment:
       YII_PATH: ${YII_PATH}
     volumes:

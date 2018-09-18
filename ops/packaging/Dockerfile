@@ -21,6 +21,8 @@ RUN docker-php-ext-install mcrypt
 # Install the PHP pdo_pgsql extention
 RUN docker-php-ext-install pdo_pgsql
 
+# Install the PHP bcmath extention
+RUN docker-php-ext-install bcmath
 
 # Install the PHP gd library
 RUN docker-php-ext-install gd && \
@@ -107,6 +109,13 @@ RUN if [ ${INSTALL_GRAPHVIZ} = true ]; then \
     apt-get install -y graphviz \
 ;fi
 
+ARG INSTALL_ZIP=false
+
+RUN if [ ${INSTALL_ZIP} = true ]; then \
+    docker-php-ext-install zip && apt-get install -y unzip \
+;fi
+
+COPY --from=composer:1.5 /usr/bin/composer /usr/bin/composer
 
 RUN usermod -u 1000 www-data
 
