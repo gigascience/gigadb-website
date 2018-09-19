@@ -32,7 +32,8 @@
     "autoload": {
         "psr-0": {
             "unit_tests": "protected/tests/unit",
-            "functional_tests": "protected/tests/functional"
+            "functional_tests": "protected/tests/functional",
+            "acceptance_tests": "features/bootstrap"
         }
     }
 }
