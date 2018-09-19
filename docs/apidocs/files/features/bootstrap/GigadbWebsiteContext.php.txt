@@ -87,7 +87,7 @@ class GigadbWebsiteContext implements Context
     */
     public function debugStep(AfterStepScope $scope)
     {
-        if ($scope->getTestResult() == 4 ) {
+        if ( 99 === $scope->getTestResult()->getResultCode() ) {
             try { # take a snapshot of web page
                 $this->minkContext->printCurrentUrl();
                 $content = $this->minkContext->getSession()->getDriver()->getContent();
