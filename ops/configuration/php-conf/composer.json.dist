@@ -1,5 +1,6 @@
 {
     "require": {
+        "php": "^${PHP_VERSION}",
         "yiisoft/yii": "${YII_VERSION}",
         "phpmailer/phpmailer": "^6.0",
         "gabrielelana/byte-units": "^0.5"
@@ -26,6 +27,12 @@
         "bin-dir": "bin",
         "platform": {
             "php": "${PHP_VERSION}"
+        }
+    },
+    "autoload": {
+        "psr-0": {
+            "unit_tests": "protected/tests/unit",
+            "functional_tests": "protected/tests/functional"
         }
     }
 }

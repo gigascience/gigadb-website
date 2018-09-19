@@ -242,13 +242,14 @@ class File extends CActiveRecord
 
 
 	/**
-	 * return the size of the file formatted for display
+	 * return the size of the file formatted for display using decimal notation
 	 *
 	 * @param string $unit kB, MB, GB, TB, B or null
 	 * @param int $precision number of decimals after the dot
 	 *
 	 * @return string formatted size
 	 *
+	 * @uses ByteUnits\Metric
 	 **/
 	public function getSizeWithFormat($unit = null, $precision = 2)
 	{
@@ -256,105 +257,12 @@ class File extends CActiveRecord
 		if ( null == $precision ) {
 			$precision = 2;
 		}
-		return ByteUnits\bytes($this->size)->format("$unit/$precision");
+		$metric = new ByteUnits\Metric($this->size);
+		$formatted_size = $metric->format("$unit/$precision"," ");
+		return $formatted_size ;
 
 	}
 
-	    /**
-	 * Convert bytes to human readable format
-	 *
-	 * @param integer bytes Size in bytes to convert
-	 * @return string
-	 */
-	public function bytesToSize($precision = 2)
-	{
-		$bytes = $this->size;
-	    $kilobyte = 1024;
-	    $megabyte = $kilobyte * 1024;
-	    $gigabyte = $megabyte * 1024;
-	    $terabyte = $gigabyte * 1024;
-
-	    if ($bytes < $megabyte) {
-	        return round($bytes / $kilobyte, $precision) . ' KB';
-	    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-	        return round($bytes / $megabyte, $precision) . ' MB';
-
-	    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-	        return round($bytes / $gigabyte, $precision) . ' GB';
-
-	    } elseif ($bytes >= $terabyte) {
-	        return round($bytes / $terabyte, $precision) . ' TB';
-	    } else {
-	        return $bytes . ' B';
-	    }
-	}
-	public function getSizeType(){
-		$bytes = $this->size;
-	    $kilobyte = 1024;
-	    $megabyte = $kilobyte * 1024;
-	    $gigabyte = $megabyte * 1024;
-	    $terabyte = $gigabyte * 1024;
-
-	    if ($bytes < $megabyte) {
-	        return 1;
-	    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-	        return 2;
-
-	    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-	        return 3;
-
-	    } elseif ($bytes >= $terabyte) {
-	        return 4;
-	    } else {
-	        return 0;
-	    }
-	}
-
-
-	public static function staticGetSizeType($bytes){
-	    $kilobyte = 1024;
-	    $megabyte = $kilobyte * 1024;
-	    $gigabyte = $megabyte * 1024;
-	    $terabyte = $gigabyte * 1024;
-
-	    if ($bytes < $megabyte) {
-	        return 1;
-	    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-	        return 2;
-
-	    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-	        return 3;
-
-	    } elseif ($bytes >= $terabyte) {
-	        return 4;
-	    } else {
-	        return 0;
-	    }
-
-	}
-
-	public static function staticBytesToSize($bytes,$precision = 2)
-	{
-
-	    $kilobyte = 1024;
-	    $megabyte = $kilobyte * 1024;
-	    $gigabyte = $megabyte * 1024;
-	    $terabyte = $gigabyte * 1024;
-
-	    if ($bytes < $megabyte) {
-	        return round($bytes / $kilobyte, $precision) . ' KB';
-	    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-	        return round($bytes / $megabyte, $precision) . ' MB';
-
-	    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-	        return round($bytes / $gigabyte, $precision) . ' GB';
-
-	    } elseif ($bytes >= $terabyte) {
-	        return round($bytes / $terabyte, $precision) . ' TB';
-	    } else {
-	        return $bytes . ' B';
-	    }
-	}
 
 	public static function getDatasetIdsByFileIds($fileIds) {
         $fileIds = implode(' , ' , $fileIds);

@@ -51,7 +51,7 @@
                 <div class="span1 logo-container-file"><img src="/images/icons/F_clipart1.png"> </div>
                 <div class="span3 file-name"><a href="<?php echo $file->location ?>"><?php echo strlen($file->name) > 20 ? substr($file->name, 0, 20). '...' : $file->name ?></a></div>
                 <div class="span2 file-type"><?php echo $file->type->name ?></div>
-                <div class="span2 file-size"><?php echo MyHtml::encode(File::staticBytesToSize($file->size))?></div>
+                <div class="span2 file-size"><?php echo MyHtml::encode($file->getSizeWithFormat()))?></div>
                 <div class="span1 file-checkbox"><input type="checkbox" ></div>
             </div>
             <?php }} ?>

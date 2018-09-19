@@ -524,7 +524,7 @@ HTML;
                                         <td><?= $file->getallsample($file->id) ?></td>
                                         <td><?= $file->type->name ?></td>
                                         <td><?= $file->format->name ?></td>
-                                        <td><?= File::staticBytesToSize($file->size) ?></td>
+                                        <td><?= $file->getSizeWithFormat() ?></td>
                                         <td><?= $file->date_stamp ?></td>
                                         <td><?= $file->attrDesc ?></td>
                                         <td><a class="download-btn js-download-count" href="<?= $file->location ?>">&nbsp;</a></td>
