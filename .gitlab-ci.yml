@@ -97,7 +97,8 @@ run_all_tests:
     # - docker network inspect rija-gigadb-website_db-tier
     # - docker-compose logs database
     # - docker images
-    # - docker-compose run --rm test ping -c 10 database
+    - docker-compose run --rm test ping -c 10 database
+    - docker-compose run --rm test ping -c 10 gigadb.dev
     # - env
     - docker-compose run test
 
