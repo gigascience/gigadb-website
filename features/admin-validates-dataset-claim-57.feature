@@ -9,7 +9,7 @@ Background:
 	And default admin user exists
 	And user "joy_fox" is loaded
 
-@ok
+
 Scenario: On user edit form, admin sees a message with validate/reject button after user submit a claim
 	Given a user has a pending claim for author "3791"
 	And I sign in as an admin
@@ -22,7 +22,7 @@ Scenario: On user edit form, admin sees a message with validate/reject button af
 	And the response should contain "Author info"
 
 
-@ok
+
 Scenario: When admin validates, user view is shown with a messaging indicating the user is linked to an author
 	Given a user has a pending claim for author "3791"
 	And I sign in as an admin
@@ -33,7 +33,7 @@ Scenario: When admin validates, user view is shown with a messaging indicating t
 	And the response should not contain "Reject"
 	And the response should not contain "Author info"
 
-@ok
+
 Scenario: When admin rejects a claim, user edit form is shown with flash message
 	Given a user has a pending claim for author "3791"
 	And I sign in as an admin
@@ -42,7 +42,7 @@ Scenario: When admin rejects a claim, user edit form is shown with flash message
 	Then the response should contain "Claimed rejected. No linking performed"
 
 
-@ok
+
 Scenario: On user view, when pending claim, admin sees a note about pending claim on author and a link to user edit form
 	Given a user has a pending claim for author "3791"
 	And I sign in as an admin
@@ -50,7 +50,7 @@ Scenario: On user view, when pending claim, admin sees a note about pending clai
 	Then the response should contain "This user has a pending claim"
 	And the response should contain "Edit user to validate/reject the claim"
 
-@ok
+
 Scenario: On user view, when no pending claim, no linked author, no message is displayed
 	Given I sign in as an admin
 	When I go to "/user/view/id/344"
@@ -58,7 +58,7 @@ Scenario: On user view, when no pending claim, no linked author, no message is d
 	And the response should not contain "Edit user to validate/reject the claim"
 	And the response should not contain "This user is linked to author"
 
-@ok
+
 Scenario: From user view, when pending claim, admin can click on button to go to user edit form
 	Given a user has a pending claim for author "3791"
 	And I sign in as an admin
@@ -71,7 +71,7 @@ Scenario: From user view, when pending claim, admin can click on button to go to
 	And I should be on "/user/update/id/346"
 
 
-@ok
+
 Scenario: On author view, when pending claim, admin sees a note about pending claim on author and a link to user edit form
 	Given a user has a pending claim for author "3791"
 	And I sign in as an admin
@@ -79,7 +79,7 @@ Scenario: On author view, when pending claim, admin sees a note about pending cl
 	Then the response should contain "There is a pending claim on this author"
 	And the response should contain "Edit user to validate/reject the claim"
 
-@ok
+
 Scenario: From author view, when pending claim, admin can click on button to go to user edit form
 	Given a user has a pending claim for author "3791"
 	And I sign in as an admin
@@ -92,7 +92,7 @@ Scenario: From author view, when pending claim, admin can click on button to go 
 	And I should be on "/user/update/id/346"
 
 
-@ok
+
 Scenario: On author view, when an author is linked to a user, a message shows the linked user name
 	Given author "3791" is associated with a user
 	And I sign in as an admin
