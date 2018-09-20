@@ -12,7 +12,6 @@ Background:
 @ok
 Scenario: On user edit form, admin sees a message with validate/reject button after user submit a claim
 	Given a user has a pending claim for author "3791"
-	And I take a screenshot named "After claiming dataset for author 3791"
 	And I sign in as an admin
 	And I take a screenshot named "After signing in as an admin"
 	When I go to "/user/update/id/346"
