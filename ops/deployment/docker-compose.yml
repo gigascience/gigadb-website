@@ -49,7 +49,7 @@ services:
       POSTGRES_PASSWORD: vagrant
     volumes:
       - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
-      - ${APPLICATION}/sql/gigadb_testdata.sql:/docker-entrypoint-initdb.d/1-gigadb_testdata.sql
+      - ${APPLICATION}/ops/configuration/postgresql-conf/bootstrap.sql:/docker-entrypoint-initdb.d/1-gigadb_testdata.sql
       - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf'
     expose:
