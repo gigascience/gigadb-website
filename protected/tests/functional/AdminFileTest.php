@@ -6,10 +6,8 @@ class AdminFileTest extends BrowserTestCase {
 
 	public static $browsers = array(
         array(
-            'driver' => 'selenium2',
-            'host' => 'phantomjs',
-            'port' => 8910,
-            'browserName' => 'phantomjs',
+            'driver' => 'goutte',
+            'browserName' => 'goutte',
             'baseUrl' => 'http://gigadb.dev',
         ),
     );
