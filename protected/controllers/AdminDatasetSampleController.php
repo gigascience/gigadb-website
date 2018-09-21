@@ -75,74 +75,12 @@ class AdminDatasetSampleController extends Controller
 		));
 	}
 
-        public function actionAutocomplete() {
-        $res = array();
-        $result = array();
+    public function actionAutocomplete() {
 
         if (isset($_GET['term'])) {
-            $term = $_GET['term'];
-            if (is_numeric($term)) {
-//                $sql = "
-//
-//                    (select distinct scientific_name as name,tax_id from species where cast(tax_id as text) like :name)
-//                    union
-//                    (select distinct common_name as name,tax_id from species where cast(tax_id as text) like :name)
-//                    order by name;
-//
-//";
-                $sql = "select tax_id,common_name,scientific_name from species where cast(tax_id as text) like :name";
-                $command = Yii::app()->db->createCommand($sql);
-                $command->bindValue(":name", $term . '%', PDO::PARAM_STR);
-                $res = $command->queryAll();
-            } else {
-//                $sql = "select (p.tax_id || '-' || p.common_name || ',' || p.scientific_name) as name from (
-//                    select distinct on (tax_id) * from
-//                    species where common_name ilike :name or scientific_name ilike :name ) p
-//                    order by length(p.common_name)";
-                $sql = "select tax_id , common_name ,scientific_name from
-                    species where common_name ilike :name or scientific_name ilike :name
-                    order by length(common_name)";
-//                $sql = "Select ( tax_id || '-' || scientific_name ) as name from species where scientific_name ilike :name order by length(scientific_name)";
-                $command = Yii::app()->db->createCommand($sql);
-                $command->bindValue(":name", '%' . $_GET['term'] . '%', PDO::PARAM_STR);
-                $res = $command->queryAll();
-
-//                        $result[] = $mres['tax_id']."-".$mres['scientific_name'];
-//                        $result[] = (string)($mres['tax_id']);
-//                        var_dump($mres['tax_id']);
-            }
-//                $sql = "Select ( tax_id || '-' || common_name ) as name from species where common_name ilike :name order by length(common_name)";
-//                $command = Yii::app()->db->createCommand($sql);
-//                $command->bindValue(":name", $_GET['term'] . '%', PDO::PARAM_STR);
-//                $res = $command->queryAll();
-//                if (!empty($res))
-//                    foreach ($res as $mres) {
-//                        $result[] = $mres['name'];
-////                        $result[] = $mres['tax_id']."-".$mres['common_name'];
-////                        $result[] = (string)($mres["tax_id"]);
-//                    }
-
-            if (!empty($res)) {
-                foreach ($res as $mres) {
-                    $name = $mres['tax_id'] . ":";
-                    $has_common_name = false;
-                    if ($mres['common_name'] != null) {
-                        $has_common_name = true;
-                        $name.= $mres['common_name'];
-                    }
-
-                    if ($mres['scientific_name'] != null) {
-                        if ($has_common_name)
-                            $name.=",";
-                        $name.= $mres['scientific_name'];
-                    }
-
-                    $result[] = $name;
-                }
-            }
-
-//            sort($result);
-//            var_dump($result);
+            $partial_sample_term = $_GET['term'];
+            $autoCompleteService = new AutocompleteService();
+            $result = $autoCompleteService->findSpeciesLike($partial_sample_term);
             echo CJSON::encode($result);
             Yii::app()->end();
         }
