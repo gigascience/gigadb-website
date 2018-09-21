@@ -26,7 +26,7 @@ if [[ "$GIGADB_ENV" == "dev" ]];then
 	bin/behat --tags "@ok&&~@facebook" -v --stop-on-failure
 else
 	# we are on CI with remote runner, affilate login tests don't work becasause Google and Twitter block it
-	bin/behat --tags "@ok&&~@affiliate-login" -v --stop-on-failure
+	bin/behat --tags "@ok&&~@affiliate-login&&~@javascript" -v --stop-on-failure
 fi
 
 ./tests/run_phpunit_tests
