@@ -38,7 +38,7 @@ class AdminFileTest extends BrowserTestCase {
         $session->visit($url);
 
         echo $session->getCurrentUrl().PHP_EOL;
-        echo $session->getPage()->getContent();
+        echo $session->getDriver()->getStatusCode();
         echo PHP_EOL;
         // Validate text presence on a page.
         $this->assertTrue($session->getPage()->hasContent("$size_value $size_unit"));
