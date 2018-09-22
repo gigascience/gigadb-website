@@ -37,6 +37,7 @@ class AdminFileTest extends BrowserTestCase {
         $url = "http://gigadb.dev/adminFile/create1/id/211/" ;
         $session->visit($url);
 
+        echo $session->getCurrentUrl().PHP_EOL;
         // Validate text presence on a page.
         $this->assertTrue($session->getPage()->hasContent("$size_value $size_unit"));
 
