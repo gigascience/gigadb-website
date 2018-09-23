@@ -50,6 +50,9 @@ before_script:
   - pip install docker-compose
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
 
+after_script:
+  - docker-compose logs web
+  - docker-compose logs application
 
 build_webapp:
   stage: build
