@@ -79,7 +79,7 @@ class AdminDatasetSampleController extends Controller
 
         if (isset($_GET['term'])) {
             $partial_sample_term = $_GET['term'];
-            $autoCompleteService = new AutocompleteService();
+            $autoCompleteService = Yii::app()->autocomplete;
             $result = $autoCompleteService->findSpeciesLike($partial_sample_term);
             echo CJSON::encode($result);
             Yii::app()->end();

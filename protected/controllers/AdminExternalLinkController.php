@@ -174,7 +174,7 @@ class AdminExternalLinkController extends Controller
 
         if (isset($_GET['term'])) {
             $partial_external_link_term = $_GET['term'];
-            $autoCompleteServiceForExternalLink = new AutocompleteService();
+            $autoCompleteServiceForExternalLink = Yii::app()->autocomplete;
             $result = $autoCompleteServiceForExternalLink->findSpeciesLike($partial_external_link_term);
             echo CJSON::encode($result);
             Yii::app()->end();

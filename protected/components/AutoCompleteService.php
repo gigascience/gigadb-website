@@ -1,6 +1,6 @@
 <?php
 
-class AutoCompleteService
+class AutoCompleteService extends CApplicationComponent
 {
 	/**
 	 * partial search for the term passed in parameter

@@ -96,7 +96,9 @@ return CMap::mergeArray(array(
                 ),
        ),
 
-
+        'autocomplete' => array(
+            'class'     => 'application.components.AutoCompleteService',
+        ),
 
         'cache' => array(
             'class' => 'system.caching.CFileCache'
