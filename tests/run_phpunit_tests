@@ -18,7 +18,7 @@ exec 1> /dev/null
 pg_restore -h $GIGADB_HOST -U $GIGADB_USER -d $GIGADB_DB --clean --no-owner -v /var/www/sql/gigadb_testdata.pgdmp
 exec 1>&3
 
-./bin/phpunit protected/tests/functional  --verbose --configuration protected/tests/phpunit.xml --no-coverage
+./bin/phpunit protected/tests/functional/AdminFileTest.php  --verbose --configuration protected/tests/phpunit.xml --no-coverage
 
 printf "\nRunning PHPUnit unit tests\n"
 
