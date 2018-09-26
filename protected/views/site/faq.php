@@ -528,6 +528,20 @@ Files:
                                 </div>
                             </div>
                         </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel35" aria-expanded="false" aria-controls="panel35">
+                                    Why do you request so many sample attributes?    
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="panel35" class="panel-collapse collapse" role="tabpanel">
+                                <div class="panel-body">
+                                    <p>The addition of comprehensive sample metadata will ensure the best possible reach of these data and help users find and filter relevant data.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
                
