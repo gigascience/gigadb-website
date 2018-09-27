@@ -4,16 +4,14 @@ if(Yii::app()->user->hasFlash('saveSuccess'))
 
 $cs = Yii::app()->getClientScript();
 $cssCoreUrl = $cs->getCoreScriptUrl();
-Yii::app()->clientScript->registerScriptFile('/js/jquery-migrate-1.2.1.js', CClientScript::POS_END);
-Yii::app()->clientScript->registerScriptFile('/js/jquery-ui-1.8.21.custom.min.js');
-Yii::app()->clientScript->registerScriptFile('/js/jquery-ui-1.8.21.custom.min.js');
-Yii::app()->clientScript->registerScriptFile('/js/jquery.tag-editor.min.js');
-Yii::app()->clientScript->registerScriptFile('/js/jquery.caret.min.js');
 
 $cs->registerCssFile($cssCoreUrl . '/jui/css/base/jquery-ui.css');
 $cs->registerCssFile('/css/jquery.tag-editor.css');
 
 ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js"></script>
+
 <?php $form=$this->beginWidget('CActiveForm', array(
     'id'=>'dataset-form',
     'enableAjaxValidation'=>false,

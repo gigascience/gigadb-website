@@ -445,30 +445,8 @@ class DatasetController extends Controller
 
                 // semantic kewyords update, using remove all and re-create approach
 				if( isset($_POST['keywords']) ){
-
-					$sKeywordAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));
-					$keywordsArray = array_filter(explode(',', $_POST['keywords']));
-
-
-					// remove existing dataset attributes
-					$datasetAttributes = DatasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$id,'attribute_id'=>$sKeywordAttr->id));
-
-					foreach (array_values($datasetAttributes) as $keyword) {
-						$keyword->delete();
-					}
-
-					// create dataset attributes from form data
-					if ( count($keywordsArray) > 0 ) {
-
-						foreach ($keywordsArray as $keyword)
-						{
-							$dataset_attribute = new DatasetAttributes();
-							$dataset_attribute->attribute_id = $sKeywordAttr->id;
-							$dataset_attribute->dataset_id = $id;
-							$dataset_attribute->value = $keyword;
-							$dataset_attribute->save();
-						}
-					}
+                    $attribute_service = new AttributeService();
+                    $attribute_service->replaceKeywordsForDatasetIdWithString($id, $_POST['keywords']);
 				}
 
 

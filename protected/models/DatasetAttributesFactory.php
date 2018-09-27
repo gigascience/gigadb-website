@@ -2,11 +2,11 @@
 
 class DatasetAttributesFactory
 {
-	private $da;
+	protected $da;
 
 	public function create()
 	{
-		$da = new DatasetAttributes();
+		return $this->da = new DatasetAttributes();
 	}
 
 	public function setAttributeId($attribute_id)
