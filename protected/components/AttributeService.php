@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * Class that offer controllers access to services related to Attributes
+ *
+ * It aims to hide storage concerns from the view and controllers
+ * and to isolate storage layer from presentation concerns.
+ * Currently it only supports the Keyword attribute for DatasetAttributes
+ *
+ * @uses DatasetDao.php
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ */
+class AttributeService
+{
+
+	/** @var DatasetDao $dataset_dao handle to data layer for Dataset */
+	private $dataset_dao;
+
+	/**
+	 * Initializes this class with the given option
+	 *
+	 * @param DatasetDao $dataset_dao injected insance of DatasetDAO
+	 */
+	public function __construct($dataset_dao = null)
+	{
+		if ($dataset_dao && $dataset_dao instanceof DatasetDAO) {
+			$this->dataset_dao = $dataset_dao;
+		}
+		else {
+			$da_factory = new DatasetAttributesFactory();
+			$this->dataset_dao = new DatasetDAO($da_factory);
+		}
+	}
+	/**
+	 * Replace keywords in the database with supplied string of keywords for a given dataset
+	 * All keywords for the dataset are removed first, then the new ones are sanitized and added
+	 *
+	 * This method uses a database transaction wrapping the removal and adding methods
+	 *
+	 * @param int $dataset_id
+	 * @param string $keywords
+	 */
+	public function replaceKeywordsForDatasetIdWithString($dataset_id, $keyword_string)
+	{
+		$sanitized_keywords = trim( filter_var( $keyword_string, FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
+		$transaction = Yii::app()->db->beginTransaction();
+
+		try {
+			$this->dataset_dao->removeKeywordsFromDatabaseForDatasetId($dataset_id);
+			$this->dataset_dao->addKeywordsToDatabaseForDatasetIdAndString($dataset_id, $sanitized_keywords);
+		    $transaction->commit();
+		}
+		catch (Exception $e) {
+		    $transaction->rollback();
+		}
+	}
+}
+
+?>

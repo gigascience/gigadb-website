@@ -3,9 +3,7 @@
 class RelationDAOTest extends CDbTestCase {
 
 
-	  protected $fixtures=array(
-        'datasets'=>'Dataset',
-    );
+
 
 	/**
      * @dataProvider relationshipProvider

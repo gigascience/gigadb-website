@@ -1,0 +1,10 @@
+<?php
+
+return array(
+	array(
+		'id'=>1,
+		'attribute_name'=>"keyword",
+	),
+);
+
+?>
