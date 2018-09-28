@@ -4,12 +4,14 @@ if (Yii::app()->user->hasFlash('saveSuccess'))
 
 $cs = Yii::app()->getClientScript();
 $cssCoreUrl = $cs->getCoreScriptUrl();
-Yii::app()->clientScript->registerScriptFile('/js/jquery-ui-1.8.21.custom.min.js');
-Yii::app()->clientScript->registerScriptFile('/js/jquery.tag-editor.min.js');
-Yii::app()->clientScript->registerScriptFile('/js/jquery.caret.min.js');
 $cs->registerCssFile($cssCoreUrl . '/jui/css/base/jquery-ui.css');
 $cs->registerCssFile('/css/jquery.tag-editor.css');
 ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js"></script>
 <div class="span12 form well">
     <div class="form-horizontal">
         <p class="note">Fields with <span class="required">*</span> are required.</p>
@@ -24,7 +26,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     $email = Yii::app()->user->getEmail();
                     echo CHtml::textField("email", $email, array('size' => 60, 'maxlength' => 300, 'readonly' => "readonly")
                     );
-                    ?> 
+                    ?>
                 </div>
             </div>
 

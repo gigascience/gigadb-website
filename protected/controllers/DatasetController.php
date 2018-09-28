@@ -1233,7 +1233,6 @@ EO_MAIL;
     }
 
         public function actionCreate1() {
-
             $dataset = new Dataset;
             $image = new Images;
             // set default types
@@ -1302,33 +1301,11 @@ EO_MAIL;
                         $dataset->image_id = $image->id;
                         $dataset->save(false);
 
-                                            // semantic kewyords update, using remove all and re-create approach
+                        // semantic kewyords update, using remove all and re-create approach
                         if( isset($_POST['keywords']) ){
-
-		        $sKeywordAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));
-			$keywordsArray = array_filter(explode(',', $_POST['keywords']));
-
-
-			// remove existing dataset attributes
-			$datasetAttributes = datasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$dataset->id,'attribute_id'=>$sKeywordAttr->id));
-
-			foreach (array_values($datasetAttributes) as $keyword) {
-                            $keyword->delete();
-			}
-
-			// create dataset attributes from form data
-			if ( count($keywordsArray) > 0 ) {
-
-                            foreach ($keywordsArray as $keyword)
-				{
-                                    $dataset_attribute = new DatasetAttributes();
-                                    $dataset_attribute->attribute_id = $sKeywordAttr->id;
-                                    $dataset_attribute->dataset_id = $dataset->id;
-                                    $dataset_attribute->value = $keyword;
-                                    $dataset_attribute->save();
-				}
-                            }
-			}
+            		        $attribute_service = new AttributeService();
+                            $attribute_service->replaceKeywordsForDatasetIdWithString($dataset->id, $_POST['keywords']);
+            			}
 
                         if (isset($_POST['datasettypes'])) {
                             $types = DatasetType::storeDatasetTypes($dataset->id, $_POST['datasettypes']);
@@ -1426,31 +1403,9 @@ EO_MAIL;
                         if($dataset->save() && $image->save()) {
 
                             if( isset($_POST['keywords']) ){
-
-		        $sKeywordAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));
-			$keywordsArray = array_filter(explode(',', $_POST['keywords']));
-
-
-			// remove existing dataset attributes
-			$datasetAttributes = datasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$dataset->id,'attribute_id'=>$sKeywordAttr->id));
-
-			foreach (array_values($datasetAttributes) as $keyword) {
-                            $keyword->delete();
-			}
-
-			// create dataset attributes from form data
-			if ( count($keywordsArray) > 0 ) {
-
-                            foreach ($keywordsArray as $keyword)
-				{
-                                    $dataset_attribute = new DatasetAttributes();
-                                    $dataset_attribute->attribute_id = $sKeywordAttr->id;
-                                    $dataset_attribute->dataset_id = $dataset->id;
-                                    $dataset_attribute->value = $keyword;
-                                    $dataset_attribute->save();
-				}
+                              $attribute_service = new AttributeService();
+                              $attribute_service->replaceKeywordsForDatasetIdWithString($dataset->id, $_POST['keywords']);
                             }
-			}
 
                             if($is_new_image) {
                                 $dataset->image_id = $image->id;
