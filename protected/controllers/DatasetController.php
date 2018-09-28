@@ -445,7 +445,7 @@ class DatasetController extends Controller
 
                 // semantic kewyords update, using remove all and re-create approach
 				if( isset($_POST['keywords']) ){
-                    $attribute_service = new AttributeService();
+                    $attribute_service = Yii::app()->attributeService;
                     $attribute_service->replaceKeywordsForDatasetIdWithString($id, $_POST['keywords']);
 				}
 
@@ -1303,7 +1303,7 @@ EO_MAIL;
 
                         // semantic kewyords update, using remove all and re-create approach
                         if( isset($_POST['keywords']) ){
-            		        $attribute_service = new AttributeService();
+            		        $attribute_service = Yii::app()->attributeService;
                             $attribute_service->replaceKeywordsForDatasetIdWithString($dataset->id, $_POST['keywords']);
             			}
 
@@ -1403,7 +1403,7 @@ EO_MAIL;
                         if($dataset->save() && $image->save()) {
 
                             if( isset($_POST['keywords']) ){
-                              $attribute_service = new AttributeService();
+                              $attribute_service = Yii::app()->attributeService;
                               $attribute_service->replaceKeywordsForDatasetIdWithString($dataset->id, $_POST['keywords']);
                             }
 

@@ -100,6 +100,10 @@ return CMap::mergeArray(array(
             'class'     => 'application.components.AutoCompleteService',
         ),
 
+        'attributeService' => array(
+            'class'     => 'application.components.AttributeService',
+        ),
+
         'cache' => array(
             'class' => 'system.caching.CFileCache'
         ),

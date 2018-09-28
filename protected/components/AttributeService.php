@@ -12,7 +12,7 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class AttributeService
+class AttributeService extends CApplicationComponent
 {
 
 	/** @var DatasetDao $dataset_dao handle to data layer for Dataset */
