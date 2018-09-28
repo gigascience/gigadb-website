@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Service that provide autocompletion to the forms for controllers
+ * it is meant to be called in an AJAX context from a form
+ *
+ * Currently used by AdminDatasetSampleController and AdminExternalLinkController.
+ * It is setup as an application component, so it must have an entry in the main.php config file.
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ */
 class AutoCompleteService extends CApplicationComponent
 {
 	/**
