@@ -38,8 +38,10 @@ echo "Running ${THIS_SCRIPT_DIR}/generate_config.sh for environment: $GIGADB_ENV
 # Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to build environment
 
 if ! [ -f  ./.secrets ];then
-    echo "Retrieving variables from ${DEV_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${DEV_VARIABLES_URL}" | jq -r '.[] | .key + "=" + .value ' > .secrets
+    echo "Retrieving variables from ${GROUP_VARIABLES_URL}"
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${GROUP_VARIABLES_URL}" | jq -r '.[] | .key + "=" + .value ' > .group_var
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}" | jq -r '.[] | .key + "=" + .value ' > .project_var
+    cat .group_var .project_var > .secrets && rm .group_var && rm .project_var
 fi
 echo "Sourcing secrets"
 source "./.secrets"

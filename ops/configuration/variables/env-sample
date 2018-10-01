@@ -17,9 +17,14 @@ COMPOSE_PROJECT_NAME=deployment
 #GITLAB_PRIVATE_TOKEN=
 
 ### GitLab API URLs  ####################################################################################################
-# the url be different for each environment. The default group based variables are for DEV environment.
+# the urls be different for each environment and forks.
+# group variables are supplied by Gigadb and set at group level (gigascience, forks and upstream) in GitLab.
+# project variables are set at a project level by the owner of the fork
+# the variables will be merged into a .secrets file
+# Replace <Your fork name here> with urlencoded name of the fork
 
-DEV_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
+GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
+PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F<Your fork name here>/variables?per_page=100"
 
 ### Deployment Environment  #############################################################################################
 # dev, ci,  staging or production
