@@ -1,8 +1,5 @@
 <?php
 
-require_once(Yii::getPathOfAlias('googleAPI') . '/Google/Client.php');
-require_once(Yii::getPathOfAlias('googleAPI') . '/Google/Service/Analytics.php');
-require_once(Yii::getPathOfAlias('googleAPI') . '/Google/Auth/AssertionCredentials.php');
 
 class Analytics extends CApplicationComponent {	
 	
