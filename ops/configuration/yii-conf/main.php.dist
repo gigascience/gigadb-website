@@ -11,7 +11,6 @@ $pre_config = require(dirname(__FILE__).'/local.php');
 Yii::setPathOfAlias('uploadPath',dirname(__FILE__).DIRECTORY_SEPARATOR.'../../images/uploads');
 Yii::setPathOfAlias('uploadURL', '/images/uploads/');
 Yii::setPathOfAlias('Elastica', realpath(dirname(__FILE__). '/../../Elastica/lib'));
-Yii::setPathOfAlias('googleAPI', realpath(dirname(__FILE__).'/../../google-api-php-client/src'));
 Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.py'));
 
 return CMap::mergeArray(array(
