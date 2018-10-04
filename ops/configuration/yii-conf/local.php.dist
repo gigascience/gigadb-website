@@ -10,10 +10,10 @@ return array(
             'devMode'   => false
         ),
         'analytics' => array(
-            "class" => "Analytics",
+            "class" => "application.components.AnalyticsService",
             "client_email" => "${ANALYTICS_CLIENT_EMAIL}",
             "client_id" => "${ANALYTICS_CLIENT_ID}",
-            "keyfile" => realpath(dirname(__FILE__)."${ANALYTICS_KEYFILE_PATH}"),
+            "key_file" => realpath(dirname(__FILE__)."/keyfile.json"),
             "app_name" => "GigaDB",
         ),
     ),

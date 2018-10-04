@@ -24,7 +24,7 @@ COMPOSE_PROJECT_NAME=deployment
 # Replace <Your fork name here> with urlencoded name of the fork
 
 GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
-PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F<Your fork name here>/variables?per_page=100"
+PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F<Your fork name here>/variables"
 
 ### Deployment Environment  #############################################################################################
 # dev, ci,  staging or production

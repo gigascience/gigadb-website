@@ -39,8 +39,9 @@ echo "Running ${THIS_SCRIPT_DIR}/generate_config.sh for environment: $GIGADB_ENV
 
 if ! [ -f  ./.secrets ];then
     echo "Retrieving variables from ${GROUP_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${GROUP_VARIABLES_URL}" | jq -r '.[] | .key + "=" + .value ' > .group_var
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}" | jq -r '.[] | .key + "=" + .value ' > .project_var
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${GROUP_VARIABLES_URL}" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > .group_var
+    echo "Retrieving variables from ${PROJECT_VARIABLES_URL}"
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > .project_var
     cat .group_var .project_var > .secrets && rm .group_var && rm .project_var
 fi
 echo "Sourcing secrets"
@@ -49,13 +50,23 @@ source "./.secrets"
 # restore default settings for variables
 set +a
 
-echo "* ---------------------------------------------- *"
 
 # do the stuff that vagrant would normally do. Even if vagrant is used, doing this stuff regardless is still ok.
 mkdir -p ${APP_SOURCE}/protected/runtime && chmod 777 ${APP_SOURCE}/protected/runtime
 mkdir -p ${APP_SOURCE}/assets && chmod 777 ${APP_SOURCE}/assets
 mkdir -p ${APP_SOURCE}/images/tempcaptcha && chmod 777 ${APP_SOURCE}/images/tempcaptcha
 
+
+# Generate google api client credentials
+
+if [[ "$GIGADB_ENV" == "dev" ]];then
+	echo "Retrieving private_key variable for Google API from ${PROJECT_VARIABLES_URL}"
+	curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN"  "${PROJECT_VARIABLES_URL}/ANALYTICS_PRIVATE_KEY" | jq -r ' .value' > protected/config/keyfile.json
+else
+	echo $ANALYTICS_PRIVATE_KEY > protected/config/keyfile.json
+fi
+
+echo "* ---------------------------------------------- *"
 
 # Generate nginx site config
 

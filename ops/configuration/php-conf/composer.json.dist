@@ -4,7 +4,7 @@
         "yiisoft/yii": "${YII_VERSION}",
         "phpmailer/phpmailer": "^6.0",
         "gabrielelana/byte-units": "^0.5",
-        "google/apiclient": "v1.1.8"
+        "google/apiclient": "v2.2.2"
     },
     "require-dev": {
         "behat/behat":  "^3.5",

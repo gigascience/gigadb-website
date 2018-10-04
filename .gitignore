@@ -11,6 +11,7 @@ protected/config/aws.json
 protected/config/local.php
 protected/config/main.php
 protected/config/console.php
+protected/config/keyfile.json
 protected/yiic.php
 !protected/runtime/.gitignore
 protected/data/*.db
