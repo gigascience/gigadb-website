@@ -102,7 +102,7 @@ run_all_tests:
     # - docker images
     - docker-compose run --rm test ping -c 5 database
     - docker-compose run --rm test ping -c 5 gigadb.dev
-    # - env
+    - env
     - docker-compose run test
 
 check_coverage:
