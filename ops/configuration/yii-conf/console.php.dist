@@ -4,7 +4,6 @@
 $esConfig = json_decode(file_get_contents(dirname(__FILE__).'/es.json'), true);
 $dbConfig = json_decode(file_get_contents(dirname(__FILE__).'/db.json'), true);
 $pre_config = require(dirname(__FILE__).'/local.php');
-Yii::setPathOfAlias('Elastica', realpath(dirname(__FILE__). '/../../Elastica/lib'));
 Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.py'));
 
 
@@ -62,11 +61,7 @@ return CMap::mergeArray($pre_config, array(
             # ImageMagick setup path
             #'params'=>array('directory'=>'/opt/local/bin'),
         ),
-        'elastic' => array(
-            'class' => 'Elastic',
-            'host' => $esConfig['host'],
-            'port' => $esConfig['port']
-        ),
+
     ),
     # application-level parameters that can be accessed
     # using Yii::app()->params['paramName']

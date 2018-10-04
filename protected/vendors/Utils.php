@@ -53,15 +53,6 @@ class Utils {
         return implode('|', $items);
     }
 
-    public static function newSphinxClient() {
-        $s = new SphinxClient;
-        $s->setServer(Yii::app()->params['sphinx_servername'], Yii::app()->params['sphinx_port']);
-        $s->setMaxQueryTime(10000);
-        $s->setLimits(0, 5000, 5000);
-        $s->setMatchMode(SPH_MATCH_EXTENDED);
-        return $s;
-    }
-
     public static function convertDate($date){
         date_default_timezone_set('America/Los_Angeles');
         return @strtotime($date);

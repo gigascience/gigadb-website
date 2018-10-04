@@ -282,64 +282,7 @@ class File extends CActiveRecord
         return $result;
     }
 
-    /**
-     * Search engine Sphinx search files
-     * @param  array $criteria
-     * @param  array $extraFileIds
-     * @return array
-     */
-    public function sphinxSearch($criteria, $extraFileIds)
-    {
-		$s = Utils::newSphinxClient();
 
-		if (count($extraFileIds) > 0) {
-			$keyword = '';
-			$s->SetSelect("id as myid");
-			$s->SetFilter('myid', $extraFileIds);
-		} else {
-			$keyword = isset($criteria['keyword']) ? $criteria['keyword'] : "";
-		}
-
-		$file_type = isset($criteria['file_type']) ? $criteria['file_type'] : "";
-		$file_format = isset($criteria['file_format']) ? $criteria['file_format'] : "";
-		$reldate_from = isset($criteria['reldate_from']) ? $criteria['reldate_from'] : "";
-		$reldate_to = isset($criteria['reldate_to']) ? $criteria['reldate_to'] : "";
-        
-		$reldate_from_temp = Utils::convertDate($reldate_from);
-		$reldate_to_temp = Utils::convertDate($reldate_to);
-
-		if ($reldate_from_temp && !$reldate_to_temp) {# Set FromDate, Don't set To Date
-		$reldate_from = $reldate_from_temp - 86400;
-			$reldate_to = floor(microtime(true));
-		} else if (!$reldate_from_temp && $reldate_to_temp) {# Set To Date, Dont Set FromDate
-		$reldate_from = 1;
-			$reldate_to = $reldate_to_temp;
-		} else {
-			$reldate_from = $reldate_from_temp - 86400;
-			$reldate_to = $reldate_to_temp;
-		}
-
-		if (is_array($file_type)) {
-			$s->SetFilter('type_id', $file_type);
-		}
-		if (is_array($file_format)) {
-			$s->SetFilter('format_id', $file_format);
-		}
-
-		if ($reldate_from && $reldate_to && $reldate_to > $reldate_from) {
-			$s->SetFilterRange('date_stamp', $reldate_from, $reldate_to);
-		}
-
-		$result = $s->query($keyword, "file");
-		$matches = array();
-		$total_found = $result['total_found'];
-		if (isset($result['matches'])) {
-			$matches = $result['matches'];
-		}
-
-		$result = array_keys($matches);
-		return array($result, $total_found);
-    }
 
     public function getSample() {
     	$criteria = new CDbCriteria;
