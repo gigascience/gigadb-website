@@ -59,6 +59,8 @@ services:
 
   config:
     image: rija/docker-alpine-shell-tools:1.0.1
+    environment:
+      ANALYTICS_PRIVATE_KEY: ${ANALYTICS_PRIVATE_KEY}
     volumes:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
