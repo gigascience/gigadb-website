@@ -121,6 +121,7 @@ RUN if [ ${INSTALL_COMPOSER} = true ]; then \
     && test $EXPECTED_SIGNATURE = $ACTUAL_SIGNATURE  \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer --quiet \
     && rm composer-setup.php \
+    && composer config --global repo.packagist composer https://packagist.org \
 ;fi
 
 RUN usermod -u 1000 www-data
