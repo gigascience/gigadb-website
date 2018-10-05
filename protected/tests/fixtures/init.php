@@ -5,6 +5,7 @@
 		$this->resetTable($tableName);
 		//$this->loadFixture($tableName);
 	}
+	$this->loadFixture("rss_message");
 	$this->loadFixture("author");
 	$this->loadFixture("dataset");
 	$this->loadFixture("dataset_author");

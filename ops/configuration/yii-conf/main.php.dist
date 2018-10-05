@@ -102,6 +102,10 @@ return CMap::mergeArray(array(
             'class'     => 'application.components.AttributeService',
         ),
 
+        'newsAndFeedsService' => array(
+            'class'     => 'application.components.NewsAndFeedsService',
+        ),
+
         'cache' => array(
             'class' => 'system.caching.CFileCache'
         ),

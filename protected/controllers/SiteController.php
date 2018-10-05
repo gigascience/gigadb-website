@@ -83,26 +83,9 @@ class SiteController extends Controller {
 
 		$datasettypes_hints = Type::model()->findAll(array('order'=>'name ASC'));
 
-		$news = News::model()->findAll("start_date<=current_date AND end_date>=current_date");
+        $news = Yii::app()->newsAndFeedsService->getTodaysNews();
 
-
-		$criteria=new CDbCriteria;
-		$criteria->limit = 10;
-		$criteria->condition = "upload_status = 'Published'";
-		#$criteria->order = "id DESC";
-		$criteria->order = 'publication_date DESC';
-		$latest_datasets = Dataset::model()->findAll($criteria);
-
-		$criteria->condition = null;
-		$criteria->order = 'publication_date DESC';
-		$latest_messages = RssMessage::model()->findAll($criteria);
-
-		$rss_arr = array_merge($latest_datasets , $latest_messages);
-
-        usort($rss_arr, function ($a,$b) {
-              return $a->publication_date < $b->publication_date;
-        });
-
+        $rss_arr = Yii::app()->newsAndFeedsService->getFeedsData();
 
         //Get dataset types number
         $sql_1="select * from homepage_dataset_type";
@@ -214,7 +197,6 @@ class SiteController extends Controller {
 			'count' => count($publicIds),
                         'count_sample' => $count_sample[0]['count'],
                         'count_file' => $count_file[0]['count'],
-			'latest_datasets'=>$latest_datasets,
                         'number_genome_mapping'=>$number_genome_mapping,
                         'number_climate' => $number_climate,
                         'number_ecology'=>$number_ecology,
@@ -493,26 +475,11 @@ class SiteController extends Controller {
     }
 
     public function actionFeed(){
-	Yii::import('ext.feed.*');
-
-	// specify feed type
-	$feed = new EFeed(EFeed::RSS1);
-	$feed->title = 'Testing the RSS 1 EFeed class';
-	$feed->link = 'http://www.ramirezcobos.com';
-	$feed->description = 'This is test of creating a RSS 1.0 feed by Universal Feed Writer';
-	$feed->RSS1ChannelAbout = 'http://www.ramirezcobos.com/about';
-	// create our item
-	$item = $feed->createNewItem();
-	$item->title = 'The first feed';
-	$item->link = 'http://www.yiiframework.com';
-	$item->date = time();
-	$item->description = 'Amaz-ii-ng <b>Yii Framework</b>';
-	$item->addTag('dc:subject', 'Subject Testing');
-
-	$feed->addItem($item);
-
-	$feed->generateFeed();
-      }
+        header("Content-type: text/xml");
+        ob_clean();
+        echo Yii::app()->newsAndFeedsService->getRss();
+        exit;
+    }
 
     public function actionChangeLanguage() {
         /* Change the session's language if the requested language is
