@@ -38,13 +38,13 @@ class SiteController extends Controller {
             array('allow',  // allow all users
                 'users'=>array('*'),
             ),
-            array('allow', 
+            array('allow',
                 'actions'=>array('create', 'captcha'),
                 'users'=>array('*'),
             ),
         );
     }
-		
+
     /**
     *
     * Administration action
@@ -99,109 +99,111 @@ class SiteController extends Controller {
 
 		$rss_arr = array_merge($latest_datasets , $latest_messages);
 
-		$this->sortRssArray($rss_arr);
-                
-                //Get dataset types number
-                $sql_1="select * from homepage_dataset_type";
-                $command = Yii::app()->db->createCommand($sql_1); 
-                $results = $command->queryAll();
-                
-                $sql_2="select * from sample_number";
-                $command = Yii::app()->db->createCommand($sql_2); 
-                $count_sample = $command->queryAll();
-                
-                $sql_3="select * from file_number";
-                $command = Yii::app()->db->createCommand($sql_3); 
-                $count_file = $command->queryAll();
-                
-                $number_genome_mapping=0;
-                $number_ecology=0;
-                $number_eeg=0;
-                $number_epi=0;
-                $number_genomic=0;
-                $number_imaging=0;
-                $number_lipi=0;
-                $number_metabarcoding=0;
-                $number_metagenomic=0;
-                $number_metadata=0;
-                $number_metabolomic=0;
-                $number_climate=0;
-                $number_na=0;
-                $number_ns=0;
-                $number_pt=0;
-                $number_proteomic=0;
-                $number_software=0;
-                $number_ts=0;
-                $number_vm=0;
-                $number_wf=0;
-                              
-                foreach($results as $result)
-                {                  
-                    switch ($result['name']) {
-                        case "Genome-Mapping":
-                             $number_genome_mapping=$result['count'];
-                             break;
-                        case "Ecology":
-                             $number_ecology=$result['count'];
-                             break;
-                        case "ElectroEncephaloGraphy(EEG)":
-                             $number_eeg=$result['count'];
-                             break;
-                        case "Epigenomic":
-                             $number_epi=$result['count'];
-                             break;
-                        case "Genomic":
-                             $number_genomic=$result['count'];
-                             break;
-                        case "Imaging":
-                             $number_imaging=$result['count'];  
-                             break;
-                        case "Lipidomic":
-                             $number_lipi=$result['count'];  
-                             break;
-                        case "Metabarcoding":
-                             $number_metabarcoding=$result['count'];    
-                             break;
-                        case "Metagenomic":
-                             $number_metagenomic=$result['count']; 
-                             break;
-                        case "Metadata":
-                             $number_metadata=$result['count'];
-                             break;
-                        case "Metabolomic":
-                             $number_metabolomic=$result['count'];
-                             break;
-                        case "Climate":
-                             $number_climate=$result['count'];
-                             break;
-                        case "Network-Analysis":
-                             $number_na=$result['count'];
-                             break; 
-                        case "Neuroscience":
-                             $number_ns=$result['count'];
-                             break;  
-                        case "Phenotyping":
-                             $number_pt=$result['count'];
-                             break;    
-                        case "Proteomic":
-                             $number_proteomic=$result['count'];
-                             break;   
-                        case "Software":
-                             $number_software=$result['count'];
-                             break;   
-                        case "Transcriptomic":
-                             $number_ts=$result['count'];
-                             break;    
-                        case "Virtual-Machine":
-                             $number_vm=$result['count'];
-                             break;  
-                        case "Workflow":
-                             $number_wf=$result['count'];
-                             break; 
+        usort($rss_arr, function ($a,$b) {
+              return $a->publication_date < $b->publication_date;
+        });
 
-                    }
-                   
-                }
+
+        //Get dataset types number
+        $sql_1="select * from homepage_dataset_type";
+        $command = Yii::app()->db->createCommand($sql_1);
+        $results = $command->queryAll();
+
+        $sql_2="select * from sample_number";
+        $command = Yii::app()->db->createCommand($sql_2);
+        $count_sample = $command->queryAll();
+
+        $sql_3="select * from file_number";
+        $command = Yii::app()->db->createCommand($sql_3);
+        $count_file = $command->queryAll();
+
+        $number_genome_mapping=0;
+        $number_ecology=0;
+        $number_eeg=0;
+        $number_epi=0;
+        $number_genomic=0;
+        $number_imaging=0;
+        $number_lipi=0;
+        $number_metabarcoding=0;
+        $number_metagenomic=0;
+        $number_metadata=0;
+        $number_metabolomic=0;
+        $number_climate=0;
+        $number_na=0;
+        $number_ns=0;
+        $number_pt=0;
+        $number_proteomic=0;
+        $number_software=0;
+        $number_ts=0;
+        $number_vm=0;
+        $number_wf=0;
+
+        foreach($results as $result) {
+            switch ($result['name']) {
+                case "Genome-Mapping":
+                     $number_genome_mapping=$result['count'];
+                     break;
+                case "Ecology":
+                     $number_ecology=$result['count'];
+                     break;
+                case "ElectroEncephaloGraphy(EEG)":
+                     $number_eeg=$result['count'];
+                     break;
+                case "Epigenomic":
+                     $number_epi=$result['count'];
+                     break;
+                case "Genomic":
+                     $number_genomic=$result['count'];
+                     break;
+                case "Imaging":
+                     $number_imaging=$result['count'];
+                     break;
+                case "Lipidomic":
+                     $number_lipi=$result['count'];
+                     break;
+                case "Metabarcoding":
+                     $number_metabarcoding=$result['count'];
+                     break;
+                case "Metagenomic":
+                     $number_metagenomic=$result['count'];
+                     break;
+                case "Metadata":
+                     $number_metadata=$result['count'];
+                     break;
+                case "Metabolomic":
+                     $number_metabolomic=$result['count'];
+                     break;
+                case "Climate":
+                     $number_climate=$result['count'];
+                     break;
+                case "Network-Analysis":
+                     $number_na=$result['count'];
+                     break;
+                case "Neuroscience":
+                     $number_ns=$result['count'];
+                     break;
+                case "Phenotyping":
+                     $number_pt=$result['count'];
+                     break;
+                case "Proteomic":
+                     $number_proteomic=$result['count'];
+                     break;
+                case "Software":
+                     $number_software=$result['count'];
+                     break;
+                case "Transcriptomic":
+                     $number_ts=$result['count'];
+                     break;
+                case "Virtual-Machine":
+                     $number_vm=$result['count'];
+                     break;
+                case "Workflow":
+                     $number_wf=$result['count'];
+                     break;
+
+            }
+
+        }
 		$this->render('index',array(
 			'datasets'=>$datasetModel,
 			'form'=>$form,
@@ -213,11 +215,11 @@ class SiteController extends Controller {
                         'count_sample' => $count_sample[0]['count'],
                         'count_file' => $count_file[0]['count'],
 			'latest_datasets'=>$latest_datasets,
-                        'number_genome_mapping'=>$number_genome_mapping,                    
-                        'number_climate' => $number_climate,                    
+                        'number_genome_mapping'=>$number_genome_mapping,
+                        'number_climate' => $number_climate,
                         'number_ecology'=>$number_ecology,
                         'number_eeg'=>$number_eeg,
-                        'number_epi'=>$number_epi,                       
+                        'number_epi'=>$number_epi,
                         'number_genomic'=>$number_genomic,
                         'number_imaging'=>$number_imaging,
                         'number_lipi'=>$number_lipi,
@@ -233,30 +235,12 @@ class SiteController extends Controller {
                         'number_ts'=>$number_ts,
                         'number_vm'=>$number_vm,
                         'number_wf'=>$number_wf,
-                        
-                        
+
                         )
-                        
-                        
+
 		);
 	}
 
-    private function sortRssArray(&$rss_arr){
-        //Using Bubble Sort
-        while(True){
-            $swapped = False ;
-            for($i = 0 ; $i < count($rss_arr) - 1 ; ++$i){
-                if($rss_arr[$i]->publication_date < $rss_arr[$i+1]->publication_date){
-                    $temp = $rss_arr[$i+1];
-                    $rss_arr[$i+1] = $rss_arr[$i];
-                    $rss_arr[$i] = $temp;
-                    $swapped = True;
-                }
-            }
-            if(!$swapped)
-                break;
-        }
-    }
 
 	/**
 	 * This is the action to handle external exceptions.
@@ -276,7 +260,7 @@ class SiteController extends Controller {
 	 * Displays the contact page
 	 */
 	public function actionContact() {
-            
+
             $this->layout='new_main';
 		$model = new ContactForm;
 		if (isset($_POST['ContactForm'])) {
@@ -294,25 +278,25 @@ class SiteController extends Controller {
 	*This method returns all dataset locations
 	*/
 	public function actionMapbrowse() {
-            
+
              $this->layout='new_main';
 	     $locations = Yii::app()->db->createCommand("SELECT d.identifier,  d.title, satt.value, sp.scientific_name as sciname, s.id as sampleid FROM dataset as d
 					      INNER JOIN dataset_sample as dsam on dsam.dataset_id = d.id
 						  INNER JOIN sample as s on s.id = dsam.sample_id
-					      INNER JOIN sample_attribute as satt on satt.sample_id=s.id 
-						  INNER JOIN species as sp on sp.id = s.species_id		
+					      INNER JOIN sample_attribute as satt on satt.sample_id=s.id
+						  INNER JOIN species as sp on sp.id = s.species_id
 						  where satt.attribute_id = 269 and d.upload_status='Published' order by sampleid")
                                               ->queryAll();
-           
+
                 foreach ($locations as $location) {
-      
-        $locationValue = $location["value"];  
-        $locationValue = preg_replace('/\s+/', '', $locationValue);   
+
+        $locationValue = $location["value"];
+        $locationValue = preg_replace('/\s+/', '', $locationValue);
         $formatCheck = preg_match('/-?[0-9]*[.][0-9]*[,]-?[0-9]*[.][0-9]*/',$locationValue);
         if (!$formatCheck==1){
           continue;
-        }     
-        $val = explode(',', $locationValue); 
+        }
+        $val = explode(',', $locationValue);
         if(strpos($val[0],'.') == false || !is_numeric($val[0])){
             continue;
         }
@@ -320,27 +304,27 @@ class SiteController extends Controller {
             continue;
         }
         $location["sciname"]=str_replace(",","",$location["sciname"]);
-     
-      
-                  
 
-  } 
 
-             
+
+
+  }
+
+
             $this->render('mapbrowse', array('locations' => $locations));
 	}
-        
+
         public function actionTeam() {
                 $this->layout='new_main';
 		$this->render('team');
 	}
-        
+
 
 	public function actionAbout() {
                 $this->layout='new_main';
 		$this->render('about');
 	}
-        
+
     public function actionAdvisory() {
                 $this->layout='new_main';
 		$this->render('advisory');
