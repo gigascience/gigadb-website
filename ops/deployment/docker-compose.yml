@@ -75,7 +75,7 @@ services:
       - application
       - web
       - database
-    command: composer update
+    command: ./ops/scripts/webapp_setup.sh
     networks:
       - web-tier
 
