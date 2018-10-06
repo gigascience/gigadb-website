@@ -1,6 +1,6 @@
 <div class="actionBar">
 <? if (Yii::app()->user->checkAccess('manageUsers')) { ?>
-[<?= MyHtml::link('Manage Users', array('admin')); ?>]
+[<?= CHtml::link('Manage Users', array('admin')); ?>]
 <? } ?>
 </div>
 

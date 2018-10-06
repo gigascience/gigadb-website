@@ -62,7 +62,7 @@
                           
                             <? if($flag>10){break;}
                             if(get_class($item) == 'Dataset'){?>
-                              <p style="margin-bottom: 0px;">New dataset added on <?=$item->publication_date?>: <?=MyHtml::link("10.5524/".$item->identifier, $item->shortUrl)?> <?=$item->title?></p>
+                              <p style="margin-bottom: 0px;">New dataset added on <?=$item->publication_date?>: <?=CHtml::link("10.5524/".$item->identifier, $item->shortUrl)?> <?=$item->title?></p>
                             <?}else{?>
                               <p style="margin-bottom: 0px;"><?= $item->publication_date ?>: <?=$item->message?></p>
                             <?php } ?>

@@ -1,6 +1,6 @@
 
-    <?php echo MyHtml::beginForm('/search/new','GET',array('class'=>'form','onsubmit'=>'return validateForm(this);')); ?>
-    <?php echo MyHtml::errorSummary($model); ?>
+    <?php echo CHtml::beginForm('/search/new','GET',array('class'=>'form','onsubmit'=>'return validateForm(this);')); ?>
+    <?php echo CHtml::errorSummary($model); ?>
 
    <div class="form-group home-search-bar-group">
        <div class="input-group search-bar-group">
@@ -30,7 +30,7 @@
              <?
         if(!Yii::app()->user->isGuest) {
             
-            echo MyHtml::ajaxButton(Yii::t('app' , 'Save current search criteria'),array("/search/save"),array('type'=>'POST','dataType'=>'json','data'=>array('criteria'=>$model->criteria, 'result'=>$model->query_result) ,'success'=>"function(data){
+            echo CHtml::ajaxButton(Yii::t('app' , 'Save current search criteria'),array("/search/save"),array('type'=>'POST','dataType'=>'json','data'=>array('criteria'=>$model->criteria, 'result'=>$model->query_result) ,'success'=>"function(data){
                 if(data.status=='fail'){
                     alert('Failed to save: '+ data.reason);
                 }else {
@@ -44,7 +44,7 @@
  </div>
 </div>
 
-    <?php echo MyHtml::endForm(); ?>
+    <?php echo CHtml::endForm(); ?>
 
    
 

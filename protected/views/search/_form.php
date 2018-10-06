@@ -5,8 +5,8 @@
         </div>
     <? } ?>
 
-    <?php echo MyHtml::beginForm('/search/new','GET',array('class'=>'form','onsubmit'=>'return validateForm(this);')); ?>
-    <?php echo MyHtml::errorSummary($model); ?>
+    <?php echo CHtml::beginForm('/search/new','GET',array('class'=>'form','onsubmit'=>'return validateForm(this);')); ?>
+    <?php echo CHtml::errorSummary($model); ?>
 
    <div class="form-group home-search-bar-group">
        <div class="input-group search-bar-group">
@@ -41,7 +41,7 @@
     <!--
     <a data-toggle="modal" href="#how-to-use-advanced-search" class="hint advanced-search-hint"></a> -->
 
-    <?php echo MyHtml::endForm(); ?>
+    <?php echo CHtml::endForm(); ?>
     <!--
     <div class="modal hide fade" id="how-to-use-advanced-search">
       <div class="modal-header">

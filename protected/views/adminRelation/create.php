@@ -2,7 +2,7 @@
 <h1>Create Relation</h1>
 <? if (Yii::app()->user->checkAccess('admin')) { ?>
 <div class="actionBar">
-[<?= MyHtml::link('Manage Relations', array('admin')) ?>]
+[<?= CHtml::link('Manage Relations', array('admin')) ?>]
 </div>
 <? } ?>
 

@@ -411,17 +411,6 @@ class Dataset extends CActiveRecord
         return Sample::model()->findAll($criteria);
     }
 
-    /**
-     * Get the url with the title slugify
-     *
-     * @return string
-     */
-    public function getDatasetUrl()
-    {
-        $url = 'dataset/' . $this->identifier . '/' . Convenients::slugify($this->title);
-        return Yii::app()->createAbsoluteUrl($url);
-    }
-
     public function getShortUrl() {
         $url = 'dataset/'.$this->identifier;
         return Yii::app()->createAbsoluteUrl($url);
@@ -585,6 +574,7 @@ class Dataset extends CActiveRecord
         }
 
         //<sizes><size>
+        // TODO: use the already installed Byte-Units library to do those size calculation
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
 
         $bytes = max($this->dataset_size, 0);

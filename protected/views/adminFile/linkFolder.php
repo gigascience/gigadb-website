@@ -2,7 +2,7 @@
 <h1>Link Temp File Folder</h1>
 <? if (Yii::app()->user->checkAccess('admin')) { ?>
 <div class="actionBar">
-[<?= MyHtml::link('Manage Files', array('admin')) ?>]
+[<?= CHtml::link('Manage Files', array('admin')) ?>]
 </div>
 <? } ?>
 <div class="row">

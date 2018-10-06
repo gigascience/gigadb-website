@@ -93,14 +93,14 @@ if (isset($_GET['status'])) {
                             <input id="agree-checkbox" type="checkbox" style="margin-right:5px"/><a target="_blank" href="/site/term">I have read GigaDB's Terms and Conditions</a>
                             <br/>
                             <div class="clear"></div>
-                            <?php echo MyHtml::form(Yii::app()->createUrl('dataset/upload'), 'post', array('enctype' => 'multipart/form-data')); ?>
+                            <?php echo CHtml::form(Yii::app()->createUrl('dataset/upload'), 'post', array('enctype' => 'multipart/form-data')); ?>
                             <div class="pull-right">
-                                <?php echo MyHtml::submitButton('Upload New Dataset', array('class' => 'btn-green upload-control', 'disabled' => 'disabled', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
+                                <?php echo CHtml::submitButton('Upload New Dataset', array('class' => 'btn-green upload-control', 'disabled' => 'disabled', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
                             </div>
-                            <?php echo MyHtml::hiddenField('userId', Yii::app()->user->id); ?>
-                            <?php echo MyHtml::label('Excel File', 'xls'); ?>
-                            <?php echo MyHtml::fileField('xls', null, array('disabled' => 'disabled', 'class' => 'upload-control', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
-                            <?php echo MyHtml::endForm(); ?>
+                            <?php echo CHtml::hiddenField('userId', Yii::app()->user->id); ?>
+                            <?php echo CHtml::label('Excel File', 'xls'); ?>
+                            <?php echo CHtml::fileField('xls', null, array('disabled' => 'disabled', 'class' => 'upload-control', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
+                            <?php echo CHtml::endForm(); ?>
 
                         </div>
                     </div>
@@ -136,9 +136,9 @@ if (isset($_GET['status'])) {
                         <input id="agree-checkbox1" type="checkbox" style="margin-right:5px"/><a target="_blank" href="/site/term">I have read GigaDB's Terms and Conditions</a>
                         <br/>
                         <div class="clear"></div>
-                        <?php echo MyHtml::form(Yii::app()->createUrl('dataset/create1'), 'post', array('enctype' => 'multipart/form-data')); ?>
+                        <?php echo CHtml::form(Yii::app()->createUrl('dataset/create1'), 'post', array('enctype' => 'multipart/form-data')); ?>
                         <div class="pull-right">
-                            <?php echo MyHtml::submitButton('Submission wizard', array('id' => 'online', 'class' => 'btn-green', 'disabled' => 'disabled', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
+                            <?php echo CHtml::submitButton('Submission wizard', array('id' => 'online', 'class' => 'btn-green', 'disabled' => 'disabled', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
                         </div>
                         <br/>
                     </div>

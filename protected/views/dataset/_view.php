@@ -1,60 +1,60 @@
 <div class="view">
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo MyHtml::link(MyHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
+	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
 	<br />
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('submitter_id')); ?>:</b>
-	<?php echo MyHtml::encode($data->submitter_id); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('submitter_id')); ?>:</b>
+	<?php echo CHtml::encode($data->submitter_id); ?>
 	<br />
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('image_id')); ?>:</b>
-	<?php echo MyHtml::encode($data->image_id); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('image_id')); ?>:</b>
+	<?php echo CHtml::encode($data->image_id); ?>
 	<br />
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('identifier')); ?>:</b>
-	<?php echo MyHtml::encode($data->identifier); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('identifier')); ?>:</b>
+	<?php echo CHtml::encode($data->identifier); ?>
 	<br />
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('title')); ?>:</b>
-	<?php echo MyHtml::encode($data->title); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('title')); ?>:</b>
+	<?php echo CHtml::encode($data->title); ?>
 	<br />
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('description')); ?>:</b>
-	<?php echo MyHtml::encode($data->description); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('description')); ?>:</b>
+	<?php echo CHtml::encode($data->description); ?>
 	<br />
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('publisher')); ?>:</b>
-	<?php echo MyHtml::encode($data->publisher_id); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('publisher')); ?>:</b>
+	<?php echo CHtml::encode($data->publisher_id); ?>
 	<br />
 
 	<?php /*
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('dataset_size')); ?>:</b>
-	<?php echo MyHtml::encode($data->dataset_size); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('dataset_size')); ?>:</b>
+	<?php echo CHtml::encode($data->dataset_size); ?>
 	<br />
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('ftp_site')); ?>:</b>
-	<?php echo MyHtml::encode($data->ftp_site); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('ftp_site')); ?>:</b>
+	<?php echo CHtml::encode($data->ftp_site); ?>
 	<br />
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('upload_status')); ?>:</b>
-	<?php echo MyHtml::encode($data->upload_status); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('upload_status')); ?>:</b>
+	<?php echo CHtml::encode($data->upload_status); ?>
 	<br />
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('excelfile')); ?>:</b>
-	<?php echo MyHtml::encode($data->excelfile); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('excelfile')); ?>:</b>
+	<?php echo CHtml::encode($data->excelfile); ?>
 	<br />
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('excelfile_md5')); ?>:</b>
-	<?php echo MyHtml::encode($data->excelfile_md5); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('excelfile_md5')); ?>:</b>
+	<?php echo CHtml::encode($data->excelfile_md5); ?>
 	<br />
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('publication_date')); ?>:</b>
-	<?php echo MyHtml::encode($data->publication_date); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('publication_date')); ?>:</b>
+	<?php echo CHtml::encode($data->publication_date); ?>
 	<br />
 
-	<b><?php echo MyHtml::encode($data->getAttributeLabel('modification_date')); ?>:</b>
-	<?php echo MyHtml::encode($data->modification_date); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('modification_date')); ?>:</b>
+	<?php echo CHtml::encode($data->modification_date); ?>
 	<br />
 
 	*/ ?>

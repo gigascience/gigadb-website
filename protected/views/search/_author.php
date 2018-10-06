@@ -6,7 +6,7 @@
 			<div class="span1 logo-container"><img src="/images/icons/g.png"></div>
 			<div class="span8 main-content">
 				<ul class="nav nav-tabs nav-stacked result-cell">
-				  <li><a data-content="<?php echo MyHtml::encode($dataset->description) ?>" class="result-main-link left content-popup" href="/dataset/<?= $dataset->identifier?>"><?= $dataset->title ?></a></li>
+				  <li><a data-content="<?php echo CHtml::encode($dataset->description) ?>" class="result-main-link left content-popup" href="/dataset/<?= $dataset->identifier?>"><?= $dataset->title ?></a></li>
 				  <li>
 				  	<strong>
 				  		<?= $dataset->authorNames ?>

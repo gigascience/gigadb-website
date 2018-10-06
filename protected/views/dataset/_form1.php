@@ -37,7 +37,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                    data type is missing please contact us on database@gigasciencejournal.com."></a>
                 <div class="controls">
                     <?
-                    $datasetTypes = MyHtml::listData(Type::model()->findAll(), 'id', 'name');
+                    $datasetTypes = CHtml::listData(Type::model()->findAll(), 'id', 'name');
                     foreach ($datasetTypes as $id => $datasetType) {
                         $checkedHtml = in_array($id, $model->types) ? 'checked="checked"' : '';
                         echo '<input type="checkbox" name="datasettypes[]" value="'.$id.'"' . $checkedHtml . '/> ' . $datasetType . '<br/>';

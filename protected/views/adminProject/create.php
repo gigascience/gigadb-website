@@ -2,7 +2,7 @@
 <h1>Create Project</h1>
 <? if (Yii::app()->user->checkAccess('admin')) { ?>
 <div class="actionBar">
-[<?= MyHtml::link('Manage Projects', array('admin')) ?>]
+[<?= CHtml::link('Manage Projects', array('admin')) ?>]
 </div>
 <? } ?>
 

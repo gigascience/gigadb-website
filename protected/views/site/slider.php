@@ -14,13 +14,13 @@
 
               $url = $dataset->getImageUrl();
 
-              echo MyHtml::link(MyHtml::image($url ,'image'), $dataset->shortUrl,array('class'=>'image-hint',  ));
-              echo 'DOI: '.MyHtml::link("10.5524/".$dataset->identifier, $dataset->shortUrl);
+              echo CHtml::link(CHtml::image($url ,'image'), $dataset->shortUrl,array('class'=>'image-hint',  ));
+              echo 'DOI: '.CHtml::link("10.5524/".$dataset->identifier, $dataset->shortUrl);
               echo '<br/><br/>';
               $dtitle = strlen($dataset->title) > 70 ? strip_tags( substr($dataset->title , 0 , 70) ) .'...' : $dataset->title;
               echo $dtitle;
               echo '<br/><br/>';
-              echo MyHtml::encode($dataset->publication_date);
+              echo CHtml::encode($dataset->publication_date);
               ?>
             </div>
         <?php

@@ -14,7 +14,7 @@
             </div></div>
             <div class="span8 main-content" style="float:right">
                 <ul class="nav nav-tabs nav-stacked result-cell">
-                  <li><a data-content="<?php echo MyHtml::encode($dataset->description) ?>" class="result-main-link left content-popup" href="<?= $dataset->shortUrl ?>"><?= $dataset->title ?></a></li>
+                  <li><a data-content="<?php echo CHtml::encode($dataset->description) ?>" class="result-main-link left content-popup" href="<?= $dataset->shortUrl ?>"><?= $dataset->title ?></a></li>
                   <li>
                     <strong>
                         <?php echo $dataset->authorNames ?>
@@ -57,7 +57,7 @@
             </div></div>
                 <div class="span3 file-name"><a href="<?php echo $file->location ?>"><?php echo strlen($file->name) > 20 ? substr($file->name, 0, 20). '...' : $file->name ?></a></div>
                 <div class="span2 file-type"><?php echo $file->type->name ?></div>
-                <div class="span2 file-size"><?php echo MyHtml::encode($file->getSizeWithFormat())?></div>
+                <div class="span2 file-size"><?php echo CHtml::encode($file->getSizeWithFormat())?></div>
                 <div class="span1 file-checkbox"><input type="checkbox" ></div>
             </div>
             <?php }} ?>

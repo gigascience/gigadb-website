@@ -11,9 +11,9 @@
         </font>
     <? } ?>
         
-    <?php echo MyHtml::beginForm('/search/index','GET',array('class'=>'form-search well','onsubmit'=>'return validateForm(this);')); ?>
+    <?php echo CHtml::beginForm('/search/index','GET',array('class'=>'form-search well','onsubmit'=>'return validateForm(this);')); ?>
 
-    <?php echo MyHtml::errorSummary($model); ?>
+    <?php echo CHtml::errorSummary($model); ?>
      
     <?php
        
@@ -35,9 +35,9 @@
                                  'class'=>'span8 offset1'
                                  ),
             ));
-        echo MyHtml::submitButton(Yii::t('app' , 'Search'), array('class'=>'span2 btn-green'));
+        echo CHtml::submitButton(Yii::t('app' , 'Search'), array('class'=>'span2 btn-green'));
       //    $image = CHtml::image(Yii::app()->baseUrl.'/images/right_arrow.png',array('class'=>'span2'));
-       // echo Myhtml::link($image,"");
+       // echo CHtml::link($image,"");
        
     ?>
  
@@ -50,7 +50,7 @@
     <a data-toggle="modal" href="#how-to-use-advanced-search" class="hint advanced-search-hint"></a>
 
     
-    <?php echo MyHtml::endForm(); ?>
+    <?php echo CHtml::endForm(); ?>
 
     <div class="modal hide fade" id="how-to-use-advanced-search">
       <div class="modal-header">

@@ -26,7 +26,7 @@
 
         <?= $this->renderPartial('//shared/_google_analytics') ?>
 
-        <title><?php echo MyHtml::encode($this->pageTitle); ?></title>
+        <title><?php echo CHtml::encode($this->pageTitle); ?></title>
     </head>
 
     <body>

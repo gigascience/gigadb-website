@@ -26,25 +26,25 @@
                 $upload_status = $data[$i]->upload_status;
 
                 if ( $upload_status != 'Published' && $upload_status!='Private' ) { ?>
-                    <td class="content-popup" data-content="<? echo MyHtml::encode($data[$i]->description); ?>">
+                    <td class="content-popup" data-content="<? echo CHtml::encode($data[$i]->description); ?>">
                        unknown
 
                     </td>
                 <? } else { ?>
-                    <td class="content-popup" data-content="<? echo MyHtml::encode($data[$i]->description); ?>">
-                        <? echo MyHtml::link("10.5524/" . $data[$i]->identifier, "/dataset/" . $data[$i]->identifier, array('target' => '_blank')); ?>
+                    <td class="content-popup" data-content="<? echo CHtml::encode($data[$i]->description); ?>">
+                        <? echo CHtml::link("10.5524/" . $data[$i]->identifier, "/dataset/" . $data[$i]->identifier, array('target' => '_blank')); ?>
                     </td>
                 <? } ?>
-                <td class="left content-popup" data-content="<? echo MyHtml::encode($data[$i]->description); ?>"><? echo $data[$i]->title; ?> </td>
+                <td class="left content-popup" data-content="<? echo CHtml::encode($data[$i]->description); ?>"><? echo $data[$i]->title; ?> </td>
                 <td >
                     <? foreach ($data[$i]->datasetTypes as $type) { ?>
                         <?= $type->name ?>
 
                     <? } ?>
                 </td>
-                <td><?= MyHtml::encode($data[$i]->upload_status) ?></td>
-                <td><? echo MyHtml::encode($data[$i]->publication_date); ?> </td>
-                <td><? echo MyHtml::encode($data[$i]->modification_date); ?> </td>
+                <td><?= CHtml::encode($data[$i]->upload_status) ?></td>
+                <td><? echo CHtml::encode($data[$i]->publication_date); ?> </td>
+                <td><? echo CHtml::encode($data[$i]->modification_date); ?> </td>
                 <td><? echo count($data[$i]->files); ?></td>
                 </tr>
             <? } ?>

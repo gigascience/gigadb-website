@@ -80,7 +80,7 @@ Yii::app()->clientScript->registerScriptFile('/js/jquery-ui-1.8.21.custom.min.js
                         <td class="left"><?= CHtml::activeDropDownList($file, '[' . $i . ']type_id', CHtml::listData(FileType::model()->findAll(), 'id', 'name'), array('class' => 'span2')); ?></td>
 
                         <td> <?= CHtml::activeDropDownList($file, '[' . $i . ']format_id', CHtml::listData(FileFormat::model()->findAll(), 'id', 'name'), array('class' => 'autowidth')); ?></td>
-                        <td><?= MyHtml::encode($file->getSizeWithFormat()) ?></td>
+                        <td><?= CHtml::encode($file->getSizeWithFormat()) ?></td>
 
                         <td><?php echo $form->textArea($file, '[' . $i . ']description', array('rows' => 3, 'cols' => 30, 'style' => 'resize:none')); ?></td>
 

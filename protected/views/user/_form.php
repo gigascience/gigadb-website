@@ -183,7 +183,7 @@
 			<? } ?>
                         <hr>
                             <div class="button-div">
-                                <?= MyHtml::submitButton($model->isNewRecord ? Yii::t('app' , 'Register') : 'Save', array('class'=>'btn background-btn')) ?>
+                                <?= CHtml::submitButton($model->isNewRecord ? Yii::t('app' , 'Register') : 'Save', array('class'=>'btn background-btn')) ?>
                             </div>
                         <? $this->endWidget() ?>
 		</div><!--well-->

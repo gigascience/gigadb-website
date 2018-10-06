@@ -32,7 +32,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'submitter_id',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->dropDownList($model,'submitter_id',MyHtml::listData(User::model()->findAll(array('order'=>'email ASC')),'id','email')); ?>
+                            <?php echo $form->dropDownList($model,'submitter_id',CHtml::listData(User::model()->findAll(array('order'=>'email ASC')),'id','email')); ?>
                             <?php echo $form->error($model,'submitter_id'); ?>
                         </div>
                     </div>
@@ -43,7 +43,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                             $criteria = new CDbCriteria;
                             $criteria->condition='role=\'admin\' and email like \'%gigasciencejournal.com\''; 
                             ?>
-                            <?php echo $form->dropDownList($model,'curator_id',MyHtml::listData(User::model()->findAll($criteria),'id','email'),array('prompt'=>'')); ?>
+                            <?php echo $form->dropDownList($model,'curator_id',CHtml::listData(User::model()->findAll($criteria),'id','email'),array('prompt'=>'')); ?>
                             <?php echo $form->error($model,'curator_id'); ?>
                         </div>
                     </div>
@@ -66,8 +66,8 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         <?php echo $form->labelEx($model,'types',array('class'=>'control-label')); ?>
                         <div class="controls">
                             <?
-                                $datasetTypes = MyHtml::listData(Type::model()->findAll(),'id','name');
-                                $checkedTypes = MyHtml::listData($model->datasetTypes,'id','id');
+                                $datasetTypes = CHtml::listData(Type::model()->findAll(),'id','name');
+                                $checkedTypes = CHtml::listData($model->datasetTypes,'id','id');
                                 foreach ($datasetTypes as $id => $datasetType) {
                                     $checkedHtml = in_array($id,$checkedTypes,true) ? 'checked="checked"' : '';
                                     echo '<input type="checkbox" name="datasettypes['.$id.']" value="1"'.$checkedHtml.'/> '.$datasetType.'<br/>';
@@ -96,7 +96,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                             $fn = end($fn);
                         }
                     ?>
-                    <? echo ($img_url && $fn !='Images_.png') ? MyHtml::image($img_url, $img_url, array('style'=>'width:100px; margin-left:160px;margin-bottom:10px;')) : ''; ?>
+                    <? echo ($img_url && $fn !='Images_.png') ? CHtml::image($img_url, $img_url, array('style'=>'width:100px; margin-left:160px;margin-bottom:10px;')) : ''; ?>
                     <div class="control-group">
                         <?php echo $form->labelEx($model->image,'Image Upload',array('class'=>'control-label')); ?>
                         <div class="controls">
@@ -220,7 +220,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'publisher',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->dropDownList($model,'publisher_id',MyHtml::listData(Publisher::model()->findAll(),'id','name'), array('class'=>'span4')); ?>
+                            <?php echo $form->dropDownList($model,'publisher_id',CHtml::listData(Publisher::model()->findAll(),'id','name'), array('class'=>'span4')); ?>
                             <?php echo $form->error($model,'publisher_id'); ?>
                         </div>
                     </div>

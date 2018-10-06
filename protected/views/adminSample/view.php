@@ -2,7 +2,7 @@
 <h1>View Sample #<?php echo $model->id; ?></h1>
 <? if (Yii::app()->user->checkAccess('admin')) { ?>
 <div class="actionBar">
-[<?= MyHtml::link('Manage Samples', array('admin')) ?>]
+[<?= CHtml::link('Manage Samples', array('admin')) ?>]
 </div>
 <? } ?>
 

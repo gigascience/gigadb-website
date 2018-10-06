@@ -14,8 +14,8 @@
         }
     ?>
 
-    <meta name="title" content="<?php echo MyHtml::encode($this->pageTitle); ?>" />
-    <meta name="description" content="<?php echo MyHtml::encode($metaData['description']) ?>" />
+    <meta name="title" content="<?php echo CHtml::encode($this->pageTitle); ?>" />
+    <meta name="description" content="<?php echo CHtml::encode($metaData['description']) ?>" />
     <meta name="identifier-url" content="<?php echo Yii::app()->createAbsoluteUrl(Yii::app()->request->url) ?>">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
 
     <?= $this->renderPartial('//shared/_google_analytics')?>
 
-    <title><?php echo MyHtml::encode($this->pageTitle); ?></title>
+    <title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
     <?php
         $url=Yii::app()->createAbsoluteUrl(Yii::app()->request->url);

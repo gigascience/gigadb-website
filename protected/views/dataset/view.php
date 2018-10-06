@@ -42,7 +42,7 @@ HTML;
                         </div>
                         <div class="media-body">
                             <h4 class="left-border-title left-border-title-lg"><?echo $model->title; ?></h4>
-                            <p class="dataset-release-date-text">Dataset type:  <? echo MyHtml::encode(implode(", ", $model->getDatasetTypes()));?> <br> Data released on <?= strftime("%B %d, %Y",strtotime($model->publication_date)) ?></p>
+                            <p class="dataset-release-date-text">Dataset type:  <? echo CHtml::encode(implode(", ", $model->getDatasetTypes()));?> <br> Data released on <?= strftime("%B %d, %Y",strtotime($model->publication_date)) ?></p>
                             <div class="color-background color-background-block dataset-color-background-block">
                                 <p><?= $model->authorNames ?> (<?=substr($model->publication_date,0,4)?>): <?= $model->title.' '.$model->publisher->name.'. '; ?><a href="http://dx.doi.org/10.5524/<?= $model->identifier; ?>">http://dx.doi.org/10.5524/<?= $model->identifier; ?></a></p>
                                 <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?= $model->identifier; ?></span></a></p>
@@ -99,7 +99,7 @@ HTML;
                                         <div id="message"></div>
                                         <div id="advice"></div>
                                     </div>
-                                    <?php echo MyHtml::beginForm('/userCommand/claim','GET'); ?>
+                                    <?php echo CHtml::beginForm('/userCommand/claim','GET'); ?>
                                         <div class="modal-body text-center">
                                             <?php if (count($model->authors) > 0) { ?>
                                                     <table>
@@ -201,7 +201,7 @@ HTML;
                     <? foreach ($model->manuscripts as $key=>$manuscript){
                         echo $manuscript->getFullCitation();
                         if ($manuscript->pmid){
-                            $pubmed = MyHtml::link($manuscript->pmid , "http://www.ncbi.nlm.nih.gov/pubmed/" . $manuscript->pmid);
+                            $pubmed = CHtml::link($manuscript->pmid , "http://www.ncbi.nlm.nih.gov/pubmed/" . $manuscript->pmid);
                             echo " (PubMed: $pubmed)";
                         }
                         echo "<br/>";
@@ -216,7 +216,7 @@ HTML;
                 <?php foreach ($model->relations as $key=>$relation){
                 if($relation->relationship->name == "IsPreviousVersionOf")
                 {
-                echo "doi:" . MyHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . MyHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi)."<b> (It is a more recent version of this dataset) </b>";
+                echo "doi:" . CHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . CHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi)."<b> (It is a more recent version of this dataset) </b>";
                 echo "<br/>";
                 ?>
 
@@ -253,7 +253,7 @@ HTML;
 
                 else
                 {
-                echo "doi:" . MyHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . MyHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi);
+                echo "doi:" . CHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . CHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi);
                 echo "<br/>";
                 }
              }
@@ -311,7 +311,7 @@ HTML;
                                     }
                                     else
                                     {
-                                    echo '<p>'. MyHtml::link($externalLink->url, $externalLink->url) . '</p>';
+                                    echo '<p>'. CHtml::link($externalLink->url, $externalLink->url) . '</p>';
                                     }
                                 }
                             }
@@ -349,7 +349,7 @@ HTML;
                                 $code = $tokens[1];
                                 ?>
                                 <?= $name ?>:
-                                <?= MyHtml::link($code, $link->getFullUrl($link_type), array('target'=>'_blank')); ?>
+                                <?= CHtml::link($code, $link->getFullUrl($link_type), array('target'=>'_blank')); ?>
                                 <br/>
                             <? } ?>
                         </p>
@@ -366,9 +366,9 @@ HTML;
                                 ?>
                                 <?php if ($name != 'http') { ?>
                                     <?= $name ?>:
-                                    <?= MyHtml::link($code, $link->getFullUrl($link_type), array('target'=>'_blank')); ?>
+                                    <?= CHtml::link($code, $link->getFullUrl($link_type), array('target'=>'_blank')); ?>
                                 <?php }else { ?>
-                                    <?= MyHtml::link($link->link , $link->link,array('target'=>'_blank')); ?>
+                                    <?= CHtml::link($link->link , $link->link,array('target'=>'_blank')); ?>
                                 <?php } ?>
                                 <br/>
                             <?php } ?>
@@ -383,7 +383,7 @@ HTML;
                         if ($project->image_location)
                             echo "<a href='$project->url'><img src='$project->image_location' /></a>";
                         else
-                            echo MyHtml::link($project->name, $project->url);
+                            echo CHtml::link($project->name, $project->url);
 
                         echo "<br/>";
                     }
@@ -494,7 +494,7 @@ HTML;
                          <?php }  else {?>
                         <div role="tabpanel" class="tab-pane active" id="files">
                          <?php   } ?>
-                            <span class="glyphicon glyphicon-adjust"></span> <?= MyHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank', 'class'=>'button'))?>
+                            <span class="glyphicon glyphicon-adjust"></span> <?= CHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank', 'class'=>'button'))?>
 
                             <button class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#files_settings"><span class="glyphicon glyphicon-adjust"></span>Table Settings</button>
                             <br>

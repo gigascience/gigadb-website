@@ -47,7 +47,7 @@ $this->breadcrumbs=array(
                                         <?= $form->checkBox($model,'rememberMe') ?>
                                         <?= $form->label($model,'rememberMe', array('disabled'=>"disabled")) ?>  
                                         &nbsp;
-                                        <?= MyHtml::link(Yii::t('app' , "Lost Password"), array('user/reset', 'username'=>$model->username,'style'=>'float:right')) ?> 
+                                        <?= CHtml::link(Yii::t('app' , "Lost Password"), array('user/reset', 'username'=>$model->username,'style'=>'float:right')) ?> 
                                          <a href="/user/create" style="float:right;">Create account</a>
                                     </div>
                                 </div>
@@ -58,7 +58,7 @@ $this->breadcrumbs=array(
 			<hr>		
                         <div class="button-div">                
                             
-                            <?= MyHtml::submitButton(Yii::t('app' ,'Login'), array('class'=>'btn background-btn','style'=>'width:236px;hight:40px;float:center;')) ?>	                         
+                            <?= CHtml::submitButton(Yii::t('app' ,'Login'), array('class'=>'btn background-btn','style'=>'width:236px;hight:40px;float:center;')) ?>	                         
                          
 			</div>
 		</div><!--form-->

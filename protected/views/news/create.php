@@ -3,7 +3,7 @@
 
 <? if (Yii::app()->user->checkAccess('admin')) { ?>
 <div class="actionBar">
-[<?= MyHtml::link('Manage News', array('admin')) ?>]
+[<?= CHtml::link('Manage News', array('admin')) ?>]
 </div>
 <? } ?>
 

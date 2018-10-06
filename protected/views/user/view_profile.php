@@ -113,7 +113,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                             <div class="text-center">
                             <div class="controls">
                                 <a id="cancel-btn" class="btn background-btn" style="display:none"><?= Yii::t('app', 'Cancel') ?></a>
-                                <?= MyHtml::submitButton(Yii::t('app', 'Save'), array('id' => 'save-btn', 'class' => 'btn background-btn', 'style' => 'display:none')) ?>
+                                <?= CHtml::submitButton(Yii::t('app', 'Save'), array('id' => 'save-btn', 'class' => 'btn background-btn', 'style' => 'display:none')) ?>
                             </div>
                             <br>
                             <button id="edit-btn" type="button" class="btn background-btn">Edit</button>

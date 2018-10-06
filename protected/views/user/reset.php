@@ -54,7 +54,7 @@
 			
                         <hr>
                             <div class="button-div">
-                                <?= MyHtml::submitButton(Yii::t('app' , 'Reset') , array('class'=>'btn background-btn')) ?>
+                                <?= CHtml::submitButton(Yii::t('app' , 'Reset') , array('class'=>'btn background-btn')) ?>
                             </div>
                         <? $this->endWidget() ?>
 		</div><!--well-->
