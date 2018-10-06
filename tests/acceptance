@@ -1,17 +1,12 @@
 #!/usr/bin/env bash
 
-set -e
-set -u
+set -e -u
 
 echo "About to run  automated tests..."
 
 echo "Loading environment..."
 set -a
-source "./.env"
-set +a
-
-echo "Loading test users"
-set -a
+source /var/www/.env
 source /var/www/.secrets
 set +a
 
@@ -23,13 +18,11 @@ exec 1>&3
 
 echo "Running acceptance tests"
 if [[ "$GIGADB_ENV" == "dev" ]];then
-	bin/behat --tags "@ok&&~@facebook" -v --stop-on-failure
+	bin/behat --tags "@ok" -v --stop-on-failure
 else
 	# we are on CI with remote runner, affilate login tests don't work becasause Google and Twitter block it
 	bin/behat --tags "@ok&&~@affiliate-login&&~@javascript" -v --stop-on-failure
 fi
-
-./tests/run_phpunit_tests
 
 echo "...all automated tests have run"
 

@@ -2,7 +2,7 @@
 
 set -e -u -x
 
-composer update
+composer install
 
 ./protected/yiic lesscompiler
 
