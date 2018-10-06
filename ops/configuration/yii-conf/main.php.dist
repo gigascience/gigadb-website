@@ -36,11 +36,14 @@ return CMap::mergeArray(array(
         ),
         'opauth' => array(
             'opauthParams' => array(
-                'Security.salt' => '1234',
+                'security_salt' => '${OPAUTH_SECURTY_SALT}',
+                'callback_url' => '/site/loginAffiliate',
+                'callback_transport' => 'get',
                 'Strategy' => array(
                     'Facebook' => array(
                         'app_id' => '${FACEBOOK_APP_ID}',
                         'app_secret' => '${FACEBOOK_APP_SECRET}',
+                        'scope' => 'email',
                     ),
                     'LinkedIn' => array(
                         'api_key' => '${LINKEDIN_API_KEY}',

@@ -220,10 +220,20 @@ class AffiliateLoginContext implements Context
         }
         else if ($arg1 == "Google") {
             $this->minkContext->fillField("Email", $login);
-            $this->minkContext->pressButton("Next");
+            if( $this->minkContext->getSession()->getPage()->findButton("下一個") ) {
+                $this->minkContext->pressButton("下一個");
+            }
+            elseif( $this->minkContext->getSession()->getPage()->findButton("Next") ) {
+                $this->minkContext->pressButton("Next");
+            }
             sleep(5);
             $this->minkContext->fillField("Passwd", $password);
-            $this->minkContext->pressButton("Sign in");
+            if( $this->minkContext->getSession()->getPage()->findButton("登入") ) {
+                $this->minkContext->pressButton("登入");
+            }
+            elseif( $this->minkContext->getSession()->getPage()->findButton("Sign in") ) {
+                $this->minkContext->pressButton("Sign in");
+            }
 
         }
         else if ($arg1 == "LinkedIn") {
@@ -279,7 +289,9 @@ class AffiliateLoginContext implements Context
         else if ($arg1 == "Google") {
 
             $this->minkContext->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
-            $this->minkContext->pressButton("Allow");
+            if( $this->minkContext->getSession()->getPage()->findButton("Allow") ) {
+                $this->minkContext->pressButton("Allow");
+            }
 
         }
         else if ($arg1 == "Orcid") {
@@ -406,11 +418,8 @@ class AffiliateLoginContext implements Context
 
         $this->minkContext->visit("/site/revoke");
         sleep(3);
-        print_r("Initializing the gigadb_user table... ");
         $this->gigadbWebsiteContext->terminateDbBackend("gigadb");
-        $this->gigadbWebsiteContext->truncateTable("gigadb","gigadb_user");
-        $this->gigadbWebsiteContext->loadUserData("joe_bloggs");
-        $this->gigadbWebsiteContext->loadUserData("john_smith");
+        $this->gigadbWebsiteContext->removeCreatedUsers();
         $this->gigadbWebsiteContext->restartPhp();
     }
 

@@ -381,15 +381,11 @@ class SiteController extends Controller {
         $this->render('login', array('model' => $model));
     }
 
-    public function actionChooseLogin() {
-		$this->render('chooseLogin');
-	}
-
 	public function actionloginAffiliate() {
 		if(isset($_GET["opauth"])) {
 			try {
 				$opauth_code = $_GET["opauth"];
-				$response = unserialize(base64_decode($opauth_code));
+				$response = json_decode(base64_decode($opauth_code), true);
 
 				// Check if it's an error callback
 				if (array_key_exists('error', $response) or !isset($response['auth'])) {
