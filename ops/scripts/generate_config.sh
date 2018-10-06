@@ -18,6 +18,8 @@ APP_SOURCE=/var/www
 # setting up the in-container path to Yii 1.1 framework
 YII_PATH="/opt/yii-1.1"
 
+# Warning to dissuade from modify the generated composer.json file
+COMPOSER_WARNING="!! Auto-generated file, edit ops/php-conf/composer.json.dist instead"
 
 # read env variables in same directory, from a file called .env.
 # They are shared by both this script and Docker compose files.
@@ -79,7 +81,7 @@ envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/php-conf/composer.json.dist
 TARGET=${APP_SOURCE}/composer.json
-VARS='$YII_VERSION:$PHP_VERSION'
+VARS='$COMPOSER_WARNING:$YII_VERSION:$PHP_VERSION'
 envsubst $VARS < $SOURCE > $TARGET
 
 # Generate config files for gigadb-website application using sed
