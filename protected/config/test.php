@@ -7,6 +7,7 @@ $testdb = json_decode(file_get_contents(dirname(__FILE__).'/db_test.json'), true
 
 return CMap::mergeArray(
 	require(dirname(__FILE__).'/main.php'),
+	require(dirname(__FILE__).'/local.php'),
 	array(
 		'components'=>array(
 			'fixture'=>array(

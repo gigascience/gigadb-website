@@ -2,12 +2,10 @@
 
 return array(
     'components' => array(
-        'mailchimp' => array(
-            'class'     => 'ext.mailchimp.EMailChimp2',
-            'apikey'    => '${MAILCHIMP_API_KEY}',
-            'listId'    => '${MAILCHIMP_LIST_ID}',
-            'ecommerce360Enabled' => false,
-            'devMode'   => false
+        'newsletter' => array(
+            'class'     => 'application.components.NewsletterService',
+            'api_key'    => '${MAILCHIMP_API_KEY}',
+            'list_id'    => '${MAILCHIMP_LIST_ID}',
         ),
         'analytics' => array(
             "class" => "application.components.AnalyticsService",

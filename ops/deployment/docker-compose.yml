@@ -27,6 +27,7 @@ services:
       args:
         - PHP_VERSION=${PHP_VERSION}
         - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
     volumes:
       - ${APPLICATION}/:/var/www
@@ -87,6 +88,7 @@ services:
       args:
         - PHP_VERSION=${PHP_VERSION}
         - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
         - INSTALL_PGSQL=true
         - INSTALL_PG_CLIENT=true
         - PG_CLIENT_VERSION=${POSTGRES_VERSION}

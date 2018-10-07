@@ -280,7 +280,7 @@ class AffiliateLoginContext implements Context
                 $elements[0]->press();
             }
 
-            // sleep(10);
+            sleep(5);
             $this->minkContext->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
 
 

@@ -46,18 +46,6 @@ class Utils {
         return $data;
     }
 
-     public static function addToMailing($email, $params = array()) {
-        $mc = Yii::app()->mailchimp;
-        $result = $mc->listSubscribe($email, $params);
-        return $result;
-    }
-
-    public static function removeFromMailing($email) {
-        $mc = Yii::app()->mailchimp;
-        $result = $mc->listUnsubscribe($email);
-        return $result;
-    }
-
     public static function parseCsvString($str, $delimiter = ",") {
         $result = array();
         $data = str_getcsv($str, "\n");
