@@ -1,7 +1,7 @@
 <?php
 
 
-class NewsLetterServiceTest extends CTestCase
+class NewsletterServiceTest extends CTestCase
 {
 
 	/**
@@ -19,7 +19,7 @@ class NewsLetterServiceTest extends CTestCase
 					  	 ->setConstructorArgs([$api_key])
                          ->setMethods(['post','success'])
                          ->getMock();
-  		$service = new NewsLetterService($api_key, $list_id, $mailchimp);
+  		$service = new NewsletterService($api_key, $list_id, $mailchimp);
 
   		$mailchimp->expects($this->exactly($how_many_times))
                  ->method('post')
@@ -49,7 +49,7 @@ class NewsLetterServiceTest extends CTestCase
 					  	 ->setConstructorArgs([$api_key])
                          ->setMethods(['subscriberHash','delete'])
                          ->getMock();
-  		$service = new NewsLetterService($api_key, $list_id, $mailchimp);
+  		$service = new NewsletterService($api_key, $list_id, $mailchimp);
 
   		$mailchimp->expects($this->once())
                  ->method('subscriberHash')
@@ -78,7 +78,7 @@ class NewsLetterServiceTest extends CTestCase
 					  	 ->setConstructorArgs([$api_key])
                          ->setMethods(['get'])
                          ->getMock();
-  		$service = new NewsLetterService($api_key, $list_id, $mailchimp);
+  		$service = new NewsletterService($api_key, $list_id, $mailchimp);
 
         $mailchimp->expects($this->once())
                  ->method('get')

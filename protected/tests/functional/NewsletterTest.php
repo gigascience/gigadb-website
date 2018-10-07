@@ -37,7 +37,7 @@ class NewsletterTest extends BrowserTestCase
   		$list_id = getenv("MAILCHIMP_LIST_ID");
 
   		$email= $fork.$today.$current_pid."_".getenv("MAILCHIMP_TEST_EMAIL") ;
-  		$service = new NewsLetterService($api_key, $list_id);
+  		$service = new NewsletterService($api_key, $list_id);
   		$result = $service->addToMailing($email);
   		$this->assertTrue( $result );
   	}
@@ -57,7 +57,7 @@ class NewsletterTest extends BrowserTestCase
   		$list_id = getenv("MAILCHIMP_LIST_ID");
 
   		$email= $fork.$today.$current_pid."_".getenv("MAILCHIMP_TEST_EMAIL") ;
-  		$service = new NewsLetterService($api_key, $list_id);
+  		$service = new NewsletterService($api_key, $list_id);
   		$result = $service->removeFromMailing($email);
   		$this->assertTrue( $result );
   	}
