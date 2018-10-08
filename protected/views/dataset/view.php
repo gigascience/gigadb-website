@@ -83,7 +83,6 @@ HTML;
                     </a>
                     </span>
                     <? if( ! Yii::app()->user->isGuest && null == Author::findAttachedAuthorByUserId(Yii::app()->user->id) ) { ?>
-                        <? Yii::log(__FUNCTION__."> Author::findAttachedAuthorByUserId:".Author::findAttachedAuthorByUserId(Yii::app()->user->id) , 'warning'); ?>
                         <span title="click to claim the dataset and link your user account to an author" data-toggle="tooltip" data-placement="bottom">
                             <a href="#myModal" role="button" class="btn background-btn background-btn-o" data-toggle="modal">
                                 Your dataset?

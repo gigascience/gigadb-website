@@ -32,7 +32,7 @@ variables:
   DATA_SAVE_PATH: "/builds/.containers-data/gigadb"
   NGINX_VERSION: "1.15.2"
   PHP_VERSION: "5.6"
-  YII_VERSION: "1.1.16"
+  YII_VERSION: "1.1.20"
   POSTGRES_VERSION: "9.4"
   HOME_URL: "gigadb.gigasciencejournal.com"
   PUBLIC_HTTP_PORT: "9170"
