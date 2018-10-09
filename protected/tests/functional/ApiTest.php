@@ -1,28 +1,24 @@
 <?php
 
-use aik099\PHPUnit\BrowserTestCase;
-
-class ApiTest extends BrowserTestCase {
-
-	public static $browsers = array(
-        array(
-            'driver' => 'goutte',
-            'browserName' => 'goutte',
-            'baseUrl' => 'http://gigadb.dev',
-        ),
-    );
+ /**
+ * Functional test for the API endpoint
+ *
+ * It tests all combination of parameters and the feed has only the relevant data
+ *
+ * @uses \BrowserPageSteps::getXMLWithSessionAndUrl()
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+*/
+class ApiTest extends FunctionalTesting
+{
+    use BrowserPageSteps;
 
 	public function testItShouldOutputDatasetOnly() {
-		// This is Mink's Session.
-        $session = $this->getSession();
         $url = "http://gigadb.dev/api/dataset/doi/100002?result=dataset" ;
 
         // Go to a page and getting xml content
-        $session->visit($url);
-        $xml = $session->getPage()->getContent();
-
-        // Loading content into an XML structure
-        $feed = new SimpleXMLElement($xml);
+        $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
         $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", $feed->dataset->title);
@@ -32,16 +28,10 @@ class ApiTest extends BrowserTestCase {
 	}
 
     public function testItShouldOutputSamplesOnly() {
-        // This is Mink's Session.
-        $session = $this->getSession();
         $url = "http://gigadb.dev/api/dataset/doi/100002?result=sample" ;
 
         // Go to a page and getting xml content
-        $session->visit($url);
-        $xml = $session->getPage()->getContent();
-
-        // Loading content into an XML structure
-        $feed = new SimpleXMLElement($xml);
+        $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
         $this->assertEquals("Pygoscelis_adeliae", $feed->samples->sample[0]->name);
@@ -51,16 +41,10 @@ class ApiTest extends BrowserTestCase {
     }
 
     public function testItShouldOutputFilesOnly() {
-        // This is Mink's Session.
-        $session = $this->getSession();
         $url = "http://gigadb.dev/api/dataset/doi/100002?result=file" ;
 
         // Go to a page and getting xml content
-        $session->visit($url);
-        $xml = $session->getPage()->getContent();
-
-        // Loading content into an XML structure
-        $feed = new SimpleXMLElement($xml);
+        $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
         $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->files->file[0]->name);
@@ -69,16 +53,10 @@ class ApiTest extends BrowserTestCase {
     }
 
     public function testItShouldOutputFullDataset() {
-        // This is Mink's Session.
-        $session = $this->getSession();
         $url = "http://gigadb.dev/api/dataset/doi/100002?result=all" ;
 
         // Go to a page and getting xml content
-        $session->visit($url);
-        $xml = $session->getPage()->getContent();
-
-        // Loading content into an XML structure
-        $feed = new SimpleXMLElement($xml);
+        $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
         $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", $feed->dataset->title);
@@ -87,16 +65,10 @@ class ApiTest extends BrowserTestCase {
     }
 
     public function testItShouldOutputFullDatasetByDefault() {
-        // This is Mink's Session.
-        $session = $this->getSession();
         $url = "http://gigadb.dev/api/dataset/doi/100002" ;
 
         // Go to a page and getting xml content
-        $session->visit($url);
-        $xml = $session->getPage()->getContent();
-
-        // Loading content into an XML structure
-        $feed = new SimpleXMLElement($xml);
+        $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
         $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", $feed->dataset->title);
@@ -105,16 +77,10 @@ class ApiTest extends BrowserTestCase {
     }
 
     public function testItShouldSearchWithKeywordAndOutputDatasetOnly() {
-        // This is Mink's Session.
-        $session = $this->getSession();
         $url = "http://gigadb.dev/api/search?keyword=description:Antartica" ;
 
         // Go to a page and getting xml content
-        $session->visit($url);
-        $xml = $session->getPage()->getContent();
-
-        // Loading content into an XML structure
-        $feed = new SimpleXMLElement($xml);
+        $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
         $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", $feed->gigadb_entry->dataset->title);
@@ -123,16 +89,10 @@ class ApiTest extends BrowserTestCase {
     }
 
     public function testItShouldSearchWithKeywordAndOutputFileOnly() {
-        // This is Mink's Session.
-        $session = $this->getSession();
         $url = "http://gigadb.dev/api/search?keyword=description:Antartica&result=file" ;
 
         // Go to a page and getting xml content
-        $session->visit($url);
-        $xml = $session->getPage()->getContent();
-
-        // Loading content into an XML structure
-        $feed = new SimpleXMLElement($xml);
+        $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
         $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->gigadb_entry->files->file[0]->name);
@@ -141,16 +101,10 @@ class ApiTest extends BrowserTestCase {
     }
 
     public function testItShouldSearchWithKeywordAndOutputSampleOnly() {
-        // This is Mink's Session.
-        $session = $this->getSession();
         $url = "http://gigadb.dev/api/search?keyword=description:Antartica&result=sample" ;
 
         // Go to a page and getting xml content
-        $session->visit($url);
-        $xml = $session->getPage()->getContent();
-
-        // Loading content into an XML structure
-        $feed = new SimpleXMLElement($xml);
+        $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
         $this->assertEquals("Pygoscelis_adeliae", $feed->gigadb_entry->samples->sample[0]->name);

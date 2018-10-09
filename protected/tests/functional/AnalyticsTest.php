@@ -1,58 +1,44 @@
 <?php
-
-use aik099\PHPUnit\BrowserTestCase;
-
-class AnalyticsTest extends BrowserTestCase
+ /**
+ * Functional test for the Google analytics controller
+ *
+ * It just tests the that the integration with Google client doesn't throw errors
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+*/
+class AnalyticsTest extends FunctionalTesting
 {
-
-	public static $browsers = array(
-        array(
-            'driver' => 'goutte',
-            'browserName' => 'goutte',
-            'baseUrl' => 'http://gigadb.dev',
-        ),
-    );
-
-    public function setUp()
-    {
-        // This is Mink's Session.
-        $session = $this->getSession();
-
-        //First login as an admin
-        $session->visit("http://gigadb.dev/site/login");
-        $session->getPage()->fillField("LoginForm_username", "admin@gigadb.org");
-        $session->getPage()->fillField("LoginForm_password", "gigadb");
-        $session->getPage()->pressButton("Login");
-
-        $this->assertTrue($session->getPage()->hasContent("Admin"));
-    }
+    use BrowserSignInSteps;
+    use BrowserPageSteps;
+    use BrowserFormSteps;
 
     /**
      * ReportController::actionIndex loads analytics report page
+     *
+     * @uses \BrowserSignInSteps::loginToWebSiteWithSessionAndCredentialsThenAssert()
+     * @uses \BrowserPageSteps::visitPageWithSessionAndUrlThenAssertContentHasOrNull()
+     * @uses \BrowserPageSteps::getCurrentUrl()
+     * @uses \BrowserPageSteps::getStatusCode()
+     * @uses \BrowserFormSteps::fillReportIndexForm()
      *
      * The test aims to test the credentials for connecting to Google API are configured correctly
      * Otherwise, a 500 Server Error will be returned. That's why we test the return code
      */
     public function testItShouldLoadGoogleAnalyticsPage()
     {
-        // This is Mink's Session. We assumed we are already logged in as admin.
-        $session = $this->getSession();
-
+        $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org","gigadb","Admin");
         // Make a call to the report controller
         $url = "http://gigadb.dev/report/index" ;
-        $session->visit($url);
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, null);
 
-        // fill the form needed for the report
-        $session->getPage()->fillField("Report_start_date", "2018-09-01");
-        $session->getPage()->fillField("Report_end_date", "2018-09-30");
-        $session->getPage()->selectFieldOption("Report_ids", "all");
-        $session->getPage()->pressButton("View");
+        $this->fillReportIndexForm();
 
         // Check that after submission we land on the same view
-        $this->assertEquals( "http://gigadb.dev/report/index", $session->getCurrentUrl() );
+        $this->assertEquals( "http://gigadb.dev/report/index", $this->getCurrentUrl() );
 
         // Check that the status code is 200 OK
-        $this->assertEquals( 200,  $session->getStatusCode() );
+        $this->assertEquals( 200,  $this->getStatusCode() );
 
     }
 

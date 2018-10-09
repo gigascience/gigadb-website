@@ -1,16 +1,17 @@
 <?php
-
-use aik099\PHPUnit\BrowserTestCase;
-
-class RSSFeedTest extends BrowserTestCase
+ /**
+ * Functional test for the RSS feed
+ *
+ * It tests that the feed appears and in the right order
+ *
+ * @uses \BrowserPageSteps::getXMLWithSessionAndUrl()
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+*/
+class RSSFeedTest extends FunctionalTesting
 {
-	public static $browsers = array(
-        array(
-            'driver' => 'goutte',
-            'browserName' => 'goutte',
-            'baseUrl' => 'http://gigadb.dev',
-        ),
-    );
+    use BrowserPageSteps;
 
     public function testItShouldShowAnRssFeed()
     {
@@ -18,17 +19,10 @@ class RSSFeedTest extends BrowserTestCase
     	$expectations = ["2016-05-11", "2016-05-11", "2016-05-09", "2011-11-12"];
     	$actual = [];
 
-    	// This is Mink's Session.
-        $session = $this->getSession();
         $url = "http://gigadb.dev/site/feed/" ;
 
         // Go to a page and getting xml content
-        $session->visit($url);
-
-        //Find all the news items on the page
-        $feed_raw = $session->getPage()->getContent();
-
-        $feed = new SimpleXMLElement($feed_raw);
+        $feed = $this->getXMLWithSessionAndUrl($url);
 
         $this->assertEquals("10.5072/100004", $feed->channel->item[0]->guid);
         $this->assertEquals("10.5072/100003", $feed->channel->item[3]->guid);

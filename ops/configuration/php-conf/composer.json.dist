@@ -46,6 +46,7 @@
         "psr-0": {
             "unit_tests": "protected/tests/unit",
             "functional_tests": "protected/tests/functional",
+            "testing_traits": "protected/tests/support",
             "acceptance_tests": "features/bootstrap",
             "business_domain": "protected/models",
             "services": "protected/components"

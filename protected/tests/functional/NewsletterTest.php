@@ -1,23 +1,16 @@
 <?php
 
-use aik099\PHPUnit\BrowserTestCase;
-
  /**
  * Functional test for the NewsletterService class using Mailchimp API
+ *
+ * It just tests the ability to subscribe/unsubscribe from the User form
+ * and that is it is a properly configured Yii application component
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
 */
-class NewsletterTest extends BrowserTestCase
+class NewsletterTest extends FunctionalTesting
 {
-  	public static $browsers = array(
-        array(
-            'driver' => 'goutte',
-            'browserName' => 'goutte',
-            'baseUrl' => 'http://gigadb.dev',
-        ),
-    );
-
   	/**
   	 * Test that we can instantiate the service and subscribe an email address
   	 *
@@ -49,7 +42,7 @@ class NewsletterTest extends BrowserTestCase
   	 * but it has to be the same used in both tests
   	 * and several developers should be able to run the tests at the same time
   	 * So make sure MAILCHIMP_TEST_EMAIL can take wildcard on the leftside of the "@"
-	 * @see https://stackoverflow.com/questions/41160763/not-allowing-more-signups-for-now-in-mailchimp-api
+	   * @see https://stackoverflow.com/questions/41160763/not-allowing-more-signups-for-now-in-mailchimp-api
   	 */
   	public function testItShouldUnsubscribeUser()
   	{
