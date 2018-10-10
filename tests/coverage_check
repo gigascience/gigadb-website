@@ -18,7 +18,7 @@ else
 fi
 
 if [[ -s $text_cov ]];then
-	current_coverage_value=`head -6 $text_cov | tail -1 | cut -d':' -f 2 | cut -d'%' -f 1 | cut -d' ' -f 4`
+	current_coverage_value=`head -6 $text_cov | tail -1 | cut -d':' -f 2 | cut -d'%' -f 1 | sed 's/ *//'`
 else
 	echo "Test Coverage report not fount at: $text_cov"
 	echo "Ensure the PHPUnit tests have run and have generated a coverage report."
