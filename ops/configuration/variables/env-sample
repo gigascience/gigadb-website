@@ -44,6 +44,7 @@ NGINX_VERSION=1.15
 PHP_VERSION=7.0
 POSTGRES_VERSION=9.4
 YII_VERSION=1.1.20
+YII2_VERSION=2.0.15.1
 
 
 ### Application Access variables ########################################################################################

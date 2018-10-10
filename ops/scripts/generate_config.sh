@@ -81,7 +81,7 @@ envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/php-conf/composer.json.dist
 TARGET=${APP_SOURCE}/composer.json
-VARS='$COMPOSER_WARNING:$YII_VERSION:$PHP_VERSION'
+VARS='$COMPOSER_WARNING:$YII_VERSION:$YII2_VERSION:$PHP_VERSION'
 envsubst $VARS < $SOURCE > $TARGET
 
 # Generate config files for gigadb-website application using sed
@@ -97,7 +97,7 @@ TARGET=${APP_SOURCE}/index.php
 VARS='$YII_PATH:$APP_SOURCE'
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/yii.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/yiic.php.dist
 TARGET=${APP_SOURCE}/protected/yiic.php
 VARS='$YII_PATH'
 envsubst $VARS < $SOURCE > $TARGET
