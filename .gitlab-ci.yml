@@ -71,7 +71,7 @@ build_webapp:
     when: on_failure
     expire_in: 1 week
 
-run_all_tests:
+run_unit_funtional_tests:
   stage: test
   cache:
     paths:
@@ -95,7 +95,7 @@ run_all_tests:
     # - env
     - docker-compose run --rm config
     - docker-compose run --rm webapp
-    - docker-compose up -d phantomjs
+    # - docker-compose up -d phantomjs
     # - docker-compose top
     # - docker network inspect rija-gigadb-website_web-tier
     # - docker network inspect rija-gigadb-website_db-tier
@@ -103,7 +103,42 @@ run_all_tests:
     # - docker images
     - docker-compose run --rm test ping -c 5 database
     - docker-compose run --rm test ping -c 5 gigadb.dev
-    - docker-compose run test
+    - docker-compose run test ./tests/unit_functional
+    - docker-compose run test ./tests/coverage
+
+run_acceptance:
+  stage: test
+  cache:
+    paths:
+      - vendor/
+      - bin/
+      - composer.lock
+  artifacts:
+    paths:
+      - tmp/
+      - protected/runtime/coverage/
+      - protected/runtime/application.log
+      - protected/runtime/features.txt
+      - protected/runtime/phpunit-coverage.txt
+      - .env
+    reports:
+      junit: protected/runtime/xml/default.xml
+    when: always
+  script:
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    # - env
+    - docker-compose run --rm config
+    - docker-compose run --rm webapp
+    # - docker-compose up -d phantomjs
+    # - docker-compose top
+    # - docker network inspect rija-gigadb-website_web-tier
+    # - docker network inspect rija-gigadb-website_db-tier
+    # - docker-compose logs database
+    # - docker images
+    - docker-compose run --rm test ping -c 5 database
+    - docker-compose run --rm test ping -c 5 gigadb.dev
+    - docker-compose run test ./tests/acceptance
 
 check_coverage:
   stage: conformance
