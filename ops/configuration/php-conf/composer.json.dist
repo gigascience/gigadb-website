@@ -1,6 +1,6 @@
 {
     "name": "GigaDB (${COMPOSER_WARNING})",
-    "type": "web site",
+    "type": "Yii-based web site",
     "description": "GigaDB primarily serves as a repository to host data and tools associated with articles in GigaScience journal",
     "homepage": "http://gigadb.org",
     "require": {
