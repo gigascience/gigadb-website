@@ -33,7 +33,7 @@ if [[ $compare -eq 1 ]];then
 	exit 1
 else
 	echo "Coverage OK!"
-	echo $current_coverage_value > $previous_coverage_file
+	echo $current_coverage_value | tee $previous_coverage_file
 	exit 0
 fi
 
