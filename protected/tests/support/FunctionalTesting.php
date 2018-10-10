@@ -53,6 +53,7 @@ class FunctionalTesting extends BrowserTestCase
 	 */
     public function setUp()
     {
+    	parent::setUp();
         $this->setBrowserSession();
     }
 
@@ -61,6 +62,7 @@ class FunctionalTesting extends BrowserTestCase
 	*/
     public function tearDown()
     {
+    	parent::tearDown();
         $this->unsetBrowserSession();
     }
 }
