@@ -86,7 +86,7 @@ services:
       context: .
       dockerfile: ../packaging/Dockerfile
       args:
-        - PHP_VERSION=5.6
+        - PHP_VERSION=${PHP_VERSION}
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_PGSQL=true
