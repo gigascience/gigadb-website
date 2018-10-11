@@ -1,7 +1,5 @@
 <?php
 
-use aik099\PHPUnit\BrowserTestCase;
-
  /**
  * Initialisation and common setup for functional tests
  *
@@ -16,7 +14,7 @@ use aik099\PHPUnit\BrowserTestCase;
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
 */
-class FunctionalTesting extends BrowserTestCase
+class FunctionalTesting extends CustomBrowserTestCase
 {
 	/** @var mixed browser session to be used by test cases */
 	protected $session;
