@@ -542,6 +542,20 @@ Files:
                                 </div>
                             </div>
                         </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel36" aria-expanded="false" aria-controls="panel35">
+                                    Why is the directory structure missing from the file table view on my dataset page?   
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="panel36" class="panel-collapse collapse" role="tabpanel">
+                                <div class="panel-body">
+                                    <p>This is simply a display issue. In the longer term, we wish to display the directory structure on the GigaDB dataset pages, however, for the moment the files appear as a flat list. By mousing over a filename in the list you can see the complete filepath which shows the directory structure has been maintained. Additionally you can click the "FTP site" link at the top of any file table to be taken to the FTP server which displays the complete directory structure.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
                
