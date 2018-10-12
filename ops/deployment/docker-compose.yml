@@ -6,6 +6,7 @@ services:
     image: nginx:${NGINX_VERSION}-alpine
     environment:
       YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
     volumes:
       - ${APPLICATION}/:/var/www
       - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
@@ -21,6 +22,7 @@ services:
   application:
     environment:
       YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
     build:
       context: .
       dockerfile: ../packaging/Dockerfile
@@ -32,6 +34,7 @@ services:
     volumes:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
+      - ${APPLICATION}/vendor/yiisoft/yii2:${YII2_PATH}
       - ${APPLICATION}/ops/configuration/php-conf/php-${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
@@ -98,9 +101,11 @@ services:
         - INSTALL_COMPOSER=true
     environment:
       YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
     volumes:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
+      - ${APPLICATION}/vendor/yiisoft/yii2:${YII2_PATH}
       - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
       - ${APPLICATION}/ops/configuration/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini

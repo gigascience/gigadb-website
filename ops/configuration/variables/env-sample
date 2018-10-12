@@ -37,6 +37,7 @@ GIGADB_ENV=dev
 
 APPLICATION=.
 YII_PATH=/opt/yii-1.1
+YII2_PATH=/opt/yii-2.0
 DATA_SAVE_PATH=~/.containers-data/gigadb
 
 ### Core services managed in Docker compose ##############################################################################
