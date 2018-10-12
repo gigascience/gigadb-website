@@ -91,6 +91,7 @@ return CMap::mergeArray(array(
         'clientScript'=>array(
                'scriptMap'=> array(
                    'jquery.js' => false,
+                   'jquery.min.js' => false,
                     'jquery.ba-bbq.js' => false,
                     'jquery-ui.min.js' => false,
                     'jquery-ui.css' => false,

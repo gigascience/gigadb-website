@@ -945,7 +945,7 @@ $(".citation-popup").popover({'placement':'top'});
 </script>
 
 <script>
-    $('#myModal').on('hidden', function () {
+    $('#myModal').on('hidden.bs.modal', function () {
         $("#message").removeAttr("class").empty();
         $("#advice").removeAttr("class").empty();
     })

@@ -110,7 +110,7 @@ class ClaimDatasetContext implements Context
         $this->gigadbWebsiteContext->iSignInAsAUser();
         // $this->gigadbWebsiteContext->itakeAScreenshot("After signing in as a user");
         $this->minkContext->visit("/dataset/100002");
-        $this->gigadbWebsiteContext->itakeAScreenshot("On dataset page 100002");
+        // $this->gigadbWebsiteContext->itakeAScreenshot("On dataset page 100002");
         $this->minkContext->clickLink("Your dataset?");
         $this->iWaitSeconds(2);
         // $this->gigadbWebsiteContext->itakeAScreenshot("After clicking on Your dataset?");

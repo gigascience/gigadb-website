@@ -48,6 +48,8 @@ class UserCommandController extends CController
      */
     public function actionClaim($dataset_id, $author_id) {
 
+        Yii::log(__FUNCTION__." ($dataset_id, $author_id)",'info');
+
     	$result['status'] = false;
         $result['message'] = "there was an error";
 
