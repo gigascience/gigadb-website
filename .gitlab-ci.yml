@@ -108,9 +108,8 @@ check_coverage:
   stage: conformance
   cache:
     paths:
-      - protected/runtime/previous_coverage_level.txt
+      - previous_coverage_level.txt
   script:
-    - ls -al protected/runtime/
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker-compose run --rm config
