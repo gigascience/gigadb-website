@@ -29,6 +29,7 @@ variables:
   # .env is only for dev, elsewhere we just list the variables here
   APPLICATION: "/builds/$CI_PROJECT_PATH"
   YII_PATH: "/opt/yii-1.1"
+  YII2_PATH: "/opt/yii-2.0"
   DATA_SAVE_PATH: "/builds/.containers-data/gigadb"
   NGINX_VERSION: "1.15.2"
   PHP_VERSION: "7.0"
