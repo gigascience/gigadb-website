@@ -20,7 +20,8 @@
         <link rel="stylesheet" type="text/css" href="/fonts/pt_sans/v8/pt_sans.css">
         <link rel="stylesheet" type="text/css" href="/fonts/lato/v11/lato.css">
         <link rel="stylesheet" type="text/css" href="/css/common.css"/>
-        <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
         <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <? } ?>
 
@@ -207,30 +208,6 @@
             </div>
 
 <?php endif ?>
-
-        <script>
-            $(function() {
-                $("#btnCreateAccount").tooltip({'placement': 'left'});
-
-<?php if (Yii::app()->user->isGuest) : ?>
-                    $('#btnLogin').attr('data-content', $('.popover-login').html()).popover({
-                        trigger: 'manual',
-                        animate: false,
-                        stay: true,
-                        placement: 'bottom',
-                        template: '<div class="popover login-popover"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>'
-                    }).on('click', function() {
-                        return false;
-                    }).mouseenter(function(e) {
-                        $(this).popover('show');
-
-                        $('.popover').one('mouseleave', function() {
-                            $('#btnLogin').popover('hide');
-                        });
-                    });
-<?php endif ?>
-            });
-        </script>
 
     </body>
 </html>
