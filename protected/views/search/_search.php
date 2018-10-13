@@ -16,7 +16,8 @@
                  'minLength'=>'2',
              ),
             'htmlOptions'=>array(
-                 'class'=>'form-control',
+                'title'=>'Search GigaDB',
+                'class'=>'form-control',
              ),
              'value'=>$model->keyword
         ));

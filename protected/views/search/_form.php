@@ -23,6 +23,7 @@
                              'minLength'=>'2',
                              ),
             'htmlOptions'=>array(
+                                'title'=>'Search GigaDB',
                                  'class'=>'form-control',
                                  'placeholder'=>'e.g. Chicken, brain etc...',
                                  ),

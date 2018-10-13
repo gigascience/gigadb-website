@@ -31,7 +31,7 @@
        
        
     ?>
-    <button class="btn-search" type="submit"><span class="fa fa-search"></span></button>
+    <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span></button>
        
    
 
