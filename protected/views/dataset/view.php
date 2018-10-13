@@ -34,8 +34,12 @@ HTML;
 
                 ?>
             <a href="<?= $url ?>" >
-                <?= CHtml::image($url, $url, array('class'=>'media-object',
-                    'title'=>'<ul style="text-align:left;"><li>'.$model->image->tag.'</li><li>'.'License: '.$model->image->license.'</li><li>'.'Source: '.$model->image->source.'</li><li>'.'Photographer: '.$model->image->photographer.'</li></ul>')); ?>
+                <?= CHtml::image($url, $model->image->tag ,
+                    array(
+                        'class'=>'media-object',
+                        'title'=>$model->image->tag.' License: '.$model->image->license.' Source: '.$model->image->source.' Photographer: '.$model->image->photographer
+                    )
+                ); ?>
             </a>
             <?php } ?>
 
@@ -68,10 +72,14 @@ HTML;
                  <div class="pull-right">
                     <p>
                         <span class="citation-popup" data-content="View citations on Google Scholar">
-                            <a href="<?= $model->googleScholarLink ?>" target="_blank"><img class="dataset-des-images" src="/images/google_scholar.png"/></a>
+                            <a href="<?= $model->googleScholarLink ?>" target="_blank">
+                                <img class="dataset-des-images" src="/images/google_scholar.png" alt="View citations for this datasets on Google Scholar"/>
+                            </a>
                         </span>
                         <span class="citation-popup" data-content="View citations on Europe PubMed Central">
-                            <a href="<?= $model->ePMCLink ?>" target="_blank"><img class="dataset-des-images" src="/images/ePMC.jpg"/></a>
+                            <a href="<?= $model->ePMCLink ?>" target="_blank">
+                                <img class="dataset-des-images" src="/images/ePMC.jpg" alt="View citations for this datasets on Europe PubMed Central"/>
+                            </a>
                         </span>
                     </p>
                 </div>
@@ -380,7 +388,7 @@ HTML;
                 <p>
                     <? foreach ($model->projects as $key=>$project){
                         if ($project->image_location)
-                            echo "<a href='$project->url'><img src='$project->image_location' /></a>";
+                            echo "<a href='$project->url'><img src='$project->image_location' alt='Go to $project->name website'/></a>";
                         else
                             echo CHtml::link($project->name, $project->url);
 

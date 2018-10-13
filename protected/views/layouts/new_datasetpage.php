@@ -106,7 +106,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-4">
-                        <a href="/"><img src="/images/new_interface_image/logo.png" class="base-nav-logo-img"></a>
+                        <a href="/"><img src="/images/new_interface_image/logo.png" class="base-nav-logo-img" alt="GigaDB Logo and tagline: Revolutionizing data dissemination, organization and use"></a>
                     </div>
                     <div class="col-xs-4 col-xs-offset-4">
                         <ul class="nav nav-pills main-nav-bar text-right">
@@ -149,9 +149,9 @@
                 <div class="row">
                     <div class="col-xs-6">
                         <ul class="list-inline base-footer-logo-bar">
-                            <li><a href="https://academic.oup.com/gigascience"><img src="/images/new_interface_image/gigascience.png"></a></li>
-                            <li><a href="http://www.genomics.cn/"><img src="/images/new_interface_image/bgi-logo.png"></a></li>
-                            <li><a href="https://www.cngb.org"><img src="/images/new_interface_image/chinagenbank.png"></a></li>
+                            <li><a href="https://academic.oup.com/gigascience"><img src="/images/new_interface_image/gigascience.png" alt="Go to GigaScience Journal web site"></a></li>
+                            <li><a href="http://www.genomics.cn/"><img src="/images/new_interface_image/bgi-logo.png" alt="Go to 华大基因 BGI (Beijing Genomics Institute) website"></a></li>
+                            <li><a href="https://www.cngb.org"><img src="/images/new_interface_image/chinagenbank.png" alt="Go to CNGB (China National Gene Bank) website"></a></li>
                         </ul>
                     </div>
                     <div class="col-xs-6 text-right">
@@ -195,23 +195,23 @@
                      <img src="<?= Yii::app()->createAbsoluteUrl('/') .  "/images/icons/id.png" ?>"/>&nbsp;&nbsp;<?=Yii::t('app' , 'ORCID')?>
                 </a>-->
                 <a class="btn btnlog center giga-log" href="/site/login">
-                     <img src="/images/icons/giga.png"/>&nbsp;
+                     <img src="/images/icons/giga.png" alt="Login to GigaDB">&nbsp;
                 </a>
              </div>
              <div class="content-btnlog">
                  <a class="btn btnlog facebook-log" href="/opauth/facebook">
-                     <img src="/images/icons/fb.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Facebook')?>
+                     <img src="/images/icons/fb.png" alt="Login with Facebook">&nbsp;&nbsp;<?=Yii::t('app' , 'Facebook')?>
                  </a>
                 <a class="btn btnlog google-log" href="/opauth/google">
-                     <img src="/images/icons/google.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Google')?>
+                     <img src="/images/icons/google.png" alt="Login with Google">&nbsp;&nbsp;<?=Yii::t('app' , 'Google')?>
                 </a>
              </div>
              <div class="content-btnlog">
                 <a class="btn btnlog twitter-log" href="/opauth/twitter">
-                     <img src="/images/icons/twi.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Twitter')?>
+                     <img src="/images/icons/twi.png" alt="Login with Twitter">&nbsp;&nbsp;<?=Yii::t('app' , 'Twitter')?>
                 </a>
                 <a class="btn btnlog linkedin-log" href="/opauth/linkedin">
-                    <img src="/images/icons/in.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'LinkedIn')?>
+                    <img src="/images/icons/in.png" alt="Login with LinkedIn">&nbsp;&nbsp;<?=Yii::t('app' , 'LinkedIn')?>
                 </a>
              </div>
         </div>
