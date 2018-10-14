@@ -15,14 +15,14 @@
         <link rel="stylesheet/less" type="text/css" href="/less/site.less?time=<?= time() ?>">
         <? Yii::app()->clientScript->registerScriptFile('/js/less-1.3.0.min.js'); ?>
             <? } else { ?>
-                <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-                <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+                <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+                <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
                 <link rel="stylesheet" type="text/css" href="/fonts/open_sans/v13/open_sans.css">
                 <link rel="stylesheet" type="text/css" href="/fonts/pt_sans/v8/pt_sans.css">
                 <link rel="stylesheet" type="text/css" href="/fonts/lato/v11/lato.css">
                 <link rel="stylesheet" type="text/css" href="/css/common.css" />
-                <script type="text/javascript" src="http://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-                <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
                 <? } ?>
                     <? Yii::app()->clientScript->scriptMap['jquery.js'] = false;
            Yii::app()->clientScript->scriptMap['jquery-ui.css'] = false;
