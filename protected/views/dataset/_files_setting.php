@@ -96,10 +96,12 @@
 </div><!-- /.modal -->
 
 
-<?php
-    Yii::app()->clientScript->registerScript("files_settings_button", '$("#save-files-settings").click(function(){
-    $("#fileSettingsForm").submit();
-    return false;
-});
-');
-?>
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
+        $("#save-files-settings").click(function(){
+            $("#fileSettingsForm").submit();
+            return false;
+        });
+
+    });
+</script>

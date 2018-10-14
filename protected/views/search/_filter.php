@@ -1,17 +1,3 @@
-<script>
-$(function(){
-    //$(".filter-content").hide();
-    //toggle the componenet with class msg_body
-    $(".heading").click(function()
-    {
-      $(this).next(".filter-content").slideToggle(500);
-    });
-    /*$('#filter_form input:checkbox').click(function(){
-        document.forms['filter_form'].submit();
-    });*/
-});
-</script>
-
 <div class="filter-your-result">Filter your result</div>
 <!--
 <a data-toggle="modal" href="#how-to-use-filters" class="btn filter"><?=Yii::t('app' , 'How to use filters')?></a>
@@ -135,118 +121,132 @@ $(function(){
         echo CHtml::submitButton(Yii::t('app' ,'Apply Filters'), array('class'=>'span2 btn-green filter'));
         echo CHtml::endForm();
     ?>
+
 <script>
-submitFilter = function(){
-    var action=$(this).attr("action");
-    var tab=$("#filter_tab").val();
-    if(tab!="" && action.indexOf("#") ==-1){
-        action=action+tab;
-    }
-    $(this).attr("action",action);
-    $(this).submit();
-    return false;
-};
-
-$(function () {
-    $('.date, .size').focus(function() {
-        $(this).parent().removeClass('disabled');
-    });
-    $('.date, .size').focusout(function() {
-        $(this).parent().children("input").each(function(index,ele){
-            if($(ele).val()!=""){
-                $(this).parent().removeClass('disabled');
-                return false;
-            }
-            $(this).parent().addClass('disabled');
+document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
+    $(function(){
+        //$(".filter-content").hide();
+        //toggle the componenet with class msg_body
+        $(".heading").click(function()
+        {
+          $(this).next(".filter-content").slideToggle(500);
         });
-    });
-    $('.date, .size').change(function() {
-
-        $(this).parent().children("input").each(function(index,ele){
-            if($(ele).val()!=""){
-                $(this).parent().removeClass('disabled');
-                $(this).parent().parent().find("button").html('<?=Yii::t('app' , 'Disable')?>');
-                return false;
-            }
-            $(this).parent().parent().find("button").html("Enable");
-            $(this).parent().addClass('disabled');
-        });
-
+        /*$('#filter_form input:checkbox').click(function(){
+            document.forms['filter_form'].submit();
+        });*/
     });
 
-    $('.date').datepicker({dateFormat: 'dd-mm-yy'});
-
-    $('.btn_filter').click(function () {
-        var action=$(this).html();
-        var alt="";
-        if($(this).next().has("input:text").length==0){
-            alt="Enable All";
-        }else{
-            alt="Enable";
+    submitFilter = function(){
+        var action=$(this).attr("action");
+        var tab=$("#filter_tab").val();
+        if(tab!="" && action.indexOf("#") ==-1){
+            action=action+tab;
         }
-
-        var status;
-        if(action=='<?=Yii::t('app' , 'Disable')?>'){
-            $(this).html(alt);
-            status=false;
-            $(this).next().addClass('disabled');
-        }else {
-            $(this).html('<?=Yii::t('app' , 'Disable')?>');
-            status=true;
-            $(this).next().removeClass('disabled');
-        }
-        $(this).next().find(':checkbox').attr('checked', status);
-        $(this).next().find(':text').attr('value', "");
-        document.forms['filter_form'].submit(submitFilter);
+        $(this).attr("action",action);
+        $(this).submit();
         return false;
+    };
+
+    $(function () {
+        $('.date, .size').focus(function() {
+            $(this).parent().removeClass('disabled');
+        });
+        $('.date, .size').focusout(function() {
+            $(this).parent().children("input").each(function(index,ele){
+                if($(ele).val()!=""){
+                    $(this).parent().removeClass('disabled');
+                    return false;
+                }
+                $(this).parent().addClass('disabled');
+            });
+        });
+        $('.date, .size').change(function() {
+
+            $(this).parent().children("input").each(function(index,ele){
+                if($(ele).val()!=""){
+                    $(this).parent().removeClass('disabled');
+                    $(this).parent().parent().find("button").html('<?=Yii::t('app' , 'Disable')?>');
+                    return false;
+                }
+                $(this).parent().parent().find("button").html("Enable");
+                $(this).parent().addClass('disabled');
+            });
+
+        });
+
+        $('.date').datepicker({dateFormat: 'dd-mm-yy'});
+
+        $('.btn_filter').click(function () {
+            var action=$(this).html();
+            var alt="";
+            if($(this).next().has("input:text").length==0){
+                alt="Enable All";
+            }else{
+                alt="Enable";
+            }
+
+            var status;
+            if(action=='<?=Yii::t('app' , 'Disable')?>'){
+                $(this).html(alt);
+                status=false;
+                $(this).next().addClass('disabled');
+            }else {
+                $(this).html('<?=Yii::t('app' , 'Disable')?>');
+                status=true;
+                $(this).next().removeClass('disabled');
+            }
+            $(this).next().find(':checkbox').attr('checked', status);
+            $(this).next().find(':text').attr('value', "");
+            document.forms['filter_form'].submit(submitFilter);
+            return false;
+        });
+
+        $('input:checkbox').click(function (e) {
+            var disable=true;
+            $(this).parent().children("input:checkbox").each(function(index,ele){
+                if($(ele).attr("checked")){
+                    $(ele).parent().parent().parent().children("button").html('<?=Yii::t('app' , 'Disable')?>');
+                    $(ele).parent().parent().removeClass('disabled');
+                    disable = false;
+                }
+            });
+            if(disable){
+                $(this).parent().parent().parent().children("button").html("Enable All");
+                $(this).parent().parent().addClass('disabled');
+            }
+            //document.forms['filter_form'].submit(submitFilter);
+        });
+
     });
 
-    $('input:checkbox').click(function (e) {
-        var disable=true;
-        $(this).parent().children("input:checkbox").each(function(index,ele){
-            if($(ele).attr("checked")){
-                $(ele).parent().parent().parent().children("button").html('<?=Yii::t('app' , 'Disable')?>');
-                $(ele).parent().parent().removeClass('disabled');
-                disable = false;
+
+    $('#filter_form').submit(submitFilter);
+    //$('#filter_form').submit(function() {
+    //    var action=$(this).attr("action");
+    //    var tab=$("#filter_tab").val();
+    //    if(tab!="" && action.indexOf("#") ==-1){
+    //        action=action+tab;
+    //    }
+    //    $(this).attr("action",action);
+    //    $(this).submit();
+    //    return false;
+    //});
+
+    $.fn.serializeObject = function()
+    {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
             }
         });
-        if(disable){
-            $(this).parent().parent().parent().children("button").html("Enable All");
-            $(this).parent().parent().addClass('disabled');
-        }
-        //document.forms['filter_form'].submit(submitFilter);
-    });
-
+        return o;
+    };
 });
-
-
-$('#filter_form').submit(submitFilter);
-//$('#filter_form').submit(function() {
-//    var action=$(this).attr("action");
-//    var tab=$("#filter_tab").val();
-//    if(tab!="" && action.indexOf("#") ==-1){
-//        action=action+tab;
-//    }
-//    $(this).attr("action",action);
-//    $(this).submit();
-//    return false;
-//});
-
-$.fn.serializeObject = function()
-{
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
-
 </script>

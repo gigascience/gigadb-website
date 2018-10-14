@@ -13,7 +13,7 @@
     
     <?php        
                
-        $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+        $this->widget('application.components.DeferrableCJuiAutoComplete', array(
             'name'=>'keyword',
             //'source'=>array('ac1', 'ac2', 'ac3'),
             // 'source'=> array_values($dataset->getListTitles()),
@@ -105,31 +105,33 @@ The full meaning of this search is:
 //     return false;
 
 // }
+document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
 
-function validateForm(myform){
-    if(myform.keyword.value.length==0) {
-        alert("Keyword can not be blank");
-        return false;
+    function validateForm(myform){
+        if(myform.keyword.value.length==0) {
+            alert("Keyword can not be blank");
+            return false;
+        }
+
+        return true;
+
     }
 
-    return true;
-
-}
-
-$.fn.serializeObject = function()
-{
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
+    $.fn.serializeObject = function()
+    {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
             }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
+        });
+        return o;
+    };
+});
 </script>

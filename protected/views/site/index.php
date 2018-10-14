@@ -231,18 +231,19 @@
                 </section>
     </div>
     <script>
-    $("#dataset-hint").popover();
-    </script>
-    <script type="text/javascript">
-    $(document).ready(function() {
-        $(".breadcrumb li span").click(function() {
-            var togglediv = $(".home-text-icon-list:nth-child(3)");
-            togglediv.toggle();
-            if (togglediv.css("display") == 'block') {
-                $(this).text('- less');
-                $("#rss").height("500px");
-            } else { $(this).text('+ more');
-                $("#rss").height("300px"); }
+    document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
+        $("#dataset-hint").popover();
+
+        $(document).ready(function() {
+            $(".breadcrumb li span").click(function() {
+                var togglediv = $(".home-text-icon-list:nth-child(3)");
+                togglediv.toggle();
+                if (togglediv.css("display") == 'block') {
+                    $(this).text('- less');
+                    $("#rss").height("500px");
+                } else { $(this).text('+ more');
+                    $("#rss").height("300px"); }
+            });
         });
     });
     </script>

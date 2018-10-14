@@ -145,22 +145,54 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                         </div>
                     </div>
                     <script>
-                    $('#edit-btn').click(function(e) {
-                        e.preventDefault();
-                        $('#save-btn').css('display', '');
-                        $('#cancel-btn').css('display', '');
-                        $('#edit-btn').css('display', 'none');
-                        $('.profile-label').css('display', 'none');
-                        $('.profile-textbox').css('display', '');
-                        $('.profile-checkbox').attr('disabled', false);
+                    document.addEventListener("DOMContentLoaded", function(e) { //This event is fired after deferred scripts are loaded
+
+                        $('#edit-btn').on('click', function (e) {
+                            e.preventDefault();
+                            $('#save-btn').css('display', '');
+                            $('#cancel-btn').css('display', '');
+                            $('#edit-btn').css('display', 'none');
+                            $('.profile-label').css('display', 'none');
+                            $('.profile-textbox').css('display', '');
+                            $('.profile-checkbox').attr('disabled', false);
+                        });
+                        $('#cancel-btn').on('click', function (e) {
+                            e.preventDefault();
+                            $('#save-btn').css('display', 'none');
+                            $('#cancel-btn').css('display', 'none');
+                            $('#edit-btn').css('display', '');
+                            $('.profile-label').css('display', '');
+                            $('.profile-textbox').css('display', 'none');
+                            $('.profile-checkbox').attr('disabled', true);
+                        });
+
                     });
-                    $('#cancel-btn').click(function(e) {
-                        e.preventDefault();
-                        $('#save-btn').css('display', 'none');
-                        $('#cancel-btn').css('display', 'none');
-                        $('#edit-btn').css('display', '');
-                        $('.profile-label').css('display', '');
-                        $('.profile-textbox').css('display', 'none');
-                        $('.profile-checkbox').attr('disabled', true);
+                    </script>
+                    <script>
+                    document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
+
+                        $(".hint").tooltip({ 'placement': 'left' });
+
+                        $(".js-delete-dataset").click(function(e) {
+                            if (!confirm('Are you sure you want to delete this item?'))
+                                return false;
+                            e.preventDefault();
+                            var did = $(this).attr('did');
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '/dataset/datasetAjaxDelete',
+                                data: { 'dataset_id': did },
+                                success: function(response) {
+                                    if (response.success) {
+                                        $('#js-dataset-row-' + did).remove();
+                                    } else {
+                                        alert(response.message);
+                                    }
+                                },
+                                error: function() {}
+                            });
+                        });
+
                     });
                     </script>

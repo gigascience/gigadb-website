@@ -65,6 +65,7 @@
     <br>
 
 <script>
+document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
     $(".hint").tooltip({'placement':'left'});
     $(".content-popup").popover({'placement':'right'});
     $('#myTab a').click(function (e) {
@@ -90,13 +91,14 @@
         $("#dataset_filter").hide();
 
     }
+});
 </script>
 
-<?php Yii::app()->clientScript->registerScriptFile('/js/jquery.twbsPagination.min.js', CClientScript::POS_END);?>
-<?php
-    $script = <<<EO_SCRIPT
-    $("#search-pg").twbsPagination({
-        totalPages: $total_page,
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
+  $("#search-pg").twbsPagination({
+        totalPages: <?= $total_page ?>,
         visiblePages: 5,
         onPageClick: function (event, page) {
             url = document.URL;
@@ -109,5 +111,5 @@
             }, 'json');
         }
     });
-EO_SCRIPT;
-Yii::app()->clientScript->registerScript('my_pagination', $script, CClientScript::POS_READY);?>
+});
+</script>

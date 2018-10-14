@@ -15,6 +15,7 @@
         <link rel="stylesheet/less" type="text/css" href="/less/site.less?time=<?= time() ?>">
         <? Yii::app()->clientScript->registerScriptFile('/js/less-1.3.0.min.js'); ?>
             <? } else { ?>
+                <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
                 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
                 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
                 <link rel="stylesheet" type="text/css" href="/fonts/open_sans/v13/open_sans.css">
@@ -23,11 +24,11 @@
                 <link rel="stylesheet" type="text/css" href="/css/common.css" />
                 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" />
                 <link rel="stylesheet" type="text/css" href="/css/datatables.css" />
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
-                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-                <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-                <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" defer></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" defer></script>
+                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
+                <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
+                <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js" defer></script>
                 <? } ?>
                     <?= $this->renderPartial('//shared/_google_analytics')?>
                         <title>
@@ -91,7 +92,7 @@
                         <form action="/search/new" method="GET">
                             <?php
 
-                                $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+                                $this->widget('application.components.DeferrableCJuiAutoComplete', array(
                                 'name'=>'keyword',
                                 'source'=> array_values(array()),
 

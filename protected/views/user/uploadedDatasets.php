@@ -86,27 +86,3 @@
         </tbody>
     </table>
 </section>
-<script>
-$(".hint").tooltip({ 'placement': 'left' });
-
-$(".js-delete-dataset").click(function(e) {
-    if (!confirm('Are you sure you want to delete this item?'))
-        return false;
-    e.preventDefault();
-    var did = $(this).attr('did');
-
-    $.ajax({
-        type: 'POST',
-        url: '/dataset/datasetAjaxDelete',
-        data: { 'dataset_id': did },
-        success: function(response) {
-            if (response.success) {
-                $('#js-dataset-row-' + did).remove();
-            } else {
-                alert(response.message);
-            }
-        },
-        error: function() {}
-    });
-});
-</script>

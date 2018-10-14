@@ -112,32 +112,13 @@ HTML;
                                                     <table>
                                                     <?php foreach ($model->authors as $author) { ?>
                                                         <tr><td>
-            <?php
-                                                $status_array = array('Request', 'Incomplete', 'Uploaded');
-                                                echo CHtml::ajaxLink($author->first_name." ".$author->middle_name." ".$author->surname,Yii::app()->createUrl('/userCommand/claim'),
-                                                array(
-                                                    'type'=>'GET',
-                                                    'data'=> array('dataset_id'=>'js:$("#dataset_id").val()',
-                                                        'author_id' => $author->id),
-                                                    'dataType'=>'json',
-                                                    'success'=>'js:function(output){
-                                                        document.getElementById("message").removeAttribute("class");
-                                                        $("#claim_button").toggleClass("disable");
-                                                        if(output.status){
-                                                            $("#message").addClass("alert").addClass("alert-success");
-                                                            $("#message").html(output.message);
-                                                        } else {
-                                                            $("#message").addClass("alert").addClass("alert-error");
-                                                            $("#message").html(output.message);
-                                                        }
-                                                        $("#advice").addClass("alert").addClass("alert-info");
-                                                        $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
-                                                    }',
-                                                ),array('class'=>'btn btn-green btn-block',
-                                                        'id' =>'claim_button_' . $author->id,
-                                                        // 'disabled'=>in_array($model->upload_status, $status_array),
-                                                ));
-                                                ?>
+                                                            <a href="#"
+                                                                    class="btn btn-green btn-block claim-button"
+                                                                    data-author-id="<?= $author->id ?>"
+                                                                    id="claim_button_<?= $author->id ?>"
+                                                            >
+                                                                <?= $author->first_name.' '.$author->middle_name.' '.$author->surname ?>
+                                                            </a>
                                                         </td><td><? echo $author->orcid ? " (orcid id:".$author->orcid.")" : "" ?> </td></tr>
                                                     <? } ?>
                                                 </table>
@@ -146,31 +127,7 @@ HTML;
                                         <div class="modal-footer">
                                             <button type="reset" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">Close</button>
                                             <input type="hidden" id="dataset_id" name="dataset_id" value="<? echo $model->id ?>"/>
-                                            <?php
-                                                // "Cancel current claim" button
-                                                $status_array = array('Request', 'Incomplete', 'Uploaded');
-                                                echo CHtml::ajaxLink('Cancel current claim',Yii::app()->createUrl('/userCommand/cancelClaim'),
-                                                array(
-                                                    'type'=>'GET',
-                                                    'dataType'=>'json',
-                                                    'success'=>'js:function(output){
-                                                        document.getElementById("message").removeAttribute("class");
-                                                        $("#cancel_button").toggleClass("disable");
-                                                        if(output.status){
-                                                            $("#message").addClass("alert").addClass("alert-success");
-                                                            $("#message").html(output.message);
-                                                        } else {
-                                                            $("#message").addClass("alert").addClass("alert-error");
-                                                            $("#message").html(output.message);
-                                                        }
-                                                        $("#advice").addClass("alert").addClass("alert-info");
-                                                        $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
-                                                    }',
-                                                ),array('class'=>'btn btn-danger',
-                                                        'id' =>'cancel_button',
-                                                        // 'disabled'=>in_array($model->upload_status, $status_array),
-                                                ));
-                                            ?>
+                                            <a  href="#" id="cancel_button" class="btn btn-danger">Cancel current claim</a>
                                         </div>
                                     </form>
                                 </div>
@@ -727,234 +684,282 @@ HTML;
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script>
-
-/* Document ready for Thumbnail Slider */
-/* ----------------------------------- */
-$(document).ready(function() {
-    // If the related are more than 3 so we add the caroussel
-    if ($('#myCarousel').attr('data-total') > 3) {
-        $('#myCarousel').carousel({
-            interval: 4000,
-            wrap: 'circular'
-        });
-    }
-    	$('.tab-container').on("click", function() {
-		$(this).toggleClass('tab-show');
-		$(this).toggleClass('tab-hide');
-
-		var arrow = $(this).find('.tab-container__arrow')[0];
-		$(arrow).toggleClass('flip-vertical');
-	});
-
-        var url = location.pathname;
-        var sample_index = url.lastIndexOf('Sample_');
-        var file_index = url.lastIndexOf('File_');
-
-         if (/Sample/.test(window.location.href)) {
-             $("#p-sample").addClass("active");
-              var e = document.getElementById('p-sample');
-              if (!!e && e.scrollIntoView) {
-                   e.scrollIntoView();
-              }
-
+document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
+    /* Document ready for Thumbnail Slider */
+    /* ----------------------------------- */
+    $(document).ready(function() {
+        // If the related are more than 3 so we add the caroussel
+        if ($('#myCarousel').attr('data-total') > 3) {
+            $('#myCarousel').carousel({
+                interval: 4000,
+                wrap: 'circular'
+            });
         }
-        else{
-             $("#p-sample").addClass("active");
-        }
-         if (/File/.test(window.location.href)) {
+        	$('.tab-container').on("click", function() {
+    		$(this).toggleClass('tab-show');
+    		$(this).toggleClass('tab-hide');
 
-             $("#p-sample").removeClass("active");
-             $("#sample").removeClass("tab-pane active");
-             $("#sample").addClass("tab-pane");
-             $("#p-file").addClass("active");
-             $("#files").addClass("active");
+    		var arrow = $(this).find('.tab-container__arrow')[0];
+    		$(arrow).toggleClass('flip-vertical');
+    	});
 
-             var e = document.getElementById('p-file');
-             if (!!e && e.scrollIntoView) {
-             e.scrollIntoView();
+            var url = location.pathname;
+            var sample_index = url.lastIndexOf('Sample_');
+            var file_index = url.lastIndexOf('File_');
+
+             if (/Sample/.test(window.location.href)) {
+                 $("#p-sample").addClass("active");
+                  var e = document.getElementById('p-sample');
+                  if (!!e && e.scrollIntoView) {
+                       e.scrollIntoView();
+                  }
+
+            }
+            else{
+                 $("#p-sample").addClass("active");
+            }
+             if (/File/.test(window.location.href)) {
+
+                 $("#p-sample").removeClass("active");
+                 $("#sample").removeClass("tab-pane active");
+                 $("#sample").addClass("tab-pane");
+                 $("#p-file").addClass("active");
+                 $("#files").addClass("active");
+
+                 var e = document.getElementById('p-file');
+                 if (!!e && e.scrollIntoView) {
+                 e.scrollIntoView();
+                }
+
+
             }
 
-
+            if(sample_index > 0 && file_index>0)
+            {
+            if(sample_index > file_index)
+            {
+                $("#p-file").removeClass("active");
+                $("#files").removeClass("tab-pane active");
+                $("#files").addClass("tab-pane");
+                $("#p-sample").addClass("active");
+                $("#sample").addClass("active");
+                  var e = document.getElementById('p-sample');
+                  if (!!e && e.scrollIntoView) {
+                       e.scrollIntoView();
+                  }
+            }
+           else
+            {
+                 $("#p-sample").removeClass("active");
+                 $("#sample").removeClass("tab-pane active");
+                 $("#sample").addClass("tab-pane");
+                 $("#p-file").addClass("active");
+                 $("#files").addClass("active");
+                 var e = document.getElementById('p-file');
+                 if (!!e && e.scrollIntoView) {
+                 e.scrollIntoView();
+                }
+            }
         }
-
-        if(sample_index > 0 && file_index>0)
+        var MyJSStringVar = "<?php Print($flag); ?>"
+        if(MyJSStringVar == 'file')
         {
-        if(sample_index > file_index)
+                 $("#p-sample").removeClass("active");
+                 $("#sample").removeClass("tab-pane active");
+                 $("#sample").addClass("tab-pane");
+                 $("#p-file").addClass("active");
+                 $("#files").addClass("active");
+
+                 var e = document.getElementById('p-file');
+                 if (!!e && e.scrollIntoView) {
+                 e.scrollIntoView();
+                }
+        }
+        if(MyJSStringVar == 'sample')
         {
-            $("#p-file").removeClass("active");
-            $("#files").removeClass("tab-pane active");
-            $("#files").addClass("tab-pane");
-            $("#p-sample").addClass("active");
-            $("#sample").addClass("active");
-              var e = document.getElementById('p-sample');
-              if (!!e && e.scrollIntoView) {
-                   e.scrollIntoView();
-              }
+                  var e = document.getElementById('p-sample');
+                  if (!!e && e.scrollIntoView) {
+                       e.scrollIntoView();
+                  }
         }
-       else
-        {
-             $("#p-sample").removeClass("active");
-             $("#sample").removeClass("tab-pane active");
-             $("#sample").addClass("tab-pane");
-             $("#p-file").addClass("active");
-             $("#files").addClass("active");
-             var e = document.getElementById('p-file');
-             if (!!e && e.scrollIntoView) {
-             e.scrollIntoView();
-            }
-        }
-    }
-    var MyJSStringVar = "<?php Print($flag); ?>"
-    if(MyJSStringVar == 'file')
-    {
-             $("#p-sample").removeClass("active");
-             $("#sample").removeClass("tab-pane active");
-             $("#sample").addClass("tab-pane");
-             $("#p-file").addClass("active");
-             $("#files").addClass("active");
 
-             var e = document.getElementById('p-file');
-             if (!!e && e.scrollIntoView) {
-             e.scrollIntoView();
-            }
-    }
-    if(MyJSStringVar == 'sample')
-    {
-              var e = document.getElementById('p-sample');
-              if (!!e && e.scrollIntoView) {
-                   e.scrollIntoView();
-              }
-    }
-
-    $('#samples_table').DataTable({
-        "paging":   false,
-        "ordering": true,
-        "info":     false,
-        "searching": false,
-        "lengthChange": false,
-        "pageLength": <?= $samples->getPagination()->getPageSize() ?>,
-        "pagingType": "simple_numbers",
-        "columns": [
-            { "visible": <?= in_array('name', $columns)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('common_name', $columns)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('scientific_name', $columns)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('attribute', $columns)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('taxonomic_id', $columns)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('genbank_name', $columns)? 'true' : 'false' ?> },
-          ]
-    } );
+        $('#samples_table').DataTable({
+            "paging":   false,
+            "ordering": true,
+            "info":     false,
+            "searching": false,
+            "lengthChange": false,
+            "pageLength": <?= $samples->getPagination()->getPageSize() ?>,
+            "pagingType": "simple_numbers",
+            "columns": [
+                { "visible": <?= in_array('name', $columns)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('common_name', $columns)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('scientific_name', $columns)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('attribute', $columns)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('taxonomic_id', $columns)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('genbank_name', $columns)? 'true' : 'false' ?> },
+              ]
+        } );
 
 
-    $('#files_table').DataTable({
-        "paging":   false,
-        "ordering": true,
-        "info":     false,
-        "searching": false,
-        "lengthChange": false,
-        "pageLength": <?= $files->getPagination()->getPageSize() ?>,
-        "pagingType": "simple_numbers",
-        "columns": [
-            { "visible": <?= in_array('name', $setting)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('description', $setting)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('sample_id', $setting)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('type_id', $setting)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('format_id', $setting)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('size', $setting)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('date_stamp', $setting)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('attribute', $setting)? 'true' : 'false' ?> },
-            { "visible": <?= in_array('location', $setting)? 'true' : 'false' ?> },
-          ]
-    } );
+        $('#files_table').DataTable({
+            "paging":   false,
+            "ordering": true,
+            "info":     false,
+            "searching": false,
+            "lengthChange": false,
+            "pageLength": <?= $files->getPagination()->getPageSize() ?>,
+            "pagingType": "simple_numbers",
+            "columns": [
+                { "visible": <?= in_array('name', $setting)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('description', $setting)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('sample_id', $setting)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('type_id', $setting)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('format_id', $setting)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('size', $setting)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('date_stamp', $setting)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('attribute', $setting)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('location', $setting)? 'true' : 'false' ?> },
+              ]
+        } );
 
-});
-/* ----------------------------------- */
-
-$(".hint").tooltip({'placement':'right'});
-$(".image-hint").tooltip({'placement':'top'});
-
-$("#js-expand-btn").click(function(){
-      $(this).hide();
-      $("#js-close-btn").show();
-      $("#js-logs-2").show();
-});
-
-$("#js-close-btn").click(function(){
-      $(this).hide();
-      $("#js-expand-btn").show();
-      $("#js-logs-2").hide();
-});
-
-
-$("#js-expand-btn1").click(function(){
-      $(this).hide();
-      $("#js-close-btn1").show();
-      $("#js-logs-1").show();
-});
-
-$("#js-close-btn1").click(function(){
-      $(this).hide();
-      $("#js-expand-btn1").show();
-      $("#js-logs-1").hide();
-});
-
-$("#js-expand-btn2").click(function(){
-      $(this).hide();
-      $("#js-close-btn2").show();
-      $("#js-logs-2").show();
-});
-
-$("#js-close-btn2").click(function(){
-      $(this).hide();
-      $("#js-expand-btn2").show();
-      $("#js-logs-2").hide();
-});
-$("#js-expand-btn3").click(function(){
-      $(this).hide();
-      $("#js-close-btn3").show();
-      $("#js-logs-3").show();
-});
-
-$("#js-close-btn3").click(function(){
-      $(this).hide();
-      $("#js-expand-btn3").show();
-      $("#js-logs-3").hide();
-});
-
-$(".js-download-count").click(function(){
-    var location = $(this).attr('href');
-    $.ajax({
-       type: 'POST',
-       url: '/adminFile/downloadCount',
-       data:{'file_href': location},
-       success: function(response){
-            if(response.success) {
-            } else {
-                alert(response.message);
-            }
-          },
-      error:function(){
-        }
     });
-});
+    /* ----------------------------------- */
 
-$(".content-popup").popover({'placement':'right'});
-$(".citation-popup").popover({'placement':'top'});
+    $(".hint").tooltip({'placement':'right'});
+    $(".image-hint").tooltip({'placement':'top'});
+
+    $("#js-expand-btn").click(function(){
+          $(this).hide();
+          $("#js-close-btn").show();
+          $("#js-logs-2").show();
+    });
+
+    $("#js-close-btn").click(function(){
+          $(this).hide();
+          $("#js-expand-btn").show();
+          $("#js-logs-2").hide();
+    });
+
+
+    $("#js-expand-btn1").click(function(){
+          $(this).hide();
+          $("#js-close-btn1").show();
+          $("#js-logs-1").show();
+    });
+
+    $("#js-close-btn1").click(function(){
+          $(this).hide();
+          $("#js-expand-btn1").show();
+          $("#js-logs-1").hide();
+    });
+
+    $("#js-expand-btn2").click(function(){
+          $(this).hide();
+          $("#js-close-btn2").show();
+          $("#js-logs-2").show();
+    });
+
+    $("#js-close-btn2").click(function(){
+          $(this).hide();
+          $("#js-expand-btn2").show();
+          $("#js-logs-2").hide();
+    });
+    $("#js-expand-btn3").click(function(){
+          $(this).hide();
+          $("#js-close-btn3").show();
+          $("#js-logs-3").show();
+    });
+
+    $("#js-close-btn3").click(function(){
+          $(this).hide();
+          $("#js-expand-btn3").show();
+          $("#js-logs-3").hide();
+    });
+
+    $(".js-download-count").click(function(){
+        var location = $(this).attr('href');
+        $.ajax({
+           type: 'POST',
+           url: '/adminFile/downloadCount',
+           data:{'file_href': location},
+           success: function(response){
+                if(response.success) {
+                } else {
+                    alert(response.message);
+                }
+              },
+          error:function(){
+            }
+        });
+    });
+
+    $(".content-popup").popover({'placement':'right'});
+    $(".citation-popup").popover({'placement':'top'});
+});
 </script>
-<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 
 <script type="text/javascript">
-    $(".js-desc").click(function(e) {
-        e.preventDefault();
-        id = $(this).attr('data');
-        $(this).hide();
-        $('.js-short-'+id).toggle();
-        $('.js-long-'+id).toggle();
-    });
-</script>
+    document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
+        $(".js-desc").click(function(e) {
+            e.preventDefault();
+            id = $(this).attr('data');
+            $(this).hide();
+            $('.js-short-'+id).toggle();
+            $('.js-long-'+id).toggle();
+        });
 
-<script>
-    $('#myModal').on('hidden.bs.modal', function () {
-        $("#message").removeAttr("class").empty();
-        $("#advice").removeAttr("class").empty();
-    })
+        $('#myModal').on('hidden.bs.modal', function () {
+            $("#message").removeAttr("class").empty();
+            $("#advice").removeAttr("class").empty();
+        });
+
+        $('#cancel_button').on('click', function () {
+                jQuery.ajax({'type':'GET','dataType':'json',
+                    'success':function(output){
+                        document.getElementById("message").removeAttribute("class");
+                        $("#cancel_button").toggleClass("disable");
+                        if(output.status){
+                            $("#message").addClass("alert").addClass("alert-success");
+                            $("#message").html(output.message);
+                        } else {
+                            $("#message").addClass("alert").addClass("alert-error");
+                            $("#message").html(output.message);
+                        }
+                        $("#advice").addClass("alert").addClass("alert-info");
+                        $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
+                    },
+                    'url':'\x2FuserCommand\x2FcancelClaim',
+                    'cache':false,
+                    'data':jQuery(this).parents("form").serialize()
+                });
+                return false;
+        });
+
+        $('.claim-button').on('click', function (event) {
+            var author_id = this.getAttribute("data-author-id");
+            jQuery.ajax({'type':'GET',
+                'data':{'dataset_id':$("#dataset_id").val(),'author_id':author_id},
+                'dataType':'json',
+                'success':function(output){
+                    document.getElementById("message").removeAttribute("class");
+                    $("#claim_button").toggleClass("disable");
+                    if(output.status){
+                        $("#message").addClass("alert").addClass("alert-success");
+                        $("#message").html(output.message);
+                    } else {
+                        $("#message").addClass("alert").addClass("alert-error");
+                        $("#message").html(output.message);
+                    }
+                    $("#advice").addClass("alert").addClass("alert-info");
+                    $("#advice").empty().append("<a data-dismiss=\"modal\" href=\"#\">You can close this box now.</a>");
+                },
+                'url':'\x2FuserCommand\x2Fclaim',
+                'cache':false
+            });
+            return false;
+        });
+
+
+    });
 </script>

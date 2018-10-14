@@ -70,10 +70,12 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<?php
-    Yii::app()->clientScript->registerScript("samples_settings_button", '$("#save-samples-settings").click(function(){
-    $("#sampleSettingsForm").submit();
-    return false;
-});
-');
-?>
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
+        $("#save-samples-settings").click(function(){
+            $("#sampleSettingsForm").submit();
+            return false;
+        });
+
+    });
+</script>
