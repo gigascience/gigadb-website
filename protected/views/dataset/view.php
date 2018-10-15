@@ -975,3 +975,4 @@ $(".citation-popup").popover({'placement':'top'});
         $("#advice").removeAttr("class").empty();
     })
 </script>
+<script type="application/ld+json"> { "@context" : "http://schema.org", "@type" : "Dataset", "name" : "<?php echo str_replace('"', '\u0022', $model->title); ?>", "description" : "<?php echo str_replace('"', '\u0022', $model->description);?>", "identifier" : "<?php echo $model->identifier; ?>", "datePublished" : "<?php echo $model->publication_date; ?>", "provider": [ { "@type":"Person", "name": "<?php echo $model->submitter->getFullName() ?>", "email": "<?php echo $model->submitter->email ?>" } ], "url": "<?php echo 'https://doi.org/10.5524/'.$model->identifier ?>", "license": "Public Domain", "distribution" : { "@type" : "DataDownload", "contentUrl" : "<?php echo $model->ftp_site; ?>" }} </script>
