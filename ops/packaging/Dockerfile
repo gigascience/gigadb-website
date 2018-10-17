@@ -124,6 +124,26 @@ RUN if [ ${INSTALL_COMPOSER} = true ]; then \
     && composer config --global repo.packagist composer https://packagist.org \
 ;fi
 
+ARG INSTALL_TIDEWAYS_XHPROF=false
+
+RUN if [ ${INSTALL_TIDEWAYS_XHPROF} = true ]; then \
+    curl -o tideways-xhprof.tar.gz -s -L https://github.com/tideways/php-xhprof-extension/archive/v4.1.6.tar.gz && \
+    tar xzvf tideways-xhprof.tar.gz && \
+    cd php-xhprof-extension* && \
+    phpize && \
+    ./configure && \
+    make && \
+    make install && \
+    echo "extension=tideways.so" >  /usr/local/etc/php/conf.d/tideways_xhprof.ini && \
+    pecl install mongodb && docker-php-ext-enable mongodb && \
+    curl -o /usr/local/src/xhgui.tar.gz -s -L https://github.com/perftools/xhgui/archive/0.8.1.tar.gz && \
+    cd /usr/local/src/ && \
+    tar xzvf /usr/local/src/xhgui.tar.gz && \
+    cd xhgui-0.8.1 && \
+    composer install && \
+    echo "auto_prepend_file=/usr/local/src/xhgui-0.8.1/external/header.php" > /usr/local/etc/php/conf.d/xhgui.ini \
+;fi
+
 RUN usermod -u 1000 www-data
 
 WORKDIR /var/www

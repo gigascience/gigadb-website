@@ -6,6 +6,8 @@
 # The file paths where docker-compose can file its YAML file
 
 COMPOSE_FILE=ops/deployment/docker-compose.yml
+# Uncomment the line below to enable profiling of the web application using Tideways XHPROF and XHGUI
+#COMPOSE_FILE=ops/deployment/docker-compose.yml:ops/deployment/docker-compose.prof.yml
 
 ### prefix for local container ##############################################################################
 COMPOSE_PROJECT_NAME=deployment

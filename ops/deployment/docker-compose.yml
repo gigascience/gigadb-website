@@ -31,6 +31,7 @@ services:
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
     volumes:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}

@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+
+  xhgui:
+    image: edyan/xhgui
+    volumes:
+      - ${APPLICATION}/ops/configuration/php-conf/xhgui-config.php:/usr/local/src/xhgui/config/config.php
+    ports:
+      - "8888:80"
+      - "27017:27017"
+    networks:
+      - web-tier
+
+  application:
+    build:
+      context: .
+      dockerfile: ../packaging/Dockerfile
+      args:
+        - INSTALL_TIDEWAYS_XHPROF=true
+    volumes:
+      - ${APPLICATION}/ops/configuration/php-conf/xhgui-config.php:/usr/local/src/xhgui-0.8.1/config/config.php
+
+  webapp:
+    depends_on:
+      - application
+      - web
+      - database
+      - phantomjs
+      - xhgui
