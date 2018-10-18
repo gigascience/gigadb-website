@@ -45,15 +45,7 @@
     },
     "autoload": {
         "psr-0": {
-            "": [ "protected/tests/unit",
-            "protected/tests/functional",
-            "protected/tests/support",
-            "features/bootstrap",
-            "protected/models",
-            "protected/components",
-            "protected/vendors",
-            "protected/behaviors"
-            ]
+            "": ["features/bootstrap"]
         }
     },
     "repositories": [

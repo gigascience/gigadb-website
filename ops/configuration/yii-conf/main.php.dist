@@ -25,6 +25,9 @@ return CMap::mergeArray(array(
         'application.behaviors.*',
         'application.vendors.*',
         'application.helpers.*',
+        'application.tests.unit.*',
+        'application.tests.functional.*',
+        'application.tests.support.*',
     ),
 
     'modules'=>array(
