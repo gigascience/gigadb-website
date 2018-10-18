@@ -85,3 +85,5 @@ class UserIdentity extends CUserIdentity {
 
 
 }
+
+?>

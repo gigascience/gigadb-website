@@ -64,3 +64,5 @@ class Controller extends CController
     }
 
 }
+
+?>

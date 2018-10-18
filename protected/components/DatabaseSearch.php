@@ -297,3 +297,5 @@ class DatabaseSearch extends CApplicationComponent {
                     );
 	}
 }
+
+?>

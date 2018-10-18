@@ -68,3 +68,5 @@ class SuUserIdentity extends CUserIdentity {
         return $this->getState('alias');
     }
 }
+
+?>

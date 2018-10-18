@@ -145,3 +145,5 @@ class OrcidStrategy extends OpauthStrategy{
 	// 	}
 	// }
 }
+
+?>
