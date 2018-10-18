@@ -472,7 +472,6 @@ class SiteController extends Controller {
 
     public function actionFeed(){
         header("Content-type: text/xml");
-        ob_clean();
         echo Yii::app()->newsAndFeedsService->getRss();
         exit;
     }
