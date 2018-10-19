@@ -5,9 +5,9 @@
 ### Compose files  ###############################################################################################
 # The file paths where docker-compose can file its YAML file
 
-COMPOSE_FILE=ops/deployment/docker-compose.yml
-# Uncomment the line below to enable profiling of the web application using Tideways XHPROF and XHGUI
-#COMPOSE_FILE=ops/deployment/docker-compose.yml:ops/deployment/docker-compose.prof.yml
+# COMPOSE_FILE=ops/deployment/docker-compose.yml
+# Keep the line below uncommented to enable profiling of the web application using Tideways XHPROF and XHGUI
+COMPOSE_FILE=ops/deployment/docker-compose.yml:ops/deployment/docker-compose.prof.yml
 
 ### prefix for local container ##############################################################################
 COMPOSE_PROJECT_NAME=deployment
@@ -44,7 +44,7 @@ DATA_SAVE_PATH=~/.containers-data/gigadb
 
 ### Core services managed in Docker compose ##############################################################################
 NGINX_VERSION=1.15
-PHP_VERSION=7.0
+PHP_VERSION=7.1
 POSTGRES_VERSION=9.4
 YII_VERSION=1.1.20
 YII2_VERSION=2.0.15.1
