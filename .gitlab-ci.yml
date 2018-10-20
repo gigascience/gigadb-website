@@ -46,6 +46,7 @@ services:
   - docker:dind
 
 before_script:
+  - env | grep "^CI_" > $APPLICATION/.ci_env
   - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.env
   - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -v "ANALYTICS_PRIVATE_KEY" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.secrets
   - apk add --no-cache py-pip
@@ -168,18 +169,26 @@ check_SAST:
     paths: [gl-sast-report.json]
 
 deploy_staging:
+  variables:
+    COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
   stage: deploy
   script:
-    - echo "The plan is, once this config is on develop branch:"
-    - echo "to commit a new container with the source code using 'docker commit'"
-    - echo "then push to registry as 'registry.gitlab.com/$CI_PROJECT_PATH/application:new_release' "
-    - echo "then we use Terraform to remote deploy to Play-with-docker (free playground, reset every 4 hours)"
-    - echo "may be accessible at url like http://gigadb-staging.play-with-docker.com"
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker-compose run --rm config
+    - docker-compose run --rm webapp
+    - docker-compose build production
+    - docker tag ${CI_PROJECT_NAME}_production:latest registry.gitlab.com/$CI_PROJECT_PATH/production:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production:latest
+    # - deploy it to staging enviroment using docker-machine
   environment:
     name: staging
     url: http://gigadb-staging.play-with-docker.com
   # only:
   #   - develop
+  artifacts:
+    untracked: true
+    when: on_failure
+    expire_in: 1 week
 
 deploy_production:
   stage: deploy
