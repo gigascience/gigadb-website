@@ -72,7 +72,7 @@ Scenario: a user with a rejected claim visit dataset page and attempt to claim a
 	When I follow "Your dataset?"
 	And I wait "1" seconds
 	And I click on button for author id "3789"
-	And I wait "1" seconds
+	And I wait "3" seconds
 	Then the response should contain "Your claim has been submitted to the administrators."
 	And the response should contain "You can close this box now."
 
