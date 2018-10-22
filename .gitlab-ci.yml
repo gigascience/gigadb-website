@@ -180,9 +180,9 @@ deploy_staging:
     - docker tag ${CI_PROJECT_NAME}_production:latest registry.gitlab.com/$CI_PROJECT_PATH/production:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production:latest
     - mkdir -pv ~/.docker
-    - echo $TLSAUTH_CA > ~/.docker/ca.pem
-    - echo $TLSAUTH_CERT > ~/.docker/cert.pem
-    - echo $TLSAUTH_KEY > ~/.docker/key.pem
+    - echo $TLSAUTH_CA | tee  ~/.docker/ca.pem
+    - echo $TLSAUTH_CERT | tee ~/.docker/cert.pem
+    - echo $TLSAUTH_KEY | tee ~/.docker/key.pem
     - docker --tlsverify -H=ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376 version
     # - deploy it to staging enviroment using docker-machine
   environment:
