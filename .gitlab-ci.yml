@@ -183,7 +183,9 @@ deploy_staging:
     - echo "$TLSAUTH_CA" >  ~/.docker/ca.pem
     - echo "$TLSAUTH_CERT" > ~/.docker/cert.pem
     - echo "$TLSAUTH_KEY" > ~/.docker/key.pem
-    - docker --tlsverify -H=ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376 version
+    # - docker --tlsverify -H=ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376 version
+    - docker --tlsverify -H=ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376 login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker --tlsverify -H=ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376 pull registry.gitlab.com/$CI_PROJECT_PATH/production:latest
     # - deploy it to staging enviroment using docker-machine
   environment:
     name: staging
