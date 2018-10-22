@@ -47,7 +47,7 @@ services:
 
 before_script:
   - env | grep "^CI_" > $APPLICATION/.ci_env
-  - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.env
+  - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" > $APPLICATION/.env
   - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -v "ANALYTICS_PRIVATE_KEY" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.secrets
   - apk add --no-cache py-pip
   - pip install docker-compose
@@ -171,6 +171,7 @@ check_SAST:
 deploy_staging:
   variables:
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
+    DOCKER_HOST: "ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com"
   stage: deploy
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
@@ -179,6 +180,11 @@ deploy_staging:
     - docker-compose build production
     - docker tag ${CI_PROJECT_NAME}_production:latest registry.gitlab.com/$CI_PROJECT_PATH/production:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production:latest
+    - mkdir -pv ~/.docker
+    - "curl -o ~/.docker/ca.pem -s --header \"PRIVATE-TOKEN: $GITLAB_TOKEN\" https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/TLSAUTH_CA | jq -r '.value'"
+    - "curl -o ~/.docker/cert.pem -s --header \"PRIVATE-TOKEN: $GITLAB_TOKEN\" https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/TLSAUTH_CERT | jq -r '.value'"
+    - "curl -o ~/.docker/key.pem -s --header \"PRIVATE-TOKEN: $GITLAB_TOKEN\" https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/TLSAUTH_KEY | jq -r '.value'"
+    - docker --tlsverify -H=$DOCKER_HOST:2376 version
     # - deploy it to staging enviroment using docker-machine
   environment:
     name: staging
