@@ -1,4 +1,0 @@
-{
-    "host": "localhost",
-    "port": "${GIGADB_ES_PORT}"
-}

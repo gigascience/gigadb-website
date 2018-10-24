@@ -1,7 +1,6 @@
 <?php
 
 
-$esConfig = json_decode(file_get_contents(dirname(__FILE__).'/es.json'), true);
 $dbConfig = json_decode(file_get_contents(dirname(__FILE__).'/db.json'), true);
 $pre_config = require(dirname(__FILE__).'/local.php');
 Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.py'));
