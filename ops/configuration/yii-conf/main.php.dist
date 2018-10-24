@@ -37,7 +37,7 @@ return CMap::mergeArray(array(
         ),
         'opauth' => array(
             'opauthParams' => array(
-                'security_salt' => '${OPAUTH_SECURTY_SALT}',
+                'security_salt' => '${OPAUTH_SECURITY_SALT}',
                 'callback_url' => '/site/loginAffiliate',
                 'callback_transport' => 'get',
                 'Strategy' => array(
