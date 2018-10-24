@@ -171,22 +171,27 @@ check_SAST:
 deploy_staging:
   variables:
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
+    REMOTE_DOCKER_HOST: "ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376"
   stage: deploy
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker-compose run --rm config
     - docker-compose run --rm webapp
-    - docker-compose build production
-    - docker tag ${CI_PROJECT_NAME}_production:latest registry.gitlab.com/$CI_PROJECT_PATH/production:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production:latest
+    - docker-compose build production_web
+    - docker-compose build production_app
+    - docker tag ${CI_PROJECT_NAME}_production_app:latest registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
+    - docker tag ${CI_PROJECT_NAME}_production_app:latest registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
     - mkdir -pv ~/.docker
     - echo "$TLSAUTH_CA" >  ~/.docker/ca.pem
     - echo "$TLSAUTH_CERT" > ~/.docker/cert.pem
     - echo "$TLSAUTH_KEY" > ~/.docker/key.pem
-    # - docker --tlsverify -H=ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376 version
-    - docker --tlsverify -H=ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376 login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker --tlsverify -H=ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376 pull registry.gitlab.com/$CI_PROJECT_PATH/production:latest
-    # - deploy it to staging enviroment using docker-machine
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
+    # - run config making sure the production variables are used
+    # - run webapp but no need of running composer as vendor is already baked in the production image
   environment:
     name: staging
     url: http://gigadb-staging.play-with-docker.com

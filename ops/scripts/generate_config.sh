@@ -70,12 +70,6 @@ fi
 
 echo "* ---------------------------------------------- *"
 
-# Generate nginx site config
-
-SOURCE=${APP_SOURCE}/ops/configuration/nginx-conf/sites/gigadb.conf.dist
-TARGET=/etc/nginx/sites-available/gigadb.conf
-VARS='$HOME_URL'
-envsubst $VARS < $SOURCE > $TARGET
 
 # Configure composer.json with dependency versions
 
@@ -85,7 +79,6 @@ VARS='$COMPOSER_WARNING:$YII_VERSION:$YII2_VERSION:$PHP_VERSION'
 envsubst $VARS < $SOURCE > $TARGET
 
 # Generate config files for gigadb-website application using sed
-
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/console.php.dist
 TARGET=${APP_SOURCE}/protected/config/console.php
@@ -100,6 +93,13 @@ envsubst $VARS < $SOURCE > $TARGET
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/yiic.php.dist
 TARGET=${APP_SOURCE}/protected/yiic.php
 VARS='$YII_PATH'
+envsubst $VARS < $SOURCE > $TARGET
+
+# environment specific configuration files
+
+SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/help.html.dist
+TARGET=${APP_SOURCE}/files/html/help.html
+VARS='$HOME_URL'
 envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/local.php.dist
@@ -117,15 +117,7 @@ TARGET=${APP_SOURCE}/protected/config/db.json
 VARS='$GIGADB_DB:$GIGADB_HOST:$GIGADB_USER:$GIGADB_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/es.json.dist
-TARGET=${APP_SOURCE}/protected/config/es.json
-VARS='$GIGADB_ES_PORT'
-envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/help.html.dist
-TARGET=${APP_SOURCE}/files/html/help.html
-VARS='$HOME_URL'
-envsubst $VARS < $SOURCE > $TARGET
 
 
 

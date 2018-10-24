@@ -2,20 +2,28 @@ version: '3.7'
 
 services:
 
-  production:
+  production_web:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    build:
+      context: ../..
+      dockerfile: ops/packaging/Web-Dockerfile
+      args:
+        - NGINX_VERSION=${NGINX_VERSION}
+        - GIGADB_ENV=${GIGADB_ENV}
+    volumes:
+      - ../../assets:/var/www/assets
+
+  production_app:
     build:
       context: ../..
       dockerfile: ops/packaging/Production-Dockerfile
-      cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/application:latest"
       args:
-        - PHP_VERSION=${PHP_VERSION}
+        - TARGET_PHP_VERSION=${PHP_VERSION}
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=false
         - INSTALL_TIDEWAYS_XHPROF=false
     volumes:
-      - ../configuration/php-conf/php-${PHP_VERSION}-${GIGADB_ENV}.ini:/usr/local/etc/php/php.ini
-      - ../configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
-      - ../configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
-      - ../configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+      - ../../assets:/var/www/assets
