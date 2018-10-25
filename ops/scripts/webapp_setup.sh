@@ -1,21 +1,15 @@
 #!/usr/bin/env bash
 
-set -e -u -x
+set -e -u
 
 source "./.env"
 
-if [ $COMPOSE_FILE == "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.production.yml" ];then
-	echo "* Production mode *"
-	composer install -a
-elif [ $COMPOSE_FILE == "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml" ];then
-	echo "* CI mode *"
-	composer install -a
-elif [ $COMPOSE_FILE == "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.prof.yml" ];then
-	echo "* Profiling mode *"
-	composer install -a
-else
+if [ $GIGADB_ENV == "dev" ];then
 	echo "* Development mode *"
 	composer install -o
+else
+	echo "* Production mode *"
+	composer install -a
 fi
 
 ./protected/yiic lesscompiler

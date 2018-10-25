@@ -37,9 +37,9 @@ GIGADB_ENV=dev
 ### Application, Framework and Data Path #################################################################################
 # Choose storage path on your machine. For all storage systems.
 
-APPLICATION=.
-YII_PATH=/opt/yii-1.1
-YII2_PATH=/opt/yii-2.0
+APPLICATION=../..
+YII_PATH=/var/www/vendor/yiisoft/yii
+YII2_PATH=/var/www/vendor/yiisoft/yii2
 DATA_SAVE_PATH=~/.containers-data/gigadb
 
 ### Core services managed in Docker compose ##############################################################################
