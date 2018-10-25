@@ -36,8 +36,6 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
     volumes:
       - ${APPLICATION}/:/var/www
-      - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
-      - ${APPLICATION}/vendor/yiisoft/yii2:${YII2_PATH}
       - ${APPLICATION}/ops/configuration/php-conf/php-${PHP_VERSION}-${GIGADB_ENV}.ini:/usr/local/etc/php/php.ini
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
@@ -65,18 +63,21 @@ services:
       - db-tier
 
   config:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
     image: rija/docker-alpine-shell-tools:1.0.1
     volumes:
       - ${APPLICATION}/:/var/www
-      - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
-      - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
     command: /var/www/ops/scripts/generate_config.sh
 
   webapp:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
     image: ${COMPOSE_PROJECT_NAME}_application:latest
     volumes:
       - ${APPLICATION}/:/var/www
-      - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
       - ${APPLICATION}:/app
     depends_on:
       - application
@@ -107,9 +108,6 @@ services:
       YII2_PATH: ${YII2_PATH}
     volumes:
       - ${APPLICATION}/:/var/www
-      - ${APPLICATION}/vendor/yiisoft/yii:${YII_PATH}
-      - ${APPLICATION}/vendor/yiisoft/yii2:${YII2_PATH}
-      - ${DATA_SAVE_PATH}/nginx:/etc/nginx/sites-available
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
       - ${APPLICATION}/ops/configuration/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ${APPLICATION}/tmp:/tmp

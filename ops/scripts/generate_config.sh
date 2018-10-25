@@ -15,9 +15,6 @@ set -a
 # It's the counterpart of the host variable APPLICATION
 APP_SOURCE=/var/www
 
-# setting up the in-container path to Yii 1.1 framework
-YII_PATH="/opt/yii-1.1"
-
 # Warning to dissuade from modify the generated composer.json file
 COMPOSER_WARNING="!! Auto-generated file, edit ops/php-conf/composer.json.dist instead"
 
