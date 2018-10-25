@@ -62,7 +62,4 @@ networks:
 
 volumes:
   assets:
-    driver: local-persist
-    driver_opts:
-      mountpoint: /var/www/assets
 
