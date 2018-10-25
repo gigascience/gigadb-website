@@ -30,7 +30,7 @@ fi
 
 
 # If we are on staging environment override variable name with STAGING_* counterpart
-if [ $GIGADB_ENV == "staging"];then
+if [ $GIGADB_ENV == "staging" ];then
     GIGADB_HOST=$STAGING_GIGADB_HOST
     GIGADB_USER=$STAGING_GIGADB_USER
     GIGADB_PASSWORD=$STAGING_GIGADB_PASSWORD
