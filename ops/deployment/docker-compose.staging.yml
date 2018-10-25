@@ -45,8 +45,8 @@ services:
       - NET_ADMIN
       - SYS_ADMIN
     depends_on:
-      - production_app
-      - production_web
+      - application
+      - web
     command: ./protected/yiic lesscompiler
     networks:
       - web-tier
