@@ -269,20 +269,30 @@ class AffiliateLoginContext implements Context
         }
         else if ($arg1 == "Facebook") {
 
-            $xpath = '//input[@type="submit" and @value="Continue as Elizabeth"]' ;
-            $elements = $driver->find($xpath) ;
+            // $xpath = '//input[@type="submit" and @value="Continue as Elizabeth"]' ;
+            // $elements = $driver->find($xpath) ;
 
-            if( 0 == count($elements) ) {
-                throw new \Exception("The element is not found");
-            }
-            else {
-                //print_r("pressing the button ". $driver->getHtml( $elements[0]->getParent()->getXpath() ) );
-                $elements[0]->press();
-            }
+            // if( 0 == count($elements) ) {
+            //     throw new \Exception("The element is not found");
+            // }
+            // else {
+            //     //print_r("pressing the button ". $driver->getHtml( $elements[0]->getParent()->getXpath() ) );
+            //     $elements[0]->press();
+            // }
 
-            sleep(5);
+            // sleep(5);
             $this->minkContext->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
 
+            $csspath = 'html body input[value="Continue as Elizabeth"]';
+            $authorize_button = $session->getPage()->find('css',$csspath);
+            if ($authorize_button) {
+                echo PHP_EOL."found authorize button!".PHP_EOL;
+                $authorize_button->press();
+                sleep(5);
+            }
+            else {
+                echo PHP_EOL."authorize button not found".PHP_EOL;
+            }
 
 
         }
@@ -297,15 +307,17 @@ class AffiliateLoginContext implements Context
         else if ($arg1 == "Orcid") {
             $this->minkContext->getSession()->wait(15000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
             // PHPUnit_Framework_Assert::assertTrue($this->minkContext->getSession()->getPage()->hasField("enablePersistentToken"), "Authorize checkbox");
-            PHPUnit_Framework_Assert::assertTrue($this->minkContext->getSession()->getPage()->hasButton("authorize"), "Authorize button");
+            // PHPUnit_Framework_Assert::assertTrue($this->minkContext->getSession()->getPage()->hasButton("authorize"), "Authorize button");
             $the_checkbox = $this->minkContext->getSession()->getPage()->findField("enablePersistentToken");
             $the_button = $this->minkContext->getSession()->getPage()->findButton("authorize");
             //var_dump($the_checkbox);
             //var_dump($the_button);
             // $the_checkbox->check();
-            sleep(5);
-            $the_button->press();
-            sleep(5);
+            if ($the_button) {
+                sleep(5);
+                $the_button->press();
+                sleep(5);
+            }
         }
     }
 
