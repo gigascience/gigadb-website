@@ -28,8 +28,8 @@ variables:
   GIGADB_ENV: CI
   # .env is only for dev, elsewhere we just list the variables here
   APPLICATION: "/builds/$CI_PROJECT_PATH"
-  YII_PATH: "/opt/yii-1.1"
-  YII2_PATH: "/opt/yii-2.0"
+  YII_PATH: "/var/www/vendor/yiisoft/yii"
+  YII2_PATH: "/var/www/vendor/yiisoft/yii2"
   DATA_SAVE_PATH: "/builds/.containers-data/gigadb"
   NGINX_VERSION: "1.15.2"
   PHP_VERSION: "7.1"
@@ -170,6 +170,7 @@ check_SAST:
 
 deploy_staging:
   variables:
+    # GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376"
   stage: deploy
@@ -190,8 +191,8 @@ deploy_staging:
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    # - run config making sure the production variables are used
-    # - run webapp but no need of running composer as vendor is already baked in the production image
+    # - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production.yml run --rm webapp
+    # - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production.yml logs
   environment:
     name: staging
     url: http://gigadb-staging.play-with-docker.com
