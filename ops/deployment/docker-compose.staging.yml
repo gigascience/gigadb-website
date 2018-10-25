@@ -13,8 +13,8 @@ services:
     volumes:
       - assets:/var/www/assets
     ports:
-      - "${PUBLIC_HTTP_PORT}:80"
-      - "${PUBLIC_HTTPS_PORT}:443"
+      - "${STAGING_PUBLIC_HTTP_PORT}:80"
+      - "${STAGING_PUBLIC_HTTPS_PORT}:443"
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
