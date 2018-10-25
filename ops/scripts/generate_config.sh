@@ -28,6 +28,18 @@ if [ -f  ./.env ];then
     source "./.env"
 fi
 
+
+# If we are on staging environment override variable name with STAGING_* counterpart
+if [ $GIGADB_ENV == "staging"];then
+    GIGADB_HOST=$STAGING_GIGADB_HOST
+    GIGADB_USER=$STAGING_GIGADB_USER
+    GIGADB_PASSWORD=$STAGING_GIGADB_PASSWORD
+    GIGADB_DB=$STAGING_GIGADB_DB
+    HOME_URL=$STAGING_HOME_URL
+    PUBLIC_HTTP_PORT=$STAGING_PUBLIC_HTTP_PORT
+    PUBLIC_HTTPS_PORT=$STAGING_PUBLIC_HTTPS_PORT
+fi
+
 # Print directory of this script. We will need it to find nginx config
 THIS_SCRIPT_DIR=`dirname "$BASH_SOURCE"`
 echo "Running ${THIS_SCRIPT_DIR}/generate_config.sh for environment: $GIGADB_ENV"
