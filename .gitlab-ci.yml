@@ -185,7 +185,7 @@ deploy_staging:
     # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
     - docker-compose build production_web
     - docker-compose build production_app
-    - docker tag ${CI_PROJECT_NAME}_production_app:latest registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
+    - docker tag ${CI_PROJECT_NAME}_production_web:latest registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
     - docker tag ${CI_PROJECT_NAME}_production_app:latest registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
