@@ -4,9 +4,6 @@ services:
 
   web:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    cap_drop:
-      - NET_ADMIN
-      - SYS_ADMIN
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
@@ -21,9 +18,6 @@ services:
 
   application:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    cap_drop:
-      - NET_ADMIN
-      - SYS_ADMIN
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
