@@ -70,6 +70,9 @@ HTML;
                         <span class="citation-popup" data-content="View citations on Europe PubMed Central">
                             <a href="<?= $model->ePMCLink ?>" target="_blank"><img class="dataset-des-images" src="/images/ePMC.jpg"/></a>
                         </span>
+                        <span class="citation-popup" data-content="View citations on Dimensions">
+                            <a href="https://app.dimensions.ai/discover/publication?search_text=10.5524%2F<?= $model->identifier ?>" target="_blank"><img class="dataset-des-images" src="/images/dimensions.jpg"/></a>
+                        </span>
                     </p>
                 </div>    
                 </div>
