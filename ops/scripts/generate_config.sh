@@ -127,8 +127,9 @@ VARS='$GIGADB_DB:$GIGADB_HOST:$GIGADB_USER:$GIGADB_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
 
-
-cp ops/configuration/nginx-conf/le.${GIGADB_ENV}.ini /etc/letsencrypt/cli.ini
+if [ $GIGADB_ENV != "CI" ];then
+    cp ops/configuration/nginx-conf/le.${GIGADB_ENV}.ini /etc/letsencrypt/cli.ini
+fi
 
 # Download example dataset files
 # mkdir -p ${APP_SOURCE}/vsftpd/files
