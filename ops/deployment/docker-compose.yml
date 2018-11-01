@@ -17,6 +17,8 @@ services:
       - "${PUBLIC_HTTPS_PORT}:443"
     volumes:
       - ${APPLICATION}/assets:/var/www/assets
+      - le_config:/etc/letsencrypt
+      - le_challenge:/var/www/letsencrypt
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
@@ -79,6 +81,7 @@ services:
     volumes:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}:/app
+      - le_config:/etc/letsencrypt
     depends_on:
       - application
       - web
@@ -138,4 +141,6 @@ networks:
       - subnet: 172.16.238.0/24
   db-tier:
 
-
+volumes:
+  le_challenge:
+  le_config:

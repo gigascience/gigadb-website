@@ -9,6 +9,7 @@ services:
       YII2_PATH: ${YII2_PATH}
     volumes:
       - assets:/var/www/assets
+      - le_config:/etc/letsencrypt
     ports:
       - "${STAGING_PUBLIC_HTTP_PORT}:80"
       - "${STAGING_PUBLIC_HTTPS_PORT}:443"
@@ -49,9 +50,11 @@ services:
     depends_on:
       - application
       - web
-    command: ./protected/yiic lesscompiler
+    command: ./ops/scripts/webapp_setup.sh
     networks:
       - web-tier
+    volumes:
+      - le_config:/etc/letsencrypt
 
 
 networks:
@@ -64,4 +67,5 @@ networks:
 
 volumes:
   assets:
+  le_config:
 
