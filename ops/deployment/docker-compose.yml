@@ -71,6 +71,7 @@ services:
     image: rija/docker-alpine-shell-tools:1.0.1
     volumes:
       - ${APPLICATION}/:/var/www
+      - le_config:/etc/letsencrypt
     command: /var/www/ops/scripts/generate_config.sh
 
   webapp:
@@ -81,7 +82,6 @@ services:
     volumes:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}:/app
-      - le_config:/etc/letsencrypt
     depends_on:
       - application
       - web

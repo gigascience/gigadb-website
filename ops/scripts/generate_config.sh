@@ -128,7 +128,7 @@ envsubst $VARS < $SOURCE > $TARGET
 
 
 
-
+cp ops/configuration/nginx-conf/le.${GIGADB_ENV}.ini /etc/letsencrypt/cli.ini
 
 # Download example dataset files
 # mkdir -p ${APP_SOURCE}/vsftpd/files
