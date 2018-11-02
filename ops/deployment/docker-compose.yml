@@ -18,7 +18,6 @@ services:
     volumes:
       - ${APPLICATION}/assets:/var/www/assets
       - le_config:/etc/letsencrypt
-      - le_challenge:/var/www/letsencrypt
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
@@ -142,5 +141,4 @@ networks:
   db-tier:
 
 volumes:
-  le_challenge:
   le_config:
