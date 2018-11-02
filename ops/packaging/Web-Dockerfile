@@ -15,7 +15,7 @@ COPY index.php /var/www/index.php
 COPY js /var/www/js
 COPY less /var/www/less
 
-RUN apk add --no-cache openssl certbot && \
+RUN apk -vv add --no-cache openssl certbot && \
 	mkdir -p /etc/ssl/nginx && chmod 700 /etc/ssl/nginx && \
 	mkdir -p /etc/ssl/nginx/certs && chmod 700 /etc/ssl/nginx/certs && \
 	mkdir -p /var/www/.le && \
