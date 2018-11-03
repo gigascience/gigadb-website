@@ -16,9 +16,6 @@ services:
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
-    cap_drop:
-      - NET_ADMIN
-      - SYS_ADMIN
     restart: unless-stopped
 
   application:
