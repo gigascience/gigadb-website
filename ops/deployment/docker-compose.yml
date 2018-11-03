@@ -18,9 +18,16 @@ services:
     volumes:
       - ${APPLICATION}/assets:/var/www/assets
       - le_config:/etc/letsencrypt
+      - le_webrootpath:/var/www/.le
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - le_config:/etc/letsencrypt
+      - le_webrootpath:/var/www/.le
 
   application:
     environment:
@@ -142,3 +149,4 @@ networks:
 
 volumes:
   le_config:
+  le_webrootpath:
