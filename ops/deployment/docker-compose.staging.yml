@@ -22,11 +22,11 @@ services:
       - SYS_ADMIN
     restart: unless-stopped
 
-  configure_certbot:
-    image: rija/docker-alpine-shell-tools:1.0.1
+  config:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
     volumes:
       - le_config:/etc/letsencrypt
-    command: cp ops/configuration/nginx-conf/le.staging.ini /etc/letsencrypt/cli.ini
+    command: cp /le.staging.ini /etc/letsencrypt/cli.ini
 
   certbot:
     image: certbot/certbot

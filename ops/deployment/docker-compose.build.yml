@@ -27,3 +27,8 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
     volumes:
       - ../../assets:/var/www/assets
+
+  production_config:
+    build:
+      context: ../..
+      dockerfile: ops/packaging/Config-Dockerfile
