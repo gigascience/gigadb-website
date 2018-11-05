@@ -25,6 +25,7 @@ services:
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=false
         - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=true
     volumes:
       - ../../assets:/var/www/assets
 

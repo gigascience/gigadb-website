@@ -144,6 +144,17 @@ RUN if [ ${INSTALL_TIDEWAYS_XHPROF} = true ]; then \
     echo "auto_prepend_file=/usr/local/src/xhgui-0.8.1/external/header.php" > /usr/local/etc/php/conf.d/xhgui.ini \
 ;fi
 
+ARG INSTALL_LIBSODIUM=false
+
+RUN if [ ${INSTALL_LIBSODIUM} = true ]; then \
+    echo "deb http://ftp.debian.org/debian jessie-backports main" | tee -a /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y -t jessie-backports libsodium-dev && \
+    pecl install libsodium && \
+    echo "extension=sodium.so" >  /usr/local/etc/php/conf.d/libsodium.ini \
+;fi
+
+
 RUN usermod -u 1000 www-data
 
 WORKDIR /var/www
