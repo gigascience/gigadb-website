@@ -1,10 +1,10 @@
 stages:
   - build
-  - security
   - test
+  - security
   - conformance
-  - deploy
-  - release
+  - staging
+  - live
 
 image: docker:stable
 
@@ -169,7 +169,7 @@ check_SAST:
   artifacts:
     paths: [gl-sast-report.json]
 
-deploy_staging_new_certificate:
+with_new_cert_deploy:
   variables:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -220,7 +220,7 @@ deploy_staging_new_certificate:
     when: on_failure
     expire_in: 1 week
 
-deploy_to_staging:
+deploy_app:
   variables:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
