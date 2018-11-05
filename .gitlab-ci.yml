@@ -174,7 +174,7 @@ with_new_cert_deploy:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376"
-  stage: deploy
+  stage: staging
   script:
     # appending staging variables at the end of the .env and .secrets
     - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
@@ -225,7 +225,7 @@ deploy_app:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376"
-  stage: deploy
+  stage: staging
   script:
     # appending staging variables at the end of the .env and .secrets
     - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
@@ -271,8 +271,8 @@ deploy_app:
     when: on_failure
     expire_in: 1 week
 
-live_release:
-  stage: release
+deploy_release:
+  stage: live
   script:
     - echo "The plan is, once this config is on develop branch:"
     - echo "to commit a new container with the source code using 'docker commit'"
