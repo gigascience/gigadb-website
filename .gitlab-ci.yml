@@ -244,19 +244,27 @@ deploy_app:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
-    # Interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
+    # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
+    # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
     - echo "$TLSAUTH_CA" >  ~/.docker/ca.pem
     - echo "$TLSAUTH_CERT" > ~/.docker/cert.pem
     - echo "$TLSAUTH_KEY" > ~/.docker/key.pem
+    # Pull production container from our private registry
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
+    # Run config script to populate the docker volumes
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
+    # Redeploy all containers and run webapp setup (run --rm webapp alone won't redeploy the containers)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm webapp
+    # Run database migrations if any
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --interactive=false
+    # Attempt to renew the web certificate for TLS termination on web container. NOOP if not close to expiration date
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot renew
+    # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web ln -s /etc/nginx/sites-available/gigadb.staging.https.conf /etc/nginx/sites-enabled/https.server.conf
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml kill -s HUP web
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml logs
