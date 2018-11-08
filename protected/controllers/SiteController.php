@@ -414,15 +414,18 @@ class SiteController extends Controller {
 				$_SESSION['affiliate_login']['token'] = $auth['credentials']['token'];
 
 				#use useridentity to login
-				$model = new LoginForm;
-				$model->username = $auth['uid'];
-				$model->password = $auth['uid'];
+                $userIdentity = new AffiliateUserIdentity(
+                                                $_SESSION['affiliate_login']['provider'],
+                                                $_SESSION['affiliate_login']['uid']
+                                );
 
-				#validate user input and redirect to the previous page if valid
-				if($model->validate()){
+				#complete authentication of affilate user
+				if($userIdentity->authenticate()){
+                    $duration= 3600*24*30 ; // 30 days
+                    Yii::app()->user->login($userIdentity,$duration);
 					$this->redirect(Yii::app()->user->returnUrl);
 				} else {
-					Yii::log("FAILED VALIDATION: " . print_r($model->getErrors(), true) , "error");
+					Yii::log("FAILED VALIDATION: " . $userIdentity->errorCode , "error");
 				}
 
 		        } catch (Exception $e) {
@@ -446,7 +449,7 @@ class SiteController extends Controller {
 	 * revoke  the current affiliatte user granting and redirect to homepage.
 	 */
 	public function actionRevoke() {
-		UserIdentity::revoke_token() ;
+		AffiliateUserIdentity::revoke_token() ;
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}

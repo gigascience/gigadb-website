@@ -1202,7 +1202,7 @@ ALTER SEQUENCE funder_name_id_seq OWNED BY funder_name.id;
 CREATE TABLE gigadb_user (
     id integer NOT NULL,
     email character varying(64) NOT NULL,
-    password character varying(64) NOT NULL,
+    password character varying(128) NOT NULL,
     first_name character varying(100) NOT NULL,
     last_name character varying(100) NOT NULL,
     affiliation character varying(200),
