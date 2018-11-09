@@ -339,40 +339,40 @@ class DatasetController extends Controller
             ),
         ));
         if (isset($_POST['Dataset'])) {
-            
-            if(isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status)            
+
+            if(isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status)
             {
-                CurationLog::createlog($_POST['Dataset']['upload_status'],$id);              
+                CurationLog::createlog($_POST['Dataset']['upload_status'],$id);
             }
-             if($_POST['Dataset']['curator_id'] != $model->curator_id)            
+             if($_POST['Dataset']['curator_id'] != $model->curator_id)
             {
                 if($_POST['Dataset']['curator_id'] != "")
                 {
                     $User1 = User::model()-> find('id=:id',array(':id'=>Yii::app()->user->id));
                     $username1 = $User1->first_name." ".$User1->last_name;
                     $User = User::model()-> find('id=:id',array(':id'=>$_POST['Dataset']['curator_id']));
-                    $username = $User->first_name." ".$User->last_name;            
-                    CurationLog::createlog_assign_curator($id,$username1,$username);                  
+                    $username = $User->first_name." ".$User->last_name;
+                    CurationLog::createlog_assign_curator($id,$username1,$username);
                     $model->curator_id = $_POST['Dataset']['curator_id'];
                 }
                 else{
-                    
+
                     $model->curator_id = null;
                 }
 
             }
-            
+
             if($_POST['Dataset']['manuscript_id'])
-            
+
             {
                 $model->manuscript_id = $_POST['Dataset']['manuscript_id'];
-                
+
             }else
             {
-            
+
                 $model->manuscript_id = "";
             }
-            
+
             $datasetAttr = $_POST['Dataset'];
 
             $model->setAttributes($datasetAttr, true);
@@ -1264,6 +1264,7 @@ EO_MAIL;
 
                     $dataset->identifier = $lastIdentifier + 1;
 
+                    //TODO: replace below with Bytes-Unit library
                     if($_POST['Dataset']['union']=='B') {
                         $dataset->dataset_size=$_POST['Dataset']['dataset_size'];
                     } else if($_POST['Dataset']['union']=='M') {
