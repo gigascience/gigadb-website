@@ -2,58 +2,58 @@
 
 class DatasetController extends Controller
 {
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	//public $layout='//layouts/new_column2';
+    /**
+     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
+     * using two-column layout. See 'protected/views/layouts/column2.php'.
+     */
+    //public $layout='//layouts/new_column2';
 
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-		);
-	}
+    /**
+     * @return array action filters
+     */
+    public function filters()
+    {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
+    }
 
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('view','checkDOIExist' , 'aSetSortCookies','ResetPageSize','Mint'),
-				'users'=>array('*'),
-			),
-			array('allow',  // allow logged-in users to perform 'upload'
-				'actions'=>array('upload','delete','create1','submit','updateSubmit', 'updateFile',
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
+    public function accessRules()
+    {
+        return array(
+            array('allow',  // allow all users to perform 'index' and 'view' actions
+                'actions'=>array('view','checkDOIExist' , 'aSetSortCookies','ResetPageSize','Mint'),
+                'users'=>array('*'),
+            ),
+            array('allow',  // allow logged-in users to perform 'upload'
+                'actions'=>array('upload','delete','create1','submit','updateSubmit', 'updateFile',
                     'datasetManagement','authorManagement','projectManagement','linkManagement','exLinkManagement',
                     'relatedDoiManagement','sampleManagement','PxInfoManagement','datasetAjaxDelete'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-			      'actions'=>array('admin','update','create','updateMetadata','private', 'mint', 'index'),
-			      'roles'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
+                'users'=>array('@'),
+            ),
+            array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                  'actions'=>array('admin','update','create','updateMetadata','private', 'mint', 'index'),
+                  'roles'=>array('admin'),
+            ),
+            array('deny',  // deny all users
+                'users'=>array('*'),
+            ),
+        );
+    }
 
 
-	public function actionView($id)	{
+    public function actionView($id)
+    {
         $form = new SearchForm;  // Use for Form
         $dataset = new Dataset; // Use for auto suggestion
         $this->layout='new_column2';
         $model = Dataset::model()->find("identifier=?", array($id));
         if (!$model) {
-
             $form = new SearchForm;
             $keyword = $id;
             $this->render('invalid', array('model' => $form, 'keyword' => $keyword, 'general_search' => 1));
@@ -64,9 +64,7 @@ class DatasetController extends Controller
 
         if ($model->upload_status != "Published") {
             if (isset($_GET['token']) && $model->token == $_GET['token']) {
-
             } else {
-
                 $form = new SearchForm;
                 $keyword = $id;
                 $this->render('invalid', array('model' => $form, 'keyword' => $keyword));
@@ -74,16 +72,16 @@ class DatasetController extends Controller
             }
         }
 
-		$urlToRedirect = trim($model->getUrlToRedirectAttribute());
-		$currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
+        $urlToRedirect = trim($model->getUrlToRedirectAttribute());
+        $currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
 
-		if($urlToRedirect && $currentAbsoluteFullUrl == $urlToRedirect ) {
-			$this->metaData['redirect'] = 'http://dx.doi.org/10.5524/'.$model->identifier ;
-			$this->render('interstitial',array(
-				'model'=>$model
-			));
-			return;
-		}
+        if ($urlToRedirect && $currentAbsoluteFullUrl == $urlToRedirect) {
+            $this->metaData['redirect'] = 'http://dx.doi.org/10.5524/'.$model->identifier ;
+            $this->render('interstitial', array(
+                'model'=>$model
+            ));
+            return;
+        }
         $crit = new CDbCriteria;
         $crit->addCondition("t.dataset_id = ".$model->id);
         $crit->select = '*';
@@ -96,21 +94,23 @@ class DatasetController extends Controller
         $pageSize = 10;
         $flag=null;
 
-        if(isset($cookies['file_setting'])) {
+        if (isset($cookies['file_setting'])) {
             //$ss = json_decode($cookies['sample_setting']);
             $fcookie = $cookies['file_setting'];
             $fcookie = json_decode($fcookie->value, true);
-            if($fcookie['setting'])
+            if ($fcookie['setting']) {
                 $setting = $fcookie['setting'];
+            }
             $pageSize = $fcookie['page'];
         }
 
-        if(isset($_POST['setting'])) {
+        if (isset($_POST['setting'])) {
             $setting = $_POST['setting'];
             $pageSize = $_POST['pageSize'];
 
-            if(isset($cookies['file_setting']))
+            if (isset($cookies['file_setting'])) {
                 unset(Yii::app()->request->cookies['file_setting']);
+            }
 
             $nc = new CHttpCookie('file_setting', json_encode(array('setting'=> $setting, 'page'=>$pageSize)));
             $nc->expire = time() + (60*60*24*30);
@@ -119,7 +119,7 @@ class DatasetController extends Controller
         }
 
 
-        $files = new CActiveDataProvider('File' , array(
+        $files = new CActiveDataProvider('File', array(
             'criteria'=> $crit,
             'sort' => array('defaultOrder'=>'name ASC',
                             'attributes' => array(
@@ -144,21 +144,23 @@ class DatasetController extends Controller
         //Sample
         $columns = array('name', 'taxonomic_id', 'genbank_name', 'scientific_name', 'common_name', 'attribute');
         $perPage = 10;
-        if(isset($cookies['sample_setting'])) {
+        if (isset($cookies['sample_setting'])) {
             //$ss = json_decode($cookies['sample_setting']);
             $scookie = $cookies['sample_setting'];
             $scookie = json_decode($scookie->value, true);
-            if($scookie['columns'])
+            if ($scookie['columns']) {
                 $columns = $scookie['columns'];
+            }
             $perPage = $scookie['page'];
         }
 
-        if(isset($_POST['columns'])) {
+        if (isset($_POST['columns'])) {
             $columns = $_POST['columns'];
             $perPage = $_POST['perPage'];
             $flag="sample";
-            if(isset($cookies['sample_setting']))
+            if (isset($cookies['sample_setting'])) {
                 unset(Yii::app()->request->cookies['sample_setting']);
+            }
 
             $ncookie = new CHttpCookie('sample_setting', json_encode(array('columns'=> $columns, 'page'=>$perPage)));
             $ncookie->expire = time() + (60*60*24*30);
@@ -169,7 +171,7 @@ class DatasetController extends Controller
         $scrit->join = "LEFT JOIN dataset_sample ds ON ds.sample_id = t.id LEFT JOIN species ON t.species_id = species.id";
         $scrit->condition = "ds.dataset_id = :id";
         $scrit->params = array(':id' => $model->id);
-        $samples = new CActiveDataProvider('Sample' , array(
+        $samples = new CActiveDataProvider('Sample', array(
             'criteria'=> $scrit,
             'pagination' => false,
             'sort' => array('defaultOrder'=>'t.name ASC',
@@ -229,13 +231,13 @@ class DatasetController extends Controller
 
         $attributes = $model->attributes;
         $l = array();
-        foreach($attributes as $att) {
+        foreach ($attributes as $att) {
             $l[] = $att->id;
         }
 
         $authors = $model->authors;
         $at = array();
-        foreach($authors as $au) {
+        foreach ($authors as $au) {
             $at[] = $au->id;
         }
 
@@ -249,12 +251,11 @@ class DatasetController extends Controller
         $rc->join = "JOIN dataset_attributes da ON t.id = da.dataset_id JOIN dataset_author au ON t.id = au.dataset_id";
         $rc->addInCondition("da.attribute_id", $l);
         $rc->addInCondition("au.author_id", $at, 'OR');
-	$rc->addCondition("t.upload_status = 'Published'");
+        $rc->addCondition("t.upload_status = 'Published'");
         $relates = Dataset::model()->findAll($rc);
 
         // if we don't find any dataset related by the first way, then by common type
         if (!$relates || count($relates) < 9) {
-
             $relatesIds = array($model->id);
             foreach ($relates as $relate) {
                 $relatesIds[] = $relate->id;
@@ -275,17 +276,18 @@ class DatasetController extends Controller
         $scholar = $model->cited;
 
         $link_type = 'EBI';
-        if(!Yii::app()->user->isGuest) {
+        if (!Yii::app()->user->isGuest) {
             $user = User::model()->findByPk(Yii::app()->user->_id);
-            if($user)
+            if ($user) {
                 $link_type = $user->preferred_link;
+            }
         }
 
         // Page private ? Disable robot to index
         $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $model->upload_status);
         // Yii::log("ActionView: about to render",CLogger::LEVEL_ERROR,"DatasetController");
 
-        $this->render('view',array(
+        $this->render('view', array(
             'model'=>$model,
             'form'=>$form,
             'dataset'=>$dataset,
@@ -304,32 +306,33 @@ class DatasetController extends Controller
             'link_type' => $link_type,
             'flag' => $flag,
         ));
-
     }
 
 
-    public function actionPrivate() {
-          $id = $_GET['identifier'];
-          $model= Dataset::model()->find("identifier=?",array($id));
-          if (!$model) {
+    public function actionPrivate()
+    {
+        $id = $_GET['identifier'];
+        $model= Dataset::model()->find("identifier=?", array($id));
+        if (!$model) {
             $this->redirect('/site/index');
-          } else if ($model->upload_status == 'Published') {
+        } elseif ($model->upload_status == 'Published') {
             $this->redirect('/dataset/'.$model->identifier);
-          }
-
-          $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-          $model->token = substr(str_shuffle($chars),0,16);
-          $model->save();
-
-          $this->redirect('/dataset/view/id/'.$model->identifier.'/token/'.$model->token);
         }
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id) {
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $model->token = substr(str_shuffle($chars), 0, 16);
+        $model->save();
+
+        $this->redirect('/dataset/view/id/'.$model->identifier.'/token/'.$model->token);
+    }
+
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function actionUpdate($id)
+    {
         $model = $this->loadModel($id);
 
         $dataProvider = new CActiveDataProvider('CurationLog', array(
@@ -339,37 +342,25 @@ class DatasetController extends Controller
             ),
         ));
         if (isset($_POST['Dataset'])) {
-
-            if(isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status)
-            {
-                CurationLog::createlog($_POST['Dataset']['upload_status'],$id);
+            if (isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status) {
+                CurationLog::createlog($_POST['Dataset']['upload_status'], $id);
             }
-             if($_POST['Dataset']['curator_id'] != $model->curator_id)
-            {
-                if($_POST['Dataset']['curator_id'] != "")
-                {
-                    $User1 = User::model()-> find('id=:id',array(':id'=>Yii::app()->user->id));
+            if ($_POST['Dataset']['curator_id'] != $model->curator_id) {
+                if ($_POST['Dataset']['curator_id'] != "") {
+                    $User1 = User::model()-> find('id=:id', array(':id'=>Yii::app()->user->id));
                     $username1 = $User1->first_name." ".$User1->last_name;
-                    $User = User::model()-> find('id=:id',array(':id'=>$_POST['Dataset']['curator_id']));
+                    $User = User::model()-> find('id=:id', array(':id'=>$_POST['Dataset']['curator_id']));
                     $username = $User->first_name." ".$User->last_name;
-                    CurationLog::createlog_assign_curator($id,$username1,$username);
+                    CurationLog::createlog_assign_curator($id, $username1, $username);
                     $model->curator_id = $_POST['Dataset']['curator_id'];
-                }
-                else{
-
+                } else {
                     $model->curator_id = null;
                 }
-
             }
 
-            if($_POST['Dataset']['manuscript_id'])
-
-            {
+            if ($_POST['Dataset']['manuscript_id']) {
                 $model->manuscript_id = $_POST['Dataset']['manuscript_id'];
-
-            }else
-            {
-
+            } else {
                 $model->manuscript_id = "";
             }
 
@@ -379,7 +370,7 @@ class DatasetController extends Controller
 
             if ($model->upload_status == 'Published') {
                 $files = $model->files;
-                if (strpos($model->ftp_site, "10.5524") == FALSE) {
+                if (strpos($model->ftp_site, "10.5524") == false) {
                     $model->ftp_site="ftp://climb.genomics.cn/pub/10.5524/100001_101000/" . $model->identifier;
 
                     if (count($files) > 0) {
@@ -391,14 +382,15 @@ class DatasetController extends Controller
                             if ($count == 1) {
                                 $new_location = "ftp://climb.genomics.cn/pub/10.5524/100001_101000/" .
                                         $model->identifier . "/" . $location_array[0];
-                            } else if ($count >= 2) {
+                            } elseif ($count >= 2) {
                                 $new_location = "ftp://climb.genomics.cn/pub/10.5524/100001_101000/" .
                                         $model->identifier . "/" . $location_array[$count - 2] . "/" . $location_array[$count - 1];
                             }
                             $file->location = $new_location;
                             $file->date_stamp = date("Y-m-d H:i:s");
-                            if (!$file->save())
+                            if (!$file->save()) {
                                 return false;
+                            }
                         }
                     }
                 }
@@ -409,12 +401,15 @@ class DatasetController extends Controller
             $image->attributes = $_POST['Images'];
             $image->scenario = 'update';
 
-            if ($model->publication_date == "")
+            if ($model->publication_date == "") {
                 $model->publication_date = null;
-            if ($model->modification_date == "")
+            }
+            if ($model->modification_date == "") {
                 $model->modification_date = null;
-            if ($model->fairnuse == "")
+            }
+            if ($model->fairnuse == "") {
                 $model->fairnuse = null;
+            }
 
 
             if ($model->save() && $image->save()) {
@@ -444,38 +439,36 @@ class DatasetController extends Controller
                 }
 
                 // semantic kewyords update, using remove all and re-create approach
-				if( isset($_POST['keywords']) ){
+                if (isset($_POST['keywords'])) {
                     $attribute_service = Yii::app()->attributeService;
                     $attribute_service->replaceKeywordsForDatasetIdWithString($id, $_POST['keywords']);
-				}
+                }
 
 
-				// retrieve existing redirect
-				$criteria = new CDbCriteria(array('order'=>'id ASC'));
-				$urlToRedirectAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
-				$urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
+                // retrieve existing redirect
+                $criteria = new CDbCriteria(array('order'=>'id ASC'));
+                $urlToRedirectAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
+                $urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
 
-				// saving url to redirect as a dataset attribute
-				if( isset($urlToRedirectDatasetAttribute) || isset($_POST['urltoredirect'])  ){
+                // saving url to redirect as a dataset attribute
+                if (isset($urlToRedirectDatasetAttribute) || isset($_POST['urltoredirect'])) {
 
 
-					// update with value from form if value has changed.
-					if (isset($urlToRedirectDatasetAttribute) && $_POST['urltoredirect'] != $urlToRedirectDatasetAttribute->value ) {
-						$urlToRedirectDatasetAttribute->value = $_POST['urltoredirect'];
-						$urlToRedirectDatasetAttribute->save();
+                    // update with value from form if value has changed.
+                    if (isset($urlToRedirectDatasetAttribute) && $_POST['urltoredirect'] != $urlToRedirectDatasetAttribute->value) {
+                        $urlToRedirectDatasetAttribute->value = $_POST['urltoredirect'];
+                        $urlToRedirectDatasetAttribute->save();
+                    }
 
-					}
-
-					// create a new dataset attribute if there isn't one
-					else if ( isset($_POST['urltoredirect']) ){
-						$urlToRedirectDatasetAttribute = new DatasetAttributes();
-						$urlToRedirectDatasetAttribute->attribute_id = $urlToRedirectAttr->id;
-						$urlToRedirectDatasetAttribute->dataset_id = $id;
-						$urlToRedirectDatasetAttribute->value = $_POST['urltoredirect'];
-						$urlToRedirectDatasetAttribute->save();
-					}
-
-				}
+                    // create a new dataset attribute if there isn't one
+                    elseif (isset($_POST['urltoredirect'])) {
+                        $urlToRedirectDatasetAttribute = new DatasetAttributes();
+                        $urlToRedirectDatasetAttribute->attribute_id = $urlToRedirectAttr->id;
+                        $urlToRedirectDatasetAttribute->dataset_id = $id;
+                        $urlToRedirectDatasetAttribute->value = $_POST['urltoredirect'];
+                        $urlToRedirectDatasetAttribute->save();
+                    }
+                }
 
 
 
@@ -484,13 +477,9 @@ class DatasetController extends Controller
                 } else {
                     $this->redirect(array('/dataset/view/id/' . $model->identifier.'/token/'.$model->token));
                 }
-
-
-            }
-            else {
+            } else {
                 Yii::log(print_r($model->getErrors(), true), 'debug');
             }
-
         }
 
         $this->render('update', array(
@@ -500,68 +489,69 @@ class DatasetController extends Controller
         ));
     }
 
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionDelete($id)
-	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param integer $id the ID of the model to be deleted
+     */
+    public function actionDelete($id)
+    {
+        if (Yii::app()->request->isPostRequest) {
+            // we only allow deletion via POST request
+            $this->loadModel($id)->delete();
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-	}
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+            if (!isset($_GET['ajax'])) {
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            }
+        } else {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
+    }
 
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('Dataset');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
+    /**
+     * Lists all models.
+     */
+    public function actionIndex()
+    {
+        $dataProvider=new CActiveDataProvider('Dataset');
+        $this->render('index', array(
+            'dataProvider'=>$dataProvider,
+        ));
+    }
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Dataset('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Dataset'])) {
+    /**
+     * Manages all models.
+     */
+    public function actionAdmin()
+    {
+        $model=new Dataset('search');
+        $model->unsetAttributes();  // clear any default values
+        if (isset($_GET['Dataset'])) {
             $model->setAttributes($_GET['Dataset']);
         }
 
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
+        $this->render('admin', array(
+            'model'=>$model,
+        ));
+    }
 
-	public function actionUpload() {
-		if (isset($_POST['userId'])) {
-			$user = User::model()->findByPk(Yii::app()->user->id);
+    public function actionUpload()
+    {
+        if (isset($_POST['userId'])) {
+            $user = User::model()->findByPk(Yii::app()->user->id);
 
 
-			$excelFile = CUploadedFile::getInstanceByName('xls');
+            $excelFile = CUploadedFile::getInstanceByName('xls');
             // print_r($excelFile);die;
-			$excelTempFileName = $excelFile->tempName;
+            $excelTempFileName = $excelFile->tempName;
 
-			// email fields: to, from, subject, and so on
-		    $from = Yii::app()->params['app_email_name']." <".Yii::app()->params['app_email'].">";
-		    $to = Yii::app()->params['adminEmail'];
-		    $subject = "New dataset uploaded by user ".$user->id." - ".$user->first_name.' '.$user->last_name;
-		    $receiveNewsletter = $user->newsletter ? 'Yes' : 'No';
-		    $message = <<<EO_MAIL
+            // email fields: to, from, subject, and so on
+            $from = Yii::app()->params['app_email_name']." <".Yii::app()->params['app_email'].">";
+            $to = Yii::app()->params['adminEmail'];
+            $subject = "New dataset uploaded by user ".$user->id." - ".$user->first_name.' '.$user->last_name;
+            $receiveNewsletter = $user->newsletter ? 'Yes' : 'No';
+            $message = <<<EO_MAIL
 
 New dataset is uploaded by:
 <br/>
@@ -580,21 +570,21 @@ Receiving Newsletter:  <b>{$receiveNewsletter}</b>
 <br/><br/>
 EO_MAIL;
 
-		    $headers = "From: $from";
+            $headers = "From: $from";
 
-		    /* prepare attachments */
+            /* prepare attachments */
 
-			// boundary
-		    $semi_rand = md5(time());
-		    $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
+            // boundary
+            $semi_rand = md5(time());
+            $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
-		    // headers for attachment
-		    $headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$mime_boundary}\"";
-		     // multipart boundary
-		    $message = "--{$mime_boundary}\n" . "Content-Type: text/html; charset=\"utf-8\"\n" ."Content-Transfer-Encoding: 7bit\n\n" . $message . "\n\n";
-		    $message .= "--{$mime_boundary}\n";
-            $fp =    @fopen($excelTempFileName,"rb");
-	        $data =    @fread($fp,filesize($excelTempFileName));
+            // headers for attachment
+            $headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$mime_boundary}\"";
+            // multipart boundary
+            $message = "--{$mime_boundary}\n" . "Content-Type: text/html; charset=\"utf-8\"\n" ."Content-Transfer-Encoding: 7bit\n\n" . $message . "\n\n";
+            $message .= "--{$mime_boundary}\n";
+            $fp =    @fopen($excelTempFileName, "rb");
+            $data =    @fread($fp, filesize($excelTempFileName));
             @fclose($fp);
             $data = chunk_split(base64_encode($data));
             // $newFileName = 'dataset_upload_'.$user->id.'.xls';
@@ -603,35 +593,38 @@ EO_MAIL;
             "Content-Description: ".$newFileName."\n" ."Content-Disposition: attachment;\n" . " filename=\"".$newFileName."\"; size=".filesize($excelTempFileName).";\n" ."Content-Transfer-Encoding: base64\n\n" . $data . "\n\n";
 
             $message .= "--{$mime_boundary}--";
-		    $returnpath = "-f" . Yii::app()->params['adminEmail'];
+            $returnpath = "-f" . Yii::app()->params['adminEmail'];
 
-	        $ok = @mail($to, $subject, $message, $headers, $returnpath);
+            $ok = @mail($to, $subject, $message, $headers, $returnpath);
 
-	        if ($ok)  {
-	        	$this->redirect('/dataset/upload/status/successful');
-	        	return;
-	        } else {
-	        	$this->redirect('/dataset/upload/status/failed');
-	        	return;
-	        }
-		}
-		$this->render('upload');
-	}
+            if ($ok) {
+                $this->redirect('/dataset/upload/status/successful');
+                return;
+            } else {
+                $this->redirect('/dataset/upload/status/failed');
+                return;
+            }
+        }
+        $this->render('upload');
+    }
 
 
- public function actionSubmit() {
-           if (isset($_POST['File'])) {
+    public function actionSubmit()
+    {
+        if (isset($_POST['File'])) {
             $count = count($_POST['File']);
             //var_dump('count'.$count);
             for ($i = 0; $i < $count; $i++) {
                 $id=$_POST['File'][$i]['id'];
                 $model = File::model()->findByPk($id);
-                if ($model === null)
-                         continue;
+                if ($model === null) {
+                    continue;
+                }
                 $model->attributes = $_POST['File'][$i];
-                if ($model->date_stamp == "")
-                    $model->date_stamp = NULL;
-               // var_dump($model->description);
+                if ($model->date_stamp == "") {
+                    $model->date_stamp = null;
+                }
+                // var_dump($model->description);
                 if (!$model->save()) {
                     var_dump($_POST['File'][$i]);
                 }
@@ -639,16 +632,16 @@ EO_MAIL;
         }
 
         if (!isset($_GET['id'])) {
-                $this->redirect("/user/view_profile");
+            $this->redirect("/user/view_profile");
         } else {
             $dataset_id = $_GET['id'];
             $dataset = Dataset::model()->findByPk($dataset_id);
-            if(!$dataset) {
-                 Yii::app()->user->setFlash('keyword', "Cannot find dataset");
+            if (!$dataset) {
+                Yii::app()->user->setFlash('keyword', "Cannot find dataset");
                 $this->redirect("/user/view_profile");
             }
 
-            if($dataset->submitter_id != Yii::app()->user->id) {
+            if ($dataset->submitter_id != Yii::app()->user->id) {
                 Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
                 $this->redirect("/user/view_profile");
             }
@@ -665,7 +658,7 @@ EO_MAIL;
             }
 
             $isOld = 1;
-            if($dataset->upload_status == 'Incomplete') {
+            if ($dataset->upload_status == 'Incomplete') {
                 $isOld = 0;
             }
 
@@ -674,14 +667,14 @@ EO_MAIL;
             if (isset($_POST['file'])) {
                 $fileLink .= 'Files:<br/>';
                 $fileLink = $link = Yii::app()->params['home_url'] . "/dataset/updateFile/?id=" . $dataset_id;
-                  $dataset->upload_status = 'Pending';
-                  CurationLog::createlog($dataset->upload_status,$dataset->id);
+                $dataset->upload_status = 'Pending';
+                CurationLog::createlog($dataset->upload_status, $dataset->id);
             } else {
-                  $dataset->upload_status = 'Request';
-                  CurationLog::createlog($dataset->upload_status,$dataset->id);
+                $dataset->upload_status = 'Request';
+                CurationLog::createlog($dataset->upload_status, $dataset->id);
             }
 
-            if (!$dataset->save()){
+            if (!$dataset->save()) {
                 Yii::app()->user->setFlash('keyword', "Submit failure" . $dataset_id);
                 $this->redirect("/user/view_profile");
                 return;
@@ -734,13 +727,13 @@ EO_MAIL;
 
             /* prepare attachments */
 
-// boundary
+            // boundary
             $semi_rand = md5(time());
             $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
-// headers for attachment
+            // headers for attachment
             $headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$mime_boundary}\"";
-// multipart boundary
+            // multipart boundary
             $message = "--{$mime_boundary}\n" . "Content-Type: text/html; charset=\"utf-8\"\n" . "Content-Transfer-Encoding: 7bit\n\n" . $message . "\n\n";
             $message .= "--{$mime_boundary}\n";
 
@@ -777,13 +770,13 @@ EO_MAIL;
 
             /* prepare attachments */
 
-// boundary
+            // boundary
             $semi_rand = md5(time());
             $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
-// headers for attachment
+            // headers for attachment
             $headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$mime_boundary}\"";
-// multipart boundary
+            // multipart boundary
             $message = "--{$mime_boundary}\n" . "Content-Type: text/html; charset=\"utf-8\"\n" . "Content-Transfer-Encoding: 7bit\n\n" . $message . "\n\n";
             $message .= "--{$mime_boundary}\n";
 
@@ -825,13 +818,13 @@ EO_MAIL;
 
             /* prepare attachments */
 
-// boundary
+            // boundary
             $semi_rand = md5(time());
             $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
-// headers for attachment
+            // headers for attachment
             $headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$mime_boundary}\"";
-// multipart boundary
+            // multipart boundary
             $message = "--{$mime_boundary}\n" . "Content-Type: text/html; charset=\"utf-8\"\n" . "Content-Transfer-Encoding: 7bit\n\n" . $message . "\n\n";
             $message .= "--{$mime_boundary}\n";
 
@@ -844,7 +837,7 @@ EO_MAIL;
 
             $to = $user->email;
 
-          //  $subject = "GigaDB update \"" . $dataset->title . '"';
+            //  $subject = "GigaDB update \"" . $dataset->title . '"';
             $subject = "GigaDB submission \"" . $dataset->title . '"'.' ['.$dataset_id.']';
             $receiveNewsletter = $user->newsletter ? 'Yes' : 'No';
             $timestamp = $date['mday'] . "-" . $date['mon'] . "-" . $date['year'];
@@ -869,13 +862,13 @@ EO_MAIL;
 
             /* prepare attachments */
 
-// boundary
+            // boundary
             $semi_rand = md5(time());
             $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
-// headers for attachment
+            // headers for attachment
             $headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$mime_boundary}\"";
-// multipart boundary
+            // multipart boundary
             $message = "--{$mime_boundary}\n" . "Content-Type: text/html; charset=\"utf-8\"\n" . "Content-Transfer-Encoding: 7bit\n\n" . $message . "\n\n";
             $message .= "--{$mime_boundary}\n";
 
@@ -896,18 +889,21 @@ EO_MAIL;
     }
 
 
-    public function actionCreate(){
+    public function actionCreate()
+    {
         $dataset = new Dataset;
         $dataset->image = new Images;
 
-        if(isset($_POST['Dataset']) && isset($_POST['Images'])){
+        if (isset($_POST['Dataset']) && isset($_POST['Images'])) {
             $dataset->attributes=$_POST['Dataset'];
             $dataset->image->attributes = $_POST['Images'];
 
-            if ($dataset->publication_date == "")
-                    $dataset->publication_date = null;
-            if ($dataset->modification_date == "")
-                    $dataset->modification_date = null;
+            if ($dataset->publication_date == "") {
+                $dataset->publication_date = null;
+            }
+            if ($dataset->modification_date == "") {
+                $dataset->modification_date = null;
+            }
 
             if ($dataset->image->validate('update') && $dataset->validate('update') && $dataset->image->save()) {
                 // save image
@@ -929,9 +925,9 @@ EO_MAIL;
 
                     Yii::app()->user->setFlash('saveSuccess', 'saveSuccess');
                     if ($dataset->upload_status=='Pending') {
-                      $this->redirect('/dataset/private/identifier/'.$dataset->identifier);
+                        $this->redirect('/dataset/private/identifier/'.$dataset->identifier);
                     } else {
-                      $this->redirect(array('/dataset/'.$dataset->identifier));
+                        $this->redirect(array('/dataset/'.$dataset->identifier));
                     }
                 }
             }
@@ -939,13 +935,15 @@ EO_MAIL;
         $this->render('create', array('model'=>$dataset)) ;
     }
 
-        public function actionUpdateSubmit() {
+    public function actionUpdateSubmit()
+    {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
             $identifier = Dataset::model()->findByAttributes(array('id' => $id))->identifier;
             $dataset_session = DatasetSession::model()->findByAttributes(array('identifier' => $identifier));
-            if ($dataset_session == NULL)
+            if ($dataset_session == null) {
                 return $this->redirect("/user/view_profile");
+            }
             $vars = array('dataset', 'images', 'identifier', 'dataset_id',
                 'datasettypes', 'authors', 'projects',
                 'links', 'externalLinks', 'relations', 'samples');
@@ -962,7 +960,8 @@ EO_MAIL;
     }
 
 
-    public function actionUpdateFile() {
+    public function actionUpdateFile()
+    {
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
             $user = User::model()->findByPk(Yii::app()->user->id);
@@ -972,8 +971,9 @@ EO_MAIL;
             }
             $identifier = $dataset->identifier;
             $dataset_session = DatasetSession::model()->findByAttributes(array('identifier' => $identifier));
-            if ($dataset_session == NULL)
+            if ($dataset_session == null) {
                 return $this->redirect("/user/view_profile");
+            }
             $vars = array('dataset', 'images', 'identifier', 'dataset_id',
                 'datasettypes', 'authors', 'projects',
                 'links', 'externalLinks', 'relations', 'samples');
@@ -989,83 +989,79 @@ EO_MAIL;
 
 
 
-/**
- *	actionMint
- *	post metadata, mint a new DOI
- */
-	public function actionMint() {
-
+    /**
+     *	actionMint
+     *	post metadata, mint a new DOI
+     */
+    public function actionMint()
+    {
         $result['status'] = false;
-		$status_array = array('Request', 'Incomplete', 'Uploaded');
+        $status_array = array('Request', 'Incomplete', 'Uploaded');
 
-		$mds_metadata_url="https://mds.datacite.org/metadata";
-		$mds_doi_url="https://mds.datacite.org/doi";
+        $mds_metadata_url="https://mds.datacite.org/metadata";
+        $mds_doi_url="https://mds.datacite.org/doi";
 
-		$mds_username = Yii::app()->params['mds_username'];
-		$mds_password = Yii::app()->params['mds_password'];
-		$mds_prefix = Yii::app()->params['mds_prefix'];
+        $mds_username = Yii::app()->params['mds_username'];
+        $mds_password = Yii::app()->params['mds_password'];
+        $mds_prefix = Yii::app()->params['mds_prefix'];
 
-		if(isset($_POST['doi'])){
+        if (isset($_POST['doi'])) {
+            $doi = $_POST['doi'];
+            if (stristr($doi, "/")) {
+                $temp = explode("/", $doi);
+                $doi = $temp[1];
+            }
 
-			$doi = $_POST['doi'];
-			if(stristr($doi, "/")){
-				$temp = explode("/", $doi);
-				$doi = $temp[1];
-			}
+            $doi = trim($doi);
+            $dataset = Dataset::model()->find("identifier=?", array($doi));
 
-			$doi = trim($doi);
-			$dataset = Dataset::model()->find("identifier=?",array($doi));
+            if ($dataset && ! in_array($dataset->upload_status, $status_array)) {
+                $xml_data = $dataset->toXML();
+                $ch= curl_init();
+                curl_setopt($ch, CURLOPT_URL, $mds_metadata_url);
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
+                curl_setopt($ch, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
+                $curl_response = curl_exec($ch);
+                $result['md_curl_response'] = $curl_response;
+                $info1 = curl_getinfo($ch);
+                $result['md_curl_status'] = $info1['http_code'];
+                curl_close($ch) ;
+            }
 
-			if ( $dataset && ! in_array($dataset->upload_status, $status_array) ) {
+            if ($dataset && $result['md_curl_status'] == 201) {
+                $doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=http://gigadb.org/dataset/".$dataset->identifier ;
+                $result['doi_data']  = $doi_data;
+                $ch2= curl_init();
+                curl_setopt($ch2, CURLOPT_URL, $mds_doi_url);
+                curl_setopt($ch2, CURLOPT_POST, 1);
+                curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch2, CURLOPT_POSTFIELDS, $doi_data);
+                curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
+                curl_setopt($ch2, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
+                $curl_response = curl_exec($ch2);
+                $result['doi_curl_response'] = $curl_response;
+                $info2 = curl_getinfo($ch2);
+                $result['doi_curl_status'] = $info2['http_code'];
+                curl_close($ch2) ;
+            }
 
-				$xml_data = $dataset->toXML();
-				$ch= curl_init();
-				curl_setopt($ch, CURLOPT_URL, $mds_metadata_url);
-				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-				curl_setopt($ch, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-				$curl_response = curl_exec($ch);
-				$result['md_curl_response'] = $curl_response;
-				$info1 = curl_getinfo($ch);
-				$result['md_curl_status'] = $info1['http_code'];
-				curl_close ($ch) ;
+            if (isset($result['doi_curl_status']) && $result['doi_curl_status'] == 201) {
+                $result['status'] = true;
+            }
+        }
 
-			}
+        echo json_encode($result);
+        Yii::app()->end();
+    }
 
-			if ( $dataset && $result['md_curl_status'] == 201) {
-				$doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=http://gigadb.org/dataset/".$dataset->identifier ;
-				$result['doi_data']  = $doi_data;
-				$ch2= curl_init();
-				curl_setopt($ch2, CURLOPT_URL, $mds_doi_url);
-				curl_setopt($ch2, CURLOPT_POST, 1);
-				curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch2, CURLOPT_POSTFIELDS, $doi_data);
-				curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-				curl_setopt($ch2, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-				$curl_response = curl_exec($ch2);
-				$result['doi_curl_response'] = $curl_response;
-				$info2 = curl_getinfo($ch2);
-				$result['doi_curl_status'] = $info2['http_code'];
-				curl_close ($ch2) ;
-			}
-
-			if (isset($result['doi_curl_status']) && $result['doi_curl_status'] == 201) {
-				$result['status'] = true;
-			}
-
-		}
-
-		echo json_encode($result);
-		Yii::app()->end();
-	}
-
-     public function storeDataset(&$dataset) {
+    public function storeDataset(&$dataset)
+    {
         $dataset_id = 0;
         $identifier = 0;
         if (isset($_SESSION['dataset']) && isset($_SESSION['images'])) {
-
             if (isset($_SESSION['identifier'])) {
                 $identifier = $_SESSION['identifier'];
                 $dataset = Dataset::model()->findByAttributes(array('identifier' => $identifier));
@@ -1088,23 +1084,25 @@ EO_MAIL;
             $dataset->identifier = $identifier;
 
             $dataset->dataset_size = $_SESSION['dataset']['dataset_size'];
-            if ($dataset->dataset_size == '')
+            if ($dataset->dataset_size == '') {
                 $dataset->dataset_size = 0;
+            }
             $dataset->ftp_site = "''";
 
             $dataset->submitter_id = Yii::app()->user->_id;
-            if ($dataset == null)
+            if ($dataset == null) {
                 return;
+            }
             try {
                 if ($dataset->validate()
                 ) {
                     if ($_SESSION['images'] != 'no-image') {
                         $dataset->image->attributes = $_SESSION['images'];
-                        if (!( $dataset->image->validate() && $dataset->image->save() ))
+                        if (!($dataset->image->validate() && $dataset->image->save())) {
                             return false;
+                        }
                         $dataset->image_id = $dataset->image->id;
-                    }
-                    else {
+                    } else {
                         //
                         $dataset->image->url="http://gigadb.org/images/data/cropped/no_image.png";
                         $dataset->image->location="no_image.jpg";
@@ -1116,8 +1114,9 @@ EO_MAIL;
                         if (isset($_SESSION['datasettypes'])) {
                             $datasettypes = $_SESSION['datasettypes'];
                             if (count($datasettypes) == 1) {
-                                foreach (array_keys($datasettypes) as $id)
+                                foreach (array_keys($datasettypes) as $id) {
                                     $type_id = $id;
+                                }
                                 //workflow
                                 if ($type_id == 5) {
                                     $dataset->image->url="http://gigadb.org/images/data/cropped/workflow.jpg";
@@ -1126,16 +1125,16 @@ EO_MAIL;
                                     $dataset->image->license="Public domain";
                                     $dataset->image->photographer="GigaDB";
                                     $dataset->image->source="GigaDB";
-                                } else if ($type_id == 2
+                                } elseif ($type_id == 2
                                 ) {
                                     //genomics
-                                   $dataset->image->url="http://gigadb.org/images/data/cropped/genomics.jpg";
+                                    $dataset->image->url="http://gigadb.org/images/data/cropped/genomics.jpg";
                                     $dataset->image->location="genomics.jpg";
                                     $dataset->image->tag="genomic icon";
                                     $dataset->image->license="Public domain";
                                     $dataset->image->photographer="GigaDB";
                                     $dataset->image->source="GigaDB";
-                                } else if ($type_id == 4) {
+                                } elseif ($type_id == 4) {
                                     //transcriptomics
                                     $dataset->image->url="http://gigadb.org/images/data/cropped/transcriptomics.jpg";
                                     $dataset->image->location="transcriptomics.jpg";
@@ -1147,15 +1146,15 @@ EO_MAIL;
                             }
                         }
 
-                       if (!( $dataset->image->validate() && $dataset->image->save() ))
+                        if (!($dataset->image->validate() && $dataset->image->save())) {
                             return false;
+                        }
 
                         $dataset->image_id = $dataset->image->id;
                     }
 
 
                     if ($dataset->save()) {
-
                         $_SESSION['identifier'] = $identifier;
                         $_SESSION['dataset_id'] = $dataset->id;
 
@@ -1169,13 +1168,12 @@ EO_MAIL;
                                 $newDatasetTypeRelationship->save();
                             }
                         }
-                    }
-                    else
+                    } else {
                         return false;
+                    }
 
                     return true;
-                }
-                else {
+                } else {
                     return false;
                 }
             } catch (Exception $e) {
@@ -1185,21 +1183,21 @@ EO_MAIL;
         }
     }
 
-    public function actioncheckDOIExist(){
-
+    public function actioncheckDOIExist()
+    {
         $result = array();
         $result['status'] = false;
-        if(isset($_POST['doi'])){
+        if (isset($_POST['doi'])) {
             $doi = $_POST['doi'];
-            if(stristr($doi, "/")){
+            if (stristr($doi, "/")) {
                 $temp = explode("/", $doi);
                 $doi = $temp[1];
             }
 
             $doi = trim($doi);
 
-            $dataset = Dataset::model()->find("identifier=?",array($doi));
-            if($dataset){
+            $dataset = Dataset::model()->find("identifier=?", array($doi));
+            if ($dataset) {
                 $result['status'] = true;
             }
         }
@@ -1214,8 +1212,9 @@ EO_MAIL;
     public function loadModel($id)
     {
         $model=Dataset::model()->findByPk($id);
-        if($model===null)
-            throw new CHttpException(404,'The requested page does not exist.');
+        if ($model===null) {
+            throw new CHttpException(404, 'The requested page does not exist.');
+        }
         return $model;
     }
 
@@ -1225,59 +1224,161 @@ EO_MAIL;
      */
     protected function performAjaxValidation($model)
     {
-        if(isset($_POST['ajax']) && $_POST['ajax']==='dataset-form')
-        {
+        if (isset($_POST['ajax']) && $_POST['ajax']==='dataset-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
     }
 
-        public function actionCreate1() {
-            $dataset = new Dataset;
-            $image = new Images;
-            // set default types
-            $dataset->types = array();
+    public function actionCreate1()
+    {
+        $dataset = new Dataset;
+        $image = new Images;
+        // set default types
+        $dataset->types = array();
+
+        if (isset($_POST['Dataset']) && isset($_POST['Images'])) {
+            $transaction = Yii::app()->db->beginTransaction();
+            try {
+                #save dataset
+                $dataset->submitter_id = Yii::app()->user->_id;
+                $attrs = $_POST['Dataset'];
+                $dataset->title = $attrs['title'];
+                $dataset->description = $attrs['description'];
+                $dataset->upload_status = "Incomplete";
+                $dataset->ftp_site = "''";
+
+                // save dataset types
+                if (isset($_POST['datasettypes'])) {
+                    $dataset->types = $_POST['datasettypes'];
+                }
+
+                $lastDataset = Dataset::model()->find(array('order'=>'identifier desc'));
+                $lastIdentifier = intval($lastDataset->identifier);
+
+                if (!is_int($lastIdentifier)) {
+                    $transaction->rollback();
+                    $this->redirect('/');
+                }
+
+                $dataset->identifier = $lastIdentifier + 1;
+
+                //TODO: replace below with Bytes-Unit library
+                if ($_POST['Dataset']['union']=='B') {
+                    $dataset->dataset_size=$_POST['Dataset']['dataset_size'];
+                } elseif ($_POST['Dataset']['union']=='M') {
+                    $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024;
+                } elseif ($_POST['Dataset']['union']=='G') {
+                    $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024*1024;
+                } elseif ($_POST['Dataset']['union']=='T') {
+                    $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024*1024*1024;
+                }
+
+                #save image
+                if (!$_POST['Images']['is_no_image']) {
+                    $uploadedFile = CUploadedFile::getInstance($image, 'image_upload');
+                    $fileName = "{$uploadedFile}";
+                    $path = Yii::getPathOfAlias('webroot') ."/images/uploads/".$fileName;
+
+                    $image->image_upload = $uploadedFile;
+                    $image->url = $path;
+                    $image->location = $fileName;
+                    $image->tag = $_POST['Images']['tag'];
+                    $image->license = $_POST['Images']['license'];
+                    $image->photographer = $_POST['Images']['photographer'];
+                    $image->source = $_POST['Images']['source'];
+                } else {
+                    $image->url="http://gigadb.org/images/data/cropped/no_image.png";
+                    $image->location="no_image.jpg";
+                    $image->tag="no image icon";
+                    $image->license="Public domain";
+                    $image->photographer="GigaDB";
+                    $image->source="GigaDB";
+                }
+
+                if ($dataset->save() && $image->save()) {
+                    $dataset->image_id = $image->id;
+                    $dataset->save(false);
+
+                    // semantic kewyords update, using remove all and re-create approach
+                    if (isset($_POST['keywords'])) {
+                        $attribute_service = Yii::app()->attributeService;
+                        $attribute_service->replaceKeywordsForDatasetIdWithString($dataset->id, $_POST['keywords']);
+                    }
+
+                    if (isset($_POST['datasettypes'])) {
+                        $types = DatasetType::storeDatasetTypes($dataset->id, $_POST['datasettypes']);
+                        if (!$types) {
+                            $transaction->rollback();
+                            $this->redirect('/');
+                        }
+                    }
+                    $transaction->commit();
+                    $this->redirect(array('/dataset/authorManagement', 'id'=>$dataset->id));
+                }
+            } catch (Exception $e) {
+                $message = $e->getMessage();
+                Yii::log(print_r($message, true), 'error');
+                $transaction->rollback();
+                $this->redirect('/');
+            }
+        }
+
+        $this->render('create1', array('model' => $dataset, 'image'=>$image));
+    }
+
+    public function actionDatasetManagement()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        } else {
+            $dataset = Dataset::model()->findByPk($_GET['id']);
+
+            if (!$dataset) {
+                $this->redirect("/user/view_profile");
+            }
+
+            // set dataset types
+            $dataset->types = $dataset->typeIds;
+
+            if ($dataset->submitter_id != Yii::app()->user->id) {
+                Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
+                $this->redirect("/user/view_profile");
+            }
+
+            if (!$dataset->image) {
+                $image = new Images;
+            } else {
+                $image = $dataset->image;
+            }
+
+            $is_new_image = $image->isNewRecord;
 
             if (isset($_POST['Dataset']) && isset($_POST['Images'])) {
                 $transaction = Yii::app()->db->beginTransaction();
                 try {
-                    #save dataset
-                    $dataset->submitter_id = Yii::app()->user->_id;
                     $attrs = $_POST['Dataset'];
                     $dataset->title = $attrs['title'];
                     $dataset->description = $attrs['description'];
-                    $dataset->upload_status = "Incomplete";
-                    $dataset->ftp_site = "''";
-
                     // save dataset types
                     if (isset($_POST['datasettypes'])) {
                         $dataset->types = $_POST['datasettypes'];
                     }
 
-                    $lastDataset = Dataset::model()->find(array('order'=>'identifier desc'));
-                    $lastIdentifier = intval($lastDataset->identifier);
 
-                    if(!is_int($lastIdentifier)) {
-                        $transaction->rollback();
-                        $this->redirect('/');
-                    }
-
-                    $dataset->identifier = $lastIdentifier + 1;
-
-                    //TODO: replace below with Bytes-Unit library
-                    if($_POST['Dataset']['union']=='B') {
+                    if ($_POST['Dataset']['union']=='B') {
                         $dataset->dataset_size=$_POST['Dataset']['dataset_size'];
-                    } else if($_POST['Dataset']['union']=='M') {
+                    } elseif ($_POST['Dataset']['union']=='M') {
                         $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024;
-                    } else if($_POST['Dataset']['union']=='G') {
+                    } elseif ($_POST['Dataset']['union']=='G') {
                         $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024*1024;
-                    } else if($_POST['Dataset']['union']=='T') {
+                    } elseif ($_POST['Dataset']['union']=='T') {
                         $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024*1024*1024;
                     }
 
                     #save image
-                    if(!$_POST['Images']['is_no_image']) {
-                        $uploadedFile = CUploadedFile::getInstance($image,'image_upload');
+                    if (!$_POST['Images']['is_no_image']) {
+                        $uploadedFile = CUploadedFile::getInstance($image, 'image_upload');
                         $fileName = "{$uploadedFile}";
                         $path = Yii::getPathOfAlias('webroot') ."/images/uploads/".$fileName;
 
@@ -1297,20 +1398,20 @@ EO_MAIL;
                         $image->source="GigaDB";
                     }
 
-                    if($dataset->save() && $image->save()) {
-
-                        $dataset->image_id = $image->id;
-                        $dataset->save(false);
-
-                        // semantic kewyords update, using remove all and re-create approach
-                        if( isset($_POST['keywords']) ){
-            		        $attribute_service = Yii::app()->attributeService;
+                    if ($dataset->save() && $image->save()) {
+                        if (isset($_POST['keywords'])) {
+                            $attribute_service = Yii::app()->attributeService;
                             $attribute_service->replaceKeywordsForDatasetIdWithString($dataset->id, $_POST['keywords']);
-            			}
+                        }
+
+                        if ($is_new_image) {
+                            $dataset->image_id = $image->id;
+                            $dataset->save(false);
+                        }
 
                         if (isset($_POST['datasettypes'])) {
                             $types = DatasetType::storeDatasetTypes($dataset->id, $_POST['datasettypes']);
-                            if(!$types) {
+                            if (!$types) {
                                 $transaction->rollback();
                                 $this->redirect('/');
                             }
@@ -1318,501 +1419,403 @@ EO_MAIL;
                         $transaction->commit();
                         $this->redirect(array('/dataset/authorManagement', 'id'=>$dataset->id));
                     }
-
-                } catch(Exception $e) {
+                } catch (Exception $e) {
                     $message = $e->getMessage();
                     Yii::log(print_r($message, true), 'error');
                     $transaction->rollback();
                     $this->redirect('/');
                 }
-
             }
 
-            $this->render('create1', array('model' => $dataset, 'image'=>$image));
+            $this->render('datasetManagement', array('model' => $dataset,'image'=>$image));
         }
+    }
 
-        public function actionDatasetManagement() {
-            if (!isset($_GET['id'])) {
+    public function actionAuthorManagement()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        } else {
+            $dataset = Dataset::model()->findByPk($_GET['id']);
+            if (!$dataset) {
                 $this->redirect("/user/view_profile");
-            } else {
-                $dataset = Dataset::model()->findByPk($_GET['id']);
-
-                if(!$dataset) {
-                    $this->redirect("/user/view_profile");
-                }
-
-                // set dataset types
-                 $dataset->types = $dataset->typeIds;
-
-                if($dataset->submitter_id != Yii::app()->user->id) {
-                    Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
-                    $this->redirect("/user/view_profile");
-                 }
-
-                if(!$dataset->image) {
-                    $image = new Images;
-                  } else {
-                    $image = $dataset->image;
-                  }
-
-                  $is_new_image = $image->isNewRecord;
-
-                if (isset($_POST['Dataset']) && isset($_POST['Images']))  {
-                    $transaction = Yii::app()->db->beginTransaction();
-                    try {
-                        $attrs = $_POST['Dataset'];
-                        $dataset->title = $attrs['title'];
-                        $dataset->description = $attrs['description'];
-                        // save dataset types
-                        if (isset($_POST['datasettypes'])) {
-                            $dataset->types = $_POST['datasettypes'];
-                        }
-
-
-                        if($_POST['Dataset']['union']=='B') {
-                            $dataset->dataset_size=$_POST['Dataset']['dataset_size'];
-                        } else if($_POST['Dataset']['union']=='M') {
-                            $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024;
-                        } else if($_POST['Dataset']['union']=='G') {
-                            $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024*1024;
-                        } else if($_POST['Dataset']['union']=='T') {
-                            $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024*1024*1024;
-                        }
-
-                        #save image
-                        if(!$_POST['Images']['is_no_image']) {
-                            $uploadedFile = CUploadedFile::getInstance($image,'image_upload');
-                            $fileName = "{$uploadedFile}";
-                            $path = Yii::getPathOfAlias('webroot') ."/images/uploads/".$fileName;
-
-                            $image->image_upload = $uploadedFile;
-                            $image->url = $path;
-                            $image->location = $fileName;
-                            $image->tag = $_POST['Images']['tag'];
-                            $image->license = $_POST['Images']['license'];
-                            $image->photographer = $_POST['Images']['photographer'];
-                            $image->source = $_POST['Images']['source'];
-                        } else {
-                            $image->url="http://gigadb.org/images/data/cropped/no_image.png";
-                            $image->location="no_image.jpg";
-                            $image->tag="no image icon";
-                            $image->license="Public domain";
-                            $image->photographer="GigaDB";
-                            $image->source="GigaDB";
-                        }
-
-                        if($dataset->save() && $image->save()) {
-
-                            if( isset($_POST['keywords']) ){
-                              $attribute_service = Yii::app()->attributeService;
-                              $attribute_service->replaceKeywordsForDatasetIdWithString($dataset->id, $_POST['keywords']);
-                            }
-
-                            if($is_new_image) {
-                                $dataset->image_id = $image->id;
-                                $dataset->save(false);
-                            }
-
-                            if (isset($_POST['datasettypes'])) {
-                                $types = DatasetType::storeDatasetTypes($dataset->id, $_POST['datasettypes']);
-                                if(!$types) {
-                                    $transaction->rollback();
-                                    $this->redirect('/');
-                                }
-                            }
-                            $transaction->commit();
-                            $this->redirect(array('/dataset/authorManagement', 'id'=>$dataset->id));
-                        }
-
-                    } catch(Exception $e) {
-                        $message = $e->getMessage();
-                        Yii::log(print_r($message, true), 'error');
-                        $transaction->rollback();
-                        $this->redirect('/');
-                    }
-                }
-
-                $this->render('datasetManagement', array('model' => $dataset,'image'=>$image));
-            }
-        }
-
-        public function actionAuthorManagement() {
-            if (!isset($_GET['id'])) {
-                $this->redirect("/user/view_profile");
-            } else {
-                $dataset = Dataset::model()->findByPk($_GET['id']);
-                if(!$dataset) {
-                    $this->redirect("/user/view_profile");
-                }
-
-                if($dataset->submitter_id != Yii::app()->user->id) {
-                    Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
-                    $this->redirect("/user/view_profile");
-                 }
-
-                $das = DatasetAuthor::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'rank asc'));
-
-                $this->render('authorManagement', array('model' => $dataset,'das'=>$das));
             }
 
-        }
-
-        public function actionProjectManagement() {
-            if (!isset($_GET['id'])) {
+            if ($dataset->submitter_id != Yii::app()->user->id) {
+                Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
                 $this->redirect("/user/view_profile");
-            } else {
-                $dataset = Dataset::model()->findByPk($_GET['id']);
-                if(!$dataset) {
-                    $this->redirect("/user/view_profile");
-                }
-
-                if($dataset->submitter_id != Yii::app()->user->id) {
-                    Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
-                    $this->redirect("/user/view_profile");
-                 }
-
-                $dps = DatasetProject::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
-
-                $this->render('projectManagement', array('model' => $dataset,'dps'=>$dps));
             }
+
+            $das = DatasetAuthor::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'rank asc'));
+
+            $this->render('authorManagement', array('model' => $dataset,'das'=>$das));
         }
+    }
 
-        public function actionLinkManagement() {
-            if (!isset($_GET['id'])) {
+    public function actionProjectManagement()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        } else {
+            $dataset = Dataset::model()->findByPk($_GET['id']);
+            if (!$dataset) {
                 $this->redirect("/user/view_profile");
-            } else {
-                $dataset = Dataset::model()->findByPk($_GET['id']);
-                if(!$dataset) {
-                    $this->redirect("/user/view_profile");
-                }
+            }
 
-                if($dataset->submitter_id != Yii::app()->user->id) {
-                    Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
-                    $this->redirect("/user/view_profile");
-                 }
+            if ($dataset->submitter_id != Yii::app()->user->id) {
+                Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
+                $this->redirect("/user/view_profile");
+            }
 
-                $links = Link::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
+            $dps = DatasetProject::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
 
-                 $link_database = Yii::app()->db->createCommand()
+            $this->render('projectManagement', array('model' => $dataset,'dps'=>$dps));
+        }
+    }
+
+    public function actionLinkManagement()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        } else {
+            $dataset = Dataset::model()->findByPk($_GET['id']);
+            if (!$dataset) {
+                $this->redirect("/user/view_profile");
+            }
+
+            if ($dataset->submitter_id != Yii::app()->user->id) {
+                Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
+                $this->redirect("/user/view_profile");
+            }
+
+            $links = Link::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
+
+            $link_database = Yii::app()->db->createCommand()
                     ->select("prefix")
                     ->from("prefix")
                     ->order("prefix asc")
                     ->group("prefix")
                     ->queryAll();
 
-                $this->render('linkManagement', array('model' => $dataset,'links'=>$links,'link_database' => $link_database));
-            }
+            $this->render('linkManagement', array('model' => $dataset,'links'=>$links,'link_database' => $link_database));
         }
+    }
 
-        public function actionExLinkManagement() {
-            if (!isset($_GET['id'])) {
+    public function actionExLinkManagement()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        } else {
+            $dataset = Dataset::model()->findByPk($_GET['id']);
+            if (!$dataset) {
                 $this->redirect("/user/view_profile");
-            } else {
-                $dataset = Dataset::model()->findByPk($_GET['id']);
-                if(!$dataset) {
-                    $this->redirect("/user/view_profile");
-                }
-
-                if($dataset->submitter_id != Yii::app()->user->id) {
-                    Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
-                    $this->redirect("/user/view_profile");
-                 }
-
-                $exLinks = ExternalLink::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
-
-                $this->render('exLinkManagement', array('model' => $dataset,'exLinks'=>$exLinks));
             }
-        }
 
-        public function actionRelatedDoiManagement() {
-            if (!isset($_GET['id'])) {
+            if ($dataset->submitter_id != Yii::app()->user->id) {
+                Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
                 $this->redirect("/user/view_profile");
-            } else {
-                $dataset = Dataset::model()->findByPk($_GET['id']);
-                if(!$dataset) {
-                    $this->redirect("/user/view_profile");
-                }
-
-                if($dataset->submitter_id != Yii::app()->user->id) {
-                    Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
-                    $this->redirect("/user/view_profile");
-                 }
-
-                $relations = Relation::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'related_doi asc'));
-
-                $this->render('relatedDoiManagement', array('model' => $dataset,'relations'=>$relations));
             }
+
+            $exLinks = ExternalLink::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
+
+            $this->render('exLinkManagement', array('model' => $dataset,'exLinks'=>$exLinks));
         }
+    }
 
-        public function actionSampleManagement() {
-            if (!isset($_GET['id'])) {
+    public function actionRelatedDoiManagement()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        } else {
+            $dataset = Dataset::model()->findByPk($_GET['id']);
+            if (!$dataset) {
                 $this->redirect("/user/view_profile");
-            } else {
-                $dataset = Dataset::model()->findByPk($_GET['id']);
-                if(!$dataset) {
-                    $this->redirect("/user/view_profile");
-                }
-
-                if($dataset->submitter_id != Yii::app()->user->id) {
-                    Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
-                    $this->redirect("/user/view_profile");
-                 }
-
-                $dss = DatasetSample::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'sample_id asc'));
-
-                $this->render('sampleManagement', array('model' => $dataset,'dss'=>$dss));
             }
-        }
 
-        public function actionPxInfoManagement() {
-            if (!isset($_GET['id'])) {
+            if ($dataset->submitter_id != Yii::app()->user->id) {
+                Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
                 $this->redirect("/user/view_profile");
-            } else {
-                $dataset = Dataset::model()->findByPk($_GET['id']);
-                if(!$dataset) {
-                    Yii::log('dataset id not found', 'debug');
-                    $this->redirect("/user/view_profile");
+            }
+
+            $relations = Relation::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'related_doi asc'));
+
+            $this->render('relatedDoiManagement', array('model' => $dataset,'relations'=>$relations));
+        }
+    }
+
+    public function actionSampleManagement()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        } else {
+            $dataset = Dataset::model()->findByPk($_GET['id']);
+            if (!$dataset) {
+                $this->redirect("/user/view_profile");
+            }
+
+            if ($dataset->submitter_id != Yii::app()->user->id) {
+                Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
+                $this->redirect("/user/view_profile");
+            }
+
+            $dss = DatasetSample::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'sample_id asc'));
+
+            $this->render('sampleManagement', array('model' => $dataset,'dss'=>$dss));
+        }
+    }
+
+    public function actionPxInfoManagement()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        } else {
+            $dataset = Dataset::model()->findByPk($_GET['id']);
+            if (!$dataset) {
+                Yii::log('dataset id not found', 'debug');
+                $this->redirect("/user/view_profile");
+            }
+
+            if ($dataset->submitter_id != Yii::app()->user->id) {
+                Yii::log('not the owner', 'debug');
+                Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
+                $this->redirect("/user/view_profile");
+            }
+
+            # load attributes
+            $keywordsAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_keywords'));
+            $sppAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_sample_processing_protocol'));
+            $dppAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_data_processing_protocol'));
+            $expTypeAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_experiment_type'));
+            $instrumentAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_instrument'));
+            $quantificationAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_quantification'));
+            $modificationAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_modification'));
+
+            if (!$keywordsAttr or !$sppAttr or !$dppAttr or !$expTypeAttr or !$instrumentAttr or !$quantificationAttr or !$modificationAttr) {
+                Yii::app()->user->setFlash('keyword', "Attr cannot be found.");
+                Yii::log("Attr cannot be found.", 'debug');
+                $this->redirect("/user/view_profile");
+            }
+
+            # create new pxForm for validation and store px info into pxForm
+            $pxForm = new PxInfoForm;
+
+            # load keywords
+            $keywords = DatasetAttributes::model()->findByAttributes(array('dataset_id'=>$dataset->id, 'attribute_id'=>$keywordsAttr->id));
+            if (!$keywords) {
+                $keywords = new DatasetAttributes;
+                $keywords->dataset_id = $dataset->id;
+                $keywords->attribute_id = $keywordsAttr->id;
+            }
+            $pxForm->keywords = $keywords->value;
+
+            # load sample processing protocol
+            $criteria = new CDbCriteria;
+            $criteria->join = 'LEFT JOIN sample s on (t.sample_id = s.id) LEFT JOIN dataset_sample ds on (ds.sample_id = s.id)';
+            $criteria->addCondition('ds.dataset_id = '.$dataset->id);
+            $criteria->addCondition('t.attribute_id = '.$sppAttr->id);
+            $spp = SampleAttribute::model()->find($criteria);
+
+            if ($spp) {
+                # get one spp
+                $pxForm->spp = $spp->value;
+            }
+
+            # load experiment first, if not create one
+            $experiment = Experiment::model()->findByAttributes(array('dataset_id'=>$dataset->id));
+            if (!$experiment) {
+                #create new experiment
+                $experiment = new Experiment;
+                $experiment->experiment_type = 'proteomic';
+                $experiment->experiment_name = 'PX "'.$dataset->title.'"';
+                $experiment->dataset_id = $dataset->id;
+                $experiment->save(false);
+            }
+
+            # load data processing protocol
+            $dpp = ExpAttributes::model()->findByAttributes(array('exp_id'=>$experiment->id, 'attribute_id'=>$dppAttr->id));
+            if (!$dpp) {
+                $dpp = new ExpAttributes;
+                $dpp->exp_id = $experiment->id;
+                $dpp->attribute_id = $dppAttr->id;
+            }
+            $pxForm->dpp = $dpp->value;
+
+            # load experiment type
+            $expType = ExpAttributes::model()->findByAttributes(array('exp_id'=>$experiment->id, 'attribute_id'=>$expTypeAttr->id));
+            if (!$expType) {
+                # set default experiment type
+                $expType = new ExpAttributes;
+                $expType->exp_id = $experiment->id;
+                $expType->attribute_id = $expTypeAttr->id;
+                $expType->value = CJSON::encode(array());
+            }
+            $expTypeVal = CJSON::decode($expType->value);
+            $pxForm->experimentType = $expTypeVal;
+            if (isset($expTypeVal['Other'])) {
+                $pxForm->exTypeOther = $expTypeVal['Other'];
+            }
+
+            # load instrument
+            $instrument = ExpAttributes::model()->findByAttributes(array('exp_id'=>$experiment->id, 'attribute_id'=>$instrumentAttr->id));
+            if (!$instrument) {
+                # set default instrument
+                $instrument = new ExpAttributes;
+                $instrument->exp_id = $experiment->id;
+                $instrument->attribute_id = $instrumentAttr->id;
+                $instrument->value = CJSON::encode(array());
+            }
+            $insVal = CJSON::decode($instrument->value);
+            $pxForm->instrument = $insVal;
+            if (isset($insVal['Other'])) {
+                $pxForm->instrumentOther = $insVal['Other'];
+            }
+
+            # load quantification
+            $quantification = ExpAttributes::model()->findByAttributes(array('exp_id'=>$experiment->id, 'attribute_id'=>$quantificationAttr->id));
+            if (!$quantification) {
+                # set default quantification
+                $quantification = new ExpAttributes;
+                $quantification->exp_id = $experiment->id;
+                $quantification->attribute_id = $quantificationAttr->id;
+                $quantification->value = CJSON::encode(array());
+            }
+            $quanVal = CJSON::decode($quantification->value);
+            $pxForm->quantification = $quanVal;
+            if (isset($quanVal['Other'])) {
+                $pxForm->quantificationOther = $quanVal['Other'];
+            }
+
+            # load modification
+            $modification = ExpAttributes::model()->findByAttributes(array('exp_id'=>$experiment->id, 'attribute_id'=>$modificationAttr->id));
+            if (!$modification) {
+                # set default modificaiton
+                $modification = new ExpAttributes;
+                $modification->exp_id = $experiment->id;
+                $modification->attribute_id = $modificationAttr->id;
+                $modification->value = CJSON::encode(array());
+            }
+            $modiVal = CJSON::decode($modification->value);
+            $pxForm->modification = $modiVal;
+            if (isset($modiVal['Other'])) {
+                $pxForm->modificationOther = $modiVal['Other'];
+            }
+
+
+            if (isset($_POST['PxInfoForm'])) {
+                # default is save and quit, redirect to user view_profile page
+                $isSubmit = false;
+                if (isset($_POST['submit-btn'])) {
+                    # if user click submit, then submit the dataset
+                    $isSubmit = true;
                 }
 
-                if($dataset->submitter_id != Yii::app()->user->id) {
-                    Yii::log('not the owner', 'debug');
-                    Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
-                    $this->redirect("/user/view_profile");
-                 }
+                # store px Info
+                $transaction = Yii::app()->db->beginTransaction();
+                try {
+                    $attrs = $_POST['PxInfoForm'];
+                    $pxForm->attributes = $attrs;
 
-                # load attributes
-                $keywordsAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_keywords'));
-                $sppAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_sample_processing_protocol'));
-                $dppAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_data_processing_protocol'));
-                $expTypeAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_experiment_type'));
-                $instrumentAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_instrument'));
-                $quantificationAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_quantification'));
-                $modificationAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_modification'));
+                    if ($pxForm->validate()) {
+                        #store keywords
+                        $keywords->value = $attrs['keywords'];
 
-                if(!$keywordsAttr or !$sppAttr or !$dppAttr or !$expTypeAttr or !$instrumentAttr or !$quantificationAttr or !$modificationAttr) {
-                    Yii::app()->user->setFlash('keyword', "Attr cannot be found.");
-                    Yii::log("Attr cannot be found.", 'debug');
-                    $this->redirect("/user/view_profile");
-                }
+                        #store dpp
+                        $dpp->value = $attrs['dpp'];
 
-                # create new pxForm for validation and store px info into pxForm
-                $pxForm = new PxInfoForm;
-
-                # load keywords
-                $keywords = DatasetAttributes::model()->findByAttributes(array('dataset_id'=>$dataset->id, 'attribute_id'=>$keywordsAttr->id));
-                if(!$keywords) {
-                    $keywords = new DatasetAttributes;
-                    $keywords->dataset_id = $dataset->id;
-                    $keywords->attribute_id = $keywordsAttr->id;
-                }
-                $pxForm->keywords = $keywords->value;
-
-                # load sample processing protocol
-                $criteria = new CDbCriteria;
-                $criteria->join = 'LEFT JOIN sample s on (t.sample_id = s.id) LEFT JOIN dataset_sample ds on (ds.sample_id = s.id)';
-                $criteria->addCondition('ds.dataset_id = '.$dataset->id);
-                $criteria->addCondition('t.attribute_id = '.$sppAttr->id);
-                $spp = SampleAttribute::model()->find($criteria);
-
-                if($spp) {
-                    # get one spp
-                    $pxForm->spp = $spp->value;
-                }
-
-                # load experiment first, if not create one
-                $experiment = Experiment::model()->findByAttributes(array('dataset_id'=>$dataset->id));
-                if(!$experiment) {
-                    #create new experiment
-                    $experiment = new Experiment;
-                    $experiment->experiment_type = 'proteomic';
-                    $experiment->experiment_name = 'PX "'.$dataset->title.'"';
-                    $experiment->dataset_id = $dataset->id;
-                    $experiment->save(false);
-                }
-
-                # load data processing protocol
-                $dpp = ExpAttributes::model()->findByAttributes(array('exp_id'=>$experiment->id, 'attribute_id'=>$dppAttr->id));
-                if(!$dpp) {
-                    $dpp = new ExpAttributes;
-                    $dpp->exp_id = $experiment->id;
-                    $dpp->attribute_id = $dppAttr->id;
-                }
-                $pxForm->dpp = $dpp->value;
-
-                # load experiment type
-                $expType = ExpAttributes::model()->findByAttributes(array('exp_id'=>$experiment->id, 'attribute_id'=>$expTypeAttr->id));
-                if(!$expType) {
-                    # set default experiment type
-                    $expType = new ExpAttributes;
-                    $expType->exp_id = $experiment->id;
-                    $expType->attribute_id = $expTypeAttr->id;
-                    $expType->value = CJSON::encode(array());
-                }
-                $expTypeVal = CJSON::decode($expType->value);
-                $pxForm->experimentType = $expTypeVal;
-                if(isset($expTypeVal['Other'])) {
-                    $pxForm->exTypeOther = $expTypeVal['Other'];
-                }
-
-                # load instrument
-                $instrument = ExpAttributes::model()->findByAttributes(array('exp_id'=>$experiment->id, 'attribute_id'=>$instrumentAttr->id));
-                if(!$instrument) {
-                    # set default instrument
-                    $instrument = new ExpAttributes;
-                    $instrument->exp_id = $experiment->id;
-                    $instrument->attribute_id = $instrumentAttr->id;
-                    $instrument->value = CJSON::encode(array());
-                }
-                $insVal = CJSON::decode($instrument->value);
-                $pxForm->instrument = $insVal;
-                if(isset($insVal['Other'])) {
-                    $pxForm->instrumentOther = $insVal['Other'];
-                }
-
-                # load quantification
-                $quantification = ExpAttributes::model()->findByAttributes(array('exp_id'=>$experiment->id, 'attribute_id'=>$quantificationAttr->id));
-                if(!$quantification) {
-                    # set default quantification
-                    $quantification = new ExpAttributes;
-                    $quantification->exp_id = $experiment->id;
-                    $quantification->attribute_id = $quantificationAttr->id;
-                    $quantification->value = CJSON::encode(array());
-                }
-                $quanVal = CJSON::decode($quantification->value);
-                $pxForm->quantification = $quanVal;
-                if(isset($quanVal['Other'])) {
-                    $pxForm->quantificationOther = $quanVal['Other'];
-                }
-
-                # load modification
-                $modification = ExpAttributes::model()->findByAttributes(array('exp_id'=>$experiment->id, 'attribute_id'=>$modificationAttr->id));
-                if(!$modification) {
-                    # set default modificaiton
-                    $modification = new ExpAttributes;
-                    $modification->exp_id = $experiment->id;
-                    $modification->attribute_id = $modificationAttr->id;
-                    $modification->value = CJSON::encode(array());
-                }
-                $modiVal = CJSON::decode($modification->value);
-                $pxForm->modification = $modiVal;
-                if(isset($modiVal['Other'])) {
-                    $pxForm->modificationOther = $modiVal['Other'];
-                }
-
-
-                if(isset($_POST['PxInfoForm'])) {
-                    # default is save and quit, redirect to user view_profile page
-                    $isSubmit = false;
-                    if(isset($_POST['submit-btn'])) {
-                        # if user click submit, then submit the dataset
-                        $isSubmit = true;
-                    }
-
-                    # store px Info
-                    $transaction = Yii::app()->db->beginTransaction();
-                    try {
-                        $attrs = $_POST['PxInfoForm'];
-                        $pxForm->attributes = $attrs;
-
-                        if($pxForm->validate()) {
-                            #store keywords
-                            $keywords->value = $attrs['keywords'];
-
-                            #store dpp
-                            $dpp->value = $attrs['dpp'];
-
-                            if(isset($_POST['exType'])) {
-                                #store exp type
-                                $expTypeVal = $_POST['exType'];
-                                if(isset($expTypeVal['Other'])) {
-                                    $expTypeVal['Other'] = ($attrs['exTypeOther'])? $attrs['exTypeOther'] : "";
-                                }
-                                $expType->value = CJSON::encode($expTypeVal);
+                        if (isset($_POST['exType'])) {
+                            #store exp type
+                            $expTypeVal = $_POST['exType'];
+                            if (isset($expTypeVal['Other'])) {
+                                $expTypeVal['Other'] = ($attrs['exTypeOther'])? $attrs['exTypeOther'] : "";
                             }
-
-                            if(isset($_POST['quantification'])) {
-                                #store quantification
-                                $quanVal = $_POST['quantification'];
-                                if(isset($quanVal['Other'])) {
-                                    $quanVal['Other'] = ($attrs['quantificationOther'])? $attrs['quantificationOther'] : "";
-                                }
-                                $quantification->value = CJSON::encode($quanVal);
-                            }
-
-                            if(isset($_POST['instrument'])) {
-                                #store instrument
-                                $insVal = $_POST['instrument'];
-                                if(isset($insVal['Other'])) {
-                                    $insVal['Other'] = ($attrs['instrumentOther'])? $attrs['instrumentOther'] : "";
-                                }
-                                $instrument->value = CJSON::encode($insVal);
-                            }
-
-                            if(isset($_POST['modification'])) {
-                                #store modification
-                                $modiVal = $_POST['modification'];
-                                if(isset($modiVal['Other'])) {
-                                    $modiVal['Other'] = ($attrs['modificationOther'])? $attrs['modificationOther'] : "";
-                                }
-                                $modification->value = CJSON::encode($modiVal);
-                            }
-
-                            #store spp into each samples in the dataset
-                            $samples = $dataset->allSamples;
-                            $isSppsStored = $this->storeSpps($samples, $attrs['spp'], $sppAttr);
-
-                            if($isSppsStored and $keywords->save() and $dpp->save() and $expType->save() and $quantification->save() and $instrument->save() and $modification->save()) {
-                                $transaction->commit();
-                                if($isSubmit) {
-                                    $this->redirect(array('/dataset/submit', 'id'=>$dataset->id));
-                                }
-                                $this->redirect('/user/view_profile');
-                            }
+                            $expType->value = CJSON::encode($expTypeVal);
                         }
-                    } catch(Exception $e) {
-                        $message = $e->getMessage();
-                        Yii::log(print_r($message, true), 'error');
-                        $transaction->rollback();
-                        $this->redirect('/');
+
+                        if (isset($_POST['quantification'])) {
+                            #store quantification
+                            $quanVal = $_POST['quantification'];
+                            if (isset($quanVal['Other'])) {
+                                $quanVal['Other'] = ($attrs['quantificationOther'])? $attrs['quantificationOther'] : "";
+                            }
+                            $quantification->value = CJSON::encode($quanVal);
+                        }
+
+                        if (isset($_POST['instrument'])) {
+                            #store instrument
+                            $insVal = $_POST['instrument'];
+                            if (isset($insVal['Other'])) {
+                                $insVal['Other'] = ($attrs['instrumentOther'])? $attrs['instrumentOther'] : "";
+                            }
+                            $instrument->value = CJSON::encode($insVal);
+                        }
+
+                        if (isset($_POST['modification'])) {
+                            #store modification
+                            $modiVal = $_POST['modification'];
+                            if (isset($modiVal['Other'])) {
+                                $modiVal['Other'] = ($attrs['modificationOther'])? $attrs['modificationOther'] : "";
+                            }
+                            $modification->value = CJSON::encode($modiVal);
+                        }
+
+                        #store spp into each samples in the dataset
+                        $samples = $dataset->allSamples;
+                        $isSppsStored = $this->storeSpps($samples, $attrs['spp'], $sppAttr);
+
+                        if ($isSppsStored and $keywords->save() and $dpp->save() and $expType->save() and $quantification->save() and $instrument->save() and $modification->save()) {
+                            $transaction->commit();
+                            if ($isSubmit) {
+                                $this->redirect(array('/dataset/submit', 'id'=>$dataset->id));
+                            }
+                            $this->redirect('/user/view_profile');
+                        }
                     }
-                }
-                $this->render('pxInfoManagement', array('model' => $dataset, 'pxForm'=>$pxForm));
-            }
-        }
-
-        public function actionDatasetAjaxDelete() {
-            if(isset($_POST['dataset_id'])) {
-                $dataset = Dataset::model()->findByPk($_POST['dataset_id']);
-
-                if(!$dataset) {
-                    Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Dataset does not exist.")));
-                }
-
-                if($dataset->delete()) {
-                    Util::returnJSON(array("success"=>true));
+                } catch (Exception $e) {
+                    $message = $e->getMessage();
+                    Yii::log(print_r($message, true), 'error');
+                    $transaction->rollback();
+                    $this->redirect('/');
                 }
             }
-            Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+            $this->render('pxInfoManagement', array('model' => $dataset, 'pxForm'=>$pxForm));
         }
+    }
 
-        private function storeSpps($samples, $value, $sppAttr) {
-            $lastSA = SampleAttribute::model()->findByAttributes(array(),array('order'=>'id desc'));
-            $lastId = $lastSA->id;
-            foreach($samples as $sample) {
-                $spp = SampleAttribute::model()->findByAttributes(array('attribute_id' => $sppAttr->id, 'sample_id'=>$sample->id));
-                if(!$spp) {
-                    $lastId = $lastId+1;
-                    $spp = new SampleAttribute;
-                    $spp->id = $lastId;
-                    $spp->attribute_id = $sppAttr->id;
-                    $spp->sample_id = $sample->id;
-                }
-                #store spp value
-                $spp->value = $value;
-                if(!$spp->save()) {
-                    return false;
-                }
+    public function actionDatasetAjaxDelete()
+    {
+        if (isset($_POST['dataset_id'])) {
+            $dataset = Dataset::model()->findByPk($_POST['dataset_id']);
+
+            if (!$dataset) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Dataset does not exist.")));
             }
-            return true;
+
+            if ($dataset->delete()) {
+                Util::returnJSON(array("success"=>true));
+            }
         }
+        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+    }
+
+    private function storeSpps($samples, $value, $sppAttr)
+    {
+        $lastSA = SampleAttribute::model()->findByAttributes(array(), array('order'=>'id desc'));
+        $lastId = $lastSA->id;
+        foreach ($samples as $sample) {
+            $spp = SampleAttribute::model()->findByAttributes(array('attribute_id' => $sppAttr->id, 'sample_id'=>$sample->id));
+            if (!$spp) {
+                $lastId = $lastId+1;
+                $spp = new SampleAttribute;
+                $spp->id = $lastId;
+                $spp->attribute_id = $sppAttr->id;
+                $spp->sample_id = $sample->id;
+            }
+            #store spp value
+            $spp->value = $value;
+            if (!$spp->save()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
