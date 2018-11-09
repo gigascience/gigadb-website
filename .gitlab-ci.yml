@@ -233,7 +233,8 @@ deploy_app:
     # pulling the CI build of the application and configure it for staging for the purpose of building production containers
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker-compose run --rm config
-    - docker-compose run --rm webapp composer install -a
+    # Install dependencies, but make sure the --no-dev parameter is passed so that development-only deps are not installed in vendor/
+    - docker-compose run --rm webapp composer install -a --no-dev
     # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
     - docker-compose build production_web
     - docker-compose build production_app
@@ -257,8 +258,9 @@ deploy_app:
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
     # Run config script to populate the docker volumes
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
-    # Redeploy all containers and run webapp setup (run --rm webapp alone won't redeploy the containers)
+    # Redeploy all containers (run --rm webapp alone won't redeploy the containers)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d
+    # run the webapp setup (like compile less files with yiic command)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm webapp
     # Run database migrations if any
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --interactive=0
