@@ -105,6 +105,7 @@ run_all_tests:
     - docker-compose run --rm test ping -c 5 database
     - docker-compose run --rm test ping -c 5 gigadb.dev
     - docker-compose run test
+    - echo $?
 
 check_coverage:
   stage: conformance
