@@ -29,5 +29,5 @@ echo "...all automated tests have run"
 echo "Lastly, restoring the main database..."
 exec 3>&1
 exec 1> /dev/null
-pg_restore -i -h $GIGADB_HOST  -U $GIGADB_USER -d $GIGADB_DB -c -v /var/www/sql/before-run.pgdmp
+pg_restore -h $GIGADB_HOST  -U $GIGADB_USER -d $GIGADB_DB --clean --no-owner -v /var/www/sql/before-run.pgdmp
 exec 1>&3
