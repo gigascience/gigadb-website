@@ -28,18 +28,15 @@ class SiteController extends Controller {
 
 	public function accessRules() {
         return array(
-            array('allow', # admins
-                'actions'=>array('admin'),
-                'roles'=>array('admin'),
-            ),
-            array('deny',  // deny to admin action
-                'users'=>array('admin'),
-            ),
             array('allow',  // allow all users
+                'actions'=>array('index','error','contact','mapbrowse','team','about','advisory','faq','term','help','privacy', 'login', 'loginAffiliate', 'logout', 'revoke', 'feed' ),
                 'users'=>array('*'),
             ),
-            array('allow',
-                'actions'=>array('create', 'captcha'),
+            array('allow', # admins
+                'actions'=>array('admin', 'su'),
+                'roles'=>array('admin'),
+            ),
+            array('deny',  // deny all users
                 'users'=>array('*'),
             ),
         );
