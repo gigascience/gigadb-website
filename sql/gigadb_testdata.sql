@@ -2073,6 +2073,18 @@ ALTER SEQUENCE species_id_seq OWNED BY species.id;
 
 SELECT pg_catalog.setval('species_id_seq', 1128856, true);
 
+--
+-- Name: tbl_migration; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+--
+
+CREATE TABLE tbl_migration (
+    version character varying(180) NOT NULL,
+    apply_time integer
+);
+
+
+ALTER TABLE tbl_migration OWNER TO gigadb;
+
 
 --
 -- Name: type; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
@@ -2514,6 +2526,13 @@ COPY attribute (id, attribute_name, definition, model, structured_comment_name, 
 269	Geographic location (latitude and longitude)	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
+--
+-- Data for Name: tbl_migration; Type: TABLE DATA; Schema: public; Owner: gigadb
+--
+
+COPY public.tbl_migration (version, apply_time) FROM stdin;
+m000000_000000_base 1541674918
+\.
 
 --
 -- Data for Name: author; Type: TABLE DATA; Schema: public; Owner: gigadb
@@ -3432,6 +3451,13 @@ ALTER TABLE ONLY search
 ALTER TABLE ONLY species
     ADD CONSTRAINT species_pkey PRIMARY KEY (id);
 
+
+--
+-- Name: tbl_migration_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
+--
+
+ALTER TABLE ONLY tbl_migration
+    ADD CONSTRAINT tbl_migration_pkey PRIMARY KEY (version);
 
 --
 -- Name: type_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 

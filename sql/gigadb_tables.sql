@@ -1993,6 +1993,18 @@ ALTER TABLE species_id_seq OWNER TO gigadb;
 
 ALTER SEQUENCE species_id_seq OWNED BY species.id;
 
+--
+-- Name: tbl_migration; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+--
+
+CREATE TABLE tbl_migration (
+    version character varying(180) NOT NULL,
+    apply_time integer
+);
+
+
+ALTER TABLE tbl_migration OWNER TO gigadb;
+
 
 --
 -- TOC entry 264 (class 1259 OID 18449)
@@ -2505,6 +2517,13 @@ COPY attribute (id, attribute_name, definition, model, structured_comment_name, 
 
 SELECT pg_catalog.setval('attribute_id_seq', 421, true);
 
+--
+-- Data for Name: tbl_migration; Type: TABLE DATA; Schema: public; Owner: gigadb
+--
+
+COPY public.tbl_migration (version, apply_time) FROM stdin;
+m000000_000000_base 1541674918
+\.
 
 --
 -- TOC entry 2769 (class 0 OID 18135)
@@ -3803,6 +3822,13 @@ ALTER TABLE ONLY search
 ALTER TABLE ONLY species
     ADD CONSTRAINT species_pkey PRIMARY KEY (id);
 
+
+--
+-- Name: tbl_migration_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
+--
+
+ALTER TABLE ONLY tbl_migration
+    ADD CONSTRAINT tbl_migration_pkey PRIMARY KEY (version);
 
 --
 -- TOC entry 2594 (class 2606 OID 18626)
