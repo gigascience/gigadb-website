@@ -279,7 +279,7 @@ deploy_app:
     when: on_failure
     expire_in: 1 week
 
-deploy_release:
+release_app:
   stage: live
   script:
     - echo "The plan is, once this config is on develop branch:"
