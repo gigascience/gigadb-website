@@ -326,7 +326,7 @@ class Dataset extends CActiveRecord
             $url = $this->image->url;
             if ($url) {
                 if (!strstr($url , 'http://')) {
-                    $url = 'http://' . $url;
+                    $url = '//' . $url;
                 }
             } else {
                 $url = $this->image->image('image_upload');
