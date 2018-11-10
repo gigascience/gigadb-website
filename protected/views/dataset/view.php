@@ -2,18 +2,6 @@
 $title= strlen($model->title)>100?strip_tags(substr($model->title, 0,100))." ...":strip_tags($model->title);
 $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title;
 
-  $template = <<<HTML
-<div>
-    {items}
-</div>
-<div class="pull-left">
-    {pager}
-</div>
-<div>
-    {summary}
-</div>
-HTML;
-
 ?>
 
 <?php $this->renderPartial('_sample_setting',array('columns' => $columns, 'pageSize' => $samples->getPagination()->getPageSize() )); ?>
