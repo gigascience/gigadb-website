@@ -120,7 +120,6 @@ check_coverage:
     - docker-compose run --rm config
     - docker-compose run --rm webapp
     - docker-compose run --rm test ./tests/coverage_check
-    - docker-compose run --rm test ./bin/php-coveralls -v
   dependencies:
     - run_all_tests
 
