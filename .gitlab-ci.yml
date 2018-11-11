@@ -91,6 +91,7 @@ run_all_tests:
       - protected/runtime/phpunit-coverage.txt
       - protected/runtime/clover.xml
       - .env
+      - .ci_env
     when: always
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
