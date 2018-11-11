@@ -154,6 +154,10 @@ RUN if [ ${INSTALL_LIBSODIUM} = true ]; then \
     echo "extension=sodium.so" >  /usr/local/etc/php/conf.d/libsodium.ini \
 ;fi
 
+ARG INSTALL_GIT=false
+RUN if [ ${INSTALL_GIT} = true ]; then \
+    apt-get install -y git \
+;fi
 
 RUN usermod -u 1000 www-data
 

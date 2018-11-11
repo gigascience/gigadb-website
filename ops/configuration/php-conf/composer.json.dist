@@ -34,7 +34,8 @@
         "phpdocumentor/phpdocumentor": "^2.9",
         "friendsofphp/php-cs-fixer": "^v2.2",
         "sebastian/phpcpd": "^3.0",
-        "phpmd/phpmd": "2.6.0"
+        "phpmd/phpmd": "2.6.0",
+        "php-coveralls/php-coveralls": "v2.1.0"
     },
     "minimum-stability": "stable",
     "config": {

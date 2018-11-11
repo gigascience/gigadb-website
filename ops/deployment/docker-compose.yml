@@ -114,6 +114,7 @@ services:
         - INSTALL_GRAPHVIZ=true
         - INSTALL_COMPOSER=true
         - INSTALL_LIBSODIUM=true
+        - INSTALL_GIT=true
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}

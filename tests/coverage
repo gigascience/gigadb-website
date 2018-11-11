@@ -19,4 +19,6 @@ exec 1>&3
 
 ./bin/phpunit protected/tests/unit  --verbose --configuration protected/tests/phpunit.xml
 
+./bin/php-coveralls --verbose --coverage_clover /var/www/protected/runtime/clover.xml --json_path /var/www/protected/runtime/coveralls-upload.json
+
 cat /var/www/protected/runtime/phpunit-coverage.txt

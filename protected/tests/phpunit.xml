@@ -19,7 +19,7 @@
 	</filter>
 
 	<logging>
-		<!-- <log type="coverage-clover" target="/var/www/protected/runtime/clover.xml"/> -->
+		<log type="coverage-clover" target="/var/www/protected/runtime/clover.xml"/>
 		<!-- <log type="coverage-text" target="php://stdout" showOnlySummary="true"/> -->
 		<log type="coverage-text" target="/var/www/protected/runtime/phpunit-coverage.txt" showOnlySummary="true"/>
 		<log type="coverage-html" target="/var/www/protected/runtime/coverage" lowUpperBound="35"
