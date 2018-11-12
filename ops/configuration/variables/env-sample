@@ -64,5 +64,6 @@ CERT_EMAIL=foo@bar
 
 ### Test Coverage configuration #########################################################################################
 COVERALLS_RUN_LOCALLY=1
-MAIN_BRANCH=https://gitlab.com/api/v4/projects/<project id>/repository/branches/<branch>
+GITLAB_UPSTREAM_PROJECT_ID=7041674
+MAIN_BRANCH=develop
 

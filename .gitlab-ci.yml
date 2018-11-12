@@ -43,7 +43,9 @@ variables:
   COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml"
   COMPOSE_PROJECT_NAME: ${CI_PROJECT_NAME}
   COVERALLS_RUN_LOCALLY: "1"
-  MAIN_BRANCH: "https://gitlab.com/api/v4/projects/7041674/repository/branches/nolegacy-dep-ux-php7"
+  MAIN_BRANCH: "nolegacy-dep-ux-php7"
+  GITLAB_PRIVATE_TOKEN: $CI_BUILD_TOKEN
+  GITLAB_UPSTREAM_PROJECT_ID: "7041674"
 
 services:
   - docker:dind
