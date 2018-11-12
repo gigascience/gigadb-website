@@ -77,7 +77,7 @@ class RssController extends Controller {
 			$item->title = $title;
 			$item->link = $link;
 			$item->date = $dataset->publication_date;
-			$item->description = $desc;
+			$item->description = preg_replace('/[\x00-\x1F\x7F]/', '', $desc);
 			$feed->addItem($item);
 		}
 		if(count($datasets)==0){
