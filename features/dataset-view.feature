@@ -14,8 +14,8 @@ Feature: a user visit the dataset page
 		Then the response should contain "Genome sequence of the duck (Anas platyrhynchos)"
 		Then the response should contain "Genomic"
 		Then the response should contain "January 23, 2014"
-		And I should see all the authors with links
-		| Author |
+		And I should see links to "Authors"
+		| Authors |
 		| Burt DW |
 		| Chen H |
 		| Gan S |
@@ -69,24 +69,29 @@ Feature: a user visit the dataset page
 		| Li N |
 		And the response should contain "10.5524/101001"
 		And the response should contain "Available here is the first draft genomic sequence of the duck"
-		And I should see links to all associated peer-reviewed publications
-		| Publications |
+		And I should see links to "peer-reviewed publications"
+		| peer-reviewed publications |
 		| doi:10.1038/ng.2657 |
 		| doi:10.1186/2047-217x-3-26 |
 		| doi:10.1126/science.1251385 |
 		| doi:10.1126/science.1253451 |
-		And I should see links to all the projects
+		And I should see links to "Projects"
 		| Projects |
 		| Go to Genome 10K website |
 		| Go to The Avian Phylogenomic Project website |
 
 	Scenario: Semantic Links
-		Given I have added keywords "duck, quack" to dataset "101001"
+		Given I have added the following keywords to dataset "101001"
+		| Keywords |
+		| duck |
+		| quacking |
 		And I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
 		Then I should see the related link "isSupplementTo" to "10.5524/101000"
-		And I should see the link to datasets with keyword "duck"
-		And I should see the link to datasets with keyword "quack"
+		And I should see links to "Search results for keywords"
+		| Search results for keywords |
+		| duck |
+		| quacking |
 		And I should see the link to Google scholar
 		And I should see the link to Europe PMC
 

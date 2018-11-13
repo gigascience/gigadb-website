@@ -115,12 +115,12 @@ class DatasetViewContext implements Context
     }
 
     /**
-     * @Then I should see links to all the projects
+     * @Then I should see links to :arg1
      */
-    public function iShouldSeeLinksToAllTheProjects(TableNode $table)
+    public function iShouldSeeLinksTo($arg1, TableNode $table)
     {
         foreach($table as $row) {
-            $this->minkContext->getSession()->getPage()->findLink($row['Projects']);
+            $this->minkContext->getSession()->getPage()->findLink($row[$arg1]);
         }
     }
 
