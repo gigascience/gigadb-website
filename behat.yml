@@ -2,7 +2,6 @@ default:
   suites:
     default:
       filters:
-        tags: "@ok"
       contexts:
         - AffiliateLoginContext
         - GigadbWebsiteContext

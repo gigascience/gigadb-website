@@ -2,6 +2,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 
 /**
  * Contains the steps definitions used in author-names.feature and name-preview.feature
@@ -24,6 +25,7 @@ class DatasetViewContext implements Context
      * @var GigadbWebsiteContext
      */
     private $gigadbWebsiteContext;
+    private $minkContext;
 
     /**
      * The method to retrieve needed contexts from the Behat environment
@@ -38,6 +40,7 @@ class DatasetViewContext implements Context
         $environment = $scope->getEnvironment();
 
         $this->gigadbWebsiteContext = $environment->getContext('GigadbWebsiteContext');
+        $this->minkContext = $environment->getContext('Behat\MinkExtension\Context\MinkContext');
     }
 
     /**
@@ -88,6 +91,37 @@ class DatasetViewContext implements Context
         $this->surname = null;
         $this->first_name = null;
         $this->middle_name = null;
+    }
+
+
+    /**
+     * @Then I should see all the authors with links
+     */
+    public function iShouldSeeAllTheAuthorsWithLinks(TableNode $table)
+    {
+        foreach($table as $row) {
+            $this->minkContext->getSession()->getPage()->findLink($row['Author']);
+        }
+    }
+
+    /**
+     * @Then I should see links to all associated peer-reviewed publications
+     */
+    public function iShouldSeeLinksToAllAssociatedPeerReviewedPublications(TableNode $table)
+    {
+        foreach($table as $row) {
+            $this->minkContext->getSession()->getPage()->findLink($row['Publications']);
+        }
+    }
+
+    /**
+     * @Then I should see links to all the projects
+     */
+    public function iShouldSeeLinksToAllTheProjects(TableNode $table)
+    {
+        foreach($table as $row) {
+            $this->minkContext->getSession()->getPage()->findLink($row['Projects']);
+        }
     }
 
 
