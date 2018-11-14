@@ -240,7 +240,7 @@ deploy_app:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker-compose run --rm config
     # Install dependencies, but make sure the --no-dev parameter is passed so that development-only deps are not installed in vendor/
-    - docker-compose run --rm webapp composer install -a --no-dev
+    - docker-compose run --rm webapp
     # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
     - docker-compose build production_web
     - docker-compose build production_app
@@ -266,8 +266,6 @@ deploy_app:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
     # Redeploy all containers (run --rm webapp alone won't redeploy the containers)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d
-    # run the webapp setup (like compile less files with yiic command)
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm webapp
     # Run database migrations if any
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --interactive=0
     # Attempt to renew the web certificate for TLS termination on web container. NOOP if not close to expiration date
