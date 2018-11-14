@@ -94,6 +94,7 @@ return CMap::mergeArray(array(
                    'jquery.js' => false,
                    'jquery.min.js' => false,
                     'jquery.ba-bbq.js' => false,
+                    'jquery.ba-bbq.min.js' => false,
                     'jquery-ui.min.js' => false,
                     'jquery-ui.js' => false,
                     'jquery-ui.css' => false,
