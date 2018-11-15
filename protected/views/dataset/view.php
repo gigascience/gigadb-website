@@ -890,7 +890,7 @@ $(document).ready(function() {
 /* ----------------------------------- */
 
 $(".hint").tooltip({'placement':'right'});
-$(".image-hint").tooltip({'placement':'top'});
+$(".media-object").tooltip({'placement':'top'});
 
 $("#js-expand-btn").click(function(){
       $(this).hide();
