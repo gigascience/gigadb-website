@@ -539,7 +539,8 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                              foreach ($protocol as $p) {
 
                             {
-                                 echo "<iframe src=\"$p\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
+                                $ps = HTTPSHelper::httpsize($p);
+                                 echo "<iframe src=\"$ps\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
                             }
 
                             }
