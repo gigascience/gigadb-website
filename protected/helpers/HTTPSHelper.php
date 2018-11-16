@@ -1,6 +1,5 @@
 <?php
 
-
 const BLACK_LIST = [
 	"penguin.genomics.cn",
 ];
@@ -22,9 +21,10 @@ class HTTPSHelper
 	 **/
 	public static function httpsize(string $url)
 	{
-		$uri = parse_url($url);
+		$url_string = trim($url);
+		$uri = parse_url($url_string);
 		if ( !in_array($uri['host'], BLACK_LIST) ) {
-			return preg_replace('/http:/', 'https:', $url);
+			return preg_replace('/http:/', 'https:', $url_string);
 		}
 		return false;
 	}
