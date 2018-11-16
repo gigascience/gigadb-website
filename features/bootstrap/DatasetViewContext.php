@@ -124,7 +124,43 @@ class DatasetViewContext implements Context
         }
     }
 
+    /**
+     * @Given I have added the following keywords to dataset :arg1
+     */
+    public function iHaveAddedTheFollowingKeywordsToDataset($arg1, TableNode $table)
+    {
+        $this->gigadbWebsiteContext->iSignInAsAnAdmin();
+        $this->minkContext->visit("/dataset/update/id/211");
+        $this->minkContext->fillField("keywords", implode( ", ", $table->getRows() ) );
+        $this->minkContext->pressButton("Save");
+    }
 
+    /**
+     * @Then I should see image :arg1 with title :arg2
+     */
+    public function iShouldSeeImageWithTitle($arg1, $arg2)
+    {
+        $imageNode = $this->minkContext->getSession()->getPage()->find('css',"img.media-object[src='$arg1']");
+        if( $imageNode->hasAttribute('title') ) {
+            PHPUnit_Framework_Assert::assertEquals($arg2, $imageNode->getAttribute('title'));
+        }
+    }
 
+    /**
+     * @Then I should see a :arg1 related links to :arg2
+     */
+    public function iShouldSeeARelatedLinksTo($arg1, $arg2)
+    {
+        $this->minkContext->getSession()->getPage()->hasContent($arg1);
+        $this->minkContext->getSession()->getPage()->hasLink($arg2);
+    }
 
+    /**
+     * @Then I should see image :arg1 linking to :arg2
+     */
+    public function iShouldSeeImageLinkingTo($arg1, $arg2)
+    {
+        $imageNode = $this->minkContext->getSession()->getPage()->find('css',"a img.dataset-des-images[src='$arg1']");
+        PHPUnit_Framework_Assert::assertEquals($arg2, $imageNode->getParent()->getAttribute('href') );
+    }
 }
