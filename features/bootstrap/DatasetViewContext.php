@@ -163,4 +163,15 @@ class DatasetViewContext implements Context
         $imageNode = $this->minkContext->getSession()->getPage()->find('css',"a img.dataset-des-images[src='$arg1']");
         PHPUnit_Framework_Assert::assertEquals($arg2, $imageNode->getParent()->getAttribute('href') );
     }
+
+    /**
+     * @Then I should see a link :arg1 to :arg2 with title :arg3
+     */
+    public function iShouldSeeALinkToWithTitle($arg1, $arg2, $arg3)
+    {
+        $linkNode = $this->minkContext->getSession()->getPage()->find('css',"a[title='$arg3']");
+        PHPUnit_Framework_Assert::assertEquals($arg2, $linkNode->getAttribute('href') );
+        PHPUnit_Framework_Assert::assertEquals($arg1, $linkNode->getText() );
+    }
+
 }

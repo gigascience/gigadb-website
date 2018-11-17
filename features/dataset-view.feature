@@ -105,6 +105,12 @@ Feature: a user visit the dataset page
 		And I should see image "/images/ePMC.jpg" linking to "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5524/101001')"
 
 
+	@ok
+	Scenario: Non-Tabbed External Links (e.g: Genome Browser)
+		Given I am not logged in to Gigadb web site
+		When I go to "/dataset/view/id/101001"
+		Then I should see a link "http://asia.ensembl.org/Anas_platyrhynchos/Info/Index" to "http://asia.ensembl.org/Anas_platyrhynchos/Info/Index" with title "Genome browser for dataset 101001"
+
 	Scenario:  History
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
@@ -119,11 +125,6 @@ Feature: a user visit the dataset page
 		Then I should see a Funding tab with
 		| Funding body 					| Awardee 			| Award ID 		| Comments |
 		| National Science Foundation 	| Matthew W Hahn	| DEB-1249633	| Matthew W Hahn |
-
-	Scenario:  Genome Browser
-		Given I am not logged in to Gigadb web site
-		When I go to "/dataset/view/id/100127"
-		Then I should see a link to "http://crocgenome.hpc.msstate.edu/gb2/gbrowse/croc/"
 
 	Scenario:  3D Viewer
 		Given I am not logged in to Gigadb web site

@@ -263,7 +263,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     }
                                     else
                                     {
-                                    echo '<p>'. CHtml::link($externalLink->url, $externalLink->url) . '</p>';
+                                    echo '<p>'. CHtml::link($externalLink->url, $externalLink->url, array("title" =>"$typeNameLabel for dataset " . $model->identifier )) . '</p>';
                                     }
                                 }
                             }
