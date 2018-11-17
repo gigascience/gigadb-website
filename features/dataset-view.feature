@@ -100,7 +100,7 @@ Feature: a user visit the dataset page
 	Scenario: Semantic Links
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
-		Then I should see a "isSupplementTo" related links to "10.5524/101000"
+		Then I should see a "IsSupplementTo" related links to "10.5524/101000"
 		And I should see image "/images/google_scholar.png" linking to "http://scholar.google.com/scholar?q=10.5524/101001"
 		And I should see image "/images/ePMC.jpg" linking to "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5524/101001')"
 
@@ -110,6 +110,13 @@ Feature: a user visit the dataset page
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/view/id/101001"
 		Then I should see a link "http://asia.ensembl.org/Anas_platyrhynchos/Info/Index" to "http://asia.ensembl.org/Anas_platyrhynchos/Info/Index" with title "Genome browser for dataset 101001"
+
+
+	Scenario: Call To Actions
+		Given I am logged in as a user
+		When I go to "/dataset/101001"
+		Then I should see an active button "Contact Submitter"
+		And I should see an active button "Your dataset?"
 
 	Scenario:  History
 		Given I am not logged in to Gigadb web site
@@ -130,12 +137,12 @@ Feature: a user visit the dataset page
 		Given I am not logged in to Gigadb web site
 		And I have added 3D Viewer link "https://sketchfab.com/models/ea49d0dd500647cbb4b61ad5ca9e659a" to dataset "101001"
 		When I go to "/dataset/101001"
-		Then I should see 3D Viewer tab with model "ea49d0dd500647cbb4b61ad5ca9e659a"
+		Then I should see "3D Viewer" tab with text "Mallard duck skull joints"
 
 	Scenario:  Protocols.io
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/view/id/100198"
-		Then I should see a Protocols.io tab with an iframe from link "https://www.protocols.io/widgets/protocol/Draft-genome-assembly-using-parasitic-mite-populat-exwbfpe"
+		Then I should see "Protocols.io" tab with text "Protocols.io:"
 
 
 	Scenario:  Code Ocean
@@ -144,17 +151,12 @@ Feature: a user visit the dataset page
 		When I go to "/dataset/101001"
 		Then I should see "Code Ocean" tab with text "Capsule"
 
+	@ok
 	Scenario: JBrowse
 		Given I am not logged in to Gigadb web site
+		And "JBrowse" external link is attached to dataset "101001"
 		When I go to "/dataset/101001"
-		Then I should see "JBrowse" tab with text "Available Tracks"
-
-
-	Scenario: Call To Actions
-		Given I am logged in as a user
-		When I go to "/dataset/101001"
-		Then I should see an active button "Contact Submitter"
-		And I should see an active button "Your dataset?"
+		Then I should see "JBrowse" tab with text "Open the JBrowse"
 
 
 	Scenario: Files

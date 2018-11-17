@@ -100,7 +100,7 @@ class DatasetViewContext implements Context
     public function iShouldSeeAllTheAuthorsWithLinks(TableNode $table)
     {
         foreach($table as $row) {
-            $this->minkContext->getSession()->getPage()->findLink($row['Author']);
+            PHPUnit_Framework_Assert::assertTrue( $this->minkContext->getSession()->getPage()->findLink($row['Author']) );
         }
     }
 
@@ -110,7 +110,9 @@ class DatasetViewContext implements Context
     public function iShouldSeeLinksToAllAssociatedPeerReviewedPublications(TableNode $table)
     {
         foreach($table as $row) {
-            $this->minkContext->getSession()->getPage()->findLink($row['Publications']);
+            PHPUnit_Framework_Assert::assertTrue(
+                $this->minkContext->getSession()->getPage()->hasLink($row['Publications'])
+            );
         }
     }
 
@@ -120,7 +122,7 @@ class DatasetViewContext implements Context
     public function iShouldSeeLinksTo($arg1, TableNode $table)
     {
         foreach($table as $row) {
-            $this->minkContext->getSession()->getPage()->findLink($row[$arg1]);
+            PHPUnit_Framework_Assert::assertTrue( $this->minkContext->getSession()->getPage()->hasLink($row[$arg1]) );
         }
     }
 
@@ -129,10 +131,15 @@ class DatasetViewContext implements Context
      */
     public function iHaveAddedTheFollowingKeywordsToDataset($arg1, TableNode $table)
     {
+        $keywords_arr = [];
+        foreach($table as $row) {
+            $keywords_arr[] =  $row['Keywords'];
+        }
         $this->gigadbWebsiteContext->iSignInAsAnAdmin();
-        $this->minkContext->visit("/dataset/update/id/211");
-        $this->minkContext->fillField("keywords", implode( ", ", $table->getRows() ) );
+        $this->minkContext->visit("/dataset/update/id/80");
+        $this->minkContext->fillField("keywords", implode(",", $keywords_arr) );
         $this->minkContext->pressButton("Save");
+        $this->minkContext->assertResponseContains("Genome sequence of the duck");
     }
 
     /**
@@ -151,8 +158,8 @@ class DatasetViewContext implements Context
      */
     public function iShouldSeeARelatedLinksTo($arg1, $arg2)
     {
-        $this->minkContext->getSession()->getPage()->hasContent($arg1);
-        $this->minkContext->getSession()->getPage()->hasLink($arg2);
+        PHPUnit_Framework_Assert::assertTrue( $this->minkContext->getSession()->getPage()->hasContent($arg1) );
+        PHPUnit_Framework_Assert::assertTrue( $this->minkContext->getSession()->getPage()->hasLink($arg2) );
     }
 
     /**
@@ -172,6 +179,24 @@ class DatasetViewContext implements Context
         $linkNode = $this->minkContext->getSession()->getPage()->find('css',"a[title='$arg3']");
         PHPUnit_Framework_Assert::assertEquals($arg2, $linkNode->getAttribute('href') );
         PHPUnit_Framework_Assert::assertEquals($arg1, $linkNode->getText() );
+    }
+
+    /**
+     * @Given :arg1 external link is attached to dataset :arg2
+     */
+    public function externalLinkIsAttachedToDataset($arg1, $arg2)
+    {
+
+        $this->gigadbWebsiteContext->loadUserData("${arg1}_${arg2}_test_data");
+    }
+
+    /**
+     * @Then I should see :arg1 tab with text :arg2
+     */
+    public function iShouldSeeTabWithText($arg1, $arg2)
+    {
+        $this->minkContext->getSession()->getPage()->clickLink("JBrowse");
+        PHPUnit_Framework_Assert::assertTrue( $this->minkContext->getSession()->getPage()->hasContent($arg2) );
     }
 
 }

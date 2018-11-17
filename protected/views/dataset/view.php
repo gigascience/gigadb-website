@@ -564,9 +564,9 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                              foreach ($jb as $p) {
 
                             {
+                                 echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
                                  echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
                                  echo "<br>";
-                                 echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
                             }
 
                             }
