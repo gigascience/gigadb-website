@@ -195,7 +195,7 @@ class DatasetViewContext implements Context
      */
     public function iShouldSeeTabWithText($arg1, $arg2)
     {
-        $this->minkContext->getSession()->getPage()->clickLink("JBrowse");
+        $this->minkContext->getSession()->getPage()->clickLink($arg1);
         PHPUnit_Framework_Assert::assertTrue( $this->minkContext->getSession()->getPage()->hasContent($arg2) );
     }
 

@@ -126,12 +126,11 @@ Feature: a user visit the dataset page
 		Then I should see a button "Contact Submitter" with no link
 		And I should not see a button "Your dataset?"
 
+	@ok
 	Scenario:  History
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
-		Then I should see a History tab with
-		| Date 				| Action |
-		| October 23, 2015 	| File Anas_platyrhynchos.cds updated |
+		Then I should see "History" tab with text "File Anas_platyrhynchos.cds updated"
 
 	Scenario:  Funding
 		Given I have added awardee "Matthew W Hahn" to dataset "100195"
@@ -147,6 +146,7 @@ Feature: a user visit the dataset page
 		When I go to "/dataset/101001"
 		Then I should see "3D Viewer" tab with text "Mallard duck skull joints"
 
+	@ok
 	Scenario:  Protocols.io
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/view/id/100198"
