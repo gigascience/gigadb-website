@@ -132,13 +132,15 @@ Feature: a user visit the dataset page
 		When I go to "/dataset/101001"
 		Then I should see "History" tab with text "File Anas_platyrhynchos.cds updated"
 
+	@ok
 	Scenario:  Funding
 		Given I have added awardee "Matthew W Hahn" to dataset "100195"
 		And I am not logged in to Gigadb web site
 		When I go to "/dataset/100195"
-		Then I should see a Funding tab with
+		Then I should see "Funding" tab with table
 		| Funding body 					| Awardee 			| Award ID 		| Comments |
-		| National Science Foundation 	| Matthew W Hahn	| DEB-1249633	| Matthew W Hahn |
+		| National Science Foundation 	| Matthew W. Hahn	| DEB-1249633	| Matthew W Hahn |
+
 
 	Scenario:  3D Viewer
 		Given I am not logged in to Gigadb web site

@@ -233,5 +233,37 @@ class DatasetViewContext implements Context
         PHPUnit_Framework_Assert::assertFalse( $this->minkContext->getSession()->getPage()->hasLink($arg1) );
     }
 
+    /**
+     * @Given I have added awardee :arg1 to dataset :arg2
+     */
+    public function iHaveAddedAwardeeToDataset($arg1, $arg2)
+    {
+        $this->gigadbWebsiteContext->loadUserData("funding_for_${arg2}");
+    }
+
+/**
+     * @Then I should see :arg1 tab with table
+     */
+    public function iShouldSeeTabWithTable($arg1, TableNode $table)
+    {
+        $this->minkContext->getSession()->getPage()->clickLink($arg1);
+        //| Funding body                    | Awardee           | Award ID      | Comments |
+        foreach($table as $row) {
+            PHPUnit_Framework_Assert::assertTrue(
+                $this->minkContext->getSession()->getPage()->hasContent($row['Funding body'])
+            );
+            PHPUnit_Framework_Assert::assertTrue(
+                $this->minkContext->getSession()->getPage()->hasContent($row['Awardee'])
+            );
+            PHPUnit_Framework_Assert::assertTrue(
+                $this->minkContext->getSession()->getPage()->hasContent($row['Award ID'])
+            );
+            PHPUnit_Framework_Assert::assertTrue(
+                $this->minkContext->getSession()->getPage()->hasContent($row['Comments'])
+            );
+        }
+    }
+
+
 
 }
