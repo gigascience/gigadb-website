@@ -111,12 +111,20 @@ Feature: a user visit the dataset page
 		When I go to "/dataset/view/id/101001"
 		Then I should see a link "http://asia.ensembl.org/Anas_platyrhynchos/Info/Index" to "http://asia.ensembl.org/Anas_platyrhynchos/Info/Index" with title "Genome browser for dataset 101001"
 
-
-	Scenario: Call To Actions
-		Given I am logged in as a user
+	@ok
+	Scenario: Call To Actions - logged in
+		Given user "joy_fox" is loaded
+		And I sign in as a user
 		When I go to "/dataset/101001"
-		Then I should see an active button "Contact Submitter"
-		And I should see an active button "Your dataset?"
+		Then I should see a button "Contact Submitter" linking to submitter's email
+		And I should see a button "Your dataset?"
+
+	@ok
+	Scenario: Call To Actions - not logged in
+		Given I am not logged in to Gigadb web site
+		When I go to "/dataset/101001"
+		Then I should see a button "Contact Submitter" with no link
+		And I should not see a button "Your dataset?"
 
 	Scenario:  History
 		Given I am not logged in to Gigadb web site

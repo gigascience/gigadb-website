@@ -199,4 +199,39 @@ class DatasetViewContext implements Context
         PHPUnit_Framework_Assert::assertTrue( $this->minkContext->getSession()->getPage()->hasContent($arg2) );
     }
 
+    /**
+     * @Then I should see a button :arg1 linking to submitter's email
+     */
+    public function iShouldSeeAButtonLinkingToSubmittersEmail($arg1)
+    {
+        $contactButton = $this->minkContext->getSession()->getPage()->findLink($arg1);
+        PHPUnit_Framework_Assert::assertEquals("mailto:liuxin@genomics.org.cn", $contactButton->getAttribute('href') );
+    }
+
+    /**
+     * @Then I should see a button :arg1
+     */
+    public function iShouldSeeAButton($arg1)
+    {
+        PHPUnit_Framework_Assert::assertTrue( $this->minkContext->getSession()->getPage()->hasLink($arg1) );
+    }
+
+    /**
+     * @Then I should see a button :arg1 with no link
+     */
+    public function iShouldSeeAButtonWithNoLink($arg1)
+    {
+         $contactButton = $this->minkContext->getSession()->getPage()->findLink($arg1);
+         PHPUnit_Framework_Assert::assertEquals("#", $contactButton->getAttribute('href') );
+    }
+
+    /**
+     * @Then I should not see a button :arg1
+     */
+    public function iShouldNotSeeAButton($arg1)
+    {
+        PHPUnit_Framework_Assert::assertFalse( $this->minkContext->getSession()->getPage()->hasLink($arg1) );
+    }
+
+
 }
