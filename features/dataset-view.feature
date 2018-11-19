@@ -141,12 +141,12 @@ Feature: a user visit the dataset page
 		| Funding body 					| Awardee 			| Award ID 		| Comments |
 		| National Science Foundation 	| Matthew W. Hahn	| DEB-1249633	| Matthew W Hahn |
 
-
+	@ok
 	Scenario:  3D Viewer
 		Given I am not logged in to Gigadb web site
-		And I have added 3D Viewer link "https://sketchfab.com/models/ea49d0dd500647cbb4b61ad5ca9e659a" to dataset "101001"
+		And I have added "3D Viewer" link "https://sketchfab.com/models/ea49d0dd500647cbb4b61ad5ca9e659a" to dataset "101001"
 		When I go to "/dataset/101001"
-		Then I should see "3D Viewer" tab with text "Mallard duck skull joints"
+		Then I should see "3D Viewer" tab with text "3D Models:"
 
 	@ok
 	Scenario:  Protocols.io
@@ -157,7 +157,7 @@ Feature: a user visit the dataset page
 
 	Scenario:  Code Ocean
 		Given I am not logged in to Gigadb web site
-		And I have added Code Ocean  capsule '<script src="https://codeocean.com/widget.js?id=fceb0521-a26d-441f-9fe0-bccc6a250fc9" async></script>' to dataset "101001"
+		And I have added "Code Ocean" link '<script src="https://codeocean.com/widget.js?id=fceb0521-a26d-441f-9fe0-bccc6a250fc9" async></script>' to dataset "101001"
 		When I go to "/dataset/101001"
 		Then I should see "Code Ocean" tab with text "Capsule"
 

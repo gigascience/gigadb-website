@@ -241,7 +241,7 @@ class DatasetViewContext implements Context
         $this->gigadbWebsiteContext->loadUserData("funding_for_${arg2}");
     }
 
-/**
+    /**
      * @Then I should see :arg1 tab with table
      */
     public function iShouldSeeTabWithTable($arg1, TableNode $table)
@@ -261,6 +261,17 @@ class DatasetViewContext implements Context
             PHPUnit_Framework_Assert::assertTrue(
                 $this->minkContext->getSession()->getPage()->hasContent($row['Comments'])
             );
+        }
+    }
+
+
+    /**
+     * @Given I have added :arg1 link :arg2 to dataset :arg3
+     */
+    public function iHaveAddedLinkToDataset($arg1, $arg2, $arg3)
+    {
+        if ("3D Viewer" == $arg1 ) {
+            $this->gigadbWebsiteContext->loadUserData("3D_Viewer_${arg3}_test_data");
         }
     }
 
