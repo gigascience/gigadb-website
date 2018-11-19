@@ -154,12 +154,12 @@ Feature: a user visit the dataset page
 		When I go to "/dataset/view/id/100198"
 		Then I should see "Protocols.io" tab with text "Protocols.io:"
 
-
+	@ok
 	Scenario:  Code Ocean
 		Given I am not logged in to Gigadb web site
 		And I have added "Code Ocean" link '<script src="https://codeocean.com/widget.js?id=fceb0521-a26d-441f-9fe0-bccc6a250fc9" async></script>' to dataset "101001"
 		When I go to "/dataset/101001"
-		Then I should see "Code Ocean" tab with text "Capsule"
+		Then I should see "Code Ocean" tab with text "Code Ocean:"
 
 	@ok
 	Scenario: JBrowse

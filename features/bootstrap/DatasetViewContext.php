@@ -273,6 +273,12 @@ class DatasetViewContext implements Context
         if ("3D Viewer" == $arg1 ) {
             $this->gigadbWebsiteContext->loadUserData("3D_Viewer_${arg3}_test_data");
         }
+        elseif ("Code Ocean" == $arg1 ) {
+            $this->gigadbWebsiteContext->loadUserData("Code_Ocean_${arg3}_test_data");
+        }
+        else {
+            PHPUnit_Framework_Assert::fail("Unknown type of external link");
+        }
     }
 
 
