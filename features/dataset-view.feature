@@ -168,24 +168,25 @@ Feature: a user visit the dataset page
 		When I go to "/dataset/101001"
 		Then I should see "JBrowse" tab with text "Open the JBrowse"
 
-
+	@ok
 	Scenario: Files
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
-		Then I should see a Files tab with
+		Then I should see "Files" tab with table
 		| File name              							| Sample ID  	| Data Type       	| File Format 	| Size  		| Release date| link |
-		| Anas_platyrhynchos.cds 							| Pekin duck 	| Coding sequence  	| FASTA 	   	| 21.50 MiB     | 2015-08-03  | link |
-	 	| Anas_platyrhynchos.gff 							| Pekin duck 	| Annotation 		| GFF        	| 10.10 MiB 	| 2015-08-03  | link |
-		| Anas_platyrhynchos.pep 							| Pekin duck 	| Protein sequence 	| FASTA      	| 7.80 MiB  	| 2015-08-03  | link |
-		| Anas_platyrhynchos_domestica.RepeatMasker.out.gz 	| Pekin duck 	| Other 			| UNKNOWN    	| 7.79 MiB  	| 2015-03-23  | link |
-		| duck.scafSeq.gapFilled.noMito 					| Pekin duck 	| Sequence assembly	| FASTA 		| 1.03 GiB 		| 2013-01-23  | link |
-		| pre_03AUG2015_update 								|				| Directory 		| UNKNOWN 		| 50.00 MiB 	| 2015-08-03  | link |
-		| readme.txt 										|				| Readme 			| TEXT 			| 337 B 		| 2013-01-23  | link |
+		| Anas_platyrhynchos.cds 							| Pekin duck 	| Coding sequence  	| FASTA 	   	| 21.50 MiB     | 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.cds |
+	 	| Anas_platyrhynchos.gff 							| Pekin duck 	| Annotation 		| GFF        	| 10.10 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.gff |
+		| Anas_platyrhynchos.pep 							| Pekin duck 	| Protein sequence 	| FASTA      	| 7.80 MiB  	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.pep |
+		| Anas_platyrhynchos_domestica.RepeatMasker.out.gz 	| Pekin duck 	| Other 			| UNKNOWN    	| 7.79 MiB  	| 2015-03-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos_domestica.RepeatMasker.out.gz |
+		| duck.scafSeq.gapFilled.noMito 					| Pekin duck 	| Sequence assembly	| FASTA 		| 1.03 GiB 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/duck.scafSeq.gapFilled.noMito |
+		| pre_03AUG2015_update 								|				| Directory 		| UNKNOWN 		| 50.00 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
+		| readme.txt 										|				| Readme 			| TEXT 			| 337 B 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
 
 	Scenario: Files Settings - row
 	Scenario: Files Settings - column
 	Scenario: Files Pagination
+	Scenario: Files - FTP site
 
 	Scenario: Samples
 		Given I am not logged in to Gigadb web site

@@ -246,21 +246,48 @@ class DatasetViewContext implements Context
      */
     public function iShouldSeeTabWithTable($arg1, TableNode $table)
     {
-        $this->minkContext->getSession()->getPage()->clickLink($arg1);
-        //| Funding body                    | Awardee           | Award ID      | Comments |
-        foreach($table as $row) {
-            PHPUnit_Framework_Assert::assertTrue(
-                $this->minkContext->getSession()->getPage()->hasContent($row['Funding body'])
-            );
-            PHPUnit_Framework_Assert::assertTrue(
-                $this->minkContext->getSession()->getPage()->hasContent($row['Awardee'])
-            );
-            PHPUnit_Framework_Assert::assertTrue(
-                $this->minkContext->getSession()->getPage()->hasContent($row['Award ID'])
-            );
-            PHPUnit_Framework_Assert::assertTrue(
-                $this->minkContext->getSession()->getPage()->hasContent($row['Comments'])
-            );
+        if ("Funding" == $arg1) {
+            $this->minkContext->getSession()->getPage()->clickLink($arg1);
+            //| Funding body                    | Awardee           | Award ID      | Comments |
+            foreach($table as $row) {
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Funding body'])
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Awardee'])
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Award ID'])
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Comments'])
+                );
+            }
+        }
+        elseif("Files" == $arg1) {
+            //| File name                                        | Sample ID  | Data Type         | File Format | Size      | Release date | link |
+            foreach($table as $row) {
+                $link = $row['link'];
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['File name']), "File name match"
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Sample ID']), "Sample ID match"
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Data Type']), "Data Type match"
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['File Format']), "File Format match"
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Size']), "Size match"
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Release date']), "Release date match"
+                );
+                $this->minkContext->assertSession()->elementExists('css',"a.download-btn[href='$link']");
+            }
         }
     }
 
