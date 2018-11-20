@@ -446,9 +446,9 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                          <?php }  else {?>
                         <div role="tabpanel" class="tab-pane active" id="files">
                          <?php   } ?>
-                            <span class="glyphicon glyphicon-adjust"></span> <?= CHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank', 'class'=>'button'))?>
+                            <span class="glyphicon glyphicon-adjust"></span> <?= CHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank', 'class'=>'button', 'title' =>'FTP site'))?>
 
-                            <button class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#files_settings"><span class="glyphicon glyphicon-adjust"></span>Table Settings</button>
+                            <a class="btn btn-default pull-right" type="button" data-toggle="modal" data-target="#files_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                             <br>
                             <br>
                             <table id="files_table" class="table table-striped table-bordered" style="width:100%">

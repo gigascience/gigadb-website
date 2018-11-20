@@ -308,6 +308,17 @@ class DatasetViewContext implements Context
         }
     }
 
+    /**
+     * @Then I should see a button input :arg1
+     */
+    public function iShouldSeeAButtonInput($arg1)
+    {
+        PHPUnit_Framework_Assert::assertTrue(
+            $this->minkContext->getSession()->getPage()->hasButton($arg1)
+        );
+    }
+
+
 
 
 }

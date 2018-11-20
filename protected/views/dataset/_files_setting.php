@@ -31,25 +31,25 @@
                             <div class="span4">
                                 <div class="row">
                                     <div class="span3"><?= Yii::t('app','File Description') ?></div>
-                                    <div class="span1"><input type="checkbox" name="setting[]" value="description" 
+                                    <div class="span1"><input id="description" type="checkbox" name="setting[]" value="description"
                                         <?= (in_array("description", $setting))? "checked" : ""?> />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="span3"><?= Yii::t('app','Sample ID') ?></div>
-                                    <div class="span1"><input type="checkbox" name="setting[]" value="sample_id" 
+                                    <div class="span1"><input id="sample_id" type="checkbox" name="setting[]" value="sample_id"
                                         <?= (in_array("sample_id", $setting))? "checked" : ""?> />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="span3"><?= Yii::t('app','Data Type') ?></div>
-                                    <div class="span1"><input type="checkbox" name="setting[]" value="type_id"
+                                    <div class="span1"><input id="type_id" type="checkbox" name="setting[]" value="type_id"
                                     <?= (in_array("type_id", $setting))? "checked" : ""?> />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="span3"><?= Yii::t('app','File Format') ?></div>
-                                    <div class="span1"><input type="checkbox" name="setting[]" value="format_id"
+                                    <div class="span1"><input id="format_id" type="checkbox" name="setting[]" value="format_id"
                                     <?= (in_array("format_id", $setting))? "checked" : ""?> />
                                     </div>
                                 </div>
@@ -58,25 +58,25 @@
                             <div class="span4">
                                  <div class="row">
                                     <div class="span3"><?= Yii::t('app','Size') ?></div>
-                                    <div class="span1"><input type="checkbox" name="setting[]" value="size"
+                                    <div class="span1"><input id="size" type="checkbox" name="setting[]" value="size"
                                     <?= (in_array("size", $setting))? "checked" : ""?> />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="span3"><?= Yii::t('app','Release Date') ?></div>
-                                    <div class="span1"><input type="checkbox" name="setting[]" value="date_stamp"
+                                    <div class="span1"><input id="date_stamp" type="checkbox" name="setting[]" value="date_stamp"
                                     <?= (in_array("date_stamp", $setting))? "checked" : ""?> />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="span3"><?= Yii::t('app','Download Link') ?></div>
-                                    <div class="span1"><input type="checkbox" name="setting[]" value="location"
+                                    <div class="span1"><input id="location" type="checkbox" name="setting[]" value="location"
                                     <?= (in_array("location", $setting))? "checked" : ""?> />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="span3"><?= Yii::t('app','File Attributes') ?></div>
-                                    <div class="span1"><input type="checkbox" name="setting[]" value="attribute"
+                                    <div class="span1"><input id="attribute" type="checkbox" name="setting[]" value="attribute"
                                     <?= (in_array("attribute", $setting))? "checked" : ""?> />
                                     </div>
                                 </div>

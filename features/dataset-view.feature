@@ -182,11 +182,44 @@ Feature: a user visit the dataset page
 		| pre_03AUG2015_update 								|				| Directory 		| UNKNOWN 		| 50.00 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
 		| readme.txt 										|				| Readme 			| TEXT 			| 337 B 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
+	@ok
+	Scenario: Files Tab Call to Actions
+		Given I am not logged in to Gigadb web site
+		When I go to "/dataset/101001"
+		And I follow "Files"
+		Then I should see a link "(FTP site)" to "ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/" with title "FTP site"
+		Then I should see a button input "Table Settings"
 
-	Scenario: Files Settings - row
-	Scenario: Files Settings - column
+	@ok @javascript
+	Scenario: Files - Table settings controls
+		Given I am not logged in to Gigadb web site
+		When I go to "/dataset/101001"
+		And I follow "Files"
+		And I follow "Table Settings"
+		And I wait "5" seconds
+		Then I should see "Items per page:"
+		And I should see an "select.selectPageSize" element
+		And I should see "Columns:"
+		And I should see "File Description"
+		And the "description" checkbox is unchecked
+		And I should see "Sample ID"
+		And the "sample_id" checkbox is checked
+		And I should see "Data Type"
+		And the "type_id" checkbox is checked
+		And I should see "File Format"
+		And the "format_id" checkbox is checked
+		And I should see "Size"
+		And the "size" checkbox is checked
+		And I should see "Release Date"
+		And the "date_stamp" checkbox is checked
+		And I should see "Download Link"
+		And the "location" checkbox is checked
+		And I should see "File Attributes"
+		And the "attribute" checkbox is unchecked
+		And I should see a button input "Save changes"
+		And I should see a button input "Close"
+
 	Scenario: Files Pagination
-	Scenario: Files - FTP site
 
 	Scenario: Samples
 		Given I am not logged in to Gigadb web site
