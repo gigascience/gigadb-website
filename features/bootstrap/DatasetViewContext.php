@@ -291,6 +291,19 @@ class DatasetViewContext implements Context
         }
     }
 
+    /**
+     * @Then I sould not see :arg1 tab with table
+     */
+    public function iSouldNotSeeTabWithTable($arg1, TableNode $table)
+    {
+        //| File name                                        | Sample ID  | Data Type         | File Format | Size      | Release date | link |
+        foreach($table as $row) {
+            PHPUnit_Framework_Assert::assertFalse(
+                $this->minkContext->getSession()->getPage()->hasContent($row['File name']), "File name match"
+            );
+        }
+    }
+
 
     /**
      * @Given I have added :arg1 link :arg2 to dataset :arg3

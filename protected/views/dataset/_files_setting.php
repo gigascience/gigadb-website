@@ -88,8 +88,8 @@
 
         </div> <!-- /.modal-body -->
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button id="save-files-settings" type="button" class="btn btn-primary">Save changes</button>
+            <a class="btn btn-default" data-dismiss="modal" href="#" title="Close">Close</a>
+            <a id="save-files-settings" class="btn btn-primary" href="#" title="Save changes">Save changes</a>
         </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
