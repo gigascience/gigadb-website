@@ -222,7 +222,7 @@ Feature: a user visit the dataset page
 	@ok @javascript
 	Scenario: Files - Items per page
 		Given I am not logged in to Gigadb web site
-		And  I am on "/dataset/101001"
+		And I am on "/dataset/101001"
 		When I follow "Files"
 		And I follow "Table Settings"
 		And I wait "1" seconds
@@ -240,7 +240,25 @@ Feature: a user visit the dataset page
 		| pre_03AUG2015_update |
 		| readme.txt |
 
+	@ok
+	Scenario: Files - Columns
+		Given I am not logged in to Gigadb web site
+		And I am on "/dataset/101001"
+		When I follow "Files"
+		And I follow "Table Settings"
+		And I wait "1" seconds
+		And I check "description"
+		And I uncheck "location"
+		And I follow "Save changes"
+		Then I should see "Files" tab with table
+		| File name | Description | Sample ID  	| Data Type       	| File Format 	| Size  		| Release date|
+		| Anas_platyrhynchos.cds | predicted coding sequences from draft genome, confirmed with RNAseq data. | Pekin duck 	| Coding sequence  	| FASTA 	   	| 21.50 MiB     | 2015-08-03  |
+
 	Scenario: Files Pagination
+		Given I am not logged in to Gigadb web site
+		And I am on "/dataset/101001"
+		When I follow "Files"
+		And I follow 
 
 	Scenario: Samples
 		Given I am not logged in to Gigadb web site

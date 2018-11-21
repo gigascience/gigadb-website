@@ -287,7 +287,9 @@ class DatasetViewContext implements Context
                 PHPUnit_Framework_Assert::assertTrue(
                     $this->minkContext->getSession()->getPage()->hasContent($row['Release date']), "Release date match"
                 );
-                $this->minkContext->assertSession()->elementExists('css',"a.download-btn[href='$link']");
+                if ($link) {
+                    $this->minkContext->assertSession()->elementExists('css',"a.download-btn[href='$link']");
+                }
             }
         }
     }
