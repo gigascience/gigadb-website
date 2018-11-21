@@ -1,4 +1,4 @@
-@issue-125 @dataset-view
+@issue-125 @dataset-view @javascript
 Feature: a user visit the dataset page
 	As a gigadb user
 	I want to see all the information pertaining to a dataset
@@ -183,7 +183,7 @@ Feature: a user visit the dataset page
 		| readme.txt 										|				| Readme 			| TEXT 			| 337 B 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
 	@ok
-	Scenario: Files Tab Call to Actions
+	Scenario: Files - Call to Actions
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
 		And I follow "Files"
@@ -219,7 +219,7 @@ Feature: a user visit the dataset page
 		And I should see a button "Save changes" with no link
 		And I should see a button "Close" with no link
 
-	@ok @javascript
+	@ok @javascript @pageSize
 	Scenario: Files - Items per page
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
@@ -254,11 +254,18 @@ Feature: a user visit the dataset page
 		| File name | Description | Sample ID  	| Data Type       	| File Format 	| Size  		| Release date|
 		| Anas_platyrhynchos.cds | predicted coding sequences from draft genome, confirmed with RNAseq data. | Pekin duck 	| Coding sequence  	| FASTA 	   	| 21.50 MiB     | 2015-08-03  |
 
-	Scenario: Files Pagination
+	@ok
+	Scenario: Files - Pagination
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
+		And I have set pageSize to "5"
 		When I follow "Files"
-		And I follow 
+		# And I take a screenshot named "Files tab before clicking pager"
+		And I follow "2"
+		Then I should see "Files" tab with table
+		| File name | Sample ID | Data Type | File Format 	| Size | Release date | link |
+		| pre_03AUG2015_update 								|				| Directory 		| UNKNOWN 		| 50.00 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
+		| readme.txt 										|				| Readme 			| TEXT 			| 337 B 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
 	Scenario: Samples
 		Given I am not logged in to Gigadb web site

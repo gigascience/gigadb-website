@@ -334,6 +334,18 @@ class DatasetViewContext implements Context
         );
     }
 
+    /**
+     * @Given I have set pageSize to :arg1
+     */
+    public function iHaveSetPagesizeTo($arg1)
+    {
+        $this->minkContext->clickLink("Files");
+        $this->minkContext->clickLink("Table Settings");
+        sleep(1);
+        $this->minkContext->selectOption("pageSize","5");
+        $this->minkContext->clickLink("Save changes");
+    }
+
 
 
 
