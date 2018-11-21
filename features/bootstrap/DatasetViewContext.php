@@ -131,15 +131,16 @@ class DatasetViewContext implements Context
      */
     public function iHaveAddedTheFollowingKeywordsToDataset($arg1, TableNode $table)
     {
-        $keywords_arr = [];
-        foreach($table as $row) {
-            $keywords_arr[] =  $row['Keywords'];
-        }
-        $this->gigadbWebsiteContext->iSignInAsAnAdmin();
-        $this->minkContext->visit("/dataset/update/id/80");
-        $this->minkContext->fillField("keywords", implode(",", $keywords_arr) );
-        $this->minkContext->pressButton("Save");
-        $this->minkContext->assertResponseContains("Genome sequence of the duck");
+        $this->gigadbWebsiteContext->loadUserData("Keywords_${arg1}_test_data");
+        // $keywords_arr = [];
+        // foreach($table as $row) {
+        //     $keywords_arr[] =  $row['Keywords'];
+        // }
+        // $this->gigadbWebsiteContext->iSignInAsAnAdmin();
+        // $this->minkContext->visit("/dataset/update/id/80");
+        // $this->minkContext->fillField("keywords", implode(",", $keywords_arr) );
+        // $this->minkContext->pressButton("Save");
+        // $this->minkContext->assertResponseContains("Genome sequence of the duck");
     }
 
     /**

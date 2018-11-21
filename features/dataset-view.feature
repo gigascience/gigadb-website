@@ -7,7 +7,7 @@ Feature: a user visit the dataset page
 	Background:
 		Given Gigadb web site is loaded with production-like data
 
-	@ok
+	@ok @keywords
 	Scenario: Core information
 		Given I have added the following keywords to dataset "101001"
 		| Keywords |
