@@ -292,6 +292,32 @@ class DatasetViewContext implements Context
                 }
             }
         }
+        elseif("Sample" == $arg1) {
+            //| Sample ID  | Common Name  | Scientific Name         | Sample Attributes                                                                                                                   | Taxonomic ID | Genbank Name |
+            foreach($table as $row) {
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Sample ID']), "Sample ID match"
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Common Name']), "Common Name match"
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Scientific Name']), "Scientific Name match"
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Sample Attributes']), "Sample Attributes match"
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Taxonomic ID']), "Taxonomic ID match"
+                );
+                PHPUnit_Framework_Assert::assertTrue(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Genbank Name']), "Genbank Name match"
+                );
+            }
+        }
+        else {
+            PHPUnit_Framework_Assert::fail("Unknown type of tab");
+        }
     }
 
     /**

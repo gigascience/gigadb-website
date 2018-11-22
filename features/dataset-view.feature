@@ -267,16 +267,24 @@ Feature: a user visit the dataset page
 		| pre_03AUG2015_update 								|				| Directory 		| UNKNOWN 		| 50.00 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
 		| readme.txt 										|				| Readme 			| TEXT 			| 337 B 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
+	@ok
 	Scenario: Samples
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
-		Then I should see a Samples tab with
+		Then I should see "Sample" tab with table
 		| Sample ID 	| Common Name 	| Scientific Name 			| Sample Attributes | Taxonomic ID | Genbank Name |
-		| Pekin duck	| Mallard duck 	| Anas Anas_platyrhynchos 	| Estimated genome size:1.4 Funding source:China Agriculctural University Geographic location (country and/or sea,region):Ch... ... + |	8839  |	mallard |
+		| Pekin duck	| Mallard duck 	| Anas platyrhynchos 	| Estimated genome size:1.4 | 8839  |	mallard |
 
+	@ok
+	Scenario: Samples - Call to Actions
+		Given I am not logged in to Gigadb web site
+		When I go to "/dataset/101001"
+		And I follow "Sample"
+		Then I should see a button input "Table Settings"
 
-	Scenario: Samples Settings - row
-	Scenario: Samples Settings - column
-	Scenario: Samples Pagination
+	Scenario: Samples - Table settings controls
+	Scenario: Samples - Items per page
+	Scenario: Samples - Columns
+	Scenario: Samples - Pagination
 
 
