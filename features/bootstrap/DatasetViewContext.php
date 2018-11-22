@@ -298,9 +298,11 @@ class DatasetViewContext implements Context
                 PHPUnit_Framework_Assert::assertTrue(
                     $this->minkContext->getSession()->getPage()->hasContent($row['Sample ID']), "Sample ID match"
                 );
-                PHPUnit_Framework_Assert::assertTrue(
-                    $this->minkContext->getSession()->getPage()->hasContent($row['Common Name']), "Common Name match"
-                );
+                if($row['Common Name']) {
+                    PHPUnit_Framework_Assert::assertTrue(
+                        $this->minkContext->getSession()->getPage()->hasContent($row['Common Name']), "Common Name match"
+                    );
+                }
                 PHPUnit_Framework_Assert::assertTrue(
                     $this->minkContext->getSession()->getPage()->hasContent($row['Scientific Name']), "Scientific Name match"
                 );
@@ -327,9 +329,26 @@ class DatasetViewContext implements Context
     {
         //| File name                                        | Sample ID  | Data Type         | File Format | Size      | Release date | link |
         foreach($table as $row) {
-            PHPUnit_Framework_Assert::assertFalse(
-                $this->minkContext->getSession()->getPage()->hasContent($row['File name']), "File name match"
-            );
+            if ("Files" == $arg1) {
+                PHPUnit_Framework_Assert::assertFalse(
+                    $this->minkContext->getSession()->getPage()->hasContent($row['File name']), "File name match"
+                );
+            }
+            elseif("Sample" == $arg1) {
+                if ($row['Sample ID']) {
+                    PHPUnit_Framework_Assert::assertFalse(
+                        $this->minkContext->getSession()->getPage()->hasContent($row['Sample ID']), "File name match"
+                    );
+                }
+                if ($row['Common Name']) {
+                    PHPUnit_Framework_Assert::assertFalse(
+                        $this->minkContext->getSession()->getPage()->hasContent($row['Common Name']), "File name match"
+                    );
+                }
+            }
+            else {
+                PHPUnit_Framework_Assert::fail("Unknown type of tab");
+            }
         }
     }
 
@@ -356,20 +375,29 @@ class DatasetViewContext implements Context
     public function iShouldSeeAButtonInput($arg1)
     {
         PHPUnit_Framework_Assert::assertTrue(
-            $this->minkContext->getSession()->getPage()->hasButton($arg1)
+            $this->minkContext->getSession()->getPage()->hasLink($arg1)
         );
     }
 
-    /**
-     * @Given I have set pageSize to :arg1
+/**
+     * @Given I have set pageSize to :arg1 on :arg2
      */
-    public function iHaveSetPagesizeTo($arg1)
+    public function iHaveSetPagesizeToOn($arg1, $arg2)
     {
-        $this->minkContext->clickLink("Files");
-        $this->minkContext->clickLink("Table Settings");
         sleep(1);
-        $this->minkContext->selectOption("pageSize","5");
-        $this->minkContext->clickLink("Save changes");
+        $this->minkContext->clickLink("$arg2");
+        sleep(1);
+        if("samples_table_settings"  == $arg2) {
+            $this->minkContext->selectOption("samplePageSize","$arg1");
+            $this->minkContext->clickLink("save-samples-settings");
+        }
+        elseif("files_table_settings"  == $arg2) {
+            $this->minkContext->selectOption("pageSize","$arg1");
+            $this->minkContext->clickLink("save-files-settings");
+        }
+        else {
+            PHPUnit_Framework_Assert::fail("Unknown type of option");
+        }
     }
 
 

@@ -16,7 +16,7 @@
 
                     <div class="attribute-setting-item">
                         <label><strong>Items per page:</strong></label>
-                        <select name="perPage" class="selectPageSize">
+                        <select name="samplePageSize" class="selectPageSize">
                         <?php $options = [5,10,20,50,100,200];
                             foreach ($options as $option) {
                         ?>
@@ -30,26 +30,26 @@
                         <div class="form form-inline" style="margin-bottom: 60px;">
 
 
-                                    <input type="checkbox" name="columns[]" value="common_name"
+                                    <input id="common_name" type="checkbox" name="columns[]" value="common_name"
                                     <?= (in_array("common_name", $columns))? "checked" : ""?>/><label for="sample_col1"><?= Yii::t('app','Common Name') ?></label>
 
 
 
-                                    <input type="checkbox" name="columns[]" value="scientific_name"
-                                    <?= (in_array("scientific_name", $columns))? "checked" : ""?>/><label for="sample_col2"><?= Yii::t('app','Scienfic Name') ?></label>
+                                    <input id="scientific_name" type="checkbox" name="columns[]" value="scientific_name"
+                                    <?= (in_array("scientific_name", $columns))? "checked" : ""?>/><label for="sample_col2"><?= Yii::t('app','Scientific Name') ?></label>
 
 
 
-                                    <input type="checkbox" name="columns[]" value="attribute"
+                                    <input id="sample_attribute" type="checkbox" name="columns[]" value="attribute"
                                     <?= (in_array("attribute", $columns))? "checked" : ""?>/><label for="sample_col3"><?= Yii::t('app','Sample Attributes') ?></label>
 
 
 
-                                    <input type="checkbox" name="columns[]" value="taxonomic_id"
+                                    <input id="taxonomic_id" type="checkbox" name="columns[]" value="taxonomic_id"
                                     <?= (in_array("taxonomic_id", $columns))? "checked" : ""?>/><label for="sample_col4"><?= Yii::t('app','Taxonomic ID') ?></label>
 
 
-                                    <input type="checkbox" name="columns[]" value="genbank_name"
+                                    <input id="genbank_name" type="checkbox" name="columns[]" value="genbank_name"
                                     <?= (in_array("genbank_name", $columns))? "checked" : ""?>/><label for="sample_col5"><?= Yii::t('app','Genbank Name') ?></label>
 
                             </div>
@@ -64,7 +64,7 @@
         </div> <!-- /.modal-body -->
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button id="save-samples-settings" type="button" class="btn btn-primary">Save changes</button>
+            <a id="save-samples-settings" href="#" class="btn btn-primary">Save changes</a>
         </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

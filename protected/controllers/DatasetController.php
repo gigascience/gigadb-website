@@ -156,7 +156,7 @@ class DatasetController extends Controller
 
         if (isset($_POST['columns'])) {
             $columns = $_POST['columns'];
-            $perPage = $_POST['perPage'];
+            $perPage = $_POST['samplePageSize'];
             $flag="sample";
             if (isset($cookies['sample_setting'])) {
                 unset(Yii::app()->request->cookies['sample_setting']);
