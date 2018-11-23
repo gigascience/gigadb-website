@@ -169,7 +169,7 @@ class UserCommandController extends CController
 
         $recipient = Yii::app()->params['notify_email'];
         $subject = $email_prefix . "New claim on a dataset author";
-        $dataset_url = $this->createAbsoluteUrl('publicdataset/view',array('id'=>$dataset->identifier));
+        $dataset_url = $this->createAbsoluteUrl('publicDataset/view',array('id'=>$dataset->identifier));
         $cta_url = $this->createAbsoluteUrl('user/update', array('id'=>$user->id));
         $body = <<<EO_MAIL
 

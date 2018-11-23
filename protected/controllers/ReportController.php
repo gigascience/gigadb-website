@@ -104,12 +104,12 @@ class ReportController extends Controller
 			if($args['start_date'] && $args['ids']) {
 				$paths = array();
 				if(in_array('all', $args['ids'])) {
-					array_push($paths, '=~^/dataset/','=~^/publicdataset/view/id/');
+					array_push($paths, '=~^/dataset/','=~^/publicDataset/view/id/');
 					$selectDois = 'all';
 				} else {
 					$selectDois = $args['ids'];
 					foreach($selectDois as $selectDoi) {
-						array_push($paths,'==/dataset/'.$selectDoi,'==/publicdataset/view/id/'.$selectDoi);
+						array_push($paths,'==/dataset/'.$selectDoi,'==/publicDataset/view/id/'.$selectDoi);
 					}
 				}
 
