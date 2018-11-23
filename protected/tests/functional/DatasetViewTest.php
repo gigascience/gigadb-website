@@ -23,7 +23,7 @@ class DatasetViewTest extends FunctionalTesting
     public function testItShouldDisplayFormattedFileSize($size_value, $size_unit) {
 
         // Go to the file admin tab of the Dataset wizard
-        $url = "http://gigadb.dev/dataset/view/id/100003/Files_page/1" ;
+        $url = "http://gigadb.dev/dataset/100003/Files_page/1" ;
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "$size_value $size_unit");
 
     }

@@ -108,7 +108,7 @@ Feature: a user visit the dataset page
 	@ok
 	Scenario: Non-Tabbed External Links (e.g: Genome Browser)
 		Given I am not logged in to Gigadb web site
-		When I go to "/dataset/view/id/101001"
+		When I go to "/dataset/101001"
 		Then I should see a link "http://asia.ensembl.org/Anas_platyrhynchos/Info/Index" to "http://asia.ensembl.org/Anas_platyrhynchos/Info/Index" with title "Genome browser for dataset 101001"
 
 	@ok
@@ -151,7 +151,7 @@ Feature: a user visit the dataset page
 	@ok
 	Scenario:  Protocols.io
 		Given I am not logged in to Gigadb web site
-		When I go to "/dataset/view/id/100198"
+		When I go to "/dataset/100198"
 		Then I should see "Protocols.io" tab with text "Protocols.io:"
 
 	@ok

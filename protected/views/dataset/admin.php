@@ -56,7 +56,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 			'class'=>'CButtonColumn',
             'buttons'=>array(
                 'view' => array(
-                        'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))'
+                        'url' => 'Yii::app()->createUrl("publicdataset/view" , array("id" => $data->identifier))'
                         )
                 ),
 		),

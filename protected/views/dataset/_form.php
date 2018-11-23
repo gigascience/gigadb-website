@@ -335,7 +335,7 @@ function checkdate() {
         <? if (!$model->isNewRecord && ($model->upload_status != 'Published')) { ?>
     <a href="<?=Yii::app()->createUrl('/dataset/private/identifier/'.$model->identifier)?>" class="btn-green"/>Create/Reset Private URL</a>
         <?if($model->token){?>
-        <a href="<?= Yii::app()->createUrl('/dataset/view/id/'.$model->identifier.'/token/'.$model->token) ?>">Open Private URL</a>
+        <a href="<?= Yii::app()->createUrl('/dataset/'.$model->identifier.'/token/'.$model->token) ?>">Open Private URL</a>
         <?}?>
         <? } ?>
 </div>
