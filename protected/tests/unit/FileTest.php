@@ -26,6 +26,14 @@ class FileTest extends CDbTestCase
 
 	}
 
+	public function testItShouldReturnZeroByteWhenSizeNegative() {
+		$system_under_test = $this->files(1);
+
+		$expectation = "-1";
+		$this->assertEquals( $expectation, $system_under_test->getSizeWithFormat() );
+
+	}
+
 	public function sizeFormatsProvider() {
 		return [
 			["KiB",3, "1291135.786 KiB"],

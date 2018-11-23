@@ -11,4 +11,14 @@ return array(
 		'description'=>'just readme',
 		'download_count'=>0,
 	),
+	array(
+		'id' => 2,
+		'dataset_id' => 1,
+		'name' => "readme.txt",
+		'location'=>'ftp://foo.bar',
+		'extension'=>'txt',
+		'size'=>'-1',
+		'description'=>'just readme',
+		'download_count'=>0,
+	),
 );

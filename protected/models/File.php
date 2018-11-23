@@ -253,7 +253,9 @@ class File extends CActiveRecord
 	 **/
 	public function getSizeWithFormat($unit = null, $precision = 2)
 	{
-
+		if ($this->size<0) {
+			return (string) $this->size;
+		}
 		if ( null == $precision ) {
 			$precision = 2;
 		}
