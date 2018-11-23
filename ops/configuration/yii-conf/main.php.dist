@@ -128,8 +128,8 @@ return CMap::mergeArray(array(
             'urlFormat'=>'path',
             'showScriptName'=>false,
             'rules'=>array(
-                '/dataset/<id:\d+>'=>'publicdataset/view/id/<id>',
-                '/dataset/<id:\d+>/<slug:.+>'=>'publicdataset/view/id/<id>',
+                '/dataset/<id:\d+>'=>'publicDataset/view/id/<id>',
+                '/dataset/<id:\d+>/<slug:.+>'=>'publicDataset/view/id/<id>',
                 '.*'=>'site/index',
             ),
         ),
