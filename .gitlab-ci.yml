@@ -93,6 +93,8 @@ run_all_tests:
       - protected/runtime/application.log
       - protected/runtime/phpunit-coverage.txt
       - protected/runtime/clover.xml
+      - protected/config/main.php
+      - protected/config/test.php
       - .env
     when: always
   script:
