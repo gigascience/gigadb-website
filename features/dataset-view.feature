@@ -188,7 +188,7 @@ Feature: a user visit the dataset page
 		When I go to "/dataset/101001"
 		And I follow "Files"
 		Then I should see a link "(FTP site)" to "ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/" with title "FTP site"
-		Then I should see a button input "Table Settings"
+		Then I should see a button "Table Settings"
 
 	@ok @files
 	Scenario: Files - Table settings controls
@@ -278,7 +278,7 @@ Feature: a user visit the dataset page
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
 		And I follow "Sample"
-		Then I should see a button input "Table Settings"
+		Then I should see a button "Table Settings"
 
 	@ok @samples
 	Scenario: Samples - Table settings controls

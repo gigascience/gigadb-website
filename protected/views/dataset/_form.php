@@ -62,19 +62,26 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                             <?php echo $form->error($model,'upload_status'); ?>
                         </div>
                     </div>
-                    <div class="control-group">
-                        <?php echo $form->labelEx($model,'types',array('class'=>'control-label')); ?>
-                        <div class="controls">
+
+                    <fieldset>
+                        <legend>Types</legend>
                             <?
                                 $datasetTypes = CHtml::listData(Type::model()->findAll(),'id','name');
                                 $checkedTypes = CHtml::listData($model->datasetTypes,'id','id');
                                 foreach ($datasetTypes as $id => $datasetType) {
+                                    echo '<div class="control-group">';
+                                    echo $form->labelEx($model,"$datasetType",array('class'=>'control-label'));
                                     $checkedHtml = in_array($id,$checkedTypes,true) ? 'checked="checked"' : '';
-                                    echo '<input type="checkbox" name="datasettypes['.$id.']" value="1"'.$checkedHtml.'/> '.$datasetType.'<br/>';
+                                    $checkboxId="Dataset_$datasetType";
+                                    echo '<div class="controls">';
+                                    echo '<input id="'.$checkboxId.'" type="checkbox" name="datasettypes['.$id.']" value="1"'.$checkedHtml.'/>';
+                                    echo '</div>';
+                                    echo '</div>';
+
                                 }
                             ?>
-                        </div>
-                    </div>
+                    </fieldset>
+
 
 
                     <div class="control-group">
@@ -98,7 +105,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     ?>
                     <? echo ($img_url && $fn !='Images_.png') ? CHtml::image($img_url, $img_url, array('style'=>'width:100px; margin-left:160px;margin-bottom:10px;')) : ''; ?>
                     <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'Image Upload',array('class'=>'control-label')); ?>
+                        <label for="image_upload_image" class="control-label">Image Upload</label>
                         <div class="controls">
                             <?php echo $model->image->imageChooserField('image_upload'); ?>
                             <?php echo $form->error($model->image,'image_upload'); ?>
@@ -218,7 +225,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     </div>
 
                     <div class="control-group">
-                        <?php echo $form->labelEx($model,'publisher',array('class'=>'control-label')); ?>
+                        <label for="Dataset_publisher_id" class="control-label">Publisher</label>
                         <div class="controls">
                             <?php echo $form->dropDownList($model,'publisher_id',CHtml::listData(Publisher::model()->findAll(),'id','name'), array('class'=>'span4')); ?>
                             <?php echo $form->error($model,'publisher_id'); ?>

@@ -5,7 +5,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 
 /**
- * Contains the steps definitions used in author-names.feature and name-preview.feature
+ * Contains the steps definitions used in author-names.feature and dataset-view.feature
  *
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
@@ -178,8 +178,8 @@ class DatasetViewContext implements Context
     public function iShouldSeeALinkToWithTitle($arg1, $arg2, $arg3)
     {
         $linkNode = $this->minkContext->getSession()->getPage()->find('css',"a[title='$arg3']");
-        PHPUnit_Framework_Assert::assertEquals($arg2, $linkNode->getAttribute('href') );
-        PHPUnit_Framework_Assert::assertEquals($arg1, $linkNode->getText() );
+        PHPUnit_Framework_Assert::assertEquals($arg2, $linkNode->getAttribute('href'), "link target matches" );
+        PHPUnit_Framework_Assert::assertEquals($arg1, $linkNode->getText(), "link text matches");
     }
 
     /**
@@ -369,17 +369,8 @@ class DatasetViewContext implements Context
         }
     }
 
-    /**
-     * @Then I should see a button input :arg1
-     */
-    public function iShouldSeeAButtonInput($arg1)
-    {
-        PHPUnit_Framework_Assert::assertTrue(
-            $this->minkContext->getSession()->getPage()->hasLink($arg1)
-        );
-    }
 
-/**
+    /**
      * @Given I have set pageSize to :arg1 on :arg2
      */
     public function iHaveSetPagesizeToOn($arg1, $arg2)

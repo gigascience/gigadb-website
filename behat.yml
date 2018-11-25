@@ -10,6 +10,7 @@ default:
         - ClaimDatasetContext
         - DatasetsOnProfileContext
         - DatasetViewContext
+        - DatasetAdminContext
         - NormalLoginContext
         - Behat\MinkExtension\Context\MinkContext
   extensions:
