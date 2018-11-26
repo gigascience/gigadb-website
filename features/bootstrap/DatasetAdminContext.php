@@ -90,5 +90,15 @@ class DatasetAdminContext implements Context
         }
     }
 
+    /**
+     * @Then the url should be :arg1
+     */
+    public function theUrlShouldBe($arg1)
+    {
+        PHPUnit_Framework_Assert::assertEquals(
+            $arg1,parse_url( $this->minkContext->getSession()->getCurrentUrl(), PHP_URL_PATH)
+        );
+    }
+
 
 }
