@@ -54,3 +54,20 @@ Scenario: Mint A DOI
 	Then I should see "minting under way, please wait"
 	And I should see element "#minting"'s content changing from "minting under way, please wait" to "new DOI successfully minted"
 
+@ok
+Scenario: Keywords
+	Given I sign in as an admin
+	And I am on "/dataset/update/id/210"
+	When I fill in the "keywords" field with "abcd, a four part keyword, my_keyword, my-keyword, my dodgy tag<script>alert('xss!');</script>"
+	And I follow "Save"
+	Then I should see links to "Keyword search"
+	| Keyword search |
+	| abcd |
+	| a four part keyword |
+	| my_keyword |
+	| my-keyword |
+	And I should not see links to "Keyword search"
+	| Keyword search |
+	| my dodgy tag<script>alert('xss!');</script> |
+	| my dodgy tag |
+

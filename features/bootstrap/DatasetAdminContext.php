@@ -71,4 +71,24 @@ class DatasetAdminContext implements Context
         );
     }
 
+    /**
+     * @When I fill in the :arg1 field with :arg2
+     */
+    public function iFillInTheFieldWith($arg1, $arg2)
+    {
+        $this->minkContext->fillField($arg1, $arg2);
+        $this->minkContext->pressButton("Save");
+    }
+
+    /**
+     * @Then I should not see links to :arg1
+     */
+    public function iShouldNotSeeLinksTo($arg1, TableNode $table)
+    {
+        foreach($table as $row) {
+            PHPUnit_Framework_Assert::assertFalse( $this->minkContext->getSession()->getPage()->hasLink($row[$arg1]) );
+        }
+    }
+
+
 }
