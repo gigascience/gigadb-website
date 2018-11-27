@@ -63,24 +63,26 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         </div>
                     </div>
 
-                    <fieldset>
-                        <legend>Types</legend>
-                            <?
-                                $datasetTypes = CHtml::listData(Type::model()->findAll(),'id','name');
-                                $checkedTypes = CHtml::listData($model->datasetTypes,'id','id');
-                                foreach ($datasetTypes as $id => $datasetType) {
-                                    echo '<div class="control-group">';
-                                    echo $form->labelEx($model,"$datasetType",array('class'=>'control-label'));
-                                    $checkedHtml = in_array($id,$checkedTypes,true) ? 'checked="checked"' : '';
-                                    $checkboxId="Dataset_$datasetType";
-                                    echo '<div class="controls">';
-                                    echo '<input id="'.$checkboxId.'" type="checkbox" name="datasettypes['.$id.']" value="1"'.$checkedHtml.'/>';
-                                    echo '</div>';
-                                    echo '</div>';
+                    <div class="control-group">
+                        <fieldset class="checkboxes">
+                                <legend class="checkboxes-legend">Types</legend>
+                                <?
+                                    $datasetTypes = CHtml::listData(Type::model()->findAll(),'id','name');
+                                    $checkedTypes = CHtml::listData($model->datasetTypes,'id','id');
+                                    foreach ($datasetTypes as $id => $datasetType) {
+                                        // echo '<div class="control-group">';
+                                        echo $form->labelEx($model,"$datasetType",array('class'=>'checkbox-label'));
+                                        $checkedHtml = in_array($id,$checkedTypes,true) ? 'checked="checked"' : '';
+                                        $checkboxId="Dataset_$datasetType";
+                                        echo '<div class="controls">';
+                                        echo '<input id="'.$checkboxId.'" type="checkbox" name="datasettypes['.$id.']" value="1"'.$checkedHtml.'/>';
+                                        echo '</div>';
+                                        // echo '</div>';
 
-                                }
-                            ?>
-                    </fieldset>
+                                    }
+                                ?>
+                        </fieldset>
+                    </div>
 
 
 
