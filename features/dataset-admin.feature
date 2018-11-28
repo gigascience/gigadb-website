@@ -84,7 +84,7 @@ Scenario: redirect
 	And I wait "10" seconds
 	And the url should be "/dataset/100002"
 
-@ok @javascript
+@ok
 Scenario: new dataset with mandatory fields filled in
 	Given I sign in as an admin
 	And I am on "/adminDataset/admin"
@@ -102,5 +102,3 @@ Scenario: new dataset with mandatory fields filled in
 	And the response should contain "10.5524/100900"
 	And I should see a button "Your dataset?"
 	And the url should match the pattern "/\/publicDataset\/view\/id\/100900\/token\//"
-	And I take a screenshot named "response page"
-
