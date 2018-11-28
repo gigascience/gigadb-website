@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="pull-right">
-            <a href="/dataset/update/id/<?php echo $dataset_id ?>" class="btn">Cancel</a>
+            <a href="/adminDataset/update/id/<?php echo $dataset_id ?>" class="btn">Cancel</a>
             <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn')); ?>
         </div>
         <?php $this->endWidget(); ?>

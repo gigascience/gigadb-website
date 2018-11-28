@@ -10,7 +10,7 @@ Background:
 @ok
 Scenario: form loading with all necessary fields
 	Given I sign in as an admin
-	When I go to "/dataset/update/id/210"
+	When I go to "/adminDataset/update/id/210"
 	Then I should see a form element labelled "Submitter *"
 	And I should see a form element labelled "Curator Id"
 	And I should see a form element labelled "Manuscript Id"
@@ -49,7 +49,7 @@ Scenario: form loading with all necessary fields
 @ok @javascript
 Scenario: Mint A DOI
 	Given I sign in as an admin
-	And I am on "/dataset/update/id/210"
+	And I am on "/adminDataset/update/id/210"
 	When I follow "Mint DOI"
 	Then I should see "minting under way, please wait"
 	And I should see element "#minting"'s content changing from "minting under way, please wait" to "new DOI successfully minted"
@@ -57,7 +57,7 @@ Scenario: Mint A DOI
 @ok
 Scenario: Keywords
 	Given I sign in as an admin
-	And I am on "/dataset/update/id/210"
+	And I am on "/adminDataset/update/id/210"
 	When I fill in the "keywords" field with "abcd, a four part keyword, my_keyword, my-keyword, my dodgy tag<script>alert('xss!');</script>"
 	And I follow "Save"
 	Then I should see links to "Keyword search"
@@ -75,13 +75,32 @@ Scenario: Keywords
 @ok @javascript
 Scenario: redirect
 	Given I sign in as an admin
-	And I am on "/dataset/update/id/210"
+	And I am on "/adminDataset/update/id/210"
 	When I fill in "urltoredirect" with "http://gigadb.dev/dataset/100002/token/ban74hsfds"
 	And I press "Save"
 	And I go to "/dataset/100002/token/ban74hsfds"
 	Then the url should be "/dataset/100002/token/ban74hsfds"
 	# And I take a screenshot named "redirect notice page"
-	And I wait "8" seconds
+	And I wait "10" seconds
 	And the url should be "/dataset/100002"
 
+@ok @javascript
+Scenario: new dataset with mandatory fields filled in
+	Given I sign in as an admin
+	And I am on "/adminDataset/admin"
+	When I follow "Create Dataset"
+	And I select "user@gigadb.org" from "Submitter"
+	And I fill in "Title" with "My dataset"
+	And I fill in "Dataset Size" with "345345324235"
+	And I fill in "Image Source" with "Wikimedia"
+	And I fill in "Image License" with "CC0"
+	And I fill in "Image Photographer" with "Anonymous"
+	And I fill in "DOI" with "100900"
+	And I fill in "Ftp Site" with "ftp.genomics.cn"
+	And I press "Create"
+	Then the response should contain "My Dataset"
+	And the response should contain "10.5524/100900"
+	And I should see a button "Your dataset?"
+	And the url should match the pattern "/\/publicDataset\/view\/id\/100900\/token\//"
+	And I take a screenshot named "response page"
 

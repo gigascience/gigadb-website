@@ -29,7 +29,7 @@ You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&g
 or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done. Date should be exactly in this format: <b>yyyy-mm-dd</b>
 </p>
 
-<a href="/dataset/create" class="btn">Create Dataset</a>
+<a href="/adminDataset/create" class="btn">Create Dataset</a>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'dataset-grid',

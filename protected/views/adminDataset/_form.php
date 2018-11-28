@@ -167,7 +167,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                                                                                 'class' => "input-mini",
                                                                                                 'ajax' => array(
                                                                                                     'type' => 'POST',
-                                                                                                    'url' => array('dataset/checkDOIExist'),
+                                                                                                    'url' => array('adminDataset/checkDOIExist'),
                                                                                                     'dataType' => 'JSON',
                                                                                                     'data'=>array('doi'=>'js:$(this).val()'),
                                                                                                     'success'=>'function(data){
@@ -339,10 +339,10 @@ function checkdate() {
 
 </script>
 <div class="span12" style="text-align:center">
-    <a href="<?=Yii::app()->createUrl('/dataset/admin')?>" class="btn"/>Cancel</a>
+    <a href="<?=Yii::app()->createUrl('/adminDataset/admin')?>" class="btn"/>Cancel</a>
     <?= CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn-green','onclick'=>'js:checkdate()')); ?>
         <? if (!$model->isNewRecord && ($model->upload_status != 'Published')) { ?>
-    <a href="<?=Yii::app()->createUrl('/dataset/private/identifier/'.$model->identifier)?>" class="btn-green"/>Create/Reset Private URL</a>
+    <a href="<?=Yii::app()->createUrl('/adminDataset/private/identifier/'.$model->identifier)?>" class="btn-green"/>Create/Reset Private URL</a>
         <?if($model->token){?>
         <a href="<?= Yii::app()->createUrl('/dataset/'.$model->identifier.'/token/'.$model->token) ?>">Open Private URL</a>
         <?}?>

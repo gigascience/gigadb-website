@@ -137,7 +137,7 @@ class DatasetViewContext implements Context
         //     $keywords_arr[] =  $row['Keywords'];
         // }
         // $this->gigadbWebsiteContext->iSignInAsAnAdmin();
-        // $this->minkContext->visit("/dataset/update/id/80");
+        // $this->minkContext->visit("/adminDataset/update/id/80");
         // $this->minkContext->fillField("keywords", implode(",", $keywords_arr) );
         // $this->minkContext->pressButton("Save");
         // $this->minkContext->assertResponseContains("Genome sequence of the duck");

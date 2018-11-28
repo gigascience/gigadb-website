@@ -100,5 +100,16 @@ class DatasetAdminContext implements Context
         );
     }
 
+    /**
+     * @Then the url should match the pattern :arg1
+     */
+    public function theUrlShouldMatchThePattern($arg1)
+    {
+        $currentUrl = parse_url( $this->minkContext->getSession()->getCurrentUrl(), PHP_URL_PATH) ;
+        PHPUnit_Framework_Assert::assertTrue(
+            (boolean)preg_match("$arg1",$currentUrl)
+        );
+    }
+
 
 }

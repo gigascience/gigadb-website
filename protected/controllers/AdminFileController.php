@@ -654,7 +654,7 @@ EO_MAIL;
                 $to = Yii::app()->params['app_email'];
                 $subject = "Files are added to  dataset: " . $model->dataset_id;
                 $receiveNewsletter = $user->newsletter ? 'Yes' : 'No';
-                $link = Yii::app()->params['home_url'] . "/dataset/update/id/" . $model->dataset_id;
+                $link = Yii::app()->params['home_url'] . "/adminDataset/update/id/" . $model->dataset_id;
                 $message = <<<EO_MAIL
 Dear GigaDB,<br/><br/>
 
