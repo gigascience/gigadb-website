@@ -76,6 +76,13 @@ The **webapp** container will run composer update using the ``composer.json`` ge
 
 The project can be configured using *deployment variables* managed in ``.env``, *application variables* managed in the [docker-compose.yml](ops/deployment/docker-compose.yml) file and its overrides (``docker-compose.*.yml``). Finally, passwords, api keys and tokens are managed as *secret variables* in ``.secrets``.
 
+
+### Running database migrations
+
+Some code changes are database schemas changes. To ensure you have the latest database schema, you will need to run Yii migration as below
+```
+$ docker-compose run --rm  application ./protected/yiic migrate --interactive=0
+```
 ## Testing
 
 To run the tests:
