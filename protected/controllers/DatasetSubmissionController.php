@@ -1,6 +1,11 @@
 <?php
-
-class DatasetController extends Controller
+/**
+ * Routing, aggregating and composing logic for Dataset submission
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ */
+class DatasetSubmissionController extends Controller
 {
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -26,10 +31,6 @@ class DatasetController extends Controller
     public function accessRules()
     {
         return array(
-            array('allow',  // allow all users to perform 'index' and 'view' actions
-                'actions'=>array('view' , 'aSetSortCookies','ResetPageSize'),
-                'users'=>array('*'),
-            ),
             array('allow',  // allow logged-in users to perform 'upload'
                 'actions'=>array('upload','delete','create1','submit','updateSubmit', 'updateFile',
                     'datasetManagement','authorManagement','projectManagement','linkManagement','exLinkManagement',
@@ -116,10 +117,10 @@ EO_MAIL;
             $ok = @mail($to, $subject, $message, $headers, $returnpath);
 
             if ($ok) {
-                $this->redirect('/dataset/upload/status/successful');
+                $this->redirect('/datasetSubmission/upload/status/successful');
                 return;
             } else {
-                $this->redirect('/dataset/upload/status/failed');
+                $this->redirect('/datasetSubmission/upload/status/failed');
                 return;
             }
         }
@@ -184,7 +185,7 @@ EO_MAIL;
             $fileLink = "";
             if (isset($_POST['file'])) {
                 $fileLink .= 'Files:<br/>';
-                $fileLink = $link = Yii::app()->params['home_url'] . "/dataset/updateFile/?id=" . $dataset_id;
+                $fileLink = $link = Yii::app()->params['home_url'] . "/datasetSubmission/updateFile/?id=" . $dataset_id;
                 $dataset->upload_status = 'Pending';
                 CurationLog::createlog($dataset->upload_status, $dataset->id);
             } else {
@@ -424,7 +425,7 @@ EO_MAIL;
             //indicate that this is an old dataset
             $_SESSION['isOld'] = 1;
 
-            $this->redirect("/dataset/create1");
+            $this->redirect("/datasetSubmission/create1");
         }
         Yii::app()->user->setFlash('keyword', 'no dataset is specified');
         return $this->redirect("/user/view_profile");
@@ -456,132 +457,6 @@ EO_MAIL;
         }
         Yii::app()->user->setFlash('keyword', 'no dataset is specified');
         return $this->redirect("/user/view_profile");
-    }
-
-    public function storeDataset(&$dataset)
-    {
-        $dataset_id = 0;
-        $identifier = 0;
-        if (isset($_SESSION['dataset']) && isset($_SESSION['images'])) {
-            if (isset($_SESSION['identifier'])) {
-                $identifier = $_SESSION['identifier'];
-                $dataset = Dataset::model()->findByAttributes(array('identifier' => $identifier));
-            }
-
-            /*else {
-                $file = fopen(Yii::app()->basePath."/scripts/data/lastdoi.txt", 'r');
-                $test=fread($file, filesize(Yii::app()->basePath."/scripts/data/lastdoi.txt"));
-                $file1 = fopen(Yii::app()->basePath."/scripts/data/lastdoi.txt", 'w');
-                fwrite($file1, $test+1);
-                fclose($file);
-                fclose($file1);
-
-                $identifier=$test;
-            }*/
-
-            $dataset->attributes = $_SESSION['dataset'];
-
-
-            $dataset->identifier = $identifier;
-
-            $dataset->dataset_size = $_SESSION['dataset']['dataset_size'];
-            if ($dataset->dataset_size == '') {
-                $dataset->dataset_size = 0;
-            }
-            $dataset->ftp_site = "''";
-
-            $dataset->submitter_id = Yii::app()->user->_id;
-            if ($dataset == null) {
-                return;
-            }
-            try {
-                if ($dataset->validate()
-                ) {
-                    if ($_SESSION['images'] != 'no-image') {
-                        $dataset->image->attributes = $_SESSION['images'];
-                        if (!($dataset->image->validate() && $dataset->image->save())) {
-                            return false;
-                        }
-                        $dataset->image_id = $dataset->image->id;
-                    } else {
-                        //
-                        $dataset->image->url="http://gigadb.org/images/data/cropped/no_image.png";
-                        $dataset->image->location="no_image.jpg";
-                        $dataset->image->tag="no image icon";
-                        $dataset->image->license="Public domain";
-                        $dataset->image->photographer="GigaDB";
-                        $dataset->image->source="GigaDB";
-                        //
-                        if (isset($_SESSION['datasettypes'])) {
-                            $datasettypes = $_SESSION['datasettypes'];
-                            if (count($datasettypes) == 1) {
-                                foreach (array_keys($datasettypes) as $id) {
-                                    $type_id = $id;
-                                }
-                                //workflow
-                                if ($type_id == 5) {
-                                    $dataset->image->url="http://gigadb.org/images/data/cropped/workflow.jpg";
-                                    $dataset->image->location="workflow.jpg";
-                                    $dataset->image->tag="workflow icon";
-                                    $dataset->image->license="Public domain";
-                                    $dataset->image->photographer="GigaDB";
-                                    $dataset->image->source="GigaDB";
-                                } elseif ($type_id == 2
-                                ) {
-                                    //genomics
-                                    $dataset->image->url="http://gigadb.org/images/data/cropped/genomics.jpg";
-                                    $dataset->image->location="genomics.jpg";
-                                    $dataset->image->tag="genomic icon";
-                                    $dataset->image->license="Public domain";
-                                    $dataset->image->photographer="GigaDB";
-                                    $dataset->image->source="GigaDB";
-                                } elseif ($type_id == 4) {
-                                    //transcriptomics
-                                    $dataset->image->url="http://gigadb.org/images/data/cropped/transcriptomics.jpg";
-                                    $dataset->image->location="transcriptomics.jpg";
-                                    $dataset->image->tag="transcriptomics icon";
-                                    $dataset->image->license="Public domain";
-                                    $dataset->image->photographer="GigaDB";
-                                    $dataset->image->source="GigaDB";
-                                }
-                            }
-                        }
-
-                        if (!($dataset->image->validate() && $dataset->image->save())) {
-                            return false;
-                        }
-
-                        $dataset->image_id = $dataset->image->id;
-                    }
-
-
-                    if ($dataset->save()) {
-                        $_SESSION['identifier'] = $identifier;
-                        $_SESSION['dataset_id'] = $dataset->id;
-
-                        $dataset_id = $dataset->id;
-                        if (isset($_SESSION['datasettypes'])) {
-                            $datasettypes = $_SESSION['datasettypes'];
-                            foreach (array_keys($datasettypes) as $id) {
-                                $newDatasetTypeRelationship = new DatasetType;
-                                $newDatasetTypeRelationship->dataset_id = $dataset->id;
-                                $newDatasetTypeRelationship->type_id = $id;
-                                $newDatasetTypeRelationship->save();
-                            }
-                        }
-                    } else {
-                        return false;
-                    }
-
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch (Exception $e) {
-                $dataset->addError('error', $e->getMessage());
-                return false;
-            }
-        }
     }
 
     /**
@@ -680,7 +555,7 @@ EO_MAIL;
                         }
                     }
                     $transaction->commit();
-                    $this->redirect(array('/dataset/authorManagement', 'id'=>$dataset->id));
+                    $this->redirect(array('/datasetSubmission/authorManagement', 'id'=>$dataset->id));
                 }
             } catch (Exception $e) {
                 $message = $e->getMessage();
@@ -783,7 +658,7 @@ EO_MAIL;
                             }
                         }
                         $transaction->commit();
-                        $this->redirect(array('/dataset/authorManagement', 'id'=>$dataset->id));
+                        $this->redirect(array('/datasetSubmission/authorManagement', 'id'=>$dataset->id));
                     }
                 } catch (Exception $e) {
                     $message = $e->getMessage();
@@ -1147,6 +1022,26 @@ EO_MAIL;
         }
     }
 
+    /**
+     * Deletes a particular Dataset.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param integer $id the ID of the model to be deleted
+     */
+    public function actionDelete($id)
+    {
+        if (Yii::app()->request->isPostRequest) {
+            // we only allow deletion via POST request
+            $this->loadModel($id)->delete();
+
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+            if (!isset($_GET['ajax'])) {
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            }
+        } else {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
+    }
+
     public function actionDatasetAjaxDelete()
     {
         if (isset($_POST['dataset_id'])) {
@@ -1183,5 +1078,19 @@ EO_MAIL;
             }
         }
         return true;
+    }
+
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     * @param integer the ID of the model to be loaded
+     */
+    private function loadModel($id)
+    {
+        $model=Dataset::model()->findByPk($id);
+        if ($model===null) {
+            throw new CHttpException(404, 'The requested page does not exist.');
+        }
+        return $model;
     }
 }

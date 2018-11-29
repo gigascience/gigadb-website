@@ -1,15 +1,15 @@
 <h2>Add sample details</h2>
 <div class="clear"></div>
 
-<a href="/dataset/datasetManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'Study')?></a>
-<a href="/dataset/authorManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'Author')?></a>
-<a href="/dataset/projectManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'Project')?></a>
-<a href="/dataset/linkManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'Link')?></a>
-<a href="/dataset/exLinkManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'External Link')?></a>
-<a href="/dataset/relatedDoiManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'Related Doi')?></a>
+<a href="/datasetSubmission/datasetManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'Study')?></a>
+<a href="/datasetSubmission/authorManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'Author')?></a>
+<a href="/datasetSubmission/projectManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'Project')?></a>
+<a href="/datasetSubmission/linkManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'Link')?></a>
+<a href="/datasetSubmission/exLinkManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'External Link')?></a>
+<a href="/datasetSubmission/relatedDoiManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'Related Doi')?></a>
 <a href="#" class="btn sw-selected-btn"><?= Yii::t('app' , 'Sample')?></a>
 <? if($model->isProteomic) { ?>
-<a href="/dataset/pxInfoManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'PX Info')?></a>
+<a href="/datasetSubmission/pxInfoManagement/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'PX Info')?></a>
 <? } ?>
 <? if($model->files && count($model->files) > 0) { ?>
 <a href="/adminFile/create1/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'File')?></a>
@@ -152,10 +152,10 @@
     </div>
 
      <div class="span12" style="text-align:center">
-        <a href="/dataset/relatedDoiManagement/id/<?= $model->id ?>" class="btn-green">Previous</a>
+        <a href="/datasetSubmission/relatedDoiManagement/id/<?= $model->id ?>" class="btn-green">Previous</a>
         <a href="/user/view_profile" title="Save your incomplete submission and leave the submission wizard." class="btn-green delete-title delete-title">Save & Quit</a>
         <? if($model->isProteomic) { ?>
-        <a href="/dataset/PxInfoManagement/id/<?= $model->id ?>" class="btn-green">Next</a>
+        <a href="/datasetSubmission/PxInfoManagement/id/<?= $model->id ?>" class="btn-green">Next</a>
         <? } else if($model->isIncomplete) { ?>
         <a class="btn-green delete-title" title="Click submit to send information to a curator for review." href="/dataset/submit/id/<?= $model->id ?>">Submit</a>
         <? } ?>

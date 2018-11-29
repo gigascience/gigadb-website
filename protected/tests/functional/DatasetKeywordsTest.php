@@ -67,18 +67,18 @@ class DatasetKeywordsTest extends FunctionalTesting
     {
 
         // Make a call to the dataset update form
-        $url = "http://gigadb.dev/dataset/create1" ;
+        $url = "http://gigadb.dev/datasetSubmission/create1" ;
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull( $url, null);
 
         $this->fillDatasetCreate1FormDummyFieldsJustKeywords($input);
 
 
         // Check that after submission we land on the author tab
-        $this->assertStringStartsWith('http://gigadb.dev/dataset/authorManagement/id/', $this->getCurrentUrl());
+        $this->assertStringStartsWith('http://gigadb.dev/datasetSubmission/authorManagement/id/', $this->getCurrentUrl());
 
         // Lets navigate back to the Dataset Form
         $this->session->getPage()->clickLink("Study");
-        $this->assertStringStartsWith('http://gigadb.dev/dataset/datasetManagement/id/', $this->getCurrentUrl());
+        $this->assertStringStartsWith('http://gigadb.dev/datasetSubmission/datasetManagement/id/', $this->getCurrentUrl());
 
         // Check that the content of the page match our $expectation given $input
         foreach($expectation as $keyword) {
@@ -97,11 +97,11 @@ class DatasetKeywordsTest extends FunctionalTesting
         $this->fillDatasetManagementFormJustKeywords($new_input);
 
      	// Check that after submission we land on the author tab
-        $this->assertStringStartsWith('http://gigadb.dev/dataset/authorManagement/id/', $this->getCurrentUrl());
+        $this->assertStringStartsWith('http://gigadb.dev/datasetSubmission/authorManagement/id/', $this->getCurrentUrl());
 
         // Lets navigate back to the Dataset Form
         $this->session->getPage()->clickLink("Study");
-        $this->assertStringStartsWith('http://gigadb.dev/dataset/datasetManagement/id/', $this->getCurrentUrl());
+        $this->assertStringStartsWith('http://gigadb.dev/datasetSubmission/datasetManagement/id/', $this->getCurrentUrl());
 
         // Check that the content of the page match our $expectation given $input
         foreach($expectation as $keyword) {
