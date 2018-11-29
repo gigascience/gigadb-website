@@ -117,7 +117,7 @@
     $this->endWidget();
 }
 ?>
-                            <!--<a href="/dataset/submit" class="btn-green" title="Click submit to send information to a curator for review.">Submit</a>-->
+                            <!--<a href="/datasetSubmission/submit" class="btn-green" title="Click submit to send information to a curator for review.">Submit</a>-->
         </div>
         <?php
 //  $pageSize = isset(Yii::app()->request->cookies['filePageSize']) ?
@@ -142,7 +142,7 @@ function process(v) {
     if (v == "save") {
         document.getElementById('file-forms').action = "/adminFile/create1/id/<?=$dataset_id?>";
     } else {
-        document.getElementById('file-forms').action = "/dataset/submit/id/<?=$dataset_id?>";
+        document.getElementById('file-forms').action = "/datasetSubmission/submit/id/<?=$dataset_id?>";
     }
     document.theForm.submit();
 }

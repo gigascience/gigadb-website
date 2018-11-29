@@ -157,7 +157,7 @@
         <? if($model->isProteomic) { ?>
         <a href="/datasetSubmission/PxInfoManagement/id/<?= $model->id ?>" class="btn-green">Next</a>
         <? } else if($model->isIncomplete) { ?>
-        <a class="btn-green delete-title" title="Click submit to send information to a curator for review." href="/dataset/submit/id/<?= $model->id ?>">Submit</a>
+        <a class="btn-green delete-title" title="Click submit to send information to a curator for review." href="/datasetSubmission/submit/id/<?= $model->id ?>">Submit</a>
         <? } ?>
     </div>
 </div>

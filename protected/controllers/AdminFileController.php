@@ -784,7 +784,7 @@ EO_MAIL;
             }
             //determine if it want to submit
 //             if (isset($_POST['file'])) {
-//                 $this->redirect("/dataset/submit");
+//                 $this->redirect("/datasetSubmission/submit");
 //             }
         }
         $dataset = Dataset::model()->findByAttributes(array('id' => $dataset_id));

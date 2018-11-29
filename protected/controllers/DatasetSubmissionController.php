@@ -1006,7 +1006,7 @@ EO_MAIL;
                         if ($isSppsStored and $keywords->save() and $dpp->save() and $expType->save() and $quantification->save() and $instrument->save() and $modification->save()) {
                             $transaction->commit();
                             if ($isSubmit) {
-                                $this->redirect(array('/dataset/submit', 'id'=>$dataset->id));
+                                $this->redirect(array('/datasetSubmission/submit', 'id'=>$dataset->id));
                             }
                             $this->redirect('/user/view_profile');
                         }

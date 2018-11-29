@@ -181,7 +181,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
 
                             $.ajax({
                                 type: 'POST',
-                                url: '/dataset/datasetAjaxDelete',
+                                url: '/datasetSubmission/datasetAjaxDelete',
                                 data: { 'dataset_id': did },
                                 success: function(response) {
                                     if (response.success) {

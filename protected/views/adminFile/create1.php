@@ -28,7 +28,7 @@ else{
              <p>You can update the files when the administrator upload your files.</p>
              
                <div class="span12" style="text-align:center">                  
-                <a href="/dataset/submit" class="btn-green">Submit</a>
+                <a href="/datasetSubmission/submit" class="btn-green">Submit</a>
             </div>
         </div>
     </div>
