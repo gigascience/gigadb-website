@@ -5,7 +5,7 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class PublicDatasetController extends Controller
+class DatasetController extends Controller
 {
 	/**
      * @return array action filters

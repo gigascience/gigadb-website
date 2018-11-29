@@ -271,7 +271,7 @@ class AdminDatasetController extends Controller
                 if ($model->upload_status == 'Published') {
                     $this->redirect('/dataset/' . $model->identifier);
                 } else {
-                    $this->redirect(array('/publicDataset/view/id/' . $model->identifier.'/token/'.$model->token));
+                    $this->redirect(array('/dataset/view/id/' . $model->identifier.'/token/'.$model->token));
                 }
             } else {
                 Yii::log(print_r($model->getErrors(), true), 'error');
@@ -304,7 +304,7 @@ class AdminDatasetController extends Controller
         $model->token = substr(str_shuffle($chars), 0, 16);
         $model->save();
 
-        $this->redirect('/publicDataset/view/id/'.$model->identifier.'/token/'.$model->token);
+        $this->redirect('/dataset/view/id/'.$model->identifier.'/token/'.$model->token);
     }
 
     /**
