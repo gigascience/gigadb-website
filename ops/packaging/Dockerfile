@@ -159,6 +159,15 @@ RUN if [ ${INSTALL_GIT} = true ]; then \
     apt-get install -y git \
 ;fi
 
+ARG INSTALL_APCU=false
+ARG APCU_VERSION=5.1.8
+
+RUN if [ ${INSTALL_APCU} = true ]; then \
+    pecl install apcu-${APCU_VERSION} && \
+    echo "extension=apcu.so" >  /usr/local/etc/php/conf.d/apcu.ini && \
+    echo 'apc.shm_size="64M"' | tee -a /usr/local/etc/php/conf.d/apcu.ini \
+;fi
+
 RUN usermod -u 1000 www-data
 
 WORKDIR /var/www

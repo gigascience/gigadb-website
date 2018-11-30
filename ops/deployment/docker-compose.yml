@@ -44,6 +44,7 @@ services:
         - INSTALL_COMPOSER=true
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=true
+        - INSTALL_APCU=true
     volumes:
       - ${APPLICATION}/:/var/www
       - ${APPLICATION}/ops/configuration/php-conf/php-${PHP_VERSION}-${GIGADB_ENV}.ini:/usr/local/etc/php/php.ini
@@ -116,6 +117,7 @@ services:
         - INSTALL_COMPOSER=true
         - INSTALL_LIBSODIUM=true
         - INSTALL_GIT=true
+        - INSTALL_APCU=true
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
