@@ -21,6 +21,7 @@ return CMap::mergeArray(array(
     'import'=>array(
         'application.models.*',
         'application.components.*',
+        'application.interfaces.*',
         'application.behaviors.*',
         'application.vendors.*',
         'application.helpers.*',
@@ -113,9 +114,6 @@ return CMap::mergeArray(array(
             'class'     => 'application.components.NewsAndFeedsService',
         ),
 
-        'cache' => array(
-            'class' => 'system.caching.CFileCache'
-        ),
         'session' => array(
             'class' => 'system.web.CDbHttpSession',
             'connectionID' => 'db',
