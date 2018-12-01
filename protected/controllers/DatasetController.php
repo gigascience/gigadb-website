@@ -192,11 +192,18 @@ class DatasetController extends Controller
         // Yii::log("samples pageVar: ". $samples_pagination->pageVar,CLogger::LEVEL_ERROR,"DatasetController");
         $samples->setPagination($samples_pagination);
 
-        $email = 'no_submitter@bgi.com';
-        $result = Dataset::model()->findAllBySql("select email from gigadb_user g,dataset d where g.id=d.submitter_id and d.identifier='" . $id . "';");
-        if (count($result) > 0) {
-            $email = $result[0]['email'];
-        }
+        // Submitter email web component
+        $datasetSubmitter = new AuthorisedDatasetSubmitter(
+                                Yii::app()->user,
+                                new CachedDatasetSubmitter(
+                                    Yii::app()->cache,
+                                    new StoredDatasetSubmitter(
+                                        $id,
+                                        Yii::app()->db
+                                    )
+                                )
+                        );
+        $email = $datasetSubmitter->getEmailAddress();
 
         $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {

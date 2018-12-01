@@ -73,8 +73,8 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                 </div>
                 </div>
                                 <div class="subsection">
-                                     <span class="content-popup" <?= !Yii::app()->user->isGuest ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
-                    <a class="btn background-btn background-btn-o <?= !Yii::app()->user->isGuest ? '' : 'notlogged' ?>" <?= !Yii::app()->user->isGuest ? 'href="mailto:'.$model->submitter->email.'"' : 'href="#"' ?>>
+                                     <span class="content-popup" <?= $email != '' ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
+                    <a class="btn background-btn background-btn-o <?= $email != '' ? '' : 'notlogged' ?>" <?= $email != '' ? 'href="mailto:'.$email.'"' : 'href="#"' ?>>
                         Contact Submitter
                     </a>
                     </span>
