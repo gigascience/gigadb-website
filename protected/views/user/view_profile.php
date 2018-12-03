@@ -103,7 +103,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
 
                         <div class="form-group">
                             <div class="text-center">
-                                <?php echo $form->checkbox($model, 'newsletter', array('disabled' => 'disabled;', 'class' => 'checkbox','style' =>'position: relative; display: inline-block')); ?>
+                                <?php echo $form->checkbox($model, 'newsletter', array('disabled' => 'disabled;', 'class' => 'profile-checkbox','style' =>'position: relative; display: inline-block')); ?>
                                 <label disabled="disabled" ><?= Yii::t('app', 'Add me to GigaDB\'s mailing list') ?></label>
                             </div>
                         </div>
