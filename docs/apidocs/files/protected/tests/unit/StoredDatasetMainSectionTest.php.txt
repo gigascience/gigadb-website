@@ -1,0 +1,20 @@
+<?php
+/**
+ * Unit tests for StoredDatasetAccessions to retrieve dataset accessions from the database
+ *
+ * @see DatasetAccessionsInterface.php
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ */
+class StoredDatasetMainSectionTest extends CDbTestCase
+{
+	protected $fixtures=array(
+        'datasets'=>'Dataset',
+    );
+
+	public function setUp()
+	{
+		parent::setUp();
+	}
+}
+?>

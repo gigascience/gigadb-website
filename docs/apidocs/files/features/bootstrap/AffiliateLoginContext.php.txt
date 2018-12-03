@@ -220,10 +220,20 @@ class AffiliateLoginContext implements Context
         }
         else if ($arg1 == "Google") {
             $this->minkContext->fillField("Email", $login);
-            $this->minkContext->pressButton("Next");
+            if( $this->minkContext->getSession()->getPage()->findButton("下一個") ) {
+                $this->minkContext->pressButton("下一個");
+            }
+            elseif( $this->minkContext->getSession()->getPage()->findButton("Next") ) {
+                $this->minkContext->pressButton("Next");
+            }
             sleep(5);
             $this->minkContext->fillField("Passwd", $password);
-            $this->minkContext->pressButton("Sign in");
+            if( $this->minkContext->getSession()->getPage()->findButton("登入") ) {
+                $this->minkContext->pressButton("登入");
+            }
+            elseif( $this->minkContext->getSession()->getPage()->findButton("Sign in") ) {
+                $this->minkContext->pressButton("Sign in");
+            }
 
         }
         else if ($arg1 == "LinkedIn") {
@@ -259,41 +269,55 @@ class AffiliateLoginContext implements Context
         }
         else if ($arg1 == "Facebook") {
 
-            $xpath = '//input[@type="submit" and @value="Continue as Elizabeth"]' ;
-            $elements = $driver->find($xpath) ;
+            // $xpath = '//input[@type="submit" and @value="Continue as Elizabeth"]' ;
+            // $elements = $driver->find($xpath) ;
 
-            if( 0 == count($elements) ) {
-                throw new \Exception("The element is not found");
-            }
-            else {
-                //print_r("pressing the button ". $driver->getHtml( $elements[0]->getParent()->getXpath() ) );
-                $elements[0]->press();
-            }
+            // if( 0 == count($elements) ) {
+            //     throw new \Exception("The element is not found");
+            // }
+            // else {
+            //     //print_r("pressing the button ". $driver->getHtml( $elements[0]->getParent()->getXpath() ) );
+            //     $elements[0]->press();
+            // }
 
-            // sleep(10);
+            // sleep(5);
             $this->minkContext->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
 
+            $csspath = 'html body input[value="Continue as Elizabeth"]';
+            $authorize_button = $session->getPage()->find('css',$csspath);
+            if ($authorize_button) {
+                echo PHP_EOL."found authorize button!".PHP_EOL;
+                $authorize_button->press();
+                sleep(5);
+            }
+            else {
+                echo PHP_EOL."authorize button not found".PHP_EOL;
+            }
 
 
         }
         else if ($arg1 == "Google") {
 
             $this->minkContext->getSession()->wait(10000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
-            $this->minkContext->pressButton("Allow");
+            if( $this->minkContext->getSession()->getPage()->findButton("Allow") ) {
+                $this->minkContext->pressButton("Allow");
+            }
 
         }
         else if ($arg1 == "Orcid") {
             $this->minkContext->getSession()->wait(15000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
             // PHPUnit_Framework_Assert::assertTrue($this->minkContext->getSession()->getPage()->hasField("enablePersistentToken"), "Authorize checkbox");
-            PHPUnit_Framework_Assert::assertTrue($this->minkContext->getSession()->getPage()->hasButton("authorize"), "Authorize button");
+            // PHPUnit_Framework_Assert::assertTrue($this->minkContext->getSession()->getPage()->hasButton("authorize"), "Authorize button");
             $the_checkbox = $this->minkContext->getSession()->getPage()->findField("enablePersistentToken");
             $the_button = $this->minkContext->getSession()->getPage()->findButton("authorize");
             //var_dump($the_checkbox);
             //var_dump($the_button);
             // $the_checkbox->check();
-            sleep(5);
-            $the_button->press();
-            sleep(5);
+            if ($the_button) {
+                sleep(5);
+                $the_button->press();
+                sleep(5);
+            }
         }
     }
 
@@ -406,11 +430,8 @@ class AffiliateLoginContext implements Context
 
         $this->minkContext->visit("/site/revoke");
         sleep(3);
-        print_r("Initializing the gigadb_user table... ");
         $this->gigadbWebsiteContext->terminateDbBackend("gigadb");
-        $this->gigadbWebsiteContext->truncateTable("gigadb","gigadb_user");
-        $this->gigadbWebsiteContext->loadUserData("joe_bloggs");
-        $this->gigadbWebsiteContext->loadUserData("john_smith");
+        $this->gigadbWebsiteContext->removeCreatedUsers();
         $this->gigadbWebsiteContext->restartPhp();
     }
 

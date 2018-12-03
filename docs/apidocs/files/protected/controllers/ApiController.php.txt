@@ -66,13 +66,13 @@ class ApiController extends Controller
                    $model=  Dataset::model()->findByAttributes(array('id'=>$id,'upload_status'=>$status));}
                    catch(CDbException $e)
                    {
-                             ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for dataset id <b>%s</b>',$id) );
                    }
                     if(!isset($model))
                    {
-                        ob_end_clean();
+
                         $this->_sendResponse(404,
                             sprintf('No items where found for dataset id <b>%s</b>',$id) );
                    }
@@ -82,20 +82,20 @@ class ApiController extends Controller
                     $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
                     catch(CDbException $e)
                    {
-                             ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
                    }
                    if(!isset($model))
                    {
-                        ob_end_clean();
+
                        $this->_sendResponse(404,
                             sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
                    }
 
                 }
 
-                ob_end_clean();
+
 
                  switch ($result) {
                         case "dataset":
@@ -124,7 +124,7 @@ class ApiController extends Controller
 
       $status='Published';
       $datasets = Dataset::model()-> findAllByAttributes(array('upload_status'=>$status));
-      ob_end_clean();
+
        $this->renderPartial('list',array(
                     'models'=>$datasets,
             ));
@@ -145,13 +145,13 @@ class ApiController extends Controller
                    $model=  Dataset::model()->findByAttributes(array('id'=>$id,'upload_status'=>$status));}
                    catch(CDbException $e)
                    {
-                             ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for file id <b>%s</b>',$id) );
                    }
                     if(!isset($model))
                    {
-                         ob_end_clean();
+
                         $this->_sendResponse(404,
                             sprintf('No items where found for file id <b>%s</b>',$id) );
                    }
@@ -163,20 +163,20 @@ class ApiController extends Controller
                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
                    catch(CDbException $e)
                    {
-                            ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for file doi <b>%s</b>',$doi) );
                    }
                     if(!isset($model))
                    {
-                        ob_end_clean();
+
                         $this->_sendResponse(404,
                             sprintf('No items where found for file doi <b>%s</b>',$doi) );
                    }
 
                 }
 
-                ob_end_clean();
+
                 $this->renderPartial('singlefile',array(
 			'model'=>$model,
 		));
@@ -195,13 +195,13 @@ class ApiController extends Controller
                    $model=  Dataset::model()->findByAttributes(array('id'=>$id,'upload_status'=>$status));}
                    catch(CDbException $e)
                         {
-                             ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for sample id <b>%s</b>',$id) );
                         }
                      if(!isset($model))
                    {
-                        ob_end_clean();
+
                         $this->_sendResponse(404,
                             sprintf('No items where found for sample id <b>%s</b>',$id) );
                    }
@@ -212,20 +212,20 @@ class ApiController extends Controller
                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
                    catch(CDbException $e)
                         {
-                             ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for sample doi <b>%s</b>',$doi) );
                         }
                     if(!isset($model))
                    {
-                         ob_end_clean();
+
                         $this->_sendResponse(404,
                             sprintf('No items where found for sample doi <b>%s</b>',$doi) );
                    }
 
                 }
 
-                ob_end_clean();
+
                 $this->renderPartial('singlesample',array(
 			'model'=>$model,
 		));
@@ -264,13 +264,13 @@ class ApiController extends Controller
                             $models= Dataset::model()->findAllBySql($sql);}
                         catch(CDbException $e)
                         {
-                            ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for keyword <b>%s</b>',$keyword) );
                         }
 
                         if (ob_get_contents()){
-                             ob_end_clean();
+
                         }
 
                         $this->renderByResult($result,$models);
@@ -317,7 +317,7 @@ class ApiController extends Controller
                                  continue;
                                  }
                                  if($type[$int] !=='sample' || $type[$int] !=='file' || $type[$int] !=='dataset'){
-                                 ob_end_clean();
+
                                  $this->_sendResponse(404,
                                  sprintf('Parameter type[] is wrong <b>%s</b>',$type[$int]) );
                                  }
@@ -341,7 +341,7 @@ class ApiController extends Controller
                         if(empty($datasets)&&empty($samples)&&empty($files)){
 
                             if (ob_get_contents()){
-                             ob_end_clean();}
+                             }
                           $this->_sendResponse(404,
                           sprintf('No items where found for keyword <b>%s</b>',$keyword) );
                         }
@@ -350,7 +350,7 @@ class ApiController extends Controller
                       //  print_r($files);
 
 
-                        ob_end_clean();
+
 
                         if(!isset($_GET['result']))
                         {
@@ -439,7 +439,7 @@ class ApiController extends Controller
                     if(count($rows)<1)
                       {
                             if (ob_get_contents()){
-                            ob_end_clean();}
+                            }
                             $this->_sendResponse(404,
                             sprintf('No items where found for taxno <b>%s</b>',$taxno) );
                       }
@@ -455,7 +455,7 @@ class ApiController extends Controller
                     $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
                     $models= Dataset::model()->findAllBySql($sql1);
                     if (ob_get_contents()){
-                    ob_end_clean();}
+                    }
                     if(!isset($_GET['result']))
                     {
 
@@ -495,7 +495,7 @@ class ApiController extends Controller
                     if(count($rows)<1)
                       {
                              if (ob_get_contents()){
-                             ob_end_clean();}
+                             }
                             $this->_sendResponse(404,
                             sprintf('No items where found for taxname <b>%s</b>',$taxname) );
                       }
@@ -514,12 +514,12 @@ class ApiController extends Controller
                     }
                     catch(CDbException $e)
                     {
-                             ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for taxname <b>%s</b>',$taxname) );
                     }
                      if (ob_get_contents()){
-                    ob_end_clean();
+
                      }
                     if(!isset($_GET['result']))
                     {
@@ -550,7 +550,7 @@ class ApiController extends Controller
                         $dataset_ids="";
                         if(count($rows)<1)
                         {
-                            ob_end_clean();
+
                             $this->_sendResponse(404,
                                 sprintf('No items where found for author <b>%s</b>',$surname." ".$middlename." ".$firstname) );
                         }
@@ -567,12 +567,12 @@ class ApiController extends Controller
                         }
                          catch(CDbException $e)
                         {
-                                ob_end_clean();
+
                                 $this->_sendResponse(404,
                                 sprintf('No items where found for author <b>%s</b>',$author) );
                         }
 
-                        ob_end_clean();
+
 
                         $this->renderByResult($result,$models);
 
@@ -589,7 +589,7 @@ class ApiController extends Controller
                         $dataset_ids="";
                         if(count($rows)<1)
                         {
-                            ob_end_clean();
+
                             $this->_sendResponse(404,
                                 sprintf('No items where found for author <b>%s</b>',$surname." ".$firstname) );
                         }
@@ -606,12 +606,12 @@ class ApiController extends Controller
                         }
                         catch(CDbException $e)
                         {
-                            ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for author <b>%s</b>',$author) );
                         }
 
-                        ob_end_clean();
+
 
                         $this->renderByResult($result,$models);
                     }
@@ -630,7 +630,7 @@ class ApiController extends Controller
                     {
                         if(isset($token) && $token == 'doibanner')
                         {
-                            ob_end_clean();
+
                             $body = $this->getDOIBannerBody();
                             echo $body;
 
@@ -638,7 +638,7 @@ class ApiController extends Controller
 
                         }else{
 
-                            ob_end_clean();
+
                             $this->_sendResponse(404,
                                 sprintf('No items where found for manuscript <b>%s</b>',$manuscript) );
                         }
@@ -658,20 +658,20 @@ class ApiController extends Controller
                     {
                         if(isset($token) && $token == 'doibanner')
                         {
-                            ob_end_clean();
+
                             $body = $this->getDOIBannerBody();
                             echo $body;
 
                             Yii::app()->end();
 
                          }else{
-                            ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for manuscript <b>%s</b>',$manuscript) );
                         }
                     }
 
-                    ob_end_clean();
+
 
                     if(isset($token) && $token == 'doibanner')
                     {
@@ -708,7 +708,7 @@ class ApiController extends Controller
                       $dataset_ids="";
                        if(count($rows)<1)
                       {
-                            ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for dataset type <b>%s</b>',$datasettype) );
                       }
@@ -726,12 +726,12 @@ class ApiController extends Controller
                      catch(CDbException $e)
                     {
                             if (ob_get_contents()){
-                            ob_end_clean();}
+                            }
                             $this->_sendResponse(404,
                             sprintf('No items where found for dataset type <b>%s</b>',$datasettype) );
                     }
                     if (ob_get_contents()){
-                    ob_end_clean();
+
                     }
 
                     $this->renderByResult($result,$models);
@@ -749,7 +749,7 @@ class ApiController extends Controller
                       $dataset_ids="";
                       if(count($rows)<1)
                       {
-                            ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for project <b>%s</b>',$project) );
                       }
@@ -765,12 +765,12 @@ class ApiController extends Controller
                     }
                     catch(CDbException $e)
                     {
-                            ob_end_clean();
+
                             $this->_sendResponse(404,
                             sprintf('No items where found for project <b>%s</b>',$project) );
                     }
 
-                    ob_end_clean();
+
 
                     $this->renderByResult($result,$models);
 

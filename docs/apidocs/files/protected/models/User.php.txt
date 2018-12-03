@@ -179,28 +179,42 @@ class User extends CActiveRecord {
         return true;
     }
 
+    /**
+     * Replace inplace user's password with a hashed version
+     *
+     * @uses sodium_crypto_pwhash_str()
+     * @see https://paragonie.com/book/pecl-libsodium/read/07-password-hashing.md
+     */
     public function encryptPassword() {
         # TODO: use salt?
         # if(md5(md5($this->password).$user->salt)!==$user->password)
         #Yii::log(__FUNCTION__."> encryptPassword password before hash = " . $this->password, 'debug');
-        $this->passwordUnHashed = $this->password;
-        $this->password = md5($this->password);
+        $this->password = sodium_crypto_pwhash_str(
+                            $this->password,
+                            SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
+                            SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
+                        );
         #Yii::log(__FUNCTION__."> encryptPassword password after  hash = " . $this->password, 'debug');
     }
 
+    /**
+     * Generate a random password securely
+     *
+     * @param int $length length of the password to generate (default to 8)
+     * @return string the generated password
+     * @see https://paragonie.com/blog/2015/07/how-safely-generate-random-strings-and-integers-in-php
+     * @see https://stackoverflow.com/questions/30145715/why-srandtime-is-a-bad-seed/30146979#30146979
+     * @see https://stackoverflow.com/questions/6101956/generating-a-random-password-in-php/31284266#31284266
+     * @see https://github.com/jedisct1/libsodium-php/issues/163
+     */
     public function generatePassword($length=8) {
         $chars = "abcdefghijkmnopqrstuvwxyz023456789";
-        srand((double)microtime()*1000000);
-        $i = 0;
-        $pass = '' ;
-
-        while ($i <= $length) {
-            $num = rand() % 33;
-            $tmp = substr($chars, $num, 1);
-            $pass .= $tmp;
-            $i++;
+        $str = '';
+        $keysize = strlen($chars) - 1;
+        for ($i = 0; $i < $length; ++$i) {
+            $str .= $chars[random_int(0, $keysize)];
         }
-        return $pass;
+        return $str;
     }
 
     /**

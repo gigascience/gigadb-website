@@ -44,21 +44,21 @@ class DatasetsOnProfileContext implements Context
     {
         if ("Zhang, G" == $author) {
             // return array(
-            //     new Step\Given("author \"3791\" is associated with user \"346\""),
+            //     new Step\Given("author \"3791\" is associated with user \"681\""),
             // );
-            $this->authorUserContext->authorIsAssociatedWithUser(3791,346);
+            $this->authorUserContext->authorIsAssociatedWithUser(3791,681);
         }
         else if("Yue, Z" == $author) {
             // return array(
-            //     new Step\Given("author \"3798\" is associated with user \"346\""),
+            //     new Step\Given("author \"3798\" is associated with user \"681\""),
             // );
-            $this->authorUserContext->authorIsAssociatedWithUser(3798,346);
+            $this->authorUserContext->authorIsAssociatedWithUser(3798,681);
         }
         else if("Pan, S" == $author) {
             // return array(
-            //     new Step\Given("author \"3794\" is associated with user \"346\""),
+            //     new Step\Given("author \"3794\" is associated with user \"681\""),
             // );
-            $this->authorUserContext->authorIsAssociatedWithUser(3794,346);
+            $this->authorUserContext->authorIsAssociatedWithUser(3794,681);
         }
     }
 

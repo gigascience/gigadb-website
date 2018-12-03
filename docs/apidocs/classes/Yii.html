@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/GigaDB.html">\GigaDB</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">1433</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">5</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-408349602"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-408349602" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-529854831"></a>
+                                <a href="../namespaces/GigaDB.html" style="margin-left: 30px; padding-left: 0">GigaDB</a>
+            </div>
+            <div id="namespace-529854831" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1326260070"></a>
+                                <a href="../namespaces/GigaDB.Tests.html" style="margin-left: 30px; padding-left: 0">Tests</a>
+            </div>
+            <div id="namespace-1326260070" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-933072613"></a>
+                                <a href="../namespaces/GigaDB.Tests.UnitTests.html" style="margin-left: 30px; padding-left: 0">UnitTests</a>
+            </div>
+            <div id="namespace-933072613" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/GigaDB.Tests.UnitTests.AffilateUserIdentityTest.html">AffilateUserIdentityTest</a></li>
+                                                    <li class="class"><a href="../classes/GigaDB.Tests.UnitTests.HTTPSHelperTest.html">HTTPSHelperTest</a></li>
+                                                    <li class="class"><a href="../classes/GigaDB.Tests.UnitTests.PasswordHelperTest.html">PasswordHelperTest</a></li>
+                                                    <li class="class"><a href="../classes/GigaDB.Tests.UnitTests.UserIdentityTest.html">UserIdentityTest</a></li>
+                                                    <li class="class"><a href="../classes/GigaDB.Tests.UnitTests.UserTest.html">UserTest</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AdminAuthorController.html">AdminAuthorController</a></li>
+                                                    <li class="class"><a href="../classes/AdminDatasetAuthorController.html">AdminDatasetAuthorController</a></li>
+                                                    <li class="class"><a href="../classes/AdminDatasetController.html">AdminDatasetController</a></li>
+                                                    <li class="class"><a href="../classes/AdminDatasetProjectController.html">AdminDatasetProjectController</a></li>
+                                                    <li class="class"><a href="../classes/AdminDatasetSampleController.html">AdminDatasetSampleController</a></li>
+                                                    <li class="class"><a href="../classes/AdminDatasetTypeController.html">AdminDatasetTypeController</a></li>
+                                                    <li class="class"><a href="../classes/AdminExternalLinkController.html">AdminExternalLinkController</a></li>
+                                                    <li class="class"><a href="../classes/AdminFileController.html">AdminFileController</a></li>
+                                                    <li class="class"><a href="../classes/AdminFileFormatController.html">AdminFileFormatController</a></li>
+                                                    <li class="class"><a href="../classes/AdminFileTest.html">AdminFileTest</a></li>
+                                                    <li class="class"><a href="../classes/AdminFileTypeController.html">AdminFileTypeController</a></li>
+                                                    <li class="class"><a href="../classes/AdminImagesController.html">AdminImagesController</a></li>
+                                                    <li class="class"><a href="../classes/AdminLinkController.html">AdminLinkController</a></li>
+                                                    <li class="class"><a href="../classes/AdminLinkPrefixController.html">AdminLinkPrefixController</a></li>
+                                                    <li class="class"><a href="../classes/AdminManuscriptController.html">AdminManuscriptController</a></li>
+                                                    <li class="class"><a href="../classes/AdminProjectController.html">AdminProjectController</a></li>
+                                                    <li class="class"><a href="../classes/AdminPublisherController.html">AdminPublisherController</a></li>
+                                                    <li class="class"><a href="../classes/AdminRelationController.html">AdminRelationController</a></li>
+                                                    <li class="class"><a href="../classes/AdminSampleController.html">AdminSampleController</a></li>
+                                                    <li class="class"><a href="../classes/AdminSpeciesController.html">AdminSpeciesController</a></li>
+                                                    <li class="class"><a href="../classes/AdminUserCommandController.html">AdminUserCommandController</a></li>
+                                                    <li class="class"><a href="../classes/AffiliateLoginContext.html">AffiliateLoginContext</a></li>
+                                                    <li class="class"><a href="../classes/AffiliateUserIdentity.html">AffiliateUserIdentity</a></li>
+                                                    <li class="class"><a href="../classes/AlternativeIdentifiers.html">AlternativeIdentifiers</a></li>
+                                                    <li class="class"><a href="../classes/AnalyticsService.html">AnalyticsService</a></li>
+                                                    <li class="class"><a href="../classes/AnalyticsTest.html">AnalyticsTest</a></li>
+                                                    <li class="class"><a href="../classes/ApiController.html">ApiController</a></li>
+                                                    <li class="class"><a href="../classes/ApiTest.html">ApiTest</a></li>
+                                                    <li class="class"><a href="../classes/Attribute.html">Attribute</a></li>
+                                                    <li class="class"><a href="../classes/AttributeController.html">AttributeController</a></li>
+                                                    <li class="class"><a href="../classes/AttributeService.html">AttributeService</a></li>
+                                                    <li class="class"><a href="../classes/AttributeServiceTest.html">AttributeServiceTest</a></li>
+                                                    <li class="class"><a href="../classes/Author.html">Author</a></li>
+                                                    <li class="class"><a href="../classes/AuthorisedDatasetAccessions.html">AuthorisedDatasetAccessions</a></li>
+                                                    <li class="class"><a href="../classes/AuthorisedDatasetAccessionsTest.html">AuthorisedDatasetAccessionsTest</a></li>
+                                                    <li class="class"><a href="../classes/AuthorisedDatasetSubmitter.html">AuthorisedDatasetSubmitter</a></li>
+                                                    <li class="class"><a href="../classes/AuthorMergingContext.html">AuthorMergingContext</a></li>
+                                                    <li class="class"><a href="../classes/AuthorRel.html">AuthorRel</a></li>
+                                                    <li class="class"><a href="../classes/AuthorTest.html">AuthorTest</a></li>
+                                                    <li class="class"><a href="../classes/AuthorUserContext.html">AuthorUserContext</a></li>
+                                                    <li class="class"><a href="../classes/AutoCompleteEndpointsTest.html">AutoCompleteEndpointsTest</a></li>
+                                                    <li class="class"><a href="../classes/AutoCompleteService.html">AutoCompleteService</a></li>
+                                                    <li class="class"><a href="../classes/AutoCompleteServiceTest.html">AutoCompleteServiceTest</a></li>
+                                                    <li class="class"><a href="../classes/CachedDatasetAccessions.html">CachedDatasetAccessions</a></li>
+                                                    <li class="class"><a href="../classes/CachedDatasetAccessionsTest.html">CachedDatasetAccessionsTest</a></li>
+                                                    <li class="class"><a href="../classes/CachedDatasetSubmitter.html">CachedDatasetSubmitter</a></li>
+                                                    <li class="class"><a href="../classes/ChangePasswordForm.html">ChangePasswordForm</a></li>
+                                                    <li class="class"><a href="../classes/ClaimDatasetContext.html">ClaimDatasetContext</a></li>
+                                                    <li class="class"><a href="../classes/ContactForm.html">ContactForm</a></li>
+                                                    <li class="class"><a href="../classes/Controller.html">Controller</a></li>
+                                                    <li class="class"><a href="../classes/CurationLog.html">CurationLog</a></li>
+                                                    <li class="class"><a href="../classes/CurationLogController.html">CurationLogController</a></li>
+                                                    <li class="class"><a href="../classes/DatabaseSearch.html">DatabaseSearch</a></li>
+                                                    <li class="class"><a href="../classes/Dataset.html">Dataset</a></li>
+                                                    <li class="class"><a href="../classes/DatasetAdminContext.html">DatasetAdminContext</a></li>
+                                                    <li class="class"><a href="../classes/DatasetAttributes.html">DatasetAttributes</a></li>
+                                                    <li class="class"><a href="../classes/DatasetAttributesFactory.html">DatasetAttributesFactory</a></li>
+                                                    <li class="class"><a href="../classes/DatasetAttributesFactoryTest.html">DatasetAttributesFactoryTest</a></li>
+                                                    <li class="class"><a href="../classes/DatasetAuthor.html">DatasetAuthor</a></li>
+                                                    <li class="class"><a href="../classes/DatasetController.html">DatasetController</a></li>
+                                                    <li class="class"><a href="../classes/DatasetDAO.html">DatasetDAO</a></li>
+                                                    <li class="class"><a href="../classes/DatasetDAOTest.html">DatasetDAOTest</a></li>
+                                                    <li class="class"><a href="../classes/DatasetFunder.html">DatasetFunder</a></li>
+                                                    <li class="class"><a href="../classes/DatasetFunderController.html">DatasetFunderController</a></li>
+                                                    <li class="class"><a href="../classes/DatasetKeywordsTest.html">DatasetKeywordsTest</a></li>
+                                                    <li class="class"><a href="../classes/DatasetLog.html">DatasetLog</a></li>
+                                                    <li class="class"><a href="../classes/DatasetLogController.html">DatasetLogController</a></li>
+                                                    <li class="class"><a href="../classes/DatasetProject.html">DatasetProject</a></li>
+                                                    <li class="class"><a href="../classes/DatasetSample.html">DatasetSample</a></li>
+                                                    <li class="class"><a href="../classes/DatasetSession.html">DatasetSession</a></li>
+                                                    <li class="class"><a href="../classes/DatasetsOnProfileContext.html">DatasetsOnProfileContext</a></li>
+                                                    <li class="class"><a href="../classes/DatasetSubmissionController.html">DatasetSubmissionController</a></li>
+                                                    <li class="class"><a href="../classes/DatasetSubmitterDataTest.html">DatasetSubmitterDataTest</a></li>
+                                                    <li class="class"><a href="../classes/DatasetTest.html">DatasetTest</a></li>
+                                                    <li class="class"><a href="../classes/DatasetType.html">DatasetType</a></li>
+                                                    <li class="class"><a href="../classes/DatasetViewContext.html">DatasetViewContext</a></li>
+                                                    <li class="class"><a href="../classes/DatasetViewTest.html">DatasetViewTest</a></li>
+                                                    <li class="class"><a href="../classes/DeferrableCJuiAutoComplete.html">DeferrableCJuiAutoComplete</a></li>
+                                                    <li class="class"><a href="../classes/EditProfileForm.html">EditProfileForm</a></li>
+                                                    <li class="class"><a href="../classes/ExpAttributes.html">ExpAttributes</a></li>
+                                                    <li class="class"><a href="../classes/Experiment.html">Experiment</a></li>
+                                                    <li class="class"><a href="../classes/Extdb.html">Extdb</a></li>
+                                                    <li class="class"><a href="../classes/ExternalLink.html">ExternalLink</a></li>
+                                                    <li class="class"><a href="../classes/ExternalLinkType.html">ExternalLinkType</a></li>
+                                                    <li class="class"><a href="../classes/File.html">File</a></li>
+                                                    <li class="class"><a href="../classes/FileAttributes.html">FileAttributes</a></li>
+                                                    <li class="class"><a href="../classes/FileFormat.html">FileFormat</a></li>
+                                                    <li class="class"><a href="../classes/FileRelationship.html">FileRelationship</a></li>
+                                                    <li class="class"><a href="../classes/FileSample.html">FileSample</a></li>
+                                                    <li class="class"><a href="../classes/FileTest.html">FileTest</a></li>
+                                                    <li class="class"><a href="../classes/FileType.html">FileType</a></li>
+                                                    <li class="class"><a href="../classes/Folder.html">Folder</a></li>
+                                                    <li class="class"><a href="../classes/FormattedDatasetAccessions.html">FormattedDatasetAccessions</a></li>
+                                                    <li class="class"><a href="../classes/FormattedDatasetAccessionsTest.html">FormattedDatasetAccessionsTest</a></li>
+                                                    <li class="class"><a href="../classes/Funder.html">Funder</a></li>
+                                                    <li class="class"><a href="../classes/FunderController.html">FunderController</a></li>
+                                                    <li class="class"><a href="../classes/GigadbWebsiteContext.html">GigadbWebsiteContext</a></li>
+                                                    <li class="class"><a href="../classes/ImageHaver.html">ImageHaver</a></li>
+                                                    <li class="class"><a href="../classes/Images.html">Images</a></li>
+                                                    <li class="class"><a href="../classes/Link.html">Link</a></li>
+                                                    <li class="class"><a href="../classes/LinkWithFormat.html">LinkWithFormat</a></li>
+                                                    <li class="class"><a href="../classes/LinkWithPreference.html">LinkWithPreference</a></li>
+                                                    <li class="class"><a href="../classes/LoginForm.html">LoginForm</a></li>
+                                                    <li class="class"><a href="../classes/Manuscript.html">Manuscript</a></li>
+                                                    <li class="class"><a href="../classes/MySort.html">MySort</a></li>
+                                                    <li class="class"><a href="../classes/News.html">News</a></li>
+                                                    <li class="class"><a href="../classes/NewsAndFeedsService.html">NewsAndFeedsService</a></li>
+                                                    <li class="class"><a href="../classes/NewsController.html">NewsController</a></li>
+                                                    <li class="class"><a href="../classes/NewsletterService.html">NewsletterService</a></li>
+                                                    <li class="class"><a href="../classes/NewsletterServiceTest.html">NewsletterServiceTest</a></li>
+                                                    <li class="class"><a href="../classes/NewsletterTest.html">NewsletterTest</a></li>
+                                                    <li class="class"><a href="../classes/NormalLoginContext.html">NormalLoginContext</a></li>
+                                                    <li class="class"><a href="../classes/OrcidStrategy.html">OrcidStrategy</a></li>
+                                                    <li class="class"><a href="../classes/PolicyController.html">PolicyController</a></li>
+                                                    <li class="class"><a href="../classes/Prefix.html">Prefix</a></li>
+                                                    <li class="class"><a href="../classes/Project.html">Project</a></li>
+                                                    <li class="class"><a href="../classes/Publisher.html">Publisher</a></li>
+                                                    <li class="class"><a href="../classes/PxInfoForm.html">PxInfoForm</a></li>
+                                                    <li class="class"><a href="../classes/Relation.html">Relation</a></li>
+                                                    <li class="class"><a href="../classes/RelationDAO.html">RelationDAO</a></li>
+                                                    <li class="class"><a href="../classes/RelationDAOTest.html">RelationDAOTest</a></li>
+                                                    <li class="class"><a href="../classes/Relationship.html">Relationship</a></li>
+                                                    <li class="class"><a href="../classes/ReportController.html">ReportController</a></li>
+                                                    <li class="class"><a href="../classes/RssController.html">RssController</a></li>
+                                                    <li class="class"><a href="../classes/RSSFeedDAO.html">RSSFeedDAO</a></li>
+                                                    <li class="class"><a href="../classes/RSSFeedDAOTest.html">RSSFeedDAOTest</a></li>
+                                                    <li class="class"><a href="../classes/RSSFeedTest.html">RSSFeedTest</a></li>
+                                                    <li class="class"><a href="../classes/RssMessage.html">RssMessage</a></li>
+                                                    <li class="class"><a href="../classes/RssMessageController.html">RssMessageController</a></li>
+                                                    <li class="class"><a href="../classes/Sample.html">Sample</a></li>
+                                                    <li class="class"><a href="../classes/SampleAttribute.html">SampleAttribute</a></li>
+                                                    <li class="class"><a href="../classes/SampleRel.html">SampleRel</a></li>
+                                                    <li class="class"><a href="../classes/SearchController.html">SearchController</a></li>
+                                                    <li class="class"><a href="../classes/SearchForm.html">SearchForm</a></li>
+                                                    <li class="class"><a href="../classes/SearchRecord.html">SearchRecord</a></li>
+                                                    <li class="class"><a href="../classes/SearchViewTest.html">SearchViewTest</a></li>
+                                                    <li class="class"><a href="../classes/SiteController.html">SiteController</a></li>
+                                                    <li class="class"><a href="../classes/SiteLinkPager.html">SiteLinkPager</a></li>
+                                                    <li class="class"><a href="../classes/SiteTest.html">SiteTest</a></li>
+                                                    <li class="class"><a href="../classes/Species.html">Species</a></li>
+                                                    <li class="class"><a href="../classes/StoredDatasetAccessions.html">StoredDatasetAccessions</a></li>
+                                                    <li class="class"><a href="../classes/StoredDatasetAccessionsTest.html">StoredDatasetAccessionsTest</a></li>
+                                                    <li class="class"><a href="../classes/StoredDatasetMainSectionTest.html">StoredDatasetMainSectionTest</a></li>
+                                                    <li class="class"><a href="../classes/StoredDatasetSubmitter.html">StoredDatasetSubmitter</a></li>
+                                                    <li class="class"><a href="../classes/SuUserIdentity.html">SuUserIdentity</a></li>
+                                                    <li class="class"><a href="../classes/Type.html">Type</a></li>
+                                                    <li class="class"><a href="../classes/Unit.html">Unit</a></li>
+                                                    <li class="class"><a href="../classes/User.html">User</a></li>
+                                                    <li class="class"><a href="../classes/UserCommand.html">UserCommand</a></li>
+                                                    <li class="class"><a href="../classes/UserCommandController.html">UserCommandController</a></li>
+                                                    <li class="class"><a href="../classes/UserController.html">UserController</a></li>
+                                                    <li class="class"><a href="../classes/UserIdentity.html">UserIdentity</a></li>
+                                                    <li class="class"><a href="../classes/Util.html">Util</a></li>
+                                                    <li class="class"><a href="../classes/WebUser.html">WebUser</a></li>
+                                                    <li class="class"><a href="../classes/Yii.html">Yii</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>Yii</h1>
+                    <p><em></em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Yii.html#method_getVersion" class="">getVersion()</a><br />
+                                                                    <a href="../classes/Yii.html#method_createWebApplication" class="">createWebApplication()</a><br />
+                                                                    <a href="../classes/Yii.html#method_createConsoleApplication" class="">createConsoleApplication()</a><br />
+                                                                    <a href="../classes/Yii.html#method_createApplication" class="">createApplication()</a><br />
+                                                                    <a href="../classes/Yii.html#method_app" class="">app()</a><br />
+                                                                    <a href="../classes/Yii.html#method_setApplication" class="">setApplication()</a><br />
+                                                                    <a href="../classes/Yii.html#method_getFrameworkPath" class="">getFrameworkPath()</a><br />
+                                                                    <a href="../classes/Yii.html#method_createComponent" class="">createComponent()</a><br />
+                                                                    <a href="../classes/Yii.html#method_import" class="">import()</a><br />
+                                                                    <a href="../classes/Yii.html#method_getPathOfAlias" class="">getPathOfAlias()</a><br />
+                                                                    <a href="../classes/Yii.html#method_setPathOfAlias" class="">setPathOfAlias()</a><br />
+                                                                    <a href="../classes/Yii.html#method_autoload" class="">autoload()</a><br />
+                                                                    <a href="../classes/Yii.html#method_trace" class="">trace()</a><br />
+                                                                    <a href="../classes/Yii.html#method_log" class="">log()</a><br />
+                                                                    <a href="../classes/Yii.html#method_beginProfile" class="">beginProfile()</a><br />
+                                                                    <a href="../classes/Yii.html#method_endProfile" class="">endProfile()</a><br />
+                                                                    <a href="../classes/Yii.html#method_getLogger" class="">getLogger()</a><br />
+                                                                    <a href="../classes/Yii.html#method_setLogger" class="">setLogger()</a><br />
+                                                                    <a href="../classes/Yii.html#method_powered" class="">powered()</a><br />
+                                                                    <a href="../classes/Yii.html#method_t" class="">t()</a><br />
+                                                                    <a href="../classes/Yii.html#method_registerAutoloader" class="">registerAutoloader()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Yii.html#property_autoloaderFilters" class="">$autoloaderFilters</a><br />
+                                                                    <a href="../classes/Yii.html#property_classMap" class="">$classMap</a><br />
+                                                                    <a href="../classes/Yii.html#property_enableIncludePath" class="">$enableIncludePath</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/protected.components.Yii.html"><div class="path-wrapper">protected/components/Yii.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper">\yii\BaseYii</div>
+                                                                                                    <div class="namespace-wrapper">\Yii</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_autoloaderFilters" name="property_autoloaderFilters" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$autoloaderFilters</h3>
+                <pre class="signature">$autoloaderFilters : array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                &mdash; filters for autoloading mechanism.
+It should be callable. For callable function autoloader pass className.
+If filter function returns true Yii autoloader will be skipped.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_classMap" name="property_classMap" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$classMap</h3>
+                <pre class="signature">$classMap : array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                &mdash; class map used by the Yii autoloading mechanism.
+The array keys are the class names and the array values are the corresponding class file paths.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_enableIncludePath" name="property_enableIncludePath" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$enableIncludePath</h3>
+                <pre class="signature">$enableIncludePath : boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                boolean
+                &mdash; whether to rely on PHP include path to autoload class files. Defaults to true.
+You may set this to be false if your hosting environment doesn&#039;t allow changing the PHP
+include path, or if you want to append additional autoloaders to the default Yii autoloader.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getVersion" name="method_getVersion" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getVersion()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getVersion() : string</pre>
+                <p><em></em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>the version of Yii framework</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_createWebApplication" name="method_createWebApplication" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">createWebApplication()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">createWebApplication(mixed  <span class="argument">$config = null</span>) : \CWebApplication</pre>
+                <p><em>Creates a Web application instance.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$config </td>
+                                <td><p>application configuration.
+If a string, it is treated as the path of the file that contains the configuration;
+If an array, it is the actual configuration information.
+Please make sure you specify the {@link CApplication::basePath basePath} property in the configuration,
+which should point to the directory containing all application logic, template and data.
+If not, the directory will be defaulted to 'protected'.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \CWebApplication
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_createConsoleApplication" name="method_createConsoleApplication" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">createConsoleApplication()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">createConsoleApplication(mixed  <span class="argument">$config = null</span>) : \CConsoleApplication</pre>
+                <p><em>Creates a console application instance.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$config </td>
+                                <td><p>application configuration.
+If a string, it is treated as the path of the file that contains the configuration;
+If an array, it is the actual configuration information.
+Please make sure you specify the {@link CApplication::basePath basePath} property in the configuration,
+which should point to the directory containing all application logic, template and data.
+If not, the directory will be defaulted to 'protected'.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \CConsoleApplication
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_createApplication" name="method_createApplication" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">createApplication()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">createApplication(string  <span class="argument">$class</span>, mixed  <span class="argument">$config = null</span>) : mixed</pre>
+                <p><em>Creates an application of the specified class.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$class </td>
+                                <td><p>the application class name</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$config </td>
+                                <td><p>application configuration. This parameter will be passed as the parameter
+to the constructor of the application class.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>the application instance</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_app" name="method_app" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">app()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">app() : \CApplication</pre>
+                <p><em>Returns the application singleton or null if the singleton has not been created yet.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \CApplication
+                                            &mdash; <p>the application singleton, null if the singleton has not been created yet.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setApplication" name="method_setApplication" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setApplication()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setApplication(\CApplication  <span class="argument">$app</span>) </pre>
+                <p><em>Stores the application instance in the class static member.</em></p>
+                <p>This method helps implement a singleton pattern for CApplication.
+Repeated invocation of this method or the CApplication constructor
+will cause the throw of an exception.
+To retrieve the application instance, use \app().</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\CApplication</td>
+                                <td>$app </td>
+                                <td><p>the application instance. If this is null, the existing
+application singleton will be removed.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\CException</dt>
+                            <dd><p>if multiple application instances are registered.</p></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getFrameworkPath" name="method_getFrameworkPath" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getFrameworkPath()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getFrameworkPath() : string</pre>
+                <p><em></em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>the path of the framework</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_createComponent" name="method_createComponent" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">createComponent()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">createComponent(mixed  <span class="argument">$config</span>) : mixed</pre>
+                <p><em>Creates an object and initializes it based on the given configuration.</em></p>
+                <p>The specified configuration can be either a string or an array.
+If the former, the string is treated as the object type which can
+be either the class name or \YiiBase::getPathOfAlias.
+If the latter, the 'class' element is treated as the object type,
+and the rest of the name-value pairs in the array are used to initialize
+the corresponding object properties.</p>
+<p>Any additional parameters passed to this method will be
+passed to the constructor of the object being created.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$config </td>
+                                <td><p>the configuration. It can be either a string or an array.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\CException</dt>
+                            <dd><p>if the configuration does not have a 'class' element.</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>the created object</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_import" name="method_import" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">import()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">import(string  <span class="argument">$alias</span>, boolean  <span class="argument">$forceInclude = false</span>) : string</pre>
+                <p><em>Imports a class or a directory.</em></p>
+                <p>Importing a class is like including the corresponding class file.
+The main difference is that importing a class is much lighter because it only
+includes the class file when the class is referenced the first time.</p>
+<p>Importing a directory is equivalent to adding a directory into the PHP include path.
+If multiple directories are imported, the directories imported later will take
+precedence in class file searching (i.e., they are added to the front of the PHP include path).</p>
+<p>Path aliases are used to import a class or directory. For example,</p>
+<ul>
+  <li><code>application.components.GoogleMap</code>: import the <code>GoogleMap</code> class.</li>
+  <li><code>application.components.*</code>: import the <code>components</code> directory.</li>
+</ul>
+<p>The same path alias can be imported multiple times, but only the first time is effective.
+Importing a directory does not import any of its subdirectories.</p>
+<p>Starting from version 1.1.5, this method can also be used to import a class in namespace format
+(available for PHP 5.3 or above only). It is similar to importing a class in path alias format,
+except that the dot separator is replaced by the backslash separator. For example, importing
+<code>application\components\GoogleMap</code> is similar to importing <code>application.components.GoogleMap</code>.
+The difference is that the former class is using qualified name, while the latter unqualified.</p>
+<p>Note, importing a class in namespace format requires that the namespace corresponds to
+a valid path alias once backslash characters are replaced with dot characters.
+For example, the namespace <code>application\components</code> must correspond to a valid
+path alias <code>application.components</code>.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$alias </td>
+                                <td><p>path alias to be imported</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$forceInclude </td>
+                                <td><p>whether to include the class file immediately. If false, the class file
+will be included only when the class is being used. This parameter is used only when
+the path alias refers to a class.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\CException</dt>
+                            <dd><p>if the alias is invalid</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>the class name or the directory that this alias refers to</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getPathOfAlias" name="method_getPathOfAlias" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getPathOfAlias()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getPathOfAlias(string  <span class="argument">$alias</span>) : mixed</pre>
+                <p><em>Translates an alias into a file path.</em></p>
+                <p>Note, this method does not ensure the existence of the resulting file path.
+It only checks if the root alias is valid or not.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$alias </td>
+                                <td><p>alias (e.g. system.web.CController)</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>file path corresponding to the alias, false if the alias is invalid.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setPathOfAlias" name="method_setPathOfAlias" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setPathOfAlias()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setPathOfAlias(string  <span class="argument">$alias</span>, string  <span class="argument">$path</span>) </pre>
+                <p><em>Create a path alias.</em></p>
+                <p>Note, this method neither checks the existence of the path nor normalizes the path.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$alias </td>
+                                <td><p>alias to the path</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$path </td>
+                                <td><p>the path corresponding to the alias. If this is null, the corresponding
+path alias will be removed.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_autoload" name="method_autoload" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">autoload()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">autoload(string  <span class="argument">$className</span>, boolean  <span class="argument">$classMapOnly = false</span>) : boolean</pre>
+                <p><em>Class autoload loader.</em></p>
+                <p>This method is provided to be invoked within an __autoload() magic method.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$className </td>
+                                <td><p>class name</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$classMapOnly </td>
+                                <td><p>whether to load classes via classmap only</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\CException</dt>
+                            <dd><p>When class name does not match class file in debug mode.</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>whether the class has been loaded successfully</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_trace" name="method_trace" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">trace()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">trace(string  <span class="argument">$msg</span>, string  <span class="argument">$category = &#039;application&#039;</span>) </pre>
+                <p><em>Writes a trace message.</em></p>
+                <p>This method will only log a message when the application is in debug mode.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$msg </td>
+                                <td><p>message to be logged</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$category </td>
+                                <td><p>category of the message</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper">\log</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_log" name="method_log" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">log()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">log(string  <span class="argument">$msg</span>, string  <span class="argument">$level = \CLogger::LEVEL_INFO</span>, string  <span class="argument">$category = &#039;application&#039;</span>) </pre>
+                <p><em>Logs a message.</em></p>
+                <p>Messages logged by this method may be retrieved via \CLogger::getLogs
+and may be recorded in different media, such as file, email, database, using
+\CLogRouter.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$msg </td>
+                                <td><p>message to be logged</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$level </td>
+                                <td><p>level of the message (e.g. 'trace', 'warning', 'error'). It is case-insensitive.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$category </td>
+                                <td><p>category of the message (e.g. 'system.web'). It is case-insensitive.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_beginProfile" name="method_beginProfile" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">beginProfile()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">beginProfile(string  <span class="argument">$token</span>, string  <span class="argument">$category = &#039;application&#039;</span>) </pre>
+                <p><em>Marks the beginning of a code block for profiling.</em></p>
+                <p>This has to be matched with a call to \endProfile() with the same token.
+The begin- and end- calls must also be properly nested, e.g.,</p>
+<pre>
+Yii::beginProfile('block1');
+Yii::beginProfile('block2');
+Yii::endProfile('block2');
+Yii::endProfile('block1');
+</pre>
+<p>The following sequence is not valid:</p>
+<pre>
+Yii::beginProfile('block1');
+Yii::beginProfile('block2');
+Yii::endProfile('block1');
+Yii::endProfile('block2');
+</pre>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$token </td>
+                                <td><p>token for the code block</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$category </td>
+                                <td><p>the category of this log message</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper">\endProfile</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_endProfile" name="method_endProfile" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">endProfile()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">endProfile(string  <span class="argument">$token</span>, string  <span class="argument">$category = &#039;application&#039;</span>) </pre>
+                <p><em>Marks the end of a code block for profiling.</em></p>
+                <p>This has to be matched with a previous call to \beginProfile() with the same token.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$token </td>
+                                <td><p>token for the code block</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$category </td>
+                                <td><p>the category of this log message</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper">\beginProfile</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getLogger" name="method_getLogger" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getLogger()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getLogger() : \CLogger</pre>
+                <p><em></em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \CLogger
+                                            &mdash; <p>message logger</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setLogger" name="method_setLogger" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setLogger()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setLogger(\CLogger  <span class="argument">$logger</span>) </pre>
+                <p><em>Sets the logger object.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\CLogger</td>
+                                <td>$logger </td>
+                                <td><p>the logger object.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.1.8                                
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_powered" name="method_powered" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">powered()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">powered() : string</pre>
+                <p><em>Returns a string that can be displayed on your Web page showing Powered-by-Yii information</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>a string that can be displayed on your Web page showing Powered-by-Yii information</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_t" name="method_t" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">t()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">t(string  <span class="argument">$category</span>, string  <span class="argument">$message</span>, array  <span class="argument">$params = array()</span>, string  <span class="argument">$source = null</span>, string  <span class="argument">$language = null</span>) : string</pre>
+                <p><em>Translates a message to the specified language.</em></p>
+                <p>This method supports choice format (see \CChoiceFormat),
+i.e., the message returned will be chosen from a few candidates according to the given
+number value. This feature is mainly used to solve plural format issue in case
+a message has different plural forms in some languages.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$category </td>
+                                <td><p>message category. Please use only word letters. Note, category 'yii' is
+reserved for Yii framework core code use. See {@link CPhpMessageSource} for
+more interpretation about message category.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$message </td>
+                                <td><p>the original message</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>parameters to be applied to the message using <code>strtr</code>.
+The first parameter can be a number without key.
+And in this case, the method will call {@link CChoiceFormat::format} to choose
+an appropriate message translation.
+Starting from version 1.1.6 you can pass parameter for {@link CChoiceFormat::format}
+or plural forms format without wrapping it with array.
+This parameter is then available as <code>{n}</code> in the message translation string.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$source </td>
+                                <td><p>which message source application component to use.
+Defaults to null, meaning using 'coreMessages' for messages belonging to
+the 'yii' category and using 'messages' for the rest messages.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$language </td>
+                                <td><p>the target language. If null (default), the {@link CApplication::getLanguage application language} will be used.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>the translated message</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper">\CMessageSource</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_registerAutoloader" name="method_registerAutoloader" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">registerAutoloader()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">registerAutoloader(callback  <span class="argument">$callback</span>, boolean  <span class="argument">$append = false</span>) </pre>
+                <p><em>Registers a new class autoloader.</em></p>
+                <p>The new autoloader will be placed before \autoload and after
+any other existing autoloaders.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>callback</td>
+                                <td>$callback </td>
+                                <td><p>a valid PHP callback (function name or array($className,$methodName)).</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$append </td>
+                                <td><p>whether to append the new autoloader after the default Yii autoloader.
+Be careful using this option as it will disable {@link enableIncludePath autoloading via include path}
+when set to true. After this the Yii autoloader can not rely on loading classes via simple include anymore
+and you have to {@link import} all classes explicitly.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">Yii.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/protected/components/Yii.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/GigaDB.html">\GigaDB</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on December 3rd, 2018 at 05:44.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
-<?
+<?php
 
 class Util {
-public static function returnJSON($data) {
+    public static function returnJSON($data) {
         header('Content-type: application/json');
         echo CJSON::encode($data);
         ob_start();
@@ -27,4 +27,6 @@ public static function returnJSON($data) {
 
         return $dois;
     }
- }
+}
+
+?>

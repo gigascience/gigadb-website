@@ -14,3 +14,5 @@ class SiteLinkPager extends CLinkPager {
         $this->prevPageLabel = Yii::t('app', '< Previous');
     }
 }
+
+?>

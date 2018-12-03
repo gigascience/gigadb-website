@@ -69,3 +69,4 @@ class SuUserIdentity extends CUserIdentity {
     }
 }
 
+?>

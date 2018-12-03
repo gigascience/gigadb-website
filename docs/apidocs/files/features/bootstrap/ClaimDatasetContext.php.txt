@@ -110,7 +110,7 @@ class ClaimDatasetContext implements Context
         $this->gigadbWebsiteContext->iSignInAsAUser();
         // $this->gigadbWebsiteContext->itakeAScreenshot("After signing in as a user");
         $this->minkContext->visit("/dataset/100002");
-        $this->gigadbWebsiteContext->itakeAScreenshot("On dataset page 100002");
+        // $this->gigadbWebsiteContext->itakeAScreenshot("On dataset page 100002");
         $this->minkContext->clickLink("Your dataset?");
         $this->iWaitSeconds(2);
         // $this->gigadbWebsiteContext->itakeAScreenshot("After clicking on Your dataset?");
@@ -149,7 +149,7 @@ class ClaimDatasetContext implements Context
      */
     public function authorIsAssociatedWithAUser($author_id)
     {
-        $sql = "update author set gigadb_user_id=346 where id=${author_id}";
+        $sql = "update author set gigadb_user_id=681 where id=${author_id}";
         $dbconn =pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: '.pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
@@ -181,13 +181,13 @@ class ClaimDatasetContext implements Context
     {
         // return array(
         //         new Step\Given("I sign in as an admin"),
-        //         new Step\When("I go to \"/user/update/id/346/\""),
+        //         new Step\When("I go to \"/user/update/id/681/\""),
         //         new Step\When("I follow \"Reject\""),
         //         new Step\When("I wait \"2\" seconds"),
         //     );
 
         $this->gigadbWebsiteContext->iSignInAsAnAdmin();
-        $this->minkContext->visit("/user/update/id/346/");
+        $this->minkContext->visit("/user/update/id/681/");
         $this->minkContext->clickLink("Reject");
         $this->iWaitSeconds(2);
     }
@@ -201,7 +201,7 @@ class ClaimDatasetContext implements Context
         //         // new Step\Given("a user has a pending claim for author \"$author\""),
         //         // new Step\Given("an admin $status the claim for author \"$author\""),
         //         // new Step\When("I go to \"/AdminAuthor/view/id/$author\""),
-        //         // new Step\Then("I should not see \"346\""),
+        //         // new Step\Then("I should not see \"681\""),
         //     );
 
     // Given a user has a pending claim for author "3791"
@@ -221,8 +221,8 @@ class ClaimDatasetContext implements Context
     // When I go to "/AdminAuthor/view/id/3791"
         $this->minkContext->visit("/AdminAuthor/view/id/$author");
 
-    // Then I should not see "346"
-        $this->minkContext->assertPageNotContainsText("346");
+    // Then I should not see "681"
+        $this->minkContext->assertPageNotContainsText("681");
     }
 
 

@@ -92,7 +92,7 @@ class UserController extends Controller {
                 if ($user->save(false)) {
                     $this->sendActivationEmail($user);
                     if($user->newsletter)
-                        Utils::addToMailing($user->email);
+                        Yii::app()->newsletter->addToMailing($user->email);
 
                     $this->redirect(array('welcome', 'id'=>$user->id));
                 }
@@ -339,11 +339,11 @@ class UserController extends Controller {
                     $new = $model->newsletter;
                     if($new && !$current) {
                         Yii::log('add new mailing', 'debug');
-                        $success = Utils::addToMailing($model->email, array('FNAME'=>$model->first_name, 'LNAME'=>$model->last_name));
+                        $success = Yii::app()->newsletter->addToMailing($model->email, $model->first_name, $model->last_name);
                     }
                     if(!$new && $current) {
                         Yii::log('remove mailing', 'debug');
-                        $success = Utils::removeFromMailing($model->email);
+                        $success = Yii::app()->newsletter->removeFromMailing($model->email);
                     }
                     $this->redirect('/user/view_profile');
                 }

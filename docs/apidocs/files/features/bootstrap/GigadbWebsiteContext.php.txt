@@ -264,6 +264,7 @@ class GigadbWebsiteContext implements Context
      *
     */
     public function terminateDbBackend($dbname) {
+        print_r("Terminating DB Backend... ");
         $sql = "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='${dbname}' and pid <> pg_backend_pid()";
         $dbconn = pg_connect("host=database dbname=postgres user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
@@ -305,6 +306,7 @@ class GigadbWebsiteContext implements Context
         $dbconn = pg_connect("host=database dbname=${dbname} user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
+        print_r("Truncated ${tablename} on ${dbname}");
     }
 
     /**
@@ -322,7 +324,7 @@ class GigadbWebsiteContext implements Context
     public function restartPhp()
     {
         $compose_name=getenv("COMPOSE_PROJECT_NAME");
-        print_r("Restarting php container for ${compose_name} project".PHP_EOL);
+        print_r("Restarting php container for ${compose_name} project...".PHP_EOL);
         exec("/var/www/ops/scripts/restart_php.sh",$output);
         sleep(2);
     }
@@ -337,6 +339,22 @@ class GigadbWebsiteContext implements Context
     */
     public function loadUserData($user) {
         $sql = file_get_contents("sql/${user}.sql");
+        $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
+        pg_query($dbconn, $sql);
+        pg_close($dbconn);
+        print_r("Loaded ${user}.sql on gigadb");
+    }
+
+    /**
+     * Remove from the database users created by the tests
+     *
+     * This function requires the pgsql PHP extension to be installed.
+     *
+     *
+    */
+    public function removeCreatedUsers() {
+        print_r("Removing Created Users... ");
+        $sql = "delete from gigadb_user where id not in (344,345)";
         $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
