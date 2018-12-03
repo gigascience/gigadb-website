@@ -12,4 +12,6 @@
 
 	$this->loadFixture("attribute");
 	$this->loadFixture("dataset_attributes");
+	$this->loadFixture("link");
+	$this->loadFixture("prefix");
 ?>

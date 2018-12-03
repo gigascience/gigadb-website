@@ -29,6 +29,7 @@ class UserIdentity extends CUserIdentity {
                 $this->_id = $user->id;
                 $this->errorCode = self::ERROR_NONE;
                 $this->setState("_id", $user->id);
+                $this->setState("_preferredLink", $user->preferred_link);
                 $this->setState('roles',$user->role);
             }
             elseif(!$user->is_activated) {

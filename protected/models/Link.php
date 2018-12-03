@@ -12,7 +12,7 @@
  * The followings are the available model relations:
  * @property Dataset $dataset
  */
-class Link extends CActiveRecord
+class Link extends CActiveRecord implements LinkInterface
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -105,7 +105,7 @@ class Link extends CActiveRecord
 		));
 	}
         
-      public function getFullUrl($source = '') {
+      public function getFullUrl(string $source = ''): string {
         $temp = explode(":", trim($this->link));
         $prefix = $temp[0];
         $value = $temp[1];

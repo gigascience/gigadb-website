@@ -275,59 +275,32 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 
                 <?php } ?>
 
-                <?php if (count($model->links) > 0) { ?>
+                <?php if (count($accessions) > 0) { ?>
 
                     <?php
-                    $primary_links = array();
-                    $secondary_links = array();
-
-                    foreach ($model->links as $key=>$link) {
-                        if ($link->is_primary) {
-                            $primary_links[] = $link;
-                        }
-                        if (!$link->is_primary) {
-                            $secondary_links[] = $link;
-                        }
-                    }
+                    $primary_links = $accessions->getPrimaryLinks();
+                    $secondary_links = $accessions->getSecondaryLinks();
                     ?>
 
                     <?php if (!empty($primary_links)) { ?>
                 <h5><strong><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></strong></h5>
                         <p>
-                            <? foreach ($primary_links as $link) { ?>
-                                <?
-                                $tokens = explode(':', $link->link);
-                                $name = $tokens[0];
-                                $code = $tokens[1];
-                                ?>
-                                <?= $name ?>:
-                                <?= CHtml::link($code, $link->getFullUrl($link_type), array('target'=>'_blank')); ?>
-                                <br/>
-                            <? } ?>
+                            <?php foreach ($primary_links as $link) {
+                                echo $link->format;
+                            } ?>
                         </p>
                     <?php } ?>
 
                     <?php if (!empty($secondary_links)) { ?>
                         <h5><strong><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></strong></h5>
                         <p>
-                            <?php foreach ($secondary_links as $link) { ?>
-                                <?php
-                                $tokens = explode(':', $link->link);
-                                $name = $tokens[0];
-                                $code = $tokens[1];
-                                ?>
-                                <?php if ($name != 'http') { ?>
-                                    <?= $name ?>:
-                                    <?= CHtml::link($code, $link->getFullUrl($link_type), array('target'=>'_blank')); ?>
-                                <?php }else { ?>
-                                    <?= CHtml::link($link->link , $link->link,array('target'=>'_blank')); ?>
-                                <?php } ?>
-                                <br/>
-                            <?php } ?>
+                            <?php foreach ($secondary_links as $link) {
+                                echo $link->format;
+                             } ?>
                         </p>
                     <?php } ?>
 
-                <?php } ?>
+                <?php } //if (count($accessions) > 0) ?>
                 <?php if (count($model->projects) > 0) { ?>
                 <h5><strong><?=Yii::t('app' , 'Projects:')?></strong></h5>
                 <p>

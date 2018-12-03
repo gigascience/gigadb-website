@@ -205,6 +205,21 @@ class DatasetController extends Controller
                         );
         $email = $datasetSubmitter->getEmailAddress();
 
+        // Accesssions links web component
+        $accessions = new FormattedDatasetAccessions(
+                                new AuthorisedDatasetAccessions(
+                                    Yii::app()->user,
+                                    new CachedDatasetAccessions(
+                                        Yii::app()->cache,
+                                        new StoredDatasetAccessions(
+                                            $id,
+                                            Yii::app()->db
+                                        )
+                                    )
+                                ),
+                                'target="_blank"'
+        );
+
         $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {
             $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
@@ -271,13 +286,6 @@ class DatasetController extends Controller
 
         $scholar = $model->cited;
 
-        $link_type = 'EBI';
-        if (!Yii::app()->user->isGuest) {
-            $user = User::model()->findByPk(Yii::app()->user->_id);
-            if ($user) {
-                $link_type = $user->preferred_link;
-            }
-        }
 
         // Page private ? Disable robot to index
         $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $model->upload_status);
@@ -290,6 +298,7 @@ class DatasetController extends Controller
             'files'=>$files,
             'samples'=>$samples,
             'email' => $email,
+            'accessions' => $accessions,
             'previous_doi' => $previous_doi,
             'previous_title' => $previous_title,
             'next_title'=> $next_title,
@@ -299,7 +308,6 @@ class DatasetController extends Controller
             'logs'=>$model->datasetLogs,
             'relates' => $relates,
             'scholar' => $scholar,
-            'link_type' => $link_type,
             'flag' => $flag,
         ));
     }
