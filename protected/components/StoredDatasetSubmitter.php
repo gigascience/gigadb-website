@@ -13,7 +13,7 @@ class StoredDatasetSubmitter extends yii\base\BaseObject implements DatasetSubmi
 	private $_doi;
 	private $_db;
 
-	public function __construct (int $doi, CDbConnection $db_connection)
+	public function __construct (string $doi, CDbConnection $db_connection)
 	{
 		parent::__construct();
 		$this->_doi =  $doi;
