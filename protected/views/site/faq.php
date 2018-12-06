@@ -600,6 +600,20 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                                 </div>
                             </div>
                         </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel40" aria-expanded="false" aria-controls="panel40">
+                                    What data storage procedures do you follow?
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="panel40" class="panel-collapse collapse" role="tabpanel">
+                                <div class="panel-body">
+                                    <p>GigaDB data is currently hosted in China National GeneBank (CNGB) servers in Shenzhen, who promise persistent and stable storage. CNGB is a central government and ShenZhen government funded research organisation tasked with supporting public welfare, innovation and scientific research. These servers are built on the Alibaba Cloud Elastic Compute Service (ECS), with Anti-DDoS protection to safeguard the data. This infrastructure is covered by the Alibaba service level agreements. Regular data backup uses the Alibaba Cloud Object Storage Service (OSS) to backup and archive all data in the data repository, and automatically storing two copies of data in different locations. As well as providing rapid data recovery. We ensure data files provided are not corrupt in transfer by use of md5 checksums whenever files are received or moved (see the data integrity FAQ for more). As full members of DataCite, CC0 metadata is sent to them upon public release.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
                
