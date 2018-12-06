@@ -7,29 +7,33 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class StoredDatasetSubmitter extends yii\base\BaseObject implements DatasetSubmitterInterface
+class StoredDatasetSubmitter extends DatasetComponents implements DatasetSubmitterInterface
 {
 
-	private $_doi;
+	private $_id;
 	private $_db;
 
-	public function __construct (string $doi, CDbConnection $db_connection)
+	public function __construct (int $id, CDbConnection $db_connection)
 	{
 		parent::__construct();
-		$this->_doi =  $doi;
+		$this->_id =  $id;
 		$this->_db = $db_connection;
 	}
 
+	public function getDatasetID(): int
+	{
+		return $this->_id;
+	}
 	public function getDatasetDOI(): string
 	{
-		return $this->_doi;
+		return $this->getDOIfromId($this->_db, $this->_id);
 	}
 
 	public function getEmailAddress(): string
 	{
-		$sql="select email from gigadb_user where id in (select submitter_id from dataset where identifier=:doi)";
+		$sql="select email from gigadb_user where id in (select submitter_id from dataset where id=:id)";
 		$command = $this->_db->createCommand($sql);
-		$command->bindParam(":doi", $this->_doi, PDO::PARAM_INT);
+		$command->bindParam(":id", $this->_id, PDO::PARAM_INT);
 		$result_array = $command->queryRow();
 		if( isset($result_array) ) {
 			return $result_array['email'];

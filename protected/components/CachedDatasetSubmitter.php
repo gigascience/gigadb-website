@@ -7,16 +7,20 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class CachedDatasetSubmitter extends yii\base\BaseObject implements DatasetSubmitterInterface
+class CachedDatasetSubmitter extends DatasetComponents implements DatasetSubmitterInterface
 {
 	private $_storedDatasetSubmitter;
-	private $_cache;
 
-	public function __construct (CCache $cache, StoredDatasetSubmitter $storedDatasetSubmitter)
+	public function __construct (CCache $cache, DatasetSubmitterInterface $datasetSubmitter)
 	{
 		parent::__construct();
 		$this->_cache = $cache;
-		$this->_storedDatasetSubmitter = $storedDatasetSubmitter;
+		$this->_storedDatasetSubmitter = $datasetSubmitter;
+	}
+
+	public function getDatasetID(): int
+	{
+		return $this->_storedDatasetSubmitter->getDatasetID();
 	}
 
 	public function getDatasetDOI(): string
@@ -35,10 +39,10 @@ class CachedDatasetSubmitter extends yii\base\BaseObject implements DatasetSubmi
 	 */
 	public function getEmailAddress(): string
 	{
-		$cachedEmailAddress = $this->_cache->get("dataset_".$this->getDatasetDOI()."_submitterEmailAddress");
+		$cachedEmailAddress = $this->getCachedLocalData( $this->getDatasetId() );
 		if (null == $cachedEmailAddress) {
 			$cachedEmailAddress = $this->_storedDatasetSubmitter->getEmailAddress();
-			$this->_cache->set("dataset_".$this->getDatasetDOI()."_submitterEmailAddress", $cachedEmailAddress, 60*60*24);
+			$this->saveLocaldataInCache( $this->getDatasetId(), $cachedEmailAddress );
 		}
 		return $cachedEmailAddress;
 	}

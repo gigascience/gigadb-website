@@ -13,9 +13,9 @@ class DatasetSubmitterDataTest extends CDbTestCase
 	public function testStoredReturnsEmailAddress()
 	{
 
-		$doi = 100243;
+		$dataset_id = 1;
 
-		$dao_under_test = new StoredDatasetSubmitter($doi, $this->getFixtureManager()->getDbConnection() );
+		$dao_under_test = new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection() );
 		$this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress());
 
 	}
@@ -23,7 +23,7 @@ class DatasetSubmitterDataTest extends CDbTestCase
 	public function testCachedReturnsEmailAddressCacheHit()
 	{
 
-		$doi = 100243;
+		$dataset_id = 1;
 		//we first need to create a mock object for the cache
 		$cache = $this->getMockBuilder(CApcCache::class)
                          ->setMethods(['get'])
@@ -31,12 +31,12 @@ class DatasetSubmitterDataTest extends CDbTestCase
         //then we set our expecation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${doi}_submitterEmailAddress"))
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetSubmitter_getEmailAddress"))
                  ->willReturn("user@gigadb.org");
 
 		$dao_under_test = new CachedDatasetSubmitter(
 			$cache,
-			new StoredDatasetSubmitter($doi, $this->getFixtureManager()->getDbConnection() )
+			new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection() )
 		);
 
 		$this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress() );
@@ -45,7 +45,7 @@ class DatasetSubmitterDataTest extends CDbTestCase
 
 	public function testCachedReturnsEmailAddressCacheMiss()
 	{
-		$doi = 100243;
+		$dataset_id = 1;
 		//we first need to create a mock object for the cache
 		$cache = $this->getMockBuilder(CApcCache::class)
                          ->setMethods(['get','set'])
@@ -53,14 +53,14 @@ class DatasetSubmitterDataTest extends CDbTestCase
         //then we set our expecation for a Cache Miss
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${doi}_submitterEmailAddress"))
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetSubmitter_getEmailAddress"))
                  ->willReturn(false);
 
         //when there is a cache miss, we also expect the value to be set into the cache for 24 hours
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                 	$this->equalTo("dataset_${doi}_submitterEmailAddress"),
+                 	$this->equalTo("dataset_${dataset_id}_CachedDatasetSubmitter_getEmailAddress"),
                  	"user@gigadb.org",
                  	60*60*24
                  )
@@ -69,7 +69,7 @@ class DatasetSubmitterDataTest extends CDbTestCase
 		$dao_under_test = new CachedDatasetSubmitter(
 							$cache,
 							new StoredDatasetSubmitter(
-								$doi,
+								$dataset_id,
 								$this->getFixtureManager()->getDbConnection()
 							)
 						);
@@ -80,13 +80,12 @@ class DatasetSubmitterDataTest extends CDbTestCase
 
 	public function testAuthorisedReturnsEmailAddressAccepted()
 	{
-		$doi = 100243;
-		//we first need to create a stub object for the cache
-		$cache = $this->createMock(CApcCache::class);
+		$dataset_id = 1;
+		//we first need to create a stub object for CachedDatasetSubmitter
+		$cachedDatasetSubmitter = $this->createMock(CachedDatasetSubmitter::class);
 
-        //then we set a stub for a Cache Hit
-        $cache->method('get')
-                 ->with( $this->equalTo("dataset_${doi}_submitterEmailAddress") )
+        //then we set a stub method for CachedDatasetSubmitter
+        $cachedDatasetSubmitter->method('getEmailAddress')
                  ->willReturn("user@gigadb.org");
 
         //we need to create a mock for the CWebUser object that's used when we call: Yii::app()->user->isGuest
@@ -101,13 +100,7 @@ class DatasetSubmitterDataTest extends CDbTestCase
 
 		$dao_under_test = new AuthorisedDatasetSubmitter(
 								$current_user,
-								new CachedDatasetSubmitter(
-									$cache,
-									new StoredDatasetSubmitter(
-										$doi,
-										$this->getFixtureManager()->getDbConnection()
-									)
-								)
+								$cachedDatasetSubmitter
 						);
 
 		$this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress() );
@@ -115,13 +108,12 @@ class DatasetSubmitterDataTest extends CDbTestCase
 
 	public function testAuthorisedReturnsEmailAddressDenied()
 	{
-		$doi = 100243;
-		//we first need to create a stub object for the cache
-		$cache = $this->createMock(CApcCache::class);
+		$dataset_id = 1;
+		//we first need to create a stub object for CachedDatasetSubmitter
+		$cachedDatasetSubmitter = $this->createMock(CachedDatasetSubmitter::class);
 
-        //then we set a stub for a Cache Hit
-        $cache->method('get')
-                 ->with( $this->equalTo("dataset_${doi}_submitterEmailAddress") )
+        //then we set a stub method for CachedDatasetSubmitter
+        $cachedDatasetSubmitter->method('getEmailAddress')
                  ->willReturn("user@gigadb.org");
 
         //we need to create a mock for the CWebUser object that's used when we call: Yii::app()->user->isGuest
@@ -136,13 +128,7 @@ class DatasetSubmitterDataTest extends CDbTestCase
 
 		$dao_under_test = new AuthorisedDatasetSubmitter(
 								$current_user,
-								new CachedDatasetSubmitter(
-									$cache,
-									new StoredDatasetSubmitter(
-										$doi,
-										$this->getFixtureManager()->getDbConnection()
-									)
-								)
+								$cachedDatasetSubmitter
 						);
 
 		$this->assertEquals("", $dao_under_test->getEmailAddress() );

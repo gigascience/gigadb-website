@@ -17,7 +17,8 @@
  */
 interface DatasetSubmitterInterface
 {
-	public function getEmailAddress(): string;
+	public function getDatasetID(): int;
 	public function getDatasetDOI(): string;
+	public function getEmailAddress(): string;
 }
 ?>

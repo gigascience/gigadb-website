@@ -16,7 +16,6 @@
 class StoredDatasetAccessions extends DatasetComponents implements DatasetAccessionsInterface
 {
 	private $_id;
-	private $_doi;
 	private $_db;
 
 	public function __construct (int $id, CDbConnection $db_connection)

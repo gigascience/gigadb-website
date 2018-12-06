@@ -9,9 +9,8 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class StoredDatasetMainSection extends yii\base\BaseObject implements DatasetMainSectionInterface
+class StoredDatasetMainSection extends DatasetComponents implements DatasetMainSectionInterface
 {
-	private $_doi;
 	private $_id;
 	private $_db;
 
@@ -38,11 +37,7 @@ class StoredDatasetMainSection extends yii\base\BaseObject implements DatasetMai
 	 */
 	public function getDatasetDOI(): string
 	{
-		$sql="select identifier from dataset where id=:id";
-		$command = $this->_db->createCommand($sql);
-		$command->bindParam(":id", $this->_id, PDO::PARAM_INT);
-		$row = $command->queryRow();
-		return $row['identifier'];
+		return $this->getDOIfromId($this->_db, $this->_id);
 	}
 
 	/**

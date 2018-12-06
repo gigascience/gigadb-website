@@ -198,7 +198,7 @@ class DatasetController extends Controller
                                 new CachedDatasetSubmitter(
                                     Yii::app()->cache,
                                     new StoredDatasetSubmitter(
-                                        $id,
+                                        $model->id,
                                         Yii::app()->db
                                     )
                                 )
@@ -212,7 +212,7 @@ class DatasetController extends Controller
                                     new CachedDatasetAccessions(
                                         Yii::app()->cache,
                                         new StoredDatasetAccessions(
-                                            $id,
+                                            $model->id,
                                             Yii::app()->db
                                         )
                                     )

@@ -12,11 +12,16 @@ class AuthorisedDatasetSubmitter extends yii\base\BaseObject implements DatasetS
 	private $_cachedDatasetSubmitter;
 	private $_user;
 
-	public function __construct (CWebUser $user, CachedDatasetSubmitter $cachedDatasetSubmitter)
+	public function __construct (CWebUser $user, DatasetSubmitterInterface $datasetSubmitter)
 	{
 		parent::__construct();
 		$this->_user = $user;
-		$this->_cachedDatasetSubmitter = $cachedDatasetSubmitter;
+		$this->_cachedDatasetSubmitter = $datasetSubmitter;
+	}
+
+	public function getDatasetID(): int
+	{
+		return $this->_cachedDatasetSubmitter->getDatasetID();
 	}
 
 	public function getDatasetDOI(): string
