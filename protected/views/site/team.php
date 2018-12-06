@@ -55,7 +55,7 @@
  
                             <td>
                                 <div class="thumbnail">
-                                    <img src="../images/team/image-coming-soon.jpg">
+                                    <img src="../images/team/hongling.png">
                                     <div class="caption">
                                         <h3>HongLing Zhou<br><small>Junior Editor</small></h3>
                                         <p>Aiding in assessing and coordinating submission of scientific manuscripts and data, and handling all of the GigaScience social media accounts in China</p>
@@ -76,7 +76,7 @@
                                     <img src="../images/team/image-coming-soon.jpg">
                                     <div class="caption">
                                         <h3>Hans Zauner<br><small>Assistant Editor</small></h3>
-                                        <p></p>
+                                        <p>Hans is Assistant Editor at GigaScience and also writes for Laborjournal. Many years ago, Hans did research in evolutionary and developmental biology. He clipped fish fins and handled a laser beam to shoot at reproductive organs of worms. Now in safe distance from any lab bench, he works on various science communication projects. </p>
                                     </div>
                                 </div>
                             </td>
@@ -85,7 +85,7 @@
                                     <img src="../images/team/image-coming-soon.jpg">
                                     <div class="caption">
                                         <h3>Nicole Nogoy<br><small>Editor</small></h3>
-                                        <p></p>
+                                        <p>Nicole has a PhD in Natural Sciences (Cardiovascular Molecular Medicine) from the University of Goettingen, Germany and obtained her BSc Hons in Biochemistry & Molecular Biology and Physiology from Victoria University of Wellington, New Zealand. Nicole has over a decade of experience in the STM publishing industry – most notably having launched and been Managing Editor of Genome Medicine, as well as the Commissioning Editor of several review journals for the Future Science Group. Nicole is now Editor with GigaScience having joined the team in 2012. She is also an Open Science, Open Data and reproducible research advocate.</p>
                                     </div>
                                 </div>
                             </td>
@@ -94,7 +94,7 @@
                         <tr>
                             <td>
                                 <div class="thumbnail">
-                                    <img src="../images/team/image-coming-soon.jpg">
+                                    <img src="../images/team/peter.png">
                                     <div class="caption">
                                         <h3>Peter Li<br><small>Lead Data Manager</small></h3>
                                         <p></p>
@@ -106,7 +106,7 @@
                                     <img src="../images/team/image-coming-soon.jpg">
                                     <div class="caption">
                                         <h3>Scott Edmunds<br><small>Executive Editor</small></h3>
-                                        <p></p>
+                                        <p>Executive Editor for GigaScience journal. Having worked in Open Access publishing for over a decade, his before that worked as a cancer molecular biologist in London and Lyon. Based in the Hong Kong office, as a self-proclaimed data nerd, outside of his day job he is Executive Committee member for Open Data Hong Kong and runs citizen science projects such as Citizenscience.Asia and the Bauhinia Genome project. Also teaching Data Management at HKU. </p>
                                     </div>
                                 </div>
                             </td>
@@ -115,7 +115,7 @@
                                     <img src="../images/team/image-coming-soon.jpg">
                                     <div class="caption">
                                         <h3>Laurie Goodman<br><small>Editor-in-Chief</small></h3>
-                                        <p></p>
+                                        <p>Laurie received a BSc and MSc from Stanford University in 1986, and a PhD in Biochemistry and Molecular Biology from the University of Chicago in 1991. During her graduate work, she published a novel, A Spell of Deceit, with Del Rey Books. She completed a postdoctoral fellowship at the University of Colorado at Boulder then left the bench in 1995 to work as Assistant Editor at Nature Genetics. In 1997, she moved to Cold Spring Harbor Laboratory to become the founding Editor of Genome Research and Managing Editor of Learning & Memory. In 2006, she served as the Director for the Broad Institute Museum during its incipient year. In addition to her GigaScience role, she carries out manuscript writing seminars and owns the USA-based company Goodman Writing & Editing, which provides high-level editing of scientific manuscripts and grants, with a specialty in editing manuscripts from non-native English speakers.</p>
                                     </div>
                                 </div>
                             </td>
