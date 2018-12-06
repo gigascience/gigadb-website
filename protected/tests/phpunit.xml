@@ -13,6 +13,7 @@
 	      <directory suffix=".php">/var/www/protected/vendors</directory>
 	      <directory suffix=".php">/var/www/protected/views</directory>
 	      <directory suffix=".php">/var/www/protected/extensions</directory>
+	      <directory suffix=".php">/var/www/protected/migrations</directory>
 	      <file suffix=".php">/var/www/protected/yiic.php</file>
 	    </exclude>
 	  </whitelist>

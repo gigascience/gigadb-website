@@ -51,6 +51,10 @@ class FormattedDatasetAccessionsTest extends CDbTestCase
 		$counter = 0;
 		while( $counter < $nb_primaryLinks ) {
 			$this->assertEquals($expected_snippets[$counter]->format, $primaryLinks[$counter]->format );
+			$this->assertEquals($expected_snippets[$counter]->id, $primaryLinks[$counter]->id );
+			$this->assertEquals($expected_snippets[$counter]->dataset_id, $primaryLinks[$counter]->dataset_id );
+			$this->assertEquals($expected_snippets[$counter]->link, $primaryLinks[$counter]->link );
+			$this->assertEquals($expected_snippets[$counter]->is_primary, $primaryLinks[$counter]->is_primary );
 			$counter++;
 		}
 	}
@@ -89,6 +93,10 @@ class FormattedDatasetAccessionsTest extends CDbTestCase
 		$counter = 0;
 		while( $counter < $nb_secondaryLinks ) {
 			$this->assertEquals($expected_snippets[$counter]->format, $secondaryLinks[$counter]->format );
+			$this->assertEquals($expected_snippets[$counter]->id, $secondaryLinks[$counter]->id );
+			$this->assertEquals($expected_snippets[$counter]->dataset_id, $secondaryLinks[$counter]->dataset_id );
+			$this->assertEquals($expected_snippets[$counter]->link, $secondaryLinks[$counter]->link );
+			$this->assertEquals($expected_snippets[$counter]->is_primary, $secondaryLinks[$counter]->is_primary );
 			$counter++;
 		}
 	}

@@ -10,6 +10,21 @@ class DatasetSubmitterDataTest extends CDbTestCase
 		parent::setUp();
 	}
 
+	public function testStoredReturnsDatasetId()
+	{
+		$dataset_id = 1;
+		$daoUnderTest = new StoredDatasetSubmitter($dataset_id,  $this->getFixtureManager()->getDbConnection());
+		$this->assertEquals($dataset_id, $daoUnderTest->getDatasetId() ) ;
+	}
+
+	public function testStoredReturnsDatasetDOI()
+	{
+		$dataset_id = 1;
+		$doi = 100243;
+		$daoUnderTest = new StoredDatasetSubmitter($dataset_id,  $this->getFixtureManager()->getDbConnection());
+		$this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
+	}
+
 	public function testStoredReturnsEmailAddress()
 	{
 

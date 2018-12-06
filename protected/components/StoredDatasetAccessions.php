@@ -25,6 +25,11 @@ class StoredDatasetAccessions extends DatasetComponents implements DatasetAccess
 		$this->_db = $db_connection;
 	}
 
+	/**
+	 * return the dataset ID
+	 *
+	 * @return int
+	 */
 	public function getDatasetId(): int
 	{
 		return $this->_id;

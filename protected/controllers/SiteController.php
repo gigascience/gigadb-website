@@ -476,17 +476,6 @@ class SiteController extends Controller {
         exit;
     }
 
-    public function actionChangeLanguage() {
-        /* Change the session's language if the requested language is
-         * supported */
-        Utils::changeLanguage(Utils::get($_GET, 'lang'));
-
-        /* Return to the previous page */
-        $returnUrl = Yii::app()->request->urlReferrer;
-        if (!$returnUrl)
-            $returnUrl = '/';
-        $this->redirect($returnUrl);
-    }
     /**
 	* This method generate captcha image
     */

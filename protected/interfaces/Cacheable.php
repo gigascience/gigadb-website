@@ -9,7 +9,7 @@
 interface Cacheable
 {
 	/** @var int defaultTTL constant for the default Time-to-live (TTL) for cached objects */
-	const defaultTTL = 60*60*24;
+	const defaultTTL = 60*60*24; //1day
 
 	/**
 	 * For generating a caching key based on local context (collection type, calling class and method)
@@ -30,6 +30,8 @@ interface Cacheable
 
 	/**
 	 * Store content from local context (collection, class, method) into the cache
+	 *
+	 * cacheDependency to invalidate out-of-date cache entry must be applied in the implementation
 	 *
 	 * @param string identifier for the collection of objects
 	 * @param mixed $content content to cache

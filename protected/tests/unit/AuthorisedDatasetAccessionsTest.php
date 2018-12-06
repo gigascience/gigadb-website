@@ -64,6 +64,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->link, $primaryLinks[$counter]->link );
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->is_primary, $primaryLinks[$counter]->is_primary );
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->preferred_source, $primaryLinks[$counter]->preferred_source );
+			$this->assertEquals($expected_links_with_preferred_source[$counter]->id, $primaryLinks[$counter]->id );
+			$this->assertEquals($expected_links_with_preferred_source[$counter]->dataset_id, $primaryLinks[$counter]->dataset_id );
 			$counter++;
 		}
 	}
@@ -117,6 +119,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->link, $primaryLinks[$counter]->link );
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->is_primary, $primaryLinks[$counter]->is_primary );
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->preferred_source, $primaryLinks[$counter]->preferred_source );
+			$this->assertEquals($expected_links_with_preferred_source[$counter]->id, $primaryLinks[$counter]->id );
+			$this->assertEquals($expected_links_with_preferred_source[$counter]->dataset_id, $primaryLinks[$counter]->dataset_id );
 			$counter++;
 		}
 	}
@@ -170,6 +174,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->link, $primaryLinks[$counter]->link );
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->is_primary, $primaryLinks[$counter]->is_primary );
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->preferred_source, $primaryLinks[$counter]->preferred_source );
+			$this->assertEquals($expected_links_with_preferred_source[$counter]->id, $primaryLinks[$counter]->id );
+			$this->assertEquals($expected_links_with_preferred_source[$counter]->dataset_id, $primaryLinks[$counter]->dataset_id );
 			$counter++;
 		}
 	}
@@ -219,6 +225,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->link, $secondaryLinks[$counter]->link );
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->is_primary, $secondaryLinks[$counter]->is_primary );
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->preferred_source, $secondaryLinks[$counter]->preferred_source );
+			$this->assertEquals($expected_links_with_preferred_source[$counter]->id, $secondaryLinks[$counter]->id );
+			$this->assertEquals($expected_links_with_preferred_source[$counter]->dataset_id, $secondaryLinks[$counter]->dataset_id );
 			$counter++;
 		}
 	}
@@ -273,6 +281,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->link, $secondaryLinks[$counter]->link );
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->is_primary, $secondaryLinks[$counter]->is_primary );
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->preferred_source, $secondaryLinks[$counter]->preferred_source );
+			$this->assertEquals($expected_links_with_preferred_source[$counter]->id, $secondaryLinks[$counter]->id );
+			$this->assertEquals($expected_links_with_preferred_source[$counter]->dataset_id, $secondaryLinks[$counter]->dataset_id );
 			$counter++;
 		}
 	}
@@ -328,6 +338,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->link, $secondaryLinks[$counter]->link );
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->is_primary, $secondaryLinks[$counter]->is_primary );
 			$this->assertEquals($expected_links_with_preferred_source[$counter]->preferred_source, $secondaryLinks[$counter]->preferred_source );
+			$this->assertEquals($expected_links_with_preferred_source[$counter]->id, $secondaryLinks[$counter]->id );
+			$this->assertEquals($expected_links_with_preferred_source[$counter]->dataset_id, $secondaryLinks[$counter]->dataset_id );
 			$counter++;
 		}
 	}

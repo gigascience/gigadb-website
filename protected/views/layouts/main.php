@@ -38,7 +38,6 @@
                 </ul>
             </div>
             <p>
-                <?/*= Utils::languageChangingLinks() */?>
                 <a class="btn" href="/site/help"><?=Yii::t('app' , 'Help')?></a>
                 <? if(Yii::app()->user->isGuest) { ?>
                 <a class="btn" href="/site/login"><?=Yii::t('app' , 'Login')?></a>

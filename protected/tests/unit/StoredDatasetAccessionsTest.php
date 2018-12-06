@@ -19,6 +19,14 @@ class StoredDatasetAccessionsTest extends CDbTestCase
 		parent::setUp();
 	}
 
+	public function testStoredReturnsDatasetDOI()
+	{
+		$dataset_id = 1;
+		$doi = 100243;
+		$daoUnderTest = new StoredDatasetAccessions($dataset_id,  $this->getFixtureManager()->getDbConnection());
+		$this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
+	}
+
 	/**
 	 * test that this DAO class return a Dataset's primary links from storage
 	 *
