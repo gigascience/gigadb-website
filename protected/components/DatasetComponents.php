@@ -1,0 +1,57 @@
+<?php
+/**
+ * Parent class for the components implementing one of the Dataset*Interface object interface
+ *
+ * Its main purpose is to abstract common code in those components (like interacting with the cache system)
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ */
+class DatasetComponents extends yii\base\BaseObject implements Cacheable
+{
+
+	protected $_cache;
+
+	/**
+	 * compose the key to access (read/write) the appropriate cache entry for local context's data
+	 *
+	 * @param string $dataset_id the identifier (dataset id) of the dataset associated with the local context's data
+	 * @return string a key to access objects in cache
+	 */
+	public function getCacheKeyForLocalData(string $dataset_id): string
+	{
+		$parent_function = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['function'];
+		$parent_class = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['class'];
+
+		return "dataset_${dataset_id}_${parent_class}_${parent_function}";
+	}
+
+
+	/**
+	 * retrieve local cached data transparently.
+	 *
+	 * @uses Cacheable::getCacheKeyForLocalData()
+	 * @return mixed the content retrieved from cache
+	 */
+	public function getCachedLocalData(string $dataset_id)
+	{
+		 return $this->_cache->get( $this->getCacheKeyForLocalData( $dataset_id ) );
+	}
+
+	/**
+	 * Store content from local context (collection, class, method) into the cache
+	 *
+	 * The content is cached until TTL of Cacheable::defaultTTL, or if there's a new entry in dataset_log table
+	 * @param mixed $content content to cache
+	 * @return boolean true if operation successful, false otherwise
+	 */
+	public function saveLocaldataInCache(string $dataset_id, $content): bool
+	{
+		$dependency = new CDbCacheDependency("select max(created_at) from dataset_log where dataset_id=$dataset_id");
+		return $this->_cache->set( $this->getCacheKeyForLocalData( $dataset_id ),
+									$content,
+									Cacheable::defaultTTL,
+									$dependency
+								 );
+	}
+}
+?>

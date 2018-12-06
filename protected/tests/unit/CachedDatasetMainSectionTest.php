@@ -116,7 +116,8 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                         "release_date"=> '2018-08-23',
                     ),
                     60*60*24
-                );
+                )
+                ->willReturn(true);
 
         $daoUnderTest = new CachedDatasetMainSection (
                             $cache,
@@ -277,7 +278,8 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                         "full_doi" => "10.5072/100243",
                     ),
                     60*60*24
-                );
+                )
+                ->willReturn(true);
 
         $daoUnderTest = new CachedDatasetMainSection (
                             $cache,
@@ -379,7 +381,8 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                         "description" => 'The emergence of Zika virus (ZIKV) as a public health emergency in Latin America and the Caribbean (LAC) occurred during a period of severe drought and unusually high temperatures. Speculation in the literature exists that these climate conditions were associated with the 2015/2016 El Niño event and/or climate change but to date no quantitative '
                     ),
                     60*60*24
-                );
+                )
+                ->willReturn(true);
 
         $daoUnderTest = new CachedDatasetMainSection (
                             $cache,

@@ -9,9 +9,8 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class CachedDatasetMainSection extends yii\base\BaseObject implements DatasetMainSectionInterface
+class CachedDatasetMainSection extends DatasetComponents implements DatasetMainSectionInterface
 {
-	private $_cache;
 	private $_storedDatasetMainSection;
 
 	public function __construct (CCache $cache, DatasetMainSectionInterface $datasetMainSection)
@@ -48,10 +47,10 @@ class CachedDatasetMainSection extends yii\base\BaseObject implements DatasetMai
 	*/
 	public function getHeadline(): array
 	{
-		$headline = $this->_cache->get("dataset_".$this->getDatasetId()."_".__CLASS__."_".__FUNCTION__);
+		$headline = $this->getCachedLocalData( $this->getDatasetId() );
 		if( false == $headline ) {
 			$headline = $this->_storedDatasetMainSection->getHeadline() ;
-			$this->_cache->set("dataset_".$this->getDatasetId()."_".__CLASS__."_".__FUNCTION__, $headline, 60*60*24);
+			$this->saveLocaldataInCache( $this->getDatasetId(), $headline );
 		}
 
 		return $headline;
@@ -64,10 +63,10 @@ class CachedDatasetMainSection extends yii\base\BaseObject implements DatasetMai
 	*/
 	public function getReleaseDetails(): array
 	{
-		$release_details = $this->_cache->get("dataset_".$this->getDatasetId()."_".__CLASS__."_".__FUNCTION__);
+		$release_details = $this->getCachedLocalData( $this->getDatasetId() );
 		if( false == $release_details ) {
 			$release_details = $this->_storedDatasetMainSection->getReleaseDetails();
-			$this->_cache->set("dataset_".$this->getDatasetId()."_".__CLASS__."_".__FUNCTION__, $release_details, 60*60*24);
+			$this->saveLocaldataInCache( $this->getDatasetId(), $release_details );
 		}
 		return $release_details;
 	}
@@ -78,10 +77,10 @@ class CachedDatasetMainSection extends yii\base\BaseObject implements DatasetMai
 	*/
 	public function getDescription(): array
 	{
-		$description =  $this->_cache->get("dataset_".$this->getDatasetId()."_".__CLASS__."_".__FUNCTION__);
+		$description =  $this->getCachedLocalData( $this->getDatasetId() );
 		if ( false == $description ) {
 			$description = $this->_storedDatasetMainSection->getDescription();
-			$this->_cache->set("dataset_".$this->getDatasetId()."_".__CLASS__."_".__FUNCTION__, $description, 60*60*24);
+			$this->saveLocaldataInCache( $this->getDatasetId(), $description );
 		}
 		return $description;
 	}
