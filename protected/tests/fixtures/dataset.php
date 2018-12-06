@@ -11,6 +11,7 @@ return array(
 		'ftp_site'=>'ftp://climb.genomics.cn/pub/10.5524/100001_101000/100243/',
 		'upload_status'=>'Published',
 		'publication_date'=>'2018-08-23',
+		'publisher_id'=>1,
 	),
 	array(
 		'id'=>2,
@@ -23,5 +24,6 @@ return array(
 		'ftp_site'=>'ftp://climb.genomics.cn/pub/10.5524/100001_101000/100243/',
 		'upload_status'=>'Published',
 		'publication_date'=>'2018-08-10',
+		'publisher_id'=>1,
 	),
 );

@@ -72,7 +72,7 @@ Feature: a user visit the dataset page
 		| Pitel F |
 		| Wang J |
 		| Li N |
-		And the response should contain "10.5524/101001"
+		And the response should contain "10.5072/101001"
 		And the response should contain "Available here is the first draft genomic sequence of the duck"
 		And I should see links to "Search results for keywords"
 		| Search results for keywords |
@@ -101,8 +101,8 @@ Feature: a user visit the dataset page
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
 		Then I should see a "IsSupplementTo" related links to "10.5524/101000"
-		And I should see image "/images/google_scholar.png" linking to "http://scholar.google.com/scholar?q=10.5524/101001"
-		And I should see image "/images/ePMC.jpg" linking to "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5524/101001')"
+		And I should see image "/images/google_scholar.png" linking to "http://scholar.google.com/scholar?q=10.5072/101001"
+		And I should see image "/images/ePMC.jpg" linking to "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/101001')"
 
 
 	@ok

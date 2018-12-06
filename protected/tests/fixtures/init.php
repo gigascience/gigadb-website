@@ -7,6 +7,7 @@
 	}
 	$this->loadFixture("rss_message");
 	$this->loadFixture("author");
+	$this->loadFixture("publisher");
 	$this->loadFixture("dataset");
 	$this->loadFixture("dataset_author");
 
@@ -14,4 +15,7 @@
 	$this->loadFixture("dataset_attributes");
 	$this->loadFixture("link");
 	$this->loadFixture("prefix");
+
+	$this->loadFixture("type");
+	$this->loadFixture("dataset_type");
 ?>

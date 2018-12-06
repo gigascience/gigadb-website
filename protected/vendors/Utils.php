@@ -46,27 +46,5 @@ class Utils {
         return $data;
     }
 
-    public static function parseCsvString($str, $delimiter = ",") {
-        $result = array();
-        $data = str_getcsv($str, "\n");
-        foreach($data as $d) {
-            $result[] = str_getcsv($d, $delimiter);
-        }
-        return $result;
-
-    }
-
-    // run python script to get scholar result
-    public static function searchScholar($phrase = '') {
-        if(!$phrase)
-            return null;
-        $script = Yii::getPathOfAlias('scholar');
-        $cmd = "python $script --phrase $phrase --csv";
-        $str = shell_exec($cmd);
-
-        $result = Utils::parseCsvString($str, "|");
-        return $result;
-    }
-
 }
 ?>

@@ -220,6 +220,17 @@ class DatasetController extends Controller
                                 'target="_blank"'
         );
 
+        // Main section with headline, release details, description and citations
+       $mainSection = new FormattedDatasetMainSection(
+                        new CachedDatasetMainSection (
+                            Yii::app()->cache,
+                            new StoredDatasetMainSection(
+                                $model->id,
+                                Yii::app()->db
+                            )
+                    )
+                );
+
         $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {
             $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
@@ -284,9 +295,6 @@ class DatasetController extends Controller
             }
         }
 
-        $scholar = $model->cited;
-
-
         // Page private ? Disable robot to index
         $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $model->upload_status);
         // Yii::log("ActionView: about to render",CLogger::LEVEL_ERROR,"DatasetController");
@@ -299,6 +307,7 @@ class DatasetController extends Controller
             'samples'=>$samples,
             'email' => $email,
             'accessions' => $accessions,
+            'mainSection' => $mainSection,
             'previous_doi' => $previous_doi,
             'previous_title' => $previous_title,
             'next_title'=> $next_title,
@@ -307,7 +316,6 @@ class DatasetController extends Controller
             'columns' => $columns,
             'logs'=>$model->datasetLogs,
             'relates' => $relates,
-            'scholar' => $scholar,
             'flag' => $flag,
         ));
     }

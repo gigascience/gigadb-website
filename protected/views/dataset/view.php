@@ -33,17 +33,17 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 
                         </div>
                         <div class="media-body">
-                            <h4 class="left-border-title left-border-title-lg"><?echo $model->title; ?></h4>
-                            <p class="dataset-release-date-text">Dataset type:  <? echo CHtml::encode(implode(", ", $model->getDatasetTypes()));?> <br> Data released on <?= strftime("%B %d, %Y",strtotime($model->publication_date)) ?></p>
+                            <h4 class="left-border-title left-border-title-lg"><?= $mainSection->getHeadline()['title']; ?></h4>
+                            <p class="dataset-release-date-text">Dataset type:  <?= $mainSection->getHeadline()['types'];?> <br> Data released on <?= $mainSection->getHeadline()['release_date'] ?></p>
                             <div class="color-background color-background-block dataset-color-background-block">
-                                <p><?= $model->authorNames ?> (<?=substr($model->publication_date,0,4)?>): <?= $model->title.' '.(isset($model->publisher) ? $model->publisher->name:'<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="http://dx.doi.org/10.5524/<?= $model->identifier; ?>">http://dx.doi.org/10.5524/<?= $model->identifier; ?></a></p>
-                                <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?= $model->identifier; ?></span></a></p>
+                                <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?>">http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?></a></p>
+                                <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge"><?= $mainSection->getReleaseDetails()['full_doi']; ?></span></a></p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="subsection">
-                    <p><?= $model->description; ?></p>
+                    <p><?php echo $mainSection->getDescription()['description'] ?></p>
                 </div>
 
                 <div class="subsection">
@@ -60,12 +60,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                  <div class="pull-right">
                     <p>
                         <span class="citation-popup" data-content="View citations on Google Scholar">
-                            <a href="<?= $model->googleScholarLink ?>" target="_blank">
+                            <a href="<?= $mainSection->getCitationsLinks()['scholar_query'] ?>" target="_blank">
                                 <img class="dataset-des-images" src="/images/google_scholar.png" alt="View citations for this datasets on Google Scholar"/>
                             </a>
                         </span>
                         <span class="citation-popup" data-content="View citations on Europe PubMed Central">
-                            <a href="<?= $model->ePMCLink ?>" target="_blank">
+                            <a href="<?= $mainSection->getCitationsLinks()['ePMC_query'] ?>" target="_blank">
                                 <img class="dataset-des-images" src="/images/ePMC.jpg" alt="View citations for this datasets on Europe PubMed Central"/>
                             </a>
                         </span>

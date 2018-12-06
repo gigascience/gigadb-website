@@ -150,25 +150,6 @@ class Dataset extends CActiveRecord
         ));
     }
 
-    public function getCited() {
-        $identifier = $this->identifier;
-        $phrase = "10.5524/$identifier";
-        $citeds = Utils::searchScholar($phrase);
-        $sum = 0;
-        if($citeds)
-            $sum = count($citeds);
-        $url = Yii::app()->params['scholar_query'].$phrase;
-        return array('total'=>$sum, 'url'=>$url);
-    }
-
-    public function getGoogleScholarLink() {
-        return Yii::app()->params['scholar_query']."10.5524/".$this->identifier;
-    }
-
-    public function getEPMCLink() {
-        return  Yii::app()->params['ePMC_query']."(REF:'10.5524/".$this->identifier."')";
-    }
-
     public static function clearDatasetSession() {
         $vars = array('dataset', 'images', 'authors', 'projects',
             'links', 'externalLinks', 'relations', 'samples', 'dataset_id', 'identifier', 'filecount',
@@ -181,7 +162,7 @@ class Dataset extends CActiveRecord
     }
 
     public function getAuthorNames() {
-        
+
         $das = Yii::app()->db->createCommand()
             ->select('a.id')
             ->from('dataset_author')

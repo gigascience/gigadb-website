@@ -8,7 +8,6 @@ $pre_config = require(dirname(__FILE__).'/local.php');
 // Location where user images are stored
 Yii::setPathOfAlias('uploadPath',dirname(__FILE__).DIRECTORY_SEPARATOR.'../../images/uploads');
 Yii::setPathOfAlias('uploadURL', '/images/uploads/');
-Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.py'));
 
 return CMap::mergeArray(array(
     'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
@@ -166,8 +165,10 @@ return CMap::mergeArray(array(
     ),
 
     'params' => array(
-        'scholar_query' => 'http://scholar.google.com/scholar?q=',
-        'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=",
+        'citations' => array(
+            'scholar_query' => 'http://scholar.google.com/scholar?q=@id',
+            'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'@id')",
+        ),
         // date formats
         'js_date_format' => 'dd-mm-yy',
         'db_date_format' => "%Y-%m-%d",
