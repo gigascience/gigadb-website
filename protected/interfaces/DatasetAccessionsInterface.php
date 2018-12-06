@@ -21,9 +21,38 @@
  */
 interface DatasetAccessionsInterface
 {
+	/**
+	 * the database id of dataset is the internal input variable for retrieving and presenting dataset accessions
+	 *
+	 * @return int dataset id
+	 */
+	public function getDatasetId(): int;
+
+	/**
+	 * external facing identifier for dataset
+	 *
+	 * @return string
+	 */
 	public function getDatasetDOI(): string;
+
+	/**
+	 * manage retrievial, caching, auhorisation and presentation of links related to a dataset that are in GigaDB
+	 *
+	 * @return array of LinkInterface (implemented by Link, LinkWithPreference, LinkWithFormat)
+	 */
 	public function getPrimaryLinks(): array; //array of LinkInterface (pity PHP cannot enforce that detail)
+
+	/**
+	 * manage retrievial, caching, auhorisation and presentation of links related to a dataset that are from third parties
+	 *
+	 * @return array of LinkInterface (implemented by Link, LinkWithPreference, LinkWithFormat)
+	 */
 	public function getSecondaryLinks(): array; //array of LinkInterface (pity PHP cannot enforce that detail)
+
+	/**
+	 *  manage retrievial, caching, auhorisation and presentation of scientific url prefixes
+	 *
+	 */
 	public function getPrefixes(): array;
 }
 

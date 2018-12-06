@@ -8,10 +8,9 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class CachedDatasetAccessions extends yii\base\BaseObject implements DatasetAccessionsInterface
+class CachedDatasetAccessions extends DatasetComponents implements DatasetAccessionsInterface
 {
 	private $_datasetAccessions;
-	private $_cache;
 
 	public function __construct (CCache $cache, DatasetAccessionsInterface $datasetAccessions)
 	{
@@ -20,6 +19,21 @@ class CachedDatasetAccessions extends yii\base\BaseObject implements DatasetAcce
 		$this->_datasetAccessions = $datasetAccessions;
 	}
 
+	/**
+	 * the database id of dataset is the internal input variable for retrieving and presenting dataset accessions
+	 *
+	 * @return int dataset id
+	 */
+	public function getDatasetId(): int
+	{
+		return $this->_datasetAccessions->getDatasetId();
+	}
+
+	/**
+	 * external facing identifier for dataset
+	 *
+	 * @return string
+	 */
 	public function getDatasetDOI(): string
 	{
 		return $this->_datasetAccessions->getDatasetDOI();
@@ -27,30 +41,30 @@ class CachedDatasetAccessions extends yii\base\BaseObject implements DatasetAcce
 
 	public function getPrimaryLinks(): array
 	{
-		$primaryLinks = $this->_cache->get("dataset_".$this->getDatasetDOI()."_accessionsPrimaryLinks");
+		$primaryLinks = $this->getCachedLocalData( $this->getDatasetId() );
 		if (null == $primaryLinks) {
 			$primaryLinks = $this->_datasetAccessions->getPrimaryLinks();
-			$this->_cache->set("dataset_".$this->getDatasetDOI()."_accessionsPrimaryLinks", $primaryLinks, 60*60*24 );
+			$this->saveLocaldataInCache( $this->getDatasetId(), $primaryLinks );
 		}
 		return $primaryLinks;
 	}
 
 	public function getSecondaryLinks(): array
 	{
-		$secondaryLinks = $this->_cache->get("dataset_".$this->getDatasetDOI()."_accessionsSecondaryLinks");
+		$secondaryLinks = $this->getCachedLocalData( $this->getDatasetId() );
 		if (null == $secondaryLinks) {
 			$secondaryLinks = $this->_datasetAccessions->getSecondaryLinks();
-			$this->_cache->set("dataset_".$this->getDatasetDOI()."_accessionsSecondaryLinks", $secondaryLinks, 60*60*24 );
+			$this->saveLocaldataInCache( $this->getDatasetId(), $secondaryLinks );
 		}
 		return $secondaryLinks;
 	}
 
 	public function getPrefixes(): array
 	{
-		$prefixes = $this->_cache->get("dataset_".$this->getDatasetDOI()."_prefixes");
+		$prefixes = $this->getCachedLocalData( $this->getDatasetId() );
 		if (null == $prefixes) {
 			$prefixes = $this->_datasetAccessions->getPrefixes();
-			$this->_cache->set("dataset_".$this->getDatasetDOI()."_prefixes", $prefixes, 60*60*24);
+			$this->saveLocaldataInCache( $this->getDatasetId(), $prefixes );
 		}
 		return $prefixes;
 	}

@@ -25,8 +25,6 @@ class FormattedDatasetAccessionsTest extends CDbTestCase
 	 */
 	public function testFormattedReturnsPrimaryLinks()
 	{
-
-		$doi = 100243;
 		//we first need to stub an object for AuthorisedDatasetAccessions
 		$authorisedDatasetAccessions = $this->createMock(AuthorisedDatasetAccessions::class);
 
@@ -63,8 +61,6 @@ class FormattedDatasetAccessionsTest extends CDbTestCase
 	 */
 	public function testFormattedReturnsSecondaryLinks()
 	{
-
-		$doi = 100243;
 		//we first need to stub an object for AuthorisedDatasetAccessions
 		$authorisedDatasetAccessions = $this->createMock(AuthorisedDatasetAccessions::class);
 

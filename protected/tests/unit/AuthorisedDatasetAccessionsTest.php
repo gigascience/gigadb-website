@@ -28,7 +28,6 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 	public function testAuthorisedReturnsPrimaryLinksGuestUser()
 	{
 
-		$doi = 100243;
 		//we first need to stub an object for the cache
 		$cachedDatasetAccessions = $this->createMock(CachedDatasetAccessions::class);
 
@@ -77,7 +76,6 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 	public function testAuthorisedReturnsPrimaryLinksLoggedInUser()
 	{
 
-		$doi = 100243;
 		//we first need to stub an object for the cache
 		$cachedDatasetAccessions = $this->createMock(CachedDatasetAccessions::class);
 
@@ -131,7 +129,6 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 	public function testAuthorisedReturnsPrimaryLinksLoggedInUserNullPreferredSource()
 	{
 
-		$doi = 100243;
 		//we first need to stub an object for the cache
 		$cachedDatasetAccessions = $this->createMock(CachedDatasetAccessions::class);
 
@@ -185,7 +182,6 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 	public function testAuthorisedReturnsSecondaryLinksGuestUser()
 	{
 
-		$doi = 100243;
 		//we first need to stub an object for the cache
 		$cachedDatasetAccessions = $this->createMock(CachedDatasetAccessions::class);
 
@@ -235,7 +231,6 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 	public function testAuthorisedReturnsSecondaryLinksLoggedInUser()
 	{
 
-		$doi = 100243;
 		//we first need to stub an object for the cache
 		$cachedDatasetAccessions = $this->createMock(CachedDatasetAccessions::class);
 
@@ -291,7 +286,6 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 	public function testAuthorisedReturnsSecondaryLinksLoggedInUserNullPreferredSource()
 	{
 
-		$doi = 100243;
 		//we first need to stub an object for the cache
 		$cachedDatasetAccessions = $this->createMock(CachedDatasetAccessions::class);
 

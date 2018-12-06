@@ -53,5 +53,22 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 									$dependency
 								 );
 	}
+
+	/**
+	 * return the dataset identifier (DOI) given a dataset ID
+	 *
+	 * this is aimed to abstract the commoon part of the implementation of getDatasetDOI() method from the Dataset interfaces
+	 * @param CDbConnection $db
+	 * @param int $id
+	 * @return string
+	 */
+	public function getDOIfromId(CDbConnection $db, int $id): string
+	{
+		$sql="select identifier from dataset where id=:id";
+		$command = $db->createCommand($sql);
+		$command->bindParam(":id", $id, PDO::PARAM_INT);
+		$row = $command->queryRow();
+		return $row['identifier'];
+	}
 }
 ?>

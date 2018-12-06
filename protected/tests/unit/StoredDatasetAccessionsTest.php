@@ -26,9 +26,9 @@ class StoredDatasetAccessionsTest extends CDbTestCase
 	public function testStoredReturnsPrimaryLinks()
 	{
 
-		$doi = 100243;
+		$dataset_id = 1;
 
-		$dao_under_test = new StoredDatasetAccessions($doi, $this->getFixtureManager()->getDbConnection() );
+		$dao_under_test = new StoredDatasetAccessions($dataset_id, $this->getFixtureManager()->getDbConnection() );
 		$primaryLinks = $dao_under_test->getPrimaryLinks();
 		$nb_primary_links = count($primaryLinks);
 		$this->assertEquals(2, $nb_primary_links);
@@ -47,9 +47,9 @@ class StoredDatasetAccessionsTest extends CDbTestCase
 	public function testStoredReturnsSecondaryLinks()
 	{
 
-		$doi = 100243;
+		$dataset_id = 1;
 
-		$dao_under_test = new StoredDatasetAccessions($doi, $this->getFixtureManager()->getDbConnection() );
+		$dao_under_test = new StoredDatasetAccessions($dataset_id, $this->getFixtureManager()->getDbConnection() );
 		$secondaryLinks = $dao_under_test->getSecondaryLinks();
 		$nb_secondaryLinks = count($secondaryLinks);
 		$this->assertEquals(3, $nb_secondaryLinks);

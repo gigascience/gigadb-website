@@ -13,28 +13,49 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class StoredDatasetAccessions extends yii\base\BaseObject implements DatasetAccessionsInterface
+class StoredDatasetAccessions extends DatasetComponents implements DatasetAccessionsInterface
 {
+	private $_id;
 	private $_doi;
 	private $_db;
 
-	public function __construct (string $doi, CDbConnection $db_connection)
+	public function __construct (int $id, CDbConnection $db_connection)
 	{
 		parent::__construct();
-		$this->_doi = $doi;
+		$this->_id = $id;
 		$this->_db = $db_connection;
 	}
 
-	public function getDatasetDOI(): string
+	public function getDatasetId(): int
 	{
-		return $this->_doi;
+		return $this->_id;
 	}
 
+	/**
+	 * return the dataset identifier (DOI)
+	 *
+	 * @return string
+	 */
+	public function getDatasetDOI(): string
+	{
+		return $this->getDOIfromId($this->_db, $this->_id);
+	}
+
+	/**
+	 * manage retrievial, caching, auhorisation and presentation of links related to a dataset that are in GigaDB
+	 *
+	 * @return array of LinkInterface (implemented by Link, LinkWithPreference, LinkWithFormat)
+	 */
 	public function getPrimaryLinks(): array
 	{
 		return $this->getLinks(true);
 	}
 
+	/**
+	 * manage retrievial, caching, auhorisation and presentation of links related to a dataset that are from third parties
+	 *
+	 * @return array of LinkInterface (implemented by Link, LinkWithPreference, LinkWithFormat)
+	 */
 	public function getSecondaryLinks(): array
 	{
 		return $this->getLinks(false);
@@ -61,8 +82,8 @@ class StoredDatasetAccessions extends yii\base\BaseObject implements DatasetAcce
 	 */
 	private function getLinks(bool $isPrimary): array
 	{
-		$sql="select * from link where is_primary=:is_primary and dataset_id in (select id from dataset where identifier=:doi)";
-		$link_array=Link::model()->findAllBySql($sql, array(":is_primary" => $isPrimary, ":doi" => $this->_doi) );
+		$sql="select * from link where is_primary=:is_primary and dataset_id=:id";
+		$link_array=Link::model()->findAllBySql($sql, array(":is_primary" => $isPrimary, ":id" => $this->_id) );
 		return $link_array;
 	}
 }

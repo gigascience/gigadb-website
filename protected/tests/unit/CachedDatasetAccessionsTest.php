@@ -26,7 +26,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
 	public function testCachedReturnsPrimaryLinksCacheHit()
 	{
 
-		$doi = 100243;
+		$dataset_id = 1;
 		//we first need to create a mock object for the cache
 		$cache = $this->getMockBuilder(CApcCache::class)
                          ->setMethods(['get'])
@@ -34,13 +34,13 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${doi}_accessionsPrimaryLinks"))
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrimaryLinks"))
                  ->willReturn([$this->links(0), $this->links(1)]);
 
 		$dao_under_test = new CachedDatasetAccessions(
 								$cache,
 								new StoredDatasetAccessions(
-										$doi,
+										$dataset_id,
 										$this->getFixtureManager()->getDbConnection()
 								)
 		);
@@ -62,7 +62,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
 	public function testCachedReturnsPrimaryLinksCacheMiss()
 	{
 
-		$doi = 100243;
+		$dataset_id = 1;
 		//we first need to create a mock object for the cache
 		$cache = $this->getMockBuilder(CApcCache::class)
                          ->setMethods(['get','set'])
@@ -70,21 +70,22 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         //then we set our expectation for a Cache Miss
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${doi}_accessionsPrimaryLinks"))
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrimaryLinks"))
                  ->willReturn(false);
 		//when there is a cache miss, we also expect the value to be set into the cache for 24 hours
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                 	$this->equalTo("dataset_${doi}_accessionsPrimaryLinks"),
+                 	$this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrimaryLinks"),
                  	[$this->links(0), $this->links(1)],
                  	60*60*24
-                );
+                )
+                ->willReturn(true);
 
 		$dao_under_test = new CachedDatasetAccessions(
 								$cache,
 								new StoredDatasetAccessions(
-										$doi,
+										$dataset_id,
 										$this->getFixtureManager()->getDbConnection()
 								)
 		);
@@ -106,7 +107,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
 	public function testCachedReturnsSecondaryLinksCacheHit()
 	{
 
-		$doi = 100243;
+		$dataset_id = 1;
 		//we first need to create a mock object for the cache
 		$cache = $this->getMockBuilder(CApcCache::class)
                          ->setMethods(['get'])
@@ -114,13 +115,13 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${doi}_accessionsSecondaryLinks"))
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getSecondaryLinks"))
                  ->willReturn([$this->links(2), $this->links(3), $this->links(4)]);
 
 		$dao_under_test = new CachedDatasetAccessions(
 								$cache,
 								new StoredDatasetAccessions(
-										$doi,
+										$dataset_id,
 										$this->getFixtureManager()->getDbConnection()
 								)
 		);
@@ -143,7 +144,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
 	public function testCachedReturnsSecondaryLinksCacheMiss()
 	{
 
-		$doi = 100243;
+		$dataset_id = 1;
 		//we first need to create a mock object for the cache
 		$cache = $this->getMockBuilder(CApcCache::class)
                          ->setMethods(['get', 'set'])
@@ -151,21 +152,23 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         //then we set our expectation for a Cache Miss
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${doi}_accessionsSecondaryLinks"))
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getSecondaryLinks"))
                  ->willReturn(false);
 
         //when there is a cache miss, we also expect the value to be set into the cache for 24 hours
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                 	$this->equalTo("dataset_${doi}_accessionsSecondaryLinks"),
+                 	$this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getSecondaryLinks"),
                  	[$this->links(2), $this->links(3), $this->links(4)],
                  	60*60*24
-                );
+                )
+                ->willReturn(true);
+
 		$dao_under_test = new CachedDatasetAccessions(
 								$cache,
 								new StoredDatasetAccessions(
-										$doi,
+										$dataset_id,
 										$this->getFixtureManager()->getDbConnection()
 								)
 		);
@@ -186,7 +189,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
 	 */
 	public function testCachedReturnsPrefixesCacheHit()
 	{
-		$doi = 100243;
+		$dataset_id = 1;
 		//we first need to create a mock object for the cache
 		$cache = $this->getMockBuilder(CApcCache::class)
                          ->setMethods(['get'])
@@ -194,13 +197,13 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${doi}_prefixes"))
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrefixes"))
                  ->willReturn([$this->prefixes(0), $this->prefixes(1)]);
 
 		$dao_under_test = new CachedDatasetAccessions(
 						$cache,
 						new StoredDatasetAccessions(
-								$doi,
+								$dataset_id,
 								$this->getFixtureManager()->getDbConnection()
 						)
 		);
@@ -223,7 +226,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
 	 */
 	public function testCachedReturnsPrefixesCacheMiss()
 	{
-		$doi = 100243;
+		$dataset_id = 1;
 		//we first need to create a mock object for the cache
 		$cache = $this->getMockBuilder(CApcCache::class)
                          ->setMethods(['get','set'])
@@ -231,25 +234,26 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         //then we set our expectation for a Cache Miss
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${doi}_prefixes"))
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrefixes"))
                  ->willReturn(false);
 
 		 //when there is a cache miss, we also expect the value to be set into the cache for 24 hours
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                 	$this->equalTo("dataset_${doi}_prefixes"),
+                 	$this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrefixes"),
                  	[
                  		$this->prefixes(0)->getAttributes(["id","prefix","url","source"]),
                  		$this->prefixes(1)->getAttributes(["id","prefix","url","source"])
                  	],
                  	60*60*24
-                );
+                )
+                ->willReturn(true);
 
 		$dao_under_test = new CachedDatasetAccessions(
 						$cache,
 						new StoredDatasetAccessions(
-								$doi,
+								$dataset_id,
 								$this->getFixtureManager()->getDbConnection()
 						)
 		);
