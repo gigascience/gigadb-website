@@ -30,11 +30,10 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
 		$doi = 100243;
 		//we first need to stub an object for the cache
-		$cache = $this->createMock(CApcCache::class);
+		$cachedDatasetAccessions = $this->createMock(CachedDatasetAccessions::class);
 
         //then we set our stub for a Cache Hit
-        $cache->method('get')
-                 ->with($this->equalTo("dataset_${doi}_accessionsPrimaryLinks"))
+        $cachedDatasetAccessions->method('getPrimaryLinks')
                  ->willReturn([$this->links(0), $this->links(1)]);
 
 
@@ -55,14 +54,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
 		$dao_under_test = new AuthorisedDatasetAccessions(
 								$current_user,
-								new CachedDatasetAccessions(
-									$cache,
-									new StoredDatasetAccessions(
-											$doi,
-											$this->getFixtureManager()->getDbConnection()
-									)
-								)
-		);
+								$cachedDatasetAccessions
+							);
 
 		$primaryLinks = $dao_under_test->getPrimaryLinks();
 		$nb_primaryLinks = count($primaryLinks);
@@ -86,11 +79,10 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
 		$doi = 100243;
 		//we first need to stub an object for the cache
-		$cache = $this->createMock(CApcCache::class);
+		$cachedDatasetAccessions = $this->createMock(CachedDatasetAccessions::class);
 
         //then we set our stub for a Cache Hit
-        $cache->method('get')
-                 ->with($this->equalTo("dataset_${doi}_accessionsPrimaryLinks"))
+        $cachedDatasetAccessions->method('getPrimaryLinks')
                  ->willReturn([$this->links(0), $this->links(1)]);
 
 
@@ -116,14 +108,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
 		$dao_under_test = new AuthorisedDatasetAccessions(
 								$current_user,
-								new CachedDatasetAccessions(
-									$cache,
-									new StoredDatasetAccessions(
-											$doi,
-											$this->getFixtureManager()->getDbConnection()
-									)
-								)
-		);
+								$cachedDatasetAccessions
+							);
 
 		$primaryLinks = $dao_under_test->getPrimaryLinks();
 		$nb_primaryLinks = count($primaryLinks);
@@ -147,11 +133,10 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
 		$doi = 100243;
 		//we first need to stub an object for the cache
-		$cache = $this->createMock(CApcCache::class);
+		$cachedDatasetAccessions = $this->createMock(CachedDatasetAccessions::class);
 
         //then we set our stub for a Cache Hit
-        $cache->method('get')
-                 ->with($this->equalTo("dataset_${doi}_accessionsPrimaryLinks"))
+        $cachedDatasetAccessions->method('getPrimaryLinks')
                  ->willReturn([$this->links(0), $this->links(1)]);
 
 
@@ -177,14 +162,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
 		$dao_under_test = new AuthorisedDatasetAccessions(
 								$current_user,
-								new CachedDatasetAccessions(
-									$cache,
-									new StoredDatasetAccessions(
-											$doi,
-											$this->getFixtureManager()->getDbConnection()
-									)
-								)
-		);
+								$cachedDatasetAccessions
+							);
 
 		$primaryLinks = $dao_under_test->getPrimaryLinks();
 		$nb_primaryLinks = count($primaryLinks);
@@ -208,12 +187,11 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
 		$doi = 100243;
 		//we first need to stub an object for the cache
-		$cache = $this->createMock(CApcCache::class);
+		$cachedDatasetAccessions = $this->createMock(CachedDatasetAccessions::class);
 
         //then we set our stub for a Cache Hit
-        $cache->method('get')
-                 ->with($this->equalTo("dataset_${doi}_accessionsSecondaryLinks"))
-                 ->willReturn([$this->links(2), $this->links(3), $this->links(4)]);
+        $cachedDatasetAccessions->method('getSecondaryLinks')
+                 ->willReturn([$this->links(2), $this->links(3),$this->links(4)]);
 
 
 		//we need to create a mock for the CWebUser object that's used when we call: Yii::app()->user->isGuest
@@ -234,14 +212,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
 		$dao_under_test = new AuthorisedDatasetAccessions(
 								$current_user,
-								new CachedDatasetAccessions(
-									$cache,
-									new StoredDatasetAccessions(
-											$doi,
-											$this->getFixtureManager()->getDbConnection()
-									)
-								)
-		);
+								$cachedDatasetAccessions
+							);
 
 		$secondaryLinks = $dao_under_test->getSecondaryLinks();
 		$nb_secondaryLinks = count($secondaryLinks);
@@ -265,12 +237,11 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
 		$doi = 100243;
 		//we first need to stub an object for the cache
-		$cache = $this->createMock(CApcCache::class);
+		$cachedDatasetAccessions = $this->createMock(CachedDatasetAccessions::class);
 
         //then we set our stub for a Cache Hit
-        $cache->method('get')
-                 ->with($this->equalTo("dataset_${doi}_accessionsSecondaryLinks"))
-                 ->willReturn([$this->links(2), $this->links(3), $this->links(4)]);
+        $cachedDatasetAccessions->method('getSecondaryLinks')
+                 ->willReturn([$this->links(2), $this->links(3),$this->links(4)]);
 
 
 		//we need to create a mock for the CWebUser object that's used when we call: Yii::app()->user->isGuest
@@ -296,14 +267,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
 		$dao_under_test = new AuthorisedDatasetAccessions(
 								$current_user,
-								new CachedDatasetAccessions(
-									$cache,
-									new StoredDatasetAccessions(
-											$doi,
-											$this->getFixtureManager()->getDbConnection()
-									)
-								)
-		);
+								$cachedDatasetAccessions
+							);
 
 		$secondaryLinks = $dao_under_test->getSecondaryLinks();
 		$nb_secondaryLinks = count($secondaryLinks);
@@ -328,12 +293,11 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
 		$doi = 100243;
 		//we first need to stub an object for the cache
-		$cache = $this->createMock(CApcCache::class);
+		$cachedDatasetAccessions = $this->createMock(CachedDatasetAccessions::class);
 
         //then we set our stub for a Cache Hit
-        $cache->method('get')
-                 ->with($this->equalTo("dataset_${doi}_accessionsSecondaryLinks"))
-                 ->willReturn([$this->links(2), $this->links(3), $this->links(4)]);
+        $cachedDatasetAccessions->method('getSecondaryLinks')
+                 ->willReturn([$this->links(2), $this->links(3),$this->links(4)]);
 
 
 		//we need to create a mock for the CWebUser object that's used when we call: Yii::app()->user->isGuest
@@ -359,14 +323,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
 		$dao_under_test = new AuthorisedDatasetAccessions(
 								$current_user,
-								new CachedDatasetAccessions(
-									$cache,
-									new StoredDatasetAccessions(
-											$doi,
-											$this->getFixtureManager()->getDbConnection()
-									)
-								)
-		);
+								$cachedDatasetAccessions
+							);
 
 		$secondaryLinks = $dao_under_test->getSecondaryLinks();
 		$nb_secondaryLinks = count($secondaryLinks);

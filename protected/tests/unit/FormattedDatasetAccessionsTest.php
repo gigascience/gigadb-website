@@ -27,25 +27,15 @@ class FormattedDatasetAccessionsTest extends CDbTestCase
 	{
 
 		$doi = 100243;
-		//we first need to stub an object for the cache
-		$cache = $this->createMock(CApcCache::class);
+		//we first need to stub an object for AuthorisedDatasetAccessions
+		$authorisedDatasetAccessions = $this->createMock(AuthorisedDatasetAccessions::class);
 
-        //then we set our stub for a Cache Hit
-        $cache->method('get')
-                 ->with($this->equalTo("dataset_${doi}_accessionsPrimaryLinks"))
-                 ->willReturn([$this->links(0), $this->links(1)]);
-
-
-		//we need to create a stub for the CWebUser object that's used when we call: Yii::app()->user->isGuest
-        $current_user = $this->createMock(CWebUser::class);
-
-        //we set the stubbed method to return false as we are testing the auhtorisation accepted scenario (user is logged in)
-        $current_user->method('getIsGuest')
-                 ->willReturn(false);
-
-        $current_user->method('getState')
-                 ->with("preferred_link")
-                 ->willReturn("ENA");
+        //then we set our stub for retrieving the data
+        $authorisedDatasetAccessions->method('getPrimaryLinks')
+                 ->willReturn([
+                 		new LinkWithPreference($this->links(0),'ENA'),
+                 		new LinkWithPreference($this->links(1),'ENA')
+                 	]);
 
         //setup our expected snippet:
         $expected_snippets=[];
@@ -53,16 +43,7 @@ class FormattedDatasetAccessionsTest extends CDbTestCase
         $expected_snippets[1] = new LinkWithFormat($this->links(1), 'Link: <a target="_blank" href="http://www.ncbi.nlm.nih.gov/projects/SNP/snp_viewBatch.cgi?sbid=1056308">http://www.ncbi.nlm.nih.gov/projects/SNP/snp_viewBatch.cgi?sbid=1056308</a><br>');
 
 		$dao_under_test = new FormattedDatasetAccessions(
-								new AuthorisedDatasetAccessions(
-									$current_user,
-									new CachedDatasetAccessions(
-										$cache,
-										new StoredDatasetAccessions(
-											$doi,
-											$this->getFixtureManager()->getDbConnection()
-										)
-									)
-								),
+								$authorisedDatasetAccessions,
 								'target="_blank"'
 		);
 
@@ -84,25 +65,16 @@ class FormattedDatasetAccessionsTest extends CDbTestCase
 	{
 
 		$doi = 100243;
-		//we first need to stub an object for the cache
-		$cache = $this->createMock(CApcCache::class);
+		//we first need to stub an object for AuthorisedDatasetAccessions
+		$authorisedDatasetAccessions = $this->createMock(AuthorisedDatasetAccessions::class);
 
-        //then we set our stub for a Cache Hit
-        $cache->method('get')
-                 ->with($this->equalTo("dataset_${doi}_accessionsSecondaryLinks"))
-                 ->willReturn([$this->links(2), $this->links(3), $this->links(4)]);
-
-
-		//we need to create a stub for the CWebUser object that's used when we call: Yii::app()->user->isGuest
-        $current_user = $this->createMock(CWebUser::class);
-
-        //we set the stubbed method to return false as we are testing the auhtorisation accepted scenario (user is logged in)
-        $current_user->method('getIsGuest')
-                 ->willReturn(false);
-
-        $current_user->method('getState')
-                 ->with("preferred_link")
-                 ->willReturn("ENA");
+        //then we set our stub for retrieving the data
+        $authorisedDatasetAccessions->method('getSecondaryLinks')
+                 ->willReturn([
+                 	new LinkWithPreference($this->links(2),'ENA'),
+                 	new LinkWithPreference($this->links(3),'ENA'),
+                 	 new LinkWithPreference($this->links(4),'ENA')
+                 ]);
 
         //setup our expected snippet:
         $expected_snippets=[];
@@ -111,16 +83,7 @@ class FormattedDatasetAccessionsTest extends CDbTestCase
         $expected_snippets[2] = new LinkWithFormat($this->links(4), 'GEO: <a target="_blank" href="#">GSE30337</a><br>'); //because GEO prefix is not in test database
 
 		$dao_under_test = new FormattedDatasetAccessions(
-								new AuthorisedDatasetAccessions(
-									$current_user,
-									new CachedDatasetAccessions(
-										$cache,
-										new StoredDatasetAccessions(
-											$doi,
-											$this->getFixtureManager()->getDbConnection()
-										)
-									)
-								),
+								$authorisedDatasetAccessions,
 								'target="_blank"'
 		);
 
