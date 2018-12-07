@@ -333,7 +333,7 @@ HTML;
                     ?>
 
                     <?php if (!empty($primary_links)) { ?>
-                <h5><strong><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></strong></h5>
+                <h5><strong><?=Yii::t('app' , 'Accessions (data generated as part of this study):')?></strong></h5>
                         <p>
                             <? foreach ($primary_links as $link) { ?>
                                 <?
@@ -349,7 +349,7 @@ HTML;
                     <?php } ?>
 
                     <?php if (!empty($secondary_links)) { ?>
-                        <h5><strong><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></strong></h5>
+                        <h5><strong><?=Yii::t('app' , 'Accessions (data referenced by this study):')?></strong></h5>
                         <p>
                             <?php foreach ($secondary_links as $link) { ?>
                                 <?php
