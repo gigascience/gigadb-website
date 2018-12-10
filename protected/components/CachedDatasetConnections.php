@@ -3,8 +3,10 @@
  * DAO class to retrieve from cache related dataset and keywords for a given dataset
  *
  *
- * @param string $id of the dataset for which to retrieve the information
+ * @param CCache $cache object
+ * @param CCacheDependency $cacheDependency Cache dependency for invalidating the cache
  * @param CDbConnection $dbConnection The database connection object to interact with the database storage
+ * @param DatasetConnectionsInterface $datasetConnections the adaptee class to fall back on if no cache variant
  * @see DatasetMainSectionInterface.php
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0

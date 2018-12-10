@@ -3,7 +3,8 @@
  * DAO class to retrieve submitter email address from cache
  *
  * @param CCache cache object
- * @param StoredDatasetSubmitter the DAO for which this is a cache adapter
+ * @param CCacheDependency $cacheDependency Cache dependency for invalidating the cache
+ * @param DatasetSubmitterInterface $datasetSubmitter the DAO for which this is a cache adapter
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */

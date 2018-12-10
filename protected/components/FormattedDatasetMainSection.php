@@ -1,10 +1,9 @@
 <?php
 /**
- * DAO class to retrieve dataset and associated information from cache
+ * Format a dataset's information for main section of the dataset view
  *
  *
- * @param CCache $cache Cache system to use
- * @param StoreDatasetMainSection $storedDatasetMainSection the adaptee class to fall back on if no cache variant
+ * @param CachedDatasetMainSection $datasetMainSection the adaptee class that return the cached information
  * @see DatasetMainSectionInterface.php
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
