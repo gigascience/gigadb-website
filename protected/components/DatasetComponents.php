@@ -10,6 +10,7 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 {
 
 	protected $_cache;
+	protected $_cacheDependency;
 
 	/**
 	 * compose the key to access (read/write) the appropriate cache entry for local context's data
@@ -46,11 +47,11 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 	 */
 	public function saveLocaldataInCache(string $dataset_id, $content): bool
 	{
-		$dependency = new CDbCacheDependency("select max(created_at) from dataset_log where dataset_id=$dataset_id");
+		$this->_cacheDependency->sql = "select max(created_at) from dataset_log where dataset_id=$dataset_id";
 		return $this->_cache->set( $this->getCacheKeyForLocalData( $dataset_id ),
 									$content,
 									Cacheable::defaultTTL,
-									$dependency
+									$this->_cacheDependency
 								 );
 	}
 

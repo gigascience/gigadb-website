@@ -11,10 +11,11 @@ class CachedDatasetSubmitter extends DatasetComponents implements DatasetSubmitt
 {
 	private $_storedDatasetSubmitter;
 
-	public function __construct (CCache $cache, DatasetSubmitterInterface $datasetSubmitter)
+	public function __construct(CCache $cache, CCacheDependency $cacheDependency, DatasetSubmitterInterface $datasetSubmitter)
 	{
 		parent::__construct();
 		$this->_cache = $cache;
+		$this->_cacheDependency = $cacheDependency;
 		$this->_storedDatasetSubmitter = $datasetSubmitter;
 	}
 

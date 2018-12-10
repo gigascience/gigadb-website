@@ -192,11 +192,15 @@ class DatasetController extends Controller
         // Yii::log("samples pageVar: ". $samples_pagination->pageVar,CLogger::LEVEL_ERROR,"DatasetController");
         $samples->setPagination($samples_pagination);
 
+        // Creating a Database cache dependency
+        $cacheDependency = new CDbCacheDependency();
+
         // Submitter email web component
         $datasetSubmitter = new AuthorisedDatasetSubmitter(
                                 Yii::app()->user,
                                 new CachedDatasetSubmitter(
                                     Yii::app()->cache,
+                                    $cacheDependency,
                                     new StoredDatasetSubmitter(
                                         $model->id,
                                         Yii::app()->db
@@ -211,6 +215,7 @@ class DatasetController extends Controller
                                     Yii::app()->user,
                                     new CachedDatasetAccessions(
                                         Yii::app()->cache,
+                                        $cacheDependency,
                                         new StoredDatasetAccessions(
                                             $model->id,
                                             Yii::app()->db
@@ -224,6 +229,7 @@ class DatasetController extends Controller
        $mainSection = new FormattedDatasetMainSection(
                         new CachedDatasetMainSection (
                             Yii::app()->cache,
+                            $cacheDependency,
                             new StoredDatasetMainSection(
                                 $model->id,
                                 Yii::app()->db

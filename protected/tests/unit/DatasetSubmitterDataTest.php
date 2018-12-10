@@ -49,8 +49,12 @@ class DatasetSubmitterDataTest extends CDbTestCase
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetSubmitter_getEmailAddress"))
                  ->willReturn("user@gigadb.org");
 
+		// create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
 		$dao_under_test = new CachedDatasetSubmitter(
 			$cache,
+			$cacheDependency,
 			new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection() )
 		);
 
@@ -71,18 +75,23 @@ class DatasetSubmitterDataTest extends CDbTestCase
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetSubmitter_getEmailAddress"))
                  ->willReturn(false);
 
+		// create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
         //when there is a cache miss, we also expect the value to be set into the cache for 24 hours
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
                  	$this->equalTo("dataset_${dataset_id}_CachedDatasetSubmitter_getEmailAddress"),
                  	"user@gigadb.org",
-                 	60*60*24
+                 	60*60*24,
+                 	$cacheDependency
                  )
                  ->willReturn(false);
 
 		$dao_under_test = new CachedDatasetSubmitter(
 							$cache,
+							$cacheDependency,
 							new StoredDatasetSubmitter(
 								$dataset_id,
 								$this->getFixtureManager()->getDbConnection()

@@ -12,10 +12,11 @@ class CachedDatasetAccessions extends DatasetComponents implements DatasetAccess
 {
 	private $_datasetAccessions;
 
-	public function __construct (CCache $cache, DatasetAccessionsInterface $datasetAccessions)
+	public function __construct (CCache $cache, CCacheDependency $cacheDependency, DatasetAccessionsInterface $datasetAccessions)
 	{
 		parent::__construct();
 		$this->_cache = $cache;
+		$this->_cacheDependency = $cacheDependency;
 		$this->_datasetAccessions = $datasetAccessions;
 	}
 

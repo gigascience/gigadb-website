@@ -13,10 +13,11 @@ class CachedDatasetMainSection extends DatasetComponents implements DatasetMainS
 {
 	private $_storedDatasetMainSection;
 
-	public function __construct (CCache $cache, DatasetMainSectionInterface $datasetMainSection)
+	public function __construct (CCache $cache, CCacheDependency $cacheDependency, DatasetMainSectionInterface $datasetMainSection)
 	{
 		parent::__construct();
 		$this->_cache = $cache;
+		$this->_cacheDependency = $cacheDependency;
 		$this->_storedDatasetMainSection = $datasetMainSection;
 	}
 

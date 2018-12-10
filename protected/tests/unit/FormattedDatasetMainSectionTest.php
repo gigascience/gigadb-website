@@ -26,16 +26,18 @@ class FormattedDatasetMainSectionTest extends CDbTestCase
     {
         $dataset_id = 1;
         $doi = "100243";
-        //we first need to create a stub object for the cache
-        $cache = $this->createMock(CApcCache::class);
+        //we first need to create a mock for the CachedDatasetMainSection
+        $cachedDatasetMainSection = $this->getMockBuilder(CachedDatasetMainSection::class)
+                         ->setMethods(['getDatasetDOI'])
+                         ->disableOriginalConstructor()
+                         ->getMock();
+        //then we set our expectation for a method call
+        $cachedDatasetMainSection->expects($this->once())
+                 ->method('getDatasetDOI')
+                 ->willReturn($doi);
 
         $daoUnderTest = new FormattedDatasetMainSection(
-                            new CachedDatasetMainSection (
-                                $cache,
-                                new StoredDatasetMainSection(
-                                    $dataset_id,  $this->getFixtureManager()->getDbConnection()
-                                )
-                            )
+                            $cachedDatasetMainSection
                         );
         $this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
     }
