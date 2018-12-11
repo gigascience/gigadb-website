@@ -89,12 +89,16 @@ class CachedDatasetConnectionsTest extends CDbTestCase
                     array(
                         array(
                             'dataset_id'=>6, // 100044
+                            'dataset_doi'=>"100044", // 100044
                             'related_id'=>5, // 100038
+                            'related_doi'=>"100038", // 100038
                             'relationship'=>"Compiles", //18 Compiles
                         ),
                         array(
                             'dataset_id'=>6, // 100044
+                            'dataset_doi'=>"100044", // 100044
                             'related_id'=>7, // 100148
+                            'related_doi'=>"100148", // 100148
                             'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
                         )
                     )
@@ -103,12 +107,16 @@ class CachedDatasetConnectionsTest extends CDbTestCase
         $expected = array(
             array(
                 'dataset_id'=>6, // 100044
+                'dataset_doi'=>"100044", // 100044
                 'related_id'=>5, // 100038
+                'related_doi'=>"100038", // 100038
                 'relationship'=>"Compiles", //18 Compiles
             ),
             array(
                 'dataset_id'=>6, // 100044
+                'dataset_doi'=>"100044", // 100044
                 'related_id'=>7, // 100148
+                'related_doi'=>"100148", // 100148
                 'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
             )
         );
@@ -132,21 +140,25 @@ class CachedDatasetConnectionsTest extends CDbTestCase
                                             ->setMethods(['getDatasetID', 'getRelations'])
                                             ->disableOriginalConstructor()
                                             ->getMock();
-        $storedDatasetConnections->expects($this->exactly(2))
+        $storedDatasetConnections->expects($this->exactly(8))
                                     ->method('getDatasetID')
                                     ->willReturn(6);
-        $storedDatasetConnections->expects($this->exactly(1))
+        $storedDatasetConnections->expects($this->exactly(4))
                                     ->method('getRelations')
                                     ->willReturn(
                                         array(
                                             array(
                                                 'dataset_id'=>6, // 100044
+                                                'dataset_doi'=>"100044", // 100044
                                                 'related_id'=>5, // 100038
+                                                'related_doi'=>"100038", // 100038
                                                 'relationship'=>"Compiles", //18 Compiles
                                             ),
                                             array(
                                                 'dataset_id'=>6, // 100044
+                                                'dataset_doi'=>"100044", // 100044
                                                 'related_id'=>7, // 100148
+                                                'related_doi'=>"100148", // 100148
                                                 'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
                                             )
                                         )
@@ -163,36 +175,44 @@ class CachedDatasetConnectionsTest extends CDbTestCase
                             array(
                                 array(
                                     'dataset_id'=>6, // 100044
+                                    'dataset_doi'=>"100044", // 100044
                                     'related_id'=>5, // 100038
+                                    'related_doi'=>"100038", // 100038
                                     'relationship'=>"Compiles", //18 Compiles
                                 ),
                                 array(
                                     'dataset_id'=>6, // 100044
+                                    'dataset_doi'=>"100044", // 100044
                                     'related_id'=>7, // 100148
+                                    'related_doi'=>"100148", // 100148
                                     'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
                                 )
                             )
                         );
 
         //then we set our expectations for a Cache Miss
-        $cache->expects($this->exactly(1))
+        $cache->expects($this->exactly(4))
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getRelations"))
                  ->willReturn( false );
 
-        $cache->expects($this->exactly(1))
+        $cache->expects($this->exactly(4))
                 ->method('set')
                 ->with(
                     $this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getRelations"),
                     array(
                         array(
                             'dataset_id'=>6, // 100044
+                            'dataset_doi'=>"100044", // 100044
                             'related_id'=>5, // 100038
+                            'related_doi'=>"100038", // 100038
                             'relationship'=>"Compiles", //18 Compiles
                         ),
                         array(
                             'dataset_id'=>6, // 100044
+                            'dataset_doi'=>"100044", // 100044
                             'related_id'=>7, // 100148
+                            'related_doi'=>"100148", // 100148
                             'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
                         )
                     ),
@@ -204,21 +224,25 @@ class CachedDatasetConnectionsTest extends CDbTestCase
         $expected = array(
             array(
                 'dataset_id'=>6, // 100044
+                'dataset_doi'=>"100044", // 100044
                 'related_id'=>5, // 100038
+                'related_doi'=>"100038", // 100038
                 'relationship'=>"Compiles", //18 Compiles
             ),
             array(
                 'dataset_id'=>6, // 100044
+                'dataset_doi'=>"100044", // 100044
                 'related_id'=>7, // 100148
+                'related_doi'=>"100148", // 100148
                 'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
             )
         );
 
         $daoUnderTest = new CachedDatasetConnections($cache, $cacheDependency, $storedDatasetConnections) ;
         $this->assertEquals($expected, $daoUnderTest->getRelations());
-        // $this->assertEquals([$expected[1]], $daoUnderTest->getRelations("IsPreviousVersionOf"));
-        // $this->assertEquals([$expected[0]], $daoUnderTest->getRelations("Compiles"));
-        // $this->assertEquals([], $daoUnderTest->getRelations("DoesNotExistRelationship"));
+        $this->assertEquals([$expected[1]], $daoUnderTest->getRelations("IsPreviousVersionOf"));
+        $this->assertEquals([$expected[0]], $daoUnderTest->getRelations("Compiles"));
+        $this->assertEquals([], $daoUnderTest->getRelations("DoesNotExistRelationship"));
 
 
     }

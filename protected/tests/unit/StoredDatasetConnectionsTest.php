@@ -57,12 +57,16 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 			// ),
 			array(
 				'dataset_id'=>6, // 100044
+				'dataset_doi'=>"100044", // 100044
 				'related_id'=>5, // 100038
+				'related_doi'=>"100038", // 100038
 				'relationship'=>"Compiles", //18 Compiles
 			),
 			array(
 				'dataset_id'=>6, // 100044
+				'dataset_doi'=>"100044", // 100044
 				'related_id'=>7, // 100148
+				'related_doi'=>"100148", // 100148
 				'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
 			),
 			// array(

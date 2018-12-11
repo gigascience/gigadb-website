@@ -100,10 +100,22 @@ Feature: a user visit the dataset page
 	Scenario: Semantic Links
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
-		Then I should see a "IsSupplementTo" related links to "10.5524/101000"
+		Then I should see a "IsSupplementTo" related links to "10.5072/101000"
 		And I should see image "/images/google_scholar.png" linking to "http://scholar.google.com/scholar?q=10.5072/101001"
 		And I should see image "/images/ePMC.jpg" linking to "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/101001')"
 
+	@ok
+	Scenario: IsPreviousVersionOf relation should show an alert warning of old version with link to new version
+		Given I am not logged in to Gigadb web site
+		When I go to "/dataset/100044"
+		Then I should see a "Compiles" related links to "10.5072/100038"
+		And I should see a "IsPreviousVersionOf" related links to "10.5072/100148"
+		And I should see "New Version Alert"
+		And I should see "There is a new version of this dataset available at DOI 10.5072/100148"
+		And I should see a button "View new version" with link "/dataset/100148"
+		And I should see a button "Continue to view old version" with link "/dataset/100044"
+		And I should see a button "Close"
+		Then I take a screenshot named "Dataset view IsPreviousVersionOf"
 
 	@ok
 	Scenario: Non-Tabbed External Links (e.g: Genome Browser)

@@ -237,6 +237,19 @@ class DatasetController extends Controller
                     )
                 );
 
+       //Dataset connections (other datasets related to this one)
+       $connections = new FormattedDatasetConnections(
+                            Yii::app()->controller,
+                        new CachedDatasetConnections (
+                            Yii::app()->cache,
+                            $cacheDependency,
+                            new StoredDatasetConnections(
+                                $model->id,
+                                Yii::app()->db
+                            )
+                    )
+                );
+
         $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {
             $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
@@ -314,6 +327,7 @@ class DatasetController extends Controller
             'email' => $email,
             'accessions' => $accessions,
             'mainSection' => $mainSection,
+            'connections' => $connections,
             'previous_doi' => $previous_doi,
             'previous_title' => $previous_title,
             'next_title'=> $next_title,

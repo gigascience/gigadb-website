@@ -162,55 +162,11 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                 </p>
                 <?php } ?>
 
-                <?php if (count($model->relations) > 0) { ?>
-                <h5><strong><?= Yii::t('app' , 'Related datasets:')?></strong></h5>
-                <p>
-                <?php foreach ($model->relations as $key=>$relation){
-                if($relation->relationship->name == "IsPreviousVersionOf")
-                {
-                echo "doi:" . CHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . CHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi)."<b> (It is a more recent version of this dataset) </b>";
-                echo "<br/>";
+                <?php
+                    $relations = $connections->getRelations();
+                    if (count($relations) > 0) {
                 ?>
-
-                   <?php
-            $target = 'window.location='."'".$this->createUrl('dataset/'.$relation->related_doi)."'";
-            $this->beginWidget('zii.widgets.jui.CJuiDialog', array(// the dialog
-                'id' => 'dialogDisplay1',
-                'options' => array(
-                    'title' => 'New Version Alert',
-                    'autoOpen' => true,
-                    'modal' => true,
-                    'width' => 400,
-                    'height' => 300,
-                    'buttons' => array(
-                        array('text' => 'View new version', 'click' => 'js:function(){'.$target.'}'),
-                        array('text' => 'Continue to view old version', 'click' => 'js:function(){$(this).dialog("close");}'),
-                        ),
-                ),
-            ));
-            ?>
-            <div class="divForForm">
-                <br>
-
-                    There is a new version of this dataset available at: DOI: 10.5524/<?php echo $relation->related_doi ?>
-
-
-            </div>
-
-                <?php $this->endWidget(); ?>
-
-
-
-               <?php }
-
-                else
-                {
-                echo "doi:" . CHtml::link("10.5524/". $model->identifier, '/dataset/'.$model->identifier) ." " . $relation->relationship->name . " " .'doi:' . CHtml::link("10.5524/".$relation->related_doi, '/dataset/'.$relation->related_doi);
-                echo "<br/>";
-                }
-             }
-            ?>
-        </p>
+                <?php $this->renderPartial('_connections',array('relations' => $relations )); ?>
 
                 <?php } ?>
 

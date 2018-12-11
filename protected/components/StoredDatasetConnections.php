@@ -53,14 +53,15 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
 		if( !empty($relationship_type) ) {
 			$filter = "and rs.name = :filter_by";
 		}
-		$sql="select dataset_id, d.id as related_id, rs.name as relationship
-		from relation r, dataset d, relationship rs
-		where 
-		r.related_doi=d.identifier 
-		and rs.id = r.relationship_id
-		$filter
-		and r.dataset_id=:id
-		order by dataset_id, related_id";
+		$sql="select r.dataset_id as dataset_id, dd.identifier as dataset_doi, d.id as related_id, related_doi, rs.name as relationship
+    from relation r, dataset d, relationship rs, dataset as dd
+    where
+    r.related_doi=d.identifier
+    and rs.id = r.relationship_id
+    and r.dataset_id=:id
+    and r.dataset_id = dd.id
+    $filter
+    order by dataset_id, related_id;";
 		$command = $this->_db->createCommand($sql);
 		$command->bindParam( ":id", $this->_id , PDO::PARAM_INT);
 		if( $filter ) {

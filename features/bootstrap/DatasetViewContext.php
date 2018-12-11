@@ -227,6 +227,15 @@ class DatasetViewContext implements Context
     }
 
     /**
+     * @Then I should see a button :arg1 with link :arg2
+     */
+    public function iShouldSeeAButtonWithLink($arg1, $arg2)
+    {
+         $button = $this->minkContext->getSession()->getPage()->findLink($arg1);
+         PHPUnit_Framework_Assert::assertEquals($arg2, $button->getAttribute('href') );
+    }
+
+    /**
      * @Then I should not see a button :arg1
      */
     public function iShouldNotSeeAButton($arg1)
