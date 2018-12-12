@@ -270,50 +270,6 @@ class DatasetController extends Controller
             $previous_title = $result[0]->title;
         }
 
-        $attributes = $model->attributes;
-        $l = array();
-        foreach ($attributes as $att) {
-            $l[] = $att->id;
-        }
-
-        $authors = $model->authors;
-        $at = array();
-        foreach ($authors as $au) {
-            $at[] = $au->id;
-        }
-
-        $relateCriteria = new CDbCriteria;
-        $relateCriteria->distinct = true;
-        $relateCriteria->addNotInCondition("t.id", array($model->id));
-        $relateCriteria->addCondition("t.upload_status = 'Published'");
-        $relateCriteria->limit = 9;
-
-        $rc = clone $relateCriteria;
-        $rc->join = "JOIN dataset_attributes da ON t.id = da.dataset_id JOIN dataset_author au ON t.id = au.dataset_id";
-        $rc->addInCondition("da.attribute_id", $l);
-        $rc->addInCondition("au.author_id", $at, 'OR');
-        $rc->addCondition("t.upload_status = 'Published'");
-        $relates = Dataset::model()->findAll($rc);
-
-        // if we don't find any dataset related by the first way, then by common type
-        if (!$relates || count($relates) < 9) {
-            $relatesIds = array($model->id);
-            foreach ($relates as $relate) {
-                $relatesIds[] = $relate->id;
-            }
-
-            $rc = clone $relateCriteria;
-            $rc->join = "JOIN dataset_type dt ON t.id = dt.dataset_id";
-            $rc->addInCondition("dt.type_id", $model->getTypeIds());
-            $rc->addNotInCondition("t.id", $relatesIds);
-            $rc->limit = 9 - count($relates);
-            $relatesType = Dataset::model()->findAll($rc);
-
-            foreach ($relatesType as $relate) {
-                $relates[] = $relate;
-            }
-        }
-
         // Page private ? Disable robot to index
         $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $model->upload_status);
         // Yii::log("ActionView: about to render",CLogger::LEVEL_ERROR,"DatasetController");
@@ -335,7 +291,6 @@ class DatasetController extends Controller
             'setting' => $setting,
             'columns' => $columns,
             'logs'=>$model->datasetLogs,
-            'relates' => $relates,
             'flag' => $flag,
         ));
     }

@@ -591,12 +591,6 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 
 <div class="clear"></div>
 
-
-<?php if (count($relates)) : ?>
-
-
-
-<?php endif ?>
 <a href="/dataset/<?php echo $previous_doi?>"  title="Previous dataset"><span class="fa fa-angle-left fixed-btn-left"></span></a>
 <a href="/dataset/<?php echo $next_doi?>" title="Next dataset"><span class="fa fa-angle-right fixed-btn-right"></span></a>
 
