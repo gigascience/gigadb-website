@@ -246,5 +246,172 @@ class CachedDatasetConnectionsTest extends CDbTestCase
 
 
     }
+
+    public function testCachedReturnsPublicationsCacheHit()
+    {
+        $dataset_id = 1;
+
+        // create a stub for the StoredDatasetConnection, cause we have no expectation on it as cache hit
+        $storedDatasetConnections = $this->createMock(StoredDatasetConnections::class);
+        $storedDatasetConnections->method('getDatasetID')
+                                    ->willReturn(1);
+
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
+        // create a mock for the cache and we need to make the cache method for getting the key
+        $cache = $this->getMockBuilder(CApcCache::class)
+                        ->setMethods(['get'])
+                        ->getMock();
+
+        //then we set our expectation for a Cache Hit
+        $cache->expects($this->exactly(1))
+                 ->method('get')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getPublications"))
+                 ->willReturn(
+                    array(
+                        array(
+                            'id' => 1,
+                            'identifier' => "10.1186/gb-2012-13-10-r100",
+                            'pmid' => 23075480,
+                            'dataset_id'=>1,
+                            'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
+                            'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+                        ),
+                        array(
+                            'id' => 2,
+                            'identifier' => "10.1038/nature10158",
+                            'pmid' => null,
+                            'dataset_id'=>1,
+                            'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
+                            'pmurl' => null,
+                        ),
+                    )
+                );
+
+        $expected = array(
+                        array(
+                            'id' => 1,
+                            'identifier' => "10.1186/gb-2012-13-10-r100",
+                            'pmid' => 23075480,
+                            'dataset_id'=>1,
+                            'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
+                            'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+                        ),
+                        array(
+                            'id' => 2,
+                            'identifier' => "10.1038/nature10158",
+                            'pmid' => null,
+                            'dataset_id'=>1,
+                            'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
+                            'pmurl' => null,
+                        ),
+                    );
+
+        $daoUnderTest = new CachedDatasetConnections($cache, $cacheDependency, $storedDatasetConnections) ;
+        $this->assertEquals($expected, $daoUnderTest->getPublications());
+    }
+
+    public function testCachedReturnsPublicationsCacheMiss()
+    {
+        $dataset_id = 1;
+
+        // create a mock for the StoredDatasetConnection, cause we expect a call
+        $storedDatasetConnections = $this->getMockBuilder(StoredDatasetConnections::class)
+                                            ->setMethods(['getDatasetID','getPublications'])
+                                            ->disableOriginalConstructor()
+                                            ->getMock();
+
+        $storedDatasetConnections->expects($this->exactly(2))
+                                    ->method('getDatasetID')
+                                    ->willReturn(1);
+
+        $storedDatasetConnections->expects($this->once())
+                                    ->method('getPublications')
+                                    ->willReturn(
+                                        array(
+                                            array(
+                                                'id' => 1,
+                                                'identifier' => "10.1186/gb-2012-13-10-r100",
+                                                'pmid' => 23075480,
+                                                'dataset_id'=>1,
+                                                'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
+                                                'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+                                            ),
+                                            array(
+                                                'id' => 2,
+                                                'identifier' => "10.1038/nature10158",
+                                                'pmid' => null,
+                                                'dataset_id'=>1,
+                                                'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
+                                                'pmurl' => null,
+                                            ),
+                                        )
+                                    );
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
+        // create a mock for the cache and we need to make the cache method for getting the key
+        $cache = $this->getMockBuilder(CApcCache::class)
+                        ->setMethods(['get','set'])
+                        ->getMock();
+
+        //then we set our expectations for a Cache Miss
+        $cache->expects($this->once())
+                 ->method('get')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getPublications"))
+                 ->willReturn(
+                        false
+                );
+
+        $cache->expects($this->once())
+                ->method('set')
+                ->with(
+                    $this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getPublications"),
+                    array(
+                        array(
+                            'id' => 1,
+                            'identifier' => "10.1186/gb-2012-13-10-r100",
+                            'pmid' => 23075480,
+                            'dataset_id'=>1,
+                            'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
+                            'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+                        ),
+                        array(
+                            'id' => 2,
+                            'identifier' => "10.1038/nature10158",
+                            'pmid' => null,
+                            'dataset_id'=>1,
+                            'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
+                            'pmurl' => null,
+                        ),
+                    ),
+                    Cacheable::defaultTTL,
+                    $cacheDependency
+                )
+                ->willReturn(true);
+
+        $expected = array(
+                        array(
+                            'id' => 1,
+                            'identifier' => "10.1186/gb-2012-13-10-r100",
+                            'pmid' => 23075480,
+                            'dataset_id'=>1,
+                            'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
+                            'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+                        ),
+                        array(
+                            'id' => 2,
+                            'identifier' => "10.1038/nature10158",
+                            'pmid' => null,
+                            'dataset_id'=>1,
+                            'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
+                            'pmurl' => null,
+                        ),
+                    );
+
+        $daoUnderTest = new CachedDatasetConnections($cache, $cacheDependency, $storedDatasetConnections) ;
+        $this->assertEquals($expected, $daoUnderTest->getPublications());
+    }
 }
 ?>

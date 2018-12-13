@@ -5,6 +5,7 @@
  *
  * @param string $id of the dataset for which to retrieve the information
  * @param CDbConnection $dbConnection The database connection object to interact with the database storage
+ * @param GuzzleHttp\Client $webClient web client to fetch citations
  * @see DatasetMainSectionInterface.php
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
@@ -13,12 +14,14 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
 {
 	private $_id;
 	private $_db;
+	private $_web;
 
-	public function __construct (int $dataset_id, CDbConnection $dbConnection)
+	public function __construct (int $dataset_id, CDbConnection $dbConnection, GuzzleHttp\Client $webClient)
 	{
 		parent::__construct();
 		$this->_id = $dataset_id;
 		$this->_db = $dbConnection;
+		$this->_web = $webClient;
 	}
 
 	/**
@@ -72,14 +75,50 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
 	}
 
 	/**
-	 * retrieval of keywords
+	 * Retrieval of publications from storage
 	 *
-	 * @todo
-	 * @return array of string representing the dataset headline attributes
+	 * Althougth the information is from the manuscript table in the database, the full citation is retrieved over HTTP
+	 * So we also need to retrieve the citation at this stage from remote "storage",
+	 * so it can be treated like other attributes (cached and formatted).
+	 * We also construct the pubmed url using url template from config so it can be cached and formated in other adapters
+	 *
+	 * @uses \GuzzleHttp\Client
+	 * @see http://docs.guzzlephp.org/en/stable/psr7.html?highlight=getbody#body
+	 * @return array of string representing the list of peer-reviewed publications associated with the dataset
 	*/
-	public function getKeywords(): array
+	public function getPublications(): array
 	{
-		return [];
+
+		$sql = "select id, identifier, pmid, dataset_id from manuscript where dataset_id = :id order by id";
+		$command = $this->_db->createCommand($sql);
+		$command->bindParam( ":id", $this->_id , PDO::PARAM_INT);
+		$rows = $command->queryAll();
+		$results = [];
+		foreach ($rows as $result) {
+			$response = null;
+			try {
+				$response = $this->_web->request('GET', 'http://dx.doi.org/'. $result['identifier'], [
+									    'headers' => [
+									        'style' => 'apa',
+									        'Accept' => 'text/x-bibliography',
+									    ],
+									    'connect_timeout' => 5
+									]);
+			}
+			catch(RequestException $e) {
+				Yii::log( Psr7\str($e->getRequest()) , "error");
+			    if ($e->hasResponse()) {
+			        Yii::log( Psr7\str($e->getResponse()), "error");
+			    }
+			}
+			$result['citation'] = $response !== null ? (string) $response->getBody() : null;
+			$result['pmurl'] = null;
+			if (null !== $result['pmid']) {
+				$result['pmurl'] = preg_replace("/@id/", $result['pmid'], Yii::app()->params['publications']['pubmed']);
+			}
+			$results[]= $result;
+		}
+		return $results;
 	}
 }
 ?>

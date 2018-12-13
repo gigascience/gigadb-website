@@ -169,6 +169,9 @@ return CMap::mergeArray(array(
             'scholar_query' => 'http://scholar.google.com/scholar?q=@id',
             'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'@id')",
         ),
+        'publications' => array(
+            'pubmed' => 'http://www.ncbi.nlm.nih.gov/pubmed/@id',
+        ),
         // date formats
         'js_date_format' => 'dd-mm-yy',
         'db_date_format' => "%Y-%m-%d",

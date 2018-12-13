@@ -13,6 +13,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
         'relationships'=>'Relationship',
         'datasets'=>'Dataset',
         'relations'=>'Relation',
+        'manuscripts'=>'Manuscript',
 
     );
 
@@ -24,7 +25,13 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 	public function testStoredReturnsDatasetId()
 	{
 		$dataset_id = 1;
-		$daoUnderTest = new StoredDatasetConnections($dataset_id,  $this->getFixtureManager()->getDbConnection());
+
+		//create a stub for the web client
+		$webClient = $this->createMock(GuzzleHttp\Client::class);
+		$daoUnderTest = new StoredDatasetConnections($dataset_id,
+								$this->getFixtureManager()->getDbConnection(),
+								$webClient
+							);
 		$this->assertEquals($dataset_id, $daoUnderTest->getDatasetId() ) ;
 	}
 
@@ -32,7 +39,15 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 	{
 		$dataset_id = 1;
 		$doi = 100243;
-		$daoUnderTest = new StoredDatasetConnections($dataset_id,  $this->getFixtureManager()->getDbConnection());
+		//create a stub for the web client
+		$webClient = $this->createMock(GuzzleHttp\Client::class);
+		$daoUnderTest = new StoredDatasetConnections($dataset_id,
+								$this->getFixtureManager()->getDbConnection(),
+								$webClient
+							);
+		$daoUnderTest = new StoredDatasetConnections($dataset_id,
+								$this->getFixtureManager()->getDbConnection(),
+								$webClient);
 		$this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
 	}
 
@@ -76,13 +91,94 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 			// ),
 		);
 
-		$daoUnderTest = new StoredDatasetConnections($dataset_id, $this->getFixtureManager()->getDbConnection()) ;
+		//create a stub for the web client
+		$webClient = $this->createMock(GuzzleHttp\Client::class);
+
+		$daoUnderTest = new StoredDatasetConnections($dataset_id,
+								$this->getFixtureManager()->getDbConnection(),
+								$webClient
+							);
 		$this->assertEquals($expected, $daoUnderTest->getRelations());
 		$this->assertEquals([$expected[1]], $daoUnderTest->getRelations("IsPreviousVersionOf"));
 		$this->assertEquals([$expected[0]], $daoUnderTest->getRelations("Compiles"));
 		$this->assertEquals([], $daoUnderTest->getRelations("DoesNotExistRelationship"));
 
 
+	}
+
+	public function testStoredReturnsPublications()
+	{
+		$dataset_id = 1;
+
+		// we need to create a mock for a PSR-7 Http response returned by the http request to get citations
+		$response = $this->getMockBuilder(GuzzleHttp\Psr7\Response::class)
+						->setMethods(['getBody'])
+						->disableOriginalConstructor()
+						->getMock();
+
+		$response->expects($this->exactly(2))
+				->method('getBody')
+				->will(
+					$this->onConsecutiveCalls(
+						"full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
+						"Another full citation fetched remotely. doi:10.1038/nature10158"
+					));
+
+		// create a mock for the HTTP request to dx.doi
+		$webClient = $this->getMockBuilder(GuzzleHttp\Client::class)
+						->setMethods(['request'])
+						->disableOriginalConstructor()
+						->getMock();
+
+		// create the expectations for each call to dx.doi for citations
+		$webClient->expects($this->exactly(2))
+					->method('request')
+					->withConsecutive(
+						[
+							'GET', 'http://dx.doi.org/10.1186/gb-2012-13-10-r100', [
+							    'headers' => [
+							        'style' => 'apa',
+							        'Accept' => 'text/x-bibliography',
+							    ],
+							    'connect_timeout' => 5
+							]
+						],
+						[
+							'GET', 'http://dx.doi.org/10.1038/nature10158', [
+							    'headers' => [
+							        'style' => 'apa',
+							        'Accept' => 'text/x-bibliography',
+							    ],
+							    'connect_timeout' => 5
+							]
+						]
+					)
+					->willReturn($response);
+
+
+		$expected = array(
+						array(
+							'id' => 1,
+							'identifier' => "10.1186/gb-2012-13-10-r100",
+							'pmid' => 23075480,
+							'dataset_id'=>1,
+							'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
+							'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+						),
+						array(
+							'id' => 2,
+							'identifier' => "10.1038/nature10158",
+							'pmid' => null,
+							'dataset_id'=>1,
+							'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
+							'pmurl' => null,
+						),
+					);
+		$daoUnderTest = new StoredDatasetConnections($dataset_id,
+								$this->getFixtureManager()->getDbConnection(),
+								$webClient
+							);
+		$this->assertEquals($expected, $daoUnderTest->getPublications());
 	}
 }
 ?>

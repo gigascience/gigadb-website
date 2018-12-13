@@ -73,14 +73,18 @@ class CachedDatasetConnections extends DatasetComponents implements DatasetConne
 	}
 
 	/**
-	 * retrieval of keywords
+	 * retrieval of publications
 	 *
-	 * @todo
-	 * @return array of string representing the dataset headline attributes
+	 * @return array of string representing the list of peer-reviewed publications associated with the dataset
 	*/
-	public function getKeywords(): array
+	public function getPublications(): array
 	{
-		return [];
+		$results = $this->getCachedLocalData( $this->getDatasetId() );
+		if(false == $results) {
+			$results = $this->_storedDatasetConnections->getPublications();
+			$this->saveLocaldataInCache( $this->getDatasetId(), $results );
+		}
+		return $results;
 	}
 }
 ?>

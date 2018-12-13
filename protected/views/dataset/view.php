@@ -147,20 +147,18 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <h4>Additional details</h4>
                         </div>
                     </div>
-                    <?php if (count($model->manuscripts) > 0) { ?>
-                <h5><strong><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></strong></h5>
-                <p>
-                    <? foreach ($model->manuscripts as $key=>$manuscript){
-                        echo $manuscript->getFullCitation();
-                        if ($manuscript->pmid){
-                            $pubmed = CHtml::link($manuscript->pmid , "http://www.ncbi.nlm.nih.gov/pubmed/" . $manuscript->pmid);
-                            echo " (PubMed: $pubmed)";
-                        }
-                        echo "<br/>";
-                    }
-                    ?>
-                </p>
-                <?php } ?>
+                    <?php
+                    $publications = $connections->getPublications();
+                    if (!empty($publications)) { ?>
+                        <h5><strong><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></strong></h5>
+                        <p>
+                            <? foreach ($publications as $publication){
+                                echo $publication['citation'].$publication['pmurl'];
+                                echo "<br/>";
+                            }
+                            ?>
+                        </p>
+                    <?php } ?>
 
                 <?php
                     $relations = $connections->getRelations();

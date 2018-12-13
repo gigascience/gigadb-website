@@ -99,6 +99,64 @@ class FormattedDatasetConnectionsTest extends CDbTestCase
         $this->assertEquals( $expected, $daoUnderTest->getRelations() );
     }
 
+    public function testFormattedReturnsPublications()
+    {
+
+        $dataset_id = 6;
+
+        // creating a stub for the controller
+        $controller = $this-> createMock(CController::class);
+
+        // making a mock of CachedDatasetConnections because expects it to be passed a getPublications(...) message
+        $cachedDatasetConnections = $this->getMockBuilder(CachedDatasetConnections::class)
+                                        ->setMethods(['getPublications'])
+                                        ->disableOriginalConstructor()
+                                        ->getMock();
+
+        $cachedDatasetConnections->expects($this->once())
+                                ->method('getPublications')
+                                ->willReturn(
+                                    array(
+                                        array(
+                                            'id' => 1,
+                                            'identifier' => "10.1186/gb-2012-13-10-r100",
+                                            'pmid' => 23075480,
+                                            'dataset_id'=>1,
+                                            'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
+                                            'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+                                        ),
+                                        array(
+                                            'id' => 2,
+                                            'identifier' => "10.1038/nature10158",
+                                            'pmid' => null,
+                                            'dataset_id'=>1,
+                                            'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
+                                            'pmurl' => null,
+                                        ),
+                                    )
+                                );
+
+        $expected = array(
+                        array(
+                            'id' => 1,
+                            'identifier' => "10.1186/gb-2012-13-10-r100",
+                            'pmid' => 23075480,
+                            'dataset_id'=>1,
+                            'citation' => 'full citation fetched remotely. <a href="https://doi.org/10.1186/gb-2012-13-10-r100">doi:10.1186/gb-2012-13-10-r100</a>',
+                            'pmurl' => '(PubMed:<a href="http://www.ncbi.nlm.nih.gov/pubmed/23075480">23075480</a>)',
+                        ),
+                        array(
+                            'id' => 2,
+                            'identifier' => "10.1038/nature10158",
+                            'pmid' => null,
+                            'dataset_id'=>1,
+                            'citation' => 'Another full citation fetched remotely. <a href="https://doi.org/10.1038/nature10158">doi:10.1038/nature10158</a>',
+                            'pmurl' => null,
+                        ),
+                    );
+        $daoUnderTest = new FormattedDatasetConnections($controller, $cachedDatasetConnections);
+        $this->assertEquals( $expected, $daoUnderTest->getPublications() );
+    }
 
 
 }

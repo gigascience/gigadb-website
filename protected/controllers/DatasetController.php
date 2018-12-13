@@ -245,7 +245,8 @@ class DatasetController extends Controller
                             $cacheDependency,
                             new StoredDatasetConnections(
                                 $model->id,
-                                Yii::app()->db
+                                Yii::app()->db,
+                                new \GuzzleHttp\Client()
                             )
                     )
                 );

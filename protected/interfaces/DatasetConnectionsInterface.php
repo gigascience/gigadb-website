@@ -1,6 +1,12 @@
 <?php
 /**
- * Retrieve related datasets and keywords associated to a dataset from db, then cache them and format them for presentation
+ * Retrieve Pieces of dataset related information related to connecting the dataset to other resources
+ *
+ * Supported connections are:
+ * - links to related datasets (DONE)
+ * - links to peer-review publications/manuscripts (TODO)
+ * - links to projects (TODO)
+ * - links to external links (TODO)
  *
  * To be implemented by:
  *
@@ -31,15 +37,17 @@ interface DatasetConnectionsInterface
 	 * retrieval of related datasets
 	 *
 	 * @param string optionally pass the list of types of relations to retrieve, otherwise retrieve them all
-	 * @return array of string representing the dataset headline attributes
+	 * @return array of string representing the list of related datasets
 	*/
 	public function getRelations(string $relationship_type = null): array;
 
 	/**
-	 * retrieval of keywords
+	 * retrieval of publications
 	 *
-	 * @return array of string representing the dataset headline attributes
+	 * @return array of string representing the list of peer-reviewed publications associated with the dataset
 	*/
-	public function getKeywords(): array;
+	public function getPublications(): array;
+
+
 }
 ?>

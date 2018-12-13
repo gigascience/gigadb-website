@@ -103,25 +103,6 @@ class Manuscript extends CActiveRecord
 	public function getDOILink(){
     	return "http://dx.doi.org/".$this->identifier;
     }
-    
-        public function getFullCitation(){
-    	$url= "http://dx.doi.org/".$this->identifier;
-        $ch= curl_init($url);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: text/x-bibliography','style=apa'));	
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	$curl_response = curl_exec($ch);
-        if(strpos($curl_response, 'doi:') !== false)
-        {
-            $messages = explode("doi:", $curl_response); 
-            $messages[1] = "<a href='https://doi.org/".$messages[1]."'>doi:$messages[1]</a>";
-            $curl_response= $messages[0].$messages[1];
-            
-        }
-        return $curl_response;
-        
-    }
 
     public function behaviors() {
         return array(

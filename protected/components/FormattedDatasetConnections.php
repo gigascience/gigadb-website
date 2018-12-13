@@ -81,14 +81,20 @@ class FormattedDatasetConnections extends DatasetComponents implements DatasetCo
 	}
 
 	/**
-	 * retrieval of keywords
+	 * retrieval of list of publications and formatting them to be presented on dataset view page
 	 *
-	 * @todo
-	 * @return array of string representing the dataset headline attributes
+	 * @return array of string representing the list of peer-reviewed publications associated with the dataset
 	*/
-	public function getKeywords(): array
+	public function getPublications(): array
 	{
-		return [];
+		$formattedPublications = [];
+		$publications = $this->_cachedDatasetConnections->getPublications();
+		foreach ($publications as $publication) {
+			$publication['citation'] = preg_replace("/(doi:)([0-9.]+\/.*)/", '<a href="https://doi.org/$2">$1$2</a>', $publication['citation']);
+			$publication['pmurl'] = preg_replace("/^(http.*)$/", "(PubMed:<a href=\"$1\">".$publication['pmid']."</a>)", $publication['pmurl']);
+			$formattedPublications[] = $publication;
+		}
+		return $formattedPublications;
 	}
 
 }
