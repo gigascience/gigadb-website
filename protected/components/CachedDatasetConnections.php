@@ -86,5 +86,20 @@ class CachedDatasetConnections extends DatasetComponents implements DatasetConne
 		}
 		return $results;
 	}
+
+	/**
+	 * retrieval of projects
+	 *
+	 * @return array of string representing the list of projects associated with the dataset
+	*/
+	public function getProjects(): array
+	{
+		$results =  $this->getCachedLocalData( $this->getDatasetId() );
+		if (false == $results) {
+			$results = $this->_storedDatasetConnections->getProjects();
+			$this->saveLocaldataInCache( $this->getDatasetId(), $results );
+		}
+		return $results;
+	}
 }
 ?>

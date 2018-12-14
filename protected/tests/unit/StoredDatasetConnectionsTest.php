@@ -14,6 +14,8 @@ class StoredDatasetConnectionsTest extends CDbTestCase
         'datasets'=>'Dataset',
         'relations'=>'Relation',
         'manuscripts'=>'Manuscript',
+        'projects'=>'Project',
+        'dataset_projects'=>'DatasetProject',
 
     );
 
@@ -179,6 +181,42 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 								$webClient
 							);
 		$this->assertEquals($expected, $daoUnderTest->getPublications());
+	}
+
+	public function testStoredReturnsProjects()
+	{
+		$dataset_id = 1;
+		$expected = array(
+			array(
+					'id'=>1,
+					'url'=>"http://avian.genomics.cn/en/index.html",
+					'name'=>"The Avian Phylogenomic Project",
+					'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
+			),
+			array(
+					'id'=>2,
+					'url'=>"http://www.genome10k.org/",
+					'name'=>"Genome 10K",
+					'image_location'=>null,
+			),
+		);
+
+		//create a stub for the web client
+		$webClient = $this->createMock(GuzzleHttp\Client::class);
+
+		$daoUnderTest = new StoredDatasetConnections($dataset_id,
+								$this->getFixtureManager()->getDbConnection(),
+								$webClient
+							);
+		$this->assertEquals($expected, $daoUnderTest->getProjects());
+
+		// testing it returns empty array if no result
+		$daoUnderTestEmpty = new StoredDatasetConnections(2,
+								$this->getFixtureManager()->getDbConnection(),
+								$webClient
+							);
+		$this->assertEquals([], $daoUnderTestEmpty->getProjects());
+
 	}
 }
 ?>

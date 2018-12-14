@@ -120,5 +120,19 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
 		}
 		return $results;
 	}
+
+	/**
+	 * retrieval of projects
+	 *
+	 * @return array of string representing the list of projects associated with the dataset
+	*/
+	public function getProjects(): array
+	{
+		$sql = "select p.id, p.url, p.name, p.image_location from project p, dataset_project dp where dp.project_id = p.id  and dp.dataset_id=:id order by p.id";
+		$command = $this->_db->createCommand($sql);
+		$command->bindParam( ":id", $this->_id , PDO::PARAM_INT);
+		$results = $command->queryAll();
+		return $results;
+	}
 }
 ?>

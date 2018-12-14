@@ -413,5 +413,154 @@ class CachedDatasetConnectionsTest extends CDbTestCase
         $daoUnderTest = new CachedDatasetConnections($cache, $cacheDependency, $storedDatasetConnections) ;
         $this->assertEquals($expected, $daoUnderTest->getPublications());
     }
+
+    public function testCachedReturnsProjectsCacheHit()
+    {
+         $dataset_id = 1;
+
+        // create a stub for the StoredDatasetConnection, cause we have no expectation on it as cache hit
+        $storedDatasetConnections = $this->createMock(StoredDatasetConnections::class);
+        $storedDatasetConnections->method('getDatasetID')
+                                    ->willReturn(1);
+
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
+        // create a mock for the cache and we need to make the cache method for getting the key
+        $cache = $this->getMockBuilder(CApcCache::class)
+                        ->setMethods(['get'])
+                        ->getMock();
+
+        //then we set our expectation for a Cache Hit
+        $cache->expects($this->once())
+                 ->method('get')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getProjects"))
+                 ->willReturn(
+                    array(
+                        array(
+                            'id'=>1,
+                            'url'=>"http://avian.genomics.cn/en/index.html",
+                            'name'=>"The Avian Phylogenomic Project",
+                            'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
+                        ),
+                        array(
+                            'id'=>2,
+                            'url'=>"http://www.genome10k.org/",
+                            'name'=>"Genome 10K",
+                            'image_location'=>null,
+                        ),
+                    )
+                );
+
+        $expected = array(
+                        array(
+                            'id'=>1,
+                            'url'=>"http://avian.genomics.cn/en/index.html",
+                            'name'=>"The Avian Phylogenomic Project",
+                            'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
+                        ),
+                        array(
+                            'id'=>2,
+                            'url'=>"http://www.genome10k.org/",
+                            'name'=>"Genome 10K",
+                            'image_location'=>null,
+                        ),
+        );
+
+        $daoUnderTest = new CachedDatasetConnections($cache, $cacheDependency, $storedDatasetConnections) ;
+        $this->assertEquals($expected, $daoUnderTest->getProjects());
+    }
+
+    public function testCachedReturnsProjectsCacheMiss()
+    {
+        $dataset_id = 1;
+
+        // create a mock for the StoredDatasetConnection, cause we expect a call
+        $storedDatasetConnections = $this->getMockBuilder(StoredDatasetConnections::class)
+                                            ->setMethods(['getDatasetID','getProjects'])
+                                            ->disableOriginalConstructor()
+                                            ->getMock();
+
+        $storedDatasetConnections->expects($this->exactly(2))
+                                    ->method('getDatasetID')
+                                    ->willReturn(1);
+
+        $storedDatasetConnections->expects($this->once())
+                                    ->method('getProjects')
+                                    ->willReturn(
+                                        array(
+                                            array(
+                                                'id'=>1,
+                                                'url'=>"http://avian.genomics.cn/en/index.html",
+                                                'name'=>"The Avian Phylogenomic Project",
+                                                'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
+                                            ),
+                                            array(
+                                                'id'=>2,
+                                                'url'=>"http://www.genome10k.org/",
+                                                'name'=>"Genome 10K",
+                                                'image_location'=>null,
+                                            ),
+                                        )
+                                    );
+
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
+        // create a mock for the cache and we need to make the cache method for getting the key
+        $cache = $this->getMockBuilder(CApcCache::class)
+                        ->setMethods(['get','set'])
+                        ->getMock();
+
+        //then we set our expectations for a Cache Miss
+        $cache->expects($this->once())
+                 ->method('get')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getProjects"))
+                 ->willReturn(
+                    false
+                );
+
+        $cache->expects($this->once())
+                 ->method('set')
+                                 ->with(
+                    $this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getProjects"),
+                    array(
+                        array(
+                            'id'=>1,
+                            'url'=>"http://avian.genomics.cn/en/index.html",
+                            'name'=>"The Avian Phylogenomic Project",
+                            'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
+                        ),
+                        array(
+                            'id'=>2,
+                            'url'=>"http://www.genome10k.org/",
+                            'name'=>"Genome 10K",
+                            'image_location'=>null,
+                        ),
+                    ),
+                    Cacheable::defaultTTL,
+                    $cacheDependency
+                )
+                 ->willReturn(true );
+
+        $expected = array(
+                        array(
+                            'id'=>1,
+                            'url'=>"http://avian.genomics.cn/en/index.html",
+                            'name'=>"The Avian Phylogenomic Project",
+                            'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
+                        ),
+                        array(
+                            'id'=>2,
+                            'url'=>"http://www.genome10k.org/",
+                            'name'=>"Genome 10K",
+                            'image_location'=>null,
+                        ),
+        );
+
+        $daoUnderTest = new CachedDatasetConnections($cache, $cacheDependency, $storedDatasetConnections) ;
+        $this->assertEquals($expected, $daoUnderTest->getProjects());
+
+    }
 }
 ?>

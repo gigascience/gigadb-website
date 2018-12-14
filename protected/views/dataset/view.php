@@ -255,19 +255,17 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                     <?php } ?>
 
                 <?php } //if (count($accessions) > 0) ?>
-                <?php if (count($model->projects) > 0) { ?>
-                <h5><strong><?=Yii::t('app' , 'Projects:')?></strong></h5>
-                <p>
-                    <? foreach ($model->projects as $key=>$project){
-                        if ($project->image_location)
-                            echo "<a href='$project->url'><img src='$project->image_location' alt='Go to $project->name website'/></a>";
-                        else
-                            echo CHtml::link($project->name, $project->url);
 
-                        echo "<br/>";
-                    }
-                    ?>
-                </p>
+                <?php $projects = $connections->getProjects() ;
+                if (count($projects) > 0) { ?>
+                    <h5><strong><?=Yii::t('app' , 'Projects:')?></strong></h5>
+                    <p>
+                        <? foreach ($projects as $project){
+                            echo $project['format'];
+                            echo "<br/>";
+                        }
+                        ?>
+                    </p>
                 <? } ?>
 
                 </div>

@@ -158,5 +158,54 @@ class FormattedDatasetConnectionsTest extends CDbTestCase
         $this->assertEquals( $expected, $daoUnderTest->getPublications() );
     }
 
+    public function testFormattedReturnsProjects()
+    {
+        $dataset_id = 1;
+
+        // creating a stub for the controller
+        $controller = $this-> createMock(CController::class);
+
+        // making a mock of CachedDatasetConnections because expects it to be passed a getPublications(...) message
+        $cachedDatasetConnections = $this->getMockBuilder(CachedDatasetConnections::class)
+                                        ->setMethods(['getProjects'])
+                                        ->disableOriginalConstructor()
+                                        ->getMock();
+
+        $cachedDatasetConnections->expects($this->once())
+                                ->method('getProjects')
+                                ->willReturn(
+                                    array(
+                                        array(
+                                            'id'=>1,
+                                            'url'=>"http://avian.genomics.cn/en/index.html",
+                                            'name'=>"The Avian Phylogenomic Project",
+                                            'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
+                                        ),
+                                        array(
+                                            'id'=>2,
+                                            'url'=>"http://www.genome10k.org/",
+                                            'name'=>"Genome 10K",
+                                            'image_location'=>null,
+                                        ),
+                                    )
+                                );
+        $expected = array(
+                        array(
+                            'url'=>"http://avian.genomics.cn/en/index.html",
+                            'name'=>"The Avian Phylogenomic Project",
+                            'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
+                            'format' => '<a href="http://avian.genomics.cn/en/index.html"><img src="http://gigadb.org/images/project/phylogenomiclogo.png" alt="Go to The Avian Phylogenomic Project website"/></a>',
+                        ),
+                        array(
+                            'url'=>"http://www.genome10k.org/",
+                            'name'=>"Genome 10K",
+                            'image_location'=>null,
+                            'format' => '<a href="http://www.genome10k.org/">Genome 10K</a>'
+                        ),
+        );
+
+        $daoUnderTest = new FormattedDatasetConnections($controller, $cachedDatasetConnections);
+        $this->assertEquals( $expected, $daoUnderTest->getProjects() );
+    }
 
 }

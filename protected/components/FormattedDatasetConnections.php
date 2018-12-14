@@ -97,5 +97,27 @@ class FormattedDatasetConnections extends DatasetComponents implements DatasetCo
 		return $formattedPublications;
 	}
 
+	/**
+	 * retrieval of projects from cache and formatting the link depending on whether there is an image
+	 *
+	 * @return array of string representing the list of projects associated with the dataset
+	*/
+	public function getProjects(): array
+	{
+		$formattedProjects = [] ;
+		$projects = $this->_cachedDatasetConnections->getProjects();
+		foreach( $projects as $project) {
+			if (null !== $project['image_location']) {
+				$project['format'] ='<a href="'.$project['url'].'"><img src="'.$project['image_location'].'" alt="Go to '.$project['name'].' website"/></a>';
+			}
+			else {
+				$project['format'] = '<a href="'.$project['url'].'">'.$project['name'].'</a>';
+			}
+			unset($project['id']);
+			$formattedProjects[] = $project;
+		}
+		return $formattedProjects;
+	}
+
 }
 ?>

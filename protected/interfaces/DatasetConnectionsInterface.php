@@ -4,7 +4,7 @@
  *
  * Supported connections are:
  * - links to related datasets (DONE)
- * - links to peer-review publications/manuscripts (TODO)
+ * - links to peer-review publications/manuscripts (DONE)
  * - links to projects (TODO)
  * - links to external links (TODO)
  *
@@ -48,6 +48,12 @@ interface DatasetConnectionsInterface
 	*/
 	public function getPublications(): array;
 
+	/**
+	 * retrieval of projects
+	 *
+	 * @return array of string representing the list of projects associated with the dataset
+	*/
+	public function getProjects(): array;
 
 }
 ?>
