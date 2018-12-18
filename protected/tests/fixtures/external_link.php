@@ -1,0 +1,40 @@
+<?php
+
+return array(
+	array(
+		'id'=>1,
+		'dataset_id'=>1,
+		'url'=>"http://foo.com",
+		'external_link_type_id'=>1,
+	),
+	array(
+		'id'=>2,
+		'dataset_id'=>1,
+		'url'=>"http://foo2.com",
+		'external_link_type_id'=>1,
+	),
+	array(
+		'id'=>3,
+		'dataset_id'=>1,
+		'url'=>"http://foo3.com",
+		'external_link_type_id'=>2,
+	),
+	array(
+		'id'=>4,
+		'dataset_id'=>1,
+		'url'=>"http://foo4.com",
+		'external_link_type_id'=>3,
+	),
+	array(
+		'id'=>5,
+		'dataset_id'=>1,
+		'url'=>"http://foo5.com",
+		'external_link_type_id'=>4,
+	),
+	array(
+		'id'=>6,
+		'dataset_id'=>2,
+		'url'=>"http://foo6.com",
+		'external_link_type_id'=>5,
+	),
+);

@@ -167,67 +167,18 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                 <?php $this->renderPartial('_connections',array('relations' => $relations )); ?>
 
                 <?php } ?>
-
-                <?php
-                        $types = array();
-                        $protocol = array();
-                        $jb = array();
-                        $dmodel = array();
-                        $codeocean = array();
-                        if (count($model->externalLinks) > 0) { ?>
                 <p>
                     <?php
-
-                        foreach ($model->externalLinks as $key=>$externalLink){
-                            $types[$externalLink->externalLinkType->name] = 1;
-                        }
-                        foreach ($types as $typeName => $value) {
-                            $typeNameLabel = preg_replace_callback('/(?:^|_)(.?)/',
-                                            function($m) { return mb_strtoupper($m[1]); },
-                                            $typeName);
-
-                            $typeNameLabel = preg_replace('/(?<=\\w)(?=[A-Z])/'," $1", $typeNameLabel);
-                            $typeNameLabel = trim($typeNameLabel);
-                            if($typeNameLabel !== 'Protocols.io' and $typeNameLabel !== 'J Browse' and $typeNameLabel !== '3 D Models' and $typeNameLabel !== 'Code Ocean')
-                            {
-                               echo "<h5><strong>$typeNameLabel:</strong></h5>";
-                            }
-
-                            foreach ($model->externalLinks as $key=>$externalLink){
-                                if ($externalLink->externalLinkType->name == $typeName) {
-                                    if($typeName == 'Protocols.io')
-                                    {
-                                       array_push($protocol,$externalLink->url);
-
-                                    }
-                                    elseif($typeName == 'JBrowse')
-                                    {
-                                       array_push($jb,$externalLink->url);
-
-                                    }
-                                    elseif($typeName == '3D Models')
-                                    {
-                                       array_push($dmodel,$externalLink->url);
-
-                                    }
-                                    elseif($typeName == 'Code Ocean')
-                                    {
-                                       array_push($codeocean,$externalLink->url);
-
-                                    }
-                                    else
-                                    {
-                                    echo '<p>'. CHtml::link($externalLink->url, $externalLink->url, array("title" =>"$typeNameLabel for dataset " . $model->identifier )) . '</p>';
-                                    }
-                                }
+                        $mainbodyExternalLinks = $links->getDatasetExternalLinksTypesAndCount(["Additional information", "Genome browser"]) ;
+                        foreach( array_keys( $mainbodyExternalLinks ) as $linkType ) {
+                            echo "<h5><strong>${linkType}:</strong></h5>";
+                            foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
+                                echo '<p>'. CHtml::link($link['url'], $link['url'], array("title" =>$linkType." for dataset " . $model->identifier )) . '</p>';
                             }
                         }
-
-
                     ?>
                 </p>
 
-                <?php } ?>
 
                 <?php if (count($accessions) > 0) { ?>
 
@@ -271,6 +222,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                 </div>
 
                 <section>
+                <?php
+                        $protocol = array();
+                        $jb = array();
+                        $dmodel = array();
+                        $codeocean = array();
+                ?>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
                         <?php if(count($model->samples) > 0) {
                             ?>
@@ -293,26 +250,14 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <li role="presentation" id="p-funding"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
                         <?php }
                         ?>
-                        <?php if(count($protocol) > 0) {
-                            ?>
-                           <li role="presentation" id="p-protocol"><a href="#protocol" aria-controls="protocol" role="tab" data-toggle="tab">Protocols.io</a></li>
-                        <?php }
+                        <?php
+                            foreach ( $links->getDatasetExternalLinksTypesNames(["Protocols.io","JBrowse","3D Models", "Code Ocean"]) as $linkType => $linkCode ) {
+                                ?>
+                                <li role="presentation" id="p-<?= $linkCode ?>"><a href="#<?= $linkCode ?>" aria-controls="<?= $linkCode ?>" role="tab" data-toggle="tab"><?= $linkType ?></a></li>
+                        <?php
+                            }
                         ?>
-                        <?php if(count($jb) > 0) {
-                            ?>
-                           <li role="presentation" id="p-jb"><a href="#jb" aria-controls="jb" role="tab" data-toggle="tab">JBrowse</a></li>
-                        <?php }
-                        ?>
-                        <?php if(count($dmodel) > 0) {
-                            ?>
-                           <li role="presentation" id="p-dmodel"><a href="#demodel" aria-controls="demodel" role="tab" data-toggle="tab">3D Viewer</a></li>
-                        <?php }
-                        ?>
-                        <?php if(count($codeocean) > 0) {
-                            ?>
-                           <li role="presentation" id="p-codeocean"><a href="#codeocean" aria-controls="codeocean" role="tab" data-toggle="tab">Code Ocean</a></li>
-                        <?php }
-                        ?>
+
                         <li role="presentation" id="p-history"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
 
                     </ul>
@@ -452,109 +397,37 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                     <?php }
                         ?>
 
-                    <?php if (count($protocol) > 0) { ?>
-
-                         <div role="tabpanel" class="tab-pane" id="protocol">
-                        <?php
-
-                            echo "<p>Protocols.io:</p>";
-                            // echo "<a id=\"js-expand-btn1\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                            // echo "<a id=\"js-close-btn1\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                            // echo "<div id=\"js-logs-1\" class=\"js-logs\" style=\"display:none;\">";
-                             foreach ($protocol as $p) {
-
-                            {
-                                $ps = HTTPSHelper::httpsize($p);
-                                 echo "<iframe src=\"$ps\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
+                    <?php
+                        foreach ( $links->getDatasetExternalLinksTypesNames(["Protocols.io","JBrowse","3D Models", "Code Ocean"]) as $linkType => $linkCode ) {
+                    ?>
+                            <div role="tabpanel" class="tab-pane" id="<?= $linkCode ?>">
+                            <p><?= $linkType ?>:</p>
+                    <?php
+                            foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
+                                $p = $link['url'];
+                                switch($linkType) {
+                                    case "Protocols.io" :
+                                        $ps = HTTPSHelper::httpsize($p);
+                                        echo "<iframe src=\"$ps\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
+                                        break;
+                                    case "JBrowse" :
+                                        echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
+                                        echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                        echo "<br>";
+                                        break;
+                                    case "3D Models" :
+                                        echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                        break;
+                                    case "Code Ocean" :
+                                        echo "<p>$p</p>";
+                                        break;
+                                }
                             }
-
-                            }
-                            // echo "</div>";
-                         ?>
-
-                              </div>
-
-
-                    <?php }?>
-
-                    <?php if (count($jb) > 0) { ?>
-
-                         <div role="tabpanel" class="tab-pane" id="jb">
-                        <?php
-
-                             echo "<p>JBrowse:</p>";
-                             //echo "<a id=\"js-expand-btn2\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                            // echo "<a id=\"js-close-btn2\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                             //echo "<div id=\"js-logs-2\" class=\"js-logs\" style=\"display:none;\">";
-                             foreach ($jb as $p) {
-
-                            {
-                                 echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
-                                 echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
-                                 echo "<br>";
-                            }
-
-                            }
-                             //echo "</div>";
-                         ?>
-
-                              </div>
-
-
-                    <?php }?>
-
-                    <?php if (count($dmodel) > 0) { ?>
-
-                         <div role="tabpanel" class="tab-pane" id="demodel">
-                        <?php
-
-                             echo "<p>3D Models:</p>";
-                             //echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                            // echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                            // echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
-                             foreach ($dmodel as $p) {
-
-                            {
-                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
-
-                            }
-
-                            }
-                            // echo "</div>";
-                         ?>
-
-                             </div>
-
-
-                    <?php }?>
-
-                     <?php if (count($codeocean) > 0) { ?>
-
-                         <div role="tabpanel" class="tab-pane" id="codeocean">
-                        <?php
-
-                             echo "<p>Code Ocean:</p>";
-                             //echo "<a id=\"js-expand-btn3\" class=\"btn btn-expand\"><div class=\"history-status\"> + </div></a>";
-                            // echo "<a id=\"js-close-btn3\" class=\"btn btn-collapse\" style=\"display:none;\"><div class=\"history-status\"> - </div></a>";
-                            // echo "<div id=\"js-logs-3\" class=\"js-logs\" style=\"display:none;\">";
-                             foreach ($codeocean as $p) {
-
-                            {
-                                 echo "<p>$p</p>";
-
-                            }
-
-                            }
-                            // echo "</div>";
-                         ?>
-
-                             </div>
-
-
-                    <?php }?>
-
-
-
+                    ?>
+                            </div>
+                    <?php
+                        }
+                    ?>
 
                         <div role="tabpanel" class="tab-pane" id="history">
 

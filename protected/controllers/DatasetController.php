@@ -251,6 +251,18 @@ class DatasetController extends Controller
                     )
                 );
 
+        //External links
+        $external_links = new FormattedDatasetExternalLinks(
+                            new CachedDatasetExternalLinks(
+                                Yii::app()->cache,
+                                $cacheDependency,
+                                new StoredDatasetExternalLinks(
+                                    $model->id,
+                                    Yii::app()->db
+                                )
+                            )
+                        );
+
         $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {
             $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
@@ -285,6 +297,7 @@ class DatasetController extends Controller
             'accessions' => $accessions,
             'mainSection' => $mainSection,
             'connections' => $connections,
+            'links' => $external_links,
             'previous_doi' => $previous_doi,
             'previous_title' => $previous_title,
             'next_title'=> $next_title,

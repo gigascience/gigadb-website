@@ -158,7 +158,7 @@ Feature: a user visit the dataset page
 		Given I am not logged in to Gigadb web site
 		And I have added "3D Viewer" link "https://sketchfab.com/models/ea49d0dd500647cbb4b61ad5ca9e659a" to dataset "101001"
 		When I go to "/dataset/101001"
-		Then I should see "3D Viewer" tab with text "3D Models:"
+		Then I should see "3D Models" tab with text "3D Models:"
 
 	@ok
 	Scenario:  Protocols.io

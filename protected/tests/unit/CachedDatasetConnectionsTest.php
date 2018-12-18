@@ -171,24 +171,7 @@ class CachedDatasetConnectionsTest extends CDbTestCase
         // create a mock for the cache and we need to make the cache method for getting the key
         $cache = $this->getMockBuilder(CApcCache::class)
                         ->setMethods(['get', 'set'])
-                        ->getMock(
-                            array(
-                                array(
-                                    'dataset_id'=>6, // 100044
-                                    'dataset_doi'=>"100044", // 100044
-                                    'related_id'=>5, // 100038
-                                    'related_doi'=>"100038", // 100038
-                                    'relationship'=>"Compiles", //18 Compiles
-                                ),
-                                array(
-                                    'dataset_id'=>6, // 100044
-                                    'dataset_doi'=>"100044", // 100044
-                                    'related_id'=>7, // 100148
-                                    'related_doi'=>"100148", // 100148
-                                    'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
-                                )
-                            )
-                        );
+                        ->getMock();
 
         //then we set our expectations for a Cache Miss
         $cache->expects($this->exactly(4))
