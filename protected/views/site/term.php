@@ -20,10 +20,10 @@ $this->pageTitle = 'GigaDB - Terms of use';
             <section style="margin-bottom: 15px;">
                 <div>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#policies" aria-controls="policies" role="tab" data-toggle="tab">GigaScience Database (<em>GigaDB</em>) Use Policies</a></li>
-                        <li role="presentation" id="privacytab"><a href="#privacy" aria-controls="privacy" role="tab" data-toggle="tab">Privacy</a></li>
-                        <li role="presentation"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Collection of Web-traffic Information</a></li>
-                        <li role="presentation"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal Data</a></li>
+                        <li id="lipolicies" role="presentation" class="active"><a href="#policies" aria-controls="policies" role="tab" data-toggle="tab">GigaScience Database (<em>GigaDB</em>) Use Policies</a></li>
+                        <li id="liprivacy" role="presentation" id="privacytab"><a href="#privacy" aria-controls="privacy" role="tab" data-toggle="tab">Privacy</a></li>
+                        <li id="liinformation" role="presentation"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Collection of Web-traffic Information</a></li>
+                        <li id="lipersonal" role="presentation"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal Data</a></li>
                     </ul>
                 </div>
             </section>
@@ -39,7 +39,6 @@ $this->pageTitle = 'GigaDB - Terms of use';
                             <p>While we will retain our commitment to Open Science, we reserve the right to update these Terms of Use at any time. When alterations are inevitable, we will attempt to give reasonable notice of any changes by placing a notice on our website, but you may wish to check each time you use the website. The date of the most recent revision will appear on this, Terms of Use page.</p>
                             <p>Any questions or comments concerning these Terms of Use can be addressed to the administrator via emailing <a href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a>.</p>
                         </div>      
-                        <br>
                         <h4 style="color: #099242; margin-bottom: 10px;">GigaDB Services</h4>
                         <div class="subsection">
                             <p><em>GigaDB</em>, GigaScience and the BGI provide these data in good faith, but make no warranty, expressed or implied, nor assume any legal liability or responsibility for any purpose for which they are used. </p>
@@ -132,17 +131,15 @@ $this->pageTitle = 'GigaDB - Terms of use';
 
 
 
-    window.onload = function AlterFunction() {
-        $url = window.location.href;
-        console.log($url);
-        if ($url.includes("privacy"))
-        {
-            $('ul li').removeClass('active');
-            $('#privacytab').addClass('active');
-            $('#policies').removeClass('active');
-            $('#privacy').addClass('active');
-        }
-
+$(document).ready(function () {
+    if(location.hash != null && location.hash != ""){
+        $('ul li').removeClass('active');
+        $('div'+ '.tab-pane').removeClass('active');
+        var variableli = location.hash; 
+        $(location.hash).addClass('active');
+        $(variableli.replace('#','#li')).addClass('active');
     }
+    
+});
 
 </script>
