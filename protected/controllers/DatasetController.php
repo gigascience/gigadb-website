@@ -60,7 +60,8 @@ class DatasetController extends Controller
             return;
         }
         $this->metaData['description'] = $model->description;
-        $status_array = array('Request', 'Incomplete', 'Uploaded');
+        $status_array = array('ImportFromEM','UserStartedIncomplete','Rejected','Not required','AssigningFTPbox','UserUploadingData','DataAvailableForReview',
+                        'Submitted','DataPending','Curation','AuthorReview','Private', 'Published');
 
         if ($model->upload_status != "Published") {
             if (isset($_GET['token']) && $model->token == $_GET['token']) {
@@ -706,7 +707,7 @@ EO_MAIL;
             }
 
             $isOld = 1;
-            if($dataset->upload_status == 'Incomplete') {
+            if($dataset->upload_status == 'UserStartedIncomplete') {
                 $isOld = 0;
             }
 
@@ -715,12 +716,12 @@ EO_MAIL;
             if (isset($_POST['file'])) {
                 $fileLink .= 'Files:<br/>';
                 $fileLink = $link = Yii::app()->params['home_url'] . "/dataset/updateFile/?id=" . $dataset_id;
-                  $dataset->upload_status = 'Pending';
+                  $dataset->upload_status = 'AuthorReview';
                   CurationLog::createlog($dataset->upload_status,$dataset->id,Yii::app()->user->id);
             } else {
-                  if($dataset->upload_status !== 'Request')
+                  if($dataset->upload_status !== 'Submitted')
                     {
-                        $dataset->upload_status = 'Request';
+                        $dataset->upload_status = 'Submitted';
                         CurationLog::createlog($dataset->upload_status,$dataset->id,Yii::app()->user->id);
                     }
             }
@@ -972,7 +973,7 @@ EO_MAIL;
 
 
                     Yii::app()->user->setFlash('saveSuccess', 'saveSuccess');
-                    if ($dataset->upload_status=='Pending') {
+                    if ($dataset->upload_status=='AuthorReview') {
                       $this->redirect('/dataset/private/identifier/'.$dataset->identifier);
                     } else {
                       $this->redirect(array('/dataset/'.$dataset->identifier));
@@ -1040,7 +1041,7 @@ EO_MAIL;
 	public function actionMint() {
 
         $result['status'] = false;
-		$status_array = array('Request', 'Incomplete', 'Uploaded');
+		$status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
 
 		$mds_metadata_url="https://mds.datacite.org/metadata";
 		$mds_doi_url="https://mds.datacite.org/doi";
