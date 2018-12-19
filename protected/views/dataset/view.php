@@ -438,12 +438,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             </tr>
                         </thead>
                         <tbody>
-                        <?php foreach($logs as $log) : ?>
+                        <?php foreach($mainSection->getHistory() as $log) { ?>
                         <tr>
-                            <td><?= date('F j, Y', strtotime($log->created_at)) ?></td>
-                            <td><?= $log->message ?></td>
+                            <td><?= date('F j, Y', strtotime($log['created_at'])) ?></td>
+                            <td><?= $log['message'] ?></td>
                         </tr>
-                        <?php endforeach ?>
+                        <?php } ?>
                         </tbody>
                        </table>
 

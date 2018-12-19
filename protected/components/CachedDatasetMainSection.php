@@ -114,5 +114,19 @@ class CachedDatasetMainSection extends DatasetComponents implements DatasetMainS
 		}
 		return $keywords;
 	}
+
+	/**
+	 * Fetch the history of changes made to the dataset
+	 *
+	 */
+	public function getHistory(): array
+	{
+		$history =  $this->getCachedLocalData( $this->getDatasetId() );
+		if (false == $history) {
+			$history = $this->_storedDatasetMainSection->getHistory();
+			$this->saveLocaldataInCache( $this->getDatasetId(), $history );
+		}
+		return $history;
+	}
 }
 ?>

@@ -61,5 +61,11 @@ interface DatasetMainSectionInterface
 	 *
 	 */
 	public function getKeywords(): array;
+
+	/**
+	 * Fetch the history of changes made to the dataset
+	 *
+	 */
+	public function getHistory(): array;
 }
 ?>

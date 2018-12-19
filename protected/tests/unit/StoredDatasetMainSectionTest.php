@@ -17,6 +17,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
         'authors'=>'Author',
         'dataset_author'=>'DatasetAuthor',
         'dataset_attriutes'=>'DatasetAttributes',
+        'dataset_logs'=>'DatasetLog',
     );
 
 	public function setUp()
@@ -149,6 +150,38 @@ class StoredDatasetMainSectionTest extends CDbTestCase
 		$expected  = array("am", "gram");
 		$daoUnderTest = new StoredDatasetMainSection($dataset_id,  $this->getFixtureManager()->getDbConnection());
 		$this->assertEquals($expected, $daoUnderTest->getKeywords());
+	}
+
+	/**
+	 * unit test for fetching the history of changes made to the dataset
+	 *
+	 */
+	public function testStoredReturnsHistory()
+	{
+		$dataset_id = 1;
+		$expected = array(
+			array(
+				'id'=>1,
+				'dataset_id'=>1,
+				'message'=>"Updated the title",
+				'created_at'=>"2015-10-13 23:41:38.899752",
+				'model'=>"dataset",
+				'model_id'=>1,
+				'url'=>"",
+			),
+			array(
+				'id'=>2,
+				'dataset_id'=>1,
+				'message'=>"File Tinamus_guttatus.fa.gz updated",
+				'created_at'=>"2015-10-12 16:16:37.09544",
+				'model'=>"File",
+				'model_id'=>16945,
+				'url'=>"/adminFile/update/id/16945",
+			),
+		);
+
+		$daoUnderTest = new StoredDatasetMainSection($dataset_id,  $this->getFixtureManager()->getDbConnection());
+		$this->assertEquals($expected, $daoUnderTest->getHistory());
 	}
 
 	public function citationsQueriesExamples()

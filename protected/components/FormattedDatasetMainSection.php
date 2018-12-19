@@ -134,5 +134,14 @@ class FormattedDatasetMainSection extends yii\base\BaseObject implements Dataset
 		};
 		return array_map($linkify, $keywords);
 	}
+
+	/**
+	 * Fetch the history of changes made to the dataset
+	 *
+	 */
+	public function getHistory(): array
+	{
+		return $this->_cachedDatasetMainSection->getHistory();
+	}
 }
 ?>

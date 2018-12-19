@@ -152,5 +152,19 @@ class StoredDatasetMainSection extends DatasetComponents implements DatasetMainS
 		return array_map($flatten, $result);
 	}
 
+	/**
+	 * Fetch the history of changes made to the dataset
+	 *
+	 */
+	public function getHistory(): array
+	{
+
+		$sql="select id, dataset_id, message, created_at, model, model_id, url from dataset_log where dataset_id=:id ";
+		$command = $this->_db->createCommand($sql);
+		$command->bindParam(":id", $this->_id, PDO::PARAM_INT);
+		$result = $command->queryAll();
+		return $result;
+	}
+
 }
 ?>

@@ -542,4 +542,155 @@ class CachedDatasetMainSectionTest extends CDbTestCase
         $this->assertEquals($expected, $daoUnderTest->getKeywords());
     }
 
+    /**
+     * unit test for fetching keywords associated with a dataset, cache hit scenario
+     *
+     */
+    public function testCachedReturnsHistoryCacheHit()
+    {
+        $dataset_id = 1;
+
+        //we first need to create a mock object for the cache
+        $cache = $this->getMockBuilder(CApcCache::class)
+                         ->setMethods(['get'])
+                         ->getMock();
+        //then we set our expectation for a Cache Hit
+        $cache->expects($this->once())
+                 ->method('get')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getHistory"))
+                 ->willReturn(
+                    array(
+                        array(
+                            'id'=>1,
+                            'dataset_id'=>1,
+                            'message'=>"Updated the title",
+                            'created_at'=>"2015-10-13 23:41:38.899752",
+                            'model'=>"dataset",
+                            'model_id'=>1,
+                            'url'=>"",
+                        ),
+                        array(
+                            'id'=>2,
+                            'dataset_id'=>1,
+                            'message'=>"File Tinamus_guttatus.fa.gz updated",
+                            'created_at'=>"2015-10-12 16:16:37.09544",
+                            'model'=>"File",
+                            'model_id'=>16945,
+                            'url'=>"/adminFile/update/id/16945",
+                        )
+                    )
+                 );
+
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
+        $daoUnderTest = new CachedDatasetMainSection (
+                            $cache,
+                            $cacheDependency,
+                            new StoredDatasetMainSection(
+                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
+                            )
+                        );
+
+        $expected  = array(
+                        array(
+                            'id'=>1,
+                            'dataset_id'=>1,
+                            'message'=>"Updated the title",
+                            'created_at'=>"2015-10-13 23:41:38.899752",
+                            'model'=>"dataset",
+                            'model_id'=>1,
+                            'url'=>"",
+                        ),
+                        array(
+                            'id'=>2,
+                            'dataset_id'=>1,
+                            'message'=>"File Tinamus_guttatus.fa.gz updated",
+                            'created_at'=>"2015-10-12 16:16:37.09544",
+                            'model'=>"File",
+                            'model_id'=>16945,
+                            'url'=>"/adminFile/update/id/16945",
+                        )
+                    );
+        $this->assertEquals($expected, $daoUnderTest->getHistory());
+    }
+
+    /**
+     * unit test for fetching keywords associated with a dataset, cache hit scenario
+     *
+     */
+    public function testCachedReturnsHistoryCacheMiss()
+    {
+        $dataset_id = 1;
+
+        $expected  = array(
+                array(
+                    'id'=>1,
+                    'dataset_id'=>1,
+                    'message'=>"Updated the title",
+                    'created_at'=>"2015-10-13 23:41:38.899752",
+                    'model'=>"dataset",
+                    'model_id'=>1,
+                    'url'=>"",
+                ),
+                array(
+                    'id'=>2,
+                    'dataset_id'=>1,
+                    'message'=>"File Tinamus_guttatus.fa.gz updated",
+                    'created_at'=>"2015-10-12 16:16:37.09544",
+                    'model'=>"File",
+                    'model_id'=>16945,
+                    'url'=>"/adminFile/update/id/16945",
+                )
+            );
+
+        //we mock the StoredDatasetMainSection
+        $storedDatasetMainSection = $this->getMockBuilder(StoredDatasetMainSection::class)
+                         ->setMethods(['getHistory','getDatasetId'])
+                         ->disableOriginalConstructor() //so we dont have to pass doi and db_connection
+                         ->getMock();
+
+        //we expect a call to getHistory
+        $storedDatasetMainSection->expects($this->once())
+                 ->method('getHistory')
+                 ->willReturn($expected);
+
+        //we expect a call to getDatasetId
+        $storedDatasetMainSection->expects($this->exactly(2))
+                 ->method('getDatasetId')
+                 ->willReturn(1);
+
+        //we first need to create a mock object for the cache
+        $cache = $this->getMockBuilder(CApcCache::class)
+                         ->setMethods(['get','set'])
+                         ->getMock();
+        //then we set our expectation for a Cache Hit
+        $cache->expects($this->once())
+                 ->method('get')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getHistory"))
+                 ->willReturn(
+                    false
+                 );
+
+         $cache->expects($this->once())
+                 ->method('set')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getHistory"),
+                    $expected,
+                    Cacheable::defaultTTL
+                )
+                ->willReturn(true);
+
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
+        $daoUnderTest = new CachedDatasetMainSection (
+                            $cache,
+                            $cacheDependency,
+                            $storedDatasetMainSection
+                        );
+
+        $this->assertEquals($expected, $daoUnderTest->getHistory());
+    }
+
+
 }
