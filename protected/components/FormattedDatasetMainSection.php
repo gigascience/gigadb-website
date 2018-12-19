@@ -121,5 +121,18 @@ class FormattedDatasetMainSection extends yii\base\BaseObject implements Dataset
         }
         return implode('; ', $links);
 	}
+
+	/**
+	 * Fetch keywords associated with a dataset
+	 *
+	 */
+	public function getKeywords(): array
+	{
+		$keywords =  $this->_cachedDatasetMainSection->getKeywords();
+		$linkify = function ($keyword) {
+			return "<a href='/search/new?keyword=$keyword'>$keyword</a>";
+		};
+		return array_map($linkify, $keywords);
+	}
 }
 ?>

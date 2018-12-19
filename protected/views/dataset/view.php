@@ -47,12 +47,11 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                 </div>
 
                 <div class="subsection">
-                     <?php if(count($model->datasetAttributes)>0){?>
+                     <?php if( !empty( $mainSection->getKeywords() ) ) {?>
                     <p>Keywords:</p>
                     <ul class="list-inline">
-                    <? foreach ($model->datasetAttributes as $key=>$keyword){
-                        if ($keyword->attribute_id == 455)
-                            echo "<li><a href='/search/new?keyword=$keyword->value'>$keyword->value</a></li>";
+                    <? foreach( $mainSection->getKeywords() as $keyword_link ){
+                        echo "<li>$keyword_link</li>";
                     }
                     ?>
                     </ul>

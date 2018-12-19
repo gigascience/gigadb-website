@@ -10,11 +10,13 @@ class StoredDatasetMainSectionTest extends CDbTestCase
 {
 	protected $fixtures=array( //careful, the order matters here because of foreign key constraints
         'publishers'=>'Publisher',
+        'attribute'=>'Attribute',
         'datasets'=>'Dataset',
         'types'=>'Type',
         'dataset_types'=>'DatasetType',
         'authors'=>'Author',
         'dataset_author'=>'DatasetAuthor',
+        'dataset_attriutes'=>'DatasetAttributes',
     );
 
 	public function setUp()
@@ -133,6 +135,20 @@ class StoredDatasetMainSectionTest extends CDbTestCase
 		$daoUnderTest = new StoredDatasetMainSection($dataset_id,  $this->getFixtureManager()->getDbConnection());
 
         $this->assertEquals( $expected, $daoUnderTest->getCitationsLinks($argument));
+	}
+
+
+	/**
+	 * unit test for fetching keywords associated with a dataset
+	 *
+	 */
+	public function testStoredReturnsKeywords()
+	{
+		$dataset_id = 1;
+
+		$expected  = array("am", "gram");
+		$daoUnderTest = new StoredDatasetMainSection($dataset_id,  $this->getFixtureManager()->getDbConnection());
+		$this->assertEquals($expected, $daoUnderTest->getKeywords());
 	}
 
 	public function citationsQueriesExamples()

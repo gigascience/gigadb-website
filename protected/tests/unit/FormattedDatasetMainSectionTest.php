@@ -238,4 +238,31 @@ class FormattedDatasetMainSectionTest extends CDbTestCase
         $this->assertEquals($response, $daoUnderTest->getCitationsLinks($argument) ) ;
     }
 
+    /**
+     * unit tests for formatting of the keywords associated to a dataset for use in the view template
+     *
+     */
+    public function testFormattedReturnsKeywords()
+    {
+        //we mock the CachedDatasetMainSection
+        $cachedDatasetMainSection = $this->getMockBuilder(CachedDatasetMainSection::class)
+                         ->setMethods(['getKeywords'])
+                         ->disableOriginalConstructor() //so we dont have to pass doi and db_connection
+                         ->getMock();
+
+        //we expect a call to getKeywords
+        $cachedDatasetMainSection->expects($this->once())
+                 ->method('getKeywords')
+                 ->willReturn( array("am", "gram") );
+
+        $expected = array(
+            "<a href='/search/new?keyword=am'>am</a>",
+            "<a href='/search/new?keyword=gram'>gram</a>",
+        );
+        $daoUnderTest = new FormattedDatasetMainSection(
+                            $cachedDatasetMainSection
+                        );
+        $this->assertEquals($expected, $daoUnderTest->getKeywords() ) ;
+    }
+
 }

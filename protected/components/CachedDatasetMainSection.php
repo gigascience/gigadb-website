@@ -100,5 +100,19 @@ class CachedDatasetMainSection extends DatasetComponents implements DatasetMainS
 	{
 		return $this->_storedDatasetMainSection->getCitationsLinks($search_engine);
 	}
+
+	/**
+	 * Fetch keywords associated with a dataset
+	 *
+	 */
+	public function getKeywords(): array
+	{
+		$keywords  =   $this->getCachedLocalData( $this->getDatasetId() );
+		if (false == $keywords) {
+			$keywords = $this->_storedDatasetMainSection->getKeywords();
+			$this->saveLocaldataInCache( $this->getDatasetId(), $keywords );
+		}
+		return $keywords;
+	}
 }
 ?>

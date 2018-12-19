@@ -1,4 +1,4 @@
-@issue-125 @dataset-view @javascript
+@issue-125 @dataset-view
 Feature: a user visit the dataset page
 	As a gigadb user
 	I want to see all the information pertaining to a dataset
@@ -115,7 +115,7 @@ Feature: a user visit the dataset page
 		And I should see a button "View new version" with link "/dataset/100148"
 		And I should see a button "Continue to view old version" with link "/dataset/100044"
 		And I should see a button "Close"
-		Then I take a screenshot named "Dataset view IsPreviousVersionOf"
+		# Then I take a screenshot named "Dataset view IsPreviousVersionOf"
 
 	@ok
 	Scenario: Non-Tabbed External Links (e.g: Genome Browser)
@@ -231,7 +231,7 @@ Feature: a user visit the dataset page
 		And I should see a button "Save changes" with no link
 		And I should see a button "Close" with no link
 
-	@ok @pageSize @files
+	@ok @pageSize @files @javascript
 	Scenario: Files - Items per page
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
@@ -263,7 +263,7 @@ Feature: a user visit the dataset page
 		| File name | Description | Sample ID  	| Data Type       	| File Format 	| Size  		| Release date|
 		| Anas_platyrhynchos.cds | predicted coding sequences from draft genome, confirmed with RNAseq data. | Pekin duck 	| Coding sequence  	| FASTA 	   	| 21.50 MiB     | 2015-08-03  |
 
-	@ok @files
+	@ok @files @javascript
 	Scenario: Files - Pagination
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
@@ -314,7 +314,7 @@ Feature: a user visit the dataset page
 		And I should see a button "Save changes" with no link
 		And I should see a button "Close" with no link
 
-	@ok @samples
+	@ok @samples @javascript
 	Scenario: Samples - Items per page
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/100197"
@@ -331,7 +331,7 @@ Feature: a user visit the dataset page
 		| Sample ID 	 |
 		| Ssol.cltw.I.67 |
 
-	@ok @samples
+	@ok @samples @javascript
 	Scenario: Samples - Columns
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
@@ -347,7 +347,7 @@ Feature: a user visit the dataset page
 		| Common Name 	 |
 		| Mallard duck |
 
-	@ok @samples
+	@ok @samples @javascript
 	Scenario: Samples - Pagination
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/100197"

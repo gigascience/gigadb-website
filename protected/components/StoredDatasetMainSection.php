@@ -135,5 +135,22 @@ class StoredDatasetMainSection extends DatasetComponents implements DatasetMainS
 		$citationLinks = preg_replace("/@id/", $doi_prefix."/".$this->getDatasetDOI(), $queries);
 		return $citationLinks;
 	}
+
+	/**
+	 * Fetch keywords associated with a dataset
+	 *
+	 */
+	public function getKeywords(): array
+	{
+		$sql="select value from dataset_attributes da, attribute a where da.attribute_id = a.id and a.attribute_name='keyword' and da.dataset_id=:id";
+		$command = $this->_db->createCommand($sql);
+		$command->bindParam(":id", $this->_id, PDO::PARAM_INT);
+		$result = $command->queryAll();
+		$flatten = function ($row) {
+			return $row['value'];
+		};
+		return array_map($flatten, $result);
+	}
+
 }
 ?>

@@ -55,5 +55,11 @@ interface DatasetMainSectionInterface
 	 * @return array of string with the links to citations seach engines with the DOI of the dataset
 	*/
 	public function getCitationsLinks(string $search_engine = null): array;
+
+	/**
+	 * Fetch keywords associated with a dataset
+	 *
+	 */
+	public function getKeywords(): array;
 }
 ?>

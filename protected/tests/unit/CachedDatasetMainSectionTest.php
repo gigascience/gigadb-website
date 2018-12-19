@@ -10,11 +10,13 @@ class CachedDatasetMainSectionTest extends CDbTestCase
 {
 	protected $fixtures=array( //careful, the order matters here because of foreign key constraints
         'publishers'=>'Publisher',
+        'attribute'=>'Attribute',
         'datasets'=>'Dataset',
         'types'=>'Type',
         'dataset_types'=>'DatasetType',
         'authors'=>'Author',
         'dataset_author'=>'DatasetAuthor',
+        'dataset_attriutes'=>'DatasetAttributes',
     );
 
 	public function setUp()
@@ -460,6 +462,84 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                             $storedDatasetMainSection
                         );
         $this->assertEquals($response, $daoUnderTest->getCitationsLinks($argument) ) ;
+    }
+
+    /**
+     * unit test for fetching keywords associated with a dataset, cache hit scenario
+     *
+     */
+    public function testCachedReturnsKeywordsCacheHit()
+    {
+        $dataset_id = 1;
+
+        //we first need to create a mock object for the cache
+        $cache = $this->getMockBuilder(CApcCache::class)
+                         ->setMethods(['get'])
+                         ->getMock();
+        //then we set our expectation for a Cache Hit
+        $cache->expects($this->once())
+                 ->method('get')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getKeywords"))
+                 ->willReturn(
+                    array("am", "gram")
+                 );
+
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
+        $daoUnderTest = new CachedDatasetMainSection (
+                            $cache,
+                            $cacheDependency,
+                            new StoredDatasetMainSection(
+                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
+                            )
+                        );
+
+        $expected  = array("am", "gram");
+        $this->assertEquals($expected, $daoUnderTest->getKeywords());
+    }
+
+    /**
+     * unit test for fetching keywords associated with a dataset, cache miss scenario
+     *
+     */
+    public function testCachedReturnsKeywordsCacheMiss()
+    {
+         $dataset_id = 1;
+
+        //we first need to create a mock object for the cache
+        $cache = $this->getMockBuilder(CApcCache::class)
+                         ->setMethods(['get','set'])
+                         ->getMock();
+        //then we set our expectation for a Cache Hit
+        $cache->expects($this->once())
+                 ->method('get')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getKeywords"))
+                 ->willReturn(
+                    false
+                 );
+
+        $cache->expects($this->once())
+                 ->method('set')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getKeywords"),
+                    array("am", "gram"),
+                    Cacheable::defaultTTL
+                )
+                ->willReturn(true);
+
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
+        $daoUnderTest = new CachedDatasetMainSection (
+                            $cache,
+                            $cacheDependency,
+                            new StoredDatasetMainSection(
+                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
+                            )
+                        );
+
+        $expected  = array("am", "gram");
+        $this->assertEquals($expected, $daoUnderTest->getKeywords());
     }
 
 }
