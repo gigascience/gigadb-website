@@ -5,7 +5,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 ?>
 
 <?php $this->renderPartial('_sample_setting',array('columns' => $columns, 'pageSize' => $samples->getPagination()->getPageSize() )); ?>
-<?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' => $files->getPagination()->getPageSize()));?>
+<?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' => $files->getDataProvider()->getPagination()->getPageSize()));?>
 
 
 <div class="content">
@@ -335,20 +335,25 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   <?php $file_models = $files->getData();
-
+                                   <?php $file_models = $files->getDataProvider()->getData();
                                     foreach($file_models as $file)
-                                    { ?>
+                                    {
+                                   ?>
                                      <tr>
-                                        <td><?= $file->nameHtml ?></td>
-                                        <td><?= $file->description ?></td>
-                                        <td><?= $file->getallsample($file->id) ?></td>
-                                        <td><?= $file->type->name ?></td>
-                                        <td><?= $file->format->name ?></td>
-                                        <td><?= $file->getSizeWithFormat() ?></td>
-                                        <td><?= $file->date_stamp ?></td>
-                                        <td><?= $file->attrDesc ?></td>
-                                        <td><a class="download-btn js-download-count" href="<?= $file->location ?>">&nbsp;</a></td>
+                                        <td><?= $file['nameHtml'] ?></td>
+                                        <td><?= $file['description'] ?></td>
+                                        <td><?php
+                                        $file_samples = $files->formatDatasetFilesSamples(3, $file['id']) ;
+                                        echo $file_samples[0]['visible'];
+                                        echo $file_samples[0]['hidden'];
+                                        echo $file_samples[0]['more_link'];
+                                        ?></td>
+                                        <td><?= $file['type'] ?></td>
+                                        <td><?= $file['format'] ?></td>
+                                        <td><?= $file['sizeUnit'] ?></td>
+                                        <td><?= $file['date_stamp'] ?></td>
+                                        <td><?= $file['attrDesc'] ?></td>
+                                        <td><a class="download-btn js-download-count" href="<?= $file['location'] ?>">&nbsp;</a></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -356,7 +361,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <?php
                                 $this->widget('SiteLinkPager', array(
                                     'id' => 'files-pager',
-                                    'pages'=>$files->getPagination(),
+                                    'pages'=>$files->getDataProvider()->getPagination(),
                             ));
 
                             ?>
@@ -588,7 +593,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
             "info":     false,
             "searching": false,
             "lengthChange": false,
-            "pageLength": <?= $files->getPagination()->getPageSize() ?>,
+            "pageLength": <?= $files->getDataProvider()->getPagination()->getPageSize() ?>,
             "pagingType": "simple_numbers",
             "columns": [
                 { "visible": <?= in_array('name', $setting)? 'true' : 'false' ?> },

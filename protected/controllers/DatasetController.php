@@ -108,28 +108,6 @@ class DatasetController extends Controller
         }
 
 
-        $files = new CActiveDataProvider('File', array(
-            'criteria'=> $crit,
-            'sort' => array('defaultOrder'=>'name ASC',
-                            'attributes' => array(
-                                'name',
-                                'description',
-                                'size',
-                                'type_id' => array('asc'=>'ft.name asc', 'desc'=>'ft.name desc'),
-                                'format_id' => array('asc'=>'ff.name asc', 'desc'=>'ff.name desc'),
-                                'date_stamp',
-                            )),
-            'pagination' => false,
-        ));
-
-        $files_pagination = new CPagination($files->getTotalItemCount());
-        $files_pagination->setPageSize($pageSize);
-        $files_pagination->pageVar = "Files_page";
-        // Yii::log("files pageVar: ". $files_pagination->pageVar,CLogger::LEVEL_ERROR,"DatasetController");
-        $files->setPagination($files_pagination);
-
-
-
         //Sample
         $columns = array('name', 'taxonomic_id', 'genbank_name', 'scientific_name', 'common_name', 'attribute');
         $perPage = 10;
@@ -263,6 +241,19 @@ class DatasetController extends Controller
                             )
                         );
 
+        //Files
+         $filesDataProvider = new FormattedDatasetFiles(
+                            $pageSize,
+                            new CachedDatasetFiles(
+                                Yii::app()->cache,
+                                $cacheDependency,
+                                new StoredDatasetFiles(
+                                    $model->id,
+                                    Yii::app()->db
+                                )
+                            )
+                        );
+
         $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {
             $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
@@ -291,7 +282,7 @@ class DatasetController extends Controller
             'model'=>$model,
             'form'=>$form,
             'dataset'=>$dataset,
-            'files'=>$files,
+            'files'=>$filesDataProvider,
             'samples'=>$samples,
             'email' => $email,
             'accessions' => $accessions,

@@ -18,4 +18,12 @@
 
 	$this->loadFixture("type");
 	$this->loadFixture("dataset_type");
+
+	$this->loadFixture("file_format");
+	$this->loadFixture("file_type");
+
+	// $this->loadFixture("species");
+	// $this->loadFixture("file");
+	// $this->loadFixture("sample");
+	// $this->loadFixture("file_sample");
 ?>
