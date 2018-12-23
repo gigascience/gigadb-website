@@ -96,7 +96,17 @@ class FormattedDatasetMainSection extends yii\base\BaseObject implements Dataset
 	*/
 	public function getCitationsLinks(string $search_engine = null): array
 	{
-		return $this->_cachedDatasetMainSection->getCitationsLinks($search_engine);
+		$formattedCitations = [];
+		$citationLinks =  $this->_cachedDatasetMainSection->getCitationsLinks($search_engine);
+		foreach($citationLinks['services'] as $service => $description) {
+			$formattedCitations[$service] = "<span class=\"citation-popup\" data-content=\"${description}\">
+                            <a href=\"".$citationLinks['urls'][$service]."\" target=\"_blank\">
+                                <img class=\"dataset-des-images\" src=\"".$citationLinks['images'][$service]."\" alt=\"${description}\"/>
+                            </a>
+                        </span>";
+		}
+
+		return $formattedCitations;
 	}
 
 	/**

@@ -128,14 +128,27 @@ class StoredDatasetMainSectionTest extends CDbTestCase
 	/**
 	 * test that we can query the citations links template from the loca.php config and replace the variable with full DOI
 	 *
-	 * @dataProvider citationsQueriesExamples
 	 */
-	public function testStoredReturnsCitationsLinks($argument, $expected)
+	public function testStoredReturnsCitationsLinks()
 	{
 		$dataset_id = 1;
 		$daoUnderTest = new StoredDatasetMainSection($dataset_id,  $this->getFixtureManager()->getDbConnection());
 
-        $this->assertEquals( $expected, $daoUnderTest->getCitationsLinks($argument));
+		$expected = array(
+			'services' => array(
+                'scholar_query' => "View citations on Google Scholar",
+                'ePMC_query' => "View citations on Europe PubMed Central",
+                ),
+            'urls' => array(
+                'scholar_query' => 'http://scholar.google.com/scholar?q=10.5072/100243',
+                'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/100243')",
+                ),
+            'images' => array(
+                'scholar_query' => '/images/google_scholar.png',
+                'ePMC_query' => "/images/ePMC.jpg",
+            ),
+        );
+        $this->assertEquals( $expected, $daoUnderTest->getCitationsLinks());
 	}
 
 

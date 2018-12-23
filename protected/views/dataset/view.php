@@ -58,16 +58,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                      <?php } ?>
                  <div class="pull-right">
                     <p>
-                        <span class="citation-popup" data-content="View citations on Google Scholar">
-                            <a href="<?= $mainSection->getCitationsLinks()['scholar_query'] ?>" target="_blank">
-                                <img class="dataset-des-images" src="/images/google_scholar.png" alt="View citations for this datasets on Google Scholar"/>
-                            </a>
-                        </span>
-                        <span class="citation-popup" data-content="View citations on Europe PubMed Central">
-                            <a href="<?= $mainSection->getCitationsLinks()['ePMC_query'] ?>" target="_blank">
-                                <img class="dataset-des-images" src="/images/ePMC.jpg" alt="View citations for this datasets on Europe PubMed Central"/>
-                            </a>
-                        </span>
+                        <?php
+                            foreach ( array_values($mainSection->getCitationsLinks() ) as $citation) {
+                                echo $citation;
+                            }
+                        ?>
+
                     </p>
                 </div>
                 </div>

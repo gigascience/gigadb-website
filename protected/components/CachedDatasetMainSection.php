@@ -92,12 +92,11 @@ class CachedDatasetMainSection extends DatasetComponents implements DatasetMainS
 	 * We delegate straight to $_storedDatasetMainSection as the data is read from config already loaded in memory,
 	 * so no need to be cached.
 	 *
-	 * @param string $search_engine name of citations search engine, default to null
 	 * @return array (of string)
 	*/
-	public function getCitationsLinks(string $search_engine = null): array
+	public function getCitationsLinks(): array
 	{
-		return $this->_storedDatasetMainSection->getCitationsLinks($search_engine);
+		return $this->_storedDatasetMainSection->getCitationsLinks();
 	}
 
 	/**

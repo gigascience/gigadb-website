@@ -435,7 +435,6 @@ class CachedDatasetMainSectionTest extends CDbTestCase
      */
     public function testCachedReturnsCitationsLinks()
     {
-        $argument = null;
         $response =["dummy_key" => "dummy_value"];
 
         //we first need to stub the cache (not need to mock it in this test)
@@ -450,7 +449,6 @@ class CachedDatasetMainSectionTest extends CDbTestCase
         //we expect a call to getCitationsLinks
         $storedDatasetMainSection->expects($this->once())
                  ->method('getCitationsLinks')
-                 ->with($argument)
                  ->willReturn($response);
 
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
@@ -461,7 +459,7 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                             $cacheDependency,
                             $storedDatasetMainSection
                         );
-        $this->assertEquals($response, $daoUnderTest->getCitationsLinks($argument) ) ;
+        $this->assertEquals($response, $daoUnderTest->getCitationsLinks() ) ;
     }
 
     /**

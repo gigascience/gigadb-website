@@ -117,21 +117,18 @@ class StoredDatasetMainSection extends DatasetComponents implements DatasetMainS
 	/**
 	 * for the citation widgets containing links and icon to configurable scholarly search engines
 	 *
-	 * @param string $search_engine name of citations search engine, default to null
 	 * @return array (of string)
 	*/
-	public function getCitationsLinks(string $search_engine = null): array
+	public function getCitationsLinks(): array
 	{
 		$doi_prefix= Yii::app()->params['mds_prefix'];
-		$queries = Yii::app()->params['citations'];
+		$citations = Yii::app()->params['citations'];
+
 		$citationLinks = [] ;
 
-		if( isset($search_engine) ) {
-			$queries = preg_replace("/@id/", $doi_prefix."/".$this->getDatasetDOI(), $queries["$search_engine"]);
-			$citationLinks["$search_engine"] =  $queries;
-			return $citationLinks;
-		}
-		$citationLinks = preg_replace("/@id/", $doi_prefix."/".$this->getDatasetDOI(), $queries);
+		$citationLinks['services'] = $citations['services'];
+		$citationLinks['urls'] = preg_replace("/@id/", $doi_prefix."/".$this->getDatasetDOI(), $citations['urls']);
+		$citationLinks['images'] = $citations['images'];
 		return $citationLinks;
 	}
 

@@ -50,11 +50,9 @@ interface DatasetMainSectionInterface
 
 	/**
 	 * for the citation widgets containing links and icon to configurable scholarly search engines
-	 * @param string|null $search_engine if present select the link to that citation search engine's results,
-	 *        otherwise, select all configured citation search engines
 	 * @return array of string with the links to citations seach engines with the DOI of the dataset
 	*/
-	public function getCitationsLinks(string $search_engine = null): array;
+	public function getCitationsLinks(): array;
 
 	/**
 	 * Fetch keywords associated with a dataset
