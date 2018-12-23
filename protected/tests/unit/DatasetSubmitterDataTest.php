@@ -84,7 +84,7 @@ class DatasetSubmitterDataTest extends CDbTestCase
                  ->with(
                  	$this->equalTo("dataset_${dataset_id}_CachedDatasetSubmitter_getEmailAddress"),
                  	"user@gigadb.org",
-                 	60*60*24,
+                 	Cacheable::defaultTTL*30,
                  	$cacheDependency
                  )
                  ->willReturn(false);

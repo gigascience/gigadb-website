@@ -85,7 +85,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
                  ->with(
                  	$this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrimaryLinks"),
                  	[$this->links(0), $this->links(1)],
-                 	60*60*24,
+                 	Cacheable::defaultTTL*30,
                  	$cacheDependency
                 )
                 ->willReturn(true);
@@ -177,7 +177,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
                  ->with(
                  	$this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getSecondaryLinks"),
                  	[$this->links(2), $this->links(3), $this->links(4)],
-                 	60*60*24,
+                 	Cacheable::defaultTTL*30,
                  	$cacheDependency
                 )
                 ->willReturn(true);
@@ -272,7 +272,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
                  		$this->prefixes(0)->getAttributes(["id","prefix","url","source"]),
                  		$this->prefixes(1)->getAttributes(["id","prefix","url","source"])
                  	],
-                 	60*60*24,
+                 	Cacheable::defaultTTL*30,
                  	$cacheDependency
                 )
                 ->willReturn(true);

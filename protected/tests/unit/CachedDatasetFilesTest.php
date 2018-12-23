@@ -187,7 +187,7 @@ class CachedDatasetFilesTest extends CDbTestCase
                 ->with(
                     $this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFiles"),
                     $expected,
-                    Cacheable::defaultTTL,
+                    Cacheable::defaultTTL*30,
                     $cacheDependency
                 )
                 ->willReturn(true);
@@ -336,7 +336,7 @@ class CachedDatasetFilesTest extends CDbTestCase
                 ->with(
                     $this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFilesSamples"),
                     $expected,
-                    Cacheable::defaultTTL,
+                    Cacheable::defaultTTL*30,
                     $cacheDependency
                 )
                 ->willReturn(true);

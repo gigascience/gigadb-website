@@ -41,16 +41,18 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 	/**
 	 * Store content from local context (collection, class, method) into the cache
 	 *
-	 * The content is cached until TTL of Cacheable::defaultTTL, or if there's a new entry in dataset_log table
+	 * The content is cached until TTL read from config, or if there's a new entry in dataset_log table (invalidation query)
 	 * @param mixed $content content to cache
 	 * @return boolean true if operation successful, false otherwise
 	 */
 	public function saveLocaldataInCache(string $dataset_id, $content): bool
 	{
-		$this->_cacheDependency->sql = "select max(created_at) from dataset_log where dataset_id=$dataset_id";
+		$invalidationQuery = preg_replace("/@id/", $dataset_id,Yii::app()->params['cacheConfig']['DatasetComponents']['invalidationQuery']);
+		$ttl = preg_replace("/@id/", $dataset_id,Yii::app()->params['cacheConfig']['DatasetComponents']['timeToLive']);
+		$this->_cacheDependency->sql = $invalidationQuery;
 		return $this->_cache->set( $this->getCacheKeyForLocalData( $dataset_id ),
 									$content,
-									Cacheable::defaultTTL,
+									$ttl,
 									$this->_cacheDependency
 								 );
 	}

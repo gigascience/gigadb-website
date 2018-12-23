@@ -278,7 +278,7 @@ class CachedDatasetExternalLinksTest extends CDbTestCase
                             'external_link_type_name'=>"JBrowse",
                         ),
                     ),
-                    Cacheable::defaultTTL,
+                    Cacheable::defaultTTL*30,
                     $cacheDependency
                 )
                 ->willReturn(true);
@@ -420,7 +420,7 @@ class CachedDatasetExternalLinksTest extends CDbTestCase
                         "Protocols.io" =>1,
                         "JBrowse" => 1,
                     ),
-                    Cacheable::defaultTTL,
+                    Cacheable::defaultTTL*30,
                     $cacheDependency
                 )
                 ->willReturn(true);

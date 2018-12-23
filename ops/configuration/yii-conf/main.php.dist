@@ -172,6 +172,12 @@ return CMap::mergeArray(array(
         'publications' => array(
             'pubmed' => 'http://www.ncbi.nlm.nih.gov/pubmed/@id',
         ),
+        'cacheConfig' =>array(
+            'DatasetComponents' => array(
+                'invalidationQuery' =>'select max(created_at) from dataset_log where dataset_id=@id',
+                'timeToLive' =>2592000 //30 days: 60*60*24*30
+            ),
+        ),
         // date formats
         'js_date_format' => 'dd-mm-yy',
         'db_date_format' => "%Y-%m-%d",

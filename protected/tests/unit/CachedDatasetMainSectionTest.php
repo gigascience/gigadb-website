@@ -125,7 +125,7 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                         ),
                         "release_date"=> '2018-08-23',
                     ),
-                    60*60*24,
+                    Cacheable::defaultTTL*30,
                     $cacheDependency
                 )
                 ->willReturn(true);
@@ -295,7 +295,7 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                         "publisher" => "Gigascience",
                         "full_doi" => "10.5072/100243",
                     ),
-                    60*60*24
+                    Cacheable::defaultTTL*30
                 )
                 ->willReturn(true);
 
@@ -406,7 +406,7 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                     array(
                         "description" => 'The emergence of Zika virus (ZIKV) as a public health emergency in Latin America and the Caribbean (LAC) occurred during a period of severe drought and unusually high temperatures. Speculation in the literature exists that these climate conditions were associated with the 2015/2016 El Niño event and/or climate change but to date no quantitative '
                     ),
-                    60*60*24
+                    Cacheable::defaultTTL*30
                 )
                 ->willReturn(true);
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
@@ -523,7 +523,7 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                  ->method('set')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getKeywords"),
                     array("am", "gram"),
-                    Cacheable::defaultTTL
+                    Cacheable::defaultTTL*30
                 )
                 ->willReturn(true);
 
@@ -676,7 +676,7 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                  ->method('set')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getHistory"),
                     $expected,
-                    Cacheable::defaultTTL
+                    Cacheable::defaultTTL*30
                 )
                 ->willReturn(true);
 

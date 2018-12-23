@@ -198,7 +198,7 @@ class CachedDatasetConnectionsTest extends CDbTestCase
                             'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
                         )
                     ),
-                    Cacheable::defaultTTL,
+                    Cacheable::defaultTTL*30,
                     $cacheDependency
                 )
                 ->willReturn(true);
@@ -368,7 +368,7 @@ class CachedDatasetConnectionsTest extends CDbTestCase
                             'pmurl' => null,
                         ),
                     ),
-                    Cacheable::defaultTTL,
+                    Cacheable::defaultTTL*30,
                     $cacheDependency
                 )
                 ->willReturn(true);
@@ -520,7 +520,7 @@ class CachedDatasetConnectionsTest extends CDbTestCase
                             'image_location'=>null,
                         ),
                     ),
-                    Cacheable::defaultTTL,
+                    Cacheable::defaultTTL*30,
                     $cacheDependency
                 )
                  ->willReturn(true );
