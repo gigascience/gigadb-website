@@ -6,9 +6,8 @@
  * It's better to use the CActiveRecord finder methods rather than DAO functions from CDbCommand
  * that use SQL and returns arrays for retrieving the links
  *
- * @param string $doi of the dataset for which to retrieve the information
+ * @param int $id of the dataset for which to retrieve the information
  * @param CDbConnection The database connection object to interact with the database storage
- * @see DatasetAccessionsInterface.php
  * @uses Link.php
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0

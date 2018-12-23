@@ -1,4 +1,13 @@
 <?php
+/**
+ * DAO class to retrieve the external links associated to a dataset
+ *
+ *
+ * @param int $id of the dataset for which to retrieve the information
+ * @param CDbConnection $dbConnection The database connection object to interact with the database storage
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ */
 class StoredDatasetExternalLinks extends DatasetComponents implements DatasetExternalLinksInterface
 {
 	private $_id;

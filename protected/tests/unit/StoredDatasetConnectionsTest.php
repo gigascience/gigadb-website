@@ -1,6 +1,6 @@
 <?php
 /**
- * Unit tests for StoredDatasetConnections to retrieve from storage connected datasets (through relations and keywords)
+ * Unit tests for StoredDatasetConnections to retrieve from storage connected resources
  *
  * @see DatasetAccessionsInterface.php
  * @author Rija Menage <rija+git@cinecinetique.com>

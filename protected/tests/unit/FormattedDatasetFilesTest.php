@@ -1,8 +1,7 @@
 <?php
 /**
- * Unit tests for FormattedDatasetFiles to present external links associated to a dataset
+ * Unit tests for FormattedDatasetFiles to present the files associated to a dataset
  *
- * @see DatasetAccessionsInterface.php
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */

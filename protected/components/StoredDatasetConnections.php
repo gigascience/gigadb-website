@@ -1,12 +1,11 @@
 <?php
 /**
- * DAO class to retrieve related dataset and keywords for a given dataset
+ * DAO class to retrieve link and metadata of resources connected to a dataset
  *
  *
- * @param string $id of the dataset for which to retrieve the information
+ * @param int $id of the dataset for which to retrieve the information
  * @param CDbConnection $dbConnection The database connection object to interact with the database storage
  * @param GuzzleHttp\Client $webClient web client to fetch citations
- * @see DatasetMainSectionInterface.php
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */

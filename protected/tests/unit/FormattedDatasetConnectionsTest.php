@@ -1,8 +1,7 @@
 <?php
 /**
- * Unit tests for FormattedDatasetConnections to present to the dataset view main dataset info
+ * Unit tests for FormattedDatasetConnections to present to the dataset view resources connected to that dataset
  *
- * @see DatasetAccessionsInterface.php
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */

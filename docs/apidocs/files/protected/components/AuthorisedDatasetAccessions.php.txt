@@ -21,6 +21,16 @@ class AuthorisedDatasetAccessions extends yii\base\BaseObject implements Dataset
 		$this->_datasetAccessions = $datasetAccessions;
 	}
 
+	/**
+	 * the database id of dataset is the internal input variable for retrieving and presenting dataset accessions
+	 *
+	 * @return int dataset id
+	 */
+	public function getDatasetId(): int
+	{
+		return $this->_datasetAccessions->getDatasetId();
+	}
+
 	public function getDatasetDOI(): string
 	{
 		return $this->_datasetAccessions->getDatasetDOI();

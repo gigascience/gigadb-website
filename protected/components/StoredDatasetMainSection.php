@@ -3,9 +3,8 @@
  * DAO class to retrieve dataset and associated information from storage
  *
  *
- * @param string $id of the dataset for which to retrieve the information
+ * @param int $id of the dataset for which to retrieve the information
  * @param CDbConnection $dbConnection The database connection object to interact with the database storage
- * @see DatasetMainSectionInterface.php
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */

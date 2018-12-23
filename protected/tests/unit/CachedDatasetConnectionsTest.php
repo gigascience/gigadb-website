@@ -1,8 +1,7 @@
 <?php
 /**
- * Unit tests for CachedDatasetConnections to retrieve from cache connected datasets (through relations and keywords)
+ * Unit tests for CachedDatasetConnections to retrieve from cache connected datasets
  *
- * @see DatasetAccessionsInterface.php
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */

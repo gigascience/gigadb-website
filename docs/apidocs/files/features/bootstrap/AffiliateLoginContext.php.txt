@@ -239,7 +239,12 @@ class AffiliateLoginContext implements Context
         else if ($arg1 == "LinkedIn") {
             $this->minkContext->fillField("session_key", $login);
             $this->minkContext->fillField("session_password", $password);
-            $this->minkContext->pressButton("Sign In");
+            if ( $this->minkContext->getSession()->getPage()->hasButton("Sign In") ) {
+                $this->minkContext->pressButton("Sign In");
+            }
+            elseif( $this->minkContext->getSession()->getPage()->hasButton("Sign in")) {
+                $this->minkContext->pressButton("Sign in");
+            }
 
         }
         else if ($arg1 == "Orcid") {

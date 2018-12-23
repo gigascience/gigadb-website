@@ -1,6 +1,6 @@
 <?php
 /**
- * Adapter class to present files for a dataset view
+ * Adapter class to present files associated to a dataset for a dataset view
  *
  * @param DatasetFilesInterface $datasetFiles the adaptee class to fall back to
  * @author Rija Menage <rija+git@cinecinetique.com>

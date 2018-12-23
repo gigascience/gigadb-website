@@ -2,7 +2,6 @@
 /**
  * Unit tests for FormattedDatasetExternalLinks to present external links associated to a dataset
  *
- * @see DatasetAccessionsInterface.php
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */

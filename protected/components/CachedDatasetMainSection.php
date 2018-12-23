@@ -6,7 +6,6 @@
  * @param CCache $cache Cache system to use
  * @param CCacheDependency $cacheDependency Cache dependency for invalidating the cache
  * @param DatasetMainSectionInterface $datasetMainSection the adaptee class to fall back on if no cache variant
- * @see DatasetMainSectionInterface.php
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */

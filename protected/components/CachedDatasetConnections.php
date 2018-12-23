@@ -44,7 +44,7 @@ class CachedDatasetConnections extends DatasetComponents implements DatasetConne
 	}
 
 	/**
-	 * retrieval of related datasets
+	 * retrieval from cache of links and metadata of resources connected to a dataset
 	 *
 	 * Note: you need to wrap array_filter with array_values because the former preserve keys,
 	 * thus returning an associative array instead of the classic array list

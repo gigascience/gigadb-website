@@ -108,28 +108,6 @@ class DatasetController extends Controller
         }
 
 
-        $files = new CActiveDataProvider('File', array(
-            'criteria'=> $crit,
-            'sort' => array('defaultOrder'=>'name ASC',
-                            'attributes' => array(
-                                'name',
-                                'description',
-                                'size',
-                                'type_id' => array('asc'=>'ft.name asc', 'desc'=>'ft.name desc'),
-                                'format_id' => array('asc'=>'ff.name asc', 'desc'=>'ff.name desc'),
-                                'date_stamp',
-                            )),
-            'pagination' => false,
-        ));
-
-        $files_pagination = new CPagination($files->getTotalItemCount());
-        $files_pagination->setPageSize($pageSize);
-        $files_pagination->pageVar = "Files_page";
-        // Yii::log("files pageVar: ". $files_pagination->pageVar,CLogger::LEVEL_ERROR,"DatasetController");
-        $files->setPagination($files_pagination);
-
-
-
         //Sample
         $columns = array('name', 'taxonomic_id', 'genbank_name', 'scientific_name', 'common_name', 'attribute');
         $perPage = 10;
@@ -192,13 +170,17 @@ class DatasetController extends Controller
         // Yii::log("samples pageVar: ". $samples_pagination->pageVar,CLogger::LEVEL_ERROR,"DatasetController");
         $samples->setPagination($samples_pagination);
 
+        // Creating a Database cache dependency
+        $cacheDependency = new CDbCacheDependency();
+
         // Submitter email web component
         $datasetSubmitter = new AuthorisedDatasetSubmitter(
                                 Yii::app()->user,
                                 new CachedDatasetSubmitter(
                                     Yii::app()->cache,
+                                    $cacheDependency,
                                     new StoredDatasetSubmitter(
-                                        $id,
+                                        $model->id,
                                         Yii::app()->db
                                     )
                                 )
@@ -211,14 +193,66 @@ class DatasetController extends Controller
                                     Yii::app()->user,
                                     new CachedDatasetAccessions(
                                         Yii::app()->cache,
+                                        $cacheDependency,
                                         new StoredDatasetAccessions(
-                                            $id,
+                                            $model->id,
                                             Yii::app()->db
                                         )
                                     )
                                 ),
                                 'target="_blank"'
         );
+
+        // Main section with headline, release details, description and citations
+       $mainSection = new FormattedDatasetMainSection(
+                        new CachedDatasetMainSection (
+                            Yii::app()->cache,
+                            $cacheDependency,
+                            new StoredDatasetMainSection(
+                                $model->id,
+                                Yii::app()->db
+                            )
+                    )
+                );
+
+       //Dataset connections (other datasets related to this one)
+       $connections = new FormattedDatasetConnections(
+                            Yii::app()->controller,
+                        new CachedDatasetConnections (
+                            Yii::app()->cache,
+                            $cacheDependency,
+                            new StoredDatasetConnections(
+                                $model->id,
+                                Yii::app()->db,
+                                new \GuzzleHttp\Client()
+                            )
+                    )
+                );
+
+        //External links
+        $external_links = new FormattedDatasetExternalLinks(
+                            new CachedDatasetExternalLinks(
+                                Yii::app()->cache,
+                                $cacheDependency,
+                                new StoredDatasetExternalLinks(
+                                    $model->id,
+                                    Yii::app()->db
+                                )
+                            )
+                        );
+
+        //Files
+         $filesDataProvider = new FormattedDatasetFiles(
+                            $pageSize,
+                            new CachedDatasetFiles(
+                                Yii::app()->cache,
+                                $cacheDependency,
+                                new StoredDatasetFiles(
+                                    $model->id,
+                                    Yii::app()->db
+                                )
+                            )
+                        );
 
         $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {
@@ -240,53 +274,6 @@ class DatasetController extends Controller
             $previous_title = $result[0]->title;
         }
 
-        $attributes = $model->attributes;
-        $l = array();
-        foreach ($attributes as $att) {
-            $l[] = $att->id;
-        }
-
-        $authors = $model->authors;
-        $at = array();
-        foreach ($authors as $au) {
-            $at[] = $au->id;
-        }
-
-        $relateCriteria = new CDbCriteria;
-        $relateCriteria->distinct = true;
-        $relateCriteria->addNotInCondition("t.id", array($model->id));
-        $relateCriteria->addCondition("t.upload_status = 'Published'");
-        $relateCriteria->limit = 9;
-
-        $rc = clone $relateCriteria;
-        $rc->join = "JOIN dataset_attributes da ON t.id = da.dataset_id JOIN dataset_author au ON t.id = au.dataset_id";
-        $rc->addInCondition("da.attribute_id", $l);
-        $rc->addInCondition("au.author_id", $at, 'OR');
-        $rc->addCondition("t.upload_status = 'Published'");
-        $relates = Dataset::model()->findAll($rc);
-
-        // if we don't find any dataset related by the first way, then by common type
-        if (!$relates || count($relates) < 9) {
-            $relatesIds = array($model->id);
-            foreach ($relates as $relate) {
-                $relatesIds[] = $relate->id;
-            }
-
-            $rc = clone $relateCriteria;
-            $rc->join = "JOIN dataset_type dt ON t.id = dt.dataset_id";
-            $rc->addInCondition("dt.type_id", $model->getTypeIds());
-            $rc->addNotInCondition("t.id", $relatesIds);
-            $rc->limit = 9 - count($relates);
-            $relatesType = Dataset::model()->findAll($rc);
-
-            foreach ($relatesType as $relate) {
-                $relates[] = $relate;
-            }
-        }
-
-        $scholar = $model->cited;
-
-
         // Page private ? Disable robot to index
         $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $model->upload_status);
         // Yii::log("ActionView: about to render",CLogger::LEVEL_ERROR,"DatasetController");
@@ -295,10 +282,13 @@ class DatasetController extends Controller
             'model'=>$model,
             'form'=>$form,
             'dataset'=>$dataset,
-            'files'=>$files,
+            'files'=>$filesDataProvider,
             'samples'=>$samples,
             'email' => $email,
             'accessions' => $accessions,
+            'mainSection' => $mainSection,
+            'connections' => $connections,
+            'links' => $external_links,
             'previous_doi' => $previous_doi,
             'previous_title' => $previous_title,
             'next_title'=> $next_title,
@@ -306,8 +296,6 @@ class DatasetController extends Controller
             'setting' => $setting,
             'columns' => $columns,
             'logs'=>$model->datasetLogs,
-            'relates' => $relates,
-            'scholar' => $scholar,
             'flag' => $flag,
         ));
     }

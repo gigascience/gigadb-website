@@ -14,16 +14,16 @@
  */
 class Link extends CActiveRecord implements LinkInterface
 {
+
+    public $doi_search;
+    public $acc_num;
+    public $database;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return Link the static model class
 	 */
-   
-    public $doi_search;
-    public $acc_num;
-    public $database;
-
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -104,15 +104,15 @@ class Link extends CActiveRecord implements LinkInterface
 			'criteria'=>$criteria,
 		));
 	}
-        
+
       public function getFullUrl(string $source = ''): string {
         $temp = explode(":", trim($this->link));
         $prefix = $temp[0];
         $value = $temp[1];
-        
-        $model = Prefix::model()->find("lower(prefix) = :p and source = :s", 
-        	array(':p'=>strtolower($prefix), ':s'=>$source));     
-        
+
+        $model = Prefix::model()->find("lower(prefix) = :p and source = :s",
+        	array(':p'=>strtolower($prefix), ':s'=>$source));
+
         // find url with preferred source
         if($model)
         	return $model->url . $value;
@@ -123,15 +123,6 @@ class Link extends CActiveRecord implements LinkInterface
         	return $model->url. $value;
 
         return "#";
-    }
-
-    public function getDatabase() {
-        $url = "http://";
-        if(strpos($this->link,$url)===0)
-                return "";
-        $temp = explode(":", $this->link);    
-        $prefix = $temp[0];     
-        return trim($prefix);
     }
 
     public function behaviors() {
