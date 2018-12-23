@@ -31,11 +31,18 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 	 * retrieve local cached data transparently.
 	 *
 	 * @uses Cacheable::getCacheKeyForLocalData()
-	 * @return mixed the content retrieved from cache
+	 * @return mixed the content retrieved from cache, or false if content is expired
 	 */
 	public function getCachedLocalData(string $dataset_id)
 	{
-		 return $this->_cache->get( $this->getCacheKeyForLocalData( $dataset_id ) );
+		 $result = $this->_cache->get( $this->getCacheKeyForLocalData( $dataset_id ) );
+		 // if (false == $result) {
+		 // 	Yii::log("cache MISS for ". $this->getCacheKeyForLocalData( $dataset_id ),'info');
+		 // }
+		 // else {
+		 // 	Yii::log("cache HIT for ". $this->getCacheKeyForLocalData( $dataset_id ),'info');
+		 // }
+		 return $result;
 	}
 
 	/**
@@ -47,6 +54,7 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 	 */
 	public function saveLocaldataInCache(string $dataset_id, $content): bool
 	{
+		// Yii::log("Saving to cache the data from:". $this->getCacheKeyForLocalData( $dataset_id ),'info');
 		$invalidationQuery = preg_replace("/@id/", $dataset_id,Yii::app()->params['cacheConfig']['DatasetComponents']['invalidationQuery']);
 		$ttl = preg_replace("/@id/", $dataset_id,Yii::app()->params['cacheConfig']['DatasetComponents']['timeToLive']);
 		$this->_cacheDependency->sql = $invalidationQuery;
