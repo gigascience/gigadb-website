@@ -152,16 +152,6 @@ class File extends CActiveRecord
         return true;
     }
 
-
-	public function getAttrDesc() {
-		$desc = "";
-		foreach($this->fileAttributes as $fa) {
-			$name = $fa->attribute->attribute_name;
-			$desc .= $name . ":".$fa->value . "<br/>";
-		}
-		return $desc;
-	}
-
 	public static function getTypeList($ids) {
 		$crit = new CDbCriteria;
         $crit->join = "join file on file.type_id = t.id";
@@ -277,16 +267,6 @@ class File extends CActiveRecord
 	public function getSizeWithFormat($unit = null, $precision = 2)
 	{
 		return File::specifySizeUnits($this->size, $unit, $precision);
-		// if ($this->size<0) {
-		// 	return (string) $this->size;
-		// }
-		// if ( null == $precision ) {
-		// 	$precision = 2;
-		// }
-		// $metric = new ByteUnits\Binary($this->size);
-		// $formatted_size = $metric->format("$unit/$precision"," ");
-		// return $formatted_size ;
-
 	}
 
 
@@ -298,13 +278,6 @@ class File extends CActiveRecord
             ->from('file')
             ->where("id in ($fileIds)")
             ->queryColumn();
-	#	$criteria = new CDbCriteria();
-	#	$criteria->select='id, dataset_id';
-    #$criteria->addInCondition('id', $fileIds);
-    #$criteria->distinct = true;
-    #$criteria->group = 'id, dataset_id';
-  	#$files = File::model()->query($criteria,true);
-  	#$result = CHtml::listData($files,'id','dataset_id');
         return $result;
     }
 
@@ -317,64 +290,6 @@ class File extends CActiveRecord
     	return Sample::model()->find($criteria);
     }
 
-     public function getallsample($id){
-        
-       $sql="select sample.* from sample,file_sample,file where sample.id=file_sample.sample_id and file_sample.file_id=file.id and file.id=$id";
-      $samples= Sample::model()->findAllBySql($sql);
-      $num = count($samples);
-      $short="";
-      $ret = "";
-      $first = true;
-      $second = true;
-      $flag=0;
-        foreach ($samples as $sample) {
-        if($flag >= 1)
-        {
-            break;
-        }
-        if ($first === true) {
-            $first = false;
-        } else {
-            $short .= ', ';
-        }
-        $short .= $sample->name;
-        $flag++;
-    }
-      foreach ($samples as $sample) {
-
-        if ($second === true) {
-            $second = false;
-        } else {
-            $ret .= ', ';
-        }
-        $ret .= $sample->name;
-    }
-    if($num>3)
-    {
-        return <<<HTML
-		<span class="js-short-$this->id">$short</span>
-        		<span class="js-long-$this->id" style="display: none;">$ret</span>
-                <a href='#' class='js-desc' data='$this->id'>+</a>
-HTML;
-    }else
-
-    return <<<HTML
-        		<span class="js-long-$this->id">$ret</span>
-HTML;
-    }
-    
-    public function getNameHtml() {
-    	$display = <<<HTML
-		<div title="$this->description"> 
-		<a href='$this->location' target='_blank'>
-		$this->name
-		</a> 
-		<div>
-HTML;
-
-	return $display;
-    }
-
     public function getSampleName() {
     	$sample = $this->sample;
     	return ($sample)? $sample->linkName : "";
@@ -385,7 +300,7 @@ HTML;
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );
     }
-    
+
     /**
      * Before save file
      */
