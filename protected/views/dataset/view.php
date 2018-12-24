@@ -4,7 +4,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 
 ?>
 
-<?php $this->renderPartial('_sample_setting',array('columns' => $columns, 'pageSize' => $samples->getPagination()->getPageSize() )); ?>
+<?php $this->renderPartial('_sample_setting',array('columns' => $columns, 'pageSize' => $samples->getDataProvider()->getPagination()->getPageSize() )); ?>
 <?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' => $files->getDataProvider()->getPagination()->getPageSize()));?>
 
 
@@ -277,17 +277,17 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                 </tr>
                             </thead>
                             <tbody>
-                               <?php $sample_models = $samples->getData();
+                               <?php $sample_models = $samples->getDataProvider()->getData();
 
                                 foreach($sample_models as $sample)
                                 { ?>
                                  <tr>
-                                    <td><?= $sample->linkName ?></td>
-                                    <td><?= $sample->species->common_name ?></td>
-                                    <td><?= $sample->species->scientific_name ?></td>
-                                    <td><?= $sample->displayAttr ?></td>
-                                    <td><?= CHtml::link($sample->species->tax_id, Species::getTaxLink($sample->species->tax_id)) ?></td>
-                                    <td><?= $sample->species->genbank_name ?></td>
+                                    <td><?= $sample['linkName'] ?></td>
+                                    <td><?= $sample['common_name'] ?></td>
+                                    <td><?= $sample['scientific_name'] ?></td>
+                                    <td><?= $sample['displayAttr'] ?></td>
+                                    <td><?= $sample['taxonomy_link'] ?></td>
+                                    <td><?= $sample['genbank_name'] ?></td>
                                 </tr>
                                 <?php } ?>
 
@@ -296,7 +296,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                         <?php
                             $this->widget('SiteLinkPager', array(
                                 'id' => 'samples-pager',
-                                'pages'=>$samples->getPagination(),
+                                'pages'=>$samples->getDataProvider()->getPagination(),
                             ));
                         ?>
                       </div>
@@ -570,7 +570,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
             "info":     false,
             "searching": false,
             "lengthChange": false,
-            "pageLength": <?= $samples->getPagination()->getPageSize() ?>,
+            "pageLength": <?= $samples->getDataProvider()->getPagination()->getPageSize() ?>,
             "pagingType": "simple_numbers",
             "columns": [
                 { "visible": <?= in_array('name', $columns)? 'true' : 'false' ?> },

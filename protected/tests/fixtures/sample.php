@@ -17,7 +17,7 @@ return array(
 	),
 	array(
 		'id' => 2,
-		'species_id' => 1,
+		'species_id' => 2,
 		'name' => "Sample 2",
 		'consent_document' => "",
 		'submitted_id' => null,
