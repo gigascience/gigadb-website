@@ -126,5 +126,19 @@ class CachedDatasetMainSection extends DatasetComponents implements DatasetMainS
 		}
 		return $history;
 	}
+
+	/**
+	 * Fetch the Funding data for to the dataset
+	 *
+	 */
+	public function getFunding(): array
+	{
+		$funding =  $this->getCachedLocalData( $this->getDatasetId() );
+		if (false == $funding) {
+			$funding = $this->_storedDatasetMainSection->getFunding();
+			$this->saveLocaldataInCache( $this->getDatasetId(), $funding );
+		}
+		return $funding;
+	}
 }
 ?>

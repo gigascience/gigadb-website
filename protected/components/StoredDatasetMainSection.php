@@ -162,5 +162,19 @@ class StoredDatasetMainSection extends DatasetComponents implements DatasetMainS
 		return $result;
 	}
 
+	/**
+	 * Fetch the Funding data for to the dataset
+	 *
+	 */
+	public function getFunding(): array
+	{
+		$sql="select df.id, dataset_id, primary_name_display as funder_name,grant_award, comments, awardee
+		from dataset_funder df, funder_name f where df.funder_id = f.id and df.dataset_id=:id";
+		$command = $this->_db->createCommand($sql);
+		$command->bindParam(":id", $this->_id, PDO::PARAM_INT);
+		$result = $command->queryAll();
+		return $result;
+	}
+
 }
 ?>

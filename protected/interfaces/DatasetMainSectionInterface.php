@@ -65,5 +65,11 @@ interface DatasetMainSectionInterface
 	 *
 	 */
 	public function getHistory(): array;
+
+	/**
+	 * Fetch the Funding data for to the dataset
+	 *
+	 */
+	public function getFunding(): array;
 }
 ?>

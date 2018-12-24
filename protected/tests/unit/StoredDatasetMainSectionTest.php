@@ -18,6 +18,8 @@ class StoredDatasetMainSectionTest extends CDbTestCase
         'dataset_author'=>'DatasetAuthor',
         'dataset_attriutes'=>'DatasetAttributes',
         'dataset_logs'=>'DatasetLog',
+        'funder_name'=>'Funder',
+        'dataset_funder'=>'DatasetFunder',
     );
 
 	public function setUp()
@@ -195,6 +197,36 @@ class StoredDatasetMainSectionTest extends CDbTestCase
 
 		$daoUnderTest = new StoredDatasetMainSection($dataset_id,  $this->getFixtureManager()->getDbConnection());
 		$this->assertEquals($expected, $daoUnderTest->getHistory());
+	}
+
+	/**
+	 * unit test for fetching the funding data for the dataset
+	 *
+	 */
+	public function testStoredReturnsFunding()
+	{
+		$dataset_id = 1;
+		$expected = array(
+			array(
+				'id'=>1,
+				'dataset_id'=>1,
+				'funder_name'=>"The Good",
+				'grant_award'=>"An award",
+				'comments'=>"A comment",
+				'awardee'=>"John Doe",
+			),
+			array(
+				'id'=>2,
+				'dataset_id'=>1,
+				'funder_name'=>"The Charitable",
+				'grant_award'=>"Another award",
+				'comments'=>"Some comment",
+				'awardee'=>"The team",
+			),
+		);
+
+		$daoUnderTest = new StoredDatasetMainSection($dataset_id,  $this->getFixtureManager()->getDbConnection());
+		$this->assertEquals($expected, $daoUnderTest->getFunding());
 	}
 
 	public function citationsQueriesExamples()

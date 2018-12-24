@@ -364,7 +364,9 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                         </div>
                     <?php } ?>
 
-                    <?php if(count($model->datasetFunders) > 0) {
+                    <?php
+                    $funding = $mainSection->getFunding();
+                    if(count($funding) > 0) {
                             ?>
 
                         <div role="tabpanel" class="tab-pane" id="funding">
@@ -381,12 +383,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                         </thead>
                         <tbody>
 
-                          <?php foreach($model->datasetFunders as $fd) { ?>
+                          <?php foreach($funding as $funder) { ?>
                             <tr>
-                                <td><?= $fd->funder->primary_name_display ?></td>
-                                <td><?= $fd->awardee ?></td>
-                                <td><?= $fd->grant_award ?></td>
-                                <td><?= $fd->comments ?></td>
+                                <td><?= $funder['funder_name'] ?></td>
+                                <td><?= $funder['awardee'] ?></td>
+                                <td><?= $funder['grant_award'] ?></td>
+                                <td><?= $funder['comments'] ?></td>
                             </tr>
                             <?php } ?>
                         </tbody>

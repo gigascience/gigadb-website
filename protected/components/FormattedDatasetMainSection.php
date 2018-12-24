@@ -153,5 +153,14 @@ class FormattedDatasetMainSection extends yii\base\BaseObject implements Dataset
 	{
 		return $this->_cachedDatasetMainSection->getHistory();
 	}
+
+	/**
+	 * Fetch the funding data associated with the dataset
+	 *
+	 */
+	public function getFunding(): array
+	{
+		return $this->_cachedDatasetMainSection->getFunding();
+	}
 }
 ?>
