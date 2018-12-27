@@ -5,7 +5,7 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class FormattedDatasetSamplesTest extends CDbTestCase
+class FormattedDatasetSamplesTest extends CTestCase
 {
 
     public function setUp()

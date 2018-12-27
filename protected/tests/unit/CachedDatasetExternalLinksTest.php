@@ -6,13 +6,8 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class CachedDatasetExternalLinksTest extends CDbTestCase
+class CachedDatasetExternalLinksTest extends CTestCase
 {
-    protected $fixtures=array( //careful, the order matters here because of foreign key constraints
-        'external_link_types'=>'ExternalLinkType',
-        'datasets'=>'Dataset',
-        'external_links'=>'ExternalLink',
-    );
 
     public function setUp()
     {

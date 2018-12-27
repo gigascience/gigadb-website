@@ -6,17 +6,8 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class FormattedDatasetMainSectionTest extends CDbTestCase
+class FormattedDatasetMainSectionTest extends CTestCase
 {
-	protected $fixtures=array( //careful, the order matters here because of foreign key constraints
-        'publishers'=>'Publisher',
-        'datasets'=>'Dataset',
-        'types'=>'Type',
-        'dataset_types'=>'DatasetType',
-        'authors'=>'Author',
-        'dataset_author'=>'DatasetAuthor',
-    );
-
 	public function setUp()
 	{
 		parent::setUp();

@@ -5,16 +5,8 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class FormattedDatasetConnectionsTest extends CDbTestCase
+class FormattedDatasetConnectionsTest extends CTestCase
 {
-    protected $fixtures=array( //careful, the order matters here because of foreign key constraints
-        'publishers'=>'Publisher',
-        'relationships'=>'Relationship',
-        'datasets'=>'Dataset',
-        'relations'=>'Relation',
-
-    );
-
 	public function setUp()
 	{
 		parent::setUp();

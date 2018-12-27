@@ -5,15 +5,8 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class CachedDatasetConnectionsTest extends CDbTestCase
+class CachedDatasetConnectionsTest extends CTestCase
 {
-    protected $fixtures=array( //careful, the order matters here because of foreign key constraints
-        'publishers'=>'Publisher',
-        'relationships'=>'Relationship',
-        'datasets'=>'Dataset',
-        'relations'=>'Relation',
-
-    );
 
     public function setUp()
     {
