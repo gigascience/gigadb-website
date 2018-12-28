@@ -178,6 +178,23 @@ check_SAST:
   artifacts:
     paths: [gl-sast-report.json]
 
+
+# job (manual, with failure allowed) for running Dymamic Application Security Testing
+# See: https://docs.gitlab.com/ee/ci/examples/dast.html
+check_DAST:
+  image: registry.gitlab.com/gitlab-org/security-products/zaproxy
+  variables:
+    website: "https://gigadb-staging.pommetab.com/"
+  script:
+    - mkdir /zap/wrk/
+    - /zap/zap-baseline.py -J gl-dast-report.json -t $website || true
+    - cp /zap/wrk/gl-dast-report.json .
+  artifacts:
+    reports:
+      dast: gl-dast-report.json
+  allow_failure: true
+  when: manual
+
 with_new_cert_deploy:
   variables:
     GIGADB_ENV: staging
