@@ -25,6 +25,8 @@ trait BrowserPageSteps
 
         // Validate text presence on a page.
         if (null !== $content) {
+        	if( false == $this->session->getPage()->hasContent($content) )
+		        var_dump($this->session->getPage()->getContent());
 	        $this->assertTrue($this->session->getPage()->hasContent($content));
         }
 
