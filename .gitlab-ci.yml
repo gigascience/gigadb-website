@@ -96,6 +96,7 @@ run_all_tests:
       - protected/config/main.php
       - protected/config/test.php
       - .env
+      - composer.lock
     when: always
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
