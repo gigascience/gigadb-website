@@ -185,10 +185,14 @@ check_DAST:
   image: registry.gitlab.com/gitlab-org/security-products/zaproxy
   variables:
     website: "https://gigadb-staging.pommetab.com/"
+  before_script:
+    - echo "About to run DAST"
   script:
     - mkdir /zap/wrk/
     - /zap/zap-baseline.py -J gl-dast-report.json -t $website || true
     - cp /zap/wrk/gl-dast-report.json .
+  after_script:
+    - echo "Finished running DAST"
   artifacts:
     reports:
       dast: gl-dast-report.json
