@@ -1,0 +1,20 @@
+- name: Install pre-requisites to Docker-CE
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+
+- name: enable Docker-CE stable repo
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: enable Docker-CE edge repo
+  shell: yum-config-manager --enable docker-ce-edge
+
+- name: Install Docker-CE package
+  yum:
+    name: docker-ce
+    state: present
+    enablerepo: docker-ce-edge

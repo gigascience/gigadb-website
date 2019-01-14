@@ -39,10 +39,18 @@ resource "aws_security_group" "docker_host_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  egress {
+	from_port   = 0
+	to_port     = 0
+	protocol    = "-1"
+	cidr_blocks = ["0.0.0.0/0"]
+  }
+
+
 }
 
 
-resource "aws_instance" "staging" {
+resource "aws_instance" "staging_dockerhost" {
   ami           = "ami-8e0205f2"
   instance_type = "t2.micro"
   vpc_security_group_ids = ["${aws_security_group.docker_host_sg.id}"]

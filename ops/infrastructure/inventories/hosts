@@ -1,0 +1,20 @@
+[staging_dockerhost]
+
+# do not add any entry here as it is dynamically managed using terraform-inventory
+
+[staging_dockerhost:vars]
+
+ansible_ssh_private_key_file="/Users/rija/.ssh/aws-centos7-keys.pem"
+ansible_user="centos"
+ansible_become="true"
+
+
+[production_dockerhost]
+
+# add IP address here for production server
+
+[production_dockerhost:vars]
+
+ansible_ssh_private_key_file=""
+ansible_user="centos"
+ansible_become="true"

@@ -1,0 +1,25 @@
+---
+# build a Centos server running a secure Docker CE install
+
+- name: Setup Fail2ban
+  hosts: staging_dockerhost
+
+  tasks:
+    - debug:
+        msg: "target host: {{ inventory_hostname }}"
+
+  roles:
+    - role: fail2ban
+    - role: jail-ssh
+
+- name: Setup Docker CE
+  hosts: staging_dockerhost
+
+  tasks:
+    - debug:
+        msg: "target host: {{ inventory_hostname }}"
+
+  roles:
+    - role: docker-install
+    - role: docker-postinstall
+    - role: docker-certs
