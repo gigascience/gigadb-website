@@ -21,5 +21,9 @@
 
   roles:
     - role: docker-install
+    - role: role-secure-docker-daemon
+      dds_host: 0.0.0.0
+      dds_server_cert_path: /etc/docker
+      dds_restart_docker: no
     - role: docker-postinstall
-    - role: docker-certs
+    - role: postgres-install

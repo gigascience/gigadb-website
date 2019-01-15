@@ -1,0 +1,19 @@
+- name: Allow centos user to use docker (add centos to group)
+  shell: usermod -aG docker $USER
+
+- name: Enable systemd service
+  shell: systemctl enable docker
+
+- name: Create an override for docker systemd service
+  copy:
+    src: override.conf
+    dest: /etc/systemd/system/docker.service.d/override.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Reload systemd docker service
+  shell: systemctl daemon-reload
+
+- name: Restart systemd docker service
+  shell: systemctl restart docker.service
