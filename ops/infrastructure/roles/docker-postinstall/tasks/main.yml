@@ -4,6 +4,11 @@
 - name: Enable systemd service
   shell: systemctl enable docker
 
+- name: Creates directory
+  file:
+    path: /etc/systemd/system/docker.service.d/
+    state: directory
+
 - name: Create an override for docker systemd service
   copy:
     src: override.conf
@@ -17,3 +22,6 @@
 
 - name: Restart systemd docker service
   shell: systemctl restart docker.service
+
+- name: smoke testing docker setup
+  shell: docker --tlsverify -H=0.0.0.0:2376 run hello-world
