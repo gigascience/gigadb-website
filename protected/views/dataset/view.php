@@ -70,6 +70,9 @@ HTML;
                         <span class="citation-popup" data-content="View citations on Europe PubMed Central">
                             <a href="<?= $model->ePMCLink ?>" target="_blank"><img class="dataset-des-images" src="/images/ePMC.jpg"/></a>
                         </span>
+                        <span class="citation-popup" data-content="View citations on Dimensions">
+                            <a href="https://app.dimensions.ai/discover/publication?search_text=10.5524%2F<?= $model->identifier ?>" target="_blank"><img class="dataset-des-images" src="/images/dimensions.jpg"/></a>
+                        </span>
                     </p>
                 </div>    
                 </div>
@@ -330,7 +333,7 @@ HTML;
                     ?>
 
                     <?php if (!empty($primary_links)) { ?>
-                <h5><strong><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></strong></h5>
+                <h5><strong><?=Yii::t('app' , 'Accessions (data generated as part of this study):')?></strong></h5>
                         <p>
                             <? foreach ($primary_links as $link) { ?>
                                 <?
@@ -346,7 +349,7 @@ HTML;
                     <?php } ?>
 
                     <?php if (!empty($secondary_links)) { ?>
-                        <h5><strong><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></strong></h5>
+                        <h5><strong><?=Yii::t('app' , 'Accessions (data referenced by this study):')?></strong></h5>
                         <p>
                             <?php foreach ($secondary_links as $link) { ?>
                                 <?php
@@ -887,7 +890,7 @@ $(document).ready(function() {
 /* ----------------------------------- */
 
 $(".hint").tooltip({'placement':'right'});
-$(".image-hint").tooltip({'placement':'top'});
+$(".media-object").tooltip({'placement':'top'});
 
 $("#js-expand-btn").click(function(){
       $(this).hide();
@@ -975,3 +978,4 @@ $(".citation-popup").popover({'placement':'top'});
         $("#advice").removeAttr("class").empty();
     })
 </script>
+<script type="application/ld+json"> { "@context" : "http://schema.org", "@type" : "Dataset", "name" : "<?php echo str_replace('"', '\u0022', $model->title); ?>", "description" : "<?php echo str_replace('"', '\u0022', $model->description);?>", "identifier" : "<?php echo $model->identifier; ?>", "datePublished" : "<?php echo $model->publication_date; ?>", "provider": [ { "@type":"Person", "name": "<?php echo $model->submitter->getFullName() ?>", "email": "<?php echo $model->submitter->email ?>" } ], "url": "<?php echo 'https://doi.org/10.5524/'.$model->identifier ?>", "license": "Public Domain", "distribution" : { "@type" : "DataDownload", "contentUrl" : "<?php echo $model->ftp_site; ?>" }} </script>

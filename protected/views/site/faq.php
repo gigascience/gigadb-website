@@ -528,9 +528,104 @@ Files:
                                 </div>
                             </div>
                         </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel35" aria-expanded="false" aria-controls="panel35">
+                                    Why do you request so many sample attributes?    
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="panel35" class="panel-collapse collapse" role="tabpanel">
+                                <div class="panel-body">
+                                    <p>The addition of comprehensive sample metadata will ensure the best possible reach of these data and help users find and filter relevant data.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel36" aria-expanded="false" aria-controls="panel36">
+                                    Why is the directory structure missing from the file table view on my dataset page?   
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="panel36" class="panel-collapse collapse" role="tabpanel">
+                                <div class="panel-body">
+                                    <p>This is simply a display issue. In the longer term, we wish to display the directory structure on the GigaDB dataset pages, however, for the moment the files appear as a flat list. By mousing over a filename in the list you can see the complete filepath which shows the directory structure has been maintained. Additionally you can click the "FTP site" link at the top of any file table to be taken to the FTP server which displays the complete directory structure.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel37" aria-expanded="false" aria-controls="panel37">
+                                    What should I do if I accidentally identify an individual from anonymized human (meta)data within a dataset?   
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="panel37" class="panel-collapse collapse" role="tabpanel">
+                                <div class="panel-body">
+                                    <p>If you inadvertently discover the identity of any patient/individual, then (a) you agree that you will make no use of this knowledge, (b) that you will notify us (<a href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a>) of the incident, and (c) that you will inform no one else of the discovered identity.
+We will assess the specific case and remove/reduce the amount of metadata available for the subjects involved, and inform the data owners/submitters of the situation.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel38" aria-expanded="false" aria-controls="panel38">
+                                    What curation do you carry out?  
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="panel38" class="panel-collapse collapse" role="tabpanel">
+                                <div class="panel-body">
+                                    <p>All datasets are curated to a high standard including but not limited to; the checking and conversion of file formats if required to ensure open (non-proprietary) and stable formats are used whenever possible; Sample metadata to meet appropriate standards and to include ontology terms where possible; creation of specialist display formats like 3D images from STL image stacks and JBrowse genome browser files from genome assemblies and annotation files. All datasets are manually curated with email correspondence to the submitting author to ensure completeness. Where possible our curators follow guidelines provided by international bodies such as the Genomics Standards Consortium (gensc.org) for the minimal information about any genomic sequences. Dataset level metadata is also checked and curated to go above and beyond DataCite standards.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel39" aria-expanded="false" aria-controls="panel39">
+                                    What procedures are in place to ensure data integrity?
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="panel39" class="panel-collapse collapse" role="tabpanel">
+                                <div class="panel-body">
+                                    <p>We ensure data files provided are not corrupt in transfer by use of md5 checksums whenever files are received or moved. All changes to the datafiles and or metadata (after publication) are tracked in a history log present on each dataset page. In the event that a major update is requested we would initiate a full new dataset and maintain the previous dataset as the archival record, placing a notice on the archival record informing users that there is a newer version available, with a link.</p>
+                                    <p>When curation is complete the dataset is registered with a datacite DOI. Each dataset can have multiple links to external repositories / websites, these are manually curated at the time of submission and automatic link resolution checks are performed weekly to try to catch links to sites that move / disappear. We check validity of email addresses from submitting author and ask for identifiers such as ORCID if available for all named authors, but no additional checks are made on those authors.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel40" aria-expanded="false" aria-controls="panel40">
+                                    What data storage procedures do you follow?
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="panel40" class="panel-collapse collapse" role="tabpanel">
+                                <div class="panel-body">
+                                    <p>GigaDB data is currently hosted in China National GeneBank (CNGB) servers in Shenzhen, who promise persistent and stable storage. CNGB is a central government and ShenZhen government funded research organisation tasked with supporting public welfare, innovation and scientific research. These servers are built on the Alibaba Cloud Elastic Compute Service (ECS), with Anti-DDoS protection to safeguard the data. This infrastructure is covered by the Alibaba service level agreements. Regular data backup uses the Alibaba Cloud Object Storage Service (OSS) to backup and archive all data in the data repository, and automatically storing two copies of data in different locations. As well as providing rapid data recovery. We ensure data files provided are not corrupt in transfer by use of md5 checksums whenever files are received or moved (see the data integrity FAQ for more). As full members of DataCite, CC0 metadata is sent to them upon public release.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
                
             </div>
         </div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+    if(location.hash != null && location.hash != ""){
+        $('.collapse').removeClass('in');
+        $(location.hash + '.collapse').collapse('show');
+    }
+});
+</script>
 

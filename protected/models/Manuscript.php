@@ -119,6 +119,10 @@ class Manuscript extends MyActiveRecord
             $curl_response= $messages[0].$messages[1];
             
         }
+        if(substr($curl_response,0,1)=="<")
+        {
+            $curl_response = "<a href='https://doi.org/".$this->identifier."'>doi:$this->identifier</a>";
+        }
         return $curl_response;
         
     }

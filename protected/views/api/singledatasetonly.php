@@ -80,6 +80,7 @@ if(isset($external_links)){
 foreach($external_links as $external_link)
 {
     $external_link_type=  ExternalLinkType::model()->findByAttributes(array('id'=>$external_link->external_link_type_id));
+    $external_link->url= htmlspecialchars($external_link->url, ENT_XML1, 'UTF-8');
     $xml.="<external_link type=\"$external_link_type->name\">$external_link->url</external_link>";
     
 }

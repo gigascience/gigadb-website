@@ -23,9 +23,9 @@ $this->pageTitle='GigaDB - Help';
                 <section>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist" id="alltabs">
                         <li id="lisearch" role="presentation" class="active"><a href="#search" aria-controls="search" role="tab" data-toggle="tab"><em>GigaDB</em> search</a></li>
-                        <li id="liguideline" role="presentation"><a href="#guidelines" aria-controls="guidelines" role="tab" data-toggle="tab">Submission guidelines</a></li>
+                        <li id="liguidelines" role="presentation"><a href="#guidelines" aria-controls="guidelines" role="tab" data-toggle="tab">Submission guidelines</a></li>
                         <li id="livocabulary" role="presentation"><a href="#vocabulary" aria-controls="vocabulary" role="tab" data-toggle="tab">Controlled vocabulary</a></li>
-                        <li id="liapi" role="presentation"><a href="#interface" aria-controls="interface" role="tab" data-toggle="tab">Application programming interface</a></li>
+                        <li id="liinterface" role="presentation"><a href="#interface" aria-controls="interface" role="tab" data-toggle="tab">Application programming interface</a></li>
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="search">
@@ -322,6 +322,17 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
             </div>
         </div>
 <script type="text/javascript">
+
+
+$(document).ready(function () {
+    if(location.hash != null && location.hash != ""){
+        $('ul li').removeClass('active');
+        var variableli = location.hash; 
+        $(location.hash).addClass('active');
+        $(variableli.replace('#','#li')).addClass('active');
+    }
+    
+});
 
 
 

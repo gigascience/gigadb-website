@@ -127,6 +127,16 @@ class User extends CActiveRecord {
             'docs'=>array(self::HAS_MANY, 'Doc', 'author_id'),
         );
     }
+    
+    /**
+    * Return the full name of the user
+    *
+    *
+    * @return string
+    */
+    public function getFullName() {
+        return $this->first_name." ".$this->last_name;
+    }
 
     /**
      * @return array customized attribute labels (name=>label)

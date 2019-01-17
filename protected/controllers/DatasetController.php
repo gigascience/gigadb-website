@@ -60,7 +60,8 @@ class DatasetController extends Controller
             return;
         }
         $this->metaData['description'] = $model->description;
-        $status_array = array('Request', 'Incomplete', 'Uploaded');
+        $status_array = array('ImportFromEM','UserStartedIncomplete','Rejected','Not required','AssigningFTPbox','UserUploadingData','DataAvailableForReview',
+                        'Submitted','DataPending','Curation','AuthorReview','Private', 'Published');
 
         if ($model->upload_status != "Published") {
             if (isset($_GET['token']) && $model->token == $_GET['token']) {
@@ -354,7 +355,7 @@ class DatasetController extends Controller
             
             if(isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status)            
             {
-                CurationLog::createlog($_POST['Dataset']['upload_status'],$id);              
+                CurationLog::createlog($_POST['Dataset']['upload_status'],$id,Yii::app()->user->id);              
             }
              if($_POST['Dataset']['curator_id'] != $model->curator_id)            
             {
@@ -382,7 +383,7 @@ class DatasetController extends Controller
             }else
             {
             
-                $model->manuscript_id = "";
+                $model->manuscript_id = null;
             }
             
             $datasetAttr = $_POST['Dataset'];
@@ -573,7 +574,14 @@ class DatasetController extends Controller
 		$model=new Dataset('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Dataset'])) {
-            $model->setAttributes($_GET['Dataset']);
+                  if($_GET['Dataset']['curator_id'] !== "")  {
+                  $curator_id= Dataset::model()->getCuratorid($_GET['Dataset']['curator_id']);
+                  $model->setAttributes($_GET['Dataset']);
+                  $model->curator_id=$curator_id;
+                  }
+                else {
+                    $model->setAttributes($_GET['Dataset']);
+                  }
         }
 
 		$this->render('admin',array(
@@ -699,7 +707,7 @@ EO_MAIL;
             }
 
             $isOld = 1;
-            if($dataset->upload_status == 'Incomplete') {
+            if($dataset->upload_status == 'UserStartedIncomplete') {
                 $isOld = 0;
             }
 
@@ -708,11 +716,14 @@ EO_MAIL;
             if (isset($_POST['file'])) {
                 $fileLink .= 'Files:<br/>';
                 $fileLink = $link = Yii::app()->params['home_url'] . "/dataset/updateFile/?id=" . $dataset_id;
-                  $dataset->upload_status = 'Pending';
-                  CurationLog::createlog($dataset->upload_status,$dataset->id);
+                  $dataset->upload_status = 'AuthorReview';
+                  CurationLog::createlog($dataset->upload_status,$dataset->id,Yii::app()->user->id);
             } else {
-                  $dataset->upload_status = 'Request';
-                  CurationLog::createlog($dataset->upload_status,$dataset->id);
+                  if($dataset->upload_status !== 'Submitted')
+                    {
+                        $dataset->upload_status = 'Submitted';
+                        CurationLog::createlog($dataset->upload_status,$dataset->id,Yii::app()->user->id);
+                    }
             }
 
             if (!$dataset->save()){
@@ -962,7 +973,7 @@ EO_MAIL;
 
 
                     Yii::app()->user->setFlash('saveSuccess', 'saveSuccess');
-                    if ($dataset->upload_status=='Pending') {
+                    if ($dataset->upload_status=='AuthorReview') {
                       $this->redirect('/dataset/private/identifier/'.$dataset->identifier);
                     } else {
                       $this->redirect(array('/dataset/'.$dataset->identifier));
@@ -1030,7 +1041,7 @@ EO_MAIL;
 	public function actionMint() {
 
         $result['status'] = false;
-		$status_array = array('Request', 'Incomplete', 'Uploaded');
+		$status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
 
 		$mds_metadata_url="https://mds.datacite.org/metadata";
 		$mds_doi_url="https://mds.datacite.org/doi";
@@ -1640,7 +1651,7 @@ EO_MAIL;
 
 
 			// remove existing dataset attributes
-			$datasetAttributes = datasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$dataset->id,'attribute_id'=>$sKeywordAttr->id));
+			$datasetAttributes = DatasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$dataset->id,'attribute_id'=>$sKeywordAttr->id));
 
 			foreach ($datasetAttributes as $key => $keyword) {
                             $keyword->delete();

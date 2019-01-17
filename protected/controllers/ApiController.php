@@ -290,7 +290,7 @@ else
                     if(strpos($keyword, ':'))
                     {
                         $pieces = explode(":", $keyword);
-                        $sql="SELECT * from dataset where ".$pieces[0]." like '%".$pieces[1]."%'";  
+                        $sql="SELECT * from dataset where ".$pieces[0]." like '%".$pieces[1]."%' and upload_status='Published'";  
                         try{
                         $models= Dataset::model()->findAllBySql($sql);}
                         catch(CDbException $e)
