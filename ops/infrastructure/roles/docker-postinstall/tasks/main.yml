@@ -1,8 +1,8 @@
 - name: Allow centos user to use docker (add centos to group)
-  shell: usermod -aG docker $USER
+  command: usermod -aG docker centos
 
 - name: Enable systemd service
-  shell: systemctl enable docker
+  command: systemctl enable docker
 
 - name: Creates directory
   file:
@@ -18,10 +18,25 @@
     mode: 0644
 
 - name: Reload systemd docker service
-  shell: systemctl daemon-reload
+  command: systemctl daemon-reload
 
 - name: Restart systemd docker service
-  shell: systemctl restart docker.service
+  command: systemctl restart docker.service
 
-- name: smoke testing docker setup
-  shell: docker --tlsverify -H=0.0.0.0:2376 run hello-world
+- name: Backup the CA
+  fetch:
+    src: /home/centos/.docker/ca.pem
+    dest: output/certs-{{ inventory_hostname }}/
+    flat: yes
+
+- name: Backup the cert
+  fetch:
+    src: /home/centos/.docker/cert.pem
+    dest: output/certs-{{ inventory_hostname }}/
+    flat: yes
+
+- name: Backup the key
+  fetch:
+    src: /home/centos/.docker/key.pem
+    dest: output/certs-{{ inventory_hostname }}/
+    flat: yes

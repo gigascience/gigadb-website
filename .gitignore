@@ -76,6 +76,7 @@ features.txt
 features.xml
 .terraform
 terraform.tfstate*
+output
 
 # docs
 

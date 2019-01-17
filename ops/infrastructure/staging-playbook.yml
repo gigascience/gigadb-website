@@ -22,11 +22,11 @@
   roles:
     - role: docker-install
     - role: role-secure-docker-daemon
-      dds_host: 0.0.0.0
+      dds_host: "{{ inventory_hostname }}"
       dds_server_cert_path: /etc/docker
       dds_restart_docker: no
+      dds_client_cert_path: /home/centos/.docker
     - role: docker-postinstall
-    - role: postgres-install
     - role: ansible-role-postgresql
       postgresql_version: 9.4
       postgresql_databases:
@@ -40,3 +40,4 @@
       - { type: host, database: all, user: all, address: '127.0.0.1/32', auth_method: md5 }
       - { type: host, database: all, user: all, address: '::1/128', auth_method: md5 }
       - { type: host, database: all, user: all, address: 'samenet', auth_method: md5 }
+    - role: postgres-postinstall
