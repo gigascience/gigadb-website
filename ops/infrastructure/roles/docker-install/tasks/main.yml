@@ -19,5 +19,3 @@
     state: present
     enablerepo: docker-ce-edge
 
-- name: run hello world test
-  shell: docker run hello-world

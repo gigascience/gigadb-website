@@ -7,7 +7,10 @@
 ansible_ssh_private_key_file="/Users/rija/.ssh/aws-centos7-keys.pem"
 ansible_user="centos"
 ansible_become="true"
-
+database_bootstrap="../../sql/production_like.pgdmp"
+pg_user = {{ vault_pg_user }}
+pg_password = {{ vault_pg_password }}
+pg_database = gigadb
 
 [production_dockerhost]
 
@@ -18,3 +21,7 @@ ansible_become="true"
 ansible_ssh_private_key_file=""
 ansible_user="centos"
 ansible_become="true"
+database_bootstrap=""
+pg_user = {{ vault_pg_user }}
+pg_password = {{ vault_pg_password }}
+pg_database = gigadb
