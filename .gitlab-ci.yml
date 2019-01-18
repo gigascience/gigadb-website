@@ -203,7 +203,7 @@ with_new_cert_deploy:
   variables:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376"
+    REMOTE_DOCKER_HOST: "13.250.112.56:2376"
   stage: staging
   script:
     # appending staging variables at the end of the .env and .secrets
@@ -254,7 +254,7 @@ deploy_app:
   variables:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "ec2-52-221-188-255.ap-southeast-1.compute.amazonaws.com:2376"
+    REMOTE_DOCKER_HOST: "13.250.112.56:2376"
   stage: staging
   script:
     # appending staging variables at the end of the .env and .secrets
