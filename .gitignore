@@ -78,6 +78,7 @@ features.xml
 terraform.tfstate*
 output
 *.retry
+vault
 
 # docs
 
