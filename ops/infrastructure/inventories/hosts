@@ -1,6 +1,6 @@
 [staging_dockerhost]
 
-# do not add any entry here as it is dynamically managed using terraform-inventory
+# do not add any IP address here as it is dynamically managed using terraform-inventory
 
 [staging_dockerhost:vars]
 
@@ -8,9 +8,11 @@ ansible_ssh_private_key_file="/Users/rija/.ssh/aws-centos7-keys.pem"
 ansible_user="centos"
 ansible_become="true"
 database_bootstrap="../../sql/production_like.pgdmp"
-pg_user = {{ vault_pg_user }}
-pg_password = {{ vault_pg_password }}
-pg_database = gigadb
+pg_user = {{ vault_staging_pg_user }}
+pg_password = {{ vault_staging_pg_password }}
+pg_database = {{ vault_staging_pg_database }}
+gitlab_private_token = {{ lookup('file','~/.gitlab_private_token') }}
+gigadb_environment = staging
 
 [production_dockerhost]
 
@@ -22,6 +24,9 @@ ansible_ssh_private_key_file=""
 ansible_user="centos"
 ansible_become="true"
 database_bootstrap=""
-pg_user = {{ vault_pg_user }}
-pg_password = {{ vault_pg_password }}
-pg_database = gigadb
+pg_user = {{ vault_production_pg_user }}
+pg_password = {{ vault_production_pg_password }}
+pg_database = {{ vault_production_pg_database }}
+gitlab_private_token = {{ lookup('file','~/.gitlab_private_token') }}
+gigadb_environment = production
+

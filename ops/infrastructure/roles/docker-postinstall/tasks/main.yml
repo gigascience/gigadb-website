@@ -40,3 +40,104 @@
     src: /home/centos/.docker/key.pem
     dest: output/certs-{{ inventory_hostname }}/
     flat: yes
+
+- name: copy the content of the CA pem
+  slurp:
+    src: /home/centos/.docker/ca.pem
+  register: ca_pem
+
+- name: copy the content of the cert pem
+  slurp:
+    src: /home/centos/.docker/cert.pem
+  register: cert_pem
+
+- name: copy the content of the key pem
+  slurp:
+    src: /home/centos/.docker/key.pem
+  register: key_pem
+
+- name: Copy the CA pem to GITLAB CI environment variable (first time)
+  uri:
+    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables"
+    method: POST
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+    body_format: json
+    body:
+      key: "{{ gigadb_environment }}_tlsauth_ca"
+      value: "{{ ca_pem['content'] | b64decode }}"
+    status_code:
+      - 201
+      - 400
+  register: ca_post_outcome
+
+- name: Copy the CA pem to GITLAB CI environment variable (subsequently)
+  uri:
+    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/{{ gigadb_environment }}_tlsauth_ca"
+    method: PUT
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+    body_format: json
+    body:
+      value: "{{ ca_pem['content'] | b64decode }}"
+    status_code: 200
+    register: ca_put_outcome
+  when: ca_post_outcome.status == 400
+
+- name: Copy the cert pem to GITLAB CI environment variable
+  uri:
+    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables"
+    method: POST
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+      # Content-Type: application/x-www-form-urlencoded
+    body_format: json
+    body:
+      key: "{{ gigadb_environment }}_tlsauth_cert"
+      value: "{{ cert_pem['content'] | b64decode }}"
+    status_code:
+      - 201
+      - 400
+  register: cert_post_outcome
+
+- name: Copy the cert pem to GITLAB CI environment variable (subsequently)
+  uri:
+    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/{{ gigadb_environment }}_tlsauth_cert"
+    method: PUT
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+    body_format: json
+    body:
+      value: "{{ cert_pem['content'] | b64decode }}"
+    status_code: 200
+    register: cert_put_outcome
+  when: cert_post_outcome.status == 400
+
+- name: Copy the key pem to GITLAB CI environment variable
+  uri:
+    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables"
+    method: POST
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+      # Content-Type: application/x-www-form-urlencoded
+    body_format: json
+    body:
+      key: "{{ gigadb_environment }}_tlsauth_key"
+      value: "{{ key_pem['content'] | b64decode }}"
+    status_code:
+      - 201
+      - 400
+  register: key_post_outcome
+
+- name: Copy the key pem to GITLAB CI environment variable (subsequently)
+  uri:
+    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/{{ gigadb_environment }}_tlsauth_key"
+    method: PUT
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+    body_format: json
+    body:
+      value: "{{ key_pem['content'] | b64decode }}"
+    status_code: 200
+    register: key_put_outcome
+  when: key_post_outcome.status == 400

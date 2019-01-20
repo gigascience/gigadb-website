@@ -226,9 +226,9 @@ with_new_cert_deploy:
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
-    - echo "$TLSAUTH_CA" >  ~/.docker/ca.pem
-    - echo "$TLSAUTH_CERT" > ~/.docker/cert.pem
-    - echo "$TLSAUTH_KEY" > ~/.docker/key.pem
+    - echo "$staging_tlsauth_ca" >  ~/.docker/ca.pem
+    - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
+    - echo "$staging_tlsauth_key" > ~/.docker/key.pem
      # Pull production container from our private registry
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
@@ -285,9 +285,9 @@ deploy_app:
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
-    - echo "$TLSAUTH_CA" >  ~/.docker/ca.pem
-    - echo "$TLSAUTH_CERT" > ~/.docker/cert.pem
-    - echo "$TLSAUTH_KEY" > ~/.docker/key.pem
+    - echo "$staging_tlsauth_ca" >  ~/.docker/ca.pem
+    - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
+    - echo "$staging_tlsauth_key" > ~/.docker/key.pem
     # Pull production container from our private registry
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
