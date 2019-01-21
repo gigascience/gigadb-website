@@ -46,7 +46,7 @@ services:
     networks:
       - web-tier
     extra_hosts:
-      - "dockerhost:${STAGING_IP_ADDRESS}"
+      - "dockerhost:${staging_private_ip}"
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN

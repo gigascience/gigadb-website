@@ -141,3 +141,61 @@
     status_code: 200
     register: key_put_outcome
   when: key_post_outcome.status == 400
+
+- name: copy the private ip address to GITLAB CI environment variable (first time)
+  uri:
+    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables"
+    method: POST
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+      # Content-Type: application/x-www-form-urlencoded
+    body_format: json
+    body:
+      key: "{{ gigadb_environment }}_private_ip"
+      value: "{{ ansible_eth0.ipv4.address }}"
+    status_code:
+      - 201
+      - 400
+  register: private_ip_post_outcome
+
+- name: copy the private ip address to GITLAB CI environment variable (subsequently)
+  uri:
+    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/{{ gigadb_environment }}_private_ip"
+    method: PUT
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+    body_format: json
+    body:
+      value: "{{ ansible_eth0.ipv4.address }}"
+    status_code: 200
+    register: private_ip_put_outcome
+  when: private_ip_post_outcome.status == 400
+
+- name: copy the public ip address to GITLAB CI environment variable (first time)
+  uri:
+    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables"
+    method: POST
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+      # Content-Type: application/x-www-form-urlencoded
+    body_format: json
+    body:
+      key: "{{ gigadb_environment }}_public_ip"
+      value: "{{ inventory_hostname }}"
+    status_code:
+      - 201
+      - 400
+  register: public_ip_post_outcome
+
+- name: copy the public ip address to GITLAB CI environment variable (subsequently)
+  uri:
+    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/{{ gigadb_environment }}_public_ip"
+    method: PUT
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+    body_format: json
+    body:
+      value: "{{ inventory_hostname }}"
+    status_code: 200
+    register: public_ip_put_outcome
+  when: public_ip_post_outcome.status == 400
