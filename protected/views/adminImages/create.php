@@ -2,7 +2,7 @@
 <h1>Create Image</h1>
 <? if (Yii::app()->user->checkAccess('admin')) { ?>
 <div class="actionBar">
-[<?= MyHtml::link('Manage Images', array('admin')) ?>]
+[<?= CHtml::link('Manage Images', array('admin')) ?>]
 </div>
 <? } ?>
 

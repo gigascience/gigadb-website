@@ -1,0 +1,98 @@
+<?php
+
+class RssController extends Controller {
+
+	public $title="";
+	public $rssLink="http://gigadb.org";
+	public $rssDescription="";
+	public $rssAbout="http://gigadb.org";
+    public $numberOfLatestDataset=10;
+
+	public function actionFeed($id){
+		$search=SearchRecord::model()->findByPk($id);
+		$ids=$this->search(json_decode($search->query,true));
+		$this->displayDataset($ids);
+	}
+
+    public function actionLatest(){
+        $criteria=new CDbCriteria;
+        $criteria->limit = $this->numberOfLatestDataset;
+        $criteria->condition = "upload_status = 'Published'";
+        #$criteria->order = "id DESC";
+        $criteria->order = 'publication_date DESC';
+        $datasets = Dataset::model()->findAll($criteria);
+
+        $criteria->condition = null;
+        $criteria->order = 'publication_date DESC';
+        $latest_messages = RssMessage::model()->findAll($criteria);
+
+        $rss_arr = array_merge($datasets , $latest_messages);
+
+        $this->sortRssArray($rss_arr);
+        $this->generateFeed($rss_arr);
+    }
+
+    private function sortRssArray(&$rss_arr){
+        //Using Bubble Sort
+        while(True){
+            $swapped = False ;
+            for($i = 0 ; $i < count($rss_arr) - 1 ; ++$i){
+                if($rss_arr[$i]->publication_date < $rss_arr[$i+1]->publication_date){
+                    $temp = $rss_arr[$i+1];
+                    $rss_arr[$i+1] = $rss_arr[$i];
+                    $rss_arr[$i] = $temp;
+                    $swapped = True;
+                }
+            }
+            if(!$swapped)
+                break;
+        }
+    }
+
+	public function displayDataset($ids){
+
+		$criteria = new CDbCriteria();
+		$criteria->addInCondition("id", $ids);
+		$datasets = Dataset::model()->findAll($criteria);
+		$this->generateFeed($datasets);
+	}
+
+	private function generateFeed($datasets){
+		Yii::import('ext.feed.*');
+		// specify feed type
+		$feed = new EFeed();
+		$feed->title = $this->title;
+		$feed->link = $this->rssLink;
+		$feed->description = 'GigaDB RSS Feed';
+		$feed->addChannelTag('language', 'en-us');
+		$feed->addChannelTag('pubDate', date(DATE_RSS, time()));
+		$feed->addChannelTag('link', 'http://www.gigadb.org' );
+		$feed->addChannelTag('title', 'GigaDB' );
+		foreach (array_values($datasets) as $dataset) {
+            $title = $this->isDataset($dataset) ? $dataset->title : $dataset->message;
+            $link = $this->isDataset($dataset) ? Yii::app()->request->hostInfo."/dataset/".$dataset->identifier : Yii::app()->request->hostInfo;
+            $desc = $this->isDataset($dataset) ? $dataset->description : $dataset->message;
+			// create dataset item
+			$item = $feed->createNewItem();
+			$item->title = $title;
+			$item->link = $link;
+			$item->date = $dataset->publication_date;
+			$item->description = $desc;
+			$feed->addItem($item);
+		}
+		if(count($datasets)==0){
+			echo "No Item";
+		}
+		else {
+			$feed->generateFeed();
+		}
+	}
+
+    private function isDataset($class){
+        return (get_class($class) == 'Dataset') ;
+    }
+
+	private function convertDate($date){
+        return strtotime($date);
+    }
+}

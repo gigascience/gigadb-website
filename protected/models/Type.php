@@ -84,13 +84,12 @@ class Type extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-                
-                
-                $criteria->alias='t';
-                $criteria->select='t.id, t.name, t.description, count(dataset_type.dataset_id) as number';
-                $criteria->join='LEFT JOIN dataset_type ON dataset_type.type_id=t.id';
-                $criteria->group='t.id';
-                $criteria->order='number DESC';
+
+        $criteria->alias='t';
+        $criteria->select='t.id, t.name, t.description, count(dataset_type.dataset_id) as number';
+        $criteria->join='LEFT JOIN dataset_type ON dataset_type.type_id=t.id';
+        $criteria->group='t.id';
+        $criteria->order='number DESC';
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('LOWER(name)',strtolower($this->name) , true);
@@ -104,7 +103,7 @@ class Type extends CActiveRecord
 	public static function getListTypes(){
         $models=Type::model()->findAll();
         $list=array();
-        foreach ($models as $key=>$model){
+        foreach (array_values($models) as $model){
             $list[$model->id] = $model->name;
         }
         return $list;

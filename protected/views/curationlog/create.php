@@ -1,7 +1,7 @@
 <h1>Create Curation Log</h1>
 <? if (Yii::app()->user->checkAccess('admin')) { ?>
 <div class="actionBar">
-[<?= MyHtml::link('Manage Logs', array('admin')) ?>]
+[<?= CHtml::link('Manage Logs', array('admin')) ?>]
 </div>
 <? } ?>
 

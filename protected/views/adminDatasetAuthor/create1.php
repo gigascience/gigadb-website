@@ -3,7 +3,7 @@
 <div class="clear"></div>
 
 
-<a href="/dataset/create1" class="btn span1"><?= Yii::t('app' , 'Study')?></a>
+<a href="/datasetSubmission/create1" class="btn span1"><?= Yii::t('app' , 'Study')?></a>
 <input type="submit" id="author-btn" class="btn-green-active nomargin" value="Author"></input>
 <a href="/adminDatasetProject/create1" class="btn nomargin"><?= Yii::t('app' , 'Project')?></a>
 <a href="/adminLink/create1" class="btn nomargin"><?= Yii::t('app' , 'Link')?></a>

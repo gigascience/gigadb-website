@@ -1248,7 +1248,7 @@ SELECT pg_catalog.setval('funder_name_id_seq', 6171, true);
 CREATE TABLE gigadb_user (
     id integer NOT NULL,
     email character varying(64) NOT NULL,
-    password character varying(64) NOT NULL,
+    password character varying(128) NOT NULL,
     first_name character varying(100) NOT NULL,
     last_name character varying(100) NOT NULL,
     affiliation character varying(200),
@@ -2025,6 +2025,18 @@ ALTER TABLE public.species_id_seq OWNER TO gigadb;
 
 ALTER SEQUENCE species_id_seq OWNED BY species.id;
 
+--
+-- Name: tbl_migration; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+--
+
+CREATE TABLE tbl_migration (
+    version character varying(180) NOT NULL,
+    apply_time integer
+);
+
+
+ALTER TABLE tbl_migration OWNER TO gigadb;
+
 
 --
 -- Name: species_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
@@ -2468,6 +2480,14 @@ COPY alternative_identifiers (id, sample_id, extdb_id, extdb_accession) FROM std
 
 COPY attribute (id, attribute_name, definition, model, structured_comment_name, value_syntax, allowed_units, occurance, ontology_link, note) FROM stdin;
 422	Source material identifiers	\N	\N	\N	\N	\N	\N	\N	\N
+\.
+
+--
+-- Data for Name: tbl_migration; Type: TABLE DATA; Schema: public; Owner: gigadb
+--
+
+COPY public.tbl_migration (version, apply_time) FROM stdin;
+m000000_000000_base 1541674918
 \.
 
 
@@ -3286,6 +3306,13 @@ ALTER TABLE ONLY search
 ALTER TABLE ONLY species
     ADD CONSTRAINT species_pkey PRIMARY KEY (id);
 
+
+--
+-- Name: tbl_migration_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
+--
+
+ALTER TABLE ONLY tbl_migration
+    ADD CONSTRAINT tbl_migration_pkey PRIMARY KEY (version);
 
 --
 -- Name: type_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 

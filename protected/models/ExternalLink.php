@@ -13,7 +13,7 @@
  * @property Dataset $dataset
  * @property ExternalLinkType $externalLinkType
  */
-class ExternalLink extends MyActiveRecord
+class ExternalLink extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.

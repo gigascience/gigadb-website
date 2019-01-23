@@ -26,7 +26,7 @@
  * @property FileExperiment[] $fileExperiments
  * @property FileAttributes[] $fileAttributes
  */
-class File extends MyActiveRecord
+class File extends CActiveRecord
 {
     public $doi_search;
     public $format_search;
@@ -152,16 +152,6 @@ class File extends MyActiveRecord
         return true;
     }
 
-
-	public function getAttrDesc() {
-		$desc = "";
-		foreach($this->fileAttributes as $fa) {
-			$name = $fa->attribute->attribute_name;
-			$desc .= $name . ":".$fa->value . "<br/>";
-		}
-		return $desc;
-	}
-
 	public static function getTypeList($ids) {
 		$crit = new CDbCriteria;
         $crit->join = "join file on file.type_id = t.id";
@@ -240,101 +230,45 @@ class File extends MyActiveRecord
 		));
 	}
 
-	    /**
-	 * Convert bytes to human readable format
+    /**
+     * Return the human readable binary size of files with configurable formatting
+     *
+     * It's extracted out of getSizeWithFormat so the functionality can be used in other contexts as well.
+     *
+     * @param int $bytes size in bytes to format/convert
+     * @param string $unit unit to convert to. KiB, MiB, GiB, TiB, B or null
+     * @param int $precision number of decimals after the dot
+     * @return string formatted size
+     * @todo move this function in a Helper class as it's not specific ot the File model class
+     */
+	public static function specifySizeUnits(int $bytes, string $unit = null, int $precision = null): string
+	{
+		if ($bytes<0) {
+			return (string) $bytes;
+		}
+		if ( null == $precision ) {
+			$precision = 2;
+		}
+		$metric = new ByteUnits\Binary($bytes);
+		$formatted_size = $metric->format("$unit/$precision"," ");
+		return $formatted_size ;
+	}
+
+	/**
+	 * return the size of the file formatted for display using Binary notation
 	 *
-	 * @param integer bytes Size in bytes to convert
-	 * @return string
-	 */
-	public function bytesToSize($precision = 2)
+	 * @param string $unit KiB, MiB, GiB, TiB, B or null
+	 * @param int $precision number of decimals after the dot
+	 *
+	 * @return string formatted size
+	 *
+	 * @uses ByteUnits\Binary
+	 **/
+	public function getSizeWithFormat($unit = null, $precision = 2)
 	{
-		$bytes = $this->size;
-	    $kilobyte = 1024;
-	    $megabyte = $kilobyte * 1024;
-	    $gigabyte = $megabyte * 1024;
-	    $terabyte = $gigabyte * 1024;
-
-	    if ($bytes < $megabyte) {
-	        return round($bytes / $kilobyte, $precision) . ' KB';
-	    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-	        return round($bytes / $megabyte, $precision) . ' MB';
-
-	    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-	        return round($bytes / $gigabyte, $precision) . ' GB';
-
-	    } elseif ($bytes >= $terabyte) {
-	        return round($bytes / $terabyte, $precision) . ' TB';
-	    } else {
-	        return $bytes . ' B';
-	    }
-	}
-	public function getSizeType(){
-		$bytes = $this->size;
-	    $kilobyte = 1024;
-	    $megabyte = $kilobyte * 1024;
-	    $gigabyte = $megabyte * 1024;
-	    $terabyte = $gigabyte * 1024;
-
-	    if ($bytes < $megabyte) {
-	        return 1;
-	    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-	        return 2;
-
-	    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-	        return 3;
-
-	    } elseif ($bytes >= $terabyte) {
-	        return 4;
-	    } else {
-	        return 0;
-	    }
+		return File::specifySizeUnits($this->size, $unit, $precision);
 	}
 
-
-	public static function staticGetSizeType($bytes){
-	    $kilobyte = 1024;
-	    $megabyte = $kilobyte * 1024;
-	    $gigabyte = $megabyte * 1024;
-	    $terabyte = $gigabyte * 1024;
-
-	    if ($bytes < $megabyte) {
-	        return 1;
-	    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-	        return 2;
-
-	    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-	        return 3;
-
-	    } elseif ($bytes >= $terabyte) {
-	        return 4;
-	    } else {
-	        return 0;
-	    }
-
-	}
-
-	public static function staticBytesToSize($bytes,$precision = 2)
-	{
-
-	    $kilobyte = 1024;
-	    $megabyte = $kilobyte * 1024;
-	    $gigabyte = $megabyte * 1024;
-	    $terabyte = $gigabyte * 1024;
-
-	    if ($bytes < $megabyte) {
-	        return round($bytes / $kilobyte, $precision) . ' KB';
-	    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-	        return round($bytes / $megabyte, $precision) . ' MB';
-
-	    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-	        return round($bytes / $gigabyte, $precision) . ' GB';
-
-	    } elseif ($bytes >= $terabyte) {
-	        return round($bytes / $terabyte, $precision) . ' TB';
-	    } else {
-	        return $bytes . ' B';
-	    }
-	}
 
 	public static function getDatasetIdsByFileIds($fileIds) {
         $fileIds = implode(' , ' , $fileIds);
@@ -344,138 +278,16 @@ class File extends MyActiveRecord
             ->from('file')
             ->where("id in ($fileIds)")
             ->queryColumn();
-	#	$criteria = new CDbCriteria();
-	#	$criteria->select='id, dataset_id';
-    #$criteria->addInCondition('id', $fileIds);
-    #$criteria->distinct = true;
-    #$criteria->group = 'id, dataset_id';
-  	#$files = File::model()->query($criteria,true);
-  	#$result = CHtml::listData($files,'id','dataset_id');
         return $result;
     }
 
-    /**
-     * Search engine Sphinx search files
-     * @param  array $criteria
-     * @param  array $extraFileIds
-     * @return array
-     */
-    public function sphinxSearch($criteria, $extraFileIds)
-    {
-		$s = Utils::newSphinxClient();
 
-		if (count($extraFileIds) > 0) {
-			$keyword = '';
-			$s->SetSelect("id as myid");
-			$s->SetFilter('myid', $extraFileIds);
-		} else {
-			$keyword = isset($criteria['keyword']) ? $criteria['keyword'] : "";
-		}
-
-		$file_type = isset($criteria['file_type']) ? $criteria['file_type'] : "";
-		$file_format = isset($criteria['file_format']) ? $criteria['file_format'] : "";
-		$reldate_from = isset($criteria['reldate_from']) ? $criteria['reldate_from'] : "";
-		$reldate_to = isset($criteria['reldate_to']) ? $criteria['reldate_to'] : "";
-        
-		$reldate_from_temp = Utils::convertDate($reldate_from);
-		$reldate_to_temp = Utils::convertDate($reldate_to);
-
-		if ($reldate_from_temp && !$reldate_to_temp) {# Set FromDate, Don't set To Date
-		$reldate_from = $reldate_from_temp - 86400;
-			$reldate_to = floor(microtime(true));
-		} else if (!$reldate_from_temp && $reldate_to_temp) {# Set To Date, Dont Set FromDate
-		$reldate_from = 1;
-			$reldate_to = $reldate_to_temp;
-		} else {
-			$reldate_from = $reldate_from_temp - 86400;
-			$reldate_to = $reldate_to_temp;
-		}
-
-		if (is_array($file_type)) {
-			$s->SetFilter('type_id', $file_type);
-		}
-		if (is_array($file_format)) {
-			$s->SetFilter('format_id', $file_format);
-		}
-
-		if ($reldate_from && $reldate_to && $reldate_to > $reldate_from) {
-			$s->SetFilterRange('date_stamp', $reldate_from, $reldate_to);
-		}
-
-		$result = $s->query($keyword, "file");
-		$matches = array();
-		$total_found = $result['total_found'];
-		if (isset($result['matches'])) {
-			$matches = $result['matches'];
-		}
-
-		$result = array_keys($matches);
-		return array($result, $total_found);
-    }
 
     public function getSample() {
     	$criteria = new CDbCriteria;
     	$criteria->join = "LEFT JOIN file_sample fs ON fs.sample_id = t.id";
     	$criteria->compare('fs.file_id', $this->id);
     	return Sample::model()->find($criteria);
-    }
-
-     public function getallsample($id){
-        
-       $sql="select sample.* from sample,file_sample,file where sample.id=file_sample.sample_id and file_sample.file_id=file.id and file.id=$id";
-      $samples= Sample::model()->findAllBySql($sql);
-      $num = count($samples);
-      $short="";
-      $ret = "";
-      $first = true;
-      $second = true;
-      $flag=0;
-        foreach ($samples as $sample) {
-        if($flag >= 1)
-        {
-            break;
-        }
-        if ($first === true) {
-            $first = false;
-        } else {
-            $short .= ', ';
-        }
-        $short .= $sample->name;
-        $flag++;
-    }
-      foreach ($samples as $sample) {
-
-        if ($second === true) {
-            $second = false;
-        } else {
-            $ret .= ', ';
-        }
-        $ret .= $sample->name;
-    }
-    if($num>3)
-    {
-        return <<<HTML
-		<span class="js-short-$this->id">$short</span>
-        		<span class="js-long-$this->id" style="display: none;">$ret</span>
-                <a href='#' class='js-desc' data='$this->id'>+</a>
-HTML;
-    }else
-
-    return <<<HTML
-        		<span class="js-long-$this->id">$ret</span>
-HTML;
-    }
-    
-    public function getNameHtml() {
-    	$display = <<<HTML
-		<div title="$this->description"> 
-		<a href='$this->location' target='_blank'>
-		$this->name
-		</a> 
-		<div>
-HTML;
-
-	return $display;
     }
 
     public function getSampleName() {
@@ -488,7 +300,7 @@ HTML;
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );
     }
-    
+
     /**
      * Before save file
      */

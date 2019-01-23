@@ -1,7 +1,6 @@
 <?php
 
 //Enable multibyte unicode aware string functions. Only needed for PHP < 5.6. Requires php-mbstring module.
-ini_set('mbstring.internal_encoding','UTF-8');
 
 $esConfig = json_decode(file_get_contents(dirname(__FILE__).'/es.json'), true);
 $dbConfig = json_decode(file_get_contents(dirname(__FILE__).'/db.json'), true);
@@ -20,7 +19,6 @@ return CMap::mergeArray(array(
 
     'preload'=>array(
         'log',
-        'bootstrap',
     ),
 
     'import'=>array(
@@ -88,9 +86,17 @@ return CMap::mergeArray(array(
             //'enableCookieValidation' => true,
         ),
 
-        'bootstrap'=>array(
-            'class'=>'ext.bootstrap.components.Bootstrap',
-        ),
+        'clientScript'=>array(
+               'scriptMap'=> array(
+                   'jquery.js' => false,
+                    'jquery.ba-bbq.js' => false,
+                    'jquery-ui.min.js' => false,
+                    'jquery-ui.css' => false,
+                ),
+       ),
+
+
+
         'cache' => array(
             'class' => 'system.caching.CFileCache'
         ),

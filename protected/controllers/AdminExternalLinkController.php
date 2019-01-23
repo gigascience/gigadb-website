@@ -81,7 +81,7 @@ class AdminExternalLinkController extends Controller
                 if ($value['id'] == $id) {
                     unset($info[$key]);
                     $_SESSION['externalLinks'] = $info;
-                    $vars = array('externelLinks');
+                    // $vars = array('externelLinks');
                     //Dataset::storeSession($vars);
                     $condition = 'id=' . $id;
                     ExternalLink::model()->deleteAll($condition);
@@ -153,7 +153,7 @@ class AdminExternalLinkController extends Controller
                     array_push($externalLinks, $newItem);
 
                     $_SESSION['externalLinks'] = $externalLinks;
-                    $vars = array('externalLinks');
+                    // $vars = array('externalLinks');
                     //Dataset::storeSession($vars);
                     $model = new ExternalLink;
                 }
@@ -170,47 +170,12 @@ class AdminExternalLinkController extends Controller
         ));
     }
 
-      public function actionAutocomplete() {
-        $res = array();
-        $result = array();
+    public function actionAutocomplete() {
 
         if (isset($_GET['term'])) {
-            $term = $_GET['term'];
-            $connection = Yii::app()->db;
-            if (is_numeric($term)) {
-                $sql = "select tax_id,common_name,scientific_name from species where cast(tax_id as text) like :name";
-                $command = Yii::app()->db->createCommand($sql);
-                $command->bindValue(":name", $term . '%', PDO::PARAM_STR);
-                $res = $command->queryAll();
-            } else {
-
-                $sql = "select tax_id , common_name ,scientific_name from
-                    species where common_name ilike :name or scientific_name ilike :name
-                    order by length(common_name)";
-                $command = Yii::app()->db->createCommand($sql);
-                $command->bindValue(":name", '%' . $_GET['term'] . '%', PDO::PARAM_STR);
-                $res = $command->queryAll();
-
-            }
-
-            if (!empty($res)) {
-                foreach ($res as $mres) {
-                    $name = $mres['tax_id'] . ":";
-                    $has_common_name = false;
-                    if ($mres['common_name'] != null) {
-                        $has_common_name = true;
-                        $name.= $mres['common_name'];
-                    }
-
-                    if ($mres['scientific_name'] != null) {
-                        if ($has_common_name)
-                            $name.=",";
-                        $name.= $mres['scientific_name'];
-                    }
-
-                    $result[] = $name;
-                }
-            }
+            $partial_external_link_term = $_GET['term'];
+            $autoCompleteServiceForExternalLink = Yii::app()->autocomplete;
+            $result = $autoCompleteServiceForExternalLink->findSpeciesLike($partial_external_link_term);
             echo CJSON::encode($result);
             Yii::app()->end();
         }

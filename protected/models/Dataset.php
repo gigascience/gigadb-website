@@ -1,7 +1,7 @@
 <?php
 Yii::import('application.extensions.CAdvancedArBehavior');
 
-class Dataset extends MyActiveRecord
+class Dataset extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
@@ -150,25 +150,6 @@ class Dataset extends MyActiveRecord
         ));
     }
 
-    public function getCited() {
-        $identifier = $this->identifier;
-        $phrase = "10.5524/$identifier";
-        $citeds = Utils::searchScholar($phrase);
-        $sum = 0;
-        if($citeds)
-            $sum = count($citeds);
-        $url = Yii::app()->params['scholar_query'].$phrase;
-        return array('total'=>$sum, 'url'=>$url);
-    }
-
-    public function getGoogleScholarLink() {
-        return Yii::app()->params['scholar_query']."10.5524/".$this->identifier;
-    }
-
-    public function getEPMCLink() {
-        return  Yii::app()->params['ePMC_query']."(REF:'10.5524/".$this->identifier."')";
-    }
-
     public static function clearDatasetSession() {
         $vars = array('dataset', 'images', 'authors', 'projects',
             'links', 'externalLinks', 'relations', 'samples', 'dataset_id', 'identifier', 'filecount',
@@ -181,18 +162,20 @@ class Dataset extends MyActiveRecord
     }
 
     public function getAuthorNames() {
-        $criteria = new CDbCriteria;
-        $criteria->join = 'left join author a on a.id = t.author_id';
-        $criteria->addCondition('t.dataset_id ='.$this->id);
-        $criteria->order= 't.rank ASC, a.surname ASC, a.first_name ASC, a.middle_name ASC';
-        $das = DatasetAuthor::model()->findAll($criteria);
+
+        $das = Yii::app()->db->createCommand()
+            ->select('a.id')
+            ->from('dataset_author')
+            ->leftJoin('author a','a.id = author_id')
+            ->where('dataset_id = :id', array(':id'=>$this->id))
+            ->order(array('rank ASC', 'a.surname ASC', 'a.first_name ASC', 'a.middle_name ASC'))
+            ->queryAll();
 
         $l = array();
         foreach($das as $da) {
-            $author = $da->author;
+            $author = Author::model()->findByPk($da['id']);
             $name = $author->displayName;
-            $id = $author->id;
-            $l[] = CHtml::link($name, "/search/new?keyword=$name&author_id=$id", array('class'=>'result-sub-links'));
+            $l[] = CHtml::link($name, "/search/new?keyword=$name&author_id=".$da['id'], array('class'=>'result-sub-links'));
         }
         return implode('; ', $l);
     }
@@ -253,23 +236,28 @@ class Dataset extends MyActiveRecord
             'criteria'=>$criteria,
         ));
     }
-    
-    public static function getCuratorname($id){
-        
-      $curator = User::model()->find('id=:user_id', array(':user_id'=>$id));
-      
-      if(isset($curator))
-      {
-        $curator_name = $curator->first_name." ".$curator->last_name;    
-          
+
+    /**
+     * Return the name of the curator associated to this dataset
+     *
+     * If no curator is associated, an empty string is returned.
+     * Otherwise, the full name is returned as a string.
+     *
+     * @return string
+     */
+    public function getCuratorName(){
+
+      $curator = User::model()->findByPk($this->curator_id);
+
+      if( isset($curator) ) {
+        $curator_name = $curator->getFullName();
       }
-      else
-      {
-        $curator_name = "";  
+      else {
+        $curator_name = "";
       }
-      
+
       return $curator_name;
-        
+
     }
 
     public static function getTypeList($ids) {
@@ -293,106 +281,13 @@ class Dataset extends MyActiveRecord
         return ExternalLinkType::model()->findAll($crit);
     }
 
-    public static function sphinxSearch($criteria, $extraDatasetIds = array()){
-        $s = Utils::newSphinxClient();
-
-        if (count($extraDatasetIds) > 0) {
-            $keyword = '';
-            $s->setSelect("id as myid");
-            $s->SetFilter('myid', $extraDatasetIds);
-        } else {
-            $keyword=isset($criteria['keyword'])?$criteria['keyword']:"";
-        }
-
-        if(isset($criteria['exclude']) && !empty($criteria['exclude'])){
-            $s->setSelect("id as myidex");
-            $s->setFilter('myidex' , array_filter(explode(',' , $criteria['exclude'])) , true);
-        }
-
-        $dataset_type=isset($criteria['dataset_type'])?$criteria['dataset_type']:"";
-        $common_name=isset($criteria['common_name'])?$criteria['common_name']:"";
-        $project=isset($criteria['project'])?$criteria['project']:"";
-        $pubdate_from=isset($criteria['pubdate_from'])?$criteria['pubdate_from']:"";
-        $pubdate_to=isset($criteria['pubdate_to'])?$criteria['pubdate_to']:"";
-        $moddate_from=isset($criteria['moddate_from'])?$criteria['moddate_from']:"";
-        $moddate_to=isset($criteria['moddate_to'])?$criteria['moddate_to']:"";
-        $external_link_type=isset($criteria['external_link_type'])?$criteria['external_link_type']:"";
-        $pubdate_from_temp=Utils::convertDate($pubdate_from);
-        $pubdate_to_temp=Utils::convertDate($pubdate_to);
-
-
-        $moddate_from_temp=Utils::convertDate($moddate_from);
-        $moddate_to_temp=Utils::convertDate($moddate_to);
-
-        # KNN: -86400 to include the from day
-        if($pubdate_from_temp && !$pubdate_to_temp){  # Set FromDate, Don't set To Date
-            $pubdate_from=$pubdate_from_temp - 86400;
-            $pubdate_to=floor(microtime(true));
-        }else if(!$pubdate_from_temp && $pubdate_to_temp){ # Set To Date, Dont Set FromDate
-            $pubdate_from = 1; # 1 is the very long time ago , near 1970
-            $pubdate_to=$pubdate_to_temp;
-
-        }else {
-            $pubdate_from=$pubdate_from_temp - 86400;
-            $pubdate_to=$pubdate_to_temp;
-        }
-
-
-        if($moddate_from_temp && !$moddate_to_temp){  # Set FromDate, Don't set To Date
-            $moddate_from=$moddate_from_temp  - 86400;
-            $moddate_to=floor(microtime(true));
-        }else if(!$moddate_from_temp && $moddate_to_temp){ # Set To Date, Dont Set FromDate
-            $moddate_from = 1;  # 1 is the very long time ago , near 1970
-            $moddate_to=$moddate_to_temp;
-        }else {
-            $moddate_from=$moddate_from_temp - 86400;
-            $moddate_to=$moddate_to_temp;
-        }
-
-
-        if(is_array($dataset_type)){
-            $s->SetFilter( 'dataset_type_ids', $dataset_type );
-        }
-
-
-        if(is_array($common_name)){
-            $s->SetFilter( 'species_ids', $common_name );
-        }
-
-        if(is_array($project)){
-            $s->SetFilter( 'project_ids', $project );
-        }
-        if(is_array($external_link_type)){
-            $s->SetFilter( 'external_type_ids', $external_link_type );
-        }
-
-
-        if($pubdate_from && $pubdate_to && $pubdate_to > $pubdate_from){
-            $s->SetFilterRange('publication_date',$pubdate_from,$pubdate_to);
-        }
-
-        if($moddate_from && $moddate_to && $moddate_to > $moddate_from){
-            $s->SetFilterRange('modification_date',$moddate_from,$moddate_to);
-        }
-
-        $result = $s->query($keyword, "dataset");
-
-        $matches=array();
-        if(isset($result['matches'])) {
-            $matches=$result['matches'];
-        }
-
-        $result=array_keys($matches);
-        return $result;
-    }
-
     public function getListTitles(){
         $models=Dataset::model()->findAll(array(
                 'select'=>'t.title',
                 'distinct'=>true,
             ));
         $list=array();
-        foreach ($models as $key=>$model){
+        foreach (array_values($models) as $model){
             $list[] = $model->title;
         }
         return $list;
@@ -401,7 +296,7 @@ class Dataset extends MyActiveRecord
     public function getDatasetTypes(){
         $list=array();
 
-        foreach ($this->datasetTypes as $key => $type) {
+        foreach (array_values($this->datasetTypes) as $type) {
             $list[]=$type->name;
         }
         return $list;
@@ -412,7 +307,7 @@ class Dataset extends MyActiveRecord
             $url = $this->image->url;
             if ($url) {
                 if (!strstr($url , 'http://')) {
-                    $url = 'http://' . $url;
+                    $url = '//' . $url;
                 }
             } else {
                 $url = $this->image->image('image_upload');
@@ -497,17 +392,6 @@ class Dataset extends MyActiveRecord
         return Sample::model()->findAll($criteria);
     }
 
-    /**
-     * Get the url with the title slugify
-     *
-     * @return string
-     */
-    public function getDatasetUrl()
-    {
-        $url = 'dataset/' . $this->identifier . '/' . Convenients::slugify($this->title);
-        return Yii::app()->createAbsoluteUrl($url);
-    }
-
     public function getShortUrl() {
         $url = 'dataset/'.$this->identifier;
         return Yii::app()->createAbsoluteUrl($url);
@@ -529,7 +413,7 @@ class Dataset extends MyActiveRecord
 
         $list=array();
 
-        foreach ($sk as $key => $keyword) {
+        foreach (array_values($sk) as $keyword) {
             $list[]=$keyword->value;
         }
         return $list;
@@ -653,26 +537,25 @@ class Dataset extends MyActiveRecord
             }
 
         }
-        
+
         $funding_References = $xml->addChild("fundingReferences");
-        
+
         if (isset($fundings)){
             foreach($fundings as $funding){
-    
+
                 $funder =  Funder::model()-> findByAttributes(array('id'=>$funding->funder_id));
                 $fundingReference = $funding_References->addChild("fundingReference");
                 $fundingReference->addChild('funderName',str_replace(array('&','>','<','"'), array('&amp;','&gt;','&lt;','&quot;'), $funder->primary_name_display));
                 $funderidentifier= $fundingReference->addChild('funderIdentifier',$funder->uri);
                 $funderidentifier->addAttribute('funderIdentifierType','Crossref Funder ID');
-                $funderaward= $fundingReference->addChild('awardNumber',$funding->grant_award);              
-                             
+                $fundingReference->addChild('awardNumber',$funding->grant_award);
 
-                
             }
-            
+
         }
 
         //<sizes><size>
+        // TODO: use the already installed Byte-Units library to do those size calculation
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
 
         $bytes = max($this->dataset_size, 0);

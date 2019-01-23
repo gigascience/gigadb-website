@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+
+bin/phpdoc --visibility "public,protected" --cache-folder "docs/cache" --directory "protected/models,protected/tests/functional,protected/components,protected/tests/unit,protected/controllers,features/bootstrap/" --target "docs/apidocs/"

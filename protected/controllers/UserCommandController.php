@@ -9,10 +9,6 @@ class UserCommandController extends CController
 	 */
 	public $layout='//layouts/column2';
 
-	/**
-	 * @var CActiveRecord the currently loaded data model instance.
-	 */
-	private $_model;
 
 	/**
 	 * @return array action filters
@@ -51,6 +47,8 @@ class UserCommandController extends CController
      * @param integer $author_id, dataset id
      */
     public function actionClaim($dataset_id, $author_id) {
+
+        Yii::log(__FUNCTION__." ($dataset_id, $author_id)",'info');
 
     	$result['status'] = false;
         $result['message'] = "there was an error";

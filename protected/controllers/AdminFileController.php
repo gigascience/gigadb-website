@@ -54,19 +54,17 @@ class AdminFileController extends Controller
             'model'=>$this->loadModel($id),
         ));
     }
-        
+
     public function getFilesInfo($conn_id, $ftp_dir, $ftp, &$model, &$count) {
 
-        $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => 'num_files'));
         ftp_pasv($conn_id, true);
         $buff = ftp_rawlist($conn_id, $ftp_dir);
         if(!$buff) {
             return false;
         }
-        $file_count = count($buff);
         $date = new DateTime("2050-01-01");
         $date = $date->format("Y-m-d");
-        foreach ($buff as $key => $value) {
+        foreach (array_values($buff) as $value) {
             $info = preg_split("/\s+/", $value);
             $name = $info[8];
             $new_dir = $ftp_dir . "/" . $name;
@@ -231,18 +229,16 @@ class AdminFileController extends Controller
 
         $model = new File;
 
-        $dataset = Dataset::model()->findByAttributes(array('id' => $dataset_id));
-        $samples = $dataset->samples;
         $samples_data = array();
         //add none and All , Multiple
         $samples_data['none']='none';
         $samples_data['All']='All';
         $samples_data['Multiple']='Multiple';
 
-        $this->render('update1', array('files' => $files, 
-                    'fileModels' => $fileModels, 
+        $this->render('update1', array('files' => $files,
+                    'fileModels' => $fileModels,
                     'identifier' => $identifier,
-                    'model' => $model, 
+                    'model' => $model,
                     'samples_data'=>$samples_data
                     ));
     }
@@ -254,7 +250,7 @@ class AdminFileController extends Controller
         $type = $f->type;
         $format = $f->format;
         if($data[2] != $type->name) {
-            $nt = FileType::model()->find(array('condition'=>'lower(name) = :name', 
+            $nt = FileType::model()->find(array('condition'=>'lower(name) = :name',
                 'params'=>array(':name'=>strtolower($data[2]))));
 
             if($nt) {
@@ -283,7 +279,7 @@ class AdminFileController extends Controller
                     $nf->name = 'UNKNOWN';
                     $nf->save();
                 }
-                $f->format_id = $nf->id;                
+                $f->format_id = $nf->id;
             }
         }
         $f->description = $data[4];
@@ -298,7 +294,6 @@ class AdminFileController extends Controller
             throw new CHttpException(404, 'The requested page does not exist.');
         $id = $_GET['id'];
         $dataset = Dataset::model()->findByAttributes(array('identifier' => $id));
-        $dsamples = $dataset->samples;
         $filelist = File::model()->findAll(array('condition' => 'dataset_id =:id', 'order' => 'id asc', 'params' => array(':id' => $dataset->id)));
 
         $file = CUploadedFile::getInstanceByName('file_info');
@@ -333,10 +328,6 @@ class AdminFileController extends Controller
             'wego' => 'WEGO', 'wig' => 'WIG', 'iprscan' => 'IPR', 'stat' => 'UNKNOWN', 'qual' => 'QUAL'
         );
 
-        $comExt = array("7z", "arj", "bz2", "bzip2", "cab", "cpio",
-            "deb", "dmg", "gz", "gzip", "hfs", "iso", "lha", "lzh", "lzma",
-            "rar", "rpm", "split", "swm", "tar", "taz", "tbz", "tbz2", "tgz",
-            "tpz", "wim", "xar", "z", "zip");
 
         $extensionArray = explode(".", $file_name);
 
@@ -379,8 +370,7 @@ class AdminFileController extends Controller
     {
         $model = $this->loadModel($id);
         $model->sample_name = ($model->sample)? $model->sample->id : '';
-        $extension = $format = null;
-        
+
         $attribute = new FileAttributes;
         $attribute->file_id = $model->id;
 
@@ -394,7 +384,7 @@ class AdminFileController extends Controller
                 $fa->value = $args['value'];
                 if($args['unit_id'])
                     $fa->unit_id = $args['unit_id'];
-                
+
                 if($fa->validate()) {
                     if($fa->save())
                         $this->redirect(array('update','id'=>$model->id));
@@ -410,18 +400,18 @@ class AdminFileController extends Controller
             $attribute->value = $attrs['value'];
             if($attrs['unit_id'])
                 $attribute->unit_id = $attrs['unit_id'];
-            
+
             if($attribute->validate()) {
                 $attribute->save();
                 $this->redirect(array('update', 'id' => $model->id));
             }
         } elseif (isset($_POST['File'])) {
             $model->attributes = $_POST['File'];
-            
+
             $model->setSizeValue();
             if ($model->validate()) {
                 $model->save();
-                
+
                 if(isset($_POST['File']['sample_name']) && !empty($_POST['File']['sample_name'])) {
                     $fs = $model->fileSamples;
                     if(!isset($fs[0])) {
@@ -447,7 +437,7 @@ class AdminFileController extends Controller
                 if (isset($model->location)) {
                     $this->setAutoFileAttributes($model, true);
                 }*/
-                
+
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }
@@ -664,7 +654,7 @@ EO_MAIL;
                 $to = Yii::app()->params['app_email'];
                 $subject = "Files are added to  dataset: " . $model->dataset_id;
                 $receiveNewsletter = $user->newsletter ? 'Yes' : 'No';
-                $link = Yii::app()->params['home_url'] . "/dataset/update/id/" . $model->dataset_id;
+                $link = Yii::app()->params['home_url'] . "/adminDataset/update/id/" . $model->dataset_id;
                 $message = <<<EO_MAIL
 Dear GigaDB,<br/><br/>
 
@@ -794,7 +784,7 @@ EO_MAIL;
             }
             //determine if it want to submit
 //             if (isset($_POST['file'])) {
-//                 $this->redirect("/dataset/submit");
+//                 $this->redirect("/datasetSubmission/submit");
 //             }
         }
         $dataset = Dataset::model()->findByAttributes(array('id' => $dataset_id));

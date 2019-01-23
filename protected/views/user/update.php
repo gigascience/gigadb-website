@@ -2,7 +2,7 @@
 <div class="clear"></div>
 <? if (Yii::app()->user->checkAccess('admin')) { ?>
 <div class="actionBar">
-[<?= MyHtml::link('Manage Users', array('admin')) ?>]
+[<?= CHtml::link('Manage Users', array('admin')) ?>]
 </div>
 <? } ?>
 

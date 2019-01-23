@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+
+  production_web:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    build:
+      context: ../..
+      dockerfile: ops/packaging/Web-Dockerfile
+      args:
+        - NGINX_VERSION=${NGINX_VERSION}
+        - GIGADB_ENV=${GIGADB_ENV}
+    volumes:
+      - ../../assets:/var/www/assets
+
+  production_app:
+    build:
+      context: ../..
+      dockerfile: ops/packaging/Production-Dockerfile
+      args:
+        - TARGET_PHP_VERSION=${PHP_VERSION}
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=false
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=true
+        - INSTALL_APCU=true
+    volumes:
+      - ../../assets:/var/www/assets
+
+  production_config:
+    build:
+      context: ../..
+      dockerfile: ops/packaging/Config-Dockerfile

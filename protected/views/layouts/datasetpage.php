@@ -14,8 +14,8 @@
         }
     ?>
 
-    <meta name="title" content="<?php echo MyHtml::encode($this->pageTitle); ?>" />
-    <meta name="description" content="<?php echo MyHtml::encode($metaData['description']) ?>" />
+    <meta name="title" content="<?php echo CHtml::encode($this->pageTitle); ?>" />
+    <meta name="description" content="<?php echo CHtml::encode($metaData['description']) ?>" />
     <meta name="identifier-url" content="<?php echo Yii::app()->createAbsoluteUrl(Yii::app()->request->url) ?>">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
 
     <?= $this->renderPartial('//shared/_google_analytics')?>
 
-    <title><?php echo MyHtml::encode($this->pageTitle); ?></title>
+    <title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
     <?php
         $url=Yii::app()->createAbsoluteUrl(Yii::app()->request->url);
@@ -43,8 +43,11 @@
         }
     ?>
     <link rel="canonical" href="<?php echo $canon_url; ?>" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -62,7 +65,6 @@
                 </ul>
             </div>
             <p>
-                <?/*= Utils::languageChangingLinks() */?>
                 <a class="btn" href="/site/help"><?=Yii::t('app' , 'Help')?></a>
                 <?php if(Yii::app()->user->isGuest) { ?>
                 <a class="btn" href="/site/login"><?=Yii::t('app' , 'Login')?></a>
@@ -90,13 +92,7 @@
             </p>
         </div>
 </header>
-<!--
-    <?php if(isset($this->breadcrumbs)):?>
-        <?php $this->widget('bootstrap.widgets.BootBreadcrumbs', array(
-            'links'=>$this->breadcrumbs,
-        )); ?>
-    <?php endif?>
--->
+
 
 <div class="container" id="wrap">
     <?php echo $content; ?>

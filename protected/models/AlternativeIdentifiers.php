@@ -13,7 +13,7 @@
  * @property Extdb $extdb
  * @property Sample $sample
  */
-class AlternativeIdentifiers extends MyActiveRecord
+class AlternativeIdentifiers extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.

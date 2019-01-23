@@ -95,7 +95,7 @@ class Prefix extends CActiveRecord
 	public static function getListPrefixes(){
         $models=Type::model()->findAll();
         $list=array();
-        foreach ($models as $key=>$model){
+        foreach (array_values($models) as $model){
             $list[$model->id] = $model->prefix;
         }
         return $list;

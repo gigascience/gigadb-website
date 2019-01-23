@@ -28,23 +28,20 @@ class SiteController extends Controller {
 
 	public function accessRules() {
         return array(
-            array('allow', # admins
-                'actions'=>array('admin'),
-                'roles'=>array('admin'),
-            ),
-            array('deny',  // deny to admin action
-                'users'=>array('admin'),
-            ),
             array('allow',  // allow all users
+                'actions'=>array('index','error','contact','mapbrowse','team','about','advisory','faq','term','help','privacy', 'login', 'loginAffiliate', 'logout', 'revoke', 'feed' ),
                 'users'=>array('*'),
             ),
-            array('allow', 
-                'actions'=>array('create', 'captcha'),
+            array('allow', # admins
+                'actions'=>array('admin', 'su'),
+                'roles'=>array('admin'),
+            ),
+            array('deny',  // deny all users
                 'users'=>array('*'),
             ),
         );
     }
-		
+
     /**
     *
     * Administration action
@@ -83,125 +80,110 @@ class SiteController extends Controller {
 
 		$datasettypes_hints = Type::model()->findAll(array('order'=>'name ASC'));
 
-		$news = News::model()->findAll("start_date<=current_date AND end_date>=current_date");
+        $news = Yii::app()->newsAndFeedsService->getTodaysNews();
 
+        $rss_arr = Yii::app()->newsAndFeedsService->getFeedsData();
 
-		$criteria=new CDbCriteria;
-		$criteria->limit = 10;
-		$criteria->condition = "upload_status = 'Published'";
-		#$criteria->order = "id DESC";
-		$criteria->order = 'publication_date DESC';
-		$latest_datasets = Dataset::model()->findAll($criteria);
+        //Get dataset types number
+        $sql_1="select * from homepage_dataset_type";
+        $command = Yii::app()->db->createCommand($sql_1);
+        $results = $command->queryAll();
 
-		$criteria->condition = null;
-		$criteria->order = 'publication_date DESC';
-		$latest_messages = RssMessage::model()->findAll($criteria);
+        $sql_2="select * from sample_number";
+        $command = Yii::app()->db->createCommand($sql_2);
+        $count_sample = $command->queryAll();
 
-		$rss_arr = array_merge($latest_datasets , $latest_messages);
+        $sql_3="select * from file_number";
+        $command = Yii::app()->db->createCommand($sql_3);
+        $count_file = $command->queryAll();
 
-		$this->sortRssArray($rss_arr);
-                
-                //Get dataset types number
-                $sql_1="select * from homepage_dataset_type";
-                $command = Yii::app()->db->createCommand($sql_1); 
-                $results = $command->queryAll();
-                
-                $sql_2="select * from sample_number";
-                $command = Yii::app()->db->createCommand($sql_2); 
-                $count_sample = $command->queryAll();
-                
-                $sql_3="select * from file_number";
-                $command = Yii::app()->db->createCommand($sql_3); 
-                $count_file = $command->queryAll();
-                
-                $number_genome_mapping=0;
-                $number_ecology=0;
-                $number_eeg=0;
-                $number_epi=0;
-                $number_genomic=0;
-                $number_imaging=0;
-                $number_lipi=0;
-                $number_metabarcoding=0;
-                $number_metagenomic=0;
-                $number_metadata=0;
-                $number_metabolomic=0;
-                $number_climate=0;
-                $number_na=0;
-                $number_ns=0;
-                $number_pt=0;
-                $number_proteomic=0;
-                $number_software=0;
-                $number_ts=0;
-                $number_vm=0;
-                $number_wf=0;
-                              
-                foreach($results as $result)
-                {                  
-                    switch ($result['name']) {
-                        case "Genome-Mapping":
-                             $number_genome_mapping=$result['count'];
-                             break;
-                        case "Ecology":
-                             $number_ecology=$result['count'];
-                             break;
-                        case "ElectroEncephaloGraphy(EEG)":
-                             $number_eeg=$result['count'];
-                             break;
-                        case "Epigenomic":
-                             $number_epi=$result['count'];
-                             break;
-                        case "Genomic":
-                             $number_genomic=$result['count'];
-                             break;
-                        case "Imaging":
-                             $number_imaging=$result['count'];  
-                             break;
-                        case "Lipidomic":
-                             $number_lipi=$result['count'];  
-                             break;
-                        case "Metabarcoding":
-                             $number_metabarcoding=$result['count'];    
-                             break;
-                        case "Metagenomic":
-                             $number_metagenomic=$result['count']; 
-                             break;
-                        case "Metadata":
-                             $number_metadata=$result['count'];
-                             break;
-                        case "Metabolomic":
-                             $number_metabolomic=$result['count'];
-                             break;
-                        case "Climate":
-                             $number_climate=$result['count'];
-                             break;
-                        case "Network-Analysis":
-                             $number_na=$result['count'];
-                             break; 
-                        case "Neuroscience":
-                             $number_ns=$result['count'];
-                             break;  
-                        case "Phenotyping":
-                             $number_pt=$result['count'];
-                             break;    
-                        case "Proteomic":
-                             $number_proteomic=$result['count'];
-                             break;   
-                        case "Software":
-                             $number_software=$result['count'];
-                             break;   
-                        case "Transcriptomic":
-                             $number_ts=$result['count'];
-                             break;    
-                        case "Virtual-Machine":
-                             $number_vm=$result['count'];
-                             break;  
-                        case "Workflow":
-                             $number_wf=$result['count'];
-                             break; 
+        $number_genome_mapping=0;
+        $number_ecology=0;
+        $number_eeg=0;
+        $number_epi=0;
+        $number_genomic=0;
+        $number_imaging=0;
+        $number_lipi=0;
+        $number_metabarcoding=0;
+        $number_metagenomic=0;
+        $number_metadata=0;
+        $number_metabolomic=0;
+        $number_climate=0;
+        $number_na=0;
+        $number_ns=0;
+        $number_pt=0;
+        $number_proteomic=0;
+        $number_software=0;
+        $number_ts=0;
+        $number_vm=0;
+        $number_wf=0;
 
-                    }
-                   
-                }
+        foreach($results as $result) {
+            switch ($result['name']) {
+                case "Genome-Mapping":
+                     $number_genome_mapping=$result['count'];
+                     break;
+                case "Ecology":
+                     $number_ecology=$result['count'];
+                     break;
+                case "ElectroEncephaloGraphy(EEG)":
+                     $number_eeg=$result['count'];
+                     break;
+                case "Epigenomic":
+                     $number_epi=$result['count'];
+                     break;
+                case "Genomic":
+                     $number_genomic=$result['count'];
+                     break;
+                case "Imaging":
+                     $number_imaging=$result['count'];
+                     break;
+                case "Lipidomic":
+                     $number_lipi=$result['count'];
+                     break;
+                case "Metabarcoding":
+                     $number_metabarcoding=$result['count'];
+                     break;
+                case "Metagenomic":
+                     $number_metagenomic=$result['count'];
+                     break;
+                case "Metadata":
+                     $number_metadata=$result['count'];
+                     break;
+                case "Metabolomic":
+                     $number_metabolomic=$result['count'];
+                     break;
+                case "Climate":
+                     $number_climate=$result['count'];
+                     break;
+                case "Network-Analysis":
+                     $number_na=$result['count'];
+                     break;
+                case "Neuroscience":
+                     $number_ns=$result['count'];
+                     break;
+                case "Phenotyping":
+                     $number_pt=$result['count'];
+                     break;
+                case "Proteomic":
+                     $number_proteomic=$result['count'];
+                     break;
+                case "Software":
+                     $number_software=$result['count'];
+                     break;
+                case "Transcriptomic":
+                     $number_ts=$result['count'];
+                     break;
+                case "Virtual-Machine":
+                     $number_vm=$result['count'];
+                     break;
+                case "Workflow":
+                     $number_wf=$result['count'];
+                     break;
+
+            }
+
+        }
 		$this->render('index',array(
 			'datasets'=>$datasetModel,
 			'form'=>$form,
@@ -212,12 +194,11 @@ class SiteController extends Controller {
 			'count' => count($publicIds),
                         'count_sample' => $count_sample[0]['count'],
                         'count_file' => $count_file[0]['count'],
-			'latest_datasets'=>$latest_datasets,
-                        'number_genome_mapping'=>$number_genome_mapping,                    
-                        'number_climate' => $number_climate,                    
+                        'number_genome_mapping'=>$number_genome_mapping,
+                        'number_climate' => $number_climate,
                         'number_ecology'=>$number_ecology,
                         'number_eeg'=>$number_eeg,
-                        'number_epi'=>$number_epi,                       
+                        'number_epi'=>$number_epi,
                         'number_genomic'=>$number_genomic,
                         'number_imaging'=>$number_imaging,
                         'number_lipi'=>$number_lipi,
@@ -233,34 +214,12 @@ class SiteController extends Controller {
                         'number_ts'=>$number_ts,
                         'number_vm'=>$number_vm,
                         'number_wf'=>$number_wf,
-                        
-                        
+
                         )
-                        
-                        
+
 		);
 	}
 
-    private function sortRssArray(&$rss_arr){
-        //Using Bubble Sort
-        while(True){
-            $swapped = False ;
-            for($i = 0 ; $i < count($rss_arr) - 1 ; ++$i){
-                if($rss_arr[$i]->publication_date < $rss_arr[$i+1]->publication_date){
-                    $temp = $rss_arr[$i+1];
-                    $rss_arr[$i+1] = $rss_arr[$i];
-                    $rss_arr[$i] = $temp;
-                    $swapped = True;
-                }
-            }
-            if(!$swapped)
-                break;
-        }
-    }
-
-	private function loadUser() {
-	  return User::model()->findbyPk(Yii::app()->user->_id);
-	}
 
 	/**
 	 * This is the action to handle external exceptions.
@@ -280,7 +239,7 @@ class SiteController extends Controller {
 	 * Displays the contact page
 	 */
 	public function actionContact() {
-            
+
             $this->layout='new_main';
 		$model = new ContactForm;
 		if (isset($_POST['ContactForm'])) {
@@ -298,25 +257,25 @@ class SiteController extends Controller {
 	*This method returns all dataset locations
 	*/
 	public function actionMapbrowse() {
-            
+
              $this->layout='new_main';
-	     $locations = $list= Yii::app()->db->createCommand("SELECT d.identifier,  d.title, satt.value, sp.scientific_name as sciname, s.id as sampleid FROM dataset as d
+	     $locations = Yii::app()->db->createCommand("SELECT d.identifier,  d.title, satt.value, sp.scientific_name as sciname, s.id as sampleid FROM dataset as d
 					      INNER JOIN dataset_sample as dsam on dsam.dataset_id = d.id
 						  INNER JOIN sample as s on s.id = dsam.sample_id
-					      INNER JOIN sample_attribute as satt on satt.sample_id=s.id 
-						  INNER JOIN species as sp on sp.id = s.species_id		
+					      INNER JOIN sample_attribute as satt on satt.sample_id=s.id
+						  INNER JOIN species as sp on sp.id = s.species_id
 						  where satt.attribute_id = 269 and d.upload_status='Published' order by sampleid")
                                               ->queryAll();
-           
+
                 foreach ($locations as $location) {
-      
-        $locationValue = $location["value"];  
-        $locationValue = preg_replace('/\s+/', '', $locationValue);   
+
+        $locationValue = $location["value"];
+        $locationValue = preg_replace('/\s+/', '', $locationValue);
         $formatCheck = preg_match('/-?[0-9]*[.][0-9]*[,]-?[0-9]*[.][0-9]*/',$locationValue);
         if (!$formatCheck==1){
           continue;
-        }     
-        $val = explode(',', $locationValue); 
+        }
+        $val = explode(',', $locationValue);
         if(strpos($val[0],'.') == false || !is_numeric($val[0])){
             continue;
         }
@@ -324,27 +283,27 @@ class SiteController extends Controller {
             continue;
         }
         $location["sciname"]=str_replace(",","",$location["sciname"]);
-     
-      
-                  
 
-  } 
 
-             
+
+
+  }
+
+
             $this->render('mapbrowse', array('locations' => $locations));
 	}
-        
+
         public function actionTeam() {
                 $this->layout='new_main';
 		$this->render('team');
 	}
-        
+
 
 	public function actionAbout() {
                 $this->layout='new_main';
 		$this->render('about');
 	}
-        
+
     public function actionAdvisory() {
                 $this->layout='new_main';
 		$this->render('advisory');
@@ -419,18 +378,14 @@ class SiteController extends Controller {
         $this->render('login', array('model' => $model));
     }
 
-    public function actionChooseLogin() {
-		$this->render('chooseLogin');
-	}
-
 	public function actionloginAffiliate() {
 		if(isset($_GET["opauth"])) {
 			try {
 				$opauth_code = $_GET["opauth"];
-				$response = unserialize(base64_decode($opauth_code));
+				$response = json_decode(base64_decode($opauth_code), true);
 
 				// Check if it's an error callback
-				if (array_key_exists('error', $response) or !isset($response['auth'])) {  
+				if (array_key_exists('error', $response) or !isset($response['auth'])) {
 					MyLog::Error('Error get info!');
 					$this->redirect('/');
 				}
@@ -448,7 +403,7 @@ class SiteController extends Controller {
 					$this->redirect('/');
 				}
 
-		        $user = User::processAffiliateUser($auth);
+		        User::processAffiliateUser($auth);
 
 				 #process to mark as logined in
 				$_SESSION['affiliate_login']['provider'] = $auth['provider'];
@@ -456,17 +411,20 @@ class SiteController extends Controller {
 				$_SESSION['affiliate_login']['token'] = $auth['credentials']['token'];
 
 				#use useridentity to login
-				$model = new LoginForm;
-				$model->username = $auth['uid'];
-				$model->password = $auth['uid'];
+                $userIdentity = new AffiliateUserIdentity(
+                                                $_SESSION['affiliate_login']['provider'],
+                                                $_SESSION['affiliate_login']['uid']
+                                );
 
-				#validate user input and redirect to the previous page if valid
-				if($model->validate()){
+				#complete authentication of affilate user
+				if($userIdentity->authenticate()){
+                    $duration= 3600*24*30 ; // 30 days
+                    Yii::app()->user->login($userIdentity,$duration);
 					$this->redirect(Yii::app()->user->returnUrl);
 				} else {
-					Yii::log("FAILED VALIDATION: " . print_r($model->getErrors(), true) , "error");
+					Yii::log("FAILED VALIDATION: " . $userIdentity->errorCode , "error");
 				}
-					
+
 		        } catch (Exception $e) {
 		                MyLog::error(print_r($e, true));
 		                exit;
@@ -488,7 +446,7 @@ class SiteController extends Controller {
 	 * revoke  the current affiliatte user granting and redirect to homepage.
 	 */
 	public function actionRevoke() {
-		UserIdentity::revoke_token() ;
+		AffiliateUserIdentity::revoke_token() ;
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
@@ -513,71 +471,43 @@ class SiteController extends Controller {
     }
 
     public function actionFeed(){
-	Yii::import('ext.feed.*');
-
-	// specify feed type
-	$feed = new EFeed(EFeed::RSS1);
-	$feed->title = 'Testing the RSS 1 EFeed class';
-	$feed->link = 'http://www.ramirezcobos.com';
-	$feed->description = 'This is test of creating a RSS 1.0 feed by Universal Feed Writer';
-	$feed->RSS1ChannelAbout = 'http://www.ramirezcobos.com/about';
-	// create our item
-	$item = $feed->createNewItem();
-	$item->title = 'The first feed';
-	$item->link = 'http://www.yiiframework.com';
-	$item->date = time();
-	$item->description = 'Amaz-ii-ng <b>Yii Framework</b>';
-	$item->addTag('dc:subject', 'Subject Testing');
-
-	$feed->addItem($item);
-
-	$feed->generateFeed();
-      }
-
-    public function actionChangeLanguage() {
-        /* Change the session's language if the requested language is
-         * supported */
-        Utils::changeLanguage(Utils::get($_GET, 'lang'));
-
-        /* Return to the previous page */
-        $returnUrl = Yii::app()->request->urlReferrer;
-        if (!$returnUrl)
-            $returnUrl = '/';
-        $this->redirect($returnUrl);
+        header("Content-type: text/xml");
+        echo Yii::app()->newsAndFeedsService->getRss();
+        exit;
     }
+
     /**
 	* This method generate captcha image
     */
     public function captchaGenerator($length = 7){
 		try{
-		$captchaPath = null;
-		$im = imagecreatetruecolor(600, 100);
-		// Create some colors
-		$white = imagecolorallocate($im, 255, 255, 255);
-		$grey = imagecolorallocate($im, 128, 128, 128);
+    		$im = imagecreatetruecolor(600, 100);
+    		// Create some colors
+    		$white = imagecolorallocate($im, 255, 255, 255);
+    		// $grey = imagecolorallocate($im, 128, 128, 128);
 
-		$black = imagecolorallocate($im, 66, 164, 244);
-		imagefilledrectangle($im, 0, 0, 600, 100, $white);
-		// The text to draw
-		
-		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$charactersLength = strlen($characters);
-		$randomString = '';
-		for ($i = 0; $i < $length; $i++) {
-			$randomString .= $characters[rand(0, $charactersLength - 1)];
-		}
-			
-		$text = $randomString;
-		$font = '/fonts/times_new_yorker.ttf';		
-		imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
-		
-		imagejpeg($im, 'images/tempcaptcha/'.$text.".png");
-		imagedestroy($im);
-		$_SESSION["captcha"] = $text;
-		return $text;
+    		$black = imagecolorallocate($im, 66, 164, 244);
+    		imagefilledrectangle($im, 0, 0, 600, 100, $white);
+    		// The text to draw
+
+    		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    		$charactersLength = strlen($characters);
+    		$randomString = '';
+    		for ($i = 0; $i < $length; $i++) {
+    			$randomString .= $characters[rand(0, $charactersLength - 1)];
+    		}
+
+    		$text = $randomString;
+    		$font = '/fonts/times_new_yorker.ttf';
+    		imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
+
+    		imagejpeg($im, 'images/tempcaptcha/'.$text.".png");
+    		imagedestroy($im);
+    		$_SESSION["captcha"] = $text;
+    		return $text;
 	}catch (Exception $e) {
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
-	}		
+        echo 'Caught exception: ',  $e->getMessage(), "\n";
+	}
 }
 
 }

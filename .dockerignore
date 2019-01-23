@@ -1,0 +1,12 @@
+**/.DS_Store
+**/*~
+.git
+.gitlab-ci.yml
+.gitmodules
+.gitignore
+.php_cs.cache
+chef
+tmp
+protected/runtime/*
+Vagrantfile
+Vagrantfile.chef

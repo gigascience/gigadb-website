@@ -16,7 +16,7 @@
  * @property FileExperiment[] $fileExperiments
  * @property ExpAttributes[] $expAttributes
  */
-class Experiment extends MyActiveRecord
+class Experiment extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.

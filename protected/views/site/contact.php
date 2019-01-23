@@ -98,7 +98,7 @@
 
 			
 		
-                <div class="span8 offset2"><?= MyHtml::submitButton('Submit', array('class'=>'btn background-btn')); ?></div>
+                <div class="span8 offset2"><?= CHtml::submitButton('Submit', array('class'=>'btn background-btn')); ?></div>
 
                 <? $this->endWidget(); ?>
                 </div><!-- form -->

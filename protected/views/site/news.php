@@ -30,7 +30,7 @@
                     ?>
                   </p>
                   <?
-                  echo MyHtml::link("See More", array("news/view",'id'=>$temp_news->id));
+                  echo CHtml::link("See More", array("news/view",'id'=>$temp_news->id));
                   echo '<br/>';
                   ?>
                 </div>

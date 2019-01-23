@@ -307,6 +307,8 @@ CREATE TABLE dataset (
     id integer NOT NULL,
     submitter_id integer NOT NULL,
     image_id integer,
+    curator_id integer,
+    manuscript_id character varying(50),
     identifier character varying(32) NOT NULL,
     title character varying(300) NOT NULL,
     description text DEFAULT ''::text NOT NULL,
@@ -1200,7 +1202,7 @@ ALTER SEQUENCE funder_name_id_seq OWNED BY funder_name.id;
 CREATE TABLE gigadb_user (
     id integer NOT NULL,
     email character varying(64) NOT NULL,
-    password character varying(64) NOT NULL,
+    password character varying(128) NOT NULL,
     first_name character varying(100) NOT NULL,
     last_name character varying(100) NOT NULL,
     affiliation character varying(200),
@@ -1765,6 +1767,24 @@ CREATE TABLE sample_rel (
 ALTER TABLE sample_rel OWNER TO gigadb;
 
 --
+-- Name: curation_log; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+--
+
+CREATE TABLE curation_log (
+    id integer NOT NULL,
+    dataset_id integer NOT NULL,
+    CREATION_DATE date,
+    CREATED_BY varchar(20),
+    LAST_MODIFIED_DATE date,
+    LAST_MODIFIED_BY varchar(20),
+    ACTION varchar(100),
+    COMMENTS varchar(200)
+);
+
+
+ALTER TABLE public.curation_log OWNER TO gigadb;
+
+--
 -- TOC entry 253 (class 1259 OID 18406)
 -- Name: sample_rel_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
 --
@@ -1787,6 +1807,25 @@ ALTER TABLE sample_rel_id_seq OWNER TO gigadb;
 
 ALTER SEQUENCE sample_rel_id_seq OWNED BY sample_rel.id;
 
+--
+-- Name: curation_log_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
+--
+
+CREATE SEQUENCE curation_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.curation_log_id_seq OWNER TO gigadb;
+
+--
+-- Name: curation_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gigadb
+--
+
+ALTER SEQUENCE curation_log_id_seq OWNED BY curation_log.id;
 
 --
 -- TOC entry 254 (class 1259 OID 18408)
@@ -1953,6 +1992,18 @@ ALTER TABLE species_id_seq OWNER TO gigadb;
 --
 
 ALTER SEQUENCE species_id_seq OWNED BY species.id;
+
+--
+-- Name: tbl_migration; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+--
+
+CREATE TABLE tbl_migration (
+    version character varying(180) NOT NULL,
+    apply_time integer
+);
+
+
+ALTER TABLE tbl_migration OWNER TO gigadb;
 
 
 --
@@ -2466,6 +2517,13 @@ COPY attribute (id, attribute_name, definition, model, structured_comment_name, 
 
 SELECT pg_catalog.setval('attribute_id_seq', 421, true);
 
+--
+-- Data for Name: tbl_migration; Type: TABLE DATA; Schema: public; Owner: gigadb
+--
+
+COPY public.tbl_migration (version, apply_time) FROM stdin;
+m000000_000000_base 1541674918
+\.
 
 --
 -- TOC entry 2769 (class 0 OID 18135)
@@ -3426,6 +3484,13 @@ ALTER TABLE ONLY dataset_type
 
 
 --
+-- Name: curation_log_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
+--
+
+ALTER TABLE ONLY curation_log
+    ADD CONSTRAINT curation_log_pkey PRIMARY KEY (id);
+
+--
 -- TOC entry 2545 (class 2606 OID 18552)
 -- Name: email_unique; Type: CONSTRAINT; Schema: public; Owner: gigadb
 --
@@ -3759,6 +3824,13 @@ ALTER TABLE ONLY species
 
 
 --
+-- Name: tbl_migration_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb; Tablespace: 
+--
+
+ALTER TABLE ONLY tbl_migration
+    ADD CONSTRAINT tbl_migration_pkey PRIMARY KEY (version);
+
+--
 -- TOC entry 2594 (class 2606 OID 18626)
 -- Name: type_pkey; Type: CONSTRAINT; Schema: public; Owner: gigadb
 --
@@ -3822,6 +3894,21 @@ CREATE UNIQUE INDEX identifier_idx ON dataset USING btree (identifier);
 
 ALTER TABLE ONLY "AuthAssignment"
     ADD CONSTRAINT "AuthAssignment_itemname_fkey" FOREIGN KEY (itemname) REFERENCES "AuthItem"(name) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: curation_log_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gigadb
+--
+
+ALTER TABLE ONLY "curation_log"
+    ADD CONSTRAINT "curation_log_dataset_id_fkey" FOREIGN KEY (dataset_id) REFERENCES "dataset"(id) ON UPDATE NO ACTION ON DELETE CASCADE;
+
+--
+-- Name: dataset_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gigadb
+--
+
+ALTER TABLE ONLY "dataset"
+    ADD CONSTRAINT "dataset_curator_id_fkey" FOREIGN KEY (curator_id) REFERENCES "gigadb_user"(id) ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 
 --

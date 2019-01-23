@@ -96,7 +96,7 @@ class FileFormat extends CActiveRecord
 	public static function getListFormats(){
         $models=FileFormat::model()->findAll();
         $list=array();
-        foreach ($models as $key=>$model){
+        foreach (array_values($models) as $model){
             $list[$model->id] = $model->name;
             $list[$model->id.'_description'] = $model->description;
         }

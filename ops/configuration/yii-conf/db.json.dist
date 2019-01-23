@@ -1,0 +1,6 @@
+{
+    "database": "${GIGADB_DB}",
+    "host"    : "${GIGADB_HOST}",
+    "user"    : "${GIGADB_USER}",
+    "password": "${GIGADB_PASSWORD}"
+}

@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+
+  application:
+    build:
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/application:latest"
+
+  test:
+    build:
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/test:latest"
+
+  config:
+    environment:
+      ANALYTICS_PRIVATE_KEY: ${ANALYTICS_PRIVATE_KEY}

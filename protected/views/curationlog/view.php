@@ -15,7 +15,7 @@ $this->widget('zii.widgets.CDetailView', array(
 		'id',
 		 array(
                     'name'=>'DataSet',
-                    'value'=> $dataset->identifier,                    
+                    'value'=> $dataset->identifier,
                 ),
 		'creation_date',
                 'created_by',
@@ -27,4 +27,4 @@ $this->widget('zii.widgets.CDetailView', array(
 )); ?>
 
 
-<?php echo CHtml::link('Back to this Dataset Curation Log', $this->createAbsoluteUrl('dataset/update',array('id'=>$model->dataset_id))); ?>
+<?php echo CHtml::link('Back to this Dataset Curation Log', $this->createAbsoluteUrl('adminDataset/update',array('id'=>$model->dataset_id))); ?>

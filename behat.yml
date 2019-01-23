@@ -1,0 +1,22 @@
+default:
+  suites:
+    default:
+      filters:
+      contexts:
+        - AffiliateLoginContext
+        - GigadbWebsiteContext
+        - AuthorMergingContext
+        - AuthorUserContext
+        - ClaimDatasetContext
+        - DatasetsOnProfileContext
+        - DatasetViewContext
+        - DatasetAdminContext
+        - NormalLoginContext
+        - Behat\MinkExtension\Context\MinkContext
+  extensions:
+      Behat\MinkExtension:
+          base_url: "http://gigadb.dev/"
+          goutte: ~
+          selenium2:
+            wd_host: http://phantomjs:8910/wd/hub
+

@@ -55,7 +55,7 @@ class AuthorTest extends CDbTestCase
 
  	function testFindAttachedAuthorByUserIdWhenNotAttached() {
  		$expectation = null;
- 		$this->assertEquals(null, Author::findAttachedAuthorByUserId(344),
+ 		$this->assertEquals($expectation, Author::findAttachedAuthorByUserId(344),
  							"return no author attached to user");
  	}
 
@@ -123,7 +123,7 @@ class AuthorTest extends CDbTestCase
 		$this->assertEquals(true,$is_success,"Can Merge an author to an author");
 		$author_rel = AuthorRel::model()->findByAttributes(array("author_id"=>1,"related_author_id"=>9));
 		$this->assertNotNull($author_rel,"An AuthorRel(1,9) exists");
-		$this->assertEquals(100,$author_rel->relationship_id,"AuthorRel(1,9) is an 'IsIdenticalTo' relationship");
+		$this->assertEquals(21,$author_rel->relationship_id,"AuthorRel(1,9) is an 'IsIdenticalTo' relationship");
 
  	}
 

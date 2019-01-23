@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * User
+ * An ActiveRecord model class to handle data related to users of the system.
+ */
 class User extends CActiveRecord {
     public $password_repeat;
     public $password_new;
@@ -61,7 +65,7 @@ class User extends CActiveRecord {
             array('terms','compare', 'on'=>'insert', 'compareValue' => TRUE,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
             array('role','safe'),
             array('preferred_link', 'safe'),
-            array('verifyCode', 'validateCaptcha'),                
+            array('verifyCode', 'validateCaptcha'),
         );
     }
 
@@ -73,7 +77,7 @@ class User extends CActiveRecord {
             $password_repeat = $this->password_repeat;
 
             if ($password != $password_repeat) {
-                $this->addError('password',"Password and confirm don't match");
+                $this->addError($attribute,"Password and confirm don't match");
                 return false;
             }
             else {
@@ -84,39 +88,37 @@ class User extends CActiveRecord {
         }
         return true;
     }
-    
-     public function checkterms($attribute, $params){
-         
-     }
+
+
     /**
     * Validate captcha
     */
     public function validateCaptcha($attribute, $params){
         $file = "images/tempcaptcha/".$_SESSION["captcha"].".png";
-        
-        if (empty($this->$attribute)){          
+
+        if (empty($this->$attribute)){
             //Check if file exist
             if(file_exists($file)){
-                //Delete file               
+                //Delete file
                  unlink($file);
                  $this->addError($attribute, 'Captcha is required');
             }
         }
         else if (!empty($this->$attribute)){
           if($this->$attribute == $_SESSION["captcha"]){
-            //Delete file               
-            unlink($file);          
+            //Delete file
+            unlink($file);
           }else{
-            //Delete file               
+            //Delete file
             unlink($file);
             $this->addError($attribute, 'Captcha is incorrect!');
           }
         }
         else{
-            //  Delete file                 
+            //  Delete file
             unlink($file);
           $this->addError($attribute, 'Captcha is required');
-        }   
+        }
     }
 
     /**
@@ -141,7 +143,7 @@ class User extends CActiveRecord {
             'last_name' => Yii::t('app' , 'Last Name'),
             'password' => Yii::t('app' , 'Password'),
             'affiliation' => Yii::t('app' , 'Affiliation'),
-            'password_repeat' => Yii::t('app' ,'Confirm Password'),          
+            'password_repeat' => Yii::t('app' ,'Confirm Password'),
         );
     }
 
@@ -177,28 +179,42 @@ class User extends CActiveRecord {
         return true;
     }
 
+    /**
+     * Replace inplace user's password with a hashed version
+     *
+     * @uses sodium_crypto_pwhash_str()
+     * @see https://paragonie.com/book/pecl-libsodium/read/07-password-hashing.md
+     */
     public function encryptPassword() {
         # TODO: use salt?
         # if(md5(md5($this->password).$user->salt)!==$user->password)
         #Yii::log(__FUNCTION__."> encryptPassword password before hash = " . $this->password, 'debug');
-        $this->passwordUnHashed = $this->password;
-        $this->password = md5($this->password);
+        $this->password = sodium_crypto_pwhash_str(
+                            $this->password,
+                            SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
+                            SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
+                        );
         #Yii::log(__FUNCTION__."> encryptPassword password after  hash = " . $this->password, 'debug');
     }
 
+    /**
+     * Generate a random password securely
+     *
+     * @param int $length length of the password to generate (default to 8)
+     * @return string the generated password
+     * @see https://paragonie.com/blog/2015/07/how-safely-generate-random-strings-and-integers-in-php
+     * @see https://stackoverflow.com/questions/30145715/why-srandtime-is-a-bad-seed/30146979#30146979
+     * @see https://stackoverflow.com/questions/6101956/generating-a-random-password-in-php/31284266#31284266
+     * @see https://github.com/jedisct1/libsodium-php/issues/163
+     */
     public function generatePassword($length=8) {
         $chars = "abcdefghijkmnopqrstuvwxyz023456789";
-        srand((double)microtime()*1000000);
-        $i = 0;
-        $pass = '' ;
-
-        while ($i <= $length) {
-            $num = rand() % 33;
-            $tmp = substr($chars, $num, 1);
-            $pass .= $tmp;
-            $i++;
+        $str = '';
+        $keysize = strlen($chars) - 1;
+        for ($i = 0; $i < $length; ++$i) {
+            $str .= $chars[random_int(0, $keysize)];
         }
-        return $pass;
+        return $str;
     }
 
     /**
@@ -251,6 +267,15 @@ class User extends CActiveRecord {
         return $author;
     }
 
+    /**
+    * Return the full name of the user
+    *
+    *
+    * @return string
+    */
+    public function getFullName() {
+        return $this->first_name." ".$this->last_name;
+    }
 /**
   * process OAuth response after successfull authorisaion and redirection to the loginAffilate callback
   * TODO: the logic with name vs first_name+last_name may not be ideal (eg: my firstname Rija is my twitter name, it becomes last name in gigadb

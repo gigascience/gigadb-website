@@ -1,39 +1,42 @@
 <?php
-
+/**
+ * Class to handle the identity of user and how they authenticate
+ *
+ * @see https://www.yiiframework.com/doc/guide/1.1/en/topics.auth
+ */
 class UserIdentity extends CUserIdentity {
 
     public $_id;
     const ERROR_USER_NOT_ACTIVATED=3;
 
+    /**
+     * This is the method used to encapsulate the main details of the authentication approach.
+     *
+     * An identity class may also declare additional identity information that needs
+     * to be persistent during the user session. In this case $user->id and $user->role
+     *
+     * @uses \PasswordHelper::verifyPassword()
+     * @return boolean whether authentication succeeds. True if successful, False otherwise
+     */
     public function authenticate() {
-        if (!isset($_SESSION['affiliate_login'])){
-            $user = User::model()->findByAttributes(array('email'=>$this->username));
-        }else{
-            $user = User::findAffiliateUser($_SESSION['affiliate_login']['provider'], $_SESSION['affiliate_login']['uid']);
-        }
+        $user = User::model()->findByAttributes(array('email'=>$this->username));
 
         if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
         } else {
-         #exist this user
-            if (!isset($_SESSION['affiliate_login'])){
-                #normal login!
-                if(md5($this->password) !== $user->password)
-                    $this->errorCode=self::ERROR_PASSWORD_INVALID;
-                else if(!$user->is_activated)
-                    $this->errorCode=self::ERROR_USER_NOT_ACTIVATED;
-                else {
-                    $this->_id = $user->id;
-                    $this->errorCode = self::ERROR_NONE;
-                    $this->setState("_id", $user->id);
-                    $this->setState('roles',$user->role);
-                 }
-            } else {
-                #has session affiliate login
+            if( PasswordHelper::verifyPassword($this->password, $user->password) && $user->is_activated) {
+
                 $this->_id = $user->id;
                 $this->errorCode = self::ERROR_NONE;
                 $this->setState("_id", $user->id);
+                $this->setState("_preferredLink", $user->preferred_link);
                 $this->setState('roles',$user->role);
+            }
+            elseif(!$user->is_activated) {
+                $this->errorCode=self::ERROR_USER_NOT_ACTIVATED;
+            }
+            else {
+                $this->errorCode=self::ERROR_PASSWORD_INVALID;
             }
         }
 
@@ -46,42 +49,7 @@ class UserIdentity extends CUserIdentity {
     }
 
 
-    /** 
-     * revoke affilate login token
-    **/
-    public static function revoke_token() {  
-        $provider = null;
-        $token = null;
-
-        if(isset($_SESSION['affiliate_login'])) {
-            $provider = isset($_SESSION['affiliate_login']['provider']) ? $_SESSION['affiliate_login']['provider'] : null ;
-            $token = isset($_SESSION['affiliate_login']['token']) ? $_SESSION['affiliate_login']['token'] : null ;
-        }
-
-        if ("Orcid" == $provider) {
-            $environment = ("sandbox" == Yii::app()->getModules()['opauth']['opauthParams']["Strategy"]["Orcid"]["environment"] ? "sandbox."  : "") ;
-            $service_url = 'https://'. $environment . 'orcid.org/oauth/revoke';  #TODO: make orcid coming form config
-            $curl = curl_init($service_url);
-            $curl_post_data = array(
-                "client_id" => Yii::app()->getModules()['opauth']['opauthParams']["Strategy"]["Orcid"]["client_id"],
-                "client_secret" => Yii::app()->getModules()['opauth']['opauthParams']["Strategy"]["Orcid"]["client_secret"],
-                "token" => $token,
-            );
-            $headers = array(
-                'Accept: application/json',
-            );
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($curl_post_data) );
-            $http_response = curl_exec($curl);
-            $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE); 
-            curl_close($curl);
-
-        }
-        //TODO:add Google, Facebook, Twitter
-        //TODO:refactor most of the curl stuff into its own function as likely common to all providers
-    }
-    
 
 }
+
+?>

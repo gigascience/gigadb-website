@@ -1,0 +1,86 @@
+<?php
+
+
+
+
+return array(
+	array(
+		'id' => 1,
+		'species_id' => 1,
+		'name' => "Sample 1",
+		'consent_document' => "",
+		'submitted_id' => null,
+		'submission_date' => null,
+		'contact_author_name' => null,
+		'contact_author_email' => null,
+		'sampling_protocol' => null,
+	),
+	array(
+		'id' => 2,
+		'species_id' => 2,
+		'name' => "Sample 2",
+		'consent_document' => "",
+		'submitted_id' => null,
+		'submission_date' => null,
+		'contact_author_name' => null,
+		'contact_author_email' => null,
+		'sampling_protocol' => null,
+	),
+	array(
+		'id' => 3,
+		'species_id' => 1,
+		'name' => "Sample 3",
+		'consent_document' => "",
+		'submitted_id' => null,
+		'submission_date' => null,
+		'contact_author_name' => null,
+		'contact_author_email' => null,
+		'sampling_protocol' => null,
+	),
+	array(
+		'id' => 4,
+		'species_id' => 1,
+		'name' => "Sample 4",
+		'consent_document' => "",
+		'submitted_id' => null,
+		'submission_date' => null,
+		'contact_author_name' => null,
+		'contact_author_email' => null,
+		'sampling_protocol' => null,
+	),
+	array(
+		'id' => 5,
+		'species_id' => 1,
+		'name' => "Sample 5",
+		'consent_document' => "",
+		'submitted_id' => null,
+		'submission_date' => null,
+		'contact_author_name' => null,
+		'contact_author_email' => null,
+		'sampling_protocol' => null,
+	),
+	array(
+		'id' => 6,
+		'species_id' => 1,
+		'name' => "Sample 6",
+		'consent_document' => "",
+		'submitted_id' => null,
+		'submission_date' => null,
+		'contact_author_name' => null,
+		'contact_author_email' => null,
+		'sampling_protocol' => null,
+	),
+	array(
+		'id' => 7,
+		'species_id' => 1,
+		'name' => "Sample 7",
+		'consent_document' => "",
+		'submitted_id' => null,
+		'submission_date' => null,
+		'contact_author_name' => null,
+		'contact_author_email' => null,
+		'sampling_protocol' => null,
+	),
+);
+
+?>

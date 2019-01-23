@@ -1,0 +1,158 @@
+version: '3.7'
+
+services:
+
+  web:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    build:
+      context: ../..
+      dockerfile: ops/packaging/Web-Dockerfile
+      args:
+        - NGINX_VERSION=${NGINX_VERSION}
+        - GIGADB_ENV=${GIGADB_ENV}
+    ports:
+      - "${PUBLIC_HTTP_PORT}:80"
+      - "${PUBLIC_HTTPS_PORT}:443"
+    volumes:
+      - ${APPLICATION}/assets:/var/www/assets
+      - ${APPLICATION}/css:/var/www/css
+      - le_config:/etc/letsencrypt
+      - le_webrootpath:/var/www/.le
+    networks:
+      web-tier:
+        ipv4_address: 172.16.238.10
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - le_config:/etc/letsencrypt
+      - le_webrootpath:/var/www/.le
+
+  application:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    build:
+      context: .
+      dockerfile: ../packaging/Dockerfile
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=true
+        - INSTALL_APCU=true
+    volumes:
+      - ${APPLICATION}/:/var/www
+      - ${APPLICATION}/ops/configuration/php-conf/php-${PHP_VERSION}-${GIGADB_ENV}.ini:/usr/local/etc/php/php.ini
+      - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
+      - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+      - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+    expose:
+      - "9000"
+    networks:
+      - web-tier
+      - db-tier
+
+  database:
+    image: postgres:${POSTGRES_VERSION}-alpine
+    environment:
+      POSTGRES_DB: gigadb
+      POSTGRES_USER: gigadb
+      POSTGRES_PASSWORD: vagrant
+    volumes:
+      - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
+      - ${APPLICATION}/ops/configuration/postgresql-conf/bootstrap.sql:/docker-entrypoint-initdb.d/1-gigadb_testdata.sql
+      - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
+    command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf'
+    expose:
+      - "5432"
+    networks:
+      - db-tier
+
+  config:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    image: rija/docker-alpine-shell-tools:1.0.1
+    volumes:
+      - ${APPLICATION}/:/var/www
+      - le_config:/etc/letsencrypt
+    command: /var/www/ops/scripts/generate_config.sh
+
+  webapp:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    image: ${COMPOSE_PROJECT_NAME}_application:latest
+    volumes:
+      - ${APPLICATION}/:/var/www
+      - ${APPLICATION}:/app
+    depends_on:
+      - application
+      - web
+      - database
+      - phantomjs
+    command: ./ops/scripts/webapp_setup.sh
+    networks:
+      - web-tier
+
+  test:
+    build:
+      context: .
+      dockerfile: ../packaging/Dockerfile
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_PGSQL=true
+        - INSTALL_PG_CLIENT=true
+        - PG_CLIENT_VERSION=${POSTGRES_VERSION}
+        - INSTALL_XDEBUG=true
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_GRAPHVIZ=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_LIBSODIUM=true
+        - INSTALL_GIT=true
+        - INSTALL_APCU=true
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    volumes:
+      - ${APPLICATION}/:/var/www
+      - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+      - ${APPLICATION}/ops/configuration/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ${APPLICATION}/tmp:/tmp
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - web-tier
+      - db-tier
+    extra_hosts:
+      - "gigadb.dev:172.16.238.10"
+    command: ./tests/all_and_coverage
+
+  phantomjs:
+    image: wernight/phantomjs:2.1.1
+    command: phantomjs --webdriver=8910
+    expose:
+      - "8910"
+    networks:
+      - web-tier
+    extra_hosts:
+      - "gigadb.dev:172.16.238.10"
+
+networks:
+  web-tier:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.238.0/24
+  db-tier:
+
+volumes:
+  le_config:
+  le_webrootpath:

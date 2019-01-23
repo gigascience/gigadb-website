@@ -53,14 +53,6 @@ class Controller extends CController
 
     }
 
-    function init() {
-        parent::init();
-        /* $this->fetchUserInfo(); */
-
-        /* Set the app language if the session's language is supported */
-        $language = Utils::get(Yii::app()->session, 'language', Yii::app()->params['language']);
-        if (Utils::isLanguageSupported($language))
-            Yii::app()->language = $language;
-    }
-
 }
+
+?>

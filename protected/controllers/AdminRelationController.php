@@ -57,7 +57,8 @@ class AdminRelationController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Relation;
+		$model = new Relation();
+        $relationDAO = new RelationDAO();
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -65,85 +66,23 @@ class AdminRelationController extends Controller
 		if(isset($_POST['Relation']))
 		{
 			$model->attributes=$_POST['Relation'];
-      if($model->save()) {
-          $related_id=$model->related_doi;
-          $dataset_id=$model->dataset_id;
-          $relationship= $model->relationship;
-                            
-        if($relationship=="IsSupplementTo") {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='IsSupplementedBy';
-                $model1->save();
-               }
-                 if($relationship=="IsSupplementBy") 
-               {
-                 $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='IsSupplementedTo';
-                $model1->save();
-               }
-                 if($relationship=="IsNewVersionOf") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='IsPreviousVersionOf';
-                $model1->save();
-               }
-               if($relationship=="IsPreviousVersionOf") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='IsNewVersionOf';
-                $model1->save();
-               }
-               if($relationship=="IsPartOf") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='HasPart';
-                $model1->save();
-               }
-                if($relationship=="HasPartOf") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='IsPartOf';
-                $model1->save();
-               }
-                  if($relationship=="IsReferencedBy") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='References';
-                $model1->save();
-               }
-                   if($relationship=="References") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='IsReferencedBy';
-                $model1->save();
-               }
-                            
-                            $this->redirect(array('view','id'=>$model->id));
-                        }
+            if($model->save()) {
+                $related_id=$model->related_doi;
+                $dataset_id=$model->dataset_id;
+                $relationship= $model->relationship;
+
+                $relationDAO->createReciprocalTo( $model, new Relation() );
+
+                $this->redirect(array('view','id'=>$model->id));
+            }
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
 		));
 	}
-        
-         public function storeRelation(&$model, &$id) {
+
+    public function storeRelation(&$model, &$id) {
 
 
         if (isset($_SESSION['dataset_id'])) {
@@ -163,6 +102,7 @@ class AdminRelationController extends Controller
 
     public function actionCreate1() {
         $model = new Relation;
+        $relationDAO = new RelationDAO();
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -170,7 +110,7 @@ class AdminRelationController extends Controller
 
         $model->dataset_id = 1;
         //$model->re
-        //update 
+        //update
         if (!isset($_SESSION['relations']))
             $_SESSION['relations'] = array();
 
@@ -182,7 +122,7 @@ class AdminRelationController extends Controller
         );
 
         if (isset($_POST['Relation'])) {
-            //store the information in session 
+            //store the information in session
 //            if (!isset($_SESSION['relation_id']))
 //                $_SESSION['relation_id'] = 0;
 //            $id = $_SESSION['relation_id'];
@@ -200,76 +140,13 @@ class AdminRelationController extends Controller
             if ($this->storeRelation($model, $id)) {
                 $newItem = array('id' => $id, 'related_doi' => $related_doi, 'relationship' => $relationship);
 
-                 if($relationship=="IsSupplementTo") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='IsSupplementedBy';
-                $model1->save();
-               }
-                 if($relationship=="IsSupplementedBy") 
-               {
-                 $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='IsSupplementedTo';
-                $model1->save();
-               }
-                 if($relationship=="IsNewVersionOf") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='IsPreviousVersionOf';
-                $model1->save();
-               }
-               if($relationship=="IsPreviousVersionOf") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='IsNewVersionOf';
-                $model1->save();
-               }
-               if($relationship=="IsPartOf") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='HasPart';
-                $model1->save();
-               }
-                if($relationship=="HasPartOf") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='IsPartOf';
-                $model1->save();
-               }
-                  if($relationship=="IsReferencedBy") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='References';
-                $model1->save();
-               }
-                   if($relationship=="References") 
-               {
-                $model1=  new Relation;
-                $model1->dataset_id= Dataset::model()->findByAttributes(array('identifier' => $related_id))->id;
-                $model1->related_doi=Dataset::model()->findByAttributes(array('id' => $dataset_id))->identifier;
-                $model1->relationship='IsReferencedBy';
-                $model1->save();
-               }
-               
+                $relationDAO->createReciprocalTo( $model, new Relation() );
+
                 array_push($relations, $newItem);
 
                 $_SESSION['relations'] = $relations;
 
-                $vars = array('relations');
+                // $vars = array('relations');
                 //Dataset::storeSession($vars);
                 $model = new Relation;
             }
@@ -331,16 +208,16 @@ class AdminRelationController extends Controller
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
-        
-        
-          public function actionDelete1($id) {
+
+
+    public function actionDelete1($id) {
         if (isset($_SESSION['relations'])) {
             $info = $_SESSION['relations'];
             foreach ($info as $key => $value) {
                 if ($value['id'] == $id) {
                     unset($info[$key]);
                     $_SESSION['relations'] = $info;
-                    $vars = array('relations');
+                    // $vars = array('relations');
                     //Dataset::storeSession($vars);
                     $condition = 'id=' . $id;
                     Relation::model()->deleteAll($condition);
@@ -364,7 +241,7 @@ class AdminRelationController extends Controller
 
 	/**
 	 * Manages all models.
-	 */  
+	 */
 	public function actionAdmin()
 	{
 		$model=new Relation('search');

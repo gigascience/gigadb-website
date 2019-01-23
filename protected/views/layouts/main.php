@@ -19,7 +19,9 @@
 
     <?= $this->renderPartial('//shared/_google_analytics')?>
 
-    <title><?php echo MyHtml::encode($this->pageTitle); ?></title>
+    <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 </head>
 
 <body>
@@ -36,7 +38,6 @@
                 </ul>
             </div>
             <p>
-                <?/*= Utils::languageChangingLinks() */?>
                 <a class="btn" href="/site/help"><?=Yii::t('app' , 'Help')?></a>
                 <? if(Yii::app()->user->isGuest) { ?>
                 <a class="btn" href="/site/login"><?=Yii::t('app' , 'Login')?></a>
@@ -62,13 +63,6 @@
             </p>
         </div>
 </header>
-<!--
-    <?php if(isset($this->breadcrumbs)):?>
-        <?php $this->widget('bootstrap.widgets.BootBreadcrumbs', array(
-            'links'=>$this->breadcrumbs,
-        )); ?>
-    <?php endif?>
--->
 
 <div class="container" id="wrap">
     <?php echo $content; ?>

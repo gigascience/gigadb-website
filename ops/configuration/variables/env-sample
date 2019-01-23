@@ -1,0 +1,69 @@
+###########################################################
+# General Setup
+###########################################################
+
+### Compose files  ###############################################################################################
+# The file paths where docker-compose can file its YAML file
+
+# COMPOSE_FILE=ops/deployment/docker-compose.yml
+# Keep the line below uncommented to enable profiling of the web application using Tideways XHPROF and XHGUI
+COMPOSE_FILE=ops/deployment/docker-compose.yml:ops/deployment/docker-compose.prof.yml
+
+### prefix for local container ##############################################################################
+COMPOSE_PROJECT_NAME=deployment
+
+### GitLab Private Token  ###############################################################################################
+# This token allows access to the secret variables stored on GitLab.com for logins, passwords, api keys and secrets
+# required by the project. If you don't have one, generate from your user account setting on Gitlab.com.
+
+#GITLAB_PRIVATE_TOKEN=
+
+### GitLab API URLs  ####################################################################################################
+# the urls be different for each environment and forks.
+# group variables are supplied by Gigadb and set at group level (gigascience, forks and upstream) in GitLab.
+# project variables are set at a project level by the owner of the fork
+# the variables will be merged into a .secrets file
+# Replace <Your fork name here> with urlencoded name of the fork
+
+GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
+PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F<Your fork name here>/variables"
+
+### Deployment Environment  #############################################################################################
+# dev, ci,  staging or production
+# determine whether we need to pull variables from GitLab
+
+GIGADB_ENV=dev
+
+### Application, Framework and Data Path #################################################################################
+# Choose storage path on your machine. For all storage systems.
+
+APPLICATION=../..
+YII_PATH=/var/www/vendor/yiisoft/yii
+YII2_PATH=/var/www/vendor/yiisoft/yii2
+DATA_SAVE_PATH=~/.containers-data/gigadb
+
+### Core services managed in Docker compose ##############################################################################
+NGINX_VERSION=1.15
+PHP_VERSION=7.1
+POSTGRES_VERSION=9.4
+YII_VERSION=1.1.20
+YII2_VERSION=2.0.15.1
+
+
+### Application Access variables ########################################################################################
+# Point to your code
+
+HOME_URL=gigadb.gigasciencejournal.com
+PUBLIC_HTTP_PORT=9170
+PUBLIC_HTTPS_PORT=8043
+
+
+### Certificates for TLS termination configuration ######################################################################
+CERT_EMAIL=foo@bar
+
+
+### Test Coverage configuration #########################################################################################
+COVERALLS_RUN_LOCALLY=1
+GITLAB_UPSTREAM_PROJECT_ID=7041674
+MAIN_BRANCH=develop
+

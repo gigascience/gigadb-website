@@ -9,7 +9,6 @@ class ImportCsvCommand extends CConsoleCommand {
 
 	private function importDA($data) {
 		foreach($data as $d) {
-			$id = $d[0];
 			$model = DatasetAuthor::model()->findByPk($d[0]);
 			if(!$model) {
 				$model = new DatasetAuthor;

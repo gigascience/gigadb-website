@@ -120,7 +120,7 @@
                     <a href="/adminFile/create1" class="btn-green"><?= Yii::t('app', 'Next') ?></a>
                 <? } else { ?>
 
-                    <a href="/dataset/submit" class="btn-green" title="Click submit to send information to a curator for review."><?= Yii::t('app', 'Submit') ?></a>
+                    <a href="/datasetSubmission/submit" class="btn-green" title="Click submit to send information to a curator for review."><?= Yii::t('app', 'Submit') ?></a>
 
                 <? } ?>
 

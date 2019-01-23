@@ -8,8 +8,8 @@
         </div>
     <? } ?>
 
-    <?php echo MyHtml::beginForm('/search/new','GET',array('class'=>'search-bar clearfix','onsubmit'=>'return validateForm(this);')); ?>
-    <?php echo MyHtml::errorSummary($model); ?>
+    <?php echo CHtml::beginForm('/search/new','GET',array('class'=>'search-bar clearfix','onsubmit'=>'return validateForm(this);')); ?>
+    <?php echo CHtml::errorSummary($model); ?>
 
     
     
@@ -31,14 +31,14 @@
        
        
     ?>
-    <button class="btn-search" type="submit"><span class="fa fa-search"></span></button>
+    <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span></button>
        
    
 
     <!--
     <a data-toggle="modal" href="#how-to-use-advanced-search" class="hint advanced-search-hint"></a> -->
 
-    <?php echo MyHtml::endForm(); ?>
+    <?php echo CHtml::endForm(); ?>
     <span class="fa fa-chevron-circle-left btn-left" title="Previous dataset"></span>
     <span class="fa fa-chevron-circle-right btn-right" title="Next dataset"></span>
     <!--

@@ -215,7 +215,7 @@ class SearchRecord extends CActiveRecord
 
 	private function convertResult($listId,$listValues){
 			$result="";
-			foreach ($listId as $key => $value) {
+			foreach (array_values($listId) as $value) {
 				if(empty($result)){
 					$result.=$listValues[$value];
 				}else {

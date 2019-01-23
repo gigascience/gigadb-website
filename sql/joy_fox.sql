@@ -1,2 +1,2 @@
 insert into gigadb_user(id, email, password, first_name, last_name, affiliation, role, is_activated, newsletter, previous_newsletter_state, facebook_id, twitter_id, linkedin_id, google_id, username, orcid_id, preferred_link) 
-values(346,'joy_fox@gigadb.org','5a4f75053077a32e681f81daa8792f95','Joy','Fox','BGI','user','t','f','t',NULL,NULL,NULL,NULL,'joy_fox@gigadb.org',NULL,'EBI');
+values(681,'joy_fox@gigadb.org','5a4f75053077a32e681f81daa8792f95','Joy','Fox','BGI','user','t','f','t',NULL,NULL,NULL,NULL,'joy_fox@gigadb.org',NULL,'EBI');

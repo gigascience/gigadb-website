@@ -145,7 +145,7 @@ class AdminLinkController extends Controller
                 array_push($links, $newItem);
 
                 $_SESSION['links'] = $links;
-                $vars = array('links');
+                // $vars = array('links');
                 //Dataset::storeSession($vars);
                 $model = new Link;
             }
@@ -167,7 +167,7 @@ class AdminLinkController extends Controller
                 if ($value['id'] == $id) {
                     unset($info[$key]);
                     $_SESSION['links'] = $info;
-                    $vars = array('links');
+                    // $vars = array('links');
                     //Dataset::storeSession($vars);
                     $condition = 'id=' . $id;
                     Link::model()->deleteAll($condition);

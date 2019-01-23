@@ -4,7 +4,7 @@
 
 
 
-<a href="/dataset/create1" class="btn span1"><?= Yii::t('app' , 'Study')?></a>
+<a href="/datasetSubmission/create1" class="btn span1"><?= Yii::t('app' , 'Study')?></a>
 
 <a href="/adminDatasetAuthor/create1" class="btn nomargin"><?= Yii::t('app' , 'Author')?></a>
 

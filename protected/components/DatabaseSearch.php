@@ -210,14 +210,9 @@ class DatabaseSearch extends CApplicationComponent {
 
 	}
 
-	public function searchByKey($keyword, $page = 1) {
-		if(!$_GET['keyword']) {
-            Yii::app()->user->setFlash('keyword','Keyword can not be blank');
-            $this->redirect(array("/site/index"));
-        }
-        $limit = 10;
-        $keyword = $_GET['keyword'];
+	public function searchByKey($keyword) {
 
+        $limit = 10;
         $model = new SearchForm;
 
         $criteria = array();
@@ -229,12 +224,11 @@ class DatabaseSearch extends CApplicationComponent {
                 , 'size_from' , 'size_to' , 'exclude' , 'external_link_type' ,
                 'size_from_unit' , 'size_to_unit');
 
-        $dates = array('pubdate_from', 'pubdate_to');
         foreach($_GET as $key => $value){
-            if(in_array($key , $params) && $value){ 
+            if(in_array($key , $params) && $value){
             	$model->$key = $value;
             	if($key == "pubdate_from" || $key == "pubdate_to")
-            		$model->$key = strftime("%Y-%m-%d", strtotime($value));     
+            		$model->$key = strftime("%Y-%m-%d", strtotime($value));
             }
         }
 
@@ -266,7 +260,7 @@ class DatabaseSearch extends CApplicationComponent {
 
         $result = $this->search($criteria);
         $model->query_result = CJSON::encode($result);
-        
+
         //Yii::log(print_r($result, true), 'debug');
         $total_page = ceil(count($result['datasets'])/$limit);
 
@@ -278,13 +272,13 @@ class DatabaseSearch extends CApplicationComponent {
         $list_formats = File::getFormatList($result['files']);
         $list_filetypes = File::getTypeList($result['files']);
 
-        
+
 
         return  array(
-                    'datasets' => array('data'=>$result['datasets'], 'total'=>count($result['datasets'])), 
+                    'datasets' => array('data'=>$result['datasets'], 'total'=>count($result['datasets'])),
                     'samples'=> array('data'=> $result['samples'], 'total' => count($result['samples'])),
                     'files'=> array('data'=> $result['files'], 'total' => count($result['files'])),
-                    'model'=>$model,                   
+                    'model'=>$model,
                     'list_dataset_types'=>$list_dataset_types,
                     'list_projects'=>$list_projects,
                     'list_ext_types'=>$list_ext_types,
@@ -292,9 +286,11 @@ class DatabaseSearch extends CApplicationComponent {
                     'list_formats'=>$list_formats,
                     'list_filetypes'=>$list_filetypes,
                     'display' => $display,
-                    'total_page'=>$total_page, 
+                    'total_page'=>$total_page,
                     'page'=>1,
-                    'limit'=> 10,                
+                    'limit'=> 10,
                     );
 	}
 }
+
+?>

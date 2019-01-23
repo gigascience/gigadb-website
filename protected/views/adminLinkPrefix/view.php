@@ -16,7 +16,7 @@ $this->menu=array(
 <h1>View Prefix #<?php echo $model->id; ?></h1>
 <? if (Yii::app()->user->checkAccess('admin')) { ?>
 <div class="actionBar">
-[<?= MyHtml::link('Manage Prefixes', array('admin')) ?>]
+[<?= CHtml::link('Manage Prefixes', array('admin')) ?>]
 </div>
 <? } ?>
 <?php $this->widget('zii.widgets.CDetailView', array(

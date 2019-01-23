@@ -13,7 +13,7 @@ $this->menu=array(
 <h2>Part of a project</h2>
 <div class="clear"></div>
 
-<a href="/dataset/create1" class="btn span1"><?= Yii::t('app' , 'Study')?></a>
+<a href="/datasetSubmission/create1" class="btn span1"><?= Yii::t('app' , 'Study')?></a>
 <a href="/adminDatasetAuthor/create1" class="btn nomargin"><?= Yii::t('app' , 'Author')?></a>
 <input type="submit" value="Project" class="btn-green-active  nomargin"></input>
 

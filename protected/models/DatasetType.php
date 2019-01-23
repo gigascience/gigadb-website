@@ -12,7 +12,7 @@
  * @property Dataset $dataset
  * @property Type $type
  */
-class DatasetType extends MyActiveRecord
+class DatasetType extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.

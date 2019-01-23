@@ -10,6 +10,8 @@ protected/config/es.json
 protected/config/aws.json
 protected/config/local.php
 protected/config/main.php
+protected/config/console.php
+protected/config/keyfile.json
 protected/yiic.php
 !protected/runtime/.gitignore
 protected/data/*.db
@@ -50,10 +52,35 @@ nbproject/project.properties
 # Testing
 tests/fixtures/affiliate_users_credentials
 sql/temp_command.sql
+sql/before-run.pgdmp
+test_users.txt
+.php_cs.cache
+phpcs.xml
 
+# Composer
 
-# Behat
+bin
+vendor
+composer.lock
+composer.json
 
-Behat/vendor
-Behat/composer.lock
+# deployment
 
+.env
+.secrets
+.data
+vsftpd
+tmp
+files/html/help.html
+features.txt
+features.xml
+.terraform
+terraform.tfstate*
+output
+*.retry
+vault
+
+# docs
+
+docs/apidocs/phpdoc-cache-*
+docs/cache

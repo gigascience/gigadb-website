@@ -6,12 +6,14 @@ return array(
 		'surname'=>'Muñoz',
 		'first_name'=>'Ángel',
 		'middle_name'=>'GG',
+		'custom_name'=>null,
 	),
 	array(
 		'id' => 2,
 		'surname'=>'Montana,',
 		'first_name'=>'Carlos',
 		'middle_name'=>'Ábel G',
+		'custom_name'=>null,
 	),
 	array(
 		'id' => 3,
@@ -19,6 +21,7 @@ return array(
 		'first_name'=>'Juan',
 		'middle_name'=>'carlos',
 		'gigadb_user_id' =>345,
+		'custom_name'=>null,
 	),
 	array(
 		'id' => 4,
@@ -40,6 +43,7 @@ return array(
 		'id' => 7,
 		'surname'=>'Schiøtt,',
 		'first_name'=>'Morten',
+		'custom_name'=>null,
 	),
 	array(
 		'id' => 8,
