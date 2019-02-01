@@ -635,7 +635,8 @@ class Dataset extends MyActiveRecord
         $titles = $xml->addChild("titles");
 
         //<title xml:lang="en-us">Full DataCite XML Example</title>
-        $title = $titles->addChild('title',$this->title);
+        $title = $titles->addChild('title',htmlspecialchars($this->title));
+        //$title = $titles->addChild('title',$this->title);
         $title->addAttribute('xml:lang','en-US','http://www.w3.org/XML/1998/namespace');
 
         //<publisher>GigaScience Database</publisher>
@@ -741,7 +742,7 @@ class Dataset extends MyActiveRecord
 
         //<descriptions><description xml:lang="en-US" descriptionType="Abstract">
         $descriptions = $xml->addChild("descriptions");
-        $description = $descriptions->addChild('description',str_replace(array('&','>','<','"'), array('&amp;','&gt;','&lt;','&quot;'), $this->description));
+        $description = $descriptions->addChild('description',htmlspecialchars($this->description));
         $description->addAttribute('xml:lang','en-US','http://www.w3.org/XML/1998/namespace');
         $description->addAttribute('descriptionType','Abstract');
 

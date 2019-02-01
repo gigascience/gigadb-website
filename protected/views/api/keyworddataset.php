@@ -1,7 +1,8 @@
 <?php
 header('Content-Type: text/xml');
 $xml="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-$xml.="<gigadb_entrys>";
+$num_dataset=count($models);
+$xml.="<gigadb_entrys count=\"$num_dataset\">";
 foreach($models as $model)
 {
 $xml.="<gigadb_entry>";    
@@ -190,5 +191,6 @@ $xml.="</gigadb_entry>";
 }
 $xml.="</gigadb_entrys>";
 $xml=preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', $xml);
+$xml=preg_replace ('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', ' ', $xml);
 $output= simplexml_load_string($xml);
 echo $output->asXML();

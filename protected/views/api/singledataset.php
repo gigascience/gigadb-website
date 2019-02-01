@@ -185,7 +185,12 @@ $xml.=" </dataset>\n";
 //samples
 $xml.=" <samples>\n";
 $samples=$model->samples;
+$flag_sample=0;
 foreach($samples as $sample){
+    if($flag_sample > 50)
+    {
+        break;
+    }
     $xml.="  <sample submission_date=\"$sample->submission_date\" id=\"$sample->id\">\n";
     $xml.="   <name>$sample->name</name>\n";
     $species=$sample->species;
@@ -204,6 +209,7 @@ foreach($samples as $sample){
     $xml.="   </contact_author>\n";
     
     $relsamples=$sample->sampleRels;
+    $flag_sample++;
     $xml.="   <related_samples>\n";
     foreach($relsamples as $relsample )
     {
@@ -219,6 +225,7 @@ foreach($samples as $sample){
         $saattribute=  Attribute::model()->findByAttributes(array('id'=>$sa_attribute->attribute_id));
         $xml.="    <attribute>\n";
         $xml.="     <key>$saattribute->attribute_name</key>\n";
+        $sa_attribute->value=htmlspecialchars($sa_attribute->value, ENT_XML1, 'UTF-8');
         $xml.="     <value>$sa_attribute->value</value>\n";
         $sample_unit=  Unit::model()->findByAttributes(array('id'=>$sa_attribute->unit_id));
         if(isset($sample_unit)){
@@ -242,8 +249,13 @@ $xml.=" <experiments>\n";
 $xml.=" </experiments>\n";
 //file
 $files=$model->files;
+$flag_file=0;
 $xml.=" <files>\n";
 foreach($files as $file){
+if($flag_file > 50)
+{
+    break;
+}
 $xml.="  <file id=\"$file->id\" index4blast=\"$file->index4blast\" download_count=\"$file->download_count\" >\n";
 $xml.="   <name>$file->name</name>\n";
 $xml.="   <location>$file->location</location>\n";
@@ -257,6 +269,7 @@ $xml.="   <type id=\"$file->type_id\">$file_type->name</type>\n";
 $file_format= FileFormat::model()->findByAttributes(array('id'=>$file->format_id));
 $xml.="   <format id=\"$file->format_id\">$file_format->name</format>\n";
 $xml.="   <linked_samples>\n";
+$flag_file++;
 $filesamples=$file->fileSamples;
 foreach($filesamples as $filesample)
 {

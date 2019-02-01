@@ -364,6 +364,36 @@ class SiteController extends Controller {
                 $this->layout='new_main';
 		$this->render('help');
 	}
+        
+        public function actionGuide() {
+                $this->layout='new_main';
+		$this->render('guide');
+	}
+        public function actionGuidegenomic() {
+                $this->layout='new_main';
+		$this->render('guidegenomic');
+	}
+        
+        public function actionGuideimaging() {
+                $this->layout='new_main';
+		$this->render('guideimaging');
+	}
+        
+        public function actionGuidemetabolomic() {
+                $this->layout='new_main';
+		$this->render('guidemetabolomic');
+	}
+        
+        public function actionGuideepigenomic() {
+                $this->layout='new_main';
+		$this->render('guideepigenomic');
+	}
+        
+        public function actionGuidemetagenomic() {
+                $this->layout='new_main';
+		$this->render('guidemetagenomic');
+	}
+        
 
 
 	public function actionPrivacy() {

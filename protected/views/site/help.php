@@ -22,8 +22,7 @@ $this->pageTitle='GigaDB - Help';
                 </div>
                 <section>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist" id="alltabs">
-                        <li id="lisearch" role="presentation" class="active"><a href="#search" aria-controls="search" role="tab" data-toggle="tab"><em>GigaDB</em> search</a></li>
-                        <li id="liguidelines" role="presentation"><a href="#guidelines" aria-controls="guidelines" role="tab" data-toggle="tab">Submission guidelines</a></li>
+                        <li id="lisearch" role="presentation" class="active"><a href="#search" aria-controls="search" role="tab" data-toggle="tab"><em>GigaDB</em> search</a></li>           
                         <li id="livocabulary" role="presentation"><a href="#vocabulary" aria-controls="vocabulary" role="tab" data-toggle="tab">Controlled vocabulary</a></li>
                         <li id="liinterface" role="presentation"><a href="#interface" aria-controls="interface" role="tab" data-toggle="tab">Application programming interface</a></li>
                     </ul>
@@ -72,41 +71,29 @@ $this->pageTitle='GigaDB - Help';
                                 <li>File Size (From and To: Format KB, MB, GB, TB)</li>
                             </ol>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="guidelines">
-                            <p><a href="http://gigadb.org/"><em>GigaDB</em></a> is an open-access database. As such, all data submitted to <em>GigaDB</em> must be fully consented for public release (for more information about our data policies, please see our <a href="http://gigadb.org/site/term/" target="_blank">Terms of use page</a>).</p>
-                            <p>All sequence, assembly, variation, and microarray data must be deposited in a public database at <a href="http://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a>, <a href="http://www.ebi.ac.uk/" target="_blank">EBI</a>, or <a href="http://www.ddbj.nig.ac.jp/" target="_blank">DDBJ</a> before you submit them to <a href="http://gigadb.org/" target="_blank"><em>GigaDB</em></a>. In the cases where you would like <em>Giga</em>DB to host files associated with genomic data not fully consented for public release, you must first submit the non-public data to <a href="http://www.ncbi.nlm.nih.gov/gap/" target="_blank">dbGaP</a> or <a href="http://ega-archive.org" target="_blank">EGA</a>.</p>
-                            <p><strong>Step 1</strong> - <a href="http://gigadb.org/user/create" target="_blank">Create an account</a> or <a href="http://gigadb.org/site/login" target="_blank">log in</a> to <a href="http://gigadb.org/" target="_blank"><em>Giga</em>DB</a></p>
-                            <p><strong>Step 2</strong> - Download and complete the <a href="http://gigadb.org/files/GigaDBUploadForm.xls" target="_blank">Excel template file</a>. Completed example files for the <a href="http://gigadb.org/files/GigaDBUploadForm-example1.xls">E. coli</a> (<a href="http://gigadb.org/dataset/100001" target="_blank">10.5524/100001</a>) and <a href="http://gigadb.org/files/GigaDBUploadForm-example2.xls">Sorghum</a> (<a href="http://gigadb.org/dataset/100012" target="_blank">10.5524/100012</a>) datasets are available.</p>
-                            <p>The template file contains:</p>
-                            <ol>
-                                <li>3 tabs which must all be completed [Study, Samples, Files]</li>
-                                <li>4 informational tabs [Samples (info), Files (info), CV, Links]</li>
-                            </ol>
-                            <p>Mandatory fields are highlighted in yellow.</p>
-                            <h5>Study</h5>
-                            <p>Required information includes submitter name, email and affiliation, upload status [can we publish this dataset immediately after review (Publish) or should it be held until publication (HUP)], author list, <a href="http://gigadb.org/site/help#datasettype" target="_blank">dataset type(s)</a> (selected from a controlled vocabulary list), dataset title and description, estimated total size of the files that will be submitted and dataset image information.</p>
-                            <p>Optional information includes links to additional resources and related manuscripts, accessions for data in other databases (prefixes are found in the Links tab), and <a href="http://gigadb.org/site/help#relation" target="_blank">relationship</a> (if any) to a previously published <em>Giga</em>DB dataset (selected from a controlled vocabulary list).</p>
-                            <h5>Samples</h5>
-                            <p>Required information includes a sample ID or name (please use an <a href="http://www.ncbi.nlm.nih.gov/biosample" target="_blank">NCBI BioSample ID</a> when possible), species <a href="http://www.ncbi.nlm.nih.gov/Taxonomy" target="_blank">NCBI taxonomy ID</a>, and species common name.</p>
-                            <p>Optional information includes sample attributes (these are automatically populated in <em>Giga</em>DB if an <a href="http://www.ncbi.nlm.nih.gov/biosample" target="_blank">NCBI BioSample ID</a> is provided).</p>
-                            <h5>Files</h5>
-                            <p>Required information includes a file name or path relative to your home directory and <a href="http://gigadb.org/site/help#filetype" target="_blank">file type</a> (selected from a controlled vocabulary list). A readme file must be provided.</p>
-                            <p>Please note;<br>
-                                -Filenames should be unique. <br>
-                                -Filenames should not include spaces. We recommend using the underscore (_) in place of spaces in the filenames.<br>
-                                -Filenames should only include the following characters a-z,A-Z,0-9,_,-,+,. </p>
-                            <p>Optional information includes a file description and a sample ID or name.</p>
-                            <p><strong>Step 3</strong> - confirm you have read our <a href="http://gigadb.org/site/term/" target="_blank">Terms of use</a> page and upload the completed Excel template file.</p>
-                            <p>You can expect a response from the <a href="http://gigadb.org/" target="_blank"><em>Giga</em>DB</a> team within 5 days to verify the information in your submission and to arrange upload of your files to our FTP site.</p>
-                            <p>If you have any questions, please contact us at <a href="mailto:database@gigasciencejournal.com" target="_blank">database@gigasciencejournal.com</a>.</p>
-                        </div>
                         <div role="tabpanel" class="tab-pane" id="vocabulary">
                             <h4 id="datasettypes" style="color: #099242; margin-bottom: 10px;">Dataset types</h4>
-                            <p><strong>Genomic</strong> - includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation. Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files)</p>
-                            <p><strong>Epigenomic</strong> - includes methylation and histone modification data. Minimal requirements: Details on methylation sites/status eg qmap files OR details on histone modification sites/status.</p>
-                            <p><strong>Metagenomic</strong> - includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation from environmental samples. Minimal requirements: Environmental DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</p>
-                            <p><strong>Proteomic</strong> - includes all mass spec data. Minimal requirements: Peptide/protein data eg mass spec.</p>
-                            <p><strong>Transcriptomic</strong> - includes all data relating to mRNA. Minimal requirements: RNA sequence data eg next-gen raw reads (fastq files) OR transcript statistics eg RNA coverage/depth.</p>
+                            <p><strong>Genomic</strong> - Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation. Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</p>
+                            <p><strong>Transcriptomic </strong> - Includes all data relating to mRNA. Minimal requirements: RNA sequence data eg next-gen raw reads (fastq files) OR transcript statistics eg RNA coverage/depth.</p>
+                            <p><strong>Epigenomic</strong> - Includes methylation and histone modification data. Minimal requirements: Details on methylation sites/status eg qmap files OR details on histone modification sites/status.</p>
+                            <p><strong>Metagenomic</strong> - Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation from environmental samples. Minimal requirements: Environmental DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</p>
+                            <p><strong>Metatranscriptomic</strong> - RNA sequences analysis data from environmental samples, e.g. assemblies, expression profiles, variations, annotations etc.</p>
+                            <p><strong>Genome mapping</strong> - Datasets containing sequence analysis of genes/conserved sequences mapped to genome(s), and/or optical maps of entire genomes.</p>
+                            <p><strong>Imaging</strong> - Includes all imaging data, e.g. light microscopy, 3D imaging, high-resolution images, camera-trap images etc...</p>
+                            <p><strong>Software</strong> - Includes datasets that package code together into a useful bioinformatics tool. Note, datasets that contain short scripts are not labelled as software.</p>
+                            <p><strong>Virtual-Machine</strong> - Includes software that has been packaged into a virtual machine environment.</p>
+                            <p><strong>Workflow</strong> - Datasets that include tools that have been pieced together into a workflow using CWL or other workflow languages.</p>
+                            <p><strong>Metabolomic</strong> - Includes analysis of specific metabolights across multiple samples and/or multiple metabolights in fewer samples, usually LC-MS data.</p>
+                            <p><strong>Proteomic</strong> - Includes all mass spec data. Minimal requirements: Peptide/protein data eg mass spec.</p>
+                            <p><strong>Lipidomic</strong> - Includes datasets with focus on lipid analysis, usually using mass spectrometry.</p>
+                            <p><strong>Metabarcoding</strong> - Datasets using barcode sequences for environmental analysis and/or monitoring studies e.g. biodiversity assessment.</p>
+                            <p><strong>Metadata</strong> - Denotes datasets where there is a focus on collection of metadata e.g. ontologies or metadata standards.</p>
+                            <p><strong>Network-Analysis</strong> - Datasets containing analysis of biological networks, either species interactions or at the molecular level.</p>
+                            <p><strong>Neuroscience</strong> - Includes all datasets that hold data about brains/neurons, can be imaging, molecular and/or software/tools.</p>
+                            <p><strong>Electro-encephalography (EEG)</strong> - Datasets containing or using EEG data.</p>
+                            <p><strong>Phenotyping</strong> - Includes datasets with extensive phenotypic information about the samples/specimens.</p>
+                            <p><strong>Ecology</strong> - Data used/collected for ecological studies.</p>
+                            <p><strong>Climate</strong> - Data used/collected for climate studies.</p>
                             <p>Additional dataset types can be added, upon review, as new submissions are received.</p>
                             <h4 id="filetypes" style="color: #099242; margin-bottom: 10px;">File types</h4>
                             <p>File types and examples of associated file extensions:</p>
@@ -327,10 +314,15 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
 $(document).ready(function () {
     if(location.hash != null && location.hash != ""){
         $('ul li').removeClass('active');
+        $('#search').removeClass('active');
         var variableli = location.hash; 
+        if(variableli === "#guidelines"){
+        window.location.replace("/site/guide");       
+        }
         $(location.hash).addClass('active');
         $(variableli.replace('#','#li')).addClass('active');
     }
+    
     
 });
 

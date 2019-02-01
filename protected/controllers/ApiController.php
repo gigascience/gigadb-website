@@ -35,7 +35,7 @@ class ApiController extends Controller
 		return array(
 			
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('Dataset','File' , 'Sample','Search','Dump','List','Listsampleh'),
+				'actions'=>array('Dataset','File' , 'Sample','Search','Dump','List','Listsampleh','Readme'),
 				'users'=>array('*'),
 			),
 			array('deny',  // deny all users
@@ -53,6 +53,38 @@ class ApiController extends Controller
 
 else
                         throw new CHttpException(404, 'The requested page does not exist.');
+            
+        }
+        public function actionReadme()
+        {
+            $doi= Yii::app()->request->getParam('doi');
+            $username= Yii::app()->request->getParam('username');
+            $password= Yii::app()->request->getParam('password');
+            $model = new LoginForm;
+            if (isset($doi) && isset($username) && isset($password)) {
+            $model->username = $_GET['username'];
+            $model->password = $_GET['password'];
+            if ($model->validate()) {
+              try{
+                    $dataset_model=  Dataset::model()->findByAttributes(array('identifier'=>$doi));}
+                    catch(CDbException $e)
+                   {
+                             ob_end_clean();
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
+                   }  
+              ob_end_clean();
+               $this->renderPartial('readme',array(
+                            'model'=>$dataset_model,));
+                
+                
+            } else {
+
+              throw new CHttpException(404, 'Username and Password not matched');
+            }
+        }
+            
+            
             
         }
         public function actionDataset()
@@ -278,6 +310,9 @@ else
                 $manuscript= Yii::app()->request->getParam('manuscript');
                 $token= Yii::app()->request->getParam('token');
                 $datasettype= Yii::app()->request->getParam('datasettype');
+                $date_year= Yii::app()->request->getParam('publication_year');
+                $date_start= Yii::app()->request->getParam('publication_start');
+                $date_end= Yii::app()->request->getParam('publication_end');
                 $project= Yii::app()->request->getParam('project');
                 $connection=Yii::app()->db;
                 if(!isset($result))
@@ -300,7 +335,7 @@ else
                             sprintf('No items where found for keyword <b>%s</b>',$keyword) );
                         }
                      
-                                              if (ob_get_contents()){
+                        if (ob_get_contents()){
                              ob_end_clean();}
                   
                     switch ($result) {
@@ -460,7 +495,142 @@ else
                  
                     }
                     }
-               
+
+                    if(isset($date_start)&&isset($date_end))   
+                {
+                    $rule = '/^\d{4}-\d{2}-\d{2}/';
+                    if(preg_match($rule, $date_start)&& preg_match($rule, $date_end))
+                    {
+                        
+                        $sql = "select DISTINCT dataset.id, dataset.publication_date from dataset where publication_date >= :start_date::date and publication_date <= :end_date::date and upload_status='Published' order by dataset.publication_date DESC;";
+                        $command=$connection->createCommand($sql);
+                        $command->bindParam(":start_date",$date_start,PDO::PARAM_STR); 
+                        $command->bindParam(":end_date",$date_end,PDO::PARAM_STR);
+                        $rows=$command->queryAll();
+                        if(count($rows)<1)
+                      {
+                            if (ob_get_contents()){
+                            ob_end_clean();}
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for taxno <b>%s</b>',$taxno) );
+                      }
+                    
+                    
+                    $dataset_ids="";
+                    
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    if (ob_get_contents()){
+                    ob_end_clean();}
+                    if(!isset($_GET['result']))
+                    {
+                        
+                          $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                        
+                    }else{
+                    switch ($result) {
+                        case "dataset":
+                            
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":
+                          
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":
+                            
+                            $this->renderPartial('keywordlfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                    exit;
+                    }
+                    
+                        
+                    }
+                }    
+                    
+                    
+                    
+                    
+                if(isset($date_year))   
+                {
+                    $rule = '/^\d{4}$/';
+                    if(preg_match($rule, $date_year))
+                    {
+                        $c_start =  $date_year.'-01-01';
+                        $c_end = $date_year.'-12-31';
+                        $sql = "select DISTINCT dataset.id, dataset.publication_date from dataset where publication_date >= :start_date::date and publication_date <= :end_date::date and upload_status='Published' order by dataset.publication_date DESC;";
+                        $command=$connection->createCommand($sql);
+                        $command->bindParam(":start_date",$c_start,PDO::PARAM_STR); 
+                        $command->bindParam(":end_date",$c_end,PDO::PARAM_STR);
+                        $rows=$command->queryAll();
+                        if(count($rows)<1)
+                      {
+                            if (ob_get_contents()){
+                            ob_end_clean();}
+                            $this->_sendResponse(404, 
+                            sprintf('No items where found for taxno <b>%s</b>',$taxno) );
+                      }
+                    
+                    
+                    $dataset_ids="";
+                    
+                    foreach($rows as $row)
+                    {
+                        $dataset_ids=$dataset_ids.$row['id'].",";
+                    }
+                    $dataset_ids=  trim($dataset_ids,',');
+                    $sql1="SELECT * from dataset where id in (".$dataset_ids.")";
+                    $models= Dataset::model()->findAllBySql($sql1);
+                    if (ob_get_contents()){
+                    ob_end_clean();}
+                    if(!isset($_GET['result']))
+                    {
+                        
+                          $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                        
+                    }else{
+                    switch ($result) {
+                        case "dataset":
+                            
+                            $this->renderPartial('keyworddataset',array(
+                            'models'=>$models,));
+                            break;
+                        case "sample":
+                          
+                            $this->renderPartial('keywordsample',array(
+                            'models'=>$models,));
+                            break;
+                        case "file":
+                            
+                            $this->renderPartial('keywordlfile',array(
+                            'models'=>$models,));
+                            break;
+
+                        default:
+                            break;
+                    }
+                    exit;
+                    }
+                    
+                        
+                    }
+                }
+                
+                
                 if(isset($taxno))
                 {
                     if(isset($datasettype)&& $datasettype !='')    
@@ -858,10 +1028,14 @@ else
                 if(isset($datasettype))
                 {
                       $uppertype=strtoupper($datasettype);
-                      $sql='select DISTINCT dataset.id from dataset,dataset_type,type where dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and upper(type.name)=:datasettype and dataset.upload_status=:status;';
+                      $sql='select DISTINCT dataset.id from dataset,dataset_type,type where dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and upper(type.name)=:datasettype and dataset.upload_status=:status'
+                              ;
                       $command=$connection->createCommand($sql);
+                      echo $sql;
                       $command->bindParam(":datasettype",$uppertype,PDO::PARAM_STR); 
                       $command->bindParam(":status",$status,PDO::PARAM_STR);
+                     // $command->bindParam(":end_date",$end_date,PDO::PARAM_STR);
+                     // $command->bindParam(":start_date",$start_date,PDO::PARAM_STR);
                        
                       $rows=$command->queryAll();
                       $dataset_ids="";

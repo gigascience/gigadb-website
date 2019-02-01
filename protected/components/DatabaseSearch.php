@@ -6,7 +6,7 @@ class DatabaseSearch extends CApplicationComponent {
 		$command->select = "f.id, f.dataset_id, fs.sample_id";
 		$command->from = "file f";
 		$command->join = "
-			left join file_sample fs on f.id = fs.file_id 
+			left join file_sample fs on f.id = fs.file_id
 			left join dataset d on d.id = f.dataset_id
 			left join file_attributes fa on f.id = fa.file_id 
 			left join attribute a on a.id = fa.attribute_id 
@@ -93,6 +93,7 @@ class DatabaseSearch extends CApplicationComponent {
 		    left join dataset_type dt on dt.dataset_id = d.id 
 		    left join dataset_funder df on df.dataset_id = d.id 
 		    left join funder_name fn on fn.id = df.funder_id 
+                    left join project p on p.id = dp.project_id
                     left join (select dataset_id, value from dataset_attributes where attribute_id=455) dat on dat.dataset_id = d.id
                     left join (select t.name as name, dt.dataset_id from type t, dataset_type dt where dt.type_id=t.id) dtnames on d.id=dtnames.dataset_id
 
@@ -125,7 +126,7 @@ class DatabaseSearch extends CApplicationComponent {
 	    if($types)
 	    	$command->andWhere(array('in', 'dt.type_id', $types));
 	    if($projects)
-	    	$command->andWhere(array('in','dp.project_id', $projects));
+	    	$command->andWhere(array('in','p.name', $projects));
 	    if($links)
 	    	$command->andWhere(array('in', 'el.name', $links));
 

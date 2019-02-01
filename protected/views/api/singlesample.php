@@ -39,7 +39,8 @@ foreach($samples as $sample){
         $saattribute=  Attribute::model()->findByAttributes(array('id'=>$sa_attribute->attribute_id));
         $xml.="<attribute>";
         $xml.="<key>$saattribute->attribute_name</key>";
-        $xml.="<value>$sa_attribute->value</value>";
+        $sa_attribute->value=htmlspecialchars($sa_attribute->value, ENT_XML1, 'UTF-8');
+        $xml.="<value>$sa_attribute->value</value>\n";
         $sample_unit=  Unit::model()->findByAttributes(array('id'=>$sa_attribute->unit_id));
         if(isset($sample_unit)){
         $xml.="<unit id=\"$sa_attribute->unit_id\">$sample_unit->name</unit>";}
