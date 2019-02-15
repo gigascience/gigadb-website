@@ -1,7 +1,0 @@
-{
-  "run_list": [
-    "recipe[aws]",
-    "recipe[gigadb]"
-  ],
-  "environment": "development"
-}

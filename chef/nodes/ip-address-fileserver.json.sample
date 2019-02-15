@@ -1,6 +1,0 @@
-{
-  "run_list": [
-    "recipe[fileserver]"
-  ]
-  "environment": "fileserver_test"
-}

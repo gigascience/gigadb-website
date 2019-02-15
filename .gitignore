@@ -21,20 +21,6 @@ themes/classic/views/
 files/certs
 images/tempcaptcha/
 
-
-# Vagrant
-*.vagrant
-vagrant.log
-
-# Chef
-chef/environments/development.json
-chef/environments/production.json
-chef/environments/aws.json
-chef/environments/docker.json
-**/encrypted_data_bag_secret
-chef/nodes/*.json
-
-
 # PhpStorm
 *.iml
 *.iws
@@ -48,7 +34,6 @@ nbproject/project.properties
 # MacOSX
 .DS_Store
 
-
 # Testing
 tests/fixtures/affiliate_users_credentials
 sql/temp_command.sql
@@ -58,14 +43,12 @@ test_users.txt
 phpcs.xml
 
 # Composer
-
 bin
 vendor
 composer.lock
 composer.json
 
 # deployment
-
 .env
 .secrets
 .data
@@ -81,6 +64,5 @@ output
 vault
 
 # docs
-
 docs/apidocs/phpdoc-cache-*
 docs/cache
