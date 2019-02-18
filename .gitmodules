@@ -1,3 +1,0 @@
-[submodule "chef/chef-cookbooks"]
-	path = chef/chef-cookbooks
-	url = https://github.com/pli888/chef-cookbooks.git

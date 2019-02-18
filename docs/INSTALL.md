@@ -1,26 +1,26 @@
-# Installing GigaDB on a virtual machine
+# Installing GigaDB using Docker
+
+A test instance of the GigaDB website can be automatically installed on your 
+computer as a multi-container application. This involves using 
+[Docker](https://www.docker.com), a computer program which allows separate 
+applications together with their software dependencies and configuration files 
+to be run from within multiple containers. These containers are all isolated 
+from one another yet can communicate with each other through well-defined 
+channels. Containers are run by a single operating-system kernel and are 
+therefore more lightweight than virtual machines which were previously used by 
+GigaDB as a development environment.
+
+Containers are created from images which specify their contents. In GigaDB, 
+several containers are used for implementing the website application and these 
+are specified within the docker-compose.yml file. Most of these are standard 
+images downloaded from the public repositories, for example the PostgreSQL 
+database system, but others such as web are modified before their use. 
 
 ## Preparation
 
-A test instance of GigaDB can be automatically installed in a virtual
-machine (VM) using [Vagrant](https://www.vagrantup.com) and [Chef Solo](https://docs.chef.io/chef_solo.html).
-
-Vagrant is a command line utility for creating VMs. To get started,
-download and install Vagrant 
-([version 2.0.1](https://releases.hashicorp.com/vagrant/2.0.1/)) 
-using the appropriate installer or package for your platform.
-There is no need to install any software for Chef-Solo since the base
-Vagrant VMs that we will be using to deploy GigaDB on will come with
-Chef pre-installed.
-
-The virtual machine we will use to host a test version of GigaDB is
-provided by [VirtualBox](https://www.virtualbox.org) which is free
-software. Download and install the appropriate version of [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-for your platform.
-
-The GigaDB code base is available from [GitHub](https://github.com/gigascience/gigadb-website).
-Since you will be committing code you will have written, please use
-git to do this.
+The GigaDB code base is available from 
+[GitHub](https://github.com/gigascience/gigadb-website) which can be downloaded
+using git.
 
 ### Linux
 
@@ -28,13 +28,11 @@ If you want to install the basic Git tools on Linux via a binary
 installer, you can generally do so through the basic package
 management tool that comes with your distribution. If you’re on
 Fedora and Centos for example, open a commandline terminal and use yum:
-
 ```bash
 $ sudo yum install git-all
 ```
 
 If you’re on a Debian-based distribution like Ubuntu, try apt-get:
-
 ```bash
 $ sudo apt-get install git-all
 ```
@@ -57,18 +55,24 @@ We suggest that you install [Babun](http://babun.github.io) which
 provides a Linux-like console on Windows platforms. Babun will provide
 `git` as well as other develop tools.
 
+
+## Other requirements
+
+* Docker (18 or more recent) is 
+  [installed](https://www.docker.com/products/docker-desktop) on your machine 
+  (Windows or macOS)
+* You have a [GitLab account](https://gitlab.com/), which is a member of the 
+  [Gigascience Forks group](https://gitlab.com/gigascience/forks), so you can 
+  access the application's 
+  [secret variables](https://docs.gitlab.com/ee/api/README.html)
+* You have generated a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) 
+  from your GitLab user settings so your local setup can access the secret 
+  variables
+
 ## Downloading the GigaDB code repository
 
-After you have git installed, you can now use it to download the
-GigaDB source code from Github:
-
-`$ git clone https://github.com/gigascience/gigadb-website.git`
-
-If you are developing GigaDB for GigaScience, you might be informed
-to write new code for a particular [branch](https://git-scm.com/book/en/v1/Git-Branching-What-a-Branch-Is)
-in the code repository. For example, if you are asked to use the
-`develop` branch then you need to checkout this branch from Github:
-
+After you have git installed, you can now use it to download the GigaDB source 
+code from Github:
 ```bash
 $ git clone https://github.com/gigascience/gigadb-website.git
 Cloning into 'gigadb-website'...
@@ -78,109 +82,185 @@ remote: Total 1657 (delta 25), reused 0 (delta 0), pack-reused 1581
 Receiving objects: 100% (1657/1657), 2.33 MiB | 785.00 KiB/s, done.
 Resolving deltas: 100% (516/516), done.
 Checking connectivity... done.
-$ cd gigadb-website
-$ git fetch
-$ git checkout develop
-Branch develop set up to track remote branch develop from origin.
-Switched to a new branch 'develop'
-$ git branch
-* develop
-  master
 ```
 
-The GigaDB source code repository relies on other Github projects
-which are incorporated into its code base as Github submodules.
-However, the code for these projects are missing. For example,
-chef-cookbooks is a submodule and its folder is present at
-`chef/chef-cookbooks` but the code is missing:
+## Getting started in 3 steps
 
-```bash
-$ cd chef/chef-cookbooks/
-$ ls
-total 0
-drwxr-xr-x  2 peterli  staff    68B Apr 27 09:57 ./
-drwxr-xr-x  4 peterli  staff   136B Apr 27 09:57 ../
+**(1)** To setup the web application locally, do the following:
+```
+$ cd gigadb-website                                 # Your cloned git repository for GigaDB website
+$ git checkout develop                              # Currently the only branch for which this work
+$ cp ops/configuration/variables/env-sample .env    # Make sure GITLAB_PRIVATE_TOKEN is set to your personal access token and GIGADB_ENV=dev
+# Check .env file to see if the correct GROUP_VARIABLES_URL and PROJECT_VARIABLES_URL are used!!!
+$ docker-compose run --rm config                    # Generate the configuration using variables in .env, GitLab, then exit
 ```
 
-The code for these other Github projects need to be downloaded:
+>**Note 1**:
+> A `.secrets` file will be created automatically and populated using secrets 
+variables stored in GitLab.
 
-```bash
-$ git submodule init
-Submodule 'chef/chef-cookbooks' (https://github.com/pli888/chef-cookbooks.git) registered for path '../chef-cookbooks'
-$ git submodule update
-Cloning into 'chef/chef-cookbooks'...
-remote: Counting objects: 8148, done.
-remote: Total 8148 (delta 0), reused 0 (delta 0), pack-reused 8148
-Receiving objects: 100% (8148/8148), 2.42 MiB | 449.00 KiB/s, done.
-Resolving deltas: 100% (2874/2874), done.
-Checking connectivity... done.
-Submodule path '../chef-cookbooks': checked out '1cf3e93cb1f7ef481269751a55df4bf7af458462'
+>**Note 2**:
+> If you are not a member of the Gigascience Forks GitLab group, you will have 
+to provide your own values for the necessary variables using 
+`ops/configuration/variables/secrets-sample` as starting point:
+
+>```
+>$ cp ops/configuration/variables/secrets-sample .secrets
+>$ vi .secrets
+>```
+
+**(2)** To start the web application, run the following command:
+```
+$ docker-compose run --rm webapp                    # Run composer update, then spin up the web application's services, then exit
 ```
 
-## Configuring the provisioning of the GigaDB virtual machine
+The **webapp** container will run composer update using the `composer.json` 
+generated in the previous step, and will launch three containers named **web**, 
+**application** and **database**, then it will exit. It's ok to run the command 
+repeatedly.
 
-There are variables in GigaDB which require values to be set in order
-for the web site to function. These variables are listed in the
-`gigadb-website/chef/environments/development.json.sample` file. The
-values in this file should be provided and the `development.json.sample`
-file should be renamed as `development.json`.
+**(3)** Upon success, three services will be started in detached mode.
 
-Your technical liason at *GigaScience* will be able to provide you with 
-a `development.json` file with example values that these variables 
-should be configured with.
+You can then navigate to the website at:
+* [http://gigadb.gigasciencejournal.com:9170](http://gigadb.gigasciencejournal.com:9170/)
 
-## Creating and provisioning the virtual machine
+>**Note**:
+>The first time, it will take longer to start the services as the 
+**application** container needs to be built first.
 
-Vagrant can now be used to create the virtual machine:
-
-```bash
-$ vagrant up
+To list the containers making up the GigaDB website:
+```
+$ docker ps -a
+CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                                                      NAMES
+ca7293d9b0e1        edyan/xhgui                "/root/entrypoint.sh"    4 days ago          Up 11 minutes       9000/tcp, 0.0.0.0:27017->27017/tcp, 0.0.0.0:8888->80/tcp   deployment_xhgui_1
+e7beb1fa6c3a        deployment_web             "nginx -g 'daemon of…"   4 days ago          Up 11 minutes       0.0.0.0:9170->80/tcp, 0.0.0.0:8043->443/tcp                deployment_web_1
+26dacb2f84c5        postgres:9.4-alpine        "docker-entrypoint.s…"   4 days ago          Up 11 minutes       0.0.0.0:54321->5432/tcp                                    deployment_database_1
+45c05692c466        deployment_application     "docker-php-entrypoi…"   4 days ago          Up 11 minutes       9000/tcp                                                   deployment_application_1
+0773ea9a6643        wernight/phantomjs:2.1.1   "phantomjs --webdriv…"   4 days ago          Up 11 minutes       8910/tcp                                                   deployment_phantomjs_1
 ```
 
-It will now take up to 10 minutes for the VM running CentOS 6 to be 
-created and installed with GigaDB and its software dependencies in a 
-process called provisioning which is performed by Chef Solo. During the
-provisioning process, you will see many log messages in your terminal
-which will keep you up to date with the deployment of GigaDB in your
-local VM.
+## Configuration variables
 
-Once the `vagrant up` command has finished, you will not see anything
-since Vagrant runs the VM without a user interface (UI). However, you
-can SSH into the machine:
+The project can be configured using the following files:
+ 
+Type of variables | Configuration file
+------------ | -------------
+Deployment | `.env`
+Application | [docker-compose.yml](ops/deployment/docker-compose.yml)* 
+Passwords, API keys and tokens | `.secrets`
 
-```bash
-$ vagrant ssh
+*`docker-compose.yml` overrides `docker-compose.*.yml`
+
+
+## Running database migrations
+
+Some code changes are database schemas changes. To ensure you have the latest 
+database schema, you will need to run Yii migration as below:
+```
+$ docker-compose run --rm  application ./protected/yiic migrate --interactive=0
 ```
 
-This command will log you into a SSH session in the VM created by
-Vagrant.
+## Testing
 
-For further evidence that GigaDB is running on the VM, open a web
-browser and point it to [http://127.0.0.1:9170]. You should see the
-GigaDB web site that is deployed on your local VM.
-
-[http://127.0.0.1:9170]: http://127.0.0.1:9170
-
-To leave the SSH session:
-
-```bash
-$ logout
-Connection to 127.0.0.1 closed.
+To run the tests:
+```
+$ docker-compose run --rm test
 ```
 
-## Shared folder
+This will run all the tests and generate a test coverage report. An headless 
+Selenium web browser (currently PhantomJS) will be automatically spun-off into 
+its own container. If an acceptance test fails, it will leave a screenshot under
+the `./tmp` directory.
 
-There is a folder `/vagrant` in the VM created Vagrant which is
-shared with the directory that contains the local gigadb-website Github
-repository on your computer which is hosting the Vagrant-VM. If you
-change the code in your gigadb-website repository, this means that
-the code is also changed in the `/vagrant` directory on your guest VM.
-Use [http://127.0.0.1:9170] in your web browser to check how your code
-may have affected the behaviour of GigaDB.
+To only run unit tests, use the command:
+```
+$ docker-compose run --rm test ./tests/unit_tests
+```
 
-## Shutting down the VM
+## Troubleshooting
 
-The Vagrant VM can be completely removed by running `vagrant destroy -f`.
-This command will terminate the use of any resources by the VM.
+To access the services logs, use the command below:
+```
+$ docker-compose logs <service name>			# e.g: docker-compose logs web
+```
+
+You can get information on the images, services and the processes running in 
+them with these commands:
+```
+$ docker-compose images
+$ docker-compose ps
+$ docker-compose top
+```
+
+To debug the configuration or the tests, you can drop into `bash` with both 
+containers:
+```
+$ docker-compose run --rm config bash
+```
+or:
+```
+$ docker-compose run --rm test bash
+```
+
+Both containers have access to the application source files, the Yii framework 
+and Nginx site configuration (so they can be used to debug the running web 
+application too).
+
+The **test** container has also the PostgreSQL admin tools installed (pg\_dump, 
+pg\_restore, psql), so it's a good place for debugging database issues. For 
+further investigation, check out 
+[docker-compose.yml](ops/deployment/docker-compose.yml) to see how the services 
+are assembled and what scripts they run.
+
+>**Note:**
+>Only the **test** and **application** containers have access to the 
+**database** container.
+
+
+## Life cycle
+
+To regenerate the web application configuration files, *e.g* because a variable 
+is added or changed on GitLab or ``.env``:
+```
+$ docker-compose run --rm config
+```
+
+To restart, start or stop any of the services:
+```
+$ docker-compose restart|start|stop <service name>	# e.g: docker-compose restart database
+```
+
+To rebuild the local containers (**application** and **test**), *e.g* because of 
+changes made to the [Dockerfile](ops/packaging/Dockerfile) or because the base 
+image has been upgraded (see below):
+```
+$ docker-compose build <service name>				# e.g: docker-compose build application
+```
+
+To tear down all the services (the project data at location pointed at by 
+DATA\_SAVE\_PATH *deployment variable* are unaffected):
+```
+$ docker-compose down
+```
+
+To upgrade the images used by the services (including base images for local 
+containers) to the latest version of a fixed tag, without restarting the 
+services:
+```
+$ docker-compose pull
+```
+
+>**Note**:
+>To upgrade the core software to major revision, first change the version 
+*deployment variables* in ``.env``.
+
+## Generating the documentation
+
+To update the browsable API Docs (PHPDoc), run the command below and then commit 
+the changes:
+```
+$ docker-compose run --rm test ./docs/make_phpdoc
+```
+
 
 
