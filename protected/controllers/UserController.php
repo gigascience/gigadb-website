@@ -133,19 +133,21 @@ class UserController extends Controller {
             $user->attributes = $_POST['User'] ;
             $attrs = $_POST['User'];
 
-            $password = $user->password_new = $attrs['password'];
+            $user->password_new = $attrs['password'];
             $user->password_repeat = $attrs['password_repeat'];
 
             if (!Yii::app()->user->checkAccess('admin')) {
                 $user->role = 'user';
             }
 
-            if ($user->validate('update')) {
-                if ($password != '') {
+           
+                if ($user->password_repeat != '') {
                     $user->encryptPassword();
                 }
+            
 
                 if ($user->save(false)) {
+
 
                     Yii::app()->user->setFlash('notice', 'Updated');
                     $this->redirect(array('user/show/id/'.$user->id));
@@ -154,10 +156,8 @@ class UserController extends Controller {
                     Yii::log(__FUNCTION__."> Update failed", 'warning');
                 }
 
-            }
-            else {
-                Yii::log(__FUNCTION__."> validation failed", 'warning');
-            }
+            
+          
         }
         $user->password = $user->password_repeat = '';
         $this->render('update', array('model'=>$user));
