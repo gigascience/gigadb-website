@@ -81,7 +81,7 @@ Scenario: redirect
 	And I go to "/dataset/100002/token/ban74hsfds"
 	Then the url should be "/dataset/100002/token/ban74hsfds"
 	# And I take a screenshot named "redirect notice page"
-	And I wait "10" seconds
+	And I wait "20" seconds
 	And the url should be "/dataset/100002"
 
 @ok
