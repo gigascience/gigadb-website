@@ -5,7 +5,7 @@ Feature:
 
 Scenario: Click upload files button when dataset has appropriate status
 	Given I am on the "Your Authored Datasets" tab of current user's profile
-	And  I have a dataset "100006" with status "UserUploadingData"
+	And user has a dataset "100006" with status "UserUploadingData"
 	When I click the button "Upload Files" for dataset "100006"
 	Then the response should contain "File Uploader for dataset 100006"
 
