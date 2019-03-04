@@ -4,15 +4,15 @@ Feature:
  	So that the dataset can be reviewed and made available online
 
 Scenario: click upload files button when dataset has appropriate status
-	Given I am on the "Your dataset page" of current user's profile
-	And  I have a dataset "100004" with status "uploadData"
-	When I click the button "Upload files" for dataset "100004"
-	Then the response should contain "File Upload Wizard for dataset 100004"
+	Given I am on the "Your Authored Dataset" tab of current user's profile
+	And  I have a dataset "100006" with status "uploadData"
+	When I click the button "Upload files" for dataset "100006"
+	Then the response should contain "File Uploader for dataset 100006"
 
 Scenario: there's no button for uploading files if dataset doesn't have the right status
-	Given I have a dataset "100004" with status "imcomplete"
+	Given I have a dataset "100006" with status "imcomplete"
 	When I go to the "Your dataset page" of current user's profile
-	Then I should not see a "Upload files" button for dataset "100004"
+	Then I should not see a "Upload files" button for dataset "100006"
 
 Scenario: Selecting files to upload using file dialog box
 	Given I am on the file upload wizard page
@@ -53,4 +53,4 @@ Scenario: files uploaded are in the appropriate drop box
 	Given I am on the file upload wizard page
 	When I add a set of files to the uploading queue
 	And all the files have been uploaded
-	Then all the files are transfered to the file drop box for dataset "100004"
+	Then all the files are transfered to the file drop box for dataset "100006"
