@@ -5,7 +5,7 @@ Feature:
 
 Scenario:
 	Given I have a file to upload
-	And An ftp server is associated with dataset "100004"
+	And An ftp server is associated with dataset "100006"
 	When I upload the file to the ftp server
-	Then the file is transfered to the file drop box for dataset "100004"
+	Then the file is transfered to the file drop box for dataset "100006"
 
