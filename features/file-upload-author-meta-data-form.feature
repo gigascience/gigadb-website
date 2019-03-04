@@ -1,15 +1,72 @@
 Feature:
 	As an Author
-	I want to add meta-data to the files I have uploaded
+	I want to add metadata to the files I have uploaded
 	So that the files associated with my manuscript's dataset can be queried precisely
 
-Scenario:
-	Given I am on the file upload wizard page
-	And I add a set of files to the uploading queue
+Scenario: metadata form elements for all uploaded files
+	Given I am on the file upload page
+	And I add a set of files to the uploading queue for dataset "100006"
 	And all the files have been uploaded
-	When click the "Next" button
-	Then I should see:
-	| File name | Data type | Format | Size |
-	| file1.txt | Text | Text | 1kb |
-	| file2.csv | Text | Text | 1kb |
-	| file3.jpg | Image | JPEG | 1kb |
+	When I click the "Next" button
+	Then I should see form elements:
+	| File name | Data type field | Format | Size | Description field | actions button |
+	| file1.txt | file-1-data-type | TEXT | 1Kib | file-1-description | file-1-delete |
+	| file2.csv | file-2-data-type | TEXT | 1Kib | file-2-description | file-2-delete |
+	| file3.jpg | file-3-data-type | JPEG | 3.4Mib | file-3-description | file-3-delete |
+	And I should see a button "Save Files metadata"
+	And I should see a button "Previous"
+	And I should not see the button "Complete and return to Your dadaset page"
+
+
+Scenario: Saving all metadata for all files
+	Given I am on the file metadata page
+	And I have uploaded a set of files to the drop box for dataset "100006"
+	When I fill in "file-1-data-type" with "Text"
+	And I fill in "file-1-description" with "this is file description"
+	And I fill in "file-2-data-type" with "Text"
+	And I fill in "file-2-description" with "this is file description"
+	And I fill in "file-3-data-type" with "Text"
+	And I fill in "file-3-description" with "this is file description"
+	And I click the "Save Files metadata" button
+	Then the response should contains "All File metadata Saved"
+	And I should be on the metadata form page
+	And I should see the button "Complete and return to Your dadaset page"
+
+Scenario: Saving all metadata for some files
+	Given I am on the file metadata page
+	And I have uploaded a set of files to the drop box for dataset "100006"
+	When I fill in "file-1-data-type" with "Text"
+	And I fill in "file-1-description" with "this is file description"
+	And I fill in "file-2-data-type" with "Text"
+	And I fill in "file-2-description" with "this is file description"
+	Then the response should contains "File metadata Saved for 2 out of 3 files"
+	And I should not see the button "Complete and return to Your dadaset page"
+
+Scenario: Saving some metadata for some files is not allowed
+	Given I am on the file metadata page
+	And I have uploaded a set of files to the drop box for dataset "100006"
+	When I fill in "file-1-data-type" with "Text"
+	And I fill in "file-1-description" with "this is file description"
+	And I fill in "file-2-data-type" with "Text"
+	And I click the "Save Files metadata" button
+	Then the response should contains "Mandatory fields must be filled in"
+	And I should be on the metadata form page
+	And I should not see the button "Complete and return to Your dadaset page"
+
+Scenario: Finishing the process
+	Given I am on the file metadata page
+	And I have uploaded a set of files to the drop box for dataset "100006"
+	When I save file descriptions for all files
+	And I click the "Complete and return to Your dadaset page"
+	Then the response should contain "Your Authored Datasets"
+	And the response sould contain "10.5524/100006"
+	And the response sould contain "DataAvailableForReview"
+
+Scenario: Return to previous page (file upload page)
+	Given I am on the file metadata page
+	And I have uploaded a set of files to the drop box for dataset "100006"
+	When I click the "Previous" button
+	Then the response should contain "File Uploader for dataset 100006"
+	And all the files should be shown as has complete
+	And I should see the button "Choose file"
+	And the "Next" button should be active
