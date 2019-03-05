@@ -15,7 +15,7 @@ Scenario: Metadata form elements for all uploaded files
 	| file3.jpg | file-3-data-type | JPEG | 3.4Mib | file-3-description | file-3-delete |
 	And I should see a button "Save Files Metadata"
 	And I should see a button "Previous"
-	And I should not see the button "Complete and return to Your Author datasets page"
+	And I should not see the button "Complete and return to Your Uploaded Datasets page"
 
 
 Scenario: Saving all metadata for all files
@@ -30,7 +30,7 @@ Scenario: Saving all metadata for all files
 	And I click the "Save Files Metadata" button
 	Then the response should contains "All File Metadata Saved"
 	And I should be on the metadata form page
-	And I should see the button "Complete and return to Your Author datasets page"
+	And I should see the button "Complete and return to Your Uploaded Datasets page"
 
 Scenario: Saving all metadata for some files
 	Given I am on the file metadata page
@@ -40,7 +40,7 @@ Scenario: Saving all metadata for some files
 	And I fill in "file-2-data-type" with "Text"
 	And I fill in "file-2-description" with "this is file description for file 2"
 	Then the response should contains "File Metadata Saved for 2 out of 3 files"
-	And I should not see the button "Complete and return to Your Author datasets page"
+	And I should not see the button "Complete and return to Your Uploaded Datasets page"
 
 Scenario: Saving some metadata for some files is not allowed
 	Given I am on the file metadata page
@@ -51,14 +51,14 @@ Scenario: Saving some metadata for some files is not allowed
 	And I click the "Save Files metadata" button
 	Then the response should contains "Mandatory fields must be filled in"
 	And I should be on the metadata form page
-	And I should not see the button "Complete and return to Your Author datasets page"
+	And I should not see the button "Complete and return to Your Uploaded Datasets page"
 
 Scenario: Finishing the process
 	Given I am on the file metadata page
 	And I have uploaded a set of files to the drop box for dataset "100006"
 	When I save file metadata for all files
-	And I click the "Complete and return to Your Author datasets page"
-	Then the response should contain "Your Authored Datasets"
+	And I click the "Complete and return to Your Uploaded Datasets page"
+	Then the response should contain "Your Uploaded Datasets"
 	And the response sould contain "10.5524/100006"
 	And the response sould contain "DataAvailableForReview"
 
