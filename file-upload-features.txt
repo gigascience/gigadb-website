@@ -22,14 +22,6 @@ Feature:
 	I want to add meta-data to the files I have uploaded
 	So that the files associated with my manuscript's dataset can be queried precisely
 
-
-# (3) --> (4) file-upload-author-meta-data-tagging.feature
-
-Feature:
-	As an Author
-	I want to add attributes to a file I have uploaded
-	So that I can described it better for more precise querying
-
 # (3) --> (4) file-upload-author-meta-data-bulk.feature
 Feature:
 	As an Author,
@@ -37,27 +29,38 @@ Feature:
 	So that the large number of files associated with my manuscript's dataset can be queried precisely
 
 
+TODO DRAFT:
+
 # (5) --> (6) file-upload-staff-share-drop-box-mockup-link.feature
 Feature:
 	As a Staff
 	I want to create a private mockup of dataset linked to the privately uploaded files
-	So that I can share access to privately uploaded files of a submitted dataset with select curators
-
-
+	So that I can share access to privately uploaded files of a dataset with select curators
 
 # (5) --> (6) file-upload-curator-access-drop-box-files.feature
 Feature:
 	As a Curator
-	I want to access the privately uploaded files of a submitted dataset
+	I want to access the privately uploaded files of a dataset
 	So that I can download and audit the files and their metadata
-
 
 
 # (7) --> (8) file-upload-staff-files-move.feature
 Feature:
 	As a Staff
-	I want to transfer the curated files of submitted datasets to the GigaDB public ftp server
+	I want the curated files of submitted datasets to be transfered to the GigaDB public ftp server
 	So that the curated files of submitted datasets are available to the public
 
+
+# file-upload-curator-files-housekeeping.feature
+Feature:
+	As a Staff
+	I want files in the drop box area to be marked for deletion after a period
+	So that redundants files can be pruned safely
+
+# file-upload-curator-files-monitoring.feature
+Feature:
+	As a Staff
+	I want the integrity of the file uploads to be monitored
+	So that reliability can be observed and improved and eventual problems be fixed
 
 
