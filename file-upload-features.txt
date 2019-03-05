@@ -35,14 +35,14 @@ Feature:
 Feature:
 	As a Staff
 	I want to create a private mockup of dataset linked to the privately uploaded files
-	So that I can share access to privately uploaded files of a dataset with select curators
+	So that I can share access to privately uploaded files of a submitted dataset with select curators
 
 
 
 # (5) --> (6) file-upload-curator-access-drop-box-files.feature
 Feature:
 	As a Curator
-	I want to access the privately uploaded files of a dataset
+	I want to access the privately uploaded files of a submitted dataset
 	So that I can download and audit the files and their metadata
 
 
