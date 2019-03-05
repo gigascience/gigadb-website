@@ -17,7 +17,7 @@ Scenario: bulk upload form for all uploaded files
 	And I should see a file upload button "Upload Files Metadata"
 	And I should see a button "Save Files Metadata"
 	And I should see a button "Previous"
-	And I should not see the button "Complete and return to Your Author Dadasets page"
+	And I should not see the button "Complete and return to Your Uploaded Datasets page"
 
 Scenario: Well-formated spreadsheet with metadata populated for some or all files with no prior metadata filled in
 	Given I am on the file metadata page
