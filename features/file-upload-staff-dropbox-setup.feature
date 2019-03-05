@@ -18,7 +18,6 @@ Scenario: Triggering the creation of a drop box for a dataset with the appropria
 	When I click the "Assign Drop box to dataset 100006"
 	Then I should see "A drop box associated with dataset 100006 will be created for user John Smith"
 	And I should see "Close message"
-	And I should not see a button "Share drop box mockup link for dataset 100006"
 
 Scenario: Status is changed after the drop box is created and email sent
 	Given I am on the admin page
@@ -29,11 +28,3 @@ Scenario: Status is changed after the drop box is created and email sent
 	Then the response sould contain "100006"
 	And the response sould contain "UserUploadingData"
 	And I should not see a button "Assign Drop box to dataset 100006"
-	And I should see a button "Share drop box mockup link for dataset 100006"
-
-Scenario: Creating a link to mockup dataset page showing the files in the drop box for curators
-	Given I am on the admin datasets page
-	And user has a dataset "100006" with status "userUploadingData"
-	When I click the "Share drop box mockup link for dataset 100006"
-	Then I should see a unique link to the mockup page associated with drop box files
-	And I should see "Close message"
