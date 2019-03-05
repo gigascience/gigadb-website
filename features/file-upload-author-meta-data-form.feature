@@ -53,7 +53,7 @@ Scenario: Saving some metadata for some files is not allowed
 	And I should be on the metadata form page
 	And I should not see the button "Complete and return to Your Uploaded Datasets page"
 
-Scenario: Finishing the process
+Scenario: Finishing the process: status changed to DataAvailableForReview and email sent to editors
 	Given I am on the file metadata page
 	And I have uploaded a set of files to the drop box for dataset "100006"
 	When I save file metadata for all files
@@ -61,6 +61,7 @@ Scenario: Finishing the process
 	Then the response should contain "Your Uploaded Datasets"
 	And the response sould contain "10.5524/100006"
 	And the response sould contain "DataAvailableForReview"
+	And an email notification is sent to "editorial@gigasciencejournal.com"
 
 Scenario: Return to previous page (file upload page)
 	Given I am on the file metadata page
