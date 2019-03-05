@@ -12,7 +12,7 @@ Scenario: Click upload files button when dataset has appropriate status
 Scenario: There's no button for uploading files if dataset doesn't have the right status
 	Given I have a dataset "100006" with status "UserStartedIncomplete"
 	When I go to the "Your dataset page" of current user's profile
-	Then I should not see a "Upload Files" button for dataset "100006"
+	Then I should not see the "Upload Files" button for dataset "100006"
 
 Scenario: Selecting files to upload using file dialog box
 	Given I am on the file upload page
