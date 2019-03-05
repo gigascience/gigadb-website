@@ -28,7 +28,7 @@ Scenario: Well-formated spreadsheet with metadata populated for some or all file
 Scenario: Well-formated spreadsheet with metadata populated for some files with pre-existing metadata
 	Given I am on the file metadata page
 	And I have uploaded a set of files to the drop box for dataset "100006"
-	And I have filled metadata for all the files
+	And I have filled in metadata for all the files
 	When I click the "Upload Files Metadata" button and select a spreadsheet with metadata for some files
 	Then The files metadata table form elements should be replaced with the spreadsheet's values for the matching files
 	And The files metadata table form elements should keep previous values for uploaded files not in the spreadsheet
