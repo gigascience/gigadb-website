@@ -54,3 +54,11 @@ Feature:
 	So that the curated files of submitted datasets are available to the public
 
 
+# (3) --> (4) file-upload-author-meta-data-tagging.feature
+
+Feature:
+	As an Author
+	I want to add attributes to a file I have uploaded
+	So that I can described it better for more precise querying
+
+
