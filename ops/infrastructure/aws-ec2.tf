@@ -56,3 +56,15 @@ resource "aws_instance" "staging_dockerhost" {
   vpc_security_group_ids = ["${aws_security_group.docker_host_sg.id}"]
   key_name = "aws-centos7-keys"
 }
+
+data "aws_eip" "staging_eip" {
+  filter {
+    name   = "tag:Name"
+    values = ["eip-staging-gigadb"]
+  }
+}
+
+resource "aws_eip_association" "staging_eip" {
+  instance_id   = "${aws_instance.staging_dockerhost.id}"
+  allocation_id = "${data.aws_eip.staging_eip.id}"
+}
