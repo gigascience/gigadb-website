@@ -22,13 +22,19 @@ Feature:
 	I want to add meta-data to the files I have uploaded
 	So that the files associated with my manuscript's dataset can be queried precisely
 
+
+# (3) --> (4) file-upload-author-meta-data-tagging.feature
+
+Feature:
+	As an Author
+	I want to add attributes to a file I have uploaded
+	So that I can described it better for more precise querying
+
 # (3) --> (4) file-upload-author-meta-data-bulk.feature
 Feature:
 	As an Author,
 	I want to make bulk assignment of meta-data to the files I have uploaded
 	So that the large number of files associated with my manuscript's dataset can be queried precisely
-
-
 
 
 # (5) --> (6) file-upload-staff-share-drop-box-mockup-link.feature
@@ -53,12 +59,5 @@ Feature:
 	I want to transfer the curated files of submitted datasets to the GigaDB public ftp server
 	So that the curated files of submitted datasets are available to the public
 
-
-# (3) --> (4) file-upload-author-meta-data-tagging.feature
-
-Feature:
-	As an Author
-	I want to add attributes to a file I have uploaded
-	So that I can described it better for more precise querying
 
 
