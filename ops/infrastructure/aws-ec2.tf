@@ -4,9 +4,11 @@ provider "aws" {
 	region     = "ap-southeast-1"
 }
 
+
+
 resource "aws_security_group" "docker_host_sg" {
   name        = "docker_host_sg"
-  description = "Allow connection to docker host for ${var.deployment_target}"
+  description = "Allow connection to docker host"
   vpc_id      = "${var.aws_vpc_id}"
 
   ingress {
@@ -43,32 +45,18 @@ resource "aws_security_group" "docker_host_sg" {
 	protocol    = "-1"
 	cidr_blocks = ["0.0.0.0/0"]
   }
+
+
 }
 
 
 resource "aws_instance" "staging_dockerhost" {
-  ami = "ami-8e0205f2"
+  ami           = "ami-8e0205f2"
   instance_type = "t2.micro"
   vpc_security_group_ids = ["${aws_security_group.docker_host_sg.id}"]
   key_name = "aws-centos7-keys"
 
-  tags = {
-    Name = "ec2-as1-${var.deployment_target}"
-  }
-
   root_block_device = {
-    delete_on_termination = "true"
+    delete_on_termination  = "true"
   }
-}
-
-data "aws_eip" "docker_host_eip" {
-  filter {
-    name   = "tag:Name"
-    values = ["eip-${var.deployment_target}"]
-  }
-}
-
-resource "aws_eip_association" "docker_host_eip_assoc" {
-  instance_id   = "${aws_instance.staging_docker_host.id}"
-  allocation_id = "${data.aws_eip.docker_host_eip.id}"
 }
