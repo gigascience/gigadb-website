@@ -203,51 +203,123 @@ is used to connect to remote servers to perform its provisioning tasks.
 
 ### Ansible setup and configuration
 
-The machines controlled by Ansible are defined in a `hosts` file which lists 
-host groups and the hosts within these groups. The `hosts` file for the 
-gigadb-website project is at `ops/infrastructure/inventories/hosts`.
+The machines controlled by Ansible are usually defined in a [`hosts`](https://github.com/gigascience/gigadb-website/blob/develop/ops/infrastructure/inventories/hosts)
+file which lists the host machines and how they are grouped together. Our 
+`hosts` file is located at `ops/infrastructure/inventories/hosts` and contains
+the following content:
+```
+[staging_dockerhost]
 
-* Check this file so that the `ansible_ssh_private_key_file` variable contains 
-the correct path to your AWS pem file.
-* If not present, create a [`~/.gitlab_private_token`](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) 
-file since this is referenced in the `hosts` file and provides access to the 
-GitLab API. The `read_user` and `read_registry` scopes are not required when
-creating the private token.
+# do not add any IP address here as it is dynamically managed using terraform-inventory
 
-Roles are used in Ansible to perform tasks such as installing a piece of 
-software. An Ansible role consists of a group of variables, tasks, files and 
-handlers stored in a standardised file structure. There are a number of roles in
-`ops/infrastructure/roles` for installing Docker, PostgreSQL and security 
-tools on hosts.
+[staging_dockerhost:vars]
 
-Other roles are required which are available from public repositories and these
-should be downloaded as follows:
+ansible_ssh_private_key_file= {{ vault_staging_private_key_file_location }}
+ansible_user="centos"
+ansible_become="true"
+database_bootstrap="../../sql/production_like.pgdmp"
+pg_user = {{ vault_staging_pg_user }}
+pg_password = {{ vault_staging_pg_password }}
+pg_database = {{ vault_staging_pg_database }}
+gitlab_private_token = {{ lookup('file','~/.gitlab_private_token') }}
+gigadb_environment = staging
+
+[production_dockerhost]
+
+# add IP address here for production server
+
+[production_dockerhost:vars]
+
+ansible_ssh_private_key_file= {{ vault_production_private_key_file_location }}
+ansible_user="centos"
+ansible_become="true"
+database_bootstrap="../../sql/production_like.pgdmp"
+pg_user = {{ vault_production_pg_user }}
+pg_password = {{ vault_production_pg_password }}
+pg_database = {{ vault_production_pg_database }}
+gitlab_private_token = {{ lookup('file','~/.gitlab_private_token') }}
+gigadb_environment = production
+
+[all:vars]
+
+gitlab_url = {{ vault_gitlab_url }}
+```
+
+Our `hosts` file does not list any machines. Instead, we use a tool called 
+[`terraform-inventory`](https://github.com/adammck/terraform-inventory) which 
+generates a dynamic Ansible inventory from a Terraform state file. Nonetheless, 
+we still use the `hosts` file to reference variables for hosts.
+
+* One particular variable to note is `gitlab_private_token`. The value of `gitlab_private_token`
+is the contents of a file located at `~/.gitlab_private_token`.  Create this 
+file using the [GitLab personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
+that you will use to access the GitLab API. N.B. The `read_user` and 
+`read_registry` scopes are not required when creating the private token.
+
+The values of some of the variables in the `hosts` file are sensitive and for 
+this reason, the actual values are encrypted within an Ansible vault file which 
+needs to be located at `ops/infrastructure/group_vars/all/vault`. This vault 
+file should NOT be version controlled as defined in the `.gitignore` file.
+
+To create the `vault` file:
+```
+$ ansible-vault create ops/infrastructure/group_vars/all/vault
+```
+
+You will be prompted to enter a password, which you will share with others 
+needing access to the vault. The variables below with appropriate values need to
+be placed in the `vault` file:
+```
+vault_staging_pg_user: somevalue
+vault_staging_pg_password: somevalue
+vault_staging_pg_database: somevalue
+# Path to AWS pem file
+vault_staging_private_key_file_location: somevalue
+
+vault_production_pg_user: somevalue
+vault_production_pg_password: somevalue
+vault_production_pg_database: somevalue
+vault_production_private_key_file_location: somevalue
+
+vault_private_gitlab_token: somevalue
+# Base URL of GitLab project
+vault_gitlab_url: somevalue
+```
+
+An example of what the `vault_gitlab_url` should look like is:
+```
+vault_gitlab_url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Fjbloggs-gigadb-website"
+```
+
+Save the `vault` file when you are done. Since the `vault` file is encrypted, you will see something like this if you
+try to edit the file in a text editor:
+```
+$ANSIBLE_VAULT;1.2;AES256;dev
+37636561366636643464376336303466613062633537323632306566653533383833366462366662
+6565353063303065303831323539656138653863353230620a653638643639333133306331336365
+62373737623337616130386137373461306535383538373162316263386165376131623631323434
+3866363862363335620a376466656164383032633338306162326639643635663936623939666238
+3161
+```
+
+To open the encrypted `vault` file for editing, use the command below. N.B. you 
+will be prompted for a password.
+```
+$ ansible-vault edit ops/infrastructure/group_vars/all/vault
+```
+
+* Provide Ansible with the password to access the vault file during the 
+execution of playbooks by storing the password in a `~/.vault_pass.txt` file. 
+
+Roles are used in Ansible to perform tasks on machines such as installing a  
+software package. An Ansible role consists of a group of variables, tasks, files 
+and handlers stored in a standardised file structure. There are a number of 
+roles in `ops/infrastructure/roles` for installing Docker, PostgreSQL and 
+security tools on hosts. Other roles are required which are available from 
+public repositories and these should be downloaded as follows:
 ```
 $ ansible-galaxy install -r requirements.yml
 ```
-
-Database security credentials are placed in an encrypted file which is created 
-using Ansible Vault. Place the vault file in 
-`ops/infrastructure/group_vars/all/vault`. This vault file should NOT be version 
-controlled as defined in the `.gitignore` file.
-
-Opening the encrypted file for editing to adjust the database credentials can be 
-done using the command below. N.B. you will be prompted for a password.
-```
-$ ansible-vault edit ops/infrastructure/group_vars/all/vault
-``` 
-
-Provide Ansible with the password so it can access the vault file during the 
-execution of playbooks by storing the password in a `~/.vault_pass.txt` file. 
-
->The docker-postinstall role needs to be updated because the name of the GitLab
-project whose environmental variables are edited by this role is hard-coded into
-the `ops/infrastructure/roles/docker-postinstall/tasks/main.yml` file so the 
-specific name of your GitLab project needs to be edited accordingly here.
-
-> A possible fix for this is to do env variable lookups from the .env file which 
-contains the gitlab project url we need in the main.yml file.
- 
 
 ### Ansible playbook execution
 
@@ -257,7 +329,8 @@ $ ansible-playbook -vvv -i inventories staging-playbook.yml --vault-password-fil
 ```
 
 > Since an elastic IP address is being used, you might need to delete the entry
-in the `~/.ssh/known_hosts` file associated with the elastic IP address.
+in the `~/.ssh/known_hosts` file associated with the elastic IP address if this
+is not the first time you have performed this provisioning step. 
 
 Ansible will update values for specific project environment variables in 
 GitLab. Check them on the project environment variables page after the Ansible
