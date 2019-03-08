@@ -65,29 +65,42 @@ the *General pipelines* section, ensure that the *Public pipelines* checkbox is
 ` \ \ Lines:\s*(\d+.\d+\%)`. Click on the *Save changes* green button.
  
 * The variables below need to be created for your project in the `Environment variables` 
-section in the CI/CD Settings page. Any values below listed as **?** should be 
-replaced with proper values - please contact the GigaScience tech support team 
-for these. These environment variables together with those in the Forks group 
-are exported to the `.secrets` file and are listed 
-[here](https://github.com/gigascience/gigadb-website/blob/develop/ops/configuration/variables/secrets-sample).
-                             
+section in the CI/CD Settings page. Any values below listed as `somevalue` 
+should be replaced with proper values - please contact the GigaScience tech 
+support team for help with setting these.
+
+* The value of the STAGING_HOME_URL variable should be the domain name of the
+machine you will use as the GigaDB staging server.
+
+* The STAGING_IP_ADDRESS variable should be given the IP address of your staging 
+server as its value. 
+
+* Variables whose names begin with `staging_*` and have `0` values will be 
+automatically updated with their proper values during Ansible provisioning of 
+your staging server. 
+
+These environment variables together with those in the Forks group are exported 
+to the `.secrets` file and are listed 
+[here](https://github.com/gigascience/gigadb-website/blob/develop/ops/configuration/variables/secrets-sample). 
+All these GitLab CI/CD environment variables are referred to in the 
+`gitlab-ci.yml` file or used in the CI/CD pipeline.
 
 Variable Name | Value
 ------------- | -----
-ANALYTICS_CLIENT_EMAIL | **?**
-ANALYTICS_CLIENT_ID | **?**
-ANALYTICS_PRIVATE_KEY | **?**
-COVERALLS_REPO_TOKEN | **?**
-FORK | **?**
-MAILCHIMP_API_KEY | **?**
-MAILCHIMP_LIST_ID | **?**
-MAILCHIMP_TEST_EMAIL | **?**
+ANALYTICS_CLIENT_EMAIL | somevalue
+ANALYTICS_CLIENT_ID | somevalue
+ANALYTICS_PRIVATE_KEY | somevalue
+COVERALLS_REPO_TOKEN | somevalue
+FORK | somevalue
+MAILCHIMP_API_KEY | somevalue
+MAILCHIMP_LIST_ID | somevalue
+MAILCHIMP_TEST_EMAIL | somevalue
 STAGING_GIGADB_DB | gigadb
 STAGING_GIGADB_HOST | dockerhost
 STAGING_GIGADB_PASSWORD | vagrant
 STAGING_GIGADB_USER | gigadb
-STAGING_HOME_URL | 0
-STAGING_IP_ADDRESS | 0
+STAGING_HOME_URL | somevalue
+STAGING_IP_ADDRESS | somevalue
 STAGING_PUBLIC_HTTPS_PORT | 433
 STAGING_PUBLIC_HTTP_PORT | 80
 staging_private_ip | 0
