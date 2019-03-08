@@ -58,7 +58,7 @@
 
 - name: Copy the CA pem to GITLAB CI environment variable (first time)
   uri:
-    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables"
+    url: "{{ gitlab_url }}/variables"
     method: POST
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -73,7 +73,7 @@
 
 - name: Copy the CA pem to GITLAB CI environment variable (subsequently)
   uri:
-    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/{{ gigadb_environment }}_tlsauth_ca"
+    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_tlsauth_ca"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -86,7 +86,7 @@
 
 - name: Copy the cert pem to GITLAB CI environment variable
   uri:
-    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables"
+    url: "{{ gitlab_url }}/variables"
     method: POST
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -102,7 +102,7 @@
 
 - name: Copy the cert pem to GITLAB CI environment variable (subsequently)
   uri:
-    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/{{ gigadb_environment }}_tlsauth_cert"
+    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_tlsauth_cert"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -115,7 +115,7 @@
 
 - name: Copy the key pem to GITLAB CI environment variable
   uri:
-    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables"
+    url: "{{ gitlab_url }}/variables"
     method: POST
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -131,7 +131,7 @@
 
 - name: Copy the key pem to GITLAB CI environment variable (subsequently)
   uri:
-    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/{{ gigadb_environment }}_tlsauth_key"
+    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_tlsauth_key"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -144,7 +144,7 @@
 
 - name: copy the private ip address to GITLAB CI environment variable (first time)
   uri:
-    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables"
+    url: "{{ gitlab_url }}/variables"
     method: POST
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -160,7 +160,7 @@
 
 - name: copy the private ip address to GITLAB CI environment variable (subsequently)
   uri:
-    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/{{ gigadb_environment }}_private_ip"
+    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_private_ip"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -173,7 +173,7 @@
 
 - name: copy the public ip address to GITLAB CI environment variable (first time)
   uri:
-    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables"
+    url: "{{ gitlab_url }}/variables"
     method: POST
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -189,7 +189,7 @@
 
 - name: copy the public ip address to GITLAB CI environment variable (subsequently)
   uri:
-    url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Frija-gigadb-website/variables/{{ gigadb_environment }}_public_ip"
+    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_public_ip"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
