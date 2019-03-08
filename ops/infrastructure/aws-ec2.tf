@@ -51,6 +51,7 @@ resource "aws_instance" "staging_dockerhost" {
   instance_type = "t2.micro"
   vpc_security_group_ids = ["${aws_security_group.docker_host_sg.id}"]
   key_name = "aws-centos7-keys"
+
   tags = {
     Name = "ec2-as1-staging-gigadb"
   }
