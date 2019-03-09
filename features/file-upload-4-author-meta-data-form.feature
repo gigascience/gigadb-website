@@ -36,7 +36,7 @@ Scenario: Saving all metadata for all files
 	And I fill in the "file-3-data-type" field with "Text"
 	And I fill in the "file-3-description" field with "this is file description for file 3"
 	And I press "Save Files Metadata"
-	Then I should see a "All File Metadata Saved" flash message
+	Then I should see a "File Metadata Saved for 3 out of 3 files" flash message
 	And I should see a "Complete and return to Your Uploaded Datasets page" button
 
 Scenario: Saving all mandatory metadata for some files
