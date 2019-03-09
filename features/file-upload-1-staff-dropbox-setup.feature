@@ -25,7 +25,7 @@ Scenario: Triggering the creation of a drop box for a dataset with the appropria
 	And I go to "/site/admin"
 	When I press "Datasets"
 	And I press "Assign Drop box to dataset 100006"
-	Then I should see "A drop box associated with dataset 100006 will be created for user Joy Fox" flash message
+	Then I should see "A new drop box will be created for this dataset. It will take up to 5mn of minutes." flash message
 
 Scenario: Status is changed after the drop box is created and email sent
 	Given I sign in as an admin
