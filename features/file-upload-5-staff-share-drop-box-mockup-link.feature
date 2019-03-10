@@ -23,4 +23,4 @@ Scenario: Create a unique link to private mockup dataset page showing the files 
 	And the uploaded dataset has status "Submitted"
 	When I press "Datasets"
 	And I press "Create mockup link for dataset 100006"
-	Then I should see "Created http://gigadb.dev/dataset/mockup/6ba41e9f81baf4ba2bb6d5ecc3e858b0" flash message
+	Then I should see "Created http://gigadb.dev/dataset/mockup/6ba413643 (copy link to share)" flash message
