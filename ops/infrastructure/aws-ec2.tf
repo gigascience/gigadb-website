@@ -4,8 +4,6 @@ provider "aws" {
 	region     = "ap-southeast-1"
 }
 
-
-
 resource "aws_security_group" "docker_host_sg" {
   name        = "docker_host_sg"
   description = "Allow connection to docker host"
@@ -45,18 +43,20 @@ resource "aws_security_group" "docker_host_sg" {
 	protocol    = "-1"
 	cidr_blocks = ["0.0.0.0/0"]
   }
-
-
 }
 
 
 resource "aws_instance" "staging_dockerhost" {
-  ami           = "ami-8e0205f2"
+  ami = "ami-8e0205f2"
   instance_type = "t2.micro"
   vpc_security_group_ids = ["${aws_security_group.docker_host_sg.id}"]
   key_name = "aws-centos7-keys"
-  tags                   = {
+  tags = {
     Name = "ec2-as1-staging-gigadb"
+  }
+
+  root_block_device = {
+    delete_on_termination = "true"
   }
 }
 
