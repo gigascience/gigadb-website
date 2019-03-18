@@ -232,37 +232,37 @@ class StoredDatasetMainSectionTest extends CDbTestCase
 		$this->assertEquals($expected, $daoUnderTest->getFunding());
 	}
 
-	public function citationsQueriesExamples()
-	{
-		return [
-			"no_argument"=> [
-				null,
-				array(
-		            'scholar_query' => 'http://scholar.google.com/scholar?q=10.5072/100243',
-		            'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/100243')",
+    public function citationsQueriesExamples()
+    {
+        return [
+            "no_argument" => [
+                null,
+                array(
+                    'scholar_query' => 'http://scholar.google.com/scholar?q=10.5072/100243',
+                    'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/100243')",
                     'dimension_query' => "https://app.dimensions.ai/discover/publication?search_text=10.5072/100243",
-		        ),
-	        ],
-			"scholar_argument"=> [
-				"scholar_query",
-				array(
-		            'scholar_query' => 'http://scholar.google.com/scholar?q=10.5072/100243',
-		        ),
-	        ],
-			"ePMC_argument"=> [
-				"ePMC_query",
-				array(
-		            'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/100243')",
-		        ),
-	        ],
-            "dimension_argument"=> [
+                ),
+            ],
+            "scholar_argument" => [
+                "scholar_query",
+                array(
+                    'scholar_query' => 'http://scholar.google.com/scholar?q=10.5072/100243',
+                ),
+            ],
+            "ePMC_argument" => [
+                "ePMC_query",
+                array(
+                    'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/100243')",
+                ),
+            ],
+            "dimension_argument" => [
                 "dimension_query",
                 array(
                     'dimension_query' => "https://app.dimensions.ai/discover/publication?search_text=10.5072/100243",
                 ),
             ],
-		];
-	}
+        ];
+    }
 }
 
 ?>
