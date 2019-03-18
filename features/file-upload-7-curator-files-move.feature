@@ -1,5 +1,5 @@
 Feature:
-	As a Staff
+	As a Curator
 	I want to transfer the curated files of submitted datasets to the GigaDB public ftp server
 	So that the curated files of submitted datasets are available to the public
 

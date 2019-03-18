@@ -1,5 +1,5 @@
 Feature:
-	As a Staff
+	As a Curator
 	I want to create a private mockup of dataset linked to the privately uploaded files
 	So that I can share access to privately uploaded files of a submitted dataset with select curators
 
