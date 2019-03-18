@@ -1,5 +1,5 @@
 Feature:
-	As a Curator
+	As a Reviewer
 	I want to access the privately uploaded files of a submitted dataset
 	So that I can download and audit the files and their metadata
 
