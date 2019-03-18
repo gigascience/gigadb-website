@@ -1,5 +1,5 @@
 Feature:
-	As a Staff
+	As a Curator
 	I want to create a restricted file drop box area on GigaDB server
 	So that authors can upload their files and select curators can access them
 
