@@ -84,3 +84,16 @@ Scenario: Status is changed after the drop box is created and email sent
 	Then the response sould contain "100006"
 	And the response sould contain "UserUploadingData"
 	And I should not see a "Assign Drop box to dataset 100006" button
+
+Scenario: The drop box access details and the author name and email saved in curation log comment
+	Given I sign in as an admin
+	And a dataset has been entered with temporary DOI "100006"
+	And the uploaded dataset has status "AssigningFTPbox"
+	And the creation of a drop box to dataset "100006" has been initiated
+	And the status of the dataset has changed to "UserUploadingData"
+	When I go to "/adminDataset/admin"
+	And I press "Update Dataset 100006"
+	Then I should see a new entry in curation log containing:
+	| Creation Date | Created By | Action | Comments | Last Modified Date | Lat Modified By |
+	| !calculated | !empty | Status changed to UserUploadingData | Joy Fox, joy_fox@gigadb.org, ftp://gigadb.dev/dropbox/6ba413643/, login: a43654, password: 46349684 | !empty | !empty |
+
