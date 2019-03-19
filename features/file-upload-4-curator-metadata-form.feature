@@ -1,5 +1,5 @@
 Feature:
-	As a Curator,
+	As a curator,
 	I want the retrieve the context of a dataset status change to "DataAvailableForReview"
 	So that I can audit or troubleshoot the dataset files and metadata upload process
 
