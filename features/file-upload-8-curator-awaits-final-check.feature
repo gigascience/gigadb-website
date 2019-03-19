@@ -1,5 +1,5 @@
 Feature:
-	As a Curator,
+	As a curator,
 	I want to signal in the dataset status when an author has given the final green light
 	So that I can proceed to publish the dataset
 
