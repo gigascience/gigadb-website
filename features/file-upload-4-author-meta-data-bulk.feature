@@ -50,3 +50,35 @@ Scenario: The file is not valid TSV or CSV
 	When I press "Upload Files Metadata"
 	And I select a malformed file
 	Then I should see a "Format not recognized, only upload valid TSV or CSV formatted spreadsheet" flash message
+
+Scenario: file 2 has following problems: missing data type, missing description
+	Given I sign in as a user
+	And I have uploaded a set of files to the drop box for dataset "100006"
+	And I am on "/uploader/meta"
+	When I press "Upload Files Metadata"
+	And I select a spreadsheet that include one problematic file with missing metadata
+	Then I should see a "Problem found when parsing file on line 2: missing data type" flash message
+
+Scenario: file 2 has following problems: file name doesn't match with any uploaded file
+	Given I sign in as a user
+	And I have uploaded a set of files to the drop box for dataset "100006"
+	And I am on "/uploader/meta"
+	When I press "Upload Files Metadata"
+	And I select a spreadsheet that include one problematic file with filename not recognised
+	Then I should see a "Problem found when parsing file on line 2: file name doesn't match any of the uploaded files" flash message
+
+Scenario: file 2 has following problems: Sample ID not recognized
+	Given I sign in as a user
+	And I have uploaded a set of files to the drop box for dataset "100006"
+	And I am on "/uploader/meta"
+	When I press "Upload Files Metadata"
+	And I select a spreadsheet that include one problematic file with filename not recognised
+	Then I should see a "Problem found when parsing file on line 2: Sample ID not found in the database" flash message
+
+Scenario: file 2 has following problems: tag1 is malformed, tag3 is malformed
+	Given I sign in as a user
+	And I have uploaded a set of files to the drop box for dataset "100006"
+	And I am on "/uploader/meta"
+	When I press "Upload Files Metadata"
+	And I select a spreadsheet that include one problematic file with malformed tags
+	Then I should see a "Problem found when parsing file on line 2: tag1 has wrong format (should be: name::value::unit)" flash message
