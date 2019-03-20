@@ -1,5 +1,5 @@
 Feature:
-	As a curator,
+	As a Curator,
 	I want to represent as a dataset status whether the dataset files and metadata are complete or not
 	So that we avoid missing information or files once the dataset is public
 
