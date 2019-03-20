@@ -1,5 +1,5 @@
 Feature:
-	As a curator,
+	As a Curator,
 	I want to know what datasets can go through curation process
 	So that my time is only used on vetted manuscripts and not on rejected manuscripts
 
