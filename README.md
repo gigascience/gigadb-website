@@ -1,7 +1,6 @@
 # GigaDB
 
 [![pipeline status](https://gitlab.com/gigascience/upstream/gigadb-website/badges/develop/pipeline.svg)](https://gitlab.com/gigascience/forks/gigadb-website/commits/develop)
-
 [![coverage report](https://gitlab.com/gigascience/upstream/gigadb-website/badges/develop/coverage.svg)](https://gitlab.com/gigascience/forks/gigadb-website/commits/develop)
 
 ## What is it?
@@ -35,7 +34,6 @@ project locally under `gigadb-website`
 ### Getting started in 3 steps
 
 **(1)** To setup the web application locally, do the following:
-
 ```
 $ cd gigadb-website                         # your cloned git repository for Gigadb website
 $ git checkout develop                      # the branch with the latest code base
@@ -55,7 +53,6 @@ you will have to provide your own values for the necessary variables using
 >```
 
 **(2)** To start the web application, run the following command:
-
 ```
 $ docker-compose run --rm webapp            # run composer update, then spin up the web application's services, then exit
 ```
@@ -101,7 +98,6 @@ This will run all the tests and generate a test coverage report. An headless
 Selenium web browser (currently PhantomJS) will be automatically spun-off into 
 its own container. If an acceptance test fails, it will leave a screenshot under 
 the `./tmp` directory.
-
 
 To only run unit tests, use the command:
 ```
@@ -154,7 +150,6 @@ root@16b04afd18d5:/var/www# psql -h database -p 5432 -U gigadb gigadb
 
 For further investigation, check out the [docker-compose.yml](ops/deployment/docker-compose.yml) 
 to see how the services are assembled and what scripts they run.
-
 
 ## Life cycle
 
