@@ -74,8 +74,14 @@ else
                             sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
                    }  
               ob_end_clean();
-               $this->renderPartial('readme',array(
-                            'model'=>$dataset_model,));
+                $criteria = new CDbCriteria;
+                $criteria->join = 'left join author a on a.id = t.author_id';
+                $criteria->addCondition('t.dataset_id ='.$dataset_model->id);
+                $criteria->order= 't.rank ASC, a.surname ASC, a.first_name ASC, a.middle_name ASC';
+                $das = DatasetAuthor::model()->findAll($criteria);
+
+                $this->renderPartial('readme',array(
+                            'model'=>$dataset_model,'authors'=>$das,));
                 
                 
             } else {
