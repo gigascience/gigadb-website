@@ -206,7 +206,7 @@ class DatasetViewContext implements Context
     public function iShouldSeeAButtonLinkingToSubmittersEmail($arg1)
     {
         $contactButton = $this->minkContext->getSession()->getPage()->findLink($arg1);
-        PHPUnit_Framework_Assert::assertEquals("mailto:liuxin@genomics.org.cn", $contactButton->getAttribute('href') );
+        PHPUnit_Framework_Assert::assertEquals("mailto:A.xsI@madeup.com", $contactButton->getAttribute('href') );
     }
 
     /**
