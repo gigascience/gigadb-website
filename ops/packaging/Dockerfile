@@ -1,12 +1,11 @@
 ARG PHP_VERSION=7.0
 FROM php:${PHP_VERSION}-fpm-jessie
 
-# Problem with Debian repos - adding repos to use below
+# Problem with http://deb.debian.org repo - adding hk repo to use
 RUN echo "deb http://ftp.hk.debian.org/debian jessie main" | tee /etc/apt/sources.list && \
     echo "deb http://ftp.hk.debian.org/debian-security jessie/updates main" | tee -a /etc/apt/sources.list && \
-    echo "deb http://ftp.cvut.cz/debian jessie-updates main" | tee -a /etc/apt/sources.list
-
-RUN apt-get update && \
+    # Basic dependencies
+    apt-get update && \
     apt-get install -y --no-install-recommends \
         curl \
         libmemcached-dev \
