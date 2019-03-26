@@ -1,7 +1,10 @@
 ARG PHP_VERSION=7.0
 FROM php:${PHP_VERSION}-fpm-jessie
 
-
+# Problem with Debian repos - adding repos to use below
+RUN echo "deb http://ftp.hk.debian.org/debian jessie main" | tee /etc/apt/sources.list && \
+    echo "deb http://ftp.hk.debian.org/debian-security jessie/updates main" | tee -a /etc/apt/sources.list && \
+    echo "deb http://ftp.cvut.cz/debian jessie-updates main" | tee -a /etc/apt/sources.list
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -147,7 +150,11 @@ RUN if [ ${INSTALL_TIDEWAYS_XHPROF} = true ]; then \
 ARG INSTALL_LIBSODIUM=false
 
 RUN if [ ${INSTALL_LIBSODIUM} = true ]; then \
-    echo "deb http://ftp.debian.org/debian jessie-backports main" | tee -a /etc/apt/sources.list && \
+    # Problem with repo below - might be related to https://lists.debian.org/debian-devel-announce/2019/03/msg00006.html
+    #echo "deb http://ftp.debian.org/debian jessie-backports main" | tee -a /etc/apt/sources.list && \
+    # Use archive repo
+    echo 'Acquire::Check-Valid-Until "0";' | tee -a /etc/apt/apt.conf.d/apt.conf && \
+    echo "deb http://archive.debian.org/debian jessie-backports main" | tee -a /etc/apt/sources.list && \
     apt-get update && \
     apt-get install -y -t jessie-backports libsodium-dev && \
     pecl install libsodium && \
