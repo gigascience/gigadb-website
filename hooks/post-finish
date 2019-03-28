@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo "Upload $TUS_ID ($TUS_SIZE bytes) finished"
+json_data=$(cat /dev/stdin | jq .)
+echo $json_data
+filename=$(echo $json_data | jq -r .MetaData.filename)
+echo "Moving the file /var/inbox/$TUS_ID.bin to /var/repo/$filename (and remove the info file upon success)"
+mv /var/inbox/$TUS_ID.bin /var/repo/$filename && rm /var/inbox/$TUS_ID.info
