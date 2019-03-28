@@ -2,9 +2,7 @@
 
 echo "Upload $TUS_ID ($TUS_SIZE bytes) finished"
 json_data=$(cat /dev/stdin | jq .)
-# echo $json_data
+echo $json_data
 filename=$(echo $json_data | jq -r .MetaData.filename)
-datasetid=$(echo $json_data | jq -r .MetaData.dataset)
-echo "Moving the file /var/inbox/$TUS_ID.bin to /var/repo/$datasetid/$filename (and metadata file too)"
-mv "/var/inbox/$TUS_ID.bin" "/var/repo/$datasetid/$filename"
-# mv "/var/inbox/$TUS_ID.info" "/var/repo/$datasetid/$filename.info.json"
+echo "Moving the file /var/inbox/$TUS_ID.bin to /var/repo/$filename (and remove the info file upon success)"
+mv /var/inbox/$TUS_ID.bin /var/repo/$filename && rm /var/inbox/$TUS_ID.info
