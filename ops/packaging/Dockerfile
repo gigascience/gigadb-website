@@ -157,7 +157,7 @@ RUN if [ ${INSTALL_LIBSODIUM} = true ]; then \
     # Using archive repo instead
     echo 'Acquire::Check-Valid-Until "0";' | tee -a /etc/apt/apt.conf.d/apt.conf && \
     echo "deb http://archive.debian.org/debian jessie-backports main" | tee -a /etc/apt/sources.list && \
-    apt-get update && \
+    apt-get update -yq && \
     apt-get install -y -t jessie-backports libsodium-dev && \
     pecl install libsodium && \
     echo "extension=sodium.so" >  /usr/local/etc/php/conf.d/libsodium.ini \
