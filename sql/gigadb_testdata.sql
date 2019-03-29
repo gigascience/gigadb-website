@@ -1858,24 +1858,6 @@ CREATE TABLE sample_rel (
 ALTER TABLE public.sample_rel OWNER TO gigadb;
 
 --
--- Name: curation_log; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
---
-
-CREATE TABLE curation_log (
-    id integer NOT NULL,
-    dataset_id integer NOT NULL,
-    CREATION_DATE date, 
-    CREATED_BY varchar(20),
-    LAST_MODIFIED_DATE date, 
-    LAST_MODIFIED_BY varchar(20),
-    ACTION varchar(100), 
-    COMMENTS varchar(200)
-);
-
-
-ALTER TABLE public.curation_log OWNER TO gigadb;
-
---
 -- Name: sample_rel_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
 --
 
@@ -1896,6 +1878,32 @@ ALTER TABLE public.sample_rel_id_seq OWNER TO gigadb;
 ALTER SEQUENCE sample_rel_id_seq OWNED BY sample_rel.id;
 
 --
+-- Name: sample_rel_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
+--
+
+SELECT pg_catalog.setval('sample_rel_id_seq', 8, true);
+
+
+--
+-- Name: curation_log; Type: TABLE; Schema: public; Owner: gigadb; Tablespace: 
+--
+
+CREATE TABLE curation_log (
+    id integer NOT NULL,
+    dataset_id integer NOT NULL,
+    CREATION_DATE date, 
+    CREATED_BY varchar(20),
+    LAST_MODIFIED_DATE date, 
+    LAST_MODIFIED_BY varchar(20),
+    ACTION varchar(100), 
+    COMMENTS varchar(200)
+);
+
+
+ALTER TABLE public.curation_log OWNER TO gigadb;
+
+
+--
 -- Name: curation_log_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
 --
 
@@ -1914,13 +1922,6 @@ ALTER TABLE public.curation_log_id_seq OWNER TO gigadb;
 --
 
 ALTER SEQUENCE curation_log_id_seq OWNED BY curation_log.id;
-
-
---
--- Name: sample_rel_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gigadb
---
-
-SELECT pg_catalog.setval('sample_rel_id_seq', 8, true);
 
 
 --
@@ -2459,6 +2460,13 @@ ALTER TABLE ONLY sample_experiment ALTER COLUMN id SET DEFAULT nextval('sample_e
 --
 
 ALTER TABLE ONLY sample_rel ALTER COLUMN id SET DEFAULT nextval('sample_rel_id_seq'::regclass);
+
+--
+-- TOC entry 2479 (class 2604 OID 18508)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gigadb
+--
+
+ALTER TABLE ONLY curation_log ALTER COLUMN id SET DEFAULT nextval('curation_log_id_seq'::regclass);
 
 
 --
