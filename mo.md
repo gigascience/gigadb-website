@@ -1,11 +1,11 @@
 ## tusd
 
-docker run -d --name tusd -p 9080:1080 -v /Users/rija/Public/Drop\ Box/:/var/inbox/  -v /Users/rija/Documents/tus-uppy-proto/repo:/var/repo/ -v /Users/rija/Documents/tus-uppy-proto/hooks:/var/hooks rija/tusd -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
+docker run -d --name tusd -p 9080:1080 -v /Users/rija/Public/Drop\ Box/tusd:/var/inbox/  -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/var/repo/ -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/hooks:/var/hooks rija/tusd -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
 
 
 ## Pure-FTPd
 
-docker run -d --name ftpd -p 9021:21 -p 30000-30009:30000-30009 -v /Users/rija/Public/Drop\ Box/:/home/uploader -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/home/downloader/:ro -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/credentials:/var/private -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/hooks:/var/scripts -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/ftp-transfer-logs:/var/log/pure-ftpd -e "PUBLICHOST=localhost" -e "ADDED_FLAGS=-O w3c:/var/log/pure-ftpd/transfer.log" rija/docker-pure-ftpd bash -c '/run.sh -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $PUBLICHOST'
+docker run -d --name ftpd -p 9021:21 -p 30000-30009:30000-30009 -v /Users/rija/Public/Drop\ Box/ftp:/home/uploader -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/home/downloader/:ro -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/credentials:/var/private -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/hooks:/var/scripts -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/ftp-transfer-logs:/var/log/pure-ftpd -e "PUBLICHOST=localhost" -e "ADDED_FLAGS=-O w3c:/var/log/pure-ftpd/transfer.log" rija/docker-pure-ftpd bash -c '/run.sh -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $PUBLICHOST'
 
 
 ### create an upload account:
@@ -21,6 +21,6 @@ docker exec -it ftpd bash -c 'pure-pw useradd d-100006 -f /etc/pure-ftpd/passwd/
 ncftpget -u d-100006 -P 9021 -p sfhsadhf localhost . /some_file.txt
 
 
-### moving files from upload directory to download directory
+### moving files from ftp upload directory to download directory
 
-docker run --name=notify-move -d  -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/inotify-config:/config:ro -v /Users/rija/Public/Drop\ Box/:/home/uploader -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/home/downloader/ coppit/inotify-command
+docker run --name=notify-move -d  -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/inotify-config:/config:ro -v /Users/rija/Public/Drop\ Box/ftp:/home/uploader -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/home/downloader/ coppit/inotify-command
