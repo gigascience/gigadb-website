@@ -6,6 +6,9 @@
 	<link href="https://transloadit.edgly.net/releases/uppy/v0.30.3/uppy.min.css" rel="stylesheet">
 </head>
 <body>
+	<form id="dataset-metadata-form">
+		<input id="dataset" type="hidden" value="100006">
+	</form>
 	<div id="drag-drop-area"></div>
 	<script src="https://transloadit.edgly.net/releases/uppy/v0.30.3/uppy.min.js"></script>
 	<script>
@@ -25,6 +28,13 @@
 						  ],
 						locale: {}
 					})
+					.use(Uppy.Form, {
+						  target: "#dataset-metadata-form",
+						  getMetaFromForm: true,
+						  addResultToForm: false,
+						  triggerUploadOnSubmit: false,
+						  submitOnSuccess: false
+						})
 					// .use(Uppy.Tus, {endpoint: 'https://master.tus.io/files/'});
 					.use(Uppy.Tus, {endpoint: 'http://gigadb.gigasciencejournal.com:9080/files/'});
 
