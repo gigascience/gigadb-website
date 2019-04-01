@@ -1,9 +1,16 @@
 ARG PHP_VERSION=7.0
 FROM php:${PHP_VERSION}-fpm-jessie
 
-
-
-RUN apt-get update && \
+# Problem with Debian repos - adding official LTS repos to use below
+RUN echo "deb http://deb.debian.org/debian/ jessie main contrib non-free" | tee /etc/apt/sources.list && \
+    echo "deb-src http://deb.debian.org/debian/ jessie main contrib non-free" | tee -a /etc/apt/sources.list && \
+    echo "deb http://security.debian.org/ jessie/updates main contrib non-free" | tee -a /etc/apt/sources.list && \
+    echo "deb-src http://security.debian.org/ jessie/updates main contrib non-free" | tee -a /etc/apt/sources.list && \
+# the two repo below are the problematic ones, so commenting them out until debian fix them
+#    echo "deb http://deb.debian.org/debian/ jessie-updates main contrib non-free" | tee -a /etc/apt/sources.list && \
+#    echo "deb-src http://deb.debian.org/debian/ jessie-updates main contrib non-free" | tee -a /etc/apt/sources.list && \
+# basic dependencies
+    apt-get update -yq && \
     apt-get install -y --no-install-recommends \
         curl \
         libmemcached-dev \
@@ -147,7 +154,11 @@ RUN if [ ${INSTALL_TIDEWAYS_XHPROF} = true ]; then \
 ARG INSTALL_LIBSODIUM=false
 
 RUN if [ ${INSTALL_LIBSODIUM} = true ]; then \
-    echo "deb http://ftp.debian.org/debian jessie-backports main" | tee -a /etc/apt/sources.list && \
+    # Problem with using http://ftp.debian.org/debian for installing libsodium
+    # Might be related to https://lists.debian.org/debian-devel-announce/2019/03/msg00006.html
+    # Using archive repo instead
+    echo 'Acquire::Check-Valid-Until "0";' | tee -a /etc/apt/apt.conf.d/apt.conf && \
+    echo "deb http://archive.debian.org/debian jessie-backports main" | tee -a /etc/apt/sources.list && \
     apt-get update && \
     apt-get install -y -t jessie-backports libsodium-dev && \
     pecl install libsodium && \
