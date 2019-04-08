@@ -1,0 +1,65 @@
+version: '3.7'
+
+services:
+
+  tusd:
+    image: rija/tusd
+    volumes:
+      - "/Users/rija/Public/Drop\ Box/tusd:/var/inbox/"
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/var/repo/
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/hooks:/var/hooks
+    command: -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
+    networks:
+      - proto
+    ports:
+      - target: 1080
+        published: 9080
+        protocol: tcp
+        mode: host
+
+  ftpd:
+    image: rija/docker-pure-ftpd
+    volumes:
+      - "/Users/rija/Public/Drop\ Box/ftp:/home/uploader"
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/home/downloader/:ro
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/credentials:/var/private
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/hooks:/var/scripts
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/ftp-transfer-logs:/var/log/pure-ftpd
+    environment:
+      PUBLICHOST: "localhost"
+      ADDED_FLAGS: "-O w3c:/var/log/pure-ftpd/transfer.log"
+    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P localhost
+    networks:
+      - proto
+    ports:
+      - target: 21
+        published: 9021
+        protocol: tcp
+        mode: host
+      - "30000-30009:30000-30009"
+
+
+
+  watcher:
+    image: rija/watchfiles
+    volumes:
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/inotify-config:/config:ro
+      - "/Users/rija/Public/Drop\ Box/ftp:/home/uploader"
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/home/downloader/
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/hooks:/commands:ro
+    networks:
+      - proto
+
+  database:
+    image: postgres:9.4-alpine
+    environment:
+      POSTGRES_DB: proto
+      POSTGRES_USER: proto
+      POSTGRES_PASSWORD: proto
+    expose:
+      - "5432"
+    networks:
+      - proto
+
+networks:
+  proto:
