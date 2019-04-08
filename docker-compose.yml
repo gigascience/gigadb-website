@@ -3,38 +3,31 @@ version: '3.7'
 services:
 
   tusd:
-    build:
-      context: ../tusd
+    image: rija/tusd
     volumes:
-      - "../incoming/tusd:/var/inbox/"
-      - ../repo:/var/repo/
-      - ../hooks:/var/hooks
+      - "/Users/rija/Public/Drop\ Box/tusd:/var/inbox/"
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/var/repo/
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/hooks:/var/hooks
     command: -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
     networks:
       - proto
-    expose:
-      - "1080"
-    cap_drop:
-      - NET_ADMIN
-      - SYS_ADMIN
-    # ports:
-    #   - target: 1080
-    #     published: 9080
-    #     protocol: tcp
-    #     mode: host
+    ports:
+      - target: 1080
+        published: 9080
+        protocol: tcp
+        mode: host
 
   ftpd:
-    build:
-      context: ../docker-pure-ftpd
+    image: rija/docker-pure-ftpd
     volumes:
-      - "../incoming/ftp:/home/uploader"
-      - ../repo:/home/downloader/:ro
-      - ../credentials:/var/private
-      - ../hooks:/var/scripts
-      # - ../ftp-transfer-logs:/var/log/pure-ftpd
+      - "/Users/rija/Public/Drop\ Box/ftp:/home/uploader"
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/home/downloader/:ro
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/credentials:/var/private
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/hooks:/var/scripts
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/ftp-transfer-logs:/var/log/pure-ftpd
     environment:
       PUBLICHOST: "localhost"
-      # ADDED_FLAGS: "-O w3c:/var/log/pure-ftpd/transfer.log"
+      ADDED_FLAGS: "-O w3c:/var/log/pure-ftpd/transfer.log"
     command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P localhost
     networks:
       - proto
@@ -44,204 +37,29 @@ services:
         protocol: tcp
         mode: host
       - "30000-30009:30000-30009"
-    cap_drop:
-      - NET_ADMIN
-      - SYS_ADMIN
+
+
 
   watcher:
-    build:
-      context: ../docker-inotify-command
+    image: rija/watchfiles
     volumes:
-      - ../inotify-config:/config:ro
-      - ../incoming/ftp:/home/uploader
-      - ../repo:/home/downloader/
-      - ../hooks:/commands:ro
-      - ../credentials:/var/access:ro
-      - ../flags:/var/tmp/processing_flag
-      - ../php-conf/appconfig.ini:/var/appconfig.ini:ro
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/inotify-config:/config:ro
+      - "/Users/rija/Public/Drop\ Box/ftp:/home/uploader"
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/home/downloader/
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/hooks:/commands:ro
     networks:
       - proto
-      - db-tier
-    cap_drop:
-      - NET_ADMIN
-      - SYS_ADMIN
 
-  db:
-    image: postgres:9.6-alpine
-    volumes:
-      - ../db_schema.sql:/docker-entrypoint-initdb.d/1-db_schema.sql
+  database:
+    image: postgres:9.4-alpine
     environment:
       POSTGRES_DB: proto
       POSTGRES_USER: proto
       POSTGRES_PASSWORD: proto
-    ports:
-      - target: 5432
-        published: 54322
-        protocol: tcp
-        mode: host
-    networks:
-      - proto
-    cap_drop:
-      - NET_ADMIN
-      - SYS_ADMIN
-
-  proxy:
-    image: nginx:1.15-alpine
-    volumes:
-      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ../nginx/conf.d:/etc/nginx/conf.d:ro
-      - ../html:/var/www:ro
-    ports:
-      - target: 80
-        published: 9090
-        protocol: tcp
-        mode: host
-    networks:
-      - proto
-
-  app:
-    build:
-      context: ../php
-      args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm
-        - APP_PORT=9003
-        - INSTALL_OPCACHE=true
-        - INSTALL_INTL=true
-        - INSTALL_COMPOSER=true
-        - INSTALL_TIDEWAYS_XHPROF=false
-        - INSTALL_LIBSODIUM=true
-        - INSTALL_APCU=true
-        - INSTALL_DOCKER=true
-        - INSTALL_NETCAT_JQ=true
-    volumes:
-      - ../html:/var/www:ro
-      - ../php-conf/php-fpm.ini:/usr/local/etc/php/php.ini:ro
-      - ../php-conf/prototype.pool.conf:/usr/local/etc/php-fpm.d/www.conf:ro
-      - ../php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini:ro
-      - ../php-conf/prototype.ini:/usr/local/etc/php/conf.d/prototype.ini:ro
-      - ../php-conf/appconfig.ini:/var/appconfig.ini:ro
-      - ../incoming:/var/incoming
-      - ../repo:/var/repo
-      - ../credentials:/var/private
-      - ../scripts:/var/scripts:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
     expose:
-      - "9003"
-    networks:
-      - proto
-      - db-tier
-    cap_drop:
-      - NET_ADMIN
-      - SYS_ADMIN
-
-  web:
-    image: nginx:1.15-alpine
-    volumes:
-      - ../app/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ../app/nginx/conf.d:/etc/nginx/conf.d:ro
-      - ../app:/app:ro
-    ports:
-      - target: 80
-        published: 7070
-        protocol: tcp
-        mode: host
-    networks:
-      - proto
-
-  frontend:
-    build:
-      context: ../app/frontend
-      args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm
-        - APP_PORT=9001
-        - INSTALL_OPCACHE=true
-        - INSTALL_INTL=true
-        - INSTALL_COMPOSER=true
-        - INSTALL_TIDEWAYS_XHPROF=false
-        - INSTALL_LIBSODIUM=false
-        - INSTALL_APCU=true
-        - INSTALL_DOCKER_API_ACCESS=true
-    expose:
-      - "9001"
-    volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer/cache:/root/.composer/cache:delegated
-      # Mount source-code for development
-      - ../app:/app
-    networks:
-      - proto
-
-  backend:
-    build:
-      context: ../app/backend
-      args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm
-        - APP_PORT=9002
-        - INSTALL_OPCACHE=true
-        - INSTALL_INTL=true
-        - INSTALL_COMPOSER=true
-        - INSTALL_TIDEWAYS_XHPROF=false
-        - INSTALL_LIBSODIUM=false
-        - INSTALL_APCU=true
-        - INSTALL_DOCKER_API_ACCESS=true
-    expose:
-      - "9002"
-    volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer/cache:/root/.composer/cache:delegated
-      # Mount source-code for development
-      - ../app:/app
-      # directories used for filedrop files
-      - ../incoming:/var/incoming
-      - ../repo:/var/repo
-      - ../credentials:/var/private
-    networks:
-      - proto
-
-  console:
-    build:
-      context: ../app/backend
-      args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm
-        - INSTALL_OPCACHE=true
-        - INSTALL_INTL=true
-        - INSTALL_COMPOSER=true
-        - INSTALL_TIDEWAYS_XHPROF=false
-        - INSTALL_LIBSODIUM=false
-        - INSTALL_APCU=true
-        - INSTALL_DOCKER_API_ACCESS=true
-        - INSTALL_NETCAT_JQ=true
-        - INSTALL_GIT=true
-        - PG_CLIENT_VERSION=9.6
-        - INSTALL_PG_CLIENT=true
-        - INSTALL_XDEBUG=true
-    volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer/cache:/root/.composer/cache:delegated
-      # Mount source-code for development
-      - ../app:/app
-      # directories used for filedrop files
-      - ../incoming:/var/incoming
-      - ../repo:/var/repo
-      - ../credentials:/var/private
-      # to run tests that interact with containers
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - proto
-
-  pgsql:
-    image: postgres:10.8-alpine
-    environment:
-      - POSTGRES_DB=yii2advanced
-      - POSTGRES_USER=yii2advanced
-      - POSTGRES_PASSWORD=secret
-    volumes:
-      - ../app/backend/db/bootstrap.sql:/docker-entrypoint-initdb.d/backend.sql
+      - "5432"
     networks:
       - proto
 
 networks:
   proto:
-  db-tier:
-    external: true
-    name: deployment_db-tier
