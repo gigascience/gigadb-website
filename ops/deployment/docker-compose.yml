@@ -64,7 +64,10 @@ services:
       POSTGRES_USER: gigadb
       POSTGRES_PASSWORD: vagrant
     ports:
-    - "54321:5432"
+      - target: 5432
+        published: 54321
+        protocol: tcp
+        mode: host
     volumes:
       - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
       - ${APPLICATION}/ops/configuration/postgresql-conf/bootstrap.sql:/docker-entrypoint-initdb.d/1-gigadb_testdata.sql
