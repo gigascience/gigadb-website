@@ -68,12 +68,13 @@ class Dataset extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('submitter_id, identifier, title, dataset_size, ftp_site', 'required'),
+            array('submitter_id, identifier, title, ftp_site', 'required'),
             array('submitter_id, image_id, publisher_id', 'numerical', 'integerOnly'=>true),
             array('dataset_size', 'numerical'),
             array('identifier, excelfile_md5', 'length', 'max'=>32),
             array('title', 'length', 'max'=>300),
             array('upload_status', 'length', 'max'=>45),
+            array('manuscript_id', 'length', 'max'=>50),
             array('ftp_site', 'length', 'max'=>100),
             array('excelfile', 'length', 'max'=>50),
             array('description, publication_date, modification_date, image_id, fairnuse, types', 'safe'),
@@ -189,6 +190,8 @@ class Dataset extends CActiveRecord
             'id' => 'ID',
             'submitter_id' => 'Submitter',
             'image_id' => 'Image',
+            'curator_id' => 'Curator ID',
+            'manuscript_id' => 'GigaScience manuscript',
             'identifier' => 'DOI',
             'title' => Yii::t('app' ,'Title'),
             'description' => 'Description',
@@ -585,5 +588,51 @@ class Dataset extends CActiveRecord
 
 
         return $xml->asXML();
+    }
+
+    public function setIdentifier()
+    {
+        $lastDataset = Dataset::model()->find(array('order'=>'identifier desc'));
+        $lastIdentifier = intval($lastDataset->identifier);
+
+        $this->identifier = $lastIdentifier + 1;
+    }
+
+    public function loadByData($data)
+    {
+        $this->submitter_id = Yii::app()->user ? Yii::app()->user->_id : null;
+        $this->manuscript_id = $data['manuscript_id'];
+        $this->title = $data['title'];
+        $this->description = $data['description'];
+        $this->upload_status = "Incomplete";
+        $this->ftp_site = "''";
+        $this->setIdentifier();
+    }
+
+    public function updateKeywords($keywords)
+    {
+        $attribute_service = Yii::app()->attributeService;
+        $attribute_service->replaceKeywordsForDatasetIdWithString($this->id, $keywords);
+    }
+
+    public function updateTypes($types)
+    {
+        DatasetType::storeDatasetTypes($this->id, $types);
+    }
+
+    public function addAuthor(Author $author)
+    {
+        $da = DatasetAuthor::model()->findByAttributes(array('dataset_id'=>$this->id), array('order'=>'rank desc'));
+        if(!$da) {
+            $rank = 1;
+        } else {
+            $rank = intval($da->rank)+1;
+        }
+
+        $da = new DatasetAuthor();
+        $da->dataset_id = $this->id;
+        $da->author_id = $author->id;
+        $da->rank = $rank;
+        return $da->save();
     }
 }
