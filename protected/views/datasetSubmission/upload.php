@@ -34,16 +34,16 @@
                 <br/>
                 Please download the template spreadsheet here
                 <br/><br/>
-                <a href="/files/GigaDBUploadForm.xls" class="btn pull-right">Download template spreadsheet (Excel)</a>
+                <a href="/files/GigaDBUploadForm.xlsx" class="btn pull-right">Download template spreadsheet (Excel)</a>
                 <div class="clear"></div>
-                <a href="/files/GigaDBUploadForm.xls" class="btn pull-right">Download template spreadsheet (Open Office)</a>
+                <a href="#" class="btn pull-right">Download template spreadsheet (Open Office)</a>
                 <div class="clear"></div>
 
                 To assist you in completing the information you may wish to see an example of a completed spreadsheet, you may download an example here
                 <br/><br/>
                 <a href="/files/GigaDBUploadForm-example1.xls" class="btn pull-right">Download Example 1 (Excel)</a>
                 <div class="clear"></div>
-                <a href="/files/GigaDBUploadForm-example2.xls" class="btn pull-right">Download Example 1 (Open Office)</a>
+                <a href="#" class="btn pull-right">Download Example 1 (Open Office)</a>
                 <div class="clear"></div>
 
                 <br/><br/>

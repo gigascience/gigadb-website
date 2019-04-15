@@ -72,7 +72,7 @@ class Images extends ImageHaver
 
     public function validateCredit($attribute, $params)
     {
-        $licenses = array('public domain', 'CC0');
+        $licenses = array('Public Domain', 'CC0');
 
         if(!in_array($this->license, $licenses) && !$this->$attribute) {
             $labels = $this->attributeLabels();

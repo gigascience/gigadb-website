@@ -165,10 +165,12 @@ $form = $this->beginWidget('CActiveForm', array(
                    for further reading on creative commons licenses."></a>
                 <div class="controls">
                     <?php echo $form->dropDownList($image,'license', array(
-                        'public domain' => 'public domain',
                         'CC0' => 'CC0',
-                        'CC1' => 'CC1',
-                        'CC2' => 'CC2'
+                        'CC BY' => 'CC BY',
+                        'CC BY-SA' => 'CC BY-SA',
+                        'CC BY-NC' => 'CC BY-NC',
+                        'Public Domain' => 'Public Domain',
+                        'GNU Free Documentation License' => 'GNU Free Documentation License',
                     ), array('class' => 'image')); ?>
                     <?php echo $form->error($image, 'license'); ?>
                 </div>
