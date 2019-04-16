@@ -34,20 +34,22 @@
         .popover-content a {
             color: #005b2d !important;
         }
-        a.myHint2 {
-            display: inline-block;
-            background-image: url(/images/hint-icon.png);
-            height: 20px;
-            width: 20px;
-        }
-        select.image {
+        select.dropdown-white {
             background-color: white;
         }
-        select.image:disabled {
+        select.dropdown-white:disabled {
             background-color: #eee !important;
         }
         #author-table td {
             white-space: nowrap;
+        }
+        .additional-bordered {
+            border: 3px solid #BFBFBF;
+            padding: 10px;
+        }
+        .additional-button {
+            width: 50px;
+            margin: 0 10px;
         }
     </style>
     <script>

@@ -167,11 +167,8 @@ $form = $this->beginWidget('CActiveForm', array(
                     <?php echo $form->dropDownList($image,'license', array(
                         'CC0' => 'CC0',
                         'CC BY' => 'CC BY',
-                        'CC BY-SA' => 'CC BY-SA',
-                        'CC BY-NC' => 'CC BY-NC',
                         'Public Domain' => 'Public Domain',
-                        'GNU Free Documentation License' => 'GNU Free Documentation License',
-                    ), array('class' => 'image')); ?>
+                    ), array('class' => 'image dropdown-white')); ?>
                     <?php echo $form->error($image, 'license'); ?>
                 </div>
             </div>
