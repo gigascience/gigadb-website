@@ -26,3 +26,12 @@ ncftpget -u d-100006 -P 9021 -p sfhsadhf localhost . /some_file.txt
 docker run --name=notify-move -d  -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/inotify-config:/config:ro -v /Users/rija/Public/Drop\ Box/ftp:/home/uploader -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/home/downloader/ -v /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/hooks:/commands:ro rija/watchfiles
 
 ## add uploaded files to database
+
+* list files
+* get filename, file type and file size
+* generate ftp link
+* generate md5 checksum
+* update datatabe table "file" rows for that dataset:
+	* update row if columns of a row have changed
+	* noop if columns of a row are unchanged
+
