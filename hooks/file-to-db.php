@@ -3,6 +3,57 @@
 <?php
 
 const FLAG_PATH = "/var/tmp/processing_flag" ;
+const DATA_TYPES = array(
+					"txt" => "Read Me",
+					"sh" => "Script",
+					"jpg" => "Photography",
+					"png" => "Infographics",
+					"zip" => "Mixed Archive",
+					"pdf" => "Instructions",
+				);
+
+const FILE_FORMATS = array(
+					"txt" => "TEXT",
+					"doc" => "TEXT",
+					"md" => "TEXT",
+					"text" => "TEXT",
+					"readme" => "TEXT",
+					"fa" => "FASTA",
+					"pdf" => "PDF",
+);
+
+/**
+ * Determine an approximate data type based on file extension
+ *
+ * @param string file name
+ * @return string the type of the data
+ */
+function getApproximateDataTypeFromFile(string $file_name): string
+{
+
+	$ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+	if (true == in_array($ext, array_keys(DATA_TYPES)) ) {
+		return DATA_TYPES[$ext];
+	}
+	return "Unknown Data Type" ;
+}
+
+/**
+ * Determine file format based on file extension
+ *
+ * @param string file name
+ * @return string the file format
+ */
+function getFileFormatFromFile(string $file_name): string
+{
+
+	$ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+	if (true == in_array($ext, array_keys(FILE_FORMATS)) ) {
+		return FILE_FORMATS[$ext];
+	}
+	return "Unknown File Format" ;
+}
+
 
 /**
  * Get list of datasetd directories from filesystem
@@ -86,15 +137,13 @@ function fileMetadata(string $file_name, int $dataset): array
 					"data_type" => null,
 					"format" => null,
 					"size" => $file_stats[7],
-					"link" => null,
+					"link" => "ftp://d-$dataset:<password here>@localhost:9021/$file_name",
+					"md5" => null,
 					"description" => null
 				);
 
-	// $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    // $metadata["format"] = finfo_file($finfo, $file_path) ;
-	// finfo_close($finfo);
-	$metadata["format"] = "Enter a format";
-	$metadata["data_type"] = "Enter a data type";
+	$metadata["format"] = getFileFormatFromFile($file_name);
+	$metadata["data_type"] = getApproximateDataTypeFromFile($file_name);
 	return $metadata;
 }
 
