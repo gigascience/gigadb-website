@@ -54,7 +54,25 @@ function getFileFormatFromFile(string $file_name): string
 	return "Unknown File Format" ;
 }
 
+/**
+ * Construct the ftp link
+ *
+ * @param string $file_name the name of the file
+ * @param int $datasetid the dataset identifier associated to the file
+ * @return string the ftp url
+ */
+function generateFTPLink(string $file_name, int $dataset): string
+{
+	$handle = fopen("/var/access/download_password.txt", "r");
+	$line = fgets($handle) ;
+	if (true == $line) {
+		$download_password = chop($line);
+	}
+	fclose($handle);
 
+	$ftp_link = "ftp://d-$dataset:$download_password@localhost:9021/$file_name";
+	return $ftp_link;
+}
 /**
  * Get list of datasetd directories from filesystem
  *
@@ -137,13 +155,14 @@ function fileMetadata(string $file_name, int $dataset): array
 					"data_type" => null,
 					"format" => null,
 					"size" => $file_stats[7],
-					"link" => "ftp://d-$dataset:<password here>@localhost:9021/$file_name",
+					"link" => null,
 					"md5" => null,
 					"description" => null
 				);
 
 	$metadata["format"] = getFileFormatFromFile($file_name);
 	$metadata["data_type"] = getApproximateDataTypeFromFile($file_name);
+	$metadata["link"] = generateFTPLink($file_name,$dataset);
 	return $metadata;
 }
 
