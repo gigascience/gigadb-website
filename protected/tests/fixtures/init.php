@@ -21,6 +21,7 @@
 
 	$this->loadFixture("file_format");
 	$this->loadFixture("file_type");
+	$this->loadFixture("contribution");
 
 	// $this->loadFixture("species");
 	// $this->loadFixture("file");

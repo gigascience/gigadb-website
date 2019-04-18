@@ -106,7 +106,7 @@ Rosalind	Elsie	Franklin 	0000-0000-0000-0001	Conceptualization"
      <div style="text-align:center">
         <a href="/datasetSubmission/study/id/<?= $model->id ?>" class="btn-green">Previous</a>
          <a href="/user/view_profile" class="btn-green">Save</a>
-        <a href="/datasetSubmission/projectManagement/id/<?= $model->id ?>" class="btn-green">Next</a>
+        <a href="/datasetSubmission/additional/id/<?= $model->id ?>" class="btn-green">Next</a>
     </div>
 
 </div>

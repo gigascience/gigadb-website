@@ -88,6 +88,41 @@ class DatasetSubmissionController extends Controller
         }
     }
 
+    /**
+     * Author page.
+     */
+    public function actionAdditional()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        } else {
+            $dataset = $this->getDataset($_GET['id']);
+
+            $this->isSubmitter($dataset);
+
+            $links = Link::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
+
+            $link_database = Yii::app()->db->createCommand()
+                ->select("prefix")
+                ->from("prefix")
+                ->order("prefix asc")
+                ->group("prefix")
+                ->queryAll();
+
+            $relations = Relation::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'related_doi asc'));
+
+            $dps = DatasetProject::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
+
+            $this->render('additional', array(
+                'model' => $dataset,
+                'links' => $links,
+                'link_database' => $link_database,
+                'relations' => $relations,
+                'dps' => $dps,
+            ));
+        }
+    }
+
     protected function getDataset($id)
     {
         $dataset = Dataset::model()->findByPk($id);

@@ -31,7 +31,7 @@ class AdminDatasetProjectController extends Controller
 				'roles'=>array('admin'),
 			),
                         array('allow',
-                                'actions' => array('create1', 'delete1','addProject','deleteProject'),
+                                'actions' => array('create1', 'delete1','addProject','deleteProject', 'deleteProjects'),
                                  'users' => array('@'),
                         ),
 			array('deny',  // deny all users
@@ -256,36 +256,103 @@ class AdminDatasetProjectController extends Controller
 	}
 
 	public function actionAddProject() {
-            if(isset($_POST['dataset_id']) && isset($_POST['project_id'])) {
-            	$project = Project::model()->findByPk($_POST['project_id']);
-            	if(!$project) {
-            		Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot find project.")));
-            	}
+        if(isset($_POST['dataset_id']) && isset($_POST['project_id'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
 
-            	$dp = DatasetProject::model()->findByAttributes(array('dataset_id'=>$_POST['dataset_id'], 'project_id'=>$_POST['project_id']));
-            	if($dp) {
-            		Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "This project has been added already.")));
-            	}
-
-            	$dp = new datasetProject;
-            	$dp->dataset_id = $_POST['dataset_id'];
-            	$dp->project_id = $_POST['project_id'];
-
-            	if($dp->save()) {
-            		Util::returnJSON(array("success"=>true));
-            	}
-
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
+            $project = Project::model()->findByPk($_POST['project_id']);
+            if(!$project) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot find project.")));
             }
-        }
 
-        public function actionDeleteProject() {
-            if(isset($_POST['dp_id'])) {
-                $dp = DatasetProject::model()->findByPk($_POST['dp_id']);
-                if($dp->delete()) {
+            $dp = DatasetProject::model()->findByAttributes(array('dataset_id'=>$_POST['dataset_id'], 'project_id'=>$_POST['project_id']));
+            if($dp) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "This project has been added already.")));
+            }
+
+            $transaction = Yii::app()->db->beginTransaction();
+
+            $dp = new datasetProject;
+            $dp->dataset_id = $_POST['dataset_id'];
+            $dp->project_id = $_POST['project_id'];
+
+            if($dp->save()) {
+                $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_PROJECTS, true);
+                if ($dataset->save()) {
+                    $transaction->commit();
                     Util::returnJSON(array("success"=>true));
-                   }
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                }
             }
+
+            $transaction->rollback();
+             Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
         }
+    }
+
+    public function actionDeleteProject() {
+        if(isset($_POST['dataset_id']) && isset($_POST['dp_id'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
+
+            $transaction = Yii::app()->db->beginTransaction();
+
+            $dp = DatasetProject::model()->findByPk($_POST['dp_id']);
+            if($dp->delete()) {
+                $count = DatasetProject::model()->CountByAttributes(array('dataset_id' => $_POST['dataset_id']));
+
+                if (!$count) {
+                    $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_PROJECTS, false);
+                    if ($dataset->save()) {
+                        $transaction->commit();
+                        Util::returnJSON(array("success"=>true));
+                    } else {
+                        $transaction->rollback();
+                        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                    }
+                }
+                $transaction->commit();
+                Util::returnJSON(array("success"=>true));
+            }
+             Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+        }
+    }
+
+    public function actionDeleteProjects() {
+        if(isset($_POST['dataset_id'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
+
+            $projects = DatasetProject::model()->findAllByAttributes(array('dataset_id' => $_POST['dataset_id']));
+            $transaction = Yii::app()->db->beginTransaction();
+            foreach ($projects as $project) {
+                if(!$project->delete()) {
+                    $transaction->rollback();
+                    Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                }
+            }
+
+            $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_PROJECTS, false);
+            if ($dataset->save()) {
+                $transaction->commit();
+                Util::returnJSON(array("success"=>true));
+            }
+            $transaction->rollback();
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Error.")));
+    }
+
+
+    /**
+     * @param $id
+     * @return array|Dataset|mixed|null
+     * @throws \yii\web\BadRequestHttpException
+     */
+    protected function getDataset($id)
+    {
+        $dataset = Dataset::model()->findByPk($id);
+
+        if (!$dataset) {
+            throw new \yii\web\BadRequestHttpException('Dataset ID is invalid.');
+        }
+
+        return $dataset;
+    }
 }

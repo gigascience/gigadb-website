@@ -6,14 +6,8 @@ $action = Yii::app()->controller->action->id;
    class="btn <?= $action == 'study' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'Study')?></a>
 <a href="/datasetSubmission/author/id/<?= $model->id ?>"
    class="btn <?= $action == 'author' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'Author')?></a>
-<a href="/datasetSubmission/projectManagement/id/<?= $model->id ?>"
-   class="btn nomargin"><?= Yii::t('app' , 'Project')?></a>
-<a href="/datasetSubmission/linkManagement/id/<?= $model->id ?>"
-   class="btn nomargin"><?= Yii::t('app' , 'Link')?></a>
-<a href="/datasetSubmission/exLinkManagement/id/<?= $model->id ?>"
-   class="btn nomargin"><?= Yii::t('app' , 'External Link')?></a>
-<a href="/datasetSubmission/relatedDoiManagement/id/<?= $model->id ?>"
-   class="btn nomargin"><?= Yii::t('app' , 'Related Doi')?></a>
+<a href="/datasetSubmission/additional/id/<?= $model->id ?>"
+   class="btn <?= $action == 'additional' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'Additional Information')?></a>
 <a href="/datasetSubmission/sampleManagement/id/<?= $model->id ?>"
    class="btn nomargin"><?= Yii::t('app' , 'Sample')?></a>
 <?php if($model->isProteomic) : ?>

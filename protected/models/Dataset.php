@@ -1,6 +1,27 @@
 <?php
 Yii::import('application.extensions.CAdvancedArBehavior');
 
+/**
+ * @property integer $id
+ * @property integer $submitter_id
+ * @property integer $image_id
+ * @property integer $curator_id
+ * @property string $manuscript_id
+ * @property string $identifier
+ * @property string $title
+ * @property string $description
+ * @property integer $dataset_size
+ * @property string $ftp_site
+ * @property string $upload_status
+ * @property string $excelfile
+ * @property string $excelfile_md5
+ * @property string $publication_date
+ * @property string $modification_date
+ * @property integer $publisher_id
+ * @property string $token
+ * @property string $fairnuse
+ * @property string $additional_information
+ */
 class Dataset extends CActiveRecord
 {
     /**
@@ -15,6 +36,12 @@ class Dataset extends CActiveRecord
     const URL_BIBTEXT = 'http://data.datacite.org/application/x-bibtex/10.5524/';
     const URL_TEXT = 'http://data.datacite.org/application/x-datacite+text/10.5524/';
 
+    const ADD_INFO_PUBLIC_LINKS = 0;
+    const ADD_INFO_RELATED_DOI = 1;
+    const ADD_INFO_PROJECTS = 2;
+    const ADD_INFO_MANUSCRIPTS = 3;
+    const ADD_INFO_PROTOCOLS = 4;
+    const ADD_INFO_3D = 5;
 
     public $dTypes="";
     public $commonNames="";
@@ -73,6 +100,7 @@ class Dataset extends CActiveRecord
             array('dataset_size', 'numerical'),
             array('identifier, excelfile_md5', 'length', 'max'=>32),
             array('title', 'length', 'max'=>300),
+            array('additional_information', 'length', 'max'=>500),
             array('upload_status', 'length', 'max'=>45),
             array('manuscript_id', 'length', 'max'=>50),
             array('ftp_site', 'length', 'max'=>100),
@@ -634,5 +662,23 @@ class Dataset extends CActiveRecord
         $da->author_id = $author->id;
         $da->rank = $rank;
         return $da->save();
+    }
+
+    public function getAdditionalInformation()
+    {
+        return $this->additional_information ? json_decode($this->additional_information) : array();
+    }
+
+    public function setAdditionalInformation(array $addInfo)
+    {
+        $this->additional_information = json_encode($addInfo);
+    }
+
+    public function setAdditionalInformationKey($key, $value)
+    {
+        $addInfo = $this->getAdditionalInformation();
+        $addInfo[$key] = (int)$value;
+
+        $this->setAdditionalInformation($addInfo);
     }
 }

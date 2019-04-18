@@ -31,7 +31,7 @@ class AdminLinkController extends Controller
 				'roles'=>array('admin'),
 			),
                      array('allow',
-                                 'actions' => array('create1', 'delete1','addLink', 'deleteLink'),
+                                 'actions' => array('create1', 'delete1','addLink', 'deleteLink', 'deleteLinks'),
                                  'users' => array('@'),
                         ),
 			array('deny',  // deny all users
@@ -274,39 +274,108 @@ class AdminLinkController extends Controller
 	}
 
 	public function actionAddLink() {
-            if(isset($_POST['dataset_id']) && isset($_POST['database']) && isset($_POST['acc_num'])) {
+        if(isset($_POST['dataset_id']) && isset($_POST['database']) && isset($_POST['acc_num'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
 
-            	// if(!is_numeric($_POST['acc_num'])) {
-            	// 	Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Please enter a number.")));
-            	// }
+            // if(!is_numeric($_POST['acc_num'])) {
+            // 	Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Please enter a number.")));
+            // }
 
-            	$linkVal =  $_POST['database'].":".$_POST['acc_num'];
+            $linkVal =  $_POST['database'].":".$_POST['acc_num'];
 
-            	$link = Link::model()->findByAttributes(array('dataset_id'=>$_POST['dataset_id'], 'link'=>$linkVal));
-            	if($link) {
-            		Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "This link has been added already.")));
-            	}
-            	
-            	$link = new Link;
-            	$link->dataset_id = $_POST['dataset_id'];
-            	$link->is_primary = true;
-            	$link->link = $linkVal;
-
-            	if($link->save()) {
-            		Util::returnJSON(array("success"=>true));
-            	}
-
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
+            $link = Link::model()->findByAttributes(array('dataset_id'=>$_POST['dataset_id'], 'link'=>$linkVal));
+            if($link) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "This link has been added already.")));
             }
-        }
 
-        public function actionDeleteLink() {
-            if(isset($_POST['link_id'])) {
-                $link = Link::model()->findByPk($_POST['link_id']);
-                if($link->delete()) {
+            $transaction = Yii::app()->db->beginTransaction();
+
+            $link = new Link;
+            $link->dataset_id = $_POST['dataset_id'];
+            $link->is_primary = true;
+            $link->link = $linkVal;
+
+            if($link->save()) {
+                $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_PUBLIC_LINKS, true);
+                if ($dataset->save()) {
+                    $transaction->commit();
                     Util::returnJSON(array("success"=>true));
-                   }
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                }
             }
+
+             $transaction->rollback();
         }
+
+        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
+    }
+
+    public function actionDeleteLink() {
+        if(isset($_POST['dataset_id']) && isset($_POST['link_id'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
+
+            $transaction = Yii::app()->db->beginTransaction();
+
+            $link = Link::model()->findByPk($_POST['link_id']);
+            if($link->delete()) {
+                $count = Link::model()->CountByAttributes(array('dataset_id' => $_POST['dataset_id']));
+
+                if (!$count) {
+                    $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_PUBLIC_LINKS, false);
+                    if ($dataset->save()) {
+                        $transaction->commit();
+                        Util::returnJSON(array("success"=>true));
+                    } else {
+                        $transaction->rollback();
+                        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                    }
+                }
+                $transaction->commit();
+                Util::returnJSON(array("success"=>true));
+            }
+
+            $transaction->rollback();
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+    }
+
+    public function actionDeleteLinks() {
+        if(isset($_POST['dataset_id'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
+
+            $links = Link::model()->findAllByAttributes(array('dataset_id' => $_POST['dataset_id']));
+            $transaction = Yii::app()->db->beginTransaction();
+            foreach ($links as $link) {
+                if(!$link->delete()) {
+                    $transaction->rollback();
+                    Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                }
+            }
+
+            $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_PUBLIC_LINKS, false);
+            if ($dataset->save()) {
+                $transaction->commit();
+                Util::returnJSON(array("success"=>true));
+            }
+            $transaction->rollback();
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Error.")));
+    }
+
+    /**
+     * @param $id
+     * @return array|Dataset|mixed|null
+     * @throws \yii\web\BadRequestHttpException
+     */
+    protected function getDataset($id)
+    {
+        $dataset = Dataset::model()->findByPk($id);
+
+        if (!$dataset) {
+            throw new \yii\web\BadRequestHttpException('Dataset ID is invalid.');
+        }
+
+        return $dataset;
+    }
 }
