@@ -31,7 +31,7 @@ docker run --name=notify-move -d  -v /Users/rija/Documents/clients-work/bgi/tus-
 * get filename, file type and file size
 * generate ftp link
 * generate md5 checksum
-* update datatabe table "file" rows for that dataset:
+* update a database table "file" rows for that dataset:
 	* update row if columns of a row have changed
 	* noop if columns of a row are unchanged
 
