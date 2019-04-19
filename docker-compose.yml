@@ -52,13 +52,18 @@ services:
       - proto
 
   database:
-    image: postgres:9.4-alpine
+    image: postgres:9.6-alpine
+    volumes:
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/db_schema.sql:/docker-entrypoint-initdb.d/1-db_schema.sql
     environment:
       POSTGRES_DB: proto
       POSTGRES_USER: proto
       POSTGRES_PASSWORD: proto
-    expose:
-      - "5432"
+    ports:
+      - target: 5432
+        published: 54321
+        protocol: tcp
+        mode: host
     networks:
       - proto
 
