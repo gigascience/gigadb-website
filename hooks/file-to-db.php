@@ -166,15 +166,67 @@ function fileMetadata(string $file_name, int $dataset): array
 	return $metadata;
 }
 
+
+/**
+ * Connect to the database
+ *
+ * @return object return a database connection handle
+ */
+function connectDB(): object
+{
+	$dbh = new PDO('pgsql:host=tus-uppy-proto_database_1;dbname=proto', 'proto', 'proto');
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+	return $dbh ;
+}
+
+/**
+ * Updating all the rows for a datasets in the file table
+ *
+ * using fetch, delete, insert approach
+ *
+ * @param object $dbh database handle
+ * @param int $dataset dataset id
+ * @return int number of row updated
+ */
+function updateFileTable(object $dbh, int $dataset, array $uploadedFilesMetadata): int
+{
+	$result = 0;
+	$status = 1;
+	$delete = "delete from file where doi_suffix= ? and status = ?";
+	$insert = "insert into file(doi_suffix,name,size,status) values(:d , :n , :z , 1)";
+
+	$delete_statement = $dbh->prepare($delete);
+	$delete_statement->bindParam(1, $dataset);
+	$delete_statement->bindParam(2, $status);
+	$delete_statement->execute();
+
+	$insert_statement = $dbh->prepare($insert);
+	$insert_statement->bindParam(':d', $dataset);
+	$insert_statement->bindParam(':n', $name);
+	$insert_statement->bindParam(':z', $size);
+	foreach ($uploadedFilesMetadata as $file) {
+		$name = $file["file_name"] ;
+		$size = $file["size"] ;
+		$result += $insert_statement->execute();
+	}
+
+	return $result;
+}
+
 clearstatcache();
+$dbh = connectDB();
 echo "Scanning file system".PHP_EOL;
 
 foreach (getDatasetDirectories("/home/downloader/") as $dataset_dir) {
 	echo "----------------- $dataset_dir ---------------".PHP_EOL;
+	$files = [];
 	foreach ( getFiles("/home/downloader/$dataset_dir") as $file ) {
-		echo "$file metadata:".PHP_EOL;
-		var_dump(fileMetadata($file, $dataset_dir));
+		echo "Gathering metadata for $file".PHP_EOL;
+		array_push( $files, fileMetadata($file, $dataset_dir) );
 	}
+	echo "Updating File table...".PHP_EOL;
+	$nbRecords = updateFileTable($dbh, $dataset_dir, $files);
+	echo "Number of records changed for files in $dataset_dir: $nbRecords".PHP_EOL;
 }
 
 touchFlag();
