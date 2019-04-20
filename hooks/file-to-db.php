@@ -74,7 +74,7 @@ function generateFTPLink(string $file_name, int $dataset): string
 	return $ftp_link;
 }
 /**
- * Get list of datasetd directories from filesystem
+ * Get list of dataset directories from filesystem
  *
  * @param $download_path path to the common drop area
  * @return array list of dataset directories
@@ -122,7 +122,8 @@ function touchFlag()
 }
 
 /**
- * verify whether the directory is newer than the file flag
+ * Verify whether the directory is newer than the file flag
+ *
  * @param string $directory_path directory to compare modification time
  * @return boolean true if the directory is newer than the file flag, false o/w
  */
@@ -176,14 +177,14 @@ function fileMetadata(string $file_name, int $dataset): array
 function connectDB(): object
 {
 	$dbh = new PDO('pgsql:host=tus-uppy-proto_database_1;dbname=proto', 'proto', 'proto');
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
 	return $dbh ;
 }
 
 /**
- * Updating all the rows for a datasets in the file table
+ * Updating all the file table rows for a dataset whose files are being uploaded
  *
- * using fetch, delete, insert approach
+ * using delete and insert approach
  *
  * @param object $dbh database handle
  * @param int $dataset dataset id
@@ -192,13 +193,11 @@ function connectDB(): object
 function updateFileTable(object $dbh, int $dataset, array $uploadedFilesMetadata): int
 {
 	$result = 0;
-	$status = 1;
-	$delete = "delete from file where doi_suffix= ? and status = ?";
-	$insert = "insert into file(doi_suffix,name,size,status,location,format,data_type,description) values(:d , :n , :z , 1, :l, :f, :t, :s)";
+	$delete = "delete from file where doi_suffix= ? and status = 'uploading'";
+	$insert = "insert into file(doi_suffix,name,size,status,location,format,data_type,description) values(:d , :n , :z , 'uploading', :l, :f, :t, :s)";
 
 	$delete_statement = $dbh->prepare($delete);
 	$delete_statement->bindParam(1, $dataset);
-	$delete_statement->bindParam(2, $status);
 	$delete_statement->execute();
 
 	$insert_statement = $dbh->prepare($insert);

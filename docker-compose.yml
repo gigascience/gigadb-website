@@ -48,6 +48,7 @@ services:
       - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo:/home/downloader/
       - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/hooks:/commands:ro
       - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/credentials:/var/access:ro
+      - /Users/rija/Documents/clients-work/bgi/tus-uppy-proto/repo/processing_flag:/var/tmp/processing_flag
     networks:
       - proto
 
