@@ -3,7 +3,7 @@ CREATE TABLE file (
     doi_suffix integer NOT NULL,
     name character varying(100) NOT NULL,
     size bigint NOT NULL,
-    status int DEFAULT 1, -- 1: upload, 2: private, 3: public
+    status character varying(100) DEFAULT 'uploading'::text, -- 1: uploading, 2: private, 3: public
     location character varying(200),
     description text DEFAULT ''::text,
     initial_md5 text DEFAULT ''::text,
