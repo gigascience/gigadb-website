@@ -27,11 +27,19 @@ docker run --name=notify-move -d  -v /Users/rija/Documents/clients-work/bgi/tus-
 
 ## add uploaded files to database
 
-* list files
-* get filename, file type and file size
-* generate ftp link
-* generate md5 checksum
+* list files [x]
+* get filename, file type and file size [x]
+* generate ftp link [x]
 * update a database table "file" rows for that dataset:
-	* update row if columns of a row have changed
-	* noop if columns of a row are unchanged
+	* update row if columns of a row have changed [x]
+	* noop if columns of a row are unchanged [x]
 
+## creating drop box area for a new dataset
+
+* create ftp upload directory [ ]
+* create ftp download directory [ ]
+* create ftp accounts [ ]
+* create an uploader page for dataset [ ]
+* create a downloader page for dataset [ ]
+* create an admin page [ ]
+* setup an nginx container [ ]
