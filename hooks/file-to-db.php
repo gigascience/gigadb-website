@@ -109,7 +109,8 @@ function getDatasetDirectories(string $download_path): array
  */
 function getFiles(string $path): array
 {
-	return scandir($path);
+	$scanned_directory = array_diff(scandir($path), array('..', '.', '.DS_Store'));
+	return $scanned_directory;
 }
 
 /**
@@ -193,7 +194,7 @@ function updateFileTable(object $dbh, int $dataset, array $uploadedFilesMetadata
 	$result = 0;
 	$status = 1;
 	$delete = "delete from file where doi_suffix= ? and status = ?";
-	$insert = "insert into file(doi_suffix,name,size,status) values(:d , :n , :z , 1)";
+	$insert = "insert into file(doi_suffix,name,size,status,location,format,data_type,description) values(:d , :n , :z , 1, :l, :f, :t, :s)";
 
 	$delete_statement = $dbh->prepare($delete);
 	$delete_statement->bindParam(1, $dataset);
@@ -204,9 +205,17 @@ function updateFileTable(object $dbh, int $dataset, array $uploadedFilesMetadata
 	$insert_statement->bindParam(':d', $dataset);
 	$insert_statement->bindParam(':n', $name);
 	$insert_statement->bindParam(':z', $size);
+	$insert_statement->bindParam(':l', $location);
+	$insert_statement->bindParam(':f', $format);
+	$insert_statement->bindParam(':t', $data_type);
+	$insert_statement->bindParam(':s', $summary);
 	foreach ($uploadedFilesMetadata as $file) {
 		$name = $file["file_name"] ;
 		$size = $file["size"] ;
+		$location = $file["link"] ;
+		$format = $file["format"] ;
+		$data_type = $file["data_type"] ;
+		$summary = $file["description"] ;
 		$result += $insert_statement->execute();
 	}
 
