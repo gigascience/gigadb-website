@@ -273,7 +273,11 @@ class AdminLinkController extends Controller
 		}
 	}
 
-	public function actionAddLink() {
+    /**
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionAddLink() {
         if(isset($_POST['dataset_id']) && isset($_POST['database']) && isset($_POST['acc_num'])) {
             $dataset = $this->getDataset($_POST['dataset_id']);
 
@@ -287,8 +291,8 @@ class AdminLinkController extends Controller
             }
 
             $pattern = $database['regexp'];
-            if ($pattern && !preg_match($pattern, $_POST['acc_num'])) {
-                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Value is invalid. Valid pattern is: " . $pattern)));
+            if (empty($_POST['acc_num']) || ($pattern && !preg_match($pattern, $_POST['acc_num']))) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Accession Number is invalid.")));
             }
 
             $linkVal =  $_POST['database'].":".$_POST['acc_num'];
@@ -319,58 +323,88 @@ class AdminLinkController extends Controller
         Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
     }
 
+    /**
+     * @throws CDbException
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
     public function actionDeleteLink() {
         if(isset($_POST['dataset_id']) && isset($_POST['link_id'])) {
             $dataset = $this->getDataset($_POST['dataset_id']);
+            $link = Link::model()->findByPk($_POST['link_id']);
+            if (!$link) {
+                throw new \yii\web\BadRequestHttpException('Link ID is invalid.');
+            }
 
             $transaction = Yii::app()->db->beginTransaction();
-
-            $link = Link::model()->findByPk($_POST['link_id']);
             if($link->delete()) {
                 $count = Link::model()->CountByAttributes(array('dataset_id' => $_POST['dataset_id']));
 
                 if (!$count) {
                     $dataset->setAdditionalInformationKey(AIHelper::PUBLIC_LINKS, false);
-                    if ($dataset->save()) {
-                        $transaction->commit();
-                        Util::returnJSON(array("success"=>true));
-                    } else {
+                    if (!$dataset->save()) {
                         $transaction->rollback();
-                        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                        Util::returnJSON(array(
+                            "success" => false,
+                            "message" => Yii::t("app", "Cant update Dataset."),
+                        ));
                     }
                 }
+
                 $transaction->commit();
                 Util::returnJSON(array("success"=>true));
             }
 
             $transaction->rollback();
+            Util::returnJSON(array(
+                "success" => false,
+                "message" => Yii::t("app", "Cant delete Link."),
+            ));
         }
 
-        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+        Util::returnJSON(array(
+            "success"=>false,
+            "message"=>Yii::t("app", "Data is empty.")
+        ));
     }
 
+    /**
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
     public function actionDeleteLinks() {
         if(isset($_POST['dataset_id'])) {
             $dataset = $this->getDataset($_POST['dataset_id']);
-
             $links = Link::model()->findAllByAttributes(array('dataset_id' => $_POST['dataset_id']));
+
             $transaction = Yii::app()->db->beginTransaction();
             foreach ($links as $link) {
                 if(!$link->delete()) {
                     $transaction->rollback();
-                    Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                    Util::returnJSON(array(
+                        "success"=>false,
+                        "message"=>Yii::t("app", "Cant delete Link.")
+                    ));
                 }
             }
 
             $dataset->setAdditionalInformationKey(AIHelper::PUBLIC_LINKS, false);
-            if ($dataset->save()) {
-                $transaction->commit();
-                Util::returnJSON(array("success"=>true));
+            if (!$dataset->save()) {
+                $transaction->rollback();
+                Util::returnJSON(array(
+                    "success" => false,
+                    "message" => Yii::t("app", "Cant update Dataset."),
+                ));
             }
-            $transaction->rollback();
+
+            $transaction->commit();
+            Util::returnJSON(array("success"=>true));
         }
 
-        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Error.")));
+        Util::returnJSON(array(
+            "success"=>false,
+            "message"=>Yii::t("app", "Data is empty.")
+        ));
     }
 
     /**

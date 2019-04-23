@@ -64,7 +64,7 @@ class Images extends ImageHaver
 
     public function validateImageUpload($attribute, $params)
     {
-        if (!$this->is_no_image && !$this->$attribute) {
+        if (!$this->is_no_image && !$this->$attribute && $this->getIsNewRecord()) {
             $labels = $this->attributeLabels();
             $this->addError($attribute, $labels[$attribute] . ' can not be empty.');
         }

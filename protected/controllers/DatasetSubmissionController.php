@@ -5,6 +5,41 @@
 class DatasetSubmissionController extends Controller
 {
     /**
+     * @return array action filters
+     */
+    public function filters()
+    {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
+    }
+
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
+    public function accessRules()
+    {
+        return array(
+            array('allow',  // allow logged-in users to perform 'upload'
+                'actions' => array(
+                    'index',
+                    'upload',
+                    'study',
+                    'author',
+                    'additional',
+                ),
+                'users' => array('@'),
+            ),
+            array('deny',  // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
+
+
+    /**
      * Index page.
      */
     public function actionIndex()
@@ -47,17 +82,19 @@ class DatasetSubmissionController extends Controller
         }
 
         if (isset($_POST['Dataset']) && isset($_POST['Images'])) {
+            $newKeywords = isset($_POST['keywords']) ? $_POST['keywords'] : '';
+            $newTypes = isset($_POST['datasettypes']) ? $_POST['datasettypes'] : array();
+
             $image->loadByData($_POST['Images']);
             $dataset->loadByData($_POST['Dataset']);
+            $dataset->types = $newTypes;
+            $dataset->keywords = explode(',', $newKeywords);
             if ($dataset->validate() && $image->validate()) {
                 $image->save();
                 $dataset->image_id = $image->id;
                 $dataset->save();
 
-                $newKeywords = isset($_POST['keywords']) ? $_POST['keywords'] : array();
                 $dataset->updateKeywords($newKeywords);
-
-                $newTypes = isset($_POST['datasettypes']) ? $_POST['datasettypes'] : array();
                 $dataset->updateTypes($newTypes);
 
                 $image->saveImageFile();

@@ -415,7 +415,7 @@ class AdminDatasetAuthorController extends Controller
                 Util::returnJSON(array("success"=>true));
             }
 
-             Util::returnJSON(array("success"=>false,"message"=>current($author->getErrors())));
+            Util::returnJSON(array("success"=>false,"message"=>current($author->getErrors())));
         }
     }
 

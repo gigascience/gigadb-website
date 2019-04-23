@@ -41,6 +41,7 @@ class Dataset extends CActiveRecord
     public $email;
     public $union;
     public $types;
+    public $keywords;
 
     public static $statusList = array('Incomplete'=>'Incomplete',
                          'Request'=>'Request',
@@ -422,6 +423,10 @@ class Dataset extends CActiveRecord
     }
 
     public function getTypeIds() {
+        if ($this->types) {
+            return $this->types;
+        }
+
         $types = $this->datasetTypes;
         $ids = array();
         foreach($types as $type) {
@@ -431,6 +436,10 @@ class Dataset extends CActiveRecord
     }
 
     public function getSemanticKeywords() {
+        if ($this->keywords) {
+            return $this->keywords;
+        }
+
         $sKeywordAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));
 
         $sk = DatasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$this->id,'attribute_id'=>$sKeywordAttr->id));

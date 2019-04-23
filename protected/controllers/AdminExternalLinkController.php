@@ -277,92 +277,132 @@ class AdminExternalLinkController extends Controller
 		}
 	}
 
-	public function actionAddExLink() {
+    /**
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionAddExLink() {
         if(isset($_POST['dataset_id']) && isset($_POST['url']) && isset($_POST['externalLinkType'])) {
             $dataset = $this->getDataset($_POST['dataset_id']);
 
-            $pattern = AIHelper::getRegExp($_POST['externalLinkType']);
-            if (!preg_match($pattern, $_POST['url'])) {
-                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Url is invalid. Valid pattern is: " . $pattern)));
-            }
-
-          $exLink = ExternalLink::model()->findByAttributes(array('dataset_id'=>$_POST['dataset_id'], 'url'=>$_POST['url']));
-            if($exLink) {
-                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "This external link has been added already.")));
-            }
+            $exLink = new ExternalLink;
+            $exLink->loadByData($_POST);
 
             $transaction = Yii::app()->db->beginTransaction();
-
-            $exLink = new ExternalLink;
-            $exLink->dataset_id = $_POST['dataset_id'];
-            $exLink->url = $_POST['url'];
-            $exLink->type = $_POST['externalLinkType'];
-            $exLink->description = $_POST['externalLinkDescription'];
-
-            if($exLink->save()) {
+            if($exLink->validate() && $exLink->save()) {
                 $dataset->setAdditionalInformationKey($_POST['externalLinkType'], true);
-                if ($dataset->save()) {
-                    $transaction->commit();
-                    Util::returnJSON(array("success"=>true));
+                if (!$dataset->save()) {
+                    $transaction->rollback();
+                    Util::returnJSON(array(
+                        "success" => false,
+                        "message" => Yii::t("app", "Cant update Dataset."),
+                    ));
                 }
+
+                $transaction->commit();
+                Util::returnJSON( array(
+                    "success" => true,
+                ));
             }
 
             $transaction->rollback();
-             Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
+            Util::returnJSON(array(
+                "success"=>false,
+                "message"=>current($exLink->getErrors())
+            ));
         }
+
+        Util::returnJSON(array(
+            "success" => false,
+            "message" => Yii::t("app", "Data is empty."),
+        ));
     }
 
+    /**
+     * @throws CDbException
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
     public function actionDeleteExLink() {
         if(isset($_POST['exLink_id'])) {
             $dataset = $this->getDataset($_POST['dataset_id']);
+            $exLink = $this->getExLink($_POST['exLink_id']);
 
             $transaction = Yii::app()->db->beginTransaction();
-
-            $exLink = ExternalLink::model()->findByPk($_POST['exLink_id']);
-            $type = $exLink->type;
             if($exLink->delete()) {
-                $count = ExternalLink::model()->CountByAttributes(array('dataset_id' => $_POST['dataset_id'], 'type' => $type));
+                $count = ExternalLink::model()->CountByAttributes(array('dataset_id' => $_POST['dataset_id'], 'type' => $exLink->type));
 
                 if (!$count) {
-                    $dataset->setAdditionalInformationKey($type, false);
-                    if ($dataset->save()) {
-                        $transaction->commit();
-                        Util::returnJSON(array("success"=>true));
-                    } else {
+                    $dataset->setAdditionalInformationKey($exLink->type, false);
+                    if (!$dataset->save()) {
                         $transaction->rollback();
-                        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                        Util::returnJSON(array(
+                            "success" => false,
+                            "message" => Yii::t("app", "Cant update Dataset."),
+                        ));
                     }
                 }
+
                 $transaction->commit();
-                Util::returnJSON(array("success"=>true));
-               }
+                Util::returnJSON( array(
+                    "success" => true,
+                ));
+            }
+
             $transaction->rollback();
-             Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+            Util::returnJSON(array(
+                "success" => false,
+                "message" => Yii::t("app", "Cant delete External Link."),
+            ));
         }
+
+        Util::returnJSON(array(
+            "success" => false,
+            "message" => Yii::t("app", "Data is empty."),
+        ));
     }
 
+    /**
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
     public function actionDeleteExLinks() {
+
         if(isset($_POST['dataset_id']) && isset($_POST['type'])) {
             $dataset = $this->getDataset($_POST['dataset_id']);
+            $exLinks = ExternalLink::model()->findAllByAttributes(array(
+                'dataset_id' => $_POST['dataset_id'],
+                'type' => $_POST['type'],
+            ));
 
-            $exLinks = ExternalLink::model()->findAllByAttributes(array('dataset_id' => $_POST['dataset_id'], 'type' => $_POST['type']));
             $transaction = Yii::app()->db->beginTransaction();
             foreach ($exLinks as $exLink) {
                 if(!$exLink->delete()) {
                     $transaction->rollback();
-                    Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                    Util::returnJSON(array(
+                        "success"=>false,
+                        "message"=>Yii::t("app", "Cant delete External Link.")
+                    ));
                 }
             }
 
             $dataset->setAdditionalInformationKey($_POST['type'], false);
-            if ($dataset->save()) {
-                $transaction->commit();
-                Util::returnJSON(array("success"=>true));
+            if (!$dataset->save()) {
+                $transaction->rollback();
+                Util::returnJSON(array(
+                    "success" => false,
+                    "message" => Yii::t("app", "Cant update Dataset."),
+                ));
             }
-            $transaction->rollback();
+
+            $transaction->commit();
+            Util::returnJSON(array("success"=>true));
         }
 
-        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Error.")));
+        Util::returnJSON(array(
+            "success"=>false,
+            "message"=>Yii::t("app", "Data is empty.")
+        ));
     }
 
     /**
@@ -379,5 +419,21 @@ class AdminExternalLinkController extends Controller
         }
 
         return $dataset;
+    }
+
+    /**
+     * @param $id
+     * @return array|Dataset|mixed|null
+     * @throws \yii\web\BadRequestHttpException
+     */
+    protected function getExLink($id)
+    {
+        $exLink = ExternalLink::model()->findByPk($id);
+
+        if (!$exLink) {
+            throw new \yii\web\BadRequestHttpException('External Link ID is invalid.');
+        }
+
+        return $exLink;
     }
 }

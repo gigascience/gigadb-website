@@ -48,6 +48,8 @@ class ExternalLink extends CActiveRecord
 			array('dataset_id, url', 'required'),
 			array('dataset_id, external_link_type_id, type', 'numerical', 'integerOnly'=>true),
 			array('url', 'length', 'max'=>128),
+			array('url', 'validateUrlUnique'),
+			array('url', 'validateUrlByPattern'),
 			array('description', 'length', 'max'=>200),
 			array('type', 'in', 'range' => array(AIHelper::MANUSCRIPTS, AIHelper::PROTOCOLS, AIHelper::_3D_IMAGES, AIHelper::CODES, AIHelper::SOURCES)),
 			// The following rule is used by search().
@@ -55,6 +57,32 @@ class ExternalLink extends CActiveRecord
 			array('id, dataset_id, url, external_link_type_id, doi_search, external_link_type_search', 'safe', 'on'=>'search'),
 		);
 	}
+
+    public function validateUrlUnique($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $exLink = ExternalLink::model()->findByAttributes(array(
+                'dataset_id'=> $this->dataset_id,
+                'url' => $this->$attribute
+            ));
+
+            if ($exLink) {
+                $labels = $this->attributeLabels();
+                $this->addError($attribute, $labels[$attribute] . ' already exist.');
+            }
+        }
+    }
+
+    public function validateUrlByPattern($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $pattern = AIHelper::getRegExp($this->type);
+            if (!preg_match($pattern, $this->$attribute)) {
+                $labels = $this->attributeLabels();
+                $this->addError($attribute, $labels[$attribute] . ' is invalid.');
+            }
+        }
+    }
 
 	/**
 	 * @return array relational rules.
@@ -121,5 +149,13 @@ class ExternalLink extends CActiveRecord
     public function getTypeName()
     {
         return AIHelper::getTypeName($this->type);
+    }
+
+    public function loadByData($data)
+    {
+        $this->dataset_id = $data['dataset_id'];
+        $this->url = $data['url'];
+        $this->type = $data['externalLinkType'];
+        $this->description = $data['externalLinkDescription'];
     }
 }
