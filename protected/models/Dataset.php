@@ -36,13 +36,6 @@ class Dataset extends CActiveRecord
     const URL_BIBTEXT = 'http://data.datacite.org/application/x-bibtex/10.5524/';
     const URL_TEXT = 'http://data.datacite.org/application/x-datacite+text/10.5524/';
 
-    const ADD_INFO_PUBLIC_LINKS = 0;
-    const ADD_INFO_RELATED_DOI = 1;
-    const ADD_INFO_PROJECTS = 2;
-    const ADD_INFO_MANUSCRIPTS = 3;
-    const ADD_INFO_PROTOCOLS = 4;
-    const ADD_INFO_3D = 5;
-
     public $dTypes="";
     public $commonNames="";
     public $email;
@@ -666,12 +659,12 @@ class Dataset extends CActiveRecord
 
     public function getAdditionalInformation()
     {
-        return $this->additional_information ? json_decode($this->additional_information) : array();
+        return $this->additional_information ? json_decode($this->additional_information, true) : array();
     }
 
     public function setAdditionalInformation(array $addInfo)
     {
-        $this->additional_information = json_encode($addInfo);
+        $this->additional_information = json_encode($addInfo, true);
     }
 
     public function setAdditionalInformationKey($key, $value)

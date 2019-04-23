@@ -276,7 +276,7 @@ class AdminDatasetProjectController extends Controller
             $dp->project_id = $_POST['project_id'];
 
             if($dp->save()) {
-                $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_PROJECTS, true);
+                $dataset->setAdditionalInformationKey(AIHelper::PROJECTS, true);
                 if ($dataset->save()) {
                     $transaction->commit();
                     Util::returnJSON(array("success"=>true));
@@ -299,7 +299,7 @@ class AdminDatasetProjectController extends Controller
                 $count = DatasetProject::model()->CountByAttributes(array('dataset_id' => $_POST['dataset_id']));
 
                 if (!$count) {
-                    $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_PROJECTS, false);
+                    $dataset->setAdditionalInformationKey(AIHelper::PROJECTS, false);
                     if ($dataset->save()) {
                         $transaction->commit();
                         Util::returnJSON(array("success"=>true));
@@ -328,7 +328,7 @@ class AdminDatasetProjectController extends Controller
                 }
             }
 
-            $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_PROJECTS, false);
+            $dataset->setAdditionalInformationKey(AIHelper::PROJECTS, false);
             if ($dataset->save()) {
                 $transaction->commit();
                 Util::returnJSON(array("success"=>true));

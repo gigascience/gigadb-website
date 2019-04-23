@@ -51,6 +51,21 @@
             width: 50px;
             margin: 0 10px;
         }
+
+        .others-button {
+            width: 50px;
+            margin: 0 0 0 20px;
+            float: right;
+        }
+        .others-input {
+            width:400px;
+            float:right;
+        }
+        .others-label {
+            text-align: left !important;
+            margin-left: 30px;
+            white-space: nowrap;
+        }
     </style>
     <script>
         $(document).ready(function () {

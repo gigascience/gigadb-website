@@ -2,11 +2,16 @@
 /** @var Dataset $model */
 
 $additionalInfo = $model->getAdditionalInformation();
-$isPublicLinks = isset($additionalInfo[Dataset::ADD_INFO_PUBLIC_LINKS]) ? !!$additionalInfo[Dataset::ADD_INFO_PUBLIC_LINKS] : null;
-$isRelatedDoi = isset($additionalInfo[Dataset::ADD_INFO_RELATED_DOI]) ? !!$additionalInfo[Dataset::ADD_INFO_RELATED_DOI] : null;
-$isProjects = isset($additionalInfo[Dataset::ADD_INFO_PROJECTS]) ? !!$additionalInfo[Dataset::ADD_INFO_PROJECTS] : null;
+//die(var_dump($additionalInfo));
+$isPublicLinks = isset($additionalInfo[AIHelper::PUBLIC_LINKS]) ? !!$additionalInfo[AIHelper::PUBLIC_LINKS] : null;
+$isRelatedDoi = isset($additionalInfo[AIHelper::RELATED_DOI]) ? !!$additionalInfo[AIHelper::RELATED_DOI] : null;
+$isProjects = isset($additionalInfo[AIHelper::PROJECTS]) ? !!$additionalInfo[AIHelper::PROJECTS] : null;
+$isManuscripts = isset($additionalInfo[AIHelper::MANUSCRIPTS]) ? !!$additionalInfo[AIHelper::MANUSCRIPTS] : null;
+$isProtocols = isset($additionalInfo[AIHelper::PROTOCOLS]) ? !!$additionalInfo[AIHelper::PROTOCOLS] : null;
+$is3dImages = isset($additionalInfo[AIHelper::_3D_IMAGES]) ? !!$additionalInfo[AIHelper::_3D_IMAGES] : null;
+$isCodes = isset($additionalInfo[AIHelper::CODES]) ? !!$additionalInfo[AIHelper::CODES] : null;
+$isSources = isset($additionalInfo[AIHelper::SOURCES]) ? !!$additionalInfo[AIHelper::SOURCES] : null;
 ?>
-
 <h2>Add Additional Information</h2>
 <div class="clear"></div>
 
@@ -27,14 +32,26 @@ $isProjects = isset($additionalInfo[Dataset::ADD_INFO_PROJECTS]) ? !!$additional
 
     <?php if ($isProjects !== null): ?>
         <div class="clear"></div>
-        <?php $this->renderPartial('_projects', array('model' => $model, 'dps' => $dps, 'isProjects' => $isProjects)); ?>
+        <?php $this->renderPartial('_others', array(
+                'model' => $model,
+                'exLinks' => $exLinks,
+                'isManuscripts' => $isManuscripts,
+                'isProtocols' => $isProtocols,
+                'is3dImages' => $is3dImages,
+                'isCodes' => $isCodes,
+                'isSources' => $isSources,
+        )); ?>
     <?php endif ?>
 
     <div class="clear"></div>
     <div style="text-align:center">
         <a href="/datasetSubmission/author/id/<?= $model->id ?>" class="btn-green">Previous</a>
         <a href="/user/view_profile" class="btn-green">Save</a>
-        <a href="#" class="btn-green">Next</a>
+        <?php if ($isSources === null || $isCodes === null || $is3dImages === null || $isProtocols === null || $isManuscripts === null || $isProjects === null || $isRelatedDoi === null || $isPublicLinks === null): ?>
+            <a href="#" class="btn" style="cursor: not-allowed" onclick="return false;">Next</a>
+        <?php else: ?>
+            <a href="#" class="btn-green">Next</a>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -108,7 +125,13 @@ $isProjects = isset($additionalInfo[Dataset::ADD_INFO_PROJECTS]) ? !!$additional
         var targetId = $this.data('target');
         var target = $('#' + targetId);
 
-        var items = target.find('.js-my-item');
+        var type = $this.data('type');
+        var itemsClass = '.js-my-item';
+        if (type) {
+            itemsClass += '-' + type;
+        }
+
+        var items = target.find(itemsClass);
         if (items.length > 0) {
             if (!confirm('Are you sure you want to delete all items?')) {
                 return false;
@@ -118,7 +141,7 @@ $isProjects = isset($additionalInfo[Dataset::ADD_INFO_PROJECTS]) ? !!$additional
         $.ajax({
             type: 'POST',
             url: url,
-            data:{'dataset_id': datasetId},
+            data:{'dataset_id': datasetId, 'type': type},
             success: function(response){
                 if(response.success) {
                     window.location.reload();
@@ -130,15 +153,28 @@ $isProjects = isset($additionalInfo[Dataset::ADD_INFO_PROJECTS]) ? !!$additional
                 alert(xhr.responseText);
             }
         });
+
+        return false;
     });
 
     $(".js-yes-button").click(function(e) {
         var $this = $(this);
         var target = $this.data('target');
 
-        $this.addClass('btn-green');
-        $this.siblings().removeClass('btn-green').addClass('js-no-button');
+        $this.addClass('btn-green btn-disabled');
+        $this.removeClass('js-yes-button');
+        $this.siblings().removeClass('btn-green btn-disabled').addClass('js-no-button');
 
         $('#' + target).show();
+
+        if ($this.parent().hasClass('span9')) {
+            $('#others-grid').show();
+        }
+
+        return false;
+    });
+
+    $(document).on('click', '.btn-disabled', function () {
+        return false;
     });
 </script>

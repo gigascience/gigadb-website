@@ -1,4 +1,3 @@
-<a name="project"></a>
 <div class="form-horizontal additional-bordered">
     <h3 style="display: inline-block">Project links</h3>
     <a class="myHint" style="float: none;" data-content="Dont know what to add here."></a>
@@ -9,12 +8,12 @@
     </p>
 
     <div style="text-align: center; margin-bottom: 15px;">
-        <a href="#project" data-target="projects" class="btn additional-button <?php if ($isProjects === true): ?>btn-green<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
-        <a href="#project"
+        <a href="#" data-target="projects" class="btn additional-button <?php if ($isProjects === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
+        <a href="#"
            data-target="projects"
            data-url="/adminDatasetProject/deleteProjects"
            data-id="<?= $model->id ?>"
-           class="btn additional-button <?php if ($isProjects === false): ?>btn-green<?php else: ?>js-no-button<?php endif; ?>"/>No</a>
+           class="btn additional-button <?php if ($isProjects === false): ?>btn-green btn-disabled<?php else: ?>js-no-button<?php endif; ?>"/>No</a>
     </div>
 
     <div id="projects"<?php if ($isProjects !== true): ?> style="display: none"<?php endif; ?>>

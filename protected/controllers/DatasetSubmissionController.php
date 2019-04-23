@@ -113,12 +113,15 @@ class DatasetSubmissionController extends Controller
 
             $dps = DatasetProject::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
 
+            $exLinks = ExternalLink::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
+
             $this->render('additional', array(
                 'model' => $dataset,
                 'links' => $links,
                 'link_database' => $link_database,
                 'relations' => $relations,
                 'dps' => $dps,
+                'exLinks' => $exLinks,
             ));
         }
     }

@@ -8,6 +8,8 @@
  * @property integer $dataset_id
  * @property string $url
  * @property integer $external_link_type_id
+ * @property integer $type
+ * @property integer $description
  *
  * The followings are the available model relations:
  * @property Dataset $dataset
@@ -43,9 +45,11 @@ class ExternalLink extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('dataset_id, url, external_link_type_id', 'required'),
-			array('dataset_id, external_link_type_id', 'numerical', 'integerOnly'=>true),
+			array('dataset_id, url', 'required'),
+			array('dataset_id, external_link_type_id, type', 'numerical', 'integerOnly'=>true),
 			array('url', 'length', 'max'=>128),
+			array('description', 'length', 'max'=>200),
+			array('type', 'in', 'range' => array(AIHelper::MANUSCRIPTS, AIHelper::PROTOCOLS, AIHelper::_3D_IMAGES, AIHelper::CODES, AIHelper::SOURCES)),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, dataset_id, url, external_link_type_id, doi_search, external_link_type_search', 'safe', 'on'=>'search'),
@@ -78,6 +82,8 @@ class ExternalLink extends CActiveRecord
 			'external_link_type_id' => 'External Link Type',
             'doi_search' => 'DOI',
             'external_link_type_search' => 'Type',
+            'type' => 'Type',
+            'description' => 'Description',
 		);
 	}
 
@@ -110,5 +116,10 @@ class ExternalLink extends CActiveRecord
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );
+    }
+
+    public function getTypeName()
+    {
+        return AIHelper::getTypeName($this->type);
     }
 }

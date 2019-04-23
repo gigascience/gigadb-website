@@ -306,7 +306,7 @@ class AdminRelationController extends Controller
                 $relation2->relationship_id = $_POST['relationship'];
 
                 if($relation->save()&&$relation2->save()) {
-                    $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_RELATED_DOI, true);
+                    $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, true);
                     if ($dataset->save()) {
                         $transaction->commit();
                         Util::returnJSON(array("success"=>true));
@@ -348,7 +348,7 @@ class AdminRelationController extends Controller
                     $count = Relation::model()->CountByAttributes(array('dataset_id'=>$dataset->id));
 
                     if (!$count) {
-                        $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_RELATED_DOI, false);
+                        $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, false);
                         if ($dataset->save()) {
                             $transaction->commit();
                             Util::returnJSON(array("success"=>true));
@@ -386,7 +386,7 @@ class AdminRelationController extends Controller
                 }
             }
 
-            $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_RELATED_DOI, false);
+            $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, false);
             if ($dataset->save()) {
                 $transaction->commit();
                 Util::returnJSON(array("success"=>true));

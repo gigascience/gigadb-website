@@ -277,9 +277,19 @@ class AdminLinkController extends Controller
         if(isset($_POST['dataset_id']) && isset($_POST['database']) && isset($_POST['acc_num'])) {
             $dataset = $this->getDataset($_POST['dataset_id']);
 
-            // if(!is_numeric($_POST['acc_num'])) {
-            // 	Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Please enter a number.")));
-            // }
+            $database = Yii::app()->db->createCommand()
+                ->select("*")
+                ->from("prefix")
+                ->where('prefix=:prefix', array(':prefix'=>$_POST['database']))
+                ->queryRow();
+            if (!$database) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Database is invalid.")));
+            }
+
+            $pattern = $database['regexp'];
+            if ($pattern && !preg_match($pattern, $_POST['acc_num'])) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Value is invalid. Valid pattern is: " . $pattern)));
+            }
 
             $linkVal =  $_POST['database'].":".$_POST['acc_num'];
 
@@ -296,7 +306,7 @@ class AdminLinkController extends Controller
             $link->link = $linkVal;
 
             if($link->save()) {
-                $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_PUBLIC_LINKS, true);
+                $dataset->setAdditionalInformationKey(AIHelper::PUBLIC_LINKS, true);
                 if ($dataset->save()) {
                     $transaction->commit();
                     Util::returnJSON(array("success"=>true));
@@ -320,7 +330,7 @@ class AdminLinkController extends Controller
                 $count = Link::model()->CountByAttributes(array('dataset_id' => $_POST['dataset_id']));
 
                 if (!$count) {
-                    $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_PUBLIC_LINKS, false);
+                    $dataset->setAdditionalInformationKey(AIHelper::PUBLIC_LINKS, false);
                     if ($dataset->save()) {
                         $transaction->commit();
                         Util::returnJSON(array("success"=>true));
@@ -352,7 +362,7 @@ class AdminLinkController extends Controller
                 }
             }
 
-            $dataset->setAdditionalInformationKey(Dataset::ADD_INFO_PUBLIC_LINKS, false);
+            $dataset->setAdditionalInformationKey(AIHelper::PUBLIC_LINKS, false);
             if ($dataset->save()) {
                 $transaction->commit();
                 Util::returnJSON(array("success"=>true));

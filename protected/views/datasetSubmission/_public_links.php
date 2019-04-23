@@ -1,4 +1,3 @@
-<a name="links"></a>
 <div class="form-horizontal additional-bordered">
     <h3 style="display: inline-block">Public data archive links</h3>
     <a class="myHint" style="float: none;" data-content="You should include top level accessions only, e.g. If you add the BioProject accession there is no need to add every BioSample accession contained within that BioProject."></a>
@@ -9,12 +8,12 @@
     </p>
 
     <div style="text-align: center; margin-bottom: 15px;">
-        <a href="#links" data-target="public-links" class="btn additional-button <?php if ($isPublicLinks === true): ?>btn-green<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
-        <a href="#links"
+        <a href="#" data-target="public-links" class="btn additional-button <?php if ($isPublicLinks === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
+        <a href="#"
            data-target="public-links"
            data-url="/adminLink/deleteLinks"
            data-id="<?= $model->id ?>"
-           class="btn additional-button <?php if ($isPublicLinks === false): ?>btn-green<?php else: ?>js-no-button<?php endif; ?>"/>No</a>
+           class="btn additional-button <?php if ($isPublicLinks === false): ?>btn-green btn-disabled<?php else: ?>js-no-button<?php endif; ?>"/>No</a>
     </div>
 
     <div id="public-links"<?php if ($isPublicLinks !== true): ?> style="display: none"<?php endif; ?>>
