@@ -66,6 +66,9 @@
             margin-left: 30px;
             white-space: nowrap;
         }
+        .js-not-allowed {
+            cursor: not-allowed;
+        }
     </style>
     <script>
         $(document).ready(function () {

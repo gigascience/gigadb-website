@@ -31,7 +31,7 @@ class AdminDatasetAuthorController extends Controller
 				'roles'=>array('admin'),
 			),
                          array('allow',
-                                'actions' => array('create1', 'delete1', 'autocomplete', 'search','addAuthor', 'addAuthors', 'deleteAuthor','updateRank'),
+                                'actions' => array('create1', 'delete1', 'autocomplete', 'search','addAuthor', 'addAuthors', 'saveAuthors', 'deleteAuthor','updateRank'),
                                 'users' => array('@'),
                           ),
 			array('deny',  // deny all users
@@ -402,28 +402,91 @@ class AdminDatasetAuthorController extends Controller
 		}
 	}
 
-	public function actionAddAuthor() {
+    /**
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionAddAuthor() {
         if(isset($_POST['dataset_id']) && isset($_POST['Author'])) {
-            $dataset = $this->getDataset($_POST['dataset_id']);
+            //$dataset = $this->getDataset($_POST['dataset_id']);
 
             $author = new Author();
             $author->loadByData($_POST['Author']);
             if($author->validate()) {
-                $author->save();
-                $dataset->addAuthor($author);
+                //$author->save();
+                //$dataset->addAuthor($author);
 
-                Util::returnJSON(array("success"=>true));
+                Util::returnJSON(array(
+                    "success"=>true,
+                    'author' => $author->asArray(),
+                ));
             }
 
             Util::returnJSON(array("success"=>false,"message"=>current($author->getErrors())));
         }
     }
 
+    /**
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionSaveAuthors() {
+        if(isset($_POST['dataset_id'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
+
+            $transaction = Yii::app()->db->beginTransaction();
+            if (isset($_POST['authors']) && is_array($_POST['authors'])) {
+                foreach ($_POST['authors'] as $num => $row) {
+                    //die(var_dump($row));
+                    if ($row['id']) {
+                        $da = DatasetAuthor::model()->findByPk($row['id']);
+                        if (!$da) {
+                            $transaction->rollback();
+                            Util::returnJSON(array("success" => false, "message" => "Row $num: Wrong id"));
+                        }
+                        $author = $da->author;
+                    } else {
+                        $author = new Author();
+                        $author->loadByData($row);
+                    }
+
+                    if ($author->validate()) {
+                        $author->save();
+                        $dataset->addAuthor($author, $row['order']);
+                    } else {
+                        $transaction->rollback();
+                        $error = current($author->getErrors());
+                        Util::returnJSON(array("success" => false, "message" => "Row $num: " . $error[0]));
+                    }
+                }
+            }
+
+            if (isset($_POST['delete_ids']) && is_array($_POST['delete_ids'])) {
+                foreach ($_POST['delete_ids'] as $deleteId) {
+                    $da = DatasetAuthor::model()->findByPk($deleteId);
+                    if ($da) {
+                        if ($da->delete()) {
+                            $da->author->delete();
+                        }
+                    }
+                }
+            }
+
+            $transaction->commit();
+            Util::returnJSON(array("success"=>true));
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>"Data is empty."));
+    }
+
+    /**
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
     public function actionAddAuthors() {
         $authors = CUploadedFile::getInstanceByName('authors');
         if($authors) {
-            $datasetId = isset($_POST['dataset_id']) ? $_POST['dataset_id'] : 0;
-            $dataset = $this->getDataset($datasetId);
+            //$datasetId = isset($_POST['dataset_id']) ? $_POST['dataset_id'] : 0;
+            //$dataset = $this->getDataset($datasetId);
 
             if ($authors->getType() != CsvHelper::TYPE_CSV && $authors->getType() != CsvHelper::TYPE_TSV) {
                 Util::returnJSON(array("success"=>false,"message"=>"File has wrong extension."));
@@ -435,22 +498,19 @@ class AdminDatasetAuthorController extends Controller
                 Util::returnJSON(array("success"=>false,"message"=>"File is empty."));
             }
 
-            $transaction = Yii::app()->db->beginTransaction();
+            $authors = array();
             foreach ($rows as $num => $row) {
                 $author = new Author();
                 $author->loadByCsvRow($row);
                 if($author->validate()) {
-                    $author->save();
-                    $dataset->addAuthor($author);
+                    $authors[] = $author->asArray();
                 } else {
-                    $transaction->rollback();
                     $error = current($author->getErrors());
                     Util::returnJSON(array("success"=>false,"message"=> "Row $num: " . $error[0]));
                 }
             }
 
-            $transaction->commit();
-            Util::returnJSON(array("success"=>true));
+            Util::returnJSON(array("success"=>true, 'authors' => $authors));
         }
 
         Util::returnJSON(array("success"=>false,"message"=>"You must input file."));

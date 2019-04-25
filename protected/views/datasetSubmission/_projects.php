@@ -11,6 +11,7 @@
         <a href="#" data-target="projects" class="btn additional-button <?php if ($isProjects === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
         <a href="#"
            data-target="projects"
+           data-next-block="others-block"
            data-url="/adminDatasetProject/deleteProjects"
            data-id="<?= $model->id ?>"
            class="btn additional-button <?php if ($isProjects === false): ?>btn-green btn-disabled<?php else: ?>js-no-button<?php endif; ?>"/>No</a>
@@ -25,7 +26,7 @@
 
         <div class="control-group" style="text-align: center">
             <?= CHtml::dropDownList('project', null, CHtml::listData(Project::model()->findAll(), 'id', 'name'),array('class'=>'js-project dropdown-white','style'=>'width:auto')); ?>
-            <a href="#" dataset-id="<?=$model->id?>" class="btn js-add-project" style="margin-left: 20px;"/>Add Project</a>
+            <a href="#" dataset-id="<?=$model->id?>" class="btn btn-green js-add-project" style="margin-left: 20px;"/>Add Project</a>
         </div>
 
         <div id="author-grid" class="grid-view">
@@ -37,25 +38,26 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php if($dps) { ?>
-                    <?php foreach($dps as $dp) { ?>
-                        <tr class="odd js-my-item">
-                            <td><?=$dp->project->name?></td>
-                            <td class="button-column">
-                                <a class="js-delete-project delete-title" dp-id="<?=$dp->id?>" data-id="<?= $model->id ?>" title="delete this row">
-                                    <img alt="delete this row" src="/images/delete.png">
-                                </a>
-                            </td>
-                        </tr>
-                    <? } ?>
-                <? } else  { ?>
-                <tr>
+                <?php foreach($dps as $dp) { ?>
+                    <tr class="odd js-my-item">
+                        <td>
+                            <?=$dp->project->name?>
+                            <input type="hidden" class="js-project-id" value="<?= $dp->project->id ?>">
+                        </td>
+                        <td class="button-column">
+                            <input type="hidden" class="js-my-id" value="<?= $dp->id ?>">
+                            <a class="js-delete-project delete-title" dp-id="<?=$dp->id?>" data-id="<?= $model->id ?>" title="delete this row">
+                                <img alt="delete this row" src="/images/delete.png">
+                            </a>
+                        </td>
+                    </tr>
+                <? } ?>
+                <tr class="js-no-results"<?php if ($dps): ?> style="display: none"<?php endif ?>>
                     <td colspan="4">
                         <span class="empty">No results found.</span>
                     </td>
                 </tr>
                 <tr>
-                    <? } ?>
                 </tbody>
             </table>
         </div>
@@ -63,21 +65,33 @@
 </div>
 
 <script>
-    $(".js-add-project").click(function(e) {
+    var projectsDiv = $('#projects');
+
+    $(projectsDiv).on('click', ".js-add-project", function(e) {
         e.preventDefault();
         var  did = $(this).attr('dataset-id');
         var pid = $('.js-project').val();
 
         $.ajax({
             type: 'POST',
-            url: '/adminDatasetProject/addProject',
+            url: '/adminDatasetProject/getProject',
             data:{'dataset_id': did, 'project_id':pid},
-            beforeSend:function(){
-                ajaxIndicatorStart('loading data.. please wait..');
-            },
             success: function(response){
                 if(response.success) {
-                    window.location.reload();
+                    var tr = '<tr class="odd js-my-item">' +
+                        '<input type="hidden" class="js-project-id" value="' + response.project['id'] + '">' +
+                        '<td>' + response.project['name'] + '</td>' +
+                        '<td class="button-column">' +
+                        '<a class="js-delete-project delete-title" title="delete this row">' +
+                        '<img alt="delete this row" src="/images/delete.png">' +
+                        '</a>' +
+                        '</td>' +
+                        '</tr>';
+
+                    $('.js-no-results', projectsDiv).before(tr);
+                    $('.js-no-results', projectsDiv).hide();
+
+                    $('#others-block').show();
                 } else {
                     alert(response.message);
                 }
@@ -88,30 +102,15 @@
         });
     });
 
-    $(".js-delete-project").click(function(e) {
+    $(projectsDiv).on('click', ".js-delete-project", function(e) {
         if (!confirm('Are you sure you want to delete this item?'))
             return false;
         e.preventDefault();
-        var  dpid = $(this).attr('dp-id');
-        var  datasetId = $(this).attr('data-id');
 
-        $.ajax({
-            type: 'POST',
-            url: '/adminDatasetProject/deleteProject',
-            data:{'dp_id': dpid, 'dataset_id': datasetId},
-            beforeSend:function(){
-                ajaxIndicatorStart('loading data.. please wait..');
-            },
-            success: function(response){
-                if(response.success) {
-                    window.location.reload();
-                } else {
-                    alert(response.message);
-                }
-            },
-            error: function(xhr) {
-                alert(xhr.responseText);
-            }
-        });
+        $(this).closest('tr').remove();
+
+        if (projectsDiv.find('.odd').length === 0) {
+            $('.js-no-results', projectsDiv).show();
+        }
     });
 </script>

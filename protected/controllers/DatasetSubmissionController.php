@@ -29,6 +29,7 @@ class DatasetSubmissionController extends Controller
                     'study',
                     'author',
                     'additional',
+                    'saveAdditional',
                 ),
                 'users' => array('@'),
             ),
@@ -161,6 +162,172 @@ class DatasetSubmissionController extends Controller
                 'exLinks' => $exLinks,
             ));
         }
+    }
+
+    /**
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionSaveAdditional() {
+        if(isset($_POST['dataset_id'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
+
+            $transaction = Yii::app()->db->beginTransaction();
+
+            $links = Link::model()->findAllByAttributes(array('dataset_id'=>$dataset->id));
+            $newLinks = isset($_POST['publicLinks']) && is_array($_POST['publicLinks']) ? $_POST['publicLinks'] : array();
+            $needLinks = array();
+            if ($newLinks) {
+                foreach ($newLinks as $newLink) {
+                    if (!$newLink['id']) {
+                        $link = new Link;
+                        $link->dataset_id = $_POST['dataset_id'];
+                        $link->is_primary = true;
+                        $link->link = $newLink['link'];
+
+                        $link->save();
+                    } else {
+                        $needLinks[] = $newLink['id'];
+                    }
+                }
+
+                $dataset->setAdditionalInformationKey(AIHelper::PUBLIC_LINKS, true);
+                $dataset->save(false);
+            } else {
+                $dataset->setAdditionalInformationKey(AIHelper::PUBLIC_LINKS, false);
+                $dataset->save(false);
+            }
+
+
+            foreach ($links as $link) {
+                if (!in_array($link->id, $needLinks)) {
+                    $link->delete();
+                }
+            }
+
+            $relations = Relation::model()->findAllByAttributes(array('dataset_id'=>$dataset->id));
+            $newRelations = isset($_POST['relatedDoi']) && is_array($_POST['relatedDoi']) ? $_POST['relatedDoi'] : array();
+            $needRelations = array();
+            if ($newRelations) {
+                foreach ($newRelations as $newRelation) {
+                    if (!$newRelation['id']) {
+                        $relation = new Relation;
+                        $relation->dataset_id = $_POST['dataset_id'];
+                        $relation->related_doi = $newRelation['related_doi'];
+                        $relation->relationship_id = $newRelation['relationship_id'];
+
+                        $relation->save();
+                    } else {
+                        $needRelations[] = $newRelation['id'];
+                    }
+                }
+
+                $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, true);
+                $dataset->save(false);
+            } else {
+                $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, false);
+                $dataset->save(false);
+            }
+
+            foreach ($relations as $relation) {
+                if (!in_array($relation->id, $needRelations)) {
+                    $relation->delete();
+                }
+            }
+
+            $projects = DatasetProject::model()->findAllByAttributes(array('dataset_id'=>$dataset->id));
+            $newProjects = isset($_POST['projects']) && is_array($_POST['projects']) ? $_POST['projects'] : array();
+            $needProjects = array();
+            if ($newProjects) {
+                foreach ($newProjects as $newProject) {
+                    if (!$newProject['id']) {
+                        $dp = new DatasetProject;
+                        $dp->dataset_id = $_POST['dataset_id'];
+                        $dp->project_id = $newProject['project_id'];
+
+                        $dp->save();
+                    } else {
+                        $needProjects[] = $newProject['id'];
+                    }
+                }
+
+                $dataset->setAdditionalInformationKey(AIHelper::PROJECTS, true);
+                $dataset->save(false);
+            } else {
+                $dataset->setAdditionalInformationKey(AIHelper::PROJECTS, false);
+                $dataset->save(false);
+            }
+
+            foreach ($projects as $project) {
+                if (!in_array($project->id, $needProjects)) {
+                    $project->delete();
+                }
+            }
+
+            $exLinks = ExternalLink::model()->findAllByAttributes(array('dataset_id'=>$dataset->id));
+            $newExLinks = isset($_POST['exLinks']) && is_array($_POST['exLinks']) ? $_POST['exLinks'] : array();
+            $needExLinks = array();
+            if ($newExLinks) {
+                $hasManuscripts = false;
+                $hasProtocols = false;
+                $has3d = false;
+                $hasCodes = false;
+                $hasSources = false;
+                foreach ($newExLinks as $newExLink) {
+                    if (!$newExLink['id']) {
+                        $exLink = new ExternalLink;
+                        $exLink->loadByData($newExLink);
+
+                        $exLink->save();
+                    } else {
+                        $needExLinks[] = $newExLink['id'];
+                    }
+
+                    switch ($newExLink['externalLinkType']) {
+                        case AIHelper::MANUSCRIPTS:
+                            $hasManuscripts = true;
+                            break;
+                        case AIHelper::PROTOCOLS:
+                            $hasProtocols = true;
+                            break;
+                        case AIHelper::_3D_IMAGES:
+                            $has3d = true;
+                            break;
+                        case AIHelper::CODES:
+                            $hasCodes = true;
+                            break;
+                        default:
+                            $hasSources = true;
+                            break;
+                    }
+                }
+
+                $dataset->setAdditionalInformationKey(AIHelper::MANUSCRIPTS, $hasManuscripts);
+                $dataset->setAdditionalInformationKey(AIHelper::PROTOCOLS, $hasProtocols);
+                $dataset->setAdditionalInformationKey(AIHelper::_3D_IMAGES, $has3d);
+                $dataset->setAdditionalInformationKey(AIHelper::CODES, $hasCodes);
+                $dataset->setAdditionalInformationKey(AIHelper::SOURCES, $hasSources);
+                $dataset->save(false);
+            } else {
+                $dataset->setAdditionalInformationKey(AIHelper::MANUSCRIPTS, false);
+                $dataset->setAdditionalInformationKey(AIHelper::PROTOCOLS, false);
+                $dataset->setAdditionalInformationKey(AIHelper::_3D_IMAGES, false);
+                $dataset->setAdditionalInformationKey(AIHelper::CODES, false);
+                $dataset->setAdditionalInformationKey(AIHelper::SOURCES, false);
+                $dataset->save(false);
+            }
+
+            foreach ($exLinks as $exLink) {
+                if (!in_array($exLink->id, $needExLinks)) {
+                    $exLink->delete();
+                }
+            }
+
+            $transaction->commit();
+            Util::returnJSON(array("success"=>true));
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>"Data is empty."));
     }
 
     protected function getDataset($id)

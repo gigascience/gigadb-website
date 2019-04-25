@@ -3,6 +3,7 @@
         <span>SketchFab 3d-Image viewer links…………………………………………………………………</span>
 
         <a href="#"
+           id="3d_images-no"
            data-target="others-grid"
            data-url="/adminExternalLink/deleteExLinks"
            data-id="<?= $model->id ?>"
@@ -10,6 +11,7 @@
            class="btn others-button <?php if ($is3dImages === false): ?>btn-green btn-disabled<?php else: ?>js-no-button<?php endif; ?>"/>No</a>
 
         <a href="#"
+           id="3d_images-yes"
            data-target="3d_images"
            class="btn others-button <?php if ($is3dImages === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
     </div>
@@ -23,6 +25,6 @@
         </div>
     </div>
     <div class="span2">
-        <a href="#" dataset-id="<?=$model->id?>" data-type="<?= AIHelper::_3D_IMAGES ?>" class="btn js-add-exLink"/>Add Link</a>
+        <a href="#" dataset-id="<?=$model->id?>" data-type="<?= AIHelper::_3D_IMAGES ?>" class="btn js-not-allowed"/>Add Link</a>
     </div>
 </div>

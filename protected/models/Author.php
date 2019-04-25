@@ -454,4 +454,15 @@ EO_SQL;
         }
 
     }
+
+    public function asArray()
+    {
+        return array(
+            'first_name' => $this->first_name,
+            'middle_name' => $this->middle_name,
+            'last_name' => $this->surname,
+            'orcid' => $this->orcid,
+            'contribution' => $this->contribution->name,
+        );
+    }
 }

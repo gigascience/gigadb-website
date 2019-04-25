@@ -89,7 +89,7 @@ class Dataset extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('submitter_id, identifier, title, ftp_site', 'required'),
+            array('submitter_id, identifier, title, ftp_site, types', 'required'),
             array('submitter_id, image_id, publisher_id', 'numerical', 'integerOnly'=>true),
             array('dataset_size', 'numerical'),
             array('identifier, excelfile_md5', 'length', 'max'=>32),
@@ -650,18 +650,15 @@ class Dataset extends CActiveRecord
         DatasetType::storeDatasetTypes($this->id, $types);
     }
 
-    public function addAuthor(Author $author)
+    public function addAuthor(Author $author, $rank)
     {
-        $da = DatasetAuthor::model()->findByAttributes(array('dataset_id'=>$this->id), array('order'=>'rank desc'));
+        $da = DatasetAuthor::model()->findByAttributes(array('dataset_id'=>$this->id, 'author_id' => $author->id));
         if(!$da) {
-            $rank = 1;
-        } else {
-            $rank = intval($da->rank)+1;
+            $da = new DatasetAuthor();
+            $da->dataset_id = $this->id;
+            $da->author_id = $author->id;
         }
 
-        $da = new DatasetAuthor();
-        $da->dataset_id = $this->id;
-        $da->author_id = $author->id;
         $da->rank = $rank;
         return $da->save();
     }

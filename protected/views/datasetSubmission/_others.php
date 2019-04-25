@@ -25,34 +25,82 @@
             </tr>
             </thead>
             <tbody>
-            <?php if($exLinks): ?>
-                <?php foreach($exLinks as $exLink): ?>
-                    <tr class="odd js-my-item-<?= $exLink->type ?>">
-                        <td><?= \yii\helpers\Html::encode($exLink->url) ?></td>
-                        <td><?= $exLink->description ?></td>
-                        <td><?= $exLink->getTypeName() ?></td>
-                        <td class="button-column">
-                            <a class="js-delete-exLink delete-title" exLink-id="<?=$exLink->id?>" data-id="<?= $model->id ?>" title="delete this row">
-                                <img alt="delete this row" src="/images/delete.png">
-                            </a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-            <tr>
+            <?php foreach($exLinks as $exLink): ?>
+                <tr class="odd js-my-item-<?= $exLink->type ?>">
+                    <td><?= \yii\helpers\Html::encode($exLink->url) ?></td>
+                    <td><?= $exLink->description ?></td>
+                    <td>
+                        <?= $exLink->getTypeName() ?>
+                    </td>
+                    <td class="button-column">
+                        <input type="hidden" class="js-type" value="<?= $exLink->type ?>">
+                        <input type="hidden" class="js-my-id" value="<?= $exLink->id ?>">
+                        <a class="js-delete-exLink delete-title" exLink-id="<?=$exLink->id?>" data-id="<?= $model->id ?>" title="delete this row">
+                            <img alt="delete this row" src="/images/delete.png">
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            <tr class="js-no-results"<?php if ($exLinks): ?> style="display: none"<?php endif ?>>
                 <td colspan="4">
                     <span class="empty">No results found.</span>
                 </td>
             </tr>
             <tr>
-                <?php endif; ?>
             </tbody>
         </table>
     </div>
 </div>
 
 <script>
-    $(".js-add-exLink").click(function(e) {
+    var othersDiv = $('#others-block');
+    var manuscriptsDiv = $('#manuscripts');
+    var protocolsDiv = $('#protocols');
+    var _3dimagesDiv = $('#3d_images');
+    var codesDiv = $('#codes');
+    var sourcesDiv = $('#sources');
+
+    $(manuscriptsDiv).on('change', 'input[name="link"]', function () {
+        if ($(this).val()){
+            $('.js-not-allowed', manuscriptsDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
+        } else {
+            $('.js-add-exLink', manuscriptsDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
+        }
+    });
+
+    $(protocolsDiv).on('change', 'input[name="link"]', function () {
+        if ($(this).val()){
+            $('.js-not-allowed', protocolsDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
+        } else {
+            $('.js-add-exLink', protocolsDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
+        }
+    });
+
+    $(_3dimagesDiv).on('change', 'input[name="link"]', function () {
+        if ($(this).val()){
+            $('.js-not-allowed', _3dimagesDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
+        } else {
+            $('.js-add-exLink', _3dimagesDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
+        }
+    });
+
+    $(codesDiv).on('change', 'input[name="link"]', function () {
+        if ($(this).val()){
+            $('.js-not-allowed', codesDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
+        } else {
+            $('.js-add-exLink', codesDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
+        }
+    });
+
+    $(sourcesDiv).on('change', 'input[name="link"]', function () {
+        if ($(this).val()){
+            $('.js-not-allowed', sourcesDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
+        } else {
+            $('.js-add-exLink', sourcesDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
+        }
+    });
+
+    $(othersDiv).on('click', ".js-add-exLink", function(e) {
         e.preventDefault();
         var $this = $(this);
         var  did = $this.attr('dataset-id');
@@ -66,14 +114,48 @@
 
         $.ajax({
             type: 'POST',
-            url: '/adminExternalLink/addExLink',
+            url: '/adminExternalLink/getExLink',
             data:{'dataset_id': did, 'url': url,  'externalLinkType': externalLinkType, 'externalLinkDescription': externalLinkDescription},
-            beforeSend:function(){
-                ajaxIndicatorStart('loading data.. please wait..');
-            },
             success: function(response){
                 if(response.success) {
-                    window.location.reload();
+                    var tr = '<tr class="odd js-my-item-'+ response.exLink['type'] +'">' +
+                        '<input type="hidden" class="js-type" value="' + response.exLink['type'] + '">' +
+                        '<td>' + response.exLink['url'] + '</td>' +
+                        '<td>' + response.exLink['description'] + '</td>' +
+                        '<td>' + response.exLink['type_name'] + '</td>' +
+                        '<td class="button-column">' +
+                        '<a class="js-delete-exLink delete-title" title="delete this row">' +
+                        '<img alt="delete this row" src="/images/delete.png">' +
+                        '</a>' +
+                        '</td>' +
+                        '</tr>';
+
+                    console.log(tr);
+
+                    $('.js-no-results', othersDiv).before(tr);
+                    $('.js-no-results', othersDiv).hide();
+
+                    let div;
+                    if (response.exLink['type'] == 3) {
+                        div = manuscriptsDiv;
+                    } else if (response.exLink['type'] == 4) {
+                        div = protocolsDiv;
+                    }  else if (response.exLink['type'] == 5) {
+                        div = _3dimagesDiv;
+                    }  else if (response.exLink['type'] == 6) {
+                        div = codesDiv;
+                    }  else if (response.exLink['type'] == 7) {
+                        div = sourcesDiv;
+
+                        $('textarea[name="link"]', div).val('');
+                    }
+
+                    $('input[name="link"]', div).val('');
+                    $('.js-add-exLink', div).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
+
+                    $('#related-doi-block').show();
+
+                    checkIfCanSave();
                 } else {
                     alert(response.message);
                 }
@@ -84,30 +166,31 @@
         });
     });
 
-    $(".js-delete-exLink").click(function(e) {
+    $(othersDiv).on('click', ".js-delete-exLink", function(e) {
         if (!confirm('Are you sure you want to delete this item?'))
             return false;
         e.preventDefault();
-        var  exlinkid = $(this).attr('exLink-id');
-        var  datasetId = $(this).attr('data-id');
 
-        $.ajax({
-            type: 'POST',
-            url: '/adminExternalLink/deleteExLink',
-            data:{'exLink_id': exlinkid, 'dataset_id': datasetId},
-            beforeSend:function(){
-                ajaxIndicatorStart('loading data.. please wait..');
-            },
-            success: function(response){
-                if(response.success) {
-                    window.location.reload();
-                } else {
-                    alert(response.message);
-                }
-            },
-            error: function(xhr) {
-                alert(xhr.responseText);
-            }
-        });
+        $(this).closest('tr').remove();
+
+        if (relatedDoiDiv.find('.odd').length === 0) {
+            $('.js-no-results', relatedDoiDiv).show();
+        }
     });
+
+    function checkIfCanSave()
+    {
+        if (
+            ($('#manuscripts-no').hasClass('btn-green') || $('#manuscripts-yes').hasClass('btn-green'))
+            && ($('#protocols-no').hasClass('btn-green') || $('#protocols-yes').hasClass('btn-green'))
+            && ($('#3d_images-no').hasClass('btn-green') || $('#3d_images-yes').hasClass('btn-green'))
+            && ($('#codes-no').hasClass('btn-green') || $('#codes-yes').hasClass('btn-green'))
+            && ($('#sources-no').hasClass('btn-green') || $('#sources-yes').hasClass('btn-green'))
+        ) {
+            console.log('y');
+            $('#additional-save').find('.js-not-allowed').removeClass('js-not-allowed').addClass('btn-green js-save-additional');
+        } else {
+            console.log('n');
+        }
+    }
 </script>

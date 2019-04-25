@@ -31,7 +31,7 @@ class AdminRelationController extends Controller
 				'roles'=>array('admin'),
 			),
                           array('allow',
-                                  'actions' => array('create1', 'delete1','addRelation','deleteRelation', 'deleteRelations'),
+                                  'actions' => array('create1', 'delete1', 'getRelation', 'addRelation','deleteRelation', 'deleteRelations'),
                                   'users' => array('@'),
                         ),
 			array('deny',  // deny all users
@@ -280,6 +280,24 @@ class AdminRelationController extends Controller
 		}
 	}
 
+    public function actionGetRelation() {
+        if(isset($_POST['dataset_id']) && isset($_POST['doi']) && isset($_POST['relationship'])) {
+            $relationship = Relationship::model()->findByPk($_POST['relationship']);
+            if (!$relationship) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Relationship ID is invalid.")));
+            }
+
+            Util::returnJSON(array(
+                "success"=>true,
+                'relation' => array(
+                    'relationship_id' => $relationship->id,
+                    'relationship_name' => $relationship->name,
+                    'related_doi' => $_POST['doi'],
+                ),
+            ));
+        }
+    }
+
     public function actionAddRelation() {
         if(isset($_POST['dataset_id']) && isset($_POST['doi']) && isset($_POST['relationship'])) {
             $dataset = $this->getDataset($_POST['dataset_id']);
@@ -307,7 +325,7 @@ class AdminRelationController extends Controller
 
                 if($relation->save()&&$relation2->save()) {
                     $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, true);
-                    if ($dataset->save()) {
+                    if ($dataset->save(false)) {
                         $transaction->commit();
                         Util::returnJSON(array("success"=>true));
                     }
@@ -349,7 +367,7 @@ class AdminRelationController extends Controller
 
                     if (!$count) {
                         $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, false);
-                        if ($dataset->save()) {
+                        if ($dataset->save(false)) {
                             $transaction->commit();
                             Util::returnJSON(array("success"=>true));
                         } else {
@@ -387,7 +405,7 @@ class AdminRelationController extends Controller
             }
 
             $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, false);
-            if ($dataset->save()) {
+            if ($dataset->save(false)) {
                 $transaction->commit();
                 Util::returnJSON(array("success"=>true));
             }

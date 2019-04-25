@@ -8,9 +8,12 @@
     </p>
 
     <div style="text-align: center; margin-bottom: 15px;">
-        <a href="#" data-target="public-links" class="btn additional-button <?php if ($isPublicLinks === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
         <a href="#"
            data-target="public-links"
+           class="btn additional-button <?php if ($isPublicLinks === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
+        <a href="#"
+           data-target="public-links"
+           data-next-block="related-doi-block"
            data-url="/adminLink/deleteLinks"
            data-id="<?= $model->id ?>"
            class="btn additional-button <?php if ($isPublicLinks === false): ?>btn-green btn-disabled<?php else: ?>js-no-button<?php endif; ?>"/>No</a>
@@ -38,11 +41,11 @@
             <a class="myHint" data-content="Please provide unique identifier of linked data, e.g. an SRA accession; SRS012345."></a>
             <div class="controls">
                 <?= CHtml::textField('link', '', array('class'=>'js-acc-num', 'size' => 60, 'maxlength' => 100, 'style'=>'width:240px', 'placeholder'=>"Unique identifier of linked data")); ?>
-                <a href="#" dataset-id="<?=$model->id?>" class="btn js-add-link" style="margin-left: 20px;"/>Add Link</a>
+                <a href="#" dataset-id="<?=$model->id?>" class="btn js-not-allowed" style="margin-left: 20px;"/>Add Link</a>
             </div>
         </div>
 
-        <div id="author-grid" class="grid-view">
+        <div class="grid-view">
             <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -52,26 +55,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php if($links) { ?>
-                    <?php foreach($links as $link) { ?>
-                        <tr class="odd js-my-item">
-                            <td><?= ($link->is_primary)?  "ext_acc_mirror" : "ext_acc_link" ?></td>
-                            <td><?= $link->link ?></td>
-                            <td class="button-column">
-                                <a class="js-delete-link delete-title" link-id="<?=$link->id?>" data-id="<?= $model->id ?>" title="delete this row">
-                                    <img alt="delete this row" src="/images/delete.png">
-                                </a>
-                            </td>
-                        </tr>
-                    <? } ?>
-                <? } else  { ?>
-                <tr>
+                <?php foreach($links as $link): ?>
+                    <tr class="odd js-my-item">
+                        <td><?= ($link->is_primary)?  "ext_acc_mirror" : "ext_acc_link" ?></td>
+                        <td><?= $link->link ?></td>
+                        <td class="button-column">
+                            <input type="hidden" class="js-my-id" value="<?= $link->id ?>">
+                            <a class="js-delete-link delete-title" link-id="<?=$link->id?>" data-id="<?= $model->id ?>" title="delete this row">
+                                <img alt="delete this row" src="/images/delete.png">
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                <tr class="js-no-results"<?php if ($links): ?> style="display: none"<?php endif ?>>
                     <td colspan="4">
                         <span class="empty">No results found.</span>
                     </td>
                 </tr>
                 <tr>
-                    <? } ?>
                 </tbody>
             </table>
         </div>
@@ -79,7 +80,18 @@
 </div>
 
 <script>
-    $(".js-add-link").click(function(e) {
+    var publicLinksDiv = $('#public-links');
+    //var deletePublicLinks = [];
+
+    $(publicLinksDiv).on('change', 'input[name="link"]', function () {
+        if ($(this).val()){
+            $('.js-not-allowed', publicLinksDiv).removeClass('js-not-allowed').addClass('js-add-link btn-green');
+        } else {
+            $('.js-add-link', publicLinksDiv).removeClass('js-add-link btn-green').addClass('js-not-allowed');
+        }
+    });
+
+    $(publicLinksDiv).on('click', ".js-add-link", function(e) {
         e.preventDefault();
         var  did = $(this).attr('dataset-id');
         var database = $(".js-database :selected").text();
@@ -87,14 +99,27 @@
 
         $.ajax({
             type: 'POST',
-            url: '/adminLink/addLink',
+            url: '/adminLink/getLink',
             data:{'dataset_id': did, 'database': database, 'acc_num': accNum},
-            beforeSend:function(){
-                ajaxIndicatorStart('loading data.. please wait..');
-            },
             success: function(response){
                 if(response.success) {
-                    window.location.reload();
+                    var tr = '<tr class="odd js-my-item">' +
+                        '<td>' + response.link['link_type'] + '</td>' +
+                        '<td>' + response.link['link'] + '</td>' +
+                        '<td class="button-column">' +
+                        '<a class="js-delete-link delete-title" title="delete this row">' +
+                        '<img alt="delete this row" src="/images/delete.png">' +
+                        '</a>' +
+                        '</td>' +
+                        '</tr>';
+
+                    $('.js-no-results', publicLinksDiv).before(tr);
+                    $('.js-no-results', publicLinksDiv).hide();
+
+                    $('input[name="link"]', publicLinksDiv).val('');
+                    $('.js-add-link', publicLinksDiv).removeClass('js-add-link btn-green').addClass('js-not-allowed');
+
+                    $('#related-doi-block').show();
                 } else {
                     alert(response.message);
                 }
@@ -105,30 +130,18 @@
         });
     });
 
-    $(".js-delete-link").click(function(e) {
+    $(publicLinksDiv).on('click', ".js-delete-link", function(e) {
         if (!confirm('Are you sure you want to delete this item?'))
             return false;
         e.preventDefault();
-        var  linkid = $(this).attr('link-id');
-        var  datasetId = $(this).attr('data-id');
+        /*var  linkid = $(this).attr('link-id');
+        if (linkid) {
+            deletePublicLinks.push(linkid);
+        }*/
+        $(this).closest('tr').remove();
 
-        $.ajax({
-            type: 'POST',
-            url: '/adminLink/deleteLink',
-            data:{'link_id': linkid, 'dataset_id': datasetId},
-            beforeSend:function(){
-                ajaxIndicatorStart('loading data.. please wait..');
-            },
-            success: function(response){
-                if(response.success) {
-                    window.location.reload();
-                } else {
-                    alert(response.message);
-                }
-            },
-            error: function(xhr) {
-                alert(xhr.responseText);
-            }
-        });
+        if (publicLinksDiv.find('.odd').length === 0) {
+            $('.js-no-results', publicLinksDiv).show();
+        }
     });
 </script>

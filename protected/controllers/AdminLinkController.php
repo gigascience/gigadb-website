@@ -31,7 +31,7 @@ class AdminLinkController extends Controller
 				'roles'=>array('admin'),
 			),
                      array('allow',
-                                 'actions' => array('create1', 'delete1','addLink', 'deleteLink', 'deleteLinks'),
+                                 'actions' => array('create1', 'delete1', 'getLink', 'addLink', 'deleteLink', 'deleteLinks'),
                                  'users' => array('@'),
                         ),
 			array('deny',  // deny all users
@@ -273,6 +273,46 @@ class AdminLinkController extends Controller
 		}
 	}
 
+
+    /**
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionGetLink() {
+        if(isset($_POST['dataset_id']) && isset($_POST['database']) && isset($_POST['acc_num'])) {
+            $database = Yii::app()->db->createCommand()
+                ->select("*")
+                ->from("prefix")
+                ->where('prefix=:prefix', array(':prefix'=>$_POST['database']))
+                ->queryRow();
+            if (!$database) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Database is invalid.")));
+            }
+
+            $pattern = $database['regexp'];
+            if (empty($_POST['acc_num']) || ($pattern && !preg_match($pattern, $_POST['acc_num']))) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Accession Number is invalid.")));
+            }
+
+            $linkVal =  $_POST['database'].":".$_POST['acc_num'];
+
+            $link = Link::model()->findByAttributes(array('dataset_id'=>$_POST['dataset_id'], 'link'=>$linkVal));
+            if($link) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "This link has been added already.")));
+            }
+
+            Util::returnJSON(array(
+                "success"=>true,
+                'link' => array(
+                    'link_type' => 'ext_acc_mirror',
+                    'link' => $linkVal,
+                )
+            ));
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Data is empty.")));
+    }
+
     /**
      * @throws CException
      * @throws \yii\web\BadRequestHttpException
@@ -311,7 +351,7 @@ class AdminLinkController extends Controller
 
             if($link->save()) {
                 $dataset->setAdditionalInformationKey(AIHelper::PUBLIC_LINKS, true);
-                if ($dataset->save()) {
+                if ($dataset->save(false)) {
                     $transaction->commit();
                     Util::returnJSON(array("success"=>true));
                 }
@@ -342,7 +382,7 @@ class AdminLinkController extends Controller
 
                 if (!$count) {
                     $dataset->setAdditionalInformationKey(AIHelper::PUBLIC_LINKS, false);
-                    if (!$dataset->save()) {
+                    if (!$dataset->save(false)) {
                         $transaction->rollback();
                         Util::returnJSON(array(
                             "success" => false,
@@ -389,7 +429,7 @@ class AdminLinkController extends Controller
             }
 
             $dataset->setAdditionalInformationKey(AIHelper::PUBLIC_LINKS, false);
-            if (!$dataset->save()) {
+            if (!$dataset->save(false)) {
                 $transaction->rollback();
                 Util::returnJSON(array(
                     "success" => false,

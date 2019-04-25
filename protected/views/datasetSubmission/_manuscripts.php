@@ -3,6 +3,7 @@
         <span>A published manuscript that uses this data………………………………………………………</span>
 
         <a href="#"
+           id="manuscripts-no"
            data-target="others-grid"
            data-url="/adminExternalLink/deleteExLinks"
            data-id="<?= $model->id ?>"
@@ -10,6 +11,7 @@
            class="btn others-button <?php if ($isManuscripts === false): ?>btn-green btn-disabled<?php else: ?>js-no-button<?php endif; ?>"/>No</a>
 
         <a href="#"
+           id="manuscripts-yes"
            data-target="manuscripts"
            class="btn others-button <?php if ($isManuscripts === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
     </div>
@@ -22,6 +24,6 @@
         </div>
     </div>
     <div class="span2">
-        <a href="#" dataset-id="<?=$model->id?>" data-type="<?= AIHelper::MANUSCRIPTS ?>" class="btn js-add-exLink"/>Add Link</a>
+        <a href="#" dataset-id="<?=$model->id?>" data-type="<?= AIHelper::MANUSCRIPTS ?>" class="btn js-not-allowed"/>Add Link</a>
     </div>
 </div>

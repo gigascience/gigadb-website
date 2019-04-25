@@ -131,6 +131,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     }
                     ?>
                 </div>
+                <?php echo $form->error($model, 'types'); ?>
             </div>
         </div>
 

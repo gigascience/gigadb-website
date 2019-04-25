@@ -3,6 +3,7 @@
         <span>Actionable code in CodeOceans…………………………………………………………………..</span>
 
         <a href="#"
+           id="codes-no"
            data-target="others-grid"
            data-url="/adminExternalLink/deleteExLinks"
            data-id="<?= $model->id ?>"
@@ -10,6 +11,7 @@
            class="btn others-button <?php if ($isCodes === false): ?>btn-green btn-disabled<?php else: ?>js-no-button<?php endif; ?>"/>No</a>
 
         <a href="#"
+           id="codes-yes"
            data-target="codes"
            class="btn others-button <?php if ($isCodes === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
     </div>
@@ -24,6 +26,6 @@
     </div>
     <div class="span2">
         <br>
-        <a href="#" dataset-id="<?=$model->id?>" data-type="<?= AIHelper::CODES ?>" class="btn js-add-exLink"/>Add Link</a>
+        <a href="#" dataset-id="<?=$model->id?>" data-type="<?= AIHelper::CODES ?>" class="btn js-not-allowed"/>Add Link</a>
     </div>
 </div>

@@ -2,7 +2,6 @@
 /** @var Dataset $model */
 
 $additionalInfo = $model->getAdditionalInformation();
-//die(var_dump($additionalInfo));
 $isPublicLinks = isset($additionalInfo[AIHelper::PUBLIC_LINKS]) ? !!$additionalInfo[AIHelper::PUBLIC_LINKS] : null;
 $isRelatedDoi = isset($additionalInfo[AIHelper::RELATED_DOI]) ? !!$additionalInfo[AIHelper::RELATED_DOI] : null;
 $isProjects = isset($additionalInfo[AIHelper::PROJECTS]) ? !!$additionalInfo[AIHelper::PROJECTS] : null;
@@ -11,6 +10,8 @@ $isProtocols = isset($additionalInfo[AIHelper::PROTOCOLS]) ? !!$additionalInfo[A
 $is3dImages = isset($additionalInfo[AIHelper::_3D_IMAGES]) ? !!$additionalInfo[AIHelper::_3D_IMAGES] : null;
 $isCodes = isset($additionalInfo[AIHelper::CODES]) ? !!$additionalInfo[AIHelper::CODES] : null;
 $isSources = isset($additionalInfo[AIHelper::SOURCES]) ? !!$additionalInfo[AIHelper::SOURCES] : null;
+
+$disabled = $isSources === null || $isCodes === null || $is3dImages === null || $isProtocols === null || $isManuscripts === null || $isProjects === null || $isRelatedDoi === null || $isPublicLinks === null;
 ?>
 <h2>Add Additional Information</h2>
 <div class="clear"></div>
@@ -20,108 +21,55 @@ $isSources = isset($additionalInfo[AIHelper::SOURCES]) ? !!$additionalInfo[AIHel
 <div class="span12 form well">
     <?php $this->renderPartial('_public_links', array('model' => $model, 'links' => $links, 'link_database' => $link_database, 'isPublicLinks' => $isPublicLinks)); ?>
 
-    <?php if ($isPublicLinks !== null): ?>
+    <div id="related-doi-block"<?php if ($isPublicLinks === null): ?> style="display: none;"<?php endif ?>>
         <div class="clear"></div>
         <?php $this->renderPartial('_related_doi', array('model' => $model, 'relations' => $relations, 'isRelatedDoi' => $isRelatedDoi)); ?>
-    <?php endif ?>
+    </div>
 
-    <?php if ($isRelatedDoi !== null): ?>
+    <div id="projects-block"<?php if ($isRelatedDoi === null): ?> style="display: none;"<?php endif ?>>
         <div class="clear"></div>
         <?php $this->renderPartial('_projects', array('model' => $model, 'dps' => $dps, 'isProjects' => $isProjects)); ?>
-    <?php endif ?>
+    </div>
 
-    <?php if ($isProjects !== null): ?>
+    <div id="others-block" <?php if ($isProjects === null): ?> style="display: none;"<?php endif ?>>
         <div class="clear"></div>
         <?php $this->renderPartial('_others', array(
-                'model' => $model,
-                'exLinks' => $exLinks,
-                'isManuscripts' => $isManuscripts,
-                'isProtocols' => $isProtocols,
-                'is3dImages' => $is3dImages,
-                'isCodes' => $isCodes,
-                'isSources' => $isSources,
+            'model' => $model,
+            'exLinks' => $exLinks,
+            'isManuscripts' => $isManuscripts,
+            'isProtocols' => $isProtocols,
+            'is3dImages' => $is3dImages,
+            'isCodes' => $isCodes,
+            'isSources' => $isSources,
         )); ?>
-    <?php endif ?>
+    </div>
 
     <div class="clear"></div>
-    <div style="text-align:center">
+    <div style="text-align:center" id="additional-save">
         <a href="/datasetSubmission/author/id/<?= $model->id ?>" class="btn-green">Previous</a>
-        <a href="/user/view_profile" class="btn-green">Save</a>
-        <?php if ($isSources === null || $isCodes === null || $is3dImages === null || $isProtocols === null || $isManuscripts === null || $isProjects === null || $isRelatedDoi === null || $isPublicLinks === null): ?>
-            <a href="#" class="btn" style="cursor: not-allowed" onclick="return false;">Next</a>
+        <?php if ($disabled): ?>
+            <a href="/datasetSubmission/additional/id/<?= $model->id ?>" class="btn js-not-allowed">Save</a>
+            <a href="/datasetSubmission/additional/id/<?= $model->id ?>" class="btn js-not-allowed">Next</a>
         <?php else: ?>
-            <a href="#" class="btn-green">Next</a>
+            <a href="/datasetSubmission/additional/id/<?= $model->id ?>" class="btn btn-green js-save-additional">Save</a>
+            <a href="/datasetSubmission/additional/id/<?= $model->id ?>" class="btn btn-green js-save-additional">Next</a>
         <?php endif; ?>
     </div>
 </div>
 
 <script>
+    var dataset_id = <?= $model->id ?>;
+
     $(".delete-title").tooltip({'placement':'top'});
 
-    function ajaxIndicatorStart(text)
-    {
-        if($('body').find('#resultLoading').attr('id') != 'resultLoading'){
-            $('body').append('<div id="resultLoading" style="display:none"><div><img width="30" src="/images/ajax-loader.gif"><div>'+text+'</div></div><div class="bg"></div></div>');
-        }
-
-        $('#resultLoading').css({
-            'width':'100%',
-            'height':'100%',
-            'position':'fixed',
-            'z-index':'10000000',
-            'top':'0',
-            'left':'0',
-            'right':'0',
-            'bottom':'0',
-            'margin':'auto'
-        });
-
-        $('#resultLoading .bg').css({
-            'background':'#000000',
-            'opacity':'0.7',
-            'width':'100%',
-            'height':'100%',
-            'position':'absolute',
-            'top':'0'
-        });
-
-        $('#resultLoading>div:first').css({
-            'width': '250px',
-            'height':'75px',
-            'text-align': 'center',
-            'position': 'fixed',
-            'top':'0',
-            'left':'0',
-            'right':'0',
-            'bottom':'0',
-            'margin':'auto',
-            'font-size':'16px',
-            'z-index':'10',
-            'color':'#ffffff'
-
-        });
-
-        $('#resultLoading .bg').height('100%');
-        $('#resultLoading').fadeIn(300);
-        $('body').css('cursor', 'wait');
-    }
-
-    function ajaxIndicatorStop()
-    {
-        $('#resultLoading .bg').height('100%');
-        $('#resultLoading').fadeOut(300);
-        $('body').css('cursor', 'default');
-    }
-
-    $(document).ajaxStop(function () {
-        //hide ajax indicator
-        ajaxIndicatorStop();
+    $(document).on('click', '.js-not-allowed', function() {
+        return false;
     });
 
     $(document).on('click', '.js-no-button', function(e) {
         var $this = $(this);
-        var datasetId = $this.data('id');
-        var url = $this.data('url');
+        //var datasetId = $this.data('id');
+        //var url = $this.data('url');
         var targetId = $this.data('target');
         var target = $('#' + targetId);
 
@@ -138,21 +86,36 @@ $isSources = isset($additionalInfo[AIHelper::SOURCES]) ? !!$additionalInfo[AIHel
             }
         }
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data:{'dataset_id': datasetId, 'type': type},
-            success: function(response){
-                if(response.success) {
-                    window.location.reload();
-                } else {
-                    alert(response.message);
-                }
-            },
-            error: function(xhr) {
-                alert(xhr.responseText);
+        var nextBlock = $this.data('next-block');
+        if (nextBlock) {
+            $('#' + nextBlock).show();
+        }
+
+        $this.addClass('btn-green btn-disabled');
+        $this.removeClass('js-no-button');
+        $this.siblings().removeClass('btn-green btn-disabled').addClass('js-yes-button');
+
+        if (type) {
+            if (
+                $('#manuscripts-no').hasClass('btn-green')
+                && $('#protocols-no').hasClass('btn-green')
+                && $('#3d_images-no').hasClass('btn-green')
+                && $('#codes-no').hasClass('btn-green')
+                && $('#sources-no').hasClass('btn-green')
+            ) {
+                target.hide();
             }
-        });
+
+            checkIfCanSave();
+        } else {
+            target.hide();
+        }
+
+        items.remove();
+
+        if (target.find('.odd').length === 0) {
+            $('.js-no-results', target).show();
+        }
 
         return false;
     });
@@ -175,6 +138,110 @@ $isSources = isset($additionalInfo[AIHelper::SOURCES]) ? !!$additionalInfo[AIHel
     });
 
     $(document).on('click', '.btn-disabled', function () {
+        return false;
+    });
+
+    function saveAdditional(url) {
+        var publicLinks = [];
+        var relatedDoi = [];
+        var projects = [];
+        var exLinks = [];
+
+        var trs = $('#public-links').find('.odd');
+        trs.each(function() {
+            let tr = $(this);
+            let id = tr.find('.js-my-id').val();
+            if (!id) {
+                id = 0;
+            }
+            let link_type = tr.children('td').eq(0).text();
+            let link = tr.children('td').eq(1).text();
+
+            publicLinks.push({
+                id: id,
+                link_type: link_type,
+                link: link
+            });
+        });
+
+        var trs = $('#related-doi').find('.odd');
+        trs.each(function() {
+            let tr = $(this);
+            let id = tr.find('.js-my-id').val();
+            if (!id) {
+                id = 0;
+            }
+            let related_doi = tr.children('td').eq(0).text();
+            let relationship_id = tr.find('.js-relationship-id').val();
+
+            relatedDoi.push({
+                id: id,
+                related_doi: related_doi,
+                relationship_id: relationship_id
+            });
+        });
+
+        var trs = $('#projects').find('.odd');
+        trs.each(function() {
+            let tr = $(this);
+            let id = tr.find('.js-my-id').val();
+            if (!id) {
+                id = 0;
+            }
+            let project_id = tr.find('.js-project-id').val();
+
+            projects.push({
+                id: id,
+                project_id: project_id
+            });
+        });
+
+        var trs = $('#others-grid').find('.odd');
+        trs.each(function() {
+            let tr = $(this);
+            let id = tr.find('.js-my-id').val();
+            if (!id) {
+                id = 0;
+            }
+            let url = tr.children('td').eq(0).text();
+            let description = tr.children('td').eq(1).text();
+            let type = tr.find('.js-type').val();
+
+            exLinks.push({
+                id: id,
+                dataset_id: dataset_id,
+                url: url,
+                externalLinkDescription: description,
+                externalLinkType: type
+            });
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '/datasetSubmission/saveAdditional',
+            data:{
+                'dataset_id': dataset_id,
+                'publicLinks':publicLinks,
+                'relatedDoi':relatedDoi,
+                'projects':projects,
+                'exLinks':exLinks
+            },
+            success: function(response){
+                if(!response.success) {
+                    alert(response.message);
+                } else {
+                    window.location.href = url;
+                }
+            },
+            error: function(xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+    $(document).on('click', ".js-save-additional", function() {
+        saveAdditional($(this).attr('href'));
+
         return false;
     });
 </script>

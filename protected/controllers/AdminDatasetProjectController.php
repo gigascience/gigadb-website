@@ -31,7 +31,7 @@ class AdminDatasetProjectController extends Controller
 				'roles'=>array('admin'),
 			),
                         array('allow',
-                                'actions' => array('create1', 'delete1','addProject','deleteProject', 'deleteProjects'),
+                                'actions' => array('create1', 'delete1','getProject','addProject','deleteProject', 'deleteProjects'),
                                  'users' => array('@'),
                         ),
 			array('deny',  // deny all users
@@ -255,6 +255,23 @@ class AdminDatasetProjectController extends Controller
 		}
 	}
 
+    public function actionGetProject() {
+        if(isset($_POST['dataset_id']) && isset($_POST['project_id'])) {
+            $project = Project::model()->findByPk($_POST['project_id']);
+            if(!$project) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot find project.")));
+            }
+
+            Util::returnJSON(array(
+                "success"=>true,
+                'project' => array(
+                  'id' => $project->id,
+                  'name' => $project->name,
+                ),
+            ));
+        }
+    }
+
 	public function actionAddProject() {
         if(isset($_POST['dataset_id']) && isset($_POST['project_id'])) {
             $dataset = $this->getDataset($_POST['dataset_id']);
@@ -277,7 +294,7 @@ class AdminDatasetProjectController extends Controller
 
             if($dp->save()) {
                 $dataset->setAdditionalInformationKey(AIHelper::PROJECTS, true);
-                if ($dataset->save()) {
+                if ($dataset->save(false)) {
                     $transaction->commit();
                     Util::returnJSON(array("success"=>true));
                 }
@@ -300,7 +317,7 @@ class AdminDatasetProjectController extends Controller
 
                 if (!$count) {
                     $dataset->setAdditionalInformationKey(AIHelper::PROJECTS, false);
-                    if ($dataset->save()) {
+                    if ($dataset->save(false)) {
                         $transaction->commit();
                         Util::returnJSON(array("success"=>true));
                     } else {
@@ -329,7 +346,7 @@ class AdminDatasetProjectController extends Controller
             }
 
             $dataset->setAdditionalInformationKey(AIHelper::PROJECTS, false);
-            if ($dataset->save()) {
+            if ($dataset->save(false)) {
                 $transaction->commit();
                 Util::returnJSON(array("success"=>true));
             }

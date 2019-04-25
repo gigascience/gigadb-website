@@ -48,7 +48,7 @@ class ExternalLink extends CActiveRecord
 			array('dataset_id, url', 'required'),
 			array('dataset_id, external_link_type_id, type', 'numerical', 'integerOnly'=>true),
 			array('url', 'length', 'max'=>128),
-			array('url', 'validateUrlUnique'),
+			//array('url', 'validateUrlUnique'),
 			array('url', 'validateUrlByPattern'),
 			array('description', 'length', 'max'=>200),
 			array('type', 'in', 'range' => array(AIHelper::MANUSCRIPTS, AIHelper::PROTOCOLS, AIHelper::_3D_IMAGES, AIHelper::CODES, AIHelper::SOURCES)),
