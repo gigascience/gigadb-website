@@ -69,23 +69,23 @@
                 </tr>
                 <tr id="authors-form">
                     <td>
-                    <input id="js-author-first-name" type="text" name="Author[first_name]" placeholder="First Name" style="width:150px">
+                    <input id="js-author-first-name" class="js-author-required" type="text" name="Author[first_name]" placeholder="First Name" style="width:150px">
                     </td>
                     <td>
                     <input id="js-author-middle-name" type="text" name="Author[middle_name]" placeholder="Middle Name (optional)" style="width:150px">
                     </td>
                     <td>
-                    <input id="js-author-last-name" type="text" name="Author[last_name]" placeholder="Last Name" style="width:150px">
+                    <input id="js-author-last-name" class="js-author-required" type="text" name="Author[last_name]" placeholder="Last Name" style="width:150px">
                     </td>
                     <td>
                        <input id="js-author-orcid" type="text" pattern="[1-9]{4}-[1-9]{4}-[1-9]{4}-[1-9]{4}" name="Author[orcid]" placeholder="ORCiD (optional)" style="width:130px">
                     </td>
                     <td>
-                        <input id="js-author-contribution" type="text" name="Author[contribution]" placeholder="Contribution" style="width:120px">
+                        <input id="js-author-contribution" class="js-author-required" type="text" name="Author[contribution]" placeholder="Contribution" style="width:120px">
                     </td>
                     <td colspan="2">
                         <input type="hidden" value="999999999" class="js-author-rank">
-                        <a href="#" dataset-id="<?=$model->id?>" class="btn js-add-author"/>Add Author</a>
+                        <a href="#" dataset-id="<?=$model->id?>" class="btn js-not-allowed" id="js-add-author"/>Add Author</a>
                     </td>
                 </tr>
             </tbody>
@@ -101,7 +101,7 @@ Firstname	Middlename	Lastname	ORCID 		contribution<br>
 Rosalind	Elsie	Franklin 	0000-0000-0000-0001	Conceptualization"
               data-html="true" style="float: none"></a>
            <input type="file" id="authors" name="authors">
-           <a href="#" dataset-id="<?=$model->id?>" class="btn js-add-authors"/>Add Authors</a>
+           <a href="#" dataset-id="<?=$model->id?>" class="btn js-not-allowed" id="js-add-authors"/>Add Authors</a>
        </div>
     </div>
 
@@ -114,40 +114,20 @@ Rosalind	Elsie	Franklin 	0000-0000-0000-0001	Conceptualization"
 </div>
 
 <script>
-    $("#js-author-orcid").keypress(function(){
-        var input = $(this);
-
-        setTimeout((function(){
-            var val = input.val();
-            var valLength = val.length;
-
-            var lastChar = val.slice(-1);
-
-            if (valLength > 19) {
-                input.val(val.slice(0, 19));
-                return false;
-            }
-
-            if (valLength == 5 || valLength == 10 || valLength == 15) {
-                if (lastChar == parseInt(lastChar)) {
-                    lastChar = '-' + lastChar;
-                } else {
-                    lastChar = lastChar.replace(/[^-]/g, '');
-                }
-            } else {
-                lastChar = lastChar.replace(/[^0-9]/g, '');
-            }
-
-            var withoutLastChar = val.slice(0, -1);
-            withoutLastChar = withoutLastChar.replace(/[^0-9\-]/g, '');
-            input.val(withoutLastChar + lastChar);
-
-        }), 50);
-    });
-</script>
-<script>
 var deleteIds = [];
 var dataset_id = <?= $model->id ?>;
+
+$(document).on('click', '.js-not-allowed', function() {
+    return false;
+});
+
+$(document).on('change', '.js-author-required', function () {
+    makeAddAuthorActiveIfCan();
+});
+
+$(document).on('change', '#authors', function () {
+    $('#js-add-authors').removeClass('js-not-allowed').addClass('btn-green js-add-authors');
+});
 
 $(document).on('focusin', ".js-author-rank", function(){
     $(this).data('val', $(this).val());
@@ -289,7 +269,7 @@ $(".js-save-authors").click(function() {
     return false;
 });
 
-$(".js-add-author").click(function(e) {
+$(document).on('click', ".js-add-author", function(e) {
     e.preventDefault();
     var  did = $(this).attr('dataset-id');
     var first_name = $('#js-author-first-name').val();
@@ -321,6 +301,8 @@ $(".js-add-author").click(function(e) {
             $('#js-author-last-name').val('');
             $('#js-author-orcid').val('');
             $('#js-author-contribution').val('');
+
+            $('#js-add-author').removeClass('btn-green js-add-author').addClass('js-not-allowed');
         } else {
             alert(response.message);
 
@@ -332,7 +314,7 @@ $(".js-add-author").click(function(e) {
     });
 });
 
-$(".js-add-authors").click(function() {
+$(document).on('click', ".js-add-authors", function(e) {
     var  did = $(this).attr('dataset-id');
 
     var data = new FormData();
@@ -357,6 +339,7 @@ $(".js-add-authors").click(function() {
                 $('#no-results').hide();
 
                 $("#authors").val('');
+                $('#js-add-authors').removeClass('btn-green js-add-authors').addClass('js-not-allowed');
             } else {
                 alert(response.message);
 
@@ -400,4 +383,47 @@ $(document).on("click", ".js-delete-author", function() {
 });
 
 $(".delete-title").tooltip({'placement':'top'});
+
+function makeAddAuthorActiveIfCan() {
+    if (
+        $('#js-author-first-name').val()
+        && $('#js-author-last-name').val()
+        && $('#js-author-contribution').val()
+    ) {
+        $('#js-add-author').removeClass('js-not-allowed').addClass('btn-green js-add-author');
+    } else {
+        $('#js-add-author').removeClass('btn-green js-add-author').addClass('js-not-allowed');
+    }
+}
+
+$("#js-author-orcid").keypress(function(){
+    var input = $(this);
+
+    setTimeout((function(){
+        var val = input.val();
+        var valLength = val.length;
+
+        var lastChar = val.slice(-1);
+
+        if (valLength > 19) {
+            input.val(val.slice(0, 19));
+            return false;
+        }
+
+        if (valLength == 5 || valLength == 10 || valLength == 15) {
+            if (lastChar == parseInt(lastChar)) {
+                lastChar = '-' + lastChar;
+            } else {
+                lastChar = lastChar.replace(/[^-]/g, '');
+            }
+        } else {
+            lastChar = lastChar.replace(/[^0-9]/g, '');
+        }
+
+        var withoutLastChar = val.slice(0, -1);
+        withoutLastChar = withoutLastChar.replace(/[^0-9\-]/g, '');
+        input.val(withoutLastChar + lastChar);
+
+    }), 50);
+});
 </script>

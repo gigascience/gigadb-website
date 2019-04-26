@@ -253,10 +253,20 @@ $form = $this->beginWidget('CActiveForm', array(
 
     <div class="span12" style="text-align:center">
         <a href="<?= Yii::app()->createUrl('/datasetSubmission/index') ?>" class="btn"/>Cancel</a>
-        <?php echo CHtml::submitButton('Save', array('class' => 'btn-green' . $class, 'id' => 'next-btn', 'disabled' => $disabled)); ?>
+        <?php echo CHtml::submitButton('Save', array(
+                'class' => 'btn-green' . $class,
+            'id' => 'next-btn', 'disabled' => $disabled
+        ));
+        ?>
         <?php if (!$model->getIsNewRecord()): ?>
-            <a href="/datasetSubmission/author/id/<?= $model->id ?>" class="btn-green">Next</a>
+            <?php echo CHtml::submitButton('Next', array(
+                'class' => 'btn-green' . $class,
+                'id' => 'next-btn2', 'disabled' => $disabled,
+                'data-url' => '/datasetSubmission/author/id/' . $model->id
+            ));
+            ?>
         <?php endif ?>
+        <input type="hidden" name="redirect_url" id="redirect_url" value="">
     </div>
 
 </div>
@@ -264,6 +274,10 @@ $form = $this->beginWidget('CActiveForm', array(
 <?php $this->endWidget(); ?>
 
 <script>
+    $('#next-btn2').click(function () {
+        $('#redirect_url').val($(this).data('url'));
+    });
+
     $('.date').datepicker();
 
     $(function() {

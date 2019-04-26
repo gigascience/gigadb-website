@@ -21,6 +21,7 @@ Yii::import('application.extensions.CAdvancedArBehavior');
  * @property string $token
  * @property string $fairnuse
  * @property string $additional_information
+ * @property integer $funding
  */
 class Dataset extends CActiveRecord
 {
@@ -90,7 +91,7 @@ class Dataset extends CActiveRecord
         // will receive user inputs.
         return array(
             array('submitter_id, identifier, title, ftp_site, types', 'required'),
-            array('submitter_id, image_id, publisher_id', 'numerical', 'integerOnly'=>true),
+            array('submitter_id, image_id, publisher_id, funding', 'numerical', 'integerOnly'=>true),
             array('dataset_size', 'numerical'),
             array('identifier, excelfile_md5', 'length', 'max'=>32),
             array('title', 'length', 'max'=>300),
@@ -132,6 +133,7 @@ class Dataset extends CActiveRecord
             'datasetLogs'=>array(self::HAS_MANY, 'DatasetLog', 'dataset_id'),
             'datasetAttributes' => array(self::HAS_MANY, 'DatasetAttributes', 'dataset_id'),
             'attributes' => array(self::MANY_MANY, 'Attribute', 'dataset_attributes(dataset_id, attribute_id)'),
+            'fundings' => array(self::HAS_MANY, 'Funding', 'dataset_id'),
         );
     }
 
@@ -680,4 +682,10 @@ class Dataset extends CActiveRecord
 
         $this->setAdditionalInformation($addInfo);
     }
+
+    public function getFunding()
+    {
+        return isset($this->funding) ? !!$this->funding : null;
+    }
+
 }

@@ -130,8 +130,6 @@
                         '</td>' +
                         '</tr>';
 
-                    console.log(tr);
-
                     $('.js-no-results', othersDiv).before(tr);
                     $('.js-no-results', othersDiv).hide();
 
@@ -187,10 +185,8 @@
             && ($('#codes-no').hasClass('btn-green') || $('#codes-yes').hasClass('btn-green'))
             && ($('#sources-no').hasClass('btn-green') || $('#sources-yes').hasClass('btn-green'))
         ) {
-            console.log('y');
             $('#additional-save').find('.js-not-allowed').removeClass('js-not-allowed').addClass('btn-green js-save-additional');
         } else {
-            console.log('n');
         }
     }
 </script>
