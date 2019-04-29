@@ -71,13 +71,38 @@ services:
   web:
     image: nginx:1.15-alpine
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./html:/usr/share/nginx/html:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./html:/var/www:ro
     ports:
       - target: 80
-        published: 9000
+        published: 9090
         protocol: tcp
         mode: host
+    networks:
+      - proto
+
+  app:
+    build:
+      context: php
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=true
+        - INSTALL_APCU=true
+    volumes:
+      - ./html:/var/www:ro
+      - ./php-conf/php-fpm.ini:/usr/local/etc/php/php.ini
+      - ./php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ./php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+      - ./php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+    expose:
+      - "9000"
+    networks:
+      - proto
 
 networks:
   proto:
