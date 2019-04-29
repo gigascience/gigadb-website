@@ -20,10 +20,10 @@
     <?= $this->renderPartial('//shared/_google_analytics')?>
 
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
-</head>
-
+        <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ba-bbq/1.2.1/jquery.ba-bbq.min.js"></script>
 <body>
 <header>
 
