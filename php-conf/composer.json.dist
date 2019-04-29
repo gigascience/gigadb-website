@@ -1,0 +1,58 @@
+{
+    "name": "GigaDB (${COMPOSER_WARNING})",
+    "type": "Yii-based web site",
+    "description": "GigaDB primarily serves as a repository to host data and tools associated with articles in GigaScience journal",
+    "homepage": "http://gigadb.org",
+    "require": {
+        "php": "^${PHP_VERSION}",
+        "yiisoft/yii": "${YII_VERSION}",
+        "yiisoft/yii2": "${YII2_VERSION}",
+        "phpmailer/phpmailer": "^6.0",
+        "gabrielelana/byte-units": "^0.5",
+        "google/apiclient": "v2.2.2",
+        "suin/php-rss-writer": "^1.6",
+         "leafo/lessphp": "^v0.3.9",
+         "opauth/opauth": "^0.4.5",
+         "opauth/facebook": "^0.4.2",
+         "opauth/twitter": "^0.3.2",
+         "opauth/google": "^0.2.2",
+         "opauth/linkedin": "^0.2.0",
+         "drewm/mailchimp-api": "^v2.5"
+    },
+    "require-dev": {
+        "behat/behat":  "^3.5",
+        "behat/mink":   "^1.7",
+        "behat/mink-extension":  "*",
+        "behat/mink-goutte-driver":     "*",
+        "behat/mink-selenium2-driver":  "*",
+        "fabpot/goutte":    "^3.2",
+        "phpunit/phpunit": "^5.7",
+        "phpunit/php-code-coverage": "*",
+        "phpunit/phpunit-mock-objects": "*",
+        "aik099/phpunit-mink": "@dev",
+        "squizlabs/php_codesniffer": "~3.0",
+        "phpdocumentor/phpdocumentor": "^2.9",
+        "friendsofphp/php-cs-fixer": "^v2.2",
+        "sebastian/phpcpd": "^3.0",
+        "phpmd/phpmd": "2.6.0",
+        "php-coveralls/php-coveralls": "v2.1.0"
+    },
+    "minimum-stability": "stable",
+    "config": {
+        "bin-dir": "bin",
+        "platform": {
+            "php": "${PHP_VERSION}"
+        }
+    },
+    "autoload": {
+        "psr-0": {
+            "": ["features/bootstrap"]
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}
