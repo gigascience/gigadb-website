@@ -79,10 +79,10 @@ function makePasswordFile(string $dataset, string $fileName): bool
 function createFTPAccount(string $dataset): bool
 {
 	$status = 0 ;
-	exec("/var/scripts/create_upload_ftp.sh $dataset",$output, $status);
-	error_log(implode("\n",$output));
-	exec("/var/scripts/create_download_ftp.sh $dataset",$output, $status);
-	error_log(implode("\n",$output));
+	exec("/var/scripts/create_upload_ftp.sh $dataset",$output1, $status);
+	error_log(implode("\n",$output1));
+	exec("/var/scripts/create_download_ftp.sh $dataset",$output2, $status);
+	error_log(implode("\n",$output2));
     sleep(2);
     return !$status;
 }
