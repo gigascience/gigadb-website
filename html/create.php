@@ -1,19 +1,13 @@
 <?php
 
-	require 'lib/db.php';
-
-    $appconfig = parse_ini_file("/var/appconfig.ini");
-    $web_endpoint = $appconfig["web_endpoint"];
-
-
 	$thisurl = parse_url($_SERVER['REQUEST_URI']);
 	parse_str($thisurl["query"], $params);
 /*
   1. create folder in incoming
   2. create folder in repo
-  3. generate random token
-  4. create download token file
-  5. create uploade token file
+  3. generate random password
+  4. create download password file
+  5. create uploade password file
 */
 
 /**
@@ -26,14 +20,14 @@ function makeDatasetDirectories(string $dataset): bool
 {
 	$in_directory = "/var/incoming/ftp";
 	$out_directory = "/var/repo";
-	$token_directory = "/var/private";
-	mkdir("$in_directory/$dataset", 0770);
-	mkdir("$out_directory/$dataset", 0755);
-	mkdir("$token_directory/$dataset", 0750);
+	$password_directory = "/var/private";
+	mkdir("$in_directory/$dataset", 0700);
+	mkdir("$out_directory/$dataset", 0700);
+	mkdir("$password_directory/$dataset", 0700);
 	clearstatcache();
 	return file_exists("$in_directory/$dataset")
 			&& file_exists("$out_directory/$dataset")
-			&& file_exists("$token_directory/$dataset");
+			&& file_exists("$password_directory/$dataset");
 }
 
 /**
@@ -55,21 +49,21 @@ function generateString(int $strength = 16): string {
 }
 
 /**
- * Create token files for upload and download accounts
+ * Create password files for upload and download accounts
  *
  * @param string $dataset DOI suffix
- * @param string $fileName file name for the token file
+ * @param string $fileName file name for the password file
  * @return bool if file exists return true, false otherwise
  */
-function makeTokenFile(string $dataset, string $fileName): bool
+function makePasswordFile(string $dataset, string $fileName): bool
 {
 	$basepath = "/var/private";
-	$token = generateString(20);
+	$password = generateString(20);
 
 	$fileHandle = fopen("$basepath/$dataset/$fileName", "w");
-	fwrite($fileHandle, $token);
+	fwrite($fileHandle, $password);
 	fwrite($fileHandle, "\n");
-	fwrite($fileHandle, $token);
+	fwrite($fileHandle, $password);
 	fclose($fileHandle);
 	clearstatcache();
 	return file_exists("$basepath/$dataset/$fileName");
@@ -85,59 +79,19 @@ function makeTokenFile(string $dataset, string $fileName): bool
 function createFTPAccount(string $dataset): bool
 {
 	$status = 0 ;
-	exec("/var/scripts/create_upload_ftp.sh $dataset",$output1, $status);
-	error_log(implode("\n",$output1));
-	exec("/var/scripts/create_download_ftp.sh $dataset",$output2, $status);
-	error_log(implode("\n",$output2));
+	exec("/var/scripts/create_upload_ftp.sh $dataset",$output, $status);
+	error_log(implode("\n",$output));
+	exec("/var/scripts/create_download_ftp.sh $dataset",$output, $status);
+	error_log(implode("\n",$output));
     sleep(2);
     return !$status;
 }
 
-/**
- * After creating folder and ftp accounts, add an entry in the account table
- *
- * @param string $dataset DOI suffix
- * @param string $downloadTokenFile file containing the download token
- * @param string $uploadTokenFile file containing the upload token
- * @return bool whether the account record was succesfully created or not
- */
-function createAccountRecord(string $dataset,
-							string $downloadTokenFile,
-							string $uploadTokenFile
-							): bool
-{
-	$dbh = connectDB();
-	$result = 0;
-
-	$uploadLogin = "u-$dataset";
-	$downloadLogin = "d-$dataset";
-	$uploadToken = file("/var/private/$dataset/$uploadTokenFile")[0];
-	$downloadToken = file("/var/private/$dataset/$downloadTokenFile")[0];
-	$status = "active";
-
-	$insert = "insert into account(doi_suffix,ulogin,utoken,dlogin,dtoken,status) select :d , :ul , :up , :dl, :dp, :s where not exists (select * from account where doi_suffix = :d and status = 'active')";
-	$insert_statement = $dbh->prepare($insert);
-	$insert_statement->bindParam(':d', $dataset);
-	$insert_statement->bindParam(':ul', $uploadLogin);
-	$insert_statement->bindParam(':up', $uploadToken);
-	$insert_statement->bindParam(':dl', $downloadLogin);
-	$insert_statement->bindParam(':dp', $downloadToken);
-	$insert_statement->bindParam(':s', $status);
-
-	$result = $insert_statement->execute();
-
-
-	return 1 == $result;
-}
-
-$uTokenFile = "upload_token.txt" ;
-$dTokenFile = "download_token.txt" ;
 $result = true ;
 $result = $result && makeDatasetDirectories($params['d']);
-$result = $result && makeTokenFile($params['d'], $dTokenFile);
-$result = $result && makeTokenFile($params['d'], $uTokenFile);
-$result = $result && createFTPAccount($params['d']);
-$result = $result && createAccountRecord($params['d'], $dTokenFile, $uTokenFile);
+$result = $result && makePasswordFile($params['d'], "download_password.txt");
+$esult = $result && makePasswordFile($params['d'], "upload_password.txt");
+$esult = $result && createFTPAccount($params['d']);
 
 ?>
 <!DOCTYPE html>
@@ -146,7 +100,6 @@ $result = $result && createAccountRecord($params['d'], $dTokenFile, $uTokenFile)
 	<title>Prototype of File Uploade Wizard (Create drop box)</title>
 </head>
 <body>
-	<nav><a href="<?= $web_endpoint ?>">[Go back to Dashboard]</a></nav>
 	<?
 		if (true == $result) {
 			echo "<p><b>Success<b></p>";
