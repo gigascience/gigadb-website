@@ -225,7 +225,7 @@ RUN if [ ${INSTALL_DOCKER} = true ]; then \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     usermod -aG docker www-data && \
-    echo "www-data ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
+    echo 'www-data ALL=(ALL) NOPASSWD: /usr/bin/docker exec tus-uppy-proto_ftpd_1 bash -c *' >> /etc/sudoers \
 ;fi
 
 
