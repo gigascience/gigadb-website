@@ -1,3 +1,7 @@
+<?php
+
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -20,8 +24,8 @@
         		<th>Dataset</th>
         		<th>Go to Uploader page</th>
         		<th>Go to Mockup page</th>
-        		<th>ftp user</th>
-        		<th>ftp password</th>
+        		<th>ftp upload user</th>
+        		<th>ftp upload password</th>
         		<th>ftp port</th>
         	</tr>
 
@@ -30,7 +34,7 @@
                 <td><a id="Upload_100006" type="button" href="/uploader.php?d=100006">Uploader</a></td>
                 <td><a id="Upload_100006" type="button" href="/downloader.php?d=100006">Mockup</a></td>
                 <td>u-100006</td>
-                <td>password</td>
+                <td>TODO</td>
                 <td>9021</td>
             </tr>
         </table>
