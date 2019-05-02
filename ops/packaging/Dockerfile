@@ -62,6 +62,7 @@ ARG INSTALL_INTL=false
 
 RUN if [ ${INSTALL_INTL} = true ]; then \
     # Install intl and requirements
+    apt-get update -yq && \
     apt-get install -y zlib1g-dev libicu-dev g++ && \
     docker-php-ext-configure intl && \
     docker-php-ext-install intl \
@@ -83,6 +84,7 @@ RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
     mkdir -p /usr/share/man/man1 && \
     mkdir -p /usr/share/man/man7 && \
     # Install the pgsql client
+    apt-get update -yq && \
     apt-get install -y postgresql-client-${PG_CLIENT_VERSION} \
 ;fi
 
@@ -107,12 +109,14 @@ RUN if [ ${INSTALL_NETCAT_JQ} = true ]; then \
     mkdir -p /usr/share/man/man1 && \
     mkdir -p /usr/share/man/man7 && \
     # Install netcat-openbsd and jq
+    apt-get update -yq && \
     apt-get install -y netcat-openbsd jq \
 ;fi
 
 ARG INSTALL_GRAPHVIZ=false
 
 RUN if [ ${INSTALL_GRAPHVIZ} = true ]; then \
+    apt-get update -yq && \
     apt-get install -y graphviz \
 ;fi
 
@@ -121,6 +125,7 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /tmp
 RUN if [ ${INSTALL_COMPOSER} = true ]; then \
     docker-php-ext-install zip \
+    && apt-get update -yq \
     && apt-get install -y unzip wget \
     && EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" \
     && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
@@ -159,7 +164,7 @@ RUN if [ ${INSTALL_LIBSODIUM} = true ]; then \
     # Using archive repo instead
     echo 'Acquire::Check-Valid-Until "0";' | tee -a /etc/apt/apt.conf.d/apt.conf && \
     echo "deb http://archive.debian.org/debian jessie-backports main" | tee -a /etc/apt/sources.list && \
-    apt-get update && \
+    apt-get update -yq && \
     apt-get install -y -t jessie-backports libsodium-dev && \
     pecl install libsodium && \
     echo "extension=sodium.so" >  /usr/local/etc/php/conf.d/libsodium.ini \
@@ -167,6 +172,7 @@ RUN if [ ${INSTALL_LIBSODIUM} = true ]; then \
 
 ARG INSTALL_GIT=false
 RUN if [ ${INSTALL_GIT} = true ]; then \
+    apt-get update -yq && \
     apt-get install -y git \
 ;fi
 

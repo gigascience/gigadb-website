@@ -51,6 +51,7 @@ resource "aws_instance" "staging_dockerhost" {
   instance_type = "t2.micro"
   vpc_security_group_ids = ["${aws_security_group.docker_host_sg.id}"]
   key_name = "aws-centos7-keys"
+<<<<<<< HEAD
   tags = {
     Name = "ec2-as1-staging-gigadb"
   }
@@ -71,3 +72,10 @@ resource "aws_eip_association" "staging_eip" {
   instance_id   = "${aws_instance.staging_dockerhost.id}"
   allocation_id = "${data.aws_eip.staging_eip.id}"
 }
+=======
+
+  root_block_device = {
+    delete_on_termination  = "true"
+  }
+}
+>>>>>>> f6fc22580365739f9343681007533d87c4ec7119
