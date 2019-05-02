@@ -1,5 +1,37 @@
 <?php
+    require 'lib/db.php';
+    /**
+     * the account class
+     *  id | doi_suffix |  ulogin  |        utoken        |  dlogin  |        dtoken        | space_used | status |         created_at         |         updated_at         | retired_at
+     */
+    class Account {
+        public $id;
+        public $doi_suffix;
+        public $ulogin;
+        public $utoken;
+        public $dlogin;
+        public $dtoken;
+        public $space_used;
+        public $status;
+        public $created_at;
+        public $updated_at;
+        public $retired_at;
+    }
 
+    /**
+     * return array of accounts
+     *
+     * @param string $status filtering on status (active or retired)
+     */
+    function getAccounts(string $status): array
+    {
+        $dbh = connectDB();
+        $sql = "select distinct * from account where status = ? order by created_at desc FETCH FIRST 1 ROWS ONLY";
+        $st = $dbh->prepare($sql);
+        $st->bindParam(1, $status, PDO::PARAM_STR);
+        $st->execute();
+        return $st->fetchAll(PDO::FETCH_CLASS, "Account");
+    }
 
 ?>
 <!DOCTYPE html>
@@ -28,15 +60,20 @@
         		<th>ftp upload password</th>
         		<th>ftp port</th>
         	</tr>
-
-            <tr>
-                <td>100006</td>
-                <td><a id="Upload_100006" type="button" href="/uploader.php?d=100006">Uploader</a></td>
-                <td><a id="Upload_100006" type="button" href="/downloader.php?d=100006">Mockup</a></td>
-                <td>u-100006</td>
-                <td>TODO</td>
-                <td>9021</td>
-            </tr>
+            <?php
+                foreach (getAccounts("active") as $account) {
+            ?>
+                <tr>
+                    <td><?= $account->doi_suffix?></td>
+                    <td><a id="Upload_<?= $account->doi_suffix?>" type="button" href="/uploader.php?d=<?= $account->doi_suffix?>">Uploader</a></td>
+                    <td><a id="Upload_<?= $account->doi_suffix?>" type="button" href="/downloader.php?d=<?= $account->doi_suffix?>">Mockup</a></td>
+                    <td>u-<?= $account->doi_suffix?></td>
+                    <td><?= $account->utoken?></td>
+                    <td>9021</td>
+                </tr>
+            <?php
+                }
+            ?>
         </table>
     </form>
     <hr>
