@@ -6,13 +6,7 @@
 	 */
 	function connectDB(): object
 	{
-		$appconfig = parse_ini_file("/var/appconfig.ini");
-
-		$db_user = $appconfig["db_user"];
-		$db_password = $appconfig["db_password"];
-		$db_source = $appconfig["db_source"];
-
-		$dbh = new PDO("pgsql:host=database;dbname=$db_source", "$db_user", "$db_password");
+		$dbh = new PDO('pgsql:host=tus-uppy-proto_database_1;dbname=proto', 'proto', 'proto');
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
 		return $dbh ;
 	}
