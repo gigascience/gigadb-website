@@ -2,9 +2,6 @@
 
 	require 'lib/db.php';
 
-    $appconfig = parse_ini_file("/var/appconfig.ini");
-    $web_endpoint = $appconfig["web_endpoint"];
-
 	$thisurl = parse_url($_SERVER['REQUEST_URI']);
 	parse_str($thisurl["query"], $params);
 /*
@@ -71,21 +68,6 @@ function removeFTPAccount(string $dataset): bool
 }
 
 /**
- * Delete entry in file table
- *
- * @param string $string dataset
- * @return bool whether the deletion was successful or not
- */
-function deleteFileRecords(string $dataset): bool
-{
-	$dbh = connectDB();
-	$delete = "delete from file where dataset_id= ? and status = 'uploading'";
-	$delete_statement = $dbh->prepare($delete);
-	$delete_statement->bindParam(1, $dataset);
-	return $delete_statement->execute();
-}
-
-/**
  * update account record as "retired"
  *
  * @param string $dataset DOI suffix
@@ -112,7 +94,6 @@ $result = true ;
 $result = $result && removeDatasetDirectories($params['d']);
 $esult = $result && removeFTPAccount($params['d']);
 $esult = $result && updateAccountRecord($params['d'], "retired");
-$esult = $result && deleteFileRecords($params['d']);
 
 ?>
 <!DOCTYPE html>
@@ -121,7 +102,6 @@ $esult = $result && deleteFileRecords($params['d']);
 	<title>Prototype of File Uploade Wizard (Retire drop box)</title>
 </head>
 <body>
-	<nav><a href="<?= $web_endpoint ?>">[Go back to Dashboard]</a></nav>
 	<?
 		if (true == $result) {
 			echo "<p><b>Success<b></p>";
