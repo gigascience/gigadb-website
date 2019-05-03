@@ -96,19 +96,23 @@ services:
         - INSTALL_DOCKER=true
     volumes:
       - ./html:/var/www:ro
-      - ./php-conf/php-fpm.ini:/usr/local/etc/php/php.ini
-      - ./php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/www.conf
-      - ./php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
-      - ./php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+      - ./php-conf/php-fpm.ini:/usr/local/etc/php/php.ini:ro
+      - ./php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      - ./php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini:ro
+      - ./php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini:ro
       - ./incoming:/var/incoming
       - ./repo:/var/repo
       - ./credentials:/var/private
-      - ./scripts:/var/scripts
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ./scripts:/var/scripts:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     expose:
       - "9000"
     networks:
       - proto
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+
 
 networks:
   proto:
