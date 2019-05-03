@@ -124,8 +124,8 @@ function createAccountRecord(string $dataset,
 	return 1 == $result;
 }
 
-$uTokenFile = "upload_password.txt" ;
-$dTokenFile = "download_password.txt" ;
+$uTokenFile = "upload_token.txt" ;
+$dTokenFile = "download_token.txt" ;
 $result = true ;
 $result = $result && makeDatasetDirectories($params['d']);
 $result = $result && makeTokenFile($params['d'], $dTokenFile);
