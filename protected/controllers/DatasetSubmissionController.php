@@ -33,6 +33,9 @@ class DatasetSubmissionController extends Controller
                     'funding',
                     'validateFunding',
                     'saveFundings',
+                    'sample',
+                    'saveSamples',
+                    'checkUnit',
                 ),
                 'users' => array('@'),
             ),
@@ -133,7 +136,7 @@ class DatasetSubmissionController extends Controller
     }
 
     /**
-     * Author page.
+     * Additional page.
      */
     public function actionAdditional()
     {
@@ -337,12 +340,12 @@ class DatasetSubmissionController extends Controller
     }
 
     /**
-     * Author page.
+     * Funding page.
      */
     public function actionFunding()
     {
         if (!isset($_GET['id'])) {
-            $this->redirect("/user/funding");
+            $this->redirect("/user/view_profile");
         } else {
             $dataset = $this->getDataset($_GET['id']);
 
@@ -446,6 +449,232 @@ class DatasetSubmissionController extends Controller
         Util::returnJSON(array("success"=>false,"message"=>"Data is empty."));
     }
 
+    /**
+     * Sample page.
+     */
+    public function actionSample()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        }
+
+        $dataset = $this->getDataset($_GET['id']);
+
+        $this->isSubmitter($dataset);
+
+        $error = '';
+        $rows = array();
+        if ($_POST) {
+            $samples = CUploadedFile::getInstanceByName('samples');
+            if($samples) {
+
+                if ($samples->getType() != CsvHelper::TYPE_CSV && $samples->getType() != CsvHelper::TYPE_TSV) {
+                    $error = "File has wrong extension.";
+                } else {
+                    $delimiter = $samples->getType() == CsvHelper::TYPE_CSV ? ';' : "\t";
+                    $rows = CsvHelper::getArrayByFileName($samples->getTempName(), $delimiter);
+                    if (!$rows) {
+                        $error = "File is empty.";
+                    }
+                }
+            }
+        }
+
+        $template = isset($_GET['template']) ? $this->getSampleTemplate($_GET['template']) : null;
+
+        $units = Unit::model()->findAll(array('order'=>'name asc'));
+
+        $sts = SampleTemplate::model()->findAll(array('order'=>'name asc'));
+
+        $samples = $dataset->samples;
+
+        $sampleIds = array();
+        foreach ($samples as $sample) {
+            $sampleIds[] = $sample->id;
+        }
+
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition("sample_id", $sampleIds);
+        $sas = SampleAttribute::model()->findAll($criteria, array('order'=>'attribute_id asc'));
+
+        $uniques = array();
+        foreach ($sas as $key => $sa) {
+            $unique = $sa->attribute_id . '-' . $sa->unit_id;
+            if (in_array($unique, $uniques)) {
+                unset($sas[$key]);
+            } else {
+                $uniques[] = $unique;
+            }
+        }
+
+        $this->render('sample', array(
+            'model' => $dataset,
+            'template' => $template,
+            'units' => $units,
+            'samples' => $samples,
+            'sas' => $sas,
+            'sts' => $sts,
+            'error' => $error,
+            'rows' => $rows,
+        ));
+    }
+
+    /**
+     * @throws CException
+     */
+    public function actionSaveSamples() {
+        if(isset($_POST['dataset_id'])) {
+            $transaction = Yii::app()->db->beginTransaction();
+
+            $dataset = $this->getDataset($_POST['dataset_id']);
+
+            $attrs = array();
+            $newSampleAttrs = isset($_POST['sample_attrs']) && is_array($_POST['sample_attrs']) ? $_POST['sample_attrs'] : array();
+            foreach ($newSampleAttrs as $i => $newSampleAttr) {
+                $attr = Attribute::model()->findByAttributes(array('attribute_name' => $newSampleAttr['attr_name']));
+                if (!$attr) {
+                    $attr = new Attribute;
+                    $attr->attribute_name = $newSampleAttr['attr_name'];
+                    if (!$attr->validate()) {
+                        $transaction->rollback();
+                        $error = current($attr->getErrors());
+                        Util::returnJSON(array(
+                            "success"=>false,
+                            "message"=> 'Col ' . ($i + 4) . ': ' . current($error)
+                        ));
+                    }
+                    $attr->save();
+                }
+
+                $attrs[] = $attr;
+            }
+
+            /** @var Sample[] $samples */
+            $samples = $dataset->samples;
+            $newSamples = isset($_POST['samples']) && is_array($_POST['samples']) ? $_POST['samples'] : array();
+            $needSamples = array();
+            if ($newSamples) {
+                foreach ($newSamples as $key => $newSample) {
+                    if (!$newSample['id']) {
+                        $sample = new Sample();
+                        $ds = new DatasetSample;
+                        $ds->dataset_id = $dataset->id;
+                    } else {
+                        $sample = Sample::model()->findByPk($newSample['id']);
+                        $ds = DatasetSample::model()->findByAttributes(array('sample_id' => $newSample['id'], 'dataset_id' => $dataset->id));
+                        if (!$sample || !$ds) {
+                            $transaction->rollback();
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                "message"=>"Save Error."
+                            ));
+                        }
+
+                        $needSamples[] = $newSample['id'];
+                    }
+
+                    $sample->loadByData($newSample);
+                    if (!$sample->validate()) {
+                        $transaction->rollback();
+                        $error = current($sample->getErrors());
+                        Util::returnJSON(array(
+                            "success"=>false,
+                            "message"=> 'Row ' . ($key + 1) . ': ' . current($error)
+                        ));
+                    }
+
+                    $sample->save();
+                    $ds->sample_id = $sample->id;
+                    $ds->save();
+
+                    $needAttrs = array();
+                    foreach ($attrs as $i => $attr) {
+                        if (!$newSample['attr_values'][$i]) {
+                            $transaction->rollback();
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                "message"=> 'Row ' . ($key + 1) . ': ' . 'Value for ' . $attr->attribute_name . ' cannot be blank.',
+                            ));
+                        }
+
+                        $unitId = isset($_POST['sample_attrs'][$i]['unit_id']) && $_POST['sample_attrs'][$i]['unit_id']
+                            ? $_POST['sample_attrs'][$i]['unit_id'] : null;
+                        $sa = SampleAttribute::model()->findByAttributes(array(
+                            'sample_id' => $sample->id,
+                            'attribute_id' => $attr->id,
+                            'unit_id' => $unitId
+                        ));
+                        if (!$sa) {
+                            $sa = new SampleAttribute();
+                            $sa->sample_id = $sample->id;
+                            $sa->attribute_id = $attr->id;
+                            $sa->unit_id = $unitId;
+                        }
+
+                        $sa->value = $newSample['attr_values'][$i];
+
+                        if (!$sa->validate()) {
+                            $transaction->rollback();
+                            $error = current($sa->getErrors());
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                "message"=> 'Row ' . ($key + 1) . ', Col ' . ($i + 4) . ': ' . current($error)
+                            ));
+                        }
+
+                        $sa->save();
+                        $needAttrs[] = $attr->id;
+                    }
+
+                    $sas = SampleAttribute::model()->findAllByAttributes(array('sample_id' => $sample->id));
+                    foreach ($sas as $sa) {
+                        if (!in_array($sa->attribute_id, $needAttrs)) {
+                            if (!$sa->delete()) {
+                                $transaction->rollback();
+                                Util::returnJSON(array(
+                                    "success"=>false,
+                                    "message"=>"Save Error."
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach ($samples as $sample) {
+                if (!in_array($sample->id, $needSamples)) {
+                    if (!$sample->delete()) {
+                        $transaction->rollback();
+                        Util::returnJSON(array(
+                            "success"=>false,
+                            "message"=>"Save Error."
+                        ));
+                    }
+                }
+            }
+
+            $transaction->commit();
+            Util::returnJSON(array("success"=>true));
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>"Data is empty."));
+    }
+
+    public function actionCheckUnit() {
+        if(isset($_GET['attr_name'])) {
+            $attr = Attribute::model()->findByAttributes(array('attribute_name' => $_GET['attr_name']));
+
+            if ($attr && $attr->allowed_units) {
+                Util::returnJSON(array(
+                    "success"=>true,
+                    'unitId' => $attr->allowed_units
+                ));
+            }
+        }
+
+        Util::returnJSON(array("success"=>false));
+    }
+
     protected function getDataset($id)
     {
         $dataset = Dataset::model()->findByPk($id);
@@ -455,6 +684,13 @@ class DatasetSubmissionController extends Controller
         }
 
         return $dataset;
+    }
+
+    protected function getSampleTemplate($id)
+    {
+        $template = SampleTemplate::model()->findByPk($id);
+
+        return $template;
     }
 
     protected function isSubmitter(Dataset $dataset)

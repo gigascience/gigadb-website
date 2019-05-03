@@ -10,4 +10,6 @@ $action = Yii::app()->controller->action->id;
    class="btn <?= $action == 'additional' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'Additional Information')?></a>
 <a href="/datasetSubmission/funding/id/<?= $model->id ?>"
    class="btn <?= $action == 'funding' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'Funding')?></a>
+<a href="/datasetSubmission/sample/id/<?= $model->id ?>"
+   class="btn <?= $action == 'sample' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'Sample')?></a>
 

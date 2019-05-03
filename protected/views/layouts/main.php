@@ -69,6 +69,25 @@
         .js-not-allowed {
             cursor: not-allowed;
         }
+        .js-delete-column {
+            display: inline !important;
+            margin-left: 5px;
+        }
+        .js-delete-row {
+            display: inline !important;
+            margin-left: 5px;
+        }
+        #samples-table [type="text"]{
+            margin: 0 5px;
+            width:150px;
+        }
+        .btn-sample{
+            white-space: nowrap;
+            margin: 0 5px;
+        }
+        .sample-attribute-column{
+            white-space: nowrap;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -95,6 +114,12 @@
             });
             $('.myHint').on('mouseleave', function() {
                 $(this).popover('hide');
+            });
+
+            $(".delete-title").tooltip({'placement':'top'});
+
+            $(document).on('click', '.js-not-allowed', function() {
+                return false;
             });
         });
     </script>

@@ -10,7 +10,7 @@ foreach ($funders as $funder) {
 }
 ?>
 
-<h2>Add Funding</h2>
+<h2>Add Fundings</h2>
 <div class="clear"></div>
 
 <?php $this->renderPartial('_tabs_navigation', array('model' => $model)); ?>
@@ -119,7 +119,7 @@ foreach ($funders as $funder) {
                 <a href="/datasetSubmission/additional/id/<?= $model->id ?>" class="btn-green">Previous</a>
                 <a href="/datasetSubmission/funding/id/<?= $model->id ?>"
                    class="btn <?php if ($disabled): ?>js-not-allowed<?php else: ?>btn-green js-save-funding<?php endif; ?>">Save</a>
-                <a href="/datasetSubmission/funding/id/<?= $model->id ?>"
+                <a href="/datasetSubmission/sample/id/<?= $model->id ?>"
                    class="btn <?php if ($disabled): ?>js-not-allowed<?php else: ?>btn-green js-save-funding<?php endif; ?>">Next</a>
             </div>
         </div>

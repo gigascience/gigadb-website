@@ -7,6 +7,7 @@
  * @property integer $id
  * @property integer $species_id
  * @property string $name
+ * @property string $description
  * @property string $consent_document
  * @property integer $submitted_id
  * @property string $submission_date
@@ -57,9 +58,11 @@ class Sample extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('species_id', 'required'),
+			array('name, description', 'required'),
+			array('name', 'validateName'),
+			array('species_id', 'required', 'message' => 'Species Name is invalid.'),
 			array('species_id, submitted_id', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>100),
+			array('name, description', 'length', 'max'=>100),
             		array('consent_document, contact_author_name', 'length', 'max'=>45),
             		array('contact_author_email, sampling_protocol', 'length', 'max'=>100),
 			array('submission_date', 'safe'),
@@ -70,6 +73,18 @@ class Sample extends CActiveRecord
 			//array('id, species_id, name, consent_document, submitted_id, submission_date, contact_author_name, contact_author_email, sampling_protocol, species_search, dois_search', 'safe', 'on'=>'search'),
 		);
 	}
+
+    public function validateName($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $sample = Sample::model()->findByAttributes(array('name' => $this->$attribute));
+
+            if ($sample && ($this->getIsNewRecord() || $sample->id != $this->id)) {
+                $labels = $this->attributeLabels();
+                $this->addError($attribute, $labels[$attribute] . ' already exist.');
+            }
+        }
+    }
 
 	/**
 	 * @return array relational rules.
@@ -103,6 +118,7 @@ class Sample extends CActiveRecord
 			'species_id' => 'Species',
 			//'code' => 'Sample ID',
 			'name' => Yii::t('app', 'Sample ID'),
+			'description' => Yii::t('app', 'Description'),
 			'taxonomic_id' => Yii::t('app','Taxonomic ID'),
 			'common_name' => Yii::t('app','Common Name'),
 			'genbank_name' => Yii::t('app','Genbank Name'),
@@ -355,5 +371,39 @@ EO_SQL;
         }
 
         return $content;
+    }
+
+    /**
+     * @param $attributeId
+     * @param $unitId
+     * @return null|SampleAttribute
+     */
+    public function getSampleAttributeByAttributeIdAndUnitId($attributeId, $unitId)
+    {
+        return SampleAttribute::model()->findByAttributes(array(
+            'sample_id' => $this->id,
+            'attribute_id' => $attributeId,
+            'unit_id' => $unitId,
+        ));
+    }
+
+    public function loadByData($data)
+    {
+        $species = Species::model()->findByAttributes(array('common_name' => $data['species_name']));
+
+        $this->species_id = $species ? $species->id : null;
+        $this->name = $data['sample_id'];
+        $this->description = $data['sample_description'];
+
+        if ($this->getIsNewRecord()) {
+            $this->submitted_id = Yii::app()->user->id;
+            $this->submission_date = date('Y-m-d H:i:s');
+
+            $user = User::model()->findByPk(Yii::app()->user->id);
+            if($user) {
+                $this->contact_author_name  = $user->first_name." ".$user->last_name;
+                $this->contact_author_email = $user->email;
+            }
+        }
     }
 }
