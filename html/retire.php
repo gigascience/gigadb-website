@@ -68,6 +68,21 @@ function removeFTPAccount(string $dataset): bool
 }
 
 /**
+ * Delete entry in file table
+ *
+ * @param string $string dataset
+ * @return bool whether the deletion was successful or not
+ */
+function deleteFileRecords(string $dataset): bool
+{
+	$dbh = connectDB();
+	$delete = "delete from file where doi_suffix= ? and status = 'uploading'";
+	$delete_statement = $dbh->prepare($delete);
+	$delete_statement->bindParam(1, $dataset);
+	return $delete_statement->execute();
+}
+
+/**
  * update account record as "retired"
  *
  * @param string $dataset DOI suffix
@@ -94,6 +109,7 @@ $result = true ;
 $result = $result && removeDatasetDirectories($params['d']);
 $esult = $result && removeFTPAccount($params['d']);
 $esult = $result && updateAccountRecord($params['d'], "retired");
+$esult = $result && deleteFileRecords($params['d']);
 
 ?>
 <!DOCTYPE html>
