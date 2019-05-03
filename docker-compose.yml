@@ -94,6 +94,7 @@ services:
         - INSTALL_LIBSODIUM=true
         - INSTALL_APCU=true
         - INSTALL_DOCKER=true
+        - INSTALL_NETCAT_JQ=true
     volumes:
       - ./html:/var/www:ro
       - ./php-conf/php-fpm.ini:/usr/local/etc/php/php.ini:ro
