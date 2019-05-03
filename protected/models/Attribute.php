@@ -45,6 +45,7 @@ class Attribute extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+			array('attribute_name', 'required'),
 			array('attribute_name, allowed_units', 'length', 'max'=>100),
 			array('definition, ontology_link', 'length', 'max'=>1000),
 			array('model', 'length', 'max'=>30),

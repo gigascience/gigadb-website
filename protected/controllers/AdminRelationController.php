@@ -31,7 +31,7 @@ class AdminRelationController extends Controller
 				'roles'=>array('admin'),
 			),
                           array('allow',
-                                  'actions' => array('create1', 'delete1','addRelation','deleteRelation'),
+                                  'actions' => array('create1', 'delete1', 'getRelation', 'addRelation','deleteRelation', 'deleteRelations'),
                                   'users' => array('@'),
                         ),
 			array('deny',  // deny all users
@@ -280,8 +280,27 @@ class AdminRelationController extends Controller
 		}
 	}
 
+    public function actionGetRelation() {
+        if(isset($_POST['dataset_id']) && isset($_POST['doi']) && isset($_POST['relationship'])) {
+            $relationship = Relationship::model()->findByPk($_POST['relationship']);
+            if (!$relationship) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Relationship ID is invalid.")));
+            }
+
+            Util::returnJSON(array(
+                "success"=>true,
+                'relation' => array(
+                    'relationship_id' => $relationship->id,
+                    'relationship_name' => $relationship->name,
+                    'related_doi' => $_POST['doi'],
+                ),
+            ));
+        }
+    }
+
     public function actionAddRelation() {
         if(isset($_POST['dataset_id']) && isset($_POST['doi']) && isset($_POST['relationship'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
 
             $relation = Relation::model()->findByAttributes(array(
               'dataset_id'=>$_POST['dataset_id'], 
@@ -305,13 +324,16 @@ class AdminRelationController extends Controller
                 $relation2->relationship_id = $_POST['relationship'];
 
                 if($relation->save()&&$relation2->save()) {
-                  $transaction->commit();
-                  Util::returnJSON(array("success"=>true));
+                    $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, true);
+                    if ($dataset->save(false)) {
+                        $transaction->commit();
+                        Util::returnJSON(array("success"=>true));
+                    }
                 }
-                else {
-                    $transaction->rollback();
-                    Yii::log(print_r($relation->getErrors(), true), 'debug');
-                }
+
+                $transaction->rollback();
+                Yii::log(print_r($relation->getErrors(), true), 'debug');
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
 
             }catch(Exception $e) {
                 $message = $e->getMessage();
@@ -323,7 +345,9 @@ class AdminRelationController extends Controller
     }
 
     public function actionDeleteRelation() {
-        if(isset($_POST['relation_id'])) {
+        if(isset($_POST['dataset_id']) && isset($_POST['relation_id'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
+
             $transaction = Yii::app()->db->beginTransaction();
             try {
                 $relation = Relation::model()->findByPk($_POST['relation_id']);
@@ -339,13 +363,25 @@ class AdminRelationController extends Controller
                   ));
 
                 if($relation->delete()&&$relation2->delete()) {
-                      $transaction->commit();
-                      Util::returnJSON(array("success"=>true));
+                    $count = Relation::model()->CountByAttributes(array('dataset_id'=>$dataset->id));
+
+                    if (!$count) {
+                        $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, false);
+                        if ($dataset->save(false)) {
+                            $transaction->commit();
+                            Util::returnJSON(array("success"=>true));
+                        } else {
+                            $transaction->rollback();
+                            Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                        }
+                    }
+
+                    $transaction->commit();
+                    Util::returnJSON(array("success"=>true));
                  }
-                else {
-                    $transaction->rollback();
-                    Util::returnJSON(array("success"=>false));
-                }
+
+                $transaction->rollback();
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
               }catch(Exception $e) {
                 $message = $e->getMessage();
                 Yii::log(print_r($message, true), 'error');
@@ -355,4 +391,43 @@ class AdminRelationController extends Controller
         }
     }
 
+    public function actionDeleteRelations() {
+        if(isset($_POST['dataset_id'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
+
+            $relations = Relation::model()->findAllByAttributes(array('dataset_id' => $_POST['dataset_id']));
+            $transaction = Yii::app()->db->beginTransaction();
+            foreach ($relations as $relation) {
+                if(!$relation->delete()) {
+                    $transaction->rollback();
+                    Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                }
+            }
+
+            $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, false);
+            if ($dataset->save(false)) {
+                $transaction->commit();
+                Util::returnJSON(array("success"=>true));
+            }
+            $transaction->rollback();
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Error.")));
+    }
+
+    /**
+     * @param $id
+     * @return array|Dataset|mixed|null
+     * @throws \yii\web\BadRequestHttpException
+     */
+    protected function getDataset($id)
+    {
+        $dataset = Dataset::model()->findByPk($id);
+
+        if (!$dataset) {
+            throw new \yii\web\BadRequestHttpException('Dataset ID is invalid.');
+        }
+
+        return $dataset;
+    }
 }

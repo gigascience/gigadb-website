@@ -25,6 +25,89 @@ class DatasetTest extends CDbTestCase
  		$this->assertEquals("Joe Bloggs", $this->datasets(1)->getCuratorName(),"Full name returned on getCuratorName()");
  	}
 
+//    function testSetIdentifier() {
+//        $lastDataset = Dataset::model()->find(array('order'=>'identifier desc'));
+//        $lastIdentifier = intval($lastDataset->identifier);
+//
+//        $dataset = new Dataset();
+//        $dataset->setIdentifier();
+//
+//        $this->assertEquals($lastIdentifier + 1, $dataset->identifier);
+//    }
+//
+//    function testLoadByData() {
+//        $data = array(
+//            'manuscript_id' => 'test manuscript_id',
+//            'title' => 'test title',
+//            'description' => 'test description',
+//        );
+//
+//        $dataset = new Dataset();
+//        $dataset->loadByData($data);
+//
+//        $this->assertEquals('test manuscript_id', $dataset->manuscript_id);
+//        $this->assertEquals('test title', $dataset->title);
+//        $this->assertEquals('test description', $dataset->description);
+//    }
+//
+//    function testSave() {
+//        $data = array(
+//            'submitter_id' => 345,
+//            'manuscript_id' => 'test manuscript_id',
+//            'title' => 'test title',
+//            'description' => 'test description',
+//            'upload_status' => 'Incomplete',
+//            'ftp_site' => "''",
+//        );
+//
+//        $dataset = new Dataset();
+//        $dataset->loadByData($data);
+//        $res = $dataset->save();
+//
+//        $this->assertTrue($res);
+//
+//        $newKeywords = array(
+//            'test keyword1',
+//            'test keyword2',
+//            'test keyword3',
+//        );
+//        $dataset->updateKeywords($newKeywords);
+//        $this->assertEquals($newKeywords, $dataset->getSemanticKeywords());
+//
+//        $res = $dataset->delete();
+//        $this->assertTrue($res);
+//    }
+//
+//    function testUpdateKeywords() {
+//        $dataset = $this->datasets(0);
+//
+//        $newKeywords = array(
+//            'test keyword1',
+//            'test keyword2',
+//            'test keyword3',
+//        );
+//        $dataset->updateKeywords($newKeywords);
+//        $this->assertEquals($newKeywords, $dataset->getSemanticKeywords());
+//    }
+//
+//    function testUpdateTypes() {
+//        $dataset = $this->datasets(0);
+//
+//        $newTypes = array(
+//            2,
+//            4,
+//        );
+//        $dataset->updateKeywords($newTypes);
+//        $this->assertEquals($newTypes, $dataset->getTypeIds());
+//    }
+//
+//    function testAddAuthor() {
+//        $dataset = $this->datasets(1);
+//        $author = $this->authors(2);
+//
+//        $dataset->addAuthor($author);
+//        $authors = $dataset->getAuthor();
+//        $this->assertEquals(1, count($authors));
+//        $this->assertEquals('Juan', $authors[0]['first_name']);
+//    }
  }
-
- ?>

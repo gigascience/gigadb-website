@@ -55,6 +55,7 @@ class Funder extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'dataset_funders' => array(self::HAS_MANY, 'DatasetFunder', 'funder_id'),
+            'fundings' => array(self::HAS_MANY, 'Funding', 'funder_id'),
 		);
 	}
 

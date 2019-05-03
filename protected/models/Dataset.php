@@ -1,6 +1,28 @@
 <?php
 Yii::import('application.extensions.CAdvancedArBehavior');
 
+/**
+ * @property integer $id
+ * @property integer $submitter_id
+ * @property integer $image_id
+ * @property integer $curator_id
+ * @property string $manuscript_id
+ * @property string $identifier
+ * @property string $title
+ * @property string $description
+ * @property integer $dataset_size
+ * @property string $ftp_site
+ * @property string $upload_status
+ * @property string $excelfile
+ * @property string $excelfile_md5
+ * @property string $publication_date
+ * @property string $modification_date
+ * @property integer $publisher_id
+ * @property string $token
+ * @property string $fairnuse
+ * @property string $additional_information
+ * @property integer $funding
+ */
 class Dataset extends CActiveRecord
 {
     /**
@@ -15,12 +37,12 @@ class Dataset extends CActiveRecord
     const URL_BIBTEXT = 'http://data.datacite.org/application/x-bibtex/10.5524/';
     const URL_TEXT = 'http://data.datacite.org/application/x-datacite+text/10.5524/';
 
-
     public $dTypes="";
     public $commonNames="";
     public $email;
     public $union;
     public $types;
+    public $keywords;
 
     public static $statusList = array('Incomplete'=>'Incomplete',
                          'Request'=>'Request',
@@ -68,12 +90,14 @@ class Dataset extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('submitter_id, identifier, title, dataset_size, ftp_site', 'required'),
-            array('submitter_id, image_id, publisher_id', 'numerical', 'integerOnly'=>true),
+            array('submitter_id, identifier, title, ftp_site, types', 'required'),
+            array('submitter_id, image_id, publisher_id, funding', 'numerical', 'integerOnly'=>true),
             array('dataset_size', 'numerical'),
             array('identifier, excelfile_md5', 'length', 'max'=>32),
             array('title', 'length', 'max'=>300),
+            array('additional_information', 'length', 'max'=>500),
             array('upload_status', 'length', 'max'=>45),
+            array('manuscript_id', 'length', 'max'=>50),
             array('ftp_site', 'length', 'max'=>100),
             array('excelfile', 'length', 'max'=>50),
             array('description, publication_date, modification_date, image_id, fairnuse, types', 'safe'),
@@ -109,6 +133,7 @@ class Dataset extends CActiveRecord
             'datasetLogs'=>array(self::HAS_MANY, 'DatasetLog', 'dataset_id'),
             'datasetAttributes' => array(self::HAS_MANY, 'DatasetAttributes', 'dataset_id'),
             'attributes' => array(self::MANY_MANY, 'Attribute', 'dataset_attributes(dataset_id, attribute_id)'),
+            'fundings' => array(self::HAS_MANY, 'Funding', 'dataset_id'),
         );
     }
 
@@ -189,6 +214,8 @@ class Dataset extends CActiveRecord
             'id' => 'ID',
             'submitter_id' => 'Submitter',
             'image_id' => 'Image',
+            'curator_id' => 'Curator ID',
+            'manuscript_id' => 'GigaScience manuscript',
             'identifier' => 'DOI',
             'title' => Yii::t('app' ,'Title'),
             'description' => 'Description',
@@ -398,6 +425,10 @@ class Dataset extends CActiveRecord
     }
 
     public function getTypeIds() {
+        if ($this->types) {
+            return $this->types;
+        }
+
         $types = $this->datasetTypes;
         $ids = array();
         foreach($types as $type) {
@@ -407,6 +438,10 @@ class Dataset extends CActiveRecord
     }
 
     public function getSemanticKeywords() {
+        if ($this->keywords) {
+            return $this->keywords;
+        }
+
         $sKeywordAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));
 
         $sk = DatasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$this->id,'attribute_id'=>$sKeywordAttr->id));
@@ -586,4 +621,71 @@ class Dataset extends CActiveRecord
 
         return $xml->asXML();
     }
+
+    public function setIdentifier()
+    {
+        $lastDataset = Dataset::model()->find(array('order'=>'identifier desc'));
+        $lastIdentifier = intval($lastDataset->identifier);
+
+        $this->identifier = $lastIdentifier + 1;
+    }
+
+    public function loadByData($data)
+    {
+        $this->submitter_id = Yii::app()->user ? Yii::app()->user->_id : null;
+        $this->manuscript_id = $data['manuscript_id'];
+        $this->title = $data['title'];
+        $this->description = $data['description'];
+        $this->upload_status = "Incomplete";
+        $this->ftp_site = "''";
+        $this->setIdentifier();
+    }
+
+    public function updateKeywords($keywords)
+    {
+        $attribute_service = Yii::app()->attributeService;
+        $attribute_service->replaceKeywordsForDatasetIdWithString($this->id, $keywords);
+    }
+
+    public function updateTypes($types)
+    {
+        DatasetType::storeDatasetTypes($this->id, $types);
+    }
+
+    public function addAuthor(Author $author, $rank)
+    {
+        $da = DatasetAuthor::model()->findByAttributes(array('dataset_id'=>$this->id, 'author_id' => $author->id));
+        if(!$da) {
+            $da = new DatasetAuthor();
+            $da->dataset_id = $this->id;
+            $da->author_id = $author->id;
+        }
+
+        $da->rank = $rank;
+        return $da->save();
+    }
+
+    public function getAdditionalInformation()
+    {
+        return $this->additional_information ? json_decode($this->additional_information, true) : array();
+    }
+
+    public function setAdditionalInformation(array $addInfo)
+    {
+        $this->additional_information = json_encode($addInfo, true);
+    }
+
+    public function setAdditionalInformationKey($key, $value)
+    {
+        $addInfo = $this->getAdditionalInformation();
+        $addInfo[$key] = (int)$value;
+
+        $this->setAdditionalInformation($addInfo);
+    }
+
+    public function getFunding()
+    {
+        return isset($this->funding) ? !!$this->funding : null;
+    }
+
 }

@@ -7,6 +7,7 @@ class AuthorTest extends CDbTestCase
         'authors'=>'Author',
         'relationship'=>'Relationship',
         'author_rel'=>'AuthorRel',
+        'contributions'=>'Contribution',
     );
 
 
@@ -197,7 +198,59 @@ class AuthorTest extends CDbTestCase
         $this->assertEquals("7. Morten Schiøtt (Orcid: n/a)",$this->authors(6)->getAuthorDetails(),"Author details returned for A7");
     }
 
-
+//    function testLoadByData()
+//	{
+//        $data = array(
+//            'first_name' => 'test first_name',
+//            'middle_name' => 'test middle_name',
+//            'last_name' => 'test last_name',
+//            'orcid' => 'test orcid',
+//            'contribution' => 'contribution1',
+//        );
+//
+//        $author = new Author();
+//        $author->loadByData($data);
+//
+//        $this->assertEquals('test first_name', $author->first_name);
+//        $this->assertEquals('test middle_name', $author->middle_name);
+//        $this->assertEquals('test last_name', $author->surname);
+//        $this->assertEquals('test orcid', $author->orcid);
+//        $this->assertEquals('1', $author->contribution_id);
+//	}
+//
+//    function testLoadByCsvRow()
+//    {
+//        $data = array(
+//            'test first_name',
+//            'test middle_name',
+//            'test last_name',
+//            'test orcid',
+//            'contribution1',
+//        );
+//
+//        $author = new Author();
+//        $author->loadByCsvRow($data);
+//
+//        $this->assertEquals('test first_name', $author->first_name);
+//        $this->assertEquals('test middle_name', $author->middle_name);
+//        $this->assertEquals('test last_name', $author->surname);
+//        $this->assertEquals('test orcid', $author->orcid);
+//        $this->assertEquals('1', $author->contribution_id);
+//    }
+//
+//    function testValidate()
+//    {
+//        $data = array(
+//            'test first_name',
+//            'test middle_name',
+//            'test last_name',
+//            '1111-2222-3333-4444',
+//            'contribution1',
+//        );
+//
+//        $author = new Author();
+//        $author->loadByData($data);
+//
+//        $this->assertTrue($author->validate());
+//    }
 }
-
-?>

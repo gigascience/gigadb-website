@@ -31,7 +31,7 @@ class AdminDatasetAuthorController extends Controller
 				'roles'=>array('admin'),
 			),
                          array('allow',
-                                'actions' => array('create1', 'delete1', 'autocomplete', 'search','addAuthor','deleteAuthor','updateRank'),
+                                'actions' => array('create1', 'delete1', 'autocomplete', 'search','addAuthor', 'addAuthors', 'saveAuthors', 'deleteAuthor','updateRank'),
                                 'users' => array('@'),
                           ),
 			array('deny',  // deny all users
@@ -402,135 +402,227 @@ class AdminDatasetAuthorController extends Controller
 		}
 	}
 
-        public function actionAddAuthor() {
-            if(isset($_POST['dataset_id']) && isset($_POST['Author'])) {
-                $attrs = $_POST['Author'];
+    /**
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionAddAuthor() {
+        if(isset($_POST['dataset_id']) && isset($_POST['Author'])) {
+            //$dataset = $this->getDataset($_POST['dataset_id']);
 
-                if(!(($attrs['first_name']) and ($attrs['last_name']))) {
-                   Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "You must input first namd and last name.")));
-                }
+            $author = new Author();
+            $author->loadByData($_POST['Author']);
+            if($author->validate()) {
+                //$author->save();
+                //$dataset->addAuthor($author);
 
-                $da = DatasetAuthor::model()->findByAttributes(array('dataset_id'=>$_POST['dataset_id']), array('order'=>'rank desc'));
-                if(!$da) {
-                    $rank = 1;
-                } else {
-                    $rank = intval($da->rank)+1;
-                }
+                Util::returnJSON(array(
+                    "success"=>true,
+                    'author' => $author->asArray(),
+                ));
+            }
 
-                $author = new Author;
-                $author->first_name = $attrs['first_name'];
-                $author->surname = $attrs['last_name'];
-                if(isset($attrs['middle_name'])) {
-                    $author->middle_name = $attrs['middle_name'];
-                }
-                if(isset($attrs['orcid'])) {
-                    $author->orcid = $attrs['orcid'];
-                }
+            Util::returnJSON(array("success"=>false,"message"=>current($author->getErrors())));
+        }
+    }
 
-                if($author->save()) {
-                    $da = new DatasetAuthor;
-                    $da->dataset_id = $_POST['dataset_id'];
-                    $da->author_id = $author->id;
-                    $da->rank = $rank;
-                    if($da->save()) {
-                         Util::returnJSON(array("success"=>true));
+    /**
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionSaveAuthors() {
+        if(isset($_POST['dataset_id'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
+
+            $transaction = Yii::app()->db->beginTransaction();
+            if (isset($_POST['authors']) && is_array($_POST['authors'])) {
+                foreach ($_POST['authors'] as $num => $row) {
+                    //die(var_dump($row));
+                    if ($row['id']) {
+                        $da = DatasetAuthor::model()->findByPk($row['id']);
+                        if (!$da) {
+                            $transaction->rollback();
+                            Util::returnJSON(array("success" => false, "message" => "Row $num: Wrong id"));
+                        }
+                        $author = $da->author;
+                    } else {
+                        $author = new Author();
+                        $author->loadByData($row);
+                    }
+
+                    if ($author->validate()) {
+                        $author->save();
+                        $dataset->addAuthor($author, $row['order']);
+                    } else {
+                        $transaction->rollback();
+                        $error = current($author->getErrors());
+                        Util::returnJSON(array("success" => false, "message" => "Row $num: " . $error[0]));
                     }
                 }
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
             }
+
+            if (isset($_POST['delete_ids']) && is_array($_POST['delete_ids'])) {
+                foreach ($_POST['delete_ids'] as $deleteId) {
+                    $da = DatasetAuthor::model()->findByPk($deleteId);
+                    if ($da) {
+                        if ($da->delete()) {
+                            $da->author->delete();
+                        }
+                    }
+                }
+            }
+
+            $transaction->commit();
+            Util::returnJSON(array("success"=>true));
         }
 
-        public function actionDeleteAuthor() {
-            if(isset($_POST['da_id'])) {
+        Util::returnJSON(array("success"=>false,"message"=>"Data is empty."));
+    }
+
+    /**
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionAddAuthors() {
+        $authors = CUploadedFile::getInstanceByName('authors');
+        if($authors) {
+            //$datasetId = isset($_POST['dataset_id']) ? $_POST['dataset_id'] : 0;
+            //$dataset = $this->getDataset($datasetId);
+
+            if ($authors->getType() != CsvHelper::TYPE_CSV && $authors->getType() != CsvHelper::TYPE_TSV) {
+                Util::returnJSON(array("success"=>false,"message"=>"File has wrong extension."));
+            }
+
+            $delimiter = $authors->getType() == CsvHelper::TYPE_CSV ? ';' : "\t";
+            $rows = CsvHelper::getArrayByFileName($authors->getTempName(), $delimiter);
+            if (!$rows) {
+                Util::returnJSON(array("success"=>false,"message"=>"File is empty."));
+            }
+
+            $authors = array();
+            foreach ($rows as $num => $row) {
+                $author = new Author();
+                $author->loadByCsvRow($row);
+                if($author->validate()) {
+                    $authors[] = $author->asArray();
+                } else {
+                    $error = current($author->getErrors());
+                    Util::returnJSON(array("success"=>false,"message"=> "Row $num: " . $error[0]));
+                }
+            }
+
+            Util::returnJSON(array("success"=>true, 'authors' => $authors));
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>"You must input file."));
+    }
+
+    public function actionDeleteAuthor() {
+        if(isset($_POST['da_id'])) {
+            $da = DatasetAuthor::model()->findByPk($_POST['da_id']);
+            $rank = $da->rank;
+            if($da->delete()) {
+                $da->author->delete();
+
+                $criteria = new CDbCriteria;
+                $criteria->addCondition('dataset_id='.$da->dataset_id);
+                $criteria->addCondition('rank > '.$rank);
+                $higherRankDas = DatasetAuthor::model()->findAll($criteria);
+
+                foreach($higherRankDas as $hrda) {
+                    $hrda->rank = $hrda->rank - 1;
+                    $hrda->save(false);
+                }
+
+                 Util::returnJSON(array("success"=>true));
+            }
+             Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+        }
+    }
+
+    public function actionUpdateRank() {
+        if(isset($_POST['da_id']) && isset($_POST['rank'])) {
+            $transaction = Yii::app()->db->beginTransaction();
+            try {
                 $da = DatasetAuthor::model()->findByPk($_POST['da_id']);
                 $rank = $da->rank;
-                if($da->delete()) {
-                    $da->author->delete();
+                $changeRank = intval($_POST['rank']);
+                $lastDa = DatasetAuthor::model()->findByAttributes(array('dataset_id'=>$da->dataset_id), array('order'=>'rank desc'));
 
+                if(!is_int($changeRank) or $changeRank == 0) {
+                     Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Please enter a non-zero integer.")));
+                }
+
+                if(!$lastDa or ($changeRank > $lastDa->rank)) {
+                     Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Please enter a value less or equal than ".$lastDa->rank)));
+                }
+
+                $das = array();
+                if($changeRank > $rank) {
+                    // update order down by 1
+                    // find all dataset authors in between
                     $criteria = new CDbCriteria;
-                    $criteria->addCondition('dataset_id='.$da->dataset_id);
-                    $criteria->addCondition('rank > '.$rank);
-                    $higherRankDas = DatasetAuthor::model()->findAll($criteria);
+                    $criteria->addCondition('t.rank > '.min($rank,$changeRank));
+                    $criteria->addCondition('t.rank <= '.max($rank,$changeRank));
+                    $criteria->addCondition('t.dataset_id = '.$da->dataset_id);
+                    $das = DatasetAuthor::model()->findAll($criteria);
+                    foreach($das as $updateDa) {
+                        $updateDa->rank = $updateDa->rank - 1;
+                    }
+                } else {
+                    // update order up by 1
+                    // find all dataset authors in between
+                    $criteria = new CDbCriteria;
+                    $criteria->addCondition('t.rank >= '.min($rank,$changeRank));
+                    $criteria->addCondition('t.rank < '.max($rank,$changeRank));
+                    $criteria->addCondition('t.dataset_id = '.$da->dataset_id);
+                    $das = DatasetAuthor::model()->findAll($criteria);
+                    foreach($das as $updateDa) {
+                        $updateDa->rank = $updateDa->rank + 1;
+                    }
+                }
 
-                    foreach($higherRankDas as $hrda) {
-                        $hrda->rank = $hrda->rank - 1;
-                        $hrda->save(false);
+                $da->rank = $changeRank;
+                if($da->save()) {
+                    if(!$this->saveDas($das)) {
+                        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot save das.")));
                     }
 
-                     Util::returnJSON(array("success"=>true));
+                    $transaction->commit();
+                    Util::returnJSON(array("success"=>true));
                 }
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot update rank.")));
+            } catch(Exception $e) {
+                $message = $e->getMessage();
+                Yii::log(print_r($message, true), 'error');
+                $transaction->rollback();
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot update rank.")));
+            }
+        }
+    }
+
+    /**
+     * @param $id
+     * @return array|Dataset|mixed|null
+     * @throws \yii\web\BadRequestHttpException
+     */
+    protected function getDataset($id)
+    {
+        $dataset = Dataset::model()->findByPk($id);
+
+        if (!$dataset) {
+            throw new \yii\web\BadRequestHttpException('Dataset ID is invalid.');
+        }
+
+        return $dataset;
+    }
+
+    private function saveDas($das) {
+        foreach($das as $da) {
+            if(!$da->save()) {
+                return false;
             }
         }
 
-        public function actionUpdateRank() {
-            if(isset($_POST['da_id']) && isset($_POST['rank'])) {
-                $transaction = Yii::app()->db->beginTransaction();
-                try {
-                    $da = DatasetAuthor::model()->findByPk($_POST['da_id']);
-                    $rank = $da->rank;
-                    $changeRank = intval($_POST['rank']);
-                    $lastDa = DatasetAuthor::model()->findByAttributes(array('dataset_id'=>$da->dataset_id), array('order'=>'rank desc'));
-
-                    if(!is_int($changeRank) or $changeRank == 0) {
-                         Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Please enter a non-zero integer.")));
-                    }
-
-                    if(!$lastDa or ($changeRank > $lastDa->rank)) {
-                         Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Please enter a value less or equal than ".$lastDa->rank)));
-                    }
-
-                    $das = array();
-                    if($changeRank > $rank) {
-                        // update order down by 1
-                        // find all dataset authors in between
-                        $criteria = new CDbCriteria;
-                        $criteria->addCondition('t.rank > '.min($rank,$changeRank));
-                        $criteria->addCondition('t.rank <= '.max($rank,$changeRank));
-                        $criteria->addCondition('t.dataset_id = '.$da->dataset_id);
-                        $das = DatasetAuthor::model()->findAll($criteria);
-                        foreach($das as $updateDa) {
-                            $updateDa->rank = $updateDa->rank - 1;
-                        }
-                    } else {
-                        // update order up by 1
-                        // find all dataset authors in between
-                        $criteria = new CDbCriteria;
-                        $criteria->addCondition('t.rank >= '.min($rank,$changeRank));
-                        $criteria->addCondition('t.rank < '.max($rank,$changeRank));
-                        $criteria->addCondition('t.dataset_id = '.$da->dataset_id);
-                        $das = DatasetAuthor::model()->findAll($criteria); 
-                        foreach($das as $updateDa) {
-                            $updateDa->rank = $updateDa->rank + 1;
-                        }
-                    }
-
-                    $da->rank = $changeRank;
-                    if($da->save()) {
-                        if(!$this->saveDas($das)) {
-                            Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot save das.")));
-                        }
-
-                        $transaction->commit();
-                        Util::returnJSON(array("success"=>true));
-                    }
-                    Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot update rank.")));
-                } catch(Exception $e) {
-                    $message = $e->getMessage();
-                    Yii::log(print_r($message, true), 'error');
-                    $transaction->rollback();
-                    Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot update rank.")));
-                }
-            }
-        }
-
-        private function saveDas($das) {
-            foreach($das as $da) {
-                if(!$da->save()) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
+        return true;
+    }
 }
