@@ -118,6 +118,24 @@
             data:{'dataset_id': did, 'url': url,  'externalLinkType': externalLinkType, 'externalLinkDescription': externalLinkDescription},
             success: function(response){
                 if(response.success) {
+                    var exit = false;
+                    var trs = othersDiv.find('.odd');
+                    trs.each(function() {
+                        let tr = $(this);
+                        let url = tr.children('td').eq(0).text().trim();
+                        let type_name = tr.children('td').eq(2).text().trim();
+
+                        if (response.exLink['url'] == url && type_name == response.exLink['type_name']) {
+                            alert('This link has been added already.');
+                            exit = true;
+                            return false;
+                        }
+                    });
+
+                    if (exit) {
+                        return false;
+                    }
+
                     var tr = '<tr class="odd js-my-item-'+ response.exLink['type'] +'">' +
                         '<input type="hidden" class="js-type" value="' + response.exLink['type'] + '">' +
                         '<td>' + response.exLink['url'] + '</td>' +
@@ -174,19 +192,7 @@
         if (relatedDoiDiv.find('.odd').length === 0) {
             $('.js-no-results', relatedDoiDiv).show();
         }
-    });
 
-    function checkIfCanSave()
-    {
-        if (
-            ($('#manuscripts-no').hasClass('btn-green') || $('#manuscripts-yes').hasClass('btn-green'))
-            && ($('#protocols-no').hasClass('btn-green') || $('#protocols-yes').hasClass('btn-green'))
-            && ($('#3d_images-no').hasClass('btn-green') || $('#3d_images-yes').hasClass('btn-green'))
-            && ($('#codes-no').hasClass('btn-green') || $('#codes-yes').hasClass('btn-green'))
-            && ($('#sources-no').hasClass('btn-green') || $('#sources-yes').hasClass('btn-green'))
-        ) {
-            $('#additional-save').find('.js-not-allowed').removeClass('js-not-allowed').addClass('btn-green js-save-additional');
-        } else {
-        }
-    }
+        checkIfCanSave();
+    });
 </script>

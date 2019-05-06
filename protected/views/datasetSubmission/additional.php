@@ -60,12 +60,6 @@ $disabled = $isSources === null || $isCodes === null || $is3dImages === null || 
 <script>
     var dataset_id = <?= $model->id ?>;
 
-    $(".delete-title").tooltip({'placement':'top'});
-
-    $(document).on('click', '.js-not-allowed', function() {
-        return false;
-    });
-
     $(document).on('click', '.js-no-button', function(e) {
         var $this = $(this);
         //var datasetId = $this.data('id');
@@ -106,7 +100,9 @@ $disabled = $isSources === null || $isCodes === null || $is3dImages === null || 
                 target.hide();
             }
 
-            checkIfCanSave();
+            var targetId2 = $this.data('target2');
+            var target2 = $('#' + targetId2);
+            target2.hide();
         } else {
             target.hide();
         }
@@ -116,6 +112,8 @@ $disabled = $isSources === null || $isCodes === null || $is3dImages === null || 
         if (target.find('.odd').length === 0) {
             $('.js-no-results', target).show();
         }
+
+        checkIfCanSave();
 
         return false;
     });
@@ -133,6 +131,8 @@ $disabled = $isSources === null || $isCodes === null || $is3dImages === null || 
         if ($this.parent().hasClass('span9')) {
             $('#others-grid').show();
         }
+
+        checkIfCanSave();
 
         return false;
     });
@@ -244,4 +244,24 @@ $disabled = $isSources === null || $isCodes === null || $is3dImages === null || 
 
         return false;
     });
+
+    function checkIfCanSave()
+    {
+        let othersDiv = $('#others-grid');
+
+        if (
+            ($('#public-links-no').hasClass('btn-green') || $('#public-links').find('.odd').length)
+            && ($('#related-doi-no').hasClass('btn-green') || $('#related-doi').find('.odd').length)
+            && ($('#projects-no').hasClass('btn-green') || $('#projects').find('.odd').length)
+            && ($('#manuscripts-no').hasClass('btn-green') || ($('#manuscripts-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-3').length))
+            && ($('#protocols-no').hasClass('btn-green') || ($('#protocols-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-4').length))
+            && ($('#3d_images-no').hasClass('btn-green') || ($('#3d_images-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-5').length))
+            && ($('#codes-no').hasClass('btn-green') || ($('#codes-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-6').length))
+            && ($('#sources-no').hasClass('btn-green') || ($('#sources-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-7').length))
+        ) {
+            $('#additional-save').find('.js-not-allowed').removeClass('js-not-allowed').addClass('btn-green js-save-additional');
+        } else {
+            $('#additional-save').find('.js-save-additional').removeClass('btn-green js-save-additional').addClass('js-not-allowed');
+        }
+    }
 </script>

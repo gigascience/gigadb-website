@@ -8,10 +8,14 @@
     </p>
 
     <div style="text-align: center; margin-bottom: 15px;">
-        <a href="#" data-target="projects" class="btn additional-button <?php if ($isProjects === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
+        <a href="#"
+           data-target="projects"
+           id="projects-yes"
+           class="btn additional-button <?php if ($isProjects === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
         <a href="#"
            data-target="projects"
            data-next-block="others-block"
+           id="projects-no"
            data-url="/adminDatasetProject/deleteProjects"
            data-id="<?= $model->id ?>"
            class="btn additional-button <?php if ($isProjects === false): ?>btn-green btn-disabled<?php else: ?>js-no-button<?php endif; ?>"/>No</a>
@@ -78,6 +82,23 @@
             data:{'dataset_id': did, 'project_id':pid},
             success: function(response){
                 if(response.success) {
+                    var exit = false;
+                    var trs = projectsDiv.find('.odd');
+                    trs.each(function() {
+                        let tr = $(this);
+                        let project_name = tr.children('td').eq(0).text().trim();
+
+                        if (response.project['name'] == project_name) {
+                            alert('This project has been added already.');
+                            exit = true;
+                            return false;
+                        }
+                    });
+
+                    if (exit) {
+                        return false;
+                    }
+
                     var tr = '<tr class="odd js-my-item">' +
                         '<input type="hidden" class="js-project-id" value="' + response.project['id'] + '">' +
                         '<td>' + response.project['name'] + '</td>' +
@@ -92,6 +113,8 @@
                     $('.js-no-results', projectsDiv).hide();
 
                     $('#others-block').show();
+
+                    checkIfCanSave();
                 } else {
                     alert(response.message);
                 }
@@ -112,5 +135,7 @@
         if (projectsDiv.find('.odd').length === 0) {
             $('.js-no-results', projectsDiv).show();
         }
+
+        checkIfCanSave();
     });
 </script>

@@ -5,6 +5,7 @@
         <a href="#"
            id="codes-no"
            data-target="others-grid"
+           data-target2="codes"
            data-url="/adminExternalLink/deleteExLinks"
            data-id="<?= $model->id ?>"
            data-type="<?= AIHelper::CODES ?>"

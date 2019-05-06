@@ -436,7 +436,6 @@ class AdminDatasetAuthorController extends Controller
             $transaction = Yii::app()->db->beginTransaction();
             if (isset($_POST['authors']) && is_array($_POST['authors'])) {
                 foreach ($_POST['authors'] as $num => $row) {
-                    //die(var_dump($row));
                     if ($row['id']) {
                         $da = DatasetAuthor::model()->findByPk($row['id']);
                         if (!$da) {

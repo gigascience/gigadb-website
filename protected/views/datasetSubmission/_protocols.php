@@ -5,6 +5,7 @@
         <a href="#"
            id="protocols-no"
            data-target="others-grid"
+           data-target2="protocols"
            data-url="/adminExternalLink/deleteExLinks"
            data-id="<?= $model->id ?>"
            data-type="<?= AIHelper::PROTOCOLS ?>"

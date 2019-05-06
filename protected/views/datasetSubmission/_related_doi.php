@@ -8,10 +8,14 @@
     </p>
 
     <div style="text-align: center; margin-bottom: 15px;">
-        <a href="#" data-target="related-doi" class="btn additional-button <?php if ($isRelatedDoi === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
+        <a href="#"
+           data-target="related-doi"
+           id="related-doi-yes"
+           class="btn additional-button <?php if ($isRelatedDoi === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
         <a href="#"
            data-target="related-doi"
            data-next-block="projects-block"
+           id="related-doi-no"
            data-url="/adminRelation/deleteRelations"
            data-id="<?= $model->id ?>"
            class="btn additional-button <?php if ($isRelatedDoi === false): ?>btn-green btn-disabled<?php else: ?>js-no-button<?php endif; ?>"/>No</a>
@@ -79,6 +83,24 @@
             data:{'dataset_id': did, 'doi': doi, 'relationship': relationship},
             success: function(response){
                 if(response.success) {
+                    var exit = false;
+                    var trs = relatedDoiDiv.find('.odd');
+                    trs.each(function() {
+                        let tr = $(this);
+                        let related_doi = tr.children('td').eq(0).text().trim();
+                        let relationship_name = tr.children('td').eq(1).text().trim();
+
+                        if (response.relation['related_doi'] == related_doi && relationship_name == response.relation['relationship_name']) {
+                            alert('This relationship has been added already.');
+                            exit = true;
+                            return false;
+                        }
+                    });
+
+                    if (exit) {
+                        return false;
+                    }
+
                     var tr = '<tr class="odd js-my-item">' +
                             '<input type="hidden" class="js-relationship-id" value="' + response.relation['relationship_id'] + '">' +
                             '<td>' + response.relation['related_doi'] + '</td>' +
@@ -94,6 +116,8 @@
                     $('.js-no-results', relatedDoiDiv).hide();
 
                     $('#projects-block').show();
+
+                    checkIfCanSave();
                 } else {
                     alert(response.message);
                 }
@@ -115,5 +139,7 @@
         if (relatedDoiDiv.find('.odd').length === 0) {
             $('.js-no-results', relatedDoiDiv).show();
         }
+
+        checkIfCanSave();
     });
 </script>

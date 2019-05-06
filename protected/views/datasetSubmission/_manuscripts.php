@@ -5,6 +5,7 @@
         <a href="#"
            id="manuscripts-no"
            data-target="others-grid"
+           data-target2="manuscripts"
            data-url="/adminExternalLink/deleteExLinks"
            data-id="<?= $model->id ?>"
            data-type="<?= AIHelper::MANUSCRIPTS ?>"
