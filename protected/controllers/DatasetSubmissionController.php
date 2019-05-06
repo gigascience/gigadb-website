@@ -36,6 +36,7 @@ class DatasetSubmissionController extends Controller
                     'sample',
                     'saveSamples',
                     'checkUnit',
+                    'end',
                 ),
                 'users' => array('@'),
             ),
@@ -130,8 +131,13 @@ class DatasetSubmissionController extends Controller
             $this->isSubmitter($dataset);
 
             $das = DatasetAuthor::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'rank asc'));
+            $contributions = Contribution::model()->findAll(array('order'=>'name asc'));
 
-            $this->render('author', array('model' => $dataset,'das'=>$das));
+            $this->render('author', array(
+                'model' => $dataset,
+                'das'=>$das,
+                'contributions' => $contributions,
+            ));
         }
     }
 
@@ -194,6 +200,14 @@ class DatasetSubmissionController extends Controller
                         $link->is_primary = true;
                         $link->link = $newLink['link'];
 
+                        if (!$link->validate()) {
+                            $transaction->rollback();
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                "message"=>"Save Error."
+                            ));
+                        }
+
                         $link->save();
                     } else {
                         $needLinks[] = $newLink['id'];
@@ -225,6 +239,14 @@ class DatasetSubmissionController extends Controller
                         $relation->related_doi = $newRelation['related_doi'];
                         $relation->relationship_id = $newRelation['relationship_id'];
 
+                        if (!$relation->validate()) {
+                            $transaction->rollback();
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                "message"=>"Save Error."
+                            ));
+                        }
+
                         $relation->save();
                     } else {
                         $needRelations[] = $newRelation['id'];
@@ -253,6 +275,14 @@ class DatasetSubmissionController extends Controller
                         $dp = new DatasetProject;
                         $dp->dataset_id = $_POST['dataset_id'];
                         $dp->project_id = $newProject['project_id'];
+
+                        if (!$dp->validate()) {
+                            $transaction->rollback();
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                "message"=>"Save Error."
+                            ));
+                        }
 
                         $dp->save();
                     } else {
@@ -286,6 +316,14 @@ class DatasetSubmissionController extends Controller
                     if (!$newExLink['id']) {
                         $exLink = new ExternalLink;
                         $exLink->loadByData($newExLink);
+
+                        if (!$exLink->validate()) {
+                            $transaction->rollback();
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                "message"=>"Save Error."
+                            ));
+                        }
 
                         $exLink->save();
                     } else {
@@ -389,7 +427,7 @@ class DatasetSubmissionController extends Controller
      * @throws CException
      */
     public function actionSaveFundings() {
-        if(isset($_POST['dataset_id']) && isset($_POST['fundings'])) {
+        if(isset($_POST['dataset_id'])) {
             $transaction = Yii::app()->db->beginTransaction();
 
             $dataset = $this->getDataset($_POST['dataset_id']);
@@ -397,7 +435,7 @@ class DatasetSubmissionController extends Controller
 
             $fundings = $dataset->fundings;
 
-            $newFundings = is_array($_POST['fundings']) ? $_POST['fundings'] : array();
+            $newFundings = isset($_POST['fundings']) && is_array($_POST['fundings']) ? $_POST['fundings'] : array();
             $needFundings = array();
             if ($newFundings) {
                 foreach ($newFundings as $newFunding) {
@@ -475,6 +513,21 @@ class DatasetSubmissionController extends Controller
                     $rows = CsvHelper::getArrayByFileName($samples->getTempName(), $delimiter);
                     if (!$rows) {
                         $error = "File is empty.";
+                    } else {
+                        $lastRequired = 2;
+                        for ($j = 3, $k = count($rows[0]); $j < $k; $j++) {
+                            if (!empty($rows[0][$j])) {
+                                $lastRequired = $j;
+                            }
+                        }
+
+                        for ($i = 1, $n = count($rows); $i < $n; $i++) {
+                            for ($j = 0; $j <= $lastRequired; $j++)
+                            if (empty($rows[$i][$j])) {
+                                $error = 'Row ' . ($i + 1) . ': ' . 'Column ' . ($j + 1) . ' cannot be blank.';
+                                break 2;
+                            }
+                        }
                     }
                 }
             }
@@ -507,6 +560,9 @@ class DatasetSubmissionController extends Controller
             }
         }
 
+        $species = Species::model()->findAll(array('order'=>'common_name asc'));
+        $attrs = Attribute::model()->findAll(array('order'=>'attribute_name asc'));
+
         $this->render('sample', array(
             'model' => $dataset,
             'template' => $template,
@@ -516,6 +572,8 @@ class DatasetSubmissionController extends Controller
             'sts' => $sts,
             'error' => $error,
             'rows' => $rows,
+            'species' => $species,
+            'attrs' => $attrs,
         ));
     }
 
@@ -673,6 +731,24 @@ class DatasetSubmissionController extends Controller
         }
 
         Util::returnJSON(array("success"=>false));
+    }
+
+    /**
+     * End page.
+     */
+    public function actionEnd()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        } else {
+            $dataset = $this->getDataset($_GET['id']);
+            $dataset->upload_status = 'UserUploadingData';
+            $dataset->save(false);
+
+            $this->isSubmitter($dataset);
+
+            $this->render('end', array('model' => $dataset));
+        }
     }
 
     protected function getDataset($id)

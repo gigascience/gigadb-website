@@ -11,6 +11,7 @@
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
             </script>
         <![endif]-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <? if (Yii::app()->params['less_dev_mode']) { ?>
         <link rel="stylesheet/less" type="text/css" href="/less/site.less?time=<?= time() ?>">
         <? Yii::app()->clientScript->registerScriptFile('/js/less-1.3.0.min.js'); ?>

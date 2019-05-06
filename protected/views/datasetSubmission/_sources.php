@@ -5,6 +5,7 @@
         <a href="#"
            id="sources-no"
            data-target="others-grid"
+           data-target2="sources"
            data-url="/adminExternalLink/deleteExLinks"
            data-id="<?= $model->id ?>"
            data-type="<?= AIHelper::SOURCES ?>"

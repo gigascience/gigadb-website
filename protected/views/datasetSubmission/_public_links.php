@@ -10,11 +10,13 @@
     <div style="text-align: center; margin-bottom: 15px;">
         <a href="#"
            data-target="public-links"
+           id="public-links-yes"
            class="btn additional-button <?php if ($isPublicLinks === true): ?>btn-green btn-disabled<?php else: ?>js-yes-button<?php endif; ?>"/>Yes</a>
         <a href="#"
            data-target="public-links"
            data-next-block="related-doi-block"
            data-url="/adminLink/deleteLinks"
+           id="public-links-no"
            data-id="<?= $model->id ?>"
            class="btn additional-button <?php if ($isPublicLinks === false): ?>btn-green btn-disabled<?php else: ?>js-no-button<?php endif; ?>"/>No</a>
     </div>
@@ -103,6 +105,24 @@
             data:{'dataset_id': did, 'database': database, 'acc_num': accNum},
             success: function(response){
                 if(response.success) {
+                    var exit = false;
+                    var trs = $('#public-links').find('.odd');
+                    trs.each(function() {
+                        let tr = $(this);
+                        let link_type = tr.children('td').eq(0).text().trim();
+                        let link = tr.children('td').eq(1).text().trim();
+
+                        if (response.link['link_type'] == link_type && link == response.link['link']) {
+                            alert('This link has been added already.');
+                            exit = true;
+                            return false;
+                        }
+                    });
+
+                    if (exit) {
+                        return false;
+                    }
+
                     var tr = '<tr class="odd js-my-item">' +
                         '<td>' + response.link['link_type'] + '</td>' +
                         '<td>' + response.link['link'] + '</td>' +
@@ -120,6 +140,8 @@
                     $('.js-add-link', publicLinksDiv).removeClass('js-add-link btn-green').addClass('js-not-allowed');
 
                     $('#related-doi-block').show();
+
+                    checkIfCanSave();
                 } else {
                     alert(response.message);
                 }
@@ -143,5 +165,7 @@
         if (publicLinksDiv.find('.odd').length === 0) {
             $('.js-no-results', publicLinksDiv).show();
         }
+
+        checkIfCanSave();
     });
 </script>

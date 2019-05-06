@@ -5,6 +5,7 @@
         <a href="#"
            id="3d_images-no"
            data-target="others-grid"
+           data-target2="3d_images"
            data-url="/adminExternalLink/deleteExLinks"
            data-id="<?= $model->id ?>"
            data-type="<?= AIHelper::_3D_IMAGES ?>"

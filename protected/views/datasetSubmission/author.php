@@ -114,11 +114,12 @@ Rosalind	Elsie	Franklin 	0000-0000-0000-0001	Conceptualization"
 </div>
 
 <script>
+var contributions = JSON.parse('<?= json_encode(array_values(CHtml::listData($contributions, 'id', 'name'))) ?>');
 var deleteIds = [];
 var dataset_id = <?= $model->id ?>;
 
-$(document).on('click', '.js-not-allowed', function() {
-    return false;
+$( "#js-author-contribution" ).autocomplete({
+    source: contributions
 });
 
 $(document).on('change', '.js-author-required', function () {
@@ -126,7 +127,11 @@ $(document).on('change', '.js-author-required', function () {
 });
 
 $(document).on('change', '#authors', function () {
-    $('#js-add-authors').removeClass('js-not-allowed').addClass('btn-green js-add-authors');
+    if ($(this).val()) {
+        $('#js-add-authors').removeClass('js-not-allowed').addClass('btn-green js-add-authors');
+    } else {
+        $('#js-add-authors').removeClass('btn-green js-add-authors').addClass('js-not-allowed');
+    }
 });
 
 $(document).on('focusin', ".js-author-rank", function(){
@@ -381,8 +386,6 @@ $(document).on("click", ".js-delete-author", function() {
 
     return false;
 });
-
-$(".delete-title").tooltip({'placement':'top'});
 
 function makeAddAuthorActiveIfCan() {
     if (

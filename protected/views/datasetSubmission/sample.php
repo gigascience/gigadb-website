@@ -118,7 +118,7 @@
                                     <input type="text" placeholder='Sample ID' value="<?= isset($rows[$i][0]) ? $rows[$i][0] : '' ?>" style="margin-right: 18px;">
                                 </td>
                                 <td>
-                                    <input type="text" placeholder='Species name' value="<?= isset($rows[$i][1]) ? $rows[$i][1] : '' ?>">
+                                    <input type="text" class="js-species-autocomplete" placeholder='Species name' value="<?= isset($rows[$i][1]) ? $rows[$i][1] : '' ?>">
                                 </td>
                                 <td>
                                     <input type="text" placeholder='Short description of sample' value="<?= isset($rows[$i][2]) ? $rows[$i][2] : '' ?>" style="width:250px;">
@@ -142,7 +142,7 @@
                                     <input type="text" placeholder='Sample ID' value="<?= $sample->name ?>" style="margin-right: 18px;">
                                 </td>
                                 <td>
-                                    <input type="text" placeholder='Species name' value="<?= $sample->species->common_name ?>">
+                                    <input type="text" class="js-species-autocomplete" placeholder='Species name' value="<?= $sample->species->common_name ?>">
                                 </td>
                                 <td>
                                     <input type="text" placeholder='Short description of sample' value="<?= $sample->description ?>" style="width:250px;">
@@ -210,7 +210,7 @@
                 <a href="/datasetSubmission/funding/id/<?= $model->id ?>" class="btn-green">Previous</a>
                 <a href="/datasetSubmission/sample/id/<?= $model->id ?>"
                    class="btn btn-green js-save-samples">Save</a>
-                <a href="/datasetSubmission/sample/id/<?= $model->id ?>"
+                <a href="/datasetSubmission/end/id/<?= $model->id ?>"
                    class="btn btn-green js-save-samples">Next</a>
             </div>
         </div>
@@ -218,6 +218,18 @@
 </div>
 
 <script>
+    var species = JSON.parse('<?= json_encode(array_values(CHtml::listData($species, 'id', 'common_name'))) ?>');
+
+    $( ".js-species-autocomplete" ).autocomplete({
+        source: species
+    });
+
+    var attrs = JSON.parse('<?= json_encode(array_values(CHtml::listData($attrs, 'id', 'attribute_name'))) ?>');
+
+    $( ".js-attribute-name-autocomplete" ).autocomplete({
+        source: attrs
+    });
+
     var baseUrl = '<?= '/datasetSubmission/sample/id/'. $model->id ?>';
     var units = JSON.parse('<?= json_encode(CHtml::listData($units, 'id', 'name')) ?>');
     var datasetId = <?= $model->id ?>;
@@ -290,6 +302,10 @@
 
         th.before(newTh);
 
+        samplesTable.find('.sample-attribute-column').last().find(".js-attribute-name-autocomplete").autocomplete({
+            source: attrs
+        });
+
         return false;
     });
 
@@ -304,7 +320,7 @@
             '</td>';
 
         newTr += '<td>' +
-                '<input type="text" placeholder=\'Species name\'>' +
+                '<input type="text" class="js-species-autocomplete" placeholder=\'Species name\'>' +
             '</td>';
 
         newTr += '<td>' +
@@ -321,6 +337,10 @@
         $('#js-no-results').before(newTr);
 
         $('#js-no-results').hide();
+
+        samplesTable.find('.item').last().find('.js-species-autocomplete').autocomplete({
+            source: species
+        });
 
         return false;
     });
