@@ -109,6 +109,7 @@ function getDatasetDirectories(string $download_path): array
  */
 function getFiles(string $path): array
 {
+	clearstatcache();
 	$scanned_directory = array_diff(scandir($path), array('..', '.', '.DS_Store'));
 	return $scanned_directory;
 }
@@ -129,7 +130,7 @@ function touchFlag()
  */
 function is_newer(string $directory_path): bool
 {
-
+	clearstatcache();
 	if (false == file_exists(FLAG_PATH)) {
 		return true;
 	}
