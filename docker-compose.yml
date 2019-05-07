@@ -48,7 +48,7 @@ services:
       - ./repo:/home/downloader/
       - ./hooks:/commands:ro
       - ./credentials:/var/access:ro
-      - ./repo/processing_flag:/var/tmp/processing_flag
+      - ./processing_flag:/var/tmp/processing_flag
     networks:
       - proto
 
