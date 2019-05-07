@@ -11,4 +11,5 @@ echo $BODY > /tmp/payload_remove_download_$1.json
 EXEC_ID=$(sudo /usr/bin/curl -s --unix-socket /var/run/docker.sock -H "Content-Type: application/json" -d @/tmp/payload_remove_download_$1.json http:/v1.37/containers${FTPD_CONTAINER}/exec | jq -r ".Id")
 
 # Run the command to create an ftp account on the ftpd container
-sudo /usr/bin/curl -s --unix-socket /var/run/docker.sock -H "Content-Type: application/json" -d @/tmp/payload_remove_download_$1.json http:/v1.37/exec/${EXEC_ID}/start
+HTTP_STATUS=$(sudo /usr/bin/curl -s --unix-socket /var/run/docker.sock -w "%{http_code}" -H "Content-Type: application/json" -d @/tmp/payload_remove_download_$1.json http:/v1.37/exec/${EXEC_ID}/start | tr '\0' '\n')
+echo "${HTTP_STATUS}"
