@@ -145,8 +145,17 @@ root@16b04afd18d5:/var/www# psql -h database -p 5432 -U gigadb gigadb
 ``` 
 
 >**Note:**
->Only the **test** and **application** containers have access to the 
-**database** container.
+>~~Only~~ The **test** and **application** containers have access to the 
+**database** container. In addition, you can access the PostgreSQL RDBMS in the 
+database container via the local dockerhost on port 54321. For example, you can
+use [pgAdmin](https://www.pgadmin.org) to connect to the gigadb PostgreSQL 
+database:
+
+**1.** Click on `Add New Server` and provide a `Name` for the connection in the 
+`General` tab.
+
+**2.** Click on the `Connection` tab and enter `localhost` as the `Host name/address` 
+and `54321` as the `Port` value. The `Maintenance database` is `gigadb`,  `username` is `gigadb`, and `password` is `vagrant`.
 
 For further investigation, check out the [docker-compose.yml](ops/deployment/docker-compose.yml) 
 to see how the services are assembled and what scripts they run.
