@@ -64,7 +64,7 @@ class File extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('dataset_id, name, location, extension, size', 'required'),
+			array('dataset_id, name, extension, size, description', 'required'),
 			array('dataset_id, format_id, type_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>100),
 			array('location, code', 'length', 'max'=>200),
@@ -317,6 +317,115 @@ class File extends CActiveRecord
                     $this->size = filesize(ReadFile::TEMP_FOLDER . $this->name);
                 }
             }
+        }
+    }
+
+    /**
+     * @param $dataset
+     * @return array
+     * @throws Exception
+     */
+    public static function updateAllByData($data, $dataset)
+    {
+        $transaction = Yii::app()->db->beginTransaction();
+
+        $errors = array();
+
+        $needFiles = array();
+        $count = count($data);
+        for ($i = 0; $i < $count; $i++) {
+            $model = File::model()->findByPk($data[$i]['id']);
+            if (!$model) {
+                $model = new File();
+                $model->dataset_id = $dataset->id;
+            } else {
+                $needFiles[] = $model->id;
+            }
+
+            $model->attributes = $data[$i];
+            if ($model->date_stamp == "") {
+                $model->date_stamp = NULL;
+            }
+
+            if (!$model->validate()) {
+                $errors[$i] = $model->getErrors();
+            } else {
+                $isNewRecord = $model->getIsNewRecord();
+                $model->save();
+
+                if ($isNewRecord) {
+                    $needFiles[] = $model->id;
+                }
+            }
+        }
+
+        if (!$errors) {
+            $criteria=new CDbCriteria();
+            $criteria->compare('dataset_id',$dataset->id);
+            $criteria->addNotInCondition('id',$needFiles);
+
+            $files = File::model()->findAll($criteria);
+            /** @var File $file */
+            foreach ($files as $file) {
+                $file->delete();
+            }
+
+            $transaction->commit();
+        } else {
+            $transaction->rollback();
+        }
+
+        return $errors;
+    }
+
+    /**
+     * @param $dataset
+     * @return array
+     * @throws Exception
+     */
+    public static function updateOneByData($number, $data, $dataset)
+    {
+
+
+
+        return $errors;
+    }
+
+    public function prepareFormatId()
+    {
+        switch ($this->extension) {
+            case 'doc':
+                $name = 'TEXT';
+                break;
+            case 'readme':
+                $name = 'TEXT';
+                break;
+            case 'text':
+                $name = 'TEXT';
+                break;
+            case 'txt':
+                $name = 'TEXT';
+                break;
+            case 'gff3':
+                $name = 'GFF';
+                break;
+            case 'gff':
+                $name = 'GFF';
+                break;
+            case 'tar':
+                $name = 'TAR';
+                break;
+            case 'pdf':
+                $name = 'PDF';
+                break;
+            default:
+                $name = 'FASTA';
+                break;
+        }
+
+        $format = FileFormat::model()->findByAttributes(array('name' => $name));
+        if ($format) {
+            $this->format_id = $format->id;
         }
     }
 }

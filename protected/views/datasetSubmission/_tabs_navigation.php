@@ -12,4 +12,7 @@ $action = Yii::app()->controller->action->id;
    class="btn <?= $action == 'funding' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'Funding')?></a>
 <a href="/datasetSubmission/sample/id/<?= $model->id ?>"
    class="btn <?= $action == 'sample' || $action == 'end' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'Sample')?></a>
+<?php if($action == 'create1'): ?>
+    <a href="/adminFile/create1/id/<?= $model->id ?>" class="btn <?= $action == 'create1' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'File')?></a>
+<?php endif ?>
 
