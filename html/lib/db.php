@@ -6,7 +6,7 @@
 	 */
 	function connectDB(): object
 	{
-		$dbh = new PDO('pgsql:host=tus-uppy-proto_database_1;dbname=proto', 'proto', 'proto');
+		$dbh = new PDO('pgsql:host=database;dbname=proto', 'proto', 'proto');
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
 		return $dbh ;
 	}
