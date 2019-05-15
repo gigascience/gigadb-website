@@ -1,0 +1,36 @@
+---
+# build a Centos server running a secure Docker CE install
+
+
+- name: Setup Fail2ban
+  hosts: prototype_dockerhost
+
+  tasks:
+    - debug:
+        msg: "target host: {{ inventory_hostname }}"
+    - debug:
+        msg: "target environment: {{ target_environment }}"
+
+  roles:
+    - role: fail2ban
+    - role: jail-ssh
+
+- name: Setup Docker CE
+  hosts: prototype_dockerhost
+
+  tasks:
+    - debug:
+        msg: "target host: {{ inventory_hostname }}"
+    - debug:
+        msg: "target environment: {{ target_environment }}"
+
+  roles:
+    - role: docker-install
+    - role: role-secure-docker-daemon
+      dds_host: "{{ inventory_hostname }}"
+      dds_server_cert_path: /etc/docker
+      dds_restart_docker: no
+      dds_client_cert_path: /home/centos/.docker
+    - role: docker-postinstall
+    - role: deploy-application-code
+    - role: start-application
