@@ -1,0 +1,7 @@
+[DEFAULT]
+
+bantime = 3600
+
+[sshd]
+
+enabled = true
