@@ -1,0 +1,34 @@
+- name: Copy over content directories (configs, scripts, webapp)
+  copy:
+    src: "../{{ item }}"
+    dest: "/home/centos/"
+  loop:
+    - "hooks"
+    - "html"
+    - "db_schema.sql"
+    - "php-conf"
+    - "nginx"
+    - "scripts"
+    - "php"
+    - "tusd"
+    - "docker-inotify-command"
+    - "docker-pure-ftpd"
+    - "inotify-config"
+
+- name: Create host directories for docker mounts
+  file:
+    path: "/home/centos/{{ item }}"
+    state: directory
+    mode: 0755
+  loop:
+    - "repo"
+    - "incoming"
+    - "incoming/ftp"
+    - "incoming/tusd"
+    - "credentials"
+    - "infrastructure"
+
+- name: Copy the docker-compose file
+  copy:
+      src: docker-compose.yml
+      dest: /home/centos/infrastructure/
