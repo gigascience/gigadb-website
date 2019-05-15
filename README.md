@@ -101,7 +101,7 @@ the `./tmp` directory.
 
 To only run unit tests, use the command:
 ```
-$ docker-compose run --rm test ./tests/unit_tests
+$ docker-compose run --rm test ./tests/unit_functional
 ```
 
 ## Troubleshooting
@@ -144,6 +144,36 @@ $ docker-compose run --rm test bash
 root@16b04afd18d5:/var/www# psql -h database -p 5432 -U gigadb gigadb
 ``` 
 
+The test database in the locally-deployed GigaDB application can be populated 
+with production-like data as follows:
+```
+# Drop into bash in the test container
+$ docker-compose run --rm test bash
+# Access the postgres database using `vagrant` as the password
+bash-4.4# psql -h database -p 5432 -U gigadb postgres
+Password for user gigadb: 
+psql (9.4.21)
+Type "help" for help.
+
+postgres=# select pg_terminate_backend(pg_stat_activity.pid) from pg_stat_activity where datname='gigadb';
+ pg_terminate_backend 
+----------------------
+ t
+ t
+ t
+ t
+ t
+(5 rows)
+
+postgres=# drop database gigadb;
+DROP DATABASE
+postgres=# create database gigadb owner gigadb;
+CREATE DATABASE
+postgres-# \q
+# Restore the `production_like.pgdmp` database
+root@9aece9101f03:/var/www# pg_restore -h database -p 5432 -U gigadb -d gigadb -v ./sql/production_like.pgdmp 
+```
+
 >**Note:**
 >~~Only~~ The **test** and **application** containers have access to the 
 **database** container. In addition, you can access the PostgreSQL RDBMS in the 
@@ -155,7 +185,8 @@ database:
 `General` tab.
 
 **2.** Click on the `Connection` tab and enter `localhost` as the `Host name/address` 
-and `54321` as the `Port` value. The `Maintenance database` is `gigadb`,  `username` is `gigadb`, and `password` is `vagrant`.
+and `54321` as the `Port` value. The `Maintenance database` is `gigadb`,  
+`username` is `gigadb`, and `password` is `vagrant`.
 
 For further investigation, check out the [docker-compose.yml](ops/deployment/docker-compose.yml) 
 to see how the services are assembled and what scripts they run.

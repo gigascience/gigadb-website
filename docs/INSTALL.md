@@ -20,7 +20,8 @@ database system, but others such as web are modified before their use.
 
 The GigaDB code base is available from 
 [GitHub](https://github.com/gigascience/gigadb-website) which can be downloaded
-using git.
+using git. [Docker](https://www.docker.com) is then used to deploy a local 
+GigaDB web application.
 
 ### Linux
 
@@ -37,6 +38,39 @@ If you’re on a Debian-based distribution like Ubuntu, try apt-get:
 $ sudo apt-get install git-all
 ```
 
+Running a local GigaDB web application also requires installing a current 
+version of Docker CE and Docker Compose. For Linux Mint 19, this can be done as 
+follows: 
+```
+# Install docker dependencies
+$ sudo apt-get update
+$ sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+# Add Docker GPG key to sign for Docker packages
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+# Add Docker upstream repository to install latest stable release of Docker
+$ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo "$UBUNTU_CODENAME") stable"
+# Install Docker Engine
+$ sudo apt-get update
+$ sudo apt-get -y install docker-ce
+# Add your normal user to the group to run docker commands as non-privileged user
+$ sudo usermod -aG docker $USER
+# Log out and log back in so that your group membership is re-evaluated
+```
+
+In Linux Mint 19, its package manager will install an old version of the Docker 
+Compose tool. A more recent binary can be downloaded from 
+[GitHub](https://github.com/docker/compose/releases/):
+```
+# Install jq command-line JSON processor
+$ sudo apt-get install jq
+$ VERSION=$(curl --silent https://api.github.com/repos/docker/compose/releases/latest | jq .name -r)
+$ DESTINATION=/usr/local/bin/docker-compose
+$ sudo curl -L https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-$(uname -s)-$(uname -m) -o $DESTINATION
+$ sudo chmod 755 $DESTINATION
+# If you get a docker-compose not found in /usr/bin/docker-compose
+$ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+```
+
 ### MacOSX
 
 There are several ways to install Git on a Mac. The easiest is
@@ -49,18 +83,21 @@ If you want a more up to date version, you can also install git via a
 binary installer. An OSX Git installer is maintained and available
 for download at the [Git website](http://git-scm.com/download/mac).
 
+Docker for MacOSX can then be installed using these 
+[instructions](https://docs.docker.com/docker-for-mac/install/).
+
 ### Windows
 
 We suggest that you install [Babun](http://babun.github.io) which
 provides a Linux-like console on Windows platforms. Babun will provide
 `git` as well as other develop tools.
 
+Docker for Windows can then be installed using these 
+[instructions](https://docs.docker.com/docker-for-windows/install/).
+
 
 ## Other requirements
 
-* Docker (18 or more recent) is 
-  [installed](https://www.docker.com/products/docker-desktop) on your machine 
-  (Windows or macOS)
 * You have a [GitLab account](https://gitlab.com/), which is a member of the 
   [Gigascience Forks group](https://gitlab.com/gigascience/forks), so you can 
   access the application's 
@@ -139,27 +176,21 @@ e7beb1fa6c3a        deployment_web             "nginx -g 'daemon of…"   4 days
 0773ea9a6643        wernight/phantomjs:2.1.1   "phantomjs --webdriv…"   4 days ago          Up 11 minutes       8910/tcp                                                   deployment_phantomjs_1
 ```
 
-## Configuration variables
+### Configuration variables
 
-The project can be configured using the following files:
- 
-Type of variables | Configuration file
------------- | -------------
-Deployment | `.env`
-Application | [docker-compose.yml](ops/deployment/docker-compose.yml)* 
-Passwords, API keys and tokens | `.secrets`
-
-*`docker-compose.yml` overrides `docker-compose.*.yml`
+The project can be configured using *deployment variables* managed in `.env`, 
+*application variables* managed in the [docker-compose.yml](ops/deployment/docker-compose.yml) 
+file and its overrides (`docker-compose.*.yml`). Finally, passwords, api keys 
+and tokens are managed as *secret variables* in `.secrets`.
 
 
-## Running database migrations
+### Running database migrations
 
 Some code changes are database schemas changes. To ensure you have the latest 
 database schema, you will need to run Yii migration as below:
 ```
 $ docker-compose run --rm  application ./protected/yiic migrate --interactive=0
 ```
-
 ## Testing
 
 To run the tests:
@@ -169,19 +200,19 @@ $ docker-compose run --rm test
 
 This will run all the tests and generate a test coverage report. An headless 
 Selenium web browser (currently PhantomJS) will be automatically spun-off into 
-its own container. If an acceptance test fails, it will leave a screenshot under
+its own container. If an acceptance test fails, it will leave a screenshot under 
 the `./tmp` directory.
 
 To only run unit tests, use the command:
 ```
-$ docker-compose run --rm test ./tests/unit_tests
+$ docker-compose run --rm test ./tests/unit_functional
 ```
 
 ## Troubleshooting
 
 To access the services logs, use the command below:
 ```
-$ docker-compose logs <service name>			# e.g: docker-compose logs web
+$ docker-compose logs <service name>            # e.g: docker-compose logs web
 ```
 
 You can get information on the images, services and the processes running in 
@@ -197,6 +228,7 @@ containers:
 ```
 $ docker-compose run --rm config bash
 ```
+
 or:
 ```
 $ docker-compose run --rm test bash
@@ -207,20 +239,66 @@ and Nginx site configuration (so they can be used to debug the running web
 application too).
 
 The **test** container has also the PostgreSQL admin tools installed (pg\_dump, 
-pg\_restore, psql), so it's a good place for debugging database issues. For 
-further investigation, check out 
-[docker-compose.yml](ops/deployment/docker-compose.yml) to see how the services 
-are assembled and what scripts they run.
+pg\_restore, psql), so it's a good place for debugging database issues. For
+example, to access the PostgreSQL database from the **test** container:
+```
+# Drop into bash in test container
+$ docker-compose run --rm test bash
+# Use psql in test container to connect to gigadb database in database container
+root@16b04afd18d5:/var/www# psql -h database -p 5432 -U gigadb gigadb
+``` 
+
+The test database in the locally-deployed GigaDB application can be populated 
+with production-like data as follows:
+```
+# Drop into bash in the test container
+$ docker-compose run --rm test bash
+# Access the postgres database using `vagrant` as the password
+bash-4.4# psql -h database -p 5432 -U gigadb postgres
+Password for user gigadb: 
+psql (9.4.21)
+Type "help" for help.
+
+postgres=# select pg_terminate_backend(pg_stat_activity.pid) from pg_stat_activity where datname='gigadb';
+ pg_terminate_backend 
+----------------------
+ t
+ t
+ t
+ t
+ t
+(5 rows)
+
+postgres=# drop database gigadb;
+DROP DATABASE
+postgres=# create database gigadb owner gigadb;
+CREATE DATABASE
+postgres-# \q
+# Restore the `production_like.pgdmp` database
+root@9aece9101f03:/var/www# pg_restore -h database -p 5432 -U gigadb -d gigadb -v ./sql/production_like.pgdmp 
+```
 
 >**Note:**
->Only the **test** and **application** containers have access to the 
-**database** container.
+>~~Only~~ The **test** and **application** containers have access to the 
+**database** container. In addition, you can access the PostgreSQL RDBMS in the 
+database container via the local dockerhost on port 54321. For example, you can
+use [pgAdmin](https://www.pgadmin.org) to connect to the gigadb PostgreSQL 
+database:
 
+**1.** Click on `Add New Server` and provide a `Name` for the connection in the 
+`General` tab.
+
+**2.** Click on the `Connection` tab and enter `localhost` as the `Host name/address` 
+and `54321` as the `Port` value. The `Maintenance database` is `gigadb`,  
+`username` is `gigadb`, and `password` is `vagrant`.
+
+For further investigation, check out the [docker-compose.yml](ops/deployment/docker-compose.yml) 
+to see how the services are assembled and what scripts they run.
 
 ## Life cycle
 
-To regenerate the web application configuration files, *e.g* because a variable 
-is added or changed on GitLab or ``.env``:
+To regenerate the web application configuration files, *e.g.* because a variable 
+is added or changed on GitLab or `.env`:
 ```
 $ docker-compose run --rm config
 ```
@@ -230,7 +308,7 @@ To restart, start or stop any of the services:
 $ docker-compose restart|start|stop <service name>	# e.g: docker-compose restart database
 ```
 
-To rebuild the local containers (**application** and **test**), *e.g* because of 
+To rebuild the local containers (**application** and **test**), e.g: because of 
 changes made to the [Dockerfile](ops/packaging/Dockerfile) or because the base 
 image has been upgraded (see below):
 ```
@@ -252,7 +330,7 @@ $ docker-compose pull
 
 >**Note**:
 >To upgrade the core software to major revision, first change the version 
-*deployment variables* in ``.env``.
+*deployment variables* in `.env`.
 
 ## Generating the documentation
 
@@ -262,5 +340,6 @@ the changes:
 $ docker-compose run --rm test ./docs/make_phpdoc
 ```
 
+## Licensing
 
-
+Please see the file called [LICENSE](./LICENSE).

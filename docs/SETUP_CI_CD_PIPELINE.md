@@ -146,7 +146,7 @@ pipelines page.
 Prior to this, a host machine has to be instantiated with a 
 secure Docker daemon on which the GigaDB application will be deployed. This 
 machine can be used for a specific environment, most likely staging or 
-production. Two tools are used to set a Docker server on the AWS cloud: 
+production. Two tools are used to deploy a Docker server on the AWS cloud: 
 Terraform and Ansible.
 
 ### Terraform
@@ -210,16 +210,21 @@ address:
 $ terraform refresh
 ```
 
-If this is not done then Ansible will try to use the original IP address of 
+If this is not done then Ansible will try to use the initial IP address of 
 your EC2 instance and you will get a server not found error since the server
-will have your elastic IP address.
+will not be associated with your elastic IP address.
 
 ### Ansible
 
+The Ansible software is a tool for provisioning, managing configuration and 
+deploying applications using its own declarative language. SSH is used to 
+connect to remote servers to perform its provisioning tasks.
 [Ansible](https://www.ansible.com) is used to install the EC2 instance 
-with a Docker daemon. The Ansible software is a tool for provisioning, managing
-configuration and deploying applications using its own declarative language. SSH
-is used to connect to remote servers to perform its provisioning tasks.
+with a Docker daemon. In addition, a PostgreSQL server is installed on the EC2
+instance which will host the database that GigaDB uses to manage information
+abouts its datasets. Note that this setup for a staging instance of GigaDB is
+different to a local GigaDB application whose PostgreSQL database is provided by
+a custom Docker container.
 
 #### Ansible setup and configuration
 
@@ -281,7 +286,7 @@ this reason, the actual values are encrypted within an Ansible vault file which
 needs to be located at `ops/infrastructure/group_vars/all/vault`. This vault 
 file should NOT be version controlled as defined in the `.gitignore` file.
 
-Create the `vault` file in the ops/infrastructure/group_vars/all directory:
+Create the `vault` file in the `ops/infrastructure/group_vars/all` directory:
 ```
 $ pwd
 ~/gigadb-website
@@ -366,22 +371,21 @@ Ansible will update values for the project environment variables below in
 GitLab. Check them on the project environment variables page after the Ansible
 provisioning has completed. This is done by the `docker-postinstall` role.
 
-* staging_tlsauth_ca - certificate authority for staging server - this is 
-provided by staging server during Ansible provisioning
-* staging_tlsauth_cert - public certificate for staging server - this is 
-provided by staging server during Ansible provisioning
-* staging_tlsauth_key - the server key for the above CA - this is provided by 
-staging server during Ansible provisioning
+| Environment variable | Description |
+|----------------------|-------------|
+| staging_tlsauth_ca | Certificate authority for staging server - this is provided by the staging server during Ansible provisioning |
+| staging_tlsauth_cert | Public certificate for staging server - this is provided by staging server during Ansible provisioning |
+| staging_tlsauth_key | the server key for the above CA - this is provided by staging server during Ansible provisioning |
  
-This is for running a secure Docker engine on the production CNGB virtual server
-so that the Docker API is secured over TCP and we know we are communicating 
-with the correct server and not a malicious impersonation. We also need to 
-authenticate the client with TLS so only clients using the client certificates 
-can use the Docker engine. This is the 2-way certificate-based authentication.
+This is for running a secure Docker engine on a cloud virtual server so that the 
+Docker API is secured over TCP and we know we are communicating with the correct 
+server and not a malicious impersonation. We also need to authenticate the 
+client with TLS so only clients using the client certificates can use the Docker 
+engine. This is the 2-way certificate-based authentication.
 
 ### Further configuration steps
 
-The new gigadb-website code contains functionality for running GigaDB over 
+The new `gigadb-website` code contains functionality for running GigaDB over 
 [HTTPS](https://en.wikipedia.org/wiki/HTTPS). 
 [Let's Encrypt](https://letsencrypt.org) is used as a trusted certificate 
 authority to sign a certificate provided by GigaDB which is trusted by users.
@@ -430,3 +434,38 @@ If it is the first time doing this on the server, select the
 
 Also, note that the HTTPS certificates last 3 months, so you need to do at least 
 one deploy every 3 month (a NO-OP deploy will work).
+
+## PostgreSQL database in GigaDB application
+
+The virtual server hosting the Docker engine also hosts the PostgreSQL database
+that GigaDB uses to store information about datasets, users, etc. If you want to 
+access the database then it is possible to connect to it using 
+[pgAdmin4](https://www.pgadmin.org). This is done by creating a new server on 
+the pgAdmin interface and using SSH Tunneling to access the virtual server with 
+the following parameters:
+```
+Tunnel host:        <Public IP address of virtual server>
+Tunnel port:        22
+Username:           centos
+Authentication:     Identity file
+Identity file:      <Path to AWS pem file>
+```
+
+For the Connection parameters:
+```
+Hostname:               127.0.0.1
+Port:                   5432
+Maintenance database:   gigadb
+Username:               gigadb
+```
+
+Use `vagrant` as the password to access the database by the `gigadb` user.
+
+There is also command line access to the PostgreSQL database on the virtual
+server:
+```
+$ ssh -i "aws-centos7-keys.pem" centos@ec2-**-***-***-***.ap-southeast-1.compute.amazonaws.com
+# Use vagrant as password
+$ psql -U gigadb -h localhost
+gigadb=>
+```
