@@ -379,7 +379,7 @@ class Dataset extends CActiveRecord
     }
 
     public function getIsIncomplete() {
-        return $this->upload_status == "Incomplete";
+        return $this->upload_status == "UserStartedIncomplete";
     }
 
     public function behaviors() {
