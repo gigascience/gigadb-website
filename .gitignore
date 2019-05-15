@@ -5,3 +5,10 @@ run
 ftp-transfer-logs
 incoming
 transfer.log
+*.tfvars
+.terraform
+*.tfstate
+*.tfstate.backup
+output
+vault
+*.retry
