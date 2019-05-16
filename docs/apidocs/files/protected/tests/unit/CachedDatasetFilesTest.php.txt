@@ -5,7 +5,7 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class CachedDatasetFilesTest extends CDbTestCase
+class CachedDatasetFilesTest extends CTestCase
 {
 
     public function setUp()
@@ -187,7 +187,7 @@ class CachedDatasetFilesTest extends CDbTestCase
                 ->with(
                     $this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFiles"),
                     $expected,
-                    Cacheable::defaultTTL,
+                    Cacheable::defaultTTL*30,
                     $cacheDependency
                 )
                 ->willReturn(true);
@@ -336,7 +336,7 @@ class CachedDatasetFilesTest extends CDbTestCase
                 ->with(
                     $this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFilesSamples"),
                     $expected,
-                    Cacheable::defaultTTL,
+                    Cacheable::defaultTTL*30,
                     $cacheDependency
                 )
                 ->willReturn(true);

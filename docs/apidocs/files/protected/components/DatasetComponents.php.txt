@@ -31,26 +31,36 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 	 * retrieve local cached data transparently.
 	 *
 	 * @uses Cacheable::getCacheKeyForLocalData()
-	 * @return mixed the content retrieved from cache
+	 * @return mixed the content retrieved from cache, or false if content is expired
 	 */
 	public function getCachedLocalData(string $dataset_id)
 	{
-		 return $this->_cache->get( $this->getCacheKeyForLocalData( $dataset_id ) );
+		 $result = $this->_cache->get( $this->getCacheKeyForLocalData( $dataset_id ) );
+		 // if (false == $result) {
+		 // 	Yii::log("cache MISS for ". $this->getCacheKeyForLocalData( $dataset_id ),'info');
+		 // }
+		 // else {
+		 // 	Yii::log("cache HIT for ". $this->getCacheKeyForLocalData( $dataset_id ),'info');
+		 // }
+		 return $result;
 	}
 
 	/**
 	 * Store content from local context (collection, class, method) into the cache
 	 *
-	 * The content is cached until TTL of Cacheable::defaultTTL, or if there's a new entry in dataset_log table
+	 * The content is cached until TTL read from config, or if there's a new entry in dataset_log table (invalidation query)
 	 * @param mixed $content content to cache
 	 * @return boolean true if operation successful, false otherwise
 	 */
 	public function saveLocaldataInCache(string $dataset_id, $content): bool
 	{
-		$this->_cacheDependency->sql = "select max(created_at) from dataset_log where dataset_id=$dataset_id";
+		// Yii::log("Saving to cache the data from:". $this->getCacheKeyForLocalData( $dataset_id ),'info');
+		$invalidationQuery = preg_replace("/@id/", $dataset_id,Yii::app()->params['cacheConfig']['DatasetComponents']['invalidationQuery']);
+		$ttl = preg_replace("/@id/", $dataset_id,Yii::app()->params['cacheConfig']['DatasetComponents']['timeToLive']);
+		$this->_cacheDependency->sql = $invalidationQuery;
 		return $this->_cache->set( $this->getCacheKeyForLocalData( $dataset_id ),
 									$content,
-									Cacheable::defaultTTL,
+									$ttl,
 									$this->_cacheDependency
 								 );
 	}

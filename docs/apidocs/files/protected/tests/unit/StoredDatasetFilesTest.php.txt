@@ -1,6 +1,6 @@
 <?php
 /**
- * Unit tests for StoredDatasetFiles to retrieve from storage, the files  for associated dataset
+ * Unit tests for StoredDatasetFiles to retrieve from storage, the files for associated dataset
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0

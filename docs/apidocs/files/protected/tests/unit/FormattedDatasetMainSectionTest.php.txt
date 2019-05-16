@@ -6,17 +6,8 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class FormattedDatasetMainSectionTest extends CDbTestCase
+class FormattedDatasetMainSectionTest extends CTestCase
 {
-	protected $fixtures=array( //careful, the order matters here because of foreign key constraints
-        'publishers'=>'Publisher',
-        'datasets'=>'Dataset',
-        'types'=>'Type',
-        'dataset_types'=>'DatasetType',
-        'authors'=>'Author',
-        'dataset_author'=>'DatasetAuthor',
-    );
-
 	public function setUp()
 	{
 		parent::setUp();
@@ -217,8 +208,33 @@ class FormattedDatasetMainSectionTest extends CDbTestCase
      */
     public function testFormattedReturnsCitationsLinks()
     {
-        $argument = null;
-        $response =["dummy_key" => "dummy_value"];
+        $source = array(
+            'services' => array(
+                'scholar_query' => "View citations on Google Scholar",
+                'ePMC_query' => "View citations on Europe PubMed Central",
+                ),
+            'urls' => array(
+                'scholar_query' => 'http://scholar.google.com/scholar?q=10.5072/100243',
+                'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/100243')",
+                ),
+            'images' => array(
+                'scholar_query' => '/images/google_scholar.png',
+                'ePMC_query' => "/images/ePMC.jpg",
+            ),
+        );
+
+        $expected = array(
+            "scholar_query" => '<span class="citation-popup" data-content="View citations on Google Scholar">
+                            <a href="http://scholar.google.com/scholar?q=10.5072/100243" target="_blank">
+                                <img class="dataset-des-images" src="/images/google_scholar.png" alt="View citations on Google Scholar"/>
+                            </a>
+                        </span>',
+            "ePMC_query" => '<span class="citation-popup" data-content="View citations on Europe PubMed Central">
+                            <a href="http://europepmc.org/search?scope=fulltext&query=(REF:\'10.5072/100243\')" target="_blank">
+                                <img class="dataset-des-images" src="/images/ePMC.jpg" alt="View citations on Europe PubMed Central"/>
+                            </a>
+                        </span>',
+        );
 
         //we mock the CachedDatasetMainSection
         $cachedDatasetMainSection = $this->getMockBuilder(CachedDatasetMainSection::class)
@@ -229,13 +245,12 @@ class FormattedDatasetMainSectionTest extends CDbTestCase
         //we expect a call to getCitationsLinks
         $cachedDatasetMainSection->expects($this->once())
                  ->method('getCitationsLinks')
-                 ->with($argument)
-                 ->willReturn($response);
+                 ->willReturn($source);
 
         $daoUnderTest = new FormattedDatasetMainSection(
                             $cachedDatasetMainSection
                         );
-        $this->assertEquals($response, $daoUnderTest->getCitationsLinks($argument) ) ;
+        $this->assertEquals($expected, $daoUnderTest->getCitationsLinks() ) ;
     }
 
     /**

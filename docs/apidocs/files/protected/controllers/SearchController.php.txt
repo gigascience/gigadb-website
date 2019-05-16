@@ -94,6 +94,10 @@ class SearchController extends Controller
 
     public function actionNew($keyword = '') {
         $this->layout="new_main";
+        if(!$_GET['keyword']) {
+            Yii::app()->user->setFlash('keyword','Keyword can not be blank');
+            $this->redirect(array("/site/index"));
+        }
         $ds = new DatabaseSearch();
         $offset = 0;
         $limit = 10;

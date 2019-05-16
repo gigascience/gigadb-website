@@ -314,7 +314,7 @@ class AdminDatasetController extends Controller
     public function actionMint()
     {
         $result['status'] = false;
-        $status_array = array('Request', 'Incomplete', 'Uploaded');
+        $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
 
         $mds_metadata_url="https://mds.datacite.org/metadata";
         $mds_doi_url="https://mds.datacite.org/doi";

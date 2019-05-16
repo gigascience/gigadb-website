@@ -134,42 +134,6 @@ class DatasetController extends Controller
             Yii::app()->request->cookies['sample_setting'] = $ncookie;
         }
 
-        $scrit = new CDbCriteria;
-        $scrit->join = "LEFT JOIN dataset_sample ds ON ds.sample_id = t.id LEFT JOIN species ON t.species_id = species.id";
-        $scrit->condition = "ds.dataset_id = :id";
-        $scrit->params = array(':id' => $model->id);
-        $samples = new CActiveDataProvider('Sample', array(
-            'criteria'=> $scrit,
-            'pagination' => false,
-            'sort' => array('defaultOrder'=>'t.name ASC',
-                            'attributes' => array(
-                                    'name',
-                                    'common_name' => array(
-                                            'asc' => 'species.common_name ASC',
-                                            'desc' => 'species.common_name DESC',
-                                        ),
-                                    'genbank_name' => array(
-                                            'asc' => 'species.genbank_name ASC',
-                                            'desc' => 'species.genbank_name DESC',
-                                        ),
-                                    'scientific_name' => array(
-                                            'asc' => 'species.scientific_name ASC',
-                                            'desc' => 'species.scientific_name DESC',
-                                        ),
-                                    'taxonomic_id' => array(
-                                            'asc' => 'species.tax_id ASC',
-                                            'desc' => 'species.tax_id DESC',
-                                        ),
-                                )),
-        ));
-
-
-        $samples_pagination = new CPagination($samples->getTotalItemCount());
-        $samples_pagination->setPageSize($perPage);
-        $samples_pagination->pageVar = "Samples_page";
-        // Yii::log("samples pageVar: ". $samples_pagination->pageVar,CLogger::LEVEL_ERROR,"DatasetController");
-        $samples->setPagination($samples_pagination);
-
         // Creating a Database cache dependency
         $cacheDependency = new CDbCacheDependency();
 
@@ -253,6 +217,18 @@ class DatasetController extends Controller
                                 )
                             )
                         );
+        //Samples
+         $samplesDataProvider = new FormattedDatasetSamples(
+                            $perPage,
+                            new CachedDatasetSamples(
+                                Yii::app()->cache,
+                                $cacheDependency,
+                                new StoredDatasetSamples(
+                                    $model->id,
+                                    Yii::app()->db
+                                )
+                            )
+                        );
 
         $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {
@@ -283,7 +259,7 @@ class DatasetController extends Controller
             'form'=>$form,
             'dataset'=>$dataset,
             'files'=>$filesDataProvider,
-            'samples'=>$samples,
+            'samples'=>$samplesDataProvider,
             'email' => $email,
             'accessions' => $accessions,
             'mainSection' => $mainSection,

@@ -177,7 +177,7 @@ EO_MAIL;
             }
 
             $isOld = 1;
-            if ($dataset->upload_status == 'Incomplete') {
+            if ($dataset->upload_status == 'UserStartedIncomplete') {
                 $isOld = 0;
             }
 
@@ -486,7 +486,7 @@ EO_MAIL;
                 $attrs = $_POST['Dataset'];
                 $dataset->title = $attrs['title'];
                 $dataset->description = $attrs['description'];
-                $dataset->upload_status = "Incomplete";
+                $dataset->upload_status = "UserStartedIncomplete";
                 $dataset->ftp_site = "''";
 
                 // save dataset types

@@ -5,13 +5,9 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class FormattedDatasetExternalLinksTest extends CDbTestCase
+class FormattedDatasetExternalLinksTest extends CTestCase
 {
-    protected $fixtures=array( //careful, the order matters here because of foreign key constraints
-        'external_link_types'=>'ExternalLinkType',
-        'datasets'=>'Dataset',
-        'external_links'=>'ExternalLink',
-    );
+
 
     public function setUp()
     {

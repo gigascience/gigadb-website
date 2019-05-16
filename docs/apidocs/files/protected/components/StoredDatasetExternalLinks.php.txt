@@ -55,6 +55,7 @@ class StoredDatasetExternalLinks extends DatasetComponents implements DatasetExt
 								->join('external_link_type t', 'l.external_link_type_id = t.id')
 								->where('dataset_id = :id', array(':id'=>$this->_id) )
 								->andWhere(array('in','t.name', $types))
+								->order('l.id')
 								->queryAll();
 		return $results;
 	}

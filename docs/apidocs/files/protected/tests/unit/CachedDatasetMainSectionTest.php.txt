@@ -6,18 +6,8 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class CachedDatasetMainSectionTest extends CDbTestCase
+class CachedDatasetMainSectionTest extends CTestCase
 {
-	protected $fixtures=array( //careful, the order matters here because of foreign key constraints
-        'publishers'=>'Publisher',
-        'attribute'=>'Attribute',
-        'datasets'=>'Dataset',
-        'types'=>'Type',
-        'dataset_types'=>'DatasetType',
-        'authors'=>'Author',
-        'dataset_author'=>'DatasetAuthor',
-        'dataset_attriutes'=>'DatasetAttributes',
-    );
 
 	public function setUp()
 	{
@@ -27,19 +17,31 @@ class CachedDatasetMainSectionTest extends CDbTestCase
     public function testCachedReturnsDatasetDOI()
     {
         $dataset_id = 1;
-        $doi = "100243";
+        $expected = "100243";
         // create a stub of the cache and cache dependency (because we don't need to verify expectations on the cache)
         $cache =  $this->createMock(CApcCache::class);
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
+       // create a mock for the StoredDatasetMainSection
+        $storedDatasetMainSection = $this->getMockBuilder(StoredDatasetMainSection::class)
+                                            ->setMethods(['getDatasetDOI'])
+                                            ->disableOriginalConstructor()
+                                            ->getMock();
+
+        // $storedDatasetMainSection->expects($this->exactly(2))
+        //                             ->method('getDatasetID')
+        //                             ->willReturn(1);
+
+        $storedDatasetMainSection->expects($this->once())
+                                    ->method('getDatasetDOI')
+                                    ->willReturn( $expected);
+
         $daoUnderTest = new CachedDatasetMainSection (
                             $cache,
                             $cacheDependency,
-                            new StoredDatasetMainSection(
-                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
-                            )
+                            $storedDatasetMainSection
                         );
-        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
+        $this->assertEquals($expected, $daoUnderTest->getDatasetDOI() ) ;
     }
 
     /**
@@ -68,15 +70,18 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                         "release_date"=> '2018-08-23',
                     )
                  );
+        // create a stub for the StoredDatasetConnection, cause we have no expectation on it as cache hit
+        $storedDatasetMainSection = $this->createMock(StoredDatasetMainSection::class);
+        $storedDatasetMainSection->method('getDatasetID')
+                                    ->willReturn(1);
+
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $daoUnderTest = new CachedDatasetMainSection (
                             $cache,
                             $cacheDependency,
-                            new StoredDatasetMainSection(
-                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
-                            )
+                            $storedDatasetMainSection
                         );
 
         $expected = array(
@@ -98,6 +103,15 @@ class CachedDatasetMainSectionTest extends CDbTestCase
     {
         $dataset_id = 1;
 
+        $expected = array(
+                "title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
+                "types" => array(
+                    "Genomic",
+                    "Workflow"
+                ),
+                "release_date"=> '2018-08-23',
+                    );
+
         //we first need to create a mock object for the cache
         $cache = $this->getMockBuilder(CApcCache::class)
                          ->setMethods(['get', 'set'])
@@ -109,43 +123,40 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                  ->willReturn(
                     false
                  );
-        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
-        $cacheDependency = $this->createMock(CCacheDependency::class);
 
         //And the expectation for setting up the data into cache
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
                     $this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getHeadline"),
-                    array(
-                        "title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
-                        "types" => array(
-                            "Genomic",
-                            "Workflow"
-                        ),
-                        "release_date"=> '2018-08-23',
-                    ),
-                    60*60*24,
-                    $cacheDependency
+                    $expected,
+                    Cacheable::defaultTTL*30
                 )
                 ->willReturn(true);
+
+        // create a mock for the StoredDatasetMainSection
+        $storedDatasetMainSection = $this->getMockBuilder(StoredDatasetMainSection::class)
+                                            ->setMethods(['getDatasetID', 'getHeadline'])
+                                            ->disableOriginalConstructor()
+                                            ->getMock();
+
+        $storedDatasetMainSection->expects($this->exactly(2))
+                                    ->method('getDatasetID')
+                                    ->willReturn(1);
+
+        $storedDatasetMainSection->expects($this->once())
+                                    ->method('getHeadline')
+                                    ->willReturn( $expected );
+
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $daoUnderTest = new CachedDatasetMainSection (
                             $cache,
                             $cacheDependency,
-                            new StoredDatasetMainSection(
-                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
-                            )
+                            $storedDatasetMainSection
                         );
 
-        $expected = array(
-                        "title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
-                        "types" => array(
-                            "Genomic",
-                            "Workflow"
-                        ),
-                        "release_date"=> '2018-08-23',
-                    );
 
         $this->assertEquals($expected, $daoUnderTest->getHeadline());
     }
@@ -199,15 +210,18 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                     )
                  );
 
+        // create a stub for the StoredDatasetConnection, cause we have no expectation on it as cache hit
+        $storedDatasetMainSection = $this->createMock(StoredDatasetMainSection::class);
+        $storedDatasetMainSection->method('getDatasetID')
+                                    ->willReturn(1);
+
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $daoUnderTest = new CachedDatasetMainSection (
                             $cache,
                             $cacheDependency,
-                            new StoredDatasetMainSection(
-                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
-                            )
+                            $storedDatasetMainSection
                         );
 
         $expected = array(
@@ -250,66 +264,6 @@ class CachedDatasetMainSectionTest extends CDbTestCase
     {
         $dataset_id = 1;
 
-        //we first need to create a mock object for the cache
-        $cache = $this->getMockBuilder(CApcCache::class)
-                         ->setMethods(['get','set'])
-                         ->getMock();
-        //then we set our expectations for a Cache Miss
-        $cache->expects($this->once())
-                 ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getReleaseDetails"))
-                 ->willReturn(
-                    false
-                 );
-
-        $cache->expects($this->once())
-                 ->method('set')
-                 ->with(
-                    "dataset_${dataset_id}_CachedDatasetMainSection_getReleaseDetails",
-                    array(
-                        "authors" => array(
-                            array(
-                                'id' => 2,
-                                'surname'=>'Montana,',
-                                'first_name'=>'Carlos',
-                                'middle_name'=>'Ábel G',
-                                'custom_name'=>null,
-                            ),
-                            array(
-                                'id' => 1,
-                                'surname'=>'Muñoz',
-                                'first_name'=>'Ángel',
-                                'middle_name'=>'GG',
-                                'custom_name'=>null,
-                            ),
-                            array(
-                                'id' => 7,
-                                'surname'=>'Schiøtt,',
-                                'first_name'=>'Morten',
-                                'middle_name'=>null,
-                                'custom_name'=>null,
-                            ),
-                        ),
-                        "release_year" => "2018",
-                        "dataset_title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
-                        "publisher" => "Gigascience",
-                        "full_doi" => "10.5072/100243",
-                    ),
-                    60*60*24
-                )
-                ->willReturn(true);
-
-        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
-        $cacheDependency = $this->createMock(CCacheDependency::class);
-
-        $daoUnderTest = new CachedDatasetMainSection (
-                            $cache,
-                            $cacheDependency,
-                            new StoredDatasetMainSection(
-                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
-                            )
-                        );
-
         $expected = array(
                         "authors" => array(
                             array(
@@ -339,6 +293,52 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                         "publisher" => "Gigascience",
                         "full_doi" => "10.5072/100243",
                     );
+
+        //we first need to create a mock object for the cache
+        $cache = $this->getMockBuilder(CApcCache::class)
+                         ->setMethods(['get','set'])
+                         ->getMock();
+        //then we set our expectations for a Cache Miss
+        $cache->expects($this->once())
+                 ->method('get')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getReleaseDetails"))
+                 ->willReturn(
+                    false
+                 );
+
+        $cache->expects($this->once())
+                 ->method('set')
+                 ->with(
+                    "dataset_${dataset_id}_CachedDatasetMainSection_getReleaseDetails",
+                    $expected,
+                    Cacheable::defaultTTL*30
+                )
+                ->willReturn(true);
+
+        // create a mock for the StoredDatasetMainSection
+        $storedDatasetMainSection = $this->getMockBuilder(StoredDatasetMainSection::class)
+                                            ->setMethods(['getDatasetID', 'getReleaseDetails'])
+                                            ->disableOriginalConstructor()
+                                            ->getMock();
+
+        $storedDatasetMainSection->expects($this->exactly(2))
+                                    ->method('getDatasetID')
+                                    ->willReturn(1);
+
+        $storedDatasetMainSection->expects($this->once())
+                                    ->method('getReleaseDetails')
+                                    ->willReturn( $expected);
+
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
+        $daoUnderTest = new CachedDatasetMainSection (
+                            $cache,
+                            $cacheDependency,
+                            $storedDatasetMainSection
+                        );
+
+
 
         $this->assertEquals($expected, $daoUnderTest->getReleaseDetails());
     }
@@ -364,15 +364,18 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                     )
                  );
 
+        // create a stub for the StoredDatasetConnection, cause we have no expectation on it as cache hit
+        $storedDatasetMainSection = $this->createMock(StoredDatasetMainSection::class);
+        $storedDatasetMainSection->method('getDatasetID')
+                                    ->willReturn(1);
+
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $daoUnderTest = new CachedDatasetMainSection (
                             $cache,
                             $cacheDependency,
-                            new StoredDatasetMainSection(
-                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
-                            )
+                            $storedDatasetMainSection
                         );
 
         $expected = array(
@@ -389,6 +392,10 @@ class CachedDatasetMainSectionTest extends CDbTestCase
     {
         $dataset_id = 1;
 
+        $expected = array(
+                        "description" => 'The emergence of Zika virus (ZIKV) as a public health emergency in Latin America and the Caribbean (LAC) occurred during a period of severe drought and unusually high temperatures. Speculation in the literature exists that these climate conditions were associated with the 2015/2016 El Niño event and/or climate change but to date no quantitative '
+                    );
+
         //we first need to create a mock object for the cache
         $cache = $this->getMockBuilder(CApcCache::class)
                          ->setMethods(['get','set'])
@@ -397,32 +404,38 @@ class CachedDatasetMainSectionTest extends CDbTestCase
         $cache->expects($this->once())
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getDescription"))
-                 ->willReturn(
-                    false
-                 );
+                 ->willReturn( false );
+
         $cache->expects($this->once())
                  ->method('set')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getDescription"),
-                    array(
-                        "description" => 'The emergence of Zika virus (ZIKV) as a public health emergency in Latin America and the Caribbean (LAC) occurred during a period of severe drought and unusually high temperatures. Speculation in the literature exists that these climate conditions were associated with the 2015/2016 El Niño event and/or climate change but to date no quantitative '
-                    ),
-                    60*60*24
+                    $expected,
+                    Cacheable::defaultTTL*30
                 )
                 ->willReturn(true);
+
+        // create a mock for the StoredDatasetMainSection
+        $storedDatasetMainSection = $this->getMockBuilder(StoredDatasetMainSection::class)
+                                            ->setMethods(['getDatasetID', 'getDescription'])
+                                            ->disableOriginalConstructor()
+                                            ->getMock();
+
+        $storedDatasetMainSection->expects($this->exactly(2))
+                                    ->method('getDatasetID')
+                                    ->willReturn(1);
+
+        $storedDatasetMainSection->expects($this->once())
+                                    ->method('getDescription')
+                                    ->willReturn( $expected);
+
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $daoUnderTest = new CachedDatasetMainSection (
                             $cache,
                             $cacheDependency,
-                            new StoredDatasetMainSection(
-                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
-                            )
+                            $storedDatasetMainSection
                         );
-
-        $expected = array(
-                        "description" => 'The emergence of Zika virus (ZIKV) as a public health emergency in Latin America and the Caribbean (LAC) occurred during a period of severe drought and unusually high temperatures. Speculation in the literature exists that these climate conditions were associated with the 2015/2016 El Niño event and/or climate change but to date no quantitative '
-                    );
 
         $this->assertEquals($expected, $daoUnderTest->getDescription());
     }
@@ -435,7 +448,6 @@ class CachedDatasetMainSectionTest extends CDbTestCase
      */
     public function testCachedReturnsCitationsLinks()
     {
-        $argument = null;
         $response =["dummy_key" => "dummy_value"];
 
         //we first need to stub the cache (not need to mock it in this test)
@@ -450,7 +462,6 @@ class CachedDatasetMainSectionTest extends CDbTestCase
         //we expect a call to getCitationsLinks
         $storedDatasetMainSection->expects($this->once())
                  ->method('getCitationsLinks')
-                 ->with($argument)
                  ->willReturn($response);
 
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
@@ -461,7 +472,7 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                             $cacheDependency,
                             $storedDatasetMainSection
                         );
-        $this->assertEquals($response, $daoUnderTest->getCitationsLinks($argument) ) ;
+        $this->assertEquals($response, $daoUnderTest->getCitationsLinks() ) ;
     }
 
     /**
@@ -484,15 +495,18 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                     array("am", "gram")
                  );
 
+        // create a stub for the StoredDatasetConnection, cause we have no expectation on it as cache hit
+        $storedDatasetMainSection = $this->createMock(StoredDatasetMainSection::class);
+        $storedDatasetMainSection->method('getDatasetID')
+                                    ->willReturn(1);
+
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $daoUnderTest = new CachedDatasetMainSection (
                             $cache,
                             $cacheDependency,
-                            new StoredDatasetMainSection(
-                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
-                            )
+                            $storedDatasetMainSection
                         );
 
         $expected  = array("am", "gram");
@@ -506,6 +520,8 @@ class CachedDatasetMainSectionTest extends CDbTestCase
     public function testCachedReturnsKeywordsCacheMiss()
     {
          $dataset_id = 1;
+
+        $expected  = array("am", "gram");
 
         //we first need to create a mock object for the cache
         $cache = $this->getMockBuilder(CApcCache::class)
@@ -522,10 +538,24 @@ class CachedDatasetMainSectionTest extends CDbTestCase
         $cache->expects($this->once())
                  ->method('set')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getKeywords"),
-                    array("am", "gram"),
-                    Cacheable::defaultTTL
+                    $expected,
+                    Cacheable::defaultTTL*30
                 )
                 ->willReturn(true);
+
+        // create a mock for the StoredDatasetMainSection
+        $storedDatasetMainSection = $this->getMockBuilder(StoredDatasetMainSection::class)
+                                            ->setMethods(['getDatasetID', 'getKeywords'])
+                                            ->disableOriginalConstructor()
+                                            ->getMock();
+
+        $storedDatasetMainSection->expects($this->exactly(2))
+                                    ->method('getDatasetID')
+                                    ->willReturn(1);
+
+        $storedDatasetMainSection->expects($this->once())
+                                    ->method('getKeywords')
+                                    ->willReturn( $expected);
 
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cacheDependency = $this->createMock(CCacheDependency::class);
@@ -533,17 +563,15 @@ class CachedDatasetMainSectionTest extends CDbTestCase
         $daoUnderTest = new CachedDatasetMainSection (
                             $cache,
                             $cacheDependency,
-                            new StoredDatasetMainSection(
-                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
-                            )
+                            $storedDatasetMainSection
                         );
 
-        $expected  = array("am", "gram");
+
         $this->assertEquals($expected, $daoUnderTest->getKeywords());
     }
 
     /**
-     * unit test for fetching keywords associated with a dataset, cache hit scenario
+     * unit test for fetching dataset log data associated with a dataset, cache hit scenario
      *
      */
     public function testCachedReturnsHistoryCacheHit()
@@ -581,15 +609,18 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                     )
                  );
 
+        // create a stub for the StoredDatasetConnection, cause we have no expectation on it as cache hit
+        $storedDatasetMainSection = $this->createMock(StoredDatasetMainSection::class);
+        $storedDatasetMainSection->method('getDatasetID')
+                                    ->willReturn(1);
+
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $daoUnderTest = new CachedDatasetMainSection (
                             $cache,
                             $cacheDependency,
-                            new StoredDatasetMainSection(
-                                $dataset_id,  $this->getFixtureManager()->getDbConnection()
-                            )
+                            $storedDatasetMainSection
                         );
 
         $expected  = array(
@@ -616,7 +647,7 @@ class CachedDatasetMainSectionTest extends CDbTestCase
     }
 
     /**
-     * unit test for fetching keywords associated with a dataset, cache hit scenario
+     * unit test for fetching dataset log data associated with a dataset, cache hit scenario
      *
      */
     public function testCachedReturnsHistoryCacheMiss()
@@ -676,7 +707,7 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                  ->method('set')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getHistory"),
                     $expected,
-                    Cacheable::defaultTTL
+                    Cacheable::defaultTTL*30
                 )
                 ->willReturn(true);
 
@@ -690,6 +721,131 @@ class CachedDatasetMainSectionTest extends CDbTestCase
                         );
 
         $this->assertEquals($expected, $daoUnderTest->getHistory());
+    }
+
+    /**
+     * unit test for fetching funding data associated with a dataset, cache hit scenario
+     *
+     */
+    public function testCachedReturnsFundingCacheHit()
+    {
+        $dataset_id = 1;
+
+        $expected  = array(
+            array(
+                'id'=>1,
+                'dataset_id'=>1,
+                'funder_name'=>"The Good",
+                'grant_award'=>"An award",
+                'comments'=>"A comment",
+                'awardee'=>"John Doe",
+            ),
+            array(
+                'id'=>2,
+                'dataset_id'=>1,
+                'funder_name'=>"The Charitable",
+                'grant_award'=>"Another award",
+                'comments'=>"Some comment",
+                'awardee'=>"The team",
+            ),
+        );
+
+        //we first need to create a mock object for the cache
+        $cache = $this->getMockBuilder(CApcCache::class)
+                         ->setMethods(['get'])
+                         ->getMock();
+        //then we set our expectation for a Cache Hit
+        $cache->expects($this->once())
+                 ->method('get')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getFunding"))
+                 ->willReturn( $expected );
+
+        // create a stub for the StoredDatasetConnection, cause we have no expectation on it as cache hit
+        $storedDatasetMainSection = $this->createMock(StoredDatasetMainSection::class);
+        $storedDatasetMainSection->method('getDatasetID')
+                                    ->willReturn(1);
+
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
+        $daoUnderTest = new CachedDatasetMainSection (
+                            $cache,
+                            $cacheDependency,
+                            $storedDatasetMainSection
+                        );
+
+        $this->assertEquals($expected, $daoUnderTest->getFunding());
+    }
+
+    /**
+     * unit test for fetching funding data associated with a dataset, cache miss scenario
+     *
+     */
+    public function testCachedReturnsFundingCacheMiss()
+    {
+        $dataset_id = 1;
+
+        $expected  = array(
+            array(
+                'id'=>1,
+                'dataset_id'=>1,
+                'funder_name'=>"The Good",
+                'grant_award'=>"An award",
+                'comments'=>"A comment",
+                'awardee'=>"John Doe",
+            ),
+            array(
+                'id'=>2,
+                'dataset_id'=>1,
+                'funder_name'=>"The Charitable",
+                'grant_award'=>"Another award",
+                'comments'=>"Some comment",
+                'awardee'=>"The team",
+            ),
+        );
+
+        //we first need to create a mock object for the cache
+        $cache = $this->getMockBuilder(CApcCache::class)
+                         ->setMethods(['get','set'])
+                         ->getMock();
+        //then we set our expectation for a Cache miss
+        $cache->expects($this->once())
+                 ->method('get')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getFunding"))
+                 ->willReturn( false );
+
+        $cache->expects($this->once())
+                 ->method('set')
+                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getFunding"),
+                    $expected,
+                    Cacheable::defaultTTL*30
+                )
+                ->willReturn(true);
+
+        // create a mock for the StoredDatasetMainSection
+        $storedDatasetMainSection = $this->getMockBuilder(StoredDatasetMainSection::class)
+                                            ->setMethods(['getDatasetID', 'getFunding'])
+                                            ->disableOriginalConstructor()
+                                            ->getMock();
+
+        $storedDatasetMainSection->expects($this->exactly(2))
+                                    ->method('getDatasetID')
+                                    ->willReturn(1);
+
+        $storedDatasetMainSection->expects($this->once())
+                                    ->method('getFunding')
+                                    ->willReturn( $expected);
+
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
+        $daoUnderTest = new CachedDatasetMainSection (
+                            $cache,
+                            $cacheDependency,
+                            $storedDatasetMainSection
+                        );
+
+        $this->assertEquals($expected, $daoUnderTest->getFunding());
     }
 
 

@@ -117,21 +117,18 @@ class StoredDatasetMainSection extends DatasetComponents implements DatasetMainS
 	/**
 	 * for the citation widgets containing links and icon to configurable scholarly search engines
 	 *
-	 * @param string $search_engine name of citations search engine, default to null
 	 * @return array (of string)
 	*/
-	public function getCitationsLinks(string $search_engine = null): array
+	public function getCitationsLinks(): array
 	{
 		$doi_prefix= Yii::app()->params['mds_prefix'];
-		$queries = Yii::app()->params['citations'];
+		$citations = Yii::app()->params['citations'];
+
 		$citationLinks = [] ;
 
-		if( isset($search_engine) ) {
-			$queries = preg_replace("/@id/", $doi_prefix."/".$this->getDatasetDOI(), $queries["$search_engine"]);
-			$citationLinks["$search_engine"] =  $queries;
-			return $citationLinks;
-		}
-		$citationLinks = preg_replace("/@id/", $doi_prefix."/".$this->getDatasetDOI(), $queries);
+		$citationLinks['services'] = $citations['services'];
+		$citationLinks['urls'] = preg_replace("/@id/", $doi_prefix."/".$this->getDatasetDOI(), $citations['urls']);
+		$citationLinks['images'] = $citations['images'];
 		return $citationLinks;
 	}
 
@@ -159,6 +156,20 @@ class StoredDatasetMainSection extends DatasetComponents implements DatasetMainS
 	{
 
 		$sql="select id, dataset_id, message, created_at, model, model_id, url from dataset_log where dataset_id=:id ";
+		$command = $this->_db->createCommand($sql);
+		$command->bindParam(":id", $this->_id, PDO::PARAM_INT);
+		$result = $command->queryAll();
+		return $result;
+	}
+
+	/**
+	 * Fetch the Funding data for to the dataset
+	 *
+	 */
+	public function getFunding(): array
+	{
+		$sql="select df.id, dataset_id, primary_name_display as funder_name,grant_award, comments, awardee
+		from dataset_funder df, funder_name f where df.funder_id = f.id and df.dataset_id=:id";
 		$command = $this->_db->createCommand($sql);
 		$command->bindParam(":id", $this->_id, PDO::PARAM_INT);
 		$result = $command->queryAll();
