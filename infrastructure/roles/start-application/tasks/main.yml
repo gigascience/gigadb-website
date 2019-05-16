@@ -1,0 +1,35 @@
+- name: Remote version of Docker
+  command: docker version
+  register: version
+
+- debug:
+    msg: "{{ version.stdout }}"
+
+- name: Build the application
+  command: pwd && docker-compose build
+  args:
+    chdir: /home/centos/infrastructure
+  register: build_status
+
+- debug:
+    msg: "{{ build_status.stdout }}"
+
+- name: Starting the application
+  command: docker-compose up -d
+  args:
+    chdir: /home/centos/infrastructure
+  register: startup_status
+
+- debug:
+    msg: "{{ startup_status.stdout }}"
+
+- name: Tear down application
+  command: docker-compose down
+  args:
+    chdir: /home/centos/infrastructure
+  register: teardown_status
+  tags: [ 'never' , 'down']
+
+- debug:
+    msg: "{{ teardown_status.stdout }}"
+  tags: [ 'never' , 'down']

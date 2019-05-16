@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+
+  ftpd:
+    environment:
+      PUBLICHOST: ${PUBLICHOST}
+      ADDED_FLAGS: "-O w3c:/var/log/pure-ftpd/transfer.log"
+    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P ${PUBLICHOST}
+
+
+  web:
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
