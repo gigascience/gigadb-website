@@ -28,7 +28,15 @@
     - "credentials"
     - "infrastructure"
 
-- name: Copy the docker-compose file
+- name: Copy the docker-compose files
   copy:
-      src: docker-compose.yml
+      src: "{{ item }}"
       dest: /home/centos/infrastructure/
+  loop:
+    - docker-compose.yml
+    - docker-compose.aws.yml
+
+- name: Create an .env file
+  template:
+    src: templates/env.j2
+    dest: /home/centos/infrastructure/.env
