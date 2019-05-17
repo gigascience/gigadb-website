@@ -1,7 +1,7 @@
 provider "aws" {
-	access_key = "${var.aws_access_key}"
- 	secret_key = "${var.aws_secret_key}"
-	region     = "ap-southeast-1"
+  access_key = "${var.aws_access_key}"
+  secret_key = "${var.aws_secret_key}"
+  region     = "ap-southeast-1"
 }
 
 resource "aws_security_group" "docker_host_sg" {
@@ -52,22 +52,22 @@ resource "aws_security_group" "docker_host_sg" {
   }
 
   egress {
-	from_port   = 0
-	to_port     = 0
-	protocol    = "-1"
-	cidr_blocks = ["0.0.0.0/0"]
+  from_port   = 0
+  to_port     = 0
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
 
-resource "aws_instance" "staging_dockerhost" {
+resource "aws_instance" "prototype_dockerhost" {
   ami = "ami-8e0205f2"
   instance_type = "t2.micro"
   vpc_security_group_ids = ["${aws_security_group.docker_host_sg.id}"]
   key_name = "aws-centos7-keys"
 
   tags = {
-    Name = "ec2-as1-staging-gigadb"
+    Name = "ec2-as1-file-upload-wizard"
   }
 
   root_block_device = {
@@ -75,14 +75,14 @@ resource "aws_instance" "staging_dockerhost" {
   }
 }
 
-data "aws_eip" "staging_eip" {
+data "aws_eip" "prototype_eip" {
   filter {
     name   = "tag:Name"
-    values = ["eip-staging-gigadb"]
+    values = ["eip-prototype-file-upload-wizard"]
   }
 }
 
-resource "aws_eip_association" "staging_eip" {
-  instance_id   = "${aws_instance.staging_dockerhost.id}"
-  allocation_id = "${data.aws_eip.staging_eip.id}"
+resource "aws_eip_association" "prototype_eip_association" {
+  instance_id   = "${aws_instance.prototype_dockerhost.id}"
+  allocation_id = "${data.aws_eip.prototype_eip.id}"
 }
