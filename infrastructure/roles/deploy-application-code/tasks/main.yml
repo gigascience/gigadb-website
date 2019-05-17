@@ -40,3 +40,13 @@
   template:
     src: templates/env.j2
     dest: /home/centos/infrastructure/.env
+
+- name: Add the nginx config for HTTPS
+  template:
+    src: templates/https.conf.j2
+    dest: /home/centos/nginx/conf.d/https.conf.disabled
+
+- name: Add Let's Encrypt config for HTTPS
+  template:
+    src: templates/le.ini.j2
+    dest: /home/centos/nginx/conf.d/le.ini
