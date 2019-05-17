@@ -82,7 +82,7 @@ data "aws_eip" "prototype_eip" {
   }
 }
 
-resource "aws_eip_association" "prototype_eip" {
+resource "aws_eip_association" "prototype_eip_association" {
   instance_id   = "${aws_instance.prototype_dockerhost.id}"
   allocation_id = "${data.aws_eip.prototype_eip.id}"
 }

@@ -10,3 +10,4 @@ ansible_become="true"
 target_environment = prototype
 target_platform = aws
 app_url = {{ vault_app_url }}
+app_email = {{ vault_app_email }}
