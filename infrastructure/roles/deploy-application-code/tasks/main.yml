@@ -2,6 +2,8 @@
   copy:
     src: "../{{ item }}"
     dest: "/home/centos/"
+    owner: centos
+    group: centos
   loop:
     - "hooks"
     - "html"
@@ -15,11 +17,19 @@
     - "docker-pure-ftpd"
     - "inotify-config"
 
+- name: Make scripts executable
+  file:
+    path: /home/centos/scripts
+    mode: a+x
+    recurse: yes
+
 - name: Create host directories for docker mounts
   file:
     path: "/home/centos/{{ item }}"
     state: directory
     mode: 0755
+    owner: centos
+    group: centos
   loop:
     - "repo"
     - "incoming"
