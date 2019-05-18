@@ -3,11 +3,12 @@ version: '3.7'
 services:
 
   tusd:
-    image: rija/tusd
+    build:
+      context: ../tusd
     volumes:
-      - "./incoming/tusd:/var/inbox/"
-      - ./repo:/var/repo/
-      - ./hooks:/var/hooks
+      - "../incoming/tusd:/var/inbox/"
+      - ../repo:/var/repo/
+      - ../hooks:/var/hooks
     command: -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
     networks:
       - proto
@@ -18,13 +19,14 @@ services:
         mode: host
 
   ftpd:
-    image: rija/docker-pure-ftpd
+    build:
+      context: ../docker-pure-ftpd
     volumes:
-      - "./incoming/ftp:/home/uploader"
-      - ./repo:/home/downloader/:ro
-      - ./credentials:/var/private
-      - ./hooks:/var/scripts
-      - ./ftp-transfer-logs:/var/log/pure-ftpd
+      - "../incoming/ftp:/home/uploader"
+      - ../repo:/home/downloader/:ro
+      - ../credentials:/var/private
+      - ../hooks:/var/scripts
+      - ../ftp-transfer-logs:/var/log/pure-ftpd
     environment:
       PUBLICHOST: "localhost"
       ADDED_FLAGS: "-O w3c:/var/log/pure-ftpd/transfer.log"
@@ -38,24 +40,23 @@ services:
         mode: host
       - "30000-30009:30000-30009"
 
-
-
   watcher:
-    image: rija/watchfiles
+    build:
+      context: ../docker-inotify-command
     volumes:
-      - ./inotify-config:/config:ro
-      - "./incoming/ftp:/home/uploader"
-      - ./repo:/home/downloader/
-      - ./hooks:/commands:ro
-      - ./credentials:/var/access:ro
-      - ./processing_flag:/var/tmp/processing_flag
+      - ../inotify-config:/config:ro
+      - "../incoming/ftp:/home/uploader"
+      - ../repo:/home/downloader/
+      - ../hooks:/commands:ro
+      - ../credentials:/var/access:ro
+      - ../processing_flag:/var/tmp/processing_flag
     networks:
       - proto
 
   database:
     image: postgres:9.6-alpine
     volumes:
-      - ./db_schema.sql:/docker-entrypoint-initdb.d/1-db_schema.sql
+      - ../db_schema.sql:/docker-entrypoint-initdb.d/1-db_schema.sql
     environment:
       POSTGRES_DB: proto
       POSTGRES_USER: proto
@@ -71,9 +72,9 @@ services:
   web:
     image: nginx:1.15-alpine
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./html:/var/www:ro
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../nginx/conf.d:/etc/nginx/conf.d:ro
+      - ../html:/var/www:ro
     ports:
       - target: 80
         published: 9090
@@ -84,7 +85,7 @@ services:
 
   app:
     build:
-      context: php
+      context: ../php
       args:
         - PHP_BASE_IMAGE_VERSION=7.2-fpm
         - INSTALL_OPCACHE=true
@@ -96,15 +97,15 @@ services:
         - INSTALL_DOCKER=true
         - INSTALL_NETCAT_JQ=true
     volumes:
-      - ./html:/var/www:ro
-      - ./php-conf/php-fpm.ini:/usr/local/etc/php/php.ini:ro
-      - ./php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/www.conf:ro
-      - ./php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini:ro
-      - ./php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini:ro
-      - ./incoming:/var/incoming
-      - ./repo:/var/repo
-      - ./credentials:/var/private
-      - ./scripts:/var/scripts:ro
+      - ../html:/var/www:ro
+      - ../php-conf/php-fpm.ini:/usr/local/etc/php/php.ini:ro
+      - ../php-conf/prototype.pool.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      - ../php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini:ro
+      - ../php-conf/prototype.ini:/usr/local/etc/php/conf.d/prototype.ini:ro
+      - ../incoming:/var/incoming
+      - ../repo:/var/repo
+      - ../credentials:/var/private
+      - ../scripts:/var/scripts:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     expose:
       - "9000"
