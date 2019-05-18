@@ -102,6 +102,7 @@ services:
       - ../php-conf/prototype.pool.conf:/usr/local/etc/php-fpm.d/www.conf:ro
       - ../php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini:ro
       - ../php-conf/prototype.ini:/usr/local/etc/php/conf.d/prototype.ini:ro
+      - ../php-conf/appconfig.ini:/var/appconfig.ini:ro
       - ../incoming:/var/incoming
       - ../repo:/var/repo
       - ../credentials:/var/private

@@ -2,6 +2,12 @@
 	$thisurl = parse_url($_SERVER['REQUEST_URI']);
 	parse_str($thisurl["query"], $params);
 
+	$appconfig = parse_ini_file("/var/appconfig.ini");
+	$tusd_endpoint = $appconfig["tusd_endpoint"];
+	if (false == $tusd_endpoint) {
+		error_log("tusd_endpoint configuration option doesn't exist");
+	}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,7 +49,7 @@
 						  submitOnSuccess: false
 						})
 					// .use(Uppy.Tus, {endpoint: 'https://master.tus.io/files/'});
-					.use(Uppy.Tus, {endpoint: 'http://gigadb.gigasciencejournal.com:9080/files/'});
+					.use(Uppy.Tus, {endpoint: '<?= $tusd_endpoint ?>'});
 
 		uppy.on('complete', (result) => {
 			console.log('Upload complete! We’ve uploaded these files:', result.successful);
