@@ -56,9 +56,10 @@
         		<th>Dataset</th>
         		<th>Go to Uploader page</th>
         		<th>Go to Mockup page</th>
-        		<th>ftp upload user</th>
-        		<th>ftp upload password</th>
-        		<th>ftp port</th>
+        		<th>ftp upload user/token</th>
+        		<th>ftp download user/token</th>
+                <th>account status</th>
+                <th>account creation date</th>
         	</tr>
             <?php
                 foreach (getAccounts("active") as $account) {
@@ -67,9 +68,10 @@
                     <td><?= $account->doi_suffix?></td>
                     <td><a id="Upload_<?= $account->doi_suffix?>" type="button" href="/uploader.php?d=<?= $account->doi_suffix?>">Uploader</a></td>
                     <td><a id="Upload_<?= $account->doi_suffix?>" type="button" href="/downloader.php?d=<?= $account->doi_suffix?>">Mockup</a></td>
-                    <td>u-<?= $account->doi_suffix?></td>
-                    <td><?= $account->utoken?></td>
-                    <td>9021</td>
+                    <td><?= $account->ulogin . "/" . $account->utoken?></td>
+                    <td><?= $account->dlogin . "/" . $account->dtoken?></td>
+                    <td><?= $account->status ?></td>
+                    <td><?= $account->created_at ?></td>
                 </tr>
             <?php
                 }
