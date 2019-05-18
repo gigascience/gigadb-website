@@ -52,6 +52,7 @@ services:
       - ../hooks:/commands:ro
       - ../credentials:/var/access:ro
       - ../processing_flag:/var/tmp/processing_flag
+      - ../php-conf/appconfig.ini:/var/appconfig.ini:ro
     networks:
       - proto
 
