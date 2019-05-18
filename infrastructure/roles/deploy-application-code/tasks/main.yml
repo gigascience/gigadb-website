@@ -19,9 +19,12 @@
 
 - name: Make scripts executable
   file:
-    path: /home/centos/scripts
+    path: "/home/centos/{{ item }}"
     mode: a+x
     recurse: yes
+  loop:
+    - "scripts"
+    - "hooks"
 
 - name: Copy template of prototype specific PHP config
   template:
