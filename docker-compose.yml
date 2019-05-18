@@ -12,11 +12,13 @@ services:
     command: -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
     networks:
       - proto
-    ports:
-      - target: 1080
-        published: 9080
-        protocol: tcp
-        mode: host
+    expose:
+      - "1080"
+    # ports:
+    #   - target: 1080
+    #     published: 9080
+    #     protocol: tcp
+    #     mode: host
 
   ftpd:
     build:
