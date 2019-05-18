@@ -99,9 +99,9 @@ services:
     volumes:
       - ../html:/var/www:ro
       - ../php-conf/php-fpm.ini:/usr/local/etc/php/php.ini:ro
-      - ../php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      - ../php-conf/prototype.pool.conf:/usr/local/etc/php-fpm.d/www.conf:ro
       - ../php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini:ro
-      - ../php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini:ro
+      - ../php-conf/prototype.ini:/usr/local/etc/php/conf.d/prototype.ini:ro
       - ../incoming:/var/incoming
       - ../repo:/var/repo
       - ../credentials:/var/private
