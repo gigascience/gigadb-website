@@ -70,7 +70,9 @@ function generateFTPLink(string $file_name, int $dataset): string
 	}
 	fclose($handle);
 
-	$ftp_link = "ftp://d-$dataset:$download_token@localhost:9021/$file_name";
+	$appconfig = parse_ini_file("/var/appconfig.ini");
+	$ftpd_endpoint = $appconfig["ftpd_endpoint"] ?? "localhost";
+	$ftp_link = "ftp://d-$dataset:$download_token@$ftpd_endpoint:9021/$file_name";
 	return $ftp_link;
 }
 /**
