@@ -16,6 +16,24 @@ server {
         expires 365d;
     }
 
+    location /files {
+        # Forward incoming requests to local tusd instance
+        proxy_pass http://tusd:1080;
+
+        # Disable request and response buffering
+        proxy_request_buffering  off;
+        proxy_buffering          off;
+        proxy_http_version       1.1;
+
+        # Add X-Forwarded-* headers
+        proxy_set_header X-Forwarded-Host $hostname;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_set_header         Upgrade $http_upgrade;
+        proxy_set_header         Connection "upgrade";
+        client_max_body_size     0;
+    }
+
     location / {
          try_files $uri $uri/ /index.php$is_args$args;
     }
