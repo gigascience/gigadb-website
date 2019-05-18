@@ -23,6 +23,11 @@
     mode: a+x
     recurse: yes
 
+- name: Copy template of prototype specific PHP config
+  template:
+    src: templates/appconfig.ini.j2
+    dest: /home/centos/php-conf/appconfig.ini
+
 - name: Create host directories for docker mounts
   file:
     path: "/home/centos/{{ item }}"
