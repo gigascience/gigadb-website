@@ -19,7 +19,7 @@ $this->pageTitle='GigaDB - Map Browse';
 </style>
 
 
-<script src="https://openlayers.org/en/v4.6.4/build/ol.js"></script>
+<script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
 
 <script>
   var geojson_features = {"type":"FeatureCollection",
