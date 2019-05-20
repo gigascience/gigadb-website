@@ -94,13 +94,13 @@ $this->breadcrumbs=array(
                                 </a>
                             </span>
                         </div>
-                        <div>
+                        <div><!--
                             <span>
                                 <a href="/opauth/orcid">
                                     <img src="/images/new_interface_image/orcid.png">
                                     <span class="logotext">ORCID</span>
                                 </a>
-                            </span>
+                            </span>-->
                             <span>
                                 <a href="/opauth/linkedin">
                                     <img src="/images/new_interface_image/linkedin.png">

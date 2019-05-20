@@ -58,16 +58,16 @@ SO THAT I can upload and manage the datasets for my papers
 		Then I'm logged in into the Gigadb web site
 		And a new Gigadb account is created with my "LinkedIn" details
 
-	@ok @orcid @javascript @done
-	Scenario: I sign in with ORCID with no existing Gigadb account
-		Given I have a "Orcid" account
-		But I don't have a Gigadb account for my "Orcid" account email
-		When I am on "/site/login"
-		And I click on the "ORCID" button
-		And I sign in to "Orcid"
-		And I authorise gigadb for "Orcid"
-		Then I'm logged in into the Gigadb web site
-		And a new Gigadb account is created with my "Orcid" details
+	#@ok @orcid @javascript @done
+	#Scenario: I sign in with ORCID with no existing Gigadb account
+		#Given I have a "Orcid" account
+		#But I don't have a Gigadb account for my "Orcid" account email
+		#When I am on "/site/login"
+		#And I click on the "ORCID" button
+		#And I sign in to "Orcid"
+		#And I authorise gigadb for "Orcid"
+		#Then I'm logged in into the Gigadb web site
+		#And a new Gigadb account is created with my "Orcid" details
 
 	@ok @facebook @javascript @done
 	Scenario: I have a Gigadb account and I sign in with my "Facebook" credentials
