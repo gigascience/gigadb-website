@@ -20,8 +20,109 @@
     <?= $this->renderPartial('//shared/_google_analytics')?>
 
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .popover-content {
+            padding: 14px;
+            background-color: #000;
+            color: #fff;
+            min-width: 250px;
+            text-align: left;
+        }
+        .popover-content a {
+            color: #005b2d !important;
+        }
+        select.dropdown-white {
+            background-color: white;
+        }
+        select.dropdown-white:disabled {
+            background-color: #eee !important;
+        }
+        #author-table td {
+            white-space: nowrap;
+        }
+        .additional-bordered {
+            border: 3px solid #BFBFBF;
+            padding: 10px;
+        }
+        .additional-button {
+            width: 50px;
+            margin: 0 10px;
+        }
+
+        .others-button {
+            width: 50px;
+            margin: 0 0 0 20px;
+            float: right;
+        }
+        .others-input {
+            width:400px;
+            float:right;
+        }
+        .others-label {
+            text-align: left !important;
+            margin-left: 30px;
+            white-space: nowrap;
+        }
+        .js-not-allowed {
+            cursor: not-allowed;
+        }
+        .js-delete-column {
+            display: inline !important;
+            margin-left: 5px;
+        }
+        .js-delete-row {
+            display: inline !important;
+            margin-left: 5px;
+        }
+        #samples-table [type="text"]{
+            margin: 0 5px;
+            width:150px;
+        }
+        .btn-sample{
+            white-space: nowrap;
+            margin: 0 5px;
+        }
+        .sample-attribute-column{
+            white-space: nowrap;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('.myHint').on('click', function () {
+                var a = $(this);
+                if (a.hasClass('my-clicked')) {
+                    a.removeClass('my-clicked');
+                    a.popover('hide');
+                    a.on('mouseenter', function() {
+                        $(this).popover('show');
+                    });
+                    a.on('mouseleave', function() {
+                        $(this).popover('hide');
+                    });
+                } else {
+                    a.addClass('my-clicked');
+                    a.popover('show');
+                    a.off('mouseenter');
+                    a.off('mouseleave');
+                }
+            });
+            $(".myHint").on('mouseenter', function() {
+                $(this).popover('show');
+            });
+            $('.myHint').on('mouseleave', function() {
+                $(this).popover('hide');
+            });
+
+            $(".delete-title").tooltip({'placement':'top'});
+
+            $(document).on('click', '.js-not-allowed', function() {
+                return false;
+            });
+        });
+    </script>
 </head>
 
 <body>
