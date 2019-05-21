@@ -31,7 +31,7 @@ class AdminDatasetProjectController extends Controller
 				'roles'=>array('admin'),
 			),
                         array('allow',
-                                'actions' => array('create1', 'delete1','addProject','deleteProject'),
+                                'actions' => array('create1', 'delete1','addProject','deleteProject', 'getProject'),
                                  'users' => array('@'),
                         ),
 			array('deny',  // deny all users
@@ -288,4 +288,21 @@ class AdminDatasetProjectController extends Controller
                  Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
             }
         }
+
+    public function actionGetProject() {
+        if(isset($_POST['dataset_id']) && isset($_POST['project_id'])) {
+            $project = Project::model()->findByPk($_POST['project_id']);
+            if(!$project) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot find project.")));
+            }
+
+            Util::returnJSON(array(
+                "success"=>true,
+                'project' => array(
+                    'id' => $project->id,
+                    'name' => $project->name,
+                ),
+            ));
+        }
+    }
 }
