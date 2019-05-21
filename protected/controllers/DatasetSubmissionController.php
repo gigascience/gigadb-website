@@ -32,7 +32,7 @@ class DatasetSubmissionController extends Controller
     {
         return array(
             array('allow',  // allow logged-in users to perform 'upload'
-                'actions'=>array('upload','delete','create1','submit','updateSubmit', 'updateFile',
+                'actions'=>array('choose', 'upload','delete','create1','submit','updateSubmit', 'updateFile',
                     'datasetManagement','authorManagement','projectManagement','linkManagement','exLinkManagement',
                     'relatedDoiManagement','sampleManagement','PxInfoManagement','datasetAjaxDelete'),
                 'users'=>array('@'),
@@ -43,6 +43,13 @@ class DatasetSubmissionController extends Controller
         );
     }
 
+    /**
+     * Index page.
+     */
+    public function actionChoose()
+    {
+        $this->render('choose');
+    }
 
     /**
      * Lists all models.
