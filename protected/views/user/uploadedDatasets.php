@@ -86,3 +86,11 @@
         </tbody>
     </table>
 </section>
+
+<script>
+    $(document).ready(function () {
+        if (window.location.hash == '#submitted') {
+            $('a[href="'+ window.location.hash +'"]').trigger('click');
+        }
+    })
+</script>
