@@ -31,7 +31,7 @@ class AdminExternalLinkController extends Controller
 				'roles'=>array('admin'),
 			),
                          array('allow',
-                                 'actions' => array('create1', 'delete1','autocomplete','addExLink', 'deleteExLink'),
+                                 'actions' => array('create1', 'delete1','autocomplete','addExLink', 'deleteExLink', 'getExLink'),
                                  'users' => array('@'),
             ),
 			array('deny',  // deny all users
@@ -312,4 +312,38 @@ class AdminExternalLinkController extends Controller
                  Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
             }
         }
+
+    /**
+     * @throws CException
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionGetExLink() {
+        if(isset($_POST['dataset_id']) && isset($_POST['url']) && isset($_POST['externalLinkType'])) {
+            $exLink = new ExternalLink;
+            $exLink->loadByData($_POST);
+
+            if($exLink->validate()) {
+                Util::returnJSON( array(
+                    "success" => true,
+                    'exLink' => array(
+                        'url' => \yii\helpers\Html::encode($exLink->url),
+                        'description' => $exLink->description,
+                        'type' => $exLink->type,
+                        'type_name' => $exLink->getTypeName(),
+                    ),
+                ));
+            }
+
+            Util::returnJSON(array(
+                "success"=>false,
+                "message"=>current($exLink->getErrors())
+            ));
+        }
+
+        Util::returnJSON(array(
+            "success" => false,
+            "message" => Yii::t("app", "Data is empty."),
+        ));
+    }
+
 }

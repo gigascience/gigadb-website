@@ -19,60 +19,60 @@ class Link extends CActiveRecord implements LinkInterface
     public $acc_num;
     public $database;
 
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return Link the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+    /**
+     * Returns the static model of the specified AR class.
+     * @param string $className active record class name.
+     * @return Link the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return 'link';
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return 'link';
+    }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('dataset_id, link', 'required'),
-			array('dataset_id', 'numerical', 'integerOnly'=>true),
-			array('link', 'length', 'max'=>100),
-			array('is_primary', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, dataset_id, is_primary, link, doi_search', 'safe', 'on'=>'search'),
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('dataset_id, link', 'required'),
+            array('dataset_id', 'numerical', 'integerOnly'=>true),
+            array('link', 'length', 'max'=>100),
+            array('is_primary', 'safe'),
+            // The following rule is used by search().
+            // Please remove those attributes that should not be searched.
+            array('id, dataset_id, is_primary, link, doi_search', 'safe', 'on'=>'search'),
+        );
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			'dataset' => array(self::BELONGS_TO, 'Dataset', 'dataset_id'),
-		);
-	}
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'dataset' => array(self::BELONGS_TO, 'Dataset', 'dataset_id'),
+        );
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
             'id' => 'ID',
             'dataset_id' => 'Dataset',
             'acc_num' => 'Accession number',
@@ -80,47 +80,47 @@ class Link extends CActiveRecord implements LinkInterface
             'is_primary' => 'Is Primary',
             'link' => 'Link',
             'doi_search' => 'DOI',
-		);
-	}
+        );
+    }
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // Warning: Please modify the following code to remove attributes that
+        // should not be searched.
 
-		$criteria=new CDbCriteria;
+        $criteria=new CDbCriteria;
         $criteria->with = array( 'dataset' );
-		$criteria->compare('t.id',$this->id);
-		$criteria->compare('dataset_id',$this->dataset_id);
-		$criteria->compare('is_primary',$this->is_primary);
-		$criteria->compare('LOWER(link)',strtolower($this->link),true);
-		$criteria->compare('dataset.identifier',$this->doi_search,true);
+        $criteria->compare('t.id',$this->id);
+        $criteria->compare('dataset_id',$this->dataset_id);
+        $criteria->compare('is_primary',$this->is_primary);
+        $criteria->compare('LOWER(link)',strtolower($this->link),true);
+        $criteria->compare('dataset.identifier',$this->doi_search,true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
 
-      public function getFullUrl(string $source = ''): string {
+    public function getFullUrl(string $source = ''): string {
         $temp = explode(":", trim($this->link));
         $prefix = $temp[0];
         $value = $temp[1];
 
         $model = Prefix::model()->find("lower(prefix) = :p and source = :s",
-        	array(':p'=>strtolower($prefix), ':s'=>$source));
+            array(':p'=>strtolower($prefix), ':s'=>$source));
 
         // find url with preferred source
         if($model)
-        	return $model->url . $value;
+            return $model->url . $value;
 
         // if not get available url
         $model = Prefix::model()->find("lower(prefix) = :p", array(':p'=>strtolower($prefix)));
         if($model)
-        	return $model->url. $value;
+            return $model->url. $value;
 
         return "#";
     }
