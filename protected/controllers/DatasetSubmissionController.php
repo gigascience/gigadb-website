@@ -35,6 +35,7 @@ class DatasetSubmissionController extends Controller
                 'actions'=>array('choose', 'upload','delete','create1','submit','updateSubmit', 'updateFile',
                     'authorManagement', 'validateAuthor', 'addAuthors', 'saveAuthors',
                     'additionalManagement', 'saveAdditional',
+                    'fundingManagement', 'validateFunding', 'saveFundings',
                     'projectManagement','linkManagement','exLinkManagement',
                     'relatedDoiManagement','sampleManagement','PxInfoManagement','datasetAjaxDelete'),
                 'users'=>array('@'),
@@ -822,6 +823,116 @@ EO_MAIL;
             foreach ($exLinks as $exLink) {
                 if (!in_array($exLink->id, $needExLinks)) {
                     $exLink->delete();
+                }
+            }
+
+            $transaction->commit();
+            Util::returnJSON(array("success"=>true));
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>"Data is empty."));
+    }
+
+    /**
+     * Funding page.
+     */
+    public function actionFundingManagement()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        } else {
+            $dataset = $this->getDataset($_GET['id']);
+
+            $this->isSubmitter($dataset);
+
+            $funders = Funder::model()->findAllByAttributes(array(), array('order'=>'primary_name_display asc'));
+            $fundings = Funding::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
+
+            $this->render('fundingManagement', array(
+                'model' => $dataset,
+                'funders' => $funders,
+                'fundings' => $fundings,
+            ));
+        }
+    }
+
+    public function actionValidateFunding() {
+        if ($_POST) {
+            $funding = new Funding();
+            $funding->loadByData($_POST);
+
+            if($funding->validate()) {
+                Util::returnJSON( array(
+                    "success" => true,
+                    'funding' => $funding->asArray(),
+                ));
+            }
+            Util::returnJSON(array(
+                "success"=>false,
+                "message"=>current($funding->getErrors())
+            ));
+        }
+
+        Util::returnJSON(array(
+            "success"=>false,
+            "message"=> "Data is empty."
+        ));
+    }
+
+    /**
+     * @throws CException
+     */
+    public function actionSaveFundings() {
+        if(isset($_POST['dataset_id'])) {
+            $transaction = Yii::app()->db->beginTransaction();
+
+            $dataset = $this->getDataset($_POST['dataset_id']);
+            $hasFunding = 0;
+
+            $fundings = $dataset->fundings;
+
+            $newFundings = isset($_POST['fundings']) && is_array($_POST['fundings']) ? $_POST['fundings'] : array();
+            $needFundings = array();
+            if ($newFundings) {
+                foreach ($newFundings as $newFunding) {
+                    if (!$newFunding['id']) {
+                        $funding = new Funding();
+                        $funding->loadByData($newFunding);
+                        if (!$funding->validate()) {
+                            $transaction->rollback();
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                "message"=>"Save Error."
+                            ));
+                        }
+
+                        $funding->save();
+                    } else {
+                        $needFundings[] = $newFunding['id'];
+                    }
+                }
+
+                $hasFunding = 1;
+            }
+
+            $dataset->funding = $hasFunding;
+            if (!$dataset->save(false)) {
+                $transaction->rollback();
+                Util::returnJSON(array(
+                    "success"=>false,
+                    "message"=>"Save Error."
+                ));
+            }
+
+            foreach ($fundings as $funding) {
+                if (!in_array($funding->id, $needFundings)) {
+                    if (!$funding->delete()) {
+                        $transaction->rollback();
+                        Util::returnJSON(array(
+                            "success"=>false,
+                            "message"=>"Save Error."
+                        ));
+                    }
                 }
             }
 
