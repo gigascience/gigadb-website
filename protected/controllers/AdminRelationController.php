@@ -31,7 +31,7 @@ class AdminRelationController extends Controller
 				'roles'=>array('admin'),
 			),
                           array('allow',
-                                  'actions' => array('create1', 'delete1','addRelation','deleteRelation'),
+                                  'actions' => array('create1', 'delete1','addRelation','deleteRelation', 'getRelation'),
                                   'users' => array('@'),
                         ),
 			array('deny',  // deny all users
@@ -352,6 +352,24 @@ class AdminRelationController extends Controller
                 $transaction->rollback();
                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
               }
+        }
+    }
+
+    public function actionGetRelation() {
+        if(isset($_POST['dataset_id']) && isset($_POST['doi']) && isset($_POST['relationship'])) {
+            $relationship = Relationship::model()->findByPk($_POST['relationship']);
+            if (!$relationship) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Relationship ID is invalid.")));
+            }
+
+            Util::returnJSON(array(
+                "success"=>true,
+                'relation' => array(
+                    'relationship_id' => $relationship->id,
+                    'relationship_name' => $relationship->name,
+                    'related_doi' => $_POST['doi'],
+                ),
+            ));
         }
     }
 
