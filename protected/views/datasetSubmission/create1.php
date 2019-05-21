@@ -262,7 +262,7 @@ $form = $this->beginWidget('CActiveForm', array(
             <?php echo CHtml::submitButton('Next', array(
                 'class' => 'btn-green' . $class,
                 'id' => 'next-btn2', 'disabled' => $disabled,
-                'data-url' => '/datasetSubmission/author/id/' . $model->id
+                'data-url' => '/datasetSubmission/authorManagement/id/' . $model->id
             ));
             ?>
         <?php endif ?>
