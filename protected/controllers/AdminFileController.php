@@ -31,7 +31,7 @@ class AdminFileController extends Controller
                     'roles'=>array('admin'),
             ),
                             array('allow',
-                                    'actions' => array('create1'),
+                                    'actions' => array('create1', 'getFiles', 'updateFiles', 'uploadFiles'),
                                     'users' => array('@'),
                             ),
                             array('allow',  // allow all users
@@ -709,6 +709,8 @@ EO_MAIL;
             $this->redirect("/user/view_profile");
         }
 
+        $dataset = Dataset::model()->findByAttributes(array('id' => $dataset_id));
+
         $defaultFileSortColumn = 'dataset.name';
         $defaultFileSortOrder = CSort::SORT_DESC;
         if (isset($_GET['filesort'])) {
@@ -755,55 +757,20 @@ EO_MAIL;
             'sort' => $fsort,
             'pagination' => $fpagination
         ));
-        $updateAll = 0;
 
         if (isset($_POST['File'])) {
-            if (isset($_POST['files']))
-                $updateAll = 1;
-            $count = count($_POST['File']);
             $page = $_POST['page'];
             $pageCount = $_POST['pageCount'];
             if ($page < $pageCount) {
                 $page++;
                 $files->getPagination()->setCurrentPage($page);
             }
-            for ($i = 0; $i < $count; $i++) {
-                if ($updateAll == 0 && !isset($_POST[$i])) {
-                    continue;
-                }
-
-                $model = $this->loadModel($_POST['File'][$i]['id']);
-//            $model->dataset_id = $dataset_id;
-                $model->attributes = $_POST['File'][$i];
-                if ($model->date_stamp == "")
-                    $model->date_stamp = NULL;
-
-                if (!$model->save()) {
-                    var_dump($_POST['File'][$i]);
-                }
-            }
-            //determine if it want to submit
-//             if (isset($_POST['file'])) {
-//                 $this->redirect("/datasetSubmission/submit");
-//             }
-        }
-        $dataset = Dataset::model()->findByAttributes(array('id' => $dataset_id));
-        $samples = $dataset->samples;
-        $samples_data = array();
-        //add none and All , Multiple
-        $samples_data[''] = '';
-        $samples_data['none'] = 'none';
-        $samples_data['All'] = 'All';
-        $samples_data['Multiple'] = 'Multiple';
-        foreach($samples as $sample) {
-            $samples_data[$sample->name] = $sample->name;
         }
 
         $identifier = $dataset->identifier;
         $action = 'create1';
 
-        $this->render($action, array('files' => $files, 'identifier' => $identifier,
-            'samples_data' => $samples_data,'model'=>$dataset));
+        $this->render($action, array('files' => $files, 'identifier' => $identifier,'model'=>$dataset));
     }
 
     public function is_dir($conn_id, $dir)
@@ -820,6 +787,153 @@ EO_MAIL;
             return false;
         }
     }
+
+    /**
+     * @throws Exception
+     */
+    public function actionGetFiles()
+    {
+        if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['dataset_id'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
+
+            $files = FtpHelper::getListOfFilesWithSizes($_POST['username'], $_POST['password']);
+
+            $html = '';
+            $i = 0;
+            foreach ($files as $fileName => $fileSize) {
+                $file = File::model()->findByAttributes(array('dataset_id'=> $_POST['dataset_id'], 'name' => $fileName));
+                if (!$file) {
+                    $file = new File();
+                    $file->name = $fileName;
+                    $file->extension = pathinfo($fileName, PATHINFO_EXTENSION);
+                    $file->size = $fileSize;
+                    $file->dataset_id = $_POST['dataset_id'];
+                    $file->id = uniqid();
+                    $file->prepareFormatId();
+                }
+
+                $html .= $this->renderPartial('_file_tr', array(
+                    'model' => $dataset,
+                    'file' => $file,
+                    'i' => $i,
+                ), true);
+                $i++;
+            }
+
+            Util::returnJSON(array(
+                "success"=>true,
+                "html"=> $html
+            ));
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>"Data is empty."));
+    }
+
+    /**
+     * @throws \yii\web\BadRequestHttpException
+     * @throws Exception
+     */
+    public function actionUpdateFiles()
+    {
+        if (isset($_POST['File']) && isset($_POST['dataset_id'])) {
+            $dataset = $this->getDataset($_POST['dataset_id']);
+
+            if (isset($_POST['file_id']) && $_POST['file_id']) {
+                foreach ($_POST['File'] as $key => $file) {
+                    if ($file['id'] == $_POST['file_id']) {
+                        $errors = array();
+
+                        $model = File::model()->findByPk($file['id']);
+                        if (!$model) {
+                            $model = new File();
+                            $model->dataset_id = $dataset->id;
+                        }
+
+                        $model->attributes = $file;
+                        if ($model->date_stamp == "") {
+                            $model->date_stamp = NULL;
+                        }
+
+                        if (!$model->validate()) {
+                            $errors[$key] = $model->getErrors();
+
+                            Util::returnJSON(array("success"=>false,"errors"=>$errors));
+                        } else {
+                            $model->save();
+
+                            Util::returnJSON(array("success"=>true, 'file_id' => $model->id));
+                        }
+                    }
+                }
+            }
+
+            $errors = File::updateAllByData($_POST['File'], $dataset);
+            if ($errors) {
+                Util::returnJSON(array("success"=>false,"errors"=>$errors));
+            } else {
+                Util::returnJSON(array("success"=>true));
+            }
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>"Data is empty."));
+    }
+
+    public function actionUploadFiles()
+    {
+        if ($_POST) {
+            $files = CUploadedFile::getInstanceByName('files');
+            if($files) {
+
+                if ($files->getType() != CsvHelper::TYPE_CSV && $files->getType() != CsvHelper::TYPE_TSV) {
+                    Util::returnJSON(array("success"=>false,"message"=>"File has wrong extension."));
+                } else {
+                    $delimiter = $files->getType() == CsvHelper::TYPE_CSV ? ';' : "\t";
+                    $rows = CsvHelper::getArrayByFileName($files->getTempName(), $delimiter);
+                    if (!$rows) {
+                        Util::returnJSON(array("success"=>false,"message"=>"File is empty."));
+                    }
+
+                    foreach ($rows as $key => $row) {
+                        $number = $key + 1;
+                        if (!isset($row[0]) || !$row[0]) {
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                "message"=>"Row $number: File Name cannot be empty."
+                            ));
+                        }
+                        if (!isset($row[1]) || !$row[1]) {
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                "message"=>"Row $number: Data Type cannot be empty."
+                            ));
+                        } else {
+                            $type = FileType::model()->findByAttributes(array('name' => $row[1]));
+                            if (!$type) {
+                                Util::returnJSON(array(
+                                    "success"=>false,
+                                    "message"=>"Row $number: Data Type is invalid."
+                                ));
+                            }
+
+                            $rows[$key][1] = $type->id;
+                        }
+                        if (!isset($row[2]) || !$row[2]) {
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                "message"=>"Row $number: Description cannot be empty."
+                            ));
+                        }
+                    }
+
+                    Util::returnJSON(array(
+                        "success"=>true,
+                        'rows' => $rows
+                    ));
+                }
+            }
+        }
+    }
+
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
@@ -1002,5 +1116,25 @@ EO_MAIL;
                 $numberColumns->save();
                 break;
         }
+    }
+
+    /**
+     * @param $id
+     * @return array|Dataset|mixed|null
+     * @throws \yii\web\BadRequestHttpException
+     */
+    protected function getDataset($id)
+    {
+        $dataset = Dataset::model()->findByPk($id);
+
+        if (!$dataset) {
+            throw new \yii\web\BadRequestHttpException('Dataset ID is invalid.');
+        }
+
+        if ($dataset->submitter_id != Yii::app()->user->id) {
+            throw new \yii\web\BadRequestHttpException('Access denied.');
+        }
+
+        return $dataset;
     }
 }
