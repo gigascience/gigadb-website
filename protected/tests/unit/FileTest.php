@@ -56,6 +56,55 @@ class FileTest extends CDbTestCase
 		];
 	}
 
+	function testPrepareFormatId()
+    {
+        $textExts = array(
+            'doc',
+            'readme',
+            'text',
+            'txt',
+        );
+
+        $gffExts = array(
+            'gff3',
+            'gff',
+        );
+
+        $tarExts = array(
+            'tar',
+        );
+
+        $pdfExts = array(
+            'pdf',
+        );
+
+        $file = $this->files(0);
+
+        foreach ($textExts as $ext) {
+            $file->extension = $ext;
+            $file->prepareFormatId();
+            $this->assertEquals(1, $file->format_id);
+        }
+
+        foreach ($gffExts as $ext) {
+            $file->extension = $ext;
+            $file->prepareFormatId();
+            $this->assertEquals(3, $file->format_id);
+        }
+
+        foreach ($tarExts as $ext) {
+            $file->extension = $ext;
+            $file->prepareFormatId();
+            $this->assertEquals(4, $file->format_id);
+        }
+
+        foreach ($pdfExts as $ext) {
+            $file->extension = $ext;
+            $file->prepareFormatId();
+            $this->assertEquals(5, $file->format_id);
+        }
+    }
+
 }
 
 ?>

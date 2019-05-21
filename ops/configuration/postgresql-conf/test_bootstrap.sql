@@ -4375,3 +4375,76 @@ GRANT ALL ON TABLE prefix TO PUBLIC;
 -- PostgreSQL database dump complete
 --
 
+ALTER TABLE "dataset"
+ALTER "dataset_size" TYPE bigint,
+ALTER "dataset_size" DROP DEFAULT,
+ALTER "dataset_size" DROP NOT NULL;
+
+ALTER TABLE "image"
+ALTER "source" TYPE character varying(256),
+ALTER "source" DROP DEFAULT,
+ALTER "source" DROP NOT NULL;
+
+ALTER TABLE "image"
+ALTER "photographer" TYPE character varying(128),
+ALTER "photographer" DROP DEFAULT,
+ALTER "photographer" DROP NOT NULL;
+
+CREATE SEQUENCE contribution_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;
+CREATE TABLE "contribution" (
+    "id" integer DEFAULT nextval('contribution_id_seq') NOT NULL,
+    "name" character varying(255) NOT NULL,
+    CONSTRAINT "contribution_id" PRIMARY KEY ("id"),
+    CONSTRAINT "contribution_name" UNIQUE ("name")
+) WITH (oids = false);
+
+ALTER TABLE "author"
+ADD "contribution_id" integer NULL;
+
+ALTER TABLE "dataset"
+ADD "additional_information" character varying(500) NULL;
+
+ALTER TABLE "external_link"
+ALTER "external_link_type_id" TYPE integer,
+ALTER "external_link_type_id" DROP DEFAULT,
+ALTER "external_link_type_id" DROP NOT NULL,
+ADD "type" integer NULL,
+ADD "description" character varying(200) NULL;
+
+ALTER TABLE "prefix"
+ADD "regexp" character varying(128) NULL;
+
+ALTER TABLE "dataset"
+ADD "funding" smallint NULL;
+
+CREATE TABLE "funding" (
+  "id" serial NOT NULL,
+  "dataset_id" integer NOT NULL,
+  "funder_id" integer NOT NULL,
+  "program_name" character varying(100) NOT NULL,
+  "grant" character varying(100) NOT NULL,
+  "pi_name" character varying(100) NOT NULL
+);
+
+ALTER TABLE "funding"
+ADD CONSTRAINT "funding_id" PRIMARY KEY ("id");
+
+ALTER TABLE "sample"
+ADD "description" character varying(100) NULL;
+
+CREATE TABLE "sample_template" (
+  "id" serial NOT NULL,
+  "name" character varying(255) NOT NULL
+);
+
+ALTER TABLE "sample_template"
+ADD CONSTRAINT "sample_template_id" PRIMARY KEY ("id");
+
+CREATE TABLE "sample_template_attribute" (
+    "id" serial NOT NULL,
+    "sample_template_id" integer,
+    "attribute_id" integer,
+    CONSTRAINT "sample_template_attribute_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "sample_template_attribute_sample_template_id_fkey" FOREIGN KEY (sample_template_id) REFERENCES sample_template(id) ON DELETE CASCADE NOT DEFERRABLE,
+    CONSTRAINT "sample_template_attribute_attribute_id_fkey" FOREIGN KEY (attribute_id) REFERENCES attribute(id) ON DELETE CASCADE NOT DEFERRABLE
+) WITH (oids = false);
