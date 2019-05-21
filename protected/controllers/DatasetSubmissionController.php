@@ -423,97 +423,47 @@ EO_MAIL;
 
     public function actionCreate1()
     {
-        $dataset = new Dataset;
-        $image = new Images;
-        // set default types
-        $dataset->types = array();
+        if (isset($_GET['id'])) {
+            $dataset = $this->getDataset($_GET['id']);
+            $image = $dataset->image ?: new Images();
+
+            if (isset($_POST['Images'])) {
+                $image->setIsNoImage(!!$_POST['Images']['is_no_image']);
+            } else {
+                $image->setIsNoImage($image->location == 'no_image.jpg');
+            }
+
+            $this->isSubmitter($dataset);
+        } else {
+            $dataset = new Dataset();
+            $image = new Images();
+        }
 
         if (isset($_POST['Dataset']) && isset($_POST['Images'])) {
-            $transaction = Yii::app()->db->beginTransaction();
-            try {
-                #save dataset
-                $dataset->submitter_id = Yii::app()->user->_id;
-                $attrs = $_POST['Dataset'];
-                $dataset->title = $attrs['title'];
-                $dataset->description = $attrs['description'];
-                $dataset->upload_status = "Incomplete";
-                $dataset->ftp_site = "''";
+            $newKeywords = isset($_POST['keywords']) ? $_POST['keywords'] : '';
+            $newTypes = isset($_POST['datasettypes']) ? $_POST['datasettypes'] : array();
 
-                // save dataset types
-                if (isset($_POST['datasettypes'])) {
-                    $dataset->types = $_POST['datasettypes'];
+            $image->loadByData($_POST['Images']);
+            $dataset->loadByData($_POST['Dataset']);
+            $dataset->types = $newTypes;
+            $dataset->keywords = explode(',', $newKeywords);
+            if ($dataset->validate() && $image->validate()) {
+                $image->save();
+                $dataset->image_id = $image->id;
+                $dataset->save();
+
+                $dataset->updateKeywords($newKeywords);
+                $dataset->updateTypes($newTypes);
+
+                $image->saveImageFile();
+
+                if (isset($_POST['redirect_url']) && $_POST['redirect_url']) {
+                    $this->redirect($_POST['redirect_url']);
                 }
-
-                $lastDataset = Dataset::model()->find(array('order'=>'identifier desc'));
-                $lastIdentifier = intval($lastDataset->identifier);
-
-                if (!is_int($lastIdentifier)) {
-                    $transaction->rollback();
-                    $this->redirect('/');
-                }
-
-                $dataset->identifier = $lastIdentifier + 1;
-
-                //TODO: replace below with Bytes-Unit library
-                if ($_POST['Dataset']['union']=='B') {
-                    $dataset->dataset_size=$_POST['Dataset']['dataset_size'];
-                } elseif ($_POST['Dataset']['union']=='M') {
-                    $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024;
-                } elseif ($_POST['Dataset']['union']=='G') {
-                    $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024*1024;
-                } elseif ($_POST['Dataset']['union']=='T') {
-                    $dataset->dataset_size=$_POST['Dataset']['dataset_size']*1024*1024*1024*1024;
-                }
-
-                #save image
-                if (!$_POST['Images']['is_no_image']) {
-                    $uploadedFile = CUploadedFile::getInstance($image, 'image_upload');
-                    $fileName = "{$uploadedFile}";
-                    $path = Yii::getPathOfAlias('webroot') ."/images/uploads/".$fileName;
-
-                    $image->image_upload = $uploadedFile;
-                    $image->url = $path;
-                    $image->location = $fileName;
-                    $image->tag = $_POST['Images']['tag'];
-                    $image->license = $_POST['Images']['license'];
-                    $image->photographer = $_POST['Images']['photographer'];
-                    $image->source = $_POST['Images']['source'];
-                } else {
-                    $image->url="http://gigadb.org/images/data/cropped/no_image.png";
-                    $image->location="no_image.jpg";
-                    $image->tag="no image icon";
-                    $image->license="Public domain";
-                    $image->photographer="GigaDB";
-                    $image->source="GigaDB";
-                }
-
-                if ($dataset->save() && $image->save()) {
-                    $dataset->image_id = $image->id;
-                    $dataset->save(false);
-
-                    // semantic kewyords update, using remove all and re-create approach
-                    if (isset($_POST['keywords'])) {
-                        $attribute_service = Yii::app()->attributeService;
-                        $attribute_service->replaceKeywordsForDatasetIdWithString($dataset->id, $_POST['keywords']);
-                    }
-
-                    if (isset($_POST['datasettypes'])) {
-                        $types = DatasetType::storeDatasetTypes($dataset->id, $_POST['datasettypes']);
-                        if (!$types) {
-                            $transaction->rollback();
-                            $this->redirect('/');
-                        }
-                    }
-                    $transaction->commit();
-                    $this->redirect(array('/datasetSubmission/authorManagement', 'id'=>$dataset->id));
-                }
-            } catch (Exception $e) {
-                $message = $e->getMessage();
-                Yii::log(print_r($message, true), 'error');
-                $transaction->rollback();
-                $this->redirect('/');
+                $this->redirect(array('/datasetSubmission/create1', 'id'=>$dataset->id));
             }
         }
+
 
         $this->render('create1', array('model' => $dataset, 'image'=>$image));
     }
@@ -1042,5 +992,26 @@ EO_MAIL;
             throw new CHttpException(404, 'The requested page does not exist.');
         }
         return $model;
+    }
+
+    protected function getDataset($id)
+    {
+        $dataset = Dataset::model()->findByPk($id);
+
+        if (!$dataset) {
+            $this->redirect("/user/view_profile");
+        }
+
+        return $dataset;
+    }
+
+    protected function isSubmitter(Dataset $dataset)
+    {
+        if ($dataset->submitter_id != Yii::app()->user->id) {
+            Yii::app()->user->setFlash('keyword', "You are not the owner of dataset");
+            $this->redirect("/user/view_profile");
+        }
+
+        return true;
     }
 }
