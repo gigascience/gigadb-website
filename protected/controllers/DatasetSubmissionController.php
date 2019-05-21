@@ -37,7 +37,7 @@ class DatasetSubmissionController extends Controller
                     'additionalManagement', 'saveAdditional',
                     'fundingManagement', 'validateFunding', 'saveFundings',
                     'projectManagement','linkManagement','exLinkManagement',
-                    'relatedDoiManagement','sampleManagement', 'saveSamples', 'checkUnit', 'PxInfoManagement','datasetAjaxDelete'),
+                    'relatedDoiManagement','sampleManagement', 'saveSamples', 'checkUnit', 'end', 'PxInfoManagement','datasetAjaxDelete'),
                 'users'=>array('@'),
             ),
             array('deny',  // deny all users
@@ -1278,6 +1278,24 @@ EO_MAIL;
         }
 
         Util::returnJSON(array("success"=>false));
+    }
+
+    /**
+     * End page.
+     */
+    public function actionEnd()
+    {
+        if (!isset($_GET['id'])) {
+            $this->redirect("/user/view_profile");
+        } else {
+            $dataset = $this->getDataset($_GET['id']);
+            $dataset->upload_status = 'UserUploadingData';
+            $dataset->save(false);
+
+            $this->isSubmitter($dataset);
+
+            $this->render('end', array('model' => $dataset));
+        }
     }
 
     public function actionPxInfoManagement()
