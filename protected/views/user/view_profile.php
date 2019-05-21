@@ -120,7 +120,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                                 <a href="/user/changePassword" class="btn background-btn">
                                                                     <?= Yii::t('app', 'Change Password') ?>
                                                                 </a>
-                                                                <a href="/datasetSubmission/upload" class="btn background-btn">
+                                                                <a href="/datasetSubmission/choose" class="btn background-btn">
                                                                     <?= Yii::t('app', 'Submit new dataset') ?>
                                                                 </a>
                                                             </div>
