@@ -25,6 +25,109 @@ class DatasetTest extends CDbTestCase
  		$this->assertEquals("Joe Bloggs", $this->datasets(1)->getCuratorName(),"Full name returned on getCuratorName()");
  	}
 
- }
+    function testSetIdentifier() {
+        $lastDataset = Dataset::model()->find(array('order'=>'identifier desc'));
+        $lastIdentifier = intval($lastDataset->identifier);
 
- ?>
+        $dataset = new Dataset();
+        $dataset->setIdentifier();
+
+        $this->assertEquals($lastIdentifier + 1, $dataset->identifier);
+    }
+
+    function testLoadByData() {
+        $data = array(
+            'manuscript_id' => 'test manuscript_id',
+            'title' => 'test title',
+            'description' => 'test description',
+        );
+
+        $dataset = new Dataset();
+        $dataset->loadByData($data);
+
+        $this->assertEquals('test manuscript_id', $dataset->manuscript_id);
+        $this->assertEquals('test title', $dataset->title);
+        $this->assertEquals('test description', $dataset->description);
+    }
+
+    function testValidate() {
+        $data = array(
+            'submitter_id' => 345,
+            'manuscript_id' => 'test manuscript_id',
+            'title' => 'test title',
+            'description' => 'test description',
+            'upload_status' => 'Incomplete',
+            'ftp_site' => "''",
+        );
+
+        $dataset = new Dataset();
+        $dataset->loadByData($data);
+        $dataset->types = array(
+            2,
+            4,
+        );
+        $res = $dataset->validate();
+
+        $this->assertTrue($res);
+    }
+
+    function testUpdateKeywords() {
+        $dataset = $this->datasets(0);
+
+        $newKeywords = array(
+            'test keyword1',
+            'test keyword2',
+            'test keyword3',
+        );
+        // DONT FORGET SHOULD BE STRING!!!
+        $dataset->updateKeywords(implode(',', $newKeywords));
+
+        $this->assertEquals($newKeywords, $dataset->getSemanticKeywords());
+    }
+
+    function testUpdateTypes() {
+        $dataset = $this->datasets(0);
+
+        $newTypes = array(
+            2,
+            4,
+        );
+        $dataset->updateTypes($newTypes);
+        $this->assertEquals($newTypes, $dataset->getTypeIds());
+    }
+
+    function testAddAuthor() {
+        $dataset = $this->datasets(2);
+        $author = $this->authors(2);
+
+        $dataset->addAuthor($author, 1);
+        $authors = $dataset->getAuthor();
+        $this->assertEquals(1, count($authors));
+        $this->assertEquals('Juan', $authors[0]['first_name']);
+    }
+
+    function testSetAdditionalInformation()
+    {
+        $addInfo = array(
+            AIHelper::PUBLIC_LINKS => 1,
+            AIHelper::RELATED_DOI => 1,
+            AIHelper::PROJECTS => 1,
+        );
+
+        $dataset = $this->datasets(2);
+
+        $dataset->setAdditionalInformation($addInfo);
+        $this->assertEquals($addInfo, $dataset->getAdditionalInformation());
+    }
+
+    function testSetAdditionalInformationKey()
+    {
+        $dataset = $this->datasets(2);
+
+        $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, true);
+
+        $addInfo = $dataset->getAdditionalInformation();
+
+        $this->assertEquals(1, $addInfo[AIHelper::RELATED_DOI]);
+    }
+ }
