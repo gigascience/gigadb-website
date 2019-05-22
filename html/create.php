@@ -109,14 +109,16 @@ function createAccountRecord(string $dataset,
 	$downloadLogin = "d-$dataset";
 	$uploadToken = file("/var/private/$dataset/$uploadTokenFile")[0];
 	$downloadToken = file("/var/private/$dataset/$downloadTokenFile")[0];
+	$status = "active";
 
-	$insert = "insert into account(doi_suffix,ulogin,utoken,dlogin,dtoken,status) values(:d , :ul , :up , :dl, :dp,'active')";
+	$insert = "insert into account(doi_suffix,ulogin,utoken,dlogin,dtoken,status) select :d , :ul , :up , :dl, :dp, :s where not exists (select * from account where doi_suffix = :d and status = 'active')";
 	$insert_statement = $dbh->prepare($insert);
 	$insert_statement->bindParam(':d', $dataset);
 	$insert_statement->bindParam(':ul', $uploadLogin);
 	$insert_statement->bindParam(':up', $uploadToken);
 	$insert_statement->bindParam(':dl', $downloadLogin);
 	$insert_statement->bindParam(':dp', $downloadToken);
+	$insert_statement->bindParam(':s', $status);
 
 	$result = $insert_statement->execute();
 
@@ -129,9 +131,9 @@ $dTokenFile = "download_token.txt" ;
 $result = true ;
 $result = $result && makeDatasetDirectories($params['d']);
 $result = $result && makeTokenFile($params['d'], $dTokenFile);
-$esult = $result && makeTokenFile($params['d'], $uTokenFile);
-$esult = $result && createFTPAccount($params['d']);
-$esult = $result && createAccountRecord($params['d'], $dTokenFile, $uTokenFile);
+$result = $result && makeTokenFile($params['d'], $uTokenFile);
+$result = $result && createFTPAccount($params['d']);
+$result = $result && createAccountRecord($params['d'], $dTokenFile, $uTokenFile);
 
 ?>
 <!DOCTYPE html>
