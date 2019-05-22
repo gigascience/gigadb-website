@@ -83,7 +83,7 @@
         <h2>How to upload using ftp</h2>
         Use the user, ftp port and password shown in dashboard.
         <pre>e.g:
-ncftpput -u u-100001 -P 9021 -p  password_see_above localhost / some_local_file
+ncftpput -u u-100001 -P 9021 -p  token localhost / some_local_file
 		</pre>
         <h2>File listings of dataset diretory (FTP)</h2>
     </div>
