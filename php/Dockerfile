@@ -209,6 +209,10 @@ RUN if [ ${INSTALL_DOCKER} = true ]; then \
     echo 'www-data ALL=(ALL) NOPASSWD: /usr/bin/curl -s --unix-socket /var/run/docker.sock *' >> /etc/sudoers \
 ;fi
 
+# create a group for GID 1000 that matches ftpgroup in the ftpd container
+COPY groupmems /etc/pam.d/groupmems
+RUN groupadd -g 1000 prototype && \
+    groupmems -g prototype -a www-data
 
 WORKDIR /var/www
 
