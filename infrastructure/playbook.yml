@@ -1,16 +1,16 @@
 ---
 # build a Centos server running a secure Docker CE install
 
-- name: Known hosts
-  hosts: prototype_dockerhost
-  gather_facts: no
+# - name: Known hosts
+#   hosts: prototype_dockerhost
+#   gather_facts: no
 
-  tasks:
-    - name: Remove host from known_hosts
-      known_hosts:
-        name: "{{ inventory_hostname }}"
-        state: absent
-      delegate_to: localhost
+#   tasks:
+#     - name: Remove host from known_hosts
+#       known_hosts:
+#         name: "{{ inventory_hostname }}"
+#         state: absent
+#       delegate_to: localhost
 
 - name: Setup Security
   hosts: prototype_dockerhost
