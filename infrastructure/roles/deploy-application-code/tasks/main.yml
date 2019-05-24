@@ -45,6 +45,7 @@
     - "incoming/tusd"
     - "credentials"
     - "infrastructure"
+    - "tmp"
 
 - name: Copy the docker-compose files
   copy:
