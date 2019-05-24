@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+
+  tusd:
+    ports:
+      - target: 1080
+        published: 9080
+        protocol: tcp
+        mode: host
