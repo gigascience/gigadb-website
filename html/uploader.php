@@ -4,9 +4,8 @@
 
 	$appconfig = parse_ini_file("/var/appconfig.ini");
 	$tusd_endpoint = $appconfig["tusd_endpoint"];
-	if (false == $tusd_endpoint) {
-		error_log("tusd_endpoint configuration option doesn't exist");
-	}
+    $web_endpoint = $appconfig["web_endpoint"];
+
 
 ?>
 <!DOCTYPE html>
@@ -18,6 +17,7 @@
 </head>
 <body>
 	<h1>Uploader for dataset <?= $params["d"]?> </h1>
+	<nav><a href="<?= $web_endpoint ?>">[Go back to Dashboard]</a></nav>
 	<form id="dataset-metadata-form">
 		<input id="dataset" type="hidden" value="<?= $params["d"]?>">
 	</form>
