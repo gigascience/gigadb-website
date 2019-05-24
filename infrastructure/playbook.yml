@@ -62,3 +62,11 @@
     - role: deploy-application-code
     - role: start-application
     - role: manage-https
+
+
+- name: Tear Down Application
+  hosts: prototype_dockerhost
+  tags: [ 'never' , 'down']
+
+  roles:
+    - role: tear-down
