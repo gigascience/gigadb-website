@@ -8,3 +8,15 @@ services:
         published: 9080
         protocol: tcp
         mode: host
+
+  watcher:
+    build:
+      context: ../docker-inotify-command
+    volumes:
+      - ../inotify-config:/config:ro
+      - ../incoming/ftp:/home/uploader
+      - ../repo:/home/downloader/
+      - ../hooks:/commands:ro
+      - ../credentials:/var/access:ro
+      - /var/tmp:/var/tmp
+      - ../php-conf/appconfig.ini:/var/appconfig.ini:ro
