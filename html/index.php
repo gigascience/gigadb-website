@@ -1,8 +1,12 @@
 <?php
     require 'lib/db.php';
 
-    $ftp_hostname = "fuw.rija.dev";
-    $ftp_port = 9021;
+    $appconfig = parse_ini_file("/var/appconfig.ini");
+    $ftpd_endpoint = $appconfig["ftpd_endpoint"];
+    $ftpd_port = $appconfig["ftpd_port"];
+    $web_endpoint = $appconfig["web_endpoint"];
+
+    $ftpd_port = 9021;
 
     /**
      * the account class
@@ -52,7 +56,7 @@
         <li>To inform the detailed software architecture and interactions mechanisms</li>
         <li>To identify and design out fragile and underperforming mechanisms</li>
     </ul>
-    <h2>Dashboard</h2>
+    <h2>Users Dashboard</h2>
     <!--     <ul>
         <li> Current host: Local [yes], AWS [no], Digital Ocean [no], Alibaba Cloud [no]</li>
         <li> Available disk space: %100 (of 20 GB)</li>
@@ -65,8 +69,8 @@
                 <th>Dataset</th>
                 <th>Go to Uploader page</th>
                 <th>Go to Mockup page</th>
-                <th>ftp upload user/token</th>
-                <th>ftp download user/token</th>
+                <th>ftp upload username/token</th>
+                <th>ftp download username/token</th>
                 <th>account status</th>
                 <th>account creation date</th>
             </tr>
@@ -97,15 +101,39 @@
             ?>
         </table>
     </form>
+    <h2>Management Dashboard</h2>
+    <table border="2">
+        <tr>
+            <th>DOI</th>
+            <th>Click to Create</th>
+            <th>Click to Delete</th>
+        </tr>
+        <tr>
+            <td>100001</td>
+            <td><a href="<?= $web_endpoint ?>create.php?d=100001">Create Drop Box Account</a></td>
+            <td><a href="<?= $web_endpoint ?>retire.php?d=100001">Delete Drop Box Account</a></td>
+        </tr>
+        <tr>
+            <td>100002</td>
+            <td><a href="<?= $web_endpoint ?>create.php?d=100002">Create Drop Box Account</a></td>
+            <td><a href="<?= $web_endpoint ?>retire.php?d=100002">Delete Drop Box Account</a></td>
+        </tr>
+        <tr>
+            <td>100003</td>
+            <td><a href="<?= $web_endpoint ?>create.php?d=100003">Create Drop Box Account</a></td>
+            <td><a href="<?= $web_endpoint ?>retire.php?d=100003">Delete Drop Box Account</a></td>
+        </tr>
+    </table>
     <hr>
     <div id="info_area">
         <h2>Alternative method to upload files, using FTP</h2>
         You will need to connect to the ftp server <b>
-            <?=  $ftp_hostname ?></b> on port <b>
-            <?= $ftp_port ?></b>
-        using the username and token shown in the table for a given dataset.
+            <?=  $ftpd_endpoint ?></b> on port <b>
+            <?= $ftpd_port ?></b>
+        using as login/password the <em>username</em> and <em>token</em> shown in the Users Dashboard table for a given dataset.
         <pre>e.g:
-$ ncftpput -u user -P <?= $ftp_port ?> -p token <?=  $ftp_hostname ?> / some_local_file
+
+$ ncftpput -u username -P <?= $ftpd_port ?> -p token <?=  $ftpd_endpoint ?> / some_local_file
 some_local_file:                         119.83 kB  159.64 kB/s
         </pre>
     </div>
@@ -137,9 +165,8 @@ some_local_file:                         119.83 kB  159.64 kB/s
             <li>synchronising uploaded files with public ftp server</li>
             <li>monitoring</li>
             <li>alerting</li>
-            <li>deploy on Alibaba Cloud (currently blocked by my lack of payment means accepted by them)</li>
-            <li>managing the drop box account (UX for retiring and creating new account)</li>
-            <li>metadata capture</li>
+            <li>deploy on Alibaba Cloud (currently blocked by payment issues)</li>
+            <li>basic metadata capture</li>
         </ul>
     </p>
 </body>
