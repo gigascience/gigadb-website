@@ -93,12 +93,12 @@
                     <th>doi_suffix</th>
                     <th>name</th>
                     <th>size</th>
-                    <th>status</th>
+                    <!-- <th>status</th> -->
                     <th>location</th>
-                    <th>description</th>
-                    <th>initial_md5</th>
-                    <th>format</th>
-                    <th>data_type</th>
+                    <!-- <th>description</th> -->
+                    <!-- <th>initial_md5</th> -->
+                    <!-- <th>format</th> -->
+                    <!-- <th>data_type</th> -->
                     <th>created_at</th>
                     <th>updated_at</th>
                 </tr>
@@ -116,12 +116,12 @@
                     <td>
                         <?= $file->size ?>
                     </td>
-                    <td>
+<!--                     <td>
                         <?= $file->status ?>
-                    </td>
+                    </td> -->
                     <td><a href="<?= $file->location ?>">
                             <?= $file->location ?></a></td>
-                    <td>
+<!--                     <td>
                         <?= $file->description ?>
                     </td>
                     <td>
@@ -132,7 +132,7 @@
                     </td>
                     <td>
                         <?= $file->data_type ?>
-                    </td>
+                    </td> -->
                     <td>
                         <?= $file->created_at ?>
                     </td>
