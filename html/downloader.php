@@ -2,6 +2,9 @@
 
 	require 'lib/db.php';
 
+    $appconfig = parse_ini_file("/var/appconfig.ini");
+    $web_endpoint = $appconfig["web_endpoint"];
+
 	$thisurl = parse_url($_SERVER['REQUEST_URI']);
 	parse_str($thisurl["query"], $params);
 	// echo $params["d"];
@@ -58,6 +61,7 @@
             <?= $params["d"]?>
         </h1>
     </headers>
+    <nav><a href="<?= $web_endpoint ?>">[Go back to Dashboard]</a></nav>
     <main role="main">
         <section>
             <article>
