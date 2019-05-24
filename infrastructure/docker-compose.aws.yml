@@ -8,6 +8,17 @@ services:
       ADDED_FLAGS: "-O w3c:/var/log/pure-ftpd/transfer.log"
     command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P ${PUBLICHOST}
 
+  watcher:
+    build:
+      context: ../docker-inotify-command
+    volumes:
+      - ../inotify-config:/config:ro
+      - ../incoming/ftp:/home/uploader
+      - ../repo:/home/downloader/
+      - ../hooks:/commands:ro
+      - ../credentials:/var/access:ro
+      - ../tmp:/var/tmp
+      - ../php-conf/appconfig.ini:/var/appconfig.ini:ro
 
   web:
     ports:
