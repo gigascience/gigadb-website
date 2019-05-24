@@ -72,6 +72,7 @@ resource "aws_instance" "prototype_dockerhost" {
 
   root_block_device = {
     delete_on_termination = "true"
+    volume_size = "25"
   }
 }
 
