@@ -1,4 +1,10 @@
 <?php
+
+	require 'lib/db.php';
+
+    $appconfig = parse_ini_file("/var/appconfig.ini");
+    $web_endpoint = $appconfig["web_endpoint"];
+
 	$thisurl = parse_url($_SERVER['REQUEST_URI']);
 	parse_str($thisurl["query"], $params);
 	// echo $params["d"];
@@ -20,17 +26,6 @@
 	    public $data_type;
 	    public $created_at;
 	    public $updated_at;
-	}
-	/**
-	 * Connect to the database
-	 *
-	 * @return object return a database connection handle
-	 */
-	function connectDB(): object
-	{
-		$dbh = new PDO('pgsql:host=tus-uppy-proto_database_1;dbname=proto', 'proto', 'proto');
-		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
-		return $dbh ;
 	}
 
 	/**
@@ -66,6 +61,7 @@
             <?= $params["d"]?>
         </h1>
     </headers>
+    <nav><a href="<?= $web_endpoint ?>">[Go back to Dashboard]</a></nav>
     <main role="main">
         <section>
             <article>
