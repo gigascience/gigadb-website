@@ -24,7 +24,7 @@ function makeDatasetDirectories(string $dataset): bool
 	$out_directory = "/var/repo";
 	$token_directory = "/var/private";
 	mkdir("$in_directory/$dataset", 0770);
-	mkdir("$out_directory/$dataset", 0750);
+	mkdir("$out_directory/$dataset", 0755);
 	mkdir("$token_directory/$dataset", 0750);
 	clearstatcache();
 	return file_exists("$in_directory/$dataset")
