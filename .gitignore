@@ -12,3 +12,4 @@ transfer.log
 output
 vault
 *.retry
+.env
