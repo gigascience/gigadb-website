@@ -7,6 +7,8 @@
 /** @var SampleTemplate $template */
 ?>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+
 <h2>Add Samples</h2>
 <div class="clear"></div>
 
@@ -185,17 +187,14 @@
             <div class="clear"></div>
 
             <div class="span6">
-                <form action="<?= '/datasetSubmission/sampleManagement/id/'. $model->id ?>" method="POST" enctype="multipart/form-data">
+                <form action="/datasetSubmission/validateSamples" data-action="<?= '/datasetSubmission/sampleManagement/id/'. $model->id ?>" method="POST" id="upload-samples" enctype="multipart/form-data">
                     <div class="control-group" id="add-samples-div">
-                        <label class='control-label<?php if ($error): ?> error<?php endif ?>'>Upload sample metadata</label>
+                        <label class='control-label'>Upload sample metadata</label>
                         <div class="controls">
                             <input type="file" id="samples" name="samples">
                             <input type="hidden" name="upload" value="true">
                             <a href="#" class="btn js-not-allowed" style="margin-left: 20px;"/>Upload</a>
-                            <input type="submit" class="btn btn-green" id="js-add-samples" style="margin-left: 20px;display: none;" value="Upload"/>
-                            <?php if ($error): ?>
-                                <div class="errorMessage"><?= $error ?></div>
-                            <?php endif ?>
+                            <a class="btn btn-green" id="js-add-samples" style="margin-left: 20px;display: none;" value="Upload"/>Upload</a>
                         </div>
                     </div>
                 </form>
@@ -351,6 +350,53 @@
         return false;
     });
 
+    $(document).on('click', '#js-add-samples', function() {
+        var form = $('#upload-samples');
+
+        form.ajaxSubmit({
+            beforeSend:function(){
+                ajaxIndicatorStart('loading data.. please wait..');
+            },
+            success: function (response) {
+                if (response.success) {
+                    console.log(response.rows);
+                    console.log(response.matches);
+                    console.log(response.matches.length);
+
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: 'rows',
+                        value: JSON.stringify(response.rows)
+                    }).appendTo(form);
+
+                    if (response.matches) {
+                        var question = 'Do you want:';
+                        for (var i in response.matches) {
+                            question += ' ' + response.matches[i] + ' instead ' + i + ',';
+                        }
+
+                        question = question.slice(0,-1) + '?';
+
+                        if (confirm(question)) {
+                            $('<input>').attr({
+                                type: 'hidden',
+                                name: 'matches',
+                                value: JSON.stringify(response.matches)
+                            }).appendTo(form);
+                        }
+                    }
+
+                    form.attr('action', form.data('action'));
+                    form.submit();
+                } else {
+                    alert(response.message)
+                }
+            }
+        });
+
+        return false;
+    });
+
     function saveSamples(url) {
         var samples = [];
         var sample_attrs = [];
@@ -471,5 +517,65 @@
         window.location.href = baseUrl + '/template/' + $('#template').val();
 
         return false;
+    });
+
+    function ajaxIndicatorStart(text)
+    {
+        if($('body').find('#resultLoading').attr('id') != 'resultLoading'){
+            $('body').append('<div id="resultLoading" style="display:none"><div><img width="30" src="/images/ajax-loader.gif"><div>'+text+'</div></div><div class="bg"></div></div>');
+        }
+
+        $('#resultLoading').css({
+            'width':'100%',
+            'height':'100%',
+            'position':'fixed',
+            'z-index':'10000000',
+            'top':'0',
+            'left':'0',
+            'right':'0',
+            'bottom':'0',
+            'margin':'auto'
+        });
+
+        $('#resultLoading .bg').css({
+            'background':'#000000',
+            'opacity':'0.7',
+            'width':'100%',
+            'height':'100%',
+            'position':'absolute',
+            'top':'0'
+        });
+
+        $('#resultLoading>div:first').css({
+            'width': '250px',
+            'height':'75px',
+            'text-align': 'center',
+            'position': 'fixed',
+            'top':'0',
+            'left':'0',
+            'right':'0',
+            'bottom':'0',
+            'margin':'auto',
+            'font-size':'16px',
+            'z-index':'10',
+            'color':'#ffffff'
+
+        });
+
+        $('#resultLoading .bg').height('100%');
+        $('#resultLoading').fadeIn(300);
+        $('body').css('cursor', 'wait');
+    }
+
+    function ajaxIndicatorStop()
+    {
+        $('#resultLoading .bg').height('100%');
+        $('#resultLoading').fadeOut(300);
+        $('body').css('cursor', 'default');
+    }
+
+    $(document).ajaxStop(function () {
+        //hide ajax indicator
+        ajaxIndicatorStop();
     });
 </script>

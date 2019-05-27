@@ -37,7 +37,7 @@ class DatasetSubmissionController extends Controller
                     'additionalManagement', 'saveAdditional',
                     'fundingManagement', 'validateFunding', 'saveFundings',
                     'projectManagement','linkManagement','exLinkManagement',
-                    'relatedDoiManagement','sampleManagement', 'saveSamples', 'checkUnit', 'end', 'PxInfoManagement','datasetAjaxDelete'),
+                    'relatedDoiManagement','sampleManagement', 'saveSamples', 'validateSamples', 'checkUnit', 'end', 'PxInfoManagement','datasetAjaxDelete'),
                 'users'=>array('@'),
             ),
             array('deny',  // deny all users
@@ -810,34 +810,16 @@ class DatasetSubmissionController extends Controller
 
         $this->isSubmitter($dataset);
 
-        $error = '';
         $rows = array();
         if ($_POST) {
-            $samples = CUploadedFile::getInstanceByName('samples');
-            if($samples) {
+            $rows = json_decode($_POST['rows']);
 
-                if ($samples->getType() != CsvHelper::TYPE_CSV && $samples->getType() != CsvHelper::TYPE_TSV) {
-                    $error = "File has wrong extension.";
-                } else {
-                    $delimiter = $samples->getType() == CsvHelper::TYPE_CSV ? ';' : "\t";
-                    $rows = CsvHelper::getArrayByFileName($samples->getTempName(), $delimiter);
-                    if (!$rows) {
-                        $error = "File is empty.";
-                    } else {
-                        $lastRequired = 2;
-                        for ($j = 3, $k = count($rows[0]); $j < $k; $j++) {
-                            if (!empty($rows[0][$j])) {
-                                $lastRequired = $j;
-                            }
-                        }
+            if (isset($_POST['matches'])) {
+                $matches = (array)json_decode($_POST['matches']);
 
-                        for ($i = 1, $n = count($rows); $i < $n; $i++) {
-                            for ($j = 0; $j <= $lastRequired; $j++)
-                                if (empty($rows[$i][$j])) {
-                                    $error = 'Row ' . ($i + 1) . ': ' . 'Column ' . ($j + 1) . ' cannot be blank.';
-                                    break 2;
-                                }
-                        }
+                for ($i = 0, $n = count($rows[0]); $i < $n; $i++) {
+                    if (isset($matches[$rows[0][$i]])) {
+                        $rows[0][$i] = $matches[$rows[0][$i]];
                     }
                 }
             }
@@ -880,10 +862,77 @@ class DatasetSubmissionController extends Controller
             'samples' => $samples,
             'sas' => $sas,
             'sts' => $sts,
-            'error' => $error,
             'rows' => $rows,
             'species' => $species,
             'attrs' => $attrs,
+        ));
+    }
+
+    public function actionValidateSamples()
+    {
+        if ($_POST) {
+            $samples = CUploadedFile::getInstanceByName('samples');
+            if($samples) {
+
+                if ($samples->getType() != CsvHelper::TYPE_CSV && $samples->getType() != CsvHelper::TYPE_TSV) {
+                    Util::returnJSON(array(
+                        "success"=>false,
+                        'message' => "File has wrong extension.",
+                    ));
+                }
+
+                $delimiter = $samples->getType() == CsvHelper::TYPE_CSV ? ';' : "\t";
+                $rows = CsvHelper::getArrayByFileName($samples->getTempName(), $delimiter);
+                if (!$rows) {
+                    Util::returnJSON(array(
+                        "success"=>false,
+                        'message' => "File is empty.",
+                    ));
+                }
+
+                $lastRequired = 2;
+                $matches = array();
+                for ($j = 3, $k = count($rows[0]); $j < $k; $j++) {
+                    if (!empty($rows[0][$j])) {
+                        $match = $rows[0][$j];
+                        $match = addcslashes($match, '%_');
+                        $criteria = new CDbCriteria( array(
+                            'condition' => "attribute_name LIKE :match",
+                            'params'    => array(':match' => "%$match%")
+                        ) );
+
+                        $attr = Attribute::model()->find($criteria);
+
+                        if ($attr && $attr->attribute_name != $match) {
+                            $matches[$match] = $attr->attribute_name;
+                        }
+
+                        $lastRequired = $j;
+                    }
+                }
+
+                for ($i = 1, $n = count($rows); $i < $n; $i++) {
+                    for ($j = 0; $j <= $lastRequired; $j++)
+                        if (empty($rows[$i][$j])) {
+                            $error = 'Row ' . ($i + 1) . ': ' . 'Column ' . ($j + 1) . ' cannot be blank.';
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                'message' => $error,
+                            ));
+                        }
+                }
+
+                Util::returnJSON(array(
+                    "success"=>true,
+                    'rows' => $rows,
+                    'matches' => $matches ?: false,
+                ));
+            }
+        }
+
+        Util::returnJSON(array(
+            "success"=>false,
+            'message' => "Data is empty.",
         ));
     }
 

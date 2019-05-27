@@ -14,7 +14,7 @@ class CsvHelper
             while (($data = fgetcsv($handle, 1000, $delimiter)) !== FALSE) {
                 $num = count($data);
                 for ($c=0; $c < $num; $c++) {
-                    $array[$row][$c] = $data[$c];
+                    $array[$row][$c] = trim($data[$c]);
                 }
                 $row++;
             }
