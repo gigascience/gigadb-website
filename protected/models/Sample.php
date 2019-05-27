@@ -390,6 +390,9 @@ EO_SQL;
     public function loadByData($data)
     {
         $species = Species::model()->findByAttributes(array('common_name' => $data['species_name']));
+        if (!$species) {
+            $species = Species::model()->findByAttributes(array('genbank_name' => $data['species_name']));
+        }
 
         $this->species_id = $species ? $species->id : null;
         $this->name = $data['sample_id'];
