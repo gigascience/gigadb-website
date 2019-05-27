@@ -9,8 +9,7 @@ class m190527_025615_dataset_upload_status extends CDbMigration
 
 	public function down()
 	{
-		echo "m190527_025615_dataset_upload_status does not support migration down.\n";
-		return false;
+        $this->execute("ALTER TABLE dataset ALTER COLUMN upload_status SET DEFAULT 'Pending'");
 	}
 
 	/*
