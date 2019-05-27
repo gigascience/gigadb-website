@@ -10,10 +10,12 @@ server {
 
     location ~* (common\.css|datatables\.css|pager\.css)$ {
         expires -1;
+        access_log off;
     }
 
     location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
         expires 365d;
+        access_log off;
     }
 
     location /files {
@@ -39,6 +41,7 @@ server {
     }
 
     location ~ \.php$ {
+        limit_req zone=prototype burst=3 nodelay;
         try_files $uri /index.php =404;
         fastcgi_pass php-upstream;
         fastcgi_index index.php;
