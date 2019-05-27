@@ -34,7 +34,7 @@
     function getAccounts(string $status): array
     {
         $dbh = connectDB();
-        $sql = "select distinct * from account where status = ? order by created_at desc";
+        $sql = "select distinct * from account where status = ? order by created_at";
         $st = $dbh->prepare($sql);
         $st->bindParam(1, $status, PDO::PARAM_STR);
         $st->execute();
