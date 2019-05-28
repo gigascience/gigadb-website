@@ -22,12 +22,19 @@ class Dataset extends CActiveRecord
     public $union;
     public $types;
 
-    public static $statusList = array('Incomplete'=>'Incomplete',
-                         'Request'=>'Request',
-                         'Uploaded'=>'Uploaded',
-                         'Pending'=>'Pending',
+    public static $statusList = array('ImportFromEM'=>'ImportFromEM',
+                         'UserStartedIncomplete'=>'UserStartedIncomplete',
+                         'Rejected'=>'Rejected',
+                         'Not required'=>'Not required',
+                         'AssigningFTPbox'=>'AssigningFTPbox',
+                         'UserUploadingData'=>'UserUploadingData',
+                         'DataAvailableForReview'=>'DataAvailableForReview',
+                         'Submitted'=>'Submitted',
+                         'DataPending'=>'DataPending',
+                         'Curation'=>'Curation',
+                         'AuthorReview'=>'AuthorReview',
                          'Private'=>'Private',
-                         'Published'=>'Published'
+                         'Published' =>'Published',
                          );
 
     /*
@@ -372,7 +379,7 @@ class Dataset extends CActiveRecord
     }
 
     public function getIsIncomplete() {
-        return $this->upload_status == "Incomplete";
+        return $this->upload_status == "UserStartedIncomplete";
     }
 
     public function behaviors() {

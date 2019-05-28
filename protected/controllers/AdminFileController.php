@@ -591,7 +591,7 @@ class AdminFileController extends Controller
 
                 $from = Yii::app()->params['app_email_name'] . " <" . Yii::app()->params['app_email'] . ">";
                 $dataset = Dataset::model()->findByattributes(array('id' => $model->dataset_id));
-                $dataset->upload_status = 'Uploaded';
+                $dataset->upload_status = 'Curation';
                 
                 if (!$dataset->save()) {
                     $transaction->rollback();
