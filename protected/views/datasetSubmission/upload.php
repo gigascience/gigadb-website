@@ -78,7 +78,7 @@ if (isset($_GET['status'])) {
                             <br/>
                             Click 'Download Template File' to get a copy:
                             <br/><br/>
-                            <a href="/files/GigaDBUploadForm.xls" class="btn pull-right">Download Template File</a>
+                            <a href="/files/GigaDBUploadForm.xlsx" class="btn pull-right">Download Template File</a>
                             <div class="clear"></div>
 
                             When filling out your dataset file, you may refer to the files below as examples.
