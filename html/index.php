@@ -34,7 +34,7 @@
     function getAccounts(string $status): array
     {
         $dbh = connectDB();
-        $sql = "select distinct * from account where status = ? order by created_at";
+        $sql = "select distinct * from account where status = ? order by doi_suffix";
         $st = $dbh->prepare($sql);
         $st->bindParam(1, $status, PDO::PARAM_STR);
         $st->execute();
@@ -122,6 +122,11 @@
             <td>100003</td>
             <td><a href="<?= $web_endpoint ?>create.php?d=100003">Create Drop Box Account</a></td>
             <td><a href="<?= $web_endpoint ?>retire.php?d=100003">Delete Drop Box Account</a></td>
+        </tr>
+        <tr>
+            <td>100004</td>
+            <td><a href="<?= $web_endpoint ?>create.php?d=100004">Create Drop Box Account</a></td>
+            <td><a href="<?= $web_endpoint ?>retire.php?d=100004">Delete Drop Box Account</a></td>
         </tr>
     </table>
     <hr>
