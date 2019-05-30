@@ -13,3 +13,5 @@ output
 vault
 *.retry
 .env
+flags/*
+!flags/README.md
