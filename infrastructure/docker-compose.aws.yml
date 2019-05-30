@@ -17,7 +17,7 @@ services:
       - ../repo:/home/downloader/
       - ../hooks:/commands:ro
       - ../credentials:/var/access:ro
-      - ../tmp:/var/tmp
+      - ../tmp:/var/tmp/processing_flag
       - ../php-conf/appconfig.ini:/var/appconfig.ini:ro
 
   web:

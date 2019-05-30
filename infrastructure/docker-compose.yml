@@ -57,6 +57,7 @@ services:
       - ../repo:/home/downloader/
       - ../hooks:/commands:ro
       - ../credentials:/var/access:ro
+      - ../flags:/var/tmp/processing_flag
       - ../php-conf/appconfig.ini:/var/appconfig.ini:ro
     networks:
       - proto
