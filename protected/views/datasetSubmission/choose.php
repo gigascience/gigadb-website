@@ -12,7 +12,7 @@
             <h3 class="center">Choose how you wish to provide your data details</h3>
 
             <div class="center">
-                <a target="_blank" href="/datasetSubmission/upload" class="btn-green upload-control">Upload new dataset from spreadsheet</a>
+                <a href="/datasetSubmission/upload" class="btn-green upload-control">Upload new dataset from spreadsheet</a>
                 <a class="myHint" style="float: none;" data-content="You may prepare all the dataset metadata in a special GigaDB Excel submission template file with instructions within the template. Download the empty “Template File” and upload it here after you have completed it. There are also example files you can download to see how it should be completed." data-original-title="" title=""></a>
             </div>
 

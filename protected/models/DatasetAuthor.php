@@ -7,6 +7,8 @@
  * @property integer $id
  * @property integer $dataset_id
  * @property integer $author_id
+ * @property integer $contribution_id
+ * @property integer $rank
  *
  * The followings are the available model relations:
  * @property Author $author
@@ -48,13 +50,23 @@ class DatasetAuthor extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('dataset_id ,rank', 'required'),
+			array('dataset_id ,rank, contribution_id', 'required'),
+            array('contribution_id', 'validateContributionId'),
 			array('dataset_id, author_id, rank', 'numerical', 'integerOnly'=>true),
                        	// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, dataset_id, author_id, doi_search, author_name_search , orcid_search , rank_search', 'safe', 'on'=>'search'),
 		);
 	}
+
+    public function validateContributionId($attribute, $params)
+    {
+        $model = Contribution::model()->findByPk($this->$attribute);
+        if (!$model) {
+            $labels = $this->attributeLabels();
+            $this->addError($attribute, $labels[$attribute] . ' is invalid.');
+        }
+    }
 
 	/**
 	 * @return array relational rules.
@@ -66,6 +78,7 @@ class DatasetAuthor extends CActiveRecord
 		return array(
 			'author' => array(self::BELONGS_TO, 'Author', 'author_id'),
 			'dataset' => array(self::BELONGS_TO, 'Dataset', 'dataset_id'),
+            'contribution' => array(self::BELONGS_TO, 'Contribution', 'contribution_id'),
 		);
 	}
 
@@ -81,9 +94,10 @@ class DatasetAuthor extends CActiveRecord
 			'doi_search' => 'DOI',
 			'author_name_search' => 'Author Name',
 			'rank'=>'Order',
-                        'orcid_search' => 'ORCID' ,
-                        'rank_search' => 'Rank',
-                        'aurhor_name' =>'Name',
+            'orcid_search' => 'ORCID' ,
+            'rank_search' => 'Rank',
+            'aurhor_name' =>'Name',
+            'contribution_id' => 'Credit',
 		);
 	}
 

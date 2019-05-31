@@ -185,6 +185,15 @@ $form = $this->beginWidget('CActiveForm', array(
             </div>
 
             <div class="control-group">
+                <?php echo $form->labelEx($image, 'source', array('class' => 'control-label')); ?>
+                <a class="myHint" data-content= "from where did you get the image, e.g. wikipedia"></a>
+                <div class="controls">
+                    <?php echo $form->textField($image, 'source', array('size' => 60, 'maxlength' => 200, 'class' => 'image')); ?>
+                    <?php echo $form->error($image, 'source'); ?>
+                </div>
+            </div>
+
+            <div class="control-group">
                 <font class="control-label">OR</font>
             </div>
 

@@ -6,6 +6,8 @@
  * The followings are the available columns in table 'contribution':
  * @property integer $id
  * @property string $name
+ * @property string $source
+ * @property string $description
  *
  */
 class Contribution extends CActiveRecord {
@@ -25,8 +27,8 @@ class Contribution extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('name', 'required'),
-            array('name', 'length', 'max' => 255),
+            array('name, source, description', 'required'),
+            array('name, source, description', 'length', 'max' => 255),
             array('name', 'unique'),
         );
     }
@@ -38,6 +40,8 @@ class Contribution extends CActiveRecord {
         return array(
             'id' => 'ID',
             'name' => 'Name',
+            'source' => 'Source',
+            'description' => 'Description',
         );
     }
 }

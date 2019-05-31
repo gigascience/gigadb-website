@@ -51,8 +51,7 @@ class Images extends ImageHaver
         return array(
             array('image_upload', 'file', 'types'=>'jpg, gif, png', 'allowEmpty'=>true, 'on'=>'update'),
             array('image_upload', 'validateImageUpload'),
-            array('license', 'required'),
-            array('photographer', 'validateCredit'),
+            array('license, photographer, source', 'required'),
             array('tag', 'length', 'max'=>120),
             array('url, source', 'length', 'max'=>256),
             array('photographer', 'length', 'max'=>128),
@@ -65,16 +64,6 @@ class Images extends ImageHaver
     public function validateImageUpload($attribute, $params)
     {
         if (!$this->is_no_image && !$this->$attribute && ($this->getIsNewRecord() || $this->location == 'no_image.jpg')) {
-            $labels = $this->attributeLabels();
-            $this->addError($attribute, $labels[$attribute] . ' can not be empty.');
-        }
-    }
-
-    public function validateCredit($attribute, $params)
-    {
-        $licenses = array('Public Domain', 'CC0');
-
-        if(!in_array($this->license, $licenses) && !$this->$attribute) {
             $labels = $this->attributeLabels();
             $this->addError($attribute, $labels[$attribute] . ' can not be empty.');
         }
@@ -162,6 +151,7 @@ class Images extends ImageHaver
             $this->tag = $data['tag'];
             $this->license = $data['license'];
             $this->photographer = $data['photographer'];
+            $this->source = $data['source'];
             $this->is_no_image = 0;
         } else {
             if ($this->url && $this->url != "http://gigadb.org/images/data/cropped/no_image.png") {
@@ -173,6 +163,7 @@ class Images extends ImageHaver
             $this->tag="no image icon";
             $this->license="Public domain";
             $this->photographer="GigaDB";
+            $this->source="GigaDB";
             $this->is_no_image = 1;
         }
     }

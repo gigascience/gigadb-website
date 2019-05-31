@@ -44,7 +44,7 @@
                         <td><?=$da->author->middle_name?></td>
                         <td><?=$da->author->surname?></td>
                         <td><?=$da->author->orcid?></td>
-                        <td><?=$da->author->contribution ? $da->author->contribution->name : '' ?></td>
+                        <td><?=$da->contribution ? $da->contribution->name : '' ?></td>
                         <td>
                             <input class='js-author-rank'
                                    id="js-author-rank-<?=$da->id?>"

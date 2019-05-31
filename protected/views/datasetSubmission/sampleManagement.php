@@ -60,7 +60,7 @@
                     <tr>
                         <th style="white-space: nowrap;">Sample ID</th>
                         <th style="white-space: nowrap;">Species name</th>
-                        <th style="white-space: nowrap;">Description</th>
+                        <th style="white-space: nowrap;" class="sample-attribute-column">Description</th>
                         <?php if ($rows): ?>
                             <?php for ($j = 3, $k = count($rows[0]); $j < $k; $j++): ?>
                                 <?php
@@ -83,6 +83,7 @@
                             <?php endfor ?>
                         <?php elseif (!$template): ?>
                             <?php foreach ($sas as $sa): ?>
+                                <?php if ($sa->attribute->attribute_name == 'description') continue ?>
                                 <th class="sample-attribute-column">
                                     <a class="js-delete-column delete-title" title="delete this column">
                                         <img alt="delete this column" src="/images/delete.png">
@@ -147,9 +148,11 @@
                                     <input type="text" class="js-species-autocomplete" placeholder='Species name' value="<?= $sample->species->common_name ?>">
                                 </td>
                                 <td>
-                                    <input type="text" placeholder='Short description of sample' value="<?= $sample->description ?>" style="width:250px;">
+                                    <?php $mySa = $sample->getSampleAttributeByAttributeName('description') ?>
+                                    <input type="text" placeholder='Short description of sample' value="<?= $mySa ? $mySa->value : '' ?>" style="width: 250px;">
                                 </td>
                                 <?php foreach ($sas as $sa): ?>
+                                    <?php if ($sa->attribute->attribute_name == 'description') continue ?>
                                     <td>
                                         <?php $mySa = $sample->getSampleAttributeByAttributeIdAndUnitId($sa->attribute_id, $sa->unit_id) ?>
                                         <input type="text" placeholder='Attribute value' value="<?= $mySa ? $mySa->value : '' ?>" style="width: 250px;">
@@ -359,10 +362,6 @@
             },
             success: function (response) {
                 if (response.success) {
-                    console.log(response.rows);
-                    console.log(response.matches);
-                    console.log(response.matches.length);
-
                     $('<input>').attr({
                         type: 'hidden',
                         name: 'rows',
@@ -411,12 +410,11 @@
             if (!id) {id = 0;}
             let sample_id = tr.children('td').eq(0).find('input').val();
             let species_name = tr.children('td').eq(1).find('input').val();
-            let sample_description = tr.children('td').eq(2).find('input').val();
 
 
             let attr_values = [];
             for (var i = 0, n = attr_tds.length; i < n; i++) {
-                let attr_value = tr.children('td').eq(3 + i).find('input').val();
+                let attr_value = tr.children('td').eq(2 + i).find('input').val();
                 attr_values.push(attr_value);
             }
 
@@ -424,7 +422,6 @@
                 id: id,
                 sample_id: sample_id,
                 species_name: species_name,
-                sample_description: sample_description,
                 attr_values: attr_values,
             });
         });
@@ -434,8 +431,10 @@
 
             let id = td.find('.js-sample-attr-id').val();
             if (!id) {id = 0;}
-            let attr_name = td.find('input[type="text"]').val();
+            let attr_name = td.find('input').val();
+            if (!attr_name) {attr_name = 'description';}
             let unit_id = td.find('select').val();
+            if (!unit_id) {unit_id = 0;}
 
 
             sample_attrs.push({
