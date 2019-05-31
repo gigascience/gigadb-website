@@ -263,9 +263,20 @@ class DatasetSubmissionController extends Controller
             $author = new Author();
             $author->loadByData($_POST['Author']);
             if($author->validate()) {
+                $contribution = Contribution::model()->findByAttributes(array('name'=>$_POST['Author']['contribution']));
+                if (!$contribution) {
+                    Util::returnJSON(array("success"=>false,"message"=>'Credit is invalid.'));
+                }
+
                 Util::returnJSON(array(
                     "success"=>true,
-                    'author' => $author->asArray(),
+                    'author' => array(
+                        'first_name' => $author->first_name,
+                        'middle_name' => $author->middle_name,
+                        'last_name' => $author->surname,
+                        'orcid' => $author->orcid,
+                        'contribution' => $contribution->name,
+                    ),
                 ));
             }
 
@@ -295,7 +306,18 @@ class DatasetSubmissionController extends Controller
                 $author = new Author();
                 $author->loadByCsvRow($row);
                 if($author->validate()) {
-                    $authors[] = $author->asArray();
+                    $contribution = Contribution::model()->findByAttributes(array('name'=>$row[4]));
+                    if (!$contribution) {
+                        Util::returnJSON(array("success"=>false,"message"=> "Row $num: " . 'Credit is invalid.'));
+                    }
+
+                    $authors[] = array(
+                        'first_name' => $author->first_name,
+                        'middle_name' => $author->middle_name,
+                        'last_name' => $author->surname,
+                        'orcid' => $author->orcid,
+                        'contribution' => $contribution->name,
+                    );
                 } else {
                     $error = current($author->getErrors());
                     Util::returnJSON(array("success"=>false,"message"=> "Row $num: " . $error[0]));
@@ -333,7 +355,7 @@ class DatasetSubmissionController extends Controller
 
                     if ($author->validate()) {
                         $author->save();
-                        $dataset->addAuthor($author, $row['order']);
+                        $dataset->addAuthor($author, $row['order'], $row['contribution']);
                     } else {
                         $transaction->rollback();
                         $error = current($author->getErrors());
@@ -609,7 +631,7 @@ class DatasetSubmissionController extends Controller
             $this->isSubmitter($dataset);
 
             $funders = Funder::model()->findAllByAttributes(array(), array('order'=>'primary_name_display asc'));
-            $fundings = Funding::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
+            $fundings = DatasetFunder::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
 
             $this->render('fundingManagement', array(
                 'model' => $dataset,
@@ -621,7 +643,7 @@ class DatasetSubmissionController extends Controller
 
     public function actionValidateFunding() {
         if ($_POST) {
-            $funding = new Funding();
+            $funding = new DatasetFunder();
             $funding->loadByData($_POST);
 
             if($funding->validate()) {
@@ -652,26 +674,43 @@ class DatasetSubmissionController extends Controller
             $dataset = $this->getDataset($_POST['dataset_id']);
             $hasFunding = 0;
 
-            $fundings = $dataset->fundings;
+            $fundings = $dataset->datasetFunders;
 
             $newFundings = isset($_POST['fundings']) && is_array($_POST['fundings']) ? $_POST['fundings'] : array();
+
             $needFundings = array();
+            foreach ($newFundings as $newFunding) {
+                if ($newFunding['id']) {
+                    $needFundings[] = $newFunding['id'];
+                }
+            }
+
+            foreach ($fundings as $funding) {
+                if (!in_array($funding->id, $needFundings)) {
+                    if (!$funding->delete()) {
+                        $transaction->rollback();
+                        Util::returnJSON(array(
+                            "success"=>false,
+                            "message"=>"Save Error."
+                        ));
+                    }
+                }
+            }
+
             if ($newFundings) {
                 foreach ($newFundings as $newFunding) {
                     if (!$newFunding['id']) {
-                        $funding = new Funding();
+                        $funding = new DatasetFunder();
                         $funding->loadByData($newFunding);
                         if (!$funding->validate()) {
                             $transaction->rollback();
                             Util::returnJSON(array(
                                 "success"=>false,
-                                "message"=>"Save Error."
+                                "message"=>current($funding->getErrors())
                             ));
                         }
 
                         $funding->save();
-                    } else {
-                        $needFundings[] = $newFunding['id'];
                     }
                 }
 
@@ -685,18 +724,6 @@ class DatasetSubmissionController extends Controller
                     "success"=>false,
                     "message"=>"Save Error."
                 ));
-            }
-
-            foreach ($fundings as $funding) {
-                if (!in_array($funding->id, $needFundings)) {
-                    if (!$funding->delete()) {
-                        $transaction->rollback();
-                        Util::returnJSON(array(
-                            "success"=>false,
-                            "message"=>"Save Error."
-                        ));
-                    }
-                }
             }
 
             $transaction->commit();

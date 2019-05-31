@@ -1,7 +1,7 @@
 <?php
 /** @var Dataset $model */
 /** @var Funder[] $funders */
-/** @var Funding[] $fundings */
+/** @var DatasetFunder[] $fundings */
 
 $disabled = $model->getFunding() === null || ($model->getFunding() === true && !$fundings);
 $fundersList = array('Please select…');
@@ -91,9 +91,9 @@ foreach ($funders as $funder) {
                         <?php foreach($fundings as $funding): ?>
                             <tr class="odd">
                                 <td><?= $funding->funder->primary_name_display ?></td>
-                                <td><?= $funding->program_name ?></td>
-                                <td><?= $funding->grant ?></td>
-                                <td><?= $funding->pi_name ?></td>
+                                <td><?= $funding->comments ?></td>
+                                <td><?= $funding->grant_award ?></td>
+                                <td><?= $funding->awardee ?></td>
                                 <td class="button-column">
                                     <a class="js-delete-funding delete-title" title="delete this row">
                                         <img alt="delete this row" src="/images/delete.png">

@@ -9,6 +9,11 @@
  * @property integer $funder_id
  * @property string $grant_award
  * @property string $comments
+ * @property string $awardee
+ *
+ * The followings are the available model relations:
+ * @property Dataset $dataset
+ * @property Funder $funder
  */
 class DatasetFunder extends CActiveRecord
 {
@@ -42,12 +47,54 @@ class DatasetFunder extends CActiveRecord
 			array('dataset_id, funder_id', 'required'),
 			array('dataset_id, funder_id', 'numerical', 'integerOnly'=>true),
 			array('grant_award, comments', 'safe'),
+			array('funder_id', 'validateUnique'),
 			//array('funder_id', 'checkIsFunderDuplicate', 'on'=>'insert'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, dataset_id, funder_id, grant_award, awardee, comments, doi_search, funder_search', 'safe', 'on'=>'search'),
+            array('dataset_id', 'validateDatasetId'),
+            array('funder_id', 'validateFunderId'),
 		);
 	}
+
+    public function validateUnique($attribute,$params=array())
+    {
+        if(!$this->hasErrors())
+        {
+            $params['criteria']=array(
+                'condition'=>'dataset_id=:dataset_id',
+                'params'=>array(':dataset_id'=>$this->dataset_id),
+            );
+            $validator=CValidator::createValidator('unique',$this,$attribute,$params);
+            $validator->validate($this,array($attribute));
+        }
+    }
+
+    public function validateDatasetId($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $dataset = Dataset::model()->findByPk($this->$attribute);
+            $this->dataset = $dataset;
+
+            if (!$dataset) {
+                $labels = $this->attributeLabels();
+                $this->addError($attribute, $labels[$attribute] . ' doesn\'t exist.');
+            }
+        }
+    }
+
+    public function validateFunderId($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $funder = Funder::model()->findByPk($this->$attribute);
+            $this->funder = $funder;
+
+            if (!$funder) {
+                $labels = $this->attributeLabels();
+                $this->addError($attribute, $labels[$attribute] . ' doesn\'t exist.');
+            }
+        }
+    }
 
 	/**
 	 * @return array relational rules.
@@ -142,5 +189,26 @@ class DatasetFunder extends CActiveRecord
 		return false; 
     	}
     	return true;
+    }
+
+    public function loadByData($data)
+    {
+        $this->dataset_id = !empty($data['dataset_id']) ? $data['dataset_id'] : null;
+        $this->funder_id = !empty($data['funder_id']) ? $data['funder_id'] : null;
+        $this->grant_award = !empty($data['grant']) ? $data['grant'] : null;
+        $this->comments = !empty($data['program_name']) ? $data['program_name'] : null;
+        $this->awardee = !empty($data['pi_name']) ? $data['pi_name'] : null;
+    }
+
+    public function asArray()
+    {
+        return array(
+            'dataset_id' => $this->dataset_id,
+            'funder_id' => $this->funder_id,
+            'funder_name' => $this->funder->primary_name_display,
+            'grant' => $this->grant_award,
+            'program_name' => $this->comments,
+            'pi_name' => $this->awardee,
+        );
     }
 }

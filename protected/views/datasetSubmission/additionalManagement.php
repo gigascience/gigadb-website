@@ -49,10 +49,10 @@ $disabled = $isSources === null || $isCodes === null || $is3dImages === null || 
         <a href="/datasetSubmission/authorManagement/id/<?= $model->id ?>" class="btn-green">Previous</a>
         <?php if ($disabled): ?>
             <a href="/datasetSubmission/additionalManagement/id/<?= $model->id ?>" class="btn js-not-allowed">Save</a>
-            <a href="/datasetSubmission/additionalManagement/id/<?= $model->id ?>" class="btn js-not-allowed">Next</a>
+            <a href="/datasetSubmission/fundingManagement/id/<?= $model->id ?>" class="btn js-not-allowed">Next</a>
         <?php else: ?>
             <a href="/datasetSubmission/additionalManagement/id/<?= $model->id ?>" class="btn btn-green js-save-additional">Save</a>
-            <a href="/datasetSubmission/additionalManagement/id/<?= $model->id ?>" class="btn btn-green js-save-additional">Next</a>
+            <a href="/datasetSubmission/fundingManagement/id/<?= $model->id ?>" class="btn btn-green js-save-additional">Next</a>
         <?php endif; ?>
     </div>
 </div>

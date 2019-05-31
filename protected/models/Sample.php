@@ -7,7 +7,6 @@
  * @property integer $id
  * @property integer $species_id
  * @property string $name
- * @property string $description
  * @property string $consent_document
  * @property integer $submitted_id
  * @property string $submission_date
@@ -58,11 +57,11 @@ class Sample extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, description', 'required'),
+            array('name', 'required'),
             array('name', 'validateName'),
             array('species_id', 'required', 'message' => 'Species Name is invalid.'),
             array('species_id, submitted_id', 'numerical', 'integerOnly'=>true),
-            array('name, description', 'length', 'max'=>100),
+            array('name', 'length', 'max'=>100),
             array('consent_document, contact_author_name', 'length', 'max'=>45),
             array('contact_author_email, sampling_protocol', 'length', 'max'=>100),
             array('submission_date', 'safe'),
@@ -118,7 +117,6 @@ class Sample extends CActiveRecord
             'species_id' => 'Species',
             //'code' => 'Sample ID',
             'name' => Yii::t('app', 'Sample ID'),
-            'description' => Yii::t('app', 'Description'),
             'taxonomic_id' => Yii::t('app','Taxonomic ID'),
             'common_name' => Yii::t('app','Common Name'),
             'genbank_name' => Yii::t('app','Genbank Name'),
@@ -387,6 +385,23 @@ EO_SQL;
         ));
     }
 
+    /**
+     * @param $attributeName
+     * @return null|SampleAttribute
+     */
+    public function getSampleAttributeByAttributeName($attributeName)
+    {
+        $attribute = Attribute::model()->findByAttributes(array('attribute_name' => $attributeName));
+        if (!$attribute) {
+            return null;
+        }
+
+        return SampleAttribute::model()->findByAttributes(array(
+            'sample_id' => $this->id,
+            'attribute_id' => $attribute->id,
+        ));
+    }
+
     public function loadByData($data)
     {
         $species = Species::model()->findByAttributes(array('common_name' => $data['species_name']));
@@ -396,7 +411,6 @@ EO_SQL;
 
         $this->species_id = $species ? $species->id : null;
         $this->name = $data['sample_id'];
-        $this->description = $data['sample_description'];
 
         if ($this->getIsNewRecord()) {
             $this->submitted_id = Yii::app()->user->id;

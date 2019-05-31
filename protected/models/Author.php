@@ -11,7 +11,6 @@
  * @property string $orcid
  * @property integer $position
  * @property integer $gigadb_user_id
- * @property integer $contribution_id
  *
  * The followings are the available model relations:
  * @property DatasetAuthor[] $datasetAuthors
@@ -42,9 +41,8 @@ class Author extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('first_name, surname, contribution_id', 'required'),
-            array('contribution_id', 'validateContributionId'),
-            array('gigadb_user_id, contribution_id', 'numerical', 'integerOnly' => true),
+            array('first_name, surname', 'required'),
+            array('gigadb_user_id', 'numerical', 'integerOnly' => true),
             array('gigadb_user_id', 'unique', 'className' => 'Author'),
             array('surname, middle_name, first_name, custom_name', 'length', 'max' => 255),
             array('orcid', 'length', 'max' => 128),
@@ -53,14 +51,6 @@ class Author extends CActiveRecord {
             // Please remove those attributes that should not be searched.
             array('id, surname, middle_name, first_name, custom_name,orcid, gigadb_user_id, dois_search', 'safe', 'on' => 'search'),
         );
-    }
-
-    public function validateContributionId($attribute, $params)
-    {
-        if ($this->$attribute === 0) {
-            $labels = $this->attributeLabels();
-            $this->addError($attribute, $labels[$attribute] . ' is invalid.');
-        }
     }
 
     /**
@@ -72,7 +62,6 @@ class Author extends CActiveRecord {
         return array(
             'datasetAuthors' => array(self::HAS_MANY, 'DatasetAuthor', 'author_id'),
             'datasets' => array(self::MANY_MANY, 'Dataset', 'dataset_author(dataset_id,author_id)'),
-            'contribution' => array(self::BELONGS_TO, 'Contribution', 'contribution_id'),
         );
     }
 
@@ -88,7 +77,6 @@ class Author extends CActiveRecord {
             'custom_name' => 'Display Name',
             'orcid' => 'Orcid',
             'gigadb_user_id' => 'Gigadb User',
-            'contribution_id' => 'Contribution',
             'dois_search' => 'DOI(s)',
         );
     }
@@ -419,15 +407,6 @@ EO_SQL;
         if(isset($data['orcid'])) {
             $this->orcid = $data['orcid'];
         }
-        if (isset($data['contribution'])) {
-            $contribution = Contribution::model()->findByAttributes(array('name'=>$data['contribution']));
-            if (!$contribution) {
-                $this->contribution_id = 0;
-            } else {
-                $this->contribution_id = $contribution->id;
-            }
-        }
-
     }
 
     public function loadByCsvRow($row)
@@ -444,25 +423,5 @@ EO_SQL;
         if(isset($row[3])) {
             $this->orcid = $row[3];
         }
-        if (isset($row[4])) {
-            $contribution = Contribution::model()->findByAttributes(array('name'=>$row[4]));
-            if (!$contribution) {
-                $this->contribution_id = 0;
-            } else {
-                $this->contribution_id = $contribution->id;
-            }
-        }
-
-    }
-
-    public function asArray()
-    {
-        return array(
-            'first_name' => $this->first_name,
-            'middle_name' => $this->middle_name,
-            'last_name' => $this->surname,
-            'orcid' => $this->orcid,
-            'contribution' => $this->contribution->name,
-        );
     }
 }

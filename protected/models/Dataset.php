@@ -133,7 +133,6 @@ class Dataset extends CActiveRecord
             'datasetLogs'=>array(self::HAS_MANY, 'DatasetLog', 'dataset_id'),
             'datasetAttributes' => array(self::HAS_MANY, 'DatasetAttributes', 'dataset_id'),
             'attributes' => array(self::MANY_MANY, 'Attribute', 'dataset_attributes(dataset_id, attribute_id)'),
-            'fundings' => array(self::HAS_MANY, 'Funding', 'dataset_id'),
         );
     }
 
@@ -656,7 +655,7 @@ class Dataset extends CActiveRecord
         DatasetType::storeDatasetTypes($this->id, $types);
     }
 
-    public function addAuthor(Author $author, $rank)
+    public function addAuthor(Author $author, $rank, $contribution)
     {
         $da = DatasetAuthor::model()->findByAttributes(array('dataset_id'=>$this->id, 'author_id' => $author->id));
         if(!$da) {
@@ -665,7 +664,12 @@ class Dataset extends CActiveRecord
             $da->author_id = $author->id;
         }
 
+        $contribution = Contribution::model()->findByAttributes(array('name'=>$contribution));
+
         $da->rank = $rank;
+
+        $da->contribution_id = $contribution ? $contribution->id : 0;
+
         return $da->save();
     }
 
