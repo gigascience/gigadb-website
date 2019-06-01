@@ -350,7 +350,8 @@ Rosalind	Elsie	Franklin 	0000-0000-0000-0001	Conceptualization"
 
                 }
             },
-            error:function(){
+            error: function(xhr) {
+                alert(xhr.responseText);
             }
         });
 

@@ -878,58 +878,52 @@ EO_MAIL;
         Util::returnJSON(array("success"=>false,"message"=>"Data is empty."));
     }
 
+    /**
+     * @throws Exception
+     */
     public function actionUploadFiles()
     {
         if ($_POST) {
             $files = CUploadedFile::getInstanceByName('files');
             if($files) {
+                $rows = CsvHelper::parse($files->getTempName(), $files->getExtensionName());
 
-                if ($files->getType() != CsvHelper::TYPE_CSV && $files->getType() != CsvHelper::TYPE_TSV) {
-                    Util::returnJSON(array("success"=>false,"message"=>"File has wrong extension."));
-                } else {
-                    $delimiter = $files->getType() == CsvHelper::TYPE_CSV ? ';' : "\t";
-                    $rows = CsvHelper::getArrayByFileName($files->getTempName(), $delimiter);
-                    if (!$rows) {
-                        Util::returnJSON(array("success"=>false,"message"=>"File is empty."));
+                foreach ($rows as $key => $row) {
+                    $number = $key + 1;
+                    if (!isset($row[0]) || !$row[0]) {
+                        Util::returnJSON(array(
+                            "success"=>false,
+                            "message"=>"Row $number: File Name cannot be empty."
+                        ));
                     }
+                    if (!isset($row[1]) || !$row[1]) {
+                        Util::returnJSON(array(
+                            "success"=>false,
+                            "message"=>"Row $number: Data Type cannot be empty."
+                        ));
+                    } else {
+                        $type = FileType::model()->findByAttributes(array('name' => $row[1]));
+                        if (!$type) {
+                            Util::returnJSON(array(
+                                "success"=>false,
+                                "message"=>"Row $number: Data Type is invalid."
+                            ));
+                        }
 
-                    foreach ($rows as $key => $row) {
-                        $number = $key + 1;
-                        if (!isset($row[0]) || !$row[0]) {
-                            Util::returnJSON(array(
-                                "success"=>false,
-                                "message"=>"Row $number: File Name cannot be empty."
-                            ));
-                        }
-                        if (!isset($row[1]) || !$row[1]) {
-                            Util::returnJSON(array(
-                                "success"=>false,
-                                "message"=>"Row $number: Data Type cannot be empty."
-                            ));
-                        } else {
-                            $type = FileType::model()->findByAttributes(array('name' => $row[1]));
-                            if (!$type) {
-                                Util::returnJSON(array(
-                                    "success"=>false,
-                                    "message"=>"Row $number: Data Type is invalid."
-                                ));
-                            }
-
-                            $rows[$key][1] = $type->id;
-                        }
-                        if (!isset($row[2]) || !$row[2]) {
-                            Util::returnJSON(array(
-                                "success"=>false,
-                                "message"=>"Row $number: Description cannot be empty."
-                            ));
-                        }
+                        $rows[$key][1] = $type->id;
                     }
-
-                    Util::returnJSON(array(
-                        "success"=>true,
-                        'rows' => $rows
-                    ));
+                    if (!isset($row[2]) || !$row[2]) {
+                        Util::returnJSON(array(
+                            "success"=>false,
+                            "message"=>"Row $number: Description cannot be empty."
+                        ));
+                    }
                 }
+
+                Util::returnJSON(array(
+                    "success"=>true,
+                    'rows' => $rows
+                ));
             }
         }
     }
