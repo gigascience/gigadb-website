@@ -2,10 +2,10 @@
 
 class CsvHelperTest extends CDbTestCase
 {
-    function testGetArrayByFileNameCsv() {
+    function testParseCsv() {
         $fileSourse = \MainHelper::getFilesDir() . '/csv/test_authors.csv';
 
-        $rows = \CsvHelper::getArrayByFileName($fileSourse);
+        $rows = \CsvHelper::parse($fileSourse);
 
         $this->assertTrue(is_array($rows));
         $this->assertEquals(3, count($rows));
@@ -13,10 +13,10 @@ class CsvHelperTest extends CDbTestCase
         $this->assertEquals('Contribution3', $rows[2][4]);
     }
 
-    function testGetArrayByFileNameTsv() {
+    function testParseTsv() {
         $fileSourse = \MainHelper::getFilesDir() . '/csv/test_authors.tsv';
 
-        $rows = \CsvHelper::getArrayByFileName($fileSourse, "\t");
+        $rows = \CsvHelper::parse($fileSourse);
 
         $this->assertTrue(is_array($rows));
         $this->assertEquals(3, count($rows));

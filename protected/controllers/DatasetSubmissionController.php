@@ -285,21 +285,12 @@ class DatasetSubmissionController extends Controller
     }
 
     /**
-     * @throws CException
-     * @throws \yii\web\BadRequestHttpException
+     * @throws Exception
      */
     public function actionAddAuthors() {
         $authors = CUploadedFile::getInstanceByName('authors');
         if($authors) {
-            if ($authors->getType() != CsvHelper::TYPE_CSV && $authors->getType() != CsvHelper::TYPE_TSV) {
-                Util::returnJSON(array("success"=>false,"message"=>"File has wrong extension."));
-            }
-
-            $delimiter = $authors->getType() == CsvHelper::TYPE_CSV ? ';' : "\t";
-            $rows = CsvHelper::getArrayByFileName($authors->getTempName(), $delimiter);
-            if (!$rows) {
-                Util::returnJSON(array("success"=>false,"message"=>"File is empty."));
-            }
+            $rows = CsvHelper::parse($authors->getTempName(), $authors->getExtensionName());
 
             $authors = array();
             foreach ($rows as $num => $row) {
@@ -895,27 +886,15 @@ class DatasetSubmissionController extends Controller
         ));
     }
 
+    /**
+     * @throws Exception
+     */
     public function actionValidateSamples()
     {
         if ($_POST) {
             $samples = CUploadedFile::getInstanceByName('samples');
             if($samples) {
-
-                if ($samples->getType() != CsvHelper::TYPE_CSV && $samples->getType() != CsvHelper::TYPE_TSV) {
-                    Util::returnJSON(array(
-                        "success"=>false,
-                        'message' => "File has wrong extension.",
-                    ));
-                }
-
-                $delimiter = $samples->getType() == CsvHelper::TYPE_CSV ? ';' : "\t";
-                $rows = CsvHelper::getArrayByFileName($samples->getTempName(), $delimiter);
-                if (!$rows) {
-                    Util::returnJSON(array(
-                        "success"=>false,
-                        'message' => "File is empty.",
-                    ));
-                }
+                $rows = CsvHelper::parse($samples->getTempName(), $samples->getExtensionName());
 
                 $lastRequired = 2;
                 $matches = array();
