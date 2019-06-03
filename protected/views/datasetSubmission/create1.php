@@ -159,7 +159,7 @@ $form = $this->beginWidget('CActiveForm', array(
 
             <div class="control-group">
                 <?php echo $form->labelEx($image, 'license', array('class' => 'control-label')); ?>
-                <a class="myHint" data-content="GigaScience database will
+                <a class="myHint" data-html="true" data-content="GigaScience database will
                    only use images that are free for others to re-use,
                    primarily this is Creative Commons 0 license (CC0)
                    please see <a target='_blank' href='http://creativecommons.org/about/cc0'>here</a>
