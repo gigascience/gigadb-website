@@ -675,20 +675,7 @@ class Dataset extends CActiveRecord
 
     public function getAdditionalInformation()
     {
-        return $this->additional_information ? json_decode($this->additional_information, true) : array();
-    }
-
-    public function setAdditionalInformation(array $addInfo)
-    {
-        $this->additional_information = json_encode($addInfo, true);
-    }
-
-    public function setAdditionalInformationKey($key, $value)
-    {
-        $addInfo = $this->getAdditionalInformation();
-        $addInfo[$key] = (int)$value;
-
-        $this->setAdditionalInformation($addInfo);
+        return $this->additional_information ? !!$this->additional_information : null;
     }
 
     public function getFunding()

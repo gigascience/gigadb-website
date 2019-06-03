@@ -398,7 +398,27 @@ class DatasetSubmissionController extends Controller
 
             $dps = DatasetProject::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
 
-            $exLinks = ExternalLink::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
+            $manuscripts = Manuscript::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'id asc'));
+
+            $protocols = ExternalLink::model()->findAllByAttributes(array(
+                'dataset_id'=>$dataset->id,
+                'external_link_type_id' => AIHelper::PROTOCOLS
+            ), array('order'=>'id asc'));
+
+            $_3dImages = ExternalLink::model()->findAllByAttributes(array(
+                'dataset_id'=>$dataset->id,
+                'external_link_type_id' => AIHelper::_3D_IMAGES
+            ), array('order'=>'id asc'));
+
+            $codes = ExternalLink::model()->findAllByAttributes(array(
+                'dataset_id'=>$dataset->id,
+                'external_link_type_id' => AIHelper::CODES
+            ), array('order'=>'id asc'));
+
+            $sources = ExternalLink::model()->findAllByAttributes(array(
+                'dataset_id'=>$dataset->id,
+                'external_link_type_id' => AIHelper::SOURCES
+            ), array('order'=>'id asc'));
 
             $this->render('additionalManagement', array(
                 'model' => $dataset,
@@ -406,7 +426,11 @@ class DatasetSubmissionController extends Controller
                 'link_database' => $link_database,
                 'relations' => $relations,
                 'dps' => $dps,
-                'exLinks' => $exLinks,
+                'manuscripts' => $manuscripts,
+                'protocols' => $protocols,
+                '_3dImages' => $_3dImages,
+                'codes' => $codes,
+                'sources' => $sources,
             ));
         }
     }
@@ -445,12 +469,6 @@ class DatasetSubmissionController extends Controller
                         $needLinks[] = $newLink['id'];
                     }
                 }
-
-                $dataset->setAdditionalInformationKey(AIHelper::PUBLIC_LINKS, true);
-                $dataset->save(false);
-            } else {
-                $dataset->setAdditionalInformationKey(AIHelper::PUBLIC_LINKS, false);
-                $dataset->save(false);
             }
 
 
@@ -484,12 +502,6 @@ class DatasetSubmissionController extends Controller
                         $needRelations[] = $newRelation['id'];
                     }
                 }
-
-                $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, true);
-                $dataset->save(false);
-            } else {
-                $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, false);
-                $dataset->save(false);
             }
 
             foreach ($relations as $relation) {
@@ -521,12 +533,6 @@ class DatasetSubmissionController extends Controller
                         $needProjects[] = $newProject['id'];
                     }
                 }
-
-                $dataset->setAdditionalInformationKey(AIHelper::PROJECTS, true);
-                $dataset->save(false);
-            } else {
-                $dataset->setAdditionalInformationKey(AIHelper::PROJECTS, false);
-                $dataset->save(false);
             }
 
             foreach ($projects as $project) {
@@ -536,18 +542,21 @@ class DatasetSubmissionController extends Controller
             }
 
             $exLinks = ExternalLink::model()->findAllByAttributes(array('dataset_id'=>$dataset->id));
+            $manuscripts = Manuscript::model()->findAllByAttributes(array('dataset_id'=>$dataset->id));
             $newExLinks = isset($_POST['exLinks']) && is_array($_POST['exLinks']) ? $_POST['exLinks'] : array();
             $needExLinks = array();
+            $needManuscripts = array();
             if ($newExLinks) {
-                $hasManuscripts = false;
-                $hasProtocols = false;
-                $has3d = false;
-                $hasCodes = false;
-                $hasSources = false;
                 foreach ($newExLinks as $newExLink) {
                     if (!$newExLink['id']) {
-                        $exLink = new ExternalLink;
-                        $exLink->loadByData($newExLink);
+                        if ($newExLink['externalLinkType'] == AIHelper::MANUSCRIPTS) {
+                            $exLink = new Manuscript;
+                            $exLink->dataset_id = $newExLink['dataset_id'];
+                            $exLink->identifier = $newExLink['url'];
+                        } else {
+                            $exLink = new ExternalLink;
+                            $exLink->loadByData($newExLink);
+                        }
 
                         if (!$exLink->validate()) {
                             $transaction->rollback();
@@ -559,41 +568,13 @@ class DatasetSubmissionController extends Controller
 
                         $exLink->save();
                     } else {
-                        $needExLinks[] = $newExLink['id'];
-                    }
-
-                    switch ($newExLink['externalLinkType']) {
-                        case AIHelper::MANUSCRIPTS:
-                            $hasManuscripts = true;
-                            break;
-                        case AIHelper::PROTOCOLS:
-                            $hasProtocols = true;
-                            break;
-                        case AIHelper::_3D_IMAGES:
-                            $has3d = true;
-                            break;
-                        case AIHelper::CODES:
-                            $hasCodes = true;
-                            break;
-                        default:
-                            $hasSources = true;
-                            break;
+                        if ($newExLink['externalLinkType'] == AIHelper::MANUSCRIPTS) {
+                            $needManuscripts[] = $newExLink['id'];
+                        } else {
+                            $needExLinks[] = $newExLink['id'];
+                        }
                     }
                 }
-
-                $dataset->setAdditionalInformationKey(AIHelper::MANUSCRIPTS, $hasManuscripts);
-                $dataset->setAdditionalInformationKey(AIHelper::PROTOCOLS, $hasProtocols);
-                $dataset->setAdditionalInformationKey(AIHelper::_3D_IMAGES, $has3d);
-                $dataset->setAdditionalInformationKey(AIHelper::CODES, $hasCodes);
-                $dataset->setAdditionalInformationKey(AIHelper::SOURCES, $hasSources);
-                $dataset->save(false);
-            } else {
-                $dataset->setAdditionalInformationKey(AIHelper::MANUSCRIPTS, false);
-                $dataset->setAdditionalInformationKey(AIHelper::PROTOCOLS, false);
-                $dataset->setAdditionalInformationKey(AIHelper::_3D_IMAGES, false);
-                $dataset->setAdditionalInformationKey(AIHelper::CODES, false);
-                $dataset->setAdditionalInformationKey(AIHelper::SOURCES, false);
-                $dataset->save(false);
             }
 
             foreach ($exLinks as $exLink) {
@@ -601,6 +582,15 @@ class DatasetSubmissionController extends Controller
                     $exLink->delete();
                 }
             }
+
+            foreach ($manuscripts as $manuscript) {
+                if (!in_array($manuscript->id, $needManuscripts)) {
+                    $manuscript->delete();
+                }
+            }
+
+            $dataset->additional_information = 1;
+            $dataset->save(false);
 
             $transaction->commit();
             Util::returnJSON(array("success"=>true));

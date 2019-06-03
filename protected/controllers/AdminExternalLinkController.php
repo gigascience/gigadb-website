@@ -328,7 +328,7 @@ class AdminExternalLinkController extends Controller
                     'exLink' => array(
                         'url' => \yii\helpers\Html::encode($exLink->url),
                         'description' => $exLink->description,
-                        'type' => $exLink->type,
+                        'type' => $exLink->external_link_type_id,
                         'type_name' => $exLink->getTypeName(),
                     ),
                 ));

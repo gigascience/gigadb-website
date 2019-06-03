@@ -1,3 +1,6 @@
+<?php
+$exLinks = $isManuscripts || $isProtocols || $is3dImages || $isCodes || $isSources;
+?>
 <div class="form-horizontal additional-bordered">
     <h3 style="display: inline-block">Other links</h3>
     <a class="myHint" style="float: none;" data-content="Dont know what to add here."></a>
@@ -25,21 +28,20 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach($exLinks as $exLink): ?>
-                <tr class="odd js-my-item-<?= $exLink->type ?>">
-                    <td><?= \yii\helpers\Html::encode($exLink->url) ?></td>
-                    <td><?= $exLink->description ?></td>
-                    <td>
-                        <?= $exLink->getTypeName() ?>
-                    </td>
-                    <td class="button-column">
-                        <input type="hidden" class="js-type" value="<?= $exLink->type ?>">
-                        <input type="hidden" class="js-my-id" value="<?= $exLink->id ?>">
-                        <a class="js-delete-exLink delete-title" exLink-id="<?=$exLink->id?>" data-id="<?= $model->id ?>" title="delete this row">
-                            <img alt="delete this row" src="/images/delete.png">
-                        </a>
-                    </td>
-                </tr>
+            <?php foreach($manuscripts as $exLink): ?>
+                <?php $this->renderPartial('_manuscript_tr', array('model' => $model, 'manuscript' => $exLink)); ?>
+            <?php endforeach; ?>
+            <?php foreach($protocols as $exLink): ?>
+                <?php $this->renderPartial('_others_tr', array('model' => $model, 'exLink' => $exLink)); ?>
+            <?php endforeach; ?>
+            <?php foreach($_3dImages as $exLink): ?>
+                <?php $this->renderPartial('_others_tr', array('model' => $model, 'exLink' => $exLink)); ?>
+            <?php endforeach; ?>
+            <?php foreach($codes as $exLink): ?>
+                <?php $this->renderPartial('_others_tr', array('model' => $model, 'exLink' => $exLink)); ?>
+            <?php endforeach; ?>
+            <?php foreach($sources as $exLink): ?>
+                <?php $this->renderPartial('_others_tr', array('model' => $model, 'exLink' => $exLink)); ?>
             <?php endforeach; ?>
             <tr class="js-no-results"<?php if ($exLinks): ?> style="display: none"<?php endif ?>>
                 <td colspan="4">
@@ -152,15 +154,15 @@
                     $('.js-no-results', othersDiv).hide();
 
                     let div;
-                    if (response.exLink['type'] == 3) {
+                    if (response.exLink['type'] == <?= AIHelper::MANUSCRIPTS ?>) {
                         div = manuscriptsDiv;
-                    } else if (response.exLink['type'] == 4) {
+                    } else if (response.exLink['type'] == <?= AIHelper::PROTOCOLS ?>) {
                         div = protocolsDiv;
-                    }  else if (response.exLink['type'] == 5) {
+                    }  else if (response.exLink['type'] == <?= AIHelper::_3D_IMAGES ?>) {
                         div = _3dimagesDiv;
-                    }  else if (response.exLink['type'] == 6) {
+                    }  else if (response.exLink['type'] == <?= AIHelper::CODES ?>) {
                         div = codesDiv;
-                    }  else if (response.exLink['type'] == 7) {
+                    }  else if (response.exLink['type'] == <?= AIHelper::SOURCES ?>) {
                         div = sourcesDiv;
 
                         $('textarea[name="link"]', div).val('');
