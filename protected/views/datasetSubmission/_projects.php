@@ -29,8 +29,10 @@
         </p>
 
         <div class="control-group" style="text-align: center">
-            <?= CHtml::dropDownList('project', null, CHtml::listData(Project::model()->findAll(), 'id', 'name'),array('class'=>'js-project dropdown-white','style'=>'width:auto')); ?>
-            <a href="#" dataset-id="<?=$model->id?>" class="btn btn-green js-add-project" style="margin-left: 20px;"/>Add Project</a>
+            <?= CHtml::dropDownList('project', null,
+                array('' => 'Please select') + CHtml::listData(Project::model()->findAll(), 'id', 'name'),
+                array('class'=>'js-project dropdown-white','style'=>'width:auto')); ?>
+            <a href="#" dataset-id="<?=$model->id?>" class="btn js-not-allowed" style="margin-left: 20px;"/>Add Project</a>
         </div>
 
         <div id="author-grid" class="grid-view">
@@ -70,6 +72,14 @@
 
 <script>
     var projectsDiv = $('#projects');
+
+    $(document).on('change', '#project', function () {
+        if ($('#project').val()){
+            $('.js-not-allowed', projectsDiv).removeClass('js-not-allowed').addClass('js-add-project btn-green');
+        } else {
+            $('.js-add-project', projectsDiv).removeClass('js-add-project btn-green').addClass('js-not-allowed');
+        }
+    });
 
     $(projectsDiv).on('click', ".js-add-project", function(e) {
         e.preventDefault();

@@ -28,17 +28,17 @@
             <label class='control-label'>Database</label>
             <a class="myHint" data-html="true" data-content="Please contact <a href=&quot;mailto:database@gigasciencejournal.com&quot; >database@gigasciencejournal.com</a> to request the addition of a new database."></a>
             <div class="controls">
-                <?= CHtml::dropDownList('link',
+                <?= CHtml::dropDownList('prefix',
                     null,
-                    CHtml::listData($link_database,'prefix','prefix'),
+                    array('' => 'Please select') + CHtml::listData($link_database,'prefix','prefix'),
                     array('class'=>'js-database dropdown-white', 'style'=>'width:250px'));
                 ?>
             </div>
         </div>
 
-        <p class="note">Please select add accession numbers to your data in the above database</p>
+        <p class="note js-set-dataset">Please select add accession numbers to your data in the above database</p>
 
-        <div class="control-group">
+        <div class="control-group js-set-dataset">
             <label class='control-label'>Accession number</label>
             <a class="myHint" data-content="Please provide unique identifier of linked data, e.g. an SRA accession; SRS012345."></a>
             <div class="controls">
@@ -83,14 +83,28 @@
 
 <script>
     var publicLinksDiv = $('#public-links');
-    //var deletePublicLinks = [];
 
-    $(publicLinksDiv).on('change', 'input[name="link"]', function () {
+    $(document).on('change', '#prefix', function () {
         if ($(this).val()){
-            $('.js-not-allowed', publicLinksDiv).removeClass('js-not-allowed').addClass('js-add-link btn-green');
+            $('.js-set-dataset').show();
         } else {
-            $('.js-add-link', publicLinksDiv).removeClass('js-add-link btn-green').addClass('js-not-allowed');
+            $('.js-set-dataset').hide();
         }
+    });
+
+    $(publicLinksDiv).on('keydown', 'input[name="link"]', function () {
+        var input = $(this);
+
+        setTimeout((function(){
+            var val = input.val().trim();
+            var valLength = val.length;
+
+            if (valLength){
+                $('.js-not-allowed', publicLinksDiv).removeClass('js-not-allowed').addClass('js-add-link btn-green');
+            } else {
+                $('.js-add-link', publicLinksDiv).removeClass('js-add-link btn-green').addClass('js-not-allowed');
+            }
+        }), 50);
     });
 
     $(publicLinksDiv).on('click', ".js-add-link", function(e) {
@@ -136,6 +150,7 @@
                     $('.js-no-results', publicLinksDiv).before(tr);
                     $('.js-no-results', publicLinksDiv).hide();
 
+                    $('#prefix', publicLinksDiv).val('');
                     $('input[name="link"]', publicLinksDiv).val('');
                     $('.js-add-link', publicLinksDiv).removeClass('js-add-link btn-green').addClass('js-not-allowed');
 

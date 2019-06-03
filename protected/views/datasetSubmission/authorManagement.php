@@ -1,3 +1,5 @@
+<script src="/js/jquery.maskedinput.js"></script>
+
 <h2>Add Authors</h2>
 <div class="clear"></div>
 
@@ -400,34 +402,8 @@ Rosalind	Elsie	Franklin 	0000-0000-0000-0001	Conceptualization"
         }
     }
 
-    $("#js-author-orcid").keypress(function(){
-        var input = $(this);
-
-        setTimeout((function(){
-            var val = input.val();
-            var valLength = val.length;
-
-            var lastChar = val.slice(-1);
-
-            if (valLength > 19) {
-                input.val(val.slice(0, 19));
-                return false;
-            }
-
-            if (valLength == 5 || valLength == 10 || valLength == 15) {
-                if (lastChar == parseInt(lastChar)) {
-                    lastChar = '-' + lastChar;
-                } else {
-                    lastChar = lastChar.replace(/[^-]/g, '');
-                }
-            } else {
-                lastChar = lastChar.replace(/[^0-9]/g, '');
-            }
-
-            var withoutLastChar = val.slice(0, -1);
-            withoutLastChar = withoutLastChar.replace(/[^0-9\-]/g, '');
-            input.val(withoutLastChar + lastChar);
-
-        }), 50);
+    $(function() {
+        $.mask.definitions['~'] = "[+-]";
+        $("#js-author-orcid").mask("9999-9999-9999-9999");
     });
 </script>

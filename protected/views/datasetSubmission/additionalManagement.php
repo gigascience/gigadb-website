@@ -129,7 +129,7 @@ $disabled = $isSources === null || $isCodes === null || $is3dImages === null || 
 
         $this.addClass('btn-green btn-disabled');
         $this.removeClass('js-yes-button');
-        $this.siblings().removeClass('btn-green btn-disabled').addClass('js-no-button');
+        $this.siblings('a').removeClass('btn-green btn-disabled').addClass('js-no-button');
 
         $('#' + target).show();
 

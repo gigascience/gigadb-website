@@ -62,44 +62,79 @@ $exLinks = $isManuscripts || $isProtocols || $is3dImages || $isCodes || $isSourc
     var codesDiv = $('#codes');
     var sourcesDiv = $('#sources');
 
-    $(manuscriptsDiv).on('change', 'input[name="link"]', function () {
-        if ($(this).val()){
-            $('.js-not-allowed', manuscriptsDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
-        } else {
-            $('.js-add-exLink', manuscriptsDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
-        }
+    $(manuscriptsDiv).on('keydown', 'input[name="link"]', function () {
+        var input = $(this);
+
+        setTimeout((function(){
+            var val = input.val().trim();
+            var valLength = val.length;
+
+            if (valLength){
+                $('.js-not-allowed', manuscriptsDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
+            } else {
+                $('.js-add-exLink', manuscriptsDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
+            }
+        }), 50);
     });
 
-    $(protocolsDiv).on('change', 'input[name="link"]', function () {
-        if ($(this).val()){
-            $('.js-not-allowed', protocolsDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
-        } else {
-            $('.js-add-exLink', protocolsDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
-        }
+    $(protocolsDiv).on('keydown', 'input[name="link"]', function () {
+        var input = $(this);
+
+        setTimeout((function(){
+            var val = input.val().trim();
+            var valLength = val.length;
+
+            if (valLength){
+                $('.js-not-allowed', protocolsDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
+            } else {
+                $('.js-add-exLink', protocolsDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
+            }
+        }), 50);
     });
 
-    $(_3dimagesDiv).on('change', 'input[name="link"]', function () {
-        if ($(this).val()){
-            $('.js-not-allowed', _3dimagesDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
-        } else {
-            $('.js-add-exLink', _3dimagesDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
-        }
+    $(_3dimagesDiv).on('keydown', 'input[name="link"]', function () {
+        var input = $(this);
+
+        setTimeout((function(){
+            var val = input.val().trim();
+            var valLength = val.length;
+
+            if (valLength){
+                $('.js-not-allowed', _3dimagesDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
+            } else {
+                $('.js-add-exLink', _3dimagesDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
+            }
+        }), 50);
     });
 
-    $(codesDiv).on('change', 'input[name="link"]', function () {
-        if ($(this).val()){
-            $('.js-not-allowed', codesDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
-        } else {
-            $('.js-add-exLink', codesDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
-        }
+    $(codesDiv).on('keydown', 'input[name="link"]', function () {
+        var input = $(this);
+
+        setTimeout((function(){
+            var val = input.val().trim();
+            var valLength = val.length;
+
+            if (valLength){
+                $('.js-not-allowed', codesDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
+            } else {
+                $('.js-add-exLink', codesDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
+            }
+        }), 50);
     });
 
-    $(sourcesDiv).on('change', 'input[name="link"]', function () {
-        if ($(this).val()){
-            $('.js-not-allowed', sourcesDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
-        } else {
-            $('.js-add-exLink', sourcesDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
-        }
+    $(sourcesDiv).on('keydown', 'input[name="link"]', function () {
+        var input = $(this);
+
+        setTimeout((function(){
+            var val = input.val().trim();
+            var valLength = val.length;
+
+            if (valLength){
+                $('.js-not-allowed', sourcesDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
+            } else {
+                $('.js-add-exLink', sourcesDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
+            }
+        }), 50);
     });
 
     $(othersDiv).on('click', ".js-add-exLink", function(e) {
