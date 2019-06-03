@@ -1,0 +1,136 @@
+version: '3.7'
+
+services:
+
+  tusd:
+    build:
+      context: ../tusd
+    volumes:
+      - "../incoming/tusd:/var/inbox/"
+      - ../repo:/var/repo/
+      - ../hooks:/var/hooks
+    command: -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
+    networks:
+      - proto
+    expose:
+      - "1080"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    # ports:
+    #   - target: 1080
+    #     published: 9080
+    #     protocol: tcp
+    #     mode: host
+
+  ftpd:
+    build:
+      context: ../docker-pure-ftpd
+    volumes:
+      - "../incoming/ftp:/home/uploader"
+      - ../repo:/home/downloader/:ro
+      - ../credentials:/var/private
+      - ../hooks:/var/scripts
+      # - ../ftp-transfer-logs:/var/log/pure-ftpd
+    environment:
+      PUBLICHOST: "localhost"
+      # ADDED_FLAGS: "-O w3c:/var/log/pure-ftpd/transfer.log"
+    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P localhost
+    networks:
+      - proto
+    ports:
+      - target: 21
+        published: 9021
+        protocol: tcp
+        mode: host
+      - "30000-30009:30000-30009"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+  watcher:
+    build:
+      context: ../docker-inotify-command
+    volumes:
+      - ../inotify-config:/config:ro
+      - ../incoming/ftp:/home/uploader
+      - ../repo:/home/downloader/
+      - ../hooks:/commands:ro
+      - ../credentials:/var/access:ro
+      - ../flags:/var/tmp/processing_flag
+      - ../php-conf/appconfig.ini:/var/appconfig.ini:ro
+    networks:
+      - proto
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+  database:
+    image: postgres:9.6-alpine
+    volumes:
+      - ../db_schema.sql:/docker-entrypoint-initdb.d/1-db_schema.sql
+    environment:
+      POSTGRES_DB: proto
+      POSTGRES_USER: proto
+      POSTGRES_PASSWORD: proto
+    ports:
+      - target: 5432
+        published: 54321
+        protocol: tcp
+        mode: host
+    networks:
+      - proto
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+  web:
+    image: nginx:1.15-alpine
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../nginx/conf.d:/etc/nginx/conf.d:ro
+      - ../html:/var/www:ro
+    ports:
+      - target: 80
+        published: 9090
+        protocol: tcp
+        mode: host
+    networks:
+      - proto
+
+  app:
+    build:
+      context: ../php
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=true
+        - INSTALL_APCU=true
+        - INSTALL_DOCKER=true
+        - INSTALL_NETCAT_JQ=true
+    volumes:
+      - ../html:/var/www:ro
+      - ../php-conf/php-fpm.ini:/usr/local/etc/php/php.ini:ro
+      - ../php-conf/prototype.pool.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      - ../php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini:ro
+      - ../php-conf/prototype.ini:/usr/local/etc/php/conf.d/prototype.ini:ro
+      - ../php-conf/appconfig.ini:/var/appconfig.ini:ro
+      - ../incoming:/var/incoming
+      - ../repo:/var/repo
+      - ../credentials:/var/private
+      - ../scripts:/var/scripts:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    expose:
+      - "9000"
+    networks:
+      - proto
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+
+networks:
+  proto:
