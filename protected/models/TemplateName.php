@@ -5,12 +5,14 @@
  *
  * The followings are the available columns in table 'sample_template':
  * @property integer $id
- * @property string $name
+ * @property string $template_name
+ * @property string $template_description
+ * @property string $notes
  *
  * The followings are the available model relations:
  * @property Attribute[] $attributes
  */
-class SampleTemplate extends CActiveRecord
+class TemplateName extends CActiveRecord
 {
 	public static function model($className=__CLASS__)
 	{
@@ -22,7 +24,7 @@ class SampleTemplate extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sample_template';
+		return 'template_name';
 	}
 
 	/**
@@ -33,7 +35,9 @@ class SampleTemplate extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'required'),
+			array('template_name', 'required'),
+            array('template_name', 'length', 'max'=>50),
+            array('template_description, notes', 'length', 'max'=>255),
 		);
 	}
 
@@ -45,7 +49,7 @@ class SampleTemplate extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-            'attributes' => array(self::MANY_MANY, 'Attribute', 'sample_template_attribute(sample_template_id,attribute_id)'),
+            'attributes' => array(self::MANY_MANY, 'Attribute', 'template_attribute(template_name_id,attribute_id)'),
 		);
 	}
 
@@ -56,7 +60,9 @@ class SampleTemplate extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
+			'template_name' => 'Name',
+			'template_description' => 'Description',
+			'notes' => 'Notes',
 		);
 	}
 }
