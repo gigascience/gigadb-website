@@ -261,7 +261,7 @@ $form = $this->beginWidget('CActiveForm', array(
     </div>
 
     <div class="span12" style="text-align:center">
-        <a href="<?= Yii::app()->createUrl('/datasetSubmission/index') ?>" class="btn"/>Cancel</a>
+        <a href="<?= Yii::app()->createUrl('/datasetSubmission/choose') ?>" class="btn"/>Cancel</a>
         <?php echo CHtml::submitButton('Save', array(
             'class' => 'btn-green' . $class,
             'id' => 'next-btn', 'disabled' => $disabled
