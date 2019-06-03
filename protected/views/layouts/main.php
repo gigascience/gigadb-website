@@ -89,6 +89,9 @@
         .sample-attribute-column{
             white-space: nowrap;
         }
+        .js-set-dataset{
+            display: none;
+        }
     </style>
     <script>
         $(document).ready(function () {

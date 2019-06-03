@@ -24,10 +24,14 @@
     <div id="related-doi"<?php if ($isRelatedDoi !== true): ?> style="display: none"<?php endif; ?>>
         <div class="control-group" style="text-align: right;">
             <label>The dataset I am now uploading</label>
-            <?= CHtml::dropDownList('relation', null, CHtml::listData(Relationship::model()->findAll(), 'id', 'name'),array('class'=>'js-relation-relationship dropdown-white','style'=>'width:250px')); ?>
+            <?= CHtml::dropDownList('relation', null,
+                array('' => 'Please select') + CHtml::listData(Relationship::model()->findAll(), 'id', 'name'),
+                array('class'=>'js-relation-relationship dropdown-white','style'=>'width:250px')); ?>
             <label>dataset (DOI)</label>
-            <?= CHtml::dropDownList('relation', null, CHtml::listData(Util::getDois(), 'identifier', 'identifier'),array('class'=>'js-relation-doi dropdown-white','style'=>'width:250px')); ?>
-            <a href="#" dataset-id="<?=$model->id?>" class="btn btn-green js-add-relation"/>Add Related Doi</a>
+            <?= CHtml::dropDownList('dataset_doi', null,
+                array('' => 'Please select') + CHtml::listData(Util::getDois(), 'identifier', 'identifier'),
+                array('class'=>'js-relation-doi dropdown-white','style'=>'width:250px')); ?>
+            <a href="#" dataset-id="<?=$model->id?>" class="btn js-not-allowed"/>Add Related Doi</a>
         </div>
 
         <div class="grid-view">
@@ -70,6 +74,14 @@
 
 <script>
     var relatedDoiDiv = $('#related-doi');
+
+    $(document).on('change', '#relation, #dataset_doi', function () {
+        if ($('#relation').val() && $('#dataset_doi').val()){
+            $('.js-not-allowed', relatedDoiDiv).removeClass('js-not-allowed').addClass('js-add-relation btn-green');
+        } else {
+            $('.js-add-relation', relatedDoiDiv).removeClass('js-add-relation btn-green').addClass('js-not-allowed');
+        }
+    });
 
     $(relatedDoiDiv).on('click', ".js-add-relation", function(e) {
         e.preventDefault();
