@@ -2,14 +2,11 @@
 
 class AIHelper
 {
-    const PUBLIC_LINKS = 0;
-    const RELATED_DOI = 1;
-    const PROJECTS = 2;
-    const MANUSCRIPTS = 3;
-    const PROTOCOLS = 4;
-    const _3D_IMAGES = 5;
-    const CODES = 6;
-    const SOURCES = 7;
+    const MANUSCRIPTS = 6;
+    const PROTOCOLS = 5;
+    const _3D_IMAGES = 7;
+    const CODES = 4;
+    const SOURCES = 3;
 
     public static function getTypeName($type)
     {

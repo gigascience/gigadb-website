@@ -2,14 +2,15 @@
 /** @var Dataset $model */
 
 $additionalInfo = $model->getAdditionalInformation();
-$isPublicLinks = isset($additionalInfo[AIHelper::PUBLIC_LINKS]) ? !!$additionalInfo[AIHelper::PUBLIC_LINKS] : null;
-$isRelatedDoi = isset($additionalInfo[AIHelper::RELATED_DOI]) ? !!$additionalInfo[AIHelper::RELATED_DOI] : null;
-$isProjects = isset($additionalInfo[AIHelper::PROJECTS]) ? !!$additionalInfo[AIHelper::PROJECTS] : null;
-$isManuscripts = isset($additionalInfo[AIHelper::MANUSCRIPTS]) ? !!$additionalInfo[AIHelper::MANUSCRIPTS] : null;
-$isProtocols = isset($additionalInfo[AIHelper::PROTOCOLS]) ? !!$additionalInfo[AIHelper::PROTOCOLS] : null;
-$is3dImages = isset($additionalInfo[AIHelper::_3D_IMAGES]) ? !!$additionalInfo[AIHelper::_3D_IMAGES] : null;
-$isCodes = isset($additionalInfo[AIHelper::CODES]) ? !!$additionalInfo[AIHelper::CODES] : null;
-$isSources = isset($additionalInfo[AIHelper::SOURCES]) ? !!$additionalInfo[AIHelper::SOURCES] : null;
+
+$isPublicLinks = $additionalInfo ? !!count($links) : null;
+$isRelatedDoi = $additionalInfo ? !!count($relations) : null;
+$isProjects = $additionalInfo ? !!count($dps) : null;
+$isManuscripts = $additionalInfo ? !!count($manuscripts) : null;
+$isProtocols = $additionalInfo ? !!count($protocols) : null;
+$is3dImages = $additionalInfo ? !!count($_3dImages) : null;
+$isCodes = $additionalInfo ? !!count($codes) : null;
+$isSources = $additionalInfo ? !!count($sources) : null;
 
 $disabled = $isSources === null || $isCodes === null || $is3dImages === null || $isProtocols === null || $isManuscripts === null || $isProjects === null || $isRelatedDoi === null || $isPublicLinks === null;
 ?>
@@ -35,7 +36,11 @@ $disabled = $isSources === null || $isCodes === null || $is3dImages === null || 
         <div class="clear"></div>
         <?php $this->renderPartial('_others', array(
             'model' => $model,
-            'exLinks' => $exLinks,
+            'manuscripts' => $manuscripts,
+            'protocols' => $protocols,
+            '_3dImages' => $_3dImages,
+            'codes' => $codes,
+            'sources' => $sources,
             'isManuscripts' => $isManuscripts,
             'isProtocols' => $isProtocols,
             'is3dImages' => $is3dImages,
@@ -248,16 +253,15 @@ $disabled = $isSources === null || $isCodes === null || $is3dImages === null || 
     function checkIfCanSave()
     {
         let othersDiv = $('#others-grid');
-
         if (
             ($('#public-links-no').hasClass('btn-green') || $('#public-links').find('.odd').length)
             && ($('#related-doi-no').hasClass('btn-green') || $('#related-doi').find('.odd').length)
             && ($('#projects-no').hasClass('btn-green') || $('#projects').find('.odd').length)
-            && ($('#manuscripts-no').hasClass('btn-green') || ($('#manuscripts-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-3').length))
-            && ($('#protocols-no').hasClass('btn-green') || ($('#protocols-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-4').length))
-            && ($('#3d_images-no').hasClass('btn-green') || ($('#3d_images-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-5').length))
-            && ($('#codes-no').hasClass('btn-green') || ($('#codes-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-6').length))
-            && ($('#sources-no').hasClass('btn-green') || ($('#sources-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-7').length))
+            && ($('#manuscripts-no').hasClass('btn-green') || ($('#manuscripts-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-<?= AIHelper::MANUSCRIPTS ?>').length))
+            && ($('#protocols-no').hasClass('btn-green') || ($('#protocols-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-<?= AIHelper::PROTOCOLS ?>').length))
+            && ($('#3d_images-no').hasClass('btn-green') || ($('#3d_images-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-<?= AIHelper::_3D_IMAGES ?>').length))
+            && ($('#codes-no').hasClass('btn-green') || ($('#codes-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-<?= AIHelper::CODES ?>').length))
+            && ($('#sources-no').hasClass('btn-green') || ($('#sources-yes').hasClass('btn-green') && othersDiv.find('.js-my-item-<?= AIHelper::SOURCES ?>').length))
         ) {
             $('#additional-save').find('.js-not-allowed').removeClass('js-not-allowed').addClass('btn-green js-save-additional');
         } else {
