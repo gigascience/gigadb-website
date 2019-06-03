@@ -3,8 +3,8 @@
 /** @var Unit[] $units */
 /** @var Sample[] $samples */
 /** @var SampleAttribute[] $sas */
-/** @var SampleTemplate[] $sts */
-/** @var SampleTemplate $template */
+/** @var TemplateName[] $sts */
+/** @var TemplateName $template */
 ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
@@ -35,7 +35,7 @@
                     <div class="controls">
                         <?= CHtml::dropDownList('template',
                             $template ? $template->id : null,
-                            CHtml::listData($sts,'id','name'),
+                            CHtml::listData($sts,'id','template_name'),
                             array('empty'=> 'Empty', 'class'=>'js-database dropdown-white', 'style'=>'width:200px'));
                         ?>
                         <a href="#" class="btn <?php if (!$template): ?>js-not-allowed<?php else: ?> btn-green js-set-template<?php endif ?>" style="margin-left: 20px;"/>Apply</a>

@@ -833,11 +833,11 @@ class DatasetSubmissionController extends Controller
             }
         }
 
-        $template = isset($_GET['template']) ? SampleTemplate::model()->findByPk($_GET['template']) : null;
+        $template = isset($_GET['template']) ? TemplateName::model()->findByPk($_GET['template']) : null;
 
         $units = Unit::model()->findAll(array('order'=>'name asc'));
 
-        $sts = SampleTemplate::model()->findAll(array('order'=>'name asc'));
+        $sts = TemplateName::model()->findAll(array('order'=>'template_name asc'));
 
         $samples = $dataset->samples;
 
