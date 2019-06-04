@@ -23,7 +23,6 @@
 	$this->loadFixture("file_type");
 	$this->loadFixture("contribution");
 	$this->loadFixture("funder_name");
-	$this->loadFixture("funding");
 
 	 //$this->loadFixture("species");
 	// $this->loadFixture("file");

@@ -18,7 +18,7 @@ class ExternalLinkTest extends CDbTestCase
 
         $this->assertEquals(1, $exLink->dataset_id);
         $this->assertEquals('doi:10.1093/gigascience/giy095', $exLink->url);
-        $this->assertEquals(AIHelper::MANUSCRIPTS, $exLink->type);
+        $this->assertEquals(AIHelper::MANUSCRIPTS, $exLink->external_link_type_id);
         $this->assertEquals('test description', $exLink->description);
     }
 

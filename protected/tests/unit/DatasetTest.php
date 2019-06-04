@@ -100,34 +100,9 @@ class DatasetTest extends CDbTestCase
         $dataset = $this->datasets(2);
         $author = $this->authors(2);
 
-        $dataset->addAuthor($author, 1);
+        $dataset->addAuthor($author, 1, 'contribution1');
         $authors = $dataset->getAuthor();
         $this->assertEquals(1, count($authors));
         $this->assertEquals('Juan', $authors[0]['first_name']);
-    }
-
-    function testSetAdditionalInformation()
-    {
-        $addInfo = array(
-            AIHelper::PUBLIC_LINKS => 1,
-            AIHelper::RELATED_DOI => 1,
-            AIHelper::PROJECTS => 1,
-        );
-
-        $dataset = $this->datasets(2);
-
-        $dataset->setAdditionalInformation($addInfo);
-        $this->assertEquals($addInfo, $dataset->getAdditionalInformation());
-    }
-
-    function testSetAdditionalInformationKey()
-    {
-        $dataset = $this->datasets(2);
-
-        $dataset->setAdditionalInformationKey(AIHelper::RELATED_DOI, true);
-
-        $addInfo = $dataset->getAdditionalInformation();
-
-        $this->assertEquals(1, $addInfo[AIHelper::RELATED_DOI]);
     }
  }
