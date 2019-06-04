@@ -239,7 +239,7 @@ class DatasetSubmissionController extends Controller
     public function actionAuthorManagement()
     {
         if (!isset($_GET['id'])) {
-            $this->redirect("/user/view_profile");
+            $this->redirect("/datasetSubmission/create1");
         } else {
             $dataset = $this->getDataset($_GET['id']);
 
@@ -381,7 +381,7 @@ class DatasetSubmissionController extends Controller
     public function actionAdditionalManagement()
     {
         if (!isset($_GET['id'])) {
-            $this->redirect("/user/view_profile");
+            $this->redirect("/datasetSubmission/create1");
         } else {
             $dataset = $this->getDataset($_GET['id']);
 
@@ -607,7 +607,7 @@ class DatasetSubmissionController extends Controller
     public function actionFundingManagement()
     {
         if (!isset($_GET['id'])) {
-            $this->redirect("/user/view_profile");
+            $this->redirect("/datasetSubmission/create1");
         } else {
             $dataset = $this->getDataset($_GET['id']);
 
@@ -813,7 +813,7 @@ class DatasetSubmissionController extends Controller
     public function actionSampleManagement()
     {
         if (!isset($_GET['id'])) {
-            $this->redirect("/user/view_profile");
+            $this->redirect("/datasetSubmission/create1");
         }
 
         $dataset = $this->getDataset($_GET['id']);
@@ -1402,7 +1402,7 @@ class DatasetSubmissionController extends Controller
         $dataset = Dataset::model()->findByPk($id);
 
         if (!$dataset) {
-            $this->redirect("/user/view_profile");
+            $this->redirect("/datasetSubmission/create1");
         }
 
         return $dataset;
