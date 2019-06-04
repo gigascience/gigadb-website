@@ -19,6 +19,7 @@
 class Images extends ImageHaver
 {
 
+    /** @var $image_upload CUploadedFile */
     public $image_upload;
     public $is_no_image = 0;
     public static $fup_img = '/images/fair.png';
@@ -49,7 +50,7 @@ class Images extends ImageHaver
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('image_upload', 'file', 'types'=>'jpg, gif, png', 'allowEmpty'=>true, 'on'=>'update'),
+            array('image_upload', 'file', 'types'=>'jpg, jpeg, gif, png', 'allowEmpty'=>true, 'on'=>'update'),
             array('image_upload', 'validateImageUpload'),
             array('license, photographer, source', 'required'),
             array('tag', 'length', 'max'=>120),
@@ -65,7 +66,7 @@ class Images extends ImageHaver
     {
         if (!$this->is_no_image && !$this->$attribute && ($this->getIsNewRecord() || $this->location == 'no_image.jpg')) {
             $labels = $this->attributeLabels();
-            $this->addError($attribute, $labels[$attribute] . ' can not be empty.');
+            $this->addError($attribute, $labels[$attribute] . ' cannot be blank.');
         }
     }
 
@@ -143,8 +144,8 @@ class Images extends ImageHaver
             if ($this->image_upload) {
                 $this->old_image = $this->url;
 
-                $fileName = "{$this->image_upload}";
-                $this->url = MainHelper::getUploadsDir() . '/' .  $fileName;
+                $fileName = time() . '.' . $this->image_upload->getExtensionName();
+                $this->url = MainHelper::getUploadsDir() . '/' . $fileName;
                 $this->location = $fileName;
             }
 
@@ -168,16 +169,24 @@ class Images extends ImageHaver
         }
     }
 
+    /**
+     * @return bool
+     * @throws Exception
+     */
     public function saveImageFile()
     {
         if ($this->image_upload) {
-            if (!$this->image_upload->saveAs($this->url)) {
+            $res = Gregwar\Image\Image::open($this->image_upload->getTempName())
+                ->resize(400, 400, 0xffffff)
+                ->save($this->url);
+
+            if (!$res) {
                 return false;
             }
-        }
 
-        if ($this->old_image && file_exists($this->old_image)) {
-            unlink($this->old_image);
+            if ($this->old_image && file_exists($this->old_image)) {
+                unlink($this->old_image);
+            }
         }
 
         return true;
