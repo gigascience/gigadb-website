@@ -205,7 +205,6 @@ class AuthorTest extends CDbTestCase
             'middle_name' => 'test middle_name',
             'last_name' => 'test last_name',
             'orcid' => 'test orcid',
-            'contribution' => 'contribution1',
         );
 
         $author = new Author();
@@ -215,7 +214,6 @@ class AuthorTest extends CDbTestCase
         $this->assertEquals('test middle_name', $author->middle_name);
         $this->assertEquals('test last_name', $author->surname);
         $this->assertEquals('test orcid', $author->orcid);
-        $this->assertEquals('1', $author->contribution_id);
 	}
 
     function testLoadByCsvRow()
@@ -225,7 +223,6 @@ class AuthorTest extends CDbTestCase
             'test middle_name',
             'test last_name',
             'test orcid',
-            'contribution1',
         );
 
         $author = new Author();
@@ -235,7 +232,6 @@ class AuthorTest extends CDbTestCase
         $this->assertEquals('test middle_name', $author->middle_name);
         $this->assertEquals('test last_name', $author->surname);
         $this->assertEquals('test orcid', $author->orcid);
-        $this->assertEquals('1', $author->contribution_id);
     }
 
     function testValidate()
@@ -245,21 +241,11 @@ class AuthorTest extends CDbTestCase
             'test middle_name',
             'test last_name',
             '1111-2222-3333-4444',
-            'contribution1',
         );
 
         $author = new Author();
         $author->loadByCsvRow($data);
 
         $this->assertTrue($author->validate());
-    }
-
-    public function testAsArray()
-    {
-        $array = $this->authors(0)->asArray();
-
-        $this->assertEquals('Ángel', $array['first_name']);
-        $this->assertEquals('GG', $array['middle_name']);
-        $this->assertEquals('Muñoz', $array['last_name']);
     }
 }

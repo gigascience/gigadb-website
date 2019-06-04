@@ -74,7 +74,7 @@ class ImagesTest extends \CDbTestCase
 
         $this->assertFalse($image->validate());
         $errors = $image->getErrors();
-        $this->assertEquals('Upload Image can not be empty.', $errors['image_upload'][0]);
+        $this->assertEquals('Upload Image cannot be blank.', $errors['image_upload'][0]);
     }
 
     function testValidateCreditRequired() {
@@ -90,7 +90,7 @@ class ImagesTest extends \CDbTestCase
 
         $this->assertFalse($image->validate());
         $errors = $image->getErrors();
-        $this->assertEquals('Image Credit can not be empty.', $errors['photographer'][0]);
+        $this->assertEquals('Image Credit cannot be blank.', $errors['photographer'][0]);
     }
 
     function testSaveWithIsNoImage() {

@@ -12,7 +12,6 @@ class SampleTest extends CDbTestCase
         $data = array(
             'species_name' => 'Adelie penguin',
             'sample_id' => 'Sample Id',
-            'sample_description' => 'Sample Description',
         );
 
         $sample = new Sample();
@@ -20,14 +19,12 @@ class SampleTest extends CDbTestCase
 
         $this->assertEquals(1, $sample->species_id);
         $this->assertEquals('Sample Id', $sample->name);
-        $this->assertEquals('Sample Description', $sample->description);
     }
 
     function testValidate() {
         $data = array(
             'species_name' => 'Adelie penguin',
             'sample_id' => 'Sample Id',
-            'sample_description' => 'Sample Description',
         );
 
         $sample = new Sample();
