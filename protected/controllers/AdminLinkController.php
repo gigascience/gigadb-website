@@ -280,7 +280,7 @@ class AdminLinkController extends Controller
             	// 	Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Please enter a number.")));
             	// }
 
-            	$linkVal =  $_POST['database'].":".$_POST['acc_num'];
+            	$linkVal =  trim($_POST['database']).":".trim($_POST['acc_num']);
 
             	$link = Link::model()->findByAttributes(array('dataset_id'=>$_POST['dataset_id'], 'link'=>$linkVal));
             	if($link) {
@@ -330,7 +330,7 @@ class AdminLinkController extends Controller
                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Accession Number is invalid.")));
             }
 
-            $linkVal =  $_POST['database'].":".$_POST['acc_num'];
+            $linkVal =  trim($_POST['database']).":".trim($_POST['acc_num']);
 
             $link = Link::model()->findByAttributes(array('dataset_id'=>$_POST['dataset_id'], 'link'=>$linkVal));
             if($link) {
