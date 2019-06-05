@@ -41,7 +41,7 @@ foreach ($funders as $funder) {
                         <?= CHtml::dropDownList('funder_id',
                             null,
                             $fundersList,
-                            array('class'=>'js-database dropdown-white js-funding-required', 'style'=>'width:250px'));
+                            array('class'=>'js-database dropdown-white', 'style'=>'width:250px'));
                         ?> * required
                     </div>
                 </div>
@@ -252,8 +252,14 @@ foreach ($funders as $funder) {
         return false;
     });
 
-    $(fundingDiv).on('change', '.js-funding-required', function () {
+    $(fundingDiv).on('change', '#funder_id', function () {
         makeAddActiveIfCan();
+    });
+
+    $(fundingDiv).on('keydown', '.js-funding-required', function () {
+        setTimeout((function(){
+            makeAddActiveIfCan();
+        }), 50);
     });
 
     $(fundingDiv).on('click', ".js-add-funding", function() {

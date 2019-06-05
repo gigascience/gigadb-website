@@ -124,8 +124,10 @@ Rosalind	Elsie	Franklin 	0000-0000-0000-0001	Conceptualization"
         source: contributions
     });
 
-    $(document).on('change', '.js-author-required', function () {
-        makeAddAuthorActiveIfCan();
+    $(document).on('keydown', '.js-author-required', function () {
+        setTimeout((function(){
+            makeAddAuthorActiveIfCan();
+        }), 50);
     });
 
     $(document).on('change', '#authors', function () {

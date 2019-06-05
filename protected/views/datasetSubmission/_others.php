@@ -62,7 +62,7 @@ $exLinks = $isManuscripts || $isProtocols || $is3dImages || $isCodes || $isSourc
     var codesDiv = $('#codes');
     var sourcesDiv = $('#sources');
 
-    $(manuscriptsDiv).on('keydown', 'input[name="link"]', function () {
+    $(manuscriptsDiv).on('keydown', 'input[name="link"]', function (event) {
         var input = $(this);
 
         setTimeout((function(){
@@ -74,10 +74,15 @@ $exLinks = $isManuscripts || $isProtocols || $is3dImages || $isCodes || $isSourc
             } else {
                 $('.js-add-exLink', manuscriptsDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
             }
+
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                $('.js-add-exLink', manuscriptsDiv).trigger('click');
+            }
         }), 50);
     });
 
-    $(protocolsDiv).on('keydown', 'input[name="link"]', function () {
+    $(protocolsDiv).on('keydown', 'input[name="link"]', function (event) {
         var input = $(this);
 
         setTimeout((function(){
@@ -89,10 +94,15 @@ $exLinks = $isManuscripts || $isProtocols || $is3dImages || $isCodes || $isSourc
             } else {
                 $('.js-add-exLink', protocolsDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
             }
+
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                $('.js-add-exLink', protocolsDiv).trigger('click');
+            }
         }), 50);
     });
 
-    $(_3dimagesDiv).on('keydown', 'input[name="link"]', function () {
+    $(_3dimagesDiv).on('keydown', 'input[name="link"]', function (event) {
         var input = $(this);
 
         setTimeout((function(){
@@ -104,10 +114,15 @@ $exLinks = $isManuscripts || $isProtocols || $is3dImages || $isCodes || $isSourc
             } else {
                 $('.js-add-exLink', _3dimagesDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
             }
+
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                $('.js-add-exLink', _3dimagesDiv).trigger('click');
+            }
         }), 50);
     });
 
-    $(codesDiv).on('keydown', 'input[name="link"]', function () {
+    $(codesDiv).on('keydown', 'input[name="link"]', function (event) {
         var input = $(this);
 
         setTimeout((function(){
@@ -118,6 +133,11 @@ $exLinks = $isManuscripts || $isProtocols || $is3dImages || $isCodes || $isSourc
                 $('.js-not-allowed', codesDiv).removeClass('js-not-allowed').addClass('js-add-exLink btn-green');
             } else {
                 $('.js-add-exLink', codesDiv).removeClass('js-add-exLink btn-green').addClass('js-not-allowed');
+            }
+
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                $('.js-add-exLink', codesDiv).trigger('click');
             }
         }), 50);
     });
