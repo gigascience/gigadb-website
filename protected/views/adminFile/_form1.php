@@ -173,12 +173,14 @@
         }
     });
 
-    $(document).on('change', '.js-check-can-get', function () {
-        if ($('#username').val() && $('#password').val()){
-            $('#js-get-files').removeClass('js-not-allowed').addClass('btn-green js-get-files');
-        } else {
-            $('#js-get-files').removeClass('btn-green js-get-file-names').addClass('js-not-allowed');
-        }
+    $(document).on('keydown', '.js-check-can-get', function () {
+        setTimeout((function(){
+            if ($('#username').val() && $('#password').val()){
+                $('#js-get-files').removeClass('js-not-allowed').addClass('btn-green js-get-files');
+            } else {
+                $('#js-get-files').removeClass('btn-green js-get-file-names').addClass('js-not-allowed');
+            }
+        }), 50);
     });
 
     $(document).on('click', ".js-get-files", function(e) {

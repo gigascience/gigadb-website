@@ -93,19 +93,25 @@
     });
 
     $(publicLinksDiv).on('keydown', 'input[name="link"]', function () {
-        var input = $(this);
-
         setTimeout((function(){
-            var val = input.val().trim();
-            var valLength = val.length;
-
-            if (valLength){
-                $('.js-not-allowed', publicLinksDiv).removeClass('js-not-allowed').addClass('js-add-link btn-green');
-            } else {
-                $('.js-add-link', publicLinksDiv).removeClass('js-add-link btn-green').addClass('js-not-allowed');
-            }
+            makePublicAddActiveIfCan();
         }), 50);
     });
+
+    $(publicLinksDiv).on('change', '#prefix', function () {
+        makePublicAddActiveIfCan();
+    });
+
+    function makePublicAddActiveIfCan() {
+        if (
+            $('#prefix', publicLinksDiv).val()
+            && $('input[name="link"]', publicLinksDiv).val()
+        ) {
+            $('.js-not-allowed', publicLinksDiv).removeClass('js-not-allowed').addClass('js-add-link btn-green');
+        } else {
+            $('.js-add-link', publicLinksDiv).removeClass('js-add-link btn-green').addClass('js-not-allowed');
+        }
+    }
 
     $(publicLinksDiv).on('click', ".js-add-link", function(e) {
         e.preventDefault();
@@ -150,7 +156,6 @@
                     $('.js-no-results', publicLinksDiv).before(tr);
                     $('.js-no-results', publicLinksDiv).hide();
 
-                    $('#prefix', publicLinksDiv).val('');
                     $('input[name="link"]', publicLinksDiv).val('');
                     $('.js-add-link', publicLinksDiv).removeClass('js-add-link btn-green').addClass('js-not-allowed');
 
@@ -171,10 +176,7 @@
         if (!confirm('Are you sure you want to delete this item?'))
             return false;
         e.preventDefault();
-        /*var  linkid = $(this).attr('link-id');
-        if (linkid) {
-            deletePublicLinks.push(linkid);
-        }*/
+
         $(this).closest('tr').remove();
 
         if (publicLinksDiv.find('.odd').length === 0) {
