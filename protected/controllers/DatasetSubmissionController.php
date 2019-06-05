@@ -295,7 +295,8 @@ class DatasetSubmissionController extends Controller
             $rows = CsvHelper::parse($authors->getTempName(), $authors->getExtensionName());
 
             $authors = array();
-            foreach ($rows as $num => $row) {
+            foreach ($rows as $i => $row) {
+                $num = $i + 1;
                 $author = new Author();
                 $author->loadByCsvRow($row);
                 if($author->validate()) {
@@ -333,7 +334,8 @@ class DatasetSubmissionController extends Controller
 
             $transaction = Yii::app()->db->beginTransaction();
             if (isset($_POST['authors']) && is_array($_POST['authors'])) {
-                foreach ($_POST['authors'] as $num => $row) {
+                foreach ($_POST['authors'] as $i => $row) {
+                    $num = $i + 1;
                     if ($row['id']) {
                         $da = DatasetAuthor::model()->findByPk($row['id']);
                         if (!$da) {
