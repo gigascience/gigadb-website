@@ -3,7 +3,7 @@ $exLinks = $isManuscripts || $isProtocols || $is3dImages || $isCodes || $isSourc
 ?>
 <div class="form-horizontal additional-bordered">
     <h3 style="display: inline-block">Other links</h3>
-    <a class="myHint" style="float: none;" data-content="Dont know what to add here."></a>
+    <a class="myHint" style="float: none;" data-content="If some of the data in this dataset is already hosted on a stable open access internationally recognized repository such as those listed below please include details."></a>
 
 
     <p class="note">
