@@ -1,6 +1,6 @@
 <div class="form-horizontal additional-bordered">
     <h3 style="display: inline-block">Related GigaDB Datasets</h3>
-    <a class="myHint" style="float: none;" data-content="Dont know what to add here."></a>
+    <a class="myHint" style="float: none;" data-content="If this dataset is directly related to any other previously published GigaDB dataset, for example an update or extension to, please provide the dataset ID and the relationship to complete the sentence below."></a>
 
 
     <p class="note">
