@@ -36,9 +36,9 @@
             </div>
         </div>
 
-        <p class="note js-set-dataset">Please select add accession numbers to your data in the above database</p>
+        <p class="note js-set-database">Please select add accession numbers to your data in the above database</p>
 
-        <div class="control-group js-set-dataset">
+        <div class="control-group js-set-database">
             <label class='control-label'>Accession number</label>
             <a class="myHint" data-content="Please provide unique identifier of linked data, e.g. an SRA accession; SRS012345."></a>
             <div class="controls">
@@ -86,9 +86,9 @@
 
     $(document).on('change', '#prefix', function () {
         if ($(this).val()){
-            $('.js-set-dataset').show();
+            $('.js-set-database').show();
         } else {
-            $('.js-set-dataset').hide();
+            $('.js-set-database').hide();
         }
     });
 

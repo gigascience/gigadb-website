@@ -89,7 +89,7 @@
         .sample-attribute-column{
             white-space: nowrap;
         }
-        .js-set-dataset{
+        .js-set-database{
             display: none;
         }
     </style>
