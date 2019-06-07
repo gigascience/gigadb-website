@@ -1,6 +1,6 @@
 # yii console commands
-# /yii
-# /yii_test
+/yii
+/yii_test
 /yii_test.bat
 
 # phpstorm project files
@@ -41,6 +41,3 @@ phpunit.phar
 /backend/web/index.php
 /backend/web/index-test.php
 /backend/web/robots.txt
-
-# certificates
-/certs
