@@ -138,10 +138,8 @@ foreach ($funders as $funder) {
 
     function makeSaveActiveIfCan() {
         if ($('#funding-no-button').hasClass('btn-green') || $('#funding').find('.odd').length) {
-            console.log('y');
             $('#funding-save').find('.js-not-allowed').removeClass('js-not-allowed').addClass('btn-green js-save-funding');
         } else {
-            console.log('n');
             $('#funding-save').find('.js-save-funding').removeClass('btn-green js-save-funding').addClass('js-not-allowed');
         }
     }
@@ -198,6 +196,8 @@ foreach ($funders as $funder) {
         $this.siblings().removeClass('btn-green btn-disabled').addClass('js-no-button');
 
         fundingDiv.show();
+
+        makeSaveActiveIfCan();
 
         return false;
     });
