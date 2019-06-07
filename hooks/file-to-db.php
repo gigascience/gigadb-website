@@ -218,7 +218,8 @@ function fileMetadata(string $file_name, int $dataset): array
 					"size" => $file_stats[7],
 					"link" => null,
 					"md5" => null,
-					"description" => null
+					"extension" => pathinfo($file_path, PATHINFO_EXTENSION) ?? "",
+					"description" => $file_name
 				);
 
 	$metadata["format"] = getFileFormatFromFile($file_name);
@@ -235,9 +236,15 @@ function fileMetadata(string $file_name, int $dataset): array
  */
 function connectDB(): object
 {
-	$dbh = new PDO('pgsql:host=tus-uppy-proto_database_1;dbname=proto', 'proto', 'proto');
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
-	return $dbh ;
+$appconfig = parse_ini_file("/var/appconfig.ini");
+
+		$db_user = $appconfig["db_user"];
+		$db_password = $appconfig["db_password"];
+		$db_source = $appconfig["db_source"];
+
+		$dbh = new PDO("pgsql:host=database;dbname=$db_source", "$db_user", "$db_password");
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
+		return $dbh ;
 }
 
 /**
@@ -246,33 +253,42 @@ function connectDB(): object
  * using delete and insert approach
  *
  * @param object $dbh database handle
- * @param int $dataset dataset id
+ * @param int $dataset_doi dataset identifier (DOI suffix)
  * @return int number of row updated
  */
-function updateFileTable(object $dbh, int $dataset, array $uploadedFilesMetadata): int
+function updateFileTable(object $dbh, int $dataset_doi, array $uploadedFilesMetadata): int
 {
 	$result = 0;
-	$delete = "delete from file where doi_suffix= ? and status = 'uploading'";
-	$insert = "insert into file(doi_suffix,name,size,status,location,format,data_type,description) values(:d , :n , :z , 'uploading', :l, :f, :t, :s)";
+
+	$getDatasetID = "select id from dataset where identifier = ?" ;
+	$delete = "delete from file where dataset_id= ? and status = 'uploading'";
+	$insert = "insert into file(dataset_id,name,size,status,location,extension,description) values(:d , :n , :z , 'uploading', :l, :e, :s)";
+
+	$get_statement = $dbh->prepare($getDatasetID);
+	$get_statement->bindParam(1, $dataset_doi);
+	$get_statement->execute();
+	$dataset = $get_statement->fetch(PDO::FETCH_OBJ);
 
 	$delete_statement = $dbh->prepare($delete);
-	$delete_statement->bindParam(1, $dataset);
+	$delete_statement->bindParam(1, $dataset->id);
 	$delete_statement->execute();
 
 	$insert_statement = $dbh->prepare($insert);
-	$insert_statement->bindParam(':d', $dataset);
+	$insert_statement->bindParam(':d', $dataset->id);
 	$insert_statement->bindParam(':n', $name);
 	$insert_statement->bindParam(':z', $size);
 	$insert_statement->bindParam(':l', $location);
-	$insert_statement->bindParam(':f', $format);
-	$insert_statement->bindParam(':t', $data_type);
+	// $insert_statement->bindParam(':f', $format);
+	// $insert_statement->bindParam(':t', $data_type);
+	$insert_statement->bindParam(':e', $extension);
 	$insert_statement->bindParam(':s', $summary);
 	foreach ($uploadedFilesMetadata as $file) {
 		$name = $file["file_name"] ;
 		$size = $file["size"] ;
 		$location = $file["link"] ;
-		$format = $file["format"] ;
-		$data_type = $file["data_type"] ;
+		// $format = $file["format"] ;
+		// $data_type = $file["data_type"] ;
+		$extension = $file["extension"] ;
 		$summary = $file["description"] ;
 		$result += $insert_statement->execute();
 	}
@@ -291,7 +307,7 @@ foreach (getDatasetDirectories("/home/downloader/") as $dataset_dir) {
 		$files = [];
 		foreach ( getFiles("/home/downloader/$dataset_dir") as $file ) {
 			echo "    Gathering metadata for $file".PHP_EOL;
-			array_push( $files, fileMetadata($file, $dataset_dir) );
+			array_push( $files, 	fileMetadata($file, $dataset_dir) );
 		}
 		echo "    Updating File table".PHP_EOL;
 		$nbRecords = updateFileTable($dbh, $dataset_dir, $files);
