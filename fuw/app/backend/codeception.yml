@@ -1,10 +1,4 @@
 namespace: backend\tests
-coverage:
-    enabled: true
-    show_only_summary: true
-    include:
-        - controllers/*
-        - models/*
 actor_suffix: Tester
 paths:
     tests: tests
