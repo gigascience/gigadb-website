@@ -87,15 +87,15 @@ function getDatasetDirectories(string $download_path): array
 	$handle = opendir($download_path);
 	while (($file = readdir($handle)) !== false) {
 		if ($file === '.' || $file === '..') {
+			echo "skipping $file because dot file".PHP_EOL;
 			continue;
 		}
 		if ( true != is_dir("$download_path/$file") ) {
+			echo "skipping $file because not a directory".PHP_EOL;
 			continue;
 		}
 		if (1 != preg_match("/\d+/",$file) ) {
-			continue;
-		}
-		if (true != is_newer("$download_path/$file") ) {
+			echo "skipping $file because not matching digits".PHP_EOL;
 			continue;
 		}
 		array_push($datasets, $file);
@@ -125,6 +125,59 @@ function touchFlag()
 }
 
 /**
+ * get flag file
+ *
+ * @param int DOI
+ * @return string path to flag file
+ */
+function getFlag(int $doi_suffix): string
+{
+	return FLAG_PATH."/".$doi_suffix;
+}
+
+/**
+ * set flag file
+ *
+ * @param int DOI
+ * @return bool whether touching file was successful or not
+ */
+function setFlag(int $doi_suffix): bool
+{
+	return touch(FLAG_PATH."/".$doi_suffix);
+}
+
+/**
+ * Compare whether a directory is newer than 2nd file
+ *
+ * If reference file is absent, we assume directory is newer
+ * If directory file is abasent, then directory is not newer
+ *
+ * @param string directory to check if newer than referenc file
+ * @param string reference file
+ * @return bool true or false whether the first file is newer than 2nd file.
+ *
+ */
+function isDirectoryNewerThan(string $dirToCheck, string $referenceFile): bool
+{
+	clearstatcache();
+	if (false == file_exists($referenceFile)) {
+		return true;
+	}
+	if (false == file_exists($dirToCheck)) {
+		return false;
+	}
+
+	$dirTime = filemtime("$dirToCheck/.");
+	$refTime = filemtime($referenceFile);
+	echo "    is_newer:".PHP_EOL;
+	echo "      dir mtime: ".$dirTime.PHP_EOL;
+	echo "      flag mtime: ".$refTime.PHP_EOL;
+	if ($dirTime >= $refTime) {
+		return true;
+	}
+	return false;
+}
+/**
  * Verify whether the directory is newer than the file flag
  *
  * @param string $directory_path directory to compare modification time
@@ -138,6 +191,9 @@ function is_newer(string $directory_path): bool
 	}
 	$dir_stats = stat($directory_path);
 	$flag_stats = stat(FLAG_PATH);
+	echo "  is_newer:".PHP_EOL;
+	echo "    dir mtime: ".$dir_stats[9].PHP_EOL;
+	echo "    flag mtime: ".$flag_stats[9].PHP_EOL;
 	if ($dir_stats[9] >= $flag_stats[9]) {
 		return true;
 	}
@@ -162,7 +218,8 @@ function fileMetadata(string $file_name, int $dataset): array
 					"size" => $file_stats[7],
 					"link" => null,
 					"md5" => null,
-					"description" => null
+					"extension" => pathinfo($file_path, PATHINFO_EXTENSION) ?? "",
+					"description" => $file_name
 				);
 
 	$metadata["format"] = getFileFormatFromFile($file_name);
@@ -179,9 +236,15 @@ function fileMetadata(string $file_name, int $dataset): array
  */
 function connectDB(): object
 {
-	$dbh = new PDO('pgsql:host=database;dbname=proto', 'proto', 'proto');
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
-	return $dbh ;
+$appconfig = parse_ini_file("/var/appconfig.ini");
+
+		$db_user = $appconfig["db_user"];
+		$db_password = $appconfig["db_password"];
+		$db_source = $appconfig["db_source"];
+
+		$dbh = new PDO("pgsql:host=database;dbname=$db_source", "$db_user", "$db_password");
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
+		return $dbh ;
 }
 
 /**
@@ -190,33 +253,42 @@ function connectDB(): object
  * using delete and insert approach
  *
  * @param object $dbh database handle
- * @param int $dataset dataset id
+ * @param int $dataset_doi dataset identifier (DOI suffix)
  * @return int number of row updated
  */
-function updateFileTable(object $dbh, int $dataset, array $uploadedFilesMetadata): int
+function updateFileTable(object $dbh, int $dataset_doi, array $uploadedFilesMetadata): int
 {
 	$result = 0;
-	$delete = "delete from file where doi_suffix= ? and status = 'uploading'";
-	$insert = "insert into file(doi_suffix,name,size,status,location,format,data_type,description) values(:d , :n , :z , 'uploading', :l, :f, :t, :s)";
+
+	$getDatasetID = "select id from dataset where identifier = ?" ;
+	$delete = "delete from file where dataset_id= ? and status = 'uploading'";
+	$insert = "insert into file(dataset_id,name,size,status,location,extension,description) values(:d , :n , :z , 'uploading', :l, :e, :s)";
+
+	$get_statement = $dbh->prepare($getDatasetID);
+	$get_statement->bindParam(1, $dataset_doi);
+	$get_statement->execute();
+	$dataset = $get_statement->fetch(PDO::FETCH_OBJ);
 
 	$delete_statement = $dbh->prepare($delete);
-	$delete_statement->bindParam(1, $dataset);
+	$delete_statement->bindParam(1, $dataset->id);
 	$delete_statement->execute();
 
 	$insert_statement = $dbh->prepare($insert);
-	$insert_statement->bindParam(':d', $dataset);
+	$insert_statement->bindParam(':d', $dataset->id);
 	$insert_statement->bindParam(':n', $name);
 	$insert_statement->bindParam(':z', $size);
 	$insert_statement->bindParam(':l', $location);
-	$insert_statement->bindParam(':f', $format);
-	$insert_statement->bindParam(':t', $data_type);
+	// $insert_statement->bindParam(':f', $format);
+	// $insert_statement->bindParam(':t', $data_type);
+	$insert_statement->bindParam(':e', $extension);
 	$insert_statement->bindParam(':s', $summary);
 	foreach ($uploadedFilesMetadata as $file) {
 		$name = $file["file_name"] ;
 		$size = $file["size"] ;
 		$location = $file["link"] ;
-		$format = $file["format"] ;
-		$data_type = $file["data_type"] ;
+		// $format = $file["format"] ;
+		// $data_type = $file["data_type"] ;
+		$extension = $file["extension"] ;
 		$summary = $file["description"] ;
 		$result += $insert_statement->execute();
 	}
@@ -226,20 +298,24 @@ function updateFileTable(object $dbh, int $dataset, array $uploadedFilesMetadata
 
 clearstatcache();
 $dbh = connectDB();
-echo "Scanning file system".PHP_EOL;
+echo "Scanning file system...".PHP_EOL;
 
 foreach (getDatasetDirectories("/home/downloader/") as $dataset_dir) {
-	echo "----------------- $dataset_dir ---------------".PHP_EOL;
-	$files = [];
-	foreach ( getFiles("/home/downloader/$dataset_dir") as $file ) {
-		echo "Gathering metadata for $file".PHP_EOL;
-		array_push( $files, fileMetadata($file, $dataset_dir) );
+	echo "  * Found dataset directory $dataset_dir".PHP_EOL;
+	if ( isDirectoryNewerThan( "/home/downloader/$dataset_dir", getFlag($dataset_dir) ) ) {
+
+		$files = [];
+		foreach ( getFiles("/home/downloader/$dataset_dir") as $file ) {
+			echo "    Gathering metadata for $file".PHP_EOL;
+			array_push( $files, 	fileMetadata($file, $dataset_dir) );
+		}
+		echo "    Updating File table".PHP_EOL;
+		$nbRecords = updateFileTable($dbh, $dataset_dir, $files);
+		echo "    Number of records changed for files in $dataset_dir: $nbRecords".PHP_EOL;
+
+		setFlag($dataset_dir);
 	}
-	echo "Updating File table...".PHP_EOL;
-	$nbRecords = updateFileTable($dbh, $dataset_dir, $files);
-	echo "Number of records changed for files in $dataset_dir: $nbRecords".PHP_EOL;
 }
 
-touchFlag();
 
 ?>
