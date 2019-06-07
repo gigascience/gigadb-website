@@ -109,24 +109,14 @@
             <th>Click to Delete</th>
         </tr>
         <tr>
-            <td>100001</td>
-            <td><a href="<?= $web_endpoint ?>create.php?d=100001">Create Drop Box Account</a></td>
-            <td><a href="<?= $web_endpoint ?>retire.php?d=100001">Delete Drop Box Account</a></td>
-        </tr>
-        <tr>
-            <td>100002</td>
-            <td><a href="<?= $web_endpoint ?>create.php?d=100002">Create Drop Box Account</a></td>
-            <td><a href="<?= $web_endpoint ?>retire.php?d=100002">Delete Drop Box Account</a></td>
-        </tr>
-        <tr>
-            <td>100003</td>
-            <td><a href="<?= $web_endpoint ?>create.php?d=100003">Create Drop Box Account</a></td>
-            <td><a href="<?= $web_endpoint ?>retire.php?d=100003">Delete Drop Box Account</a></td>
-        </tr>
-        <tr>
             <td>100004</td>
             <td><a href="<?= $web_endpoint ?>create.php?d=100004">Create Drop Box Account</a></td>
             <td><a href="<?= $web_endpoint ?>retire.php?d=100004">Delete Drop Box Account</a></td>
+        </tr>
+        <tr>
+            <td>100005</td>
+            <td><a href="<?= $web_endpoint ?>create.php?d=100005">Create Drop Box Account</a></td>
+            <td><a href="<?= $web_endpoint ?>retire.php?d=100005">Delete Drop Box Account</a></td>
         </tr>
     </table>
     <hr>
