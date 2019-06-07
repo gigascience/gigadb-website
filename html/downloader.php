@@ -11,11 +11,11 @@
 
 	/**
 	 * the file class
-	 * id | doi_suffix | name | size | status | location | description | initial_md5 | format | data_type | created_at | updated_at
+	 * id | dataset_id | name | size | status | location | description | initial_md5 | format | data_type | created_at | updated_at
 	 */
 	class File {
 	    public $id;
-	    public $doi_suffix;
+	    public $dataset_id;
 	    public $name;
 	    public $size;
 	    public $status;
@@ -35,11 +35,11 @@
 	 * @param int $dataset DOI suffix
 	 * @return array list of files
 	 */
-	function getFileTable(object $dbh, int $dataset): array
+	function getFileTable(object $dbh, int $dataset_doi): array
 	{
-		$sql = "select * from file where doi_suffix= ? and status = 'uploading'";
+		$sql = "select * from file where dataset_id = (select id from dataset where identifier = ?)  and status = 'uploading'";
 		$st = $dbh->prepare($sql);
-		$st->bindParam(1, $dataset);
+		$st->bindParam(1, $dataset_doi);
 		$st->execute();
 		return $st->fetchAll(PDO::FETCH_CLASS, "File");
 	}
@@ -94,7 +94,7 @@
             <table border="1">
                 <tr>
                     <th>id</th>
-                    <th>doi_suffix</th>
+                    <th>dataset_id</th>
                     <th>name</th>
                     <th>size</th>
                     <!-- <th>status</th> -->
@@ -112,7 +112,7 @@
                         <?= $file->id ?>
                     </td>
                     <td>
-                        <?= $file->doi_suffix ?>
+                        <?= $file->dataset_id ?>
                     </td>
                     <td>
                         <?= $file->name ?>
