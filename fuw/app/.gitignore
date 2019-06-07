@@ -1,6 +1,6 @@
 # yii console commands
-# /yii
-# /yii_test
+/yii
+/yii_test
 /yii_test.bat
 
 # phpstorm project files
@@ -35,16 +35,9 @@ phpunit.phar
 /.vagrant
 
 # ignore generated files
-frontend/web/index.php
-frontend/web/index-test.php
-frontend/web/robots.txt
-backend/web/index.php
-backend/web/index-test.php
-backend/web/robots.txt
-
-# certificates
-/certs
-
-# ignore Yii2 generated environments/ as conflict with Gigadb config build
-
-environments/*
+/frontend/web/index.php
+/frontend/web/index-test.php
+/frontend/web/robots.txt
+/backend/web/index.php
+/backend/web/index-test.php
+/backend/web/robots.txt
