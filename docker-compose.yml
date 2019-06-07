@@ -61,11 +61,12 @@ services:
       - ../php-conf/appconfig.ini:/var/appconfig.ini:ro
     networks:
       - proto
+      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
 
-  database:
+  db:
     image: postgres:9.6-alpine
     volumes:
       - ../db_schema.sql:/docker-entrypoint-initdb.d/1-db_schema.sql
@@ -75,7 +76,7 @@ services:
       POSTGRES_PASSWORD: proto
     ports:
       - target: 5432
-        published: 54321
+        published: 54322
         protocol: tcp
         mode: host
     networks:
@@ -127,6 +128,7 @@ services:
       - "9000"
     networks:
       - proto
+      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
@@ -134,3 +136,6 @@ services:
 
 networks:
   proto:
+  db-tier:
+    external: true
+    name: deployment_db-tier

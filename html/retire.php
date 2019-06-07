@@ -79,7 +79,7 @@ function removeFTPAccount(string $dataset): bool
 function deleteFileRecords(string $dataset): bool
 {
 	$dbh = connectDB();
-	$delete = "delete from file where doi_suffix= ? and status = 'uploading'";
+	$delete = "delete from file where dataset_id= ? and status = 'uploading'";
 	$delete_statement = $dbh->prepare($delete);
 	$delete_statement->bindParam(1, $dataset);
 	return $delete_statement->execute();
