@@ -71,16 +71,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        if ("www.gigadb.org" === $token->getClaim('iss')
-            && "fuw.gigadb.org" === $token->getClaim('aud')
-            && "API Access request from client" === $token->getClaim('sub')
-        ) {
-            return static::findOne([
-                'email' => $token->getClaim('email'),
-                'status' => self::STATUS_ACTIVE,
-            ]);
-        }
-        return null;
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
     /**

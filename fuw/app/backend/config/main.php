@@ -41,23 +41,14 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-
+        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'filedrop-account'],
-                'site/login' => 'site/login',
             ],
         ],
-
-        'request' => [
-            'parsers' => [
-                'application/json' => 'yii\web\JsonParser',
-            ]
-        ],
-
+        */
     ],
     'params' => $params,
 ];
