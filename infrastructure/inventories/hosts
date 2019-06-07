@@ -12,3 +12,6 @@ target_platform = aws
 app_url = {{ vault_app_url }}
 app_email = {{ vault_app_email }}
 tusd_url = {{ vault_tusd_url }}
+db_user =  {{ vault_db_user }}
+db_password = {{ vault_db_password }}
+db_source = {{ vault_db_source }}
