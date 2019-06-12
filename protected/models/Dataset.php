@@ -20,8 +20,10 @@ Yii::import('application.extensions.CAdvancedArBehavior');
  * @property integer $publisher_id
  * @property string $token
  * @property string $fairnuse
- * @property string $additional_information
+ * @property integer $additional_information
  * @property integer $funding
+ * @property integer $is_test
+ * @property string $creation_date
  */
 class Dataset extends CActiveRecord
 {
@@ -91,7 +93,7 @@ class Dataset extends CActiveRecord
         // will receive user inputs.
         return array(
             array('submitter_id, identifier, title, ftp_site, types', 'required'),
-            array('submitter_id, image_id, publisher_id, funding', 'numerical', 'integerOnly'=>true),
+            array('submitter_id, image_id, publisher_id, funding, is_test', 'numerical', 'integerOnly'=>true),
             array('dataset_size', 'numerical'),
             array('identifier, excelfile_md5', 'length', 'max'=>32),
             array('title', 'length', 'max'=>300),
@@ -100,7 +102,7 @@ class Dataset extends CActiveRecord
             array('manuscript_id', 'length', 'max'=>50),
             array('ftp_site', 'length', 'max'=>100),
             array('excelfile', 'length', 'max'=>50),
-            array('description, publication_date, modification_date, image_id, fairnuse, types', 'safe'),
+            array('description, publication_date, modification_date, creation_date, image_id, fairnuse, types', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('id, submitter_id, image_id, identifier, title, description, publisher, dataset_size, ftp_site, upload_status, excelfile, excelfile_md5, publication_date, modification_date', 'safe', 'on'=>'search'),
@@ -683,4 +685,184 @@ class Dataset extends CActiveRecord
         return isset($this->funding) ? !!$this->funding : null;
     }
 
+
+    public function removeWithAllData()
+    {
+        $transaction = Yii::app()->db->beginTransaction();
+
+        //AUTHORS
+        $das = DatasetAuthor::model()->findAllByAttributes(array('dataset_id'=>$this->id));
+        foreach ($das as $da) {
+            $author = $da->author;
+            if (!$da->delete()) {
+                $transaction->rollback();
+                return false;
+            }
+
+            //if Author doesnt exist in another DatasetAuthor then delete it
+            $das2 = DatasetAuthor::model()->findByAttributes(array('author_id' => $author->id));
+            if (!count($das2)) {
+                if (!$author->delete()) {
+                    $transaction->rollback();
+                    return false;
+                }
+            }
+        }
+
+        //ADDITIONAL
+        $links = Link::model()->findAllByAttributes(array('dataset_id'=>$this->id));
+        foreach ($links as $link) {
+            if (!$link->delete()) {
+                $transaction->rollback();
+                return false;
+            }
+        }
+
+        $relations = Relation::model()->findAllByAttributes(array('dataset_id'=>$this->id));
+        foreach ($relations as $relation) {
+            if (!$relation->delete()) {
+                $transaction->rollback();
+                return false;
+            }
+        }
+
+        $projects = DatasetProject::model()->findAllByAttributes(array('dataset_id'=>$this->id));
+        foreach ($projects as $project) {
+            if (!$project->delete()) {
+                $transaction->rollback();
+                return false;
+            }
+        }
+
+        $manuscripts = Manuscript::model()->findAllByAttributes(array('dataset_id'=>$this->id));
+        foreach ($manuscripts as $manuscript) {
+            if (!$manuscript->delete()) {
+                $transaction->rollback();
+                return false;
+            }
+        }
+
+        $exLinks = ExternalLink::model()->findAllByAttributes(array('dataset_id'=>$this->id));
+        foreach ($exLinks as $exLink) {
+            if (!$exLink->delete()) {
+                $transaction->rollback();
+                return false;
+            }
+        }
+
+        //FUNDING
+        $fundings = DatasetFunder::model()->findAllByAttributes(array('dataset_id'=>$this->id));
+        foreach ($fundings as $funding) {
+            if (!$funding->delete()) {
+                $transaction->rollback();
+                return false;
+            }
+        }
+
+        //SAMPLES
+        $samples = $this->samples;
+        $attributes = array();
+        foreach ($samples as $sample) {
+            $sampleAttributes = SampleAttribute::model()->findAllByAttributes(array('sample_id'=>$sample->id));
+            foreach ($sampleAttributes as $sampleAttribute) {
+                $attributes[$sampleAttribute->attribute->id] = $sampleAttribute->attribute;
+                if (!$sampleAttribute->delete()) {
+                    $transaction->rollback();
+                    return false;
+                }
+            }
+        }
+
+        //FILES
+        $files = File::model()->findAllByAttributes(array('dataset_id'=>$this->id));
+        foreach ($files as $file) {
+            if (!$file->delete()) {
+                $transaction->rollback();
+                return false;
+            }
+        }
+
+        //DATASET
+        $image = $this->image;
+        $url = $image->url;
+        if (!$image->delete()) {
+            $transaction->rollback();
+            return false;
+        }
+
+        $logs = DatasetLog::model()->findAllByAttributes(array('dataset_id'=>$this->id));
+        foreach ($logs as $log) {
+            if (!$log->delete()) {
+                $transaction->rollback();
+                return false;
+            }
+        }
+
+        $datasetAttributes = $this->datasetAttributes;
+        foreach ($datasetAttributes as $datasetAttribute) {
+            $attributes[$datasetAttribute->attribute->id] = $datasetAttribute->attribute;
+            if (!$datasetAttribute->delete()) {
+                $transaction->rollback();
+                return false;
+            }
+        }
+
+        //if Attribute doesnt exist in another SampleAttribute, DatasetAttributes, etc then delete it
+        foreach ($attributes as $attribute) {
+            if (!$attribute->is_test) {
+                continue;
+            }
+
+            $exp_attributes = $attribute->exp_attributes;
+            $sample_attributes = $attribute->sample_attributes;
+            $dataset_attributes = $attribute->dataset_attributes;
+            $file_attributes = $attribute->file_attributes;
+            if (!count($exp_attributes) && !count($sample_attributes) && !count($dataset_attributes) && !count($file_attributes)) {
+                if (!$attribute->delete()) {
+                    $transaction->rollback();
+                    return false;
+                }
+            }
+        }
+
+        if (!$this->delete()) {
+            $transaction->rollback();
+            return false;
+        }
+
+        if ($url && $url != Images::NO_IMG_URL && file_exists($url)) {
+            unlink($image->url);
+        }
+
+        $transaction->commit();
+        return true;
+    }
+
+    public function toReal()
+    {
+        $transaction = Yii::app()->db->beginTransaction();
+
+        $this->is_test = 0;
+
+        if (!$this->save(false)) {
+            $transaction->rollback();
+            return false;
+        }
+
+        $samples = $this->samples;
+        foreach ($samples as $sample) {
+            $sampleAttributes = SampleAttribute::model()->findAllByAttributes(array('sample_id'=>$sample->id));
+            foreach ($sampleAttributes as $sampleAttribute) {
+                $attr = $sampleAttribute->attribute;
+                $attr->is_test = 0;
+                if (!$attr->save()) {
+                    $transaction->rollback();
+                    return false;
+                }
+            }
+        }
+
+        $transaction->commit();
+        return true;
+    }
 }

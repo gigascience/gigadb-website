@@ -3,6 +3,10 @@ $controller = Yii::app()->controller->id;
 $action = Yii::app()->controller->action->id;
 ?>
 
+<?php if ($model->is_test): ?>
+    <div style="color: red;font-weight: bold;">This is ONLY for testing and cannot be submitted!</div>
+<?php endif; ?>
+
 <a href="<?= $model->getIsNewRecord() ? '#' : "/datasetSubmission/create1/id/{$model->id}" ?>"
    class="btn <?= $controller == 'datasetSubmission' && $action == 'create1' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'Study')?></a>
 <a href="/datasetSubmission/authorManagement/id/<?= $model->id ?>"
