@@ -92,6 +92,12 @@
         .js-set-database{
             display: none;
         }
+        .btn-red{
+            background: -webkit-gradient(linear,0 0,0 bottom,from(#ff9999),to(red)) !important;
+        }
+        .btn-red:hover{
+            background: #cc0000 !important;
+        }
     </style>
     <script>
         $(document).ready(function () {
