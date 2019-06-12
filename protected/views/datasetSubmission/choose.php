@@ -22,6 +22,13 @@
                 <a href="/datasetSubmission/create1" class="btn-green upload-control">Create new dataset online using wizard</a>
                 <a class="myHint" style="float: none;" data-content="If possible, we recommend using the online submission wizard, it affords you the submitter the most control over your metadata and provides automatic validation on various steps. Submission made using the wizard are often processed faster than those made using the upload spreadsheet option." data-original-title="" title=""></a>
             </div>
+
+            <div class="center" style="margin: 15px 0 10px 0">OR</div>
+
+            <div class="center">
+                <a href="/datasetSubmission/create1/is_test/1" class="btn-green btn-red upload-control">Create test dataset online using wizard</a>
+                <a class="myHint" style="float: none;" data-content="If possible, we recommend using the online submission wizard, it affords you the submitter the most control over your metadata and provides automatic validation on various steps. Submission made using the wizard are often processed faster than those made using the upload spreadsheet option." data-original-title="" title=""></a>
+            </div>
         </div>
     </div>
 </div>
