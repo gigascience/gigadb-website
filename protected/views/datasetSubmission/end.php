@@ -20,6 +20,9 @@
 
             <div class="clear"></div>
             <div style="text-align:center" >
+                <?php if ($model->is_test): ?>
+                    <a href="/datasetSubmission/end/id/<?= $model->id ?>/is_test/0" class="btn-green">Make this submission REAL</a>
+                <?php endif; ?>
                 <a href="/user/view_profile#submitted" class="btn-green">Return to your profile page</a>
             </div>
         </div>

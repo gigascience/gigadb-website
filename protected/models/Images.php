@@ -19,6 +19,8 @@
 class Images extends ImageHaver
 {
 
+    const NO_IMG_URL = "http://gigadb.org/images/data/cropped/no_image.png";
+
     /** @var $image_upload CUploadedFile */
     public $image_upload;
     public $is_no_image = 0;
@@ -155,11 +157,11 @@ class Images extends ImageHaver
             $this->source = $data['source'];
             $this->is_no_image = 0;
         } else {
-            if ($this->url && $this->url != "http://gigadb.org/images/data/cropped/no_image.png") {
+            if ($this->url && $this->url != static::NO_IMG_URL) {
                 $this->old_image = $this->url;
             }
 
-            $this->url="http://gigadb.org/images/data/cropped/no_image.png";
+            $this->url=static::NO_IMG_URL;
             $this->location="no_image.jpg";
             $this->tag="no image icon";
             $this->license="Public domain";
