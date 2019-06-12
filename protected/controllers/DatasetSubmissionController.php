@@ -33,7 +33,7 @@ class DatasetSubmissionController extends Controller
         return array(
             array('allow',  // allow logged-in users to perform 'upload'
                 'actions'=>array('choose', 'upload','delete','create1','submit','updateSubmit', 'updateFile',
-                    'authorManagement', 'validateAuthor', 'addAuthors', 'saveAuthors',
+                    'datasetManagement', 'authorManagement', 'validateAuthor', 'addAuthors', 'saveAuthors',
                     'additionalManagement', 'saveAdditional',
                     'fundingManagement', 'validateFunding', 'saveFundings',
                     'projectManagement','linkManagement','exLinkManagement',
@@ -190,6 +190,22 @@ class DatasetSubmissionController extends Controller
     public function actionCreate1()
     {
         if (isset($_GET['id'])) {
+            $this->redirect(array('/datasetSubmission/datasetManagement', 'id'=>$_GET['id']));
+        } else {
+            $dataset = new Dataset();
+            $dataset->is_test = isset($_GET['is_test']) && $_GET['is_test'] === '1' ? 1 : 0;
+            $dataset->creation_date = date('Y-m-d');
+            $image = new Images();
+        }
+
+        $this->datasetUpdate($dataset, $image);
+
+        $this->render('create1', array('model' => $dataset, 'image'=>$image));
+    }
+
+    public function actionDatasetManagement()
+    {
+        if (isset($_GET['id'])) {
             $dataset = $this->getDataset($_GET['id']);
             $dataset->modification_date = date('Y-m-d');
             $image = $dataset->image ?: new Images();
@@ -202,12 +218,16 @@ class DatasetSubmissionController extends Controller
 
             $this->isSubmitter($dataset);
         } else {
-            $dataset = new Dataset();
-            $dataset->is_test = isset($_GET['is_test']) && $_GET['is_test'] === '1' ? 1 : 0;
-            $dataset->creation_date = date('Y-m-d');
-            $image = new Images();
+            $this->redirect(array('/datasetSubmission/create1'));
         }
 
+        $this->datasetUpdate($dataset, $image);
+
+        $this->render('create1', array('model' => $dataset, 'image'=>$image));
+    }
+
+    protected function datasetUpdate(Dataset $dataset, Images $image)
+    {
         if (isset($_POST['Dataset']) && isset($_POST['Images'])) {
             $newKeywords = isset($_POST['keywords']) ? $_POST['keywords'] : '';
             $newTypes = isset($_POST['datasettypes']) ? $_POST['datasettypes'] : array();
@@ -231,11 +251,9 @@ class DatasetSubmissionController extends Controller
                 if (isset($_POST['redirect_url']) && $_POST['redirect_url']) {
                     $this->redirect($_POST['redirect_url']);
                 }
-                $this->redirect(array('/datasetSubmission/create1', 'id'=>$dataset->id));
+                $this->redirect(array('/datasetSubmission/datasetManagement', 'id'=>$dataset->id));
             }
         }
-
-        $this->render('create1', array('model' => $dataset, 'image'=>$image));
     }
 
     public function actionAuthorManagement()
