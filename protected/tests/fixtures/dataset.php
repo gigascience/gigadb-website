@@ -25,6 +25,7 @@ return array(
 		'upload_status'=>'Published',
 		'publication_date'=>'2018-08-10',
 		'publisher_id'=>1,
+		'is_test'=>1,
 	),
 	array(
 		'id'=>3,
