@@ -885,14 +885,7 @@ class DatasetSubmissionController extends Controller
         }
 
         $species = Species::model()->findAll(array('order'=>'common_name asc'));
-        if ($dataset->is_test) {
-            $attrs = Attribute::model()->findAll(array('order'=>'attribute_name asc'));
-        } else {
-            $criteria = new CDbCriteria();
-            $criteria->condition = "is_test IS NULL OR is_test = 0";
-            $attrs = Attribute::model()->findAll($criteria, array('order'=>'attribute_name asc'));
-        }
-
+        $attrs = Attribute::model()->findAll(array('order'=>'attribute_name asc'));
 
         $this->render('sampleManagement', array(
             'model' => $dataset,
@@ -920,7 +913,7 @@ class DatasetSubmissionController extends Controller
                 $lastRequired = 2;
                 $matches = array();
                 for ($j = 3, $k = count($rows[0]); $j < $k; $j++) {
-                    if (!empty($rows[0][$j])) {
+                    if (empty($rows[0][$j])) {
                         $match = $rows[0][$j];
                         $match = addcslashes($match, '%_');
                         $criteria = new CDbCriteria( array(
@@ -977,20 +970,10 @@ class DatasetSubmissionController extends Controller
             foreach ($newSampleAttrs as $i => $newSampleAttr) {
                 $attr = Attribute::model()->findByAttributes(array('attribute_name' => $newSampleAttr['attr_name']));
                 if (!$attr) {
-                    $attr = new Attribute;
-                    $attr->attribute_name = $newSampleAttr['attr_name'];
-                    $attr->is_test = $dataset->is_test ? 1 : 0;
-                    if (!$attr->validate()) {
-                        $transaction->rollback();
-                        $error = current($attr->getErrors());
-                        Util::returnJSON(array(
-                            "success"=>false,
-                            "message"=> 'Col ' . ($i + 4) . ': ' . current($error)
-                        ));
-                    }
-                    $attr->save();
-                } else {
-                    $attr->is_test = $dataset->is_test ? 1 : 0;
+                    Util::returnJSON(array(
+                        "success"=>false,
+                        "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute does\'nt exist. You can try an alternative attribute name or use "miscellaneous parameter" and include your own attribute name within the value, e.g. miscellaneous parameter=users-own-attribute-name:value-of-attribute',
+                    ));
                 }
 
                 $attrs[] = $attr;

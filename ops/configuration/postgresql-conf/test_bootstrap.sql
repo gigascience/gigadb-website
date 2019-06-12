@@ -4427,6 +4427,3 @@ CREATE TABLE "template_attribute" (
 ALTER TABLE "dataset"
 ADD "is_test" smallint NULL,
 ADD "creation_date" date NULL;
-
-ALTER TABLE "attribute"
-ADD "is_test" smallint NULL;

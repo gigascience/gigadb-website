@@ -27,7 +27,5 @@
 	 //$this->loadFixture("species");
 	// $this->loadFixture("file");
 	 $this->loadFixture("sample");
-	 $this->loadFixture("dataset_sample");
-	 $this->loadFixture("sample_attribute");
 	// $this->loadFixture("file_sample");
 ?>
