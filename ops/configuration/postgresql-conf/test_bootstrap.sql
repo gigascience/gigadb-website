@@ -4423,3 +4423,10 @@ CREATE TABLE "template_attribute" (
     CONSTRAINT "sample_template_attribute_sample_template_id_fkey" FOREIGN KEY (template_name_id) REFERENCES template_name(id) ON DELETE CASCADE NOT DEFERRABLE,
     CONSTRAINT "sample_template_attribute_attribute_id_fkey" FOREIGN KEY (attribute_id) REFERENCES attribute(id) ON DELETE CASCADE NOT DEFERRABLE
 ) WITH (oids = false);
+
+ALTER TABLE "dataset"
+ADD "is_test" smallint NULL,
+ADD "creation_date" date NULL;
+
+ALTER TABLE "attribute"
+ADD "is_test" smallint NULL;

@@ -7,6 +7,9 @@ class DatasetTest extends CDbTestCase
         'datasets'=>'Dataset',
         'authors'=>'Author',
         'dataset_author'=>'DatasetAuthor',
+        'sample'=>'Sample',
+        'dataset_sample'=>'DatasetSample',
+        'sample_attribute'=>'SampleAttribute',
     );
 
  	function testGetAuthors() {
@@ -104,5 +107,26 @@ class DatasetTest extends CDbTestCase
         $authors = $dataset->getAuthor();
         $this->assertEquals(1, count($authors));
         $this->assertEquals('Juan', $authors[0]['first_name']);
+    }
+
+    function testRemoveWithAllData() {
+        $dataset = $this->datasets(2);
+
+        $this->assertTrue($dataset->removeWithAllData());
+    }
+
+    function testToReal() {
+        $dataset = Dataset::model()->findByPk(2);
+        $attr = Attribute::model()->findByPk(3);
+
+        $this->assertEquals(1, $dataset->is_test);
+        $this->assertEquals(1, $attr->is_test);
+
+        $this->assertTrue($dataset->toReal());
+        $dataset = Dataset::model()->findByPk(2);
+        $attr = Attribute::model()->findByPk(3);
+
+        $this->assertEquals(0, $dataset->is_test);
+        $this->assertEquals(0, $attr->is_test);
     }
  }

@@ -688,7 +688,10 @@ class Dataset extends CActiveRecord
 
     public function removeWithAllData()
     {
-        $transaction = Yii::app()->db->beginTransaction();
+        $transaction = Yii::app()->db->getCurrentTransaction();
+        if (!$transaction) {
+            $transaction = Yii::app()->db->beginTransaction();
+        }
 
         //AUTHORS
         $das = DatasetAuthor::model()->findAllByAttributes(array('dataset_id'=>$this->id));
@@ -784,8 +787,8 @@ class Dataset extends CActiveRecord
 
         //DATASET
         $image = $this->image;
-        $url = $image->url;
-        if (!$image->delete()) {
+        $url = $image ? $image->url : '';
+        if ($image && $image->delete()) {
             $transaction->rollback();
             return false;
         }
@@ -835,12 +838,16 @@ class Dataset extends CActiveRecord
         }
 
         $transaction->commit();
+
         return true;
     }
 
     public function toReal()
     {
-        $transaction = Yii::app()->db->beginTransaction();
+        $transaction = Yii::app()->db->getCurrentTransaction();
+        if (!$transaction) {
+            $transaction = Yii::app()->db->beginTransaction();
+        }
 
         $this->is_test = 0;
 
