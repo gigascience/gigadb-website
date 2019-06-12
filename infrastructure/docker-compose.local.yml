@@ -18,5 +18,22 @@ services:
       - ../repo:/home/downloader/
       - ../hooks:/commands:ro
       - ../credentials:/var/access:ro
-      - /var/tmp:/var/tmp
+      - ../flags:/var/tmp/processing_flag
       - ../php-conf/appconfig.ini:/var/appconfig.ini:ro
+
+  web:
+    image: nginx:1.15-alpine
+    volumes:
+      - ../app/certs:/etc/letsencrypt
+    ports:
+      - target: 443
+        published: 7443
+        protocol: tcp
+        mode: host
+
+  cert:
+    build:
+      context: ../minica
+    volumes:
+      - ../app/certs/live:/ca
+    command: --domains '*.pommetab.com'
