@@ -36,11 +36,6 @@ return array(
 		'dataset_id' => 2,
 		'sample_id' => 7,
 	),
-    array(
-        'id' => 8,
-        'dataset_id' => 2,
-        'sample_id' => 2,
-    ),
 );
 
 ?>

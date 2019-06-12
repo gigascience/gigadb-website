@@ -764,11 +764,9 @@ class Dataset extends CActiveRecord
 
         //SAMPLES
         $samples = $this->samples;
-        $attributes = array();
         foreach ($samples as $sample) {
             $sampleAttributes = SampleAttribute::model()->findAllByAttributes(array('sample_id'=>$sample->id));
             foreach ($sampleAttributes as $sampleAttribute) {
-                $attributes[$sampleAttribute->attribute->id] = $sampleAttribute->attribute;
                 if (!$sampleAttribute->delete()) {
                     $transaction->rollback();
                     return false;
@@ -803,28 +801,9 @@ class Dataset extends CActiveRecord
 
         $datasetAttributes = $this->datasetAttributes;
         foreach ($datasetAttributes as $datasetAttribute) {
-            $attributes[$datasetAttribute->attribute->id] = $datasetAttribute->attribute;
             if (!$datasetAttribute->delete()) {
                 $transaction->rollback();
                 return false;
-            }
-        }
-
-        //if Attribute doesnt exist in another SampleAttribute, DatasetAttributes, etc then delete it
-        foreach ($attributes as $attribute) {
-            if (!$attribute->is_test) {
-                continue;
-            }
-
-            $exp_attributes = $attribute->exp_attributes;
-            $sample_attributes = $attribute->sample_attributes;
-            $dataset_attributes = $attribute->dataset_attributes;
-            $file_attributes = $attribute->file_attributes;
-            if (!count($exp_attributes) && !count($sample_attributes) && !count($dataset_attributes) && !count($file_attributes)) {
-                if (!$attribute->delete()) {
-                    $transaction->rollback();
-                    return false;
-                }
             }
         }
 
@@ -844,32 +823,12 @@ class Dataset extends CActiveRecord
 
     public function toReal()
     {
-        $transaction = Yii::app()->db->getCurrentTransaction();
-        if (!$transaction) {
-            $transaction = Yii::app()->db->beginTransaction();
-        }
-
         $this->is_test = 0;
 
         if (!$this->save(false)) {
-            $transaction->rollback();
             return false;
         }
 
-        $samples = $this->samples;
-        foreach ($samples as $sample) {
-            $sampleAttributes = SampleAttribute::model()->findAllByAttributes(array('sample_id'=>$sample->id));
-            foreach ($sampleAttributes as $sampleAttribute) {
-                $attr = $sampleAttribute->attribute;
-                $attr->is_test = 0;
-                if (!$attr->save()) {
-                    $transaction->rollback();
-                    return false;
-                }
-            }
-        }
-
-        $transaction->commit();
         return true;
     }
 }

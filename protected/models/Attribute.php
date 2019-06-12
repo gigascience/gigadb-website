@@ -14,7 +14,6 @@
  * @property string $occurance
  * @property string $ontology_link
  * @property string $note
- * @property string $is_test
  */
 class Attribute extends CActiveRecord
 {
