@@ -1,0 +1,1 @@
+CREATE DATABASE yii2advanced_test;
