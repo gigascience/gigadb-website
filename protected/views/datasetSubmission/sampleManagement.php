@@ -220,6 +220,8 @@
 </div>
 
 <script>
+    $('#samples-table').resizable();
+
     var species = JSON.parse('<?= json_encode(array_values(CHtml::listData($species, 'id', 'common_name'))) ?>');
 
     $( ".js-species-autocomplete" ).autocomplete({
