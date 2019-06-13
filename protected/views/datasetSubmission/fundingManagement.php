@@ -20,7 +20,7 @@ foreach ($funders as $funder) {
         <div id="funding-grid" class="grid-view">
             <p class="note">
                 Would you like to acknowledge any funding bodies that have provided resources to generate these data?
-                <a class="myHint" style="float: none;" data-content="Dont know what to add here."></a>
+                <a class="myHint" style="float: none;" data-content="We encourage the addition of funding information to acknowledge the support from your funders, we require that funding information is highly structured to ensure that it can be machine readable. If your funding body is not already included in our database please contact us (database@gigasciencejournal.com) with the name, country and a URL of the funder and we can add it to the list."></a>
             </p>
 
             <div style="text-align: center; margin-bottom: 15px;">
