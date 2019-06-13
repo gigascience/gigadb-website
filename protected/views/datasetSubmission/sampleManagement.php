@@ -19,7 +19,7 @@
         <div id="sample-grid" class="grid-view">
             <p class="note">
                 Please supply all the information about the experimental samples included in this dataset. This should include samples used only for example purposes even when you have only performed in-silco analysis.
-                <a class="myHint" style="float: none;" data-content="Dont know what to add here."></a>
+                <a class="myHint" style="float: none;" data-html="true" data-content="For datasets that include biological sample-related data we would expect the sample metadata to be included in the GigaDB dataset. We understand that the level of sample metadata made available is often limited by sample collection restrictions, but authors should make every effort to provide as comprehensive metadata about samples as is possible. For a checklist of metadata fields please see <a href='http://gigadb.org/site/guide'>http://gigadb.org/site/guide</a>."></a>
             </p>
 
             <p class="note">
