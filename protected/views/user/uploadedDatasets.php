@@ -78,7 +78,7 @@
                                 </td>
                                 <td>
                                     <? if ($data[$i]->upload_status !='Published' && $data[$i]->upload_status!='Pending' && $data[$i]->upload_status!='Private'){ ?>
-                                        <a class="update" title="Update" href=<? echo "/datasetSubmission/datasetManagement/id/" . $data[$i]->id ?> ><img src="/images/update.png" alt="Update" /></a>
+                                        <a class="update" title="Update" href=<?= $data[$i]->upload_status == 'UserUploadingData' ? "/adminFile/create1/id/" . $data[$i]->id : "/datasetSubmission/datasetManagement/id/" . $data[$i]->id ?> ><img src="/images/update.png" alt="Update" /></a>
                                         <a class="js-delete-dataset" did="<?=$data[$i]->id?>" title="Delete"><img alt="Delete" src="/images/delete.png"></a>
                                         <? } ?>
                 </tr>

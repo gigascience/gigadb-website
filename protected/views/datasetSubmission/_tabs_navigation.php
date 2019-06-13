@@ -17,7 +17,7 @@ $action = Yii::app()->controller->action->id;
    class="btn <?= $action == 'fundingManagement' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'Funding')?></a>
 <a href="/datasetSubmission/sampleManagement/id/<?= $model->id ?>"
    class="btn <?= $action == 'sampleManagement' || $action == 'end' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'Sample')?></a>
-<?php if( $controller == 'adminFile' && $action == 'create1' ): ?>
-    <a href="/adminFile/create1/id/<?= $model->id ?>" class="btn <?= $action == 'create1' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'File')?></a>
+<?php if( $model->upload_status == 'UserUploadingData' ): ?>
+    <a href="/adminFile/create1/id/<?= $model->id ?>" class="btn <?= $controller == 'adminFile' && $action == 'create1' ? 'sw-selected-btn' : 'nomargin' ?>"><?= Yii::t('app' , 'File')?></a>
 <?php endif ?>
 

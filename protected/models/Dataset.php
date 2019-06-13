@@ -51,7 +51,8 @@ class Dataset extends CActiveRecord
         'Uploaded'=>'Uploaded',
         'Pending'=>'Pending',
         'Private'=>'Private',
-        'Published'=>'Published'
+        'Published'=>'Published',
+        'UserUploadingData'=>'UserUploadingData',
     );
 
     /*
