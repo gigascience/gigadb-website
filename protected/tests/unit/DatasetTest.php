@@ -117,16 +117,11 @@ class DatasetTest extends CDbTestCase
 
     function testToReal() {
         $dataset = Dataset::model()->findByPk(2);
-        $attr = Attribute::model()->findByPk(3);
 
         $this->assertEquals(1, $dataset->is_test);
-        $this->assertEquals(1, $attr->is_test);
 
         $this->assertTrue($dataset->toReal());
-        $dataset = Dataset::model()->findByPk(2);
-        $attr = Attribute::model()->findByPk(3);
 
         $this->assertEquals(0, $dataset->is_test);
-        $this->assertEquals(0, $attr->is_test);
     }
  }
