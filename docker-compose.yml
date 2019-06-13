@@ -191,6 +191,10 @@ services:
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ../app:/app
+      # directories used for filedrop files
+      - ../incoming:/var/incoming
+      - ../repo:/var/repo
+      - ../credentials:/var/private
     networks:
       - proto
 
@@ -215,6 +219,10 @@ services:
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ../app:/app
+      # directories used for filedrop files
+      - ../incoming:/var/incoming
+      - ../repo:/var/repo
+      - ../credentials:/var/private
     networks:
       - proto
 
@@ -224,6 +232,8 @@ services:
       - POSTGRES_DB=yii2advanced
       - POSTGRES_USER=yii2advanced
       - POSTGRES_PASSWORD=secret
+    volumes:
+      - ../app/backend/db/bootstrap.sql:/docker-entrypoint-initdb.d/backend.sql
     networks:
       - proto
 
