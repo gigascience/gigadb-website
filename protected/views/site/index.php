@@ -221,7 +221,7 @@
                                     <div class="home-color-background-block">
                                         <div class="text-icon text-icon-o text-icon-lg">
                                             <img src="/images/new_interface_image/volume.svg" alt="Total Volume of Data"></div>
-                                        <h4>31</h4>
+                                        <h4><? echo $count_size ?></h4>
                                         <p>Data volume(TB)</p>
                                     </div>
                                 </div>

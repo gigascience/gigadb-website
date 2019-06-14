@@ -97,6 +97,12 @@ class SiteController extends Controller {
         $command = Yii::app()->db->createCommand($sql_3);
         $count_file = $command->queryAll();
 
+        $sql_4="select sum(dataset_size) from dataset where upload_status='Published'";
+        $command = Yii::app()->db->createCommand($sql_4);
+        $count_size = $command->queryAll();
+        $count_size = $this->formatBytes($count_size[0]['sum'],0);
+
+
         $number_genome_mapping=0;
         $number_ecology=0;
         $number_eeg=0;
@@ -192,6 +198,7 @@ class SiteController extends Controller {
 			'dataset_hint'=>$datasettypes_hints ,
 			'rss_arr' => $rss_arr ,
 			'count' => count($publicIds),
+                        'count_size' => $count_size,
                         'count_sample' => $count_sample[0]['count'],
                         'count_file' => $count_file[0]['count'],
                         'number_genome_mapping'=>$number_genome_mapping,
@@ -474,6 +481,15 @@ class SiteController extends Controller {
         header("Content-type: text/xml");
         echo Yii::app()->newsAndFeedsService->getRss();
         exit;
+    }
+
+    public function formatBytes($bytes, $precision = 2) {
+        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+
+        $base = log($bytes, 1024);
+        $suffixes = array('', 'K', 'M', 'G', 'T');
+
+        return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
     }
 
     /**
