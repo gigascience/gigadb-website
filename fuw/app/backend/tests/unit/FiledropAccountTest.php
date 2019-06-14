@@ -54,7 +54,7 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         $this->assertFalse(file_exists("/var/repo/100001"));
         $this->assertFalse(file_exists("/var/private/100001"));
 
-        $this->filedrop->createDirectories("100001");
+        $result = $this->filedrop->createDirectories("100001");
 
         $this->assertTrue(file_exists("/var/incoming/ftp/100001"));
         $this->assertTrue(file_exists("/var/repo/100001"));
@@ -63,6 +63,8 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         $this->assertEquals("0770", substr(sprintf('%o', fileperms('/var/incoming/ftp/100001')), -4) );
         $this->assertEquals("0755", substr(sprintf('%o', fileperms('/var/repo/100001')), -4) );
         $this->assertEquals("0750", substr(sprintf('%o', fileperms('/var/private/100001')), -4) );
+
+        $this->assertTrue($result);
 
     }
 
