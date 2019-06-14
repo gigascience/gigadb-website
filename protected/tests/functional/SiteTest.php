@@ -46,6 +46,26 @@ class SiteTest extends FunctionalTesting
 
     }
 
+    public function testItShouldShowCountNumber()
+    {
+
+        // this is the content we expect to be in
+        $expectations = ["4", "2", "16", "2 G"];
+        $actual = [];
+        $url = "http://gigadb.dev/site/" ;
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, null);
+
+        //Find all count items on the page
+        $newsitemsElement = $this->findAllByCSS('html body div.content section div.container div.color-background div.home-color-background-block h4');
+
+        foreach ($newsitemsElement as $node) {
+
+            $actual[]=$node->getHtml();
+        }
+
+        $this->assertEquals($expectations, $actual, "Checked the number in dataset, samples, files, data_volume") ;
+    }
+
 }
 
 ?>
