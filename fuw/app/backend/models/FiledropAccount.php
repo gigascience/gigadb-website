@@ -64,13 +64,15 @@ class FiledropAccount extends \yii\db\ActiveRecord
      * Create directories required for file upload pipeline
      *
      * @param string $doi dataset identifier for which to create directory
+     * @return bool whether or not the operation is successful
      */
-    function createDirectories(string $doi): void
+    function createDirectories(string $doi): bool
     {
-        mkdir("/var/incoming/ftp/$doi", 0770);
-        chmod("/var/incoming/ftp/$doi", 0770); //to bypass umask
-        mkdir("/var/repo/$doi", 0755);
-        mkdir("/var/private/$doi", 0750);
+        return mkdir("/var/incoming/ftp/$doi", 0770)
+                && chmod("/var/incoming/ftp/$doi", 0770)//to bypass umask
+                && mkdir("/var/repo/$doi", 0755)
+                && mkdir("/var/private/$doi", 0750);
+
     }
 
     /**
