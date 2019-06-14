@@ -100,7 +100,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
         $input_length = strlen($range);
         $random_string = '';
         for($i = 0; $i < $size; $i++) {
-            $random_character = $range[mt_rand(0, $input_length - 1)];
+            $random_character = $range[random_int(0, $input_length - 1)];
             $random_string .= $random_character;
         }
 
