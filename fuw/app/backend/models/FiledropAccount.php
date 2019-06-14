@@ -86,7 +86,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
     public function makeToken(string $doi, string $fileName): bool
     {
         $token = $this->generateRandomString(16);
-        return file_put_contents("/var/private/$doi/".$fileName, $token) ? true : false ;
+        return file_put_contents("/var/private/$doi/".$fileName, $token.PHP_EOL.$token.PHP_EOL) ? true : false ;
     }
 
     /**

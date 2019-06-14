@@ -79,15 +79,17 @@ class FiledropAccountTest extends \Codeception\Test\Unit
 
         $result1 = $this->filedrop->makeToken('100001','token_file');
         $this->assertTrue(file_exists("/var/private/100001/token_file"));
-        $token1 = file_get_contents("/var/private/100001/token_file");
+        $token1 = file("/var/private/100001/token_file");
+        $this->assertEquals($token1[0],$token1[1]);
 
         $result2 = $this->filedrop->makeToken('100001','token_file');
         $this->assertTrue(file_exists("/var/private/100001/token_file"));
-        $token2 = file_get_contents("/var/private/100001/token_file");
+        $token2 = file("/var/private/100001/token_file");
+        $this->assertEquals($token2[0],$token2[1]);
 
         $this->assertTrue($result1);
         $this->assertTrue($result2);
-        $this->assertNotEquals($token1, $token2);
+        $this->assertNotEquals($token1[0], $token2[0]);
 
     }
 
