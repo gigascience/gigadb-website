@@ -3,6 +3,8 @@
 namespace backend\models;
 
 use Yii;
+use Docker\Docker;
+use Docker\API\Model\ContainerSummaryItem;
 
 /**
  * This is the model class for table "filedrop_account".
@@ -107,5 +109,48 @@ class FiledropAccount extends \yii\db\ActiveRecord
         }
 
         return $random_string;
+    }
+    /**
+     * Create ftp account on the ftpd container using Docker API
+     *
+     * @return \Docker\API\Model\ContainerSummaryItem container dettails
+     */
+    public function getFTPdContainer(): \Docker\API\Model\ContainerSummaryItem
+    {
+        $docker = Docker::create();
+        $containers = $docker->containerList();
+        foreach ($containers as $container) {
+            if ( preg_match("/ftpd_1/",implode("",$container->getNames())) ) {
+                return $container;
+            }
+        }
+        return $containers;
+    }
+    /**
+     * Create ftp account on the ftpd container using Docker API
+     *
+     * @param string $doi dataset identifier
+     * @return bool if successful return true, otherwise false
+     */
+    function createFTPAccount(string $doi): bool
+    {
+        // $status = 0 ;
+        // exec("/var/scripts/create_upload_ftp.sh $dataset",$output1, $status);
+        // error_log(implode("\n",$output1));
+        // exec("/var/scripts/create_download_ftp.sh $dataset",$output2, $status);
+        // error_log(implode("\n",$output2));
+        // sleep(2);
+        // return !$status;
+
+        // 1. get name of ftpd container
+        //      getFTPContainerId(): string
+        // 2. load exec resource
+        //      loadExecResource(string $containerId): string
+        // 3. start exec resource
+        //      startExecResource(string $execId): DockerRawStream::class
+        // 4. check output
+        //      checkAccountCreated(DockerRawStream::class $dockerStream): bool
+        //
+        // see: https://github.com/docker-php/docker-php/blob/master/tests/Resource/ExecResourceTest.php
     }
 }
