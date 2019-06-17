@@ -94,13 +94,34 @@ class FiledropAccountTest extends \Codeception\Test\Unit
     }
 
     /**
-     * test can retrieve ftpd container id
+     * test can retrieve matching ftpd container
      */
-    public function testCanFindFTPdContainer()
+    public function testCanFindMatchingContainer()
     {
-        $container = $this->filedrop->getFTPdContainer();
+        $containerPattern = "/ftpd_1/";
+        $container = $this->filedrop->getContainer($containerPattern);
         $this->assertNotNull($container);
-        $this->assertRegexp('/ftpd_1/',$container->getNames()[0]);
+        $this->assertRegexp($containerPattern,$container->getNames()[0]);
+    }
+
+    /**
+     * test null is returned when pattern don't match
+     */
+    public function testCannotFindContainer()
+    {
+        $containerPattern = "/foo_bar/";
+        $container = $this->filedrop->getContainer($containerPattern);
+        $this->assertNull($container);
+    }
+
+    /**
+     * test null is returned when pattern match a forbidden container
+     */
+    public function testCannotSeeForbiddenContainer()
+    {
+        $containerPattern = "/console_1/";
+        $container = $this->filedrop->getContainer($containerPattern);
+        $this->assertNull($container);
     }
 
 }
