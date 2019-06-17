@@ -18,6 +18,7 @@
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+        "jane-php/open-api-runtime": "^4 <4.3",
         "docker-php/docker-php": "~2.0.0"
     },
     "require-dev": {
@@ -27,6 +28,8 @@
         "codeception/base": "^2.4.0",
         "phpunit/phpunit": "~6.5.5",
         "codeception/verify": "~1.0.0",
+        "jane-php/json-schema": "^4 <4.3",
+        "jane-php/open-api": "^4 <4.3",
         "symfony/browser-kit": ">=2.7 <=4.2.4"
     },
     "config": {
