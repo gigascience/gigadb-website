@@ -23,6 +23,11 @@ use Docker\API\Model\ContainerSummaryItem;
 class FiledropAccount extends \yii\db\ActiveRecord
 {
     /**
+     * @var array list of containers that should not be accessed programmatically
+     */
+    const FORBIDDEN = ["/console_1/","/db_1/"];
+
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
@@ -110,22 +115,31 @@ class FiledropAccount extends \yii\db\ActiveRecord
 
         return $random_string;
     }
+
     /**
-     * Create ftp account on the ftpd container using Docker API
+     * Retrieve a matching container using Docker API
      *
-     * @return \Docker\API\Model\ContainerSummaryItem container dettails
+     * @param string regex pattern for the container to match
+     * @return null|\Docker\API\Model\ContainerSummaryItem container details
      */
-    public function getFTPdContainer(): \Docker\API\Model\ContainerSummaryItem
+    public function getContainer(string $containerPattern): ?\Docker\API\Model\ContainerSummaryItem
     {
+        if( in_array($containerPattern, self::FORBIDDEN) ) {
+            return null;
+        }
+
         $docker = Docker::create();
         $containers = $docker->containerList();
         foreach ($containers as $container) {
-            if ( preg_match("/ftpd_1/",implode("",$container->getNames())) ) {
+            if ( preg_match($containerPattern,implode("",$container->getNames())) ) {
                 return $container;
             }
         }
-        return $containers;
+        return null;
     }
+
+
+
     /**
      * Create ftp account on the ftpd container using Docker API
      *
