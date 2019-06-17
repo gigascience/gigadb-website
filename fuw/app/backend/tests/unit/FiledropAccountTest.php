@@ -93,4 +93,14 @@ class FiledropAccountTest extends \Codeception\Test\Unit
 
     }
 
+    /**
+     * test can retrieve ftpd container id
+     */
+    public function testCanFindFTPdContainer()
+    {
+        $container = $this->filedrop->getFTPdContainer();
+        $this->assertNotNull($container);
+        $this->assertRegexp('/ftpd_1/',$container->getNames()[0]);
+    }
+
 }

@@ -223,6 +223,8 @@ services:
       - ../incoming:/var/incoming
       - ../repo:/var/repo
       - ../credentials:/var/private
+      # to run tests that interact with containers
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - proto
 
