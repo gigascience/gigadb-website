@@ -5,6 +5,9 @@ namespace backend\models;
 use Yii;
 use Docker\Docker;
 use Docker\API\Model\ContainerSummaryItem;
+use Docker\API\Model\{ContainersIdExecPostBody,
+                      ExecIdStartPostBody,
+                    };
 
 /**
  * This is the model class for table "filedrop_account".
@@ -138,7 +141,30 @@ class FiledropAccount extends \yii\db\ActiveRecord
         return null;
     }
 
-
+    /**
+     * Factory for making instance of *PostBody objet for Docker PHP API
+     *
+     * @param string $postBodyType type of postBody to make
+     * @param array $commandArray array forming a command to execute on the container
+     * @return null|\Docker\API\Model\ContainersIdExecPostBody|\Docker\API\Model\ExecIdStartPostBody
+     */
+    public function makePostBodyFor(string $postBodyType, array $commandArray = null): ?object
+    {
+        if ("execConfig" == $postBodyType) {
+            $execConfig = new ContainersIdExecPostBody();
+            $execConfig->setAttachStdout(true);
+            $execConfig->setAttachStderr(true);
+            $execConfig->setCmd($commandArray);
+            return $execConfig;
+        }
+        elseif ("execStartConfig" == $postBodyType) {
+            $execStartConfig = new ExecIdStartPostBody();
+            $execStartConfig->setDetach(false);
+            $execStartConfig->setTty(false);
+            return $execStartConfig;
+        }
+        return null;
+    }
 
     /**
      * Create ftp account on the ftpd container using Docker API
