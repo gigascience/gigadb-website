@@ -124,4 +124,24 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         $this->assertNull($container);
     }
 
+    /**
+     * Test of factory function that make PostBody for Docker PHP
+     */
+    public function testCanMakePostBody()
+    {
+        $execConfig = $this->filedrop->makePostBodyFor("execConfig", ["foo", "bar"]);
+        $this->assertNotNull($execConfig);
+        $this->assertInstanceOf("\Docker\API\Model\ContainersIdExecPostBody", $execConfig);
+        $this->assertEquals(["foo", "bar"], $execConfig->getCmd());
+
+        $execStartConfig = $this->filedrop->makePostBodyFor("execStartConfig");
+        $this->assertNotNull($execStartConfig);
+        $this->assertInstanceOf("\Docker\API\Model\ExecIdStartPostBody", $execStartConfig);
+
+        $nullResponse = $this->filedrop->makePostBodyFor("");
+        $this->assertNull($nullResponse);
+    }
+
+
+
 }
