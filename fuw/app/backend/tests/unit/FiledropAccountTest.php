@@ -4,6 +4,9 @@ namespace backend\tests;
 
 use backend\models\FiledropAccount;
 
+use \Docker\API\Model\IdResponse ;
+use \Docker\Docker ;
+
 class FiledropAccountTest extends \Codeception\Test\Unit
 {
     /**
@@ -94,54 +97,52 @@ class FiledropAccountTest extends \Codeception\Test\Unit
     }
 
     /**
-     * test can retrieve matching ftpd container
+     * test sending  upload account creation to the ftpd container
      */
-    public function testCanFindMatchingContainer()
+    public function notestCreateFTPAccount()
     {
-        $containerPattern = "/ftpd_1/";
-        $container = $this->filedrop->getContainer($containerPattern);
-        $this->assertNotNull($container);
-        $this->assertRegexp($containerPattern,$container->getNames()[0]);
+         $expectedCommandArray = ["bash","-c","/usr/bin/pure-pw useradd u-100001 -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u uploader -d /home/uploader/100001  < /var/private/100001/uploader_token.txt"] ;
+         $expectedContainer = "ftpd_1";
+         $expectedDOI = "100001";
+         $expectedType = "uploader";
+
+
+        // Create stub for retrieval of container id
+
+        // Create stubs for PostBody objects
+
+        // create a mock for retrieving id of configured exec resource
+        $mockIdResponse = $this->getMockBuilder(\Docker\API\Model\IdResponse::class)
+            ->setMethods(['getId'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        // create a mock for the Docker Client
+        $mockDockerManager = $this->getMockBuilder(\Docker\Docker::class)
+                         ->setMethods(['containerExec','execStart'])
+                         ->disableOriginalConstructor()
+                         ->getMock();
+
+        //then we set our expectation for containerExec
+        $mockDockerManager->expects($this->once())
+                ->method('containerExec')
+                ->with(
+                    $this->equalTo($container->getId()),
+                    $this->equalTo($execConfig)
+                )
+                ->willReturn($mockIdResponse);
+
+
+        //then we set our expectation for execStart
+        $mockDockerManager->expects($this->once())
+                ->method('execStart')
+                ->with(
+                    $this->equalTo($mockIdResponse->getId()),
+                    $this->equalTo($execStartConfig)
+                );
+
+         $response = $this->filedrop->createFTPAccount( $mockDockerManager, $expectedType, $expectedDOI );
+         $this->assertTrue($response);
     }
-
-    /**
-     * test null is returned when pattern don't match
-     */
-    public function testCannotFindContainer()
-    {
-        $containerPattern = "/foo_bar/";
-        $container = $this->filedrop->getContainer($containerPattern);
-        $this->assertNull($container);
-    }
-
-    /**
-     * test null is returned when pattern match a forbidden container
-     */
-    public function testCannotSeeForbiddenContainer()
-    {
-        $containerPattern = "/console_1/";
-        $container = $this->filedrop->getContainer($containerPattern);
-        $this->assertNull($container);
-    }
-
-    /**
-     * Test of factory function that make PostBody for Docker PHP
-     */
-    public function testCanMakePostBody()
-    {
-        $execConfig = $this->filedrop->makePostBodyFor("execConfig", ["foo", "bar"]);
-        $this->assertNotNull($execConfig);
-        $this->assertInstanceOf("\Docker\API\Model\ContainersIdExecPostBody", $execConfig);
-        $this->assertEquals(["foo", "bar"], $execConfig->getCmd());
-
-        $execStartConfig = $this->filedrop->makePostBodyFor("execStartConfig");
-        $this->assertNotNull($execStartConfig);
-        $this->assertInstanceOf("\Docker\API\Model\ExecIdStartPostBody", $execStartConfig);
-
-        $nullResponse = $this->filedrop->makePostBodyFor("");
-        $this->assertNull($nullResponse);
-    }
-
-
 
 }
