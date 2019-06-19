@@ -2,13 +2,14 @@
 
 namespace backend\models;
 
+use Yii;
 use Docker\Docker;
 use Docker\API\Model\ContainerSummaryItem;
 use Docker\API\Model\{ContainersIdExecPostBody,
                       ExecIdStartPostBody,
                     };
 
-class DockerManager
+class DockerManager extends yii\base\BaseObject
 {
 	/**
      * @var array list of containers that should not be accessed programmatically
@@ -19,6 +20,20 @@ class DockerManager
      * @var object $docker static class variable to hold connection to Docker
      */
 	private static $docker;
+
+
+	/**
+	 * initialise or return a docker client
+	 * @return \Docker\Docker a docker api client
+	 */
+	public function getClient(): \Docker\Docker
+	{
+		if (null === self::$docker) {
+            self::$docker = Docker::create();
+        }
+
+        return self::$docker;
+	}
 
 	/**
      * Retrieve a matching container using Docker API
@@ -32,7 +47,7 @@ class DockerManager
             return null;
         }
 
-        $docker = Docker::create();
+        $docker = $this->getClient();
         $containers = $docker->containerList();
         foreach ($containers as $container) {
             if ( preg_match($containerPattern,implode("",$container->getNames())) ) {
