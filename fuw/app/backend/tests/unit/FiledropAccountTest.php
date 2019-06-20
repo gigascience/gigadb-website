@@ -3,8 +3,15 @@
 namespace backend\tests;
 
 use backend\models\FiledropAccount;
+use backend\models\DockerManager;
 
-use \Docker\API\Model\IdResponse ;
+use \Docker\API\Model\{
+        IdResponse,
+        ContainersIdExecPostBody,
+        ExecIdStartPostBody,
+        ContainerSummaryItem,
+    } ;
+
 use \Docker\Docker ;
 
 class FiledropAccountTest extends \Codeception\Test\Unit
@@ -98,51 +105,39 @@ class FiledropAccountTest extends \Codeception\Test\Unit
 
     /**
      * test sending  upload account creation to the ftpd container
+     * This test is to specify the internal logic (behaviours), not end-to-end
+     * end-to-end testing of the docker interaction will be done in functional tests
      */
-    public function notestCreateFTPAccount()
+    public function testCreateFTPAccount()
     {
-         $expectedCommandArray = ["bash","-c","/usr/bin/pure-pw useradd u-100001 -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u uploader -d /home/uploader/100001  < /var/private/100001/uploader_token.txt"] ;
-         $expectedContainer = "ftpd_1";
-         $expectedDOI = "100001";
-         $expectedType = "uploader";
+        $uploaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd uploader-100001 -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u uploader -d /home/uploader/100001  < /var/private/100001/uploader_token.txt"] ;
 
+        $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd downloader-100001 -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u downloader -d /home/downloader/100001  < /var/private/100001/downloader_token.txt"] ;
 
-        // Create stub for retrieval of container id
+         $doi = "100001";
 
-        // Create stubs for PostBody objects
+        $mockDockerManager = $this->getMockBuilder(\backend\models\DockerManager::class)
+                    ->setMethods(['loadAndRunCommand'])
+                    ->disableOriginalConstructor()
+                    ->getMock();
 
-        // create a mock for retrieving id of configured exec resource
-        $mockIdResponse = $this->getMockBuilder(\Docker\API\Model\IdResponse::class)
-            ->setMethods(['getId'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        // create a mock for the Docker Client
-        $mockDockerManager = $this->getMockBuilder(\Docker\Docker::class)
-                         ->setMethods(['containerExec','execStart'])
-                         ->disableOriginalConstructor()
-                         ->getMock();
-
-        //then we set our expectation for containerExec
-        $mockDockerManager->expects($this->once())
-                ->method('containerExec')
+        $mockDockerManager->expects($this->at(0))
+                ->method('loadAndRunCommand')
                 ->with(
-                    $this->equalTo($container->getId()),
-                    $this->equalTo($execConfig)
+                    $this->equalTo("ftpd"),
+                    $this->equalTo($uploaderCommandArray)
                 )
-                ->willReturn($mockIdResponse);
+                ->willReturn(true);
 
-
-        //then we set our expectation for execStart
-        $mockDockerManager->expects($this->once())
-                ->method('execStart')
+        $mockDockerManager->expects($this->at(1))
+                ->method('loadAndRunCommand')
                 ->with(
-                    $this->equalTo($mockIdResponse->getId()),
-                    $this->equalTo($execStartConfig)
-                );
+                    $this->equalTo("ftpd"),
+                    $this->equalTo($downloaderCommandArray)
+                )
+                ->willReturn(true);
 
-         $response = $this->filedrop->createFTPAccount( $mockDockerManager, $expectedType, $expectedDOI );
-         $this->assertTrue($response);
+        $response = $this->filedrop->createFTPAccount( $mockDockerManager, $doi );
     }
 
 }
