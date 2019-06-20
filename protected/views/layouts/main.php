@@ -46,7 +46,7 @@
         }
         .additional-bordered {
             border: 3px solid #BFBFBF;
-            padding: 10px;
+            padding: 20px 5px;
         }
         .additional-button {
             width: 50px;

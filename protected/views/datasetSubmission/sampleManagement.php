@@ -55,7 +55,7 @@
             </p>
 
             <div class="additional-bordered" style="overflow-x: auto;margin: 15px 0;">
-                <table class="table table-bordered sample-tab-table" id="samples-table">
+                <table class="table table-bordered sample-tab-table" id="samples-table" style="overflow: auto;">
                     <thead>
                     <tr>
                         <th style="white-space: nowrap;">Sample ID</th>
