@@ -2,6 +2,8 @@
 
 namespace backend\tests;
 
+use \Docker\Docker;
+
 use backend\models\DockerManager;
 
 class DockerManagerTest extends \Codeception\Test\Unit
@@ -19,6 +21,7 @@ class DockerManagerTest extends \Codeception\Test\Unit
     protected function _before()
     {
         $this->dockerManager = new DockerManager();
+        $this->dockerManager->setClient(Docker::create());
     }
 
     protected function _after()
@@ -72,5 +75,57 @@ class DockerManagerTest extends \Codeception\Test\Unit
 
         $nullResponse = $this->dockerManager->makePostBodyFor("");
         $this->assertNull($nullResponse);
+    }
+
+    /**
+     * Test it can load and run command on remote docker container
+     */
+    public function testCanLoadAndRunCommand()
+    {
+        // ------------------------- stubs configuration ----------------------
+
+        // create a stub for retrieving id of configured exec resource
+        $stubResponse = $this->createMock(\Docker\API\Model\IdResponse::class);
+        $stubResponse->method('getId')
+            ->willReturn("fdsf45dsf");
+
+        // Create a stub for the container
+        $stubContainer = $this->createMock(\Docker\API\Model\ContainerSummaryItem::class);
+        $stubContainer->method('getId')
+            ->willReturn("xhiauidnfa4");
+        $stubContainer->method('getNames')
+            ->willReturn(["/test_foobar_1"]);
+
+        // ------------------------- mocks configuration ----------------------
+
+        // mock Docker client to expect call to containerList, containerExec and ExecStart
+        $mockDockerClient = $this->getMockBuilder(\Docker\Docker::class)
+                    ->setMethods(['containerList','containerExec','execStart'])
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $mockDockerClient->expects($this->once())
+                ->method('containerList')
+                ->willReturn([$stubContainer]);
+
+        $mockDockerClient->expects($this->once())
+                ->method('containerExec')
+                ->with(
+                    $this->isType("string"),
+                    $this->isInstanceOf("\Docker\API\Model\ContainersIdExecPostBody")
+                )
+                ->willReturn($stubResponse);
+
+        $mockDockerClient->expects($this->once())
+                ->method('execStart')
+                ->with(
+                    $this->isType("string"),
+                    $this->isInstanceOf("\Docker\API\Model\ExecIdStartPostBody")
+                );
+
+        // ------------------------- execute system under test ----------------------
+
+        $this->dockerManager->setClient($mockDockerClient);
+        $response = $this->dockerManager->loadAndRunCommand("foobar",["echo","hello world"]);
     }
 }
