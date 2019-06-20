@@ -23,6 +23,17 @@ class DockerManager extends yii\base\BaseObject
 
 
 	/**
+	 * init(), called by Yii2. Here to initialise static variable $docker with a Docker client
+	 *
+	 */
+	public function init()
+	{
+		if (null === $this->getClient() ) {
+			$this->setClient( Docker::create() ) ;
+		}
+	}
+
+	/**
 	 * set a docker client
 	 *
 	 * @param  \Docker\Docker $client a docker api client
@@ -35,9 +46,9 @@ class DockerManager extends yii\base\BaseObject
 	/**
 	 * return a docker client
 	 *
-	 * @return \Docker\Docker a docker api client
+	 * @return null|\Docker\Docker a docker api client
 	 */
-	public function getClient(): \Docker\Docker
+	public function getClient(): ?\Docker\Docker
 	{
         return self::$docker;
 	}
