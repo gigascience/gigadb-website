@@ -36,7 +36,7 @@
                         <?= CHtml::dropDownList('template',
                             $template ? $template->id : null,
                             CHtml::listData($sts,'id','template_name'),
-                            array('empty'=> 'Please select', 'class'=>'js-database dropdown-white', 'style'=>'width:200px'));
+                            array('empty'=> 'Empty', 'class'=>'js-database dropdown-white', 'style'=>'width:200px'));
                         ?>
                         <a href="#" class="btn <?php if (!$template): ?>js-not-allowed<?php else: ?> btn-green js-set-template<?php endif ?>" style="margin-left: 20px;"/>Apply</a>
                     </div>
