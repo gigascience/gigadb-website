@@ -263,46 +263,51 @@ foreach ($funders as $funder) {
     });
 
     $(fundingDiv).on('click', ".js-add-funding", function() {
-        $.ajax({
-            type: 'POST',
-            url: '/datasetSubmission/validateFunding',
-            data:{
-                'dataset_id': datasetId,
-                'funder_id': $('#funder_id').val(),
-                'grant': $('#grant').val(),
-                'pi_name': $('#pi_name').val(),
-                'program_name': $('#program_name').val()
-            },
-            success: function(response){
-                if(response.success) {
-                    var tr =
-                        '<tr class="odd">' +
+        var funderId = $('#funder_id').val();
+        if ($('.js-funder-id[value="' + funderId + '"]').length) {
+            alert('Funder "'+funderId+'" has already been taken.');
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/datasetSubmission/validateFunding',
+                data:{
+                    'dataset_id': datasetId,
+                    'funder_id': funderId,
+                    'grant': $('#grant').val(),
+                    'pi_name': $('#pi_name').val(),
+                    'program_name': $('#program_name').val()
+                },
+                success: function(response){
+                    if(response.success) {
+                        var tr =
+                            '<tr class="odd">' +
                             '<td>' + response.funding['funder_name'] + '</td>' +
                             '<td>' + response.funding['program_name'] + '</td>' +
                             '<td>' + response.funding['grant'] + '</td>' +
                             '<td>' + response.funding['pi_name'] + '</td>' +
                             '<td class="button-column">' +
-                                '<a class="js-delete-funding delete-title" title="delete this row">' +
-                                '<img alt="delete this row" src="/images/delete.png">' +
-                                '</a>' +
-                                '<input type="hidden" class="js-funder-id" value="' + response.funding['funder_id'] + '">' +
+                            '<a class="js-delete-funding delete-title" title="delete this row">' +
+                            '<img alt="delete this row" src="/images/delete.png">' +
+                            '</a>' +
+                            '<input type="hidden" class="js-funder-id" value="' + response.funding['funder_id'] + '">' +
                             '</td>' +
-                        '</tr>';
+                            '</tr>';
 
-                    $('.js-no-results', fundingDiv).before(tr);
-                    $('.js-no-results', fundingDiv).hide();
+                        $('.js-no-results', fundingDiv).before(tr);
+                        $('.js-no-results', fundingDiv).hide();
 
-                    cleanFundingForm();
-                    makeAddActiveIfCan();
-                    makeSaveActiveIfCan();
-                } else {
-                    alert(response.message);
+                        cleanFundingForm();
+                        makeAddActiveIfCan();
+                        makeSaveActiveIfCan();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr) {
+                    alert(xhr.responseText);
                 }
-            },
-            error: function(xhr) {
-                alert(xhr.responseText);
-            }
-        });
+            });
+        }
 
         return false;
     });
