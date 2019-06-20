@@ -25,10 +25,6 @@ use Docker\API\Model\{ContainersIdExecPostBody,
  */
 class FiledropAccount extends \yii\db\ActiveRecord
 {
-    /**
-     * @var array list of containers that should not be accessed programmatically
-     */
-    const FORBIDDEN = ["/console_1/","/db_1/"];
 
     /**
      * {@inheritdoc}
@@ -70,6 +66,15 @@ class FiledropAccount extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * Initialise a singleton Docker Manager instance for all instances of FiledropAccount
+     *
+     * @param \backend\models\DockerManager $dockerManager
+     */
+    public function setDockerManager(\backend\models\DockerManager $dockerManager): void
+    {
+        self::$dockerManager = $dockerManager;
+    }
     /**
      * Create directories required for file upload pipeline
      *
@@ -122,11 +127,22 @@ class FiledropAccount extends \yii\db\ActiveRecord
     /**
      * Create ftp account on the ftpd container using Docker API
      *
+     * @param \backend\models\DockerManager $dockerManager instance of docker API
+     * @param string $accountType type of account ("uploader" or "downloader")
      * @param string $doi dataset identifier
      * @return bool if successful return true, otherwise false
      */
-    function createFTPAccount(string $doi): bool
+    function createFTPAccount(\backend\models\DockerManager $dockerManager, string $doi): bool
     {
+        $status = true ;
+
+        $uploaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd uploader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u uploader -d /home/uploader/$doi  < /var/private/$doi/uploader_token.txt"] ;
+
+        $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd downloader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u downloader -d /home/downloader/$doi  < /var/private/$doi/downloader_token.txt"] ;
+
+        $status = $status && $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
+        $status = $status && $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
+
         // $status = 0 ;
         // exec("/var/scripts/create_upload_ftp.sh $dataset",$output1, $status);
         // error_log(implode("\n",$output1));
@@ -145,5 +161,6 @@ class FiledropAccount extends \yii\db\ActiveRecord
         //      checkAccountCreated(DockerRawStream::class $dockerStream): bool
         //
         // see: https://github.com/docker-php/docker-php/blob/master/tests/Resource/ExecResourceTest.php
+        return $status;
     }
 }
