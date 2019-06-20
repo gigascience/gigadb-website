@@ -23,17 +23,32 @@ class DockerManager extends yii\base\BaseObject
 
 
 	/**
-	 * initialise or return a docker client
+	 * set a docker client
+	 *
+	 * @param  \Docker\Docker $client a docker api client
+	 */
+	public function setClient(\Docker\Docker $client): void
+	{
+        self::$docker = $client;
+	}
+
+	/**
+	 * return a docker client
+	 *
 	 * @return \Docker\Docker a docker api client
 	 */
 	public function getClient(): \Docker\Docker
 	{
-		if (null === self::$docker) {
-            self::$docker = Docker::create();
-        }
-
         return self::$docker;
 	}
+
+	/**
+	 * initialising the class
+	 */
+	// protected function init()
+	// {
+	// 	$this->setClient( Docker::create() );
+	// }
 
 	/**
      * Retrieve a matching container using Docker API
@@ -80,6 +95,37 @@ class DockerManager extends yii\base\BaseObject
             return $execStartConfig;
         }
         return null;
+    }
+
+    /**
+     * Load and run a command on a Docker service
+     *
+     * @param string $service service to execute the command on
+     * @param array $commandArray command and its argument
+     * @return bool return true if successful, false otherwise
+     *
+     */
+    public function loadAndRunCommand(string $service, array $commandArray): bool
+    {
+
+        $container = $this->getContainer("/${service}_1/");
+
+        $execConfig = $this->makePostBodyFor("execConfig", $commandArray);
+
+        $execConfigResponse = $this->getClient()->containerExec(
+        											$container->getId(), $execConfig
+        										);
+
+        $execStartConfig =  $this->makePostBodyFor("execStartConfig");
+
+        $result =  $this->getClient()->execStart(
+        										$execConfigResponse->getId(), $execStartConfig
+        									);
+        if (null === $result) {
+            return true;
+        }
+
+    	return false;
     }
 }
 ?>
