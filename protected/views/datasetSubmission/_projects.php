@@ -1,5 +1,5 @@
 <div class="form-horizontal additional-bordered">
-    <h3 style="display: inline-block">Project links</h3>
+    <h3 style="display: inline-block">Collaboration links</h3>
     <a class="myHint" style="float: none;" data-content="If your dataset is part of an international collaborative project you may provide the details here."></a>
 
 
