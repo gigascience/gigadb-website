@@ -100,7 +100,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     public function makeToken(string $doi, string $fileName): bool
     {
-        $token = $this->generateRandomString(16);
+        $token = self::generateRandomString(16);
         return file_put_contents("/var/private/$doi/".$fileName, $token.PHP_EOL.$token.PHP_EOL) ? true : false ;
     }
 
@@ -111,7 +111,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
      * @return string generated string
      *
      */
-    private function generateRandomString(int $size): string
+    public static function generateRandomString(int $size): string
     {
         $range = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $input_length = strlen($range);
@@ -140,27 +140,12 @@ class FiledropAccount extends \yii\db\ActiveRecord
 
         $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd downloader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u downloader -d /home/downloader/$doi  < /var/private/$doi/downloader_token.txt"] ;
 
-        $status = $status && $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
-        $status = $status && $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
+        $upload_response = $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
+        $download_response = $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
 
-        // $status = 0 ;
-        // exec("/var/scripts/create_upload_ftp.sh $dataset",$output1, $status);
-        // error_log(implode("\n",$output1));
-        // exec("/var/scripts/create_download_ftp.sh $dataset",$output2, $status);
-        // error_log(implode("\n",$output2));
-        // sleep(2);
-        // return !$status;
-
-        // 1. get name of ftpd container
-        //      getFTPContainerId(): string
-        // 2. load exec resource
-        //      loadExecResource(string $containerId): string
-        // 3. start exec resource
-        //      startExecResource(string $execId): DockerRawStream::class
-        // 4. check output
-        //      checkAccountCreated(DockerRawStream::class $dockerStream): bool
-        //
-        // see: https://github.com/docker-php/docker-php/blob/master/tests/Resource/ExecResourceTest.php
+        if (null === $upload_response || null === $download_response) {
+            return false;
+        }
         return $status;
     }
 }
