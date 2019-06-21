@@ -24,7 +24,7 @@
 
             <p class="note">
                 You should add as many attributes as you have details for, as a guide we provided a small number of templates for common dataset types (genomic, metagenomic and imaging) with a suggestion of possible attributes.
-                <a class="myHint" style="float: none;" data-content="Dont know what to add here."></a>
+                <a class="myHint" style="float: none;" data-html="true" data-content="Please see <a target='_blank' href='http://gigadb.org/site/guide'>http://gigadb.org/site/guide</a>."></a>
             </p>
 
             <div class="clear"></div>
@@ -45,7 +45,7 @@
 
             <div class="span5">
                 <span>Note- applying a new template will delete any attributes already inserted below</span>
-                <a class="myHint" style="float: none;" data-content="Dont know what to add here."></a>
+                <a class="myHint" style="float: none;" data-content="The templates provide a guide to some of the possible attributes that could be added to samples, please add more columns as required, or delete those that are not relevant to your data."></a>
             </div>
 
             <div class="clear"></div>
