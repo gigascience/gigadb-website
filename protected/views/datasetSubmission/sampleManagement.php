@@ -65,7 +65,7 @@
                             <?php for ($j = 3, $k = count($rows[0]); $j < $k; $j++): ?>
                                 <?php
                                 $attributeName = isset($rows[0][$j]) ? $rows[0][$j] : '';
-                                $attribute = Attribute::model()->findByAttributes(array('attribute_name' => $attributeName));
+                                $attribute = Attribute::findByAttrName($attributeName);
                                 ?>
                                 <th class="sample-attribute-column">
                                 <a class="js-delete-column delete-title" title="delete this column">
