@@ -126,16 +126,14 @@ class FiledropAccountTest extends \Codeception\Test\Unit
                 ->with(
                     $this->equalTo("ftpd"),
                     $this->equalTo($uploaderCommandArray)
-                )
-                ->willReturn(true);
+                );
 
         $mockDockerManager->expects($this->at(1))
                 ->method('loadAndRunCommand')
                 ->with(
                     $this->equalTo("ftpd"),
                     $this->equalTo($downloaderCommandArray)
-                )
-                ->willReturn(true);
+                );
 
         $response = $this->filedrop->createFTPAccount( $mockDockerManager, $doi );
     }
