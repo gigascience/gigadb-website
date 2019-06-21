@@ -126,5 +126,17 @@ class Attribute extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	static function findByAttrName($attributeName)
+    {
+        $criteria = new CDbCriteria( array(
+            'condition' => "LOWER(attribute_name) = LOWER(:match)",
+            'params'    => array(':match' => $attributeName)
+        ) );
+
+        $attribute = Attribute::model()->find($criteria);
+
+        return $attribute;
+    }
 }
 

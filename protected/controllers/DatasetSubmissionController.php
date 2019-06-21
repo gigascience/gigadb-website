@@ -911,7 +911,7 @@ class DatasetSubmissionController extends Controller
                         $match = $rows[0][$j];
                         $match = addcslashes($match, '%_');
                         $criteria = new CDbCriteria( array(
-                            'condition' => "attribute_name LIKE :match",
+                            'condition' => "LOWER(attribute_name) LIKE LOWER(:match)",
                             'params'    => array(':match' => "%$match%")
                         ) );
 

@@ -391,7 +391,7 @@ EO_SQL;
      */
     public function getSampleAttributeByAttributeName($attributeName)
     {
-        $attribute = Attribute::model()->findByAttributes(array('attribute_name' => $attributeName));
+        $attribute = Attribute::findByAttrName($attributeName);
         if (!$attribute) {
             return null;
         }
