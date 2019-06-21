@@ -40,7 +40,7 @@
                 $class = 'submit-selected';
             }
             ?>
-                <tr class="<?php echo $class; ?>" id="js-dataset-row-<?=$data[$i]->id?>">
+                <tr class="<?php echo $class; ?>" id="js-dataset-row-<?=$data[$i]->id?>"<?php if (isset($_GET['added']) && $_GET['added'] == $data[$i]->id): ?> style="background-color: #e3efda;"<?php endif; ?>>
                     <?
                 $upload_status = $data[$i]->upload_status;
                 
