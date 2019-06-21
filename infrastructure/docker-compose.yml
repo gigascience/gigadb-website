@@ -31,6 +31,8 @@ services:
       - ../repo:/home/downloader/:ro
       - ../credentials:/var/private
       - ../hooks:/var/scripts
+      - ../runtime/pure-ftpd:/etc/pure-ftpd
+      - ../runtime/pure-ftpd/passwd:/etc/pure-ftpd/passwd
       # - ../ftp-transfer-logs:/var/log/pure-ftpd
     environment:
       PUBLICHOST: "localhost"
@@ -223,6 +225,8 @@ services:
       - ../incoming:/var/incoming
       - ../repo:/var/repo
       - ../credentials:/var/private
+      - ../runtime/pure-ftpd:/etc/pure-ftpd
+      - ../runtime/pure-ftpd/passwd:/etc/pure-ftpd/passwd
       # to run tests that interact with containers
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
