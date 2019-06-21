@@ -3,3 +3,4 @@ actor: FunctionalTester
 modules:
     enabled:
         - Yii2
+        - Asserts

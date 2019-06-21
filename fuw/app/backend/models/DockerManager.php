@@ -113,10 +113,10 @@ class DockerManager extends yii\base\BaseObject
      *
      * @param string $service service to execute the command on
      * @param array $commandArray command and its argument
-     * @return bool return true if successful, false otherwise
+     * @return null | object whatever is returned by execStart
      *
      */
-    public function loadAndRunCommand(string $service, array $commandArray): bool
+    public function loadAndRunCommand(string $service, array $commandArray): ?object
     {
 
         $container = $this->getContainer("/${service}_1/");
@@ -132,11 +132,8 @@ class DockerManager extends yii\base\BaseObject
         $result =  $this->getClient()->execStart(
         										$execConfigResponse->getId(), $execStartConfig
         									);
-        if (null === $result) {
-            return true;
-        }
 
-    	return false;
+    	return $result;
     }
 }
 ?>
