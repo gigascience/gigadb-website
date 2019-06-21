@@ -162,6 +162,8 @@
                     $('#related-doi-block').show();
 
                     checkIfCanSave();
+
+                    $(".delete-title").tooltip({'placement':'left'});
                 } else {
                     alert(response.message);
                 }

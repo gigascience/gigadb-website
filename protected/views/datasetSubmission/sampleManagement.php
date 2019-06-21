@@ -83,7 +83,7 @@
                             <?php endfor ?>
                         <?php elseif (!$template): ?>
                             <?php foreach ($sas as $sa): ?>
-                                <?php if ($sa->attribute->attribute_name == 'description') continue ?>
+                                <?php if ($sa->attribute->attribute_name == 'Description') continue ?>
                                 <th class="sample-attribute-column">
                                     <a class="js-delete-column delete-title" title="delete this column">
                                         <img alt="delete this column" src="/images/delete.png">
@@ -148,11 +148,11 @@
                                     <input type="text" class="js-species-autocomplete" placeholder='Species name' value="<?= $sample->species->common_name ?>">
                                 </td>
                                 <td>
-                                    <?php $mySa = $sample->getSampleAttributeByAttributeName('description') ?>
+                                    <?php $mySa = $sample->getSampleAttributeByAttributeName('Description') ?>
                                     <input type="text" placeholder='Short description of sample' value="<?= $mySa ? $mySa->value : '' ?>" style="width: 250px;">
                                 </td>
                                 <?php foreach ($sas as $sa): ?>
-                                    <?php if ($sa->attribute->attribute_name == 'description') continue ?>
+                                    <?php if ($sa->attribute->attribute_name == 'Description') continue ?>
                                     <td>
                                         <?php $mySa = $sample->getSampleAttributeByAttributeIdAndUnitId($sa->attribute_id, $sa->unit_id) ?>
                                         <input type="text" placeholder='Attribute value' value="<?= $mySa ? $mySa->value : '' ?>" style="width: 250px;">
@@ -221,6 +221,7 @@
 
 <script>
     $('#samples-table').resizable();
+    $(".delete-title").tooltip({'placement':'right'});
 
     var species = JSON.parse('<?= json_encode(array_values(CHtml::listData($species, 'id', 'common_name'))) ?>');
 
@@ -346,6 +347,8 @@
             source: species
         });
 
+        $(".delete-title").tooltip({'placement':'right'});
+
         return false;
     });
 
@@ -437,7 +440,7 @@
             let id = td.find('.js-sample-attr-id').val();
             if (!id) {id = 0;}
             let attr_name = td.find('input').val();
-            if (!attr_name) {attr_name = 'description';}
+            if (!attr_name) {attr_name = 'Description';}
             let unit_id = td.find('select').val();
             if (!unit_id) {unit_id = 0;}
 

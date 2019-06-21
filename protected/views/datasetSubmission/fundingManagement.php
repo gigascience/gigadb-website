@@ -130,7 +130,7 @@ foreach ($funders as $funder) {
     var datasetId = <?= $model->id ?>;
     var fundingDiv = $('#funding');
 
-    $(".delete-title").tooltip({'placement':'top'});
+    $(".delete-title").tooltip({'placement':'left'});
 
     $(document).on('click', '.js-not-allowed', function() {
         return false;
@@ -299,6 +299,8 @@ foreach ($funders as $funder) {
                         cleanFundingForm();
                         makeAddActiveIfCan();
                         makeSaveActiveIfCan();
+
+                        $(".delete-title").tooltip({'placement':'left'});
                     } else {
                         alert(response.message);
                     }

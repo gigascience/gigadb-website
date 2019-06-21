@@ -65,6 +65,8 @@ $disabled = $isSources === null || $isCodes === null || $is3dImages === null || 
 <script>
     var dataset_id = <?= $model->id ?>;
 
+    $(".delete-title").tooltip({'placement':'left'});
+
     $(document).on('click', '.js-no-button', function(e) {
         var $this = $(this);
         //var datasetId = $this.data('id');

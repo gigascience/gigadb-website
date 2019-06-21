@@ -229,6 +229,8 @@ $exLinks = $isManuscripts || $isProtocols || $is3dImages || $isCodes || $isSourc
                     $('#related-doi-block').show();
 
                     checkIfCanSave();
+
+                    $(".delete-title").tooltip({'placement':'left'});
                 } else {
                     alert(response.message);
                 }
