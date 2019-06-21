@@ -116,6 +116,8 @@ Rosalind	Elsie	Franklin 	0000-0000-0000-0001	Conceptualization"
 </div>
 
 <script>
+    $(".delete-title").tooltip({'placement':'left'});
+
     var contributions = JSON.parse('<?= json_encode(array_values(CHtml::listData($contributions, 'id', 'name'))) ?>');
     var deleteIds = [];
     var dataset_id = <?= $model->id ?>;
@@ -312,6 +314,8 @@ Rosalind	Elsie	Franklin 	0000-0000-0000-0001	Conceptualization"
                     $('#js-author-contribution').val('');
 
                     $('#js-add-author').removeClass('btn-green js-add-author').addClass('js-not-allowed');
+
+                    $(".delete-title").tooltip({'placement':'left'});
                 } else {
                     alert(response.message);
 
