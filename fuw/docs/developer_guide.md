@@ -31,6 +31,14 @@ $ docker exec console bash
 # vendor/bin/codecept build
 ```
 
+## Create a new controller (for the backend app) with three actions
+
+```
+$ docker exec console bash
+# cd /app
+# php yii gii/controller --controllerClass="backend\controllers\FiledropAccountController" --actions=create,close,index --viewPath="backend/views/filedrop-account"
+```
+
 ## Services
 
 ### ftpd
