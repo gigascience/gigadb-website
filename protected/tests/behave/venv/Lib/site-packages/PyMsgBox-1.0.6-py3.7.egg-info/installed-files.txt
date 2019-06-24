@@ -1,0 +1,16 @@
+..\pymsgbox\__init__.py
+..\pymsgbox\__pycache__\__init__.cpython-37.pyc
+..\pymsgbox\__pycache__\_native_java.cpython-37.pyc
+..\pymsgbox\__pycache__\_native_osx.cpython-37.pyc
+..\pymsgbox\__pycache__\_native_win.cpython-37.pyc
+..\pymsgbox\__pycache__\_native_x11.cpython-37.pyc
+..\pymsgbox\__pycache__\native.cpython-37.pyc
+..\pymsgbox\_native_java.py
+..\pymsgbox\_native_osx.py
+..\pymsgbox\_native_win.py
+..\pymsgbox\_native_x11.py
+..\pymsgbox\native.py
+PKG-INFO
+SOURCES.txt
+dependency_links.txt
+top_level.txt
