@@ -83,6 +83,7 @@
                                         <?php if ($data[$i]->token): ?>
                                             <a href="/view/id/<?= $data[$i]->identifier ?>/token/<?= $data[$i]->token ?>" style="margin-left: 15px;" title="Private Accession Link"><img alt="Private Accession Link" src="/images/view.png"></a>
                                         <?php endif; ?>
+                                        <a class="js-undo-dataset" style="display: none;" did="<?=$data[$i]->id?>" title="Undo"><img alt="Undo" src="/images/undo.png"></a>
                                     <? } ?>
                 </tr>
                 <? } ?>

@@ -24,6 +24,7 @@ Yii::import('application.extensions.CAdvancedArBehavior');
  * @property integer $funding
  * @property integer $is_test
  * @property string $creation_date
+ * @property integer $is_deleted
  */
 class Dataset extends CActiveRecord
 {
@@ -94,7 +95,7 @@ class Dataset extends CActiveRecord
         // will receive user inputs.
         return array(
             array('submitter_id, identifier, title, ftp_site, types', 'required'),
-            array('submitter_id, image_id, publisher_id, funding, is_test', 'numerical', 'integerOnly'=>true),
+            array('submitter_id, image_id, publisher_id, funding, is_test, is_deleted', 'numerical', 'integerOnly'=>true),
             array('dataset_size', 'numerical'),
             array('identifier, excelfile_md5', 'length', 'max'=>32),
             array('title', 'length', 'max'=>300),

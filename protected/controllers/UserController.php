@@ -381,7 +381,9 @@ class UserController extends Controller {
         $searchRecord = SearchRecord::model()->findAllByAttributes(array('user_id' => Yii::app()->user->id));
         //Yii::log(print_r($searchRecord, true), 'debug');
 
-        $uploadedDatasets = Dataset::model()->findAllByAttributes(array('submitter_id'=> Yii::app()->user->id), array('order'=>'upload_status'));
+        $criteria = new CDbCriteria();
+        $criteria->condition = '(is_deleted IS NULL OR is_deleted = 0) AND submitter_id = ' . Yii::app()->user->id;
+        $uploadedDatasets = Dataset::model()->findAll($criteria, array('order'=>'upload_status'));
         $this->render('view_profile',array('model'=>$model,'searchRecord'=>$searchRecord,'uploadedDatasets'=>$uploadedDatasets, 'authoredDatasets' => $authoredDatasets, 'linkedAuthors' => $linkedAuthors));
     }
 

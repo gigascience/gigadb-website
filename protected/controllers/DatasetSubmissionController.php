@@ -37,7 +37,7 @@ class DatasetSubmissionController extends Controller
                     'additionalManagement', 'saveAdditional',
                     'fundingManagement', 'validateFunding', 'saveFundings',
                     'projectManagement','linkManagement','exLinkManagement',
-                    'relatedDoiManagement','sampleManagement', 'saveSamples', 'validateSamples', 'checkUnit', 'end', 'PxInfoManagement','datasetAjaxDelete'),
+                    'relatedDoiManagement','sampleManagement', 'saveSamples', 'validateSamples', 'checkUnit', 'end', 'PxInfoManagement','datasetAjaxDelete', 'datasetAjaxUndo'),
                 'users'=>array('@'),
             ),
             array('deny',  // deny all users
@@ -1368,11 +1368,31 @@ class DatasetSubmissionController extends Controller
                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Dataset does not exist.")));
             }
 
-            if ($dataset->delete()) {
+            $dataset->is_deleted = 1;
+            $dataset->modification_date = date('Y-m-d');
+            if ($dataset->save(false)) {
                 Util::returnJSON(array("success"=>true));
             }
         }
         Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+    }
+
+    public function actionDatasetAjaxUndo()
+    {
+        if (isset($_POST['dataset_id'])) {
+            $dataset = Dataset::model()->findByPk($_POST['dataset_id']);
+
+            if (!$dataset) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Dataset does not exist.")));
+            }
+
+            $dataset->is_deleted = 0;
+            $dataset->modification_date = date('Y-m-d');
+            if ($dataset->save(false)) {
+                Util::returnJSON(array("success"=>true));
+            }
+        }
+        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Undo Error.")));
     }
 
     private function storeSpps($samples, $value, $sppAttr)
