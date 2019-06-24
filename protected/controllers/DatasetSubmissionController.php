@@ -962,7 +962,7 @@ class DatasetSubmissionController extends Controller
             $attrs = array();
             $newSampleAttrs = isset($_POST['sample_attrs']) && is_array($_POST['sample_attrs']) ? $_POST['sample_attrs'] : array();
             foreach ($newSampleAttrs as $i => $newSampleAttr) {
-                $attr = Attribute::model()->findByAttributes(array('attribute_name' => $newSampleAttr['attr_name']));
+                $attr = Attribute::findByAttrName($newSampleAttr['attr_name']);
                 if (!$attr) {
                     Util::returnJSON(array(
                         "success"=>false,
@@ -1067,11 +1067,13 @@ class DatasetSubmissionController extends Controller
 
             foreach ($samples as $sample) {
                 if (!in_array($sample->id, $needSamples)) {
-                    if (!$sample->delete()) {
+                    try {
+                        $sample->delete();
+                    } catch (\Exception $e) {
                         $transaction->rollback();
                         Util::returnJSON(array(
                             "success"=>false,
-                            "message"=>"Save Error."
+                            "message"=>"Delete error: sample \"{$sample->id}\" already related to some File."
                         ));
                     }
                 }

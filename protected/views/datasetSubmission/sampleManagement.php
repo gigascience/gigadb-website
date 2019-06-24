@@ -83,7 +83,7 @@
                             <?php endfor ?>
                         <?php elseif (!$template): ?>
                             <?php foreach ($sas as $sa): ?>
-                                <?php if ($sa->attribute->attribute_name == 'Description') continue ?>
+                                <?php if (strtolower($sa->attribute->attribute_name) == 'description') continue ?>
                                 <th class="sample-attribute-column">
                                     <a class="js-delete-column delete-title" title="delete this column">
                                         <img alt="delete this column" src="/images/delete.png">
@@ -152,7 +152,7 @@
                                     <input type="text" placeholder='Short description of sample' value="<?= $mySa ? $mySa->value : '' ?>" style="width: 250px;">
                                 </td>
                                 <?php foreach ($sas as $sa): ?>
-                                    <?php if ($sa->attribute->attribute_name == 'Description') continue ?>
+                                    <?php if (strtolower($sa->attribute->attribute_name) == 'description') continue ?>
                                     <td>
                                         <?php $mySa = $sample->getSampleAttributeByAttributeIdAndUnitId($sa->attribute_id, $sa->unit_id) ?>
                                         <input type="text" placeholder='Attribute value' value="<?= $mySa ? $mySa->value : '' ?>" style="width: 250px;">
@@ -332,7 +332,7 @@
             '<input type="text" placeholder=\'Short description of sample\' style="width:250px;">' +
             '</td>';
 
-        for (var i = 0, n = samplesTable.find('.sample-attribute-column').length; i < n; i++) {
+        for (var i = 0, n = samplesTable.find('.sample-attribute-column').length - 1; i < n; i++) {
             newTr += newTd;
         }
 
