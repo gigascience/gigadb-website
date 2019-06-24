@@ -137,6 +137,24 @@ services:
       - "gigadb.dev:172.16.238.10"
     command: ./tests/all_and_coverage
 
+  behave-test:
+    build:
+      context: .
+      dockerfile: ../packaging/Behave-Dockerfile
+    volumes:
+      - ${APPLICATION}/:/var/www
+    depends_on:
+      - application
+      - web
+      - database
+      - phantomjs
+    networks:
+      - web-tier
+      - db-tier
+    extra_hosts:
+      - "gigadb.dev:172.16.238.10"
+    command: ./tests/behave_tests
+
   phantomjs:
     image: wernight/phantomjs:2.1.1
     command: phantomjs --webdriver=8910
