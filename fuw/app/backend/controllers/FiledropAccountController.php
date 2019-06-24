@@ -7,33 +7,28 @@ use yii\rest\ActiveController;
 /**
  * REST controller for FiledropAccount
  *
- * @uses \backend\models\FiledropAccount
+ * POST /filedrop-account/ -> /filedrop-account/create
+ * DELETE /filedrop-account/ -> /filedrop-account/close
+ * GET /filedrop-account/ -> /filedrop-account/index
  *
  **/
 class FiledropAccountController extends ActiveController
 {
     public $modelClass = 'backend\models\FiledropAccount';
 
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
+    public function actionClose()
     {
-        $behaviors = parent::behaviors();
-        $behaviors['authenticator'] = [
-            'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
-        ];
-
-        return $behaviors;
+        return $this->render('close');
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function actions()
+    public function actionCreate()
     {
-        $actions = parent::actions();
-        $actions['delete']['class'] = 'backend\actions\FiledropAccountController\DeleteAction';
-        return $actions;
+        return $this->render('create');
     }
+
+    public function actionIndex()
+    {
+        return $this->render('index');
+    }
+
 }
