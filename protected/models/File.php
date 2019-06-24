@@ -392,37 +392,13 @@ class File extends CActiveRecord
 
     public function prepareFormatId()
     {
-        switch ($this->extension) {
-            case 'doc':
-                $name = 'TEXT';
-                break;
-            case 'readme':
-                $name = 'TEXT';
-                break;
-            case 'text':
-                $name = 'TEXT';
-                break;
-            case 'txt':
-                $name = 'TEXT';
-                break;
-            case 'gff3':
-                $name = 'GFF';
-                break;
-            case 'gff':
-                $name = 'GFF';
-                break;
-            case 'tar':
-                $name = 'TAR';
-                break;
-            case 'pdf':
-                $name = 'PDF';
-                break;
-            default:
-                $name = 'FASTA';
-                break;
-        }
+        $match = addcslashes($this->extension, '%_');
+        $criteria = new CDbCriteria( array(
+            'condition' => "LOWER(description) LIKE LOWER(:match)",
+            'params'    => array(':match' => "%$match%")
+        ) );
 
-        $format = FileFormat::model()->findByAttributes(array('name' => $name));
+        $format = FileFormat::model()->find($criteria);
         if ($format) {
             $this->format_id = $format->id;
         }
