@@ -58,5 +58,21 @@ class FiledropAccountCest
   //   	$password_file = file("/etc/pure-ftpd/passwd/pureftpd.passwd");
 		// $I->assertRegExp("/$downloadLogin/", $password_file[count($password_file) - 1], "size: ".count($password_file));
 
+    	// save account to the database
+    	$filedrop->doi = $doi;
+    	$filedrop->upload_login = $uploadLogin;
+    	$filedrop->upload_token = $uploadToken;
+        $filedrop->download_login = $downloadLogin;
+    	$filedrop->download_token = $downloadToken;
+    	$filedrop->status = "active";
+    	$filedrop->save();
+
+    	$accounts = FiledropAccount::find()
+    		->where(['doi' => $doi])
+    		->all();
+    	$I->assertCount(1, $accounts);
+    	$I->assertEquals($uploadLogin, $accounts[0]->upload_login);
+
+
     }
 }
