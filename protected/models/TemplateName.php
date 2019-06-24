@@ -65,4 +65,28 @@ class TemplateName extends CActiveRecord
 			'notes' => 'Notes',
 		);
 	}
+
+    public static function findByAttrName($attributeName)
+    {
+        $criteria = new CDbCriteria( array(
+            'condition' => "LOWER(template_name) = LOWER(:match)",
+            'params'    => array(':match' => $attributeName)
+        ) );
+
+        $attribute = self::model()->find($criteria);
+
+        return $attribute;
+    }
+
+    public function addAttributes($attributes)
+    {
+        $inserts = array();
+        foreach ($attributes as $attribute) {
+            $inserts[] = array('template_name_id' => $this->id, 'attribute_id' => $attribute->id);
+        }
+
+        $command = Yii::app()->db->schema->commandBuilder->createMultipleInsertCommand('template_attribute', $inserts);
+
+        $command->execute();
+    }
 }

@@ -20,6 +20,11 @@ class MainHelper
         return dirname(__FILE__).DIRECTORY_SEPARATOR.'../../files';
     }
 
+    public static function getTemplatesDir()
+    {
+        return self::getFilesDir() . '/templates';
+    }
+
     public static function getUploadsDir()
     {
         return Yii::getPathOfAlias('uploadPath');

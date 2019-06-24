@@ -1,0 +1,4 @@
+Sample name	Species name	Description	analyte type	alternative accession-BioSample	alternative accession-BioProject	"Geographic location (country and/or sea,region)"	geographic location (latitude)	geographic location (longitude)	Sample source	Broad-scale environmental context	Local environmental context	Environmental medium	Life stage	Age	Tissue type	Collection date	Collected by	Sample collection device or method	Sample material processing	Amount or size of sample collected	source material identifiers	sequencing method	sequence quality check	assembly software	annotation	number of contigs	WGA amplication approach	multiplex identifiers	adapters
+																													
+																													
+																													
