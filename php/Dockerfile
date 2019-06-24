@@ -218,4 +218,6 @@ WORKDIR /var/www
 
 CMD ["php-fpm"]
 
-EXPOSE 9000
+ARG APP_PORT=9000
+EXPOSE ${APP_PORT}
+RUN sed -i "s/9000/${APP_PORT}/" /usr/local/etc/php-fpm.d/zz-docker.conf
