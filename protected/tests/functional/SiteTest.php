@@ -56,7 +56,7 @@ class SiteTest extends FunctionalTesting
     public function testItShouldShowCountNumber()
     {
         // this is the content we expect to be in
-        $expectations = ["4", "2", "16", "2 G"];
+        $expectations = ["4", "2", "16", "2"];
         $actual = [];
         $url = "http://gigadb.dev/site/" ;
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, null);
