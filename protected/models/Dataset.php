@@ -54,6 +54,7 @@ class Dataset extends CActiveRecord
         'Private'=>'Private',
         'Published'=>'Published',
         'UserUploadingData'=>'UserUploadingData',
+        'AssigningFTPbox'=>'AssigningFTPbox',
     );
 
     /*

@@ -1110,7 +1110,7 @@ class DatasetSubmissionController extends Controller
             $this->redirect("/user/view_profile");
         } else {
             $dataset = $this->getDataset($_GET['id']);
-            $dataset->upload_status = 'UserUploadingData';
+            $dataset->upload_status = 'AssigningFTPbox';
             if (isset($_GET['is_test']) && $_GET['is_test'] === '0'){
                 $dataset->toReal();
             }
