@@ -367,6 +367,18 @@ class File extends CActiveRecord
             $files = File::model()->findAll($criteria);
             /** @var File $file */
             foreach ($files as $file) {
+                foreach ($file->fileSamples as $fileSample) {
+                    $fileSample->delete();
+                }
+
+                foreach ($file->fileRelationships as $fileRelationship) {
+                    $fileRelationship->delete();
+                }
+
+                foreach ($file->fileAttributes as $fileAttribute) {
+                    $fileAttribute->delete();
+                }
+
                 $file->delete();
             }
 
