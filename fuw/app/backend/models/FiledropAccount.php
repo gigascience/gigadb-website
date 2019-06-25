@@ -40,7 +40,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['doi'], 'required'],
+            [['doi','upload_login','upload_token','download_login','download_token'], 'required'],
             [['created_at', 'updated_at', 'retired_at'], 'safe'],
             [['doi', 'upload_login', 'download_login', 'status'], 'string', 'max' => 100],
             [['upload_token', 'download_token'], 'string', 'max' => 128],
@@ -162,5 +162,37 @@ class FiledropAccount extends \yii\db\ActiveRecord
         //
         // see: https://github.com/docker-php/docker-php/blob/master/tests/Resource/ExecResourceTest.php
         return $status;
+    }
+
+    /**
+     * prepare directories and generate tokens and assign the data to the model
+     *
+     * @param string $doi
+     */
+    public function prepareAccountSetFields(string $doi): bool
+    {
+        // create directories
+        $this->createDirectories("$doi");
+
+        // create tokens
+        $result1 = $this->makeToken("$doi",'uploader_token.txt');
+        $result1 = $this->makeToken("$doi",'downloader_token.txt');
+
+        // derive logins and tokens
+        $uploadLogin = "uploader-$doi";
+        $uploadToken = rtrim(file("/var/private/$doi/uploader_token.txt")[0]);
+
+        $downloadLogin = "downloader-$doi";
+        $downloadToken = rtrim(file("/var/private/$doi/downloader_token.txt")[0]);
+
+        $this->doi = $doi ;
+
+        $this->upload_login = $uploadLogin ;
+        $this->upload_token = $uploadToken ;
+
+        $this->download_login = $downloadLogin ;
+        $this->download_token = $downloadToken ;
+
+        return $uploadLogin && $downloadLogin && $uploadToken && $downloadToken ;
     }
 }
