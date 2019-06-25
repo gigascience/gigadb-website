@@ -11,7 +11,21 @@ class FiledropAccountCest
     	// make sure the ftpd container is reset
     }
 
+	/**
+     * functional test that directory are created, tokens generated and set to model class
+     * @param FunctionalTester $I
+     */
+    public function prepareAccountSetFields(FunctionalTester $I)
+    {
+    	$filedrop = new FiledropAccount();
+    	$dockerManager = new DockerManager();
+    	$doi = FiledropAccount::generateRandomString(6);
+
+    	$I->assertTrue($filedrop->prepareAccountSetFields($doi));
+    }
+
     /**
+     * functional test that ftp accounts are created on the ftpd container
      * @param FunctionalTester $I
      */
     public function createFTPAccounts(FunctionalTester $I)
@@ -42,21 +56,35 @@ class FiledropAccountCest
     	$status = $filedrop->createFTPAccount( $dockerManager, $doi );
     	$I->assertTrue($status);
 
-    	// we should be able to connect. problem 2 is there is delay in filesytem sync
-    	// Problem 1 is ftpd cannot be connected by ftp (because of PUBLICHOST value)
-  //   	clearstatcache();
-  //   	$password_file = file("/etc/pure-ftpd/passwd/pureftpd.passwd");
-  //   	clearstatcache();
-  //   	$password_file = file("/etc/pure-ftpd/passwd/pureftpd.passwd");
-  //    	clearstatcache();
-  //   	$password_file = file("/etc/pure-ftpd/passwd/pureftpd.passwd");
-  //    	clearstatcache();
-  //   	$password_file = file("/etc/pure-ftpd/passwd/pureftpd.passwd");
-  //    	clearstatcache();
-  //   	$password_file = file("/etc/pure-ftpd/passwd/pureftpd.passwd");
-  //    	clearstatcache();
-  //   	$password_file = file("/etc/pure-ftpd/passwd/pureftpd.passwd");
-		// $I->assertRegExp("/$downloadLogin/", $password_file[count($password_file) - 1], "size: ".count($password_file));
+    }
+
+    /**
+     * functional test that accounts are created and save in database
+     *
+     * @todo validate directories, token and ftp account exist before saving
+     * @param FunctionalTester $I
+     */
+    public function createAccountsDatabaseRecord(FunctionalTester $I)
+    {
+
+    	$filedrop = new FiledropAccount();
+    	$dockerManager = new DockerManager();
+    	$doi = FiledropAccount::generateRandomString(6);
+    	$ftpServer = "ftpd";
+
+    	// create directories
+    	$filedrop->createDirectories("$doi");
+
+    	// create tokens
+		$result1 = $filedrop->makeToken("$doi",'uploader_token.txt');
+		$result1 = $filedrop->makeToken("$doi",'downloader_token.txt');
+
+		// derive logins and tokens
+		$uploadLogin = "uploader-$doi";
+		$uploadToken = rtrim(file("/var/private/$doi/uploader_token.txt")[0]);
+
+		$downloadLogin = "downloader-$doi";
+		$downloadToken = rtrim(file("/var/private/$doi/downloader_token.txt")[0]);
 
     	// save account to the database
     	$filedrop->doi = $doi;
@@ -72,7 +100,18 @@ class FiledropAccountCest
     		->all();
     	$I->assertCount(1, $accounts);
     	$I->assertEquals($uploadLogin, $accounts[0]->upload_login);
+    }
 
-
+    /**
+     * functional test http post to create account
+     *
+     * @param FunctionalTester $I
+     */
+    public function sendRestHttpPostToCreateAccount(FunctionalTester $I)
+    {
+    	$doi = FiledropAccount::generateRandomString(6);
+    	// $I->amBearerAuthenticated("hfafsdadsgv2n887ad5");
+    	// $I->sendPOST("/filedrop-accounts",['doi' =>"$doi"]);
+    	// $I->seeResponseCodeIs(201);
     }
 }

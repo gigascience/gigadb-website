@@ -38,6 +38,16 @@ $ docker exec console bash
 # cd /app
 # php yii gii/controller --controllerClass="backend\controllers\FiledropAccountController" --actions=create,close,index --viewPath="backend/views/filedrop-account"
 ```
+## query the REST API
+
+```
+$ curl -sSL -D - -o /dev/null -i -H "Accept:application/json" -H "Content-Type:application/json" -XPOST "http://fuw-admin-dev.pommetab.com:7070/filedrop-accounts" -d '{"doi": "example", "email": "user@example.com"}'
+```
+
+**Note:**
+> ControllerIDs are pluralized by default, so _FiledropAccountController_ will have ``filedrop-accounts`` as controllerID by default.
+> This make sense when seeing REST endpoints as resources to act upon.
+> it can be changed by reconfiguring 'urlManager' in main.php.
 
 ## Services
 
