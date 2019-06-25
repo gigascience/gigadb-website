@@ -4,3 +4,6 @@ modules:
     enabled:
         - Yii2
         - Asserts
+        - REST:
+            depends: Yii2
+            part: Json
