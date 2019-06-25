@@ -1,8 +1,10 @@
 FROM williamyeh/behave:latest
 
-ARG PG_CLIENT_VERSION=10.5
-
 RUN apt-get update -yq && \ 
     mkdir -p /usr/share/man/man1 && \
     mkdir -p /usr/share/man/man7 && \
-    apt-get install -y postgresql-client-${PG_CLIENT_VERSION}
+    apt-get install -y postgresql-client
+    
+WORKDIR /var/www
+
+ENTRYPOINT ["/var/www/tests/behave_tests"]

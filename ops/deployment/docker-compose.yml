@@ -153,7 +153,6 @@ services:
       - db-tier
     extra_hosts:
       - "gigadb.dev:172.16.238.10"
-    command: ./tests/behave_tests
 
   phantomjs:
     image: wernight/phantomjs:2.1.1
