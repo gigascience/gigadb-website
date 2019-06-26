@@ -85,7 +85,7 @@ def wait_on_xpath_element_active(context, time_sec, xpath_element):
 
 
 def go_to(context, address_without_domen):
-    context.settings = load(open('features/conf.yaml').read())
+    context.settings = load(open('conf.yaml').read())
     url = context.settings['base_url']
     basic_url = 'https://{}/{}'.format(url,address_without_domen)
     context.browser.get(basic_url)
@@ -93,7 +93,7 @@ def go_to(context, address_without_domen):
 
 @given('url address "{text}"')
 def step_impl(context, text):
-    context.settings = load(open('features/conf.yaml').read())
+    context.settings = load(open('conf.yaml').read())
     url = context.settings['base_url']
     # login = context.settings['login']
     # password = context.settings['password']

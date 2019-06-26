@@ -4,6 +4,10 @@ RUN apt-get update -yq && \
     mkdir -p /usr/share/man/man1 && \
     mkdir -p /usr/share/man/man7 && \
     apt-get install -y postgresql-client
+
+RUN pip3 install --no-cache-dir \
+    pyyaml \
+    pyautogui
     
 WORKDIR /var/www
 
