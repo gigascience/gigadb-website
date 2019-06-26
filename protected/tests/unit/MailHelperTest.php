@@ -7,7 +7,8 @@ class MailHelperTest extends CDbTestCase
 //        'datasets'=>'Dataset',
 //    );
 //
-//    const TEST_ADMIN_EMAIL = 'vitaliklunyov@gmail.com';
+//    const TEST_ADMIN_EMAIL = 'test@gigasciencejournal.com';
+//    //awny$emit_6
 //
 //    function getTestSender()
 //    {
