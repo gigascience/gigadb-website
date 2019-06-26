@@ -47,14 +47,20 @@ class Dataset extends CActiveRecord
     public $types;
     public $keywords;
 
-    public static $statusList = array('Incomplete'=>'Incomplete',
-        'Request'=>'Request',
-        'Uploaded'=>'Uploaded',
-        'Pending'=>'Pending',
-        'Private'=>'Private',
-        'Published'=>'Published',
-        'UserUploadingData'=>'UserUploadingData',
+    public static $statusList = array(
+        'ImportFromEM'=>'ImportFromEM',
+        'UserStartedIncomplete'=>'UserStartedIncomplete',
+        'Rejected'=>'Rejected',
+        'Not required'=>'Not required',
         'AssigningFTPbox'=>'AssigningFTPbox',
+        'UserUploadingData'=>'UserUploadingData',
+        'DataAvailableForReview'=>'DataAvailableForReview',
+        'Submitted'=>'Submitted',
+        'DataPending'=>'DataPending',
+        'Curation'=>'Curation',
+        'AuthorReview'=>'AuthorReview',
+        'Private'=>'Private',
+        'Published' =>'Published',
     );
 
     /*
@@ -403,7 +409,7 @@ class Dataset extends CActiveRecord
     }
 
     public function getIsIncomplete() {
-        return $this->upload_status == "Incomplete";
+        return $this->upload_status == "UserStartedIncomplete";
     }
 
     public function behaviors() {
@@ -644,7 +650,7 @@ class Dataset extends CActiveRecord
         $this->manuscript_id = $data['manuscript_id'];
         $this->title = $data['title'];
         $this->description = $data['description'];
-        $this->upload_status = "Incomplete";
+        $this->upload_status = "UserStartedIncomplete";
         $this->ftp_site = "''";
         $this->setIdentifier();
     }

@@ -92,7 +92,7 @@ class AdminDatasetController extends Controller
                     }
 
                     Yii::app()->user->setFlash('saveSuccess', 'saveSuccess');
-                    if ($dataset->upload_status=='Pending') {
+                    if ($dataset->upload_status=='AuthorReview') {
                         $this->redirect('/adminDataset/private/identifier/'.$dataset->identifier);
                     }
                     $this->redirect(array('/dataset/'.$dataset->identifier));
