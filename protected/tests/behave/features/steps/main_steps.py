@@ -38,9 +38,9 @@ global_ftp_file_sizes = []
 
 connection = psycopg2.connect(user="gigadb",
                                      password="vagrant",
-                                     host="192.168.10.233",
-                                     port="54321",
-                                     database="gigadb")
+                                     host="database",
+                                     port="5432",
+                                     database="gigadb_test")
 
 def convert_number_to_orcid_format(orcid):
     converted_orcid = '-'.join([orcid[i:i + 4] for i in range(0, len(orcid), 4)])
@@ -85,7 +85,7 @@ def wait_on_xpath_element_active(context, time_sec, xpath_element):
 
 
 def go_to(context, address_without_domen):
-    context.settings = load(open('conf.yaml').read())
+    context.settings = load(open('/var/www/protected/tests/behave/features/conf.yaml').read())
     url = context.settings['base_url']
     basic_url = 'https://{}/{}'.format(url,address_without_domen)
     context.browser.get(basic_url)
@@ -93,7 +93,7 @@ def go_to(context, address_without_domen):
 
 @given('url address "{text}"')
 def step_impl(context, text):
-    context.settings = load(open('conf.yaml').read())
+    context.settings = load(open('/var/www/protected/tests/behave/features/conf.yaml').read())
     url = context.settings['base_url']
     # login = context.settings['login']
     # password = context.settings['password']

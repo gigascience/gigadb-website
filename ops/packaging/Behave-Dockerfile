@@ -1,14 +1,15 @@
 FROM williamyeh/behave:latest
 
 RUN apt-get update -yq && \ 
-    mkdir -p /usr/share/man/man1 && \
-    mkdir -p /usr/share/man/man7 && \
-    apt-get install -y postgresql-client
+mkdir -p /usr/share/man/man1 && \
+mkdir -p /usr/share/man/man7 && \
+apt-get install -y postgresql-client libpq-dev build-essential
 
 RUN pip3 install --no-cache-dir \
-    pyyaml \
-    pyautogui
-    
+pyyaml \
+psycopg2 \
+pyautogui
+
 WORKDIR /var/www
 
 ENTRYPOINT ["/var/www/tests/behave_tests"]
