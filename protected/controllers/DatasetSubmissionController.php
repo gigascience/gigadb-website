@@ -93,7 +93,7 @@ class DatasetSubmissionController extends Controller
             $this->isSubmitter($dataset);
 
             $isOld = 1;
-            if ($dataset->upload_status == 'Incomplete') {
+            if ($dataset->upload_status == 'UserStartedIncomplete') {
                 $isOld = 0;
             }
 

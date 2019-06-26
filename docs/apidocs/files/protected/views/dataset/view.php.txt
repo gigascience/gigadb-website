@@ -106,7 +106,7 @@ HTML;
                                                     <?php foreach ($model->authors as $author) { ?>
                                                         <tr><td>
             <?php
-                                                $status_array = array('Request', 'Incomplete', 'Uploaded');
+                                                $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
                                                 echo CHtml::ajaxLink($author->first_name." ".$author->middle_name." ".$author->surname,Yii::app()->createUrl('/userCommand/claim'),
                                                 array(
                                                     'type'=>'GET',
@@ -141,7 +141,7 @@ HTML;
                                             <input type="hidden" id="dataset_id" name="dataset_id" value="<? echo $model->id ?>"/>
                                             <?php
                                                 // "Cancel current claim" button
-                                                $status_array = array('Request', 'Incomplete', 'Uploaded');
+                                                $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
                                                 echo CHtml::ajaxLink('Cancel current claim',Yii::app()->createUrl('/userCommand/cancelClaim'),
                                                 array(
                                                     'type'=>'GET',
