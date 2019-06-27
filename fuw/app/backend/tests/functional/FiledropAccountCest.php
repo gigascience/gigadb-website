@@ -104,4 +104,30 @@ class FiledropAccountCest
     	$I->seeResponseJsonMatchesJsonPath('$.upload_token');
     	$I->seeResponseJsonMatchesJsonPath('$.download_token');
     }
+
+    /**
+     * functional test http delete to delete account
+     *
+     * @param FunctionalTester $I
+     */
+    public function sendRestHttpDeleteToDeleteAccount(FunctionalTester $I)
+    {
+    	$doi = FiledropAccount::generateRandomString(6);
+
+    	$filedrop = new FiledropAccount();
+    	$dockerManager = new DockerManager();
+
+    	$filedrop->setDOI($doi);
+    	$filedrop->setDockerManager($dockerManager);
+    	$filedrop->status = "active";
+    	$filedrop->save();
+
+    	$I->sendDELETE("/filedrop-accounts/" . $filedrop->id);
+    	$I->seeResponseCodeIs(204);
+
+    	$accounts = FiledropAccount::find()
+    		->where(['doi' => $doi])
+    		->all();
+    	$I->assertCount(0, $accounts);
+    }
 }
