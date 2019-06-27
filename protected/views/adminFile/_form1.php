@@ -19,14 +19,14 @@
             <div class="control-group">
                 <label class='control-label'>FTP username =</label>
                 <div class="controls">
-                    <?= CHtml::textField('username', '', array('class' => 'js-check-can-get', 'size' => 60, 'maxlength' => 100, 'style'=>'width:240px', 'placeholder'=>"userNNN")); ?>
+                    <?= CHtml::textField('username', '', array('class' => 'js-check-can-get', 'size' => 60, 'maxlength' => 100, 'style'=>'width:240px', 'placeholder'=>"Username")); ?>
                 </div>
             </div>
 
             <div class="control-group">
                 <label class='control-label'>FTP password =</label>
                 <div class="controls">
-                    <?= CHtml::textField('password', '', array('class' => 'js-check-can-get', 'size' => 60, 'maxlength' => 100, 'style'=>'width:240px', 'placeholder'=>"XyZ")); ?>
+                    <?= CHtml::textField('password', '', array('class' => 'js-check-can-get', 'size' => 60, 'maxlength' => 100, 'style'=>'width:240px', 'placeholder'=>"Password")); ?>
                     <a href="#" class="btn js-not-allowed" style="margin-left: 20px;" id="js-get-files"/>Get File Names</a>
                 </div>
             </div>
