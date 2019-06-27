@@ -193,6 +193,119 @@ class FiledropAccountTest extends \Codeception\Test\Unit
 
         $filedropAccount->setDockerManager($stubDockerManager);
         $response = $filedropAccount->beforeValidate();
+        $this->assertTrue($response);
+    }
+
+    /**
+     * test than beforeValidate calls prepareAccount and createFTPAccount
+     *
+     */
+    public function testBeforeValidateCallsAccountMakingFunctionPrepsFails()
+    {
+
+        // create a stub for dockerManager
+        $stubDockerManager = $this->createMock(DockerManager::class);
+
+        // Creating a "partial mock" for FiledropAccount
+        // so don't use disableOriginalConstructor() method as we need the real object
+        // and don't add to setMethods that are the system under test
+        // and only add those that specify expected behaviour
+        $filedropAccount = $this->getMockBuilder(FiledropAccount::class)
+                 ->setMethods(['getDOI','getDockerManager','prepareAccountSetFields', 'createFTPAccount', 'setStatus' ])
+                 ->getMock();
+
+        // preparation
+        $doi = "100001";
+
+        // expected behaviours
+        $filedropAccount->expects($this->once())
+                ->method('getDOI')
+                ->willReturn($doi); // now invoked only once
+
+        $filedropAccount->expects($this->never())
+                ->method('getDockerManager')
+                ->willReturn($stubDockerManager); // this should never be invoked
+
+        $filedropAccount->expects($this->once())
+                ->method('prepareAccountSetFields')
+                ->with(
+                    $this->equalTo("$doi")
+                )
+                ->willReturn(false);// let's make this one fail
+
+        $filedropAccount->expects($this->never())
+                ->method('createFTPAccount')
+                ->with(
+                    $this->identicalTo($stubDockerManager),
+                    $this->equalTo("$doi")
+                )
+                ->willReturn(true); // this should never be invoked
+
+        $filedropAccount->expects($this->never())
+                ->method('setStatus')
+                ->with(
+                    $this->equalTo("active")
+                ); // this should never be invoked
+
+        $filedropAccount->setDockerManager($stubDockerManager);
+        $response = $filedropAccount->beforeValidate();
+        $this->assertFalse($response);
+    }
+
+    /**
+     * test than beforeValidate calls prepareAccount and createFTPAccount
+     *
+     */
+    public function testBeforeValidateCallsAccountMakingFunctionFTPdFails()
+    {
+
+        // create a stub for dockerManager
+        $stubDockerManager = $this->createMock(DockerManager::class);
+
+        // Creating a "partial mock" for FiledropAccount
+        // so don't use disableOriginalConstructor() method as we need the real object
+        // and don't add to setMethods that are the system under test
+        // and only add those that specify expected behaviour
+        $filedropAccount = $this->getMockBuilder(FiledropAccount::class)
+                 ->setMethods(['getDOI','getDockerManager','prepareAccountSetFields', 'createFTPAccount', 'setStatus' ])
+                 ->getMock();
+
+        // preparation
+        $doi = "100001";
+
+        // expected behaviours
+        $filedropAccount->expects($this->exactly(2))
+                ->method('getDOI')
+                ->willReturn($doi);
+
+        $filedropAccount->expects($this->once())
+                ->method('getDockerManager')
+                ->willReturn($stubDockerManager);
+
+        $filedropAccount->expects($this->once())
+                ->method('prepareAccountSetFields')
+                ->with(
+                    $this->equalTo("$doi")
+                )
+                ->willReturn(true);
+
+        $filedropAccount->expects($this->once())
+                ->method('createFTPAccount')
+                ->with(
+                    $this->identicalTo($stubDockerManager),
+                    $this->equalTo("$doi")
+                )
+                ->willReturn(false); // let's make this one fail
+
+        $filedropAccount->expects($this->never())
+                ->method('setStatus')
+                ->with(
+                    $this->equalTo("active")
+                ); // this should never be invoked
+
+        $filedropAccount->setDockerManager($stubDockerManager);
+        $response = $filedropAccount->beforeValidate();
+        $this->assertFalse($response);
     }
 
 }
