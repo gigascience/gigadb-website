@@ -155,7 +155,7 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         // and don't add to setMethods that are the system under test
         // and only add those that specify expected behaviour
         $filedropAccount = $this->getMockBuilder(FiledropAccount::class)
-                 ->setMethods(['getDOI','getDockerManager','prepareAccountSetFields', 'createFTPAccount' ])
+                 ->setMethods(['getDOI','getDockerManager','prepareAccountSetFields', 'createFTPAccount', 'setStatus' ])
                  ->getMock();
 
         // preparation
@@ -174,13 +174,21 @@ class FiledropAccountTest extends \Codeception\Test\Unit
                 ->method('prepareAccountSetFields')
                 ->with(
                     $this->equalTo("$doi")
-                );
+                )
+                ->willReturn(true);
 
         $filedropAccount->expects($this->once())
                 ->method('createFTPAccount')
                 ->with(
                     $this->identicalTo($stubDockerManager),
                     $this->equalTo("$doi")
+                )
+                ->willReturn(true);
+
+        $filedropAccount->expects($this->once())
+                ->method('setStatus')
+                ->with(
+                    $this->equalTo("active")
                 );
 
         $filedropAccount->setDockerManager($stubDockerManager);
