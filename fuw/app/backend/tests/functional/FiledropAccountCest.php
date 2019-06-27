@@ -72,26 +72,10 @@ class FiledropAccountCest
     	$doi = FiledropAccount::generateRandomString(6);
     	$ftpServer = "ftpd";
 
-    	// create directories
-    	$filedrop->createDirectories("$doi");
+    	$uploadLogin = "uploader-$doi";
 
-    	// create tokens
-		$result1 = $filedrop->makeToken("$doi",'uploader_token.txt');
-		$result1 = $filedrop->makeToken("$doi",'downloader_token.txt');
-
-		// derive logins and tokens
-		$uploadLogin = "uploader-$doi";
-		$uploadToken = rtrim(file("/var/private/$doi/uploader_token.txt")[0]);
-
-		$downloadLogin = "downloader-$doi";
-		$downloadToken = rtrim(file("/var/private/$doi/downloader_token.txt")[0]);
-
-    	// save account to the database
-    	$filedrop->doi = $doi;
-    	$filedrop->upload_login = $uploadLogin;
-    	$filedrop->upload_token = $uploadToken;
-        $filedrop->download_login = $downloadLogin;
-    	$filedrop->download_token = $downloadToken;
+    	$filedrop->setDOI($doi);
+    	$filedrop->setDockerManager($dockerManager);
     	$filedrop->status = "active";
     	$filedrop->save();
 
