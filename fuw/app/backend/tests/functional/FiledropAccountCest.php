@@ -95,7 +95,13 @@ class FiledropAccountCest
     {
     	$doi = FiledropAccount::generateRandomString(6);
     	// $I->amBearerAuthenticated("hfafsdadsgv2n887ad5");
-    	// $I->sendPOST("/filedrop-accounts",['doi' =>"$doi"]);
-    	// $I->seeResponseCodeIs(201);
+    	$I->sendPOST("/filedrop-accounts",['doi' =>"$doi"]);
+    	$I->seeResponseCodeIs(201);
+    	$I->seeResponseContainsJson(array('doi' => "$doi"));
+    	$I->seeResponseContainsJson(array('upload_login' => "uploader-$doi"));
+    	$I->seeResponseContainsJson(array('download_login' => "downloader-$doi"));
+    	$I->seeResponseContainsJson(array('status' => "active"));
+    	$I->seeResponseJsonMatchesJsonPath('$.upload_token');
+    	$I->seeResponseJsonMatchesJsonPath('$.download_token');
     }
 }
