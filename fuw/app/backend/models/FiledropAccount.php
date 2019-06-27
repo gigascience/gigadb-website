@@ -74,6 +74,17 @@ class FiledropAccount extends \yii\db\ActiveRecord
     }
 
     /**
+     * init(), called by Yii2. Here to initialise variable a DockerManager instance
+     *
+     */
+    public function init()
+    {
+        if (null === $this->getDockerManager()) {
+            $this->setDockerManager(new DockerManager());
+        }
+    }
+
+    /**
      * Initialise a singleton Docker Manager instance for all instances of FiledropAccount
      *
      * @param \backend\models\DockerManager $dockerManager
@@ -86,9 +97,9 @@ class FiledropAccount extends \yii\db\ActiveRecord
     /**
      * Initialise a singleton Docker Manager instance for all instances of FiledropAccount
      *
-     * @return \backend\models\DockerManager $dockerManager
+     * @return null|\backend\models\DockerManager $dockerManager
      */
-    public function getDockerManager(): \backend\models\DockerManager
+    public function getDockerManager(): ?\backend\models\DockerManager
     {
         return $this->dockerManager;
     }
@@ -111,6 +122,26 @@ class FiledropAccount extends \yii\db\ActiveRecord
     public function getDOI(): string
     {
         return $this->doi ;
+    }
+
+    /**
+     * set the status attribute
+     *
+     * @param string $status status
+     */
+    public function setStatus(string $status): void
+    {
+        $this->status = $status ;
+    }
+
+   /**
+     * get the status
+     *
+     * @return string $status status
+     */
+    public function getStatus(): string
+    {
+        return $this->status ;
     }
 
     /**
@@ -240,6 +271,10 @@ class FiledropAccount extends \yii\db\ActiveRecord
     {
         $prepared = $this->prepareAccountSetFields($this->getDOI());
         $ftpd_status = $this->createFTPAccount($this->getDockerManager(), $this->getDOI());
-        return $prepared && $ftpd_status;
+        if ($prepared && $ftpd_status) {
+            $this->setStatus("active");
+            return true;
+        }
+        return false;
     }
 }
