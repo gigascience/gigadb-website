@@ -270,7 +270,8 @@ class FiledropAccount extends \yii\db\ActiveRecord
     public function beforeValidate(): bool
     {
         $prepared = $this->prepareAccountSetFields($this->getDOI());
-        $ftpd_status = $this->createFTPAccount($this->getDockerManager(), $this->getDOI());
+        $ftpd_status = $prepared && $this->createFTPAccount($this->getDockerManager(),
+                                                            $this->getDOI());
         if ($prepared && $ftpd_status) {
             $this->setStatus("active");
             return true;
