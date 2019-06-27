@@ -140,4 +140,51 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         $response = $this->filedrop->createFTPAccount( $mockDockerManager, $doi );
     }
 
+    /**
+     * test than beforeValidate calls prepareAccount and createFTPAccount
+     *
+     */
+    public function testBeforeValidateCallsAccountMakingFunction()
+    {
+
+        // create a stub for dockerManager
+        $stubDockerManager = $this->createMock(DockerManager::class);
+
+        // Creating a "partial mock" for FiledropAccount
+        // so don't use disableOriginalConstructor() method as we need the real object
+        // and don't add to setMethods that are the system under test
+        // and only add those that specify expected behaviour
+        $filedropAccount = $this->getMockBuilder(FiledropAccount::class)
+                 ->setMethods(['getDOI','getDockerManager','prepareAccountSetFields', 'createFTPAccount' ])
+                 ->getMock();
+
+        // preparation
+        $doi = "100001";
+
+        // expected behaviours
+        $filedropAccount->expects($this->exactly(2))
+                ->method('getDOI')
+                ->willReturn($doi);
+
+        $filedropAccount->expects($this->once())
+                ->method('getDockerManager')
+                ->willReturn($stubDockerManager);
+
+        $filedropAccount->expects($this->once())
+                ->method('prepareAccountSetFields')
+                ->with(
+                    $this->equalTo("$doi")
+                );
+
+        $filedropAccount->expects($this->once())
+                ->method('createFTPAccount')
+                ->with(
+                    $this->identicalTo($stubDockerManager),
+                    $this->equalTo("$doi")
+                );
+
+        $filedropAccount->setDockerManager($stubDockerManager);
+        $response = $filedropAccount->beforeValidate();
+    }
+
 }

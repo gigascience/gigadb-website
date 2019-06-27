@@ -27,6 +27,13 @@ class FiledropAccount extends \yii\db\ActiveRecord
 {
 
     /**
+     * non-serializable property so the model filters can handle Docker container manipulation
+     *
+     * @var \backend\models\DockerManager $dockerManager
+     */
+    public $dockerManager;
+
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
@@ -73,8 +80,39 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     public function setDockerManager(\backend\models\DockerManager $dockerManager): void
     {
-        self::$dockerManager = $dockerManager;
+        $this->dockerManager = $dockerManager;
     }
+
+    /**
+     * Initialise a singleton Docker Manager instance for all instances of FiledropAccount
+     *
+     * @return \backend\models\DockerManager $dockerManager
+     */
+    public function getDockerManager(): \backend\models\DockerManager
+    {
+        return $this->dockerManager;
+    }
+
+    /**
+     * set the doi attribute
+     *
+     * @param string $doi DOI
+     */
+    public function setDOI(string $doi): void
+    {
+        $this->doi = $doi ;
+    }
+
+   /**
+     * get the doi
+     *
+     * @return string $doi DOI
+     */
+    public function getDOI(): string
+    {
+        return $this->doi ;
+    }
+
     /**
      * Create directories required for file upload pipeline
      *
@@ -185,8 +223,6 @@ class FiledropAccount extends \yii\db\ActiveRecord
         $downloadLogin = "downloader-$doi";
         $downloadToken = rtrim(file("/var/private/$doi/downloader_token.txt")[0]);
 
-        $this->doi = $doi ;
-
         $this->upload_login = $uploadLogin ;
         $this->upload_token = $uploadToken ;
 
@@ -194,5 +230,16 @@ class FiledropAccount extends \yii\db\ActiveRecord
         $this->download_token = $downloadToken ;
 
         return $uploadLogin && $downloadLogin && $uploadToken && $downloadToken ;
+    }
+
+    /**
+     * method invoked before validation so to call account creation methods
+     *
+     */
+    public function beforeValidate(): bool
+    {
+        $prepared = $this->prepareAccountSetFields($this->getDOI());
+        $ftpd_status = $this->createFTPAccount($this->getDockerManager(), $this->getDOI());
+        return $prepared && $ftpd_status;
     }
 }
