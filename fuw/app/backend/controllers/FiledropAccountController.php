@@ -13,4 +13,17 @@ use yii\rest\ActiveController;
 class FiledropAccountController extends ActiveController
 {
     public $modelClass = 'backend\models\FiledropAccount';
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator'] = [
+            'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
+        ];
+
+        return $behaviors;
+    }
 }
