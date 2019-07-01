@@ -88,21 +88,12 @@ Feature: Create Dataset
     Then "Image Source cannot be blank." error message appears
 
   Scenario: Image upload
-    Given url address "site/login"
-    When I enter email address "user@gigadb.org"
-    And I enter password "gigadb"
-    And I click Login button
-    And I click View profile link
-    And I click Submit new dataset button
-    And I click "Create new dataset online using wizard" button
-    And select a Type No "1" on Study tab
-    And I enter Title "Dataset_title" on Study tab
-    And I enter Description "test description" on Study tab
+    Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
+    When I go to submission wizard "datasetSubmission/datasetManagement/id/210" URL
     And Choose image file '1200per800' to upload on Study tab
     And I enter Image Title "Test_image_title" on Study tab
     And choose Image License "Public Domain" drop-down list on Study tab
     And I enter Image Credit "mam" on Study tab
     And I enter Image Source "wiki" on Study tab
-    And mark "I have read Terms and Conditions" check-box on Study tab
     And I click Save button on Study tab
 #    Then not finished need access to DB
