@@ -12,11 +12,11 @@ import ftplib
 
 def before_scenario(context,scenario):
     chrome_options = webdriver.ChromeOptions()
-    psycopg2.connect(user="gigadb",
-                     password="vagrant",
-                     host="192.168.10.233",
-                     port="54321",
-                     database="gigadb")
+    # psycopg2.connect(user="gigadb",
+    #                  password="vagrant",
+    #                  host="192.168.10.233",
+    #                  port="54321",
+    #                  database="gigadb")
     chrome_options.add_argument("--headless")
     chrome_options.add_argument('--lang=en')
     chrome_options.add_argument("--kiosk")
