@@ -28,6 +28,9 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                             </section>
                             <section>
                                 <div style="padding-top: 1px;">
+                                    <?php if (isset($_GET['thanks']) && isset($_GET['thanks']) == 1): ?>
+                                        <p style="font-size: 20px;margin-bottom: 15px;">Thank you for updating the file metadata and completing the dataset submission. The curatorial team have been notified and will be in touch with details of the next step as soon as they have checked the dataset.</p>
+                                    <?php endif ?>
                                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
                                         <li role="presentation" class="active"><a href="#edit" aria-controls="edit" role="tab" data-toggle="tab">Personal details</a></li>
                                         <li role="presentation"><a href="#submitted" aria-controls="submitted" role="tab" data-toggle="tab">Your Uploaded Datasets</a></li>

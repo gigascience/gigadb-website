@@ -101,10 +101,11 @@ class DatasetSubmissionController extends Controller
                 $dataset->upload_status = 'Pending';
                 CurationLog::createlog($dataset->upload_status, $dataset->id);
             } else {
-                $dataset->upload_status = 'Request';
+                $dataset->upload_status = 'Submitted';
                 CurationLog::createlog($dataset->upload_status, $dataset->id);
             }
 
+            $dataset->modification_date = date('Y-m-d');
             if (!$dataset->save(false)) {
                 Yii::app()->user->setFlash('keyword', "Submit failure" . $dataset_id);
                 $this->redirect("/user/view_profile");
@@ -120,7 +121,7 @@ class DatasetSubmissionController extends Controller
             MailHelper::sendUpdateDatasetToAdmin($user, $dataset);
         }
 
-        $this->redirect('/user/view_profile#submitted');
+        $this->redirect('/user/view_profile/thanks/1/added/' . $dataset->id . '#submitted');
     }
 
     public function actionUpdateSubmit()
