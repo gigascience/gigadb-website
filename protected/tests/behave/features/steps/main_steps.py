@@ -1525,3 +1525,33 @@ def step_impl(context, name):
     delete = "delete from sample where name = '{}'".format(name)
     cursor.execute(delete)
     connection.commit()
+
+
+@when("I remove a description for a file")
+def step_impl(context):
+    xpath_description_field = "(//textarea[@class='js-description'])[1]"
+    wait_for_xpath_element(context, 1, xpath_description_field)
+    context.browser.find_element_by_xpath(xpath_description_field).clear()
+
+
+@step("I click on Complete submission button on Files tab")
+def step_impl(context):
+    xpath_complete_submission_button = "//input[@class='btn-green js-complete-submission']"
+    wait_for_xpath_element(context, 1, xpath_complete_submission_button)
+    context.browser.find_element_by_xpath(xpath_complete_submission_button).click()
+
+
+@then('"{error}" error message appears under the description field on Files tab')
+def step_impl(context, error):
+    xpath_error_message = "//div[@class='errorMessage']"
+    wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_error_message)
+    appearing_error_message = context.browser.find_element_by_xpath(xpath_error_message).text
+    assert error == appearing_error_message
+
+    @step('the status is updated to "{status}" where dataset_id is "{id}"')
+    def step_impl(context, status, id):
+        cursor = connection.cursor()
+        select_query = "select upload_status from dataset where id = {}".format(id)
+        cursor.execute(select_query)
+        record = cursor.fetchall()
+        assert tuple([status]) == record[0]
