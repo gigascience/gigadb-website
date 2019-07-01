@@ -216,6 +216,7 @@ services:
         - INSTALL_GIT=true
         - PG_CLIENT_VERSION=9.6
         - INSTALL_PG_CLIENT=true
+        - INSTALL_XDEBUG=true
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer/cache:/root/.composer/cache:delegated
