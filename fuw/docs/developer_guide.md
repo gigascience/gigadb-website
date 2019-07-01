@@ -3,6 +3,8 @@
 
 ## Running tests
 
+### running all (unit and fonctional) tests for all tiers (backend and frontend)
+
 ```
 $ docker exec console bash
 # cd /app
@@ -10,6 +12,48 @@ $ docker exec console bash
 # vendor/bin/codecept build
 # vendor/bin/codecept run
 ```
+
+and with coverage:
+
+```
+$ docker exec console bash
+# cd /app
+# vendor/bin/codecept run --coverage --coverage-xml --coverage-html
+```
+
+### running all tests from outside the container
+
+```
+$ docker-compose exec console /app/vendor/bin/codecept run -c /app --coverage
+```
+
+### running all tests for specific tier
+
+```
+$ docker exec console bash
+# cd /app/backend
+# ../vendor/bin/codecept build
+# ../vendor/bin/codecept run
+```
+
+### running specific test suites
+
+```
+$ docker exec console bash
+# cd /app/backend
+# ../vendor/bin/codecept run unit
+```
+
+### running test coverage for unit and functional tests
+
+
+```
+$ docker exec console bash
+# cd /app/backend
+# ../vendor/bin/codecept run --coverage --coverage-xml --coverage-html
+```
+
+
 ## Create a new model (replace backend with common or frontend if needed)
 
 ```

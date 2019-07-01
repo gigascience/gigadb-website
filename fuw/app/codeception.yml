@@ -3,6 +3,8 @@ include:
     - common
     - frontend
     - backend
+coverage:
+    show_only_summary: true
 paths:
     log: console/runtime/logs
 settings:
