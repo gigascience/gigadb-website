@@ -87,7 +87,7 @@ Feature: Add Additional Information page
     Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
-    Then "Project links" block appears
+    Then "Collaboration links" block appears
 
 
   Scenario: I click Yes button for Related GigaDB Datasets

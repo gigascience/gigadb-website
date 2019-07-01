@@ -716,13 +716,13 @@ def step_impl(context, accession_number):
 @then('Link Type is "{link_type}" and Link is added')
 def step_impl(context, link_type):
     xpath_link_type = "//tr/td[contains(text(),'ext_acc_mirror')]"
-    xpath_link = "//tr/td[contains(text(),'{}:{}')]".format(global_database.strip(), global_accession_number)
+    xpath_link = "//tr/td[contains(text(),'{}                 :{}')]".format(global_database.strip(), global_accession_number)
     wait_for_xpath_element(context, time_sec=5,xpath_element=xpath_link_type)
     wait_for_xpath_element(context, time_sec=5,xpath_element=xpath_link)
     added_link_type = context.browser.find_element_by_xpath(xpath_link_type).text
     assert added_link_type == link_type
     added_link = context.browser.find_element_by_xpath(xpath_link).text
-    link = "{}:{}".format(global_database.strip(), global_accession_number)
+    link = "{} :{}".format(global_database.strip(), global_accession_number)
     assert added_link == link
 
 
