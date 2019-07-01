@@ -28,7 +28,7 @@ Feature: Funding tab
 #    And I click "no" button for "or any other URL to a stable source of data and files directly related to this dataset"
 #    And I click Next button on Additional Information tab
     Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
-    When I go to submission wizard "/datasetSubmission/fundingManagement/id/368" URL
+    When I go to submission wizard "/datasetSubmission/fundingManagement/id/210" URL
     And I click "no" on Fundings tab
     Then Next button class 'btn btn-green js-save-funding' becomes active
     And I click 'Next' button on Fundings tab
@@ -37,7 +37,7 @@ Feature: Funding tab
 
   Scenario: I add a grant to the table
     Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
-    When I go to submission wizard "/datasetSubmission/fundingManagement/id/397" URL
+    When I go to submission wizard "/datasetSubmission/fundingManagement/id/210" URL
     And I click "yes" on Fundings tab
     And I enter a program name "FP7 framework", the unique reference "Grant reference", PI name "Bloggs J" field, and choose a funding body option "2" from dropdown list
     And I click Add Link button on Funding tab
@@ -49,7 +49,7 @@ Feature: Funding tab
 
   Scenario: delete grant from the table
     Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
-    When I go to submission wizard "/datasetSubmission/fundingManagement/id/368" URL
+    When I go to submission wizard "/datasetSubmission/fundingManagement/id/210" URL
     And I click "yes" on Fundings tab
     And I enter a program name "FP7 framework", the unique reference "Grant reference", PI name "Bloggs J" field, and choose a funding body option "2" from dropdown list
     And I click Add Link button on Funding tab
@@ -59,7 +59,7 @@ Feature: Funding tab
 
   Scenario: I add a grant to the table by clicking NEXT button and I check if it is saved into DB
     Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
-    When I go to submission wizard "/datasetSubmission/fundingManagement/id/397" URL
+    When I go to submission wizard "/datasetSubmission/fundingManagement/id/210" URL
     And I click "yes" on Fundings tab
     And I enter a program name "FP7 framework", the unique reference "Grant reference", PI name "Bloggs J" field, and choose a funding body option "3" from dropdown list
     And I click Add Link button on Funding tab

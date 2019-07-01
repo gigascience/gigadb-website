@@ -5,6 +5,7 @@ from yaml import load
 import csv
 import psycopg2
 import ftplib
+from selenium.webdriver.common.keys import Keys
 
 
 global_user_email = None
@@ -35,12 +36,14 @@ global_attributes = []
 global_attribute_id = ""
 global_ftp_file_names = []
 global_ftp_file_sizes = []
+global_file_names = []
+global_ftp_file_sizes2 = []
 
 connection = psycopg2.connect(user="gigadb",
                                      password="vagrant",
-                                     host="192.168.10.233",
-                                     port="54321",
-                                     database="gigadb")
+                                     host="database",
+                                     port="5432",
+                                     database="gigadb_test")
 
 def convert_number_to_orcid_format(orcid):
     converted_orcid = '-'.join([orcid[i:i + 4] for i in range(0, len(orcid), 4)])
@@ -149,7 +152,7 @@ def step_impl(context):
 @then('the user is redirected to "{text}" page')
 def step_impl(context,text):
     xpath_for_header_text = "//div/h2"
-    wait_for_xpath_element(context,time_sec=5,xpath_element=xpath_for_header_text)
+    wait_for_xpath_element(context,time_sec=60,xpath_element=xpath_for_header_text)
     header_text = context.browser.find_element_by_xpath(xpath_for_header_text).text
     assert text == header_text
 
@@ -196,6 +199,7 @@ def step_impl(context):
 def step_impl(context, dataset_title):
     xpath_dataset_title = "//input[@id='Dataset_title']"
     wait_for_xpath_element(context,time_sec=2,xpath_element=xpath_dataset_title)
+    context.browser.find_element_by_xpath(xpath_dataset_title).clear()
     context.browser.find_element_by_xpath(xpath_dataset_title).send_keys(dataset_title)
     global global_dataset_title
     global_dataset_title = dataset_title
@@ -290,6 +294,7 @@ def step_impl(context):
     xpath_upload_new_dataset_button = "//input[@class='btn-green upload-control']"
     wait_for_xpath_element(context,time_sec=1,xpath_element=xpath_upload_new_dataset_button)
     context.browser.find_element_by_xpath(xpath_upload_new_dataset_button).click()
+    time.sleep(10)
 
 
 @when('I click "Download template spreadsheet" (Excel) button')
@@ -936,6 +941,7 @@ def step_impl(context, image_size):
 def step_impl(context, image_title):
     xpath_image_title_field = "//input[@id='Images_tag']"
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_image_title_field)
+    context.browser.find_element_by_xpath(xpath_image_title_field).clear()
     context.browser.find_element_by_xpath(xpath_image_title_field).send_keys(image_title)
 
 
@@ -953,6 +959,7 @@ def step_impl(context, image_license):
 def step_impl(context, image_credit):
     xpath_image_credit_field = "//input[@id='Images_photographer']"
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_image_credit_field)
+    context.browser.find_element_by_xpath(xpath_image_credit_field).clear()
     context.browser.find_element_by_xpath(xpath_image_credit_field).send_keys(image_credit)
 
 
@@ -960,6 +967,7 @@ def step_impl(context, image_credit):
 def step_impl(context, image_source):
     xpath_image_source_field = "//input[@id='Images_source']"
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_image_source_field)
+    context.browser.find_element_by_xpath(xpath_image_source_field).clear()
     context.browser.find_element_by_xpath(xpath_image_source_field).send_keys(image_source)
 
 
@@ -1016,11 +1024,6 @@ def step_impl(context, text, username, password):
 
 @step("A new dataset is created in DB table dataset")
 def step_impl(context):
-    connection = psycopg2.connect(user="gigadb",
-                                  password="vagrant",
-                                  host="192.168.10.233",
-                                  port="54321",
-                                  database="gigadb")
     cursor = connection.cursor()
     postgreSQL_select_Query = "select title, description, manuscript_id from dataset ORDER BY id DESC LIMIT 1"
     cursor.execute(postgreSQL_select_Query)
@@ -1224,7 +1227,7 @@ def step_impl(context):
         for row in reader:
             data.append(row)
     global global_attributes
-    global_attributes = data[0]
+    global_attributes = data[0][0]
 
 
 @then("the metadata is used to populate the sample table")
@@ -1301,7 +1304,8 @@ def step_impl(context):
         file_sizes.append(ftp.size(name))
     global global_ftp_file_names
     global_ftp_file_names = file_names
-
+    global global_ftp_file_sizes2
+    global_ftp_file_sizes2 = file_sizes
     sizes = []
     for f in file_sizes:
         if f <= 1024:
@@ -1329,6 +1333,8 @@ def step_impl(context):
     for element in column_records:
         file_names.append(element.text)
     assert global_ftp_file_names == file_names
+    global global_file_names
+    global_file_names = file_names
 
     xpath_file_size_column = "//tr/td[contains(text(),'B')]"
     wait_for_xpath_element(context, time_sec=10, xpath_element=xpath_file_size_column)
@@ -1341,5 +1347,181 @@ def step_impl(context):
         assert b in a
 
 
+@step('I click "Return to your profile page" button on Sample tab')
+def step_impl(context):
+    xpath_return_button = "//a[contains(text(), 'Return to your profile page')]"
+    wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_return_button)
+    context.browser.find_element_by_xpath(xpath_return_button).click()
 
 
+@step("recently submitted dataset is highlighted in table")
+def step_impl(context):
+    xpath_tr = "//tr[@style='background-color: #e3efda;']"
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_tr)
+    background_style = context.browser.find_element_by_xpath(xpath_tr).get_attribute('style')
+    style = "background-color: rgb(227, 239, 218);"
+    assert background_style == style
+
+
+@step('I update dataset status to "{status}" where id is "{id}"')
+def step_impl(context, status, id):
+    cursor = connection.cursor()
+    select_query = "UPDATE dataset SET upload_status='{}' where id = {}".format(status, id)
+    cursor.execute(select_query)
+
+
+@step('I add a row and enter Sample ID "{sample_id}", Species name "{species_name}" and "{description}"')
+def step_impl(context, sample_id, species_name, description):
+    xpath_button = "//a[contains(text(), 'Add Row')]"
+    xpath_sample_id = "//input[@placeholder='Sample ID']"
+    xpath_species_name = "//input[@class='js-species-autocomplete ui-autocomplete-input']"
+    xpath_description = "//input[@style='width:250px;']"
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_button)
+    context.browser.find_element_by_xpath(xpath_button).click()
+
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_sample_id)
+    context.browser.find_element_by_xpath(xpath_sample_id).send_keys(sample_id)
+
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_species_name)
+    context.browser.find_element_by_xpath(xpath_species_name).send_keys(species_name)
+
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_description)
+    context.browser.find_element_by_xpath(xpath_description).send_keys(description)
+    my_records = []
+    xpath_table = "//input[@type='text']"
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_table)
+    table_records = context.browser.find_elements_by_xpath(xpath_table)
+    for element in table_records:
+        my_records.append(element.get_attribute('value'))
+    global global_attributes
+    global_attributes = my_records
+    xpath_entered_sample_id = "//input[@placeholder='Sample ID']"
+    wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_entered_sample_id)
+    sample_id_name = context.browser.find_element_by_xpath(xpath_entered_sample_id).get_attribute('value')
+    global global_attribute_id
+    global_attribute_id = sample_id_name
+
+
+
+@step('I click on "{save_next_button}" button on Sample tab')
+def step_impl(context, save_next_button):
+    xpath_save_next_button = "//div[@id='samples-save']/a[contains(text(), '{}')]".format(save_next_button)
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_save_next_button)
+    element = context.browser.find_element_by_xpath(xpath_save_next_button)
+    context.browser.execute_script("arguments[0].scrollIntoView();", element)
+    context.browser.find_element_by_xpath(xpath_save_next_button).click()
+    time.sleep(1)
+
+
+@then("any rows in the sample table are saved to the database")
+def step_impl(context):
+    cursor = connection.cursor()
+    select_query ="select sample.name, species.genbank_name, sample_attribute.value from sample, species, sample_attribute where species.id = sample.species_id and sample_attribute.sample_id = sample.id and sample.name = '{}'".format(global_attribute_id)
+    cursor.execute(select_query)
+    records = cursor.fetchall()
+    l = []
+    l.append(tuple(global_attributes))
+    assert records == l
+
+
+@step('dataset upload status is set to "{upload_status}"')
+def step_impl(context, upload_status):
+    cursor = connection.cursor()
+    select_query = "select upload_status from dataset where id = 397"
+    cursor.execute(select_query)
+    record = cursor.fetchall()
+    assert record == tuple([upload_status])
+
+
+@then("the user is redirected to The end page")
+def step_impl(context):
+    xpath_return_button = "//a[contains(text(), 'Return to your profile page')]"
+    wait_for_xpath_element(context, time_sec=50, xpath_element=xpath_return_button)
+    text = context.browser.find_element_by_xpath(xpath_return_button).text
+    text_on_button = "Return to your profile page"
+    assert text == text_on_button
+
+
+@step("I delete the added sample form DB")
+def step_impl(context):
+    cursor = connection.cursor()
+    delete = "delete from sample where name = '{}'".format(global_attribute_id)
+    cursor.execute(delete)
+    connection.commit()
+
+
+@step('I add a second row and enter Sample ID "{sample_id}", Species name "{species_name}" and "{description}"')
+def step_impl(context, sample_id, species_name, description):
+    xpath_button = "//a[contains(text(), 'Add Row')]"
+    xpath_sample_id = "(//input[@placeholder='Sample ID'])[2]"
+    xpath_species_name = "(//input[@class='js-species-autocomplete ui-autocomplete-input'])[2]"
+    xpath_description = "(//input[@style='width:250px;'])[2]"
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_button)
+    context.browser.find_element_by_xpath(xpath_button).click()
+
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_sample_id)
+    context.browser.find_element_by_xpath(xpath_sample_id).send_keys(sample_id)
+
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_species_name)
+    context.browser.find_element_by_xpath(xpath_species_name).send_keys(species_name)
+
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_description)
+    context.browser.find_element_by_xpath(xpath_description).send_keys(description)
+
+
+@when("I click Save button on Files tab")
+def step_impl(context):
+    xpath_save_button = "//input[@class='btn btn-green js-save-files']"
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_save_button)
+    context.browser.find_element_by_xpath(xpath_save_button).click()
+    time.sleep(1)
+
+
+@then("file details are saved to database where dataset_id is '{id}'")
+def step_impl(context, id):
+    cursor = connection.cursor()
+    select_names = "SELECT name FROM file WHERE dataset_id = {} ORDER BY name".format(id)
+    cursor.execute(select_names)
+    file_names = cursor.fetchall()
+    for element in global_file_names:
+        assert tuple([element]) in file_names
+
+    description_list = []
+    xpath_description = "//textarea[@class='js-description']"
+    wait_for_xpath_element(context, 1, xpath_description)
+    description = context.browser.find_elements_by_xpath(xpath_description)
+    for element in description:
+        description_list.append(element.text)
+    select_description = "SELECT description FROM file WHERE dataset_id = {} ORDER BY id".format(id)
+    cursor.execute(select_description)
+    description_records = cursor.fetchall()
+    for i in description_list:
+        assert tuple([i]) in description_records
+
+    select_sizes = "SELECT size FROM file WHERE dataset_id = {} ORDER BY name".format(id)
+    cursor.execute(select_sizes)
+    sizes_records = cursor.fetchall()
+    for size in global_ftp_file_sizes2:
+        assert tuple([size]) in sizes_records
+
+
+
+
+
+
+@when("I add description to the files loaded from ftp")
+def step_impl(context):
+    xpath_description = "//textarea[@class='js-description']"
+    wait_for_xpath_element(context, 1, xpath_description)
+    description = context.browser.find_elements_by_xpath(xpath_description)
+    for element in description:
+        element.clear()
+        element.send_keys("description " + str(time.ctime()))
+
+
+@step('I delete the added sample form DB where Sample name is "{}"')
+def step_impl(context, name):
+    cursor = connection.cursor()
+    delete = "delete from sample where name = '{}'".format(name)
+    cursor.execute(delete)
+    connection.commit()

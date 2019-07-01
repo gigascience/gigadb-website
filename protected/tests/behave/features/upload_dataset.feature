@@ -15,47 +15,47 @@ Feature: Upload your dataset metadata from a spreadsheet page
 #    Then send email to database@gigasciencejournal.com with file as attachment NB- subject and body of email are already defined, check should be in place to ensure they are not empty.
 
 
-  Scenario: The user downloads template spreadsheet (Excel)
-    Given url address "site/login"
-    When I enter email address "user@gigadb.org"
-    And I enter password "gigadb"
-    And I click Login button
-    And I click View profile link
-    And I click Submit new dataset button
-    And I click "Upload new dataset from spreadsheet" button
-    And I click "Download template spreadsheet" (Excel) button
+#  Scenario: The user downloads template spreadsheet (Excel)
+#    Given url address "site/login"
+#    When I enter email address "user@gigadb.org"
+#    And I enter password "gigadb"
+#    And I click Login button
+#    And I click View profile link
+#    And I click Submit new dataset button
+#    And I click "Upload new dataset from spreadsheet" button
+#    And I click "Download template spreadsheet" (Excel) button
 #    Then the file is downloaded (not finished yet)
 
-  Scenario: The user downloads template spreadsheet (Open Office)
-    Given url address "site/login"
-    When I enter email address "user@gigadb.org"
-    And I enter password "gigadb"
-    And I click Login button
-    And I click View profile link
-    And I click Submit new dataset button
-    And I click "Upload new dataset from spreadsheet" button
-    And I click "Download template spreadsheet (Open Office)" button
+#  Scenario: The user downloads template spreadsheet (Open Office)
+#    Given url address "site/login"
+#    When I enter email address "user@gigadb.org"
+#    And I enter password "gigadb"
+#    And I click Login button
+#    And I click View profile link
+#    And I click Submit new dataset button
+#    And I click "Upload new dataset from spreadsheet" button
+#    And I click "Download template spreadsheet (Open Office)" button
 #    Then the file is downloaded (not finished yet)
 
-  Scenario: The user downloads Example 1 (Excel)
-    Given url address "site/login"
-    When I enter email address "user@gigadb.org"
-    And I enter password "gigadb"
-    And I click Login button
-    And I click View profile link
-    And I click Submit new dataset button
-    And I click "Upload new dataset from spreadsheet" button
-    And I click "Download Example 1 (Excel)" button
+#  Scenario: The user downloads Example 1 (Excel)
+#    Given url address "site/login"
+#    When I enter email address "user@gigadb.org"
+#    And I enter password "gigadb"
+#    And I click Login button
+#    And I click View profile link
+#    And I click Submit new dataset button
+#    And I click "Upload new dataset from spreadsheet" button
+#    And I click "Download Example 1 (Excel)" button
 #    Then the file is downloaded (not finished yet)
 
-  Scenario: The user downloads Example 1 (Open Office)
-    Given url address "site/login"
-    When I enter email address "user@gigadb.org"
-    And I enter password "gigadb"
-    And I click Login button
-    And I click View profile link
-    And I click Submit new dataset button
-    And I click "Upload new dataset from spreadsheet" button
-    And I click "Download Example 1 (Open Office)" button
+#  Scenario: The user downloads Example 1 (Open Office)
+#    Given url address "site/login"
+#    When I enter email address "user@gigadb.org"
+#    And I enter password "gigadb"
+#    And I click Login button
+#    And I click View profile link
+#    And I click Submit new dataset button
+#    And I click "Upload new dataset from spreadsheet" button
+#    And I click "Download Example 1 (Open Office)" button
 
 #    Then the file is downloaded (not finished yet)

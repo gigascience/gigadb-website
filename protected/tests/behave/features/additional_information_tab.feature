@@ -18,7 +18,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     Then "Related GigaDB Datasets" block appears
 
@@ -40,7 +40,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click Yes button for Public data archive links
     Then Database dropdown menu appears
 
@@ -61,7 +61,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click Yes button for Public data archive links
     And choose №"2" from dropdown list
     Then "Accession number" field appears
@@ -84,7 +84,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     Then "Project links" block appears
@@ -107,7 +107,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'yes' button for Related GigaDB Datasets
     Then "Add Related Doi" button appears on Related GigaDB Datasets block
@@ -129,7 +129,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -153,7 +153,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'yes' button for Project links
@@ -176,7 +176,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -207,7 +207,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -217,8 +217,8 @@ Feature: Add Additional Information page
     And I click Add Link button
     Then the manuscript url is added and External Link Type is "manuscript"
     When I click Save button on Additional Information tab
-    Then the link 'identifier' is saved to DB 'manuscript' where dataset id is '397'
-    And I delete the saved link from DB 'manuscript' where dataset id is '397'
+    Then the link 'identifier' is saved to DB 'manuscript' where dataset id is '210'
+    And I delete the saved link from DB 'manuscript' where dataset id is '210'
 
   Scenario: I click yes button to provide the Protocols.io DOI and check if it is saved into DB
     Given url address "site/login"
@@ -237,7 +237,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -247,8 +247,8 @@ Feature: Add Additional Information page
     And I click Add Link button
     Then the protocol url is added and External Link Type is "protocol"
     When I click Save button on Additional Information tab
-    Then the link 'url' is saved to DB 'external_link' where dataset id is '397'
-    And I delete the saved link from DB 'external_link' where dataset id is '397'
+    Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
 
 
   Scenario: I click yes button to provide SketchFab Link and check if it is saved into DB
@@ -268,7 +268,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -278,8 +278,8 @@ Feature: Add Additional Information page
     And I click Add Link button
     Then the sketch fab url is added and External Link Type is "3d image"
     When I click Save button on Additional Information tab
-    Then the link 'url' is saved to DB 'external_link' where dataset id is '397'
-    And I delete the saved link from DB 'external_link' where dataset id is '397'
+    Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
 
   Scenario: I click yes button to provide CodeOceans “Embed code widget” and check if it is saved into DB
     Given url address "site/login"
@@ -298,7 +298,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -308,8 +308,8 @@ Feature: Add Additional Information page
     And I click Add Link button
     Then the CodeOcean is added and External Link Type is "code"
     When I click Save button on Additional Information tab
-    Then the link 'url' is saved to DB 'external_link' where dataset id is '397'
-    And I delete the saved link from DB 'external_link' where dataset id is '397'
+    Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
 
 
   Scenario: I click yes button to  provide the DOI or URL on Other links block and check if it is saved into DB
@@ -329,7 +329,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -339,8 +339,8 @@ Feature: Add Additional Information page
     And I click Add Link button
     Then the DOI or URL is added, Short Description is added and External Link Type is "source"
     When I click Save button on Additional Information tab
-    Then the link 'url' is saved to DB 'external_link' where dataset id is '397'
-    And I delete the saved link from DB 'external_link' where dataset id is '397'
+    Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
 
 
   Scenario: Add an Accession number for Public data archive links
@@ -360,7 +360,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click Yes button for Public data archive links
     And choose №"3" from dropdown list
     And I enter "SRS012345" an accession number of Public data archive links block
@@ -385,7 +385,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click Yes button for Public data archive links
     And choose №"3" from dropdown list
     And I enter "SRS012345" an accession number of Public data archive links block
@@ -413,7 +413,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'yes' button for Related GigaDB Datasets
     And I choose the item №"2" from relationship dropdown list on Related GigaDB Datasets block
@@ -439,7 +439,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'yes' button for Related GigaDB Datasets
     And I choose the item №"2" from relationship dropdown list on Related GigaDB Datasets block
@@ -468,7 +468,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'yes' button for Project links
@@ -494,7 +494,7 @@ Feature: Add Additional Information page
 #    And I click Save button on Study tab
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'yes' button for Project links
@@ -508,7 +508,7 @@ Feature: Add Additional Information page
   Scenario: I add manuscript link and check if it is saved into DB by clicking Next button
     Given url address "site/login"
     When I login as "user@gigadb.org" with password "gigadb"
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -518,13 +518,13 @@ Feature: Add Additional Information page
     And I click Add Link button
     Then the manuscript url is added and External Link Type is "manuscript"
     When I click Next button on Additional Information tab
-    Then the link 'identifier' is saved to DB 'manuscript' where dataset id is '397'
-    And I delete the saved link from DB 'manuscript' where dataset id is '397'
+    Then the link 'identifier' is saved to DB 'manuscript' where dataset id is '210'
+    And I delete the saved link from DB 'manuscript' where dataset id is '210'
 
   Scenario: I add Protocols.io DOI and check if it is saved into DB by clicking Next button
     Given url address "site/login"
     When I login as "user@gigadb.org" with password "gigadb"
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -534,14 +534,14 @@ Feature: Add Additional Information page
     And I click Add Link button
     Then the protocol url is added and External Link Type is "protocol"
     When I click Next button on Additional Information tab
-    Then the link 'url' is saved to DB 'external_link' where dataset id is '397'
-    And I delete the saved link from DB 'external_link' where dataset id is '397'
+    Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
 
 
   Scenario: I add SketchFab Link and check if it is saved into DB by clicking Next button
     Given url address "site/login"
     When I login as "user@gigadb.org" with password "gigadb"
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -551,13 +551,13 @@ Feature: Add Additional Information page
     And I click Add Link button
     Then the sketch fab url is added and External Link Type is "3d image"
     When I click Next button on Additional Information tab
-    Then the link 'url' is saved to DB 'external_link' where dataset id is '397'
-    And I delete the saved link from DB 'external_link' where dataset id is '397'
+    Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
 
   Scenario: I Add CodeOceans “Embed code widget” and check if it is saved into DB by clicking Next
     Given url address "site/login"
     When I login as "user@gigadb.org" with password "gigadb"
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -567,14 +567,14 @@ Feature: Add Additional Information page
     And I click Add Link button
     Then the CodeOcean is added and External Link Type is "code"
     When I click Next button on Additional Information tab
-    Then the link 'url' is saved to DB 'external_link' where dataset id is '397'
-    And I delete the saved link from DB 'external_link' where dataset id is '397'
+    Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
 
 
   Scenario: I click yes button to  provide the DOI or URL on Other links block and check if it is saved into DB by clicking NEXT button
     Given url address "site/login"
     When I login as "user@gigadb.org" with password "gigadb"
-    Given url address "/datasetSubmission/additionalManagement/id/397"
+    Given url address "/datasetSubmission/additionalManagement/id/210"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -584,8 +584,8 @@ Feature: Add Additional Information page
     And I click Add Link button
     Then the DOI or URL is added, Short Description is added and External Link Type is "source"
     When I click Next button on Additional Information tab
-    Then the link 'url' is saved to DB 'external_link' where dataset id is '397'
-    And I delete the saved link from DB 'external_link' where dataset id is '397'
+    Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
 
 
 

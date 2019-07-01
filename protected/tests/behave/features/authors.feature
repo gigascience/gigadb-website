@@ -3,7 +3,7 @@ Feature: Add Authors
 
   Scenario: check if a correct ORCiD is added
     Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
-    When I go to submission wizard "/datasetSubmission/authorManagement/id/403" URL
+    When I go to submission wizard "/datasetSubmission/authorManagement/id/210" URL
 #    When I enter email address "user@gigadb.org"
 #    And I enter password "gigadb"
 #    And I click Login button
@@ -33,7 +33,7 @@ Feature: Add Authors
 
   Scenario: add an Author via CSV file
     Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
-    When I go to submission wizard "/datasetSubmission/authorManagement/id/404" URL
+    When I go to submission wizard "/datasetSubmission/authorManagement/id/210" URL
 #    When I enter email address "user@gigadb.org"
 #    And I enter password "gigadb"
 #    And I click Login button
@@ -56,7 +56,7 @@ Feature: Add Authors
 
   Scenario: add an Author via CSV file and save it to DB by clicking Next buton
     Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
-    When I go to submission wizard "/datasetSubmission/authorManagement/id/404" URL
+    When I go to submission wizard "/datasetSubmission/authorManagement/id/210" URL
 #    When I enter email address "user@gigadb.org"
 #    And I enter password "gigadb"
 #    And I click Login button
