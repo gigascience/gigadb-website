@@ -43,9 +43,9 @@ Feature: Samples tab
     And I update dataset status to "Incomplete" where id is "210"
     And I add a row and enter Sample ID "210", Species name "Adelie penguin" and "Description"
     And I click on "Next" button on Sample tab
-# when next button is clicked it does not go to the next page
     Then the user is redirected to The end page
     Then any rows in the sample table are saved to the database
+    When I click "Return to your profile page" button on Sample tab
     And dataset upload status is set to "AssigningFTPbox"
 #    And email is sent to database@gigasciencejournal.com to alert us to a new submission
     And I delete the added sample form DB
