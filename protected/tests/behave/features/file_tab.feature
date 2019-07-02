@@ -47,3 +47,16 @@ Feature: File tab
     And the status is updated to "Submitted" where dataset_id is "210"
     And the user is redirected to congratulation page
 #    And send email to database@giga to notify of submission
+
+
+  Scenario: the user uploads metadata file on File tab
+    Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
+    When I go to submission wizard "/adminFile/create1/id/210" URL
+    And I have a valid value in FTP username “user99“
+    And I have a valid value in FTP password “WhiteLabel”
+    And I click “Get File Names” button
+    And I choose a valid matadata file to upload on File tab
+    And I click on Upload button on File tab
+    And I click Save button on Files tab
+    Then Data Type is populated accordingly form metadata file
+    And Description is updated accordingly form metadata file
