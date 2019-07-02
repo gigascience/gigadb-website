@@ -275,7 +275,7 @@ def step_impl(context):
 
 @then('"{error}" error message appears')
 def step_impl(context,error):
-    xpath_error_message = f"//div[@class='errorMessage' and contains(text(),'{error}')]"
+    xpath_error_message = "//div[@class='errorMessage' and contains(text(),'{}')]".format(error)
     wait_for_xpath_element(context,time_sec=5,xpath_element=xpath_error_message)
     message = context.browser.find_element_by_xpath(xpath_error_message).text
     assert message == error
@@ -365,7 +365,7 @@ def step_impl(context, credit):
 
 @when('select CreadiT form the autocomplete list "{credit_item}"')
 def step_impl(context, credit_item):
-    xpath_credit_item = f"//div[@class='ui-menu-item-wrapper' and contains(text(),'{credit_item}')]"
+    xpath_credit_item = "//div[@class='ui-menu-item-wrapper' and contains(text(),'{}')]".format(credit_item)
     wait_for_xpath_element(context,time_sec=1,xpath_element=xpath_credit_item)
     context.browser.find_element_by_xpath(xpath_credit_item).click()
 
@@ -399,7 +399,7 @@ def step_impl(context):
 def step_impl(context, file_format):
     xpath_choose_file = "//input[@id='authors']"
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_choose_file)
-    path_to_file = os.getcwd() + rf"\authors_example.{file_format}"
+    path_to_file = os.getcwd() + r"\authors_example.{}".format(file_format)
     context.browser.find_element_by_xpath(xpath_choose_file).send_keys(path_to_file)
 
 
@@ -420,7 +420,7 @@ def step_impl(context):
 
 @then('"{header}" block appears')
 def step_impl(context, header):
-    xpath_block_header = f"//h3[contains(text(),'{header}')]"
+    xpath_block_header = "//h3[contains(text(),'{}')]".format(header)
     wait_for_xpath_element(context,time_sec=1,xpath_element=xpath_block_header)
     text = context.browser.find_element_by_xpath(xpath_block_header).text
     assert text == header
@@ -435,7 +435,7 @@ def step_impl(context):
 
 @when("I click '{yes_no}' button for Related GigaDB Datasets")
 def step_impl(context,yes_no):
-    xpath_related_doi_yes_button = f"//a[@id='related-doi-{yes_no}']"
+    xpath_related_doi_yes_button = "//a[@id='related-doi-{}']".format(yes_no)
     wait_for_xpath_element(context, time_sec=1,xpath_element=xpath_related_doi_yes_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_button).click()
 
@@ -483,7 +483,7 @@ def step_impl(context):
 
 @when("I click '{yes_no_button}' button for Project links")
 def step_impl(context, yes_no_button):
-    xpath_related_doi_yes_no_button = f"//a[@id='projects-{yes_no_button}']"
+    xpath_related_doi_yes_no_button = "//a[@id='projects-{}']".format(yes_no_button)
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
 
@@ -502,28 +502,28 @@ def step_impl(context, button_text, project):
 
 @when('I click "{yes_no_button}" button for "A published manuscript that uses this data"')
 def step_impl(context, yes_no_button):
-    xpath_related_doi_yes_no_button = f"//a[@id='manuscripts-{yes_no_button}']"
+    xpath_related_doi_yes_no_button = "//a[@id='manuscripts-{}']".format(yes_no_button)
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
 
 
 @when('I click "{yes_no_button}" button for "Protocols.io link to methods used to generate this data"')
 def step_impl(context, yes_no_button):
-    xpath_related_doi_yes_no_button = f"//a[@id='protocols-{yes_no_button}']"
+    xpath_related_doi_yes_no_button = "//a[@id='protocols-{}']".format(yes_no_button)
     wait_for_xpath_element(context, time_sec=2, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
 
 
 @when('I click "{yes_no_button}" button for "Actionable code in CodeOceans"')
 def step_impl(context, yes_no_button):
-    xpath_related_doi_yes_no_button = f"//a[@id='codes-{yes_no_button}']"
+    xpath_related_doi_yes_no_button = "//a[@id='codes-{}']".format(yes_no_button)
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
 
 
 @when('I click "{yes_no_button}" button for "or any other URL to a stable source of data and files directly related to this dataset"')
 def step_impl(context, yes_no_button):
-    xpath_related_doi_yes_no_button = f"//a[@id='sources-{yes_no_button}']"
+    xpath_related_doi_yes_no_button = "//a[@id='sources-{}']".format(yes_no_button)
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
 
@@ -538,7 +538,7 @@ def step_impl(context, next_button_class):
 
 @when('I click "{yes_no_button}" button for "SketchFab 3d-Image viewer links"')
 def step_impl(context, yes_no_button):
-    xpath_related_doi_yes_no_button = f"//a[@id='3d_images-{yes_no_button}']"
+    xpath_related_doi_yes_no_button = "//a[@id='3d_images-{}']".format(yes_no_button)
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
 
@@ -602,7 +602,7 @@ def step_impl(context):
 
 @when("I click out of the manuscript field")
 def step_impl(context):
-    xpath_related_doi_yes_no_button = f"//a[@id='projects-no']"
+    xpath_related_doi_yes_no_button = "//a[@id='projects-no']"
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
 
@@ -660,7 +660,7 @@ def step_impl(context, code):
 
 @then('the CodeOcean is added and External Link Type is "{external_link_type}"')
 def step_impl(context, external_link_type):
-    xpath_url = f"//tr/td[contains(text(),'{global_link}')]"
+    xpath_url = "//tr/td[contains(text(),'{}')]".format(global_link)
     xpath_external_link_type = "(//tr/td[contains(text(), 'code')])[2]"
     wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_url)
     wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_external_link_type)
@@ -689,10 +689,10 @@ def step_impl(context, short_description):
 
 
 @then('the DOI or URL is added, Short Description is added and External Link Type is "{external_link_type}"')
-def step_impl(context, external_link_type ):
-    xpath_url = f"//tr/td[contains(text(),'{global_link}')]"
+def step_impl(context, external_link_type):
+    xpath_url = "//tr/td[contains(text(),'{}')]".format(global_link)
     xpath_external_link_type = "(//tr/td[contains(text(), 'source')])"
-    xpath_short_description_field = f"//tr/td[contains(text(),'{global_short_description}')]"
+    xpath_short_description_field = "//tr/td[contains(text(),'{}')]".format(global_short_description)
     wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_url)
     wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_external_link_type)
     wait_for_xpath_element(context,time_sec=5,xpath_element=xpath_short_description_field)
@@ -735,7 +735,7 @@ def step_impl(context):
 
 @when('I click Delete this row "{row_number}" button')
 def step_impl(context, row_number):
-    xpath_delete_row_button = f"(//img[@alt='delete this row'])[{row_number}]"
+    xpath_delete_row_button = "(//img[@alt='delete this row'])[{}]".format(row_number)
     wait_for_xpath_element(context,time_sec=5, xpath_element=xpath_delete_row_button)
     context.browser.find_element_by_xpath(xpath_delete_row_button).click()
 
@@ -755,7 +755,7 @@ def step_impl(context):
 
 @then('The table No"{table_number_on_the_page}" is empty and contains "{empty_table_text}" on Additional Info tab')
 def step_impl(context, table_number_on_the_page, empty_table_text):
-    xpath_table = f"(//tr/td/span[contains(text(),'No results found.')])[{table_number_on_the_page}]"
+    xpath_table = "(//tr/td/span[contains(text(),'No results found.')])[{}]".format(table_number_on_the_page)
     wait_for_xpath_element(context,time_sec=5, xpath_element=xpath_table)
     content = context.browser.find_element_by_xpath(xpath_table).text
     assert content == empty_table_text
@@ -798,8 +798,8 @@ def step_impl(context):
 
 @then('Related DOI and Relationship are added to the table')
 def step_impl(context):
-    xpath_related_doi = f"//tr/td[contains(text(),'{global_dataset_doi_relationship}')]"
-    xpath_relationship = f"//tr/td[contains(text(),'{global_dataset_relationship}')]"
+    xpath_related_doi = "//tr/td[contains(text(),'{}')]".format(global_dataset_doi_relationship)
+    xpath_relationship = "//tr/td[contains(text(),'{}')]".format(global_dataset_relationship)
     wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_related_doi)
     wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_relationship)
     added_related_doi = context.browser.find_element_by_xpath(xpath_related_doi).text
