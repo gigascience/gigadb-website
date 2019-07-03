@@ -215,6 +215,7 @@ Feature: Add Additional Information page
     And I enter "doi:10.1093/gigascience/giy095" manuscript link
     And I click out of the manuscript field
     And I click Add Link button
+    And I delete the saved link from DB 'manuscript' where dataset id is '210'
     Then the manuscript url is added and External Link Type is "manuscript"
     When I click Save button on Additional Information tab
     Then the link 'identifier' is saved to DB 'manuscript' where dataset id is '210'
@@ -245,6 +246,7 @@ Feature: Add Additional Information page
     And I provide "doi:10.17504/protocols.io.gk8buzw" Protocols.io DOI
     And I click out of the manuscript field
     And I click Add Link button
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the protocol url is added and External Link Type is "protocol"
     When I click Save button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -276,6 +278,7 @@ Feature: Add Additional Information page
     And I provide "https://skfb.ly/69wDV" SketchFab Link
     And I click out of the manuscript field
     And I click Add Link button
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the sketch fab url is added and External Link Type is "3d image"
     When I click Save button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -306,6 +309,7 @@ Feature: Add Additional Information page
     And I provide "<script src="https://codeocean.com/widget.js?id=0a812d9b-0ff3-4eb7-825f-76d3cd049a43" async></script>" CodeOceans
     And I click out of the manuscript field
     And I click Add Link button
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the CodeOcean is added and External Link Type is "code"
     When I click Save button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -337,6 +341,7 @@ Feature: Add Additional Information page
     And I provide the DOI or URL: "doi:12.3456/789012.3"
     And I enter short description "test short description" for DOI or URL
     And I click Add Link button
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the DOI or URL is added, Short Description is added and External Link Type is "source"
     When I click Save button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -516,6 +521,7 @@ Feature: Add Additional Information page
     And I enter "doi:10.1093/gigascience/giy095" manuscript link
     And I click out of the manuscript field
     And I click Add Link button
+    And I delete the saved link from DB 'manuscript' where dataset id is '210'
     Then the manuscript url is added and External Link Type is "manuscript"
     When I click Next button on Additional Information tab
     Then the link 'identifier' is saved to DB 'manuscript' where dataset id is '210'
@@ -532,6 +538,7 @@ Feature: Add Additional Information page
     And I provide "doi:10.17504/protocols.io.gk8buzw" Protocols.io DOI
     And I click out of the manuscript field
     And I click Add Link button
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the protocol url is added and External Link Type is "protocol"
     When I click Next button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -549,6 +556,7 @@ Feature: Add Additional Information page
     And I provide "https://skfb.ly/69wDV" SketchFab Link
     And I click out of the manuscript field
     And I click Add Link button
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the sketch fab url is added and External Link Type is "3d image"
     When I click Next button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -565,6 +573,7 @@ Feature: Add Additional Information page
     And I provide "<script src="https://codeocean.com/widget.js?id=0a812d9b-0ff3-4eb7-825f-76d3cd049a43" async></script>" CodeOceans
     And I click out of the manuscript field
     And I click Add Link button
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the CodeOcean is added and External Link Type is "code"
     When I click Next button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -582,6 +591,7 @@ Feature: Add Additional Information page
     And I provide the DOI or URL: "doi:12.3456/789012.3"
     And I enter short description "test short description" for DOI or URL
     And I click Add Link button
+    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the DOI or URL is added, Short Description is added and External Link Type is "source"
     When I click Next button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
