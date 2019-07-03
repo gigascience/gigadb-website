@@ -646,7 +646,8 @@ def step_impl(context, accession_number):
 def step_impl(context):
     xpath_active_next_button = "(//a[@class='btn btn-green js-save-additional'])[2]"
     wait_for_xpath_element(context, time_sec=2, xpath_element=xpath_active_next_button)
-    context.browser.find_element_by_xpath(xpath_active_next_button).click()
+    element = context.browser.find_element_by_xpath(xpath_active_next_button)
+    context.browser.execute_script("arguments[0].click();", element)
     time.sleep(1)
 
 
