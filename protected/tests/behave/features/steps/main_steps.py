@@ -1236,7 +1236,7 @@ def step_impl(context):
     xpath_save_button = "//a[@class='btn btn-green js-save-additional' and contains(text(),'Save')]"
     wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_save_button)
     context.browser.find_element_by_xpath(xpath_save_button).click()
-    time.sleep(1)
+    time.sleep(2)
 
 
 @step("I add some data into Sample table")

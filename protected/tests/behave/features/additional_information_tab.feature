@@ -193,21 +193,8 @@ Feature: Add Additional Information page
   Scenario: I click yes button to add manuscript link and check if it is saved into DB
     Given url address "site/login"
     When I login as "user@gigadb.org" with password "gigadb"
-#    When I enter email address "user@gigadb.org"
-#    And I enter password "gigadb"
-#    And I click Login button
-#    And I click View profile link
-#    And I click Submit new dataset button
-#    And I click "Create new dataset online using wizard" button
-#    And select a Type No "1" on Study tab
-#    And mark "If you are unable to provide a suitable image to help..." check-box on Study tab
-#    And I enter Title "Dataset_title" on Study tab
-#    And I enter Description "test description" on Study tab
-#    And mark "I have read Terms and Conditions" check-box on Study tab
-#    And I click Save button on Study tab
-#    And I click Next button on Study tab
-#    And I click Next button on Author tab
     Given url address "/datasetSubmission/additionalManagement/id/210"
+    When I delete the saved link from DB 'manuscript' where dataset id is '210'
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -215,7 +202,6 @@ Feature: Add Additional Information page
     And I enter "doi:10.1093/gigascience/giy095" manuscript link
     And I click out of the manuscript field
     And I click Add Link button
-    And I delete the saved link from DB 'manuscript' where dataset id is '210'
     Then the manuscript url is added and External Link Type is "manuscript"
     When I click Save button on Additional Information tab
     Then the link 'identifier' is saved to DB 'manuscript' where dataset id is '210'
@@ -224,21 +210,8 @@ Feature: Add Additional Information page
   Scenario: I click yes button to provide the Protocols.io DOI and check if it is saved into DB
     Given url address "site/login"
     When I login as "user@gigadb.org" with password "gigadb"
-#    When I enter email address "user@gigadb.org"
-#    And I enter password "gigadb"
-#    And I click Login button
-#    And I click View profile link
-#    And I click Submit new dataset button
-#    And I click "Create new dataset online using wizard" button
-#    And select a Type No "1" on Study tab
-#    And mark "If you are unable to provide a suitable image to help..." check-box on Study tab
-#    And I enter Title "Dataset_title" on Study tab
-#    And I enter Description "test description" on Study tab
-#    And mark "I have read Terms and Conditions" check-box on Study tab
-#    And I click Save button on Study tab
-#    And I click Next button on Study tab
-#    And I click Next button on Author tab
     Given url address "/datasetSubmission/additionalManagement/id/210"
+    When I delete the saved link from DB 'external_link' where dataset id is '210'
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -246,7 +219,6 @@ Feature: Add Additional Information page
     And I provide "doi:10.17504/protocols.io.gk8buzw" Protocols.io DOI
     And I click out of the manuscript field
     And I click Add Link button
-    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the protocol url is added and External Link Type is "protocol"
     When I click Save button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -271,6 +243,7 @@ Feature: Add Additional Information page
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
     Given url address "/datasetSubmission/additionalManagement/id/210"
+    When I delete the saved link from DB 'external_link' where dataset id is '210'
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -278,7 +251,6 @@ Feature: Add Additional Information page
     And I provide "https://skfb.ly/69wDV" SketchFab Link
     And I click out of the manuscript field
     And I click Add Link button
-    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the sketch fab url is added and External Link Type is "3d image"
     When I click Save button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -302,6 +274,7 @@ Feature: Add Additional Information page
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
     Given url address "/datasetSubmission/additionalManagement/id/210"
+    When I delete the saved link from DB 'external_link' where dataset id is '210'
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -309,7 +282,6 @@ Feature: Add Additional Information page
     And I provide "<script src="https://codeocean.com/widget.js?id=0a812d9b-0ff3-4eb7-825f-76d3cd049a43" async></script>" CodeOceans
     And I click out of the manuscript field
     And I click Add Link button
-    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the CodeOcean is added and External Link Type is "code"
     When I click Save button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -334,6 +306,7 @@ Feature: Add Additional Information page
 #    And I click Next button on Study tab
 #    And I click Next button on Author tab
     Given url address "/datasetSubmission/additionalManagement/id/210"
+    When I delete the saved link from DB 'external_link' where dataset id is '210'
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -341,7 +314,6 @@ Feature: Add Additional Information page
     And I provide the DOI or URL: "doi:12.3456/789012.3"
     And I enter short description "test short description" for DOI or URL
     And I click Add Link button
-    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the DOI or URL is added, Short Description is added and External Link Type is "source"
     When I click Save button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -514,6 +486,7 @@ Feature: Add Additional Information page
     Given url address "site/login"
     When I login as "user@gigadb.org" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/210"
+    When I delete the saved link from DB 'manuscript' where dataset id is '210'
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -521,7 +494,6 @@ Feature: Add Additional Information page
     And I enter "doi:10.1093/gigascience/giy095" manuscript link
     And I click out of the manuscript field
     And I click Add Link button
-    And I delete the saved link from DB 'manuscript' where dataset id is '210'
     Then the manuscript url is added and External Link Type is "manuscript"
     When I click Next button on Additional Information tab
     Then the link 'identifier' is saved to DB 'manuscript' where dataset id is '210'
@@ -531,6 +503,7 @@ Feature: Add Additional Information page
     Given url address "site/login"
     When I login as "user@gigadb.org" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/210"
+    When I delete the saved link from DB 'external_link' where dataset id is '210'
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -538,7 +511,6 @@ Feature: Add Additional Information page
     And I provide "doi:10.17504/protocols.io.gk8buzw" Protocols.io DOI
     And I click out of the manuscript field
     And I click Add Link button
-    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the protocol url is added and External Link Type is "protocol"
     When I click Next button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -549,6 +521,7 @@ Feature: Add Additional Information page
     Given url address "site/login"
     When I login as "user@gigadb.org" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/210"
+    When I delete the saved link from DB 'external_link' where dataset id is '210'
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -556,7 +529,6 @@ Feature: Add Additional Information page
     And I provide "https://skfb.ly/69wDV" SketchFab Link
     And I click out of the manuscript field
     And I click Add Link button
-    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the sketch fab url is added and External Link Type is "3d image"
     When I click Next button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -566,6 +538,7 @@ Feature: Add Additional Information page
     Given url address "site/login"
     When I login as "user@gigadb.org" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/210"
+    When I delete the saved link from DB 'external_link' where dataset id is '210'
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -573,7 +546,6 @@ Feature: Add Additional Information page
     And I provide "<script src="https://codeocean.com/widget.js?id=0a812d9b-0ff3-4eb7-825f-76d3cd049a43" async></script>" CodeOceans
     And I click out of the manuscript field
     And I click Add Link button
-    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the CodeOcean is added and External Link Type is "code"
     When I click Next button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
@@ -584,6 +556,7 @@ Feature: Add Additional Information page
     Given url address "site/login"
     When I login as "user@gigadb.org" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/210"
+    When I delete the saved link from DB 'external_link' where dataset id is '210'
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
@@ -591,7 +564,6 @@ Feature: Add Additional Information page
     And I provide the DOI or URL: "doi:12.3456/789012.3"
     And I enter short description "test short description" for DOI or URL
     And I click Add Link button
-    And I delete the saved link from DB 'external_link' where dataset id is '210'
     Then the DOI or URL is added, Short Description is added and External Link Type is "source"
     When I click Next button on Additional Information tab
     Then the link 'url' is saved to DB 'external_link' where dataset id is '210'
