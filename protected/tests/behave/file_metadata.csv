@@ -1,0 +1,9 @@
+file-list.txt,Readme ,file-list.txt
+imaginary_genome_OrthologProtein_Multi-Alignment.fa,Sequence assembly,imaginary_genome_OrthologProtein_Multi-Alignment.fa
+imaginary_genome_OrthologProtein_tree.nwk,Annotation,imaginary_genome_OrthologProtein_tree.nwk
+imaginary_genome_assembly.fasta.gz,Protein sequence,imaginary_genome_assembly.fasta.gz
+imaginary_genome_final.cds.fa,Repeat sequence,imaginary_genome_final.cds.fa
+imaginary_genome_final.gff3,Coding sequence,imaginary_genome_final.gff3
+imaginary_genome_final.pep.fa,Script,imaginary_genome_final.pep.fa
+imagingary_genome_BUSCO_full_results.txt,Mixed archive,imagingary_genome_BUSCO_full_results.txt
+file_metadata.csv,Mixed archive,file_metadata.csv

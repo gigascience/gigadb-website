@@ -1368,6 +1368,7 @@ def step_impl(context, status, id):
     cursor = connection.cursor()
     select_query = "UPDATE dataset SET upload_status='{}' where id = {}".format(status, id)
     cursor.execute(select_query)
+    connection.commit()
 
 
 @step('I add a row and enter Sample ID "{sample_id}", Species name "{species_name}" and "{description}"')
@@ -1548,10 +1549,76 @@ def step_impl(context, error):
     appearing_error_message = context.browser.find_element_by_xpath(xpath_error_message).text
     assert error == appearing_error_message
 
-    @step('the status is updated to "{status}" where dataset_id is "{id}"')
-    def step_impl(context, status, id):
-        cursor = connection.cursor()
-        select_query = "select upload_status from dataset where id = {}".format(id)
-        cursor.execute(select_query)
-        record = cursor.fetchall()
-        assert tuple([status]) == record[0]
+
+
+@step('the status is updated to "{status}" where dataset_id is "{id}"')
+def step_impl(context, status, id):
+    cursor = connection.cursor()
+    select_query = "select upload_status from dataset where id = {}".format(id)
+    cursor.execute(select_query)
+    record = cursor.fetchall()
+    assert tuple([status]) == record[0]
+
+
+@step("the user is redirected to congratulation page")
+def step_impl(context):
+    thank_you_message = "Thank you for updating the file metadata and completing the dataset submission. The curatorial team have been notified and will be in touch with details of the next step as soon as they have checked the dataset."
+    xpath_thankyou_message = "//p[@style='font-size: 20px;margin-bottom: 15px;']"
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_thankyou_message)
+    message = context.browser.find_element_by_xpath(xpath_thankyou_message).text
+    assert thank_you_message == message
+
+
+@step("I choose a valid matadata file to upload on File tab")
+def step_impl(context):
+    xpath_choose_file = "//input[@id='files']"
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_choose_file)
+    locate_file = os.getcwd() + r"/file_metadata.csv"
+    context.browser.find_element_by_xpath(xpath_choose_file).send_keys(locate_file)
+    time.sleep(2)
+
+
+@step("I click on Upload button on File tab")
+def step_impl(context):
+    xpath_upload_button = "//input[@class='btn btn-green']"
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_upload_button)
+    context.browser.find_element_by_xpath(xpath_upload_button).click()
+
+
+@then("Data Type is populated accordingly form metadata file")
+def step_impl(context):
+    xpath_data_type_column = "//select[@class='span2 dropdown-white js-type-id']/option[@selected='selected']"
+    wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_data_type_column)
+    records = context.browser.find_elements_by_xpath(xpath_data_type_column)
+
+    with open('file_metadata.csv', 'r') as file:
+        reader = csv.reader(file, delimiter='\t',)
+        # next(reader)
+        data = []
+        for row in reader:
+            data.append(row)
+        flat_list = []
+        for sublist in data:
+            for item in sublist:
+                flat_list.append(item)
+    for element in records:
+        assert element.text in ''.join(flat_list)
+
+
+@step("Description is updated accordingly form metadata file")
+def step_impl(context):
+    xpath_description = "//textarea[@class='js-description']"
+    wait_for_xpath_element(context, 1, xpath_description)
+    description = context.browser.find_elements_by_xpath(xpath_description)
+    with open('file_metadata.csv', 'r') as file:
+        reader = csv.reader(file, delimiter='\t',)
+        # next(reader)
+        data = []
+        for row in reader:
+            data.append(row)
+        flat_list = []
+        for sublist in data:
+            for item in sublist:
+                flat_list.append(item)
+    for element in description:
+        assert element.text in ''.join(flat_list)
