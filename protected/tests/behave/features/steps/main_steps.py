@@ -438,6 +438,15 @@ def step_impl(context,yes_no):
     xpath_related_doi_yes_button = "//a[@id='related-doi-{}']".format(yes_no)
     wait_for_xpath_element(context, time_sec=1,xpath_element=xpath_related_doi_yes_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_button).click()
+    try:
+        alert_obj = context.browser.switch_to.alert
+        message = alert_obj.text
+        if message == "Are you sure you want to delete all items?":
+            alert_obj.accept()
+        else:
+            pass
+    except:
+        pass
 
 
 @then('"{text}" button appears on Related GigaDB Datasets block')
@@ -514,6 +523,15 @@ def step_impl(context, yes_no_button):
     xpath_related_doi_yes_no_button = "//a[@id='manuscripts-{}']".format(yes_no_button)
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
+    try:
+        alert_obj = context.browser.switch_to.alert
+        message = alert_obj.text
+        if message == "Are you sure you want to delete all items?":
+            alert_obj.accept()
+        else:
+            pass
+    except:
+        pass
 
 
 @when('I click "{yes_no_button}" button for "Protocols.io link to methods used to generate this data"')
@@ -521,6 +539,15 @@ def step_impl(context, yes_no_button):
     xpath_related_doi_yes_no_button = "//a[@id='protocols-{}']".format(yes_no_button)
     wait_for_xpath_element(context, time_sec=2, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
+    try:
+        alert_obj = context.browser.switch_to.alert
+        message = alert_obj.text
+        if message == "Are you sure you want to delete all items?":
+            alert_obj.accept()
+        else:
+            pass
+    except:
+        pass
 
 
 @when('I click "{yes_no_button}" button for "Actionable code in CodeOceans"')
@@ -528,6 +555,15 @@ def step_impl(context, yes_no_button):
     xpath_related_doi_yes_no_button = "//a[@id='codes-{}']".format(yes_no_button)
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
+    try:
+        alert_obj = context.browser.switch_to.alert
+        message = alert_obj.text
+        if message == "Are you sure you want to delete all items?":
+            alert_obj.accept()
+        else:
+            pass
+    except:
+        pass
 
 
 @when('I click "{yes_no_button}" button for "or any other URL to a stable source of data and files directly related to this dataset"')
@@ -535,6 +571,15 @@ def step_impl(context, yes_no_button):
     xpath_related_doi_yes_no_button = "//a[@id='sources-{}']".format(yes_no_button)
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
+    try:
+        alert_obj = context.browser.switch_to.alert
+        message = alert_obj.text
+        if message == "Are you sure you want to delete all items?":
+            alert_obj.accept()
+        else:
+            pass
+    except:
+        pass
 
 
 @then("Next button class '{next_button_class}' becomes active")
@@ -550,6 +595,15 @@ def step_impl(context, yes_no_button):
     xpath_related_doi_yes_no_button = "//a[@id='3d_images-{}']".format(yes_no_button)
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
+    try:
+        alert_obj = context.browser.switch_to.alert
+        message = alert_obj.text
+        if message == "Are you sure you want to delete all items?":
+            alert_obj.accept()
+        else:
+            pass
+    except:
+        pass
 
 
 @when('choose №"{item}" from dropdown list')
