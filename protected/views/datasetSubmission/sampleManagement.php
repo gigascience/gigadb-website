@@ -440,7 +440,7 @@
             let id = td.find('.js-sample-attr-id').val();
             if (!id) {id = 0;}
             let attr_name = td.find('input').val();
-            if (!attr_name) {attr_name = 'Description';}
+            if (!attr_name) {attr_name = '';}
             let unit_id = td.find('select').val();
             if (!unit_id) {unit_id = 0;}
 

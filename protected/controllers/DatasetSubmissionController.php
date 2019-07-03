@@ -963,11 +963,18 @@ class DatasetSubmissionController extends Controller
             $attrs = array();
             $newSampleAttrs = isset($_POST['sample_attrs']) && is_array($_POST['sample_attrs']) ? $_POST['sample_attrs'] : array();
             foreach ($newSampleAttrs as $i => $newSampleAttr) {
+                if (!$newSampleAttr['attr_name']) {
+                    Util::returnJSON(array(
+                        "success"=>false,
+                        "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute Name cannot be empty.',
+                    ));
+                }
+
                 $attr = Attribute::findByAttrName($newSampleAttr['attr_name']);
                 if (!$attr) {
                     Util::returnJSON(array(
                         "success"=>false,
-                        "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute does\'nt exist. You can try an alternative attribute name or use "miscellaneous parameter" and include your own attribute name within the value, e.g. miscellaneous parameter=users-own-attribute-name:value-of-attribute',
+                        "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute Name does\'nt exist. You can try an alternative attribute name or use "miscellaneous parameter" and include your own attribute name within the value, e.g. miscellaneous parameter=users-own-attribute-name:value-of-attribute.',
                     ));
                 }
 
