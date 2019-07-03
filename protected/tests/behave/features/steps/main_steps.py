@@ -1211,7 +1211,7 @@ def step_impl(context, program_name):
 @then("the link '{column_name}' is saved to DB '{table}' where dataset id is '{dataset_id}'")
 def step_impl(context, column_name, table, dataset_id):
     cursor = connection.cursor()
-    select_query = "select {} from {} where dataset_id={}".format(column_name,table,dataset_id)
+    select_query = "select {} from {} where dataset_id={} ORDER BY ID DESC LIMIT 1".format(column_name,table,dataset_id)
     cursor.execute(select_query)
     record = cursor.fetchone()
     link = []
