@@ -486,6 +486,12 @@ def step_impl(context, yes_no_button):
     xpath_related_doi_yes_no_button = "//a[@id='projects-{}']".format(yes_no_button)
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_related_doi_yes_no_button)
     context.browser.find_element_by_xpath(xpath_related_doi_yes_no_button).click()
+    alert_obj = context.browser.switch_to.alert
+    message = alert_obj.text
+    if message == "Are you sure you want to delete all items?":
+        alert_obj.accept()
+    else:
+        pass
 
 
 @then("'{button_text}' button with '{project}' dropdown menu appears")
