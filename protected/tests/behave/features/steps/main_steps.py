@@ -285,7 +285,7 @@ def step_impl(context,error):
 def step_impl(context):
     xpath_choose_file = "//input[@class='upload-control']"
     wait_for_xpath_element(context,time_sec=1,xpath_element=xpath_choose_file)
-    path_to_file = os.getcwd()+ r"\GigaDBUploadForm-example1.xls"
+    path_to_file = os.getcwd()+ r"/var/www/protected/tests/behave/GigaDBUploadForm-example1.xls"
     context.browser.find_element_by_xpath(xpath_choose_file).send_keys(path_to_file)
 
 
@@ -988,7 +988,7 @@ def step_impl(context, username, password):
 
 @when('I go to submission wizard "{text}" URL')
 def step_impl(context, text):
-    context.settings = load(open('features/conf.yaml').read())
+    context.settings = load(open('/var/www/protected/tests/behave/features/conf.yaml').read())
     url = context.settings['base_url']
     # login = context.settings['login']
     # password = context.settings['password']
@@ -1000,7 +1000,7 @@ def step_impl(context, text):
 
 @given('I am on "{text}" and I login as "{username}" with password "{password}"')
 def step_impl(context, text, username, password):
-    context.settings = load(open('features/conf.yaml').read())
+    context.settings = load(open('/var/www/protected/tests/behave/features/conf.yaml').read())
     url = context.settings['base_url']
     # login = context.settings['login']
     # password = context.settings['password']
