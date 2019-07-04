@@ -230,6 +230,7 @@ def step_impl(context, description):
     wait_for_xpath_element(context,time_sec=10,xpath_element=xpath_description_iframe)
     context.browser.switch_to.frame(iframe)
     context.browser.find_element_by_tag_name("body").send_keys(description)
+    context.browser.switch_to_default_content()
     global global_dataset_description
     global_dataset_description = description
 
@@ -245,7 +246,10 @@ def step_impl(context, type):
 @when('mark "I have read Terms and Conditions" check-box on Study tab')
 def step_impl(context):
     xpath_terms_and_conditions_checkbox = "//input[@id='agree-checkbox']"
-    context.browser.find_element_by_xpath(xpath_terms_and_conditions_checkbox).click()
+    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_terms_and_conditions_checkbox)
+    element = context.browser.find_element_by_xpath(xpath_terms_and_conditions_checkbox)
+    context.browser.execute_script("arguments[0].scrollIntoView();", element)
+    context.browser.execute_script("arguments[0].click();", element)
 
 
 @when("I click Save button on Study tab")
