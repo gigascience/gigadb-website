@@ -45,6 +45,8 @@ connection = psycopg2.connect(user="gigadb",
                                      port="5432",
                                      database="gigadb_test")
 
+
+
 def convert_number_to_orcid_format(orcid):
     converted_orcid = '-'.join([orcid[i:i + 4] for i in range(0, len(orcid), 4)])
     return converted_orcid
