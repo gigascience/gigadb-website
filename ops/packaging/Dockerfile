@@ -1,11 +1,12 @@
-ARG PHP_VERSION=7.0
-FROM php:${PHP_VERSION}-fpm-buster
+ARG PHP_VERSION=7.1
+FROM php:${PHP_VERSION}-fpm
+
 
 # basic dependencies
 RUN apt-get update -yq && \
     apt-get install -y --no-install-recommends \
+        procps \
         curl \
-        gnupg \
         libmemcached-dev \
         libz-dev \
         libpq-dev \
@@ -14,7 +15,11 @@ RUN apt-get update -yq && \
         libfreetype6-dev \
         libssl-dev \
         libmcrypt-dev \
-        bc
+        bc \
+        --no-install-recommends && \
+        apt-get clean && \
+        rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 
 RUN docker-php-ext-install mcrypt
 
@@ -73,11 +78,12 @@ ARG INSTALL_PG_CLIENT=false
 ARG PG_CLIENT_VERSION=10.5
 
 RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
-    echo "deb http://apt.postgresql.org/pub/repos/apt buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-        curl -sL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
-        apt-get update && \
-        apt-get -y install postgresql-${PG_CLIENT_VERSION} && \
-        apt-get clean \
+    # Create folders if not exists (https://github.com/tianon/docker-brew-debian/issues/65)
+    mkdir -p /usr/share/man/man1 && \
+    mkdir -p /usr/share/man/man7 && \
+    # Install the pgsql client
+    apt-get update -yq && \
+    apt-get install -y postgresql-client-${PG_CLIENT_VERSION} \
 ;fi
 
 
@@ -102,7 +108,7 @@ RUN if [ ${INSTALL_NETCAT_JQ} = true ]; then \
     mkdir -p /usr/share/man/man7 && \
     # Install netcat-openbsd and jq
     apt-get update -yq && \
-    apt-get install -y netcat-openbsd inetutils-ping jq \
+    apt-get install -y netcat-openbsd jq \
 ;fi
 
 ARG INSTALL_GRAPHVIZ=false
@@ -152,13 +158,8 @@ RUN if [ ${INSTALL_TIDEWAYS_XHPROF} = true ]; then \
 ARG INSTALL_LIBSODIUM=false
 
 RUN if [ ${INSTALL_LIBSODIUM} = true ]; then \
-    # Problem with using http://ftp.debian.org/debian for installing libsodium
-    # Might be related to https://lists.debian.org/debian-devel-announce/2019/03/msg00006.html
-    # Using archive repo instead
-    echo 'Acquire::Check-Valid-Until "0";' | tee -a /etc/apt/apt.conf.d/apt.conf && \
-    echo "deb http://archive.debian.org/debian jessie-backports main" | tee -a /etc/apt/sources.list && \
     apt-get update -yq && \
-    apt-get install -y -t jessie-backports libsodium-dev && \
+    apt-get install -y libsodium-dev && \
     pecl install libsodium && \
     echo "extension=sodium.so" >  /usr/local/etc/php/conf.d/libsodium.ini \
 ;fi

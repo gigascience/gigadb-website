@@ -25,5 +25,6 @@
 		<log type="coverage-text" target="/var/www/protected/runtime/phpunit-coverage.txt" showOnlySummary="true"/>
 		<log type="coverage-html" target="/var/www/protected/runtime/coverage" lowUpperBound="35"
        highLowerBound="70"/>
+       <log type="coverage-php" target="/var/www/protected/runtime/coverage.serialized"/>
 	</logging>
 </phpunit>
