@@ -209,7 +209,7 @@ class GigadbWebsiteContext implements Context
         $this->terminateDbBackend("gigadb");
         $this->dropCreateDb("gigadb");
         if ( preg_match("/\.pgdmp$/", $arg1) ) {
-            exec("pg_restore -i -h database -p 5432 -U gigadb -d gigadb -v /var/www/sql/${arg1} 2>&1",$output);
+            exec("pg_restore -h database -p 5432 -U gigadb -d gigadb -v /var/www/sql/${arg1} 2>&1",$output);
             $this->restartPhp();
         }
         else {
