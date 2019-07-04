@@ -445,8 +445,6 @@ def step_impl(context,yes_no):
         message = alert_obj.text
         if message == "Are you sure you want to delete all items?":
             alert_obj.accept()
-        elif message == "This link has been added already.":
-            alert_obj.accept()
         else:
             pass
     except:
@@ -504,8 +502,7 @@ def step_impl(context, yes_no_button):
         message = alert_obj.text
         if message == "Are you sure you want to delete all items?":
             alert_obj.accept()
-        elif message == "This link has been added already.":
-            alert_obj.accept()
+        
         else:
             pass
     except:
@@ -534,8 +531,7 @@ def step_impl(context, yes_no_button):
         message = alert_obj.text
         if message == "Are you sure you want to delete all items?":
             alert_obj.accept()
-        elif message == "This link has been added already.":
-            alert_obj.accept()
+        
         else:
             pass
     except:
@@ -552,8 +548,7 @@ def step_impl(context, yes_no_button):
         message = alert_obj.text
         if message == "Are you sure you want to delete all items?":
             alert_obj.accept()
-        elif message == "This link has been added already.":
-            alert_obj.accept()
+        
         else:
             pass
     except:
@@ -570,8 +565,7 @@ def step_impl(context, yes_no_button):
         message = alert_obj.text
         if message == "Are you sure you want to delete all items?":
             alert_obj.accept()
-        elif message == "This link has been added already.":
-            alert_obj.accept()
+        
         else:
             pass
     except:
@@ -588,8 +582,7 @@ def step_impl(context, yes_no_button):
         message = alert_obj.text
         if message == "Are you sure you want to delete all items?":
             alert_obj.accept()
-        elif message == "This link has been added already.":
-            alert_obj.accept()
+        
         else:
             pass
     except:
@@ -614,8 +607,7 @@ def step_impl(context, yes_no_button):
         message = alert_obj.text
         if message == "Are you sure you want to delete all items?":
             alert_obj.accept()
-        elif message == "This link has been added already.":
-            alert_obj.accept()
+        
         else:
             pass
     except:
