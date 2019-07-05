@@ -314,7 +314,7 @@ CREATE TABLE dataset (
     description text DEFAULT ''::text NOT NULL,
     dataset_size bigint NOT NULL,
     ftp_site character varying(100) NOT NULL,
-    upload_status character varying(45) DEFAULT 'Pending'::character varying NOT NULL,
+    upload_status character varying(45) DEFAULT 'AuthorReview'::character varying NOT NULL,
     excelfile character varying(50),
     excelfile_md5 character varying(32),
     publication_date date,

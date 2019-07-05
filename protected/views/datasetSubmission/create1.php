@@ -7,9 +7,8 @@ $cssCoreUrl = $cs->getCoreScriptUrl();
 $cs->registerCssFile($cssCoreUrl . '/jui/css/base/jquery-ui.css');
 $cs->registerCssFile('/css/jquery.tag-editor.css');
 
-
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/ckeditor/ckeditor.js', CClientScript::POS_BEGIN);
 ?>
+<script src="https://cdn.ckeditor.com/4.11.4/standard/ckeditor.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js"></script>
 <script>

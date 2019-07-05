@@ -28,6 +28,9 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                             </section>
                             <section>
                                 <div style="padding-top: 1px;">
+                                    <?php if (isset($_GET['thanks']) && isset($_GET['thanks']) == 1): ?>
+                                        <p style="font-size: 20px;margin-bottom: 15px;">Thank you for updating the file metadata and completing the dataset submission. The curatorial team have been notified and will be in touch with details of the next step as soon as they have checked the dataset.</p>
+                                    <?php endif ?>
                                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
                                         <li role="presentation" class="active"><a href="#edit" aria-controls="edit" role="tab" data-toggle="tab">Personal details</a></li>
                                         <li role="presentation"><a href="#submitted" aria-controls="submitted" role="tab" data-toggle="tab">Your Uploaded Datasets</a></li>
@@ -177,7 +180,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                             if (!confirm('Are you sure you want to delete this item?'))
                                 return false;
                             e.preventDefault();
-                            var did = $(this).attr('did');
+                            var $this = $(this);
+                            var did = $this.attr('did');
 
                             $.ajax({
                                 type: 'POST',
@@ -185,7 +189,35 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                 data: { 'dataset_id': did },
                                 success: function(response) {
                                     if (response.success) {
-                                        $('#js-dataset-row-' + did).remove();
+                                        $this.closest('tr').css('background-color', '#f1f1f1');
+                                        var td = $this.closest('td');
+                                        td.find('a').hide();
+                                        td.find('.js-undo-dataset').show();
+                                    } else {
+                                        alert(response.message);
+                                    }
+                                },
+                                error: function() {}
+                            });
+                        });
+
+                        $(document).on('click', ".js-undo-dataset", function(e) {
+                            if (!confirm('Are you sure you want to undo this item?'))
+                                return false;
+                            e.preventDefault();
+                            var $this = $(this);
+                            var did = $this.attr('did');
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '/datasetSubmission/datasetAjaxUndo',
+                                data: { 'dataset_id': did },
+                                success: function(response) {
+                                    if (response.success) {
+                                        $this.closest('tr').css('background-color', 'white');
+                                        var td = $this.closest('td');
+                                        td.find('a').show();
+                                        td.find('.js-undo-dataset').hide();
                                     } else {
                                         alert(response.message);
                                     }

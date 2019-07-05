@@ -22,6 +22,7 @@ class Util {
         $dois = Yii::app()->db->createCommand()
                 ->select("id, identifier")
                 ->from("dataset")
+                ->where('upload_status=:upload_status', array(':upload_status' => 'Published'))
                 ->order("id DESC")
                 ->queryAll();
 

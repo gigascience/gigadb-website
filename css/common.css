@@ -792,9 +792,9 @@ p.dataset-release-date-text {
     border-top: 0px;
     padding: 0px;
 }
-table.submitted-table > thead > tr > th {
+/*table.submitted-table > thead > tr > th {
     white-space: nowrap;
-}
+}*/
 table.submitted-table > thead > tr > th,
 table.submitted-table > tbody > tr > td,
 table.saved-table > thead > tr > th,

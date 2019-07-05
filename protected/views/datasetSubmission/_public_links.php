@@ -58,9 +58,10 @@
                 </thead>
                 <tbody>
                 <?php foreach($links as $link): ?>
+                <?php $pos = strpos($link->link, ':') ?>
                     <tr class="odd js-my-item">
-                        <td><?= ($link->is_primary)?  "ext_acc_mirror" : "ext_acc_link" ?></td>
-                        <td><?= $link->link ?></td>
+                        <td><?= substr($link->link, 0, $pos) ?></td>
+                        <td><?= substr($link->link, $pos + 1) ?></td>
                         <td class="button-column">
                             <input type="hidden" class="js-my-id" value="<?= $link->id ?>">
                             <a class="js-delete-link delete-title" link-id="<?=$link->id?>" data-id="<?= $model->id ?>" title="delete this row">

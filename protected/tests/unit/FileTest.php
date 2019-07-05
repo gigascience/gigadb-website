@@ -66,7 +66,7 @@ class FileTest extends CDbTestCase
         );
 
         $gffExts = array(
-            'gff3',
+            //'gff3',
             'gff',
         );
 

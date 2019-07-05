@@ -92,7 +92,7 @@ class AdminDatasetController extends Controller
                     }
 
                     Yii::app()->user->setFlash('saveSuccess', 'saveSuccess');
-                    if ($dataset->upload_status=='Pending') {
+                    if ($dataset->upload_status=='AuthorReview') {
                         $this->redirect('/adminDataset/private/identifier/'.$dataset->identifier);
                     }
                     $this->redirect(array('/dataset/'.$dataset->identifier));
@@ -314,7 +314,7 @@ class AdminDatasetController extends Controller
     public function actionMint()
     {
         $result['status'] = false;
-        $status_array = array('Request', 'Incomplete', 'Uploaded');
+        $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
 
         $mds_metadata_url="https://mds.datacite.org/metadata";
         $mds_doi_url="https://mds.datacite.org/doi";

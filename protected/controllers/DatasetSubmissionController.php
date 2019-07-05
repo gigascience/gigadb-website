@@ -37,7 +37,7 @@ class DatasetSubmissionController extends Controller
                     'additionalManagement', 'saveAdditional',
                     'fundingManagement', 'validateFunding', 'saveFundings',
                     'projectManagement','linkManagement','exLinkManagement',
-                    'relatedDoiManagement','sampleManagement', 'saveSamples', 'validateSamples', 'checkUnit', 'end', 'PxInfoManagement','datasetAjaxDelete'),
+                    'relatedDoiManagement','sampleManagement', 'saveSamples', 'validateSamples', 'checkUnit', 'end', 'PxInfoManagement','datasetAjaxDelete', 'datasetAjaxUndo'),
                 'users'=>array('@'),
             ),
             array('deny',  // deny all users
@@ -93,7 +93,7 @@ class DatasetSubmissionController extends Controller
             $this->isSubmitter($dataset);
 
             $isOld = 1;
-            if ($dataset->upload_status == 'Incomplete') {
+            if ($dataset->upload_status == 'UserStartedIncomplete') {
                 $isOld = 0;
             }
 
@@ -101,10 +101,11 @@ class DatasetSubmissionController extends Controller
                 $dataset->upload_status = 'Pending';
                 CurationLog::createlog($dataset->upload_status, $dataset->id);
             } else {
-                $dataset->upload_status = 'Request';
+                $dataset->upload_status = 'Submitted';
                 CurationLog::createlog($dataset->upload_status, $dataset->id);
             }
 
+            $dataset->modification_date = date('Y-m-d');
             if (!$dataset->save(false)) {
                 Yii::app()->user->setFlash('keyword', "Submit failure" . $dataset_id);
                 $this->redirect("/user/view_profile");
@@ -120,7 +121,7 @@ class DatasetSubmissionController extends Controller
             MailHelper::sendUpdateDatasetToAdmin($user, $dataset);
         }
 
-        $this->redirect('/user/view_profile#submitted');
+        $this->redirect('/user/view_profile/thanks/1/added/' . $dataset->id . '#submitted');
     }
 
     public function actionUpdateSubmit()
@@ -478,7 +479,7 @@ class DatasetSubmissionController extends Controller
                         $link = new Link;
                         $link->dataset_id = $_POST['dataset_id'];
                         $link->is_primary = true;
-                        $link->link = $newLink['link'];
+                        $link->link = $newLink['link_type'] . ":" . $newLink['link'];
 
                         if (!$link->validate()) {
                             $transaction->rollback();
@@ -962,11 +963,18 @@ class DatasetSubmissionController extends Controller
             $attrs = array();
             $newSampleAttrs = isset($_POST['sample_attrs']) && is_array($_POST['sample_attrs']) ? $_POST['sample_attrs'] : array();
             foreach ($newSampleAttrs as $i => $newSampleAttr) {
-                $attr = Attribute::model()->findByAttributes(array('attribute_name' => $newSampleAttr['attr_name']));
+                if (!$newSampleAttr['attr_name']) {
+                    Util::returnJSON(array(
+                        "success"=>false,
+                        "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute Name cannot be empty.',
+                    ));
+                }
+
+                $attr = Attribute::findByAttrName($newSampleAttr['attr_name']);
                 if (!$attr) {
                     Util::returnJSON(array(
                         "success"=>false,
-                        "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute does\'nt exist. You can try an alternative attribute name or use "miscellaneous parameter" and include your own attribute name within the value, e.g. miscellaneous parameter=users-own-attribute-name:value-of-attribute',
+                        "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute Name does\'nt exist. You can try an alternative attribute name or use "miscellaneous parameter" and include your own attribute name within the value, e.g. miscellaneous parameter=users-own-attribute-name:value-of-attribute.',
                     ));
                 }
 
@@ -1067,11 +1075,13 @@ class DatasetSubmissionController extends Controller
 
             foreach ($samples as $sample) {
                 if (!in_array($sample->id, $needSamples)) {
-                    if (!$sample->delete()) {
+                    try {
+                        $sample->delete();
+                    } catch (\Exception $e) {
                         $transaction->rollback();
                         Util::returnJSON(array(
                             "success"=>false,
-                            "message"=>"Save Error."
+                            "message"=>"Delete error: sample \"{$sample->id}\" already related to some File."
                         ));
                     }
                 }
@@ -1108,7 +1118,7 @@ class DatasetSubmissionController extends Controller
             $this->redirect("/user/view_profile");
         } else {
             $dataset = $this->getDataset($_GET['id']);
-            $dataset->upload_status = 'UserUploadingData';
+            $dataset->upload_status = 'AssigningFTPbox';
             if (isset($_GET['is_test']) && $_GET['is_test'] === '0'){
                 $dataset->toReal();
             }
@@ -1366,11 +1376,31 @@ class DatasetSubmissionController extends Controller
                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Dataset does not exist.")));
             }
 
-            if ($dataset->delete()) {
+            $dataset->is_deleted = 1;
+            $dataset->modification_date = date('Y-m-d');
+            if ($dataset->save(false)) {
                 Util::returnJSON(array("success"=>true));
             }
         }
         Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+    }
+
+    public function actionDatasetAjaxUndo()
+    {
+        if (isset($_POST['dataset_id'])) {
+            $dataset = Dataset::model()->findByPk($_POST['dataset_id']);
+
+            if (!$dataset) {
+                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Dataset does not exist.")));
+            }
+
+            $dataset->is_deleted = 0;
+            $dataset->modification_date = date('Y-m-d');
+            if ($dataset->save(false)) {
+                Util::returnJSON(array("success"=>true));
+            }
+        }
+        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Undo Error.")));
     }
 
     private function storeSpps($samples, $value, $sppAttr)

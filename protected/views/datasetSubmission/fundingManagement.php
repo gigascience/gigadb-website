@@ -265,7 +265,7 @@ foreach ($funders as $funder) {
     $(fundingDiv).on('click', ".js-add-funding", function() {
         var funderId = $('#funder_id').val();
         if ($('.js-funder-id[value="' + funderId + '"]').length) {
-            alert('Funder "'+funderId+'" has already been taken.');
+            alert('Funder "'+ $('option[value="'+ funderId +'"]').text() +'" has already been taken.');
         } else {
             $.ajax({
                 type: 'POST',
