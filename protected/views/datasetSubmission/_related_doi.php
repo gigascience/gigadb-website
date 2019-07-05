@@ -38,18 +38,16 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th id="author-grid_c0" width="45%">Related DOI</th>
                     <th id="author-grid_c0" width="45%">Relationship</th>
+                    <th id="author-grid_c0" width="45%">Related DOI</th>
                     <th id="author-grid_c5" class="button-column" width="10%"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach($relations as $relation): ?>
                     <tr class="odd js-my-item" id="js-relation-<?=$relation->id?>">
+                        <td><?= $relation->relationship->name ?></td>
                         <td><?= $relation->related_doi ?></td>
-                        <td>
-                            <?= $relation->relationship->name ?>
-                        </td>
                         <td class="button-column">
                             <input type="hidden" class="js-relationship-id" value="<?= $relation->relationship->id ?>">
                             <input type="hidden" class="js-my-id" value="<?= $relation->id ?>">
@@ -99,8 +97,8 @@
                     var trs = relatedDoiDiv.find('.odd');
                     trs.each(function() {
                         let tr = $(this);
-                        let related_doi = tr.children('td').eq(0).text().trim();
-                        let relationship_name = tr.children('td').eq(1).text().trim();
+                        let related_doi = tr.children('td').eq(1).text().trim();
+                        let relationship_name = tr.children('td').eq(0).text().trim();
 
                         if (response.relation['related_doi'] == related_doi && relationship_name == response.relation['relationship_name']) {
                             alert('This relationship has been added already.');
@@ -115,8 +113,8 @@
 
                     var tr = '<tr class="odd js-my-item">' +
                             '<input type="hidden" class="js-relationship-id" value="' + response.relation['relationship_id'] + '">' +
-                            '<td>' + response.relation['related_doi'] + '</td>' +
                             '<td>' + response.relation['relationship_name'] + '</td>' +
+                            '<td>' + response.relation['related_doi'] + '</td>' +
                             '<td class="button-column">' +
                             '<a class="js-delete-relation delete-title" title="delete this row">' +
                             '<img alt="delete this row" src="/images/delete.png">' +

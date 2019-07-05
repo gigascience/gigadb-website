@@ -178,7 +178,7 @@ $disabled = $isSources === null || $isCodes === null || $is3dImages === null || 
             if (!id) {
                 id = 0;
             }
-            let related_doi = tr.children('td').eq(0).text();
+            let related_doi = tr.children('td').eq(1).text();
             let relationship_id = tr.find('.js-relationship-id').val();
 
             relatedDoi.push({
