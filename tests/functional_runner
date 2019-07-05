@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+
+docker-compose run --rm test ./tests/functional
+docker-compose -f fuw/infrastructure/docker-compose.yml exec console /app/vendor/bin/codecept -c /app/backend run functional
+docker-compose -f fuw/infrastructure/docker-compose.yml exec console /app/vendor/bin/codecept -c /app/frontend run functional
