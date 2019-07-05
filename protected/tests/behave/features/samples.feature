@@ -1,7 +1,7 @@
 # Created by serhi at 6/6/2019
 Feature: Samples tab
 
-
+# need to add templates
   Scenario: Warn the user that all data in table will be over-written when applying a template on Sample table with data
     Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
     When I go to submission wizard "/datasetSubmission/sampleManagement/id/210" URL

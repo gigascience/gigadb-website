@@ -150,7 +150,7 @@ Feature: Add Additional Information page
     And choose №"3" from dropdown list
     And I enter "SRS012345" an accession number of Public data archive links block
     And I click Add Link button to add Access number
-    Then Link Type is "ext_acc_mirror" and Link is added
+    Then Link Type is "SRA" and Link is added
 
 
   Scenario: delete added Accession number on Public data archive links block
