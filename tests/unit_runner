@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+
+docker-compose run --rm test ./bin/phpunit protected/tests/unit  --verbose --configuration protected/tests/phpunit.xml --no-coverage
+docker-compose -f fuw/infrastructure/docker-compose.yml exec console /app/vendor/bin/codecept -c /app/backend run unit
+docker-compose -f fuw/infrastructure/docker-compose.yml exec console /app/vendor/bin/codecept -c /app/frontend run unit
+docker-compose -f fuw/infrastructure/docker-compose.yml exec console /app/vendor/bin/codecept -c /app/common run unit
