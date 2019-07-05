@@ -479,7 +479,7 @@ class DatasetSubmissionController extends Controller
                         $link = new Link;
                         $link->dataset_id = $_POST['dataset_id'];
                         $link->is_primary = true;
-                        $link->link = $newLink['link'];
+                        $link->link = $newLink['link_type'] . ":" . $newLink['link'];
 
                         if (!$link->validate()) {
                             $transaction->rollback();

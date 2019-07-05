@@ -340,8 +340,8 @@ class AdminLinkController extends Controller
             Util::returnJSON(array(
                 "success"=>true,
                 'link' => array(
-                    'link_type' => 'ext_acc_mirror',
-                    'link' => $linkVal,
+                    'link_type' => $_POST['database'],
+                    'link' => $_POST['acc_num'],
                 )
             ));
         }
