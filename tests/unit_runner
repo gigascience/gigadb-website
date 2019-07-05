@@ -1,15 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 set -u
 
-set -a
-source .env
-set +a
-
-docker-compose run --rm application ./protected/yiic_test migrate --interactive=0
-docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
-docker-compose exec -T console /app/yii_test migrate --interactive=0
-docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run unit
-docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run unit
-docker-compose exec -T console /app/vendor/bin/codecept -c /app/common run unit
+docker-compose run --rm test ./bin/phpunit protected/tests/unit  --verbose --configuration protected/tests/phpunit.xml --no-coverage
+docker-compose -f fuw/infrastructure/docker-compose.yml exec console /app/vendor/bin/codecept -c /app/backend run unit
+docker-compose -f fuw/infrastructure/docker-compose.yml exec console /app/vendor/bin/codecept -c /app/frontend run unit
+docker-compose -f fuw/infrastructure/docker-compose.yml exec console /app/vendor/bin/codecept -c /app/common run unit
