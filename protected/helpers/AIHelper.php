@@ -26,6 +26,8 @@ class AIHelper
 
     public static function getRegExp($type)
     {
+        return '//';
+
         switch ($type) {
             case self::MANUSCRIPTS:
                 return '/^doi:[0-9]+\.[0-9]+\/gigascience\/[a-z]+[0-9]+$/i';
