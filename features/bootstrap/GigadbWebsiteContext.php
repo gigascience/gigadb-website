@@ -3,6 +3,8 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
+use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
+use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 
 /**
  * Contains steps definitions and utility functions to be used in all Context classes
@@ -263,13 +265,17 @@ class GigadbWebsiteContext implements Context
      * @param string $dbname name of database to operate on
      *
     */
-    public function terminateDbBackend($dbname) {
+    public static function call_pg_terminate_backend($dbname) {
         print_r("Terminating DB Backend... ");
         $sql = "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='${dbname}' and pid <> pg_backend_pid()";
         $dbconn = pg_connect("host=database dbname=postgres user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
 
+    }
+
+    public function terminateDbBackend($dbname) {
+        GigadbWebsiteContext::call_pg_terminate_backend($dbname);
     }
 
     /**
@@ -280,7 +286,7 @@ class GigadbWebsiteContext implements Context
      * @param string $dbname name of database to operate on
      *
     */
-    public function dropCreateDb($dbname) {
+    public static function recreateDB($dbname) {
         $sql_to_fence ="ALTER DATABASE $dbname WITH CONNECTION LIMIT 0;"; //avoid new connection during this process
         $sql_to_drop = "DROP DATABASE ${dbname}";
         $sql_to_create = "CREATE DATABASE ${dbname} OWNER gigadb";
@@ -290,6 +296,10 @@ class GigadbWebsiteContext implements Context
         pg_query($dbconn, $sql_to_create);
         pg_close($dbconn);
 
+    }
+
+    public function dropCreateDb($dbname) {
+        GigadbWebsiteContext::recreateDB($dbname);
     }
 
     /**
@@ -321,12 +331,17 @@ class GigadbWebsiteContext implements Context
      *
      *
     */
-    public function restartPhp()
+    public static function containerRestart()
     {
         $compose_name=getenv("COMPOSE_PROJECT_NAME");
         print_r("Restarting php container for ${compose_name} project...".PHP_EOL);
         exec("/var/www/ops/scripts/restart_php.sh",$output);
         sleep(2);
+    }
+
+    public function restartPhp()
+    {
+        GigadbWebsiteContext::containerRestart();
     }
 
     /**
@@ -377,6 +392,23 @@ class GigadbWebsiteContext implements Context
         $time = $time_end - $this->time_start;
 
         print_r("Timer stopped after $time seconds\n");
+    }
+
+    /** @BeforeSuite */
+    public static function backupCurrentDB(BeforeSuiteScope $scope)
+    {
+        print_r("Backing up current database... ");
+        exec("pg_dump gigadb -U gigadb -h database -F custom  -f /var/www/sql/before-run.pgdmp 2>&1",$output);
+    }
+
+    /** @AfterSuite */
+    public static function restoreCurrentDB(AfterSuiteScope $scope)
+    {
+        print_r("Restoring current database... ");
+        GigadbWebsiteContext::call_pg_terminate_backend("gigadb");
+        GigadbWebsiteContext::recreateDB("gigadb");
+        exec("pg_restore -h database  -U gigadb -d gigadb --clean --no-owner -v /var/www/sql/before-run.pgdmp 2>&1",$output);
+        GigadbWebsiteContext::containerRestart();
     }
 
 
