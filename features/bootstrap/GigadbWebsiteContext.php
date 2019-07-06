@@ -266,7 +266,7 @@ class GigadbWebsiteContext implements Context
      *
     */
     public static function call_pg_terminate_backend($dbname) {
-        print_r("Terminating DB Backend...".PHP_EOL);
+        print_r("Terminating DB Backend... ");
         $sql = "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='${dbname}' and pid <> pg_backend_pid()";
         $dbconn = pg_connect("host=database dbname=postgres user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
@@ -287,7 +287,6 @@ class GigadbWebsiteContext implements Context
      *
     */
     public static function recreateDB($dbname) {
-        echo "Recreating database ${dbname}...".PHP_EOL;
         $sql_to_fence ="ALTER DATABASE $dbname WITH CONNECTION LIMIT 0;"; //avoid new connection during this process
         $sql_to_drop = "DROP DATABASE ${dbname}";
         $sql_to_create = "CREATE DATABASE ${dbname} OWNER gigadb";
@@ -398,19 +397,14 @@ class GigadbWebsiteContext implements Context
     /** @BeforeSuite */
     public static function backupCurrentDB(BeforeSuiteScope $scope)
     {
-        print_r("Loading environment variables... ".PHP_EOL);
-        $dotenv = Dotenv\Dotenv::create('/var/www', '.env');
-        $dotenv->load();
-        $dotsecrets = Dotenv\Dotenv::create('/var/www', '.secrets');
-        $dotsecrets->load();
-        print_r("Backing up current database... ".PHP_EOL);
+        print_r("Backing up current database... ");
         exec("pg_dump gigadb -U gigadb -h database -F custom  -f /var/www/sql/before-run.pgdmp 2>&1",$output);
     }
 
     /** @AfterSuite */
     public static function restoreCurrentDB(AfterSuiteScope $scope)
     {
-        print_r("Restoring current database... ".PHP_EOL);
+        print_r("Restoring current database... ");
         GigadbWebsiteContext::call_pg_terminate_backend("gigadb");
         GigadbWebsiteContext::recreateDB("gigadb");
         exec("pg_restore -h database  -U gigadb -d gigadb --clean --no-owner -v /var/www/sql/before-run.pgdmp 2>&1",$output);
