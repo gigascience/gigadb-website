@@ -46,6 +46,7 @@ variables:
   MAIN_BRANCH: "nolegacy-dep-ux-php7"
   GITLAB_PRIVATE_TOKEN: $CI_BUILD_TOKEN
   GITLAB_UPSTREAM_PROJECT_ID: "7041674"
+  CSV_DIR: "prod_like"
 
 services:
   - docker:dind
@@ -54,7 +55,7 @@ before_script:
   - env | grep "^CI_" > $APPLICATION/.ci_env
   - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" > $APPLICATION/.env
   - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -v "ANALYTICS_PRIVATE_KEY" | grep -viE "tlsauth" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.secrets
-  - apk add --no-cache py-pip bash
+  - apk add --no-cache py-pip
   # Pin docker-compose version to stop installation error
   - pip install docker-compose~=1.23.0
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
@@ -106,18 +107,13 @@ run_all_tests:
     - docker-compose run --rm config
     - docker-compose run --rm webapp
     - docker-compose up -d chrome
-    # build the javascript app
-    - docker-compose run --rm csv-to-migrations npm install
     # - docker-compose top
     # - docker network inspect rija-gigadb-website_web-tier
     # - docker network inspect rija-gigadb-website_db-tier
     # - docker-compose logs database
     # - docker images
-    - docker-compose run --rm test ping -c 5 database
-    - docker-compose run --rm test ping -c 5 gigadb.dev
-    # Setup test db
-    - ./ops/scripts/make_pgdmp_gigadb_testdata.sh
-    - ./ops/scripts/make_pgdmp_production_like.sh
+    # - docker-compose run --rm test ping -c 5 database
+    # - docker-compose run --rm test ping -c 5 gigadb.dev
     - docker-compose run test
     - echo $?
 
@@ -219,6 +215,8 @@ with_new_cert_deploy:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker-compose run --rm config
     - docker-compose run --rm webapp composer install -a
+    # Generate Yii migration scripts
+    - docker-compose up csv-to-migrations
     # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
     - docker-compose build production_web
     - docker-compose build production_app
@@ -244,6 +242,11 @@ with_new_cert_deploy:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
     # Redeploy all containers (run --rm webapp alone won't redeploy the containers)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d
+    # Run database migrations if any
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate to 300000_000000 --migrationPath=application.migrations.admin --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.prod_like --interactive=0
     # Generate the web certificate for TLS termination on web container.
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot certonly -d $STAGING_HOME_URL
     # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
@@ -274,6 +277,8 @@ deploy_app:
     # pulling the CI build of the application and configure it for staging for the purpose of building production containers
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker-compose run --rm config
+    # Generate Yii migration scripts
+    - docker-compose up csv-to-migrations
     # Install dependencies, but make sure the --no-dev parameter is passed so that development-only deps are not installed in vendor/
     - docker-compose run --rm webapp
     # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
@@ -301,6 +306,11 @@ deploy_app:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
     # Redeploy all containers (run --rm webapp alone won't redeploy the containers)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d
+    # Run database migrations if any
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate to 300000_000000 --migrationPath=application.migrations.admin --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.prod_like --interactive=0
     # Attempt to renew the web certificate for TLS termination on web container. NOOP if not close to expiration date
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot renew
     # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
