@@ -36,7 +36,7 @@ variables:
   PHP_VERSION: "7.1"
   YII_VERSION: "1.1.20"
   YII2_VERSION: "2.0.15.1"
-  POSTGRES_VERSION: "9.4"
+  POSTGRES_VERSION: "9.6"
   HOME_URL: "gigadb.gigasciencejournal.com"
   PUBLIC_HTTP_PORT: "9170"
   PUBLIC_HTTPS_PORT: "8043"
