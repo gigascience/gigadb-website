@@ -588,6 +588,7 @@ deploy_proto:
     when: on_failure
     expire_in: 1 week
 
+
 release_app:
   stage: live
   script:
