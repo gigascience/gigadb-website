@@ -60,7 +60,7 @@
                     <tr>
                         <th style="white-space: nowrap;">Sample ID</th>
                         <th style="white-space: nowrap;">Species name</th>
-                        <th style="white-space: nowrap;" class="sample-attribute-column">Description</th>
+                        <th style="white-space: nowrap;" class="sample-attribute-column">Description <input type="hidden" value="description"></th>
                         <?php if ($rows): ?>
                             <?php for ($j = 3, $k = count($rows[0]); $j < $k; $j++): ?>
                                 <?php

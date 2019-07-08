@@ -962,11 +962,19 @@ class DatasetSubmissionController extends Controller
 
             $attrs = array();
             $newSampleAttrs = isset($_POST['sample_attrs']) && is_array($_POST['sample_attrs']) ? $_POST['sample_attrs'] : array();
+            $attrNames = array();
             foreach ($newSampleAttrs as $i => $newSampleAttr) {
                 if (!$newSampleAttr['attr_name']) {
                     Util::returnJSON(array(
                         "success"=>false,
                         "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute Name cannot be empty.',
+                    ));
+                }
+
+                if (in_array($newSampleAttr['attr_name'], $attrNames)) {
+                    Util::returnJSON(array(
+                        "success"=>false,
+                        "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute Name already exist.',
                     ));
                 }
 
@@ -979,6 +987,7 @@ class DatasetSubmissionController extends Controller
                 }
 
                 $attrs[] = $attr;
+                $attrNames[] = $newSampleAttr['attr_name'];
             }
 
             /** @var Sample[] $samples */
