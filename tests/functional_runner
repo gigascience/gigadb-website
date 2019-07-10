@@ -3,6 +3,8 @@
 set -e
 set -u
 
-docker-compose run --rm test ./tests/functional
-docker-compose -f fuw/infrastructure/docker-compose.yml exec console /app/vendor/bin/codecept -c /app/backend run functional
-docker-compose -f fuw/infrastructure/docker-compose.yml exec console /app/vendor/bin/codecept -c /app/frontend run functional
+docker-compose run --rm application ./protected/yiic migrate --interactive=0
+docker-compose run --rm test ./bin/phpunit protected/tests/functional --bootstrap protected/tests/functional/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
+docker-compose exec console /app/yii migrate --interactive=0
+docker-compose exec console /app/vendor/bin/codecept -c /app/backend run functional
+docker-compose exec console /app/vendor/bin/codecept -c /app/frontend run functional

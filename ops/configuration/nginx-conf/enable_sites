@@ -1,0 +1,13 @@
+#!/bin/ash
+
+for var in "$@"
+do
+	echo "ln -s /etc/nginx/sites-available/$var.conf /etc/nginx/sites-enabled/$var.conf"
+	find /etc/nginx/sites-available/$var.conf && ln -s /etc/nginx/sites-available/$var.conf /etc/nginx/sites-enabled/$var.conf
+done
+
+if ps -ef | grep -v grep | grep nginx ; then
+        nginx -t && nginx -s reload
+else
+	exec nginx -g 'daemon off;'
+fi
