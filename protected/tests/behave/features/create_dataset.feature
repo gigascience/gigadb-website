@@ -96,4 +96,4 @@ Feature: Create Dataset
     And I enter Image Credit "mam" on Study tab
     And I enter Image Source "wiki" on Study tab
     And I click Save button on Study tab
-#    Then not finished need access to DB
+

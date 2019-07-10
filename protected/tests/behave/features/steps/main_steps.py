@@ -1494,10 +1494,10 @@ def step_impl(context):
     assert records == l
 
 
-@step('dataset upload status is set to "{upload_status}"')
-def step_impl(context, upload_status):
+@step('dataset upload status is set to "{upload_status}" where dataset_id is "{}"')
+def step_impl(context, upload_status, id):
     cursor = connection.cursor()
-    select_query = "select upload_status from dataset where id = 397"
+    select_query = "select upload_status from dataset where id = {}".format(id)
     cursor.execute(select_query)
     record = cursor.fetchall()
     assert record == tuple([upload_status])

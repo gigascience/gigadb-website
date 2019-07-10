@@ -46,7 +46,7 @@ Feature: Samples tab
     Then the user is redirected to The end page
     Then any rows in the sample table are saved to the database
     When I click "Return to your profile page" button on Sample tab
-    And dataset upload status is set to "AssigningFTPbox"
+    And dataset upload status is set to "AssigningFTPbox" where dataset_id is "210"
 #    And email is sent to database@gigasciencejournal.com to alert us to a new submission
     And I delete the added sample form DB
 
