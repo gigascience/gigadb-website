@@ -209,10 +209,12 @@ RUN if [ ${INSTALL_DOCKER_API_ACCESS} = true ]; then \
     echo 'www-data ALL=(ALL) NOPASSWD: /usr/bin/curl -s --unix-socket /var/run/docker.sock *' >> /etc/sudoers \
 ;fi
 
-WORKDIR /var/www
+ARG APP_ROOT_DIR=/var/www
+WORKDIR ${APP_ROOT_DIR}
 
 CMD ["php-fpm"]
 
 ARG APP_PORT=9000
 EXPOSE ${APP_PORT}
 RUN sed -i "s/9000/${APP_PORT}/" /usr/local/etc/php-fpm.d/zz-docker.conf
+
