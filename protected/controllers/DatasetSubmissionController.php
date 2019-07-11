@@ -652,9 +652,17 @@ class DatasetSubmissionController extends Controller
             $funding = new DatasetFunder();
             $funding->loadByData($_POST);
 
+            if ($funding->validate()) {
+                Util::returnJSON( array(
+                    "success" => true,
+                    'funding' => $funding->asArray(),
+                ));
+            }
+
+            $error = current($funding->getErrors());
             Util::returnJSON( array(
-                "success" => true,
-                'funding' => $funding->asArray(),
+                "success" => false,
+                'message' => $error[0],
             ));
         }
 

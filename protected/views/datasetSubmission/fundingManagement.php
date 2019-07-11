@@ -273,9 +273,9 @@ foreach ($funders as $funder) {
                 data:{
                     'dataset_id': datasetId,
                     'funder_id': funderId,
-                    'grant': $('#grant').val(),
-                    'pi_name': $('#pi_name').val(),
-                    'program_name': $('#program_name').val()
+                    'grant': $('#grant').val().trim(),
+                    'pi_name': $('#pi_name').val().trim(),
+                    'program_name': $('#program_name').val().trim()
                 },
                 success: function(response){
                     if(response.success) {
