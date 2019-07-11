@@ -279,10 +279,11 @@ foreach ($funders as $funder) {
                 },
                 success: function(response){
                     if(response.success) {
-                        var tr =
+                        let programName = response.funding['program_name'] === null ? '' : response.funding['program_name'];
+                        let tr =
                             '<tr class="odd">' +
                             '<td>' + response.funding['funder_name'] + '</td>' +
-                            '<td>' + response.funding['program_name'] + '</td>' +
+                            '<td>' + programName + '</td>' +
                             '<td>' + response.funding['grant'] + '</td>' +
                             '<td>' + response.funding['pi_name'] + '</td>' +
                             '<td class="button-column">' +
