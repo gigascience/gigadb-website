@@ -422,7 +422,7 @@
 
             let attr_values = [];
             for (var i = 0, n = attr_tds.length; i < n; i++) {
-                let attr_value = tr.children('td').eq(2 + i).find('input').val();
+                let attr_value = tr.children('td').eq(2 + i).find('input').val().trim();
                 attr_values.push(attr_value);
             }
 
