@@ -904,19 +904,12 @@ class DatasetSubmissionController extends Controller
             $samples = CUploadedFile::getInstanceByName('samples');
             if($samples) {
                 $rows = CsvHelper::parse($samples->getTempName(), $samples->getExtensionName());
-
                 $lastRequired = 2;
                 $matches = array();
                 for ($j = 3, $k = count($rows[0]); $j < $k; $j++) {
-                    if (empty($rows[0][$j])) {
+                    if (!empty($rows[0][$j])) {
                         $match = $rows[0][$j];
-                        $match = addcslashes($match, '%_');
-                        $criteria = new CDbCriteria( array(
-                            'condition' => "LOWER(attribute_name) LIKE LOWER(:match)",
-                            'params'    => array(':match' => "%$match%")
-                        ) );
-
-                        $attr = Attribute::model()->find($criteria);
+                        $attr = Attribute::findSimilarByAttrName($match);
 
                         if ($attr && $attr->attribute_name != $match) {
                             $matches[$match] = $attr->attribute_name;
