@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+profile=${1:-"local"}
+
+docker-compose run --rm test bin/behat --profile $profile -v --stop-on-failure
