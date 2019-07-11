@@ -397,14 +397,19 @@ class GigadbWebsiteContext implements Context
     /** @BeforeSuite */
     public static function backupCurrentDB(BeforeSuiteScope $scope)
     {
-        print_r("Backing up current database... ");
+        print_r("Loading environment variables... ".PHP_EOL);
+        $dotenv = Dotenv\Dotenv::create('/var/www', '.env');
+        $dotenv->load();
+        $dotsecrets = Dotenv\Dotenv::create('/var/www', '.secrets');
+        $dotsecrets->load();
+        print_r("Backing up current database... ".PHP_EOL);
         exec("pg_dump gigadb -U gigadb -h database -F custom  -f /var/www/sql/before-run.pgdmp 2>&1",$output);
     }
 
     /** @AfterSuite */
     public static function restoreCurrentDB(AfterSuiteScope $scope)
     {
-        print_r("Restoring current database... ");
+        print_r("Restoring current database... ".PHP_EOL);
         GigadbWebsiteContext::call_pg_terminate_backend("gigadb");
         GigadbWebsiteContext::recreateDB("gigadb");
         exec("pg_restore -h database  -U gigadb -d gigadb --clean --no-owner -v /var/www/sql/before-run.pgdmp 2>&1",$output);
