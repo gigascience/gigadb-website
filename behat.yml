@@ -20,3 +20,14 @@ default:
           selenium2:
             wd_host: http://phantomjs:8910/wd/hub
 
+local:
+  suites:
+    default:
+      filters:
+        tags: "@ok&&~@affiliate-login"
+
+cli:
+  suites:
+    default:
+      filters:
+        tags: "@ok&&~@affiliate-login&&~@javascript"
