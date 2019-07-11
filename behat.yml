@@ -26,3 +26,15 @@ default:
                   - "--headless"
                   - "--disable-gpu"
                   - "--window-size=1024,768"
+
+local:
+  suites:
+    default:
+      filters:
+        tags: "@ok&&~@affiliate-login"
+
+cli:
+  suites:
+    default:
+      filters:
+        tags: "@ok&&~@affiliate-login&&~@javascript"
