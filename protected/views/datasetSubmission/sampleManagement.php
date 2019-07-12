@@ -226,7 +226,11 @@
     function getAttributesAutocomplete() {
         $( ".js-attribute-name-autocomplete" ).autocomplete({
             minLength: 2,
-            source : '/datasetSubmission/getAttributes'
+            source : '/datasetSubmission/getAttributes',
+            select: function (a, b) {
+                var $this = $(this);
+                checkUnit($this);
+            }
         });
     }
 
@@ -464,27 +468,34 @@
         });
     }
 
-    $(document).on('change', '.js-attribute-name-autocomplete', function () {
+    function checkUnit($this)
+    {
+        setTimeout((function(){
+            $.ajax({
+                type: 'GET',
+                url: '/datasetSubmission/checkUnit',
+                data:{
+                    attr_name: $this.val(),
+                },
+                success: function(response){
+                    var select = $this.closest('th').find('select');
+                    if(response.success) {
+                        select.val(response.unitId)
+                    } else {
+                        select.val('');
+                    }
+                },
+                error: function(xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        }), 50);
+    }
+
+    $(document).on('keydown', '.js-attribute-name-autocomplete', function () {
         var $this = $(this);
 
-        $.ajax({
-            type: 'GET',
-            url: '/datasetSubmission/checkUnit',
-            data:{
-                attr_name: $this.val(),
-            },
-            success: function(response){
-                var select = $this.closest('th').find('select');
-                if(response.success) {
-                    select.val(response.unitId)
-                } else {
-                    select.val('');
-                }
-            },
-            error: function(xhr) {
-                alert(xhr.responseText);
-            }
-        });
+        checkUnit($this);
     });
 
     $(document).on('change', '#template', function () {

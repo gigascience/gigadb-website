@@ -988,19 +988,11 @@ class DatasetSubmissionController extends Controller
 
             $attrs = array();
             $newSampleAttrs = isset($_POST['sample_attrs']) && is_array($_POST['sample_attrs']) ? $_POST['sample_attrs'] : array();
-            $attrNames = array();
             foreach ($newSampleAttrs as $i => $newSampleAttr) {
                 if (!$newSampleAttr['attr_name']) {
                     Util::returnJSON(array(
                         "success"=>false,
                         "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute Name cannot be empty.',
-                    ));
-                }
-
-                if (in_array($newSampleAttr['attr_name'], $attrNames)) {
-                    Util::returnJSON(array(
-                        "success"=>false,
-                        "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute Name already exist.',
                     ));
                 }
 
@@ -1013,7 +1005,6 @@ class DatasetSubmissionController extends Controller
                 }
 
                 $attrs[] = $attr;
-                $attrNames[] = $newSampleAttr['attr_name'];
             }
 
             /** @var Sample[] $samples */
@@ -1054,7 +1045,7 @@ class DatasetSubmissionController extends Controller
                     $ds->sample_id = $sample->id;
                     $ds->save();
 
-                    $needAttrs = array();
+                    $needSAttrs = array();
                     foreach ($attrs as $i => $attr) {
                         if (!$newSample['attr_values'][$i]) {
                             $transaction->rollback();
@@ -1090,12 +1081,12 @@ class DatasetSubmissionController extends Controller
                         }
 
                         $sa->save();
-                        $needAttrs[] = $attr->id;
+                        $needSAttrs[] = $sa->id;
                     }
 
                     $sas = SampleAttribute::model()->findAllByAttributes(array('sample_id' => $sample->id));
                     foreach ($sas as $sa) {
-                        if (!in_array($sa->attribute_id, $needAttrs)) {
+                        if (!in_array($sa->id, $needSAttrs)) {
                             if (!$sa->delete()) {
                                 $transaction->rollback();
                                 Util::returnJSON(array(
@@ -1134,9 +1125,10 @@ class DatasetSubmissionController extends Controller
             $attr = Attribute::model()->findByAttributes(array('attribute_name' => $_GET['attr_name']));
 
             if ($attr && $attr->allowed_units) {
+                $unitIds = explode(',', $attr->allowed_units);
                 Util::returnJSON(array(
-                    "success"=>true,
-                    'unitId' => $attr->allowed_units
+                    "success" => true,
+                    'unitId' => $unitIds[0]
                 ));
             }
         }
