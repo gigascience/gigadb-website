@@ -37,7 +37,7 @@ class DatasetSubmissionController extends Controller
                     'additionalManagement', 'saveAdditional',
                     'fundingManagement', 'validateFunding', 'saveFundings',
                     'projectManagement','linkManagement','exLinkManagement',
-                    'relatedDoiManagement','sampleManagement', 'saveSamples', 'validateSamples', 'checkUnit', 'end', 'PxInfoManagement','datasetAjaxDelete', 'datasetAjaxUndo'),
+                    'relatedDoiManagement','sampleManagement', 'getAttributes', 'saveSamples', 'validateSamples', 'checkUnit', 'end', 'PxInfoManagement','datasetAjaxDelete', 'datasetAjaxUndo'),
                 'users'=>array('@'),
             ),
             array('deny',  // deny all users
@@ -887,8 +887,8 @@ class DatasetSubmissionController extends Controller
             }
         }
 
-        $species = Species::model()->findAll(array('order'=>'common_name asc'));
-        $attrs = Attribute::model()->findAll(array('order'=>'attribute_name asc'));
+        //$species = Species::model()->findAll(array('order'=>'common_name asc'));
+        //$attrs = Attribute::model()->findAll(array('order'=>'attribute_name asc'));
 
         $this->render('sampleManagement', array(
             'model' => $dataset,
@@ -898,9 +898,34 @@ class DatasetSubmissionController extends Controller
             'sas' => $sas,
             'sts' => $sts,
             'rows' => $rows,
-            'species' => $species,
-            'attrs' => $attrs,
+            //'species' => $species,
+            //'attrs' => $attrs,
         ));
+    }
+
+    public function actionGetAttributes()
+    {
+        if (isset($_GET['term'])) {
+            $attributeName = trim($_GET['term']);
+            if (strlen($attributeName) < 2) {
+                return null;
+            }
+
+            /** @var Attribute[] $attributes */
+            $attributes = Attribute::findAllSimilarByAttrName($attributeName);
+            $data = array();
+            foreach ($attributes as $attribute) {
+                $data[] = array(
+                    'id' => $attribute->id,
+                    'label' => $attribute->attribute_name,
+                    'value' => $attribute->attribute_name,
+                );
+            }
+
+            Util::returnJSON($data);
+        }
+
+        return null;
     }
 
     /**

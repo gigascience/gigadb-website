@@ -223,17 +223,14 @@
     $('#samples-table').resizable();
     $(".delete-title").tooltip({'placement':'right'});
 
-    var species = JSON.parse('<?= json_encode(array_values(CHtml::listData($species, 'id', 'common_name'))) ?>');
+    function getAttributesAutocomplete() {
+        $( ".js-attribute-name-autocomplete" ).autocomplete({
+            minLength: 2,
+            source : '/datasetSubmission/getAttributes'
+        });
+    }
 
-    $( ".js-species-autocomplete" ).autocomplete({
-        source: species
-    });
-
-    var attrs = JSON.parse('<?= json_encode(array_values(CHtml::listData($attrs, 'id', 'attribute_name'))) ?>');
-
-    $( ".js-attribute-name-autocomplete" ).autocomplete({
-        source: attrs
-    });
+    getAttributesAutocomplete();
 
     var baseUrl = '<?= '/datasetSubmission/sampleManagement/id/'. $model->id ?>';
     var units = JSON.parse('<?= json_encode(CHtml::listData($units, 'id', 'name')) ?>');
@@ -307,9 +304,7 @@
 
         th.before(newTh);
 
-        samplesTable.find('.sample-attribute-column').last().find(".js-attribute-name-autocomplete").autocomplete({
-            source: attrs
-        });
+        getAttributesAutocomplete();
 
         return false;
     });
@@ -342,10 +337,6 @@
         $('#js-no-results').before(newTr);
 
         $('#js-no-results').hide();
-
-        samplesTable.find('.item').last().find('.js-species-autocomplete').autocomplete({
-            source: species
-        });
 
         $(".delete-title").tooltip({'placement':'right'});
 
