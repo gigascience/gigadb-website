@@ -266,6 +266,9 @@ services:
       - ../../fuw/credentials:/var/private
       - ../../fuw/runtime/pure-ftpd:/etc/pure-ftpd
       - ../../fuw/runtime/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+      # need to run gigadb's unit tests using the more modern phpunit for coverage aggregation
+      - ../../protected:/var/www/protected
+      - ../../vendor:/var/www/vendor
       # to run tests that interact with containers
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
