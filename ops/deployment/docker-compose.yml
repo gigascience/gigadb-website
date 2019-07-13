@@ -16,15 +16,19 @@ services:
       - "${PUBLIC_HTTP_PORT}:80"
       - "${PUBLIC_HTTPS_PORT}:443"
     volumes:
+      # Gigadb webapp
       - ${APPLICATION}/assets:/var/www/assets
       - ${APPLICATION}/images:/var/www/images
       - ${APPLICATION}/css:/var/www/css
       - ${APPLICATION}/style-guide:/var/www/style-guide
+      # File Upload Wizard admin application
+      - ${APPLICATION}/fuw/app:/var/fuw
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
+    command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-http.dev"]
 
   certbot:
     image: certbot/certbot
@@ -73,6 +77,7 @@ services:
         mode: host
     volumes:
       - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
+      - ${APPLICATION}/fuw/app/common/config/bootstrap.sql:/docker-entrypoint-initdb.d/3-fuw.sql
       - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf'
     networks:
@@ -165,6 +170,146 @@ services:
     networks:
       - web-tier
       - db-tier
+
+
+  fuw-admin:
+    build:
+      context: ../../fuw/app/backend
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm
+        - APP_PORT=9002
+        - APP_ROOT_DIR=/var/fuw/backend/web/
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=false
+        - INSTALL_APCU=true
+        - INSTALL_DOCKER_API_ACCESS=true
+    expose:
+      - "9002"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ../../fuw/app:/var/fuw
+      # directories used for filedrop files
+      - ../../fuw/incoming:/var/incoming
+      - ../../fuw/repo:/var/repo
+      - ../../fuw/credentials:/var/private
+    depends_on:
+      - database
+      - web
+      - console
+      - ftpd
+      - tusd
+      - watcher
+    networks:
+      - web-tier
+      - db-tier
+
+  console:
+    build:
+      context: ../../fuw/app/backend
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm
+        - APP_PORT=9001
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=false
+        - INSTALL_APCU=true
+        - INSTALL_DOCKER_API_ACCESS=true
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_GIT=true
+        - PG_CLIENT_VERSION=9.6
+        - INSTALL_PG_CLIENT=true
+        - INSTALL_XDEBUG=true
+    expose:
+      - "9001"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ../../fuw/app:/app
+      # directories used for filedrop files
+      - ../../fuw/incoming:/var/incoming
+      - ../../fuw/repo:/var/repo
+      - ../../fuw/credentials:/var/private
+      - ../../fuw/runtime/pure-ftpd:/etc/pure-ftpd
+      - ../../fuw/runtime/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+      # need to run gigadb's unit tests using the more modern phpunit for coverage aggregation
+      - ../../protected:/var/www/protected
+      - ../../vendor:/var/www/vendor
+      # to run tests that interact with containers
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - web-tier
+      - db-tier
+
+  ftpd:
+    build:
+      context: ../../fuw/docker-pure-ftpd
+    volumes:
+      - "../../fuw/incoming/ftp:/home/uploader"
+      - ../../fuw/repo:/home/downloader/:ro
+      - ../../fuw/credentials:/var/private
+      - ../../fuw/hooks:/var/scripts
+      - ../../fuw/runtime/pure-ftpd:/etc/pure-ftpd
+      - ../../fuw/runtime/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+      # - ../ftp-transfer-logs:/var/log/pure-ftpd
+    environment:
+      PUBLICHOST: "localhost"
+      # ADDED_FLAGS: "-O w3c:/var/log/pure-ftpd/transfer.log"
+    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P localhost
+    ports:
+      - target: 21
+        published: 9021
+        protocol: tcp
+        mode: host
+      - "30000-30009:30000-30009"
+    networks:
+      - web-tier
+      - db-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+  watcher:
+    build:
+      context: ../../fuw/docker-inotify-command
+    volumes:
+      - ../../fuw/inotify-config:/config:ro
+      - ../../fuw/incoming/ftp:/home/uploader
+      - ../../fuw/repo:/home/downloader/
+      - ../../fuw/hooks:/commands:ro
+      - ../../fuw/credentials:/var/access:ro
+      - ../../fuw/flags:/var/tmp/processing_flag
+      - ../../fuw/php-conf/appconfig.ini:/var/appconfig.ini:ro
+    networks:
+      - web-tier
+      - db-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+  tusd:
+    build:
+      context: ../../fuw/tusd
+    volumes:
+      - "../../fuw/incoming/tusd:/var/inbox/"
+      - ../../fuw/repo:/var/repo/
+      - ../../fuw/hooks:/var/hooks
+    command: -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
+    networks:
+      - web-tier
+      - db-tier
+    expose:
+      - "1080"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
 
 networks:
   web-tier:
