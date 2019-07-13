@@ -1,10 +1,21 @@
-<phpunit bootstrap="bootstrap.php"
-		colors="true"
+<phpunit colors="true"
 		convertErrorsToExceptions="true"
 		convertNoticesToExceptions="false"
 		convertWarningsToExceptions="false"
 		stopOnFailure="false">
 
+	<testsuites>
+	  <testsuite name="unit">
+	    <directory>unit</directory>
+	  </testsuite>
+	  <testsuite name="functional">
+	    <directory>functional</directory>
+	  </testsuite>
+	  <testsuite name="all">
+	    <directory>unit</directory>
+	    <directory>functional</directory>
+	  </testsuite>
+	</testsuites>
 	<filter>
 	  <whitelist processUncoveredFilesFromWhitelist="true">
 	    <directory suffix=".php">/var/www/protected</directory>
@@ -15,6 +26,9 @@
 	      <directory suffix=".php">/var/www/protected/extensions</directory>
 	      <directory suffix=".php">/var/www/protected/migrations</directory>
 	      <file suffix=".php">/var/www/protected/yiic.php</file>
+	      <file suffix=".php">/var/www/protected/yiic_test.php</file>
+	      <file suffix=".php">/var/www/protected/tests/unit_bootstrap.php</file>
+	      <file suffix=".php">/var/www/protected/tests/functional_custom_bootstrap.php</file>
 	    </exclude>
 	  </whitelist>
 	</filter>
