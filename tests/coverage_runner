@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -e
+set -u
+
+
+docker-compose run --rm test ./bin/phpunit /var/www/protected/tests --testsuite all --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml
+docker-compose exec console /app/vendor/bin/codecept -c /app run --coverage --coverage-xml --coverage-html
+
+docker-compose run --rm -e $(cat .env | grep COVERALLS) -e $(cat .secrets | grep COVERALLS) test ./bin/php-coveralls --verbose --coverage_clover /var/www/protected/runtime/clover.xml --json_path /var/www/protected/runtime/coveralls-upload.json
+
+cat protected/runtime/phpunit-coverage.txt
