@@ -21,7 +21,7 @@ services:
     volumes:
       - ${APPLICATION}/ops/configuration/php-conf/xhgui-config.php:/usr/local/src/xhgui-0.8.1/config/config.php
 
-  webapp:
+  gigadb:
     depends_on:
       - application
       - web

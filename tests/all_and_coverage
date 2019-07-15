@@ -2,8 +2,10 @@
 
 set -e -u
 
-./tests/acceptance
-./tests/unit_functional
-./tests/coverage
+./tests/unit_runner
+./tests/functional_runner
+./tests/acceptance_runner
 ./tests/css_check
 ./tests/javascript_check
+./tests/coverage_runner
+
