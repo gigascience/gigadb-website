@@ -1,5 +1,5 @@
 ARG PHP_VERSION=7.1
-FROM php:${PHP_VERSION}-fpm
+FROM php:${PHP_VERSION}-fpm-stretch
 
 
 # basic dependencies
