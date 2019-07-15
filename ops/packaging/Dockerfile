@@ -34,7 +34,7 @@ RUN docker-php-ext-install gd && \
     docker-php-ext-configure gd \
         --enable-gd-native-ttf \
         --with-jpeg-dir=/usr/lib \
-        --with-freetype-dir=/usr/include/freetype2 && \
+        --with-freetype-dir && \
     docker-php-ext-install gd
 
 # Set Environment Variables
