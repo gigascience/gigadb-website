@@ -93,7 +93,7 @@ services:
       - le_config:/etc/letsencrypt
     command: /var/www/ops/scripts/generate_config.sh
 
-  webapp:
+  gigadb:
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
@@ -174,7 +174,7 @@ services:
       - db-tier
     extra_hosts:
       - "gigadb.dev:172.16.238.10"
-    command: ./tests/all_and_coverage
+    command: bash
 
   chrome:
     image: selenium/standalone-chrome:3.141.59-oxygen # latest version with Chrome 74
