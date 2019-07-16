@@ -212,7 +212,7 @@ services:
     build:
       context: ../../fuw/app/backend
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
         - APP_PORT=9001
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
