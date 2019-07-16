@@ -138,5 +138,25 @@ class Attribute extends CActiveRecord
 
         return $attribute;
     }
+
+    static function findSimilarByAttrName($attributeName)
+    {
+        $criteria = new CDbCriteria( array(
+            'condition' => "LOWER(:match) LIKE CONCAT('%', LOWER(attribute_name), '%') OR LOWER(attribute_name) LIKE CONCAT('%', LOWER(:match), '%')",
+            'params'    => array(':match' => $attributeName)
+        ) );
+
+        return Attribute::model()->find($criteria);
+    }
+
+    static function findAllSimilarByAttrName($attributeName)
+    {
+        $criteria = new CDbCriteria( array(
+            'condition' => "LOWER(:match) LIKE CONCAT('%', LOWER(attribute_name), '%') OR LOWER(attribute_name) LIKE CONCAT('%', LOWER(:match), '%')",
+            'params'    => array(':match' => $attributeName)
+        ) );
+
+        return Attribute::model()->findAll($criteria);
+    }
 }
 

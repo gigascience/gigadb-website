@@ -60,7 +60,7 @@
                     <tr>
                         <th style="white-space: nowrap;">Sample ID</th>
                         <th style="white-space: nowrap;">Species name</th>
-                        <th style="white-space: nowrap;" class="sample-attribute-column">Description</th>
+                        <th style="white-space: nowrap;" class="sample-attribute-column">Description <input type="hidden" value="description"></th>
                         <?php if ($rows): ?>
                             <?php for ($j = 3, $k = count($rows[0]); $j < $k; $j++): ?>
                                 <?php
@@ -223,17 +223,18 @@
     $('#samples-table').resizable();
     $(".delete-title").tooltip({'placement':'right'});
 
-    var species = JSON.parse('<?= json_encode(array_values(CHtml::listData($species, 'id', 'common_name'))) ?>');
+    function getAttributesAutocomplete() {
+        $( ".js-attribute-name-autocomplete" ).autocomplete({
+            minLength: 2,
+            source : '/datasetSubmission/getAttributes',
+            select: function (a, b) {
+                var $this = $(this);
+                checkUnit($this);
+            }
+        });
+    }
 
-    $( ".js-species-autocomplete" ).autocomplete({
-        source: species
-    });
-
-    var attrs = JSON.parse('<?= json_encode(array_values(CHtml::listData($attrs, 'id', 'attribute_name'))) ?>');
-
-    $( ".js-attribute-name-autocomplete" ).autocomplete({
-        source: attrs
-    });
+    getAttributesAutocomplete();
 
     var baseUrl = '<?= '/datasetSubmission/sampleManagement/id/'. $model->id ?>';
     var units = JSON.parse('<?= json_encode(CHtml::listData($units, 'id', 'name')) ?>');
@@ -307,9 +308,7 @@
 
         th.before(newTh);
 
-        samplesTable.find('.sample-attribute-column').last().find(".js-attribute-name-autocomplete").autocomplete({
-            source: attrs
-        });
+        getAttributesAutocomplete();
 
         return false;
     });
@@ -342,10 +341,6 @@
         $('#js-no-results').before(newTr);
 
         $('#js-no-results').hide();
-
-        samplesTable.find('.item').last().find('.js-species-autocomplete').autocomplete({
-            source: species
-        });
 
         $(".delete-title").tooltip({'placement':'right'});
 
@@ -422,7 +417,7 @@
 
             let attr_values = [];
             for (var i = 0, n = attr_tds.length; i < n; i++) {
-                let attr_value = tr.children('td').eq(2 + i).find('input').val();
+                let attr_value = tr.children('td').eq(2 + i).find('input').val().trim();
                 attr_values.push(attr_value);
             }
 
@@ -473,27 +468,34 @@
         });
     }
 
-    $(document).on('change', '.js-attribute-name-autocomplete', function () {
+    function checkUnit($this)
+    {
+        setTimeout((function(){
+            $.ajax({
+                type: 'GET',
+                url: '/datasetSubmission/checkUnit',
+                data:{
+                    attr_name: $this.val(),
+                },
+                success: function(response){
+                    var select = $this.closest('th').find('select');
+                    if(response.success) {
+                        select.val(response.unitId)
+                    } else {
+                        select.val('');
+                    }
+                },
+                error: function(xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        }), 50);
+    }
+
+    $(document).on('keydown', '.js-attribute-name-autocomplete', function () {
         var $this = $(this);
 
-        $.ajax({
-            type: 'GET',
-            url: '/datasetSubmission/checkUnit',
-            data:{
-                attr_name: $this.val(),
-            },
-            success: function(response){
-                var select = $this.closest('th').find('select');
-                if(response.success) {
-                    select.val(response.unitId)
-                } else {
-                    select.val('');
-                }
-            },
-            error: function(xhr) {
-                alert(xhr.responseText);
-            }
-        });
+        checkUnit($this);
     });
 
     $(document).on('change', '#template', function () {

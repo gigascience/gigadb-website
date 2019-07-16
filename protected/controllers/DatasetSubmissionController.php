@@ -37,7 +37,7 @@ class DatasetSubmissionController extends Controller
                     'additionalManagement', 'saveAdditional',
                     'fundingManagement', 'validateFunding', 'saveFundings',
                     'projectManagement','linkManagement','exLinkManagement',
-                    'relatedDoiManagement','sampleManagement', 'saveSamples', 'validateSamples', 'checkUnit', 'end', 'PxInfoManagement','datasetAjaxDelete', 'datasetAjaxUndo'),
+                    'relatedDoiManagement','sampleManagement', 'getAttributes', 'saveSamples', 'validateSamples', 'checkUnit', 'end', 'PxInfoManagement','datasetAjaxDelete', 'datasetAjaxUndo'),
                 'users'=>array('@'),
             ),
             array('deny',  // deny all users
@@ -652,9 +652,17 @@ class DatasetSubmissionController extends Controller
             $funding = new DatasetFunder();
             $funding->loadByData($_POST);
 
+            if ($funding->validate()) {
+                Util::returnJSON( array(
+                    "success" => true,
+                    'funding' => $funding->asArray(),
+                ));
+            }
+
+            $error = current($funding->getErrors());
             Util::returnJSON( array(
-                "success" => true,
-                'funding' => $funding->asArray(),
+                "success" => false,
+                'message' => $error[0],
             ));
         }
 
@@ -879,8 +887,8 @@ class DatasetSubmissionController extends Controller
             }
         }
 
-        $species = Species::model()->findAll(array('order'=>'common_name asc'));
-        $attrs = Attribute::model()->findAll(array('order'=>'attribute_name asc'));
+        //$species = Species::model()->findAll(array('order'=>'common_name asc'));
+        //$attrs = Attribute::model()->findAll(array('order'=>'attribute_name asc'));
 
         $this->render('sampleManagement', array(
             'model' => $dataset,
@@ -890,9 +898,34 @@ class DatasetSubmissionController extends Controller
             'sas' => $sas,
             'sts' => $sts,
             'rows' => $rows,
-            'species' => $species,
-            'attrs' => $attrs,
+            //'species' => $species,
+            //'attrs' => $attrs,
         ));
+    }
+
+    public function actionGetAttributes()
+    {
+        if (isset($_GET['term'])) {
+            $attributeName = trim($_GET['term']);
+            if (strlen($attributeName) < 2) {
+                return null;
+            }
+
+            /** @var Attribute[] $attributes */
+            $attributes = Attribute::findAllSimilarByAttrName($attributeName);
+            $data = array();
+            foreach ($attributes as $attribute) {
+                $data[] = array(
+                    'id' => $attribute->id,
+                    'label' => $attribute->attribute_name,
+                    'value' => $attribute->attribute_name,
+                );
+            }
+
+            Util::returnJSON($data);
+        }
+
+        return null;
     }
 
     /**
@@ -904,19 +937,12 @@ class DatasetSubmissionController extends Controller
             $samples = CUploadedFile::getInstanceByName('samples');
             if($samples) {
                 $rows = CsvHelper::parse($samples->getTempName(), $samples->getExtensionName());
-
                 $lastRequired = 2;
                 $matches = array();
                 for ($j = 3, $k = count($rows[0]); $j < $k; $j++) {
-                    if (empty($rows[0][$j])) {
+                    if (!empty($rows[0][$j])) {
                         $match = $rows[0][$j];
-                        $match = addcslashes($match, '%_');
-                        $criteria = new CDbCriteria( array(
-                            'condition' => "LOWER(attribute_name) LIKE LOWER(:match)",
-                            'params'    => array(':match' => "%$match%")
-                        ) );
-
-                        $attr = Attribute::model()->find($criteria);
+                        $attr = Attribute::findSimilarByAttrName($match);
 
                         if ($attr && $attr->attribute_name != $match) {
                             $matches[$match] = $attr->attribute_name;
@@ -1019,7 +1045,7 @@ class DatasetSubmissionController extends Controller
                     $ds->sample_id = $sample->id;
                     $ds->save();
 
-                    $needAttrs = array();
+                    $needSAttrs = array();
                     foreach ($attrs as $i => $attr) {
                         if (!$newSample['attr_values'][$i]) {
                             $transaction->rollback();
@@ -1055,12 +1081,12 @@ class DatasetSubmissionController extends Controller
                         }
 
                         $sa->save();
-                        $needAttrs[] = $attr->id;
+                        $needSAttrs[] = $sa->id;
                     }
 
                     $sas = SampleAttribute::model()->findAllByAttributes(array('sample_id' => $sample->id));
                     foreach ($sas as $sa) {
-                        if (!in_array($sa->attribute_id, $needAttrs)) {
+                        if (!in_array($sa->id, $needSAttrs)) {
                             if (!$sa->delete()) {
                                 $transaction->rollback();
                                 Util::returnJSON(array(
@@ -1099,9 +1125,10 @@ class DatasetSubmissionController extends Controller
             $attr = Attribute::model()->findByAttributes(array('attribute_name' => $_GET['attr_name']));
 
             if ($attr && $attr->allowed_units) {
+                $unitIds = explode(',', $attr->allowed_units);
                 Util::returnJSON(array(
-                    "success"=>true,
-                    'unitId' => $attr->allowed_units
+                    "success" => true,
+                    'unitId' => $unitIds[0]
                 ));
             }
         }

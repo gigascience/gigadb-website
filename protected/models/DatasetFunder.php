@@ -44,7 +44,7 @@ class DatasetFunder extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('dataset_id, funder_id', 'required'),
+			array('dataset_id, funder_id, grant_award, awardee', 'required'),
 			array('dataset_id, funder_id', 'numerical', 'integerOnly'=>true),
 			array('grant_award, comments', 'safe'),
 			array('funder_id', 'validateUnique'),
@@ -118,9 +118,9 @@ class DatasetFunder extends CActiveRecord
 			'id' => 'Id',
 			'dataset_id' => 'Dataset',
 			'funder_id' => 'Funder',
-			'grant_award' => 'Grant Award',
-			'comments' => 'Comments',
-                        'awardee' => 'Awardee',
+			'grant_award' => 'Grant Number',
+			'comments' => 'Program Name',
+            'awardee' => 'PI name',
 			'doi_search' => 'Dataset',
 			'funder_search' => 'Funder',
 		);
