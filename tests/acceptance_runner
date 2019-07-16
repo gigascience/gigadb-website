@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 profile=${1:-"local"}
 
