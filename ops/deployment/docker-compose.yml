@@ -295,8 +295,7 @@ services:
       - SYS_ADMIN
 
   tusd:
-    build:
-      context: ../../fuw/tusd
+    image: tusproject/tusd:0.13.1
     volumes:
       - "../../fuw/incoming/tusd:/var/inbox/"
       - ../../fuw/repo:/var/repo/
