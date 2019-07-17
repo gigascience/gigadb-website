@@ -63,6 +63,7 @@ before_script:
 after_script:
   - docker-compose logs web
   - docker-compose logs application
+  - docker-compose logs gigadb
 
 build_webapp:
   stage: build
