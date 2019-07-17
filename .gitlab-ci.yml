@@ -132,7 +132,6 @@ run_all_tests:
     # - docker-compose run --rm test ping -c 5 database
     # - docker-compose run --rm test ping -c 5 gigadb.dev
     # - docker-compose run test
-    - /bin/bash -c 'echo "this is bash"'
     - cd /builds/$CI_PROJECT_PATH ; pwd ; ls -al tests ; ./tests/all_and_coverage
     - echo $?
 
