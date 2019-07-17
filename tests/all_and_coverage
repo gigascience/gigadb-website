@@ -2,6 +2,10 @@
 
 set -e -u
 
+set -a
+source .env
+set +a
+
 ./tests/unit_runner
 ./tests/functional_runner
 ./tests/acceptance_runner
