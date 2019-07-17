@@ -74,28 +74,24 @@ build_webapp:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
     - docker-compose build application
     - docker-compose build test
     - docker-compose build fuw-admin
     - docker-compose build console
     - docker-compose build ftpd
     - docker-compose build watcher
-    - docker-compose build web
     - docker tag ${CI_PROJECT_NAME}_application:latest registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker tag ${CI_PROJECT_NAME}_test:latest registry.gitlab.com/$CI_PROJECT_PATH/test:latest
     - docker tag ${CI_PROJECT_NAME}_fuw-admin:latest registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest
     - docker tag ${CI_PROJECT_NAME}_console:latest registry.gitlab.com/$CI_PROJECT_PATH/console:latest
     - docker tag ${CI_PROJECT_NAME}_ftpd:latest registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest
     - docker tag ${CI_PROJECT_NAME}_watcher:latest registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest
-    - docker tag ${CI_PROJECT_NAME}_web:latest registry.gitlab.com/$CI_PROJECT_PATH/web:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/test:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/console:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/web:latest
   artifacts:
     untracked: true
     when: on_failure
@@ -124,13 +120,13 @@ run_all_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
     # - env
     - docker-compose run --rm config
+    - docker-compose build web
     # starting two webapps: gigadb website and File Upload Wizard Admin
     - docker-compose up -d gigadb fuw-admin
     - docker-compose up -d chrome
