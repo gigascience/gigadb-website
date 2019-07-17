@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
-set -e
-set -u
+# set -e
+# set -u
 
 docker-compose run --rm application ./protected/yiic_test migrate --interactive=0
 docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
