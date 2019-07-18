@@ -177,7 +177,7 @@ run_all_tests:
     # - docker-compose run --rm test ping -c 5 database
     # - docker-compose run --rm test ping -c 5 gigadb.dev
     # - docker-compose run test
-    - cd /builds/$CI_PROJECT_PATH
+    - cd $APPLICATION
     - ls -alrt vendor
     - ./tests/all_and_coverage
     - echo $?
