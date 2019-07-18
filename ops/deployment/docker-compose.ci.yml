@@ -17,11 +17,6 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest"
 
-  tusd:
-    build:
-      cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest"
-
   ftpd:
     build:
       cache_from:
