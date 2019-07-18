@@ -3,6 +3,10 @@
 set -e
 set -u
 
+set -a
+source .env
+set +a
+
 docker-compose run --rm application ./protected/yiic_test migrate --interactive=0
 docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
 docker-compose exec console /app/yii_test migrate --interactive=0
