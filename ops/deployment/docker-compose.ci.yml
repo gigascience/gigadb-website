@@ -2,9 +2,6 @@ version: '3.7'
 
 services:
 
-  less:
-    image: registry.gitlab.com/$CI_PROJECT_PATH/application:latest
-
   application:
     build:
       cache_from:
@@ -20,10 +17,10 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest"
 
-  fuw-proto:
+  tusd:
     build:
       cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/fuw-proto:latest"
+        - "registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest"
 
   ftpd:
     build:
@@ -44,9 +41,3 @@ services:
   config:
     environment:
       ANALYTICS_PRIVATE_KEY: ${ANALYTICS_PRIVATE_KEY}
-
-  web:
-    build:
-      cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/web:latest"
-    command: ["/usr/local/bin/enable_sites", "gigadb.CI.http", "fuw-backend.CI.http"]
