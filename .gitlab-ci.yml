@@ -68,6 +68,7 @@ before_script:
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
   - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest
   - cd $APPLICATION
+  - docker-compose run --rm config
   - ls -alrt
   - docker-compose run --rm test composer install
 
