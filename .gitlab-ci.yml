@@ -51,6 +51,13 @@ variables:
 services:
   - docker:dind
 
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - vendor/
+    - bin/
+    - composer.lock
+
 before_script:
   - env | grep "^CI_" > $APPLICATION/.ci_env
   - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" > $APPLICATION/.env
@@ -59,6 +66,9 @@ before_script:
   # Pin docker-compose version to stop installation error
   - pip install docker-compose~=1.23.0
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+  - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest
+  - cd /builds/$CI_PROJECT_PATH
+  - docker-compose run --rm test composer install
 
 after_script:
   - docker-compose logs web
@@ -100,11 +110,6 @@ build_webapp:
 
 run_all_tests:
   stage: test
-  cache:
-    paths:
-      - vendor/
-      - bin/
-      - composer.lock
   artifacts:
     paths:
       - tmp/
@@ -148,6 +153,7 @@ run_all_tests:
 check_coverage:
   stage: conformance
   cache:
+    key: coverage-cache
     paths:
       - previous_coverage_level.txt
   script:
