@@ -67,7 +67,8 @@ before_script:
   - pip install docker-compose~=1.23.0
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
   - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest
-  - cd /builds/$CI_PROJECT_PATH
+  - cd $APPLICATION
+  - ls -alrt
   - docker-compose run --rm test composer install
 
 after_script:
@@ -144,8 +145,7 @@ run_all_tests:
     # - docker-compose run --rm test ping -c 5 database
     # - docker-compose run --rm test ping -c 5 gigadb.dev
     # - docker-compose run test
-    - cd /builds/$CI_PROJECT_PATH
-    - docker-compose run --rm test composer install
+    - cd $APPLICATION
     - ls -alrt vendor
     - ./tests/all_and_coverage
     - echo $?
