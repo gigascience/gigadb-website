@@ -3,7 +3,7 @@ Feature: Create Dataset
 
   Scenario: The user navigates to "Create Dataset"
     Given url address "site/login"
-    When I enter email address "user@gigadb.org"
+    When I enter email address "local-gigadb-admin@rijam.ml1.net"
     And I enter password "gigadb"
     And I click Login button
     And I click View profile link
@@ -13,7 +13,7 @@ Feature: Create Dataset
 
   Scenario: "Submitter" field is auto-filled with username/email
     Given url address "site/login"
-    When I enter email address "user@gigadb.org"
+    When I enter email address "local-gigadb-admin@rijam.ml1.net"
     And I enter password "gigadb"
     And I click Login button
     And I click View profile link
@@ -24,7 +24,7 @@ Feature: Create Dataset
 
   Scenario: Length warning message appears And more that 100 chars are I entered
     Given url address "site/login"
-    When I enter email address "user@gigadb.org"
+    When I enter email address "local-gigadb-admin@rijam.ml1.net"
     And I enter password "gigadb"
     And I click Login button
     And I click View profile link
@@ -36,7 +36,7 @@ Feature: Create Dataset
 
   Scenario: Creating Dataset
     Given url address "site/login"
-    When I enter email address "user@gigadb.org"
+    When I enter email address "local-gigadb-admin@rijam.ml1.net"
     And I enter password "gigadb"
     And I click Login button
     And I click View profile link
@@ -57,7 +57,7 @@ Feature: Create Dataset
 
   Scenario: Validation "Type" and "Title" required fields
     Given url address "site/login"
-    When I enter email address "user@gigadb.org"
+    When I enter email address "local-gigadb-admin@rijam.ml1.net"
     And I enter password "gigadb"
     And I click Login button
     And I click View profile link
@@ -71,7 +71,7 @@ Feature: Create Dataset
 
   Scenario: Image required fields validation
     Given url address "site/login"
-    When I enter email address "user@gigadb.org"
+    When I enter email address "local-gigadb-admin@rijam.ml1.net"
     And I enter password "gigadb"
     And I click Login button
     And I click View profile link
@@ -88,7 +88,7 @@ Feature: Create Dataset
     Then "Image Source cannot be blank." error message appears
 
   Scenario: Image upload
-    Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
+    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     When I go to submission wizard "datasetSubmission/datasetManagement/id/210" URL
     And Choose image file '1200per800' to upload on Study tab
     And I enter Image Title "Test_image_title" on Study tab

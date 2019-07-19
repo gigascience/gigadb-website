@@ -3,7 +3,7 @@ Feature: Dataset submission page
 
   Scenario: The user navigates to "Dataset submission selection" page
     Given url address "site/login"
-    When I enter email address "user@gigadb.org"
+    When I enter email address "local-gigadb-admin@rijam.ml1.net"
     And I enter password "gigadb"
     And I click Login button
     And I click View profile link
@@ -13,7 +13,7 @@ Feature: Dataset submission page
 
   Scenario: The user navigates to "Upload your dataset metadata from a spreadsheet" page
     Given url address "site/login"
-    When I enter email address "user@gigadb.org"
+    When I enter email address "local-gigadb-admin@rijam.ml1.net"
     And I enter password "gigadb"
     And I click Login button
     And I click View profile link

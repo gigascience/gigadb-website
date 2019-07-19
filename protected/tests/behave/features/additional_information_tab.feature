@@ -3,7 +3,7 @@ Feature: Add Additional Information page
 
   Scenario: I click No for Public data archive links
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     Then "Related GigaDB Datasets" block appears
@@ -11,14 +11,14 @@ Feature: Add Additional Information page
 
   Scenario: I click Yes for Public data archive links
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click Yes button for Public data archive links
     Then Database dropdown menu appears
 
   Scenario: And a database is selected from dropdown Accession number field appears on "Public data archive links" block
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click Yes button for Public data archive links
     And choose №"2" from dropdown list
@@ -27,7 +27,7 @@ Feature: Add Additional Information page
 
   Scenario: I click No button for Related GigaDB Datasets
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -36,7 +36,7 @@ Feature: Add Additional Information page
 
   Scenario: I click Yes button for Related GigaDB Datasets
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'yes' button for Related GigaDB Datasets
@@ -44,7 +44,7 @@ Feature: Add Additional Information page
 
   Scenario: I click No button for Project links
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -54,7 +54,7 @@ Feature: Add Additional Information page
 
   Scenario: I click Yes button for Project links
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -63,7 +63,7 @@ Feature: Add Additional Information page
 
   Scenario: I click No button for all Other links I click Next button
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -81,7 +81,7 @@ Feature: Add Additional Information page
 
   Scenario: I click yes button to provide SketchFab Link and check if it is saved into DB
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I delete the saved link from DB 'external_link' where dataset id is '211'
     When I click No button for Public data archive links
@@ -102,7 +102,7 @@ Feature: Add Additional Information page
   Scenario: I click yes button to provide CodeOceans “Embed code widget” and check if it is saved into DB
     Given url address "site/login"
     When I delete the saved link from DB 'external_link' where dataset id is '211'
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -123,7 +123,7 @@ Feature: Add Additional Information page
   Scenario: I click yes button to  provide the DOI or URL on Other links block and check if it is saved into DB
     Given url address "site/login"
     When I delete the saved link from DB 'external_link' where dataset id is '211'
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -144,7 +144,7 @@ Feature: Add Additional Information page
 
   Scenario: Add an Accession number for Public data archive links
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click Yes button for Public data archive links
     And choose №"3" from dropdown list
@@ -155,7 +155,7 @@ Feature: Add Additional Information page
 
   Scenario: delete added Accession number on Public data archive links block
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click Yes button for Public data archive links
     And choose №"3" from dropdown list
@@ -169,7 +169,7 @@ Feature: Add Additional Information page
 
   Scenario: Add Related DOI and Relationship to Related GigaDB Datasets
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'yes' button for Related GigaDB Datasets
@@ -181,7 +181,7 @@ Feature: Add Additional Information page
 
   Scenario: Delete Related DOI and Relationship to Related GigaDB Datasets
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'yes' button for Related GigaDB Datasets
@@ -196,7 +196,7 @@ Feature: Add Additional Information page
 
   Scenario: add the project selected to the table linking the dataset to that project on Project links tab
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -208,7 +208,7 @@ Feature: Add Additional Information page
 
   Scenario: delete the added project from the table linking the dataset to that project on Project links tab
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -223,7 +223,7 @@ Feature: Add Additional Information page
   Scenario: I add manuscript link and check if it is saved into DB by clicking Next button
     Given url address "site/login"
     When I delete the saved link from DB 'manuscript' where dataset id is '211'
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -243,7 +243,7 @@ Feature: Add Additional Information page
   Scenario: I add Protocols.io DOI and check if it is saved into DB by clicking Next button
     Given url address "site/login"
     When I delete the saved link from DB 'external_link' where dataset id is '211'
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -263,7 +263,7 @@ Feature: Add Additional Information page
 
   Scenario: I add SketchFab Link and check if it is saved into DB by clicking Next button
     Given url address "site/login"
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I delete the saved link from DB 'external_link' where dataset id is '211'
     When I click No button for Public data archive links
@@ -284,7 +284,7 @@ Feature: Add Additional Information page
   Scenario: I Add CodeOceans “Embed code widget” and check if it is saved into DB by clicking Next
     Given url address "site/login"
     When I delete the saved link from DB 'external_link' where dataset id is '211'
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -305,7 +305,7 @@ Feature: Add Additional Information page
   Scenario: I click yes button to  provide the DOI or URL on Other links block and check if it is saved into DB by clicking NEXT button
     Given url address "site/login"
     When I delete the saved link from DB 'external_link' where dataset id is '211'
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -327,7 +327,7 @@ Feature: Add Additional Information page
   Scenario: I click yes button to add manuscript link and check if it is saved into DB
     Given url address "site/login"
     When I delete the saved link from DB 'manuscript' where dataset id is '211'
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
@@ -349,7 +349,7 @@ Feature: Add Additional Information page
   Scenario: I click yes button to provide the Protocols.io DOI and check if it is saved into DB
     Given url address "site/login"
     When I delete the saved link from DB 'external_link' where dataset id is '211'
-    When I login as "user@gigadb.org" with password "gigadb"
+    When I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     Given url address "/datasetSubmission/additionalManagement/id/211"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets

@@ -2,7 +2,7 @@
 Feature: Add Authors
 
   Scenario: check if a correct ORCiD is added
-    Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
+    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     When I go to submission wizard "/datasetSubmission/authorManagement/id/210" URL
     And I enter First Name "QA"
     And I enter Middle Name "test middle name"
@@ -19,7 +19,7 @@ Feature: Add Authors
 
 
   Scenario: add an Author via CSV file
-    Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
+    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     When I go to submission wizard "/datasetSubmission/authorManagement/id/210" URL
     And Choose CSV or TSV 'csv' file from file system on Author tab
     And I click Add Authors button
@@ -29,7 +29,7 @@ Feature: Add Authors
     Then I delete the added author from DB
 
   Scenario: add an Author via CSV file and save it to DB by clicking Next buton
-    Given I am on "site/login" and I login as "user@gigadb.org" with password "gigadb"
+    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
     When I go to submission wizard "/datasetSubmission/authorManagement/id/210" URL
     And Choose CSV or TSV 'csv' file from file system on Author tab
     And I click Add Authors button

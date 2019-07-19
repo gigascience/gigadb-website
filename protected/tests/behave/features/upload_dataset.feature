@@ -3,7 +3,7 @@ Feature: Upload your dataset metadata from a spreadsheet page
 
  Scenario: The user uploads dataset metadata from a spreadsheet
     Given url address "site/login"
-    When I enter email address "user@gigadb.org"
+    When I enter email address "local-gigadb-admin@rijam.ml1.net"
     And I enter password "gigadb"
     And I click Login button
     And I click View profile link
@@ -17,7 +17,7 @@ Feature: Upload your dataset metadata from a spreadsheet page
 
 #  Scenario: The user downloads template spreadsheet (Excel)
 #    Given url address "site/login"
-#    When I enter email address "user@gigadb.org"
+#    When I enter email address "local-gigadb-admin@rijam.ml1.net"
 #    And I enter password "gigadb"
 #    And I click Login button
 #    And I click View profile link
@@ -28,7 +28,7 @@ Feature: Upload your dataset metadata from a spreadsheet page
 
 #  Scenario: The user downloads template spreadsheet (Open Office)
 #    Given url address "site/login"
-#    When I enter email address "user@gigadb.org"
+#    When I enter email address "local-gigadb-admin@rijam.ml1.net"
 #    And I enter password "gigadb"
 #    And I click Login button
 #    And I click View profile link
@@ -39,7 +39,7 @@ Feature: Upload your dataset metadata from a spreadsheet page
 
 #  Scenario: The user downloads Example 1 (Excel)
 #    Given url address "site/login"
-#    When I enter email address "user@gigadb.org"
+#    When I enter email address "local-gigadb-admin@rijam.ml1.net"
 #    And I enter password "gigadb"
 #    And I click Login button
 #    And I click View profile link
@@ -50,7 +50,7 @@ Feature: Upload your dataset metadata from a spreadsheet page
 
 #  Scenario: The user downloads Example 1 (Open Office)
 #    Given url address "site/login"
-#    When I enter email address "user@gigadb.org"
+#    When I enter email address "local-gigadb-admin@rijam.ml1.net"
 #    And I enter password "gigadb"
 #    And I click Login button
 #    And I click View profile link
