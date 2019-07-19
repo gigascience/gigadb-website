@@ -173,9 +173,10 @@ run_all_tests:
     # - docker network inspect rija-gigadb-website_db-tier
     # - docker-compose logs database
     # - docker images
-    # - docker-compose ps
-    # - docker-compose run --rm test ping -c 5 database
-    # - docker-compose run --rm test ping -c 5 gigadb.dev
+    - docker-compose ps
+    - docker-compose run --rm test ping -c 5 database
+    - docker-compose run --rm test ping -c 5 gigadb.dev
+    - docker-compose exec -T console uname -a
     # - docker-compose run test
     - cd $APPLICATION
     - ls -alrt vendor
