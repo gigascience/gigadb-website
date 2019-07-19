@@ -57,6 +57,9 @@ cache:
     - vendor/
     - bin/
     - composer.lock
+    - fuw/app/vendor/
+    - fuw/app/bin/
+    - fuw/app/composer.lock
 
 before_script:
   - env | grep "^CI_" > $APPLICATION/.ci_env
@@ -71,6 +74,7 @@ before_script:
   - docker-compose run --rm config
   - ls -alrt
   - docker-compose run --rm test composer install
+  - docker-compose run --rm console  bash -c "cd /app && composer install"
 
 after_script:
   - docker-compose logs web
@@ -145,13 +149,12 @@ run_all_tests:
     # - docker network inspect rija-gigadb-website_db-tier
     # - docker-compose logs database
     # - docker images
-    - docker-compose ps
-    - docker-compose run --rm test ping -c 5 database
-    - docker-compose run --rm test ping -c 5 gigadb.dev
-    - docker-compose exec -T console uname -a
+    # - docker-compose ps
+    # - docker-compose run --rm test ping -c 5 database
+    # - docker-compose run --rm test ping -c 5 gigadb.dev
     # - docker-compose run test
     - cd $APPLICATION
-    - ls -alrt vendor
+    # - ls -alrt vendor
     - ./tests/all_and_coverage
     - echo $?
 
