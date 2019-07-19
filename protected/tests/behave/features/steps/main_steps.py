@@ -92,7 +92,7 @@ def wait_on_xpath_element_active(context, time_sec, xpath_element):
 def go_to(context, address_without_domen):
     context.settings = load(open('/var/www/protected/tests/behave/features/conf.yaml').read())
     url = context.settings['base_url']
-    basic_url = 'https://{}/{}'.format(url,address_without_domen)
+    basic_url = 'http://{}/{}'.format(url,address_without_domen)
     context.browser.get(basic_url)
 
 
