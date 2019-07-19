@@ -108,7 +108,7 @@ RUN if [ ${INSTALL_NETCAT_JQ} = true ]; then \
     mkdir -p /usr/share/man/man7 && \
     # Install netcat-openbsd and jq
     apt-get update -yq && \
-    apt-get install -y netcat-openbsd jq \
+    apt-get install -y netcat-openbsd inetutils-ping jq \
 ;fi
 
 ARG INSTALL_GRAPHVIZ=false
