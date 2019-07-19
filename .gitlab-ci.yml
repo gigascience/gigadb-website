@@ -150,7 +150,6 @@ run_all_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
@@ -172,10 +171,10 @@ run_all_tests:
     # - docker network inspect rija-gigadb-website_web-tier
     # - docker network inspect rija-gigadb-website_db-tier
     # - docker-compose logs database
-    # - docker images
-    # - docker-compose ps
-    # - docker-compose run --rm test ping -c 5 database
-    # - docker-compose run --rm test ping -c 5 gigadb.dev
+    - docker images
+    - docker-compose ps
+    - docker-compose run --rm test ping -c 5 database
+    - docker-compose run --rm test ping -c 5 gigadb.dev
     # - docker-compose run test
     - cd $APPLICATION
     # - ls -alrt vendor
