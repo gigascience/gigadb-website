@@ -39,6 +39,12 @@ global_ftp_file_sizes = []
 global_file_names = []
 global_ftp_file_sizes2 = []
 
+
+# test account credentials
+username = "local-gigadb-admin@rijam.ml1.net"
+password = "gigadb"
+
+# database connection
 connection = psycopg2.connect(user="gigadb",
                                      password="vagrant",
                                      host="database",
@@ -1067,8 +1073,8 @@ def step_impl(context, text):
     context.browser.get('http://{}/'.format(url) + text)
 
 
-@given('I am on "{text}" and I login as "{username}" with password "{password}"')
-def step_impl(context, text, username, password):
+@given('I am on "{text}" and I login')
+def step_impl(context, text):
     context.settings = load(open('/var/www/protected/tests/behave/features/conf.yaml').read())
     url = context.settings['base_url']
     # login = context.settings['login']

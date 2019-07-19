@@ -3,7 +3,7 @@ Feature: File tab
   # Enter feature description here
 
   Scenario: the user is redirected to File tab when clicking Update button for a dataset that has status is UserUploadingData
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I go to submission wizard "/user/view_profile#submitted" URL
     And a dataset with status “UserUploadingData” is included in my user account
     And I click Update button on dataset id "210"
@@ -12,7 +12,7 @@ Feature: File tab
 
 
   Scenario: the user gets file names from FTP, adds the description saves files into DB by clicking Save button
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I go to submission wizard "/adminFile/create1/id/210" URL
     And I have a valid value in FTP username “user99“
     And I have a valid value in FTP password “WhiteLabel”
@@ -25,7 +25,7 @@ Feature: File tab
 
 
   Scenario: the user sees an error message when completing submission without description
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I go to submission wizard "/adminFile/create1/id/210" URL
     When I remove a description for a file
     And I click on Complete submission button on Files tab
@@ -33,7 +33,7 @@ Feature: File tab
 
 
   Scenario: the user clicks Complete submission button and the user is redirected to congratulation page
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I update dataset status to "UserUploadingData" where id is "210"
     And I go to submission wizard "/adminFile/create1/id/210" URL
     And I have a valid value in FTP username “user99“
@@ -50,7 +50,7 @@ Feature: File tab
 
 
   Scenario: the user uploads metadata file on File tab
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I go to submission wizard "/adminFile/create1/id/210" URL
     And I have a valid value in FTP username “user99“
     And I have a valid value in FTP password “WhiteLabel”
