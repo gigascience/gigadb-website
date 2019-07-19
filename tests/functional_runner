@@ -5,6 +5,6 @@ set -u
 
 docker-compose run --rm application ./protected/yiic migrate --interactive=0
 docker-compose run --rm test ./bin/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
-docker-compose exec console /app/yii migrate --interactive=0
-docker-compose exec console /app/vendor/bin/codecept -c /app/backend run functional
+docker-compose exec -T console /app/yii migrate --interactive=0
+docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run functional
 docker-compose exec console /app/vendor/bin/codecept -c /app/frontend run functional
