@@ -45,3 +45,9 @@ def before_feature(context, feature):
         # firefox_options = webdriver.FirefoxOptions()
         # firefox_options.add_argument("start-maximized")
         # context.browser = webdriver.Firefox(executable_path="F:\geckodriver.exe", firefox_options=firefox_options)
+
+
+def after_scenario(context, scenario):
+    context.browser.switch_to_window(context.browser.window_handles[-1])
+    if scenario.status == 'failed':
+        context.browser.save_screenshot("report/{}.png".format(scenario.name))
