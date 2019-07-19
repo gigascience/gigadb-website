@@ -101,7 +101,8 @@ class Dataset extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('submitter_id, identifier, title, ftp_site, types', 'required'),
+            array('submitter_id, identifier, title, ftp_site', 'required'),
+            array('types', 'validateTypes'),
             array('submitter_id, image_id, publisher_id, funding, is_test, is_deleted', 'numerical', 'integerOnly'=>true),
             array('dataset_size', 'numerical'),
             array('identifier, excelfile_md5', 'length', 'max'=>32),
@@ -117,6 +118,13 @@ class Dataset extends CActiveRecord
             array('id, submitter_id, image_id, identifier, title, description, publisher, dataset_size, ftp_site, upload_status, excelfile, excelfile_md5, publication_date, modification_date', 'safe', 'on'=>'search'),
 #            array('projectIDs , sampleIDs , authorIDs , datasetTypeIDs' , 'safe'),
         );
+    }
+
+    public function validateTypes($attribute, $params)
+    {
+        if (isset($this->types) && !$this->types) {
+            $this->addError($attribute, 'Types cannot be blank.');
+        }
     }
 
     /**
