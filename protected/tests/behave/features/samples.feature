@@ -63,7 +63,7 @@ Feature: Samples tab
     Given I am on "site/login" and I login
     When I go to submission wizard "datasetSubmission/sampleManagement/id/210" URL
     And I add a row and enter Sample ID "Sample ID", Species name "Adelie penguin" and "Description"
-    And I add a second row and enter Sample ID "210", Species name "Adelie penguin" and "Description"
+    And I add a second row and enter Sample ID "Sample ID", Species name "Adelie penguin" and "Description"
     And I click on "Save" button on Sample tab
     Then A pop-up message appears "Row 2: Sample ID already exist."
 

@@ -1560,7 +1560,7 @@ def step_impl(context):
 def step_impl(context, sample_id, species_name, description):
     xpath_button = "//a[contains(text(), 'Add Row')]"
     xpath_sample_id = "(//input[@placeholder='Sample ID'])[2]"
-    xpath_species_name = "(//input[@class='js-species-autocomplete ui-autocomplete-input'])[2]"
+    xpath_species_name = "(//input[@class='js-species-autocomplete'])[2]"
     xpath_description = "(//input[@style='width:250px;'])[2]"
     wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_button)
     context.browser.find_element_by_xpath(xpath_button).click()
