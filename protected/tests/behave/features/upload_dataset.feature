@@ -2,11 +2,8 @@
 Feature: Upload your dataset metadata from a spreadsheet page
 
  Scenario: The user uploads dataset metadata from a spreadsheet
-    Given url address "site/login"
-    When I enter email address "local-gigadb-admin@rijam.ml1.net"
-    And I enter password "gigadb"
-    And I click Login button
-    And I click View profile link
+    Given I am on "site/login" and I login
+    When I click View profile link
     And I click Submit new dataset button
     And I click "Upload new dataset from spreadsheet" button
     And mark "I have read Terms and Conditions" check-box on Study tab
@@ -16,10 +13,7 @@ Feature: Upload your dataset metadata from a spreadsheet page
 
 
 #  Scenario: The user downloads template spreadsheet (Excel)
-#    Given url address "site/login"
-#    When I enter email address "local-gigadb-admin@rijam.ml1.net"
-#    And I enter password "gigadb"
-#    And I click Login button
+#    Given I am on "site/login" and I login
 #    And I click View profile link
 #    And I click Submit new dataset button
 #    And I click "Upload new dataset from spreadsheet" button
@@ -27,10 +21,7 @@ Feature: Upload your dataset metadata from a spreadsheet page
 #    Then the file is downloaded (not finished yet)
 
 #  Scenario: The user downloads template spreadsheet (Open Office)
-#    Given url address "site/login"
-#    When I enter email address "local-gigadb-admin@rijam.ml1.net"
-#    And I enter password "gigadb"
-#    And I click Login button
+#    Given I am on "site/login" and I login
 #    And I click View profile link
 #    And I click Submit new dataset button
 #    And I click "Upload new dataset from spreadsheet" button
@@ -38,10 +29,7 @@ Feature: Upload your dataset metadata from a spreadsheet page
 #    Then the file is downloaded (not finished yet)
 
 #  Scenario: The user downloads Example 1 (Excel)
-#    Given url address "site/login"
-#    When I enter email address "local-gigadb-admin@rijam.ml1.net"
-#    And I enter password "gigadb"
-#    And I click Login button
+#    Given I am on "site/login" and I login
 #    And I click View profile link
 #    And I click Submit new dataset button
 #    And I click "Upload new dataset from spreadsheet" button
@@ -49,10 +37,7 @@ Feature: Upload your dataset metadata from a spreadsheet page
 #    Then the file is downloaded (not finished yet)
 
 #  Scenario: The user downloads Example 1 (Open Office)
-#    Given url address "site/login"
-#    When I enter email address "local-gigadb-admin@rijam.ml1.net"
-#    And I enter password "gigadb"
-#    And I click Login button
+#    Given I am on "site/login" and I login
 #    And I click View profile link
 #    And I click Submit new dataset button
 #    And I click "Upload new dataset from spreadsheet" button

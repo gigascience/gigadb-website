@@ -3,7 +3,7 @@ Feature: Samples tab
 
 # need to add templates
   Scenario: Warn the user that all data in table will be over-written when applying a template on Sample table with data
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I go to submission wizard "/datasetSubmission/sampleManagement/id/210" URL
     And I add some data into Sample table
     And I select a template №"2"
@@ -12,14 +12,14 @@ Feature: Samples tab
 
 
   Scenario: if Sample table is empty the selected template is applied without an error message
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I go to submission wizard "/datasetSubmission/sampleManagement/id/210" URL
     And I select a template №"2"
     And I click 'Apply' button
     Then The appropriate template and display new sample table with those columns defined in the template chosen
 
   Scenario: A valid “metadata file” is uploaded
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I go to submission wizard "/datasetSubmission/sampleManagement/id/210" URL
     And I choose a valid matadata file to upload on Sample tab
     And I click Upload button on Sample tab
@@ -29,7 +29,7 @@ Feature: Samples tab
 
 
   Scenario: recently submitted dataset is highlighted in table
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I go to submission wizard "/datasetSubmission/end/id/210" URL
     And I click "Return to your profile page" button on Sample tab
     Then the user is redirected to Your profile page page
@@ -38,7 +38,7 @@ Feature: Samples tab
 
 
   Scenario: any rows in the sample table are saved to the database “dataset status” is set to “Assigning FTP dropbox and an email is sent
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I go to submission wizard "datasetSubmission/sampleManagement/id/210" URL
     And I update dataset status to "Incomplete" where id is "210"
     And I add a row and enter Sample ID "210", Species name "Adelie penguin" and "Description"
@@ -52,7 +52,7 @@ Feature: Samples tab
 
 
   Scenario: when Save button clicked the dated is saved to DB on Sample tab
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I go to submission wizard "datasetSubmission/sampleManagement/id/210" URL
     And I add a row and enter Sample ID "210", Species name "Adelie penguin" and "Description"
     And I click on "Save" button on Sample tab
@@ -60,7 +60,7 @@ Feature: Samples tab
     And I delete the added sample form DB
 
   Scenario:  when adding the same Sample ID twice the error pop-up appears
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I go to submission wizard "datasetSubmission/sampleManagement/id/210" URL
     And I add a row and enter Sample ID "210", Species name "Adelie penguin" and "Description"
     And I add a second row and enter Sample ID "210", Species name "Adelie penguin" and "Description"
@@ -68,7 +68,7 @@ Feature: Samples tab
     Then A pop-up message appears "Row 2: Sample ID already exist."
 
   Scenario:  the user adds an invalid species name and gets notified
-    Given I am on "site/login" and I login as "local-gigadb-admin@rijam.ml1.net" with password "gigadb"
+    Given I am on "site/login" and I login
     When I go to submission wizard "datasetSubmission/sampleManagement/id/210" URL
     And I add a row and enter Sample ID "210", Species name "Adelie penguin1" and "Description"
     And I click on "Save" button on Sample tab
