@@ -40,9 +40,6 @@ global_file_names = []
 global_ftp_file_sizes2 = []
 
 
-# test account credentials
-username = "local-gigadb-admin@rijam.ml1.net"
-password = "gigadb"
 
 # database connection
 connection = psycopg2.connect(user="gigadb",
@@ -1083,18 +1080,30 @@ def step_impl(context, text):
     if 'staging' in url or 'dev' in url:
         context.browser.get(basic_url)
     context.browser.get('http://{}/'.format(url) + text)
-
-    xpath_email_address_field = "//input[@id='LoginForm_username']"
-    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_email_address_field)
-    context.browser.find_element_by_xpath(xpath_email_address_field).send_keys(username)
-
-    xpath_email_address_field = "//input[@id='LoginForm_password']"
-    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_email_address_field)
-    context.browser.find_element_by_xpath(xpath_email_address_field).send_keys(password)
-
-    xpath_email_address_field = "//input[@class='btn background-btn']"
-    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_email_address_field)
-    context.browser.find_element_by_xpath(xpath_email_address_field).click()
+    if 'staging' in url:
+        username = "local-gigadb-admin@rijam.ml1.net"
+        password = "gigadb"
+        xpath_email_address_field = "//input[@id='LoginForm_username']"
+        wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_email_address_field)
+        context.browser.find_element_by_xpath(xpath_email_address_field).send_keys(username)
+        xpath_email_address_field = "//input[@id='LoginForm_password']"
+        wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_email_address_field)
+        context.browser.find_element_by_xpath(xpath_email_address_field).send_keys(password)
+        xpath_email_address_field = "//input[@class='btn background-btn']"
+        wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_email_address_field)
+        context.browser.find_element_by_xpath(xpath_email_address_field).click()
+    elif 'dev' in url:
+        username = "user@gigadb.org"
+        password = "gigadb"
+        xpath_email_address_field = "//input[@id='LoginForm_username']"
+        wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_email_address_field)
+        context.browser.find_element_by_xpath(xpath_email_address_field).send_keys(username)
+        xpath_email_address_field = "//input[@id='LoginForm_password']"
+        wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_email_address_field)
+        context.browser.find_element_by_xpath(xpath_email_address_field).send_keys(password)
+        xpath_email_address_field = "//input[@class='btn background-btn']"
+        wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_email_address_field)
+        context.browser.find_element_by_xpath(xpath_email_address_field).click()
 
 
 @step("A new dataset is created in DB table dataset")
