@@ -808,7 +808,7 @@ EO_MAIL;
                     $file->extension = pathinfo($fileName, PATHINFO_EXTENSION);
                     $file->size = $fileSize;
                     $file->dataset_id = $_POST['dataset_id'];
-                    $file->id = uniqid();
+                    $file->id = 'fake' . time();
                     $file->prepareFormatId();
                 }
 
