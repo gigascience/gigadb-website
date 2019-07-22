@@ -78,4 +78,7 @@ Feature: Create Dataset
     And I enter Image Credit "mam" on Study tab
     And I enter Image Source "wiki" on Study tab
     And I click Save button on Study tab
+    Then the file is properly saved into DB where dataset id is "210"
+    And I delete the uploaded image
+
 

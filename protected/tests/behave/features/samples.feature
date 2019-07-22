@@ -41,7 +41,7 @@ Feature: Samples tab
     Given I am on "site/login" and I login
     When I go to submission wizard "datasetSubmission/sampleManagement/id/210" URL
     And I update dataset status to "Incomplete" where id is "210"
-    And I add a row and enter Sample ID "210", Species name "Adelie penguin" and "Description"
+    And I add a row and enter Sample ID "Sample ID", Species name "Adelie penguin" and "Description"
     And I click on "Next" button on Sample tab
     Then the user is redirected to The end page
     Then any rows in the sample table are saved to the database
@@ -54,7 +54,7 @@ Feature: Samples tab
   Scenario: when Save button clicked the dated is saved to DB on Sample tab
     Given I am on "site/login" and I login
     When I go to submission wizard "datasetSubmission/sampleManagement/id/210" URL
-    And I add a row and enter Sample ID "210", Species name "Adelie penguin" and "Description"
+    And I add a row and enter Sample ID "Sample ID", Species name "Adelie penguin" and "Description"
     And I click on "Save" button on Sample tab
     Then any rows in the sample table are saved to the database
     And I delete the added sample form DB
@@ -62,7 +62,7 @@ Feature: Samples tab
   Scenario:  when adding the same Sample ID twice the error pop-up appears
     Given I am on "site/login" and I login
     When I go to submission wizard "datasetSubmission/sampleManagement/id/210" URL
-    And I add a row and enter Sample ID "210", Species name "Adelie penguin" and "Description"
+    And I add a row and enter Sample ID "Sample ID", Species name "Adelie penguin" and "Description"
     And I add a second row and enter Sample ID "210", Species name "Adelie penguin" and "Description"
     And I click on "Save" button on Sample tab
     Then A pop-up message appears "Row 2: Sample ID already exist."
@@ -70,11 +70,10 @@ Feature: Samples tab
   Scenario:  the user adds an invalid species name and gets notified
     Given I am on "site/login" and I login
     When I go to submission wizard "datasetSubmission/sampleManagement/id/210" URL
-    And I add a row and enter Sample ID "210", Species name "Adelie penguin1" and "Description"
+    And I add a row and enter Sample ID "Sample ID", Species name "Adelie penguin1" and "Description"
     And I click on "Save" button on Sample tab
     Then A pop-up message appears "Row 1: Species Name is invalid."
 
-  Scenario: the user tries to save a row with empty Description
 
 
     

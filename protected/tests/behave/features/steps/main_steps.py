@@ -38,6 +38,11 @@ global_ftp_file_names = []
 global_ftp_file_sizes = []
 global_file_names = []
 global_ftp_file_sizes2 = []
+global_image_title = ""
+global_image_license = ""
+global_image_source = ""
+global_image_id = ""
+
 
 
 
@@ -425,7 +430,15 @@ def step_impl(context):
     xpath_no_button = "//a[@id='public-links-no']"
     wait_for_xpath_element(context,time_sec=1,xpath_element=xpath_no_button)
     context.browser.find_element_by_xpath(xpath_no_button).click()
-
+    try:
+        alert_obj = context.browser.switch_to.alert
+        message = alert_obj.text
+        if message == "Are you sure you want to delete all items?":
+            alert_obj.accept()
+        else:
+            pass
+    except:
+        pass
 
 @then('"{header}" block appears')
 def step_impl(context, header):
@@ -484,7 +497,7 @@ def step_impl(context):
     database_drop_down_data.remove("Please select")
     count = len(database_drop_down_data)
     cursor = connection.cursor()
-    ps_select_query = "select prefix from prefix"
+    ps_select_query = "select DISTINCT prefix from prefix"
     cursor.execute(ps_select_query)
     prefixes = []
     ps_records = cursor.fetchall()
@@ -1015,6 +1028,8 @@ def step_impl(context, image_title):
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_image_title_field)
     context.browser.find_element_by_xpath(xpath_image_title_field).clear()
     context.browser.find_element_by_xpath(xpath_image_title_field).send_keys(image_title)
+    global global_image_title
+    global_image_title = image_title
 
 
 @when('choose Image License "{image_license}" drop-down list on Study tab')
@@ -1025,6 +1040,8 @@ def step_impl(context, image_license):
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_image_license_item)
     context.browser.find_element_by_xpath(xpath_image_license_dropdown_list).click()
     context.browser.find_element_by_xpath(xpath_image_license_item).click()
+    global global_image_license
+    global_image_license = image_license
 
 
 @when('I enter Image Credit "{image_credit}" on Study tab')
@@ -1033,6 +1050,8 @@ def step_impl(context, image_credit):
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_image_credit_field)
     context.browser.find_element_by_xpath(xpath_image_credit_field).clear()
     context.browser.find_element_by_xpath(xpath_image_credit_field).send_keys(image_credit)
+    global global_images_photographer
+    global_images_photographer = image_credit
 
 
 @when('I enter Image Source "{image_source}" on Study tab')
@@ -1041,6 +1060,8 @@ def step_impl(context, image_source):
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_image_source_field)
     context.browser.find_element_by_xpath(xpath_image_source_field).clear()
     context.browser.find_element_by_xpath(xpath_image_source_field).send_keys(image_source)
+    global global_image_source
+    global_image_source = image_source
 
 
 @when('I login as "{username}" with password "{password}"')
@@ -1459,7 +1480,7 @@ def step_impl(context, status, id):
 def step_impl(context, sample_id, species_name, description):
     xpath_button = "//a[contains(text(), 'Add Row')]"
     xpath_sample_id = "//input[@placeholder='Sample ID']"
-    xpath_species_name = "//input[@class='js-species-autocomplete ui-autocomplete-input']"
+    xpath_species_name = "//input[@class='js-species-autocomplete']"
     xpath_description = "//input[@style='width:250px;']"
     wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_button)
     context.browser.find_element_by_xpath(xpath_button).click()
@@ -1706,3 +1727,38 @@ def step_impl(context):
                 flat_list.append(item)
     for element in description:
         assert element.text in ''.join(flat_list)
+
+
+@then('the file is properly saved into DB where dataset id is "{id}"')
+def step_impl(context, id):
+    cursor = connection.cursor()
+    select_image_id = "select image_id from dataset where id={}".format(id)
+    cursor.execute(select_image_id)
+    image_id = cursor.fetchall()
+    i_id = str(image_id[0][0])
+    select_tag = "select tag from image where id={}".format(i_id)
+    cursor.execute(select_tag)
+    tag = cursor.fetchall()
+    assert tag[0][0] == global_image_title
+    select_license = "select license from image where id={}".format(i_id)
+    cursor.execute(select_license)
+    license = cursor.fetchall()
+    assert license[0][0] == global_image_license
+    select_photographer = "select photographer from image where id={}".format(i_id)
+    cursor.execute(select_photographer)
+    photographer = cursor.fetchall()
+    assert photographer[0][0] == global_images_photographer
+    select_source = "select source from image where id={}".format(i_id)
+    cursor.execute(select_source)
+    source = cursor.fetchall()
+    assert source[0][0] == global_image_source
+    global global_image_id
+    global_image_id = i_id
+
+
+@step("I delete the uploaded image")
+def step_impl(context):
+    cursor = connection.cursor()
+    delete_uploaded_image = "delete from image where id = {}".format(global_image_id)
+    cursor.execute(delete_uploaded_image)
+    connection.commit()

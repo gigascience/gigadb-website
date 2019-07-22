@@ -225,6 +225,7 @@ Feature: Add Additional Information page
   Scenario: I add Protocols.io DOI and check if it is saved into DB by clicking Next button
     Given I am on "site/login" and I login
     When I delete the saved link from DB 'external_link' where dataset id is '211'
+    Given url address "/datasetSubmission/additionalManagement/id/322"
     When I click No button for Public data archive links
     And I click 'no' button for Related GigaDB Datasets
     And I click 'no' button for Project links
