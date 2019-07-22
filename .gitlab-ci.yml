@@ -137,7 +137,11 @@ run_all_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
     # - env
+    # generate config for gigadb webapp
     - docker-compose run --rm config
+    # generate config for File upload wizard webapp
+    - docker-compose run --rm fuw-config
+    # build the nginx container
     - docker-compose build web
     # starting two webapps: gigadb website and File Upload Wizard Admin
     - docker-compose up -d gigadb fuw-admin
