@@ -51,7 +51,7 @@ connection = psycopg2.connect(user="gigadb",
                                      password="vagrant",
                                      host="database",
                                      port="5432",
-                                     database="gigadb_test")
+                                     database="gigadb_stage")
 
 
 
@@ -299,7 +299,7 @@ def step_impl(context,error):
 def step_impl(context):
     xpath_choose_file = "//input[@class='upload-control']"
     wait_for_xpath_element(context,time_sec=1,xpath_element=xpath_choose_file)
-    path_to_file = os.getcwd()+ r"/var/www/protected/tests/behave/GigaDBUploadForm-example1.xls"
+    path_to_file = os.getcwd()+ r"/protected/tests/behave/GigaDBUploadForm-example1.xls"
     context.browser.find_element_by_xpath(xpath_choose_file).send_keys(path_to_file)
 
 
@@ -413,7 +413,7 @@ def step_impl(context):
 def step_impl(context, file_format):
     xpath_choose_file = "//input[@id='authors']"
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_choose_file)
-    path_to_file = os.getcwd() + r"\authors_example.{}".format(file_format)
+    path_to_file = "/var/www/protected/tests/behave/authors_example.{}".format(file_format)
     context.browser.find_element_by_xpath(xpath_choose_file).send_keys(path_to_file)
 
 
@@ -923,7 +923,7 @@ def step_impl(context):
 
 @then('The authors from the file "{file_format}" are added accordingly')
 def step_impl(context, file_format):
-    with open(f'authors_example.{file_format}', 'r') as file:
+    with open(f'/var/www/protected/tests/behave/authors_example.{file_format}', 'r') as file:
         rows = csv.reader(file,
                           delimiter=',',
                           quotechar='"')
@@ -1018,7 +1018,7 @@ def step_impl(context):
 def step_impl(context, image_size):
     xpath_choose_file = "//input[@id='Images_image_upload']"
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_choose_file)
-    path_to_file = os.getcwd() + r"\{}.png".format(image_size)
+    path_to_file = os.getcwd() + r"/protected/tests/behave/{}.png".format(image_size)
     context.browser.find_element_by_xpath(xpath_choose_file).send_keys(path_to_file)
 
 
@@ -1114,7 +1114,7 @@ def step_impl(context, text):
         wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_email_address_field)
         context.browser.find_element_by_xpath(xpath_email_address_field).click()
     elif 'dev' in url:
-        username = "user@gigadb.org"
+        username = "test+gigadb345@gigasciencejournal.com"
         password = "gigadb"
         xpath_email_address_field = "//input[@id='LoginForm_username']"
         wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_email_address_field)
@@ -1322,7 +1322,7 @@ def step_impl(context):
 def step_impl(context):
     xpath_choose_file = "//input[@id='samples']"
     wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_choose_file)
-    locate_file = os.getcwd()+ r"/sample_example-genomics.csv"
+    locate_file = os.getcwd()+ r"/protected/tests/behave/sample_example-genomics.csv"
     context.browser.find_element_by_xpath(xpath_choose_file).send_keys(locate_file)
 
     with open('sample_example-genomics.csv', 'r') as file:
@@ -1678,7 +1678,7 @@ def step_impl(context):
 def step_impl(context):
     xpath_choose_file = "//input[@id='files']"
     wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_choose_file)
-    locate_file = os.getcwd() + r"/file_metadata.csv"
+    locate_file = os.getcwd() + r"/protected/tests/behave/file_metadata.csv"
     context.browser.find_element_by_xpath(xpath_choose_file).send_keys(locate_file)
     time.sleep(2)
 

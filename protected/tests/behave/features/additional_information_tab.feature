@@ -135,7 +135,7 @@ Feature: Add Additional Information page
     Given I am on "site/login" and I login
     Given url address "/datasetSubmission/additionalManagement/id/322"
     When I click Yes button for Public data archive links
-    And choose №"3" from dropdown list
+    And choose №"2" from dropdown list
     And I enter "SRS012345" an accession number of Public data archive links block
     And I click Add Link button to add Access number
     Then Link Type and Link are added to the table
@@ -145,7 +145,7 @@ Feature: Add Additional Information page
     Given I am on "site/login" and I login
     Given url address "/datasetSubmission/additionalManagement/id/322"
     When I click Yes button for Public data archive links
-    And choose №"3" from dropdown list
+    And choose №"2" from dropdown list
     And I enter "SRS012345" an accession number of Public data archive links block
     And I click Add Link button to add Access number
     And I click Delete this row "1" button

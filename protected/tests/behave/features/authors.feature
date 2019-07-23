@@ -9,7 +9,7 @@ Feature: Add Authors
     And I enter Last Name "Engineer"
     And I enter ORCiD code "4444444444444444"
     And I enter CrediT "con"
-    And select CreadiT form the autocomplete list "Contribution3"
+    And select CreadiT form the autocomplete list "Conceptualization"
     And I click Add Author button
     And I click "Save" button on Author tab
     Then ORCiD format is nnnn-nnnn-nnnn-nnnn
