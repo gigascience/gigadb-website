@@ -1,0 +1,4 @@
+<?php
+return [
+	"jwt_key" => "$FUW_JWT_KEY",
+];
