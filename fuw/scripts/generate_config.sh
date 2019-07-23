@@ -62,6 +62,24 @@ TARGET=${APP_SOURCE}/fuw/app/console/config/test-local.php
 VARS=''
 envsubst $VARS < $SOURCE > $TARGET
 
+# generate config for Codeception
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/codeception-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/backend/config/codeception-local.php
+VARS=''
+envsubst $VARS < $SOURCE > $TARGET
+
+export COOKIE_RANDOM_KEY=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/codeception-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/common/config/codeception-local.php
+VARS='$COOKIE_RANDOM_KEY'
+envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/codeception-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/frontend/config/codeception-local.php
+VARS=''
+envsubst $VARS < $SOURCE > $TARGET
+
 # generate config for Yii2 main configs in FUW webapps
 
 SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/main-local.php.dist
@@ -73,8 +91,6 @@ SOURCE=${APP_SOURCE}/fuw/yii2-conf/console/main-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/console/config/main-local.php
 VARS=''
 envsubst $VARS < $SOURCE > $TARGET
-
-
 
 export COOKIE_RANDOM_KEY=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)
 SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/main-local.php.dist
