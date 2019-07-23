@@ -1,4 +1,5 @@
 <?php
+
 return [
     'components' => [
         'mailer' => [
@@ -9,5 +10,14 @@ return [
             // for the mailer to send real emails.
             'useFileTransport' => true,
         ],
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => "pgsql:host=$FUW_DB_HOST;dbname=$FUW_DB_NAME",
+            'username' => "$FUW_DB_USER",
+            'password' => "$FUW_DB_PASSWORD",
+            'charset' => 'utf8',
+        ],
     ],
+
+
 ];
