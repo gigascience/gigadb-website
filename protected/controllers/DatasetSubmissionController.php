@@ -941,10 +941,13 @@ class DatasetSubmissionController extends Controller
                 $matches = array();
                 for ($j = 3, $k = count($rows[0]); $j < $k; $j++) {
                     if (!empty($rows[0][$j])) {
-                        $match = $rows[0][$j];
-                        $attr = Attribute::findSimilarByAttrName($match);
+                        $match = strtolower(trim($rows[0][$j]));
+                        $attr = Attribute::findByAttrName($match);
+                        if (!$attr) {
+                            $attr = Attribute::findSimilarByAttrName($match);
+                        }
 
-                        if ($attr && $attr->attribute_name != $match) {
+                        if ($attr && strtolower($attr->attribute_name) != $match) {
                             $matches[$match] = $attr->attribute_name;
                         }
 
