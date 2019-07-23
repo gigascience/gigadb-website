@@ -3,7 +3,7 @@ Feature: Add Authors
 
   Scenario: check if a correct ORCiD is added
     Given I am on "site/login" and I login
-    When I go to submission wizard "/datasetSubmission/authorManagement/id/210" URL
+    When I go to submission wizard "/datasetSubmission/authorManagement/id/322" URL
     And I enter First Name "QA"
     And I enter Middle Name "test middle name"
     And I enter Last Name "Engineer"
@@ -20,7 +20,7 @@ Feature: Add Authors
 
   Scenario: add an Author via CSV file
     Given I am on "site/login" and I login
-    When I go to submission wizard "/datasetSubmission/authorManagement/id/210" URL
+    When I go to submission wizard "/datasetSubmission/authorManagement/id/322" URL
     And Choose CSV or TSV 'csv' file from file system on Author tab
     And I click Add Authors button
     Then The authors from the file "csv" are added accordingly
@@ -30,7 +30,7 @@ Feature: Add Authors
 
   Scenario: add an Author via CSV file and save it to DB by clicking Next buton
     Given I am on "site/login" and I login
-    When I go to submission wizard "/datasetSubmission/authorManagement/id/210" URL
+    When I go to submission wizard "/datasetSubmission/authorManagement/id/322" URL
     And Choose CSV or TSV 'csv' file from file system on Author tab
     And I click Add Authors button
     Then The authors from the file "csv" are added accordingly

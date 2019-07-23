@@ -34,7 +34,7 @@ Feature: Upload your dataset metadata from a spreadsheet page
 #    And I click Submit new dataset button
 #    And I click "Upload new dataset from spreadsheet" button
 #    And I click "Download Example 1 (Excel)" button
-#    Then the file is downloaded (not finished yet)
+#    Then the file is downloaded
 
 #  Scenario: The user downloads Example 1 (Open Office)
 #    Given I am on "site/login" and I login
@@ -43,4 +43,4 @@ Feature: Upload your dataset metadata from a spreadsheet page
 #    And I click "Upload new dataset from spreadsheet" button
 #    And I click "Download Example 1 (Open Office)" button
 
-#    Then the file is downloaded (not finished yet)
+#    Then the file is downloaded (not finished)
