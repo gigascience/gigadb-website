@@ -23,7 +23,7 @@ fi
 #exec 1>&3
 
 echo "Running behave tests..."
-behave /var/www/protected/tests/behave/features/file_tab.feature
+behave /var/www/protected/tests/behave/features/samples.feature
 echo "...behave tests finished"
 
 echo "Done!"

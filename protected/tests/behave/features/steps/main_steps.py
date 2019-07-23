@@ -1325,7 +1325,7 @@ def step_impl(context):
     locate_file = os.getcwd()+ r"/protected/tests/behave/sample_example-genomics.csv"
     context.browser.find_element_by_xpath(xpath_choose_file).send_keys(locate_file)
 
-    with open('sample_example-genomics.csv', 'r') as file:
+    with open('/var/www/protected/tests/behave/sample_example-genomics.csv', 'r') as file:
         reader = csv.reader(file, delimiter='\t')
         next(reader)
         data = []
@@ -1696,7 +1696,7 @@ def step_impl(context):
     wait_for_xpath_element(context, time_sec=1, xpath_element=xpath_data_type_column)
     records = context.browser.find_elements_by_xpath(xpath_data_type_column)
 
-    with open('file_metadata.csv', 'r') as file:
+    with open('/var/www/protected/tests/behave/file_metadata.csv', 'r') as file:
         reader = csv.reader(file, delimiter='\t',)
         # next(reader)
         data = []
@@ -1715,7 +1715,7 @@ def step_impl(context):
     xpath_description = "//textarea[@class='js-description']"
     wait_for_xpath_element(context, 1, xpath_description)
     description = context.browser.find_elements_by_xpath(xpath_description)
-    with open('file_metadata.csv', 'r') as file:
+    with open('/var/www/protected/tests/behave/file_metadata.csv', 'r') as file:
         reader = csv.reader(file, delimiter='\t',)
         # next(reader)
         data = []
