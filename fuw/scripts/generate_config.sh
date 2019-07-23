@@ -40,9 +40,71 @@ fi
 set +a
 
 
-# generate config for Yii2 test database in common project
+# generate config for Yii2 test configs in FUW webapps
 
 SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/test-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/common/config/test-local.php
 VARS='$FUW_TESTDB_HOST:$FUW_TESTDB_NAME:$FUW_TESTDB_USER:$FUW_TESTDB_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/test-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/backend/config/test-local.php
+VARS=''
+envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/test-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/frontend/config/test-local.php
+VARS=''
+envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/console/test-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/console/config/test-local.php
+VARS=''
+envsubst $VARS < $SOURCE > $TARGET
+
+# generate config for Yii2 main configs in FUW webapps
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/main-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/common/config/main-local.php
+VARS='$FUW_DB_HOST:$FUW_DB_NAME:$FUW_DB_USER:$FUW_DB_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/console/main-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/console/config/main-local.php
+VARS=''
+envsubst $VARS < $SOURCE > $TARGET
+
+
+
+export COOKIE_RANDOM_KEY=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/main-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/backend/config/main-local.php
+VARS='$COOKIE_RANDOM_KEY'
+envsubst $VARS < $SOURCE > $TARGET
+
+export COOKIE_RANDOM_KEY=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/main-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/frontend/config/main-local.php
+VARS='$COOKIE_RANDOM_KEY'
+envsubst $VARS < $SOURCE > $TARGET
+
+# generate variable files for Yii2
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/params-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/common/config/params-local.php
+VARS=''
+envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/params-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/frontend/config/params-local.php
+VARS=''
+envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/console/params-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/console/config/params-local.php
+VARS=''
+envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/params-local.php.dist
+TARGET=${APP_SOURCE}/fuw/app/backend/config/params-local.php
+VARS='$FUW_JWT_KEY'
 envsubst $VARS < $SOURCE > $TARGET
