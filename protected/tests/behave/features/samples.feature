@@ -1,6 +1,19 @@
 # Created by serhi at 6/6/2019
 Feature: Samples tab
 
+  Scenario: any rows in the sample table are saved to the database “dataset status” is set to “Assigning FTP dropbox and an email is sent
+    Given I am on "site/login" and I login
+    When I go to submission wizard "datasetSubmission/sampleManagement/id/210" URL
+    And I update dataset status to "Incomplete" where id is "210"
+    And I add a row and enter Sample ID "Sample ID", Species name "Adelie penguin" and "Description"
+    And I click on "Next" button on Sample tab
+    Then the user is redirected to The end page
+    Then any rows in the sample table are saved to the database
+    When I click "Return to your profile page" button on Sample tab
+    Then dataset status is changed to "AssigningFTPbox" where dataset id is "210"
+#    And email is sent to database@gigasciencejournal.com to alert us to a new submission
+    And I delete the added sample form DB
+
 # need to add templates
   Scenario: Warn the user that all data in table will be over-written when applying a template on Sample table with data
     Given I am on "site/login" and I login
@@ -36,21 +49,6 @@ Feature: Samples tab
     And recently submitted dataset is highlighted in table
 
 
-
-  Scenario: any rows in the sample table are saved to the database “dataset status” is set to “Assigning FTP dropbox and an email is sent
-    Given I am on "site/login" and I login
-    When I go to submission wizard "datasetSubmission/sampleManagement/id/210" URL
-    And I update dataset status to "Incomplete" where id is "210"
-    And I add a row and enter Sample ID "Sample ID", Species name "Adelie penguin" and "Description"
-    And I click on "Next" button on Sample tab
-    Then the user is redirected to The end page
-    Then any rows in the sample table are saved to the database
-    When I click "Return to your profile page" button on Sample tab
-    And dataset upload status is set to "AssigningFTPbox" where dataset_id is "210"
-#    And email is sent to database@gigasciencejournal.com to alert us to a new submission
-    And I delete the added sample form DB
-
-
   Scenario: when Save button clicked the dated is saved to DB on Sample tab
     Given I am on "site/login" and I login
     When I go to submission wizard "datasetSubmission/sampleManagement/id/210" URL
@@ -73,6 +71,8 @@ Feature: Samples tab
     And I add a row and enter Sample ID "Sample ID", Species name "Adelie penguin1" and "Description"
     And I click on "Save" button on Sample tab
     Then A pop-up message appears "Row 1: Species Name is invalid."
+
+
 
 
 

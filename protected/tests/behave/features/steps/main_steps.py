@@ -1530,13 +1530,13 @@ def step_impl(context):
     assert records == l
 
 
-@step('dataset upload status is set to "{upload_status}" where dataset_id is "{}"')
-def step_impl(context, upload_status, id):
+@step('dataset upload status is set to "{expected_upload_status}" where dataset_id is "{}"')
+def step_impl(context, expected_upload_status, id):
     cursor = connection.cursor()
     select_query = "select upload_status from dataset where id = {}".format(id)
     cursor.execute(select_query)
     record = cursor.fetchall()
-    assert record == tuple([upload_status])
+    assert expected_upload_status == record[0][0]
 
 
 @then("the user is redirected to The end page")
@@ -1762,3 +1762,10 @@ def step_impl(context):
     delete_uploaded_image = "delete from image where id = {}".format(global_image_id)
     cursor.execute(delete_uploaded_image)
     connection.commit()
+
+@then('dataset status is changed to "{expected_dataset_status}" where dataset id is "{dataset_id}"')
+def step_impl(context, expected_dataset_status, dataset_id):
+    xpath_status = "(//tr[@id='js-dataset-row-{}']/td)[5]".format(dataset_id)
+    wait_for_xpath_element(context, 5, xpath_status)
+    new_status = context.browser.find_element_by_xpath(xpath_status).text
+    assert expected_dataset_status == new_status

@@ -50,4 +50,4 @@ def before_feature(context, feature):
 def after_scenario(context, scenario):
     context.browser.switch_to_window(context.browser.window_handles[-1])
     if scenario.status == 'failed':
-        context.browser.save_screenshot("report/{}.png".format(scenario.name))
+        context.browser.save_screenshot("/var/www/protected/tests/behave/report/{}.png".format(scenario.name))
