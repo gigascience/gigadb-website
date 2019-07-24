@@ -51,7 +51,7 @@ connection = psycopg2.connect(user="gigadb",
                                      password="vagrant",
                                      host="database",
                                      port="5432",
-                                     database="gigadb_stage")
+                                     database="gigadb_test")
 
 
 
