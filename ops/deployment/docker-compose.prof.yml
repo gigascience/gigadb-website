@@ -24,7 +24,6 @@ services:
   gigadb:
     depends_on:
       - application
-      - web
       - database
       - xhgui
       - chrome

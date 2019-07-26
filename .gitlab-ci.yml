@@ -140,8 +140,11 @@ run_all_tests:
     # - env
     - docker-compose run --rm config
     - docker-compose build web
-    # starting two webapps: gigadb website and File Upload Wizard Admin
+    # starting two webapps: gigadb website and File Upload Wizard Admin, then the web server
     - docker-compose up -d gigadb fuw-admin
+    - sleep 5
+    - docker-compose up -d web
+    # starting the headless browser for acceptance testing
     - docker-compose up -d chrome
     # - docker-compose top
     # - docker network inspect rija-gigadb-website_web-tier
