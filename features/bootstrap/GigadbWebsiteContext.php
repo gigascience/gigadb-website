@@ -266,7 +266,7 @@ class GigadbWebsiteContext implements Context
      *
     */
     public static function call_pg_terminate_backend($dbname) {
-        print_r("Terminating DB Backend... ");
+        print_r("Terminating DB Backend...".PHP_EOL);
         $sql = "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='${dbname}' and pid <> pg_backend_pid()";
         $dbconn = pg_connect("host=database dbname=postgres user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
@@ -287,6 +287,7 @@ class GigadbWebsiteContext implements Context
      *
     */
     public static function recreateDB($dbname) {
+        echo "Recreating database ${dbname}...".PHP_EOL;
         $sql_to_fence ="ALTER DATABASE $dbname WITH CONNECTION LIMIT 0;"; //avoid new connection during this process
         $sql_to_drop = "DROP DATABASE ${dbname}";
         $sql_to_create = "CREATE DATABASE ${dbname} OWNER gigadb";
