@@ -160,13 +160,13 @@ run_all_tests:
     # generate config for File upload wizard webapp
     - docker-compose run --rm fuw-config
     # build the nginx container
-    # - docker-compose build web
+    - docker-compose build web
     # starting two webapps: gigadb website and File Upload Wizard Admin, then the web server
     - docker-compose up -d gigadb fuw
     - sleep 5
     - docker-compose up -d web
     # starting the headless browser for acceptance testing
-    # - docker-compose up -d chrome
+    - docker-compose up -d chrome
     # - docker-compose top
     # - docker network inspect rija-gigadb-website_web-tier
     # - docker network inspect rija-gigadb-website_db-tier
