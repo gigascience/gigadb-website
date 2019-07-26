@@ -26,14 +26,14 @@ exec("pg_dump $db_name -U $db_user -h $db_host -F custom  -f /var/www/sql/before
 print_r("Loading test database... ".PHP_EOL);
 GigadbWebsiteContext::call_pg_terminate_backend($db_name);
 GigadbWebsiteContext::recreateDB($db_name);
-exec("pg_restore -h $db_host -U $db_user -d $db_name --clean --no-owner -v /var/www/sql/gigadb_testdata.pgdmp || true 2>&1",$output);
+exec("pg_restore -h $db_host -U $db_user -d $db_name --clean --no-owner -v /var/www/sql/gigadb_testdata.pgdmp 2>&1",$output);
 GigadbWebsiteContext::containerRestart();
 
 // After hooks for our functional tests
-register_shutdown_function(function(){
+register_shutdown_function(function(array $db){
+   	GigadbWebsiteContext::call_pg_terminate_backend($db['database']);
+   	GigadbWebsiteContext::recreateDB($db['database']);
    	print_r("Restoring current database...".PHP_EOL);
-   	GigadbWebsiteContext::call_pg_terminate_backend($GLOBALS['db_name']);
-   	GigadbWebsiteContext::recreateDB($GLOBALS['db_name']);
-    exec("pg_restore -h $db_host  -U $db_user -d $db_name --clean --no-owner -v /var/www/sql/before-run.pgdmp 2>&1",$output);
+    exec("pg_restore -h {$db['host']}  -U {$db['user']} -d {$db['database']} --clean --no-owner -v /var/www/sql/before-run.pgdmp 2>&1",$output);
    	GigadbWebsiteContext::containerRestart();
-});
+}, $dbconf);
