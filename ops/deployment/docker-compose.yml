@@ -27,7 +27,8 @@ services:
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
-    command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-http.dev"]
+    command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-backend.dev.http"]
+    # command: ["/usr/local/bin/enable_sites", "gigadb.dev.http"]
 
   certbot:
     image: certbot/certbot
@@ -112,7 +113,6 @@ services:
       - ${APPLICATION}:/app
     depends_on:
       - application
-      - web
       - database
       # - chrome
     command: composer install
@@ -235,7 +235,6 @@ services:
       - ../../fuw/credentials:/var/private
     depends_on:
       - database
-      - web
       - console
       - ftpd
       - tusd
