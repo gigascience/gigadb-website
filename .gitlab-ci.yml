@@ -81,6 +81,7 @@ after_script:
   - docker-compose logs gigadb
   - docker-compose logs database
   - cat $APPLICATION/.env
+  - cat $APPLICATION/.secrets
 
 build_webapp:
   stage: build
