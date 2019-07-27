@@ -36,3 +36,6 @@ services:
   config:
     environment:
       ANALYTICS_PRIVATE_KEY: ${ANALYTICS_PRIVATE_KEY}
+
+  web:
+    command: ["/usr/local/bin/enable_sites", "gigadb.CI.http", "fuw-backend.CI.http"]
