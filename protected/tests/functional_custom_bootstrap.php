@@ -12,8 +12,10 @@ Yii::createWebApplication($config);
 
 // Before hooks for our functional tests
 print_r("Loading environment variables... ".PHP_EOL);
-$dotenv = Dotenv\Dotenv::create('/var/www', '.secrets');
+$dotenv = Dotenv\Dotenv::create('/var/www', '.env');
 $dotenv->load();
+$secrets = Dotenv\Dotenv::create('/var/www', '.secrets');
+$secrets->overload();
 print_r("Loading database config...".PHP_EOL);
 $dbconf = json_decode(file_get_contents(dirname(__FILE__).'/../config/db.json'), true);
 $db_host = $dbconf["host"];
