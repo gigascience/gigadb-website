@@ -28,10 +28,14 @@ class NewsletterTest extends FunctionalTesting
   		$current_pid = getmypid();
   		$api_key = getenv("MAILCHIMP_API_KEY");
   		$list_id = getenv("MAILCHIMP_LIST_ID");
+      $mailchimp_email = getenv("MAILCHIMP_TEST_EMAIL");
+      $this->assertNotNull($today);
+      $this->assertNotNull($fork);
       $this->assertNotNull($api_key);
       $this->assertNotNull($list_id);
+      $this->assertNotNull($mailchimp_email);
 
-  		$email= $fork.$today.$current_pid."_".getenv("MAILCHIMP_TEST_EMAIL") ;
+  		$email= $fork.$today.$current_pid."_".$mailchimp_email ;
   		$service = new NewsletterService($api_key, $list_id);
   		$result = $service->addToMailing($email);
   		$this->assertTrue( $result );
