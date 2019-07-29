@@ -38,7 +38,7 @@ class NewsletterTest extends FunctionalTesting
   		$email= $fork.$today.$current_pid."_".$mailchimp_email ;
   		$service = new NewsletterService($api_key, $list_id);
   		$result = $service->addToMailing($email);
-  		$this->assertTrue( $result );
+  		$this->assertTrue( $result, "$email is added to Mailchimp" );
   	}
 
   	/**
