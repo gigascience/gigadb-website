@@ -24,7 +24,7 @@ class NewsletterTest extends FunctionalTesting
   	{
 
   		$today = date('ymd');
-  		$fork = getenv('FORK') || "up";
+  		$fork = getenv('FORK');
   		$current_pid = getmypid();
   		$api_key = getenv("MAILCHIMP_API_KEY");
   		$list_id = getenv("MAILCHIMP_LIST_ID");
