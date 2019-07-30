@@ -125,7 +125,18 @@ TARGET=${APP_SOURCE}/fuw/app/backend/config/params-local.php
 VARS='$FUW_JWT_KEY'
 envsubst $VARS < $SOURCE > $TARGET
 
-# generate directories for web assets
+# Configuring yii2 asset pipeline
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/AppAsset.php.dist
+TARGET=${APP_SOURCE}/fuw/app/backend/assets/AppAsset.php
+VARS=''
+envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/AppAsset.php.dist
+TARGET=${APP_SOURCE}/fuw/app/frontend/assets/AppAsset.php
+VARS=''
+envsubst $VARS < $SOURCE > $TARGET
+
 mkdir -pv /var/www/fuw/app/backend/web/assets
 mkdir -pv /var/www/fuw/app/frontend/web/assets
 chmod 0777 /var/www/fuw/app/backend/web/assets
