@@ -127,6 +127,9 @@ envsubst $VARS < $SOURCE > $TARGET
 
 # Configuring yii2 asset pipeline
 
+mkdir -pv /var/www/fuw/app/backend/assets
+mkdir -pv /var/www/fuw/app/frontend/assets
+
 SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/AppAsset.php.dist
 TARGET=${APP_SOURCE}/fuw/app/backend/assets/AppAsset.php
 VARS=''
