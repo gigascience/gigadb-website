@@ -1100,6 +1100,7 @@ def step_impl(context, text):
     basic_url = 'http://{}/'.format(url)
     if 'staging' in url or 'dev' in url:
         context.browser.get(basic_url)
+    context.browser.execute_script("location.reload()")
     context.browser.get('http://{}/'.format(url) + text)
     if 'staging' in url:
         username = "local-gigadb-admin@rijam.ml1.net"
