@@ -1,4 +1,7 @@
-index.php
+repo
+credentials
+run
+/index.php
 logs
 assets
 giga_cache
@@ -75,3 +78,15 @@ docs/cache
 !style-guide/vendor
 !style-guide/index.php
 site/
+
+ftp-transfer-logs
+incoming
+transfer.log
+*.tfvars
+
+flags/*
+!flags/README.md
+php-conf/appconfig.ini
+
+site/
+
