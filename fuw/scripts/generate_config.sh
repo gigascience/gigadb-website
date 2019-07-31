@@ -144,3 +144,8 @@ mkdir -pv /var/www/fuw/app/backend/web/assets
 mkdir -pv /var/www/fuw/app/frontend/web/assets
 chmod 0777 /var/www/fuw/app/backend/web/assets
 chmod 0777 /var/www/fuw/app/frontend/web/assets
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/index.php.dist
+TARGET=${APP_SOURCE}/fuw/app/frontend/web/index.php
+VARS='$GIGADB_ENV'
+envsubst $VARS < $SOURCE > $TARGET
