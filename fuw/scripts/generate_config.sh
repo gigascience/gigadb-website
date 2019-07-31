@@ -149,3 +149,8 @@ SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/index.php.dist
 TARGET=${APP_SOURCE}/fuw/app/frontend/web/index.php
 VARS='$GIGADB_ENV'
 envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/index-test.php.dist
+TARGET=${APP_SOURCE}/fuw/app/frontend/web/index-test.php
+VARS='$GIGADB_ENV'
+envsubst $VARS < $SOURCE > $TARGET
