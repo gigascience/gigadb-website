@@ -1,5 +1,11 @@
 # Developer Guide for File Upload Wizard
 
+## urls
+
+http://fuw-admin-dev.pommetab.com:7070
+https://fuw-admin-dev.pommetab.com:7443
+
+The ``ca.pem`` file need to be added to the web browser in order to be recognised.
 
 ## Running tests
 
