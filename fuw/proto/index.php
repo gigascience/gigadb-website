@@ -34,7 +34,7 @@
     function getAccounts(string $status): array
     {
         $dbh = connectDB();
-        $sql = "select distinct * from account where status = ? order by doi_suffix";
+        $sql = "select distinct * from filedrop_account where status = ? order by doi";
         $st = $dbh->prepare($sql);
         $st->bindParam(1, $status, PDO::PARAM_STR);
         $st->execute();
