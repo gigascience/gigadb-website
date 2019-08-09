@@ -23,13 +23,14 @@ services:
       - ${APPLICATION}/style-guide:/var/www/style-guide
       # File Upload Wizard admin application
       - ${APPLICATION}/fuw/app:/var/fuw
+      - ${APPLICATION}/fuw/proto:/var/fuw/proto
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
-    command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-backend.dev.http"]
-    # command: ["/usr/local/bin/enable_sites", "gigadb.dev.http"]
+    # command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-backend.dev.http"]
+    command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-backend.dev.http", "fuw-proto.dev.http"]
 
   certbot:
     image: certbot/certbot
@@ -115,7 +116,7 @@ services:
     depends_on:
       - application
       - database
-      - phantomjs
+      # - phantomjs
     command: ./ops/scripts/webapp_setup.sh
     networks:
       - web-tier
@@ -214,6 +215,45 @@ services:
       - web-tier
       - db-tier
 
+  fuw-proto:
+    build:
+      context: ../../fuw/app/frontend
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
+        - APP_PORT=9003
+        - APP_ROOT_DIR=/var/fuw/proto/
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=false
+        - INSTALL_APCU=true
+        - INSTALL_DOCKER_API_ACCESS=true
+    expose:
+      - "9003"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ../../fuw/proto:/var/fuw/proto
+      # directories used for filedrop files
+      - ../../fuw/incoming:/var/incoming
+      - ../../fuw/repo:/var/repo
+      - ../../fuw/credentials:/var/private
+      # volume for prototype's config
+      - ../../fuw/php-conf/appconfig.ini:/var/appconfig.ini:ro
+    depends_on:
+      - database
+      - console
+      - ftpd
+      - tusd
+      - watcher
+    networks:
+      - web-tier
+      - db-tier
+    extra_hosts:
+      - "fuw-admin-api:172.16.238.10"
+
   console:
     build:
       context: ../../fuw/app/backend
@@ -250,6 +290,8 @@ services:
       - ../../vendor:/var/www/vendor
       # to run tests that interact with containers
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      # to generate the config for the prototype
+      - ../../fuw/php-conf/appconfig.ini:/var/appconfig.ini
     networks:
       - web-tier
       - db-tier
