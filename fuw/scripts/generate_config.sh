@@ -107,7 +107,7 @@ envsubst $VARS < $SOURCE > $TARGET
 # generate variable files for Yii2
 SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/params-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/common/config/params-local.php
-VARS=''
+VARS='$FUW_JWT_KEY'
 envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/params-local.php.dist
@@ -122,7 +122,7 @@ envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/params-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/backend/config/params-local.php
-VARS='$FUW_JWT_KEY'
+VARS=''
 envsubst $VARS < $SOURCE > $TARGET
 
 # Configuring yii2 asset pipeline
