@@ -52,16 +52,20 @@ class PrototypeController extends Controller
     	}
     	// 2. Generate JWT token for interacting with the API
     	$this->stdout("Create token...");
-    	// $this->stdout("jwt key: ".yii::$app->jwt->key, Console::FG_PURPLE);
+    	$signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
     	$client_token = Yii::$app->jwt->getBuilder()
             ->setIssuer('www.gigadb.org') // Configures the issuer (iss claim)
             ->setAudience('fuw.gigadb.org') // Configures the audience (aud claim)
             ->setSubject('API Access request from client') // Configures the subject
             ->setId('4f1g23a12aa', true) // Configures the id (jti claim), replicating as a header item
+            ->set('email', $protoUser->email)
+            ->set('name', "John Smith")
+            ->set('role', "create")
+            ->set('admin_status', "true")
             ->setIssuedAt(time()) // Configures the time that the token was issue (iat claim)
             ->setNotBefore(time() + 60) // Configures the time before which the token cannot be accepted (nbf claim)
-            ->setExpiration(time() + 3600) // Configures the expiration time of the token (exp claim)
-            ->set('email', $protoUser->email) // Configures a new claim, called "email"
+            ->setExpiration(time() + 31104000) // Configures the expiration time of the token (exp claim) 1 year
+            ->sign($signer, Yii::$app->jwt->key)// creates a signature using [[Jwt::$key]]
             ->getToken(); // Retrieves the generated token
         if( $client_token ) {
 	    	$this->stdout("ok\n", Console::FG_GREEN, Console::BOLD);
