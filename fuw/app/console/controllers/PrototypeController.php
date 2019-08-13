@@ -10,34 +10,47 @@ use Config_Lite;
 
 class PrototypeController extends Controller
 {
-    public $appUrl;
-	private $protoUrl;
-	private $tusUrl;
-	private $apiUrl;
+	public $protoUrl;
+	public $apiUrl;
+	public $tusUrl;
 
     /**
      * Command for setting up the prototype
      * Usage:
-     * "yii prototype/setup --appUrl <url>"
+     * "yii prototype/setup --protoUrl <url1> --apiUrl <url2> --tusUrl <url3>"
     */
     public function actionSetup() {
-        $this->protoUrl = $this->appUrl."/proto/";
-        $this->tusUrl = $this->appUrl."/files/";
-        $this->apiUrl = "http://fuw-admin-api/filedrop-accounts";
-
     	$this->stdout("Setting up the prototype\n", Console::FG_CYAN, Console::BOLD);
-    	$this->stdout("with settings:\n");
-    	$this->stdout("appUrl:  ". $this->ansiFormat($this->appUrl, Console::FG_BLUE, Console::BOLD)."\n");
-        $this->stdout("protoUrl:  ". $this->ansiFormat($this->protoUrl, Console::FG_BLUE, Console::BOLD)."\n");
-    	$this->stdout("apiUrl: ". $this->ansiFormat($this->apiUrl, Console::FG_BLUE, Console::BOLD)."\n");
-    	$this->stdout("tusUrl: ". $this->ansiFormat($this->tusUrl, Console::FG_BLUE, Console::BOLD)."\n");
+    	$this->stdout("with arguments:\n");
+    	$this->stdout("--protoUrl ". $this->ansiFormat($this->protoUrl, Console::FG_BLUE, Console::BOLD)."\n");
+    	$this->stdout("--apiUrl ". $this->ansiFormat($this->apiUrl, Console::FG_BLUE, Console::BOLD)."\n");
+    	$this->stdout("--tusUrl ". $this->ansiFormat($this->tusUrl, Console::FG_BLUE, Console::BOLD)."\n");
 
     	if ( !($this->protoUrl && $this->apiUrl && $this->tusUrl) ) {
     		$this->stdout("Some argument is missing\n", Console::BOLD);
     		return Controller::EXIT_CODE_ERROR;
     	}
 
-    	// 1. Generate JWT token for interacting with the API
+    	// 1. find or create the user for the prototype
+    	$this->stdout("Create user...");
+    	$protoUser = User::findOne(["username" => "prototype", 
+    								"email" => "sfriesen@jenkins.info"]
+    							) ?? new User();
+
+    	$protoUser->username = "prototype";
+    	$protoUser->email = "sfriesen@jenkins.info";
+    	$protoUser->auth_key = "dsfasdfasdfdsa";
+    	$protoUser->password_hash = "dsafadsgads";
+    	$protoUser->password_reset_token = "oqwetad";
+    	$protoUser->status = User::STATUS_ACTIVE;
+
+    	if( $protoUser->save() ) {
+	    	$this->stdout("ok\n", Console::FG_GREEN, Console::BOLD);
+    	}
+    	else {
+	    	$this->stdout("error\n", Console::FG_GREEN, Console::BOLD);
+    	}
+    	// 2. Generate JWT token for interacting with the API
     	$this->stdout("Create token...");
     	$signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
     	$client_token = Yii::$app->jwt->getBuilder()
@@ -45,7 +58,7 @@ class PrototypeController extends Controller
             ->setAudience('fuw.gigadb.org') // Configures the audience (aud claim)
             ->setSubject('API Access request from client') // Configures the subject
             ->setId('4f1g23a12aa', true) // Configures the id (jti claim), replicating as a header item
-            ->set('email', "sfriesen@jenkins.info")
+            ->set('email', $protoUser->email)
             ->set('name', "John Smith")
             ->set('role', "create")
             ->set('admin_status', "true")
@@ -61,10 +74,10 @@ class PrototypeController extends Controller
 	    	$this->stdout("error\n", Console::FG_GREEN, Console::BOLD);
     	}
 
-    	// 2. Generate prototype configuration file
+    	// 3. Generate prototype configuration file
     	$this->stdout("Create config...");
     	$config = new Config_Lite();
-    	$configFilename = "/app/proto/appconfig.ini" ;
+    	$configFilename = "/var/appconfig.ini" ;
     	$protoConfigData = array(
     							"tusd_endpoint" => $this->tusUrl,
     							"ftpd_endpoint" => "localhost",
@@ -73,7 +86,8 @@ class PrototypeController extends Controller
     							"api_endpoint" => $this->apiUrl,
     							"db_user" => Yii::$app->db->username,
     							"db_password" => Yii::$app->db->password,
-                                "db_dsn" => Yii::$app->db->dsn,
+    							"db_source" => "fuwdb",
+    							"db_host" => "database",
     							"dummy_jwt_token" => $client_token);
 
 		try {
@@ -92,7 +106,7 @@ class PrototypeController extends Controller
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','appUrl'];
+        return ['color', 'interactive', 'help','protoUrl','apiUrl','tusUrl'];
     }
 
 }
