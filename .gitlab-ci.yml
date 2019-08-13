@@ -81,6 +81,7 @@ after_script:
   - docker-compose logs database
   - cat $APPLICATION/.env
   - cat $APPLICATION/.secrets
+  - echo $DOCKER_HOST
 
 build_webapp:
   stage: build
