@@ -4,6 +4,7 @@ namespace backend\models;
 
 use Yii;
 use Docker\Docker;
+use Docker\DockerClientFactory;
 use Docker\API\Model\ContainerSummaryItem;
 use Docker\API\Model\{ContainersIdExecPostBody,
                       ExecIdStartPostBody,
@@ -28,8 +29,13 @@ class DockerManager extends yii\base\BaseObject
 	 */
 	public function init()
 	{
+        $client = DockerClientFactory::create([
+            'remote_socket' => 'tcp://host.docker.internal:2375',
+            'ssl' => false,
+        ]);
+        $docker = Docker::create($client);
 		if (null === $this->getClient() ) {
-			$this->setClient( Docker::create() ) ;
+			$this->setClient( $docker ) ;
 		}
 	}
 
