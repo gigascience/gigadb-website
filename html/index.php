@@ -79,15 +79,15 @@
             ?>
             <tr>
                 <td>
-                    <?= $account->doi_suffix?>
+                    <?= $account->doi?>
                 </td>
-                <td><a id="Upload_<?= $account->doi_suffix?>" type="button" href="/uploader.php?d=<?= $account->doi_suffix?>">Uploader</a></td>
-                <td><a id="Upload_<?= $account->doi_suffix?>" type="button" href="/downloader.php?d=<?= $account->doi_suffix?>">Mockup</a></td>
+                <td><a id="Upload_<?= $account->doi?>" type="button" href="/uploader.php?d=<?= $account->doi?>">Uploader</a></td>
+                <td><a id="Upload_<?= $account->doi?>" type="button" href="/downloader.php?d=<?= $account->doi?>">Mockup</a></td>
                 <td>
-                    <?= $account->ulogin . "/" . $account->utoken?>
+                    <?= $account->upload_login . "/" . $account->upload_token?>
                 </td>
                 <td>
-                    <?= $account->dlogin . "/" . $account->dtoken?>
+                    <?= $account->download_login . "/" . $account->download_token?>
                 </td>
                 <td>
                     <?= $account->status ?>
