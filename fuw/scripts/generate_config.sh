@@ -105,10 +105,26 @@ VARS='$COOKIE_RANDOM_KEY'
 envsubst $VARS < $SOURCE > $TARGET
 
 # generate variable files for Yii2
+set +e
+nc -zv docker 2375 2> /dev/null
+name_is_docker=$?
+nc -zv host.docker.internal 2375 2> /dev/null
+name_is_host_docker=$?
+if [ $name_is_docker -eq 0 ];
+then
+	REMOTE_DOCKER_HOSTNAME="tcp://docker:2375"
+elif [ $name_is_host_docker -eq 0 ];
+then
+	REMOTE_DOCKER_HOSTNAME="tcp://host.docker.internal:2375"
+else
+	REMOTE_DOCKER_HOSTNAME="error"
+fi
+export REMOTE_DOCKER_HOSTNAME
 SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/params-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/common/config/params-local.php
-VARS='$FUW_JWT_KEY'
+VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME'
 envsubst $VARS < $SOURCE > $TARGET
+set -e
 
 SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/params-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/frontend/config/params-local.php
