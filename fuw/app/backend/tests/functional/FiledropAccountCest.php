@@ -5,6 +5,8 @@ use common\fixtures\UserFixture;
 use backend\models\FiledropAccount;
 use backend\models\DockerManager;
 
+use Yii;
+
 class FiledropAccountCest
 {
 	/**
@@ -153,13 +155,15 @@ class FiledropAccountCest
     	$filedrop->setDockerManager($dockerManager);
     	$filedrop->status = "active";
     	$filedrop->save();
+        $I->assertEquals("active", $filedrop->status);
     	$I->amBearerAuthenticated("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBUEkgQWNjZXNzIHJlcXVlc3QgZnJvbSBjbGllbnQiLCJpc3MiOiJ3d3cuZ2lnYWRiLm9yZyIsImF1ZCI6ImZ1dy5naWdhZGIub3JnIiwiZW1haWwiOiJzZnJpZXNlbkBqZW5raW5zLmluZm8iLCJuYW1lIjoiSm9obiBTbWl0aCIsImFkbWluX3N0YXR1cyI6InRydWUiLCJyb2xlIjoiY3JlYXRlIiwiaWF0IjoiMTU2MTczMDgyMyIsIm5iZiI6IjE1NjE3MzA4MjMiLCJleHAiOiIyNzI5NTEzMjIwIn0.uTZpDB1eCGt3c_23wLaVxpFUw_WFH2Jep_vpzky2o18");
     	$I->sendDELETE("/filedrop-accounts/" . $filedrop->id);
     	$I->seeResponseCodeIs(204);
+        $filedrop = FiledropAccount::findOne(["doi" => $doi]);
+    	$I->assertEquals("terminated", $filedrop->status, "account set to 'terminated'");
 
-    	$accounts = FiledropAccount::find()
-    		->where(['doi' => $doi])
-    		->all();
-    	$I->assertCount(0, $accounts);
+        $I->assertNotTrue(file_exists("/var/incoming/ftp/$doi"), "incoming directory removed");
+        $I->assertNotTrue(file_exists("/var/repo/$doi"), "repository removed");
+        $I->assertNotTrue(file_exists("/var/private/$doi"), "private directory removed");
     }
 }
