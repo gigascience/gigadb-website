@@ -99,6 +99,28 @@ $ curl -sSL -D - -o /dev/null -i -H "Accept:application/json" -H "Content-Type:a
 > This make sense when seeing REST endpoints as resources to act upon.
 > it can be changed by reconfiguring 'urlManager' in main.php.
 
+## Accessing the docker daemon from container
+
+if using a mac, first install socat using brew:
+```
+$ brew install socat
+```
+then do:
+```
+$ socat TCP-LISTEN:2375,reuseaddr,fork UNIX-CONNECT:/var/run/docker.sock &
+```
+
+because Docker for Mac doesn't allow  the daemon on a TCP port. The above steps are not necessary on Windows or Linux.
+
+Using a php dev container (test or console services), one can then use:
+
+```
+$ docker-compose exec console bash
+# echo -e "GET /info HTTP/1.0\r\n" | nc -v host.docker.internal 2375 | awk 'NR==1,/^\r$/ {next} {printf "%s%s",$0,RT}' | jq
+```
+
+For security, do not mount directly the Docker unix socket in any container. TCP socket access is the safe method.
+
 ## Services
 
 ### ftpd
