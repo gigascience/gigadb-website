@@ -106,9 +106,10 @@ envsubst $VARS < $SOURCE > $TARGET
 
 # generate variable files for Yii2
 set +e
-nc -zv docker 2375 2> /dev/null
+default_route_via_host=$(/sbin/ip route|awk '/default/ { print $3 }')
+nc -zv docker 2375
 name_is_docker=$?
-nc -zv host.docker.internal 2375 2> /dev/null
+nc -zv host.docker.internal 2375
 name_is_host_docker=$?
 if [ $name_is_docker -eq 0 ];
 then
@@ -117,9 +118,10 @@ elif [ $name_is_host_docker -eq 0 ];
 then
 	REMOTE_DOCKER_HOSTNAME="tcp://host.docker.internal:2375"
 else
-	REMOTE_DOCKER_HOSTNAME="error"
+	REMOTE_DOCKER_HOSTNAME="tcp://$default_route_via_host:2375"
 fi
 export REMOTE_DOCKER_HOSTNAME
+echo "Writing REMOTE_DOCKER_HOSTNAME to params-local as '$REMOTE_DOCKER_HOSTNAME'"
 SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/params-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/common/config/params-local.php
 VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME'
