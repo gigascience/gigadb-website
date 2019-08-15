@@ -26,4 +26,14 @@ class FiledropAccountController extends ActiveController
 
         return $behaviors;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['delete']['class'] = 'backend\actions\FiledropAccountController\DeleteAction';
+        return $actions;
+    }
 }
