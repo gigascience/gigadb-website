@@ -26,16 +26,16 @@ class DeleteAction extends \yii\rest\DeleteAction
             call_user_func($this->checkAccess, $account->id, $account);
         }
 
-        $account->status = FiledropAccount::STATUS_TERMINATED;
+        $account->status = "terminated";
 
         if ( ! $account->validate() ) {
-        	throw new ServerErrorHttpException('validation failed:'.implode("\n", $account->getErrorSummary(true)));
+        	throw new ServerErrorHttpException('Failure during termination of account');
         }
         else if ( ! $account->save(false) ) {
-            throw new ServerErrorHttpException("Failed to terminate account for dataset ".$account->doi);
+            throw new ServerErrorHttpException('Failed to update terminated account');
         }
         else {
-        	Yii::info("Terminated Filedrop Account for dataset ".$account->doi);
+        	Yii::info("Terminated Filedrop Account $id");
         }
 
         Yii::$app->getResponse()->setStatusCode(204);
