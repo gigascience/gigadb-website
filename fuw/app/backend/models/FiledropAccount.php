@@ -160,6 +160,19 @@ class FiledropAccount extends \yii\db\ActiveRecord
     }
 
     /**
+     * Remove directories required for suspending a filedrop account
+     *
+     * @param string $doi dataset identifier for which to remove directory
+     * @return bool whether or not the operation is successful
+     */
+    function removeDirectories(string $doi): bool
+    {
+        return Yii::$app->fs->deleteDir("incoming/ftp/$doi")
+                && Yii::$app->fs->deleteDir("repo/$doi")
+                && Yii::$app->fs->deleteDir("private/$doi");
+    }
+
+    /**
      * Create a randomly generated string token and write to file
      *
      * @param string $doi dataset identifier
@@ -169,8 +182,11 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     public function makeToken(string $doi, string $fileName): bool
     {
-        $token = $this->generateRandomString(16);
-        return file_put_contents("/var/private/$doi/".$fileName, $token.PHP_EOL.$token.PHP_EOL) ? true : false ;
+        $token = self::generateRandomString(16);
+        return Yii::$app->fs->put(
+                        "private/$doi/".$fileName,
+                        $token.PHP_EOL.$token.PHP_EOL
+                    );
     }
 
     /**
@@ -180,7 +196,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
      * @return string generated string
      *
      */
-    private function generateRandomString(int $size): string
+    public static function generateRandomString(int $size): string
     {
         $range = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $input_length = strlen($range);
@@ -209,27 +225,37 @@ class FiledropAccount extends \yii\db\ActiveRecord
 
         $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd downloader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u downloader -d /home/downloader/$doi  < /var/private/$doi/downloader_token.txt"] ;
 
-        $status = $status && $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
-        $status = $status && $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
+        $upload_response = $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
+        $download_response = $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
 
-        // $status = 0 ;
-        // exec("/var/scripts/create_upload_ftp.sh $dataset",$output1, $status);
-        // error_log(implode("\n",$output1));
-        // exec("/var/scripts/create_download_ftp.sh $dataset",$output2, $status);
-        // error_log(implode("\n",$output2));
-        // sleep(2);
-        // return !$status;
+        if (null === $upload_response || null === $download_response) {
+            return false;
+        }
+        return $status;
+    }
 
-        // 1. get name of ftpd container
-        //      getFTPContainerId(): string
-        // 2. load exec resource
-        //      loadExecResource(string $containerId): string
-        // 3. start exec resource
-        //      startExecResource(string $execId): DockerRawStream::class
-        // 4. check output
-        //      checkAccountCreated(DockerRawStream::class $dockerStream): bool
-        //
-        // see: https://github.com/docker-php/docker-php/blob/master/tests/Resource/ExecResourceTest.php
+    /**
+     * Remove ftp account on the ftpd container using Docker API
+     *
+     * @param \backend\models\DockerManager $dockerManager instance of docker API
+     * @param string $accountType type of account ("uploader" or "downloader")
+     * @param string $doi dataset identifier
+     * @return bool if successful return true, otherwise false
+     */
+    function removeFTPAccount(\backend\models\DockerManager $dockerManager, string $doi): bool
+    {
+        $status = true;
+
+        $uploaderCommandArray = ["bash","-c","/usr/bin/pure-pw userdel uploader-dummydoi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m"] ;
+
+        $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw userdel downloader-dummydoi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m"] ;
+
+        $upload_response = $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
+        $download_response = $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
+
+        if (null === $upload_response || null === $download_response) {
+            return false;
+        }
         return $status;
     }
 
@@ -269,11 +295,22 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     public function beforeValidate(): bool
     {
-        $prepared = $this->prepareAccountSetFields($this->getDOI());
-        $ftpd_status = $prepared && $this->createFTPAccount($this->getDockerManager(),
-                                                            $this->getDOI());
-        if ($prepared && $ftpd_status) {
-            $this->setStatus("active");
+        if (parent::beforeValidate()) {
+            if ( $this->getIsNewRecord() ) {
+                $prepared = $this->prepareAccountSetFields($this->getDOI());
+                $ftpd_status = $prepared && $this->createFTPAccount($this->getDockerManager(),
+                                                                    $this->getDOI());
+                if ($prepared && $ftpd_status) {
+                    $this->setStatus("active");
+                    return true;
+                }
+                return false;
+            }
+            else if ("terminated" === $this->status) {
+                $directoryRemoved = $this->removeDirectories($this->doi);
+                return $directoryRemoved && $this->removeFTPAccount($this->getDockerManager(),
+                                                                    $this->getDOI());
+            }
             return true;
         }
         return false;

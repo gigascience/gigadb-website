@@ -20,7 +20,8 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "jane-php/open-api-runtime": "^4 <4.3",
         "docker-php/docker-php": "~2.0.0",
-        "sizeg/yii2-jwt": "~1.2.0"
+        "sizeg/yii2-jwt": "~1.2.0",
+        "creocoder/yii2-flysystem": "~0.9.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
