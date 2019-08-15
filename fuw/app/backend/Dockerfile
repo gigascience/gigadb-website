@@ -209,6 +209,14 @@ RUN if [ ${INSTALL_DOCKER_API_ACCESS} = true ]; then \
     echo 'www-data ALL=(ALL) NOPASSWD: /usr/bin/curl -s --unix-socket /var/run/docker.sock *' >> /etc/sudoers \
 ;fi
 
+ARG INSTALL_IPROUTE2=false
+
+RUN if [ ${INSTALL_IPROUTE2} = true ]; then \
+    apt-get update -yq && \
+    apt-get install -y iproute2 && \
+    apt-get clean \
+;fi
+
 ARG APP_ROOT_DIR=/var/www
 WORKDIR ${APP_ROOT_DIR}
 
