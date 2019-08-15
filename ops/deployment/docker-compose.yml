@@ -272,6 +272,7 @@ services:
         - PG_CLIENT_VERSION=9.6
         - INSTALL_PG_CLIENT=true
         - INSTALL_XDEBUG=true
+        - INSTALL_IPROUTE2=true
     expose:
       - "9001"
     volumes:
