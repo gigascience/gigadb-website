@@ -66,34 +66,69 @@ The commands to execute for tusd hooks and FTP watcher commands are located in t
 
 ### GigaDB Webapp
 
-The legacy web site that serve dataset files and their metadata.
+The main web site that serve dataset files and their metadata.
 It's built with Yii 1 framework (but it can be coded with Yii2 code).
 The web application is fronted by the nginx web and TLS termination server container and it runs inside a php-fpm/php 7.1 container using official Debian Stretch (8) based image.
 
-The automated testing for this webapp make use of three other containers, test container, phantomjs container and a database container.
+The automated testing for this webapp make use of three other containers, test container, phantomJS container and a PosgreSQL server container.
+
+The docker-compose service for this container is called "application", while that of the side-car (auxiliary) services mentioned above are "test", "phantomjs" and "database" respectively.
+
+The "test" and "application" service are built from the same Dockerfile, but they are parametized differenlty using arguments set in the docker-compose files that enable/disable corresponding argument flags in the Dockerfile. The "test" services has debugging, testing and console related flags switched on that the "application" have switched off.
 
 #### test
 
+We use this container service to run all tests (unit, functional and acceptance) for the Gigadb webapp, and also for debugging as it has a bash console.
+
 #### phantomjs
+
+This service runs a PhantomJS WebKit headless browser to execute the acceptance tests scenarios against a concrete deployment of GigaDB webapp.
 
 #### database
 
+This container service run a PostgreSQL server which is the database server used by all webapps (GigaDB and File Upload Wizard).
+
+A database serves a single webapp's functions and storage need so each webapp has it's own database on the server. The database objects are stored in the default "public" schema of each database.
+
+The container service called "database" is the official PostgreSQL's Alpine Linux variant. Custom initialiation scripts have been setup to configure password-less access to GigaDB database to all services on the same virtual network as the database (which excludes public web facing servers), and to initialise the database with a schema, reference data on brand new deployments for both test and regular database.
+
 ### File Upload Wizard Webapps
 
-The user-visible web application for authors to upload, reviewers to audit and curators to administrate the files associated to a newly accepted manuscript. It is built on Yii 2 web framework using Yii2 Advanced project template. It consists of three sub-apps, each running in their container.
-File Upload Wizard use the same database server container as Gigadb Webapp, but has a separate database schema.
+The user-visible web application for authors to upload, reviewers to audit and curators to administrate the files associated to a newly accepted manuscript. It is built on Yii 2 web framework using Yii2 Advanced project template. It consists of three components or services, each running in their own php-fpm container.
+There is only one Dockerfile for the "console" and "fuw-admin". However the build is parametized using boolean arguments switched on and off in the docker-compose files "args" section that in turn switch on or off the corresponding arguments flags in the Dockerfile.
+
+Eventually the "fuw-user" front-end component which contains the actual file upload forms will use the same parametized Dockerfile, but it's not the case yet as fuw-user is still a dummy or scaffolding for now.
+
+File Upload Wizard components use the same database server service as the Gigadb Webapp, but has one distinct database with a schema that serves the workflow of its three components.
 
 #### fuw-admin
 
-In Yii2 terminology, this is the backend application. Intended only for admin task, in our case curator's tasks. Because the workflow for curator is triggered using UX in Gigadb Webapp, fuw-admin can be built as a only a REST Api to receive commands from Gigadb Webapp.
+In Yii2 terminology, this is the backend application. Intended only for admin task, in our case curator's tasks. Because the workflow for curator is triggered using UX in Gigadb Webapp, fuw-admin can be built as a only a REST API to receive commands from Gigadb Webapp.
+
+The API is scaffolded using the Yii REST controllers library, and the testing relies on the Yii2 and REST modules of the Codeception testing framework.
 
 #### console
 
+The "console" service is similar in role for File Upload Wizard to the "test" service in the GigaDB webapp: used for running tests, command-line experiments and debugging.
+
+And additional role is to run back-office workers (implemented as Yii2  console controllers).
+
+The script to configure and start the prototype also can be found there as the Yii2 console controller "PrototypeController".
+
 #### fuw-user
+
+Not yet built, just the scaffolding.
+The user accessible (UX) component of the File Upload Wizard webapp.
+
+In the Yii2 Advanced Template application architecture, this is the "frontend" application.
 
 ### Certificate management
 
 ### Console and testing
 
-### Prototype
+
+### Networking
+
+There are two Docker networks, the "web-tier" and "db-tier", to avoid exposing back-office applications to the open web.
+
 
