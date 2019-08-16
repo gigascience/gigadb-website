@@ -132,8 +132,14 @@ Valid 3 months, the renewal process is performed automatically upon deployment t
 
 For development environment we are using the minica project to create and manage self-signed certifcate on development machine, the CA keys of which needs to be added in the web browsers (at least for Firefox) in order to be supported.
 
-### Console and testing
+### Testing
 
+Like GigaDB webapp, FUW webapp's test harness is made of unit tests, functional tests and acceptance tests.
+
+FUW webapp uses Codeception as an integrated runner, framework and helper for all testing. It uses and is compatible with PHPUnit for unit tests and functional tests. It can uses Behat's gherkin DSL (domain specific language) for the writing acceptance tests by the business. However it cannot reuse Behat's scenario implementation, using its own implementation engine (Cest) instead. Codeception is configured by default with Yii2 Advanced Template. Code coverage can be calculated across unit tests and funcional tests. It's a superior solution to the adhoc solution used in GigaDB webapp. Eventually all webapp should use Codeception.
+
+The project test runners will run the tests for all webapps for a given type (unit, functional, acceptance). Coverage across webapps cannot be merged at this stage. As the low-level data format of the older version PHPunit used in GigaDB webapp is incompatible with coverage merging tools.
+Eventually when GigaDB webapp's testing apparatus can be updated, we will want to merge coverage for all webapps. In the meantime, it's not a problem, as the only other webapp (FUW) has coverage above 70%.
 
 ### Networking
 
