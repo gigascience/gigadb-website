@@ -1678,7 +1678,7 @@ def step_impl(context):
 @step("I choose a valid matadata file to upload on File tab")
 def step_impl(context):
     xpath_choose_file = "//input[@id='files']"
-    wait_for_xpath_element(context, time_sec=5, xpath_element=xpath_choose_file)
+    wait_for_xpath_element(context, time_sec=60, xpath_element=xpath_choose_file)
     locate_file = os.getcwd() + r"/protected/tests/behave/file_metadata.csv"
     context.browser.find_element_by_xpath(xpath_choose_file).send_keys(locate_file)
     time.sleep(2)
