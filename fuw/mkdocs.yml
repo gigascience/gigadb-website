@@ -1,7 +1,7 @@
 site_name: File Upload Wizard Docs
 nav:
     - Software Architecture: software_architecture.md
-    - Operations: ops.md
+    - Operational Guide: ops.md
     - Developer Guide: developer_guide.md
     - REST endpoints Docs: rest.md
     - PHPDocs: phpdocs/index.md
