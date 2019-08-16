@@ -29,13 +29,13 @@ class DeleteAction extends \yii\rest\DeleteAction
         $account->status = "terminated";
 
         if ( ! $account->validate() ) {
-        	throw new ServerErrorHttpException('Failure during termination of account');
+        	throw new ServerErrorHttpException('validation failed:'.implode("\n", $account->getErrorSummary(true)));
         }
         else if ( ! $account->save(false) ) {
-            throw new ServerErrorHttpException('Failed to update terminated account');
+            throw new ServerErrorHttpException("Failed to terminate account for dataset ".$account->doi);
         }
         else {
-        	Yii::info("Terminated Filedrop Account $id");
+        	Yii::info("Terminated Filedrop Account for dataset ".$account->doi);
         }
 
         Yii::$app->getResponse()->setStatusCode(204);
