@@ -167,9 +167,25 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     function removeDirectories(string $doi): bool
     {
-        return Yii::$app->fs->deleteDir("incoming/ftp/$doi")
-                && Yii::$app->fs->deleteDir("repo/$doi")
-                && Yii::$app->fs->deleteDir("private/$doi");
+        if ( Yii::$app->fs->has("incoming/ftp/$doi") ) {
+            if ( ! Yii::$app->fs->deleteDir("incoming/ftp/$doi") ) {
+                return false;
+            }
+        }
+
+        if ( Yii::$app->fs->has("repo/$doi") ) {
+            if ( ! Yii::$app->fs->deleteDir("repo/$doi") ) {
+                return false;
+            }
+        }
+
+        if ( Yii::$app->fs->has("private/$doi") ) {
+            if ( ! Yii::$app->fs->deleteDir("private/$doi") ) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -308,11 +324,15 @@ class FiledropAccount extends \yii\db\ActiveRecord
             }
             else if ("terminated" === $this->status) {
                 $directoryRemoved = $this->removeDirectories($this->doi);
-                return $directoryRemoved && $this->removeFTPAccount($this->getDockerManager(),
-                                                                    $this->getDOI());
+                $directoryAndFTPremoved = $directoryRemoved && $this->removeFTPAccount(
+                    $this->getDockerManager(),
+                    $this->getDOI()
+                );
+                return $directoryAndFTPremoved ;
             }
             return true;
         }
+        Yii::error('parent::beforeValidate() returns false');
         return false;
     }
 }
