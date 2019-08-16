@@ -13,7 +13,7 @@
 
 	// retrieve id of account:
 	$dbh = connectDB();
-    $sql = "select id from filedrop_account where doi = ? ";
+    $sql = "select id from filedrop_account where status='active' and doi = ? ";
     $st = $dbh->prepare($sql);
     $st->bindParam(1, $params['d'], PDO::PARAM_STR);
     $st->execute();

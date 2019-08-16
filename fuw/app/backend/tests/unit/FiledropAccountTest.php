@@ -95,6 +95,14 @@ class FiledropAccountTest extends \Codeception\Test\Unit
     }
 
     /**
+     * test remoDirectories perform no-op and return true if files to delete don't exist
+     */
+    public function testNoOpRemoveDirectories()
+    {
+        $result = $this->filedrop->removeDirectories("dummydir");
+        $this->assertTrue($result);
+    }
+    /**
      * test FileDrop can create create a token file
      */
     public function testCanCreateTokens()
