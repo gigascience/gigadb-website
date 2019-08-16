@@ -79,6 +79,30 @@ class FiledropAccountTest extends \Codeception\Test\Unit
     }
 
     /**
+     * test can remove directories
+     */
+    public function testCanRemoveDirectories()
+    {
+        exec("mkdir -p /var/incoming/ftp/dummydir/some-subdir");
+        exec("mkdir -p /var/repo/dummydir/some-subdir");
+        exec("mkdir -p /var/private/dummydir");
+
+        $result = $this->filedrop->removeDirectories("dummydir");
+
+        $this->assertNotTrue(file_exists("/var/incoming/ftp/dummydir/some-subdir"));
+        $this->assertNotTrue(file_exists("/var/repo/dummydir/some-subdir"));
+        $this->assertNotTrue(file_exists("/var/private/dummydir"));
+    }
+
+    /**
+     * test remoDirectories perform no-op and return true if files to delete don't exist
+     */
+    public function testNoOpRemoveDirectories()
+    {
+        $result = $this->filedrop->removeDirectories("dummydir");
+        $this->assertTrue($result);
+    }
+    /**
      * test FileDrop can create create a token file
      */
     public function testCanCreateTokens()
@@ -136,6 +160,41 @@ class FiledropAccountTest extends \Codeception\Test\Unit
                 );
 
         $response = $this->filedrop->createFTPAccount( $mockDockerManager, $doi );
+    }
+
+    /**
+     * test sending account removal to the ftpd container
+     * This test is to specify the internal logic (behaviours), not end-to-end
+     * end-to-end testing of the docker interaction will be done in functional tests
+     */
+    public function testRemoveFTPAccount()
+    {
+        $uploaderCommandArray = ["bash","-c","/usr/bin/pure-pw userdel uploader-dummydoi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m"] ;
+
+        $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw userdel downloader-dummydoi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m"] ;
+
+         $doi = "dummydoi";
+
+        $mockDockerManager = $this->getMockBuilder(\backend\models\DockerManager::class)
+                    ->setMethods(['loadAndRunCommand'])
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $mockDockerManager->expects($this->at(0))
+                ->method('loadAndRunCommand')
+                ->with(
+                    $this->equalTo("ftpd"),
+                    $this->equalTo($uploaderCommandArray)
+                );
+
+        $mockDockerManager->expects($this->at(1))
+                ->method('loadAndRunCommand')
+                ->with(
+                    $this->equalTo("ftpd"),
+                    $this->equalTo($downloaderCommandArray)
+                );
+
+        $response = $this->filedrop->removeFTPAccount( $mockDockerManager, $doi );
     }
 
     /**
