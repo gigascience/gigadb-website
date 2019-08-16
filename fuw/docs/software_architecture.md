@@ -124,6 +124,14 @@ In the Yii2 Advanced Template application architecture, this is the "frontend" a
 
 ### Certificate management
 
+TLS termination is provided in the "web" container service, using TLS certificates from Let's Encrypt implemented in Nginx.
+
+In addition of encrypting web traffic to GigaDB and FUW webapps, it encrypt traffic to  the TUS daemon in "tusd" container service.
+
+Valid 3 months, the renewal process is performed automatically upon deployment to staging/production environment.
+
+For development environment we are using the minica project to create and manage self-signed certifcate on development machine, the CA keys of which needs to be added in the web browsers (at least for Firefox) in order to be supported.
+
 ### Console and testing
 
 
