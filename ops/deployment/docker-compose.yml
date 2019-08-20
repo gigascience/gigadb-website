@@ -140,13 +140,14 @@ services:
       YII2_PATH: ${YII2_PATH}
     image: ${COMPOSE_PROJECT_NAME}_fuw-admin:latest
     volumes:
-      - ${APPLICATION}/fuw/app:/app
-      - ${APPLICATION}/.env:/app/.env
+      - ${APPLICATION}/fuw/app:/var/fuw
+      - ${APPLICATION}/ops/scripts:/ops/scripts
+      - ${APPLICATION}/.env:/var/fuw/.env
     depends_on:
       - fuw-admin
       - database
       # - phantomjs
-    command: composer install
+    command: bash -c "cd /var/fuw && /ops/scripts/webapp_setup.sh"
     networks:
       - web-tier
 
