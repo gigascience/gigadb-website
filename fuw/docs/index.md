@@ -6,7 +6,7 @@ Web application for authors to upload dataset of accepted papers, for reviewers 
 
 ```
 $ socat TCP-LISTEN:2375,reuseaddr,fork UNIX-CONNECT:/var/run/docker.sock &
-$ docker-compose up -d gigadb fuw-admin
+$ docker-compose up -d gigadb fuw
 $ docker-compose up -d web
 $ docker-compose up -d phantomjs
 ```
