@@ -12,5 +12,5 @@ elif [ $GIGADB_ENV == "staging" ];then
 	composer install -a --no-dev
 fi
 
-./protected/yiic lesscompiler
+
 
