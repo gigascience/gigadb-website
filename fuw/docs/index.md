@@ -2,13 +2,31 @@
 
 Web application for authors to upload dataset of accepted papers, for reviewers to audit the uploaded dataset and for curators to publish the dataset to the public.
 
-## Start the web applications
+## Start the GigaDB and File Upload Wizard webapps
+
+```
+$ socat TCP-LISTEN:2375,reuseaddr,fork UNIX-CONNECT:/var/run/docker.sock &
+$ docker-compose up -d gigadb fuw-admin
+$ docker-compose up -d web
+$ docker-compose up -d phantomjs
+```
+**Note:** socat, which needs to be installed (using brew on macOS) is only necessary when running Docker Desktop for macOS and Windows. Not required on Linux.
 
 ## Start the prototype
 
+Configure URLs:
 ```
 ./yii prototype/setup --protoUrl http://fuw-proto-dev.pommetab.com:9170/ --apiUrl http://fuw-admin-api/filedrop-accounts --tusUrl http://fuw-proto-dev.pommetab.com:9170/files/
 ```
+Start the prototype:
+
+```
+$ docker-compose up -d fuw-proto
+$ docker-compose exec web /usr/local/bin/enable_sites "fuw-proto.dev.http"
+```
+
+The protototype will be availabe at:
+(http://fuw-proto-dev.pommetab.com:9170/)
 
 ## Start and accessing the documentation server
 
