@@ -119,7 +119,24 @@ services:
       - application
       - database
       # - chrome
-    command: ./ops/scripts/webapp_setup.sh
+    command: bash -c "./ops/scripts/webapp_setup.sh && ./protected/yiic lesscompiler"
+    networks:
+      - web-tier
+
+  fuw:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    image: ${COMPOSE_PROJECT_NAME}_fuw-admin:latest
+    volumes:
+      - ${APPLICATION}/fuw/app:/var/fuw
+      - ${APPLICATION}/ops/scripts:/ops/scripts
+      - ${APPLICATION}/.env:/var/fuw/.env
+    depends_on:
+      - fuw-admin
+      - database
+      # - phantomjs
+    command: bash -c "cd /var/fuw && /ops/scripts/webapp_setup.sh"
     networks:
       - web-tier
     cap_drop:
@@ -134,22 +151,6 @@ services:
     volumes:
       - ${APPLICATION}/:/var/www
     command: bash -c "./protected/yiic lesscompiler"
-    networks:
-      - web-tier
-
-  fuw:
-    environment:
-      YII_PATH: ${YII_PATH}
-      YII2_PATH: ${YII2_PATH}
-    image: ${COMPOSE_PROJECT_NAME}_fuw-admin:latest
-    volumes:
-      - ${APPLICATION}/fuw/app:/app
-      - ${APPLICATION}/.env:/app/.env
-    depends_on:
-      - fuw-admin
-      - database
-      # - phantomjs
-    command: composer install
     networks:
       - web-tier
 
