@@ -9,6 +9,7 @@ services:
       YII2_PATH: ${YII2_PATH}
     volumes:
       - assets:/var/www/assets
+      - captchas:/var/www/images/tempcaptcha
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le
     ports:
@@ -41,6 +42,7 @@ services:
       YII2_PATH: ${YII2_PATH}
     volumes:
       - assets:/var/www/assets
+      - captchas:/var/www/images/tempcaptcha
     expose:
       - "9000"
     networks:
@@ -82,4 +84,5 @@ volumes:
   assets:
   le_config:
   le_webrootpath:
+  captchas:
 
