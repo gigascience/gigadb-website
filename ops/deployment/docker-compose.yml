@@ -29,8 +29,8 @@ services:
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
-    # command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-backend.dev.http"]
-    command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-backend.dev.http", "fuw-proto.dev.http"]
+    command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "gigadb.dev.https", "fuw-backend.dev.http"]
+    # command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-backend.dev.http", "fuw-proto.dev.http"]
 
   certbot:
     image: certbot/certbot
@@ -193,10 +193,7 @@ services:
     volumes:
       - ${APPLICATION}/:/var/www
     shm_size: '1gb' # to avoid a known issue
-    command: bash -c "npm install /var/www/ops/scripts"
-    networks:
-      - web-tier
-      - db-tier
+    command: bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR"
 
 
   fuw-admin:
@@ -377,6 +374,14 @@ services:
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
+
+  local-cert:
+    build:
+      context: ..
+      dockerfile: packaging/Minica-Dockerfile
+    volumes:
+      - le_config:/ca
+    command: --domains '*.gigasciencejournal.com'
 
 networks:
   web-tier:
