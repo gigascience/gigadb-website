@@ -28,7 +28,7 @@ services:
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
-    command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-backend.dev.http"]
+    command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "gigadb.dev.https", "fuw-backend.dev.http"]
     # command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-backend.dev.http", "fuw-proto.dev.http"]
 
   certbot:
@@ -388,6 +388,14 @@ services:
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
+
+  local-cert:
+    build:
+      context: ..
+      dockerfile: packaging/Minica-Dockerfile
+    volumes:
+      - le_config:/ca
+    command: --domains '*.gigasciencejournal.com'
 
 networks:
   web-tier:
