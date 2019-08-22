@@ -81,8 +81,8 @@
                 <td>
                     <?= $account->doi?>
                 </td>
-                <td><a id="Upload_<?= $account->doi?>" type="button" href="/uploader.php?d=<?= $account->doi?>">Uploader</a></td>
-                <td><a id="Upload_<?= $account->doi?>" type="button" href="/downloader.php?d=<?= $account->doi?>">Mockup</a></td>
+                <td><a id="Upload_<?= $account->doi?>" type="button" href="<?= $web_endpoint ?>uploader.php?d=<?= $account->doi?>">Uploader</a></td>
+                <td><a id="Upload_<?= $account->doi?>" type="button" href="<?= $web_endpoint ?>downloader.php?d=<?= $account->doi?>">Mockup</a></td>
                 <td>
                     <?= $account->upload_login . "/" . $account->upload_token?>
                 </td>
