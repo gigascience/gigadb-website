@@ -37,7 +37,7 @@
 	 */
 	function getFileTable(object $dbh, int $dataset_doi): array
 	{
-		$sql = "select * from file where dataset_id = (select id from dataset where identifier = ?)  and status = 'uploading'";
+		$sql = "select * from upload where doi = ?  and status = 'uploading'";
 		$st = $dbh->prepare($sql);
 		$st->bindParam(1, $dataset_doi);
 		$st->execute();
