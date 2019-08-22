@@ -2,7 +2,7 @@
 
 	require 'lib/db.php';
 
-    $appconfig = parse_ini_file("/app/proto/appconfig.ini");
+    $appconfig = parse_ini_file("/var/appconfig.ini");
     $web_endpoint = $appconfig["web_endpoint"];
 
 	$thisurl = parse_url($_SERVER['REQUEST_URI']);
@@ -30,7 +30,6 @@
 
 	/**
 	 * Return the list of file and metadata for a given dataset
-     * TODO: valid status are 'uploading', 'uploaded'
 	 *
 	 * @param object $dbh database handle
 	 * @param int $dataset DOI suffix
@@ -38,7 +37,7 @@
 	 */
 	function getFileTable(object $dbh, int $dataset_doi): array
 	{
-		$sql = "select * from upload where doi = ?  and status = 0";
+		$sql = "select * from upload where doi = ?  and status = 'uploading'";
 		$st = $dbh->prepare($sql);
 		$st->bindParam(1, $dataset_doi);
 		$st->execute();
@@ -62,7 +61,7 @@
             <?= $params["d"]?>
         </h1>
     </headers>
-    <nav><a href="/proto/">[Go back to Dashboard]</a></nav>
+    <nav><a href="<?= $web_endpoint ?>">[Go back to Dashboard]</a></nav>
     <main role="main">
         <section>
             <article>

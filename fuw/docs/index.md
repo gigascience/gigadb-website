@@ -7,6 +7,7 @@ Web application for authors to upload dataset of accepted papers, for reviewers 
 ```
 $ socat TCP-LISTEN:2375,reuseaddr,fork UNIX-CONNECT:/var/run/docker.sock &
 $ docker-compose up -d gigadb fuw
+$ docker-compose exec console /app/yii migrate --interactive=0
 $ docker-compose up -d web
 $ docker-compose up -d phantomjs
 ```
@@ -16,13 +17,14 @@ $ docker-compose up -d phantomjs
 
 Configure URLs:
 ```
-./yii prototype/setup --protoUrl http://fuw-proto-dev.pommetab.com:9170/ --apiUrl http://fuw-admin-api/filedrop-accounts --tusUrl http://fuw-proto-dev.pommetab.com:9170/files/
+$ docker-compose exec bash
+# cd /app
+# ./yii prototype/setup --protoUrl http://gigadb.gigasciencejournal.com:9170/proto/ --apiUrl http://fuw-admin-api/filedrop-accounts --tusUrl http://gigadb.gigasciencejournal.com:9170/files/
 ```
 Start the prototype:
 
 ```
 $ docker-compose up -d fuw-proto
-$ docker-compose exec web /usr/local/bin/enable_sites "fuw-proto.dev.http"
 ```
 
 The protototype will be availabe at:

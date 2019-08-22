@@ -58,21 +58,21 @@ function getFileFormatFromFile(string $file_name): string
  * Construct the ftp link
  *
  * @param string $file_name the name of the file
- * @param int $datasetid the dataset identifier associated to the file
+ * @param string $dataset id the dataset identifier associated to the file
  * @return string the ftp url
  */
-function generateFTPLink(string $file_name, int $dataset): string
+function generateFTPLink(string $file_name, string $dataset): string
 {
-	$handle = fopen("/var/access/$dataset/download_token.txt", "r");
+	$handle = fopen("/var/access/$dataset/downloader_token.txt", "r");
 	$line = fgets($handle) ;
 	if (true == $line) {
-		$download_token = chop($line);
+		$downloader_token = chop($line);
 	}
 	fclose($handle);
 
 	$appconfig = parse_ini_file("/var/appconfig.ini");
 	$ftpd_endpoint = $appconfig["ftpd_endpoint"] ?? "localhost";
-	$ftp_link = "ftp://d-$dataset:$download_token@$ftpd_endpoint:9021/$file_name";
+	$ftp_link = "ftp://d-$dataset:$downloader_token@$ftpd_endpoint:9021/$file_name";
 	return $ftp_link;
 }
 /**
@@ -127,10 +127,10 @@ function touchFlag()
 /**
  * get flag file
  *
- * @param int DOI
+ * @param string DOI
  * @return string path to flag file
  */
-function getFlag(int $doi_suffix): string
+function getFlag(string $doi_suffix): string
 {
 	return FLAG_PATH."/".$doi_suffix;
 }
@@ -138,10 +138,10 @@ function getFlag(int $doi_suffix): string
 /**
  * set flag file
  *
- * @param int DOI
+ * @param string DOI
  * @return bool whether touching file was successful or not
  */
-function setFlag(int $doi_suffix): bool
+function setFlag(string $doi_suffix): bool
 {
 	return touch(FLAG_PATH."/".$doi_suffix);
 }
@@ -204,10 +204,10 @@ function is_newer(string $directory_path): bool
  * Gather file metadata
  *
  * @param string $file_name the name of the file
- * @param int $datasetid the dataset identifier associated to the file
+ * @param string $dataset id the dataset identifier associated to the file
  * @return array array of metadata key/value pair
  */
-function fileMetadata(string $file_name, int $dataset): array
+function fileMetadata(string $file_name, string $dataset): array
 {
 	$file_path = "/home/downloader/$dataset/$file_name";
 	$file_stats = stat($file_path);
@@ -241,8 +241,9 @@ $appconfig = parse_ini_file("/var/appconfig.ini");
 		$db_user = $appconfig["db_user"];
 		$db_password = $appconfig["db_password"];
 		$db_source = $appconfig["db_source"];
+		$db_host = $appconfig["db_host"];
 
-		$dbh = new PDO("pgsql:host=database;dbname=$db_source", "$db_user", "$db_password");
+		$dbh = new PDO("pgsql:host=$db_host;dbname=$db_source", "$db_user", "$db_password");
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
 		return $dbh ;
 }
@@ -253,28 +254,22 @@ $appconfig = parse_ini_file("/var/appconfig.ini");
  * using delete and insert approach
  *
  * @param object $dbh database handle
- * @param int $dataset_doi dataset identifier (DOI suffix)
+ * @param string $dataset_doi dataset identifier (DOI suffix)
  * @return int number of row updated
  */
-function updateFileTable(object $dbh, int $dataset_doi, array $uploadedFilesMetadata): int
+function updateFileTable(object $dbh, string $dataset_doi, array $uploadedFilesMetadata): int
 {
 	$result = 0;
 
-	$getDatasetID = "select id from dataset where identifier = ?" ;
-	$delete = "delete from file where dataset_id= ? and status = 'uploading'";
-	$insert = "insert into file(dataset_id,name,size,status,location,extension,description) values(:d , :n , :z , 'uploading', :l, :e, :s)";
-
-	$get_statement = $dbh->prepare($getDatasetID);
-	$get_statement->bindParam(1, $dataset_doi);
-	$get_statement->execute();
-	$dataset = $get_statement->fetch(PDO::FETCH_OBJ);
+	$delete = "delete from upload where doi= ? and status = 'uploading'";
+	$insert = "insert into upload(doi,name,size,status,location,description, extension) values(:d , :n , :z , 'uploading', :l, :s, :e)";
 
 	$delete_statement = $dbh->prepare($delete);
-	$delete_statement->bindParam(1, $dataset->id);
+	$delete_statement->bindParam(1, $dataset_doi);
 	$delete_statement->execute();
 
 	$insert_statement = $dbh->prepare($insert);
-	$insert_statement->bindParam(':d', $dataset->id);
+	$insert_statement->bindParam(':d', $dataset_doi);
 	$insert_statement->bindParam(':n', $name);
 	$insert_statement->bindParam(':z', $size);
 	$insert_statement->bindParam(':l', $location);

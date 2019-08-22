@@ -121,6 +121,16 @@ $ docker-compose exec console bash
 
 For security, do not mount directly the Docker unix socket in any container. TCP socket access is the safe method.
 
+## Changing database schema
+
+Use Yii2 migrations to describe new changes to the database schema.
+
+```
+$ docker exec console bash
+# cd /app
+# ./yii migrate/create create_upload_table
+```
+
 ## Services
 
 ### ftpd
