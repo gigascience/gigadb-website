@@ -13,6 +13,7 @@ use \Docker\API\Model\{
     } ;
 
 use \Docker\Docker ;
+use \Docker\Stream\DockerRawStream ;
 
 class FiledropAccountTest extends \Codeception\Test\Unit
 {
@@ -195,6 +196,43 @@ class FiledropAccountTest extends \Codeception\Test\Unit
                 );
 
         $response = $this->filedrop->removeFTPAccount( $mockDockerManager, $doi );
+    }
+
+    /**
+     * test checkFTPAccount
+     */
+    public function testCheckFTPAccount()
+    {
+        $doi = "dummydoi";
+
+        $checkCommandArray = ["bash","-c","cat /etc/pure-ftpd/passwd/pureftpd.passwd | grep $doi"] ;
+
+
+        $mockDockerManager = $this->getMockBuilder(\backend\models\DockerManager::class)
+                    ->setMethods(['loadAndRunCommand'])
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $mockStream = $this->getMockBuilder(\Docker\Stream\DockerRawStream::class)
+                    ->setMethods(['onStdout', 'wait'])
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+        $mockDockerManager->expects($this->once())
+                ->method('loadAndRunCommand')
+                ->with(
+                    $this->equalTo("ftpd"),
+                    $this->equalTo($checkCommandArray)
+                )
+                ->willReturn($mockStream);
+
+        $mockStream->expects($this->once())
+                ->method('onStdout');
+
+        $mockStream->expects($this->once())
+                ->method('wait');
+
+        $response = $this->filedrop->checkFTPAccount( $mockDockerManager, $doi );
     }
 
     /**

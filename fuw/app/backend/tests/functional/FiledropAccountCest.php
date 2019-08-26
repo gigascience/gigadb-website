@@ -42,6 +42,26 @@ class FiledropAccountCest
     	$I->assertTrue($filedrop->prepareAccountSetFields($doi));
     }
 
+
+    /**
+     * functional test that ftp accounts are created on the ftpd container
+     * @param FunctionalTester $I
+     */
+    public function checkingAnFTPAccount(FunctionalTester $I)
+    {
+        $filedrop = new FiledropAccount();
+        $dockerManager = new DockerManager();
+        $doi = FiledropAccount::generateRandomString(6);
+        $ftpServer = "ftpd";
+
+
+        $filedrop->setDOI($doi);
+        $filedrop->setDockerManager($dockerManager);
+
+        $response = $filedrop->checkFTPAccount( $dockerManager, $doi );
+        $I->assertNotTrue($response);
+
+    }
     /**
      * functional test that ftp accounts are created on the ftpd container
      * @param FunctionalTester $I
@@ -73,6 +93,10 @@ class FiledropAccountCest
     	// create accounts
     	$status = $filedrop->createFTPAccount( $dockerManager, $doi );
     	$I->assertTrue($status);
+
+        // check success (TODO)
+        // $status = $filedrop->checkFTPAccount( $dockerManager, $doi );
+        // $I->assertTrue($status, "account created for $doi, returned $status");
 
     }
 
@@ -163,3 +187,4 @@ class FiledropAccountCest
     	$I->assertCount(0, $accounts);
     }
 }
+

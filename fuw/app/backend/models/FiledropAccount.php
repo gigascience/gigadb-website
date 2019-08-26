@@ -262,9 +262,9 @@ class FiledropAccount extends \yii\db\ActiveRecord
     {
         $status = true;
 
-        $uploaderCommandArray = ["bash","-c","/usr/bin/pure-pw userdel uploader-dummydoi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m"] ;
+        $uploaderCommandArray = ["bash","-c","/usr/bin/pure-pw userdel uploader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m"] ;
 
-        $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw userdel downloader-dummydoi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m"] ;
+        $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw userdel downloader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m"] ;
 
         $upload_response = $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
         $download_response = $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
@@ -273,6 +273,33 @@ class FiledropAccount extends \yii\db\ActiveRecord
             return false;
         }
         return $status;
+    }
+
+    /**
+     * check ftp account exists the ftpd container using Docker API
+     *
+     * @param \backend\models\DockerManager $dockerManager instance of docker API
+     * @param string $accountType type of account ("uploader" or "downloader")
+     * @param string $doi dataset identifier
+     * @return string if exists return true, otherwise false
+     */
+    function checkFTPAccount(\backend\models\DockerManager $dockerManager, string $doi): string
+    {
+
+
+        $command = ["bash","-c","cat /etc/pure-ftpd/passwd/pureftpd.passwd | grep $doi"] ;
+
+        $stream = $dockerManager->loadAndRunCommand("ftpd", $command);
+
+
+        $response = '';
+        $stream->onStdout(function ($stdout) use (&$response): void {
+            $response .= $response;
+        });
+
+        $stream->wait();
+
+        return $response;
     }
 
     /**
@@ -336,3 +363,4 @@ class FiledropAccount extends \yii\db\ActiveRecord
         return false;
     }
 }
+
