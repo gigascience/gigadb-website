@@ -2,4 +2,5 @@ suite_namespace: backend\tests\unit
 actor: UnitTester
 modules:
     enabled:
-        - Yii2
+        - Yii2:
+            part: [orm, fixtures]
