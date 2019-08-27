@@ -3,19 +3,17 @@ FROM nginx:${NGINX_VERSION}-alpine
 
 ARG GIGADB_ENV=dev
 
-COPY ops/configuration/nginx-conf/sites/*.${GIGADB_ENV}.* /etc/nginx/sites-available/
-COPY ops/configuration/nginx-conf/nginx.conf /etc/nginx/nginx.conf
-COPY ops/configuration/nginx-conf/upstream.conf /etc/nginx/conf.d/upstream.conf
-COPY ops/configuration/nginx-conf/enable_sites /usr/local/bin/enable_sites
+COPY configuration/nginx-conf/nginx.conf /etc/nginx/nginx.conf
+COPY configuration/nginx-conf/upstream.conf /etc/nginx/conf.d/upstream.conf
+COPY configuration/nginx-conf/enable_sites /usr/local/bin/enable_sites
 
-COPY css /var/www/css
-COPY docs /var/www/docs
-COPY favicon.ico /var/www/favicon.ico
-COPY fonts /var/www/fonts
-COPY images /var/www/images
-COPY index.php /var/www/index.php
-COPY js /var/www/js
-COPY less /var/www/less
+COPY configuration/gigadb-public/css /var/www/css
+COPY configuration/gigadb-public/favicon.ico /var/www/favicon.ico
+COPY configuration/gigadb-public/fonts /var/www/fonts
+COPY configuration/gigadb-public/images /var/www/images
+COPY configuration/gigadb-public/index.php /var/www/index.php
+COPY configuration/gigadb-public/js /var/www/js
+COPY configuration/gigadb-public/less /var/www/less
 
 RUN apk --no-cache add openssl && \
 	mkdir -vp /etc/ssl/nginx && chmod 700 /etc/ssl/nginx && \
