@@ -9,6 +9,8 @@ use Docker\API\Model\{ContainersIdExecPostBody,
                       ExecIdStartPostBody,
                     };
 
+use common\models\Upload;
+
 /**
  * This is the model class for table "filedrop_account".
  *
@@ -276,6 +278,17 @@ class FiledropAccount extends \yii\db\ActiveRecord
     }
 
     /**
+     * remove uploads associated with this FiledropAccount object by marking them as archived
+     *
+     * @return int number of uploads successfully archived
+     */
+    public function removeUploads(): ?int
+    {
+        $nbArchived = Upload::updateAll(['status' => "archived"], "doi = '{$this->getDOI()}'");
+        return $nbArchived;
+    }
+
+    /**
      * check ftp account exists the ftpd container using Docker API
      *
      * @param \backend\models\DockerManager $dockerManager instance of docker API
@@ -349,12 +362,15 @@ class FiledropAccount extends \yii\db\ActiveRecord
                 }
                 return false;
             }
-            else if ("terminated" === $this->status) {
-                $directoryRemoved = $this->removeDirectories($this->doi);
+            else if ( "terminated" === $this->getStatus() ) {
+                $directoryRemoved = $this->removeDirectories($this->getDOI());
                 $directoryAndFTPremoved = $directoryRemoved && $this->removeFTPAccount(
                     $this->getDockerManager(),
                     $this->getDOI()
                 );
+                if ($directoryAndFTPremoved) {
+                    $this->removeUploads();
+                }
                 return $directoryAndFTPremoved ;
             }
             return true;
