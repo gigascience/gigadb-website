@@ -30,6 +30,7 @@
 
 	/**
 	 * Return the list of file and metadata for a given dataset
+     * TODO: valid status are 'uploading', 'uploaded'
 	 *
 	 * @param object $dbh database handle
 	 * @param int $dataset DOI suffix
