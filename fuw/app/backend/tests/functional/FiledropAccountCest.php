@@ -40,6 +40,9 @@ class FiledropAccountCest
     	$doi = FiledropAccount::generateRandomString(6);
 
     	$I->assertTrue($filedrop->prepareAccountSetFields($doi));
+
+        // clean up directories created by the test
+        $filedrop->removeDirectories("$doi");
     }
 
 
@@ -98,6 +101,10 @@ class FiledropAccountCest
         // $status = $filedrop->checkFTPAccount( $dockerManager, $doi );
         // $I->assertTrue($status, "account created for $doi, returned $status");
 
+
+        // clean up directories created by the test
+        $filedrop->removeDirectories("$doi");
+
     }
 
     /**
@@ -126,6 +133,9 @@ class FiledropAccountCest
     		->all();
     	$I->assertCount(1, $accounts);
     	$I->assertEquals($uploadLogin, $accounts[0]->upload_login);
+
+        // clean up directories created by the test
+        $filedrop->removeDirectories("$doi");
     }
 
     /**
@@ -159,6 +169,11 @@ class FiledropAccountCest
     	$I->seeResponseContainsJson(array('status' => "active"));
     	$I->seeResponseJsonMatchesJsonPath('$.upload_token');
     	$I->seeResponseJsonMatchesJsonPath('$.download_token');
+
+        // clean up directories created by the test
+        $filedrop = new FiledropAccount();
+        $filedrop->setDOI($doi);
+        $filedrop->removeDirectories("$doi");
     }
 
     /**
