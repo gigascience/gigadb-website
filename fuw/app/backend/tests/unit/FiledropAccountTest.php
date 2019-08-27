@@ -15,6 +15,9 @@ use \Docker\API\Model\{
 use \Docker\Docker ;
 use \Docker\Stream\DockerRawStream ;
 
+use common\fixtures\UploadFixture;
+use common\models\Upload;
+
 class FiledropAccountTest extends \Codeception\Test\Unit
 {
     /**
@@ -31,12 +34,20 @@ class FiledropAccountTest extends \Codeception\Test\Unit
     {
         $this->cleanUpDirectories();
         $this->filedrop = new FiledropAccount();
+
+        $this->tester->haveFixtures([
+            'uploads' => [
+                'class' => UploadFixture::className(),
+                'dataFile' => codecept_data_dir() . 'upload.php'
+            ],
+        ]);
     }
 
     protected function _after()
     {
         $this->cleanUpDirectories();
     }
+
 
     private function cleanUpDirectories()
     {
@@ -199,6 +210,25 @@ class FiledropAccountTest extends \Codeception\Test\Unit
     }
 
     /**
+     * test removeUploads()
+     */
+    public function testRemoveUploads()
+    {
+        $doi = "200001";
+        $this->filedrop->setDOI($doi);
+        $count = Upload::find()
+            ->where(['status' => 'archived'])
+            ->count();
+        $this->assertEquals(0, $count);
+        $result = $this->filedrop->removeUploads();
+        $this->assertEquals(2,$result);
+        $count = Upload::find()
+            ->where(['status' => 'archived'])
+            ->count();
+        $this->assertEquals(2, $count);
+
+    }
+    /**
      * test checkFTPAccount
      */
     public function testCheckFTPAccount()
@@ -236,7 +266,7 @@ class FiledropAccountTest extends \Codeception\Test\Unit
     }
 
     /**
-     * test than beforeValidate calls prepareAccount and createFTPAccount
+     * beforeValidate calls prepareAccount, createFTPAccount
      *
      */
     public function testBeforeValidateCallsAccountMakingFunction()
@@ -401,6 +431,68 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         $filedropAccount->setDockerManager($stubDockerManager);
         $response = $filedropAccount->beforeValidate();
         $this->assertFalse($response);
+    }
+
+    /**
+     * beforeValidate calls removeDirectories, removeFTPAccount, removeUploads
+     *
+     */
+    public function testBeforeValidateTriggerRemoval()
+    {
+
+        // create a stub for dockerManager
+        $stubDockerManager = $this->createMock(DockerManager::class);
+
+        // Creating a "partial mock" for FiledropAccount
+        // so don't use disableOriginalConstructor() method as we need the real object
+        // and don't add to setMethods that are the system under test
+        // and only add those that specify expected behaviour
+        $filedropAccount = $this->getMockBuilder(FiledropAccount::class)
+                 ->setMethods(['getDOI','getIsNewRecord', 'getStatus','getDockerManager','removeDirectories', 'removeFTPAccount', 'removeUploads' ])
+                 ->getMock();
+
+        // preparation
+        $doi = "100001";
+
+        // expected behaviours
+        $filedropAccount->expects($this->exactly(2))
+                ->method('getDOI')
+                ->willReturn($doi);
+
+        $filedropAccount->expects($this->once())
+                ->method('getIsNewRecord')
+                ->willReturn(false);
+
+        $filedropAccount->expects($this->once())
+                ->method('getStatus')
+                ->willReturn("terminated");
+
+        $filedropAccount->expects($this->once())
+                ->method('getDockerManager')
+                ->willReturn($stubDockerManager);
+
+        $filedropAccount->expects($this->once())
+                ->method('removeDirectories')
+                ->with(
+                    $this->equalTo("$doi")
+                )
+                ->willReturn(true);
+
+        $filedropAccount->expects($this->once())
+                ->method('removeFTPAccount')
+                ->with(
+                    $this->identicalTo($stubDockerManager),
+                    $this->equalTo("$doi")
+                )
+                ->willReturn(true);
+
+        $filedropAccount->expects($this->once())
+                ->method('removeUploads')
+                ->willReturn(0);
+
+        $filedropAccount->setDockerManager($stubDockerManager);
+        $response = $filedropAccount->beforeValidate();
+        $this->assertTrue($response);
     }
 
 }
