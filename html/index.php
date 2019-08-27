@@ -81,8 +81,8 @@
                 <td>
                     <?= $account->doi?>
                 </td>
-                <td><a id="Upload_<?= $account->doi?>" type="button" href="/uploader.php?d=<?= $account->doi?>">Uploader</a></td>
-                <td><a id="Upload_<?= $account->doi?>" type="button" href="/downloader.php?d=<?= $account->doi?>">Mockup</a></td>
+                <td><a id="Upload_<?= $account->doi?>" type="button" href="/proto/uploader.php?d=<?= $account->doi?>">Uploader</a></td>
+                <td><a id="Upload_<?= $account->doi?>" type="button" href="/proto/downloader.php?d=<?= $account->doi?>">Mockup</a></td>
                 <td>
                     <?= $account->upload_login . "/" . $account->upload_token?>
                 </td>
@@ -110,13 +110,13 @@
         </tr>
         <tr>
             <td>100004</td>
-            <td><a href="<?= $web_endpoint ?>create.php?d=100004">Create Drop Box Account</a></td>
-            <td><a href="<?= $web_endpoint ?>retire.php?d=100004">Delete Drop Box Account</a></td>
+            <td><a href="/proto/create.php?d=100004">Create Drop Box Account</a></td>
+            <td><a href="/proto/retire.php?d=100004">Delete Drop Box Account</a></td>
         </tr>
         <tr>
             <td>100005</td>
-            <td><a href="<?= $web_endpoint ?>create.php?d=100005">Create Drop Box Account</a></td>
-            <td><a href="<?= $web_endpoint ?>retire.php?d=100005">Delete Drop Box Account</a></td>
+            <td><a href="/proto/create.php?d=100005">Create Drop Box Account</a></td>
+            <td><a href="/proto/retire.php?d=100005">Delete Drop Box Account</a></td>
         </tr>
     </table>
     <hr>
