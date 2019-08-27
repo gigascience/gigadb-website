@@ -17,7 +17,7 @@
 </head>
 <body>
 	<h1>Uploader for dataset <?= $params["d"]?> </h1>
-	<nav><a href="<?= $web_endpoint ?>">[Go back to Dashboard]</a></nav>
+	<nav><a href="/proto/">[Go back to Dashboard]</a></nav>
 	<form id="dataset-metadata-form">
 		<input id="dataset" type="hidden" value="<?= $params["d"]?>">
 	</form>
