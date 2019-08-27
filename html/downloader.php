@@ -62,7 +62,7 @@
             <?= $params["d"]?>
         </h1>
     </headers>
-    <nav><a href="<?= $web_endpoint ?>">[Go back to Dashboard]</a></nav>
+    <nav><a href="/proto/">[Go back to Dashboard]</a></nav>
     <main role="main">
         <section>
             <article>
