@@ -2,9 +2,6 @@ version: '3.7'
 
 services:
 
-  less:
-    image: registry.gitlab.com/$CI_PROJECT_PATH/application:latest
-
   production_web:
     environment:
       YII_PATH: ${YII_PATH}
@@ -12,19 +9,17 @@ services:
     build:
       context: ../..
       dockerfile: ops/packaging/Production-Web-Dockerfile
-      cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest"
       args:
         - NGINX_VERSION=${NGINX_VERSION}
         - GIGADB_ENV=${GIGADB_ENV}
         - FIX_SITE_CONFIGS=true
+    volumes:
+      - ../../assets:/var/www/assets
 
   production_app:
     build:
       context: ../..
       dockerfile: ops/packaging/Production-Dockerfile
-      cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest"
       args:
         - TARGET_PHP_VERSION=7.1
         - INSTALL_OPCACHE=true
@@ -33,68 +28,10 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=true
         - INSTALL_APCU=true
-
-  production_fuw-console:
-    build:
-      context: ../../fuw/app
-      dockerfile: common/Production-Dockerfile
-      cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest"
-      args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
-        - APP_PORT=9001
-        - INSTALL_NETCAT_JQ=true
-        - INSTALL_IPROUTE2=true
-
-  production_fuw-admin:
-    build:
-      context: ../../fuw/app
-      dockerfile: common/Production-Dockerfile
-      cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest"
-      args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
-        - APP_PORT=9002
-        - INSTALL_NETCAT_JQ=true
-        - INSTALL_IPROUTE2=true
-    expose:
-      - "9002"
-
-  production_fuw-proto:
-    build:
-      context: ../../fuw/app
-      dockerfile: common/Production-Dockerfile
-      cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest"
-      args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
-        - APP_PORT=9003
-    expose:
-      - "9003"
-
-  production_ftpd:
-    build:
-      context: ../../fuw/docker-pure-ftpd
-      cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest"
-
-  production_watcher:
-    build:
-      context: ../../fuw/watcher
-      dockerfile: Production-Dockerfile
-      cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest"
-
-  production_tusd:
-    build:
-      context: ../../fuw/tusd
-      dockerfile: Production-Dockerfile
-      cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest"
+    volumes:
+      - ../../assets:/var/www/assets
 
   production_config:
     build:
       context: ../..
       dockerfile: ops/packaging/Config-Dockerfile
-      cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest"
