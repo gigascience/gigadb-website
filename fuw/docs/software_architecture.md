@@ -14,6 +14,8 @@ The server software is Nginx opensource running on Alpine Linux.
 
 The docker-compose service for the container is called "web"
 
+On the "dev" and "CI" environments, changes to Nginx config don't require building the container image. Instead, modifications just requires restarting the "web" service to be effective. On "staging" and "production" environments, the Nginx configs are baked into the container image during build time (see ``ops/deployment/docker-compose.build.yml``), thanks to setting the **FIX_SITE_CONFIGS** variable to true (see ``ops/packaging/Web-Dockerfile``).
+
 ### Database Server
 
 The web server is shared by all web apps, Gigadb and File Upload Wizard.
@@ -74,7 +76,9 @@ The automated testing for this webapp make use of three other containers, test c
 
 The docker-compose service for this container is called "application", while that of the side-car (auxiliary) services mentioned above are "test", "phantomjs" and "database" respectively.
 
-The "test" and "application" service are built from the same Dockerfile, but they are parametized differenlty using arguments set in the docker-compose files that enable/disable corresponding argument flags in the Dockerfile. The "test" services has debugging, testing and console related flags switched on that the "application" have switched off.
+The "test" and "application" service are built from the same Dockerfile, but they are parametized differenlty using arguments set in the docker-compose files that enable/disable corresponding argument flags in the Dockerfile (see ``ops/deployment/docker-compose.yml`` and ``ops/packaging/Dockerfile``). The "test" services has debugging, testing and console related flags switched on that the "application" have switched off.
+
+The container image for "staging" and "production" environments is build from a specific Dockerfile (see ``ops/packaging/Production-Dockerfile``) as on these environments the application code need to be baked into the container image so to obtain an immutable deployment preventing uncontrolled, unaudited changes on live or live-like environments.
 
 #### test
 
