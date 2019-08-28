@@ -12,6 +12,7 @@ services:
       args:
         - NGINX_VERSION=${NGINX_VERSION}
         - GIGADB_ENV=${GIGADB_ENV}
+        - FIX_SITE_CONFIGS=true
     volumes:
       - ../../assets:/var/www/assets
 
