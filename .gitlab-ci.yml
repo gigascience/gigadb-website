@@ -526,7 +526,7 @@ deploy_proto:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
     - docker-compose run --rm config
-    - docker-compose run --rm webapp composer install -a
+    - docker-compose run --rm application composer install -a
     - docker-compose run --rm fuw-admin bash -c "cd /var/fuw && composer install"
     # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
     - docker-compose build production_web
