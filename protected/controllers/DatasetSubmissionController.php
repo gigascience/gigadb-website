@@ -995,16 +995,22 @@ class DatasetSubmissionController extends Controller
                 if (!$newSampleAttr['attr_name']) {
                     Util::returnJSON(array(
                         "success"=>false,
-                        "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute Name cannot be empty.',
+                        "message"=> 'Col ' . ($i + 3) . ': ' . 'Attribute Name cannot be empty.',
                     ));
                 }
 
                 $attr = Attribute::findByAttrName($newSampleAttr['attr_name']);
                 if (!$attr) {
-                    Util::returnJSON(array(
-                        "success"=>false,
-                        "message"=> 'Col ' . ($i + 4) . ': ' . 'Attribute Name does\'nt exist. You can try an alternative attribute name or use "miscellaneous parameter" and include your own attribute name within the value, e.g. miscellaneous parameter=users-own-attribute-name:value-of-attribute.',
-                    ));
+                    if (strtolower($newSampleAttr['attr_name']) == 'description') {
+                        $attr = new Attribute();
+                        $attr->attribute_name = $newSampleAttr['attr_name'];
+                        $attr->save();
+                    } else {
+                        Util::returnJSON(array(
+                            "success"=>false,
+                            "message"=> 'Col ' . ($i + 3) . ': ' . 'Attribute Name does\'nt exist. You can try an alternative attribute name or use "miscellaneous parameter" and include your own attribute name within the value, e.g. miscellaneous parameter=users-own-attribute-name:value-of-attribute.',
+                        ));
+                    }
                 }
 
                 $attrs[] = $attr;
@@ -1079,7 +1085,7 @@ class DatasetSubmissionController extends Controller
                             $error = current($sa->getErrors());
                             Util::returnJSON(array(
                                 "success"=>false,
-                                "message"=> 'Row ' . ($key + 1) . ', Col ' . ($i + 4) . ': ' . current($error)
+                                "message"=> 'Row ' . ($key + 1) . ', Col ' . ($i + 3) . ': ' . current($error)
                             ));
                         }
 
