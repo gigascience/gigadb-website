@@ -92,6 +92,24 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest"
 
+  production_fuw-admin:
+    build:
+      context: ../../fuw/app/backend
+      dockerfile: Production-Dockerfile
+      args:
+        - "IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin"
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
+        - APP_PORT=9002
+        - APP_ROOT_DIR=/var/fuw/backend/web/
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=false
+        - INSTALL_APCU=true
+        - INSTALL_DOCKER_API_ACCESS=false
+
+
   production_config:
     build:
       context: ../..
