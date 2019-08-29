@@ -6,14 +6,15 @@
 	 */
 	function connectDB(): object
 	{
-		$appconfig = parse_ini_file("/app/proto/appconfig.ini");
+		$appconfig = parse_ini_file("/var/appconfig.ini");
 
 		$db_user = $appconfig["db_user"];
 		$db_password = $appconfig["db_password"];
-		$db_dsn = $appconfig["db_dsn"];
+		$db_source = $appconfig["db_source"];
+		$db_host = $appconfig["db_host"];
 
-		$dbh = new PDO("$db_dsn", "$db_user", "$db_password");
-		// $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
+		$dbh = new PDO("pgsql:host=$db_host;dbname=$db_source", "$db_user", "$db_password");
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
 		return $dbh ;
 	}
 ?>
