@@ -200,7 +200,7 @@ services:
 
   fuw-admin:
     build:
-      context: ../../fuw/app/backend
+      context: ../../fuw/app/common
       args:
         - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
         - APP_PORT=9002
@@ -235,7 +235,7 @@ services:
 
   fuw-proto:
     build:
-      context: ../../fuw/app/frontend
+      context: ../../fuw/app/common
       args:
         - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
         - APP_PORT=9003
@@ -274,7 +274,7 @@ services:
 
   console:
     build:
-      context: ../../fuw/app/backend
+      context: ../../fuw/app/common
       args:
         - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
         - APP_PORT=9001
