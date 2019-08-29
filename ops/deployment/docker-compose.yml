@@ -25,7 +25,7 @@ services:
       - ${APPLICATION}/style-guide:/var/www/style-guide
       # File Upload Wizard admin application
       - ${APPLICATION}/fuw/app:/var/fuw
-      - ${APPLICATION}/fuw/proto:/var/fuw/proto
+      - ${APPLICATION}/fuw/app/proto:/var/fuw/proto
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le
     networks:
@@ -253,7 +253,7 @@ services:
       # Re-use local composer cache via host-volume
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
-      - ../../fuw/proto:/var/fuw/proto
+      - ../../fuw/app/proto:/var/fuw/proto
       # directories used for filedrop files
       - ../../fuw/incoming:/var/incoming
       - ../../fuw/repo:/var/repo
