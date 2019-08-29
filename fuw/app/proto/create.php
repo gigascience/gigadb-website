@@ -2,7 +2,7 @@
 
 	require 'lib/db.php';
 
-    $appconfig = parse_ini_file("/app/proto/appconfig.ini");
+    $appconfig = parse_ini_file("/var/appconfig.ini");
     $web_endpoint = $appconfig["web_endpoint"];
     $api_endpoint = $appconfig["api_endpoint"];
     $jwt_token = $appconfig["dummy_jwt_token"];
@@ -39,8 +39,6 @@
 	if($server_errno)
 	{
 	    $server_error = curl_error($ch);
-	    error_log("Error communicating with the REST API: $server_error");
-	    error_log($server_output);
 	}
 	curl_close ($ch);
 
