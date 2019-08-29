@@ -1,7 +1,7 @@
 <?php
     require 'lib/db.php';
 
-    $appconfig = parse_ini_file("/app/proto/appconfig.ini");
+    $appconfig = parse_ini_file("/var/appconfig.ini");
     $ftpd_endpoint = $appconfig["ftpd_endpoint"];
     $ftpd_port = $appconfig["ftpd_port"];
     $web_endpoint = $appconfig["web_endpoint"];
@@ -10,7 +10,7 @@
 
     /**
      * the account class
-     *  id | doi_suffix |  ulogin  |        utoken        |  dlogin  |        dtoken        | space_used | status |         created_at         |         updated_at         | terminated_at
+     *  id | doi_suffix |  ulogin  |        utoken        |  dlogin  |        dtoken        | space_used | status |         created_at         |         updated_at         | retired_at
      */
     class Account {
         public $id;
@@ -23,7 +23,7 @@
         public $status;
         public $created_at;
         public $updated_at;
-        public $terminated_at;
+        public $retired_at;
     }
 
     /**
@@ -31,12 +31,12 @@
      *
      * @param string $status filtering on status (active or retired)
      */
-    function getAccounts(int $status): array
+    function getAccounts(string $status): array
     {
         $dbh = connectDB();
-        $sql = "select distinct * from filedrop_account where status = ? order by doi";
+        $sql = "select distinct * from account where status = ? order by doi_suffix";
         $st = $dbh->prepare($sql);
-        $st->bindParam(1, $status);
+        $st->bindParam(1, $status, PDO::PARAM_STR);
         $st->execute();
         return $st->fetchAll(PDO::FETCH_CLASS, "Account");
     }
@@ -75,7 +75,7 @@
                 <th>account creation date</th>
             </tr>
             <?php
-                foreach (getAccounts(1) as $account) {
+                foreach (getAccounts("active") as $account) {
             ?>
             <tr>
                 <td>
