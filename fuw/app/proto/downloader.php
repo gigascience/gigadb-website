@@ -2,7 +2,7 @@
 
 	require 'lib/db.php';
 
-    $appconfig = parse_ini_file("/app/proto/appconfig.ini");
+    $appconfig = parse_ini_file("/var/appconfig.ini");
     $web_endpoint = $appconfig["web_endpoint"];
 
 	$thisurl = parse_url($_SERVER['REQUEST_URI']);
@@ -38,7 +38,7 @@
 	 */
 	function getFileTable(object $dbh, int $dataset_doi): array
 	{
-		$sql = "select * from upload where doi = ?  and status = 0";
+		$sql = "select * from upload where doi = ?  and status = 'uploading'";
 		$st = $dbh->prepare($sql);
 		$st->bindParam(1, $dataset_doi);
 		$st->execute();

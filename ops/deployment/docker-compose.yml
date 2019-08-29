@@ -1,0 +1,400 @@
+version: '3.7'
+
+services:
+
+  web:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    build:
+      context: ../..
+      dockerfile: ops/packaging/Web-Dockerfile
+      args:
+        - NGINX_VERSION=${NGINX_VERSION}
+        - GIGADB_ENV=${GIGADB_ENV}
+    ports:
+      - "${PUBLIC_HTTP_PORT}:80"
+      - "${PUBLIC_HTTPS_PORT}:443"
+    volumes:
+      # nginx config
+      - "${APPLICATION}/ops/configuration/nginx-conf/sites/${GIGADB_ENV}:/etc/nginx/sites-available"
+      # Gigadb webapp
+      - ${APPLICATION}/assets:/var/www/assets
+      - ${APPLICATION}/images:/var/www/images
+      - ${APPLICATION}/css:/var/www/css
+      - ${APPLICATION}/style-guide:/var/www/style-guide
+      # File Upload Wizard admin application
+      - ${APPLICATION}/fuw/app:/var/fuw
+      - ${APPLICATION}/fuw/app/proto:/var/fuw/proto
+      - le_config:/etc/letsencrypt
+      - le_webrootpath:/var/www/.le
+    networks:
+      web-tier:
+        ipv4_address: 172.16.238.10
+    command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "gigadb.dev.https", "fuw-backend.dev.http"]
+    # command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-backend.dev.http", "fuw-proto.dev.http"]
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - le_config:/etc/letsencrypt
+      - le_webrootpath:/var/www/.le
+
+  application:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    build:
+      context: .
+      dockerfile: ../packaging/Dockerfile
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=true
+        - INSTALL_APCU=true
+        - INSTALL_MAILPARSE=true
+        - INSTALL_GIT=true
+    volumes:
+      - ${APPLICATION}/:/var/www
+      - ${APPLICATION}/ops/configuration/php-conf/php-${PHP_VERSION}-${GIGADB_ENV}.ini:/usr/local/etc/php/php.ini
+      - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
+      - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+      - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+    expose:
+      - "9000"
+    networks:
+      - web-tier
+      - db-tier
+
+  database:
+    image: postgres:${POSTGRES_VERSION}-alpine
+    environment:
+      POSTGRES_DB: gigadb
+      POSTGRES_USER: gigadb
+      POSTGRES_PASSWORD: vagrant
+    ports:
+      - target: 5432
+        published: 54321
+        protocol: tcp
+        mode: host
+    volumes:
+      - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
+      - ${APPLICATION}/fuw/app/common/config/bootstrap.sql:/docker-entrypoint-initdb.d/3-fuw.sql
+      - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
+    command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf'
+    networks:
+      - db-tier
+
+  config:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    image: rija/docker-alpine-shell-tools:1.0.1
+    volumes:
+      - ${APPLICATION}/:/var/www
+      - le_config:/etc/letsencrypt
+    command: /var/www/ops/scripts/generate_config.sh
+
+  fuw-config:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    image: rija/docker-alpine-shell-tools:1.0.1
+    volumes:
+      - ${APPLICATION}/:/var/www
+    command: /var/www/fuw/scripts/generate_config.sh
+
+  gigadb:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    image: ${COMPOSE_PROJECT_NAME}_application:latest
+    volumes:
+      - ${APPLICATION}/:/var/www
+      - ${APPLICATION}:/app
+    depends_on:
+      - application
+      - database
+      # - phantomjs
+    command: bash -c "./ops/scripts/webapp_setup.sh && ./protected/yiic lesscompiler"
+    networks:
+      - web-tier
+
+  fuw:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    image: ${COMPOSE_PROJECT_NAME}_fuw-admin:latest
+    volumes:
+      - ${APPLICATION}/fuw/app:/var/fuw
+      - ${APPLICATION}/ops/scripts:/ops/scripts
+      - ${APPLICATION}/.env:/var/fuw/.env
+    depends_on:
+      - fuw-admin
+      - database
+      # - phantomjs
+    command: bash -c "cd /var/fuw && /ops/scripts/webapp_setup.sh"
+    networks:
+      - web-tier
+
+  test:
+    build:
+      context: .
+      dockerfile: ../packaging/Dockerfile
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_PGSQL=true
+        - INSTALL_PG_CLIENT=true
+        - PG_CLIENT_VERSION=${POSTGRES_VERSION}
+        - INSTALL_XDEBUG=true
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_GRAPHVIZ=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_LIBSODIUM=true
+        - INSTALL_GIT=true
+        - INSTALL_APCU=true
+        - INSTALL_MAILPARSE=true
+        - INSTALL_CSSLINT_JSHINT=true
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    volumes:
+      - ${APPLICATION}/:/var/www
+      - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+      - ${APPLICATION}/ops/configuration/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ${APPLICATION}/tmp:/tmp
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - web-tier
+      - db-tier
+    extra_hosts:
+      - "gigadb.dev:172.16.238.10"
+    command: bash
+
+  chrome:
+    image: selenium/standalone-chrome:3.141.59-oxygen # latest version with Chrome 74
+    shm_size: '1gb' # to avoid a known issue
+    ports:
+      # - "5900:5900" #for VNC access
+      - "4444:4444" #for webdriver access
+    networks:
+      - web-tier
+    extra_hosts:
+      - "gigadb.test:172.16.238.10"
+      - "gigadb.dev:172.16.238.10"
+    environment: # to run headless, set false and comment out port 5900 above and make sure to pass --headless arg in acceptance.suite.yml
+      START_XVFB: "false"
+
+  csv-to-migrations:
+    image: node:14.9.0-buster
+    working_dir: /var/www/ops/scripts
+    volumes:
+      - ${APPLICATION}/:/var/www
+    shm_size: '1gb' # to avoid a known issue
+    command: bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR"
+
+
+  fuw-admin:
+    build:
+      context: ../../fuw/app/common
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
+        - APP_PORT=9002
+        - APP_ROOT_DIR=/var/fuw/backend/web/
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=false
+        - INSTALL_APCU=true
+        - INSTALL_DOCKER_API_ACCESS=true
+    expose:
+      - "9002"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ../../fuw/app:/var/fuw
+      # directories used for filedrop files
+      - ../../fuw/incoming:/var/incoming
+      - ../../fuw/repo:/var/repo
+      - ../../fuw/credentials:/var/private
+    depends_on:
+      - database
+      - console
+      - ftpd
+      - tusd
+      - watcher
+    networks:
+      - web-tier
+      - db-tier
+
+  fuw-proto:
+    build:
+      context: ../../fuw/app/common
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
+        - APP_PORT=9003
+        - APP_ROOT_DIR=/var/fuw/proto/
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=false
+        - INSTALL_APCU=true
+        - INSTALL_DOCKER_API_ACCESS=true
+    expose:
+      - "9003"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ../../fuw/app/proto:/var/fuw/proto
+      # directories used for filedrop files
+      - ../../fuw/incoming:/var/incoming
+      - ../../fuw/repo:/var/repo
+      - ../../fuw/credentials:/var/private
+      # volume for prototype's config
+      - ../../fuw/php-conf/appconfig.ini:/var/appconfig.ini:ro
+    depends_on:
+      - database
+      - console
+      - ftpd
+      - tusd
+      - watcher
+    networks:
+      - web-tier
+      - db-tier
+    extra_hosts:
+      - "fuw-admin-api:172.16.238.10"
+
+  console:
+    build:
+      context: ../../fuw/app/common
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
+        - APP_PORT=9001
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=false
+        - INSTALL_APCU=true
+        - INSTALL_DOCKER_API_ACCESS=true
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_GIT=true
+        - PG_CLIENT_VERSION=9.6
+        - INSTALL_PG_CLIENT=true
+        - INSTALL_XDEBUG=true
+        - INSTALL_IPROUTE2=true
+    expose:
+      - "9001"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ../../fuw/app:/app
+      # directories used for filedrop files
+      - ../../fuw/incoming:/var/incoming
+      - ../../fuw/repo:/var/repo
+      - ../../fuw/credentials:/var/private
+      - ../../fuw/runtime/pure-ftpd:/etc/pure-ftpd
+      - ../../fuw/runtime/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+      # need to run gigadb's unit tests using the more modern phpunit for coverage aggregation
+      - ../../protected:/var/www/protected
+      - ../../vendor:/var/www/vendor
+      # to run tests that interact with containers
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # to generate the config for the prototype
+      - ../../fuw/php-conf/appconfig.ini:/var/appconfig.ini
+    networks:
+      - web-tier
+      - db-tier
+
+  ftpd:
+    build:
+      context: ../../fuw/docker-pure-ftpd
+    volumes:
+      - "../../fuw/incoming/ftp:/home/uploader"
+      - ../../fuw/repo:/home/downloader/:ro
+      - ../../fuw/credentials:/var/private
+      - ../../fuw/hooks:/var/scripts
+      - ../../fuw/runtime/pure-ftpd:/etc/pure-ftpd
+      - ../../fuw/runtime/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+      # - ../ftp-transfer-logs:/var/log/pure-ftpd
+    environment:
+      PUBLICHOST: "localhost"
+      # ADDED_FLAGS: "-O w3c:/var/log/pure-ftpd/transfer.log"
+    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P localhost
+    ports:
+      - target: 21
+        published: 9021
+        protocol: tcp
+        mode: host
+      - "30000-30009:30000-30009"
+    networks:
+      - web-tier
+      - db-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+  watcher:
+    build:
+      context: ../../fuw/docker-inotify-command
+    volumes:
+      - ../../fuw/inotify-config:/config:ro
+      - ../../fuw/incoming/ftp:/home/uploader
+      - ../../fuw/repo:/home/downloader/
+      - ../../fuw/hooks:/commands:ro
+      - ../../fuw/credentials:/var/access:ro
+      - ../../fuw/flags:/var/tmp/processing_flag
+      - ../../fuw/php-conf/appconfig.ini:/var/appconfig.ini:ro
+    networks:
+      - web-tier
+      - db-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+  tusd:
+    image: tusproject/tusd:0.13.1
+    volumes:
+      - "../../fuw/incoming/tusd:/var/inbox/"
+      - ../../fuw/repo:/var/repo/
+      - ../../fuw/hooks:/var/hooks
+    command: -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
+    networks:
+      - web-tier
+      - db-tier
+    expose:
+      - "1080"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+  local-cert:
+    build:
+      context: ..
+      dockerfile: packaging/Minica-Dockerfile
+    volumes:
+      - le_config:/ca
+    command: --domains '*.gigasciencejournal.com'
+
+networks:
+  web-tier:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+  db-tier:
+
+volumes:
+  le_config:
+  le_webrootpath:
