@@ -2,7 +2,7 @@
 
     require 'lib/db.php';
 
-    $appconfig = parse_ini_file("/app/proto/appconfig.ini");
+    $appconfig = parse_ini_file("/var/appconfig.ini");
     $web_endpoint = $appconfig["web_endpoint"];
     $api_endpoint = $appconfig["api_endpoint"];
     $jwt_token = $appconfig["dummy_jwt_token"];
@@ -13,7 +13,7 @@
 
 	// retrieve id of account:
 	$dbh = connectDB();
-    $sql = "select id from filedrop_account where status=1 and doi = ? ";
+    $sql = "select id from filedrop_account where status='active' and doi = ? ";
     $st = $dbh->prepare($sql);
     $st->bindParam(1, $params['d'], PDO::PARAM_STR);
     $st->execute();
