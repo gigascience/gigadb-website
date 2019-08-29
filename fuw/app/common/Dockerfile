@@ -217,7 +217,8 @@ RUN if [ ${INSTALL_IPROUTE2} = true ]; then \
     apt-get clean \
 ;fi
 
-WORKDIR /app
+ARG APP_ROOT_DIR=/var/www
+WORKDIR ${APP_ROOT_DIR}
 
 CMD ["php-fpm"]
 
