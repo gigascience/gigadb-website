@@ -17,18 +17,17 @@ $ docker-compose up -d phantomjs
 
 Configure URLs:
 ```
-$ docker-compose exec bash
-# cd /app
-# ./yii prototype/setup --protoUrl http://gigadb.gigasciencejournal.com:9170/proto/ --apiUrl http://fuw-admin-api/filedrop-accounts --tusUrl http://gigadb.gigasciencejournal.com:9170/files/
+$ docker-compose exec console bash -c "cd /app;./yii prototype/setup --appUrl http://gigadb.gigasciencejournal.com:9170"
 ```
-Start the prototype:
+Start the prototype (TODO: currently out-of-date):
 
 ```
 $ docker-compose up -d fuw-proto
+$ docker-compose restart web
 ```
 
 The protototype will be availabe at:
-(http://fuw-proto-dev.pommetab.com:9170/)
+(http://gigadb.gigasciencejournal.com:9170/proto/)
 
 ## Start and accessing the documentation server
 
