@@ -9,6 +9,8 @@ services:
     build:
       context: ../..
       dockerfile: ops/packaging/Production-Web-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest"
       args:
         - NGINX_VERSION=${NGINX_VERSION}
         - GIGADB_ENV=${GIGADB_ENV}
@@ -20,6 +22,8 @@ services:
     build:
       context: ../..
       dockerfile: ops/packaging/Production-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest"
       args:
         - TARGET_PHP_VERSION=7.1
         - INSTALL_OPCACHE=true
@@ -35,6 +39,8 @@ services:
     build:
       context: ../../fuw/app/common
       dockerfile: Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base:latest"
       args:
         - APPLICATION=fuw/app/backend
         - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
@@ -51,6 +57,8 @@ services:
     build:
       context: ../../fuw/app/common
       dockerfile: Production-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest"
       args:
         - IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base
         - APPLICATION=fuw/app/console
@@ -60,6 +68,8 @@ services:
     build:
       context: ../../fuw/app/common
       dockerfile: Production-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest"
       args:
         - IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base
         - APPLICATION=fuw/app/backend
@@ -72,6 +82,8 @@ services:
     build:
       context: ../../fuw/app/common
       dockerfile: Production-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest"
       args:
         - IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base
         - APPLICATION=fuw/app/proto
@@ -84,3 +96,5 @@ services:
     build:
       context: ../..
       dockerfile: ops/packaging/Config-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest"
