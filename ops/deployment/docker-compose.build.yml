@@ -31,15 +31,14 @@ services:
     volumes:
       - ../../assets:/var/www/assets
 
-  production_fuw-admin:
+  production_fuw-base:
     build:
-      context: ../../fuw/app/backend
-      dockerfile: Production-Dockerfile
+      context: ../../fuw/app/common
+      dockerfile: Dockerfile
       args:
-        - "IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin"
+        - APPLICATION=fuw/app/backend
         - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
         - APP_PORT=9002
-        - APP_ROOT_DIR=/var/fuw/backend/web/
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
@@ -48,6 +47,38 @@ services:
         - INSTALL_APCU=true
         - INSTALL_DOCKER_API_ACCESS=false
 
+  production_fuw-console:
+    build:
+      context: ../../fuw/app/common
+      dockerfile: Production-Dockerfile
+      args:
+        - IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base
+        - APPLICATION=fuw/app/console
+        - APP_PORT=9001
+
+  production_fuw-admin:
+    build:
+      context: ../../fuw/app/common
+      dockerfile: Production-Dockerfile
+      args:
+        - IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base
+        - APPLICATION=fuw/app/backend
+        - APP_PORT=9002
+        - APP_ROOT_DIR=/var/fuw/backend/web/
+    expose:
+      - "9002"
+
+  production_fuw-proto:
+    build:
+      context: ../../fuw/app/common
+      dockerfile: Production-Dockerfile
+      args:
+        - IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base
+        - APPLICATION=fuw/app/proto
+        - APP_PORT=9003
+        - APP_ROOT_DIR=/var/fuw/app/proto/
+    expose:
+      - "9003"
 
   production_config:
     build:
