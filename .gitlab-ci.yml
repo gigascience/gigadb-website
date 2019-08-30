@@ -396,6 +396,7 @@ deploy_proto:
     - docker-compose run --rm fuw-config
     - docker-compose run --rm application composer install -a --no-dev
     - docker-compose run --rm console bash -c "cd /app && composer install -a --no-dev"
+    - docker-compose run --rm console bash -c "cd /app && ./yii prototype/setup --appUrl $STAGING_HOME_URL"
     # pulling production build of images from registry to use as cache
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest || true
@@ -465,7 +466,7 @@ deploy_proto:
     # - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml logs
   environment:
     name: staging
-    url: https://fuw.rija.dev
+    url: $STAGING_HOME_URL
   when: manual
   # only:
   #   - develop
