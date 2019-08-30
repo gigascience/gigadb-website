@@ -1,6 +1,6 @@
 <?php
 
-    require 'lib/db.php';
+	require 'lib/db.php';
 
     $appconfig = parse_ini_file("/var/fuw/proto/appconfig.ini");
     $web_endpoint = $appconfig["web_endpoint"];
@@ -11,15 +11,6 @@
 	$thisurl = parse_url($_SERVER['REQUEST_URI']);
 	parse_str($thisurl["query"], $params);
 
-	// retrieve id of account:
-	$dbh = connectDB();
-    $sql = "select id from filedrop_account where status='active' and doi = ? ";
-    $st = $dbh->prepare($sql);
-    $st->bindParam(1, $params['d'], PDO::PARAM_STR);
-    $st->execute();
-    $result = $st->fetch(PDO::FETCH_ASSOC);
-    $account_id = $result['id'];
-
 	// pass the JWT token
 	$headers = [ "Authorization: Bearer $jwt_token"];
 
@@ -29,9 +20,11 @@
 
 	$ch = curl_init();
 
-	curl_setopt($ch, CURLOPT_URL, $api_endpoint."/$account_id");
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+	curl_setopt($ch, CURLOPT_URL, $api_endpoint);
+	curl_setopt($ch, CURLOPT_POST, true);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+	curl_setopt($ch, CURLOPT_POSTFIELDS,
+	            "doi=${params['d']}");
 
 	// In real life you should use something like:
 	// curl_setopt($ch, CURLOPT_POSTFIELDS, 
@@ -49,17 +42,18 @@
 	}
 	curl_close ($ch);
 
+	// var_dump($server_output);
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Prototype of File Uploade Wizard (Terminate Filedrop account)</title>
+	<title>Prototype of File Upload Wizard (Create drop box)</title>
 </head>
 <body>
-	<nav><a href="/proto/">[Go back to Dashboard]</a></nav>
+	<nav><a href="<?= $web_endpoint ?>">[Go back to Dashboard]</a></nav>
 	<?
 		if (false === $server_output) {
-			echo "<p><b>Failed<b></p>";
+			echo "<p><b>Failed: <b> $server_error ($server_errno)</p>";
 		}
 		else {
 			echo "<p><b>Success<b></p>";
