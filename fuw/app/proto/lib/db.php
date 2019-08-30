@@ -6,7 +6,7 @@
 	 */
 	function connectDB(): object
 	{
-		$appconfig = parse_ini_file("/var/appconfig.ini");
+		$appconfig = parse_ini_file("/var/fuw/proto/appconfig.ini");
 
 		$db_user = $appconfig["db_user"];
 		$db_password = $appconfig["db_password"];
