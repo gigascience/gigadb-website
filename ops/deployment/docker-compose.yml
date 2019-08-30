@@ -259,8 +259,6 @@ services:
       - ../../fuw/incoming:/var/incoming
       - ../../fuw/repo:/var/repo
       - ../../fuw/credentials:/var/private
-      # volume for prototype's config
-      - ../../fuw/php-conf/appconfig.ini:/var/appconfig.ini:ro
     depends_on:
       - database
       - console
@@ -310,8 +308,6 @@ services:
       - ../../vendor:/var/www/vendor
       # to run tests that interact with containers
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      # to generate the config for the prototype
-      - ../../fuw/php-conf/appconfig.ini:/var/appconfig.ini
     networks:
       - web-tier
       - db-tier
@@ -354,7 +350,7 @@ services:
       - ../../fuw/hooks:/commands:ro
       - ../../fuw/credentials:/var/access:ro
       - ../../fuw/flags:/var/tmp/processing_flag
-      - ../../fuw/php-conf/appconfig.ini:/var/appconfig.ini:ro
+      - ../../fuw/app/proto/appconfig.ini:/var/appconfig.ini:ro
     networks:
       - web-tier
       - db-tier
