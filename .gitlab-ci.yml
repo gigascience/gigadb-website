@@ -392,15 +392,24 @@ deploy_proto:
     - docker-compose build production_web
     - docker-compose build production_app
     - docker-compose build production_config
+    - docker-compose build production_fuw-base
+    - docker-compose build production_fuw-console
     - docker-compose build production_fuw-admin
+    - docker-compose build production_fuw-proto
     - docker tag ${CI_PROJECT_NAME}_production_web:latest registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
     - docker tag ${CI_PROJECT_NAME}_production_app:latest registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
     - docker tag ${CI_PROJECT_NAME}_production_config:latest registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
+    - docker tag ${CI_PROJECT_NAME}_production_fuw-base:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base:latest
+    - docker tag ${CI_PROJECT_NAME}_production_fuw-console:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
     - docker tag ${CI_PROJECT_NAME}_production_fuw-admin:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest
+    - docker tag ${CI_PROJECT_NAME}_production_fuw-proto:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     # - mkdir -pv ~/.docker
