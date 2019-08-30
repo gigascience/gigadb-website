@@ -178,7 +178,6 @@ run_all_tests:
     - docker-compose run --rm test ping -c 5 gigadb.dev
     # - docker-compose run test
     - cd $APPLICATION
-    - docker-compose run --rm console  bash -c "cd /app && composer update"
     - ./tests/all_and_coverage
     - echo $?
 
