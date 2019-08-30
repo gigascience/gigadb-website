@@ -394,9 +394,9 @@ deploy_proto:
     # TODO: generate config for watcher
     - docker-compose run --rm config
     - docker-compose run --rm fuw-config
+    - docker-compose run --rm console bash -c "cd /app && ./yii prototype/setup --appUrl $STAGING_HOME_URL"
     - docker-compose run --rm application composer install -a --no-dev
     - docker-compose run --rm console bash -c "cd /app && composer install -a --no-dev"
-    - docker-compose run --rm console bash -c "cd /app && ./yii prototype/setup --appUrl $STAGING_HOME_URL"
     # pulling production build of images from registry to use as cache
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest || true
