@@ -38,4 +38,7 @@ services:
       ANALYTICS_PRIVATE_KEY: ${ANALYTICS_PRIVATE_KEY}
 
   web:
+    build:
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/web:latest"
     command: ["/usr/local/bin/enable_sites", "gigadb.CI.http", "fuw-backend.CI.http"]
