@@ -527,9 +527,11 @@ deploy_proto:
     # pulling the CI build of the application and configure it for staging for the purpose of building production containers
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
+    # Generate configuration files and vendors libraries before baking an immutable image
     - docker-compose run --rm config
-    - docker-compose run --rm application composer install -a
-    - docker-compose run --rm fuw-admin bash -c "cd /var/fuw && composer install"
+    - docker-compose run --rm fuw-config
+    - docker-compose run --rm application composer install -a --no-dev
+    - docker-compose run --rm fuw-admin bash -c "cd /var/fuw && composer install -a --no-dev"
     # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
     - docker-compose build production_web
     - docker-compose build production_app
@@ -556,21 +558,25 @@ deploy_proto:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
-    # - mkdir -pv ~/.docker
-    # - echo "$staging_tlsauth_ca" >  ~/.docker/ca.pem
-    # - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
-    # - echo "$staging_tlsauth_key" > ~/.docker/key.pem
-     # Pull production container from our private registry
-    # - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    # - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    # - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    # - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
+    - mkdir -pv ~/.docker
+    - echo "$staging_tlsauth_ca" >  ~/.docker/ca.pem
+    - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
+    - echo "$staging_tlsauth_key" > ~/.docker/key.pem
+    # Pull production container from our private registry
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest
     # Run config script to populate the docker volumes
-    # - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
     # Redeploy all containers (run --rm webapp alone won't redeploy the containers)
-    # - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d
     # Run database migrations if any
-    # - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T console /app/yii migrate --interactive=0
     # Generate the web certificate for TLS termination on web container.
     # - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot certonly -d $STAGING_HOME_URL
     # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
