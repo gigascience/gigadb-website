@@ -1,0 +1,5 @@
+ARG IMAGE_NAME=deployment_fuw-admin
+FROM ${IMAGE_NAME}:latest
+
+ARG APPLICATION=/fuw/app/backend
+COPY . /var/${APPLICATION}
