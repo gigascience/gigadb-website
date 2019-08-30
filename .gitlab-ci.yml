@@ -70,20 +70,22 @@ before_script:
   - pip install docker-compose~=1.23.0
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
   - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest
+  - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest
   - cd $APPLICATION
   - docker-compose run --rm config
+  - docker-compose run --rm fuw-config
   - ls -alrt
   - docker-compose run --rm test composer install
   - docker-compose run --rm console  bash -c "cd /app && composer install"
 
 after_script:
   - docker-compose logs web
-  - docker-compose logs application
-  - docker-compose logs gigadb
+  # - docker-compose logs application
+  # - docker-compose logs gigadb
   - docker-compose logs database
-  - cat $APPLICATION/.env
-  - cat $APPLICATION/.secrets
-  - echo $DOCKER_HOST
+  # - cat $APPLICATION/.env
+  # - cat $APPLICATION/.secrets
+  # - echo $DOCKER_HOST
 
 build_webapp:
   stage: build
@@ -133,6 +135,8 @@ run_all_tests:
       - protected/runtime/clover.xml
       - protected/config/main.php
       - protected/config/test.php
+      - fuw/app/backend/runtime/
+      - fuw/app/console/runtime/
       - .env
       - composer.lock
     when: always
@@ -152,7 +156,7 @@ run_all_tests:
     # build the nginx container
     # - docker-compose build web
     # starting two webapps: gigadb website and File Upload Wizard Admin, then the web server
-    - docker-compose up -d gigadb fuw-admin
+    - docker-compose up -d gigadb fuw
     - sleep 5
     - docker-compose up -d web
     # starting the headless browser for acceptance testing
@@ -167,7 +171,6 @@ run_all_tests:
     - docker-compose run --rm test ping -c 5 gigadb.dev
     # - docker-compose run test
     - cd $APPLICATION
-    - docker-compose run --rm console  bash -c "cd /app && composer update"
     - ./tests/all_and_coverage
     - echo $?
 
@@ -203,10 +206,11 @@ check_PSR2:
     - docker-compose run --rm config
     - docker-compose run --rm gigadb
     - docker-compose run --rm test ops/scripts/check_codestyle.sh
+  allow_failure: true
+  when: manual
 
 check_PHPDoc:
   stage: conformance
-  allow_failure: true
   artifacts:
     paths:
       - protected/runtime/phpcs-phpdoc-source.txt
@@ -220,11 +224,11 @@ check_PHPDoc:
     - docker-compose run --rm config
     - docker-compose run --rm gigadb
     - docker-compose run --rm test ops/scripts/check_phpdoc.sh
-
+  allow_failure: true
+  when: manual
 
 check_SAST:
   stage: security
-  allow_failure: true
   script:
     - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
     - docker run
@@ -234,7 +238,8 @@ check_SAST:
         "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
   artifacts:
     paths: [gl-sast-report.json]
-
+  allow_failure: true
+  when: manual
 
 # job (manual, with failure allowed) for running Dymamic Application Security Testing
 # See: https://docs.gitlab.com/ee/ci/examples/dast.html
