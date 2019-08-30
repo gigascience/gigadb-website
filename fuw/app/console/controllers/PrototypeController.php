@@ -10,21 +10,26 @@ use Config_Lite;
 
 class PrototypeController extends Controller
 {
-	public $protoUrl;
-	public $apiUrl;
-	public $tusUrl;
+    public $appUrl;
+	private $protoUrl;
+	private $tusUrl;
+	private $apiUrl;
 
     /**
      * Command for setting up the prototype
      * Usage:
-     * "yii prototype/setup --protoUrl <url1> --apiUrl <url2> --tusUrl <url3>"
+     * "yii prototype/setup --appUrl <url>"
     */
     public function actionSetup() {
+        $this->protoUrl = $this->appUrl."/proto/";
+        $this->tusUrl = $this->appUrl."/files/";
+        $this->apiUrl = "http://fuw-admin-api/filedrop-accounts";
+
     	$this->stdout("Setting up the prototype\n", Console::FG_CYAN, Console::BOLD);
     	$this->stdout("with arguments:\n");
-    	$this->stdout("--protoUrl ". $this->ansiFormat($this->protoUrl, Console::FG_BLUE, Console::BOLD)."\n");
-    	$this->stdout("--apiUrl ". $this->ansiFormat($this->apiUrl, Console::FG_BLUE, Console::BOLD)."\n");
-    	$this->stdout("--tusUrl ". $this->ansiFormat($this->tusUrl, Console::FG_BLUE, Console::BOLD)."\n");
+    	$this->stdout("protoUrl:  ". $this->ansiFormat($this->protoUrl, Console::FG_BLUE, Console::BOLD)."\n");
+    	$this->stdout("apiUrl: ". $this->ansiFormat($this->apiUrl, Console::FG_BLUE, Console::BOLD)."\n");
+    	$this->stdout("tusUrl: ". $this->ansiFormat($this->tusUrl, Console::FG_BLUE, Console::BOLD)."\n");
 
     	if ( !($this->protoUrl && $this->apiUrl && $this->tusUrl) ) {
     		$this->stdout("Some argument is missing\n", Console::BOLD);
@@ -77,7 +82,7 @@ class PrototypeController extends Controller
     	// 3. Generate prototype configuration file
     	$this->stdout("Create config...");
     	$config = new Config_Lite();
-    	$configFilename = "/var/appconfig.ini" ;
+    	$configFilename = "/app/proto/appconfig.ini" ;
     	$protoConfigData = array(
     							"tusd_endpoint" => $this->tusUrl,
     							"ftpd_endpoint" => "localhost",
@@ -106,7 +111,7 @@ class PrototypeController extends Controller
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','protoUrl','apiUrl','tusUrl'];
+        return ['color', 'interactive', 'help','appUrl'];
     }
 
 }
