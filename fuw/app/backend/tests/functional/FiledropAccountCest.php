@@ -92,9 +92,6 @@ class FiledropAccountCest
 		$downloadLogin = "downloader-$doi";
 		$downloadToken = rtrim(file("/var/private/$doi/downloader_token.txt")[0]);
 
-    	// in case no accounts
-    	touch("/etc/pure-ftpd/passwd/pureftpd.passwd");
-
     	// create accounts
     	$status = $filedrop->createFTPAccount( $dockerManager, $doi );
     	$I->assertTrue($status);
