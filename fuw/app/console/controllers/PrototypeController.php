@@ -10,47 +10,34 @@ use Config_Lite;
 
 class PrototypeController extends Controller
 {
-	public $protoUrl;
-	public $apiUrl;
-	public $tusUrl;
+    public $appUrl;
+	private $protoUrl;
+	private $tusUrl;
+	private $apiUrl;
 
     /**
      * Command for setting up the prototype
      * Usage:
-     * "yii prototype/setup --protoUrl <url1> --apiUrl <url2> --tusUrl <url3>"
+     * "yii prototype/setup --appUrl <url>"
     */
     public function actionSetup() {
+        $this->protoUrl = $this->appUrl."/proto/";
+        $this->tusUrl = $this->appUrl."/files/";
+        $this->apiUrl = "http://fuw-admin-api/filedrop-accounts";
+
     	$this->stdout("Setting up the prototype\n", Console::FG_CYAN, Console::BOLD);
-    	$this->stdout("with arguments:\n");
-    	$this->stdout("--protoUrl ". $this->ansiFormat($this->protoUrl, Console::FG_BLUE, Console::BOLD)."\n");
-    	$this->stdout("--apiUrl ". $this->ansiFormat($this->apiUrl, Console::FG_BLUE, Console::BOLD)."\n");
-    	$this->stdout("--tusUrl ". $this->ansiFormat($this->tusUrl, Console::FG_BLUE, Console::BOLD)."\n");
+    	$this->stdout("with settings:\n");
+    	$this->stdout("appUrl:  ". $this->ansiFormat($this->appUrl, Console::FG_BLUE, Console::BOLD)."\n");
+        $this->stdout("protoUrl:  ". $this->ansiFormat($this->protoUrl, Console::FG_BLUE, Console::BOLD)."\n");
+    	$this->stdout("apiUrl: ". $this->ansiFormat($this->apiUrl, Console::FG_BLUE, Console::BOLD)."\n");
+    	$this->stdout("tusUrl: ". $this->ansiFormat($this->tusUrl, Console::FG_BLUE, Console::BOLD)."\n");
 
     	if ( !($this->protoUrl && $this->apiUrl && $this->tusUrl) ) {
     		$this->stdout("Some argument is missing\n", Console::BOLD);
     		return Controller::EXIT_CODE_ERROR;
     	}
 
-    	// 1. find or create the user for the prototype
-    	$this->stdout("Create user...");
-    	$protoUser = User::findOne(["username" => "prototype", 
-    								"email" => "sfriesen@jenkins.info"]
-    							) ?? new User();
-
-    	$protoUser->username = "prototype";
-    	$protoUser->email = "sfriesen@jenkins.info";
-    	$protoUser->auth_key = "dsfasdfasdfdsa";
-    	$protoUser->password_hash = "dsafadsgads";
-    	$protoUser->password_reset_token = "oqwetad";
-    	$protoUser->status = User::STATUS_ACTIVE;
-
-    	if( $protoUser->save() ) {
-	    	$this->stdout("ok\n", Console::FG_GREEN, Console::BOLD);
-    	}
-    	else {
-	    	$this->stdout("error\n", Console::FG_GREEN, Console::BOLD);
-    	}
-    	// 2. Generate JWT token for interacting with the API
+    	// 1. Generate JWT token for interacting with the API
     	$this->stdout("Create token...");
     	$signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
     	$client_token = Yii::$app->jwt->getBuilder()
@@ -74,10 +61,10 @@ class PrototypeController extends Controller
 	    	$this->stdout("error\n", Console::FG_GREEN, Console::BOLD);
     	}
 
-    	// 3. Generate prototype configuration file
+    	// 2. Generate prototype configuration file
     	$this->stdout("Create config...");
     	$config = new Config_Lite();
-    	$configFilename = "/var/appconfig.ini" ;
+    	$configFilename = "/app/proto/appconfig.ini" ;
     	$protoConfigData = array(
     							"tusd_endpoint" => $this->tusUrl,
     							"ftpd_endpoint" => "localhost",
@@ -106,7 +93,7 @@ class PrototypeController extends Controller
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','protoUrl','apiUrl','tusUrl'];
+        return ['color', 'interactive', 'help','appUrl'];
     }
 
 }
