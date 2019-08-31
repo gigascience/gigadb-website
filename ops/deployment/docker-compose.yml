@@ -23,7 +23,7 @@ services:
       - ${APPLICATION}/css:/var/www/css
       - ${APPLICATION}/style-guide:/var/www/style-guide
       # File Upload Wizard admin application
-      - ${APPLICATION}/fuw/app:/var/fuw
+      - ${APPLICATION}/fuw/app:/app
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le
     networks:
@@ -137,14 +137,14 @@ services:
       YII2_PATH: ${YII2_PATH}
     image: ${COMPOSE_PROJECT_NAME}_fuw-admin:latest
     volumes:
-      - ${APPLICATION}/fuw/app:/var/fuw
+      - ${APPLICATION}/fuw/app:/app
       - ${APPLICATION}/ops/scripts:/ops/scripts
-      - ${APPLICATION}/.env:/var/fuw/.env
+      - ${APPLICATION}/.env:/app/.env
     depends_on:
       - fuw-admin
       - database
       # - phantomjs
-    command: bash -c "cd /var/fuw && /ops/scripts/webapp_setup.sh"
+    command: bash -c "cd /app && /ops/scripts/webapp_setup.sh"
     networks:
       - web-tier
 
@@ -209,11 +209,11 @@ services:
 
   fuw-admin:
     build:
-      context: ../../fuw/app/common
+      context: ../../fuw/app
+      dockerfile: common/Dockerfile
       args:
         - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
         - APP_PORT=9002
-        - APP_ROOT_DIR=/var/fuw/backend/web/
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
@@ -227,7 +227,7 @@ services:
       # Re-use local composer cache via host-volume
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
-      - ../../fuw/app:/var/fuw
+      - ../../fuw/app:/app
       # directories used for filedrop files
       - ../../fuw/incoming:/var/incoming
       - ../../fuw/repo:/var/repo
@@ -244,11 +244,11 @@ services:
 
   fuw-proto:
     build:
-      context: ../../fuw/app/common
+      context: ../../fuw/app
+      dockerfile: common/Dockerfile
       args:
         - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
         - APP_PORT=9003
-        - APP_ROOT_DIR=/var/fuw/proto/
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
@@ -262,7 +262,7 @@ services:
       # Re-use local composer cache via host-volume
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
-      - ../../fuw/app/proto:/var/fuw/proto
+      - ../../fuw/app:/app
       # directories used for filedrop files
       - ../../fuw/incoming:/var/incoming
       - ../../fuw/repo:/var/repo
@@ -283,7 +283,8 @@ services:
 
   console:
     build:
-      context: ../../fuw/app/common
+      context: ../../fuw/app
+      dockerfile: common/Dockerfile
       args:
         - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
         - APP_PORT=9001
@@ -311,8 +312,6 @@ services:
       - ../../fuw/incoming:/var/incoming
       - ../../fuw/repo:/var/repo
       - ../../fuw/credentials:/var/private
-      - ../../fuw/runtime/pure-ftpd:/etc/pure-ftpd
-      - ../../fuw/runtime/pure-ftpd/passwd:/etc/pure-ftpd/passwd
       # need to run gigadb's unit tests using the more modern phpunit for coverage aggregation
       - ../../protected:/var/www/protected
       - ../../vendor:/var/www/vendor
