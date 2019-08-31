@@ -121,6 +121,12 @@ $ docker-compose exec console bash
 
 For security, do not mount directly the Docker unix socket in any container. TCP socket access is the safe method.
 
+## Accessing logs for Docker Daemon
+
+```
+~/Library/Containers/com.docker.docker/Data/log/host/com.docker.driver.amd64-linux.log
+```
+
 ## Working with database schema on Yii2 application (File Upload Wizard)
 
 Use Yii2 migrations to describe new changes to the database schema.
