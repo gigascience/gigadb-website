@@ -94,6 +94,7 @@ build_webapp:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-proto:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest || true
@@ -101,6 +102,7 @@ build_webapp:
     - docker-compose build application
     - docker-compose build test
     - docker-compose build fuw-admin
+    - docker-compose build fuw-proto
     - docker-compose build console
     - docker-compose build ftpd
     - docker-compose build watcher
@@ -108,6 +110,7 @@ build_webapp:
     - docker tag ${CI_PROJECT_NAME}_application:latest registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker tag ${CI_PROJECT_NAME}_test:latest registry.gitlab.com/$CI_PROJECT_PATH/test:latest
     - docker tag ${CI_PROJECT_NAME}_fuw-admin:latest registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest
+    - docker tag ${CI_PROJECT_NAME}_fuw-proto:latest registry.gitlab.com/$CI_PROJECT_PATH/fuw-proto:latest
     - docker tag ${CI_PROJECT_NAME}_console:latest registry.gitlab.com/$CI_PROJECT_PATH/console:latest
     - docker tag ${CI_PROJECT_NAME}_ftpd:latest registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest
     - docker tag ${CI_PROJECT_NAME}_watcher:latest registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest
@@ -115,6 +118,7 @@ build_webapp:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/test:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/fuw-proto:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/console:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest
@@ -148,6 +152,7 @@ run_all_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-proto:latest || true
     # - env
     # generate config for gigadb webapp
     - docker-compose run --rm config
@@ -156,7 +161,7 @@ run_all_tests:
     # build the nginx container
     # - docker-compose build web
     # starting two webapps: gigadb website and File Upload Wizard Admin, then the web server
-    - docker-compose up -d gigadb fuw
+    - docker-compose up -d gigadb fuw fuw-proto
     - sleep 5
     - docker-compose up -d web
     # starting the headless browser for acceptance testing
