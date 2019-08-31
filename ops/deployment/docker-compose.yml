@@ -332,6 +332,7 @@ services:
       - ../../fuw/repo:/home/downloader/:ro
       - ../../fuw/credentials:/var/private
       - ${DATA_SAVE_PATH}/pure-ftpd:/etc/pure-ftpd
+      - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
       # - ../ftp-transfer-logs:/var/log/pure-ftpd
     environment:
       PUBLICHOST: "localhost"
