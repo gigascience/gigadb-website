@@ -1,0 +1,3 @@
+FROM tusproject/tusd:0.13.1
+
+COPY ./hooks /var/hooks/
