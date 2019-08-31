@@ -53,24 +53,22 @@ services:
 
   production_fuw-console:
     build:
-      context: ../../fuw/app/common
-      dockerfile: Production-Dockerfile
+      context: ../../fuw/app
+      dockerfile: common/Production-Dockerfile
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest"
       args:
         - IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base
-        - APPLICATION=fuw/app/console
         - APP_PORT=9001
 
   production_fuw-admin:
     build:
-      context: ../../fuw/app/common
-      dockerfile: Production-Dockerfile
+      context: ../../fuw/app
+      dockerfile: common/Production-Dockerfile
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest"
       args:
         - IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base
-        - APPLICATION=fuw/app/backend
         - APP_PORT=9002
         - APP_ROOT_DIR=/var/fuw/backend/web/
     expose:
@@ -78,13 +76,12 @@ services:
 
   production_fuw-proto:
     build:
-      context: ../../fuw/app/common
-      dockerfile: Production-Dockerfile
+      context: ../../fuw/app
+      dockerfile: common/Production-Dockerfile
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest"
       args:
         - IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base
-        - APPLICATION=fuw/app/proto
         - APP_PORT=9003
         - APP_ROOT_DIR=/var/fuw/app/proto/
     expose:
