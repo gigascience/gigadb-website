@@ -172,3 +172,11 @@ SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/index-test.php.dist
 TARGET=${APP_SOURCE}/fuw/app/frontend/web/index-test.php
 VARS='$GIGADB_ENV'
 envsubst $VARS < $SOURCE > $TARGET
+
+
+# Configuring Watcher's PHP script to allow database access
+
+SOURCE=${APP_SOURCE}/fuw/watcher/conf/db.ini.dist
+TARGET=${APP_SOURCE}/fuw/watcher/conf/db.ini
+VARS='$FUW_DB_HOST:$FUW_DB_NAME:$FUW_DB_USER:$FUW_DB_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET
