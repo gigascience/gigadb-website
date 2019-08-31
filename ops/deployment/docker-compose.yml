@@ -104,7 +104,7 @@ services:
     image: rija/docker-alpine-shell-tools:1.0.1
     volumes:
       - ${APPLICATION}/:/var/www
-    command: /var/www/fuw/scripts/generate_config.sh
+    command: /var/www/fuw/generate_config.sh
 
   gigadb:
     environment:
