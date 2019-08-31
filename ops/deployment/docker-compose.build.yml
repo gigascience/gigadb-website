@@ -98,7 +98,7 @@ services:
 
   production_watcher:
     build:
-      context: ../../fuw/docker-inotify-command
+      context: ../../fuw/watcher
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest"
 
