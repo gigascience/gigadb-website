@@ -70,7 +70,7 @@ function generateFTPLink(string $file_name, string $dataset): string
 	}
 	fclose($handle);
 
-	$appconfig = parse_ini_file("/config/db.ini");
+	$appconfig = parse_ini_file("/var/appconfig.ini");
 	$ftpd_endpoint = $appconfig["ftpd_endpoint"] ?? "localhost";
 	$ftp_link = "ftp://downloader-$dataset:$downloader_token@$ftpd_endpoint:9021/$file_name";
 	return $ftp_link;
@@ -236,13 +236,14 @@ function fileMetadata(string $file_name, string $dataset): array
  */
 function connectDB(): object
 {
-$appconfig = parse_ini_file("/config/db.ini");
+$appconfig = parse_ini_file("/var/appconfig.ini");
 
 		$db_user = $appconfig["db_user"];
 		$db_password = $appconfig["db_password"];
-		$db_dsn = $appconfig["db_dsn"];
+		$db_source = $appconfig["db_source"];
+		$db_host = $appconfig["db_host"];
 
-		$dbh = new PDO("$db_dsn", "$db_user", "$db_password");
+		$dbh = new PDO("pgsql:host=$db_host;dbname=$db_source", "$db_user", "$db_password");
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
 		return $dbh ;
 }
@@ -260,8 +261,8 @@ function updateFileTable(object $dbh, string $dataset_doi, array $uploadedFilesM
 {
 	$result = 0;
 
-	$delete = "delete from upload where doi= ? and status = 0";
-	$insert = "insert into upload(doi,name,size,status,location,description, extension) values(:d , :n , :z , 0, :l, :s, :e)";
+	$delete = "delete from upload where doi= ? and status = 'uploading'";
+	$insert = "insert into upload(doi,name,size,status,location,description, extension) values(:d , :n , :z , 'uploading', :l, :s, :e)";
 
 	$delete_statement = $dbh->prepare($delete);
 	$delete_statement->bindParam(1, $dataset_doi);

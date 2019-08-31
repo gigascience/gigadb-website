@@ -45,7 +45,7 @@ class PrototypeController extends Controller
             ->setAudience('fuw.gigadb.org') // Configures the audience (aud claim)
             ->setSubject('API Access request from client') // Configures the subject
             ->setId('4f1g23a12aa', true) // Configures the id (jti claim), replicating as a header item
-            ->set('email', $protoUser->email)
+            ->set('email', "sfriesen@jenkins.info")
             ->set('name', "John Smith")
             ->set('role', "create")
             ->set('admin_status', "true")
