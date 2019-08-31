@@ -2,7 +2,7 @@
 
     require 'lib/db.php';
 
-    $appconfig = parse_ini_file("/var/fuw/proto/appconfig.ini");
+    $appconfig = parse_ini_file("/app/proto/appconfig.ini");
     $web_endpoint = $appconfig["web_endpoint"];
     $api_endpoint = $appconfig["api_endpoint"];
     $jwt_token = $appconfig["dummy_jwt_token"];
