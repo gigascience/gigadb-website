@@ -96,6 +96,7 @@ services:
   production_watcher:
     build:
       context: ../../fuw/watcher
+      dockerfile: Production-Dockerfile
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest"
 
