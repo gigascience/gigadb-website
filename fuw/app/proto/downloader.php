@@ -2,7 +2,7 @@
 
 	require 'lib/db.php';
 
-    $appconfig = parse_ini_file("/var/appconfig.ini");
+    $appconfig = parse_ini_file("/app/proto/appconfig.ini");
     $web_endpoint = $appconfig["web_endpoint"];
 
 	$thisurl = parse_url($_SERVER['REQUEST_URI']);

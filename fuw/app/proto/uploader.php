@@ -2,7 +2,7 @@
 	$thisurl = parse_url($_SERVER['REQUEST_URI']);
 	parse_str($thisurl["query"], $params);
 
-	$appconfig = parse_ini_file("/var/appconfig.ini");
+	$appconfig = parse_ini_file("/app/proto/appconfig.ini");
 	$tusd_endpoint = $appconfig["tusd_endpoint"];
     $web_endpoint = $appconfig["web_endpoint"];
 
