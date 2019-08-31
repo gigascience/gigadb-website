@@ -360,7 +360,6 @@ services:
       - ../../fuw/watcher/scripts:/commands:ro
       - ../../fuw/credentials:/var/access:ro
       - ../../fuw/watcher/runtime/flags:/var/tmp/processing_flag
-      - ../../fuw/watcher/conf/db.ini:/var/appconfig.ini:ro
     networks:
       - web-tier
       - db-tier
