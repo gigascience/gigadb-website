@@ -336,9 +336,7 @@ services:
       - "../../fuw/incoming/ftp:/home/uploader"
       - ../../fuw/repo:/home/downloader/:ro
       - ../../fuw/credentials:/var/private
-      - ../../fuw/hooks:/var/scripts
       - ${DATA_SAVE_PATH}/pure-ftpd:/etc/pure-ftpd
-      # - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
       # - ../ftp-transfer-logs:/var/log/pure-ftpd
     environment:
       PUBLICHOST: "localhost"
@@ -359,15 +357,15 @@ services:
 
   watcher:
     build:
-      context: ../../fuw/docker-inotify-command
+      context: ../../fuw/watcher
     volumes:
-      - ../../fuw/inotify-config:/config:ro
+      - ../../fuw/watcher/conf:/config:ro
       - ../../fuw/incoming/ftp:/home/uploader
       - ../../fuw/repo:/home/downloader/
-      - ../../fuw/hooks:/commands:ro
+      - ../../fuw/watcher/scripts:/commands:ro
       - ../../fuw/credentials:/var/access:ro
-      - ../../fuw/flags:/var/tmp/processing_flag
-      - ../../fuw/app/proto/appconfig.ini:/var/appconfig.ini:ro
+      - ../../fuw/watcher/runtime/flags:/var/tmp/processing_flag
+      - ../../fuw/watcher/conf/db.ini:/var/appconfig.ini:ro
     networks:
       - web-tier
       - db-tier
@@ -380,7 +378,7 @@ services:
     volumes:
       - "../../fuw/incoming/tusd:/var/inbox/"
       - ../../fuw/repo:/var/repo/
-      - ../../fuw/hooks:/var/hooks
+      - ../../fuw/tusd/hooks:/var/hooks
     command: -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
     networks:
       - web-tier
