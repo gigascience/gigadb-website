@@ -121,7 +121,7 @@ $ docker-compose exec console bash
 
 For security, do not mount directly the Docker unix socket in any container. TCP socket access is the safe method.
 
-## Changing database schema
+## Working with database schema on Yii2 application (File Upload Wizard)
 
 Use Yii2 migrations to describe new changes to the database schema.
 
@@ -130,6 +130,20 @@ $ docker exec console bash
 # cd /app
 # ./yii migrate/create create_upload_table
 ```
+
+To run migrations (it will only run the ones not already applied):
+
+```
+$ docker-compose exec console /app/yii migrate --interactive=0
+```
+
+To revert the latest migration:
+```
+$ docker-compose exec console /app/yii migrate/down --interactive=0
+```
+
+**Note: **[More info on Yii2 migrations](https://www.yiiframework.com/doc/guide/2.0/en/db-migrations)
+
 
 ## Services
 
