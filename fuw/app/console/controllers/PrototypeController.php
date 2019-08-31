@@ -26,8 +26,9 @@ class PrototypeController extends Controller
         $this->apiUrl = "http://fuw-admin-api/filedrop-accounts";
 
     	$this->stdout("Setting up the prototype\n", Console::FG_CYAN, Console::BOLD);
-    	$this->stdout("with arguments:\n");
-    	$this->stdout("protoUrl:  ". $this->ansiFormat($this->protoUrl, Console::FG_BLUE, Console::BOLD)."\n");
+    	$this->stdout("with settings:\n");
+    	$this->stdout("appUrl:  ". $this->ansiFormat($this->appUrl, Console::FG_BLUE, Console::BOLD)."\n");
+        $this->stdout("protoUrl:  ". $this->ansiFormat($this->protoUrl, Console::FG_BLUE, Console::BOLD)."\n");
     	$this->stdout("apiUrl: ". $this->ansiFormat($this->apiUrl, Console::FG_BLUE, Console::BOLD)."\n");
     	$this->stdout("tusUrl: ". $this->ansiFormat($this->tusUrl, Console::FG_BLUE, Console::BOLD)."\n");
 
@@ -36,26 +37,7 @@ class PrototypeController extends Controller
     		return Controller::EXIT_CODE_ERROR;
     	}
 
-    	// 1. find or create the user for the prototype
-    	$this->stdout("Create user...");
-    	$protoUser = User::findOne(["username" => "prototype", 
-    								"email" => "sfriesen@jenkins.info"]
-    							) ?? new User();
-
-    	$protoUser->username = "prototype";
-    	$protoUser->email = "sfriesen@jenkins.info";
-    	$protoUser->auth_key = "dsfasdfasdfdsa";
-    	$protoUser->password_hash = "dsafadsgads";
-    	$protoUser->password_reset_token = "oqwetad";
-    	$protoUser->status = User::STATUS_ACTIVE;
-
-    	if( $protoUser->save() ) {
-	    	$this->stdout("ok\n", Console::FG_GREEN, Console::BOLD);
-    	}
-    	else {
-	    	$this->stdout("error\n", Console::FG_GREEN, Console::BOLD);
-    	}
-    	// 2. Generate JWT token for interacting with the API
+    	// 1. Generate JWT token for interacting with the API
     	$this->stdout("Create token...");
     	$signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
     	$client_token = Yii::$app->jwt->getBuilder()
@@ -79,7 +61,7 @@ class PrototypeController extends Controller
 	    	$this->stdout("error\n", Console::FG_GREEN, Console::BOLD);
     	}
 
-    	// 3. Generate prototype configuration file
+    	// 2. Generate prototype configuration file
     	$this->stdout("Create config...");
     	$config = new Config_Lite();
     	$configFilename = "/app/proto/appconfig.ini" ;
