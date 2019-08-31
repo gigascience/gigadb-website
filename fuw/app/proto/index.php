@@ -1,7 +1,7 @@
 <?php
     require 'lib/db.php';
 
-    $appconfig = parse_ini_file("/var/appconfig.ini");
+    $appconfig = parse_ini_file("/app/proto/appconfig.ini");
     $ftpd_endpoint = $appconfig["ftpd_endpoint"];
     $ftpd_port = $appconfig["ftpd_port"];
     $web_endpoint = $appconfig["web_endpoint"];
