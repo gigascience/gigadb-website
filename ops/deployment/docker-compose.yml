@@ -25,7 +25,6 @@ services:
       - ${APPLICATION}/style-guide:/var/www/style-guide
       # File Upload Wizard admin application
       - ${APPLICATION}/fuw/app:/var/fuw
-      - ${APPLICATION}/fuw/app/proto:/var/fuw/proto
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le
     networks:
@@ -114,12 +113,22 @@ services:
     image: ${COMPOSE_PROJECT_NAME}_application:latest
     volumes:
       - ${APPLICATION}/:/var/www
-      - ${APPLICATION}:/app
     depends_on:
       - application
       - database
       # - chrome
-    command: bash -c "./ops/scripts/webapp_setup.sh && ./protected/yiic lesscompiler"
+    command: bash -c "./ops/scripts/webapp_setup.sh"
+    networks:
+      - web-tier
+
+  less:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    image: ${COMPOSE_PROJECT_NAME}_application:latest
+    volumes:
+      - ${APPLICATION}/:/var/www
+    command: bash -c "./protected/yiic lesscompiler"
     networks:
       - web-tier
 
