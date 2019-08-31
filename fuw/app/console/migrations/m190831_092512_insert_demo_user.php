@@ -12,7 +12,7 @@ class m190831_092512_insert_demo_user extends Migration
      */
     public function safeUp()
     {
-        $this->insert('{{%user}}', ["username" => "prototype", "email" => "sfriesen@jenkins.info", "auth_key" => "dsfasdfasdfdsa", "password_hash" => "dsafadsgads","password_reset_token" => "oqwetad" , "status" => 10, "created_at" =>  $this->dateTime(), "updated_at" =>  $this->dateTime()]);
+        $this->insert('{{%user}}', ["username" => "prototype", "email" => "sfriesen@jenkins.info", "auth_key" => "dsfasdfasdfdsa", "password_hash" => "dsafadsgads","password_reset_token" => "oqwetad" , "status" => 10, "created_at" => 1565353012, "updated_at" =>  1565353012]);
     }
 
     /**
