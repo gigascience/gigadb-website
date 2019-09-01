@@ -57,7 +57,18 @@ services:
         - INSTALL_MAILPARSE=true
         - INSTALL_GIT=true
     volumes:
-      - ${APPLICATION}/:/var/www
+      # Gigadb webapp
+      - ${APPLICATION}/protected:/var/www/protected
+      - ${APPLICATION}/vendor:/var/www/vendor
+      - ${APPLICATION}/assets:/var/www/assets
+      - ${APPLICATION}/images:/var/www/images
+      - ${APPLICATION}/files:/var/www/files
+      - ${APPLICATION}/fonts:/var/www/fonts
+      - ${APPLICATION}/js:/var/www/js
+      - ${APPLICATION}/less:/var/www/less
+      - ${APPLICATION}/css:/var/www/css
+      - ${APPLICATION}/sql:/var/www/sql
+      - ${APPLICATION}/index.php:/var/www/index.php
       - ${APPLICATION}/ops/configuration/php-conf/php-${PHP_VERSION}-${GIGADB_ENV}.ini:/usr/local/etc/php/php.ini
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
