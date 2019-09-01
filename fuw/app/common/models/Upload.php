@@ -11,7 +11,7 @@ use Yii;
  * @property string $doi
  * @property string $name
  * @property int $size
- * @property string $status
+ * @property int $status
  * @property string $location
  * @property string $description
  * @property string $initial_md5
@@ -21,6 +21,10 @@ use Yii;
  */
 class Upload extends \yii\db\ActiveRecord
 {
+
+    const STATUS_UPLOADING = 0;
+    const STATUS_UPLOADED = 1;
+    const STATUS_ARCHIVED = 2;
     /**
      * {@inheritdoc}
      */
@@ -40,7 +44,8 @@ class Upload extends \yii\db\ActiveRecord
             [['size'], 'integer'],
             [['description', 'initial_md5'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
-            [['doi', 'status'], 'string', 'max' => 100],
+            [['doi'], 'string', 'max' => 100],
+            ['status', 'in', 'range' => [self::STATUS_UPLOADING, self::STATUS_UPLOADED, self::STATUS_ARCHIVED]],
             [['name'], 'string', 'max' => 128],
             [['location'], 'string', 'max' => 200],
             [['extension'], 'string', 'max' => 32],
