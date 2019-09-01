@@ -127,9 +127,12 @@ services:
       - application
       - database
       # - phantomjs
-    command: bash -c "./ops/scripts/webapp_setup.sh"
+    command: composer install
     networks:
       - web-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
 
   less:
     environment:
@@ -149,15 +152,17 @@ services:
     image: ${COMPOSE_PROJECT_NAME}_fuw-admin:latest
     volumes:
       - ${APPLICATION}/fuw/app:/app
-      - ${APPLICATION}/ops/scripts:/ops/scripts
       - ${APPLICATION}/.env:/app/.env
     depends_on:
       - fuw-admin
       - database
       # - phantomjs
-    command: bash -c "cd /app && /ops/scripts/webapp_setup.sh"
+    command: composer install
     networks:
       - web-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
 
   test:
     build:
