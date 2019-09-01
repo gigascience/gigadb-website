@@ -182,6 +182,7 @@ RUN usermod -u 1000 www-data
 
 COPY ./protected /var/www/protected/
 COPY ./vendor /var/www/vendor/
+COPY ./assets /var/www/assets/
 COPY ./images /var/www/images/
 COPY ./files /var/www/files/
 COPY ./fonts /var/www/fonts/
