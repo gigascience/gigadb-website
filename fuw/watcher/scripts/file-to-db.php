@@ -261,8 +261,8 @@ function updateFileTable(object $dbh, string $dataset_doi, array $uploadedFilesM
 {
 	$result = 0;
 
-	$delete = "delete from upload where doi= ? and status = 'uploading'";
-	$insert = "insert into upload(doi,name,size,status,location,description, extension) values(:d , :n , :z , 'uploading', :l, :s, :e)";
+	$delete = "delete from upload where doi= ? and status = 0";
+	$insert = "insert into upload(doi,name,size,status,location,description, extension) values(:d , :n , :z , 0, :l, :s, :e)";
 
 	$delete_statement = $dbh->prepare($delete);
 	$delete_statement->bindParam(1, $dataset_doi);
