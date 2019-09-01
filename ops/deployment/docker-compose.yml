@@ -314,9 +314,11 @@ services:
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
-      # need to run gigadb's unit tests using the more modern phpunit for coverage aggregation
+      # TODO: need to run gigadb's unit tests using the more modern phpunit for coverage aggregation
       - ../../protected:/var/www/protected
       - ../../vendor:/var/www/vendor
+      # to run tests that interact with containers
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - web-tier
       - db-tier
