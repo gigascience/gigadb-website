@@ -20,13 +20,15 @@ use common\models\Upload;
  * @property string $upload_token
  * @property string $download_login
  * @property string $download_token
- * @property string $status
+ * @property int $status
  * @property string $created_at
  * @property string $updated_at
- * @property string $retired_at
+ * @property string $terminated_at
  */
 class FiledropAccount extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE = 1;
+    const STATUS_TERMINATED = 0;
 
     /**
      * non-serializable property so the model filters can handle Docker container manipulation
@@ -50,8 +52,9 @@ class FiledropAccount extends \yii\db\ActiveRecord
     {
         return [
             [['doi','upload_login','upload_token','download_login','download_token'], 'required'],
-            [['created_at', 'updated_at', 'retired_at'], 'safe'],
-            [['doi', 'upload_login', 'download_login', 'status'], 'string', 'max' => 100],
+            [['created_at', 'updated_at', 'terminated_at'], 'safe'],
+            [['doi', 'upload_login', 'download_login'], 'string', 'max' => 100],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_TERMINATED]],
             [['upload_token', 'download_token'], 'string', 'max' => 128],
         ];
     }
@@ -71,7 +74,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'retired_at' => 'Retired At',
+            'terminated_at' => 'Retired At',
         ];
     }
 
@@ -131,7 +134,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
      *
      * @param string $status status
      */
-    public function setStatus(string $status): void
+    public function setStatus(int $status): void
     {
         $this->status = $status ;
     }
@@ -141,7 +144,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
      *
      * @return string $status status
      */
-    public function getStatus(): string
+    public function getStatus(): int
     {
         return $this->status ;
     }
@@ -357,12 +360,12 @@ class FiledropAccount extends \yii\db\ActiveRecord
                 $ftpd_status = $prepared && $this->createFTPAccount($this->getDockerManager(),
                                                                     $this->getDOI());
                 if ($prepared && $ftpd_status) {
-                    $this->setStatus("active");
+                    $this->setStatus(self::STATUS_ACTIVE);
                     return true;
                 }
                 return false;
             }
-            else if ( "terminated" === $this->getStatus() ) {
+            else if ( self::STATUS_TERMINATED === $this->getStatus() ) {
                 $directoryRemoved = $this->removeDirectories($this->getDOI());
                 $directoryAndFTPremoved = $directoryRemoved && $this->removeFTPAccount(
                     $this->getDockerManager(),
