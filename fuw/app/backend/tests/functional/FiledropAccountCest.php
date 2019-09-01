@@ -101,6 +101,7 @@ class FiledropAccountCest
 
         // clean up directories created by the test
         $filedrop->removeDirectories("$doi");
+        $filedrop->removeFTPAccount( $dockerManager, $doi );
 
     }
 
@@ -133,6 +134,7 @@ class FiledropAccountCest
 
         // clean up directories created by the test
         $filedrop->removeDirectories("$doi");
+        $filedrop->removeFTPAccount( $dockerManager, $doi );
     }
 
     /**
@@ -169,8 +171,11 @@ class FiledropAccountCest
 
         // clean up directories created by the test
         $filedrop = new FiledropAccount();
+        $dockerManager = new DockerManager();
         $filedrop->setDOI($doi);
+        $filedrop->setDockerManager($dockerManager);
         $filedrop->removeDirectories("$doi");
+        $filedrop->removeFTPAccount( $dockerManager, $doi );
     }
 
     /**
