@@ -287,7 +287,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     public function removeUploads(): ?int
     {
-        $nbArchived = Upload::updateAll(['status' => "archived"], "doi = '{$this->getDOI()}'");
+        $nbArchived = Upload::updateAll(['status' => Upload::STATUS_ARCHIVED], "doi = '{$this->getDOI()}'");
         return $nbArchived;
     }
 
