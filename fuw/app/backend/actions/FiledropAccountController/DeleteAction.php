@@ -26,7 +26,7 @@ class DeleteAction extends \yii\rest\DeleteAction
             call_user_func($this->checkAccess, $account->id, $account);
         }
 
-        $account->status = "terminated";
+        $account->status = FiledropAccount::STATUS_TERMINATED;
 
         if ( ! $account->validate() ) {
         	throw new ServerErrorHttpException('validation failed:'.implode("\n", $account->getErrorSummary(true)));
