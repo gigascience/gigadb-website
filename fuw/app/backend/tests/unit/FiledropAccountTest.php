@@ -313,7 +313,7 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         $filedropAccount->expects($this->once())
                 ->method('setStatus')
                 ->with(
-                    $this->equalTo("active")
+                    $this->equalTo(FiledropAccount::STATUS_ACTIVE)
                 );
 
         $filedropAccount->setDockerManager($stubDockerManager);
@@ -369,7 +369,7 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         $filedropAccount->expects($this->never())
                 ->method('setStatus')
                 ->with(
-                    $this->equalTo("active")
+                    $this->equalTo(FiledropAccount::STATUS_ACTIVE)
                 ); // this should never be invoked
 
         $filedropAccount->setDockerManager($stubDockerManager);
@@ -425,7 +425,7 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         $filedropAccount->expects($this->never())
                 ->method('setStatus')
                 ->with(
-                    $this->equalTo("active")
+                    $this->equalTo(FiledropAccount::STATUS_ACTIVE)
                 ); // this should never be invoked
 
         $filedropAccount->setDockerManager($stubDockerManager);
@@ -465,7 +465,7 @@ class FiledropAccountTest extends \Codeception\Test\Unit
 
         $filedropAccount->expects($this->once())
                 ->method('getStatus')
-                ->willReturn("terminated");
+                ->willReturn(FiledropAccount::STATUS_TERMINATED);
 
         $filedropAccount->expects($this->once())
                 ->method('getDockerManager')
