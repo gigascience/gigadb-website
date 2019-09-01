@@ -10,7 +10,7 @@
 
     /**
      * the account class
-     *  id | doi_suffix |  ulogin  |        utoken        |  dlogin  |        dtoken        | space_used | status |         created_at         |         updated_at         | retired_at
+     *  id | doi_suffix |  ulogin  |        utoken        |  dlogin  |        dtoken        | space_used | status |         created_at         |         updated_at         | terminated_at
      */
     class Account {
         public $id;
@@ -23,7 +23,7 @@
         public $status;
         public $created_at;
         public $updated_at;
-        public $retired_at;
+        public $terminated_at;
     }
 
     /**
@@ -31,12 +31,12 @@
      *
      * @param string $status filtering on status (active or retired)
      */
-    function getAccounts(string $status): array
+    function getAccounts(int $status): array
     {
         $dbh = connectDB();
         $sql = "select distinct * from filedrop_account where status = ? order by doi";
         $st = $dbh->prepare($sql);
-        $st->bindParam(1, $status, PDO::PARAM_STR);
+        $st->bindParam(1, $status);
         $st->execute();
         return $st->fetchAll(PDO::FETCH_CLASS, "Account");
     }
@@ -75,7 +75,7 @@
                 <th>account creation date</th>
             </tr>
             <?php
-                foreach (getAccounts("active") as $account) {
+                foreach (getAccounts(1) as $account) {
             ?>
             <tr>
                 <td>
