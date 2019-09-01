@@ -12,28 +12,18 @@ class m190822_104110_create_upload_table extends Migration
      */
     public function safeUp()
     {
-            // id serial PRIMARY KEY,
-            // doi_suffix integer NOT NULL,
-            // name character varying(100) NOT NULL,
-            // size bigint NOT NULL,
-            // status character varying(100) DEFAULT 'uploading'::text, -- 1: uploading, 2: private, 3: public
-            // location character varying(200),
-            // description text DEFAULT ''::text,
-            // initial_md5 text DEFAULT ''::text,
-            // format text DEFAULT 'Unknown'::text,
-            // data_type text DEFAULT 'Unknown'::text,
         $this->createTable('{{%upload}}', [
-            'id' => 'serial PRIMARY KEY',
-            'doi' => 'character varying(100) NOT NULL',
-            'name' => 'character varying(128) NOT NULL',
-            'size' => 'bigint NOT NULL',
-            'status' => 'character varying(100)',
-            'location' => 'character varying(200)',
-            'description' => 'text',
-            'initial_md5' => 'text',
-            'extension' => 'character varying(32)',
-            'created_at' => 'timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL',
-            'updated_at' => 'timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL',
+            'id' => $this->primaryKey(),
+            'doi' => $this->string(100)->notNull(),
+            'name' => $this->string(128)->notNull(),
+            'size' => $this->bigInteger()->notNull(),
+            'status' => $this->integer(),
+            'location' => $this->string(200)->notNull(),
+            'description' => $this->text(),
+            'initial_md5' => $this->text(),
+            'extension' => $this->string(32),
+            'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'updated_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
         ]);
 
         $this->execute("CREATE OR REPLACE FUNCTION update_modified_column()
