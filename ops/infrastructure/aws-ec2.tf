@@ -6,7 +6,7 @@ provider "aws" {
 
 resource "aws_security_group" "docker_host_sg" {
   name        = "docker_host_sg"
-  description = "Allow connection to docker host"
+  description = "Allow connection to docker host for ${var.deployment_target}"
   vpc_id      = "${var.aws_vpc_id}"
 
   ingress {
@@ -53,7 +53,7 @@ resource "aws_instance" "staging_dockerhost" {
   key_name = "aws-centos7-keys"
 
   tags = {
-    Name = "ec2-as1-staging-gigadb"
+    Name = "ec2-as1-${var.deployment_target}"
   }
 
   root_block_device = {
@@ -61,14 +61,14 @@ resource "aws_instance" "staging_dockerhost" {
   }
 }
 
-data "aws_eip" "staging_eip" {
+data "aws_eip" "docker_host_eip" {
   filter {
     name   = "tag:Name"
-    values = ["eip-staging-gigadb"]
+    values = ["eip-${var.deployment_target}"]
   }
 }
 
-resource "aws_eip_association" "staging_eip" {
-  instance_id   = "${aws_instance.staging_dockerhost.id}"
-  allocation_id = "${data.aws_eip.staging_eip.id}"
+resource "aws_eip_association" "docker_host_eip_assoc" {
+  instance_id   = "${aws_instance.staging_docker_host.id}"
+  allocation_id = "${data.aws_eip.docker_host_eip.id}"
 }
