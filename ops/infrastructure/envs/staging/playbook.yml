@@ -2,7 +2,7 @@
 # build a Centos server running a secure Docker CE install
 
 - name: Setup Fail2ban
-  hosts: "name_gigadb_staging"
+  hosts: docker_host
 
   tasks:
     - debug:
@@ -16,7 +16,7 @@
     - role: ../../roles/jail-ssh
 
 - name: Setup Docker CE
-  hosts: name_gigadb_staging
+  hosts: docker_host
 
   tasks:
     - debug:
