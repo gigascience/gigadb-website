@@ -146,7 +146,7 @@ pipelines page.
 Prior to this, a host machine has to be instantiated with a 
 secure Docker daemon on which the GigaDB application will be deployed. This 
 machine can be used for a specific environment, most likely staging or 
-production. Two tools are used to deploy a Docker server on the AWS cloud: 
+production. Two tools are used to set a Docker server on the AWS cloud: 
 Terraform and Ansible.
 
 ### Terraform
@@ -220,15 +220,12 @@ address:
 $ terraform refresh
 ```
 
-If this is not done then Ansible will try to use the initial IP address of 
+If this is not done then Ansible will try to use the original IP address of 
 your EC2 instance and you will get a server not found error since the server
-will not be associated with your elastic IP address.
+will have your elastic IP address.
 
 ### Ansible
 
-The Ansible software is a tool for provisioning, managing configuration and 
-deploying applications using its own declarative language. SSH is used to 
-connect to remote servers to perform its provisioning tasks.
 [Ansible](https://www.ansible.com) is used to install the EC2 instance 
 with a Docker daemon. Currently, Ansible version 2.9.10 is able to deploy an AWS
 server for installing GigaDB. In addition, a PostgreSQL server is installed on 
@@ -236,6 +233,7 @@ the EC2 instance which will host the database that GigaDB uses to manage
 information abouts its datasets. Note that this setup for a staging instance of 
 GigaDB is different to a local GigaDB application whose PostgreSQL database is 
 provided by a custom Docker container.
+SSH is used by Ansible to connect to remote servers to perform its provisioning tasks.
 
 #### Ansible setup and configuration
 
@@ -259,54 +257,30 @@ However the connection parameters (like SSH keys) are variables we need to suppl
 
 In this paragraph and the next, from now on we will assume we are dealing with the **staging** environment.
 
-The machines controlled by Ansible are usually defined in a [`hosts`](https://github.com/gigascience/gigadb-website/blob/develop/ops/infrastructure/inventories/hosts)
-file which lists the host machines connection details. Our file is located at `ops/infrastructure/inventories/hosts` and contains
+The machines controlled by Ansible are usually defined in a [`hosts`](https://github.com/gigascience/gigadb-website/blob/develop/ops/infrastructure/envs/staging/group_vars/docker_host/vars)
+file which lists the host machines connection details. Our file is located at `ops/infrastructure/envs/staging/group_vars/docker_host/vars` and contains
 the following content:
 ```
-[name_gigadb_staging]
+ansible_ssh_private_key_file: "{{ vault_staging_private_key_file_location }}"
+ansible_user: "centos"
+ansible_become: "true"
+database_bootstrap: "../../../../sql/production_like.pgdmp"
+pg_user: "{{ vault_staging_pg_user }}"
+pg_password: "{{ vault_staging_pg_password }}"
+pg_database: "{{ vault_staging_pg_database }}"
+gitlab_url: "{{ vault_gitlab_url }}"
+gitlab_private_token: "{{ lookup('file','~/.gitlab_private_token') }}"
+gigadb_environment: staging
 
-# do not add any IP address here as it is dynamically managed using terraform-inventory
-
-[name_gigadb_staging:vars]
-
-ansible_ssh_private_key_file = "{{ vault_staging_private_key_file_location }}"
-ansible_user = "centos"
-ansible_become = "true"
-database_bootstrap = "../../../../sql/production_like.pgdmp"
-pg_user = "{{ vault_staging_pg_user }}"
-pg_password = "{{ vault_staging_pg_password }}"
-pg_database = "{{ vault_staging_pg_database }}"
-gitlab_private_token = "{{ lookup('file','~/.gitlab_private_token') }}"
-gigadb_environment = staging
-
-fuw_db_user = "{{ vault_staging_fuw_db_user }}"
-fuw_db_password = "{{ vault_staging_fuw_db_password }}"
-fuw_db_database = "{{ vault_staging_fuw_db_database }}"
-
-...
-
+fuw_db_user: "{{ vault_staging_fuw_db_user }}"
+fuw_db_password: "{{ vault_staging_fuw_db_password }}"
+fuw_db_database: "{{ vault_staging_fuw_db_database }}"
 ```
 
-Note that the header **[name_gigadb_staging]** must match the "Name" tag associated to the AWS EC2 resource defined in ``ops/infrastructure/modules/aws-instance/aws-instance.tf`` for the environment of interest (here ``staging``):
-
-```
-tags = {
-    Name = "gigadb_${var.deployment_target}",
-    Hosting = "ec2-as1-t2m-centos"
- }
-```
-
-Knowning that, one can add any other necessary environments as long as the environment variable TF_VAR_deployment_target is set with that value and that the ``hosts`` file has a block fronted with an appropriately named header after that same value.
-
-The hosts can be defined in as many file as desired, not just ``hosts``, as long as they reside inside ``ops/infrastructure/inventories/``.
-It's actually highly recommended to have the production host definition in its own file to avoid accidental changes to production when modifying an other environment.
-
-**Note:** host names in Ansible must be made of alphanumerical and underscore characters only. Although Terraform and AWS don't have that limitation, the Name tag needs to follow it so the connection between Terraform and Ansible can be made.
-
-Our `hosts` file does not list any machines. Instead, a tool called 
+Our `vars` file does not list any machines. Instead, a tool called 
 [`terraform-inventory`](https://github.com/adammck/terraform-inventory)  
 generates a dynamic Ansible inventory from a Terraform state file. Nonetheless, 
-the `hosts` file is still used to reference variables for hosts.
+the `vars` file is still used to reference variables for hosts.
 
 * One particular variable to note is `gitlab_private_token`. The value of `gitlab_private_token`
 is the contents of a file located at `~/.gitlab_private_token`.  Create this 
@@ -316,10 +290,10 @@ that you will use to access the GitLab API. N.B. The `read_user` and
 
 The values of some of the variables in the `hosts` file are sensitive and for 
 this reason, the actual values are encrypted within an Ansible vault file which 
-needs to be located at `ops/infrastructure/envs/staging/group_vars/all/vault`. This vault 
+needs to be located at `ops/infrastructure/envs/staging/group_vars/docker_host/vault`. This vault 
 file should NOT be version controlled as defined in the `.gitignore` file.
 
-Create the `vault` file in the ops/infrastructure/envs/staging/group_vars/all directory:
+Create the `vault` file in the ops/infrastructure/envs/staging/group_vars/docker_host directory:
 ```
 $ pwd
 ~/gigadb-website
@@ -370,7 +344,7 @@ $ANSIBLE_VAULT;1.2;AES256;dev
 To open the encrypted `vault` file for editing, use the command below and input
 the password when prompted.
 ```
-$ ansible-vault edit ops/infrastructure/envs/stagings/group_vars/all/vault
+$ ansible-vault edit ops/infrastructure/envs/stagings/group_vars/docker_host/vault
 ```
 
 Provide Ansible with the password to access the vault file during the 
@@ -394,7 +368,7 @@ $ ansible-galaxy install -r requirements.yml
 Provision the EC2 instance using Ansible:
 ```
 $ cd ops/infrastructure/envs/staging
-$ ansible-playbook -vvv -i ../../inventories -i name_gigadb_staging  playbook.yml --vault-password-file ~/.vault_pass.txt
+$ ansible-playbook -vvv -i docker_host -i /usr/local/bin/terraform-inventory  playbook.yml --vault-password-file ~/.vault_pass.txt
 ```
 
 > Since an elastic IP address is being used, you might need to delete the entry
@@ -412,16 +386,17 @@ provisioning has completed. This is done by the `docker-postinstall` role.
 | staging_tlsauth_key  | the server key for the above CA - this is provided by staging server during Ansible provisioning |
 | staging_public_ip    | Public IP address of staging server |
 | staging_private_ip   | Private IP address of staging server |
+
  
-This is for running a secure Docker engine on a cloud virtual server so that the 
-Docker API is secured over TCP and we know we are communicating with the correct 
-server and not a malicious impersonation. We also need to authenticate the 
-client with TLS so only clients using the client certificates can use the Docker 
-engine. This is the 2-way certificate-based authentication.
+This is for running a secure Docker engine on the production CNGB virtual server
+so that the Docker API is secured over TCP and we know we are communicating 
+with the correct server and not a malicious impersonation. We also need to 
+authenticate the client with TLS so only clients using the client certificates 
+can use the Docker engine. This is the 2-way certificate-based authentication.
 
 ### Further configuration steps
 
-The new `gigadb-website` code contains functionality for running GigaDB over 
+The new gigadb-website code contains functionality for running GigaDB over 
 [HTTPS](https://en.wikipedia.org/wiki/HTTPS). 
 [Let's Encrypt](https://letsencrypt.org) is used as a trusted certificate 
 authority to sign a certificate provided by GigaDB which is trusted by users.
@@ -470,61 +445,3 @@ If it is the first time doing this on the server, select the
 
 Also, note that the HTTPS certificates last 3 months, so you need to do at least 
 one deploy every 3 month (a NO-OP deploy will work).
-
-## PostgreSQL database in GigaDB application
-
-The virtual server hosting the Docker engine also hosts the PostgreSQL database
-that GigaDB uses to store information about datasets, users, etc. If you want to 
-access the database then it is possible to connect to it using 
-[pgAdmin4](https://www.pgadmin.org). This is done by creating a new server on 
-the pgAdmin interface and using SSH Tunneling to access the virtual server with 
-the following parameters:
-```
-Tunnel host:        <Public IP address of virtual server>
-Tunnel port:        22
-Username:           centos
-Authentication:     Identity file
-Identity file:      <Path to AWS pem file>
-```
-
-For the Connection parameters:
-```
-Hostname:               127.0.0.1
-Port:                   5432
-Maintenance database:   gigadb
-Username:               gigadb
-```
-
-Use `vagrant` as the password to access the database by the `gigadb` user.
-
-There is also command line access to the PostgreSQL database on the virtual
-server:
-```
-$ ssh -i "aws-centos7-keys.pem" centos@ec2-**-***-***-***.ap-southeast-1.compute.amazonaws.com
-# Use vagrant as password
-$ psql -U gigadb -h localhost
-gigadb=>
-```
-one deploy every 3 month (a NO-OP deploy will work).
-
-### Remote debugging of CD deployment
-
-1. Download the "Job artifacts" from the "Run all tests" steps reports (click "Download" under "Job artifacts" section). The zip archive contains the staging ``.env`` file. In a new bash shell, cd into gigadb-website git repo and source that ``.env`` file.
-
-```
-export STAGING_PUBLIC_HTTP_PORT=80
-export STAGING_PUBLIC_HTTPS_PORT=443
-export CI_PROJECT_PATH="gigascience/forks/rija-gigadb-website"
-```
-
-1. Download the body of certificate files from the Gitlab Variables list (staging_tlsauth_ca, staging_tlsauth_cert, staging_tlsauth_key) into PEM files (e.g: ca.pem, cert.pm, key.pem).
-
-1. You can then control staging containers as below:
-
-Note: below,  18.136.238.239 is the public ip of the server the code was deployed to.
-
-```
-$ docker --tlsverify -H=tcp://18.136.238.239:2376 --tlscacert=ca.pem  --tlscert=cert.pem --tlskey=key.pem ps
-```
-
-
