@@ -193,9 +193,16 @@ generate a `no matching Elastic IP found` error message.
 > Using your domain name service, map the EIP to the domain name you will use 
 for your staging or production server.
 
+In order to avoid accidental deletion of provisioned infrastructure, it is highly recommended to maintain distinct Terraform state for each target environment. This also make it easier using different and segregated cloud accounts for each environment. 
+
+Thus the main Terraform configugration, state and variables will be kept in environment-specific directory.
+
+Furthermore, that approach reduce code duplication as the common Terraform code can be kept in modules in a separate directory (``ops/infrastructure/modules``). From now on in the doc, we will take the example of the **staging** environment. When creating a new environment, one can just duplicate the ``ops/infrastructure/envs/staging`` directory and adjust values.
+
 Use Terraform to instantiate the t2.micro instance on AWS cloud with the 
 following commands:
 ```
+$ cd ops/infrastructure/envs/staging
 $ terraform init
 $ terraform plan
 $ terraform apply
@@ -232,52 +239,50 @@ provided by a custom Docker container.
 
 #### Ansible setup and configuration
 
-The machines controlled by Ansible are usually defined in a [`hosts`](https://github.com/gigascience/gigadb-website/blob/develop/ops/infrastructure/inventories/hosts)
-file which lists the host machines and how they are grouped together. Our 
-`hosts` file is located at `ops/infrastructure/inventories/hosts` and contains
+Like Terraform, we keep the Ansible configuration files in environment-specific directories, and we execute Ansible in these directories. The reasons are exactly the same as for Terraform (Safety, DRY, Cloud account flexibility).
+
+The main concepts used in Ansible are Hosts, Roles, Tasks and Playbook.
+
+The sets of software configuration instructions we want to perform on the infrastructure provisioned with Terraform in the previous step, are Tasks (e.g: Enable systemd service).
+
+Tasks are grouped into Roles (e.g: docker-postinstall). 
+
+The Playbook is the file describing the sequence of Roles (and/or Tasks) to be performed on a collection of Hosts whose software configuration we want to bring to a certain state.
+
+Hosts can be defined statically, dynamically or a combination of both and from one or more sources.
+
+Best practices is to use Ansible in agent-less way, so it needs connection parameters in order to control the remote provisioned machine.
+
+The host name and IP address on which to run ansible are an output of running terraform, so we are going to feed ansible the host name and ip adress dynamically.
+
+However the connection parameters (like SSH keys) are variables we need to supply statically and they are different for each environment.
+
+In this paragraph and the next, from now on we will assume we are dealing with the **staging** environment.
+
+The machines controlled by Ansible are usually defined in a [`hosts`](https://github.com/gigascience/gigadb-website/blob/develop/ops/infrastructure/envs/staging/group_vars/docker_host/vars)
+file which lists the host machines connection details. Our file is located at `ops/infrastructure/envs/staging/group_vars/docker_host/vars` and contains
 the following content:
 ```
-[staging_dockerhost]
+ansible_ssh_private_key_file: "{{ vault_staging_private_key_file_location }}"
+ansible_user: "centos"
+ansible_become: "true"
+database_bootstrap: "../../../../sql/production_like.pgdmp"
+pg_user: "{{ vault_staging_pg_user }}"
+pg_password: "{{ vault_staging_pg_password }}"
+pg_database: "{{ vault_staging_pg_database }}"
+gitlab_url: "{{ vault_gitlab_url }}"
+gitlab_private_token: "{{ lookup('file','~/.gitlab_private_token') }}"
+gigadb_environment: staging
 
-# do not add any IP address here as it is dynamically managed using terraform-inventory
-
-[staging_dockerhost:vars]
-
-ansible_ssh_private_key_file= {{ vault_staging_private_key_file_location }}
-ansible_user="centos"
-ansible_become="true"
-database_bootstrap="../../sql/production_like.pgdmp"
-pg_user = {{ vault_staging_pg_user }}
-pg_password = {{ vault_staging_pg_password }}
-pg_database = {{ vault_staging_pg_database }}
-gitlab_private_token = {{ lookup('file','~/.gitlab_private_token') }}
-gigadb_environment = staging
-
-[production_dockerhost]
-
-# add IP address here for production server
-
-[production_dockerhost:vars]
-
-ansible_ssh_private_key_file= {{ vault_production_private_key_file_location }}
-ansible_user="centos"
-ansible_become="true"
-database_bootstrap="../../sql/production_like.pgdmp"
-pg_user = {{ vault_production_pg_user }}
-pg_password = {{ vault_production_pg_password }}
-pg_database = {{ vault_production_pg_database }}
-gitlab_private_token = {{ lookup('file','~/.gitlab_private_token') }}
-gigadb_environment = production
-
-[all:vars]
-
-gitlab_url = {{ vault_gitlab_url }}
+fuw_db_user: "{{ vault_staging_fuw_db_user }}"
+fuw_db_password: "{{ vault_staging_fuw_db_password }}"
+fuw_db_database: "{{ vault_staging_fuw_db_database }}"
 ```
 
-Our `hosts` file does not list any machines. Instead, a tool called 
+Our `vars` file does not list any machines. Instead, a tool called 
 [`terraform-inventory`](https://github.com/adammck/terraform-inventory)  
 generates a dynamic Ansible inventory from a Terraform state file. Nonetheless, 
-the `hosts` file is still used to reference variables for hosts.
+the `vars` file is still used to reference variables for hosts.
 
 * One particular variable to note is `gitlab_private_token`. The value of `gitlab_private_token`
 is the contents of a file located at `~/.gitlab_private_token`.  Create this 
@@ -287,10 +292,10 @@ that you will use to access the GitLab API. N.B. The `read_user` and
 
 The values of some of the variables in the `hosts` file are sensitive and for 
 this reason, the actual values are encrypted within an Ansible vault file which 
-needs to be located at `ops/infrastructure/group_vars/all/vault`. This vault 
+needs to be located at `ops/infrastructure/envs/staging/group_vars/docker_host/vault`. This vault 
 file should NOT be version controlled as defined in the `.gitignore` file.
 
-Create the `vault` file in the `ops/infrastructure/group_vars/all` directory:
+Create the `vault` file in the ops/infrastructure/envs/staging/group_vars/docker_host directory:
 ```
 $ pwd
 ~/gigadb-website
@@ -341,7 +346,7 @@ $ANSIBLE_VAULT;1.2;AES256;dev
 To open the encrypted `vault` file for editing, use the command below and input
 the password when prompted.
 ```
-$ ansible-vault edit ops/infrastructure/group_vars/all/vault
+$ ansible-vault edit ops/infrastructure/envs/stagings/group_vars/docker_host/vault
 ```
 
 Provide Ansible with the password to access the vault file during the 
@@ -364,7 +369,8 @@ $ ansible-galaxy install -r requirements.yml
 
 Provision the EC2 instance using Ansible:
 ```
-$ ansible-playbook -vvv -i inventories staging-playbook.yml --vault-password-file ~/.vault_pass.txt
+$ cd ops/infrastructure/envs/staging
+$ ansible-playbook -vvv -i docker_host -i /usr/local/bin/terraform-inventory  playbook.yml --vault-password-file ~/.vault_pass.txt
 ```
 
 > Since an elastic IP address is being used, you might need to delete the entry
