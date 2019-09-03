@@ -1,0 +1,19 @@
+[dockerhost]
+
+# do not add any IP address here as it is dynamically managed using terraform-inventory
+
+[dockerhost:vars]
+
+ansible_ssh_private_key_file= {{ vault_staging_private_key_file_location }}
+ansible_user="centos"
+ansible_become="true"
+database_bootstrap="../../sql/production_like.pgdmp"
+pg_user = {{ vault_staging_pg_user }}
+pg_password = {{ vault_staging_pg_password }}
+pg_database = {{ vault_staging_pg_database }}
+gitlab_private_token = {{ lookup('file','~/.gitlab_private_token') }}
+gigadb_environment = staging
+
+fuw_db_user = {{ vault_staging_fuw_db_user }}
+fuw_db_password = {{ vault_staging_fuw_db_password }}
+fuw_db_database = {{ vault_staging_fuw_db_database }}
