@@ -1,26 +1,5 @@
 
-- name: Create a DB user if not exists
-  command: psql -U postgres -c "{{ lookup('template', './templates/create_user.j2') }}"
-- name: Create the database if not exists
-  command: echo "SELECT 'CREATE DATABASE {{ fuw_db_database }} WITH OWNER {{ fuw_db_user }};' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '{{ fuw_db_database }}')" | psql -U postgres
-- name: Create the path for application data
-  file:
-    path: /home/centos/app_data
-    state: directory
-    mode: 0755
-    owner: centos
-    group: centos
-- name: Create host directories for docker mounts
-  file:
-    path: "/home/centos/app_data/{{ item }}"
-    state: directory
-    mode: 0755
-    owner: centos
-    group: centos
-  loop:
-    - "fuw/flags"
-    - "fuw/repo"
-    - "fuw/incoming/ftp"
-    - "fuw/incoming/tusd"
-    - "fuw/credentials"
-    - "pure-ftpd/passwd"
+- name: Create a DB user
+  command: psql -U postgres -c "CREATE USER {{ fuw_db_user }} WITH PASSWORD '{{ fuw_db_password }}';"
+- name: Create the database
+  command: psql -U postgres -c "CREATE DATABASE {{ fuw_db_database }} WITH OWNER {{ fuw_db_user }};"
