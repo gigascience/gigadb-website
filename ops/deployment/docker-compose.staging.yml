@@ -15,6 +15,7 @@ services:
     ports:
       - "${STAGING_PUBLIC_HTTP_PORT}:80"
       - "${STAGING_PUBLIC_HTTPS_PORT}:443"
+    command: ["/usr/local/bin/enable_sites", "gigadb.staging.http", "gigadb.staging.https", "fuw-backend.staging.http"]
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
@@ -54,22 +55,136 @@ services:
       - SYS_ADMIN
     restart: unless-stopped
 
-  webapp:
-    image: registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    environment:
-      YII_PATH: ${YII_PATH}
-      YII2_PATH: ${YII2_PATH}
+  fuw-admin:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest
+    expose:
+      - "9002"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ../../fuw/app:/app
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+    depends_on:
+      - database
+      - console
+      - ftpd
+      - tusd
+      - watcher
+    networks:
+      - web-tier
+      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
+    restart: unless-stopped
+
+  fuw-proto:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest
+    expose:
+      - "9003"
+    volumes:
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
     depends_on:
-      - application
-      - web
-    command: ./ops/scripts/webapp_setup.sh
+      - console
+      - ftpd
+      - tusd
+      - watcher
     networks:
       - web-tier
+      - db-tier
+    extra_hosts:
+      - "fuw-admin-api:172.16.238.10"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+
+  fuw-console:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
+    expose:
+      - "9001"
     volumes:
-      - le_config:/etc/letsencrypt
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+    networks:
+      - web-tier
+      - db-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  csv-to-migrations:
+    image: node:14.9.0-buster
+    working_dir: /var/www/ops/scripts
+    shm_size: '1gb' # to avoid a known issue
+    command: bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR"
+
+  ftpd:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
+    volumes:
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/home/uploader
+      - ${DATA_SAVE_PATH}/fuw/repo:/home/downloader/:ro
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      - ${DATA_SAVE_PATH}/pure-ftpd:/etc/pure-ftpd
+      - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+    environment:
+      PUBLICHOST: "localhost"
+    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P localhost
+    ports:
+      - target: 21
+        published: 9021
+        protocol: tcp
+        mode: host
+      - "30000-30009:30000-30009"
+    networks:
+      - web-tier
+      - db-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  watcher:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest
+    volumes:
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/home/uploader
+      - ${DATA_SAVE_PATH}/fuw/repo:/home/downloader/
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/access:ro
+      - ${DATA_SAVE_PATH}/fuw/flags:/var/tmp/processing_flag
+    networks:
+      - web-tier
+      - db-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  tusd:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest
+    volumes:
+      - ${DATA_SAVE_PATH}/fuw/incoming/tusd:/var/inbox/
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo/
+    command: -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
+    expose:
+      - "1080"
+    networks:
+      - web-tier
+      - db-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
 
 networks:
   web-tier:
