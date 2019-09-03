@@ -2,35 +2,32 @@
 # build a Centos server running a secure Docker CE install
 
 - name: Setup Fail2ban
-  hosts: "name_gigadb_staging"
+  hosts: staging_dockerhost
 
   tasks:
     - debug:
         msg: "target host: {{ inventory_hostname }}"
-  tasks:
-    - debug:
-        msg: "path to ssh keys : {{ ansible_ssh_private_key_file }}"
 
   roles:
-    - role: ../../roles/fail2ban
-    - role: ../../roles/jail-ssh
+    - role: fail2ban
+    - role: jail-ssh
 
 - name: Setup Docker CE
-  hosts: name_gigadb_staging
+  hosts: staging_dockerhost
 
   tasks:
     - debug:
         msg: "target host: {{ inventory_hostname }}"
 
   roles:
-    - role: ../../roles/docker-install
+    - role: docker-install
     - role: role-secure-docker-daemon
       dds_host: "{{ inventory_hostname }}"
       dds_server_cert_path: /etc/docker
       dds_restart_docker: no
       dds_client_cert_path: /home/centos/.docker
-    - role: ../../roles/docker-postinstall
-    - role: ../../roles/postgres-preinstall
+    - role: docker-postinstall
+    - role: postgres-preinstall
     - role: ansible-role-postgresql
       postgresql_enablerepo: "pgdg96"
       postgresql_version: 9.6
@@ -57,5 +54,5 @@
       - { type: host, database: all, user: all, address: '127.0.0.1/32', auth_method: md5 }
       - { type: host, database: all, user: all, address: '::1/128', auth_method: md5 }
       - { type: host, database: all, user: all, address: 'samenet', auth_method: md5 }
-    - role: ../../roles/postgres-postinstall
-    - role: ../../roles/fuw
+    - role: postgres-postinstall
+    - role: fuw
