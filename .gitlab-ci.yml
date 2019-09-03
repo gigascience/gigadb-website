@@ -535,7 +535,7 @@ deploy_proto:
     # pulling production build of images from registry to use as cache
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_console:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest || true
@@ -590,6 +590,9 @@ deploy_proto:
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
     # Run config script to populate the docker volumes
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
     # Redeploy all containers (run --rm webapp alone won't redeploy the containers)
