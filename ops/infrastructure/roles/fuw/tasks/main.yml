@@ -1,5 +1,5 @@
 
 - name: Create a DB user
-  command: psql -U postgres -c "CREATE USER {{ fuwdb_user }} WITH PASSWORD '{{ fuwdb_password }}';"
+  command: psql -U postgres -c "CREATE USER {{ fuw_db_user }} WITH PASSWORD '{{ fuw_db_password }}';"
 - name: Create the database
-  command: psql -U postgres -c "CREATE DATABASE {{ fuwdb_database }} WITH OWNER {{ fuwdb_user }};"
+  command: psql -U postgres -c "CREATE DATABASE {{ fuw_db_database }} WITH OWNER {{ fuw_db_user }};"
