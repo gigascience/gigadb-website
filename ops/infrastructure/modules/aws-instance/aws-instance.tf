@@ -31,20 +31,6 @@ resource "aws_security_group" "docker_host_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    from_port   = 30000
-    to_port     = 30009
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 9021
-    to_port     = 9021
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   egress {
   from_port   = 0
   to_port     = 0
@@ -61,8 +47,7 @@ resource "aws_instance" "docker_host" {
   key_name = "aws-centos7-keys"
 
   tags = {
-    Name = "gigadb_${var.deployment_target}",
-    Hosting = "ec2-as1-t2m-centos"
+    Name = "ec2-as1-${var.deployment_target}"
   }
 
   root_block_device = {
