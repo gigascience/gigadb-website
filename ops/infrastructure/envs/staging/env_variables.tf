@@ -12,5 +12,6 @@ variable "aws_vpc_id" {
 
 variable "deployment_target" {
   description = "environment to build"
+  default = "staging"
 }
 
