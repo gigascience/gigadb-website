@@ -55,3 +55,4 @@
       - { type: host, database: all, user: all, address: '::1/128', auth_method: md5 }
       - { type: host, database: all, user: all, address: 'samenet', auth_method: md5 }
     - role: postgres-postinstall
+    - role: fuw
