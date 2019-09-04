@@ -72,7 +72,6 @@ services:
       - watcher
     networks:
       - web-tier
-      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
@@ -90,7 +89,6 @@ services:
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
     networks:
       - web-tier
-      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
@@ -112,7 +110,6 @@ services:
       - watcher
     networks:
       - web-tier
-      - db-tier
     extra_hosts:
       - "fuw-admin-api:172.16.238.10"
     cap_drop:
@@ -131,7 +128,6 @@ services:
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
     networks:
       - web-tier
-      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
@@ -156,7 +152,6 @@ services:
       - "30000-30009:30000-30009"
     networks:
       - web-tier
-      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
@@ -171,7 +166,6 @@ services:
       - ${DATA_SAVE_PATH}/fuw/flags:/var/tmp/processing_flag
     networks:
       - web-tier
-      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
@@ -187,7 +181,6 @@ services:
       - "1080"
     networks:
       - web-tier
-      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
