@@ -21,6 +21,7 @@ services:
       # Gigadb webapp
       - ${APPLICATION}/assets:/var/www/assets
       - ${APPLICATION}/images:/var/www/images
+      - ${APPLICATION}/composer.json:/var/www/composer.json
       - ${APPLICATION}/css:/var/www/css
       - ${APPLICATION}/style-guide:/var/www/style-guide
       # File Upload Wizard admin application
