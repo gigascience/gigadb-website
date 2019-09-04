@@ -23,6 +23,7 @@ services:
       - ${APPLICATION}/images:/var/www/images
       - ${APPLICATION}/css:/var/www/css
       - ${APPLICATION}/style-guide:/var/www/style-guide
+      - ${APPLICATION}/composer.json:/var/www/composer.json
       # File Upload Wizard admin application
       - ${APPLICATION}/fuw/app:/app
       - le_config:/etc/letsencrypt
