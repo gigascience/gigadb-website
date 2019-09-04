@@ -60,10 +60,6 @@ services:
     expose:
       - "9002"
     volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer/cache:/root/.composer/cache:delegated
-      # Mount source-code for development
-      - ../../fuw/app:/app
       # directories used for filedrop files
       - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
@@ -75,6 +71,24 @@ services:
       - ftpd
       - tusd
       - watcher
+    networks:
+      - web-tier
+      - db-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+console:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
+    expose:
+      - "9001"
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
     networks:
       - web-tier
       - db-tier
