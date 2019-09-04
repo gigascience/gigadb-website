@@ -15,7 +15,7 @@ services:
     ports:
       - "${STAGING_PUBLIC_HTTP_PORT}:80"
       - "${STAGING_PUBLIC_HTTPS_PORT}:443"
-    command: ["/usr/local/bin/enable_sites", "gigadb.staging.http"]
+    command: ["/usr/local/bin/enable_sites", "gigadb.staging.http", "gigadb.staging.https", "fuw-backend.staging.http"]
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
@@ -28,8 +28,7 @@ services:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
     volumes:
       - le_config:/etc/letsencrypt
-      - assets:/var/www/assets
-    command: bash -c "cp /le.staging.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets"
+    command: cp /le.staging.ini /etc/letsencrypt/cli.ini
 
   certbot:
     image: certbot/certbot
@@ -66,23 +65,21 @@ services:
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
-      # mount client certificates for connecting to docker daemon
-      - /home/centos/.docker:/etc/certs:ro
     depends_on:
+      - database
       - console
       - ftpd
       - tusd
       - watcher
     networks:
       - web-tier
-    extra_hosts:
-      - "dockerhost:${staging_private_ip}"
+      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
     restart: unless-stopped
 
-  console:
+console:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
     expose:
       - "9001"
@@ -92,12 +89,9 @@ services:
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
-      # mount client certificates for connecting to docker daemon
-      - /home/centos/.docker:/etc/certs:ro
     networks:
       - web-tier
-    extra_hosts:
-      - "dockerhost:${staging_private_ip}"
+      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
@@ -119,13 +113,30 @@ services:
       - watcher
     networks:
       - web-tier
+      - db-tier
     extra_hosts:
-      - "dockerhost:${staging_private_ip}"
       - "fuw-admin-api:172.16.238.10"
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
 
+
+  fuw-console:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
+    expose:
+      - "9001"
+    volumes:
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+    networks:
+      - web-tier
+      - db-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
 
   ftpd:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
@@ -136,8 +147,8 @@ services:
       - ${DATA_SAVE_PATH}/pure-ftpd:/etc/pure-ftpd
       - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
     environment:
-      PUBLICHOST: "$STAGING_HOME_URL"
-    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $STAGING_HOME_URL
+      PUBLICHOST: "localhost"
+    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P localhost
     ports:
       - target: 21
         published: 9021
@@ -146,6 +157,10 @@ services:
       - "30000-30009:30000-30009"
     networks:
       - web-tier
+      - db-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
     restart: unless-stopped
 
   watcher:
@@ -157,8 +172,7 @@ services:
       - ${DATA_SAVE_PATH}/fuw/flags:/var/tmp/processing_flag
     networks:
       - web-tier
-    extra_hosts:
-      - "dockerhost:${staging_private_ip}"
+      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
@@ -174,6 +188,7 @@ services:
       - "1080"
     networks:
       - web-tier
+      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
