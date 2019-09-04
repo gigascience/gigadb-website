@@ -79,7 +79,7 @@ services:
       - SYS_ADMIN
     restart: unless-stopped
 
-console:
+  console:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
     expose:
       - "9001"
