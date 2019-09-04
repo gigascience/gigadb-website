@@ -25,6 +25,7 @@ services:
       - ${APPLICATION}/js:/var/www/js
       - ${APPLICATION}/less:/var/www/less
       - ${APPLICATION}/css:/var/www/css
+      - ${APPLICATION}/composer.json:/var/www/composer.json
       # File Upload Wizard admin application
       - ${APPLICATION}/fuw/app:/app
       - le_config:/etc/letsencrypt
