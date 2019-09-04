@@ -23,7 +23,6 @@ services:
       - ${APPLICATION}/images:/var/www/images
       - ${APPLICATION}/css:/var/www/css
       - ${APPLICATION}/style-guide:/var/www/style-guide
-      - ${APPLICATION}/composer.json:/var/www/composer.json
       # File Upload Wizard admin application
       - ${APPLICATION}/fuw/app:/app
       - le_config:/etc/letsencrypt
@@ -70,6 +69,7 @@ services:
       - ${APPLICATION}/css:/var/www/css
       - ${APPLICATION}/sql:/var/www/sql
       - ${APPLICATION}/index.php:/var/www/index.php
+      - ${APPLICATION}/composer.json:/var/www/composer.json
       - ${APPLICATION}/ops/configuration/php-conf/php-${PHP_VERSION}-${GIGADB_ENV}.ini:/usr/local/etc/php/php.ini
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
