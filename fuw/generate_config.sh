@@ -39,6 +39,13 @@ fi
 
 set +a
 
+# If we are on staging environment override variable name with STAGING_* counterpart
+if [ $GIGADB_ENV == "staging" ];then
+    FUW_DB_HOST=$STAGING_FUW_DB_HOST
+    FUW_DB_USER=$STAGING_FUW_DB_USER
+    FUW_DB_PASSWORD=$STAGING_FUW_DB_PASSWORD
+    FUW_DB_NAME=$STAGING_FUW_DB_NAME
+fi
 
 # generate config for Yii2 test configs in FUW webapps
 
