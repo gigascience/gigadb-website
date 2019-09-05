@@ -72,6 +72,8 @@ services:
       - watcher
     networks:
       - web-tier
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
@@ -89,6 +91,8 @@ services:
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
     networks:
       - web-tier
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
@@ -111,33 +115,12 @@ services:
     networks:
       - web-tier
     extra_hosts:
+      - "dockerhost:${staging_private_ip}"
       - "fuw-admin-api:172.16.238.10"
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
 
-
-  fuw-console:
-    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
-    expose:
-      - "9001"
-    volumes:
-      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
-      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
-      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
-      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
-    networks:
-      - web-tier
-    cap_drop:
-      - NET_ADMIN
-      - SYS_ADMIN
-    restart: unless-stopped
-
-  csv-to-migrations:
-    image: node:14.9.0-buster
-    working_dir: /var/www/ops/scripts
-    shm_size: '1gb' # to avoid a known issue
-    command: bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR"
 
   ftpd:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
@@ -172,6 +155,8 @@ services:
       - ${DATA_SAVE_PATH}/fuw/flags:/var/tmp/processing_flag
     networks:
       - web-tier
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
