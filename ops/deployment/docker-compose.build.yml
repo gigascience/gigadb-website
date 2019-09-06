@@ -30,8 +30,6 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=true
         - INSTALL_APCU=true
-    volumes:
-      - ../../assets:/var/www/assets
 
   production_fuw-base:
     build:
