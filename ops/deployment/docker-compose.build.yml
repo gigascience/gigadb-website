@@ -15,8 +15,6 @@ services:
         - NGINX_VERSION=${NGINX_VERSION}
         - GIGADB_ENV=${GIGADB_ENV}
         - FIX_SITE_CONFIGS=true
-    volumes:
-      - ../../assets:/var/www/assets
 
   production_app:
     build:
@@ -32,8 +30,6 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=true
         - INSTALL_APCU=true
-    volumes:
-      - ../../assets:/var/www/assets
 
   production_fuw-base:
     build:
