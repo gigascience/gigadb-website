@@ -47,7 +47,8 @@ resource "aws_instance" "docker_host" {
   key_name = "aws-centos7-keys"
 
   tags = {
-    Name = "ec2-as1-${var.deployment_target}"
+    Name = "gigadb_${var.deployment_target}",
+    Hosting = "ec2-as1-t2m-centos"
   }
 
   root_block_device = {

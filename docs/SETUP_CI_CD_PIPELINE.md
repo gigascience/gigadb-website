@@ -260,30 +260,54 @@ However the connection parameters (like SSH keys) are variables we need to suppl
 
 In this paragraph and the next, from now on we will assume we are dealing with the **staging** environment.
 
-The machines controlled by Ansible are usually defined in a [`hosts`](https://github.com/gigascience/gigadb-website/blob/develop/ops/infrastructure/envs/staging/group_vars/docker_host/vars)
-file which lists the host machines connection details. Our file is located at `ops/infrastructure/envs/staging/group_vars/docker_host/vars` and contains
+The machines controlled by Ansible are usually defined in a [`hosts`](https://github.com/gigascience/gigadb-website/blob/develop/ops/infrastructure/inventories/hosts)
+file which lists the host machines connection details. Our file is located at `ops/infrastructure/inventories/hosts` and contains
 the following content:
 ```
-ansible_ssh_private_key_file: "{{ vault_staging_private_key_file_location }}"
-ansible_user: "centos"
-ansible_become: "true"
-database_bootstrap: "../../../../sql/production_like.pgdmp"
-pg_user: "{{ vault_staging_pg_user }}"
-pg_password: "{{ vault_staging_pg_password }}"
-pg_database: "{{ vault_staging_pg_database }}"
-gitlab_url: "{{ vault_gitlab_url }}"
-gitlab_private_token: "{{ lookup('file','~/.gitlab_private_token') }}"
-gigadb_environment: staging
+[name_gigadb_staging]
 
-fuw_db_user: "{{ vault_staging_fuw_db_user }}"
-fuw_db_password: "{{ vault_staging_fuw_db_password }}"
-fuw_db_database: "{{ vault_staging_fuw_db_database }}"
+# do not add any IP address here as it is dynamically managed using terraform-inventory
+
+[name_gigadb_staging:vars]
+
+ansible_ssh_private_key_file = "{{ vault_staging_private_key_file_location }}"
+ansible_user = "centos"
+ansible_become = "true"
+database_bootstrap = "../../../../sql/production_like.pgdmp"
+pg_user = "{{ vault_staging_pg_user }}"
+pg_password = "{{ vault_staging_pg_password }}"
+pg_database = "{{ vault_staging_pg_database }}"
+gitlab_private_token = "{{ lookup('file','~/.gitlab_private_token') }}"
+gigadb_environment = staging
+
+fuw_db_user = "{{ vault_staging_fuw_db_user }}"
+fuw_db_password = "{{ vault_staging_fuw_db_password }}"
+fuw_db_database = "{{ vault_staging_fuw_db_database }}"
+
+...
+
 ```
 
-Our `vars` file does not list any machines. Instead, a tool called 
+Note that the header **[name_gigadb_staging]** must match the "Name" tag associated to the AWS EC2 resource defined in ``ops/infrastructure/modules/aws-instance/aws-instance.tf`` for the environment of interest (here ``staging``):
+
+```
+tags = {
+    Name = "gigadb_${var.deployment_target}",
+    Hosting = "ec2-as1-t2m-centos"
+ }
+```
+
+Knowning that, one can add any other necessary environments as long as the environment variable TF_VAR_deployment_target is set with that value and that the ``hosts`` file has a block fronted with an appropriately named header after that same value.
+
+The hosts can be defined in as many file as desired, not just ``hosts``, as long as they reside inside ``ops/infrastructure/inventories/``.
+It's actually highly recommended to have the production host definition in its own file to avoid accidental changes to production when modifying an other environment.
+
+**Note:** host names in Ansible must be made of alphanumerical and underscore characters only. Although Terraform and AWS don't have that limitation, the Name tag needs to follow it so the connection between Terraform and Ansible can be made.
+
+Our `hosts` file does not list any machines. Instead, a tool called 
 [`terraform-inventory`](https://github.com/adammck/terraform-inventory)  
 generates a dynamic Ansible inventory from a Terraform state file. Nonetheless, 
-the `vars` file is still used to reference variables for hosts.
+the `hosts` file is still used to reference variables for hosts.
 
 * One particular variable to note is `gitlab_private_token`. The value of `gitlab_private_token`
 is the contents of a file located at `~/.gitlab_private_token`.  Create this 
@@ -293,10 +317,10 @@ that you will use to access the GitLab API. N.B. The `read_user` and
 
 The values of some of the variables in the `hosts` file are sensitive and for 
 this reason, the actual values are encrypted within an Ansible vault file which 
-needs to be located at `ops/infrastructure/envs/staging/group_vars/docker_host/vault`. This vault 
+needs to be located at `ops/infrastructure/envs/staging/group_vars/all/vault`. This vault 
 file should NOT be version controlled as defined in the `.gitignore` file.
 
-Create the `vault` file in the ops/infrastructure/envs/staging/group_vars/docker_host directory:
+Create the `vault` file in the ops/infrastructure/envs/staging/group_vars/all directory:
 ```
 $ pwd
 ~/gigadb-website
@@ -347,7 +371,7 @@ $ANSIBLE_VAULT;1.2;AES256;dev
 To open the encrypted `vault` file for editing, use the command below and input
 the password when prompted.
 ```
-$ ansible-vault edit ops/infrastructure/envs/stagings/group_vars/docker_host/vault
+$ ansible-vault edit ops/infrastructure/envs/stagings/group_vars/all/vault
 ```
 
 Provide Ansible with the password to access the vault file during the 
@@ -371,7 +395,7 @@ $ ansible-galaxy install -r requirements.yml
 Provision the EC2 instance using Ansible:
 ```
 $ cd ops/infrastructure/envs/staging
-$ ansible-playbook -vvv -i docker_host -i /usr/local/bin/terraform-inventory  playbook.yml --vault-password-file ~/.vault_pass.txt
+$ ansible-playbook -vvv -i ../../inventories -i name_gigadb_staging  playbook.yml --vault-password-file ~/.vault_pass.txt
 ```
 
 > Since an elastic IP address is being used, you might need to delete the entry
