@@ -15,7 +15,7 @@ services:
     ports:
       - "${STAGING_PUBLIC_HTTP_PORT}:80"
       - "${STAGING_PUBLIC_HTTPS_PORT}:443"
-    command: ["/usr/local/bin/enable_sites", "gigadb.staging.http", "gigadb.staging.https", "fuw-backend.staging.http"]
+    command: ["/usr/local/bin/enable_sites", "gigadb.staging.http", "fuw-backend.staging.http"]
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
