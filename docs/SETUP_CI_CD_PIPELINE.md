@@ -507,3 +507,26 @@ $ ssh -i "aws-centos7-keys.pem" centos@ec2-**-***-***-***.ap-southeast-1.compute
 $ psql -U gigadb -h localhost
 gigadb=>
 ```
+one deploy every 3 month (a NO-OP deploy will work).
+
+### Remote debugging of CD deployment
+
+1. Download the "Job artifacts" from the "Run all tests" steps reports (click "Download" under "Job artifacts" section). The zip archive contains the staging ``.env`` file. In a new bash shell, cd into gigadb-website git repo and source that ``.env`` file.
+
+```
+export STAGING_PUBLIC_HTTP_PORT=80
+export STAGING_PUBLIC_HTTPS_PORT=443
+export CI_PROJECT_PATH="gigascience/forks/rija-gigadb-website"
+```
+
+1. Download the body of certificate files from the Gitlab Variables list (staging_tlsauth_ca, staging_tlsauth_cert, staging_tlsauth_key) into PEM files (e.g: ca.pem, cert.pm, key.pem).
+
+1. You can then control staging containers as below:
+
+Note: below,  18.136.238.239 is the public ip of the server the code was deployed to.
+
+```
+$ docker --tlsverify -H=tcp://18.136.238.239:2376 --tlscacert=ca.pem  --tlscert=cert.pem --tlskey=key.pem ps
+```
+
+
