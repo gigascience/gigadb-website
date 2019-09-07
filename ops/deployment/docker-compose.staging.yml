@@ -28,7 +28,8 @@ services:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
     volumes:
       - le_config:/etc/letsencrypt
-    command: cp /le.staging.ini /etc/letsencrypt/cli.ini
+      - assets:/var/www/assets
+    command: bash -c "cp /le.staging.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets"
 
   certbot:
     image: certbot/certbot
