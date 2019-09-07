@@ -312,8 +312,6 @@ with_new_cert_deploy:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.prod_like --interactive=0
-    # Make asset directory writable
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application bash -c 'chmod 777 /var/www/assets'
 
     # Generate the web certificate for TLS termination on web container.
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot certonly -d $STAGING_HOME_URL
@@ -370,7 +368,7 @@ deploy_app:
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
-    # Run config script to populate the docker volumes
+    # Run config script to configure docker volumes
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
     # Redeploy all containers (run --rm webapp alone won't redeploy the containers)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d
