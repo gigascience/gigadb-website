@@ -4,10 +4,12 @@ FROM nginx:${NGINX_VERSION}-alpine
 ARG GIGADB_ENV=dev
 
 COPY configuration/nginx-conf/sites/${GIGADB_ENV} /tmp/sites-available/
+COPY configuration/nginx-static /tmp/nginx-static/
 ARG FIX_SITE_CONFIGS=false
 RUN if [ ${FIX_SITE_CONFIGS} = true ]; then \
 	mkdir -p /etc/nginx/sites-available/ && \
-	mv /tmp/sites-available/* /etc/nginx/sites-available/ \
+	mv /tmp/sites-available/* /etc/nginx/sites-available/ && \
+	mv /tmp/nginx-static/* /var/www/ \
 ;fi
 # the sites directory in /tmp is no longer needed
 RUN rm -rf /tmp/sites-available

@@ -607,8 +607,11 @@ deploy_proto:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest || true
-    # build and push production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
+    # build Nginx web container, making sure static assets are baked in
+    - mkdir -p ops/configuration/nginx-static
+    - cp -R less js fonts css images ops/configuration/nginx-static/
     - docker-compose build production_web
+    # build and push production containers for PHP-FPM with application code and vendor code baked in and publish to registry
     - docker-compose build production_app
     - docker-compose build production_config
     - docker tag ${CI_PROJECT_NAME}_production_web:latest registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
