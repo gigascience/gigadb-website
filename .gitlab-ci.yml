@@ -481,7 +481,12 @@ deploy_proto:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot certonly -d $STAGING_HOME_URL
     # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web /usr/local/bin/enable_sites gigadb.staging.https
-
+    # prototype specific steps
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec console bash -c "cd /app;./yii prototype/setup --appUrl https://$STAGING_HOME_URL"
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d fuw-proto
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec web ash -c "rm /etc/nginx/sites-enabled/gigadb.$GIGADB_ENV.http.conf"
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec web ash -c "rm /etc/nginx/sites-enabled/gigadb.$GIGADB_ENV.https.conf"
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec web /usr/local/bin/enable_sites gigadb-proto.$GIGADB_ENV.http gigadb-proto.$GIGADB_ENV.https
   environment:
     name: staging
     url: $STAGING_HOME_URL
