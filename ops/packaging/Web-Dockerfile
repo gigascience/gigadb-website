@@ -3,17 +3,6 @@ FROM nginx:${NGINX_VERSION}-alpine
 
 ARG GIGADB_ENV=dev
 
-COPY configuration/nginx-conf/sites/${GIGADB_ENV} /tmp/sites-available/
-COPY configuration/nginx-static /tmp/nginx-static/
-ARG FIX_SITE_CONFIGS=false
-RUN if [ ${FIX_SITE_CONFIGS} = true ]; then \
-	mkdir -p /etc/nginx/sites-available/ && \
-	mv /tmp/sites-available/* /etc/nginx/sites-available/ && \
-	mv /tmp/nginx-static/* /var/www/ \
-;fi
-# the sites directory in /tmp is no longer needed
-RUN rm -rf /tmp/sites-available
-
 COPY configuration/nginx-conf/nginx.conf /etc/nginx/nginx.conf
 COPY configuration/nginx-conf/upstream.conf /etc/nginx/conf.d/upstream.conf
 COPY configuration/nginx-conf/enable_sites /usr/local/bin/enable_sites
@@ -21,9 +10,25 @@ COPY configuration/nginx-conf/enable_sites /usr/local/bin/enable_sites
 COPY configuration/gigadb-public/favicon.ico /var/www/favicon.ico
 COPY configuration/gigadb-public/index.php /var/www/index.php
 
+COPY configuration/nginx-conf/sites/${GIGADB_ENV} /tmp/sites-available/
+COPY configuration/nginx-static /tmp/nginx-static/
+ARG FIX_SITE_CONFIGS=false
+RUN if [ ${FIX_SITE_CONFIGS} = true ]; then \
+	# bake in the nginx site configs
+	mkdir -vp /etc/nginx/sites-available/ && \
+	mv /tmp/sites-available/* /etc/nginx/sites-available/ && \
+	# bake in the static assets
+	mv /tmp/nginx-static/* /var/www/ \
+;fi
+
 RUN apk --no-cache add openssl && \
+	# pre-requisite for enabling TLS
 	mkdir -vp /etc/ssl/nginx && chmod 700 /etc/ssl/nginx && \
 	mkdir -vp /etc/ssl/nginx/certs && chmod 700 /etc/ssl/nginx/certs && \
 	mkdir -vp /var/www/.le && \
 	openssl dhparam -out /etc/ssl/nginx/dhparam.pem 2048 && \
-	mkdir -vp /etc/nginx/sites-enabled
+	# for nginx site configs
+	mkdir -vp /etc/nginx/sites-enabled && \
+	# clean up temporary directories
+	rm -rf /tmp/sites-available && \
+	rm -rf /tmp/nginx-static \
