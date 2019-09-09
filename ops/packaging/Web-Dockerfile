@@ -12,13 +12,18 @@ COPY configuration/gigadb-public/index.php /var/www/index.php
 
 COPY configuration/nginx-conf/sites/${GIGADB_ENV} /tmp/sites-available/
 COPY configuration/nginx-static /tmp/nginx-static/
+COPY configuration/proto-conf /tmp/proto-conf/
 ARG FIX_SITE_CONFIGS=false
 RUN if [ ${FIX_SITE_CONFIGS} = true ]; then \
 	# bake in the nginx site configs
 	mkdir -vp /etc/nginx/sites-available/ && \
 	mv /tmp/sites-available/* /etc/nginx/sites-available/ && \
 	# bake in the static assets
-	mv /tmp/nginx-static/* /var/www/ \
+	mv /tmp/nginx-static/* /var/www/ && \
+	# bake in proto files
+	mkdir -vp /app/ && \
+	mv /tmp/proto-conf/* /app/ \
+
 ;fi
 
 COPY configuration/nginx-conf/sites/${GIGADB_ENV} /tmp/sites-available/
