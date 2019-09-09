@@ -160,19 +160,19 @@ run_all_tests:
     # build the nginx container
     # - docker-compose build web
     # starting two webapps: gigadb website and File Upload Wizard Admin, then the web server
-    - docker-compose up -d gigadb fuw fuw-proto
+    - docker-compose up -d gigadb fuw
     - sleep 5
     - docker-compose up -d web
     # starting the headless browser for acceptance testing
-    - docker-compose up -d phantomjs
+    # - docker-compose up -d phantomjs
     # - docker-compose top
     # - docker network inspect rija-gigadb-website_web-tier
     # - docker network inspect rija-gigadb-website_db-tier
     # - docker-compose logs database
-    - docker images
-    - docker-compose ps
-    - docker-compose run --rm test ping -c 5 database
-    - docker-compose run --rm test ping -c 5 gigadb.dev
+    # - docker images
+    # - docker-compose ps
+    # - docker-compose run --rm test ping -c 5 database
+    # - docker-compose run --rm test ping -c 5 gigadb.dev
     # - docker-compose run test
     - cd $APPLICATION
     - ./tests/all_and_coverage
