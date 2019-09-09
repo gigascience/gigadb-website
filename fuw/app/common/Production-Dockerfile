@@ -1,4 +1,4 @@
-ARG IMAGE_NAME=deployment_fuw-admin
+ARG IMAGE_NAME=production_fuw-base
 FROM ${IMAGE_NAME}:latest
 
 COPY . /app/
