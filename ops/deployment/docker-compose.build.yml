@@ -58,6 +58,7 @@ services:
       args:
         - IMAGE_NAME=registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base
         - APP_PORT=9001
+        - INSTALL_NETCAT_JQ=true
 
   production_fuw-admin:
     build:
