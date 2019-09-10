@@ -305,7 +305,6 @@ deploy_app:
     # build Nginx web container, making sure static assets are baked in
     - cp -R less js fonts css images ops/configuration/nginx-static/
     - cp -R fuw/app/proto ops/configuration/proto-conf/
-    - cp -R fuw/app/backend ops/configuration/fuw-conf/
     - docker-compose build production_web
     # build and push production containers for PHP-FPM with application code and vendor code baked in and publish to registry
     - docker-compose build production_app
@@ -326,6 +325,10 @@ deploy_app:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest
+    # build and push the base image for File Upload Wizard apps
+    - docker-compose build production_fuw-base
+    - docker tag ${CI_PROJECT_NAME}_production_fuw-base:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-base:latest
     # build and push production container images for File Upload Wizard apps
     - docker-compose build production_fuw-console
     - docker-compose build production_fuw-admin
@@ -375,135 +378,12 @@ deploy_app:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic lesscompiler
     # Make asset directory writable
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application bash -c 'chmod 777 /var/www/assets'
-    # Generate the web certificate for TLS termination on web container.
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot certonly -d $STAGING_HOME_URL
-    # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web /usr/local/bin/enable_sites gigadb.staging.https
-  environment:
-    name: staging
-    url: $STAGING_HOME_URL
-  when: manual
-  # only:
-  #   - develop
-  artifacts:
-    untracked: true
-    when: on_failure
-    expire_in: 1 week
-
-deploy_proto:
-  variables:
-    GIGADB_ENV: staging
-    COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
-    DATA_SAVE_PATH: "/home/centos/app_data"
-  stage: staging
-  script:
-    # appending staging variables at the end of the .env and .secrets
-    - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
-    - env | grep -iE "^staging_" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
-    # pulling the CI build of the application from registry and configure it for staging for the purpose of building production containers
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
-    # Generate configuration files and vendors libraries before baking an immutable image
-    - docker-compose run --rm config
-    - docker-compose run --rm less
-    - docker-compose run --rm fuw-config
-    - docker-compose run --rm console bash -c "cd /app && ./yii prototype/setup --appUrl https://$STAGING_HOME_URL"
-    - docker-compose run --rm application composer install -a --no-dev
-    - docker-compose run --rm console bash -c "cd /app && composer install -a --no-dev"
-    # Generate Yii migration scripts
-    - docker-compose up csv-to-migrations    
-    # pulling production build of images from registry to use as cache
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest || true
-    # build Nginx web container, making sure static assets are baked in
-    - cp -R less js fonts css images ops/configuration/nginx-static/
-    - cp -R fuw/app/proto ops/configuration/proto-conf/
-    - cp -R fuw/app/backend ops/configuration/fuw-conf/
-    - docker-compose build production_web
-    # build and push production containers for PHP-FPM with application code and vendor code baked in and publish to registry
-    - docker-compose build production_app
-    - docker-compose build production_config
-    - docker tag ${CI_PROJECT_NAME}_production_web:latest registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    - docker tag ${CI_PROJECT_NAME}_production_app:latest registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    - docker tag ${CI_PROJECT_NAME}_production_config:latest registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
-    # build and push sidecar apps (ftpd, watcher, tusd) for FUW
-    - docker-compose build production_ftpd
-    - docker-compose build production_watcher
-    - docker-compose build production_tusd
-    - docker tag ${CI_PROJECT_NAME}_production_ftpd:latest registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
-    - docker tag ${CI_PROJECT_NAME}_production_watcher:latest registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest
-    - docker tag ${CI_PROJECT_NAME}_production_tusd:latest registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest
-    # build and push production container images for File Upload Wizard apps
-    - docker-compose build production_fuw-console
-    - docker-compose build production_fuw-admin
-    - docker-compose build production_fuw-proto
-    - docker tag ${CI_PROJECT_NAME}_production_fuw-console:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
-    - docker tag ${CI_PROJECT_NAME}_production_fuw-admin:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest
-    - docker tag ${CI_PROJECT_NAME}_production_fuw-proto:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest
-    # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
-    # Create client certificate files for authenticating with remote docker daemon
-    - mkdir -pv ~/.docker
-    - echo "$staging_tlsauth_ca" >  ~/.docker/ca.pem
-    - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
-    - echo "$staging_tlsauth_key" > ~/.docker/key.pem
-    # Pull production container from our private registry
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
-    # shutdown currently running container
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml down
-    # verify config renders correctly after variables interpolation
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml config
-    # Run config script to configure docker volumes
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
-    # Redeploy all containers but the web container
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d application
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d fuw-admin console tusd ftpd watcher
-    # deploy the web container once the application servers are up
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d web
-
-    # Run database migrations if any
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate to 300000_000000 --migrationPath=application.migrations.admin --interactive=0
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.prod_like --interactive=0
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T console /app/yii migrate --interactive=0
     # post-install script to run
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic lesscompiler
     # Generate the web certificate for TLS termination on web container.
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot certonly -d $STAGING_HOME_URL
     # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web /usr/local/bin/enable_sites gigadb.staging.https
-    # prototype specific steps
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T console bash -c "cd /app;./yii prototype/setup --appUrl https://$STAGING_HOME_URL"
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d fuw-proto
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web ash -c "rm /etc/nginx/sites-enabled/gigadb.$GIGADB_ENV.http.conf"
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web ash -c "rm /etc/nginx/sites-enabled/gigadb.$GIGADB_ENV.https.conf"
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web /usr/local/bin/enable_sites gigadb-proto.$GIGADB_ENV.http gigadb-proto.$GIGADB_ENV.https
   environment:
     name: staging
     url: $STAGING_HOME_URL
