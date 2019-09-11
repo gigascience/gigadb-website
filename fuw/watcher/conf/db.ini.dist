@@ -1,4 +1,3 @@
 db_user = "$FUW_DB_USER"
 db_password = "$FUW_DB_PASSWORD"
-db_source = "$FUW_DB_NAME"
-db_host = "$FUW_DB_HOST"
+db_dsn = "pgsql:host=$FUW_DB_HOST;dbname=$FUW_DB_NAME"
