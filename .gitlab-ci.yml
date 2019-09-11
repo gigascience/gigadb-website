@@ -92,7 +92,7 @@ build_webapp:
   script:
     - echo "Building app"
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    # - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-proto:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
