@@ -73,8 +73,7 @@ class PrototypeController extends Controller
     							"api_endpoint" => $this->apiUrl,
     							"db_user" => Yii::$app->db->username,
     							"db_password" => Yii::$app->db->password,
-    							"db_source" => "fuwdb",
-    							"db_host" => "database",
+                                "db_dsn" => Yii::$app->db->dsn,
     							"dummy_jwt_token" => $client_token);
 
 		try {
