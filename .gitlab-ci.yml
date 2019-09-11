@@ -68,7 +68,7 @@ before_script:
   # Pin docker-compose version to stop installation error
   - pip install docker-compose~=1.23.0
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-  - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest
+  # - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest
   - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest
   - cd $APPLICATION
   - docker-compose run --rm config
