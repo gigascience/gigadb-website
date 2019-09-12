@@ -180,6 +180,15 @@ TARGET=${APP_SOURCE}/fuw/app/frontend/web/index-test.php
 VARS='$GIGADB_ENV'
 envsubst $VARS < $SOURCE > $TARGET
 
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/index.php.dist
+TARGET=${APP_SOURCE}/fuw/app/backend/web/index.php
+VARS='$GIGADB_ENV'
+envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/index-test.php.dist
+TARGET=${APP_SOURCE}/fuw/app/backend/web/index-test.php
+VARS='$GIGADB_ENV'
+envsubst $VARS < $SOURCE > $TARGET
 
 # Configuring Watcher's PHP script to allow database access
 
