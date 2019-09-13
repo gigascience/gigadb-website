@@ -40,11 +40,13 @@ fi
 set +a
 
 # If we are on staging environment override variable name with STAGING_* counterpart
+export DEBUG=true
 if [ $GIGADB_ENV == "staging" ];then
     FUW_DB_HOST=$STAGING_FUW_DB_HOST
     FUW_DB_USER=$STAGING_FUW_DB_USER
     FUW_DB_PASSWORD=$STAGING_FUW_DB_PASSWORD
     FUW_DB_NAME=$STAGING_FUW_DB_NAME
+    DEBUG=false
 fi
 
 # generate config for Yii2 test configs in FUW webapps
@@ -177,7 +179,7 @@ envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/index.php.dist
 TARGET=${APP_SOURCE}/fuw/app/backend/web/index.php
-VARS='$GIGADB_ENV'
+VARS='$DEBUG:$GIGADB_ENV'
 envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/index-test.php.dist
