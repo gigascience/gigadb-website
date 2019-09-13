@@ -1,5 +1,5 @@
 <?php
-defined('YII_DEBUG') or define('YII_DEBUG', true);
+defined('YII_DEBUG') or define('YII_DEBUG', $DEBUG);
 defined('YII_ENV') or define('YII_ENV', '$GIGADB_ENV');
 
 require __DIR__ . '/../../vendor/autoload.php';
