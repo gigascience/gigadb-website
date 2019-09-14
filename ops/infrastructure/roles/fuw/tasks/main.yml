@@ -5,6 +5,8 @@
   command: echo "SELECT 'CREATE DATABASE {{ fuw_db_database }} WITH OWNER {{ fuw_db_user }};' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '{{ fuw_db_database }}')" | psql -U postgres
 - name: Create the path for application data
   file:
-    path: /usr/local/share/gigadb
+    path: /home/centos/app_data
     state: directory
-    mode: '0755'
+    mode: 0755
+    owner: centos
+    group: centos
