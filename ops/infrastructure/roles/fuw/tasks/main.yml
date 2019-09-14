@@ -10,3 +10,17 @@
     mode: 0755
     owner: centos
     group: centos
+- name: Create host directories for docker mounts
+  file:
+    path: "/home/centos/app_data/{{ item }}"
+    state: directory
+    mode: 0755
+    owner: centos
+    group: centos
+  loop:
+    - "fuw/flags"
+    - "fuw/repo"
+    - "fuw/incoming/ftp"
+    - "fuw/incoming/tusd"
+    - "fuw/credentials"
+    - "pure-ftpd/passwd"
