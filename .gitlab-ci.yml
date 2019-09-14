@@ -384,7 +384,7 @@ deploy_proto:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
-    DATA_SAVE_PATH: "/usr/local/share/gigadb"
+    DATA_SAVE_PATH: "/home/centos/app_data"
   stage: staging
   script:
     # appending staging variables at the end of the .env and .secrets
