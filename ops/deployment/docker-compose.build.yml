@@ -40,6 +40,8 @@ services:
       args:
         - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
         - APP_PORT=9001
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_IPROUTE2=true
 
   production_fuw-admin:
     build:
