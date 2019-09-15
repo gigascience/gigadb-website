@@ -2,4 +2,5 @@
 return [
 	"jwt_key" => "$FUW_JWT_KEY",
 	"remote_docker_hostname" => "$REMOTE_DOCKER_HOSTNAME",
+	"docker_ssl" => false,
 ];
