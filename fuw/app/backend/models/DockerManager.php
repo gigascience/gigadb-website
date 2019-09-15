@@ -31,7 +31,7 @@ class DockerManager extends yii\base\BaseObject
 	{
         $client = DockerClientFactory::create([
             'remote_socket' => Yii::$app->params['remote_docker_hostname'],
-            'ssl' => false,
+            'ssl' => Yii::$app->params['docker_ssl'],
         ]);
         $docker = Docker::create($client);
 		if (null === $this->getClient() ) {
