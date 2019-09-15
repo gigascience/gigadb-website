@@ -52,6 +52,8 @@ services:
       args:
         - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
         - APP_PORT=9002
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_IPROUTE2=true
     expose:
       - "9002"
 
