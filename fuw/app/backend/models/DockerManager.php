@@ -29,10 +29,28 @@ class DockerManager extends yii\base\BaseObject
 	 */
 	public function init()
 	{
-        $client = DockerClientFactory::create([
-            'remote_socket' => Yii::$app->params['remote_docker_hostname'],
-            'ssl' => Yii::$app->params['docker_ssl'],
-        ]);
+        if ( Yii::$app->params['docker_ssl'] ) {
+
+            $context = stream_context_create([
+                'ssl' => Yii::$app->params['docker_ssl']
+            ]);
+            $client = DockerClientFactory::create([
+                'remote_socket' => Yii::$app->params['remote_docker_hostname'],
+                'stream_context' => $context,
+                'ssl' => true,
+            ]);
+
+        }
+        else {
+
+            $client = DockerClientFactory::create([
+                'remote_socket' => Yii::$app->params['remote_docker_hostname'],
+                'ssl' => false,
+            ]);
+
+        }
+
+
         $docker = Docker::create($client);
 		if (null === $this->getClient() ) {
 			$this->setClient( $docker ) ;
