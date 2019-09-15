@@ -1,0 +1,10 @@
+<?php
+return [
+	"jwt_key" => "$FUW_JWT_KEY",
+	"remote_docker_hostname" => "$REMOTE_DOCKER_HOSTNAME",
+	"docker_ssl" => [
+		"cafile" => "$cafile",
+		"local_cert" => "$local_cert",
+		"local_pk" => "$local_pk",
+	]
+];
