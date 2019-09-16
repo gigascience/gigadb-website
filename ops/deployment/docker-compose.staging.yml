@@ -136,8 +136,8 @@ services:
       - ${DATA_SAVE_PATH}/pure-ftpd:/etc/pure-ftpd
       - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
     environment:
-      PUBLICHOST: "localhost"
-    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P localhost
+      PUBLICHOST: "$STAGING_HOME_URL"
+    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $STAGING_HOME_URL
     ports:
       - target: 21
         published: 9021
