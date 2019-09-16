@@ -144,6 +144,7 @@ run_all_tests:
       - .env
       - composer.lock
     when: always
+    expire_in: 1 week
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
@@ -497,7 +498,7 @@ deploy_proto:
   #   - develop
   artifacts:
     untracked: true
-    when: on_failure
+    when: always
     expire_in: 1 week
 
 release_app:
