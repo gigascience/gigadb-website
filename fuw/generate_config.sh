@@ -7,7 +7,7 @@ set -e
 set -u
 
 # display the lines of this script as they are executed for debugging
-# set -x
+set -x
 
 # export all variables that need to be substitued in templates
 set -a
