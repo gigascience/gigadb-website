@@ -155,9 +155,21 @@ $ docker-compose exec console /app/yii migrate/down --interactive=0
 
 ### ftpd
 
+#### account databases
 ```
 root@5e7517fa37ef:/# ls -alrt /etc/pure-ftpd/passwd/pureftpd.passwd
 -rw------- 1 root root 171 Jun 21 13:53 /etc/pure-ftpd/passwd/pureftpd.passwd
 root@5e7517fa37ef:/# ls -alrt /etc/pure-ftpd/pureftpd.pdb
 -rw------- 1 root root 2237 Jun 21 13:55 /etc/pure-ftpd/pureftpd.pdb
+```
+
+#### debugging
+
+view list of accounts:
+```
+$ docker-compose exec ftpd cat /etc/pure-ftpd/passwd/pureftpd.passwd
+```
+view ftp account detail for user **uploader-100004**:
+```
+$ docker-compose exec ftpd pure-pw show uploader-100004 -f /etc/pure-ftpd/passwd/pureftpd.passwd
 ```
