@@ -147,7 +147,6 @@ services:
     networks:
       - web-tier
     cap_drop:
-      - NET_ADMIN
       - SYS_ADMIN
     restart: unless-stopped
 
