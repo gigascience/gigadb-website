@@ -146,8 +146,6 @@ services:
       - "30000-30009:30000-30009"
     networks:
       - web-tier
-    cap_drop:
-      - SYS_ADMIN
     restart: unless-stopped
 
   watcher:
