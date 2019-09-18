@@ -397,6 +397,7 @@ deploy_proto:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
     # Generate configuration files and vendors libraries before baking an immutable image
     - docker-compose run --rm config
+    - docker-compose run --rm less
     - docker-compose run --rm fuw-config
     - docker-compose run --rm console bash -c "cd /app && ./yii prototype/setup --appUrl https://$STAGING_HOME_URL"
     - docker-compose run --rm application composer install -a --no-dev
