@@ -2,6 +2,9 @@ version: '3.7'
 
 services:
 
+  less:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/application:latest
+
   production_web:
     environment:
       YII_PATH: ${YII_PATH}
