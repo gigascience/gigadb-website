@@ -217,6 +217,13 @@ RUN if [ ${INSTALL_IPROUTE2} = true ]; then \
     apt-get clean \
 ;fi
 
+# create a group for GID 1000 that matches ftpgroup in the ftpd container
+# so that users can ftp files into directories created by php app
+COPY groupmems /etc/pam.d/groupmems
+COPY php-fpm-www.conf /usr/local/etc/php-fpm.d/www.conf
+RUN groupadd -g 1000 fuwapp && \
+    groupmems -g fuwapp -a www-data
+
 WORKDIR /app
 
 CMD ["php-fpm"]
