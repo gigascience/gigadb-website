@@ -274,6 +274,7 @@ deploy_app:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
+    DATA_SAVE_PATH: "/home/centos/app_data"
   stage: staging
   script:
     # appending staging variables at the end of the .env and .secrets
@@ -284,8 +285,9 @@ deploy_app:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
     # Generate configuration files and vendors libraries before baking an immutable image
     - docker-compose run --rm config
+    - docker-compose run --rm less
     - docker-compose run --rm fuw-config
-    - docker-compose run --rm console bash -c "cd /app && ./yii prototype/setup --appUrl $STAGING_HOME_URL"
+    - docker-compose run --rm console bash -c "cd /app && ./yii prototype/setup --appUrl https://$STAGING_HOME_URL"
     - docker-compose run --rm application composer install -a --no-dev
     - docker-compose run --rm console bash -c "cd /app && composer install -a --no-dev"
     # Generate Yii migration scripts
@@ -303,6 +305,7 @@ deploy_app:
     # build Nginx web container, making sure static assets are baked in
     - cp -R less js fonts css images ops/configuration/nginx-static/
     - cp -R fuw/app/proto ops/configuration/proto-conf/
+    - cp -R fuw/app/backend ops/configuration/fuw-conf/
     - docker-compose build production_web
     # build and push production containers for PHP-FPM with application code and vendor code baked in and publish to registry
     - docker-compose build production_app
@@ -350,6 +353,10 @@ deploy_app:
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
+    # shutdown currently running container
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml down
+    # verify config renders correctly after variables interpolation
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml config
     # Run config script to populate the docker volumes
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
     # Redeploy all containers but the web container
