@@ -70,7 +70,7 @@ function generateFTPLink(string $file_name, string $dataset): string
 	}
 	fclose($handle);
 
-	$appconfig = parse_ini_file("/config/db.ini");
+	$appconfig = parse_ini_file("/config/watcherconfig.ini");
 	$ftpd_endpoint = $appconfig["ftpd_endpoint"] ?? "localhost";
 	$ftp_link = "ftp://downloader-$dataset:$downloader_token@$ftpd_endpoint:9021/$file_name";
 	return $ftp_link;
@@ -236,7 +236,7 @@ function fileMetadata(string $file_name, string $dataset): array
  */
 function connectDB(): object
 {
-$appconfig = parse_ini_file("/config/db.ini");
+$appconfig = parse_ini_file("/config/watcherconfig.ini");
 
 		$db_user = $appconfig["db_user"];
 		$db_password = $appconfig["db_password"];
