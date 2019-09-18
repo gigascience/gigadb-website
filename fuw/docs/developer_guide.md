@@ -173,3 +173,32 @@ view ftp account detail for user **uploader-100004**:
 ```
 $ docker-compose exec ftpd pure-pw show uploader-100004 -f /etc/pure-ftpd/passwd/pureftpd.passwd
 ```
+
+
+Debugging the connection using ``ncftp``
+
+```
+$ ncftpput -u uploader-100004 -P 9021 -p QEEDE8VBkHSNhDx1 -d ~/debugging.log fuw.rija.dev /  ~/Downloads/Before_FIAR_Animal_Classification.pdf
+```
+
+``~/debugging.log`` will contain the low-level connection detail similar to:
+```
+2019-09-17 20:47:05  LibNcFTP 3.2.6 (November 12, 2016) compiled for macosx10.13
+2019-09-17 20:47:05  Uname: Darwin|Faith.local|18.7.0|Darwin Kernel Version 18.7.0: Tue Aug 20 16:57:14 PDT 2019; root:xnu-4903.271.2~2/RELEASE_X86_64|x86_64
+2019-09-17 20:47:05  Sysinfo: Mac OS X 10.14.6 (Build 18G95)
+2019-09-17 20:47:07  220: --------- Welcome to Pure-FTPd [privsep] [TLS] ----------
+2019-09-17 20:47:07       You are user number 1 of 5 allowed.
+2019-09-17 20:47:07       Local time is now 18:47. Server port: 21.
+2019-09-17 20:47:07       This is a private system - No anonymous login
+2019-09-17 20:47:07       IPv6 connections are also welcome on this server.
+2019-09-17 20:47:07       You will be disconnected after 15 minutes of inactivity.
+2019-09-17 20:47:07  Connected to fuw.rija.dev.
+2019-09-17 20:47:07  Cmd: USER uploader-100004
+2019-09-17 20:47:07  331: User uploader-100004 OK. Password required
+2019-09-17 20:47:07  Cmd: PASS xxxxxxxx
+2019-09-17 20:47:08  Remote host has closed the connection.
+2019-09-17 20:47:08  421: Home directory not available - aborting
+2019-09-17 20:47:08  Sleeping 18 seconds.
+2019-09-17 20:47:26  Retry Number: 1
+
+```
