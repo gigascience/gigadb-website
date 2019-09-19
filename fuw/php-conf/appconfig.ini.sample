@@ -1,7 +1,0 @@
-tusd_endpoint=http://gigadb.gigasciencejournal.com:9080/files/
-ftpd_endpoint=localhost
-ftpd_port = 9021
-web_endpoint=http://gigadb.gigasciencejournal.com:9090/
-db_user = proto
-db_password = proto
-db_source = proto
