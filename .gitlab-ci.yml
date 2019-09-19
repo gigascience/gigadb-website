@@ -154,8 +154,9 @@ run_all_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-proto:latest || true
     # - env
-    # generate config for gigadb webapp
+    # generate config and css for gigadb webapp
     - docker-compose run --rm config
+    - docker-compose run --rm less
     # generate config for File upload wizard webapp
     - docker-compose run --rm fuw-config
     # build the nginx container
