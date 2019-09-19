@@ -214,13 +214,13 @@ RUN if [ ${INSTALL_IPROUTE2} = true ]; then \
 ;fi
 
 # Copy php configuration files
-COPY php-conf/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
-COPY php-conf/fuw.ini /usr/local/etc/php/conf.d/fuw.ini
+COPY php-fpm/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY php-fpm/fuw.ini /usr/local/etc/php/conf.d/fuw.ini
 
 # create a group for GID 1000 that matches ftpgroup in the ftpd container
 # so that users can ftp files into directories created by php app
-COPY php-conf/groupmems /etc/pam.d/groupmems
-COPY php-conf/www.pool.conf /usr/local/etc/php-fpm.d/www.conf
+COPY php-fpm/groupmems /etc/pam.d/groupmems
+COPY php-fpm/www.pool.conf /usr/local/etc/php-fpm.d/www.conf
 RUN groupadd -g 1000 fuwapp && \
     groupmems -g fuwapp -a www-data
 
