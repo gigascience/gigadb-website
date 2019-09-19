@@ -15,5 +15,4 @@ vault
 .env
 flags/*
 !flags/README.md
-php-conf/appconfig.ini
-watcher/conf/db.ini
+watcher/conf/watcherconfig.ini
