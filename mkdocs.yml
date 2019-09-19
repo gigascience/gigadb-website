@@ -1,0 +1,8 @@
+site_name: GigaDB Documentation
+# nav:
+#     - Software Architecture: software_architecture.md
+#     - Operational Guide: ops.md
+#     - Developer Guide: developer_guide.md
+#     - REST endpoints Docs: rest.md
+#     - PHPDocs: phpdocs/index.md
+theme: readthedocs
