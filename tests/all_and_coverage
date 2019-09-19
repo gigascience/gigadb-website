@@ -8,6 +8,6 @@ set +a
 
 ./tests/unit_runner
 ./tests/functional_runner
-./tests/acceptance_runner
+./tests/acceptance_runner cli
 ./tests/coverage_runner
 
