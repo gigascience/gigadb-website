@@ -51,64 +51,64 @@ fi
 
 # generate config for Yii2 test configs in FUW webapps
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/test-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/test-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/common/config/test-local.php
 VARS='$FUW_TESTDB_HOST:$FUW_TESTDB_NAME:$FUW_TESTDB_USER:$FUW_TESTDB_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/test-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/backend/test-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/backend/config/test-local.php
 VARS=''
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/test-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/frontend/test-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/frontend/config/test-local.php
 VARS=''
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/console/test-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/console/test-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/console/config/test-local.php
 VARS=''
 envsubst $VARS < $SOURCE > $TARGET
 
 # generate config for Codeception
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/codeception-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/backend/codeception-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/backend/config/codeception-local.php
 VARS=''
 envsubst $VARS < $SOURCE > $TARGET
 
 export COOKIE_RANDOM_KEY=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/codeception-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/codeception-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/common/config/codeception-local.php
 VARS='$COOKIE_RANDOM_KEY'
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/codeception-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/frontend/codeception-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/frontend/config/codeception-local.php
 VARS=''
 envsubst $VARS < $SOURCE > $TARGET
 
 # generate config for Yii2 main configs in FUW webapps
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/main-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/main-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/common/config/main-local.php
 VARS='$FUW_DB_HOST:$FUW_DB_NAME:$FUW_DB_USER:$FUW_DB_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/console/main-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/console/main-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/console/config/main-local.php
 VARS=''
 envsubst $VARS < $SOURCE > $TARGET
 
 export COOKIE_RANDOM_KEY=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/main-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/backend/main-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/backend/config/main-local.php
 VARS='$COOKIE_RANDOM_KEY'
 envsubst $VARS < $SOURCE > $TARGET
 
 export COOKIE_RANDOM_KEY=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/main-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/frontend/main-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/frontend/config/main-local.php
 VARS='$COOKIE_RANDOM_KEY'
 envsubst $VARS < $SOURCE > $TARGET
@@ -141,27 +141,27 @@ if [ $GIGADB_ENV == "staging" ];then
     export cafile
     export local_cert
     export local_pk
-    SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/params-local.php.staging.dist
+    SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/params-local.php.staging.dist
     VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$cafile:$local_cert:$local_pk'
 else
-    SOURCE=${APP_SOURCE}/fuw/yii2-conf/common/params-local.php.dist
+    SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/params-local.php.dist
     VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME'
 fi
 TARGET=${APP_SOURCE}/fuw/app/common/config/params-local.php
 envsubst $VARS < $SOURCE > $TARGET
 set -e
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/params-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/frontend/params-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/frontend/config/params-local.php
 VARS=''
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/console/params-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/console/params-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/console/config/params-local.php
 VARS=''
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/params-local.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/backend/params-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/backend/config/params-local.php
 VARS=''
 envsubst $VARS < $SOURCE > $TARGET
@@ -171,12 +171,12 @@ envsubst $VARS < $SOURCE > $TARGET
 mkdir -pv /var/www/fuw/app/backend/assets
 mkdir -pv /var/www/fuw/app/frontend/assets
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/AppAsset.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/backend/AppAsset.php.dist
 TARGET=${APP_SOURCE}/fuw/app/backend/assets/AppAsset.php
 
 cp $SOURCE $TARGET
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/AppAsset.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/frontend/AppAsset.php.dist
 TARGET=${APP_SOURCE}/fuw/app/frontend/assets/AppAsset.php
 
 cp $SOURCE $TARGET
@@ -186,22 +186,22 @@ mkdir -pv /var/www/fuw/app/frontend/web/assets
 chmod 0777 /var/www/fuw/app/backend/web/assets
 chmod 0777 /var/www/fuw/app/frontend/web/assets
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/index.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/frontend/index.php.dist
 TARGET=${APP_SOURCE}/fuw/app/frontend/web/index.php
 VARS='$GIGADB_ENV'
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/frontend/index-test.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/frontend/index-test.php.dist
 TARGET=${APP_SOURCE}/fuw/app/frontend/web/index-test.php
 VARS='$GIGADB_ENV'
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/index.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/backend/index.php.dist
 TARGET=${APP_SOURCE}/fuw/app/backend/web/index.php
 VARS='$DEBUG:$GIGADB_ENV'
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/fuw/yii2-conf/backend/index-test.php.dist
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/backend/index-test.php.dist
 TARGET=${APP_SOURCE}/fuw/app/backend/web/index-test.php
 VARS='$GIGADB_ENV'
 envsubst $VARS < $SOURCE > $TARGET
