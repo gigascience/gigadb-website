@@ -66,3 +66,4 @@ vault
 # docs
 docs/apidocs/phpdoc-cache-*
 docs/cache
+site/
