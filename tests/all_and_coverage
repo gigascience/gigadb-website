@@ -8,7 +8,7 @@ set +a
 
 ./tests/unit_runner
 ./tests/functional_runner
-./tests/acceptance_runner
+./tests/acceptance_runner cli
 ./tests/css_check
 ./tests/javascript_check
 ./tests/coverage_runner
