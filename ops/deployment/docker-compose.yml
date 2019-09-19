@@ -249,6 +249,10 @@ services:
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ../../fuw/app:/app
+      # php config
+      - ../../fuw/app/php-conf/fuw.ini:/usr/local/etc/php/conf.d/fuw.ini
+      - ../../fuw/app/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ../../fuw/app/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
       # directories used for filedrop files
       - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
@@ -285,6 +289,10 @@ services:
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ../../fuw/app:/app
+      # php config
+      - ../../fuw/app/php-conf/fuw.ini:/usr/local/etc/php/conf.d/fuw.ini
+      - ../../fuw/app/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ../../fuw/app/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
       # directories used for filedrop files
       - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
@@ -329,6 +337,10 @@ services:
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ../../fuw/app:/app
+      # php config
+      - ../../fuw/app/php-conf/fuw.ini:/usr/local/etc/php/conf.d/fuw.ini
+      - ../../fuw/app/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ../../fuw/app/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
       # directories used for filedrop files
       - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
