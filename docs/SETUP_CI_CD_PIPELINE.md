@@ -291,6 +291,18 @@ tags = {
     Hosting = "ec2-as1-t2m-centos"
  }
 ```
+tags = {
+    Name = "gigadb_${var.deployment_target}",
+    Hosting = "ec2-as1-t2m-centos"
+ }
+```
+
+Knowning that, one can add any other necessary environments as long as the environment variable TF_VAR_deployment_target is set with that value and that the ``hosts`` file has a block fronted with an appropriately named header after that same value.
+
+The hosts can be defined in as many file as desired, not just ``hosts``, as long as they reside inside ``ops/infrastructure/inventories/``.
+It's actually highly recommended to have the production host definition in its own file to avoid accidental changes to production when modifying an other environment.
+
+**Note:** host names in Ansible must be made of alphanumerical and underscore characters only. Although Terraform and AWS don't have that limitation, the Name tag needs to follow it so the connection between Terraform and Ansible can be made.
 
 Knowning that, one can add any other necessary environments as long as the environment variable TF_VAR_deployment_target is set with that value and that the ``hosts`` file has a block fronted with an appropriately named header after that same value.
 
