@@ -12,7 +12,14 @@ use Docker\API\Model\{ContainersIdExecPostBody,
 use common\models\Upload;
 
 /**
- * This is the model class for table "filedrop_account".
+ * Model that represent a Filedrop account
+ *
+ * Technically, it's a model class for table "filedrop_account".
+ * It needs to interact with the filesystem (create/delete directories),
+ * and with Docker daemon (create/delete account in the ftp container)
+ * It has before-validate validation hook that trigger creation of directories and ftp accounts
+ * when instantiated and saved. The same hook will delete directories and ftp accounts
+ * if the model'status is updated to self::STATUS_TERMINATED
  *
  * @property int $id
  * @property string $doi
@@ -24,6 +31,9 @@ use common\models\Upload;
  * @property string $created_at
  * @property string $updated_at
  * @property string $terminated_at
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
  */
 class FiledropAccount extends \yii\db\ActiveRecord
 {
