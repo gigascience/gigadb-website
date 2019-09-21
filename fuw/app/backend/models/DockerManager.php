@@ -10,6 +10,13 @@ use Docker\API\Model\{ContainersIdExecPostBody,
                       ExecIdStartPostBody,
                     };
 
+/**
+ * A wrapper around Docker-PHP to execute commands on another container
+ *
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+*/
 class DockerManager extends yii\base\BaseObject
 {
 	/**

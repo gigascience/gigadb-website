@@ -6,6 +6,14 @@ use Yii;
 use yii\web\ServerErrorHttpException;
 use backend\models\FiledropAccount;
 
+/**
+ * A custom RestController action for deleting a FiledropAccount model
+ *
+ * Instead of deleting the model, it marks the model as FiledropAccount::STATUS_TERMINATED
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+*/
 class DeleteAction extends \yii\rest\DeleteAction
 {
 	/**
