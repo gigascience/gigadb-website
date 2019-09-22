@@ -7,9 +7,13 @@ set -a
 source .env
 set +a
 
+# before running tests, run migration for test database first (GigaDB)
 docker-compose run --rm application ./protected/yiic_test migrate --interactive=0
+# running unit tests for GigaDB, make sure to reference the appropriate bootstrap as unit and functional tests have different ones
 docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
+# before running tests, run migration for test database first (FUW)
 docker-compose exec -T console /app/yii_test migrate --interactive=0
+# running unit tests for File Upload Wizard's backend and frontend apps, as well as for common models
 docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run unit
 docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run unit
 docker-compose exec -T console /app/vendor/bin/codecept -c /app/common run unit
