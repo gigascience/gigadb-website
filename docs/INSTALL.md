@@ -130,6 +130,7 @@ $ git checkout develop                              # Currently the only branch 
 $ cp ops/configuration/variables/env-sample .env    # Make sure GITLAB_PRIVATE_TOKEN is set to your personal access token and GIGADB_ENV=dev
 # Check .env file to see if the correct GROUP_VARIABLES_URL and PROJECT_VARIABLES_URL are used!!!
 $ docker-compose run --rm config                    # Generate the configuration using variables in .env, GitLab, then exit
+$ docker-compose run --rm less				# generate site.css
 ```
 
 >**Note 1**:
