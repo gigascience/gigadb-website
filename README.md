@@ -52,15 +52,29 @@ you will have to provide your own values for the necessary variables using
 >$ vi .secrets
 >```
 
-**(2)** To start the web application, run the following command:
+**(2)** To start the web application, run the following commands:
 ```
-$ docker-compose run --rm webapp            # run composer update, then spin up the web application's services, then exit
+$ docker-compose -d gigadb fuw
+$ docker-compose -d web
 ```
 
-The **webapp** container will run composer update using the `composer.json` 
+The **gigadb** service will run composer update using the `composer.json` 
 generated in the previous step, and will launch three containers named **web**, 
 **application** and **database**, then it will exit. It's ok to run the command 
 repeatedly.
+
+The **fuw** service will do the same for the File Upload Wizard. You can omit it if not working on File Upload Wizard.
+
+The **web** service will start the web server
+
+If working on File Upload Wizard on a Mac, you will need to enable TCP access to the Docker Daemon API, by running the following command on a separate terminal:
+
+```
+$ socat TCP-LISTEN:2375,reuseaddr,fork UNIX-CONNECT:/var/run/docker.sock &
+```
+(socat can be instaled using ``brew install socat``)
+
+
 
 **(3)** Upon success, three services will be started in detached mode.
 
@@ -86,12 +100,13 @@ Some code changes are database schemas changes. To ensure you have the latest
 database schema, you will need to run Yii migration as below:
 ```
 $ docker-compose run --rm  application ./protected/yiic migrate --interactive=0
+$ docker-compose exec -T console /app/yii migrate --interactive=0
 ```
 ## Testing
 
 To run the tests:
 ```
-$ docker-compose run --rm test
+$ ./tests/all_and_coverage
 ```
 
 This will run all the tests and generate a test coverage report. An headless 
@@ -101,10 +116,15 @@ the `./tmp` directory.
 
 To only run unit tests, use the command:
 ```
-$ docker-compose run --rm test ./tests/unit_functional
+$ ./tests/unit_runner
 ```
 
-## Troubleshooting
+For functional tests:
+```
+$ ./tests/functional_runner
+```
+
+## Troubleshooting (for GigaDB)
 
 To access the services logs, use the command below:
 ```
@@ -230,6 +250,29 @@ $ docker-compose pull
 
 ## Generating the documentation
 
+Install mkdocs. On mac you can use brew:
+
+```
+$ brew install mkdocs
+```
+
+Otherwise you can use Python pip:
+
+```
+pip install mkdocs
+```
+
+To start the server, from this project root directory, run the command:
+
+```
+$ mkdocs serve
+```
+
+the documentation will be available at: (http://127.0.0.1:8000)
+
+
+### PHPDocs
+
 To update the browsable API Docs (PHPDoc), run the command below and then commit 
 the changes:
 ```
@@ -239,26 +282,3 @@ $ docker-compose run --rm test ./docs/make_phpdoc
 ## Licensing
 
 Please see the file called [LICENSE](./LICENSE).
-=======
-# tus-uppy-proto
-
-## deploy
-```
-$ terraform plan
-
-$ terraform apply
-
-$ ansible-playbook -i inventories/hosts -i /usr/local/bin/terraform-inventory playbook.yml --vault-password-file ~/.vault_pass.txt
-```
-
-## access the database
-
-```
-$ docker-compose exec database psql -h localhost -U proto -d proto
-```
-
-## show ftp account for a user
-
-```
-$ docker-compose exec ftpd pure-pw show d-100003 -f /etc/pure-ftpd/passwd/pureftpd.passwd
-```
