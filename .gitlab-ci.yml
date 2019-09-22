@@ -442,7 +442,7 @@ deploy_apps:
     # deploy the web container once the application servers are up
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d web
     # Enable the File Upload Wizard API in the web container configuration
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec web /usr/local/bin/enable_sites fuw-backend.staging.http
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web /usr/local/bin/enable_sites fuw-backend.staging.http
     # Run database migrations if any
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate to 300000_000000 --migrationPath=application.migrations.admin --interactive=0
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
