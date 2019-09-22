@@ -43,7 +43,7 @@ docker-compose exec -T console /app/yii_test migrate --interactive=0
 ```
 $ docker-compose run --rm gigadb
 $ docker-compose run --rm fuw
-$ docker-compose -d web
+$ docker-compose up -d web
 $ docker-compose exec web /usr/local/bin/enable_sites gigadb.dev.http fuw-backend.dev.http
 ```
 
