@@ -195,7 +195,7 @@ $ docker-compose run --rm  application ./protected/yiic migrate --interactive=0
 
 To run the tests:
 ```
-$ docker-compose run --rm test
+$ ./tests/all_and_coverage
 ```
 
 This will run all the tests and generate a test coverage report. An headless 
@@ -203,9 +203,16 @@ Selenium web browser (currently PhantomJS) will be automatically spun-off into
 its own container. If an acceptance test fails, it will leave a screenshot under 
 the `./tmp` directory.
 
-To only run unit tests, use the command:
+To only run unit tests for all webapps, use the bash script below:
 ```
-$ docker-compose run --rm test ./tests/unit_functional
+$ ./tests/unit_runner
+```
+
+you can read that script to see how to run the test for individual webapps.
+For example, to just run the unit tests for GigaDB app, use the following command:
+
+```
+$ docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
 ```
 
 ## Troubleshooting
