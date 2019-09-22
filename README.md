@@ -39,6 +39,7 @@ $ cd gigadb-website                         # your cloned git repository for Gig
 $ git checkout develop                      # the branch with the latest code base
 $ cp ops/configuration/variables/env-sample .env    # make sure GITLAB_PRIVATE_TOKEN is set to your personal access token
 $ docker-compose run --rm config            # generate the configuration using variables in .env, GitLab, then exit
+$ docker-compose run --rm less				# generate site.css
 ```
 
 >**Note 1**: A `.secrets` file will be created automatically and populated using 
