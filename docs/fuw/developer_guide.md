@@ -1,11 +1,5 @@
 # Developer Guide for File Upload Wizard
 
-## urls
-
-http://fuw-admin-dev.pommetab.com:7070
-https://fuw-admin-dev.pommetab.com:7443
-
-The ``ca.pem`` file need to be added to the web browser in order to be recognised.
 
 ## Running tests
 
@@ -59,6 +53,15 @@ $ docker exec console bash
 # ../vendor/bin/codecept run --coverage --coverage-xml --coverage-html
 ```
 
+### running all tests for GigaDB and File Upload Wizard
+
+If GigaDB and File Upload wizard webapps are all running, you can run test suite across them all:
+
+```
+$ ./tests/unit_runner
+$ ./tests/functional_runner
+$ ./tests/all_and_coverage
+```
 
 ## Create a new model (replace backend with common or frontend if needed)
 
