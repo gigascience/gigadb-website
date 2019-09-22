@@ -203,7 +203,7 @@ services:
       - db-tier
     extra_hosts:
       - "gigadb.dev:172.16.238.10"
-    command: bash
+    command: bash -c "./tests/all_and_coverage"
 
   chrome:
     image: selenium/standalone-chrome:3.141.59-oxygen # latest version with Chrome 74
