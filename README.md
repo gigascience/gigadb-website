@@ -53,27 +53,18 @@ you will have to provide your own values for the necessary variables using
 >```
 
 **(2)** To start the web application, run the following commands:
+
 ```
-$ docker-compose -d gigadb fuw
-$ docker-compose -d web
+$ docker-compose run --rm gigadb                    # Run composer update, then spin up the web application's services, then exit
+$ docker-compose -d web 							# Start the web server
 ```
 
-The **gigadb** service will run composer update using the `composer.json` 
-generated in the previous step, and will launch three containers named **web**, 
+The **gigadb** container will run composer update using the `composer.json` 
+generated in the previous step, and will launch two containers named
 **application** and **database**, then it will exit. It's ok to run the command 
 repeatedly.
 
-The **fuw** service will do the same for the File Upload Wizard. You can omit it if not working on File Upload Wizard.
-
-The **web** service will start the web server
-
-If working on File Upload Wizard on a Mac, you will need to enable TCP access to the Docker Daemon API, by running the following command on a separate terminal:
-
-```
-$ socat TCP-LISTEN:2375,reuseaddr,fork UNIX-CONNECT:/var/run/docker.sock &
-```
-(socat can be instaled using ``brew install socat``)
-
+Starting the web container will first enable site configuration connecting nginx to gigadb PHP application server before starting the web server as a deamon.
 
 
 **(3)** Upon success, three services will be started in detached mode.
@@ -100,28 +91,36 @@ Some code changes are database schemas changes. To ensure you have the latest
 database schema, you will need to run Yii migration as below:
 ```
 $ docker-compose run --rm  application ./protected/yiic migrate --interactive=0
-$ docker-compose exec -T console /app/yii migrate --interactive=0
 ```
-## Testing
+## Testing GigaDB webapp
 
-To run the tests:
+To run the unit tests:
 ```
-$ ./tests/all_and_coverage
+$ docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
 ```
 
-This will run all the tests and generate a test coverage report. An headless 
+To run the functional tests:
+
+```
+$ docker-compose run --rm test ./bin/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
+```
+
+To run the acceptance tests:
+
+```
+$ docker-compose up -d phantomjs
+$ docker-compose run --rm test bin/behat --profile local -v --stop-on-failure
+```
+
+
 Selenium web browser (currently PhantomJS) will be automatically spun-off into 
 its own container. If an acceptance test fails, it will leave a screenshot under 
 the `./tmp` directory.
 
-To only run unit tests, use the command:
-```
-$ ./tests/unit_runner
-```
+To run test coverage:
 
-For functional tests:
 ```
-$ ./tests/functional_runner
+$ docker-compose run --rm test ./bin/phpunit /var/www/protected/tests --testsuite all --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml
 ```
 
 ## Troubleshooting (for GigaDB)
