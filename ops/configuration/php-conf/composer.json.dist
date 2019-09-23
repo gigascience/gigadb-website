@@ -12,13 +12,13 @@
         "gabrielelana/byte-units": "^0.5",
         "google/apiclient": "v2.2.2",
         "suin/php-rss-writer": "^1.6",
-        "leafo/lessphp": "^v0.3.9",
-        "opauth/opauth": "^0.4.5",
-        "opauth/facebook": "^0.4.2",
-        "opauth/twitter": "^0.3.2",
-        "opauth/google": "^0.2.2",
-        "opauth/linkedin": "^0.3.0",
-        "drewm/mailchimp-api": "v2.5.3"
+         "leafo/lessphp": "^v0.3.9",
+         "opauth/opauth": "^0.4.5",
+         "opauth/facebook": "^0.4.2",
+         "opauth/twitter": "^0.3.2",
+         "opauth/google": "^0.2.2",
+         "opauth/linkedin": "^0.3.0",
+         "drewm/mailchimp-api": "v2.5.3"
     },
     "require-dev": {
         "behat/behat":  "^3.5",
@@ -37,7 +37,8 @@
         "sebastian/phpcpd": "^3.0",
         "phpmd/phpmd": "2.6.0",
         "php-coveralls/php-coveralls": "v2.1.0",
-        "php-mime-mail-parser/php-mime-mail-parser": "5.0.5"
+        "php-mime-mail-parser/php-mime-mail-parser": "5.0.5",
+        "vlucas/phpdotenv": "v3.4.0"
     },
     "minimum-stability": "stable",
     "config": {
