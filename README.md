@@ -57,7 +57,7 @@ you will have to provide your own values for the necessary variables using
 
 ```
 $ docker-compose run --rm gigadb                    # Run composer update, then spin up the web application's services, then exit
-$ docker-compose -d web 							# Start the web server
+$ docker-compose up -d web 							# Start the web server
 ```
 
 The **gigadb** container will run composer update using the `composer.json` 
