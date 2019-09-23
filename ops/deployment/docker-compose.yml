@@ -30,7 +30,7 @@ services:
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
-    command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "gigadb.dev.https"]
+    command: ["/usr/local/bin/enable_sites", "gigadb.dev.http"]
     # command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "gigadb.dev.https", "fuw-backend.dev.http"]
     # command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-backend.dev.http", "fuw-proto.dev.http"]
 
