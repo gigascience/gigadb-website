@@ -44,7 +44,7 @@ Scenario: a user select an author to claim and submit the claim form
 	And I wait "1" seconds
 	# And I take a screenshot named "expect_modal"
 	And I click on button for author id "3791"
-	And I wait "1" seconds
+	And I wait "3" seconds
 	Then the response should contain "Your claim has been submitted to the administrators."
 	And the response should contain "You can close this box now."
 
