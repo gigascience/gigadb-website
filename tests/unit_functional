@@ -3,5 +3,6 @@
 set -e
 set -u
 
-./tests/unit_runner
-./tests/functional_runner
+docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
+
+docker-compose run --rm test ./bin/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
