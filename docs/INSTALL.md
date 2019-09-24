@@ -210,6 +210,11 @@ To run the functional tests:
 $ docker-compose run --rm test ./bin/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
 ```
 
+There is a bash shortcut available to run both unit tests and functional tests for GigaDB:
+```
+$ ./tests/unit_functional
+```
+
 To run the acceptance tests:
 
 ```
