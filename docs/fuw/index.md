@@ -24,20 +24,6 @@ $ docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:2375:2
 
 **Note:** On Windows and Linux, it is not necessary to go through this step.
 
-### Run database migrations
-
-Main database:
-```
-$ docker-compose exec console /app/yii migrate --interactive=0
-```
-
-Test database:
-
-```
-docker-compose exec -T console /app/yii_test migrate --interactive=0
-```
-
-
 ### Starting GigaDB, File Upload Wizard API (but not the prototype) from scratch
 
 ```
@@ -55,6 +41,21 @@ $ docker-compose exec web /usr/local/bin/enable_sites gigadb.dev.http fuw-backen
 $ docker-compose run --rm fuw
 $ docker-compose run --rm fuw-config
 $ docker-compose exec web /usr/local/bin/enable_sites fuw-backend.dev.http
+```
+
+### Run database migrations
+
+Make sure that both the ``fuw`` service (as Composer vendors libraries are required) and the ``fuw-config`` service (that fill in Database connection strings in config files) have been run beforehand.
+
+Main database:
+```
+$ docker-compose exec console /app/yii migrate --interactive=0
+```
+
+Test database:
+
+```
+docker-compose exec -T console /app/yii_test migrate --interactive=0
 ```
 
 
@@ -84,25 +85,18 @@ $ docker-compose stop fuw-proto
 The protototype will be availabe at:
 [http://gigadb.gigasciencejournal.com:9170/proto/](http://gigadb.gigasciencejournal.com:9170/proto/)
 
-## Start and accessing the documentation server
-
-Install mkdocs. On macOS you can use brew:
-
-```
-$ brew install mkdocs
-```
-start the server:
-
-```
-$ cd fuw
-$ mkdocs serve
-```
-
-the documentation will be available at: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ## Testing
 
-See the [Developer Guide](developer_guide.md) for more information.
+To run all the tests (GigaDB and FUW), these commands can be used:
+```
+$ ./tests/unit_runner
+$ ./tests/functional_runner
+$ ./tests/coverage_runner
+$ ./tests/acceptance_runner
+```
+See the [Developer Guide](developer_guide.md) for detailed information.
+
 
 ## Workflow
 
