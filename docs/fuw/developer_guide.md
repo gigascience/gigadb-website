@@ -6,7 +6,7 @@
 ### running all (unit and fonctional) tests for all tiers (backend and frontend)
 
 ```
-$ docker exec console bash
+$ docker-compose exec console bash
 # cd /app
 # php yii_test migrate
 # vendor/bin/codecept build
@@ -16,7 +16,7 @@ $ docker exec console bash
 and with coverage:
 
 ```
-$ docker exec console bash
+$ docker-compose exec console bash
 # cd /app
 # vendor/bin/codecept run --coverage --coverage-xml --coverage-html
 ```
@@ -30,7 +30,7 @@ $ docker-compose exec console /app/vendor/bin/codecept run -c /app --coverage
 ### running all tests for specific tier
 
 ```
-$ docker exec console bash
+$ docker-compose exec console bash
 # cd /app/backend
 # ../vendor/bin/codecept build
 # ../vendor/bin/codecept run
@@ -39,7 +39,7 @@ $ docker exec console bash
 ### running specific test suites
 
 ```
-$ docker exec console bash
+$ docker-compose exec console bash
 # cd /app/backend
 # ../vendor/bin/codecept run unit
 ```
@@ -48,7 +48,7 @@ $ docker exec console bash
 
 
 ```
-$ docker exec console bash
+$ docker-compose exec console bash
 # cd /app/backend
 # ../vendor/bin/codecept run --coverage --coverage-xml --coverage-html
 ```
@@ -66,7 +66,7 @@ $ ./tests/all_and_coverage
 ## Create a new model (replace backend with common or frontend if needed)
 
 ```
-$ docker exec console bash
+$ docker-compose exec console bash
 # cd /app
 # php yii gii/model --tableName filedrop_account --modelClass FiledropAccount --ns 'backend\models'
 ```
@@ -87,7 +87,7 @@ $ docker exec console bash
 ## Create a new controller (for the backend app) with three actions
 
 ```
-$ docker exec console bash
+$ docker-compose exec console bash
 # cd /app
 # php yii gii/controller --controllerClass="backend\controllers\FiledropAccountController" --actions=create,close,index --viewPath="backend/views/filedrop-account"
 ```
@@ -135,7 +135,7 @@ For security, do not mount directly the Docker unix socket in any container. TCP
 Use Yii2 migrations to describe new changes to the database schema.
 
 ```
-$ docker exec console bash
+$ docker-compose exec console bash
 # cd /app
 # ./yii migrate/create create_upload_table
 ```
