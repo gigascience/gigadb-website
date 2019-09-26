@@ -1,0 +1,8 @@
+# acceptance.suite.yml
+suite_namespace: common\tests\acceptance
+bootstrap: false
+actor: AcceptanceTester
+modules:
+    enabled:
+        - PhpBrowser:
+            url: http://www.example.com/
