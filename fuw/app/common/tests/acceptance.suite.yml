@@ -5,4 +5,4 @@ actor: AcceptanceTester
 modules:
     enabled:
         - PhpBrowser:
-            url: http://www.example.com/
+            url: http://gigasciencejournal.com:9170/
