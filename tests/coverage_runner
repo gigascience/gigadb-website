@@ -12,9 +12,9 @@ console_running=$?
 set -e
 if [ "$console_running" -eq "0" ];then
 	# docker-compose exec -T console /app/vendor/bin/codecept -c /app run --coverage --coverage-xml --coverage-html
-	docker-compose exec -T console /app/vendor/bin/codecept run --coverage --coverage-xml --coverage-html -- unit,functional -c backend
-	docker-compose exec -T console /app/vendor/bin/codecept run --coverage --coverage-xml --coverage-html -- unit,functional -c frontend
-	docker-compose exec -T console /app/vendor/bin/codecept run --coverage --coverage-xml --coverage-html -- unit,functional -c common
+	docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run --coverage --coverage-xml --coverage-html
+	docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run --coverage --coverage-xml --coverage-html
+	docker-compose exec -T console /app/vendor/bin/codecept -c /app/common run --coverage --coverage-xml --coverage-html -- unit,functional
 else
 	echo "No 'console' container running so not running File Upload Wizard coverage"
 fi
