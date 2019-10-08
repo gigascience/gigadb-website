@@ -26,8 +26,9 @@ RUN apt-get update && apt-get install -y libmcrypt-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install the PHP pdo_pgsql extention
+# Install extensions for the postgresql and PHP integration
 RUN docker-php-ext-install pdo_pgsql
+RUN docker-php-ext-install pgsql
 
 # Install the PHP bcmath extention
 RUN docker-php-ext-install bcmath
