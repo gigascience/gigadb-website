@@ -1,9 +1,6 @@
 <?php
 namespace common\tests\Step\Acceptance;
 
-use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\Local;
-
 class CuratorSteps #extends \common\tests\AcceptanceTester
 {
 	protected $I;
@@ -13,28 +10,18 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	{
 	    $this->I = $I;
 	}
-
-	/**
-     * @Given filedrop account for DOI :arg1 doesn't exist
-     */
-     public function filedropAccountForDOIDoesntExist($arg1)
-     {
-
-     	$adapter = new Local("/var");
-		$fs = new Filesystem($adapter);
-
-     	$fs->deleteDir("incoming/ftp/$arg1");
-     	$fs->deleteDir("repo/$arg1");
-     	$fs->deleteDir("private/$arg1");
-     }
-
-
 	/**
 	 * @Given I sign in as an admin
 	 */
 	public function iSignInAsAnAdmin()
 	{
-		$this->I->amOnUrl('http://gigadb.test');
+	   // $this->minkContext->visit("/site/login");
+    //      $this->minkContext->fillField("LoginForm_username", $this->admin_login);
+    //      $this->minkContext->fillField("LoginForm_password", $this->admin_password);
+    //      $this->minkContext->pressButton("Login");
+
+    //      $this->minkContext->assertResponseContains("Admin");
+		$this->I->amOnUrl('http://gigadb.dev');
 		$this->I->amOnPage('/site/login');
 		$this->I->fillField(['name' => 'LoginForm[username]'], 'admin@gigadb.org');
 		$this->I->fillField(['name' => 'LoginForm[password]'], 'gigadb');
@@ -62,7 +49,7 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	 */
 	public function iGoTo($arg1)
 	{
-	   $this->I->amOnPage($arg1);
+	   throw new \Codeception\Exception\Incomplete("Step `I go to :arg1` is not defined");
 	}
 
 	/**
@@ -70,7 +57,7 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	 */
 	public function iPress($arg1)
 	{
-	   $this->I->click($arg1);
+	   throw new \Codeception\Exception\Incomplete("Step `I press :arg1` is not defined");
 	}
 
 	/**
@@ -78,7 +65,7 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	 */
 	public function theResponseSouldContain($arg1)
 	{
-	   $this->I->canSee($arg1);
+	   throw new \Codeception\Exception\Incomplete("Step `the response sould contain :arg1` is not defined");
 	}
 
 	/**
@@ -86,71 +73,6 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	 */
 	public function iShouldSeeAButton($arg1)
 	{
-		$this->I->seeElement("//img[@alt='$arg1']");
+	   throw new \Codeception\Exception\Incomplete("Step `I should see a :arg1 button` is not defined");
 	}
-
-    /**
-     * @Then I should see a :arg1 link
-     */
-     public function iShouldSeeALink($arg1)
-     {
-        $this->I->canSeeLink($arg1);
-     }
-
-	/**
-     * @Then I should see a :arg1 form text area
-     */
-     public function iShouldSeeAFormTextArea($arg1)
-     {
-        $this->I->seeElement('textarea',["name" => $arg1]);
-     }
-
-	/**
-     * @When I wait for modal window :arg1
-     */
-     public function iWaitForModalWindow($arg1)
-     {
-        $this->I->waitForElement('#editInstructions', 10);
-     }
-
-	/**
-     * @When I wait :arg1 seconds
-     */
-     public function iWaitSeconds($arg1)
-     {
-         $this->I->wait($arg1);
-     }
-
-     /**
-     * @When I fill in :arg1 text area with :arg2
-     */
-     public function iFillInTextAreaWith($arg1, $arg2)
-     {
-        $this->I->fillField(['name' => $arg1], $arg2);
-     }
-
-     /**
-     * @Then I should see :arg1
-     */
-     public function iShouldSee($arg1)
-     {
-        $this->I->canSee($arg1);
-     }
-
-	/**
-     * @Then I should not see a :arg1 link
-     */
-     public function iShouldNotSeeALink($arg1)
-     {
-        $this->I->cantSeeLink($arg1);
-     }
-
-     /**
-     * @Then I am on :arg1
-     */
-     public function iAmOn($arg1)
-     {
-        $this->I->amOnUrl("http://gigadb.test".$arg1);
-     }
-
 }
