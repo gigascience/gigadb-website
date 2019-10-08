@@ -3,20 +3,18 @@ Feature:
 	I want to create a restricted file drop box area on GigaDB server
 	So that authors can upload their files and select curators can access them
 
-# Background:
-# 	Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
-# 	And user "joy_fox" is loaded # Author
+Background:
+	Given there is a user "Joy" "Fox"
+	And a dataset with DOI "100006" owned by user "Joy" "Fox" has status "AssigningFTPbox"
 
 @first
 Scenario: Accessing admin page's list of datasets to setup drop box for a dataset
 	Given I sign in as an admin
-	And a dataset has been uploaded with temporary DOI "100006" by user "joy_fox"
-	And the uploaded dataset has status "AssigningFTPbox"
 	And I go to "/site/admin"
 	When I press "Datasets"
 	Then the response sould contain "100006"
 	And the response sould contain "AssigningFTPbox"
-	And I should see a "Assign Drop box to dataset 100006" button
+	And I should see a "New Dropbox for this dataset (100006)" button
 
 
 # Scenario: Triggering the creation of a drop box for a dataset with the appropriate status
