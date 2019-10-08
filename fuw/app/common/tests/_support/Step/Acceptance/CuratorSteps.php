@@ -10,17 +10,47 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	{
 	    $this->I = $I;
 	}
+
+	/**
+     * @Given there is a user :firstname :lastname
+     */
+   	public function thereIsAUser($firstname, $lastname)
+     {
+        $this->I->haveInDatabase('gigadb_user', [
+			  'email' => "${firstname}_${lastname}@gigadb.org",
+			  'password' => 'foobar',
+			  'first_name' => "$firstname",
+			  'last_name' => "$lastname",
+			  'role' => 'user',
+			  'is_activated' => true,
+			  'newsletter' => false,
+			  'previous_newsletter_state' => false,
+			  'username' => "${firstname}_${lastname}",
+			]);
+    }
+    /**
+     * @Given a dataset with DOI :doi owned by user :firstname :lastname has status :status
+     */
+    public function aDatasetWithDOIOwnedByUserHasStatus($doi, $firstname, $lastname, $status)
+    {
+    	$submitter_id = $this->I->grabFromDatabase('gigadb_user', 'id', array('username' => "${firstname}_${lastname}"));
+         $this->I->haveInDatabase('dataset', [
+			  'submitter_id' => $submitter_id,
+			  'identifier' => "$doi",
+			  'title' => "Dataset Fantastic",
+			  'description' => "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo",
+			  'dataset_size' => 3453534634,
+			  'ftp_site' => 'ftp://data.org',
+			  'upload_status' => "$status",
+			]);
+    }
+
+
 	/**
 	 * @Given I sign in as an admin
 	 */
 	public function iSignInAsAnAdmin()
 	{
-	   // $this->minkContext->visit("/site/login");
-    //      $this->minkContext->fillField("LoginForm_username", $this->admin_login);
-    //      $this->minkContext->fillField("LoginForm_password", $this->admin_password);
-    //      $this->minkContext->pressButton("Login");
-
-    //      $this->minkContext->assertResponseContains("Admin");
 		$this->I->amOnUrl('http://gigadb.dev');
 		$this->I->amOnPage('/site/login');
 		$this->I->fillField(['name' => 'LoginForm[username]'], 'admin@gigadb.org');
@@ -49,7 +79,7 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	 */
 	public function iGoTo($arg1)
 	{
-	   throw new \Codeception\Exception\Incomplete("Step `I go to :arg1` is not defined");
+	   $this->I->amOnPage($arg1);
 	}
 
 	/**
@@ -57,7 +87,7 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	 */
 	public function iPress($arg1)
 	{
-	   throw new \Codeception\Exception\Incomplete("Step `I press :arg1` is not defined");
+	   $this->I->click($arg1);
 	}
 
 	/**
@@ -65,7 +95,7 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	 */
 	public function theResponseSouldContain($arg1)
 	{
-	   throw new \Codeception\Exception\Incomplete("Step `the response sould contain :arg1` is not defined");
+	   $this->I->canSee($arg1);
 	}
 
 	/**
@@ -73,6 +103,6 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	 */
 	public function iShouldSeeAButton($arg1)
 	{
-	   throw new \Codeception\Exception\Incomplete("Step `I should see a :arg1 button` is not defined");
+	   $this->I->canSee($arg1);
 	}
 }

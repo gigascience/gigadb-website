@@ -5,6 +5,13 @@ bootstrap: false
 actor: AcceptanceTester
 modules:
     enabled:
+        - Db:
+            dsn: 'pgsql:host=database;dbname=gigadb'
+            user: 'gigadb'
+            password: 'vagrant'
+            # dump: tests/_data/gigadb_bootstrap.sql
+            cleanup: false # don't reload dump between tests
+            populate: false # don't load dump before all tests
         - WebDriver:
              host: 'phantomjs'
              port: 8910
