@@ -352,6 +352,8 @@ services:
     networks:
       - web-tier
       - db-tier
+    extra_hosts:
+      - "gigadb.dev:172.16.238.10"
 
   ftpd:
     build:

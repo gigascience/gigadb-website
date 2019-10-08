@@ -1,8 +1,23 @@
 # acceptance.suite.yml
+namespace: common\tests
 suite_namespace: common\tests\acceptance
 bootstrap: false
 actor: AcceptanceTester
 modules:
     enabled:
-        - PhpBrowser:
-            url: http://gigasciencejournal.com:9170/
+        - WebDriver:
+             host: 'phantomjs'
+             port: 8910
+             browser: phantomjs
+             url: 'http://gigadb.dev'
+gherkin:
+    contexts:
+        default:
+            - common\tests\AcceptanceTester
+        role:
+            curator:
+                - common\tests\Step\Acceptance\CuratorSteps
+
+extensions:
+    enabled:
+        - Codeception\Extension\Recorder
