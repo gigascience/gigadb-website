@@ -5,6 +5,7 @@
  * to File Upload Wizard API
  *
  *
+ * @property string $jwtKey private key for signing JSON Web Tokens
  * @property string $jwtTTL time validity for the JSON Web Tokens
  * @property \Lcobucci\JWT\Builder $jwtBuilder JSON Web Token builder library
  * @property UserDAO $users finders for acessing User data
@@ -16,6 +17,7 @@
 class TokenService extends yii\base\Component
 {
 
+	public $jwtKey;
 	public $jwtTTL;
 	public $jwtBuilder;
 	public $jwtSigner;
@@ -42,21 +44,19 @@ class TokenService extends yii\base\Component
 	{
 		$user = $this->users->findByEmail($email);
 		$signer = $this->jwtSigner;
-		$issuedTime = $this->dt->format('U');
-		$notBeforeTime = $issuedTime ;
-		$expirationTime = $this->dt->modify("+1 hour")->format('U');
-
+		$startTime = $this->dt->modify("+60 seconds")->format('U');
+		$expiryTime = $this->dt->modify("+{$this->jwtTTL} seconds")->format('U');
 		$client_token = $this->jwtBuilder
             ->setIssuer('www.gigadb.org') // Configures the issuer (iss claim)
             ->setAudience('fuw.gigadb.org') // Configures the audience (aud claim)
-            ->setSubject('API Access request from client') // Configures the subject
+            ->setSubject('Access to FUW API') // Configures the subject
             ->setId('4f1g23a12aa', true) // Configures the id (jti claim), replicating as a header item
             ->set('email', $email)
             ->set('name', $user->getFullName())
-            ->set('role', $user->role)
-            ->setIssuedAt($issuedTime) // Configures the time that the token was issue (iat claim)
-            ->setNotBefore($notBeforeTime) // Configures the time before which the token cannot be accepted (nbf claim)
-            ->setExpiration($expirationTime) // Configures the expiration time of the token (exp claim) 1 year
+            ->set('role', $user->getRole())
+            ->setIssuedAt(time()) // Configures the time that the token was issue (iat claim)
+            ->setNotBefore($startTime) // Configures the time before which the token cannot be accepted (nbf claim)
+            ->setExpiration($expiryTime) // Configures the expiration time of the token (exp claim) 1 year
             ->sign($signer, Yii::$app->jwt->key)// creates a signature using [[Jwt::$key]]
             ->getToken(); // Retrieves the generated token
 
