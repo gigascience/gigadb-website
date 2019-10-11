@@ -6,9 +6,16 @@
  */
 class UserDAO {
 
-	public function findByEmail(string $mail): ?\User
+	/**
+	 * Find a user by email
+	 *
+	 * @param string $email email of user to find
+	 * @return ?\User a User instance if user is found, null otherwise
+	 *
+	 */
+	public function findByEmail(string $email): ?\User
 	{
-		return null;
+		return User::findAffiliateEmail($email); //that static funtion already exist, so let's just use it.
 	}
 }
 ?>
