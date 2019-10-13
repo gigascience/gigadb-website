@@ -22,37 +22,6 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<?php if( Yii::app()->user->hasFlash('success') ) { ?>
-<div class="alert alert-success flash-success modal-header">
-	<?php echo Yii::app()->user->getFlash('success'); ?>
-
-</div>
-
-<?php } else if (Yii::app()->user->hasFlash('error')) { ?>
-	<div class="alert alert-error flash-error">
-		<?php echo Yii::app()->user->getFlash('error'); ?>
-	</div>
-<?php } ?>
-
-<?php if( Yii::app()->session["filedrop_id_".Yii::app()->user->id]) {
-	[$doi, $fid] = Yii::app()->session["filedrop_id_".Yii::app()->user->id];
-?>
-	<div class="button-panel panel" role="alert">
-		<div class="panel-heading header alert-success">A new drop box has been created for the dataset <?php  echo $doi ?>.</div>
-  	<div class="panel-body controls">
-<?php
-
-	echo CHtml::link('Customize instructions','#', array('class' => 'btn btn-primary', 'data-toggle' => "modal", 'data-target' => "#editInstructions"));
-
-	echo CHtml::link('Send instructions by email',
-		                array('adminDataset/sendInstructions', 'id'=>$doi, 'fid'=>$fid),
-                        array('class' => 'btn btn-primary')
-                    );
-?>
-	</div>
-	</div>
-<?php } ?>
-
 <h1>Manage Datasets</h1>
 
 <p>
@@ -85,78 +54,15 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 
 		array(
 			'class'=>'CButtonColumn',
-			'template' => '{view}{update}{dropbox}{delete}',
+			'template' => '{view}{update}{delete}{dropbox}',
             'buttons'=>array(
                 'view' => array(
-	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/view_new.png',
                         'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))'
                         ),
-                'update' => array(
-	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/update_new.png',
-                        ),
-                'delete' => array(
-	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/delete_new.png',
-                        ),
                 'dropbox' => array(
-	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/dropbox.png',
-                		'url' => 'Yii::app()->createUrl("adminDataset/assignFTPBox" , array("id" => $data->identifier))',
-                		'options'=>array('title'=>'New Dropbox for this dataset'),
-                		'label' => 'New Dropbox for this dataset',
-                		'visible' => '"AssigningFTPbox" === $data->upload_status'
+                		'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))'
                 	)
                 ),
 		),
 	),
 )); ?>
-
-<?php if( Yii::app()->session["filedrop_id_".Yii::app()->user->id]) { ?>
-
-<div class="modal fade" id="editInstructions" tabindex="-1" role="dialog" aria-labelledby="customizeInstructions">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Write custom upload instructions</h4>
-      </div>
-      <div class="modal-body">
-        <form id="instructionsForm">
-        	<label for="instructions" class="control-label">Instructions</label>
-        	<textarea id="instructions" name="instructions"
-      class="form-control" rows="6" cols="120" tabindex="0">
-			</textarea>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a id="saveLink" href="#" class="btn btn-primary" alt="Save changes" >Save changes</a>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<script>
-document.addEventListener("DOMContentLoaded", function(event) {//after deferred scripts loaded
-
-	// $('#editInstructions').on('hidden.bs.modal', function (e) {
-	//   console.log("Hidden!");
-	// });
-	$('#editInstructions').on('shown.bs.modal', function (e) {
-	  document.querySelector("#instructions").focus();
-	});
-	// document.querySelector("#editInstructions").addEventListener("shown.bs.modal", function (event) {
-	// 	console.log("Shown!");
-	// 	document.querySelector("#instructions").focus();
-	// });
-	document.querySelector("#saveLink").addEventListener("click", function(event) {
-		event.preventDefault();
-		<?php
-			echo 'var doi = "'.$doi.'";';
-			echo 'var fid = "'.$fid.'";';
-		?>
-		var myForm = document.getElementById('instructionsForm') ;
-		myForm.method = 'post';
-		myForm.action = "/adminDataset/saveInstructions/id/"+doi+"/fid/" +fid ;
-		myForm.submit();
-	});
-});
-</script>
-<?php } ?>
