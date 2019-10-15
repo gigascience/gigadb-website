@@ -196,11 +196,19 @@ services:
       - ${APPLICATION}/ops/configuration/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ${APPLICATION}/tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
+      # we need to mount fuw data dirs for testing
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/home/uploader
+      - ${DATA_SAVE_PATH}/fuw/repo:/home/downloader/
+      - ${DATA_SAVE_PATH}/fuw/credentials:/home/credentials
+      - ${DATA_SAVE_PATH}/pure-ftpd:/etc/pure-ftpd
+      - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+
     networks:
       - web-tier
       - db-tier
     extra_hosts:
       - "gigadb.dev:172.16.238.10"
+      - "fuw-admin-api:172.16.238.10"
     command: bash -c "./tests/all_and_coverage"
 
   chrome:

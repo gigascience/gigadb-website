@@ -90,3 +90,5 @@ php-conf/appconfig.ini
 
 site/
 
+# config
+params-local.php
