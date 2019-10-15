@@ -157,6 +157,11 @@ TARGET=${APP_SOURCE}/protected/config/yii2/test.php
 VARS='$SERVER_EMAIL_SMTP_HOST:$SERVER_EMAIL_SMTP_PORT:$SERVER_EMAIL:$SERVER_EMAIL_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/params-local.php.dist
+TARGET=${APP_SOURCE}/protected/config/yii2/params-local.php
+VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME'
+envsubst $VARS < $SOURCE > $TARGET
+
 if [ $GIGADB_ENV != "CI" ];then
     cp ops/configuration/nginx-conf/le.${GIGADB_ENV}.ini /etc/letsencrypt/cli.ini
 fi

@@ -39,12 +39,12 @@ class FiledropService extends yii\base\Component
 	{
 		$api_endpoint = "http://fuw-admin-api/filedrop-accounts";
 
-		$token = $tokenSrv->generateTokenForUser($requester->email); //TODO:check it's an admin
+		$token = $this->tokenSrv->generateTokenForUser($this->requester->email); //TODO:check it's an admin
 
 		try {
 			$response = $this->webClient->request('POST', $api_endpoint, [
 								    'headers' => [
-								        'Authorization' => "Bearer $jwt_token",
+								        'Authorization' => "Bearer $token",
 								    ],
 								    'form_params' => [
 								        'doi' => $this->identifier,//TODO:check it's right status
