@@ -681,7 +681,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
     $(".citation-popup").popover({'placement':'top'});
 });
 </script>
-
+<script src="https://hypothes.is/embed.js" async></script>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
         $(".js-desc").click(function(e) {

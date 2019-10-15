@@ -230,6 +230,7 @@
                     </div>
                 </section>
     </div>
+    <script src="https://hypothes.is/embed.js" async></script>
     <script>
     document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
         $("#dataset-hint").popover();
