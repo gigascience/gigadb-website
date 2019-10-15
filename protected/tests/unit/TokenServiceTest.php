@@ -1,13 +1,21 @@
 <?php
 
-
+/**
+ * Unit test for TokenService
+ *
+ * NB: example of testing Date/Time function
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ */
 class TokenServiceTest extends CTestCase
 {
   public function testCreateToken()
   {
-    $jwt_key = "fooTESTbar$#^%@#";
-    $jwt_ttl = 31104000 ;
-    $email = "foo@bar.com";
+    $email = "foo@bar.com"; //dummy email of requester of the token
+    $jwt_key = "fooTESTbar$#^%@#"; //private key for JWT tokens
+    $jwt_ttl = 3600 ; //1 hour validity
+    $issuedTime = 1569171152; //dummy time of issue of the token
 
     // Setup mocks
     $mockUserDAO = $this->getMockBuilder(UserDAO::class)
@@ -15,15 +23,11 @@ class TokenServiceTest extends CTestCase
                     ->getMock();
 
     $mockUser = $this->getMockBuilder(User::class)
-                        ->setMethods(['getFullName', 'getRole'])
+                        ->setMethods(['getFullName'])
                         ->getMock();
 
     $mockDateTime = $this->getMockBuilder(\DateTime::class)
-                          ->setMethods(['modify'])
-                          ->getMock();
-
-    $mockModifiedDateTimes = $this->getMockBuilder(\DateTime::class)
-                          ->setMethods(['format'])
+                          ->setMethods(['modify','format'])
                           ->getMock();
 
     // 0. find user record
@@ -37,35 +41,27 @@ class TokenServiceTest extends CTestCase
                  ->method('getFullName')
                  ->willReturn("Foo Bar");
 
-    $mockUser->expects($this->once())
-                 ->method('getRole')
-                 ->willReturn("admin");
-
     // 2. calculate validity period (notbefore and expiry datetime)
-    $mockDateTime->expects($this->exactly(2))
+    $mockDateTime->expects($this->once())
                  ->method('modify')
-                 ->withConsecutive(
-                 "+60 seconds",
-                 "+1 year"
-             )
-             ->willReturn($mockModifiedDateTimes);
+                 ->with("+1 hour")
+             ->willReturn($mockDateTime);
 
     //3. format both datetimes as seconds since epoch to feed the JWT builder
-    $testStartTime = time()+60 ;
-    $testExpiryTime = $testStartTime+$jwt_ttl ;
-    $mockModifiedDateTimes->expects($this->exactly(2))
+    $mockExpirationTime = $issuedTime + $jwt_ttl ;
+    $mockDateTime->expects($this->exactly(2))
                  ->method('format')
                  ->withConsecutive(
                  "U",
                  "U"
              )
              ->will($this->onConsecutiveCalls(
-              $testStartTime,
-              $testExpiryTime
+              $issuedTime,
+              $mockExpirationTime
             ));
 
     // Instantiate the token service after injecting the mock and invoke token creation
-    $tokenSrv = new TokenService(['jwtKey' => $jwt_key,
+    $tokenSrv = new TokenService([
                                   'jwtTTL' => $jwt_ttl,
                                   'jwtBuilder' => Yii::$app->jwt->getBuilder(),
                                   'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
@@ -80,17 +76,26 @@ class TokenServiceTest extends CTestCase
     $data->setIssuer('www.gigadb.org');
     $data->setAudience('fuw.gigadb.org');
     $data->setId('4f1g23a12aa');
-    $data->setSubject('Access to FUW API');
+    $data->setSubject('API Access request from client');
 
-    // set the time of validation to be after testStartTime
-    $data->setCurrentTime(time() + 61);
-
+    // set the time of usage to be straight after issue
+    // (to reflect real call scenario, it should be valid)
+    $data->setCurrentTime($issuedTime);
     $this->assertTrue($token->validate($data));
+
+
+    // set the time of usage to be just before 1 hour later ( it should be valid)
+    $data->setCurrentTime($issuedTime+$jwt_ttl-1);
+    $this->assertTrue($token->validate($data));
+
+    // set the time of usage to more than 1 hour later (it should not be valid)
+    $data->setCurrentTime($issuedTime+$jwt_ttl+1);
+    $this->assertFalse($token->validate($data));
 
     // 5. verify that the necessary user info can be claimed from token
     $this->assertEquals($token->getClaim('name'),"Foo Bar");
     $this->assertEquals($token->getClaim('email'),"$email");
-    $this->assertEquals($token->getClaim('role'),"admin");
+    $this->assertEquals($token->getClaim('role'),"user");
 
 
   }
