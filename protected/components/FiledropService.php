@@ -9,6 +9,7 @@
  * @property \GuzzleHttp\Client $webClient the web agent for making REST call
  * @property \User $requester the logged in user
  * @property string $identifier DOI of the dataset for which to create a filedrop account
+ * @property boolean $dryRunMode whether or not to simulate final resource changes
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
@@ -32,6 +33,11 @@ class FiledropService extends yii\base\Component
    	 */
 	public $identifier;
 	/**
+ 	 * {@inheritdoc}
+   	 */
+	public $dryRunMode;
+
+	/**
 	 * Will make an HTTP call to File Upload Wizard to trigger creation of Filedrop account
 	 *
 	 */
@@ -48,6 +54,7 @@ class FiledropService extends yii\base\Component
 								    ],
 								    'form_params' => [
 								        'doi' => $this->identifier,//TODO:check it's right status
+								        'dryRunMode' => true,
 								    ],
 								    'connect_timeout' => 5,
 								]);
