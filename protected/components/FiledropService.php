@@ -40,17 +40,28 @@ class FiledropService extends yii\base\Component
 	/**
 	 * Will make an HTTP call to File Upload Wizard to trigger creation of Filedrop account
 	 *
+	 * @return bool whether the call has been made and succeed or not
 	 */
-	public function createAccount()
+	public function createAccount(): bool
 	{
 		$api_endpoint = "http://fuw-admin-api/filedrop-accounts";
 
-		$token = $tokenSrv->generateTokenForUser($requester->email); //TODO:check it's an admin
+		if ("admin" !== $this->requester->role) {
+			Yii::log("The requesting user doesn't have admin role","error");
+			return false;
+		}
+		// 'postID=:postID', array(':postID'=>10)
+		$dataset = Dataset::model()->find('identifier=:doi',[":doi" => $this->identifier]) ;
+		if ( !isset($dataset) || "AssigningFTPbox" !== $dataset->upload_status ) {
+			Yii::log("Upload status required: AssigningFTPbox, gotten: {$dataset->upload_status}","error");
+			return false;
+		}
+		$token = $this->tokenSrv->generateTokenForUser($this->requester->email);
 
 		try {
 			$response = $this->webClient->request('POST', $api_endpoint, [
 								    'headers' => [
-								        'Authorization' => "Bearer $jwt_token",
+								        'Authorization' => "Bearer $token",
 								    ],
 								    'form_params' => [
 								        'doi' => $this->identifier,//TODO:check it's right status
@@ -58,6 +69,7 @@ class FiledropService extends yii\base\Component
 								    ],
 								    'connect_timeout' => 5,
 								]);
+			return 201 === $response->getStatusCode();
 		}
 		catch(RequestException $e) {
 			Yii::log( Psr7\str($e->getRequest()) , "error");
@@ -65,6 +77,7 @@ class FiledropService extends yii\base\Component
 		        Yii::log( Psr7\str($e->getResponse()), "error");
 		    }
 		}
+		return false;
 	}
 }
 ?>
