@@ -42,6 +42,9 @@
 	    error_log("Error communicating with the REST API: $server_error");
 	    error_log($server_output);
 	}
+	else {
+		error_log($server_output);
+	}
 	curl_close ($ch);
 
 	// var_dump($server_output);

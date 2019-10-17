@@ -48,6 +48,11 @@ class FiledropAccount extends \yii\db\ActiveRecord
     public $dockerManager;
 
     /**
+     * @var bool indicate whether to simulate or actually perform resource altering actions
+     */
+    public $dryRunMode;
+
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
@@ -252,12 +257,19 @@ class FiledropAccount extends \yii\db\ActiveRecord
     {
         $status = true ;
 
+        $dryRunModeArray = ["bash","-c","pwd"] ;
         $uploaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd uploader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u uploader -d /home/uploader/$doi  < /var/private/$doi/uploader_token.txt"] ;
 
         $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd downloader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u downloader -d /home/downloader/$doi  < /var/private/$doi/downloader_token.txt"] ;
 
-        $upload_response = $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
-        $download_response = $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
+
+        if ($this->dryRunMode) {
+            $dryRunModeRsp = $dockerManager->loadAndRunCommand("ftpd", $dryRunModeArray);
+        }
+        else {
+            $upload_response = $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
+            $download_response = $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
+        }
 
         if (null === $upload_response || null === $download_response) {
             return false;
@@ -335,27 +347,37 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     public function prepareAccountSetFields(string $doi): bool
     {
-        // create directories
-        $this->createDirectories("$doi");
 
-        // create tokens
-        $result1 = $this->makeToken("$doi",'uploader_token.txt');
-        $result1 = $this->makeToken("$doi",'downloader_token.txt');
 
-        // derive logins and tokens
-        $uploadLogin = "uploader-$doi";
-        $uploadToken = rtrim(file("/var/private/$doi/uploader_token.txt")[0]);
+        if (!$this->dryRunMode) {
+            // create directories
+            $this->createDirectories("$doi");
+            // create tokens
+            $result1 = $this->makeToken("$doi",'uploader_token.txt');
+            $result1 = $this->makeToken("$doi",'downloader_token.txt');
+            // derive logins and tokens
+            $uploadLogin = "uploader-$doi";
+            $uploadToken = rtrim(file("/var/private/$doi/uploader_token.txt")[0]);
 
-        $downloadLogin = "downloader-$doi";
-        $downloadToken = rtrim(file("/var/private/$doi/downloader_token.txt")[0]);
+            $downloadLogin = "downloader-$doi";
+            $downloadToken = rtrim(file("/var/private/$doi/downloader_token.txt")[0]);
+            $this->upload_login = $uploadLogin ;
+            $this->upload_token = $uploadToken ;
 
-        $this->upload_login = $uploadLogin ;
-        $this->upload_token = $uploadToken ;
+            $this->download_login = $downloadLogin ;
+            $this->download_token = $downloadToken ;
+        }
+        else {
+            mkdir("/var/incoming/ftp/dryRunMode", 0770);
+            rmdir("/var/incoming/ftp/dryRunMode");
+            mkdir("/var/repo/dryRunMode", 0755);
+            rmdir("/var/repo/dryRunMode");
+            mkdir("/var/private/dryRunMode", 0750);
+            rmdir("/var/private/dryRunMode");
+        }
 
-        $this->download_login = $downloadLogin ;
-        $this->download_token = $downloadToken ;
 
-        return $uploadLogin && $downloadLogin && $uploadToken && $downloadToken ;
+        return $this->upload_login && $this->upload_token && $this->download_login && $this->download_token ;
     }
 
     /**
@@ -390,6 +412,22 @@ class FiledropAccount extends \yii\db\ActiveRecord
         }
         Yii::error('parent::beforeValidate() returns false');
         return false;
+    }
+
+    /**
+     * prevent save if dry-run mode is on
+     */
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        if ( $this->dryRunMode ) {
+            return false;
+        }
+
+        return true;
     }
 }
 

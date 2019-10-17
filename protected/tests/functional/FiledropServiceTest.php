@@ -29,23 +29,6 @@ class FiledropServiceTest extends FunctionalTesting
         //admin user is logged to gigadb
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org","gigadb","Admin");
 
-        $dotenv = Dotenv\Dotenv::create('/var/www', '.env');
-        $dotenv->load();
-
-        //backup ftp daemon config to restore after the test has run
-        copy( "/etc/pure-ftpd/pureftpd.pdb", "/etc/pure-ftpd/pureftpd.pdb.bkp");
-        copy( "/etc/pure-ftpd/passwd/pureftpd.passwd", "/etc/pure-ftpd/passwd/pureftpd.passwd.bkp");
-    }
-
-    public function tearDown()
-    {
-        //restore ftp daemon config to the prior state
-        rename( "/etc/pure-ftpd/pureftpd.pdb.bkp", "/etc/pure-ftpd/pureftpd.pdb");
-        rename( "/etc/pure-ftpd/passwd/pureftpd.passwd.bkp", "/etc/pure-ftpd/passwd/pureftpd.passwd");
-        //remove directories for the dummy doi
-        // rmdir("/home/uploader/000009");
-        // rmdir("/home/downloader/000009");
-        // rmdir("/home/credentials/000009");
     }
 
     public function testCreateAccountMakeAuthenticatedCall()
@@ -77,6 +60,7 @@ class FiledropServiceTest extends FunctionalTesting
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344),
             "identifier"=> $doi,
+            "dryRunMode"=>true,
             ]);
 
         // invoke the Filedrop Service
@@ -94,6 +78,9 @@ class FiledropServiceTest extends FunctionalTesting
         $this->assertTrue($api_endpoint == $container[0]['request']->getUri());
         $this->assertFalse(401 == $container[0]['response']->getStatusCode());
         $this->assertFalse(403 == $container[0]['response']->getStatusCode());
+
+        // test the response is successful
+        $this->assertEquals(201, $container[0]['response']->getStatusCode());
 
         // test that we are on the admin page after invocation of the action
         // $this->assertEquals( "http://gigadb.dev/adminDataset/admin", $this->getCurrentUrl() );
