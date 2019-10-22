@@ -79,7 +79,8 @@ before_script:
   - docker-compose run --rm console  bash -c "cd /app && composer install"
 
 after_script:
-  # - docker-compose logs web
+  - docker-compose logs web
+  - docker-compose exec web ls -alrt /etc/nginx/sites-enabled
   # - docker-compose logs application
   # - docker-compose logs gigadb
   # - docker-compose logs database
