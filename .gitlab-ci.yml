@@ -43,7 +43,7 @@ variables:
   COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml"
   COMPOSE_PROJECT_NAME: ${CI_PROJECT_NAME}
   COVERALLS_RUN_LOCALLY: "1"
-  MAIN_BRANCH: "develop"
+  MAIN_BRANCH: "nolegacy-dep-ux-php7"
   GITLAB_PRIVATE_TOKEN: $CI_BUILD_TOKEN
   GITLAB_UPSTREAM_PROJECT_ID: "7041674"
   CSV_DIR: "prod_like"
@@ -74,24 +74,15 @@ before_script:
   - cd $APPLICATION
   - docker-compose run --rm config
   - docker-compose run --rm fuw-config
+  - ls -alrt
   - docker-compose run --rm test composer install
-  - docker-compose run --rm console bash -c "cd /app && composer install"
+  - docker-compose run --rm console  bash -c "cd /app && composer install"
 
 after_script:
-  # - docker-compose ps
-  # - docker-compose logs web
-  # - docker-compose exec -T web ls -alrt /etc/nginx/sites-enabled
-  # - docker-compose exec -T web ls -alrt /etc/nginx/sites-available
-  # - docker-compose logs fuw-admin
-  # - cat fuw/app/backend/runtime/logs/app.log
-  # - ls -lart $DATA_SAVE_PATH/fuw/incoming/ftp/
-  # - docker-compose top fuw-admin
-  # - ls -lart /builds/.containers-data/gigadb/fuw/incoming/ftp/
-  # - ls -lart /builds/.containers-data/gigadb/fuw/repo/
-  # - ls -lart /builds/.containers-data/gigadb/fuw/credentials/
+  - docker-compose logs web
   # - docker-compose logs application
   # - docker-compose logs gigadb
-  # - docker-compose logs database
+  - docker-compose logs database
   # - cat $APPLICATION/.env
   # - cat $APPLICATION/.secrets
   # - echo $DOCKER_HOST
@@ -178,7 +169,7 @@ run_all_tests:
     - docker-compose up -d gigadb fuw fuw-proto
     - sleep 5
     - docker-compose up -d web
-    - docker-compose exec -T web /usr/local/bin/enable_sites gigadb.dev.http fuw-backend.dev.http
+    - docker-compose exec web /usr/local/bin/enable_sites gigadb.dev.http fuw-backend.dev.http
     # starting the headless browser for acceptance testing
     - docker-compose up -d chrome
     # - docker-compose top
@@ -191,9 +182,6 @@ run_all_tests:
     - docker-compose run --rm test ping -c 5 gigadb.dev
     - docker-compose exec -T console uname -a
     # - docker-compose run test
-    - chmod -R 777 $DATA_SAVE_PATH/fuw/incoming
-    - chmod -R 777 $DATA_SAVE_PATH/fuw/repo
-    - chmod -R 777 $DATA_SAVE_PATH/fuw/credentials
     - cd $APPLICATION
     - ./tests/all_and_coverage
     - echo $?
