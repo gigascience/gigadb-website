@@ -169,7 +169,7 @@ run_all_tests:
     - docker-compose up -d gigadb fuw fuw-proto
     - sleep 5
     - docker-compose up -d web
-    - docker-compose exec web /usr/local/bin/enable_sites gigadb.dev.http fuw-backend.dev.http
+    - docker-compose exec -T web /usr/local/bin/enable_sites gigadb.dev.http fuw-backend.dev.http
     # starting the headless browser for acceptance testing
     - docker-compose up -d chrome
     # - docker-compose top
