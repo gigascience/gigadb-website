@@ -81,6 +81,7 @@ before_script:
 after_script:
   - docker-compose logs web
   - docker-compose exec -T web ls -alrt /etc/nginx/sites-enabled
+  - docker-compose exec -T web ls -alrt /etc/nginx/sites-available
   # - docker-compose logs application
   # - docker-compose logs gigadb
   # - docker-compose logs database
