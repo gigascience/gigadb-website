@@ -105,4 +105,20 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	{
 	   $this->I->canSee($arg1);
 	}
+
+	/**
+     * @When I wait :arg1 seconds
+     */
+     public function iWaitSeconds($arg1)
+     {
+         $this->I->wait($arg1);
+     }
+
+     /**
+     * @Then I should see :arg1
+     */
+     public function iShouldSee($arg1)
+     {
+        $this->I->canSee($arg1);
+     }
 }
