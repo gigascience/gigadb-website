@@ -22,6 +22,16 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
+<?php if( Yii::app()->user->hasFlash('success') ) { ?>
+<div class="flash-success">
+	<?php echo Yii::app()->user->getFlash('success'); ?>
+</div>
+<?php } else if (Yii::app()->user->hasFlash('error')) { ?>
+	<div class="flash-error">
+		<?php echo Yii::app()->user->getFlash('error'); ?>
+	</div>
+<?php } ?> 
+
 <h1>Manage Datasets</h1>
 
 <p>
@@ -60,7 +70,10 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
                         'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))'
                         ),
                 'dropbox' => array(
-                		'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))'
+                		'url' => 'Yii::app()->createUrl("adminDataset/assignFTPBox" , array("id" => $data->identifier))',
+                		'options'=>array('title'=>'New Dropbox for this dataset'),
+                		'label' => 'New Dropbox for this dataset',
+                		'visible' => '"AssigningFTPbox" === $data->upload_status'
                 	)
                 ),
 		),

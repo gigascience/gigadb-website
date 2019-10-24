@@ -7,28 +7,36 @@ Background:
 	Given there is a user "Joy" "Fox"
 	And a dataset with DOI "100006" owned by user "Joy" "Fox" has status "AssigningFTPbox"
 
-@first
+@ok
 Scenario: Accessing admin page's list of datasets to setup drop box for a dataset
 	Given I sign in as an admin
 	And I go to "/site/admin"
 	When I press "Datasets"
 	Then the response sould contain "100006"
 	And the response sould contain "AssigningFTPbox"
-	And I should see a "New Dropbox for this dataset (100006)" button
+	And I should see a "New Dropbox for this dataset" button
 
+@ok
+Scenario: Triggering the creation of a drop box for a dataset with the appropriate status
+	Given I sign in as an admin
+	And I go to "/site/admin"
+	When I press "Datasets"
+	And I press "New Dropbox for this dataset"
+	And I wait "2" seconds
+	Then I should see "A new drop box will be created for this dataset. It will take up to 5mn of minutes."
 
-# Scenario: Triggering the creation of a drop box for a dataset with the appropriate status
-# 	Given I sign in as an admin
-# 	And a dataset has been entered with temporary DOI "100006"
-# 	And the uploaded dataset has status "AssigningFTPbox"
-# 	And I go to "/site/admin"
-# 	When I press "Datasets"
-# 	And I press "Assign Drop box to dataset 100006"
-# 	Then I should see a form element labelled "Author name"
-# 	And I should see a form element labelled "Author email address"
-# 	And I should see a form element labelled "Message to the author"
-# 	And I should see a checked checkbox labelled "Create Drop box"
-# 	And I should see a button "Create drop box and email instructions to author"
+Scenario: Triggering the creation of a drop box for a dataset with the appropriate status with email form
+	Given I sign in as an admin
+	And a dataset has been entered with temporary DOI "100006"
+	And the uploaded dataset has status "AssigningFTPbox"
+	And I go to "/site/admin"
+	When I press "Datasets"
+	And I press "New Dropbox for this dataset (100006)"
+	Then I should see a form element labelled "Author name"
+	And I should see a form element labelled "Author email address"
+	And I should see a form element labelled "Message to the author"
+	And I should see a checked checkbox labelled "Create Drop box"
+	And I should see a button "Create drop box and email instructions to author"
 
 # Scenario: Creating the drop box and emailing the author custom instructions
 # 	Given I sign in as an admin
