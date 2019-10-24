@@ -83,6 +83,9 @@ after_script:
   - docker-compose logs web
   - docker-compose exec -T web ls -alrt /etc/nginx/sites-enabled
   - docker-compose exec -T web ls -alrt /etc/nginx/sites-available
+  - ls -lart /builds/.containers-data/gigadb/fuw/incoming/ftp/
+  - ls -lart /builds/.containers-data/gigadb/fuw/repo/
+  - ls -lart /builds/.containers-data/gigadb/fuw/credentials/
   # - docker-compose logs application
   # - docker-compose logs gigadb
   # - docker-compose logs database
