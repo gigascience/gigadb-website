@@ -77,6 +77,8 @@ services:
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
     expose:
       - "9000"
+    extra_hosts:
+      - "fuw-admin-api:172.16.238.10"
     networks:
       - web-tier
       - db-tier

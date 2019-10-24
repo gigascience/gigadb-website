@@ -53,7 +53,8 @@ class FiledropService extends yii\base\Component
 		// 'postID=:postID', array(':postID'=>10)
 		$dataset = Dataset::model()->find('identifier=:doi',[":doi" => $this->identifier]) ;
 		if ( !isset($dataset) || "AssigningFTPbox" !== $dataset->upload_status ) {
-			Yii::log("Upload status required: AssigningFTPbox, gotten: {$dataset->upload_status}","error");
+			Yii::log("Upload status required for DOI {$this->identifier}: AssigningFTPbox", "error");
+			Yii::log("Gotten: {$dataset->upload_status}","error");
 			return false;
 		}
 		$token = $this->tokenSrv->generateTokenForUser($this->requester->email);

@@ -8,9 +8,38 @@
  */
 class AssignFTPBoxAction extends CAction
 {
-    public function run()
+    public function run($id)
     {
-        // place the action logic here
+    	$jwt_ttl = 3600 ;
+    	$webClient = new \GuzzleHttp\Client();
+
+        // Instantiate FiledropService
+        $filedropSrv = new FiledropService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => $jwt_ttl,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByPk(344), //admin user
+            "identifier"=> $id,
+            "dryRunMode"=>false,
+            ]);
+
+        $response = $filedropSrv->createAccount();
+        $message = "";
+        if ($response) {
+        	$message = "A new drop box will be created for this dataset. It will take up to 5mn of minutes.";
+        	Yii::app()->user->setFlash('success',$message);
+        }
+        else {
+        	$message = "An error occured. Drop box not created";
+        	Yii::app()->user->setFlash('error',$message);
+        }
+
+        $this->getController()->redirect('/adminDataset/admin/');
     }
 }
 
