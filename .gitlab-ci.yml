@@ -86,6 +86,7 @@ after_script:
   - docker-compose logs fuw-admin
   - cat fuw/app/backend/runtime/logs/app.log
   - ls -lart $DATA_SAVE_PATH/fuw/incoming/ftp/
+  - docker-compose top fuw-admin
   # - ls -lart /builds/.containers-data/gigadb/fuw/incoming/ftp/
   # - ls -lart /builds/.containers-data/gigadb/fuw/repo/
   # - ls -lart /builds/.containers-data/gigadb/fuw/credentials/
