@@ -60,7 +60,7 @@ class FiledropServiceTest extends FunctionalTesting
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
             "identifier"=> $doi,
-            "dryRunMode"=>false,
+            "dryRunMode"=>true,
             ]);
 
         // set the right status on the dataset
