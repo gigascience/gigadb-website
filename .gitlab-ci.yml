@@ -79,13 +79,15 @@ before_script:
   - docker-compose run --rm console  bash -c "cd /app && composer install"
 
 after_script:
-  - docker-compose ps
-  - docker-compose logs web
-  - docker-compose exec -T web ls -alrt /etc/nginx/sites-enabled
-  - docker-compose exec -T web ls -alrt /etc/nginx/sites-available
-  - ls -lart /builds/.containers-data/gigadb/fuw/incoming/ftp/
-  - ls -lart /builds/.containers-data/gigadb/fuw/repo/
-  - ls -lart /builds/.containers-data/gigadb/fuw/credentials/
+  # - docker-compose ps
+  # - docker-compose logs web
+  # - docker-compose exec -T web ls -alrt /etc/nginx/sites-enabled
+  # - docker-compose exec -T web ls -alrt /etc/nginx/sites-available
+  - docker-compose logs fuw-admin
+  - cat fuw/app/backend/runtime/logs/app.log
+  # - ls -lart /builds/.containers-data/gigadb/fuw/incoming/ftp/
+  # - ls -lart /builds/.containers-data/gigadb/fuw/repo/
+  # - ls -lart /builds/.containers-data/gigadb/fuw/credentials/
   # - docker-compose logs application
   # - docker-compose logs gigadb
   # - docker-compose logs database
