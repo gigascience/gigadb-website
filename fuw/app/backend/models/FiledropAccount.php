@@ -369,7 +369,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
         }
         else {
             Yii::warning("Creating directory in /var/incoming/ftp/ [dry-run]");
-            mkdir("/var/incoming/ftp/dryRunMode", 0770);
+            mkdir("/var/incoming/ftp/dryRunMode", 0770, true);
             rmdir("/var/incoming/ftp/dryRunMode");
             Yii::warning("Creating directory in /var/repo/ [dry-run]");
             mkdir("/var/repo/dryRunMode", 0755);
