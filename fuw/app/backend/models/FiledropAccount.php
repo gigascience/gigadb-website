@@ -368,10 +368,13 @@ class FiledropAccount extends \yii\db\ActiveRecord
             $this->download_token = $downloadToken ;
         }
         else {
+            Yii::warning("Creating directory in /var/incoming/ftp/ [dry-run]");
             mkdir("/var/incoming/ftp/dryRunMode", 0770);
             rmdir("/var/incoming/ftp/dryRunMode");
+            Yii::warning("Creating directory in /var/repo/ [dry-run]");
             mkdir("/var/repo/dryRunMode", 0755);
             rmdir("/var/repo/dryRunMode");
+            Yii::warning("Creating directory in /var/private/ [dry-run]");
             mkdir("/var/private/dryRunMode", 0750);
             rmdir("/var/private/dryRunMode");
         }

@@ -49,7 +49,7 @@ class CreateAction extends \yii\rest\CreateAction
         ]);
 
         if( Yii::$app->getRequest()->getBodyParam('dryRunMode') ) {
-            Yii::info('Dry-Run Mode: true');
+            Yii::warning('Dry-Run Mode: true');
             $model->dryRunMode = true;
         }
 
