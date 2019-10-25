@@ -48,7 +48,7 @@ class CreateAction extends \yii\rest\CreateAction
             'scenario' => $this->scenario,
         ]);
 
-        if( Yii::$app->getRequest()->getBodyParam('dryRunMode') ) {
+        if( true === Yii::$app->getRequest()->getBodyParam('dryRunMode') ) {
             Yii::warning('Dry-Run Mode: true');
             $model->dryRunMode = true;
         }
