@@ -67,6 +67,34 @@ class DatasetDAO
 		}
 
 	}
+
+	/**
+	 * Update a dataset's upload_status from one status to another
+	 *
+	 * If the fromStatus doesn't exist, it is noop and return false
+	 *
+	 * @param int $dataset_id
+	 * @param string $fromStatus upload status to transition from
+	 * @param string $toStatus upload status to transition to
+	 * @param string $comment description for curation_log entry
+	 *
+	 * @return bool whether the transition was enacted or not
+	 */
+	public function transitionStatus(int $dataset_id, string $fromStatus, string $toStatus, string $comment = null): bool
+	{
+		$dataset = Dataset::model()->findByPk($dataset_id);
+		if ($fromStatus !== $dataset->upload_status) {
+			return false;
+		}
+		if (null === $toStatus) {
+			return false;
+		}
+		$dataset->upload_status = $toStatus;
+		if ( $dataset->save() ) {
+			return true;
+		}
+		return false;
+	}
 }
 
 ?>
