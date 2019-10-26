@@ -25,18 +25,39 @@ Scenario: Triggering the creation of a drop box for a dataset with the appropria
 	And I wait "2" seconds
 	Then I should see "A new drop box will be created for this dataset. It will take up to 5mn of minutes."
 
-Scenario: Triggering the creation of a drop box for a dataset with the appropriate status with email form
+@wip
+Scenario: The drop box is created
 	Given I sign in as an admin
-	And a dataset has been entered with temporary DOI "100006"
-	And the uploaded dataset has status "AssigningFTPbox"
+	And I am on "/site/admin"
+	And I have pressed "New Dropbox for this dataset"
+	When new dropbox account is created for "100006"
+	And I am on "/site/admin"
+	Then I should see "A new drop box has been created for this dataset. An email will be sent to John Smith <user@gigadb.org>"
+	And I should see "UserUploadingData"
+	And an "Instructions" email is sent to "John Smith" "user@gigadb.org"
+
+@not-ready
+Scenario: Customizing email instructions
+	Given I sign in as an admin
 	And I go to "/site/admin"
 	When I press "Datasets"
-	And I press "New Dropbox for this dataset (100006)"
+	And I press "New Dropbox for this dataset"
+	And I wait "2" seconds
+	Then I should see "A new drop box will be created for this dataset. It will take up to 5mn of minutes."
+	And I should see a "Edit Email Instructions" button
+
+@not-ready
+Scenario: Popup email composer for customizing email instructions
+	Given I sign in as an admin
+	And I go to "/site/admin"
+	When I press "Datasets"
+	And I press "New Dropbox for this dataset"
+	And I wait "2" seconds
+	And I press "Edit E-mail Instructions"
 	Then I should see a form element labelled "Author name"
 	And I should see a form element labelled "Author email address"
-	And I should see a form element labelled "Message to the author"
-	And I should see a checked checkbox labelled "Create Drop box"
-	And I should see a button "Create drop box and email instructions to author"
+	And I should see a form element labelled "Instructions"
+	And I should see a "Save Email Instructions" button
 
 # Scenario: Creating the drop box and emailing the author custom instructions
 # 	Given I sign in as an admin
@@ -48,14 +69,6 @@ Scenario: Triggering the creation of a drop box for a dataset with the appropria
 # 	And I press "Create drop box and email instructions to author"
 # 	Then I should see "A new drop box will be created for this dataset. It will take up to 5mn of minutes. Instructions will be sent to Joy Fox <joy_fox@gigadb.org>" flash message
 
-# Scenario: Creating the drop box and emailing the author templated instructions
-# 	Given I sign in as an admin
-# 	And a dataset has been entered with temporary DOI "100006"
-# 	And the uploaded dataset has status "AssigningFTPbox"
-# 	And I am on "/site/admin"
-# 	And I have pressed "Assign Drop box to dataset 100006"
-# 	When I press "Create drop box and email instructions to author"
-# 	Then I should see "A new drop box will be created for this dataset. It will take up to 5mn of minutes. Instructions will be sent to Joy Fox <joy_fox@gigadb.org>" flash message
 
 # Scenario: Creating the drop box and emailing a different author
 # 	Given I sign in as an admin
