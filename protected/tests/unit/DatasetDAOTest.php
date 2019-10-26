@@ -83,6 +83,20 @@ class DatasetDAOTest extends CDbTestCase {
 
     }
 
+    /**
+     * test function to transition Dataset from one status to another
+     */
+    public function testTransitionStatus()
+    {
+        $dataset_dao = new DatasetDAO(null);
+        $success = $dataset_dao->transitionStatus(1,"Published","AssigningFTPBox","foobar");
+        $failure = $dataset_dao->transitionStatus(2,"Pending","AssigningFTPBox","foobar");
+        $this->assertTrue($success);
+        $this->assertFalse($failure);
+        $changedDataset = Dataset::model()->findByPk(1);
+        $this->assertEquals("AssigningFTPBox", $changedDataset->upload_status);
+    }
+
 
     public function keywordsProvider()
     {
