@@ -11,50 +11,23 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class DatasetDAO extends yii\base\BaseObject
+class DatasetDAO
 {
 
-	/** @var DatasetAttributesFactory $_datasetAttrFactory contains a factory instance for making DatasetAttributes. */
-	protected $_datasetAttrFactory;
-
-	/** @var string $_identifier property to hold a DOI to be manipulated/queried by DAO func. */
-	protected $_identifier;
+	/** @var DatasetAttributesFactory contains a factory instance for making DatasetAttributes. */
+	protected $dataset_attr_factory;
 
 	/**
-	 * Getter for _datasetAttrFactory
-	 * @return DatasetAttribute
+	 * Initializes this class with the given option
+	 *
+	 * @param DatasetAttributesFactory $da_factory injected factory for making new DatasetAttribute instances
 	 */
-	public function getDatasetAttrFactory(): DatasetAttributesFactory
+	public function __construct($da_factory)
 	{
-	    return $this->_datasetAttrFactory;
+		$this->dataset_attr_factory = $da_factory;
 	}
 
-	/**
-	 * Setter for _datasetAttrFactory
-	 * @param DatasetAttribute
-	 */
-	public function setDatasetAttrFactory(DatasetAttributesFactory $datasetAttributeFactory): void
-	{
-	    $this->_datasetAttrFactory = $datasetAttributeFactory;
-	}
 
-	/**
-	 * Getter for _identifier
-	 * @return string
-	 */
-	public function getIdentifier(): string
-	{
-	    return $this->_identifier;
-	}
-
-	/**
-	 * Setter for _identifier
-	 * @param string
-	 */
-	public function setIdentifier(string $identifier): void
-	{
-	    $this->_identifier = $identifier;
-	}
 	/**
 	 * Remove DatasetAttributes entries in the database for 'keyword' attribute and given dataset_id
 	 *
@@ -86,11 +59,11 @@ class DatasetDAO extends yii\base\BaseObject
 		$keywords_array = array_filter(explode(',', $post_keywords_string));
 
 		foreach ($keywords_array as $keyword) {
-			$this->_datasetAttrFactory->create();
-			$this->_datasetAttrFactory->setAttributeId($keyword_attribute->id);
-			$this->_datasetAttrFactory->setDatasetId($dataset_id);
-			$this->_datasetAttrFactory->setValue( trim($keyword) );
-			$this->_datasetAttrFactory->save();
+			$this->dataset_attr_factory->create();
+			$this->dataset_attr_factory->setAttributeId($keyword_attribute->id);
+			$this->dataset_attr_factory->setDatasetId($dataset_id);
+			$this->dataset_attr_factory->setValue( trim($keyword) );
+			$this->dataset_attr_factory->save();
 		}
 
 	}
@@ -100,16 +73,16 @@ class DatasetDAO extends yii\base\BaseObject
 	 *
 	 * If the fromStatus doesn't exist, it is noop and return false
 	 *
+	 * @param int $dataset_id
 	 * @param string $fromStatus upload status to transition from
 	 * @param string $toStatus upload status to transition to
 	 * @param string $comment description for curation_log entry
 	 *
 	 * @return bool whether the transition was enacted or not
 	 */
-	public function transitionStatus(string $fromStatus, string $toStatus, string $comment = null): bool
+	public function transitionStatus(int $dataset_id, string $fromStatus, string $toStatus, string $comment = null): bool
 	{
-
-		$dataset = Dataset::model()->findByAttributes(["identifier" => $this->_identifier]);
+		$dataset = Dataset::model()->findByPk($dataset_id);
 		if ($fromStatus !== $dataset->upload_status) {
 			return false;
 		}
@@ -121,17 +94,6 @@ class DatasetDAO extends yii\base\BaseObject
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * return title and status for given dataset
-	 *
-	 * @return array|null return associate array of title, status or null
-	 */
-	public function getTitleAndStatus(): ?array
-	{
-		$dataset = Dataset::model()->findByAttributes(["identifier" => $this->_identifier]);
-		return array("title" =>$dataset->title, "status" => $dataset->upload_status);
 	}
 }
 
