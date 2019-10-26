@@ -66,7 +66,7 @@ class FiledropService extends yii\base\Component
 								    ],
 								    'form_params' => [
 								        'doi' => $this->identifier,//TODO:check it's right status
-								        'dryRunMode' => true,
+								        'dryRunMode' => $this->dryRunMode,
 								    ],
 								    'connect_timeout' => 5,
 								]);
