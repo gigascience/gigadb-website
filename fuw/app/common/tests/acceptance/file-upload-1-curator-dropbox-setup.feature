@@ -6,6 +6,7 @@ Feature:
 Background:
 	Given there is a user "Joy" "Fox"
 	And a dataset with DOI "100006" owned by user "Joy" "Fox" has status "AssigningFTPbox"
+	And filedrop account for DOI "100006" doesn't exist
 
 @ok
 Scenario: Accessing admin page's list of datasets to setup drop box for a dataset
@@ -25,7 +26,7 @@ Scenario: Triggering the creation of a drop box for a dataset with the appropria
 	And I wait "2" seconds
 	Then I should see "A new drop box will be created for this dataset. It will take up to 5mn of minutes."
 
-@wip
+@not-ready
 Scenario: The drop box is created
 	Given I sign in as an admin
 	And I am on "/site/admin"
