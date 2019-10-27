@@ -1,6 +1,9 @@
 <?php
 namespace common\tests\Step\Acceptance;
 
+use League\Flysystem\Filesystem;
+use League\Flysystem\Adapter\Local;
+
 class CuratorSteps #extends \common\tests\AcceptanceTester
 {
 	protected $I;
@@ -10,6 +13,20 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	{
 	    $this->I = $I;
 	}
+
+	/**
+     * @Given filedrop account for DOI :arg1 doesn't exist
+     */
+     public function filedropAccountForDOIDoesntExist($arg1)
+     {
+
+     	$adapter = new Local("/var");
+		$fs = new Filesystem($adapter);
+
+     	$fs->deleteDir("incoming/ftp/$arg1");
+     	$fs->deleteDir("repo/$arg1");
+     	$fs->deleteDir("private/$arg1");
+     }
 
 	/**
      * @Given there is a user :firstname :lastname
