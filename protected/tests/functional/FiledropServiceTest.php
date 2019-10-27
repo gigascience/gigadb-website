@@ -68,7 +68,7 @@ class FiledropServiceTest extends FunctionalTesting
         Dataset::model()->updateAll(["upload_status" => "AssigningFTPbox"], "identifier = :doi", [":doi" => $doi]);
 
         // invoke the Filedrop Service
-        $filedropSrv->createAccount();
+        $response = $filedropSrv->createAccount();
 
         // test an authenticated HTTP call was actually made to the API
         $this->assertTrue(1 == count($container));
@@ -77,8 +77,11 @@ class FiledropServiceTest extends FunctionalTesting
         $this->assertFalse(401 == $container[0]['response']->getStatusCode());
         $this->assertFalse(403 == $container[0]['response']->getStatusCode());
 
-        // test the response is successful
+        // test the response from the API is successful
         $this->assertEquals(201, $container[0]['response']->getStatusCode());
+
+        // test that createAccount return a value
+        $this->assertTrue($response);
 
         // test the upload status has been changed
         $dataset = Dataset::model()->findByAttributes(["identifier" => $doi]);

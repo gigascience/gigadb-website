@@ -82,6 +82,7 @@ class FiledropService extends yii\base\Component
 								]);
 			if (201 === $response->getStatusCode() ) {
 				$this->dataset->transitionStatus("AssigningFTPbox","UserUploadingData", $this->instructions);
+				return true;
 			}
 		}
 		catch(RequestException $e) {
