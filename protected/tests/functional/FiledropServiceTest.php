@@ -60,6 +60,7 @@ class FiledropServiceTest extends FunctionalTesting
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
             "identifier"=> $doi,
+            "dataset" => new DatasetDAO(["identifier" => $doi]),
             "dryRunMode"=> true,
             ]);
 
@@ -79,8 +80,9 @@ class FiledropServiceTest extends FunctionalTesting
         // test the response is successful
         $this->assertEquals(201, $container[0]['response']->getStatusCode());
 
-        // test that we are on the admin page after invocation of the action
-        // $this->assertEquals( "http://gigadb.dev/adminDataset/admin", $this->getCurrentUrl() );
+        // test the upload status has been changed
+        $dataset = Dataset::model()->findByAttributes(["identifier" => $doi]);
+        $this->assertEquals("UserUploadingData",$dataset->upload_status);
 
         // restore original upload status
         Dataset::model()->updateAll(["upload_status" => "Published"], "identifier = :doi", [":doi" => $doi]);

@@ -25,6 +25,7 @@ class AssignFTPBoxAction extends CAction
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
             "identifier"=> $id,
+            "dataset" => new DatasetDAO(["identifier" => $id]),
             "dryRunMode"=>false,
             ]);
 
