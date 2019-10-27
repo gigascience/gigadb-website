@@ -9,6 +9,8 @@
  * @property \GuzzleHttp\Client $webClient the web agent for making REST call
  * @property \User $requester the logged in user
  * @property string $identifier DOI of the dataset for which to create a filedrop account
+ * @property string $instructions text to sent authors for uploading data
+ * @property DatasetDAO $dataset Instance of DatasetDAO for working with dataset resultsets
  * @property boolean $dryRunMode whether or not to simulate final resource changes
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
@@ -35,10 +37,18 @@ class FiledropService extends yii\base\Component
 	/**
  	 * {@inheritdoc}
    	 */
+	public $instructions;
+	/**
+ 	 * {@inheritdoc}
+   	 */
+	public $dataset;
+	/**
+ 	 * {@inheritdoc}
+   	 */
 	public $dryRunMode;
 
 	/**
-	 * Will make an HTTP call to File Upload Wizard to trigger creation of Filedrop account
+	 * Make HTTP POST to File Upload Wizard to create Filedrop account
 	 *
 	 * @return bool whether the call has been made and succeed or not
 	 */
@@ -70,7 +80,9 @@ class FiledropService extends yii\base\Component
 								    ],
 								    'connect_timeout' => 5,
 								]);
-			return 201 === $response->getStatusCode();
+			if (201 === $response->getStatusCode() ) {
+				$this->dataset->transitionStatus("AssigningFTPbox","UserUploadingData", $this->instructions);
+			}
 		}
 		catch(RequestException $e) {
 			Yii::log( Psr7\str($e->getRequest()) , "error");

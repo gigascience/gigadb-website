@@ -17,7 +17,7 @@ class DatasetDAOTest extends CDbTestCase {
     	$dataset_id = 1;
     	$keyword_attribute_id = 1;
 
-    	$dataset_dao = new DatasetDAO(null);
+    	$dataset_dao = new DatasetDAO();
 
     	$dataset_dao->removeKeywordsFromDatabaseForDatasetId($dataset_id);
 
@@ -49,7 +49,8 @@ class DatasetDAOTest extends CDbTestCase {
 
 
         // Instantiate a new DatasetDAO, the system under test.
-        $dataset_dao = new DatasetDAO($da_factory);
+        $dataset_dao = new DatasetDAO();
+        $dataset_dao->setDatasetAttrFactory($da_factory);
 
         // Below, we expect a new DatasetAttribute object created, set and saved for each keyword.
         // Expected number of calls to be exactly zero times, two times and two times respectively
@@ -88,15 +89,29 @@ class DatasetDAOTest extends CDbTestCase {
      */
     public function testTransitionStatus()
     {
-        $dataset_dao = new DatasetDAO(null);
-        $success = $dataset_dao->transitionStatus(1,"Published","AssigningFTPBox","foobar");
-        $failure = $dataset_dao->transitionStatus(2,"Pending","AssigningFTPBox","foobar");
+        $datasetDAO = new DatasetDAO();
+
+        $datasetDAO->setIdentifier("100243");
+        $success = $datasetDAO->transitionStatus("Published","AssigningFTPBox","foobar");
+
+        $datasetDAO->setIdentifier("100249");
+        $failure = $datasetDAO->transitionStatus("Pending","AssigningFTPBox","foobar");
+
         $this->assertTrue($success);
         $this->assertFalse($failure);
-        $changedDataset = Dataset::model()->findByPk(1);
+        $changedDataset = Dataset::model()->findByAttributes(["identifier" => "100243"]);
         $this->assertEquals("AssigningFTPBox", $changedDataset->upload_status);
+
     }
 
+    /**
+     * test passing properties to constructor
+    */
+    public function testConstructor()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
+        $this->assertEquals("100249", $datasetDAO->getIdentifier());
+    }
 
     public function keywordsProvider()
     {
