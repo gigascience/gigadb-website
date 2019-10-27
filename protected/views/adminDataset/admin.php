@@ -64,12 +64,20 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 
 		array(
 			'class'=>'CButtonColumn',
-			'template' => '{view}{update}{delete}{dropbox}',
+			'template' => '{view}{update}{dropbox}{delete}',
             'buttons'=>array(
                 'view' => array(
+	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/view_new.png',
                         'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))'
                         ),
+                'update' => array(
+	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/update_new.png',
+                        ),
+                'delete' => array(
+	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/delete_new.png',
+                        ),
                 'dropbox' => array(
+	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/dropbox.png',
                 		'url' => 'Yii::app()->createUrl("adminDataset/assignFTPBox" , array("id" => $data->identifier))',
                 		'options'=>array('title'=>'New Dropbox for this dataset'),
                 		'label' => 'New Dropbox for this dataset',
