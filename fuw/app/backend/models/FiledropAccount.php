@@ -31,6 +31,7 @@ use common\models\Upload;
  * @property string $created_at
  * @property string $updated_at
  * @property string $terminated_at
+ * @property string $instructions
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
@@ -69,6 +70,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
             [['doi','upload_login','upload_token','download_login','download_token'], 'required'],
             [['created_at', 'updated_at', 'terminated_at'], 'safe'],
             [['doi', 'upload_login', 'download_login'], 'string', 'max' => 100],
+            ['instructions', 'string', 'min' => 3],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_TERMINATED]],
             [['upload_token', 'download_token'], 'string', 'max' => 128],
         ];
@@ -90,6 +92,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'terminated_at' => 'Retired At',
+            'instructions' => 'Instructions',
         ];
     }
 
