@@ -505,7 +505,7 @@ Files:
                             </div>
                             <div id="panel33" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p><a href="http://hypothes.is/">Hypothes.is</a> is an open source project helping to bring a discussion, annotation and curation layer to the web, we are collaborating with Hypothes.is in order to make all our datasets open to discussion by anyone (with a hypothesis user account). Simply highlight the text of interest on the page and click "New Note" icon that appears. To see previous notes, click the number on the side bar, or open the side bar to see all preious public annotations.</p>
+                                    <p><a href="http://hypothes.is/">Hypothes.is</a> is an open source project helping to bring a discussion, annotation and curation layer to the web, we are collaborating with Hypothes.is in order to make all our datasets open to discussion by anyone (with a hypothesis user account). Simply highlight the text of interest on the page and click "New Note" icon that appears. To see previous notes, click the number on the side bar, or open the side bar to see all previous public annotations.</p>
                                 </div>
                             </div>
                         </div>
