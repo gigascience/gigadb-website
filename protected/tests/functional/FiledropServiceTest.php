@@ -208,7 +208,16 @@ class FiledropServiceTest extends FunctionalTesting
 
         $subject = "Uploading Instructions";
         $instructions = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo";
-        $filedrop_id = 1;
+
+        // create a filedrop acccount to update and save email instructions into
+        $filedrop_id = 435342;
+        $db_name = getenv("FUW_DB_NAME");
+        $db_user = getenv("FUW_DB_USER");
+        $db_password = getenv("FUW_DB_PASSWORD");
+        $dbh=new CDbConnection("pgsql:host=database;dbname=$db_name",$db_user,$db_password);
+        $dbh->active=true;
+        $insert_account = $dbh->createCommand("insert into filedrop_account(id, doi,status,upload_login,upload_token,download_login,download_token) values($filedrop_id,$doi,1,'a','a','a','a')");
+        $insert_account->execute();
 
         // Prepare the http client to be traceable for testing
 
@@ -242,6 +251,12 @@ class FiledropServiceTest extends FunctionalTesting
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
         $this->assertTrue($response);
+
+
+        //remove created database objects
+        $delete_account = $dbh->createCommand("delete from filedrop_account where id=$filedrop_id");
+        $delete_account->execute();
+        $connection->active=false;
     }
 
 }
