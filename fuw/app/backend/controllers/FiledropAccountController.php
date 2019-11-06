@@ -35,6 +35,7 @@ class FiledropAccountController extends ActiveController
         $actions = parent::actions();
         $actions['create']['class'] = 'backend\actions\FiledropAccountController\CreateAction';
         $actions['delete']['class'] = 'backend\actions\FiledropAccountController\DeleteAction';
+        $actions['update']['class'] = 'backend\actions\FiledropAccountController\UpdateAction';
         return $actions;
     }
 }
