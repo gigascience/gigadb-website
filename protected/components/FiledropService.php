@@ -92,5 +92,48 @@ class FiledropService extends yii\base\Component
 		}
 		return false;
 	}
+
+	/**
+	 * Make HTTP PUT to File Upload Wizard to save and send email instructions
+	 *
+	 * @param int $filedrop_id internal id of a filedrop account to update
+	 * @param string $subject subject to use for the email to be sent
+	 * @param string $instructions email content
+	 *
+	 * @return bool whether the call has been made and succeed or not
+	 */
+	public function emailInstructions(int $filedrop_id, string $subject, string $instructions): bool
+	{
+
+		$api_endpoint = "http://fuw-admin-api/filedrop-accounts/$filedrop_id";
+
+		$token = $this->tokenSrv->generateTokenForUser($this->requester->email);
+
+		try {
+			$response = $this->webClient->request('PUT', $api_endpoint, [
+								    'headers' => [
+								        'Authorization' => "Bearer $token",
+								    ],
+								    'form_params' => [
+								        'doi' => $this->identifier,
+								        'subject' => $subject,
+								        'instructions' => $instructions,
+								        'to' => $this->requester->email,
+								        'send' => true,
+								    ],
+								    'connect_timeout' => 5,
+								]);
+			if (200 === $response->getStatusCode() ) {
+				return true;
+			}
+		}
+		catch(RequestException $e) {
+			Yii::log( Psr7\str($e->getRequest()) , "error");
+		    if ($e->hasResponse()) {
+		        Yii::log( Psr7\str($e->getResponse()), "error");
+		    }
+		}
+		return false;
+	}
 }
 ?>
