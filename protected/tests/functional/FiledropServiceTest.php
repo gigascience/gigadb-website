@@ -73,7 +73,7 @@ class FiledropServiceTest extends FunctionalTesting
         Dataset::model()->updateAll(["upload_status" => "AssigningFTPbox"], "identifier = :doi", [":doi" => $doi]);
 
         // invoke the Filedrop Service
-        $filedropSrv->createAccount();
+        $response = $filedropSrv->createAccount();
 
         // test an authenticated HTTP call was actually made to the API
         $this->assertTrue(1 == count($container));
@@ -82,8 +82,11 @@ class FiledropServiceTest extends FunctionalTesting
         $this->assertFalse(401 == $container[0]['response']->getStatusCode());
         $this->assertFalse(403 == $container[0]['response']->getStatusCode());
 
-        // test the response is successful
+        // test the response from the API is successful
         $this->assertEquals(201, $container[0]['response']->getStatusCode());
+
+        // test that createAccount return a value
+        $this->assertNotNull($response);
 
         // test the upload status has been changed
         $dataset = Dataset::model()->findByAttributes(["identifier" => $doi]);
@@ -91,6 +94,67 @@ class FiledropServiceTest extends FunctionalTesting
 
         // restore original upload status
         Dataset::model()->updateAll(["upload_status" => "Published"], "identifier = :doi", [":doi" => $doi]);
+    }
+
+/**
+     * test that newly created filedrop account's properties are returned from HTTP call
+     *
+     * Happy path
+     */
+    public function testCreateAccountReturnsProperties()
+    {
+        $api_endpoint = "http://fuw-admin-api/filedrop-accounts";
+        $doi = "101001";
+        $jwt_ttl = 31104000 ;
+
+        // Prepare the http client to be traceable for testing
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
+
+        $webClient = new Client(['handler' => $stack]);
+
+        // Instantiate FiledropService
+        $filedropSrv = new FiledropService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => $jwt_ttl,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByPk(344), //admin user
+            "identifier"=> $doi,
+            "dataset" => new DatasetDAO(["identifier" => $doi]),
+            "dryRunMode"=> true,
+            ]);
+
+        // set the right status on the dataset
+        Dataset::model()->updateAll(["upload_status" => "AssigningFTPbox"], "identifier = :doi", [":doi" => $doi]);
+
+        // invoke the Filedrop Service
+        $response = $filedropSrv->createAccount();
+
+        // test the response from the API is successful
+        $this->assertEquals(201, $container[0]['response']->getStatusCode());
+
+        // test that createAccount return a value
+        $this->assertNotNull($response);
+        $this->assertEquals(0, $response["id"]);
+        $this->assertEquals($doi, $response["doi"]);
+
+        // test the upload status has been changed
+        $dataset = Dataset::model()->findByAttributes(["identifier" => $doi]);
+        $this->assertEquals("UserUploadingData",$dataset->upload_status);
+
+        // restore original upload status
+        Dataset::model()->updateAll(["upload_status" => "Published"], "identifier = :doi", [":doi" => $doi]);
+
     }
 
     /**
@@ -141,7 +205,7 @@ class FiledropServiceTest extends FunctionalTesting
 
         // test an authenticated HTTP call was not actually made to the API
         $this->assertTrue(0 == count($container));
-        $this->assertFalse($success);
+        $this->assertNull($success);
 
     }
 
@@ -187,7 +251,7 @@ class FiledropServiceTest extends FunctionalTesting
 
         // test an authenticated HTTP call was not actually made to the API
         $this->assertTrue(0 == count($container));
-        $this->assertFalse($success);
+        $this->assertNull($success);
 
     }
 
@@ -253,7 +317,7 @@ class FiledropServiceTest extends FunctionalTesting
         //remove created database objects
         $delete_account = $dbh->createCommand("delete from filedrop_account where id=$filedrop_id");
         $delete_account->execute();
-        $connection->active=false;
+        $dbh->active=false;
     }
 
 }
