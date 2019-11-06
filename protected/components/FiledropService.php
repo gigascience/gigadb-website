@@ -50,22 +50,22 @@ class FiledropService extends yii\base\Component
 	/**
 	 * Make HTTP POST to File Upload Wizard to create Filedrop account
 	 *
-	 * @return bool whether the call has been made and succeed or not
+	 * @return array||null if successfully created, the filedrop account is returned as array, null otherwise
 	 */
-	public function createAccount(): bool
+	public function createAccount(): ?array
 	{
 		$api_endpoint = "http://fuw-admin-api/filedrop-accounts";
 
 		if ("admin" !== $this->requester->role) {
 			Yii::log("The requesting user doesn't have admin role","error");
-			return false;
+			return null;
 		}
 		// 'postID=:postID', array(':postID'=>10)
 		$dataset = Dataset::model()->find('identifier=:doi',[":doi" => $this->identifier]) ;
 		if ( !isset($dataset) || "AssigningFTPbox" !== $dataset->upload_status ) {
 			Yii::log("Upload status required for DOI {$this->identifier}: AssigningFTPbox", "error");
 			Yii::log("Gotten: {$dataset->upload_status}","error");
-			return false;
+			return null;
 		}
 		$token = $this->tokenSrv->generateTokenForUser($this->requester->email);
 
@@ -82,7 +82,7 @@ class FiledropService extends yii\base\Component
 								]);
 			if (201 === $response->getStatusCode() ) {
 				$this->dataset->transitionStatus("AssigningFTPbox","UserUploadingData", $this->instructions);
-				return true;
+				return json_decode($response->getBody(), true);
 			}
 		}
 		catch(RequestException $e) {
@@ -91,7 +91,7 @@ class FiledropService extends yii\base\Component
 		        Yii::log( Psr7\str($e->getResponse()), "error");
 		    }
 		}
-		return false;
+		return null;
 	}
 
 	/**
