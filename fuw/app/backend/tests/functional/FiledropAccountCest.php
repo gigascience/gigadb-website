@@ -233,8 +233,6 @@ class FiledropAccountCest
                                             "subject" => $subject,
                                             "send" => 1 ]);
         $I->seeResponseCodeIs(200);
-        $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(array('id' => $filedrop->id));
 
         $updated = FiledropAccount::find()->where(['id' => $filedrop->id])->one();
         $I->assertEquals($doi,$updated->doi);
