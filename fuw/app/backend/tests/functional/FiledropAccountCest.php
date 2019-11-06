@@ -207,5 +207,37 @@ class FiledropAccountCest
         $I->assertNotTrue(file_exists("/var/repo/$doi"), "repository removed");
         $I->assertNotTrue(file_exists("/var/private/$doi"), "private directory removed");
     }
+
+    /**
+     * Testing PUT on /filedrop-account/ with additional params for email
+     *
+     */
+    public function sendRestHttpPutToUpdateFiledropAccountAndSendEmail(FunctionalTester $I)
+    {
+
+        $doi = FiledropAccount::generateRandomString(6);
+        $subject = FiledropAccount::generateRandomString(32);
+        $content = FiledropAccount::generateRandomString(128);
+        $recipient = "user_gigadb3@mailinator.com";
+
+        $filedrop = new FiledropAccount();
+        $dockerManager = new DockerManager();
+        $filedrop->setDOI($doi);
+        $filedrop->setDockerManager($dockerManager);
+        $filedrop->status = FiledropAccount::STATUS_ACTIVE;
+        $filedrop->save();
+
+        $I->amBearerAuthenticated("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBUEkgQWNjZXNzIHJlcXVlc3QgZnJvbSBjbGllbnQiLCJpc3MiOiJ3d3cuZ2lnYWRiLm9yZyIsImF1ZCI6ImZ1dy5naWdhZGIub3JnIiwiZW1haWwiOiJzZnJpZXNlbkBqZW5raW5zLmluZm8iLCJuYW1lIjoiSm9obiBTbWl0aCIsImFkbWluX3N0YXR1cyI6InRydWUiLCJyb2xlIjoiY3JlYXRlIiwiaWF0IjoiMTU2MTczMDgyMyIsIm5iZiI6IjE1NjE3MzA4MjMiLCJleHAiOiIyNzI5NTEzMjIwIn0.uTZpDB1eCGt3c_23wLaVxpFUw_WFH2Jep_vpzky2o18");
+        $I->sendPUT("/filedrop-accounts/{$filedrop->id}",[  "instructions" => $content,
+                                            "to" => $recipient,
+                                            "subject" => $subject,
+                                            "send" => 1 ]);
+        $I->seeResponseCodeIs(200);
+
+        $updated = FiledropAccount::find()->where(['id' => $filedrop->id])->one();
+        $I->assertEquals($doi,$updated->doi);
+        $I->assertEquals($content,$updated->instructions);
+        $I->seeEmailIsSent();
+    }
 }
 
