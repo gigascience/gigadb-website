@@ -51,6 +51,7 @@ class CreateAction extends \yii\rest\CreateAction
         if( "1" === Yii::$app->getRequest()->getBodyParam('dryRunMode') ) {
             Yii::warning('Dry-Run Mode: true');
             $model->dryRunMode = true;
+            $model->id = 0 ;
         }
 
         $model->load(Yii::$app->getRequest()->getBodyParams(), '');
