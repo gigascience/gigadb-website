@@ -1,17 +1,19 @@
 <?php
 /**
  * This action will make connection to File Upload Wizard REST API
- * in order to create Filedrop accounts for a dataset
+ * in order to send email instructions for the new filedrop account
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class AssignFTPBoxAction extends CAction
+class SendInstructionsAction extends CAction
 {
-    public function run($id)
+    public function run($id, $fid)
     {
     	$jwt_ttl = 3600 ;
     	$webClient = new \GuzzleHttp\Client();
+
+        // Retrieve identifiers
 
         // Instantiate FiledropService
         $filedropSrv = new FiledropService([
@@ -29,17 +31,19 @@ class AssignFTPBoxAction extends CAction
             "dryRunMode"=>false,
             ]);
 
-        $response = $filedropSrv->createAccount();
+        $subject = "Instructions for using the filedrop account for dataset $id";
+        $instructions = "";
+        $response = $filedropSrv->emailInstructions($fid, $subject, $instructions);
         $message = "";
         if (!$response) {
-        	$message = "An error occured. Drop box not created";
+        	$message = "Error: Filedrop Account ($fid) instructions not sent for dataset ($id)";
         	Yii::app()->user->setFlash('error',$message);
             $this->getController()->redirect("/adminDataset/admin/");
         }
 
-        $message = "A new drop box has been created for this dataset.";
+        $message = "Instructions sent.";
         Yii::app()->user->setFlash('success',$message);
-        Yii::app()->session["filedrop_id_".Yii::app()->user->id] = array($id, $response['id']);
+        unset(Yii::app()->session["filedrop_id_".Yii::app()->user->id]);
 
         $this->getController()->redirect("/adminDataset/admin/");
     }

@@ -25,12 +25,23 @@ $('.search-form form').submit(function(){
 <?php if( Yii::app()->user->hasFlash('success') ) { ?>
 <div class="flash-success">
 	<?php echo Yii::app()->user->getFlash('success'); ?>
+
 </div>
+
 <?php } else if (Yii::app()->user->hasFlash('error')) { ?>
 	<div class="flash-error">
 		<?php echo Yii::app()->user->getFlash('error'); ?>
 	</div>
-<?php } ?> 
+<?php } ?>
+
+<?php if( Yii::app()->session["filedrop_id_".Yii::app()->user->id] ) {
+	[$doi, $fid] = Yii::app()->session["filedrop_id_".Yii::app()->user->id];
+	echo CHtml::link('Send instructions by email',
+		                array('adminDataset/sendInstructions', 'id'=>$doi, 'fid'=>$fid),
+                        array('class' => 'btn')
+                    );
+}
+?>
 
 <h1>Manage Datasets</h1>
 

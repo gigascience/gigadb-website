@@ -138,4 +138,12 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
      {
         $this->I->canSee($arg1);
      }
+
+         /**
+     * @Then I am on :arg1
+     */
+     public function iAmOn($arg1)
+     {
+        $this->I->amOnUrl("http://gigadb.dev".$arg1);
+     }
 }
