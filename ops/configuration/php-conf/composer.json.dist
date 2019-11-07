@@ -11,13 +11,13 @@
         "gabrielelana/byte-units": "^0.5",
         "google/apiclient": "v2.2.2",
         "suin/php-rss-writer": "^1.6",
-         "leafo/lessphp": "^v0.3.9",
-         "opauth/opauth": "^0.4.5",
-         "opauth/facebook": "^0.4.2",
-         "opauth/twitter": "^0.3.2",
-         "opauth/google": "^0.2.2",
-         "opauth/linkedin": "^0.2.0",
-         "drewm/mailchimp-api": "^v2.5"
+        "leafo/lessphp": "^v0.3.9",
+        "opauth/opauth": "^0.4.5",
+        "opauth/facebook": "^0.4.2",
+        "opauth/twitter": "^0.3.2",
+        "opauth/google": "^0.2.2",
+        "opauth/linkedin": "^0.2.0",
+        "drewm/mailchimp-api": "^v2.5"
     },
     "require-dev": {
         "behat/behat":  "^3.5",
