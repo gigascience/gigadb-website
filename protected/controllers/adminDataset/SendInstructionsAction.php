@@ -13,7 +13,6 @@ class SendInstructionsAction extends CAction
     	$jwt_ttl = 3600 ;
     	$webClient = new \GuzzleHttp\Client();
 
-        // Retrieve identifiers
 
         // Instantiate FiledropService
         $filedropSrv = new FiledropService([
@@ -25,14 +24,20 @@ class SendInstructionsAction extends CAction
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => \User::model()->findByPk(344), //admin user
+            "requester" => Yii::app()->user,
             "identifier"=> $id,
             "dataset" => new DatasetDAO(["identifier" => $id]),
             "dryRunMode"=>false,
             ]);
 
+        $datasetUpload = new DatasetUpload(
+                                $fid,
+                                $filedropSrv,
+                                Yii::$app->params['dataset_upload']
+                            );
+        $instructions = $datasetUpload->getDefaultUploadInstructions();
         $subject = "Instructions for using the filedrop account for dataset $id";
-        $instructions = "";
+
         $response = $filedropSrv->emailInstructions($fid, $subject, $instructions);
         $message = "";
         if (!$response) {

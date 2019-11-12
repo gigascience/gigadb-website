@@ -1,0 +1,27 @@
+Dear {{ author }},
+
+A new filedrop account has been created on our server to allow the uploading of assets associated with the manuscript you have submitted:
+
+{{ title }}
+
+To upload the assets simply navigate to "Submitted dataset" tab of your user profile after loggging on gigadb.org with your registered credentials: There will be an upload button next the dataset you have submitted.
+
+That's the preferred approach. However you can alternatively use FTP to upload file using the connection details below:
+
+
+host: {{ ftpd_endpoint }}
+port: {{ ftpd_port }}
+username: {{ upload_login }}
+password: {{ upload_token }}
+
+Example usage:
+
+$ ncftpput -u $username -P <?= {{ ftpd_port }} ?> -p token <?=  {{ ftpd_endpoint }} ?> / some_local_file
+my_data.csv:                         119.83 kB  159.64 kB/s
+
+
+Once you have finished the uploading the files and the metadata.
+You can change the status from {{ status }} to "DataAvalaibleForReview" to allow review of the submission and its dataset.
+
+Any question, don't hesitate to contact us at info@gigasciencejournal.com
+

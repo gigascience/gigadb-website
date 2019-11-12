@@ -2,5 +2,10 @@
 return [
 	"jwt_key" => "$FUW_JWT_KEY",
 	"remote_docker_hostname" => "$REMOTE_DOCKER_HOSTNAME",
+	"dataset_upload" => [
+		"ftpd_endpoint" => "gigadb.org",
+		"ftpd_port" => "9021",
+		"template_path" => "/var/www/files/templates",
+	],
 	"docker_ssl" => false,
 ];

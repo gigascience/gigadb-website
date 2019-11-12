@@ -13,6 +13,7 @@ return [
             'class' => 'sizeg\jwt\Jwt',
             'key'   => $params['jwt_key'],
         ],
-    ],
+     ],
+    'params' => $params,
 ];
 ?>
