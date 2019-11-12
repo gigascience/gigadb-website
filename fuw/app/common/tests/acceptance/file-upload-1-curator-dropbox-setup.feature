@@ -38,8 +38,7 @@ Scenario: The drop box is created, we can send email instructions
 	And I should see a "Send instructions by email" button
 	And I am on "/adminDataset/admin"
 
-@wip
-#TODO: implement default instructions
+@ok
 Scenario: Popup composer for customizing and sending email instructions
 	Given I sign in as an admin
 	And I go to "/site/admin"

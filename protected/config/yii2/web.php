@@ -8,6 +8,7 @@ return [
             'class' => 'sizeg\jwt\Jwt',
             'key'   => 'dummy--qwertyuiop' #$params['jwt_key'],
         ],
-    ],
+     ],
+    'params' => $params,
 ];
 ?>
