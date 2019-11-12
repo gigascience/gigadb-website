@@ -122,6 +122,17 @@ class DatasetDAO extends yii\base\BaseObject
 		}
 		return false;
 	}
+
+	/**
+	 * return title and status for given dataset
+	 *
+	 * @return array|null return associate array of title, status or null
+	 */
+	public function getTitleAndStatus(): ?array
+	{
+		$dataset = Dataset::model()->findByAttributes(["identifier" => $this->_identifier]);
+		return array("title" =>$dataset->title, "status" => $dataset->upload_status);
+	}
 }
 
 ?>

@@ -19,7 +19,8 @@
          "opauth/google": "^0.2.2",
          "opauth/linkedin": "^0.2.0",
          "drewm/mailchimp-api": "v2.5.3",
-         "sizeg/yii2-jwt": "~1.2.0"
+         "sizeg/yii2-jwt": "~1.2.0",
+         "twig/twig": "~v1.42.0"
     },
     "require-dev": {
         "behat/behat":  "^3.5",

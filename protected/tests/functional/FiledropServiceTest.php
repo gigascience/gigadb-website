@@ -29,6 +29,17 @@ class FiledropServiceTest extends FunctionalTesting
         //admin user is logged to gigadb
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org","gigadb","Admin");
 
+        //test filedrop account doesn't exist in db
+        $filedrop_id = 435342;
+        $db_name = getenv("FUW_DB_NAME");
+        $db_user = getenv("FUW_DB_USER");
+        $db_password = getenv("FUW_DB_PASSWORD");
+        $dbh=new CDbConnection("pgsql:host=database;dbname=$db_name",$db_user,$db_password);
+        $dbh->active=true;
+        $delete_account = $dbh->createCommand("delete from filedrop_account where id=$filedrop_id");
+        $delete_account->execute();
+        $dbh->active=false;
+
     }
 
     /**
@@ -96,8 +107,8 @@ class FiledropServiceTest extends FunctionalTesting
         Dataset::model()->updateAll(["upload_status" => "Published"], "identifier = :doi", [":doi" => $doi]);
     }
 
-/**
-     * test that newly created filedrop account's properties are returned from HTTP call
+    /**
+     * Newly created filedrop account properties are returned from call
      *
      * Happy path
      */
@@ -256,7 +267,7 @@ class FiledropServiceTest extends FunctionalTesting
     }
 
     /**
-     * test sending email
+     * test sending email (happy path)
      *
      */
     public function testSendEmail()
@@ -313,11 +324,74 @@ class FiledropServiceTest extends FunctionalTesting
 
         $this->assertTrue($response);
 
+        //invoke function a second time to ensure token reuse in same session works
+        $response2 = $filedropSrv->emailInstructions($filedrop_id, $subject,$instructions);
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
-        //remove created database objects
-        $delete_account = $dbh->createCommand("delete from filedrop_account where id=$filedrop_id");
-        $delete_account->execute();
-        $dbh->active=false;
+    }
+
+    /**
+     * Test retrieving existing filedrop account from the API
+     *
+     * Happy path
+     */
+    public function testGetAccount()
+    {
+
+        // create a filedrop acccount to retrieve through API
+        $filedrop_id = 435342;
+        $doi = "100004";
+        $db_name = getenv("FUW_DB_NAME");
+        $db_user = getenv("FUW_DB_USER");
+        $db_password = getenv("FUW_DB_PASSWORD");
+        $dbh=new CDbConnection("pgsql:host=database;dbname=$db_name",$db_user,$db_password);
+        $dbh->active=true;
+        $insert_account = $dbh->createCommand("insert into filedrop_account(id, doi,status,upload_login,upload_token,download_login,download_token) values($filedrop_id,$doi,1,'uploader-$doi','sdafad','downloader-$doi','asdgina')");
+        $insert_account->execute();
+
+        // Prepare the http client to be traceable for testing
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
+
+        $webClient = new Client(['handler' => $stack]);
+
+        // Instantiate FiledropService
+        $filedropSrv = new FiledropService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => 31104000,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByPk(344), //admin user
+            "identifier"=> $doi,
+            "dataset" => new DatasetDAO(["identifier" => $doi]),
+            "dryRunMode"=> false,
+            ]);
+
+        // invoke the Filedrop Service
+        $response = $filedropSrv->getAccount($filedrop_id);
+
+        // test the response from the API is successful
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
+
+        // test that createAccount return a value
+        $this->assertNotNull($response);
+        $this->assertEquals($filedrop_id, $response["id"]);
+        $this->assertEquals($doi, $response["doi"]);
+        $this->assertEquals("uploader-$doi", $response["upload_login"]);
+
+        // test we can call getAccount a second time within the same session (token reuse)
+        $response2 = $filedropSrv->getAccount($filedrop_id);
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
+
     }
 
 }
