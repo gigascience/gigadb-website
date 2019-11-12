@@ -113,6 +113,18 @@ class DatasetDAOTest extends CDbTestCase {
         $this->assertEquals("100249", $datasetDAO->getIdentifier());
     }
 
+    /**
+     * test retrieve title and status
+     */
+    public function testGetTitleAndStatus()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
+        $this->assertEquals('Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',$datasetDAO->getTitleAndStatus()['title']);
+
+        $this->assertEquals('Published',$datasetDAO->getTitleAndStatus()['status']);
+    }
+
+
     public function keywordsProvider()
     {
     	return [

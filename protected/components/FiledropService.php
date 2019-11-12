@@ -4,6 +4,10 @@
  * Service to manage the creation and housekeeping of Filedrop accounts
  * used for author to upload files related to submitted manuscript
  *
+ * createAccount: create a filedrop account
+ * getAccount: retrieve info about existing filedrop account
+ * emailInstructions: save instructions in filedrop account and send email
+ *
  *
  * @property \TokenService $tokenSrv we need the service of JWT token generation
  * @property \GuzzleHttp\Client $webClient the web agent for making REST call
@@ -12,6 +16,7 @@
  * @property string $instructions text to sent authors for uploading data
  * @property DatasetDAO $dataset Instance of DatasetDAO for working with dataset resultsets
  * @property boolean $dryRunMode whether or not to simulate final resource changes
+ * @property \Lcobucci\JWT\Token $token generated for multiple call to the api per session
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
@@ -46,6 +51,11 @@ class FiledropService extends yii\base\Component
  	 * {@inheritdoc}
    	 */
 	public $dryRunMode;
+
+	/**
+ 	 * {@inheritdoc}
+   	 */
+	public $token;
 
 	/**
 	 * Make HTTP POST to File Upload Wizard to create Filedrop account
@@ -106,14 +116,24 @@ class FiledropService extends yii\base\Component
 	public function emailInstructions(int $filedrop_id, string $subject, string $instructions): bool
 	{
 
+		if (!$instructions) {
+			return false;
+		}
+
+		if (!$subject) {
+			return false;
+		}
+
 		$api_endpoint = "http://fuw-admin-api/filedrop-accounts/$filedrop_id";
 
-		$token = $this->tokenSrv->generateTokenForUser($this->requester->email);
+		// reuse token to avoid "You must unsign before making changes" error
+		// when multiple API calls in same session
+		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
 
 		try {
 			$response = $this->webClient->request('PUT', $api_endpoint, [
 								    'headers' => [
-								        'Authorization' => "Bearer $token",
+								        'Authorization' => "Bearer ".$this->token,
 								    ],
 								    'form_params' => [
 								        'doi' => $this->identifier,
@@ -135,6 +155,41 @@ class FiledropService extends yii\base\Component
 		    }
 		}
 		return false;
+	}
+
+	/**
+	 * Make HTTP GET to File Upload Wizard to retrieve Filedrop account
+	 *
+	 * @param int $filedrop_id internal id of filedrop account
+	 *
+	 * @return array||null return an array of attributes or null if not found
+	 */
+	public function getAccount(int $filedrop_id): ?array
+	{
+		$api_endpoint = "http://fuw-admin-api/filedrop-accounts/$filedrop_id";
+
+		// reuse token to avoid "You must unsign before making changes" error
+		// when multiple API calls in same session
+		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
+
+		try {
+			$response = $this->webClient->request('GET', $api_endpoint, [
+								    'headers' => [
+								        'Authorization' => "Bearer ".$this->token,
+								    ],
+								    'connect_timeout' => 5,
+								]);
+			if (200 === $response->getStatusCode() ) {
+				return json_decode($response->getBody(), true);
+			}
+		}
+		catch(RequestException $e) {
+			Yii::log( Psr7\str($e->getRequest()) , "error");
+		    if ($e->hasResponse()) {
+		        Yii::log( Psr7\str($e->getResponse()), "error");
+		    }
+		}
+		return null;
 	}
 }
 ?>
