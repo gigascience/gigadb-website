@@ -30,16 +30,15 @@ class SendInstructionsAction extends CAction
             "dryRunMode"=>false,
             ]);
 
+        $subject = "Instructions for using the filedrop account for dataset $id";
         $datasetUpload = new DatasetUpload(
                                 $fid,
                                 $filedropSrv,
                                 Yii::$app->params['dataset_upload']
                             );
-        $instructions = $datasetUpload->getDefaultUploadInstructions();
-        $subject = "Instructions for using the filedrop account for dataset $id";
-
-        $response = $filedropSrv->emailInstructions($fid, $subject, $instructions);
-        $message = "";
+        $filedropAccount = $datasetUpload->getFiledropAccountDetails();
+        $instructions = $datasetUpload->renderUploadInstructions($filedropAccount);
+        $response = $datasetUpload->sendUploadInstructions(Yii::app()->user->email, $subject, $instructions);
         if (!$response) {
         	$message = "Error: Filedrop Account ($fid) instructions not sent for dataset ($id)";
         	Yii::app()->user->setFlash('error',$message);
