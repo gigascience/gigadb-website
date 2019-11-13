@@ -35,11 +35,11 @@ Scenario: The drop box is created, we can send email instructions
 	And I press "New Dropbox for this dataset"
 	And I wait "2" seconds
 	Then I should see "A new drop box has been created for this dataset."
-	And I should see a "Send instructions by email" button
+	And I should see a "Send instructions by email" link
 	And I am on "/adminDataset/admin"
 
 @ok
-Scenario: Popup composer for customizing and sending email instructions
+Scenario: send email instructions
 	Given I sign in as an admin
 	And I go to "/site/admin"
 	When I press "Datasets"

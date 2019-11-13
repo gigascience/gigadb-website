@@ -120,9 +120,16 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	 */
 	public function iShouldSeeAButton($arg1)
 	{
-	   $this->I->canSee($arg1);
+		$this->I->seeElement("//img[@alt='$arg1']");
 	}
 
+    /**
+     * @Then I should see a :arg1 link
+     */
+     public function iShouldSeeALink($arg1)
+     {
+        $this->I->canSeeLink($arg1);
+     }
 	/**
      * @When I wait :arg1 seconds
      */
