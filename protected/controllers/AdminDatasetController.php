@@ -29,7 +29,7 @@ class AdminDatasetController extends Controller
     {
         return array(
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                  'actions'=>array('create','admin','update','private', 'mint','checkDOIExist', 'assignFTPBox','saveInstructions','sendInstructions'),
+                  'actions'=>array('create','admin','update','private', 'mint','checkDOIExist', 'assignFTPBox','sendInstructions'),
                   'roles'=>array('admin'),
             ),
             array('deny',  // deny all users
@@ -45,7 +45,6 @@ class AdminDatasetController extends Controller
     {
         return array(
             'assignFTPBox'=>'application.controllers.adminDataset.AssignFTPBoxAction',
-            'sendInstructions'=>'application.controllers.adminDataset.SaveInstructionsAction',
             'sendInstructions'=>'application.controllers.adminDataset.SendInstructionsAction',
         );
     }
