@@ -104,17 +104,69 @@ class FiledropService extends yii\base\Component
 		return null;
 	}
 
+
+	/**
+	 * Make HTTP PUT to File Upload Wizard to save instructions
+	 *
+	 * @param int $filedrop_id internal id of a filedrop account to update
+	 * @param string $instructions email content
+	 *
+	 * @return bool whether the call has been made and succeed or not
+	 */
+	public function saveInstructions(int $filedrop_id, string $instructions): bool
+	{
+
+		if (!$instructions) {
+			return false;
+		}
+
+		$api_endpoint = "http://fuw-admin-api/filedrop-accounts/$filedrop_id";
+
+		// reuse token to avoid "You must unsign before making changes" error
+		// when multiple API calls in same session
+		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
+
+		try {
+			$response = $this->webClient->request('PUT', $api_endpoint, [
+								    'headers' => [
+								        'Authorization' => "Bearer ".$this->token,
+								    ],
+								    'form_params' => [
+								        'doi' => $this->identifier,
+								        'instructions' => $instructions,
+								    ],
+								    'connect_timeout' => 5,
+								]);
+			if (200 === $response->getStatusCode() ) {
+				return true;
+			}
+		}
+		catch(RequestException $e) {
+			Yii::log( Psr7\str($e->getRequest()) , "error");
+		    if ($e->hasResponse()) {
+		        Yii::log( Psr7\str($e->getResponse()), "error");
+		    }
+		}
+		return false;
+	}
+
 	/**
 	 * Make HTTP PUT to File Upload Wizard to save and send email instructions
 	 *
 	 * @param int $filedrop_id internal id of a filedrop account to update
+	 * @param string $recipient whom to send the email
 	 * @param string $subject subject to use for the email to be sent
 	 * @param string $instructions email content
 	 *
 	 * @return bool whether the call has been made and succeed or not
 	 */
-	public function emailInstructions(int $filedrop_id, string $subject, string $instructions): bool
+	public function emailInstructions(int $filedrop_id, string $recipient, string $subject, string $instructions): bool
 	{
+
+
+		if (!$recipient) {
+			return false;
+		}
 
 		if (!$instructions) {
 			return false;
@@ -139,7 +191,7 @@ class FiledropService extends yii\base\Component
 								        'doi' => $this->identifier,
 								        'subject' => $subject,
 								        'instructions' => $instructions,
-								        'to' => $this->requester->email,
+								        'to' => $recipient,
 								        'send' => true,
 								    ],
 								    'connect_timeout' => 5,

@@ -8,7 +8,89 @@
 class DatasetUploadTest extends CTestCase
 {
 
-	public function testGetDefaultUploadInstructions()
+	public function testGetFiledropAccountDetails()
+	{
+		$config = [
+			"ftpd_endpoint" => "localhost",
+			"ftpd_port" => "9021",
+			"template_path" => "/var/www/files/templates",
+		];
+
+		$filedrop_id = 1;
+
+		$filedropAccountHash = array('upload_login' => 'uploader-232452',
+					'upload_token' => '9ad4sf',
+					'download_login' => 'downloader-286652',
+					'download_token' => 'a97b3');
+
+		$mockFiledropSrv = $this->createMock(FiledropService::class);
+
+        $mockFiledropSrv->expects($this->once())
+                 ->method('getAccount')
+                 ->with($filedrop_id)
+                 ->willReturn($filedropAccountHash);
+
+		$datasetUpload = new DatasetUpload($filedrop_id, $mockFiledropSrv, $config);
+
+		$datasetUpload->getFiledropAccountDetails();
+	}
+
+	public function testChangeUploadInstructions()
+	{
+		$config = [
+			"ftpd_endpoint" => "localhost",
+			"ftpd_port" => "9021",
+			"template_path" => "/var/www/files/templates",
+		];
+
+		$filedrop_id = 1;
+		$newInstructions = "Lorem ipsum";
+		$mockFiledropSrv = $this->createMock(FiledropService::class);
+        $mockFiledropSrv->expects($this->once())
+                 ->method('saveInstructions')
+                 ->with($filedrop_id, $newInstructions)
+                 ->willReturn(true);
+
+		$datasetUpload = new DatasetUpload($filedrop_id, $mockFiledropSrv, $config);
+
+		$this->assertTrue( $datasetUpload->changeUploadInstructions($newInstructions) );
+
+	}
+
+	public function testSendUploadInstructions()
+	{
+		$config = [
+			"ftpd_endpoint" => "localhost",
+			"ftpd_port" => "9021",
+			"template_path" => "/var/www/files/templates",
+		];
+
+		$filedrop_id = 1;
+
+		$recipient =  "foo@bar.com" ;
+		$subject = "Upload Instructions for the dataset of your GigaDB submission";
+		$instructions = "Lorem Ipsum";
+
+		$filedropAccountHash = array('upload_login' => 'uploader-232452',
+					'upload_token' => '9ad4sf',
+					'download_login' => 'downloader-286652',
+					'download_token' => 'a97b3');
+
+		$mockFiledropSrv = $this->createMock(FiledropService::class);
+		$mockFiledropSrv->identifier = "100001";
+
+        $mockFiledropSrv->expects($this->once())
+                 ->method('emailInstructions')
+                 ->with($filedrop_id, $recipient, $subject , $instructions)
+                 ->willReturn(true);
+
+		$datasetUpload = new DatasetUpload($filedrop_id, $mockFiledropSrv, $config);
+
+		$this->assertTrue( $datasetUpload->sendUploadInstructions($recipient, $subject, $instructions) );
+
+	}
+
+	public function testRenderUploadInstructions()
 	{
 
 		$config = [
@@ -35,16 +117,10 @@ class DatasetUploadTest extends CTestCase
 
         $mockFiledropSrv->dataset = $mockDatasetDAO;
 
-        $mockFiledropSrv->expects($this->once())
-                 ->method('getAccount')
-                 ->with($filedrop_id)
-                 ->willReturn(array('title' => 'foo', 'status' => 'bar'))
-                 ->willReturn($filedropAccountHash);
-
 
 		$datasetUpload = new DatasetUpload($filedrop_id, $mockFiledropSrv, $config);
 
-		$renderedInstructions = $datasetUpload->getDefaultUploadInstructions();
+		$renderedInstructions = $datasetUpload->renderUploadInstructions($filedropAccountHash);
 		$this->assertNotNull($renderedInstructions);
 
 		//veriyfing that Twig has interpolated the template tags with the variables
