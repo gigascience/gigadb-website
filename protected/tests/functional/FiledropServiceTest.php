@@ -266,6 +266,70 @@ class FiledropServiceTest extends FunctionalTesting
 
     }
 
+
+/**
+     * test save instructions
+     *
+     */
+    public function testSaveInstructions()
+    {
+
+        // $this->markTestSkipped('wip, not ready to run yet.');
+        $api_endpoint = "http://fuw-admin-api/filedrop-accounts";
+        $doi = "100004";
+        $jwt_ttl = 31104000 ;
+
+        $instructions = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo";
+
+        // create a filedrop acccount to update and save email instructions into
+        $filedrop_id = 435342;
+        $db_name = getenv("FUW_DB_NAME");
+        $db_user = getenv("FUW_DB_USER");
+        $db_password = getenv("FUW_DB_PASSWORD");
+        $dbh=new CDbConnection("pgsql:host=database;dbname=$db_name",$db_user,$db_password);
+        $dbh->active=true;
+        $insert_account = $dbh->createCommand("insert into filedrop_account(id, doi,status,upload_login,upload_token,download_login,download_token) values($filedrop_id,$doi,1,'a','a','a','a')");
+        $insert_account->execute();
+
+        // Prepare the http client to be traceable for testing
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
+        $webClient = new Client(['handler' => $stack]);
+
+        // Instantiate FiledropService
+        $filedropSrv = new FiledropService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => $jwt_ttl,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByPk(344),
+            "identifier"=> $doi,
+            "dryRunMode"=>true,
+            ]);
+
+        //invoke function
+        $response = $filedropSrv->saveInstructions($filedrop_id,$instructions);
+
+        // test the response from the API is successful
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
+
+        $this->assertTrue($response);
+
+        //invoke function a second time to ensure token reuse in same session works
+        $response2 = $filedropSrv->saveInstructions($filedrop_id,$instructions);
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
+
+    }
+
     /**
      * test sending email (happy path)
      *
@@ -278,6 +342,7 @@ class FiledropServiceTest extends FunctionalTesting
         $doi = "100004";
         $jwt_ttl = 31104000 ;
 
+        $recipient = "foo@bar.com";
         $subject = "Uploading Instructions";
         $instructions = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo";
 
@@ -317,7 +382,7 @@ class FiledropServiceTest extends FunctionalTesting
             ]);
 
         //invoke function
-        $response = $filedropSrv->emailInstructions($filedrop_id, $subject,$instructions);
+        $response = $filedropSrv->emailInstructions($filedrop_id, $recipient ,$subject,$instructions);
 
         // test the response from the API is successful
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
@@ -325,7 +390,7 @@ class FiledropServiceTest extends FunctionalTesting
         $this->assertTrue($response);
 
         //invoke function a second time to ensure token reuse in same session works
-        $response2 = $filedropSrv->emailInstructions($filedrop_id, $subject,$instructions);
+        $response2 = $filedropSrv->emailInstructions($filedrop_id, $recipient, $subject,$instructions);
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
     }
