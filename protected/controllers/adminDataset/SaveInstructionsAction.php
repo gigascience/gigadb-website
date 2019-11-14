@@ -1,18 +1,19 @@
 <?php
 /**
  * This action will make connection to File Upload Wizard REST API
- * in order to send email instructions for the new filedrop account
+ * in order to save custom instructions for the new filedrop account
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class SendInstructionsAction extends CAction
+class SaveInstructionsAction extends CAction
 {
     public function run(string $id, int $fid)
     {
     	$jwt_ttl = 3600 ;
     	$webClient = new \GuzzleHttp\Client();
 
+        $instructions = $_POST['instructions'];
 
         // Instantiate FiledropService
         $filedropSrv = new FiledropService([
@@ -30,22 +31,19 @@ class SendInstructionsAction extends CAction
             "dryRunMode"=>false,
             ]);
 
-        $subject = "Instructions for using the filedrop account for dataset $id";
         $datasetUpload = new DatasetUpload(
                                 $fid,
                                 $filedropSrv,
                                 Yii::$app->params['dataset_upload']
                             );
-        $filedropAccount = $datasetUpload->getFiledropAccountDetails();
-        $instructions = $datasetUpload->renderUploadInstructions($filedropAccount);
-        $response = $datasetUpload->sendUploadInstructions(Yii::app()->user->email, $subject, $instructions);
+        $response = $datasetUpload->changeUploadInstructions($instructions);
         if (!$response) {
-        	$message = "Error: Filedrop Account ($fid) instructions not sent for dataset ($id)";
+        	$message = "Error: Filedrop Account ($fid) instructions not saved for dataset ($id)";
         	Yii::app()->user->setFlash('error',$message);
             $this->getController()->redirect("/adminDataset/admin/");
         }
 
-        $message = "Instructions sent.";
+        $message = "New instructions saved.";
         Yii::app()->user->setFlash('success',$message);
         unset(Yii::app()->session["filedrop_id_".Yii::app()->user->id]);
 

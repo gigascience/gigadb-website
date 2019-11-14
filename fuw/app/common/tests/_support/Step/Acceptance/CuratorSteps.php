@@ -130,12 +130,37 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
      {
         $this->I->canSeeLink($arg1);
      }
+
+	/**
+     * @Then I should see a :arg1 form text area
+     */
+     public function iShouldSeeAFormTextArea($arg1)
+     {
+        $this->I->seeElement('textarea',["name" => $arg1]);
+     }
+
+	/**
+     * @When I wait for modal window :arg1
+     */
+     public function iWaitForModalWindow($arg1)
+     {
+        $this->I->waitForElement('#editInstructions', 10);
+     }
+
 	/**
      * @When I wait :arg1 seconds
      */
      public function iWaitSeconds($arg1)
      {
          $this->I->wait($arg1);
+     }
+
+     /**
+     * @When I fill in :arg1 text area with :arg2
+     */
+     public function iFillInTextAreaWith($arg1, $arg2)
+     {
+        $this->I->fillField(['name' => $arg1], $arg2);
      }
 
      /**
@@ -153,4 +178,5 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
      {
         $this->I->amOnUrl("http://gigadb.dev".$arg1);
      }
+
 }
