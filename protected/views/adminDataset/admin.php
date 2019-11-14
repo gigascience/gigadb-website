@@ -23,25 +23,34 @@ $('.search-form form').submit(function(){
 ?>
 
 <?php if( Yii::app()->user->hasFlash('success') ) { ?>
-<div class="flash-success">
+<div class="alert alert-success flash-success modal-header">
 	<?php echo Yii::app()->user->getFlash('success'); ?>
 
 </div>
 
 <?php } else if (Yii::app()->user->hasFlash('error')) { ?>
-	<div class="flash-error">
+	<div class="alert alert-error flash-error">
 		<?php echo Yii::app()->user->getFlash('error'); ?>
 	</div>
 <?php } ?>
 
-<?php if( Yii::app()->session["filedrop_id_".Yii::app()->user->id] ) {
+<?php if( Yii::app()->session["filedrop_id_".Yii::app()->user->id] ) { ?>
+	<div class="button-panel panel" role="alert">
+		<div class="panel-heading header alert-success">A filedrop account has been created</div>
+  	<div class="panel-body controls">
+<?php
 	[$doi, $fid] = Yii::app()->session["filedrop_id_".Yii::app()->user->id];
+
+	echo CHtml::link('Customize instructions','#', array('class' => 'btn btn-primary', 'data-toggle' => "modal", 'data-target' => "#editInstructions"));
+
 	echo CHtml::link('Send instructions by email',
 		                array('adminDataset/sendInstructions', 'id'=>$doi, 'fid'=>$fid),
-                        array('class' => 'btn')
+                        array('class' => 'btn btn-primary')
                     );
-}
 ?>
+	</div>
+	</div>
+<?php } ?>
 
 <h1>Manage Datasets</h1>
 
@@ -98,3 +107,27 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		),
 	),
 )); ?>
+
+
+<div class="modal fade" id="editInstructions" tabindex="-1" role="dialog" aria-labelledby="Customize Instructions">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Customize</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+        	<label for="instructions">Instructions</label>
+        	<textarea id="instructions" name="instructions"
+      rows="5" cols="33">
+			</textarea>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a href="#" class="btn btn-primary" alt="Save changes">Save changes</a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

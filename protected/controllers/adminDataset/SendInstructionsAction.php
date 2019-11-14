@@ -8,7 +8,7 @@
  */
 class SendInstructionsAction extends CAction
 {
-    public function run($id, $fid)
+    public function run(string $id, int $fid)
     {
     	$jwt_ttl = 3600 ;
     	$webClient = new \GuzzleHttp\Client();

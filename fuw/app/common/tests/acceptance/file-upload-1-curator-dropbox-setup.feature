@@ -36,10 +36,11 @@ Scenario: The drop box is created, we can send email instructions
 	And I wait "2" seconds
 	Then I should see "A new drop box has been created for this dataset."
 	And I should see a "Send instructions by email" link
+	And I should see a "Customize instructions" link
 	And I am on "/adminDataset/admin"
 
 @ok
-Scenario: send email instructions
+Scenario: send default email instructions
 	Given I sign in as an admin
 	And I go to "/site/admin"
 	When I press "Datasets"
@@ -48,18 +49,33 @@ Scenario: send email instructions
 	And I press "Send instructions by email"
 	Then I should see "Instructions sent."
 
-@not-ready
+@ok
 Scenario: Popup composer for customizing and sending email instructions
 	Given I sign in as an admin
 	And I go to "/site/admin"
 	When I press "Datasets"
 	And I press "New Dropbox for this dataset"
 	And I wait "2" seconds
-	And I press "Send instructions by email"
-	Then I should see a form element labelled "Author name"
-	And I should see a form element labelled "Author email address"
-	And I should see a form element labelled "Instructions"
-	And I should see a "Send Email Instructions" button
+	And I press "Customize instructions"
+	And I wait for modal window "editInstructions"
+	Then I should see a "instructions" form text area
+	And I should see a "Save changes" link
+
+
+@wip
+Scenario: Popup composer for customizing and sending email instructions
+	Given I sign in as an admin
+	And I go to "/site/admin"
+	When I press "Datasets"
+	And I press "New Dropbox for this dataset"
+	And I wait "2" seconds
+	And I press "Customize instructions"
+	And I wait for modal window "editInstructions"
+	And I fill in "instructions" text area with "some text"
+	And I press "Save changes"
+	And I wait "2" seconds
+	Then I should see "New instructions saved."
+
 
 # Scenario: Creating the drop box and emailing the author custom instructions
 # 	Given I sign in as an admin
