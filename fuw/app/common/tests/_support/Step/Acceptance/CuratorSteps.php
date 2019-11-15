@@ -171,7 +171,15 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
         $this->I->canSee($arg1);
      }
 
-         /**
+	/**
+     * @Then I should not see a :arg1 link
+     */
+     public function iShouldNotSeeALink($arg1)
+     {
+        $this->I->cantSeeLink($arg1);
+     }
+
+     /**
      * @Then I am on :arg1
      */
      public function iAmOn($arg1)

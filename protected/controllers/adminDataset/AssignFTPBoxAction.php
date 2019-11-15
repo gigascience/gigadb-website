@@ -30,15 +30,11 @@ class AssignFTPBoxAction extends CAction
             ]);
 
         $response = $filedropSrv->createAccount();
-        $message = "";
         if (!$response) {
-        	$message = "An error occured. Drop box not created";
-        	Yii::app()->user->setFlash('error',$message);
+        	Yii::app()->user->setFlash('error',"An error occured. Drop box not created");
             $this->getController()->redirect("/adminDataset/admin/");
         }
 
-        $message = "A new drop box has been created for this dataset.";
-        Yii::app()->user->setFlash('success',$message);
         Yii::app()->session["filedrop_id_".Yii::app()->user->id] = array($id, $response['id']);
 
         $this->getController()->redirect("/adminDataset/admin/");
