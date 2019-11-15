@@ -72,19 +72,22 @@ class DatasetUpload extends yii\base\BaseObject
         // Retrieve info about the dataset
         $dataset_info = $this->_filedrop->dataset->getTitleAndStatus();
 
-        // prepare array of variables to be interpolated
-        $vars = array_merge($filedropAccount, $dataset_info, $this->_config);
+        $instructions = $filedropAccount['instructions']; //preferably use saved instructions
+        if (!$instructions) { // otherwise create from template and interpolate properties
+	        // prepare array of variables to be interpolated
+	        $vars = array_merge($filedropAccount, $dataset_info, $this->_config);
 
-       	// create a template loader from specific directory in file system
-        $loader = new \Twig\Loader\FilesystemLoader(
-	        	$this->_config['template_path']
-	        );
+	       	// create a template loader from specific directory in file system
+	        $loader = new \Twig\Loader\FilesystemLoader(
+		        	$this->_config['template_path']
+		        );
 
-        // instantiate template environment object for rendering to be called upon
-        $twig = new \Twig\Environment($loader);
+	        // instantiate template environment object for rendering to be called upon
+	        $twig = new \Twig\Environment($loader);
 
-        // render the email instructions from template
-        $instructions = $twig->render('emailInstructions.twig', $vars);
+	        // render the email instructions from template
+	        $instructions = $twig->render('emailInstructions.twig', $vars);
+        }
 
 		return $instructions;
 	}
