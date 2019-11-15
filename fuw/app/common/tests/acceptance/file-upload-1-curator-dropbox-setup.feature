@@ -24,7 +24,7 @@ Scenario: Triggering the creation of a drop box for a dataset with the appropria
 	When I press "Datasets"
 	And I press "New Dropbox for this dataset"
 	And I wait "2" seconds
-	Then I should see "A new drop box has been created for this dataset."
+	Then I should see "A new drop box has been created for the dataset 100006."
 	And I should see "UserUploadingData"
 
 @ok
@@ -34,7 +34,7 @@ Scenario: The drop box is created, we can send email instructions
 	When I press "Datasets"
 	And I press "New Dropbox for this dataset"
 	And I wait "2" seconds
-	Then I should see "A new drop box has been created for this dataset."
+	Then I should see "A new drop box has been created for the dataset 100006."
 	And I should see a "Send instructions by email" link
 	And I should see a "Customize instructions" link
 	And I am on "/adminDataset/admin"
@@ -48,6 +48,7 @@ Scenario: send default email instructions
 	And I wait "2" seconds
 	And I press "Send instructions by email"
 	Then I should see "Instructions sent."
+	And I should not see a "Send instructions by email" link
 
 @ok
 Scenario: Popup composer for customizing and sending email instructions
@@ -62,7 +63,7 @@ Scenario: Popup composer for customizing and sending email instructions
 	And I should see a "Save changes" link
 
 
-@wip
+@ok
 Scenario: Popup composer for customizing and sending email instructions
 	Given I sign in as an admin
 	And I go to "/site/admin"
