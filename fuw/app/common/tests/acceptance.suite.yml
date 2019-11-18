@@ -12,6 +12,13 @@ modules:
             # dump: tests/_data/gigadb_bootstrap.sql
             cleanup: false # don't reload dump between tests
             populate: false # don't load dump before all tests
+            databases:
+                fuwdb:
+                    dsn: 'pgsql:host=database;dbname=fuwdb'
+                    user: 'fuwdb'
+                    password: 'yii2advanced'
+                    cleanup: false # don't reload dump between tests
+                    populate: false # don't load dump before all tests
         - WebDriver:
              host: 'phantomjs'
              port: 8910
@@ -24,6 +31,8 @@ gherkin:
         role:
             curator:
                 - common\tests\Step\Acceptance\CuratorSteps
+            author:
+                - common\tests\Step\Acceptance\AuthorSteps
 
 extensions:
     enabled:

@@ -3,8 +3,9 @@ namespace common\tests\Step\Acceptance;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
+use \backend\models\FiledropAccount;
 
-class CuratorSteps #extends \common\tests\AcceptanceTester
+class AuthorSteps #extends \common\tests\AcceptanceTester
 {
 	protected $I;
 
@@ -14,30 +15,34 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	    $this->I = $I;
 	}
 
-	/**
-     * @Given filedrop account for DOI :arg1 doesn't exist
+	 /**
+     * @Given filedrop account for DOI :doi does exist
      */
-     public function filedropAccountForDOIDoesntExist($arg1)
+     public function filedropAccountForDOIDoesExist($doi)
      {
 
-     	$adapter = new Local("/var");
-		$fs = new Filesystem($adapter);
+     	$this->I->amConnectedToDatabase('fuwdb');
+        $this->I->haveInDatabase('filedrop_account', [
+			  'doi' => $doi,
+			  'upload_login' => FiledropAccount::generateRandomString(6),
+			  'upload_token' => FiledropAccount::generateRandomString(6),
+			  'download_login' => FiledropAccount::generateRandomString(6),
+			  'download_token' => FiledropAccount::generateRandomString(6),
+			  'status' => FiledropAccount::STATUS_ACTIVE,
+			]);
+       	$this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
 
-     	$fs->deleteDir("incoming/ftp/$arg1");
-     	$fs->deleteDir("repo/$arg1");
-     	$fs->deleteDir("private/$arg1");
      }
 
-
-	/**
-	 * @Given I sign in as an admin
-	 */
-	public function iSignInAsAnAdmin()
+ 	/**
+     * @Given I sign in as the user :firstname :lastname
+     */
+     public function iSignInAsTheUser($firstname, $lastname)
 	{
 		$this->I->amOnUrl('http://gigadb.dev');
 		$this->I->amOnPage('/site/login');
-		$this->I->fillField(['name' => 'LoginForm[username]'], 'admin@gigadb.org');
-		$this->I->fillField(['name' => 'LoginForm[password]'], 'gigadb');
+		$this->I->fillField(['name' => 'LoginForm[username]'], "${firstname}_${lastname}@gigadb.org");
+		$this->I->fillField(['name' => 'LoginForm[password]'], 'foobar');
 		$this->I->click('Login');
 	}
 
