@@ -42,26 +42,18 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
 	{
 		$this->I->amOnUrl('http://gigadb.test');
 		$this->I->amOnPage('/site/login');
-		$this->I->fillField(['name' => 'LoginForm[username]'], "${firstname}_${lastname}@gigadb.org");
-		$this->I->fillField(['name' => 'LoginForm[password]'], 'foobar');
+		$this->I->fillField(['name' => 'LoginForm[username]'], strtolower("${firstname}_${lastname}@gigadb.org"));
+		$this->I->fillField(['name' => 'LoginForm[password]'], 'gigadb');
 		$this->I->click('Login');
 	}
 
-	/**
-	 * @Given a dataset has been uploaded with temporary DOI :arg1 by user :arg2
-	 */
-	public function aDatasetHasBeenUploadedWithTemporaryDOIByUser($arg1, $arg2)
-	{
-	   throw new \Codeception\Exception\Incomplete("Step `a dataset has been uploaded with temporary DOI :arg1 by user :arg2` is not defined");
-	}
-
-	/**
-	 * @Given the uploaded dataset has status :arg1
-	 */
-	public function theUploadedDatasetHasStatus($arg1)
-	{
-	   throw new \Codeception\Exception\Incomplete("Step `the uploaded dataset has status :arg1` is not defined");
-	}
+ 	/**
+     * @Then the :arg1 tab is active
+     */
+     public function theTabIsActive($arg1)
+     {
+        $this->I->seeInSource('<a href="#submitted" aria-controls="submitted" role="tab" data-toggle="tab" aria-expanded="true">Your Uploaded Datasets</a>');
+     }
 
 	/**
 	 * @Given I go to :arg1
