@@ -160,6 +160,7 @@ services:
       - ${APPLICATION}/.env:/app/.env
     depends_on:
       - fuw-admin
+      - fuw-public
       - database
       # - phantomjs
     command: composer install
@@ -252,6 +253,46 @@ services:
         - INSTALL_DOCKER_API_ACCESS=true
     expose:
       - "9002"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ../../fuw/app:/app
+      # php config
+      - ../../fuw/app/php-conf/fuw.ini:/usr/local/etc/php/conf.d/fuw.ini
+      - ../../fuw/app/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ../../fuw/app/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+    depends_on:
+      - database
+      - console
+      - ftpd
+      - tusd
+      - watcher
+    networks:
+      - web-tier
+      - db-tier
+
+  fuw-public:
+    build:
+      context: ../../fuw/app
+      dockerfile: common/Dockerfile
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
+        - APP_PORT=9001
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=false
+        - INSTALL_APCU=true
+        - INSTALL_DOCKER_API_ACCESS=true
+    expose:
+      - "9001"
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer/cache:/root/.composer/cache:delegated
