@@ -8,13 +8,35 @@ Background:
 	And a dataset with DOI "100007" owned by user "Artie" "Dodger" has status "UserUploadingData"
 	And filedrop account for DOI "100007" does exist
 
-@wip
-Scenario: Click upload files button when dataset has appropriate status
+@ok
+Scenario: Upload files button when dataset has appropriate status
 	Given I sign in as the user "Artie" "Dodger"
-	And I go to "/user/view_profile#submitted"
-	When I press "Upload Files for dataset 100007"
-	Then I should see "File Uploader for dataset 100007"
-	And I am on "/uploader/files"
+	And I wait "2" seconds
+	When I go to "/user/view_profile#submitted"
+	Then I should see "Your profile page"
+	And the "Your Uploaded Datasets" tab is active
+	And I should see a "Upload Dataset Files" link
+
+@ok
+Scenario: No Upload files button when dataset hasn't got to the appropriate status yet
+	Given there is a user "Chloe" "Decker"
+	And a dataset with DOI "100008" owned by user "Chloe" "Decker" has status "AssigningFTPbox"
+	And I sign in as the user "Chloe" "Decker"
+	And I wait "2" seconds
+	When I go to "/user/view_profile#submitted"
+	Then I should see "Your profile page"
+	And the "Your Uploaded Datasets" tab is active
+	And I should not see a "Upload Dataset Files" link
+
+
+@ok
+Scenario: Pressing the upload button bring up File Upload Wizard upload screen
+	Given I sign in as the user "Artie" "Dodger"
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	When I press "Upload Dataset Files"
+	Then I should be on "/uploader/"
+	And I should see "File Uploader"
 
 # Scenario: There's no button for uploading files if dataset doesn't have the right status
 # 	Given I sign in as a user

@@ -58,4 +58,12 @@ class AcceptanceTester extends \Codeception\Actor
 			  'upload_status' => "$status",
 			]);
     }
+
+     /**
+     * @Then I should be on :arg1
+     */
+     public function iShouldBeOn($arg1)
+     {
+        $this->canSeeInCurrentUrl($arg1);
+     }
 }
