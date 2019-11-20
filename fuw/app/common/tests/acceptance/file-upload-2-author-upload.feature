@@ -35,7 +35,7 @@ Scenario: Pressing the upload button bring up File Upload Wizard upload screen
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
 	When I press "Upload Dataset Files"
-	Then I am on "/uploader/"
+	Then I should be on "/uploader/"
 	And I should see "File Uploader"
 
 # Scenario: There's no button for uploading files if dataset doesn't have the right status

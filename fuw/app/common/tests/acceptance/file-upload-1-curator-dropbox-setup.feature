@@ -37,7 +37,7 @@ Scenario: The drop box is created, we can send email instructions
 	Then I should see "A new drop box has been created for the dataset 100006."
 	And I should see a "Send instructions by email" link
 	And I should see a "Customize instructions" link
-	And I am on "/adminDataset/admin"
+	And I should be on "/adminDataset/admin"
 
 @ok
 Scenario: send default email instructions
