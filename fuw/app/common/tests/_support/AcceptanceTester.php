@@ -21,6 +21,50 @@ class AcceptanceTester extends \Codeception\Actor
     use _generated\AcceptanceTesterActions;
 
    /**
-    * Define custom actions here
+    * Define custom actions common to multiple roles here
     */
+
+   /**
+     * @Given there is a user :firstname :lastname
+     */
+   	public function thereIsAUser($firstname, $lastname)
+     {
+        $this->haveInDatabase('gigadb_user', [
+			  'email' => strtolower("${firstname}_${lastname}@gigadb.org"),
+			  'password' => '5a4f75053077a32e681f81daa8792f95',
+			  'first_name' => "$firstname",
+			  'last_name' => "$lastname",
+			  'role' => 'user',
+			  'affiliation' => 'BGI',
+			  'is_activated' => true,
+			  'newsletter' => false,
+			  'previous_newsletter_state' => true,
+			  'username' => strtolower("${firstname}_${lastname}"),
+			]);
+    }
+
+    /**
+     * @Given a dataset with DOI :doi owned by user :firstname :lastname has status :status
+     */
+    public function aDatasetWithDOIOwnedByUserHasStatus($doi, $firstname, $lastname, $status)
+    {
+    	$submitter_id = $this->grabFromDatabase('gigadb_user', 'id', array('username' => strtolower("${firstname}_${lastname}")));
+         $this->haveInDatabase('dataset', [
+			  'submitter_id' => $submitter_id,
+			  'identifier' => "$doi",
+			  'title' => "Dataset Fantastic",
+			  'description' => "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo",
+			  'dataset_size' => 3453534634,
+			  'ftp_site' => 'ftp://data.org',
+			  'upload_status' => "$status",
+			]);
+    }
+
+     /**
+     * @Then I should be on :arg1
+     */
+     public function iShouldBeOn($arg1)
+     {
+        $this->canSeeInCurrentUrl($arg1);
+     }
 }
