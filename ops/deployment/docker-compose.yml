@@ -237,6 +237,32 @@ services:
     command: bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR"
 
 
+# the firefox test browser currently doesn't work
+# see: https://stackoverflow.com/questions/46913377/php-codeception-not-so-quick-start-phpunit-framework-exception-undefined-inde
+  firefox:
+    image: selenium/standalone-firefox-debug
+    shm_size: '1gb' # to avoid a known issue
+    ports:
+      - "5900:5900" #for VNC access
+      - "4444:4444" #for webdriver access
+    networks:
+      - web-tier
+    extra_hosts:
+      - "gigadb.test:172.16.238.10"
+
+  chrome:
+    image: selenium/standalone-chrome-debug
+    shm_size: '1gb' # to avoid a known issue
+    ports:
+      # - "5900:5900" #for VNC access
+      - "4444:4444" #for webdriver access
+    networks:
+      - web-tier
+    extra_hosts:
+      - "gigadb.test:172.16.238.10"
+    environment: # to run headless, set false and comment out port 5900 above and make sure to pass --headless arg in acceptance.suite.yml
+      START_XVFB: "false"
+
   fuw-admin:
     build:
       context: ../../fuw/app

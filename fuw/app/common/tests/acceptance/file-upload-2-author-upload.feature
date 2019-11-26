@@ -39,6 +39,27 @@ Scenario: Pressing the upload button bring up File Upload Wizard upload screen
 	And I should see "File Uploader for dataset 100007"
 	And I should see "Drop files here, paste or browse"
 
+@wip @file-upload
+Scenario: Can add files to the upload queue
+	Given I sign in as the user "Artie" "Dodger"
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I should be on "/authorisedDataset/uploadFiles/"
+	And I wait "2" seconds
+	When I attach the file "TheProof.csv" in the file drop panel
+	And I wait "1" seconds
+	Then I should see "TheProof.csv"
+
+@not-ready
+Scenario: All files in the queue are uploaded
+
+@not-ready
+Scenario: A particular file transfer can be paused
+
+@not-ready
+Scenario: A particular file transfer can be cancelled
+
 # Scenario: There's no button for uploading files if dataset doesn't have the right status
 # 	Given I sign in as a user
 # 	And I am on "/user/view_profile#submitted"
