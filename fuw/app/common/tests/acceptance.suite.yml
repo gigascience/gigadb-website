@@ -20,10 +20,21 @@ modules:
                     cleanup: false # don't reload dump between tests
                     populate: false # don't load dump before all tests
         - WebDriver:
-             host: 'phantomjs'
-             port: 8910
-             browser: phantomjs
-             url: 'http://gigadb.dev'
+             url: 'http://gigadb.test'
+             window_size: 1440x900
+             # host: 'phantomjs'
+             # port: 8910
+             # browser: phantomjs
+             # host: 'firefox'
+             # port: 4444
+             # browser: firefox'
+             host: 'chrome'
+             port: 4444
+             browser: chrome
+             capabilities:
+                "goog:chromeOptions":
+                    args: ['--headless']
+                    w3c: false
 gherkin:
     contexts:
         default:

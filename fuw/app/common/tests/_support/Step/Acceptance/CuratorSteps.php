@@ -34,7 +34,7 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	 */
 	public function iSignInAsAnAdmin()
 	{
-		$this->I->amOnUrl('http://gigadb.dev');
+		$this->I->amOnUrl('http://gigadb.test');
 		$this->I->amOnPage('/site/login');
 		$this->I->fillField(['name' => 'LoginForm[username]'], 'admin@gigadb.org');
 		$this->I->fillField(['name' => 'LoginForm[password]'], 'gigadb');
@@ -150,7 +150,7 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
      */
      public function iAmOn($arg1)
      {
-        $this->I->amOnUrl("http://gigadb.dev".$arg1);
+        $this->I->amOnUrl("http://gigadb.test".$arg1);
      }
 
 }
