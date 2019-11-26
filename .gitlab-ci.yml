@@ -75,6 +75,8 @@ before_script:
   - docker-compose run --rm config
   - docker-compose run --rm fuw-config
   - ls -alrt
+  - cat composer.json
+  - docker-compose ps
   - docker-compose run --rm test composer install
   - docker-compose run --rm console bash -c "cd /app && composer install"
 
@@ -83,10 +85,10 @@ after_script:
   # - docker-compose logs web
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-enabled
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-available
-  - docker-compose logs fuw-admin
-  - cat fuw/app/backend/runtime/logs/app.log
-  - ls -lart $DATA_SAVE_PATH/fuw/incoming/ftp/
-  - docker-compose top fuw-admin
+  # - docker-compose logs fuw-admin
+  # - cat fuw/app/backend/runtime/logs/app.log
+  # - ls -lart $DATA_SAVE_PATH/fuw/incoming/ftp/
+  # - docker-compose top fuw-admin
   # - ls -lart /builds/.containers-data/gigadb/fuw/incoming/ftp/
   # - ls -lart /builds/.containers-data/gigadb/fuw/repo/
   # - ls -lart /builds/.containers-data/gigadb/fuw/credentials/
