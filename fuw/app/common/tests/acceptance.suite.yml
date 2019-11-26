@@ -4,36 +4,47 @@ suite_namespace: common\tests\acceptance
 bootstrap: false
 actor: AcceptanceTester
 modules:
-  enabled:
-    - Db:
-        dsn: 'pgsql:host=database;dbname=gigadb'
-        user: 'gigadb'
-        password: 'vagrant'
-        # dump: tests/_data/gigadb_bootstrap.sql
-        cleanup: false # don't reload dump between tests
-        populate: false # don't load dump before all tests
-        databases:
-          fuwdb:
-            dsn: 'pgsql:host=database;dbname=fuwdb'
-            user: 'fuwdb'
-            password: 'yii2advanced'
+    enabled:
+        - Db:
+            dsn: 'pgsql:host=database;dbname=gigadb'
+            user: 'gigadb'
+            password: 'vagrant'
+            # dump: tests/_data/gigadb_bootstrap.sql
             cleanup: false # don't reload dump between tests
             populate: false # don't load dump before all tests
-    - WebDriver:
-        host: 'phantomjs'
-        port: 8910
-        browser: phantomjs
-        url: 'http://gigadb.dev'
+            databases:
+                fuwdb:
+                    dsn: 'pgsql:host=database;dbname=fuwdb'
+                    user: 'fuwdb'
+                    password: 'yii2advanced'
+                    cleanup: false # don't reload dump between tests
+                    populate: false # don't load dump before all tests
+        - WebDriver:
+             url: 'http://gigadb.test'
+             window_size: 1440x900
+             # host: 'phantomjs'
+             # port: 8910
+             # browser: phantomjs
+             # host: 'firefox'
+             # port: 4444
+             # browser: firefox'
+             host: 'chrome'
+             port: 4444
+             browser: chrome
+             capabilities:
+                "goog:chromeOptions":
+                    args: ['--headless']
+                    w3c: false
 gherkin:
-  contexts:
-    default:
-      - common\tests\AcceptanceTester
-    role:
-      curator:
-        - common\tests\Step\Acceptance\CuratorSteps
-      author:
-        - common\tests\Step\Acceptance\AuthorSteps
+    contexts:
+        default:
+            - common\tests\AcceptanceTester
+        role:
+            curator:
+                - common\tests\Step\Acceptance\CuratorSteps
+            author:
+                - common\tests\Step\Acceptance\AuthorSteps
 
 extensions:
-  enabled:
-    - Codeception\Extension\Recorder
+    enabled:
+        - Codeception\Extension\Recorder
