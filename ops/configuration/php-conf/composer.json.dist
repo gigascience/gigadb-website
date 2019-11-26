@@ -1,7 +1,11 @@
 {
     "name": "gigascience/gigadb-website",
     "type": "yii-project",
+<<<<<<< HEAD
     "description": "GigaDB primarily serves as a repository to host data and tools associated with articles in GigaScience journal. (${COMPOSER_WARNING})",
+=======
+    "description": "GigaDB primarily serves as a repository to host data and tools associated with articles in GigaScience journal (${COMPOSER_WARNING})",
+>>>>>>> Ported the fix to gigascience#361 to my branch to fix Gitlab CI issue
     "homepage": "http://gigadb.org",
     "require": {
         "php": "^${PHP_VERSION}",
