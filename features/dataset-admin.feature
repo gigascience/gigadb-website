@@ -72,7 +72,7 @@ Scenario: Keywords
 	| my dodgy tag |
 
 
-@ok @javascript
+@ok @javascript @ci-js
 Scenario: redirect
 	Given I sign in as an admin
 	And I am on "/adminDataset/update/id/210"

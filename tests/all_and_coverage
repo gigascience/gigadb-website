@@ -8,8 +8,9 @@ set +a
 
 ./tests/unit_runner
 ./tests/functional_runner
-./tests/acceptance_runner cli
 ./tests/css_check
 ./tests/javascript_check
+./tests/acceptance_runner ci
+./tests/acceptance_runner ci-js
 ./tests/coverage_runner
 
