@@ -27,8 +27,9 @@ $ docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:2375:2
 ### Starting GigaDB, File Upload Wizard API (but not the prototype) from scratch
 
 ```
-$ docker-compose run --rm gigadb
 $ docker-compose run --rm config
+$ docker-compose run --rm gigadb
+$ docker-compose run --rm less
 $ docker-compose run --rm fuw
 $ docker-compose run --rm fuw-config
 $ docker-compose up -d web
@@ -93,7 +94,7 @@ To run all the tests (GigaDB and FUW), these commands can be used:
 $ ./tests/unit_runner
 $ ./tests/functional_runner
 $ ./tests/coverage_runner
-$ ./tests/acceptance_runner
+$ ./tests/acceptance_runner local
 ```
 See the [Developer Guide](developer_guide.md) for detailed information.
 
