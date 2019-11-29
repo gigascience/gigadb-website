@@ -1,6 +1,6 @@
 {
     "name": "gigascience/gigadb-website",
-    "type": "Yii-based web site",
+    "type": "yii-project",
     "description": "GigaDB primarily serves as a repository to host data and tools associated with articles in GigaScience journal (${COMPOSER_WARNING})",
     "homepage": "http://gigadb.org",
     "require": {
