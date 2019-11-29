@@ -166,7 +166,7 @@ run_all_tests:
     - sleep 5
     - docker-compose up -d web
     # starting the headless browser for acceptance testing
-    # - docker-compose up -d phantomjs
+    - docker-compose up -d phantomjs
     # - docker-compose top
     # - docker network inspect rija-gigadb-website_web-tier
     # - docker network inspect rija-gigadb-website_db-tier
