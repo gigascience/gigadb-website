@@ -7,8 +7,18 @@ set -u
 docker-compose run --rm application ./protected/yiic migrate --interactive=0
 # running functional tests for GigaDB, make sure to reference the appropriate bootstrap, so database can be loaded and restored properly
 docker-compose run --rm test ./bin/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
-# before running tests, run migration for main database first (FUW)
-docker-compose exec -T console /app/yii migrate --interactive=0
-# running functional tests for File Upload Wizard's backend and frontend apps
-docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run functional
-docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run functional
+gigadb_test_status=$?
+set +e
+docker-compose ps | grep console
+console_running=$?
+set -e
+if [ "$console_running" -eq "0" ];then
+	# before running tests, run migration for main database first (FUW)
+	docker-compose exec -T console /app/yii migrate --interactive=0
+	# running functional tests for File Upload Wizard's backend and frontend apps
+	docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run functional
+	docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run functional
+else
+	echo "No 'console' container running so not running File Upload Wizard functional tests"
+	exit $gigadb_test_status
+fi

@@ -5,7 +5,16 @@ set -u
 
 
 docker-compose run --rm test ./bin/phpunit /var/www/protected/tests --testsuite all --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml
-docker-compose exec -T console /app/vendor/bin/codecept -c /app run --coverage --coverage-xml --coverage-html
+gigadb_test_status=$?                                                                                                                                         
+set +e                                                                                                                                                        
+docker-compose ps | grep console                                                                                                                              
+console_running=$?                                                                                                                                            
+set -e                                                                                                                                                        
+if [ "$console_running" -eq "0" ];then  
+	docker-compose exec -T console /app/vendor/bin/codecept -c /app run --coverage --coverage-xml --coverage-html
+else
+	echo "No 'console' container running so not running File Upload Wizard coverage"
+fi    
 
 docker-compose run --rm -e $(cat .env | grep COVERALLS) -e $(cat .secrets | grep COVERALLS) test ./bin/php-coveralls --verbose --coverage_clover /var/www/protected/runtime/clover.xml --json_path /var/www/protected/runtime/coveralls-upload.json
 
