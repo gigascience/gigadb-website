@@ -186,7 +186,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                     <div class="span3">
                                         <?php
                                         $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
-                                        echo CHtml::ajaxLink('Mint DOI',Yii::app()->createUrl('/dataset/mint/'),
+                                        echo CHtml::ajaxLink('Mint DOI',Yii::app()->createUrl('/adminDataset/mint/'),
                                         array(
                                             'type'=>'POST',
                                             'data'=> array('doi'=>'js:$("#Dataset_identifier").val()'),
