@@ -33,8 +33,14 @@ local:
       filters:
         tags: "@ok&&~@affiliate-login"
 
-cli:
+ci:
   suites:
     default:
       filters:
         tags: "@ok&&~@affiliate-login&&~@javascript"
+
+ci-js:
+  suites:
+    default:
+      filters:
+        tags: "@ok&&@ci-js"
