@@ -34,12 +34,13 @@ project locally under `gigadb-website`
 ### Getting started in 3 steps
 
 **(1)** To setup the web application locally, do the following:
+
 ```
 $ cd gigadb-website                         # your cloned git repository for Gigadb website
 $ git checkout develop                      # the branch with the latest code base
 $ cp ops/configuration/variables/env-sample .env    # make sure GITLAB_PRIVATE_TOKEN is set to your personal access token
 $ docker-compose run --rm config            # generate the configuration using variables in .env, GitLab, then exit
-$ docker-compose run --rm less				# generate site.css
+
 ```
 
 >**Note 1**: A `.secrets` file will be created automatically and populated using 
@@ -53,20 +54,26 @@ you will have to provide your own values for the necessary variables using
 >$ vi .secrets
 >```
 
-**(2)** To start the web application, run the following command:
+
+**(2)** To install PHP Composer dependencies and start the PHP webapp, run the following commands:
+
 ```
-$ docker-compose run --rm webapp            # run composer update, then spin up the web application's services, then exit
+$ docker-compose run --rm gigadb            # start php-fpm and postgresql containers, install php dependencies
+$ docker-compose run --rm less              # generate site.css from less/site.less
 ```
 
-The **webapp** container will run composer update using the `composer.json` 
-generated in the previous step, and will launch three containers named **web**, 
-**application** and **database**, then it will exit. It's ok to run the command 
-repeatedly.
+**(3)** Start the web server
 
-**(3)** Upon success, three services will be started in detached mode.
+Starting the web container will first enable site configuration connecting nginx to gigadb PHP application server before starting the web server as a deamon.
 
->**Note**: The first time, it will take longer to start the services as the 
-**application** container needs to be built first.
+```
+$ docker-compose up -d web                  # Start the web server
+```
+
+Upon success, three services should now be started in detached mode.
+You can then navigate to the website at:
+
+ * [http://gigadb.gigasciencejournal.com:9170/](http://gigadb.gigasciencejournal.com:9170/)
 
 
 ### Running database migrations
@@ -77,11 +84,6 @@ database for GigaDB as follows:
 $ ops/scripts/setup_devdb.sh
 ```
 
-You can then navigate to the website at:
-
- * [http://gigadb.gigasciencejournal.com:9170/](http://gigadb.gigasciencejournal.com:9170/)
-
-
 ### Configuration variables
 
 The project can be configured using *deployment variables* managed in `.env`, 
@@ -90,32 +92,91 @@ file and its overrides (`docker-compose.*.yml`). Finally, passwords, api keys
 and tokens are managed as *secret variables* in `.secrets`.
 
 
-## Testing
+## Testing GigaDB 
+
+
+### Using convenience test runners:
+
+```
+$ ./tests/unit_runner         # run all the unit tests after ensuring test DB migrations are up-to-date
+$ ./tests/functional_runner   # run all the functional tests after ensuring DB migrations are up-to-date
+$ docker-compose up -d phantomjs  # start a WebKit-based headless web browser
+$ ./tests/acceptance_runner local # run all the acceptance tests (see important note below)
+$ ./tests/coverage_runner     # run test coverage, print report and submit to coveralls.io
+```
+
+>**Important**: Before running the acceptance tests, if you are on a Mac, you will need to run the command below in a separate terminal tab/window to expose the Docker API on a TCP port (the secure way for container/host communications). No need to do so on Windows or Linux where TCP port is already exposed.
+
+```
+$ socat TCP-LISTEN:2375,reuseaddr,fork UNIX-CONNECT:/var/run/docker.sock &
+```
+
+If ``socat`` is not installed, you can do so with:
+
+```
+$ brew install socat
+```
+
+>**Note**: those runners are just ``bash`` wrappers to ``docker-compose run`` commands that you are free to use directly. You will want to do that if you want to tweak the test suite execution (see below).
+
+### How to run a subset of a test suite?
+
+#### For unit tests
+
+You can specifiy the specific test file you want to run:
+
+```
+$ docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage protected/tests/unit/DatasetDAOTest.php
+```
+
+#### For functional tests
+
+You can specifiy the specific test file you want to run:
+
+```
+$ docker-compose run --rm test ./bin/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage protected/tests/functional/SiteTest.php
+```
+
+#### For Acceptance tests
+
+three methods are available and they can all be combined together
+
+##### using filename
+
+You specify a feature file to run:
 
 To run the tests:
 ```
-$ docker-compose run --rm test
+$ docker-compose run --rm test bin/behat --profile local --stop-on-failure features/dataset-admin.feature
 ```
 
-This will run all the tests and generate a test coverage report. An headless 
-Selenium web browser (currently PhantomJS) will be automatically spun-off into 
-its own container. If an acceptance test fails, it will leave a screenshot under 
-the `./tmp` directory.
+##### using tags
 
-To only run unit tests, use the command:
+You can pass tags as arguments to run all scenarios that have these tags in any feature file.
+
 ```
-$ docker-compose run --rm test ./tests/unit_functional
+$ docker-compose run --rm test bin/behat --profile local --stop-on-failure --tags @login
+```
+
+##### using line numbers
+
+You can specify the line number in a feature file where the text of a scenario starts to just run that scenario.
+
+```
+$ docker-compose run --rm test bin/behat --profile local --stop-on-failure features/dataset-admin.feature:76
 ```
 
 ## Troubleshooting
 
 To access the services logs, use the command below:
+
 ```
 $ docker-compose logs <service name>            # e.g: docker-compose logs web
 ```
 
 You can get information on the images, services and the processes running in 
 them with these commands:
+
 ```
 $ docker-compose images
 $ docker-compose ps
@@ -124,11 +185,13 @@ $ docker-compose top
 
 To debug the configuration or the tests, you can drop into `bash` with both 
 containers:
+
 ```
 $ docker-compose run --rm config bash
 ```
 
 or:
+
 ```
 $ docker-compose run --rm test bash
 ```
@@ -140,6 +203,7 @@ application too).
 The **test** container has also the PostgreSQL admin tools installed (pg\_dump, 
 pg\_restore, psql), so it's a good place for debugging database issues. For
 example, to access the PostgreSQL database from the **test** container:
+
 ```
 # Drop into bash in test container
 $ docker-compose run --rm test bash
@@ -149,6 +213,7 @@ root@16b04afd18d5:/var/www# psql -h database -p 5432 -U gigadb gigadb
 
 The test database in the locally-deployed GigaDB application can be populated 
 with production-like data as follows:
+
 ```
 # Drop into bash in the test container
 $ docker-compose run --rm test bash
@@ -198,11 +263,13 @@ to see how the services are assembled and what scripts they run.
 
 To regenerate the web application configuration files, *e.g.* because a variable 
 is added or changed on GitLab or `.env`:
+
 ```
 $ docker-compose run --rm config
 ```
 
 To restart, start or stop any of the services:
+
 ```
 $ docker-compose restart|start|stop <service name>	# e.g: docker-compose restart database
 ```
@@ -210,12 +277,14 @@ $ docker-compose restart|start|stop <service name>	# e.g: docker-compose restart
 To rebuild the local containers (**application** and **test**), e.g: because of 
 changes made to the [Dockerfile](ops/packaging/Dockerfile) or because the base 
 image has been upgraded (see below):
+
 ```
 $ docker-compose build <service name>				# e.g: docker-compose build application
 ```
 
 To tear down all the services (the project data at location pointed at by 
 DATA\_SAVE\_PATH *deployment variable* are unaffected):
+
 ```
 $ docker-compose down
 ```
@@ -223,6 +292,7 @@ $ docker-compose down
 To upgrade the images used by the services (including base images for local 
 containers) to the latest version of a fixed tag, without restarting the 
 services:
+
 ```
 $ docker-compose pull
 ```
