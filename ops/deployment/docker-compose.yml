@@ -93,7 +93,7 @@ services:
         protocol: tcp
         mode: host
     volumes:
-      - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
+      - ${DATA_SAVE_PATH}/postgres/${POSTGRES_VERSION}/data:/var/lib/postgresql/data
       - ${APPLICATION}/fuw/app/common/config/bootstrap.sql:/docker-entrypoint-initdb.d/3-fuw.sql
       - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf'
