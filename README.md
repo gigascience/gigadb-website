@@ -57,7 +57,7 @@ you will have to provide your own values for the necessary variables using
 **(2)** To install PHP Composer dependencies and start the PHP webapp, run the following commands:
 
 ```
-$ docker-compose run --rm gigadb            # start php-fpm and postgresql containers, install php dependencies
+$ docker-compose run --rm --build gigadb            # start php-fpm and postgresql containers, install php dependencies
 $ docker-compose run --rm less              # generate site.css from less/site.less
 ```
 
@@ -65,7 +65,6 @@ The **gigadb** container will run composer update using the `composer.json`
 generated in the previous step, and will launch two containers named
 **application** and **database**, then it will exit. It's ok to run the command 
 repeatedly.
-
 
 **(3)** Start the web server
 
@@ -76,12 +75,23 @@ $ docker-compose up -d web                  # Start the web server
 ```
 
 Upon success, three services should now be started in detached mode.
-You can then navigate to the website at:
+You can then navigate to the website at: [http://gigadb.gigasciencejournal.com:9170/](http://gigadb.gigasciencejournal.com:9170/)
 
- * [http://gigadb.gigasciencejournal.com:9170/](http://gigadb.gigasciencejournal.com:9170/)
 
->**Note**: The first time, it will take longer to start the services as the 
-**application** container needs to be built first.
+>**Note**: The first time (or when using ``--build``, as explained below), it will take longer to start the services as the 
+**application** and **web** containers need to be built first.
+
+#### About the ``--build`` argument
+
+The ``--build`` argument (to force-build containers) is required :
+
+* after changing their Dockerfile 
+* after making changes to the ``.env`` file
+* after switching/merging git branches with either of the above conditions
+
+to ensure the containers (**application**, **web**, and **test**) are built from the expected local development files due to lingering prior running version of the containers. 
+
+Avoiding using it when not necessary will speed up container startup by not building them again. Even if not used, the containers will still automatically go through the build process the very first time or after the container image has been deleted.
 
 
 ### Configuration variables
@@ -111,6 +121,11 @@ $ docker-compose run --rm application ./protected/yiic_test migrate --interactiv
 
 ## Testing GigaDB 
 
+Make sure the test container is built if it's the first time or if the Dockerfile and/or the ``.env`` file have changed to ensure the container uses the correct development files.
+
+```
+$ docker-compose build test
+```
 
 ### Using convenience test runners:
 
@@ -140,7 +155,7 @@ $ brew install socat
 
 #### For unit tests
 
-You can specifiy the specific test file you want to run:
+You can specify the specific test file you want to run:
 
 ```
 $ docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage protected/tests/unit/DatasetDAOTest.php
@@ -148,7 +163,7 @@ $ docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protec
 
 #### For functional tests
 
-You can specifiy the specific test file you want to run:
+You can specify the specific test file you want to run:
 
 ```
 $ docker-compose run --rm test ./bin/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage protected/tests/functional/SiteTest.php
