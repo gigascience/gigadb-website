@@ -90,7 +90,6 @@ Scenario: new dataset with mandatory fields filled in
 	And I am on "/adminDataset/admin"
 	When I follow "Create Dataset"
 	And I select "user@gigadb.org" from "Submitter"
-	And I select "AuthorReview" from "Upload Status"
 	And I fill in "Title" with "My dataset"
 	And I fill in "Dataset Size" with "345345324235"
 	And I fill in "Image Source" with "Wikimedia"
