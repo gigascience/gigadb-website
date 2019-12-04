@@ -84,11 +84,17 @@ mkdir -p ${APP_SOURCE}/images/tempcaptcha && chmod 777 ${APP_SOURCE}/images/temp
 
 # Generate google api client credentials
 
-if [[ "$GIGADB_ENV" == "dev" ]];then
+if [ "$GIGADB_ENV" == "dev" ] && [ "$REPO_NAME" != "<Your fork name here>" ] ;then
 	echo "Retrieving private_key variable for Google API from ${PROJECT_VARIABLES_URL}"
 	curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN"  "${PROJECT_VARIABLES_URL}/ANALYTICS_PRIVATE_KEY" | jq -r ' .value' > protected/config/keyfile.json
 else
-	echo $ANALYTICS_PRIVATE_KEY > protected/config/keyfile.json
+    echo "Either not a dev environment or REPO_NAME set to <Your fork name here>"
+    echo "Will try ANALYTICS_PRIVATE_KEY"
+    if ! [[ -z ${ANALYTICS_PRIVATE_KEY+x} ]] ;then
+    	echo $ANALYTICS_PRIVATE_KEY > protected/config/keyfile.json
+    else
+        echo "either set REPO_NAME correctly or supply a value for ANALYTICS_PRIVATE_KEY"
+    fi
 fi
 
 echo "* ---------------------------------------------- *"

@@ -35,10 +35,10 @@ $ docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:2375:2
 
 ```
 $ docker-compose run --rm config
-$ docker-compose run --rm gigadb
+$ docker-compose up -d gigadb
 $ docker-compose run --rm less
 $ docker-compose run --rm fuw-config
-$ docker-compose run --rm fuw
+$ docker-compose up -d fuw
 $ docker-compose up -d web
 $ docker-compose exec web /usr/local/bin/enable_sites fuw-backend.dev.http
 ```
@@ -87,7 +87,7 @@ However, there are situations where we need to force the build process to make s
 In those cases, use the ```--build`` argument when you start the container services:
 
 ```
-$ docker-compose run --rm --build fuw
+$ docker-compose up -d --build fuw
 ```
 
 

@@ -38,7 +38,7 @@ project locally under `gigadb-website`
 ```
 $ cd gigadb-website                         # your cloned git repository for Gigadb website
 $ git checkout develop                      # the branch with the latest code base
-$ cp ops/configuration/variables/env-sample .env    # make sure GITLAB_PRIVATE_TOKEN is set to your personal access token
+$ cp ops/configuration/variables/env-sample .env    # ensure GITLAB_PRIVATE_TOKEN is set, as well as <Your fork name here>
 $ docker-compose run --rm config            # generate the configuration using variables in .env, GitLab, then exit
 
 ```
@@ -58,7 +58,7 @@ you will have to provide your own values for the necessary variables using
 **(2)** To install PHP Composer dependencies and start the PHP webapp, run the following commands:
 
 ```
-$ docker-compose run --rm --build gigadb            # start php-fpm and postgresql containers, install php dependencies
+$ docker-compose up -d --build gigadb            # start php-fpm and postgresql containers, install php dependencies
 $ docker-compose run --rm less              # generate site.css from less/site.less
 ```
 
