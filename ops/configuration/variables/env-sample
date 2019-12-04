@@ -5,9 +5,9 @@
 ### Compose files  ###############################################################################################
 # The file paths where docker-compose can file its YAML file
 
-# COMPOSE_FILE=ops/deployment/docker-compose.yml
+COMPOSE_FILE=ops/deployment/docker-compose.yml
 # Keep the line below uncommented to enable profiling of the web application using Tideways XHPROF and XHGUI
-COMPOSE_FILE=ops/deployment/docker-compose.yml:ops/deployment/docker-compose.prof.yml
+# COMPOSE_FILE=ops/deployment/docker-compose.yml:ops/deployment/docker-compose.prof.yml
 
 ### prefix for local container ##############################################################################
 COMPOSE_PROJECT_NAME=deployment
@@ -25,8 +25,9 @@ COMPOSE_PROJECT_NAME=deployment
 # the variables will be merged into a .secrets file
 # Replace <Your fork name here> with urlencoded name of the fork
 
+REPO_NAME="<Your fork name here>"
 GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
-PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F<Your fork name here>/variables"
+PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
 
 ### Deployment Environment  #############################################################################################
 # dev, ci,  staging or production
