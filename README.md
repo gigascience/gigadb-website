@@ -137,18 +137,6 @@ $ ./tests/acceptance_runner local # run all the acceptance tests (see important 
 $ ./tests/coverage_runner     # run test coverage, print report and submit to coveralls.io
 ```
 
->**Important**: Before running the acceptance tests, if you are on a Mac, you will need to run the command below in a separate terminal tab/window to expose the Docker API on a TCP port (the secure way for container/host communications). No need to do so on Windows or Linux where TCP port is already exposed.
-
-```
-$ socat TCP-LISTEN:2375,reuseaddr,fork UNIX-CONNECT:/var/run/docker.sock &
-```
-
-If ``socat`` is not installed, you can do so with:
-
-```
-$ brew install socat
-```
-
 >**Note**: those runners are just ``bash`` wrappers to ``docker-compose run`` commands that you are free to use directly. You will want to do that if you want to tweak the test suite execution (see below).
 
 ### How to run a subset of a test suite?
