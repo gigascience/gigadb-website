@@ -46,7 +46,9 @@ class DatasetAttributes extends CActiveRecord
         // will receive user inputs.
         return array(
             array('dataset_id, attribute_id, image_id', 'numerical', 'integerOnly'=>true),
+            array('value', 'required'),
             array('value', 'length', 'max'=>200),
+            array('value', 'rejectCode'),
             array('units_id', 'length', 'max'=>30),
             array('until_date', 'safe'),
             // The following rule is used by search().
@@ -114,5 +116,19 @@ class DatasetAttributes extends CActiveRecord
         return new CActiveDataProvider('DatasetAttributes', array(
             'criteria'=>$criteria,
         ));
+    }
+
+    /**
+     * Reject values that have HTML/PHP/javascript tags in them
+     *
+     * @param string $attr the name of the attribute to be validated
+     * @param array $params options specified in the validation rule
+     */
+    public function rejectCode($attr,$params) {
+        $rawValue = CHtml::decode($this->value);
+        $strippedValue = strip_tags($rawValue);
+        if ($rawValue !== $strippedValue) {
+            $this->addError($attr,'Rejected value because of illegal characters detected');
+        }
     }
 }
