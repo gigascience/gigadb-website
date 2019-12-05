@@ -76,13 +76,15 @@ Scenario: Keywords
 Scenario: redirect
 	Given I sign in as an admin
 	And I am on "/adminDataset/update/id/210"
-	When I fill in "urltoredirect" with "http://gigadb.dev/dataset/100002/token/ban74hsfds"
+	When I fill in "urltoredirect" with "http://gigadb.dev/dataset/100002/token/banasdfsaf74hsfds"
 	And I press "Save"
-	And I go to "/dataset/100002/token/ban74hsfds"
-	Then the url should be "/dataset/100002/token/ban74hsfds"
-	# And I take a screenshot named "redirect notice page"
-	And I wait "20" seconds
-	And the url should be "/dataset/100002"
+	And I go to "/dataset/100002/token/banasdfsaf74hsfds"
+	Then the url should be "/dataset/100002/token/banasdfsaf74hsfds"
+	# And I take a screenshot named "redirect notice page (before)"
+	And I should see "Redirect notice"
+	And I wait "10" seconds
+	# And I take a screenshot named "redirect notice page (after)"
+	And I should not see "Redirect notice"
 
 @ok
 Scenario: new dataset with mandatory fields filled in
