@@ -46,7 +46,7 @@ class DatasetAttributes extends CActiveRecord
         // will receive user inputs.
         return array(
             array('dataset_id, attribute_id, image_id', 'numerical', 'integerOnly'=>true),
-            array('value', 'length', 'max'=>50),
+            array('value', 'length', 'max'=>200),
             array('units_id', 'length', 'max'=>30),
             array('until_date', 'safe'),
             // The following rule is used by search().
