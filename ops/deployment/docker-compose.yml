@@ -268,7 +268,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm
         - APP_PORT=9002
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
