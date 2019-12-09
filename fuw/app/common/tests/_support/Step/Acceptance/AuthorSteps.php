@@ -132,9 +132,10 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
      */
      public function iAttachTheFileInTheFileDropPanel($arg1)
      {
-        $this->I->waitForElementClickable('/html/body/div[3]/div[1]/div/div[2]/div/div[2]/input', 30);
+        // $this->I->waitForElementClickable('/html/body/div[3]/div[1]/div/div[2]/div/div[2]/input', 30);
+        $this->I->waitForElement('.uppy-Dashboard-input', 30);
         $this->I->resizeWindow(1440,900);
-        $this->I->attachFile('/html/body/div[3]/div[1]/div/div[2]/div/div[2]/input',$arg1);
+        $this->I->attachFile('.uppy-Dashboard-input',$arg1);
      }
 
      /**
