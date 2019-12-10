@@ -46,7 +46,7 @@ Scenario: Can add files to the upload queue
 	And the "Your Uploaded Datasets" tab is active
 	And I press "Upload Dataset Files"
 	And I should be on "/authorisedDataset/uploadFiles/"
-	And I wait "2" seconds
+	And I wait "1" seconds
 	When I attach the file "TheProof.csv" in the file drop panel
 	And I wait "1" seconds
 	Then I should see "TheProof.csv"
@@ -59,7 +59,20 @@ Scenario: All files in the queue are uploaded
 	And I press "Upload Dataset Files"
 	When I attach the file "TheProof.csv" in the file drop panel
 	And I press "Upload 1 file"
-	And I wait "2" seconds
+	And I wait "1" seconds
+	Then I should see the file upload completed
+
+@ok @file-upload
+Scenario: Queued files are all uploaded
+	Given I sign in as the user "Artie" "Dodger"
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	When I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "TheProof2.csv" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "1" seconds
 	Then I should see the file upload completed
 
 @not-ready
@@ -67,6 +80,9 @@ Scenario: A particular file transfer can be paused
 
 @not-ready
 Scenario: A particular file transfer can be cancelled
+
+@not-ready
+Scenario: Files to the appropriate filedrop account
 
 # Scenario: There's no button for uploading files if dataset doesn't have the right status
 # 	Given I sign in as a user
