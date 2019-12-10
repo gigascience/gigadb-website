@@ -22,6 +22,7 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
      public function filedropAccountForDOIDoesExist($doi)
      {
 
+        // Database record
      	$this->I->amConnectedToDatabase('fuwdb');
         $this->I->haveInDatabase('filedrop_account', [
 			  'doi' => $doi,
@@ -33,6 +34,10 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
 			]);
        	$this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
 
+        //Filesystem objects
+        mkdir("/var/incoming/ftp/$doi",0777,true) or exit("failed making directory 1 for $doi");
+        mkdir("/var/incoming/credentials/$doi",0777,true) or exit("failed making directory 2 for $doi");
+        mkdir("/var/repo/$doi",0777,true) or exit("failed making directory 3 for $doi");
      }
 
  	/**
@@ -161,5 +166,16 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
      {
         $this->I->amOnUrl("http://gigadb.test".$arg1);
      }
+
+    /**
+     * @Then I should see the file upload completed
+     */
+     public function iShouldSeeTheFileUploadCompleted()
+     {
+        $this->I->waitForElementChange('.uppy-StatusBar-progress',function(WebDriverElement $el) {
+            return "100" === $el->getAttribute("aria-valuenow");
+        }, 30);
+     }
+
 
 }
