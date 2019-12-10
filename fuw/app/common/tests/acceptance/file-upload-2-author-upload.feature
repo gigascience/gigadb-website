@@ -75,15 +75,6 @@ Scenario: Queued files are all uploaded
 	And I wait "1" seconds
 	Then I should see the file upload completed
 
-@not-ready
-Scenario: A particular file transfer can be paused
-
-@not-ready
-Scenario: A particular file transfer can be cancelled
-
-@not-ready
-Scenario: Files to the appropriate filedrop account
-
 # Scenario: There's no button for uploading files if dataset doesn't have the right status
 # 	Given I sign in as a user
 # 	And I am on "/user/view_profile#submitted"
