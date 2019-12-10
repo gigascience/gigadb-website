@@ -35,6 +35,8 @@ modules:
                 "goog:chromeOptions":
                     args: ['--headless']
                     w3c: false
+        - Filesystem
+        - common\tests\Helper\FilesystemCleanupHook
 gherkin:
     contexts:
         default:
