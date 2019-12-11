@@ -10,6 +10,43 @@
 class AuthorisedDatasetController extends Controller
 {
 
+    /**
+     * Filter testing whether user is submitter of dataset in parameter
+     *
+     * @param CFilterChain $filterChain context of the filter including controller params
+     */
+    public function filterAuthoriseSubmitter($filterChain)
+    {
+        $doi = $filterChain->controller->getActionParams()['id'] ?? false ;
+        $dataset = Dataset::model()->findByAttributes(["identifier" => $doi]) ?? false ;
+        if ($dataset && Yii::app()->user->id === $dataset->submitter_id) {
+            $filterChain->run(); // continue with executing further filters and the action
+        }
+        else {
+            throw new CHttpException(403,
+                Yii::t('yii','Forbidden: Dataset upload not authorised for user')
+            );
+        }
+    }
+
+    /**
+     * Filter testing whether the dataset has right upload status
+     *
+     * @param CFilterChain $filterChain context of the filter including controller params
+     */
+    public function filterCheckUploadStatus($filterChain)
+    {
+        $doi = $filterChain->controller->getActionParams()['id'] ?? false ;
+        $dataset = Dataset::model()->findByAttributes(["identifier" => $doi]) ?? false ;
+        if ($dataset && 'UserUploadingData' === $dataset->upload_status) {
+            $filterChain->run(); // continue with executing further filters and the action
+        }
+        else {
+            throw new CHttpException(409,
+                Yii::t('yii','Conflict: Dataset has incorrect status for uploading')
+            );
+        }
+    }
 	/**
      * @return array action filters
      */
@@ -17,6 +54,8 @@ class AuthorisedDatasetController extends Controller
     {
         return array(
             'accessControl', // perform access control for CRUD operations
+            'authoriseSubmitter', // ensure only submitters can upload files
+            'checkUploadStatus', // ensure dataset's right status
         );
     }
 
