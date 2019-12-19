@@ -13,6 +13,8 @@ trait DatabaseSteps
 	/**
 	 * Set up a new user in the database
 	 *
+	 * to be used with gigadb database
+	 *
 	 * @param PDO $dbh
 	 * @param string $firstname
 	 * @param string $lastname
@@ -31,6 +33,8 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 	/**
 	 * tear down user in the database
 	 *
+	 * to be used with gigadb database
+	 *
 	 * @param PDO $dbh
 	 * @param string $email
 	 */
@@ -46,6 +50,8 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 	/**
 	 * Set dataset status for test
 	 *
+	 * to be used with gigadb database
+	 *
 	 * @param PDO $dbh
 	 * @param string $doi
 	 * @param string $status
@@ -58,5 +64,47 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 		$sth = null;
 	}
 
+	/**
+	 * create a filedrop_account record
+	 *
+	 * to be used with fuw database
+	 *
+	 * @param PDO $dbh
+	 * @param string $doi
+	 * @param string $instructions
+	 * @return int $id the id of the record just created
+	 */
+	public function makeFiledropAccountRecord(PDO $dbh, string $doi, string $instructions): int
+	{
+		$sql = "insert into filedrop_account(doi, instructions, upload_login, upload_token, download_login, download_token, status) values(:doi,:instructions, :upload_login, :upload_token, :download_login, :download_token, 1) returning id";
+		$sth = $dbh->prepare($sql);
+		$sth->bindValue(':doi', "$doi");
+		$sth->bindValue(':instructions', "$instructions");
+		$sth->bindValue(':upload_login', "agasniashgadaf");
+		$sth->bindValue(':upload_token', "agasniashgadaf");
+		$sth->bindValue(':download_login', "agasniashgadaf");
+		$sth->bindValue(':download_token', "agasniashgadaf");
+		$sth->execute();
+		$result = $sth->fetch(PDO::FETCH_OBJ);
+		$sth = null;
+		return $result->id;
+	}
+
+
+	/**
+	 * tear down Filedrop account
+	 *
+	 * to be used with fuw database
+	 *
+	 * @param PDO $dbh
+	 */
+	public function tearDownFiledropAccount(PDO $dbh): void
+	{
+		$sql = "delete from filedrop_account";
+		$sth = $dbh->prepare($sql);
+		// $sth->bindValue(":id", "$id");
+		$sth->execute();
+		$sth = null;
+	}
 }
 ?>
