@@ -46,6 +46,24 @@ class SendInstructionsAction extends CAction
         }
 
         $message = "Instructions sent.";
+        // save it to the instructions log
+        $log = new CurationLog();
+        $log->setAttributes([
+             "dataset_id" => Dataset::model()->findByAttributes(['identifier'=>$id])->id,
+             "action" => "upload instructions sent",
+             "comments" => $instructions,
+             "created_by" => User::model()->findByPk(Yii::app()->user->id)->getFullName(),
+             "creation_date" => new CDbExpression('NOW()')
+            ]);
+        if ($log->save()) {
+            Yii::log("email instructions saved in curation log",'info');
+        }
+        else {
+            Yii::log("problem saving email instructions in curation log:",'error');
+            foreach ($log->getErrors() as $attr => $msg) {
+                Yii::log("$attr: $msg",'error');
+            }
+        }
         Yii::app()->user->setFlash('success',$message);
         unset(Yii::app()->session["filedrop_id_".Yii::app()->user->id]);
 
