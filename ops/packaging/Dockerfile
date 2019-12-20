@@ -21,13 +21,10 @@ RUN apt-get update -yq && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
-RUN docker-php-ext-install mcrypt
-
-# Install the PHP pdo_pgsql extention
-RUN docker-php-ext-install pdo_pgsql
-
-# Install the PHP bcmath extention
-RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install mcrypt && \
+    docker-php-ext-install pdo_pgsql && \
+    docker-php-ext-install bcmath && \
+    docker-php-ext-install pcntl
 
 # Install the PHP gd library
 RUN docker-php-ext-install gd && \
