@@ -50,7 +50,7 @@ class FiledropServiceTest extends FunctionalTesting
     public function testCreateAccountMakeAuthenticatedCall()
     {
         $api_endpoint = "http://fuw-admin-api/filedrop-accounts";
-        $doi = "101001";
+        $doi = "100004";
         $jwt_ttl = 31104000 ;
 
         // Prepare the http client to be traceable for testing
@@ -115,7 +115,7 @@ class FiledropServiceTest extends FunctionalTesting
     public function testCreateAccountReturnsProperties()
     {
         $api_endpoint = "http://fuw-admin-api/filedrop-accounts";
-        $doi = "101001";
+        $doi = "100004";
         $jwt_ttl = 31104000 ;
 
         // Prepare the http client to be traceable for testing
