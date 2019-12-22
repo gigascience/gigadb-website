@@ -2,7 +2,7 @@
 
 // PHPUnit needs to now where to find classes and library
 $yiit=__DIR__.'/../yiit.php';
-$config=dirname(__FILE__).'/../config/test.php';
+$config=dirname(__FILE__).'/../config/main.php';
 $composer=dirname(__FILE__)."/../../vendor/autoload.php";
 
 require_once($yiit);
