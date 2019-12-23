@@ -3,12 +3,24 @@
 set -e
 set -u
 
+docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --coverage-php protected/runtime/unit.cov  --configuration protected/tests/phpunit.xml
+docker-compose run --rm test ./bin/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php  --coverage-php protected/runtime/functional.cov  --configuration protected/tests/phpunit.xml
+docker-compose run --rm test ./bin/phpcov merge protected/runtime --html protected/runtime/coverage --clover protected/runtime/clover.xml --text  protected/runtime/phpunit-coverage.txt | head -16 > protected/runtime/phpunit-coverage.txt
 
-docker-compose run --rm test ./bin/phpunit /var/www/protected/tests --testsuite all --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml
-# docker-compose exec -T console /app/vendor/bin/codecept -c /app run --coverage --coverage-xml --coverage-html
-docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run --coverage --coverage-xml --coverage-html
-docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run --coverage --coverage-xml --coverage-html
-docker-compose exec -T console /app/vendor/bin/codecept -c /app/common run --coverage --coverage-xml --coverage-html -- unit,functional
+gigadb_test_status=$?
+set +e
+docker-compose ps | grep console
+console_running=$?
+set -e
+if [ "$console_running" -eq "0" ];then
+	# docker-compose exec -T console /app/vendor/bin/codecept -c /app run --coverage --coverage-xml --coverage-html
+	docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run --coverage --coverage-xml --coverage-html
+	docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run --coverage --coverage-xml --coverage-html
+	docker-compose exec -T console /app/vendor/bin/codecept -c /app/common run --coverage --coverage-xml --coverage-html -- unit,functional
+else
+	echo "No 'console' container running so not running File Upload Wizard coverage"
+fi
+
 
 docker-compose run --rm -e $(cat .env | grep COVERALLS) -e $(cat .secrets | grep COVERALLS) test ./bin/php-coveralls --verbose --coverage_clover /var/www/protected/runtime/clover.xml --json_path /var/www/protected/runtime/coveralls-upload.json
 

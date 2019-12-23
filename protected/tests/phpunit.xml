@@ -23,6 +23,7 @@
 	      <directory suffix=".php">/var/www/protected/tests/fixtures</directory>
 	      <directory suffix=".php">/var/www/protected/vendors</directory>
 	      <directory suffix=".php">/var/www/protected/views</directory>
+	      <directory suffix=".php">/var/www/protected/scripts</directory>
 	      <directory suffix=".php">/var/www/protected/extensions</directory>
 	      <directory suffix=".php">/var/www/protected/migrations</directory>
 	      <file suffix=".php">/var/www/protected/yiic.php</file>
@@ -32,13 +33,4 @@
 	    </exclude>
 	  </whitelist>
 	</filter>
-
-	<logging>
-		<log type="coverage-clover" target="/var/www/protected/runtime/clover.xml"/>
-		<!-- <log type="coverage-text" target="php://stdout" showOnlySummary="true"/> -->
-		<log type="coverage-text" target="/var/www/protected/runtime/phpunit-coverage.txt" showOnlySummary="true"/>
-		<log type="coverage-html" target="/var/www/protected/runtime/coverage" lowUpperBound="35"
-       highLowerBound="70"/>
-       <log type="coverage-php" target="/var/www/protected/runtime/coverage.serialized"/>
-	</logging>
 </phpunit>
