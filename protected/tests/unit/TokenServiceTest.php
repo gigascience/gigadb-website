@@ -52,8 +52,8 @@ class TokenServiceTest extends CTestCase
     $mockDateTime->expects($this->exactly(2))
                  ->method('format')
                  ->withConsecutive(
-                 "U",
-                 "U"
+                 ["U"],
+                 ["U"]
              )
              ->will($this->onConsecutiveCalls(
               $issuedTime,
