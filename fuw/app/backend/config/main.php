@@ -48,6 +48,7 @@ return [
             'showScriptName' => false,
             'rules' => [
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'filedrop-account'],
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'user'],
                 'site/login' => 'site/login',
             ],
         ],
