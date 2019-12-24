@@ -106,5 +106,25 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 		$sth->execute();
 		$sth = null;
 	}
+
+
+	/**
+	 * tear down FUW User account
+	 *
+	 * to be used with fuw database
+	 *
+	 * @param PDO $dbh
+	 * @param string $email
+	 */
+	public function tearDownUserIdentity(PDO $dbh, ?string $email): void
+	{
+		if ($dbh && $email) {
+			$sql = "delete from public.user where email=:email";
+			$sth = $dbh->prepare($sql);
+			$sth->bindValue(":email", "$email");
+			$sth->execute();
+			$sth = null;
+		}
+	}
 }
 ?>
