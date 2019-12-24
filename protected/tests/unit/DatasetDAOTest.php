@@ -124,6 +124,14 @@ class DatasetDAOTest extends CDbTestCase {
         $this->assertEquals('Published',$datasetDAO->getTitleAndStatus()['status']);
     }
 
+    /**
+     * test retrieve submitter
+     */
+    public function testGetSubmitter()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
+        $this->assertEquals($datasetDAO->getSubmitter()->id,345);
+    }
 
     public function keywordsProvider()
     {

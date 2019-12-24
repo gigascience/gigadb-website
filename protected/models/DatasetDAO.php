@@ -133,6 +133,17 @@ class DatasetDAO extends yii\base\BaseObject
 		$dataset = Dataset::model()->findByAttributes(["identifier" => $this->_identifier]);
 		return array("title" =>$dataset->title, "status" => $dataset->upload_status);
 	}
+
+	/**
+	 * return user who submitted the dataset
+	 *
+	 * @return User||null return User
+	 */
+	public function getSubmitter(): ?User
+	{
+		$dataset = Dataset::model()->findByAttributes(["identifier" => $this->_identifier]);
+		return $dataset->submitter;
+	}
 }
 
 ?>
