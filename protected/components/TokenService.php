@@ -63,5 +63,43 @@ class TokenService extends yii\base\Component
 		return $client_token;
 	}
 
+	/**
+	 * Make HTTP POST to File Upload Wizard to create user
+	 *
+	 * @param \Lcobucci\JWT\Token $token authentication token
+	 * @param \GuzzleHttp\Client $webClient web client
+	 * @param string $username username for the user to create
+	 * @param string $email email for the user to create
+	 *
+	 * @return ?array whether the call has been made and succeed or not. If succes, return an array of created User's properties.
+	 */
+	public function createUser($token, $webClient, string $username, string $email): ?array
+	{
+
+		$api_endpoint = "http://fuw-admin-api/users";
+
+		try {
+			$response = $webClient->request('POST', $api_endpoint, [
+								    'headers' => [
+								        'Authorization' => "Bearer ".$token,
+								    ],
+								    'form_params' => [
+								        'username' => $username,
+								        'email' => $email,
+								    ],
+								    'connect_timeout' => 5,
+								]);
+			if (201 === $response->getStatusCode() ) {
+				return json_decode($response->getBody(), true);
+			}
+		}
+		catch(RequestException $e) {
+			Yii::log( Psr7\str($e->getRequest()) , "error");
+		    if ($e->hasResponse()) {
+		        Yii::log( Psr7\str($e->getResponse()), "error");
+		    }
+		}
+		return false;
+	}
 }
 ?>

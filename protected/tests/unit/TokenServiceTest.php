@@ -99,4 +99,66 @@ class TokenServiceTest extends CTestCase
 
 
   }
+
+  /**
+     * test createUser() passing
+     *
+     */
+    public function testCreateUser()
+    {
+
+      // set mocks
+      $mockToken = $this->createMock(\Lcobucci\JWT\Token::class);
+      $mockWebClient = $this->createMock(\GuzzleHttp\Client::class);
+      $mockResponse = $this->createMock(\GuzzleHttp\Psr7\Response::class);
+
+      // set expected parameters to the HTTP request:
+      $filedrop_id = 1;
+      $api_endpoint = "http://fuw-admin-api/users";
+      $username = "foo bar";
+      $email = "foo@bar.com";
+      $method = "POST";
+      $connect_timeout = 5 ;
+      $auth_header = ['Authorization' => "Bearer ".$mockToken];
+      $form_params = [
+                      'username' => $username,
+                      'email' => $email,
+                      ];
+      $jsonResponse = json_encode(["id" => 3434, "username" =>"foobar", "email" => "foo@bar.com"]);
+
+      $mockResponse->expects($this->once())
+               ->method('getBody')
+               ->willReturn($jsonResponse);
+
+      $mockWebClient->expects($this->once())
+               ->method('request')
+               ->with($method, $api_endpoint, [ 'headers' => $auth_header,
+                                              'form_params' => $form_params,
+                                              'connect_timeout' => $connect_timeout
+                      ])
+               ->willReturn($mockResponse);
+
+
+
+      $mockResponse->expects($this->once())
+               ->method('getStatusCode')
+               ->willReturn(201);
+
+      // Instantiate the token service after injecting the mock and invoke token creation
+      $tokenSrv = new TokenService([
+                                  'jwtTTL' => $jwt_ttl,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => $mockUserDAO,
+                                  'dt' => $mockDateTime,
+                                ]);
+
+      $userData = $tokenSrv->createUser(
+        $mockToken, $mockWebClient, $username, $email
+      );
+      $this->assertNotNull($userData);
+      $this->assertNotNull($userData['id']);
+      $this->assertNotNull($userData['username']);
+      $this->assertNotNull($userData['email']);
+    }
 }
