@@ -158,22 +158,22 @@ class FiledropService extends yii\base\Component
 	 * @param string $subject subject to use for the email to be sent
 	 * @param string $instructions email content
 	 *
-	 * @return bool whether the call has been made and succeed or not
+	 * @return ?array whether the call has been made and succeed or not. If successful a response array is returned.
 	 */
-	public function emailInstructions(int $filedrop_id, string $recipient, string $subject, string $instructions): bool
+	public function emailInstructions(int $filedrop_id, string $recipient, string $subject, string $instructions): ?array
 	{
 
 
 		if (!$recipient) {
-			return false;
+			return null;
 		}
 
 		if (!$instructions) {
-			return false;
+			return null;
 		}
 
 		if (!$subject) {
-			return false;
+			return null;
 		}
 
 		$api_endpoint = "http://fuw-admin-api/filedrop-accounts/$filedrop_id";
@@ -197,7 +197,20 @@ class FiledropService extends yii\base\Component
 								    'connect_timeout' => 5,
 								]);
 			if (200 === $response->getStatusCode() ) {
-				return true;
+				//convert returned json to a PHP array so we can work with it
+				$responseData = json_decode($response->getBody(), true);
+
+				// add author to fuw users so they can authenticate using JWT token when they annotate files
+				$authorUserName = str_replace(" ", "", strtolower($this->dataset->getSubmitter()->getFullName()));
+				$authorUserEmail = $this->dataset->getSubmitter()->email;
+				$userData = $this->tokenSrv->createUser(
+					$this->token, $this->webClient, $authorUserName, $authorUserEmail);
+
+
+				$responseData['authorUserId'] = $userData['id'];
+				$responseData['authorUserName'] = $userData['username'];
+				$responseData['authorUserEmail'] = $userData['email'];
+				return $responseData;
 			}
 		}
 		catch(RequestException $e) {
@@ -206,7 +219,7 @@ class FiledropService extends yii\base\Component
 		        Yii::log( Psr7\str($e->getResponse()), "error");
 		    }
 		}
-		return false;
+		return null;
 	}
 
 	/**
@@ -244,45 +257,5 @@ class FiledropService extends yii\base\Component
 		return null;
 	}
 
-	/**
-	 * Make HTTP POST to File Upload Wizard to create user
-	 *
-	 * @param string $username username for the user to create
-	 * @param string $email email for the user to create
-	 *
-	 * @return bool whether the call has been made and succeed or not
-	 */
-	public function createUser(string $username, string $email): bool
-	{
-
-		$api_endpoint = "http://fuw-admin-api/user";
-
-		// reuse token to avoid "You must unsign before making changes" error
-		// when multiple API calls in same session
-		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
-
-		try {
-			$response = $this->webClient->request('POST', $api_endpoint, [
-								    'headers' => [
-								        'Authorization' => "Bearer ".$this->token,
-								    ],
-								    'form_params' => [
-								        'username' => $username,
-								        'email' => $email,
-								    ],
-								    'connect_timeout' => 5,
-								]);
-			if (201 === $response->getStatusCode() ) {
-				return true;
-			}
-		}
-		catch(RequestException $e) {
-			Yii::log( Psr7\str($e->getRequest()) , "error");
-		    if ($e->hasResponse()) {
-		        Yii::log( Psr7\str($e->getResponse()), "error");
-		    }
-		}
-		return false;
-	}
 }
 ?>

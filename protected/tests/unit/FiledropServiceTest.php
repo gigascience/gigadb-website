@@ -27,6 +27,7 @@ class FiledropServiceTest extends \CTestCase
 		$mockTokenSrv = $this->createMock(\TokenService::class);
 		$mockToken = $this->createMock(\Lcobucci\JWT\Token::class);
 		$mockWebClient = $this->createMock(\GuzzleHttp\Client::class);
+        $mockDatasetDAO = $this->createMock(\DatasetDAO::class);
 		$mockResponse = $this->createMock(\GuzzleHttp\Psr7\Response::class);
 
         // set expected parameters to the HTTP request:
@@ -46,10 +47,24 @@ class FiledropServiceTest extends \CTestCase
                         'to' => $recipient,
                         'send' => true,
                         ];
+        $fakeUserData = [
+                'id' => 32532,
+                'username' => 'foobar',
+                'email' => 'foo@bar.com'
+        ];
+
+        $mockDatasetDAO->expects($this->exactly(2))
+                 ->method('getSubmitter')
+                 ->willReturn(\User::model()->findByPk(345));
 
 		$mockTokenSrv->expects($this->once())
                  ->method('generateTokenForUser')
                  ->willReturn($mockToken);
+
+        $mockTokenSrv->expects($this->once())
+                 ->method('createUser')
+                 ->with($mockToken, $mockWebClient, "johnsmith","user@gigadb.org")
+                 ->willReturn($fakeUserData);
 
         $mockWebClient->expects($this->once())
                  ->method('request')
@@ -71,11 +86,12 @@ class FiledropServiceTest extends \CTestCase
             "webClient" => $mockWebClient,
             "requester" => \User::model()->findByPk(344),
             "identifier"=> $doi,
+            "dataset" => $mockDatasetDAO,
             "dryRunMode"=>true,
             ]);
 
         // make the call
-        $this->assertTrue($filedropSrv->emailInstructions($filedrop_id,$recipient,$subject,$instructions));
+        $this->assertNotNull($filedropSrv->emailInstructions($filedrop_id,$recipient,$subject,$instructions));
 
 	}
 
@@ -171,68 +187,11 @@ class FiledropServiceTest extends \CTestCase
             "dryRunMode"=>true,
             ]);
 
-        $this->assertFalse($filedropSrv->emailInstructions(1,"","foo","bar"));
-        $this->assertFalse($filedropSrv->emailInstructions(1,"user@domain.tld","foo",""));
-        $this->assertFalse($filedropSrv->emailInstructions(1,"user@domain.tld","","bar"));
+        $this->assertNull($filedropSrv->emailInstructions(1,"","foo","bar"));
+        $this->assertNull($filedropSrv->emailInstructions(1,"user@domain.tld","foo",""));
+        $this->assertNull($filedropSrv->emailInstructions(1,"user@domain.tld","","bar"));
 
 	}
-
-       /**
-     * test createUser() passing
-     *
-     */
-    public function testCreateUser()
-    {
-
-        // set mocks
-        $mockTokenSrv = $this->createMock(\TokenService::class);
-        $mockToken = $this->createMock(\Lcobucci\JWT\Token::class);
-        $mockWebClient = $this->createMock(\GuzzleHttp\Client::class);
-        $mockResponse = $this->createMock(\GuzzleHttp\Psr7\Response::class);
-
-        // set expected parameters to the HTTP request:
-        $filedrop_id = 1;
-        $api_endpoint = "http://fuw-admin-api/user";
-        $username = "foo bar";
-        $email = "foo@bar.com";
-        $method = "POST";
-        $connect_timeout = 5 ;
-        $auth_header = ['Authorization' => "Bearer ".$this->mockToken];
-        $form_params = [
-                        'username' => $username,
-                        'email' => $email,
-                        ];
-        $mockTokenSrv->expects($this->once())
-                 ->method('generateTokenForUser')
-                 ->willReturn($mockToken);
-
-        $mockWebClient->expects($this->once())
-                 ->method('request')
-                 ->with($method, $api_endpoint, [ 'headers' => $auth_header,
-                                                'form_params' => $form_params,
-                                                'connect_timeout' => $connect_timeout
-                        ])
-                 ->willReturn($mockResponse);
-
-
-
-        $mockResponse->expects($this->once())
-                 ->method('getStatusCode')
-                 ->willReturn(201);
-
-        // Instantiate FiledropService
-        $filedropSrv = new \FiledropService([
-            "tokenSrv" => $mockTokenSrv,
-            "webClient" => $mockWebClient,
-            "requester" => \User::model()->findByPk(344),
-            "identifier"=> $doi,
-            "dryRunMode"=>true,
-            ]);
-
-        $userData = $filedropSrv->createUser($username,$email);
-        $this->assertNotNull($userData);
-
-    }
 
 }
 

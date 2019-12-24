@@ -46,7 +46,7 @@ class DatasetUpload extends yii\base\BaseObject
 	}
 
 	/**
-	 * Send the instructions bye email through File Upload Wizard API
+	 * Send the instructions by email through File Upload Wizard API
 	 *
 	 * @param string $recipient whom to send the email
 	 * @param string $subject subject of the email
@@ -55,7 +55,8 @@ class DatasetUpload extends yii\base\BaseObject
 	 **/
 	public function sendUploadInstructions(string $recipient, string $subject, string $instructions): bool
 	{
-		return $this->_filedrop->emailInstructions($this->_id, $recipient, $subject, $instructions);
+		$response = $this->_filedrop->emailInstructions($this->_id, $recipient, $subject, $instructions);
+		return isset($response) && is_array($response);
 	}
 
 	/**
