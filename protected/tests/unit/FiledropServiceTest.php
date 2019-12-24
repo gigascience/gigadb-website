@@ -177,6 +177,63 @@ class FiledropServiceTest extends \CTestCase
 
 	}
 
+       /**
+     * test createUser() passing
+     *
+     */
+    public function testCreateUser()
+    {
+
+        // set mocks
+        $mockTokenSrv = $this->createMock(\TokenService::class);
+        $mockToken = $this->createMock(\Lcobucci\JWT\Token::class);
+        $mockWebClient = $this->createMock(\GuzzleHttp\Client::class);
+        $mockResponse = $this->createMock(\GuzzleHttp\Psr7\Response::class);
+
+        // set expected parameters to the HTTP request:
+        $filedrop_id = 1;
+        $api_endpoint = "http://fuw-admin-api/user";
+        $username = "foo bar";
+        $email = "foo@bar.com";
+        $method = "POST";
+        $connect_timeout = 5 ;
+        $auth_header = ['Authorization' => "Bearer ".$this->mockToken];
+        $form_params = [
+                        'username' => $username,
+                        'email' => $email,
+                        ];
+        $mockTokenSrv->expects($this->once())
+                 ->method('generateTokenForUser')
+                 ->willReturn($mockToken);
+
+        $mockWebClient->expects($this->once())
+                 ->method('request')
+                 ->with($method, $api_endpoint, [ 'headers' => $auth_header,
+                                                'form_params' => $form_params,
+                                                'connect_timeout' => $connect_timeout
+                        ])
+                 ->willReturn($mockResponse);
+
+
+
+        $mockResponse->expects($this->once())
+                 ->method('getStatusCode')
+                 ->willReturn(201);
+
+        // Instantiate FiledropService
+        $filedropSrv = new \FiledropService([
+            "tokenSrv" => $mockTokenSrv,
+            "webClient" => $mockWebClient,
+            "requester" => \User::model()->findByPk(344),
+            "identifier"=> $doi,
+            "dryRunMode"=>true,
+            ]);
+
+        $userData = $filedropSrv->createUser($username,$email);
+        $this->assertNotNull($userData);
+
+    }
+
 }
 
 

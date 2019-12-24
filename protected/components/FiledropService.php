@@ -243,5 +243,46 @@ class FiledropService extends yii\base\Component
 		}
 		return null;
 	}
+
+	/**
+	 * Make HTTP POST to File Upload Wizard to create user
+	 *
+	 * @param string $username username for the user to create
+	 * @param string $email email for the user to create
+	 *
+	 * @return bool whether the call has been made and succeed or not
+	 */
+	public function createUser(string $username, string $email): bool
+	{
+
+		$api_endpoint = "http://fuw-admin-api/user";
+
+		// reuse token to avoid "You must unsign before making changes" error
+		// when multiple API calls in same session
+		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
+
+		try {
+			$response = $this->webClient->request('POST', $api_endpoint, [
+								    'headers' => [
+								        'Authorization' => "Bearer ".$this->token,
+								    ],
+								    'form_params' => [
+								        'username' => $username,
+								        'email' => $email,
+								    ],
+								    'connect_timeout' => 5,
+								]);
+			if (201 === $response->getStatusCode() ) {
+				return true;
+			}
+		}
+		catch(RequestException $e) {
+			Yii::log( Psr7\str($e->getRequest()) , "error");
+		    if ($e->hasResponse()) {
+		        Yii::log( Psr7\str($e->getResponse()), "error");
+		    }
+		}
+		return false;
+	}
 }
 ?>
