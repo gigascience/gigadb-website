@@ -9,6 +9,8 @@ use yii\rest\ActiveController;
  *
  * @uses \backend\models\FiledropAccount
  *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
  **/
 class FiledropAccountController extends ActiveController
 {
