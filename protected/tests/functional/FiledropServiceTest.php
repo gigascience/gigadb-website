@@ -17,6 +17,12 @@ class FiledropServiceTest extends FunctionalTesting
     use BrowserSignInSteps;
     use BrowserPageSteps;
     use CommonDataProviders;
+    use DatabaseSteps;
+
+    /** @var PDO $dbhf DB handle to FUW database connection */
+    private $dbhf;
+    /** @var string $submitterEmail email of dataset author */
+    private $submitterEmail;
 
     /**
      *
@@ -34,12 +40,24 @@ class FiledropServiceTest extends FunctionalTesting
         $db_name = getenv("FUW_DB_NAME");
         $db_user = getenv("FUW_DB_USER");
         $db_password = getenv("FUW_DB_PASSWORD");
-        $dbh=new CDbConnection("pgsql:host=database;dbname=$db_name",$db_user,$db_password);
-        $dbh->active=true;
-        $delete_account = $dbh->createCommand("delete from filedrop_account where id=$filedrop_id");
+        $this->dbhf=new CDbConnection("pgsql:host=database;dbname=$db_name",$db_user,$db_password);
+        $this->dbhf->active=true;
+        $delete_account = $this->dbhf->createCommand("delete from filedrop_account where id=$filedrop_id");
         $delete_account->execute();
-        $dbh->active=false;
 
+    }
+
+    public function tearDown()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => '100004']) ;
+        $this->tearDownUserIdentity(
+            $this->dbhf->pdoInstance,
+            $datasetDAO->getSubmitter()->email
+        );
+        $this->dbhf->active=false;
+        $this->dbhf = null;
+        $datasetDAO = null;
+        parent::tearDown();
     }
 
     /**
@@ -366,6 +384,11 @@ class FiledropServiceTest extends FunctionalTesting
         $stack->push($history);
         $webClient = new Client(['handler' => $stack]);
 
+        // Dataset DAO is required to be passed to the service
+        $datasetDAO = new DatasetDAO(["identifier" => $doi]) ;
+        // var_dump($datasetDAO->getTitleAndStatus());
+        // var_dump(Dataset::model()->findAll());
+
         // Instantiate FiledropService
         $filedropSrv = new FiledropService([
             "tokenSrv" => new TokenService([
@@ -378,6 +401,7 @@ class FiledropServiceTest extends FunctionalTesting
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344),
             "identifier"=> $doi,
+            "dataset" => $datasetDAO,
             "dryRunMode"=>true,
             ]);
 
@@ -387,9 +411,18 @@ class FiledropServiceTest extends FunctionalTesting
         // test the response from the API is successful
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
-        $this->assertTrue($response);
+        $this->assertNotNull($response);
+
+        // test that a new user record is created in File Upload Wizard for the author
+        $this->assertNotNull($response['authorUserId'],'authorUserId');
+        $this->assertNotNull($response['authorUserName'], 'authorUserName');
+        $this->assertNotNull($response['authorUserEmail'],'authorUserEmail');
 
         //invoke function a second time to ensure token reuse in same session works
+        $this->tearDownUserIdentity( //remove created user first
+            $this->dbhf->pdoInstance,
+            $datasetDAO->getSubmitter()->email
+        );
         $response2 = $filedropSrv->emailInstructions($filedrop_id, $recipient, $subject,$instructions);
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
 

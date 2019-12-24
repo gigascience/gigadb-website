@@ -70,6 +70,7 @@ class DatasetUploadTest extends CTestCase
 		$recipient =  "foo@bar.com" ;
 		$subject = "Upload Instructions for the dataset of your GigaDB submission";
 		$instructions = "Lorem Ipsum";
+		$fakeResponse = ["id" => f2r3s, "instructions" => $instructions];
 
 		$filedropAccountHash = array('upload_login' => 'uploader-232452',
 					'upload_token' => '9ad4sf',
@@ -82,7 +83,7 @@ class DatasetUploadTest extends CTestCase
         $mockFiledropSrv->expects($this->once())
                  ->method('emailInstructions')
                  ->with($filedrop_id, $recipient, $subject , $instructions)
-                 ->willReturn(true);
+                 ->willReturn($fakeResponse);
 
 		$datasetUpload = new DatasetUpload($filedrop_id, $mockFiledropSrv, $config);
 
