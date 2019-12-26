@@ -5,7 +5,7 @@ bootstrap: false
 actor: AcceptanceTester
 modules:
     enabled:
-        - Db:
+        - common\tests\Helper\DbExtendedWithHooks:
             dsn: 'pgsql:host=database;dbname=gigadb'
             user: 'gigadb'
             password: 'vagrant'
