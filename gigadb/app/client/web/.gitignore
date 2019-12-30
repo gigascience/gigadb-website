@@ -1,0 +1,17 @@
+.DS_Store
+npm-debug.log
+yarn-error.log
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# no commiting of dependencies, execute 'npm install'
+node_modules
+# don't commit the compiled bundle (main.js), execute 'npm run build'
+dist/main.js
+# no need to commit coverage data
+coverage

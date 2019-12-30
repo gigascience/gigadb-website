@@ -1,0 +1,49 @@
+{
+  "name": "gigadb-client-web",
+  "version": "1.0.0",
+  "description": "web client to GigaDB's API",
+  "private": true,
+  "homepage": "https://gigadb.org",
+  "directories": {
+    "test": "tests"
+  },
+  "main": "dist/main.js",
+  "dependencies": {
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
+    "@vue/test-utils": "^1.0.0-beta.30",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-istanbul": "^5.2.0",
+    "cross-env": "^6.0.3",
+    "css-loader": "^3.3.2",
+    "jasmine-core": "^3.5.0",
+    "karma": "^4.4.1",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-coverage": "^2.0.1",
+    "karma-firefox-launcher": "^1.2.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-spec-reporter": "0.0.32",
+    "karma-webpack": "^4.0.2",
+    "vue-loader": "^15.7.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  },
+  "scripts": {
+    "test": "npx cross-env BABEL_ENV=test karma start --single-run",
+    "build": "webpack",
+    "clean": "rm -r dist/*",
+    "deploy": "cp dist/main.js /var/www/js/fuw-$npm_package_version.js",
+    "env": "env"
+  },
+  "author": {
+    "name": "Rija Menage"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/gigascience/gigadb-website/issues"
+  }
+}
