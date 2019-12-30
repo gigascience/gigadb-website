@@ -236,6 +236,24 @@ services:
     shm_size: '1gb' # to avoid a known issue
     command: bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR"
 
+  js:
+    build:
+      context: .
+      dockerfile: ../packaging/VueDev-Dockerfile
+    volumes:
+      - ${APPLICATION}/:/var/www
+    shm_size: '1gb' # to avoid a known issue
+    command: bash -c "npm test ; npm run build ; npm run deploy"
+
+  phantomjs:
+    image: wernight/phantomjs:2.1.1
+    command: phantomjs --webdriver=8910
+    expose:
+      - "8910"
+    networks:
+      - web-tier
+    extra_hosts:
+      - "gigadb.dev:172.16.238.10"
 
 # the firefox test browser currently doesn't work
 # see: https://stackoverflow.com/questions/46913377/php-codeception-not-so-quick-start-phpunit-framework-exception-undefined-inde
