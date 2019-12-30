@@ -6,6 +6,7 @@
     <meta name="language" content="en" />
     <meta name="robots" content="noindex">
     <meta name="googlebot" content="noindex">
+<? Yii::app()->clientScript->registerScriptFile('/js/fuw-1.0.0.js', CClientScript::POS_END); ?>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">

@@ -38,6 +38,7 @@ $ docker-compose run --rm config
 $ docker-compose up -d gigadb
 $ docker-compose run --rm less
 $ docker-compose run --rm fuw-config
+$ docker-compose run --rm js
 $ docker-compose up -d fuw
 $ docker-compose up -d web
 $ docker-compose exec web /usr/local/bin/enable_sites fuw-backend.dev.http
@@ -66,6 +67,7 @@ Writing REMOTE_DOCKER_HOSTNAME to params-local as 'tcp://host.docker.internal:23
 ```
 $ docker-compose exec database bash -c 'psql -U gigadb < /docker-entrypoint-initdb.d/3-fuw.sql'
 $ docker-compose run --rm fuw-config
+$ docker-compose run --rm js
 $ docker-compose run --rm fuw
 $ docker-compose exec web /usr/local/bin/enable_sites fuw-backend.dev.http
 ```

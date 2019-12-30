@@ -36,7 +36,7 @@ Scenario: Pressing the upload button bring up File Upload Wizard upload screen
 	And the "Your Uploaded Datasets" tab is active
 	When I press "Upload Dataset Files"
 	Then I should be on "/authorisedDataset/uploadFiles/"
-	And I should see "File Uploader for dataset 100007"
+	And I should see "Uploading files for the dataset 100007"
 	And I should see "Drop files here, paste or browse"
 
 @ok @file-upload
@@ -74,6 +74,22 @@ Scenario: Queued files are all uploaded
 	And I press "Upload 2 files"
 	And I wait "1" seconds
 	Then I should see the file upload completed
+
+@wip
+Scenario: Next button to proceed to file metadata annotation form
+	Given I sign in as the user "Artie" "Dodger"
+	And I am on "/authorisedDataset/uploadFiles/"
+	And I have uploaded files for dataset
+	| doi 	| name         	| size 	| location 		| extension | status|
+    | 100007| TheProof.csv | 112 	| ftp://foobar 	| csv 		| 1 	|
+    | 100007| TheProof2.csv| 112 	| ftp://foobar 	| csv 		| 1     |
+	When I press "Next"
+	Then I should be on "/authorisedDataset/annotateFiles/"
+	And I should see list of files
+	| doi 	| name         	| size 	| location 		| extension | status|
+    | 100007| TheProof.csv | 112 	| ftp://foobar 	| csv 		| 1 	|
+    | 100007| TheProof2.csv| 112 	| ftp://foobar 	| csv 		| 1     |
+    And I should see a "Previous" link
 
 # Scenario: There's no button for uploading files if dataset doesn't have the right status
 # 	Given I sign in as a user

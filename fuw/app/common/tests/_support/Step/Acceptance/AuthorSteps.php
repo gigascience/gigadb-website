@@ -5,6 +5,8 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
 use \backend\models\FiledropAccount;
 use \Facebook\WebDriver\WebDriverElement;
+use \Behat\Gherkin\Node\TableNode;
+use \Codeception\Util\ActionSequence;
 
 class AuthorSteps #extends \common\tests\AcceptanceTester
 {
@@ -176,6 +178,32 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
             return "100" === $el->getAttribute("aria-valuenow");
         }, 30);
      }
+
+    /**
+     * @Given I have uploaded files for dataset
+     */
+     public function iHaveUploadedFilesForDataset(TableNode $files)
+     {
+        // Database record
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            $this->I->performInDatabase('fuwdb', ActionSequence::build()->haveInDatabase('upload', array_combine($keys, $row))
+            );
+        }
+
+     }
+
+    /**
+     * @Then I should see list of files
+     */
+     public function iShouldSeeListOfFiles()
+     {
+         throw new \Codeception\Exception\Incomplete("Step `I should see list of files` is not defined");
+     }
+
 
 
 }
