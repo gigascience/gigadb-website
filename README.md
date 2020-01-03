@@ -124,7 +124,7 @@ $ docker-compose build test
 ```
 $ ./tests/unit_runner         # run all the unit tests after ensuring test DB migrations are up-to-date
 $ ./tests/functional_runner   # run all the functional tests after ensuring DB migrations are up-to-date
-$ docker-compose up -d phantomjs  # start a WebKit-based headless web browser
+$ docker-compose up -d chrome  # start a headless web browser
 $ ./tests/acceptance_runner local # run all the acceptance tests (see important note below)
 $ ./tests/coverage_runner     # run test coverage, print report and submit to coveralls.io
 ```

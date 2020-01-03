@@ -221,6 +221,22 @@ class GigadbWebsiteContext implements Context
 
     }
 
+
+    /**
+     * @Given dataset :arg1 exists
+     */
+    public function datasetExists($arg1)
+    {
+        $sql = 'select identifier from dataset where identifier = $1';
+        $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
+        $resultRes = pg_query_params($dbconn, $sql, [$arg1]);
+        $result = pg_fetch_array($resultRes, NULL, PGSQL_ASSOC);
+        PHPUnit_Framework_Assert::assertNotNull($result);
+        PHPUnit_Framework_Assert::assertEquals($arg1, $result['identifier']);
+        pg_free_result($resultRes);
+        pg_close($dbconn);
+    }
+
     /**
      * @Given /^I take a screenshot named "([^"]*)"$/
      */
