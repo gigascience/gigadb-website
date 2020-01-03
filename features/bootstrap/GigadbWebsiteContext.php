@@ -55,10 +55,19 @@ class GigadbWebsiteContext implements Context
      */
     private $affiliateLoginContext;
 
+    /**
+     * @var Array $dbConf configuration data for database
+     */
+    public $dbConf;
+
     public function __construct()
     {
         $this->admin_login = getenv("GIGADB_admin_tester_email");
         $this->admin_password = getenv("GIGADB_admin_tester_password") ;
+        $this->dbConf['host'] = getenv('GIGADB_HOST');
+        $this->dbConf['db'] = getenv('GIGADB_DB');
+        $this->dbConf['user'] = getenv('GIGADB_USER');
+        $this->dbConf['password'] = getenv('GIGADB_PASSWORD');
     }
 
 
@@ -228,7 +237,7 @@ class GigadbWebsiteContext implements Context
     public function datasetExists($arg1)
     {
         $sql = 'select identifier from dataset where identifier = $1';
-        $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host={$this->dbConf['host']} dbname={$this->dbConf['db']} user={$this->dbConf['user']} password={$this->dbConf['password']} port=5432") or die('Could not connect: ' . pg_last_error());
         $resultRes = pg_query_params($dbconn, $sql, [$arg1]);
         $result = pg_fetch_array($resultRes, NULL, PGSQL_ASSOC);
         PHPUnit_Framework_Assert::assertNotNull($result);
