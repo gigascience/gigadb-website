@@ -9,7 +9,7 @@ class m191224_025216_widen_curation_log_comments_column extends CDbMigration
 
 	public function down()
 	{
-		$this->alterColumn('curation_log','comments','varchar(1000');
+		$this->alterColumn('curation_log','comments','varchar(1000)');
 	}
 
 	/*
