@@ -380,7 +380,7 @@ class GigadbWebsiteContext implements Context
     */
     public function loadUserData($user) {
         $sql = file_get_contents("sql/${user}.sql");
-        $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host={$this->dbConf['host']} dbname={$this->dbConf['db']} user={$this->dbConf['user']} password={$this->dbConf['password']} port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
         print_r("Loaded ${user}.sql on gigadb");
