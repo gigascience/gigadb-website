@@ -211,6 +211,7 @@ services:
       - db-tier
     extra_hosts:
       - "gigadb.dev:172.16.238.10"
+      - "gigadb.test:172.16.238.10"
       - "fuw-admin-api:172.16.238.10"
     command: bash -c "./tests/all_and_coverage"
 
@@ -269,7 +270,7 @@ services:
       - "gigadb.test:172.16.238.10"
 
   chrome:
-    image: selenium/standalone-chrome-debug
+    image: selenium/standalone-chrome:3.141.59-oxygen # latest version with Chrome 74
     shm_size: '1gb' # to avoid a known issue
     ports:
       # - "5900:5900" #for VNC access

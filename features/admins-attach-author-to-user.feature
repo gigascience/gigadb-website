@@ -7,8 +7,7 @@ Feature: a curator can fill in user id in an author record
 Background:
 	Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 	And default admin user exists
-	When I go to "/dataset/100002"
-	Then I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
+	And dataset "100002" exists
 
 @ok @admin-author-form-add-user
 Scenario: populate user identity field when creating an author

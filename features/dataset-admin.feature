@@ -76,7 +76,7 @@ Scenario: Keywords
 Scenario: redirect
 	Given I sign in as an admin
 	And I am on "/adminDataset/update/id/210"
-	When I fill in "urltoredirect" with "http://gigadb.dev/dataset/100002/token/banasdfsaf74hsfds"
+	When I fill in "urltoredirect" with "http://gigadb.test/dataset/100002/token/banasdfsaf74hsfds"
 	And I press "Save"
 	And I go to "/dataset/100002/token/banasdfsaf74hsfds"
 	Then the url should be "/dataset/100002/token/banasdfsaf74hsfds"
