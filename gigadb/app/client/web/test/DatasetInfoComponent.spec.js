@@ -15,7 +15,7 @@ const factory = function (values = {}) {
 describe('Dataset Info component', function () {
 	it('should show the File Upload Wizard stage', function () {
 		const renderedComponent = factory()
-		expect(renderedComponent.find('.stage-head').text()).toContain('GigaDB: Uploading files')
+		expect(renderedComponent.find('h4').text()).toContain('GigaDB: Uploading files')
 	})
 
   it('should show DOI passed to the custom element', function () {
@@ -25,7 +25,7 @@ describe('Dataset Info component', function () {
         }
       })
 
-    expect(renderedComponent.find('.stage-head').text()).toContain('for the dataset 000000')
+    expect(renderedComponent.find('h4').text()).toContain('for the dataset 000000')
   })
 
 })
