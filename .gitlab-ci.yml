@@ -60,6 +60,7 @@ cache:
     - fuw/app/vendor/
     - fuw/app/bin/
     - fuw/app/composer.lock
+    - gigadb/app/client/web/node_modules
 
 before_script:
   - env | grep "^CI_" > $APPLICATION/.ci_env
@@ -136,6 +137,7 @@ build_webapp:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/web:latest
     - docker-compose run --rm test composer update
+    - docker-compose run --rm js npm install
   artifacts:
     untracked: true
     when: on_failure
