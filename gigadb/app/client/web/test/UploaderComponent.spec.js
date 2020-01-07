@@ -19,9 +19,39 @@ describe('Uploader component', function () {
 		expect(renderedComponent.find('.uppy-Dashboard-dropFilesTitle').text()).toContain('Drop files here, paste or')
 	})
 
-  //TODO: it should set value of the dataset hidden text field to DOI props
+  it('should set value of the dataset hidden text field from props', function () {
+        const renderedComponent = shallowMount(UploaderComponent, {
+          // attachToDocument: true,
+          propsData: {
+            identifier: '000000',
+            endpoint: '/foobar/',
+          },
+          data: function () {
+            return {
+              uppy: '',
+            }
+          }
+        })
+        // console.log(renderedComponent.find('#dataset').element.attributes)
+        expect(renderedComponent.find('#dataset').attributes('value')).toBe("000000")
+  })
 
-  //TODO: it should set TUS endpoint to the endpoint props
+  it('should set TUS endpoint from props', function () {
+        const renderedComponent = shallowMount(UploaderComponent, {
+          // attachToDocument: true,
+          propsData: {
+            identifier: '000000',
+            endpoint: '/foobar/',
+          },
+          data: function () {
+            return {
+              uppy: '',
+            }
+          }
+        })
+        // console.log(renderedComponent.vm.uppy.getPlugin('Tus').opts['endpoint'])
+        expect(renderedComponent.vm.uppy.getPlugin('Tus').opts['endpoint']).toEqual('/foobar/')
+  })
 
   //TODO: it should emit an event when uploads are completed
 

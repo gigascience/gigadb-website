@@ -15,17 +15,19 @@ import Form from '@uppy/form'
 import Tus from '@uppy/tus'
 
 export default {
-	props: ["identifier"],
+	props: ["identifier", "endpoint"],
     data: function() {
-        return {}
+        return {
+        	uppy:''
+        }
     },
     mounted: function() {
 
-        const uppy = new Uppy({
+        this.uppy = new Uppy({
             autoProceed: true,
             debug: true,
         })
-        uppy.use(Dashboard, {
+        this.uppy.use(Dashboard, {
             inline: true,
             target: '.drag-drop-area',
             hideAfterFinish: true,
@@ -41,14 +43,14 @@ export default {
             ],
             locale: {}
         })
-        uppy.use(Form, {
+        this.uppy.use(Form, {
             target: "#dataset-metadata-form",
             getMetaFromForm: true,
             addResultToForm: false,
             triggerUploadOnSubmit: false,
             submitOnSuccess: false
         })
-        uppy.use(Tus, { endpoint: '/files/' })
+        this.uppy.use(Tus, { endpoint: this.endpoint || '/uploads/' })
     },
 }
 </script>
