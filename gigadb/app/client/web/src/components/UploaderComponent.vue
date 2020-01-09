@@ -23,7 +23,7 @@ export default {
     },
     mounted: function() {
         this.uppy = new Uppy({
-            autoProceed: true,
+            autoProceed: false,
             debug: false,
         })
         this.uppy.use(Dashboard, {
@@ -50,10 +50,19 @@ export default {
             submitOnSuccess: false
         })
         this.uppy.use(Tus, { endpoint: this.endpoint })
+        this.uppy.on('complete', (result) => {
+	      	this.emitOnComplete(result)
+	    })
 
     },
     beforeDestroy: function () {
     	this.uppy.close()
+    },
+    methods: {
+    	emitOnComplete: function (result) {
+    		this.$emit('complete',result)
+      		// console.log('Upload complete! We’ve uploaded these files:', result.successful);
+    	}
     }
 }
 </script>

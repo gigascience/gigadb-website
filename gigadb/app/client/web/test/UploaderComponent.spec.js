@@ -49,3 +49,21 @@ describe('Uploader component', function() {
 
 })
 
+describe('Uploader component event handler', function() {
+    it('should emit an event when all the uploads have completed', function() {
+        const renderedComponent = factory({
+                attachToDocument: true,
+                propsData: {
+                    identifier: '000000',
+                    endpoint: '/foobar/',
+                },
+            }
+        )
+        let result = {}
+        renderedComponent.vm.emitOnComplete(result)
+        expect(renderedComponent.emitted().complete).toBeTruthy()
+        // it's not worth the cost to also test that our emitOnComplete method
+        // is called by Uppy event handler, as we can test that in integration
+        // and acceptance tests.
+    })
+})
