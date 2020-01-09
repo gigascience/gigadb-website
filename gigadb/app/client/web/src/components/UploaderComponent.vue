@@ -22,10 +22,9 @@ export default {
         }
     },
     mounted: function() {
-
         this.uppy = new Uppy({
             autoProceed: true,
-            debug: true,
+            debug: false,
         })
         this.uppy.use(Dashboard, {
             inline: true,
@@ -50,7 +49,11 @@ export default {
             triggerUploadOnSubmit: false,
             submitOnSuccess: false
         })
-        this.uppy.use(Tus, { endpoint: this.endpoint || '/uploads/' })
+        this.uppy.use(Tus, { endpoint: this.endpoint })
+
     },
+    beforeDestroy: function () {
+    	this.uppy.close()
+    }
 }
 </script>
