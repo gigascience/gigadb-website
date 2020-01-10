@@ -15,7 +15,7 @@ import Form from '@uppy/form'
 import Tus from '@uppy/tus'
 
 export default {
-	props: ["identifier", "endpoint"],
+	props: ["identifier", "endpoint", "events"],
     data: function() {
         return {
         	uppy:''
@@ -51,18 +51,12 @@ export default {
         })
         this.uppy.use(Tus, { endpoint: this.endpoint })
         this.uppy.on('complete', (result) => {
-	      	this.emitOnComplete(result)
+	      	this.events.$emit('complete',result)
 	    })
 
     },
     beforeDestroy: function () {
     	this.uppy.close()
-    },
-    methods: {
-    	emitOnComplete: function (result) {
-    		this.$emit('complete',result)
-      		// console.log('Upload complete! We’ve uploaded these files:', result.successful);
-    	}
     }
 }
 </script>
