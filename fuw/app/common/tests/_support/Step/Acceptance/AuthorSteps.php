@@ -188,6 +188,24 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
      }
 
     /**
+     * @Then I should see the files in the database
+     */
+     public function iShouldSeeTheFilesInTheDatabase(TableNode $files)
+     {
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            $this->I->performInDatabase('fuwdb', ActionSequence::build()->seeInDatabase('upload', array_combine($keys, $row))
+            );
+        }
+     }
+
+
+
+
+    /**
      * @Given I have uploaded files for dataset
      */
      public function iHaveUploadedFilesForDataset(TableNode $files)
