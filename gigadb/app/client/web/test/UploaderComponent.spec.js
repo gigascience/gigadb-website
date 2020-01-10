@@ -2,6 +2,8 @@ import Vue from 'vue'
 import { shallowMount } from '@vue/test-utils'
 import UploaderComponent from '../src/components/UploaderComponent.vue'
 
+const eventBus = new Vue()
+
 const factory = function(options = {}, values = {}) {
     return shallowMount(UploaderComponent, {
         ...options,
@@ -56,14 +58,15 @@ describe('Uploader component event handler', function() {
                 propsData: {
                     identifier: '000000',
                     endpoint: '/foobar/',
+                    events: eventBus,
                 },
             }
         )
-        let result = {}
-        renderedComponent.vm.emitOnComplete(result)
-        expect(renderedComponent.emitted().complete).toBeTruthy()
-        // it's not worth the cost to also test that our emitOnComplete method
-        // is called by Uppy event handler, as we can test that in integration
-        // and acceptance tests.
+        let $emitted = false
+        eventBus.$on('complete', function($result) {
+            $emitted = true //event bus would catch our component's 'complete' event
+        })
+        renderedComponent.vm.uppy.emit('complete',{}) //force Uppy to emit its 'complete' event
+        expect($emitted).toBeTrue()
     })
 })
