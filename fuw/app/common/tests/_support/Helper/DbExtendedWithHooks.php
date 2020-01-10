@@ -18,7 +18,7 @@ class DbExtendedWithHooks extends \Codeception\Module\Db
 
     /**
      * HOOK: after each test scenario
-     * make sure the fuw database's user table is cleaned of
+     * make sure the fuw database's tables are cleaned of
      * record created during the tests
      * This is made necessary as default send email scenario
      * has now a side effect of adding a new user which
@@ -28,11 +28,20 @@ class DbExtendedWithHooks extends \Codeception\Module\Db
     public function _after(\Codeception\TestInterface $test)
     {
     	$this->amConnectedToDatabase('fuwdb');
-    	$criteria = ['username' => 'joyfox'] ;
+    	$userCriteria = ['username' => 'joyfox'] ;
     	try {
-            $this->_getDriver()->deleteQueryByCriteria('public.user', $criteria);
+            $this->_getDriver()->deleteQueryByCriteria('public.user', $userCriteria);
         } catch (\Exception $e) {
-            $this->debug("Couldn't delete record " . json_encode($criteria) ." from public.user");
+            $this->debug("Couldn't delete record " . json_encode($userCriteria) ." from public.user");
+        }
+
+        $uploadCriteria = ['doi' => '100007', 'name' => 'TheProof.csv'];
+        $uploadCriteria2 = ['doi' => '100007', 'name' => 'TheProof2.csv'];
+        try {
+            $this->_getDriver()->deleteQueryByCriteria('public.upload', $uploadCriteria);
+            $this->_getDriver()->deleteQueryByCriteria('public.upload', $uploadCriteria2);
+        } catch (\Exception $e) {
+            $this->debug("Couldn't delete a record from public.upload");
         }
         $this->amConnectedToDatabase(self::DEFAULT_DATABASE);
         parent::_after($test);
