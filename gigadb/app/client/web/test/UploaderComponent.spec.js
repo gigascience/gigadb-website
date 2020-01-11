@@ -69,4 +69,20 @@ describe('Uploader component event handler', function() {
         renderedComponent.vm.uppy.emit('complete',{}) //force Uppy to emit its 'complete' event
         expect($emitted).toBeTrue()
     })
+
+    it('should emit an event indicating the stage when instanciated', function () {
+        let changedTo = ''
+        eventBus.$on('stage-changed', function(stage) {
+            changedTo = stage
+        })
+        const renderedComponent = factory({
+                attachToDocument: true,
+                propsData: {
+                    identifier: '000000',
+                    endpoint: '/foobar/',
+                    events: eventBus,
+                },
+        })
+        expect(changedTo).toEqual('uploading')
+    })
 })

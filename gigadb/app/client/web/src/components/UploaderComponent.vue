@@ -22,6 +22,11 @@ export default {
         }
     },
     mounted: function() {
+
+    	if (typeof this.events !== 'undefined') {
+	    	this.events.$emit("stage-changed","uploading")
+	    }
+
         this.uppy = new Uppy({
             autoProceed: false,
             debug: false,
