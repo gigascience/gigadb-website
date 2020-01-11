@@ -14,6 +14,8 @@ import Dashboard from '@uppy/dashboard'
 import Form from '@uppy/form'
 import Tus from '@uppy/tus'
 
+import {eventBus} from '../index.js'
+
 export default {
 	props: ["identifier", "endpoint", "events"],
     data: function() {
@@ -23,9 +25,7 @@ export default {
     },
     mounted: function() {
 
-    	if (typeof this.events !== 'undefined') {
-	    	this.events.$emit("stage-changed","uploading")
-	    }
+    	eventBus.$emit("stage-changed","uploading")
 
         this.uppy = new Uppy({
             autoProceed: false,
@@ -56,7 +56,7 @@ export default {
         })
         this.uppy.use(Tus, { endpoint: this.endpoint })
         this.uppy.on('complete', (result) => {
-	      	this.events.$emit('complete',result)
+	      	eventBus.$emit('complete',result)
 	    })
 
     },

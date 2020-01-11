@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { shallowMount } from '@vue/test-utils'
 import PagerComponent from '../src/components/PagerComponent.vue'
 
-const eventBus = new Vue()
+import {eventBus} from '../src/index.js'
 
 const factory = function(options = {}, values = {}) {
     return shallowMount(PagerComponent, {
@@ -19,11 +19,7 @@ describe('Pager component', function() {
     let renderedComponent = null
 
     beforeEach(function() {
-        renderedComponent = factory({
-            propsData: {
-                events: eventBus,
-            }
-        })
+        renderedComponent = factory()
     })
 
     it('should show Next button in upload stage when file upload is complete', function() {

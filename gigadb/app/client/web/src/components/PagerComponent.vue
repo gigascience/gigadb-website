@@ -8,6 +8,9 @@
 <style>
 </style>
 <script>
+
+import {eventBus} from '../index.js'
+
 export default {
     props: ['events'],
     data: function() {
@@ -17,10 +20,10 @@ export default {
         }
     },
     created: function() {
-        this.events.$on('stage-changed', function(stage) {
+        eventBus.$on('stage-changed', function(stage) {
             this.stage = stage
         })
-        this.events.$on('complete', function(result) {
+        eventBus.$on('complete', function(result) {
             this.uploadsComplete = true
         })
     }

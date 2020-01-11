@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { shallowMount } from '@vue/test-utils'
 import UploaderComponent from '../src/components/UploaderComponent.vue'
 
-const eventBus = new Vue()
+import {eventBus} from '../src/index.js'
 
 const factory = function(options = {}, values = {}) {
     return shallowMount(UploaderComponent, {
@@ -58,7 +58,6 @@ describe('Uploader component event handler', function() {
                 propsData: {
                     identifier: '000000',
                     endpoint: '/foobar/',
-                    events: eventBus,
                 },
             }
         )
@@ -80,7 +79,6 @@ describe('Uploader component event handler', function() {
                 propsData: {
                     identifier: '000000',
                     endpoint: '/foobar/',
-                    events: eventBus,
                 },
         })
         expect(changedTo).toEqual('uploading')
