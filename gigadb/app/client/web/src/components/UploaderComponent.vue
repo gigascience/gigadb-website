@@ -25,7 +25,9 @@ export default {
     },
     mounted: function() {
 
-    	eventBus.$emit("stage-changed","uploading")
+    	this.$nextTick(function () {
+	    	eventBus.$emit("stage-changed","uploading")
+    	})
 
         this.uppy = new Uppy({
             autoProceed: false,

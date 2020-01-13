@@ -81,6 +81,8 @@ describe('Uploader component event handler', function() {
                     endpoint: '/foobar/',
                 },
         })
-        expect(changedTo).toEqual('uploading')
+        Vue.nextTick().then(function () {
+            expect(changedTo).toEqual('uploading')
+        })
     })
 })

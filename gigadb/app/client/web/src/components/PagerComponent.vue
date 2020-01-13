@@ -3,6 +3,10 @@
         <div v-if="stage === 'uploading' && uploadsComplete === true">
             <a href="#" class="btn">Next</a>
         </div>
+        <!-- <div v-else>
+        	stage: {{ stage }}
+        	uploadsComplete: {{ uploadsComplete }}
+        </div> -->
     </nav>
 </template>
 <style>
@@ -12,19 +16,19 @@
 import {eventBus} from '../index.js'
 
 export default {
-    props: ['events'],
     data: function() {
         return {
-            stage: '',
+            stage: 'undetermined',
             uploadsComplete: false,
         }
     },
-    created: function() {
+    mounted: function() {
+    	const vm = this //see https://stackoverflow.com/a/47148828/6518111
         eventBus.$on('stage-changed', function(stage) {
-            this.stage = stage
+            vm.stage = stage
         })
         eventBus.$on('complete', function(result) {
-            this.uploadsComplete = true
+            vm.uploadsComplete = true
         })
     }
 }
