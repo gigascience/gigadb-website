@@ -74,23 +74,39 @@ Scenario: Queued files are all uploaded
 	And I press "Upload 2 files"
 	And I wait "1" seconds
 	Then I should see the file upload completed
-	And I wait "30" seconds
+	And I wait "60" seconds
 	And I should see the files in the database
 	| doi 	| name         | status |
     | 100007| TheProof.csv | 0 |
     | 100007| TheProof2.csv| 0 |
 
-@wip
+@ok
 Scenario: Next button to proceed to file metadata annotation form
 	Given I sign in as the user "Artie" "Dodger"
-	And I am on "/authorisedDataset/uploadFiles/"
-	And I have uploaded files for dataset
-	| doi 	| name         	| size 	| location 		| extension | status|
-    | 100007| TheProof.csv | 112 	| ftp://foobar 	| csv 		| 1 	|
-    | 100007| TheProof2.csv| 112 	| ftp://foobar 	| csv 		| 1     |
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	When I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "TheProof2.csv" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "1" seconds
+	Then I should see a "Next" link
+
+@not-yet
+Scenario: Next button to proceed to file metadata annotation form
+	Given I sign in as the user "Artie" "Dodger"
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "TheProof2.csv" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "1" seconds
 	When I press "Next"
-	Then I should be on "/authorisedDataset/annotateFiles/"
-	And I should see list of files
+	# Then I should be on "/authorisedDataset/annotateFiles/"
+	Then I should see list of files
 	| doi 	| name         	| size 	| location 		| extension | status|
     | 100007| TheProof.csv | 112 	| ftp://foobar 	| csv 		| 1 	|
     | 100007| TheProof2.csv| 112 	| ftp://foobar 	| csv 		| 1     |
