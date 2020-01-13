@@ -1,8 +1,8 @@
 <?php ?>
 <div class="content">
     <div id="gigadb-fuw">
-        <div class="container">
-            <section class="page-title-section">
+        <article class="container">
+            <header class="page-title-section">
                 <div class="page-title">
                     <ol class="breadcrumb pull-right">
                         <li><a href="/">Home</a></li>
@@ -10,11 +10,15 @@
                     </ol>
                     <dataset-info identifier="<?= $identifier ?>" />
                 </div>
-            </section>
+            </header>
             <section>
                 <uploader identifier="<?= $identifier ?>"
-                            endpoint="/files/" />
+                            endpoint="/files/"
+                />
             </section>
-        </div>
+            <footer>
+                <pager/>
+            </footer>
+        </article>
     </div>
 </div>

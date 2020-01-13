@@ -200,19 +200,26 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
     /**
      * @Given I have uploaded files for dataset
      */
-     public function iHaveUploadedFilesForDataset(TableNode $files)
-     {
-        // Database record
-        foreach ($files->getRows() as $index => $row) {
-            if ($index === 0) { // first row to define fields
-                $keys = $row;
-                continue;
-            }
-            $this->I->performInDatabase('fuwdb', ActionSequence::build()->haveInDatabase('upload', array_combine($keys, $row))
-            );
-        }
+     // public function iHaveUploadedFilesForDataset(TableNode $files)
+     // {
+     //    $this->I->amOnUrl('http://gigadb.test/user/view_profile#submitted');
+     //    $this->I->seeInSource('<a href="#submitted" aria-controls="submitted" role="tab" data-toggle="tab" aria-expanded="true">Your Uploaded Datasets</a>');
+     //    $this->I->click('Upload Dataset Files');
+     //    $this->I->resizeWindow(1440,900);
+     //    foreach ($files->getRows() as $index => $row) {
+     //        if ($index === 0) { // first row to define fields
+     //            $keys = $row;
+     //            continue;
+     //        }
+     //        if ($index > 1) {
+     //            $this->I->click('Add more');
+     //        }
+     //        $this->I->waitForElement('.uppy-Dashboard-input', 30);
+     //        $this->I->attachFile('.uppy-Dashboard-input',$row[1]);
+     //    }
+     //    $this->I->click('Upload '+$index+' files');
 
-     }
+     // }
 
     /**
      * @Then I should see list of files
