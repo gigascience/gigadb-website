@@ -1,0 +1,40 @@
+<?php
+
+return [
+    [
+        'id' => 1,
+        'doi' => '010010',
+        'name' => 'FieldDataMethods.doc',
+        'size' => 2352636,
+        'status' => 0,
+        'location' => 'ftp://some.location/FieldDataMethods.doc',
+        'initial_md5' => 't5GU9NwpuGYSfb7FEZMAxqtuz2PkEvv',
+        'description' => 'methods for field data',
+        'datatype' => 'Text',
+        'extension' => 'MSDOC',
+    ],
+    [
+        'id' => 2,
+        'doi' => '010010',
+        'name' => 'Measurements.csv',
+        'size' => 3252654,
+        'status' => 0,
+        'location' => 'ftp://some.location/Measurements.csv',
+        'initial_md5' => 'X5GU9NwpuGYSfb7FEZMAxqtuz2PkEvv',
+        'description' => 'measurements',
+        'datatype' => 'Text',
+        'extension' => 'CSV',
+    ],
+    [
+        'id' => 3,
+        'doi' => '010020',
+        'name' => 'SomeImage.jpg',
+        'size' => 3252654,
+        'status' => 0,
+        'location' => 'ftp://some.location/SomeImage.jpg',
+        'initial_md5' => 'Y5GU9NwpuGYSfb7FEZMAxqtuz2PkEvv',
+        'description' => 'An image',
+        'datatype' => 'Image',
+        'extension' => 'JPEG',
+    ],
+];

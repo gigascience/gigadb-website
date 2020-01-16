@@ -4,3 +4,6 @@ modules:
     enabled:
         - Filesystem
         - Yii2
+        - REST:
+            depends: Yii2
+            part: Json
