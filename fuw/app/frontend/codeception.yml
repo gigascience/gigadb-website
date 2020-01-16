@@ -4,7 +4,7 @@ coverage:
     show_only_summary: true
     include:
         - controllers/*
-        - models/*
+        # - models/*
 actor_suffix: Tester
 paths:
     tests: tests
