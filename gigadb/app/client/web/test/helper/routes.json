@@ -1,0 +1,4 @@
+{
+  "/uploads/\\?filter[doi]=:id": "/uploads?doi=:id",
+  "/fuw/api/v1/public/upload/\\?filter[doi]=:id": "/uploads?doi=:id"
+}
