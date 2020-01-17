@@ -16,10 +16,6 @@ use yii\data\ActiveDataProvider;
 class UploadController extends ActiveController
 {
     public $modelClass = 'common\models\Upload';
-    public $serializer = [
-        'class' => 'yii\rest\Serializer',
-        'collectionEnvelope' => 'uploads',
-    ];
 
     /**
      * @inheritdoc

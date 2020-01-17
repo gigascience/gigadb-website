@@ -46,8 +46,8 @@ class UploadCest
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson(array('doi' => "$doi"));
         $I->dontSeeResponseContainsJson(array('doi' => "010020"));
-        $I->seeResponseJsonMatchesJsonPath('$.uploads[0].name');
-        $I->seeResponseJsonMatchesJsonPath('$.uploads[1].name');
-        $I->dontSeeResponseJsonMatchesJsonPath('$.uploads[2].name');
+        $I->seeResponseJsonMatchesJsonPath('$.[0].name');
+        $I->seeResponseJsonMatchesJsonPath('$.[1].name');
+        $I->dontSeeResponseJsonMatchesJsonPath('$.[2].name');
     }
 }
