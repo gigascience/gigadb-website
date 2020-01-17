@@ -1,0 +1,20 @@
+{
+    "uploads": [
+	    {
+	        "id": 1,
+	        "doi": "000000",
+	        "name": "TheProof.csv",
+	        "datatype": "Text",
+	        "extension": "TEXT",
+	        "size": 1120000
+	    },
+	    {
+	        "id": 2,
+	        "doi": "000000",
+	        "name": "TheProof2.csv",
+	        "datatype": "Text",
+	        "extension": "TEXT",
+	        "size": 1120000
+	    }
+	]
+}

@@ -245,6 +245,22 @@ services:
       - ${APPLICATION}/:/var/www
     shm_size: '1gb' # to avoid a known issue
     command: bash -c "npm test ; npm run build ; npm run deploy"
+    networks:
+      - web-tier
+      - db-tier
+
+  json-server:
+    build:
+      context: .
+      dockerfile: ../packaging/VueDev-Dockerfile
+    volumes:
+      - ${APPLICATION}/:/var/www
+    command: npx json-server --host "json-server" --watch test/helper/db.json --routes test/helper/routes.json #--middlewares test/helper/wrapper.js
+    networks:
+      - web-tier
+      - db-tier
+    expose:
+      - "3000"
 
   phantomjs:
     image: wernight/phantomjs:2.1.1
