@@ -10,7 +10,7 @@ module.exports = function (api) {
     presets,
     "env": {
             "test": {
-                "plugins": ["istanbul"]
+                "plugins": ["istanbul","@babel/plugin-transform-runtime"]
             }
         }
   };
