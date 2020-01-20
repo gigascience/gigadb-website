@@ -17,33 +17,46 @@ const factory = function(options = {}, values = {}) {
 }
 
 describe('Annotator component', function() {
-
-
-    it('should show rows matching the number of uploaded files', function() {
-        const renderedComponent = factory({
+	let renderedComponent
+	beforeEach(function () {
+		renderedComponent = factory({
 			propsData: {
 				identifier: '000000',
 				uploads: testdata.uploads
 			}
         })
+	})
+    it('should show rows matching the number of uploaded files', function() {
        	renderedComponent.vm.$nextTick(function () {
 	       	expect(renderedComponent.findAll('tbody tr').length).toBe(2)
        	})
     })
     it('should show file names of all upload files', function() {
-        const renderedComponent = factory({
-			propsData: {
-				identifier: '000000',
-				uploads: testdata.uploads
-			}
-        })
         renderedComponent.vm.$nextTick(function () {
 	        expect(renderedComponent.html()).toContain('File Name')
 	        expect(renderedComponent.html()).toContain('TheProof.csv')
 	        expect(renderedComponent.html()).toContain('TheProof2.jpg')
         })
     })
-    //TODO: should show data type of all upload files
-    //TODO: should show format of all upload files
-    //TODO: should show size of all upload files
+    it('should show data type of all upload files', function() {
+        renderedComponent.vm.$nextTick(function () {
+	        expect(renderedComponent.html()).toContain('Data Type')
+	        expect(renderedComponent.html()).toContain('Text')
+	        expect(renderedComponent.html()).toContain('Image')
+        })
+    })
+   it('should show format of all upload files', function() {
+        renderedComponent.vm.$nextTick(function () {
+	        expect(renderedComponent.html()).toContain('Format')
+	        expect(renderedComponent.html()).toContain('TEXT')
+	        expect(renderedComponent.html()).toContain('JPEG')
+        })
+    })
+   it('should show size of all upload files', function() {
+        renderedComponent.vm.$nextTick(function () {
+	        expect(renderedComponent.html()).toContain('Size')
+	        expect(renderedComponent.html()).toContain('1120000')
+	        expect(renderedComponent.html()).toContain('1170000')
+        })
+    })
 })
