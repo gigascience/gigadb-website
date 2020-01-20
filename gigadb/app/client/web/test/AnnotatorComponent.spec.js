@@ -19,7 +19,7 @@ const factory = function(options = {}, values = {}) {
 describe('Annotator component', function() {
 
 
-    it('should show rows matching the number of uploaded files', function(done) {
+    it('should show rows matching the number of uploaded files', function() {
         const renderedComponent = factory({
 			propsData: {
 				identifier: '000000',
@@ -28,24 +28,19 @@ describe('Annotator component', function() {
         })
        	renderedComponent.vm.$nextTick(function () {
 	       	expect(renderedComponent.findAll('tbody tr').length).toBe(2)
-	       	done()
        	})
     })
     it('should show file names of all upload files', function() {
         const renderedComponent = factory({
 			propsData: {
 				identifier: '000000',
+				uploads: testdata.uploads
 			}
-        }, {
-        	apiUrl: 'http://json-server:3000'
         })
-        Vue.nextTick().then(function (){
-	        renderedComponent.vm.webclient.done(function() {
-		        expect(renderedComponent.find('th')).toContain('File Name')
-		        expect(renderedComponent.find('tbody')).toContain('TheProof.csv')
-		        expect(renderedComponent.find('tbody')).toContain('TheProof2.jpg')
-		        expect(renderedComponent.find('tbody')).not.toContain('foobar.doc')
-	        })
+        renderedComponent.vm.$nextTick(function () {
+	        expect(renderedComponent.html()).toContain('File Name')
+	        expect(renderedComponent.html()).toContain('TheProof.csv')
+	        expect(renderedComponent.html()).toContain('TheProof2.jpg')
         })
     })
     //TODO: should show data type of all upload files
