@@ -1,7 +1,7 @@
 {
-    "name": "GigaDB (${COMPOSER_WARNING})",
-    "type": "Yii-based web site",
-    "description": "GigaDB primarily serves as a repository to host data and tools associated with articles in GigaScience journal",
+    "name": "gigascience/gigadb-website",
+    "type": "yii-project",
+    "description": "GigaDB primarily serves as a repository to host data and tools associated with articles in GigaScience journal. (${COMPOSER_WARNING})",
     "homepage": "http://gigadb.org",
     "require": {
         "php": "^${PHP_VERSION}",
@@ -11,13 +11,13 @@
         "gabrielelana/byte-units": "^0.5",
         "google/apiclient": "v2.2.2",
         "suin/php-rss-writer": "^1.6",
-         "leafo/lessphp": "^v0.3.9",
-         "opauth/opauth": "^0.4.5",
-         "opauth/facebook": "^0.4.2",
-         "opauth/twitter": "^0.3.2",
-         "opauth/google": "^0.2.2",
-         "opauth/linkedin": "^0.2.0",
-         "drewm/mailchimp-api": "^v2.5"
+        "leafo/lessphp": "^v0.3.9",
+        "opauth/opauth": "^0.4.5",
+        "opauth/facebook": "^0.4.2",
+        "opauth/twitter": "^0.3.2",
+        "opauth/google": "^0.2.2",
+        "opauth/linkedin": "^0.2.0",
+        "drewm/mailchimp-api": "^v2.5"
     },
     "require-dev": {
         "behat/behat":  "^3.5",
