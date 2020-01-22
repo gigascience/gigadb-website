@@ -21,8 +21,12 @@ class FiledropServiceTest extends FunctionalTesting
 
     /** @var PDO $dbhf DB handle to FUW database connection */
     private $dbhf;
-    /** @var string $submitterEmail email of dataset author */
-    private $submitterEmail;
+
+    /** @var int $filedrop_id id of file drop account created for testing */
+    private $filedrop_id;
+
+    /** @var string $doi DOI to use for testing */
+    private $doi;
 
     /**
      *
@@ -36,14 +40,17 @@ class FiledropServiceTest extends FunctionalTesting
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org","gigadb","Admin");
 
         //test filedrop account doesn't exist in db
-        $filedrop_id = 435342;
         $db_name = getenv("FUW_DB_NAME");
         $db_user = getenv("FUW_DB_USER");
         $db_password = getenv("FUW_DB_PASSWORD");
         $this->dbhf=new CDbConnection("pgsql:host=database;dbname=$db_name",$db_user,$db_password);
         $this->dbhf->active=true;
-        $delete_account = $this->dbhf->createCommand("delete from filedrop_account where id=$filedrop_id");
-        $delete_account->execute();
+
+        // setup DOI and file drop account for testing
+        $this->doi = "100004";
+        $this->filedrop_id = $this->setUpFiledropAccount(
+            $this->dbhf->getPdoInstance(), $this->doi
+        );
 
     }
 
@@ -54,8 +61,14 @@ class FiledropServiceTest extends FunctionalTesting
             $this->dbhf->pdoInstance,
             $datasetDAO->getSubmitter()->email
         );
+        $this->tearDownFiledropAccount(
+            $this->dbhf->getPdoInstance(),
+            $this->filedrop_id
+        );
         $this->dbhf->active=false;
         $this->dbhf = null;
+        $this->doi = null;
+        $this->filedrop_id = null;
         $datasetDAO = null;
         parent::tearDown();
     }
@@ -68,7 +81,6 @@ class FiledropServiceTest extends FunctionalTesting
     public function testCreateAccountMakeAuthenticatedCall()
     {
         $api_endpoint = "http://fuw-admin-api/filedrop-accounts";
-        $doi = "100004";
         $jwt_ttl = 31104000 ;
 
         // Prepare the http client to be traceable for testing
@@ -93,13 +105,13 @@ class FiledropServiceTest extends FunctionalTesting
                                 ]),
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
-            "identifier"=> $doi,
-            "dataset" => new DatasetDAO(["identifier" => $doi]),
+            "identifier"=> $this->doi,
+            "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> true,
             ]);
 
         // set the right status on the dataset
-        Dataset::model()->updateAll(["upload_status" => "AssigningFTPbox"], "identifier = :doi", [":doi" => $doi]);
+        Dataset::model()->updateAll(["upload_status" => "AssigningFTPbox"], "identifier = :doi", [":doi" => $this->doi]);
 
         // invoke the Filedrop Service
         $response = $filedropSrv->createAccount();
@@ -118,11 +130,11 @@ class FiledropServiceTest extends FunctionalTesting
         $this->assertNotNull($response);
 
         // test the upload status has been changed
-        $dataset = Dataset::model()->findByAttributes(["identifier" => $doi]);
+        $dataset = Dataset::model()->findByAttributes(["identifier" => $this->doi]);
         $this->assertEquals("UserUploadingData",$dataset->upload_status);
 
         // restore original upload status
-        Dataset::model()->updateAll(["upload_status" => "Published"], "identifier = :doi", [":doi" => $doi]);
+        Dataset::model()->updateAll(["upload_status" => "Published"], "identifier = :doi", [":doi" => $this->doi]);
     }
 
     /**
@@ -133,7 +145,6 @@ class FiledropServiceTest extends FunctionalTesting
     public function testCreateAccountReturnsProperties()
     {
         $api_endpoint = "http://fuw-admin-api/filedrop-accounts";
-        $doi = "100004";
         $jwt_ttl = 31104000 ;
 
         // Prepare the http client to be traceable for testing
@@ -158,13 +169,13 @@ class FiledropServiceTest extends FunctionalTesting
                                 ]),
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
-            "identifier"=> $doi,
-            "dataset" => new DatasetDAO(["identifier" => $doi]),
+            "identifier"=> $this->doi,
+            "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> true,
             ]);
 
         // set the right status on the dataset
-        Dataset::model()->updateAll(["upload_status" => "AssigningFTPbox"], "identifier = :doi", [":doi" => $doi]);
+        Dataset::model()->updateAll(["upload_status" => "AssigningFTPbox"], "identifier = :doi", [":doi" => $this->doi]);
 
         // invoke the Filedrop Service
         $response = $filedropSrv->createAccount();
@@ -175,14 +186,14 @@ class FiledropServiceTest extends FunctionalTesting
         // test that createAccount return a value
         $this->assertNotNull($response);
         $this->assertEquals(0, $response["id"]);
-        $this->assertEquals($doi, $response["doi"]);
+        $this->assertEquals($this->doi, $response["doi"]);
 
         // test the upload status has been changed
-        $dataset = Dataset::model()->findByAttributes(["identifier" => $doi]);
+        $dataset = Dataset::model()->findByAttributes(["identifier" => $this->doi]);
         $this->assertEquals("UserUploadingData",$dataset->upload_status);
 
         // restore original upload status
-        Dataset::model()->updateAll(["upload_status" => "Published"], "identifier = :doi", [":doi" => $doi]);
+        Dataset::model()->updateAll(["upload_status" => "Published"], "identifier = :doi", [":doi" => $this->doi]);
 
     }
 
@@ -246,7 +257,6 @@ class FiledropServiceTest extends FunctionalTesting
     public function testCreateAccountWithWrongStatus()
     {
         $api_endpoint = "http://fuw-admin-api/filedrop-accounts";
-        $doi = "100004";
         $jwt_ttl = 31104000 ;
 
         // Prepare the http client to be traceable for testing
@@ -271,7 +281,7 @@ class FiledropServiceTest extends FunctionalTesting
                                 ]),
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344),
-            "identifier"=> $doi,
+            "identifier"=> $this->doi,
             "dryRunMode"=>true,
             ]);
 
@@ -294,20 +304,9 @@ class FiledropServiceTest extends FunctionalTesting
 
         // $this->markTestSkipped('wip, not ready to run yet.');
         $api_endpoint = "http://fuw-admin-api/filedrop-accounts";
-        $doi = "100004";
         $jwt_ttl = 31104000 ;
 
         $instructions = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo";
-
-        // create a filedrop acccount to update and save email instructions into
-        $filedrop_id = 435342;
-        $db_name = getenv("FUW_DB_NAME");
-        $db_user = getenv("FUW_DB_USER");
-        $db_password = getenv("FUW_DB_PASSWORD");
-        $dbh=new CDbConnection("pgsql:host=database;dbname=$db_name",$db_user,$db_password);
-        $dbh->active=true;
-        $insert_account = $dbh->createCommand("insert into filedrop_account(id, doi,status,upload_login,upload_token,download_login,download_token) values($filedrop_id,$doi,1,'a','a','a','a')");
-        $insert_account->execute();
 
         // Prepare the http client to be traceable for testing
 
@@ -330,12 +329,12 @@ class FiledropServiceTest extends FunctionalTesting
                                 ]),
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344),
-            "identifier"=> $doi,
+            "identifier"=> $this->doi,
             "dryRunMode"=>true,
             ]);
 
         //invoke function
-        $response = $filedropSrv->saveInstructions($filedrop_id,$instructions);
+        $response = $filedropSrv->saveInstructions($this->filedrop_id,$instructions);
 
         // test the response from the API is successful
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
@@ -343,7 +342,7 @@ class FiledropServiceTest extends FunctionalTesting
         $this->assertTrue($response);
 
         //invoke function a second time to ensure token reuse in same session works
-        $response2 = $filedropSrv->saveInstructions($filedrop_id,$instructions);
+        $response2 = $filedropSrv->saveInstructions($this->filedrop_id,$instructions);
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
     }
@@ -357,22 +356,11 @@ class FiledropServiceTest extends FunctionalTesting
 
         // $this->markTestSkipped('wip, not ready to run yet.');
         $api_endpoint = "http://fuw-admin-api/filedrop-accounts";
-        $doi = "100004";
         $jwt_ttl = 31104000 ;
 
         $recipient = "foo@bar.com";
         $subject = "Uploading Instructions";
         $instructions = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo";
-
-        // create a filedrop acccount to update and save email instructions into
-        $filedrop_id = 435342;
-        $db_name = getenv("FUW_DB_NAME");
-        $db_user = getenv("FUW_DB_USER");
-        $db_password = getenv("FUW_DB_PASSWORD");
-        $dbh=new CDbConnection("pgsql:host=database;dbname=$db_name",$db_user,$db_password);
-        $dbh->active=true;
-        $insert_account = $dbh->createCommand("insert into filedrop_account(id, doi,status,upload_login,upload_token,download_login,download_token) values($filedrop_id,$doi,1,'a','a','a','a')");
-        $insert_account->execute();
 
         // Prepare the http client to be traceable for testing
 
@@ -385,7 +373,7 @@ class FiledropServiceTest extends FunctionalTesting
         $webClient = new Client(['handler' => $stack]);
 
         // Dataset DAO is required to be passed to the service
-        $datasetDAO = new DatasetDAO(["identifier" => $doi]) ;
+        $datasetDAO = new DatasetDAO(["identifier" => $this->doi]) ;
         // var_dump($datasetDAO->getTitleAndStatus());
         // var_dump(Dataset::model()->findAll());
 
@@ -400,13 +388,13 @@ class FiledropServiceTest extends FunctionalTesting
                                 ]),
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344),
-            "identifier"=> $doi,
+            "identifier"=> $this->doi,
             "dataset" => $datasetDAO,
             "dryRunMode"=>true,
             ]);
 
         //invoke function
-        $response = $filedropSrv->emailInstructions($filedrop_id, $recipient ,$subject,$instructions);
+        $response = $filedropSrv->emailInstructions($this->filedrop_id, $recipient ,$subject,$instructions);
 
         // test the response from the API is successful
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
@@ -423,7 +411,7 @@ class FiledropServiceTest extends FunctionalTesting
             $this->dbhf->pdoInstance,
             $datasetDAO->getSubmitter()->email
         );
-        $response2 = $filedropSrv->emailInstructions($filedrop_id, $recipient, $subject,$instructions);
+        $response2 = $filedropSrv->emailInstructions($this->filedrop_id, $recipient, $subject,$instructions);
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
     }
@@ -435,17 +423,6 @@ class FiledropServiceTest extends FunctionalTesting
      */
     public function testGetAccount()
     {
-
-        // create a filedrop acccount to retrieve through API
-        $filedrop_id = 435342;
-        $doi = "100004";
-        $db_name = getenv("FUW_DB_NAME");
-        $db_user = getenv("FUW_DB_USER");
-        $db_password = getenv("FUW_DB_PASSWORD");
-        $dbh=new CDbConnection("pgsql:host=database;dbname=$db_name",$db_user,$db_password);
-        $dbh->active=true;
-        $insert_account = $dbh->createCommand("insert into filedrop_account(id, doi,status,upload_login,upload_token,download_login,download_token) values($filedrop_id,$doi,1,'uploader-$doi','sdafad','downloader-$doi','asdgina')");
-        $insert_account->execute();
 
         // Prepare the http client to be traceable for testing
 
@@ -469,25 +446,25 @@ class FiledropServiceTest extends FunctionalTesting
                                 ]),
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
-            "identifier"=> $doi,
-            "dataset" => new DatasetDAO(["identifier" => $doi]),
+            "identifier"=> $this->doi,
+            "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
             ]);
 
         // invoke the Filedrop Service
-        $response = $filedropSrv->getAccount($filedrop_id);
+        $response = $filedropSrv->getAccount($this->filedrop_id);
 
         // test the response from the API is successful
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
         // test that createAccount return a value
         $this->assertNotNull($response);
-        $this->assertEquals($filedrop_id, $response["id"]);
-        $this->assertEquals($doi, $response["doi"]);
-        $this->assertEquals("uploader-$doi", $response["upload_login"]);
+        $this->assertEquals($this->filedrop_id, $response["id"]);
+        $this->assertEquals($this->doi, $response["doi"]);
+        $this->assertEquals("uploader-{$this->doi}", $response["upload_login"]);
 
         // test we can call getAccount a second time within the same session (token reuse)
-        $response2 = $filedropSrv->getAccount($filedrop_id);
+        $response2 = $filedropSrv->getAccount($this->filedrop_id);
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
     }
