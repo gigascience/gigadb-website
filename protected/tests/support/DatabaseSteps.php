@@ -92,23 +92,6 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 
 
 	/**
-	 * tear down Filedrop account
-	 *
-	 * to be used with fuw database
-	 *
-	 * @param PDO $dbh
-	 */
-	public function tearDownFiledropAccount(PDO $dbh): void
-	{
-		$sql = "delete from filedrop_account";
-		$sth = $dbh->prepare($sql);
-		// $sth->bindValue(":id", "$id");
-		$sth->execute();
-		$sth = null;
-	}
-
-
-	/**
 	 * tear down FUW User account
 	 *
 	 * to be used with fuw database
@@ -125,6 +108,110 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 			$sth->execute();
 			$sth = null;
 		}
+	}
+
+	/**
+	 * tear down FUW Filedrop account
+	 *
+	 * to be used with fuw database
+	 *
+	 * @param PDO $dbh
+	 * @param int $id
+	 */
+	public function tearDownFiledropAccount(PDO $dbh, int $id = null): void
+	{
+		if ($id) {
+			$sql = "delete from filedrop_account where id=:id";
+			$sth = $dbh->prepare($sql);
+			$sth->bindValue(":id", "$id");
+			$sth->execute();
+			$sth = null;
+		}
+		else {
+			$sql = "delete from filedrop_account";
+			$sth = $dbh->prepare($sql);
+			$sth->execute();
+			$sth = null;
+		}
+	}
+
+	/**
+	 * tear down FUW file uploads
+	 *
+	 * to be used with fuw database
+	 *
+	 * @param PDO $dbh
+	 * @param array $ids
+	 */
+	public function tearDownFileUploads(PDO $dbh, array $ids = null): void
+	{
+		if ($ids) {
+			$deleteUploadsQuery = "delete from upload where id=:id";
+        	$deleteUploadsStatement = $dbh->prepare($deleteUploadsQuery);
+	        foreach ($ids as $fileId) {
+	            echo PHP_EOL."deleting upload of id {$fileId}".PHP_EOL;
+	            $deleteUploadsStatement->bindValue(":id", $fileId);
+	            $deleteUploadsStatement->execute();
+	        }
+	        $deleteUploadsStatement = null;
+		}
+		else {
+			$sql = "delete from upload";
+			$sth = $dbh->prepare($sql);
+			$sth->execute();
+			$sth = null;
+		}
+	}
+
+	/**
+	 * setup FUW filedrop account
+	 *
+	 * to be used with fuw database
+	 *
+	 * @param PDO $dbh
+	 * @param string $doi
+	 *
+	 * @return int Id of the just created record
+	 */
+	public function setUpFiledropAccount(PDO $dbh, string $doi): int{
+		$insertAccountQuery = "insert into filedrop_account(doi,status,upload_login,upload_token,download_login,download_token) values($doi,1,'uploader-$doi','sdafad','downloader-$doi','asdgina') returning id";
+        $insertAccountStatement = $dbh->prepare($insertAccountQuery);
+        $insertAccountStatement->execute();
+        $account = $insertAccountStatement->fetch(PDO::FETCH_OBJ);
+        $insertAccountStatement = null;
+        return $account->id;
+	}
+
+	/**
+	 * setup FUW file uploads
+	 *
+	 * to be used with fuw database
+	 *
+	 * @param PDO $dbh
+	 * @param array $files
+	 *
+	 * @return array Ids of the just created records
+	 */
+	public function setUpFileUploads(PDO $dbh, array $files): array
+	{
+		$uploads = [];
+		$insertFilesQuery = "insert into upload(doi, name, size, status, location, description, extension, datatype) values(:doi, :name, :size, :status, :location, :description, :extension, :datatype) returning id";
+        $insertFilesStatement = $dbh->prepare($insertFilesQuery);
+        foreach ($files as $file) {
+            $insertFilesStatement->bindValue(':doi',$file['doi']);
+            $insertFilesStatement->bindValue(':name',$file['name']);
+            $insertFilesStatement->bindValue(':size',$file['size']);
+            $insertFilesStatement->bindValue(':status',$file['status']);
+            $insertFilesStatement->bindValue(':location',$file['location']);
+            $insertFilesStatement->bindValue(':description',$file['description']);
+            $insertFilesStatement->bindValue(':extension',$file['extension']);
+            $insertFilesStatement->bindValue(':datatype',$file['datatype']);
+            $insertFilesStatement->execute();
+            $result = $insertFilesStatement->fetch(PDO::FETCH_OBJ);
+            $uploads[] = $result->id;
+        }
+        $insertFilesStatement = null;
+        return $uploads;
 	}
 }
 ?>
