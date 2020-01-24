@@ -49,4 +49,4 @@ services:
     build:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/web:latest"
-    command: ["/usr/local/bin/enable_sites", "gigadb.CI.http", "fuw-backend.CI.http"]
+    command: ["/usr/local/bin/enable_sites", "gigadb.CI.http", "fuw-backend.CI.http", "fuw-frontend.CI.http"]
