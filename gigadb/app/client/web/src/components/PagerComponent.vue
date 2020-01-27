@@ -1,7 +1,7 @@
 <template>
     <nav>
         <div v-if="stage === 'uploading' && uploadsComplete === true">
-            <a href="#" class="btn">Next</a>
+            <a v-bind:href="annotationUrl" class="btn">Next</a>
         </div>
         <!-- <div v-else>
         	stage: {{ stage }}
@@ -16,10 +16,12 @@
 import {eventBus} from '../index.js'
 
 export default {
+    props: ["identifier"],
     data: function() {
         return {
             stage: 'undetermined',
             uploadsComplete: false,
+            annotationUrl: '/authorisedDataset/filesAnnotates/'+this.identifier
         }
     },
     mounted: function() {

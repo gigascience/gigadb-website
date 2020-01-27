@@ -93,7 +93,7 @@ Scenario: Next button to proceed to file metadata annotation form
 	And I wait "1" seconds
 	Then I should see a "Next" link
 
-@not-yet
+@wip
 Scenario: Next button to proceed to file metadata annotation form
 	Given I sign in as the user "Artie" "Dodger"
 	And I am on "/user/view_profile#submitted"
@@ -105,7 +105,7 @@ Scenario: Next button to proceed to file metadata annotation form
 	And I press "Upload 2 files"
 	And I wait "1" seconds
 	When I press "Next"
-	# Then I should be on "/authorisedDataset/annotateFiles/"
+	Then I should be on "/authorisedDataset/filesAnnotate/"
 	Then I should see list of files
 	| doi 	| name         	| size 	| location 		| extension | status|
     | 100007| TheProof.csv | 112 	| ftp://foobar 	| csv 		| 1 	|
