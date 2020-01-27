@@ -28,6 +28,9 @@ class FiledropServicePublicAPITest extends FunctionalTesting
     /** @var Object $account file drop account */
     private $account;
 
+    /** @var string $doi DOI to use for testing */
+    private $doi;
+
     /**
      *
      * @uses \BrowserSignInSteps::loginToWebSiteWithSessionAndCredentialsThenAssert()
@@ -45,6 +48,8 @@ class FiledropServicePublicAPITest extends FunctionalTesting
         );
         $this->dbhf->active=true;
 
+        // setup DOI and file drop account for testing
+        $this->doi = "100004";
         // create file uploads associated with that account
         $files =  [
                 ["doi" => "$doi", "name" =>"somefile.txt", "size" => 325352, "status"=> 0, "location" => "ftp://foobar", "description" => "", "extension" => "TEXT", "datatype"=>"Text"],
@@ -71,6 +76,7 @@ class FiledropServicePublicAPITest extends FunctionalTesting
 
         $this->dbhf->active=false;
         $this->dbhf = null;
+        $this->doi = null;
         parent::tearDown();
     }
 
@@ -81,7 +87,6 @@ class FiledropServicePublicAPITest extends FunctionalTesting
      */
     public function testGetUploads()
     {
-
         // create a filedrop acccount
         $doi = "100004";
         $this->account = $this->setUpFiledropAccount(
@@ -112,7 +117,7 @@ class FiledropServicePublicAPITest extends FunctionalTesting
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
             "identifier"=> $doi,
-            "dataset" => new DatasetDAO(["identifier" => $doi]),
+            "dataset" => new DatasetDAO(["identifier" => "100004"]),
             "dryRunMode"=> false,
             ]);
 
@@ -121,12 +126,12 @@ class FiledropServicePublicAPITest extends FunctionalTesting
 
         // test the response from the API is successful
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
-
+        echo PHP_EOL."Response:".$container[0]['response']->getBody().PHP_EOL;
         // test that getUploads return a value
         $this->assertNotNull($response);
-
+        var_dump($response);
         // and that it's an array of files
-        // $this->assertEquals(2, count($response));
+        $this->assertEquals(2, count($response));
 
     }
 

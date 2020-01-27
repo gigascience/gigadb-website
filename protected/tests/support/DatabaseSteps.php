@@ -206,9 +206,15 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
             $insertFilesStatement->bindValue(':description',$file['description']);
             $insertFilesStatement->bindValue(':extension',$file['extension']);
             $insertFilesStatement->bindValue(':datatype',$file['datatype']);
-            $insertFilesStatement->execute();
-            $result = $insertFilesStatement->fetch(PDO::FETCH_OBJ);
-            $uploads[] = $result->id;
+            $isSuccess = $insertFilesStatement->execute();
+            if(!$isSuccess) {
+            	echo PHP_EOL."Failure creating in DB file {$file['name']}".PHP_EOL;
+            }
+            else{
+	            $returnId = $insertFilesStatement->fetch(PDO::FETCH_OBJ);
+	            $uploads[] = $returnId->id;
+            	echo PHP_EOL."Created in DB, file of id {$returnId->id}".PHP_EOL;
+            }
         }
         $insertFilesStatement = null;
         return $uploads;
