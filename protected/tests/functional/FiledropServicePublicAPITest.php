@@ -52,8 +52,8 @@ class FiledropServicePublicAPITest extends FunctionalTesting
         $this->doi = "100004";
         // create file uploads associated with that account
         $files =  [
-                ["doi" => "$doi", "name" =>"somefile.txt", "size" => 325352, "status"=> 0, "location" => "ftp://foobar", "description" => "", "extension" => "TEXT", "datatype"=>"Text"],
-                ["doi" => "$doi", "name" =>"anotherfile.png", "size" => 5463434, "status"=> 0, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
+                ["doi" => "{$this->doi}", "name" =>"somefile.txt", "size" => 325352, "status"=> 1, "location" => "ftp://foobar", "description" => "", "extension" => "TEXT", "datatype"=>"Text"],
+                ["doi" => "{$this->doi}", "name" =>"anotherfile.png", "size" => 5463434, "status"=> 1, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
             ];
         $this->uploads = $this->setUpFileUploads(
             $this->dbhf->getPdoInstance(), $files
@@ -117,7 +117,7 @@ class FiledropServicePublicAPITest extends FunctionalTesting
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
             "identifier"=> $doi,
-            "dataset" => new DatasetDAO(["identifier" => "100004"]),
+            "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
             ]);
 
@@ -126,10 +126,8 @@ class FiledropServicePublicAPITest extends FunctionalTesting
 
         // test the response from the API is successful
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
-        echo PHP_EOL."Response:".$container[0]['response']->getBody().PHP_EOL;
         // test that getUploads return a value
         $this->assertNotNull($response);
-        var_dump($response);
         // and that it's an array of files
         $this->assertEquals(2, count($response));
 

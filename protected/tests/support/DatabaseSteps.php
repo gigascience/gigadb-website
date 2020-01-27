@@ -149,7 +149,7 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 			$deleteUploadsQuery = "delete from upload where id=:id";
         	$deleteUploadsStatement = $dbh->prepare($deleteUploadsQuery);
 	        foreach ($ids as $fileId) {
-	            echo PHP_EOL."deleting upload of id {$fileId}".PHP_EOL;
+	            // echo PHP_EOL."deleting upload of id {$fileId}".PHP_EOL;
 	            $deleteUploadsStatement->bindValue(":id", $fileId);
 	            $deleteUploadsStatement->execute();
 	        }
@@ -213,7 +213,7 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
             else{
 	            $returnId = $insertFilesStatement->fetch(PDO::FETCH_OBJ);
 	            $uploads[] = $returnId->id;
-            	echo PHP_EOL."Created in DB, file of id {$returnId->id}".PHP_EOL;
+            	// echo PHP_EOL."Created in DB, file of id {$returnId->id}".PHP_EOL;
             }
         }
         $insertFilesStatement = null;
