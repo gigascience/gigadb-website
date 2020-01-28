@@ -12,7 +12,7 @@
                 </div>
             </header>
             <section>
-                <annotator identifier="<?= $identifier ?>" uploads="<?= $uploads ?>" />
+                <annotator identifier="<?= $identifier ?>" uploads="<?= json_encode($uploads) ?>" />
             </section>
             <footer>
                 <pager identifier="<?= $identifier ?>" />

@@ -18,13 +18,23 @@ class AuthorisedDatasetController extends Controller
     public function filterAuthoriseSubmitter($filterChain)
     {
         $doi = $filterChain->controller->getActionParams()['id'] ?? false ;
+        if (!$doi) {
+            throw new CHttpException(403,
+                Yii::t('yii',"Forbidden: DOI is invalid")
+            );
+        }
         $dataset = Dataset::model()->findByAttributes(["identifier" => $doi]) ?? false ;
-        if ($dataset && Yii::app()->user->id === $dataset->submitter_id) {
+        if (!$dataset) {
+            throw new CHttpException(403,
+                Yii::t('yii',"Forbidden: Dataset non existent")
+            );
+        }
+        if (Yii::app()->user->id === $dataset->submitter_id) {
             $filterChain->run(); // continue with executing further filters and the action
         }
         else {
             throw new CHttpException(403,
-                Yii::t('yii','Forbidden: Dataset upload not authorised for user')
+                Yii::t('yii',"Forbidden: Operation on dataset not authorised for user")
             );
         }
     }

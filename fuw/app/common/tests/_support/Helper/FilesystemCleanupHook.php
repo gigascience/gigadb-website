@@ -19,7 +19,7 @@ class FilesystemCleanupHook extends \Codeception\Module\Filesystem
     // HOOK: after each test scenario
     public function _after(\Codeception\TestInterface $test)
     {
-    	$doi = "100007";
+    	$doi = "000007";
     	$this->deleteDir("/var/incoming/ftp/$doi");
     	$this->deleteDir("/var/incoming/credentials/$doi");
     	$this->deleteDir("/var/repo/$doi");

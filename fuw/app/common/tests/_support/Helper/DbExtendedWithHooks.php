@@ -35,8 +35,8 @@ class DbExtendedWithHooks extends \Codeception\Module\Db
             $this->debug("Couldn't delete record " . json_encode($userCriteria) ." from public.user");
         }
 
-        $uploadCriteria = ['doi' => '100007', 'name' => 'TheProof.csv'];
-        $uploadCriteria2 = ['doi' => '100007', 'name' => 'TheProof2.csv'];
+        $uploadCriteria = ['doi' => '000007', 'name' => 'TheProof.csv'];
+        $uploadCriteria2 = ['doi' => '000007', 'name' => 'TheProof2.csv'];
         try {
             $this->_getDriver()->deleteQueryByCriteria('public.upload', $uploadCriteria);
             $this->_getDriver()->deleteQueryByCriteria('public.upload', $uploadCriteria2);

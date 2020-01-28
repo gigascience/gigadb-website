@@ -21,7 +21,7 @@ export default {
         return {
             stage: 'undetermined',
             uploadsComplete: false,
-            annotationUrl: '/authorisedDataset/filesAnnotates/'+this.identifier
+            annotationUrl: '/authorisedDataset/annotateFiles/id/'+this.identifier
         }
     },
     mounted: function() {

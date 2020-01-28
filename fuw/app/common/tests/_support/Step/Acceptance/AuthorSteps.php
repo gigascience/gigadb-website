@@ -54,6 +54,24 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
 		$this->I->click('Login');
 	}
 
+    /**
+     * @Given The user :firstname :lastname is registered as authorised user in the API
+     */
+     public function theUserIsRegisteredAsAuthorisedUserInTheAPI($firstname, $lastname)
+     {
+        // Database record
+        $this->I->amConnectedToDatabase('fuwdb');
+        $this->I->haveInDatabase('public.user', [
+              'username' => "{$firstname}_{$lastname}",
+              'auth_key' => FiledropAccount::generateRandomString(6),
+              'password_hash' => FiledropAccount::generateRandomString(6),
+              'email' => strtolower("${firstname}_${lastname}@gigadb.org"),
+              'created_at' => date("U"),
+              'updated_at' => date("U"),
+            ]);
+        $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
+     }
+
  	/**
      * @Then the :arg1 tab is active
      */
@@ -100,6 +118,14 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
      public function iShouldSeeALink($arg1)
      {
         $this->I->canSeeLink($arg1);
+     }
+
+    /**
+     * @Then I should see a :arg1 link to :arg2
+     */
+     public function iShouldSeeALinkTo($arg1, $arg2)
+     {
+        $this->I->canSeeLink($arg1, $arg2);
      }
 
 	/**
@@ -224,9 +250,16 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
     /**
      * @Then I should see list of files
      */
-     public function iShouldSeeListOfFiles()
+     public function iShouldSeeListOfFiles(TableNode $files)
      {
-         throw new \Codeception\Exception\Incomplete("Step `I should see list of files` is not defined");
+           foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+
+            $this->I->seeInSource("<td>{$row[1]}</td>");
+        }
      }
 
 
