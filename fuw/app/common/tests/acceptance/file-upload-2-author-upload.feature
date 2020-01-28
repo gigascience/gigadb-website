@@ -5,8 +5,8 @@ Feature:
 
 Background:
 	Given there is a user "Artie" "Dodger"
-	And a dataset with DOI "100007" owned by user "Artie" "Dodger" has status "UserUploadingData"
-	And filedrop account for DOI "100007" does exist
+	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "UserUploadingData"
+	And filedrop account for DOI "000007" does exist
 
 @ok
 Scenario: Upload files button when dataset has appropriate status
@@ -36,7 +36,7 @@ Scenario: Pressing the upload button bring up File Upload Wizard upload screen
 	And the "Your Uploaded Datasets" tab is active
 	When I press "Upload Dataset Files"
 	Then I should be on "/authorisedDataset/uploadFiles/"
-	And I should see "Uploading files for the dataset 100007"
+	And I should see "Uploading files for the dataset 000007"
 	And I should see "Drop files here, paste or browse"
 
 @ok @file-upload
@@ -77,11 +77,11 @@ Scenario: Queued files are all uploaded
 	And I wait "60" seconds
 	And I should see the files in the database
 	| doi 	| name         | status |
-    | 100007| TheProof.csv | 0 |
-    | 100007| TheProof2.csv| 0 |
+    | 000007| TheProof.csv | 0 |
+    | 000007| TheProof2.csv| 0 |
 
-@ok
-Scenario: Next button to proceed to file metadata annotation form
+@ok @vue-ok
+Scenario: There is a Next button
 	Given I sign in as the user "Artie" "Dodger"
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
@@ -91,11 +91,12 @@ Scenario: Next button to proceed to file metadata annotation form
 	And I attach the file "TheProof2.csv" in the file drop panel
 	And I press "Upload 2 files"
 	And I wait "1" seconds
-	Then I should see a "Next" link
+	Then I should see a "Next" link to "/authorisedDataset/annotateFiles/id/000007"
 
-@not-yet
+@wip @vue
 Scenario: Next button to proceed to file metadata annotation form
 	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
 	And I press "Upload Dataset Files"
@@ -105,11 +106,11 @@ Scenario: Next button to proceed to file metadata annotation form
 	And I press "Upload 2 files"
 	And I wait "1" seconds
 	When I press "Next"
-	# Then I should be on "/authorisedDataset/annotateFiles/"
+	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
 	Then I should see list of files
 	| doi 	| name         	| size 	| location 		| extension | status|
-    | 100007| TheProof.csv | 112 	| ftp://foobar 	| csv 		| 1 	|
-    | 100007| TheProof2.csv| 112 	| ftp://foobar 	| csv 		| 1     |
+    | 000007| TheProof.csv | 112 	| ftp://foobar 	| csv 		| 1 	|
+    | 000007| TheProof2.csv| 112 	| ftp://foobar 	| csv 		| 1     |
     And I should see a "Previous" link
 
 # Scenario: There's no button for uploading files if dataset doesn't have the right status

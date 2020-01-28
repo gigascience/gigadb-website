@@ -49,26 +49,36 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
 	{
 		$this->I->amOnUrl('http://gigadb.test');
 		$this->I->amOnPage('/site/login');
-		$this->I->fillField(['name' => 'LoginForm[username]'], "${firstname}_${lastname}@gigadb.org");
-		$this->I->fillField(['name' => 'LoginForm[password]'], 'foobar');
+		$this->I->fillField(['name' => 'LoginForm[username]'], strtolower("${firstname}_${lastname}@gigadb.org"));
+		$this->I->fillField(['name' => 'LoginForm[password]'], 'gigadb');
 		$this->I->click('Login');
 	}
 
-	/**
-	 * @Given a dataset has been uploaded with temporary DOI :arg1 by user :arg2
-	 */
-	public function aDatasetHasBeenUploadedWithTemporaryDOIByUser($arg1, $arg2)
-	{
-	   throw new \Codeception\Exception\Incomplete("Step `a dataset has been uploaded with temporary DOI :arg1 by user :arg2` is not defined");
-	}
+    /**
+     * @Given The user :firstname :lastname is registered as authorised user in the API
+     */
+     public function theUserIsRegisteredAsAuthorisedUserInTheAPI($firstname, $lastname)
+     {
+        // Database record
+        $this->I->amConnectedToDatabase('fuwdb');
+        $this->I->haveInDatabase('public.user', [
+              'username' => "{$firstname}_{$lastname}",
+              'auth_key' => FiledropAccount::generateRandomString(6),
+              'password_hash' => FiledropAccount::generateRandomString(6),
+              'email' => strtolower("${firstname}_${lastname}@gigadb.org"),
+              'created_at' => date("U"),
+              'updated_at' => date("U"),
+            ]);
+        $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
+     }
 
-	/**
-	 * @Given the uploaded dataset has status :arg1
-	 */
-	public function theUploadedDatasetHasStatus($arg1)
-	{
-	   throw new \Codeception\Exception\Incomplete("Step `the uploaded dataset has status :arg1` is not defined");
-	}
+ 	/**
+     * @Then the :arg1 tab is active
+     */
+     public function theTabIsActive($arg1)
+     {
+        $this->I->seeInSource('<a href="#submitted" aria-controls="submitted" role="tab" data-toggle="tab" aria-expanded="true">Your Uploaded Datasets</a>');
+     }
 
 	/**
 	 * @Given I go to :arg1
@@ -108,6 +118,14 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
      public function iShouldSeeALink($arg1)
      {
         $this->I->canSeeLink($arg1);
+     }
+
+    /**
+     * @Then I should see a :arg1 link to :arg2
+     */
+     public function iShouldSeeALinkTo($arg1, $arg2)
+     {
+        $this->I->canSeeLink($arg1, $arg2);
      }
 
 	/**
@@ -232,9 +250,16 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
     /**
      * @Then I should see list of files
      */
-     public function iShouldSeeListOfFiles()
+     public function iShouldSeeListOfFiles(TableNode $files)
      {
-         throw new \Codeception\Exception\Incomplete("Step `I should see list of files` is not defined");
+           foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+
+            $this->I->seeInSource("<td>{$row[1]}</td>");
+        }
      }
 
 

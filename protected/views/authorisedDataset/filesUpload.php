@@ -12,12 +12,10 @@
                 </div>
             </header>
             <section>
-                <uploader identifier="<?= $identifier ?>"
-                            endpoint="/files/"
-                />
+                <annotator identifier="<?= $identifier ?>" uploads="<?= json_encode($uploads) ?>" />
             </section>
             <footer>
-                <pager/>
+                <pager identifier="<?= $identifier ?>" />
             </footer>
         </article>
     </div>
