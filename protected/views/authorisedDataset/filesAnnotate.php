@@ -8,14 +8,14 @@
                         <li><a href="/">Home</a></li>
                         <li class="active">File Upload Wizard</li>
                     </ol>
-                    <dataset-info identifier="<?php echo $identifier ?>" />
+                    <dataset-info identifier="<?php echo $identifier; ?>" />
                 </div>
             </header>
             <section>
-                <annotator identifier="<?php echo $identifier ?>" v-bind:uploads="<?php echo json_encode($uploads) ?>" />
+                <annotator identifier="<?php echo $identifier; ?>" v-bind:uploads='<?php echo json_encode($uploads); ?>' />
             </section>
             <footer>
-                <pager identifier="<?php echo $identifier ?>" />
+                <pager identifier="<?php echo $identifier; ?>" />
             </footer>
         </article>
     </div>
