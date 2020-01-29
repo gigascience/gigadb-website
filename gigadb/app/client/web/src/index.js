@@ -2,6 +2,7 @@ import Vue from 'vue'
 import DatasetInfoComponent from './components/DatasetInfoComponent.vue'
 import UploaderComponent from './components/UploaderComponent.vue'
 import PagerComponent from './components/PagerComponent.vue'
+import AnnotatorComponent from './components/AnnotatorComponent.vue'
 
 Vue.config.productionTip = false
 
@@ -13,5 +14,6 @@ new Vue({
 		'dataset-info': DatasetInfoComponent,
 		'uploader': UploaderComponent,
 		'pager': PagerComponent,
+		'annotator': AnnotatorComponent,
 	}
 })
