@@ -59,4 +59,7 @@ describe('Annotator component', function() {
 	        expect(renderedComponent.html()).toContain('1170000')
         })
     })
+    it('should set uploads from json in props', function() {
+        expect(renderedComponent.vm.uploadedFiles).toEqual(testdata.uploads)
+    })
 })
