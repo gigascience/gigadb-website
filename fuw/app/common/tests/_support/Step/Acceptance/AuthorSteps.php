@@ -257,8 +257,10 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
                 $keys = $row;
                 continue;
             }
-
             $this->I->seeInSource("<td>{$row[1]}</td>");
+            $this->I->seeInSource("<td>{$row[2]}</td>");
+            $this->I->seeInSource("<td>{$row[3]}</td>");
+            $this->I->seeInSource("<td>{$row[4]}</td>");
         }
      }
 

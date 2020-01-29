@@ -34,7 +34,8 @@ class FilesAnnotateAction extends CAction
 
         // Fetch list of uploaded files
         $uploadedFiles = $filedropSrv->getUploads($id);
-        Yii::log("uploadedFiles count: ".count($uploadedFiles),'info');
+        // Yii::log("uploadedFiles count: ".count($uploadedFiles),'info');
+        // Yii::log(var_export($uploadedFiles, true),'info');
         $this->getController()->render("filesAnnotate", array("identifier" => $id, "uploads" => $uploadedFiles));
     }
 }
