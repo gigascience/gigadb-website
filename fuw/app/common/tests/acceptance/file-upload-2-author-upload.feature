@@ -104,14 +104,13 @@ Scenario: Next button to proceed to file metadata annotation form
 	And I press "Add more"
 	And I attach the file "TheProof2.csv" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "1" seconds
+	And I wait "60" seconds
 	When I press "Next"
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
 	Then I should see list of files
-	| doi 	| name         	| size 	| location 		| extension | status|
-    | 000007| TheProof.csv | 112 	| ftp://foobar 	| csv 		| 1 	|
-    | 000007| TheProof2.csv| 112 	| ftp://foobar 	| csv 		| 1     |
-    And I should see a "Previous" link
+	| doi 	| Name         | Data type 	| Format 	| Size |
+    | 000007| TheProof.csv | Text 	| CSV 	| 117 		|
+    | 000007| TheProof2.csv| Text 	| CSV 	| 112 		|
 
 # Scenario: There's no button for uploading files if dataset doesn't have the right status
 # 	Given I sign in as a user

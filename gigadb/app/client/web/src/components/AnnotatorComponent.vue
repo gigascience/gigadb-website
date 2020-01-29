@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-bind:id="'metadata-form-' + identifier">
         <table>
             <thead>
                 <tr>
