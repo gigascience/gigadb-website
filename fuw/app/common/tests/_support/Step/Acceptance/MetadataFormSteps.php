@@ -35,6 +35,22 @@ class MetadataFormSteps
         }
      }
 
+     /**
+     * @When I fill in the form with
+     */
+     public function iFillInTheFormWith(TableNode $files)
+     {
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            $this->I->selectOption("form select[id=upload-$index-datatype]", $row[1]);
+            $this->I->fillField("form input[id=upload-$index-description]", $row[2]);
+        }
+     }
+
+
 
 
 }
