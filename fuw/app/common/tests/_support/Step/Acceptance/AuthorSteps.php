@@ -252,13 +252,13 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
      */
      public function iShouldSeeListOfFiles(TableNode $files)
      {
-           foreach ($files->getRows() as $index => $row) {
+        foreach ($files->getRows() as $index => $row) {
             if ($index === 0) { // first row to define fields
                 $keys = $row;
                 continue;
             }
             $this->I->seeInSource("<td>{$row[1]}</td>");
-            $this->I->seeInSource("<td>{$row[2]}</td>");
+            $this->I->seeInSource("<option>{$row[2]}</option>");
             $this->I->seeInSource("<td>{$row[3]}</td>");
             $this->I->seeInSource("<td>{$row[4]}</td>");
         }

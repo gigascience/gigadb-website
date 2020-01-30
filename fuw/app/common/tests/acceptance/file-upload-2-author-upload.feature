@@ -80,7 +80,7 @@ Scenario: Queued files are all uploaded
     | 000007| TheProof.csv | 0 |
     | 000007| TheProof2.csv| 0 |
 
-@ok @vue-ok
+@ok
 Scenario: There is a Next button
 	Given I sign in as the user "Artie" "Dodger"
 	And I am on "/user/view_profile#submitted"
@@ -93,7 +93,7 @@ Scenario: There is a Next button
 	And I wait "1" seconds
 	Then I should see a "Next" link to "/authorisedDataset/annotateFiles/id/000007"
 
-@wip @vue
+@ok
 Scenario: Next button to proceed to file metadata annotation form
 	Given I sign in as the user "Artie" "Dodger"
 	And The user "Artie" "Dodger" is registered as authorised user in the API
