@@ -62,4 +62,24 @@ describe('Annotator component', function() {
     it('should set uploads from json in props', function() {
         expect(renderedComponent.vm.uploadedFiles).toEqual(testdata.uploads)
     })
+
+    it('should update the metadata for the first upload', function () {
+        // Update two fields on the first of the two uploaded files
+        const selectField = renderedComponent.find('select[id="upload-1-datatype"]')
+        selectField.setValue('Rich Text')
+        
+        const inputField = renderedComponent.find('input[id="upload-1-description"]')
+        inputField.setValue('Some description here')
+
+        renderedComponent.vm.$nextTick(function () {
+            expect(renderedComponent.vm.uploadedFiles[0].datatype).toBe('Rich Text')
+            expect(renderedComponent.vm.uploadedFiles[0].description).toBe('Some description here')
+            // the other fields remained unchanged
+            expect(renderedComponent.vm.uploadedFiles[0].doi).toBe('000000')
+            expect(renderedComponent.vm.uploadedFiles[0].extension).toBe('TEXT')
+        })
+
+
+    })
+    //TODO: it should emit an event when all fields for all uploads are filled in
 })
