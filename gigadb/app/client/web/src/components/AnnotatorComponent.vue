@@ -26,7 +26,7 @@
                     <td>
                         <div class="form-group required">
                             <label class='control-label'>
-                                <input type="text" name="description" v-bind:id="'upload-'+(index+1)+'-description'" required>
+                                <input v-model="upload.description" type="text" name="description" v-bind:id="'upload-'+(index+1)+'-description'" required>
                             </label>
                         </div>
                     </td>
