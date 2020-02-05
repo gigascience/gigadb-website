@@ -16,7 +16,6 @@ const factory = function(options = {}, values = {}) {
 }
 
 describe('Pager component', function() {
-    let renderedComponent = null
 
     beforeEach(function() {
         this.renderedComponent = factory({
@@ -29,27 +28,27 @@ describe('Pager component', function() {
     })
 
     it('should show Next button in upload stage when file upload is complete', function() {
-        eventBus.$emit('state-change', "uploading")
+        eventBus.$emit('state-changed', "uploading")
         eventBus.$emit('complete', {})
-        Vue.nextTick().then(function() {
-            expect(renderedComponent.find('.btn').text()).toEqual('Next')
+        const wrapper = this.renderedComponent
+        return Vue.nextTick().then(function() {
+            expect(wrapper.find('.btn').text()).toEqual('Next')
         })
     })
 
     it('should not show Next button in upload stage when file upload not complete', function() {
-        eventBus.$emit('state-change', "uploading")
-        Vue.nextTick().then(function() {
-            expect(renderedComponent.find('.btn').exists()).toBe(false)
+        eventBus.$emit('state-changed', "uploading")
+        const wrapper = this.renderedComponent
+        return Vue.nextTick().then(function() {
+            expect(wrapper.find('.btn').exists()).toBe(false)
         })
     })
 
     it('should not show Next button when not in upload stage', function() {
-        Vue.nextTick().then(function() {
-            expect(renderedComponent.find('.btn').exists()).toBe(false)
-        })
         eventBus.$emit('complete', {})
-        Vue.nextTick().then(function() {
-            expect(renderedComponent.find('.btn').exists()).toBe(false)
+        const wrapper = this.renderedComponent
+        return Vue.nextTick().then(function() {
+            expect(wrapper.find('.btn').exists()).toBe(false)
         })
     })
 
