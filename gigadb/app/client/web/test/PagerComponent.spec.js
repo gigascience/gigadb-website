@@ -28,7 +28,7 @@ describe('Pager component', function() {
     })
 
     it('should show Next button in upload stage when file upload is complete', function() {
-        eventBus.$emit('state-changed', "uploading")
+        eventBus.$emit('stage-changed', "uploading")
         eventBus.$emit('complete', {})
         const wrapper = this.renderedComponent
         return Vue.nextTick().then(function() {
@@ -37,7 +37,7 @@ describe('Pager component', function() {
     })
 
     it('should not show Next button in upload stage when file upload not complete', function() {
-        eventBus.$emit('state-changed', "uploading")
+        eventBus.$emit('stage-changed', "uploading")
         const wrapper = this.renderedComponent
         return Vue.nextTick().then(function() {
             expect(wrapper.find('.btn').exists()).toBe(false)
@@ -53,7 +53,7 @@ describe('Pager component', function() {
     })
 
     it('should not show Complete button when metadata form not ready', function () {
-        eventBus.$emit('state-changed', "annotating")
+        eventBus.$emit('stage-changed', "annotating")
         eventBus.$emit('metadata-ready-status',false)
         const wrapper = this.renderedComponent
         return Vue.nextTick().then(function() {
@@ -62,7 +62,7 @@ describe('Pager component', function() {
     })
 
     it('should show Complete button when metadata form is complete', function () {
-        eventBus.$emit('state-changed', "annotating")
+        eventBus.$emit('stage-changed', "annotating")
         eventBus.$emit('metadata-ready-status',true)
         // console.log(this.renderedComponent.vm.stage)
         // console.log(this.renderedComponent.vm.metadataComplete)
