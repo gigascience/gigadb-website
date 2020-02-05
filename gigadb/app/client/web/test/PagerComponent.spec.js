@@ -19,7 +19,13 @@ describe('Pager component', function() {
     let renderedComponent = null
 
     beforeEach(function() {
-        renderedComponent = factory()
+        this.renderedComponent = factory({
+            attachToDocument: true,
+            propsData: {
+                identifier: '000000',
+            }
+        })
+
     })
 
     it('should show Next button in upload stage when file upload is complete', function() {
@@ -44,6 +50,27 @@ describe('Pager component', function() {
         eventBus.$emit('complete', {})
         Vue.nextTick().then(function() {
             expect(renderedComponent.find('.btn').exists()).toBe(false)
+        })
+    })
+
+    it('should not show Complete button when metadata form not ready', function () {
+        eventBus.$emit('state-changed', "annotating")
+        eventBus.$emit('metadata-ready-status',false)
+        const wrapper = this.renderedComponent
+        return Vue.nextTick().then(function() {
+            expect(wrapper.find('.btn btn-success complete').exists()).toBe(false)
+        })
+    })
+
+    it('should show Complete button when metadata form is complete', function () {
+        eventBus.$emit('state-changed', "annotating")
+        eventBus.$emit('metadata-ready-status',true)
+        // console.log(this.renderedComponent.vm.stage)
+        // console.log(this.renderedComponent.vm.metadataComplete)
+        const wrapper = this.renderedComponent
+        return Vue.nextTick().then(function() {
+            // console.log(wrapper.html())
+            expect(wrapper.find('.complete').text()).toEqual('Complete and return to Your Uploaded Datasets page')
         })
     })
 
