@@ -26,7 +26,7 @@ Scenario: Metadata form elements for all uploaded files
 	| TheProof.csv 	| form select | Text 	| form input 	| a | a |
 	| CC0_pixel.jpg | form select | Image 	| form input 	| a | a |
 
-@wip
+@ok
 Scenario: Saving changes to metadata
 	Given I sign in as the user "Artie" "Dodger"
 	And The user "Artie" "Dodger" is registered as authorised user in the API

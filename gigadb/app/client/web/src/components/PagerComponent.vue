@@ -30,7 +30,7 @@ export default {
     },
     mounted: function() {
     	const vm = this //see https://stackoverflow.com/a/47148828/6518111
-        eventBus.$on('state-changed', function(stage) {
+        eventBus.$on('stage-changed', function(stage) {
             vm.stage = stage
             // console.log('Pager, stage changed to ' + vm.stage)
         })
