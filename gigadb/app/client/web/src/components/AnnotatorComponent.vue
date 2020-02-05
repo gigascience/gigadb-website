@@ -88,6 +88,11 @@ export default {
         },
         destroyed: function () {
             console.log("after destroy")
+        },
+        mounted: function () {
+            this.$nextTick(function () {
+                eventBus.$emit("stage-changed","annotating")
+            })
         }
     }
 </script>
