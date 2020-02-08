@@ -11,7 +11,7 @@ use Yii;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\web\ServerErrorHttpException;
-use backend\components\MessagingService;
+use common\components\MessagingService;
 
 /**
  * Custom RestController action: update FiledropAccount model and send email

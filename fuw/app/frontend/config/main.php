@@ -42,6 +42,13 @@ return [
             'showScriptName' => false,
             'rules' => [
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'upload'],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'notification',
+                    'extraPatterns' => [
+                        'POST emailSend' => 'emailSend',
+                    ],
+                ]
             ],
         ],
     ],
