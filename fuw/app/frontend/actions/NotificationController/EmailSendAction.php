@@ -26,10 +26,11 @@ class EmailSendAction extends \yii\base\Action
     public function run()
     {
         $data = Yii::$app->getRequest()->getBodyParams();
+        Yii::warning(print_r($data,true));
         $msgSrv = new MessagingService(Yii::$app->mailer);
         $status = $msgSrv->sendEmailMessage(
-            $data['from'],
-            $data['to'],
+            $data['sender'],
+            $data['recipient'],
             $data['subject'],
             $data['content']
         );
