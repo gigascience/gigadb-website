@@ -106,7 +106,7 @@ class FiledropServicePublicAPITest extends FunctionalTesting
         $webClient = new Client(['handler' => $stack]);
 
         // Instantiate FiledropService
-        $filedropSrv = new FiledropService([
+        $filedropSrv = new FileUploadService([
             "tokenSrv" => new TokenService([
                                   'jwtTTL' => 31104000,
                                   'jwtBuilder' => Yii::$app->jwt->getBuilder(),
@@ -159,7 +159,7 @@ class FiledropServicePublicAPITest extends FunctionalTesting
         $webClient = new Client(['handler' => $stack]);
 
         // Instantiate FiledropService
-        $filedropSrv = new FiledropService([
+        $filedropSrv = new FileUploadService([
             "tokenSrv" => new TokenService([
                                   'jwtTTL' => 31104000,
                                   'jwtBuilder' => Yii::$app->jwt->getBuilder(),

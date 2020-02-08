@@ -16,8 +16,8 @@ class FilesAnnotateAction extends CAction
         $this->getController()->layout='uploader_layout';
         $webClient = new \GuzzleHttp\Client();
 
-        // Instantiate FiledropService
-        $filedropSrv = new FiledropService([
+        // Instantiate FileUploadService
+        $filedropSrv = new FileUploadService([
             "tokenSrv" => new TokenService([
                                   'jwtTTL' => 3600,
                                   'jwtBuilder' => Yii::$app->jwt->getBuilder(),
