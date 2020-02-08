@@ -34,7 +34,7 @@ class SendInstructionsAction extends CAction
         $datasetFiledrop = new DatasetFiledrop(
                                 $fid,
                                 $filedropSrv,
-                                Yii::$app->params['dataset_upload']
+                                Yii::$app->params['dataset_filedrop']
                             );
         $filedropAccount = $datasetFiledrop->getFiledropAccountDetails();
         $instructions = $datasetFiledrop->renderUploadInstructions($filedropAccount);

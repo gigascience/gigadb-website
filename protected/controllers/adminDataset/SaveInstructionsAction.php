@@ -34,7 +34,7 @@ class SaveInstructionsAction extends CAction
         $datasetFiledrop = new DatasetFiledrop(
                                 $fid,
                                 $filedropSrv,
-                                Yii::$app->params['dataset_upload']
+                                Yii::$app->params['dataset_filedrop']
                             );
         $response = $datasetFiledrop->changeUploadInstructions($instructions);
         if (!$response) {

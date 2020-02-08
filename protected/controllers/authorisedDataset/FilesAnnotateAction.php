@@ -16,8 +16,8 @@ class FilesAnnotateAction extends CAction
         $this->getController()->layout='uploader_layout';
         $webClient = new \GuzzleHttp\Client();
 
-        // Instantiate FileUploadService
-        $filedropSrv = new FileUploadService([
+        // Instantiate FileUploadService and DatasetUpload
+        $fileUploadSrv = new FileUploadService([
             "tokenSrv" => new TokenService([
                                   'jwtTTL' => 3600,
                                   'jwtBuilder' => Yii::$app->jwt->getBuilder(),
@@ -32,10 +32,44 @@ class FilesAnnotateAction extends CAction
             "dryRunMode"=>false,
             ]);
 
+        $datasetUpload = new DatasetUpload(
+            $fileUploadSrv->dataset, 
+            $fileUploadSrv, 
+            Yii::$app->params['dataset_upload']
+        );
         // Fetch list of uploaded files
-        $uploadedFiles = $filedropSrv->getUploads($id);
+        $uploadedFiles = $fileUploadSrv->getUploads($id);
         // Yii::log("uploadedFiles count: ".count($uploadedFiles),'info');
-        // Yii::log(var_export($uploadedFiles, true),'info');
+
+        $completeSuccess = true;
+        if(isset($_POST['Upload']))
+        {
+            foreach($uploadedFiles as $upload)
+            {
+                if(isset($_POST['Upload'][$upload['id']])) {
+                    $completeSuccess = $completeSuccess && $fileUploadSrv->updateUpload($upload['id'], $_POST['Upload'][$upload['id']] );
+                }
+            }
+            if ($completeSuccess) {
+
+                $statusChangedAndNotified = $datasetUpload->setStatusToDataAvailableForReview(
+                    $datasetUpload->renderNotificationEmailBody(
+                        "DataAvailableForReview"
+                    )
+                );
+                if($statusChangedAndNotified) {
+                    Yii::app()->user->setFlash('fileUpload','File uploading complete');
+                }
+                else {
+                    Yii::app()->user->setFlash('error','Error changing and notifying dataset upload status');
+                }
+                
+            }
+            else {
+                Yii::app()->user->setFlash('error','Error with some files');
+            }
+            $this->getController()->redirect("/user/view_profile#submitted");
+        }
         $this->getController()->render("filesAnnotate", array("identifier" => $id, "uploads" => $uploadedFiles));
     }
 }

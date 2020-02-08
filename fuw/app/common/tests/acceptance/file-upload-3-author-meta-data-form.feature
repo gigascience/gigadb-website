@@ -1,3 +1,4 @@
+@metadata
 Feature:
 	As an Author
 	I want to add metadata to the files I have uploaded
@@ -27,7 +28,7 @@ Scenario: Metadata form elements for all uploaded files
 	| CC0_pixel.jpg | form select | Image 	| form input 	| a | a |
 
 @ok
-Scenario: Saving changes to metadata
+Scenario: Making changes to metadata
 	Given I sign in as the user "Artie" "Dodger"
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
@@ -43,7 +44,28 @@ Scenario: Saving changes to metadata
 	| File name 	| Data type | Description text 	|
 	| TheProof.csv 	| Rich Text | foo bar 			| 
 	| CC0_pixel.jpg | Image 	| hello world 		|
-	Then I should see a "Complete and return to Your Uploaded Datasets page" link
+	Then I should see a "Complete and return to Your Uploaded Datasets page" button
+
+@wip
+Scenario: Saving metadata
+	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "60" seconds
+	And I press "Next"
+	And I fill in the form with
+	| File name 	| Data type | Description text 	|
+	| TheProof.csv 	| Rich Text | foo bar 			| 
+	| CC0_pixel.jpg | Image 	| hello world 		|
+	When I press "Complete and return to Your Uploaded Datasets page"
+	Then I should be on "/user/view_profile#submitted"
+	And I should see "File uploading complete"
 
 # Scenario: Saving all metadata for all files
 # 	Given I sign in as a user
