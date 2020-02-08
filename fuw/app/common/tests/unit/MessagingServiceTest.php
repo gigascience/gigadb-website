@@ -1,10 +1,10 @@
 <?php
 
-namespace backend\tests;
+namespace common\tests;
 
 use \yii\mail\Mailer;
 use \yii\mail\Message;
-use backend\components\MessagingService;
+use common\components\MessagingService;
 
 
 class MessagingServiceTest extends \Codeception\Test\Unit
@@ -58,10 +58,12 @@ class MessagingServiceTest extends \Codeception\Test\Unit
                     ->willReturn($mockMessage);
 
         $mockMessage->expects($this->once())
-                    ->method('send');
+                    ->method('send')
+                    ->willReturn(true);
 
         $msgSrv = new MessagingService($mockMailer);
-        $msgSrv->sendEmailMessage($from, $to, $subject, $content);
+        $result = $msgSrv->sendEmailMessage($from, $to, $subject, $content);
+        $this->assertTrue($result);
     }
 
 

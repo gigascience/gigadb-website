@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\components;
+namespace common\components;
 
 /**
  * Service for handling message sending
@@ -28,10 +28,11 @@ class MessagingService extends \yii\base\Component
 	 * @param string $to recipient email
 	 * @param string $subject email's subject
 	 * @param string $content content to send
+	 * @return bool whether sending the email is successful or not
 	 */
-	public function sendEmailMessage(string $from, string $to, string $subject, string $content)
+	public function sendEmailMessage(string $from, string $to, string $subject, string $content): bool
 	{
-		$this->mailer->compose()
+		return $this->mailer->compose()
 		    ->setFrom($from)
 		    ->setTo($to)
 		    ->setSubject($subject)
