@@ -31,12 +31,12 @@ class SaveInstructionsAction extends CAction
             "dryRunMode"=>false,
             ]);
 
-        $datasetUpload = new DatasetUpload(
+        $datasetFiledrop = new DatasetFiledrop(
                                 $fid,
                                 $filedropSrv,
                                 Yii::$app->params['dataset_upload']
                             );
-        $response = $datasetUpload->changeUploadInstructions($instructions);
+        $response = $datasetFiledrop->changeUploadInstructions($instructions);
         if (!$response) {
         	$message = "Error: Filedrop Account ($fid) instructions not saved for dataset ($id)";
         	Yii::app()->user->setFlash('error',$message);

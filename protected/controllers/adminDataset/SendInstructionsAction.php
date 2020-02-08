@@ -31,14 +31,14 @@ class SendInstructionsAction extends CAction
             ]);
 
         $subject = "Instructions for using the filedrop account for dataset $id";
-        $datasetUpload = new DatasetUpload(
+        $datasetFiledrop = new DatasetFiledrop(
                                 $fid,
                                 $filedropSrv,
                                 Yii::$app->params['dataset_upload']
                             );
-        $filedropAccount = $datasetUpload->getFiledropAccountDetails();
-        $instructions = $datasetUpload->renderUploadInstructions($filedropAccount);
-        $response = $datasetUpload->sendUploadInstructions(Yii::app()->user->email, $subject, $instructions);
+        $filedropAccount = $datasetFiledrop->getFiledropAccountDetails();
+        $instructions = $datasetFiledrop->renderUploadInstructions($filedropAccount);
+        $response = $datasetFiledrop->sendUploadInstructions(Yii::app()->user->email, $subject, $instructions);
         if (!$response) {
         	$message = "Error: Filedrop Account ($fid) instructions not sent for dataset ($id)";
         	Yii::app()->user->setFlash('error',$message);

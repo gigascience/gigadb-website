@@ -1,11 +1,11 @@
 <?php
 /**
- * Unit tests for DatasetUpload
+ * Unit tests for DatasetFiledrop
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class DatasetUploadTest extends CTestCase
+class DatasetFiledropTest extends CTestCase
 {
 
 	public function testGetFiledropAccountDetails()
@@ -30,9 +30,9 @@ class DatasetUploadTest extends CTestCase
                  ->with($filedrop_id)
                  ->willReturn($filedropAccountHash);
 
-		$datasetUpload = new DatasetUpload($filedrop_id, $mockFiledropSrv, $config);
+		$datasetFiledrop = new DatasetFiledrop($filedrop_id, $mockFiledropSrv, $config);
 
-		$datasetUpload->getFiledropAccountDetails();
+		$datasetFiledrop->getFiledropAccountDetails();
 	}
 
 	public function testChangeUploadInstructions()
@@ -51,9 +51,9 @@ class DatasetUploadTest extends CTestCase
                  ->with($filedrop_id, $newInstructions)
                  ->willReturn(true);
 
-		$datasetUpload = new DatasetUpload($filedrop_id, $mockFiledropSrv, $config);
+		$datasetFiledrop = new DatasetFiledrop($filedrop_id, $mockFiledropSrv, $config);
 
-		$this->assertTrue( $datasetUpload->changeUploadInstructions($newInstructions) );
+		$this->assertTrue( $datasetFiledrop->changeUploadInstructions($newInstructions) );
 
 	}
 
@@ -85,9 +85,9 @@ class DatasetUploadTest extends CTestCase
                  ->with($filedrop_id, $recipient, $subject , $instructions)
                  ->willReturn($fakeResponse);
 
-		$datasetUpload = new DatasetUpload($filedrop_id, $mockFiledropSrv, $config);
+		$datasetFiledrop = new DatasetFiledrop($filedrop_id, $mockFiledropSrv, $config);
 
-		$this->assertTrue( $datasetUpload->sendUploadInstructions($recipient, $subject, $instructions) );
+		$this->assertTrue( $datasetFiledrop->sendUploadInstructions($recipient, $subject, $instructions) );
 
 	}
 
@@ -119,9 +119,9 @@ class DatasetUploadTest extends CTestCase
         $mockFiledropSrv->dataset = $mockDatasetDAO;
 
 
-		$datasetUpload = new DatasetUpload($filedrop_id, $mockFiledropSrv, $config);
+		$datasetFiledrop = new DatasetFiledrop($filedrop_id, $mockFiledropSrv, $config);
 
-		$renderedInstructions = $datasetUpload->renderUploadInstructions($filedropAccountHash);
+		$renderedInstructions = $datasetFiledrop->renderUploadInstructions($filedropAccountHash);
 		$this->assertNotNull($renderedInstructions);
 
 		//veriyfing that Twig has interpolated the template tags with the variables
@@ -165,9 +165,9 @@ class DatasetUploadTest extends CTestCase
         $mockFiledropSrv->dataset = $mockDatasetDAO;
 
 
-		$datasetUpload = new DatasetUpload($filedrop_id, $mockFiledropSrv, $config);
+		$datasetFiledrop = new DatasetFiledrop($filedrop_id, $mockFiledropSrv, $config);
 
-		$renderedInstructions = $datasetUpload->renderUploadInstructions($filedropAccountHash);
+		$renderedInstructions = $datasetFiledrop->renderUploadInstructions($filedropAccountHash);
 		$this->assertNotNull($renderedInstructions);
 
 		//veriyfing that Twig has NOT interpolated the template tags with the variables
