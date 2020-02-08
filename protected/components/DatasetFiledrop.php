@@ -10,7 +10,7 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class DatasetUpload extends yii\base\BaseObject
+class DatasetFiledrop extends yii\base\BaseObject
 {
 	private $_id;
 	private $_filedrop;
