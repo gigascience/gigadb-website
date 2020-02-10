@@ -46,7 +46,7 @@ Scenario: Making changes to metadata
 	| CC0_pixel.jpg | Image 	| hello world 		|
 	Then I should see a "Complete and return to Your Uploaded Datasets page" button
 
-@wip
+@ok
 Scenario: Saving metadata
 	Given I sign in as the user "Artie" "Dodger"
 	And The user "Artie" "Dodger" is registered as authorised user in the API
@@ -66,6 +66,7 @@ Scenario: Saving metadata
 	When I press "Complete and return to Your Uploaded Datasets page"
 	Then I should be on "/user/view_profile#submitted"
 	And I should see "File uploading complete"
+	And I should see "DataAvailableForReview"
 
 # Scenario: Saving all metadata for all files
 # 	Given I sign in as a user
