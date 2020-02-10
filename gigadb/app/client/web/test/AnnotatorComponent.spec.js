@@ -133,3 +133,37 @@ describe('Annotator component', function() {
         expect(this.renderedComponent.vm.isMetadataComplete()).toBeTrue()
     })
 })
+
+describe("Annotator component's Attributes button", function () {
+    beforeEach(function () {
+        this.renderedComponent = factory({
+            attachToDocument: true,
+            propsData: {
+                identifier: '000000',
+                uploads: JSON.parse(JSON.stringify( uploads )) //we need a copy, not reference
+            }
+        })
+    })
+
+    afterEach(function () {
+        eventBus.$off()
+    })
+
+    it('should exist', function () {
+        const wrapper = this.renderedComponent
+        return Vue.nextTick().then(function() {
+            // console.log(wrapper.html())
+            expect(wrapper.findAll(".btn.btn-info.btn-small").length).toBe(2)
+            expect(wrapper.findAll(".btn.btn-info.btn-small").at(0).text()).toContain("Attributes")
+            expect(wrapper.findAll(".btn.btn-info.btn-small").at(1).text()).toContain("Attributes")
+        })
+    })
+
+    it('should open the drawer for adding attributes', function() {
+        const wrapper = this.renderedComponent
+        wrapper.findAll(".btn.btn-info.btn-small").at(0).trigger("click")
+        return Vue.nextTick().then(function() {
+            expect(wrapper.find("#attributes-form").exists()).toBe(true)
+        })
+    })
+})
