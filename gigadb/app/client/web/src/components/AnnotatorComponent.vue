@@ -31,7 +31,7 @@
                         </div>
                     </td>
                     <td>
-                        <el-button v-bind:id="'upload-'+(index+1)+'-tag'" v-on:click="drawer = true" type="primary" class="btn btn-info btn-small">
+                        <el-button v-bind:id="'upload-'+(index+1)+'-tag'" v-on:click="toggleDrawer(index)" type="primary" class="btn btn-info btn-small">
                             Attributes
                         </el-button>
                         <a href="" v-bind:id="'upload-'+(index+1)+'-delete'" class="btn btn-danger btn-small">Delete</a>
@@ -39,9 +39,9 @@
                 </tr>
             </tbody>
         </table>
-        <el-drawer title="Add attributes" :visible.sync="drawer" :with-header="true">
+        <el-drawer v-bind:title="'Add attributes to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="drawer" v-bind:with-header="true" ref="drawer">
             <span>
-                <specifier id="attributes-form"/>
+                <specifier id="attributes-form" />
             </span>
         </el-drawer>
     </div>
@@ -69,6 +69,7 @@ export default {
                 "Genome Sequence",
             ],
             drawer: false,
+            drawerIndex: 0,
         }
     },
     methods: {
@@ -90,6 +91,11 @@ export default {
         },
         isMetadataComplete() {
             return this.metaComplete.length === this.uploadedFiles.length
+        },
+        toggleDrawer(uploadIndex) {
+            // console.log("toggleDrawer with index:"+uploadIndex)
+            this.drawerIndex = uploadIndex
+            this.drawer =  !this.drawer
         }
     },
     beforeDestroy: function() {

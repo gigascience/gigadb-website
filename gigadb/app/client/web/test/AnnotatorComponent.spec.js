@@ -166,4 +166,12 @@ describe("Annotator component's Attributes button", function () {
             expect(wrapper.find("#attributes-form").exists()).toBe(true)
         })
     })
+
+    it('should pass the name of the clicked upload to the open drawer', function() {
+        const wrapper = this.renderedComponent
+        wrapper.findAll(".btn.btn-info.btn-small").at(0).trigger("click")
+        return Vue.nextTick().then(function() {
+            expect(wrapper.vm.$refs.drawer.title).toBe("Add attributes to file: TheProof.csv")
+        })        
+    })
 })
