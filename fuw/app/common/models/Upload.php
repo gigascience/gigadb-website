@@ -19,6 +19,9 @@ use Yii;
  * @property string $extension
  * @property string $created_at
  * @property string $updated_at
+ *
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
  */
 class Upload extends \yii\db\ActiveRecord
 {
@@ -68,5 +71,13 @@ class Upload extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * return related attribute objects
+     */
+    public function getUploadAttributes()
+    {
+        return $this->hasMany(Attribute::className(), ['upload_id' => 'id']);
     }
 }
