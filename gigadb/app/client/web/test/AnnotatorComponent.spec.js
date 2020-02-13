@@ -43,7 +43,7 @@ describe('Annotator component', function() {
     })
     it('should show file names of all upload files', function() {
         const wrapper = this.renderedComponent
-        wrapper.vm.$nextTick(function () {
+        return Vue.nextTick().then(function() {
 	        expect(wrapper.html()).toContain('File Name')
 	        expect(wrapper.html()).toContain('TheProof.csv')
 	        expect(wrapper.html()).toContain('TheProof2.jpg')
@@ -51,7 +51,7 @@ describe('Annotator component', function() {
     })
     it('should show data type of all upload files', function() {
         const wrapper = this.renderedComponent
-        wrapper.vm.$nextTick(function () {
+        return Vue.nextTick().then(function() {
 	        expect(wrapper.html()).toContain('Data Type')
 	        expect(wrapper.html()).toContain('Text')
 	        expect(wrapper.html()).toContain('Image')
@@ -59,7 +59,7 @@ describe('Annotator component', function() {
     })
    it('should show format of all upload files', function() {
         const wrapper = this.renderedComponent
-        wrapper.vm.$nextTick(function () {
+        return Vue.nextTick().then(function() {
 	        expect(wrapper.html()).toContain('Format')
 	        expect(wrapper.html()).toContain('TEXT')
 	        expect(wrapper.html()).toContain('JPEG')
@@ -67,7 +67,7 @@ describe('Annotator component', function() {
     })
    it('should show size of all upload files', function() {
         const wrapper = this.renderedComponent
-        wrapper.vm.$nextTick(function () {
+        return Vue.nextTick().then(function() {
 	        expect(wrapper.html()).toContain('Size')
 	        expect(wrapper.html()).toContain('1120000')
 	        expect(wrapper.html()).toContain('1170000')
@@ -86,7 +86,7 @@ describe('Annotator component', function() {
         inputField.setValue('Some description here')
 
         const wrapper = this.renderedComponent
-        wrapper.vm.$nextTick(function () {
+        return Vue.nextTick().then(function() {
             expect(wrapper.vm.uploadedFiles[0].datatype).toBe('Rich Text')
             expect(wrapper.vm.uploadedFiles[0].description).toBe('Some description here')
             // the other fields remained unchanged
