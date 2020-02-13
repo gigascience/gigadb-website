@@ -24,8 +24,8 @@ Scenario: Metadata form elements for all uploaded files
 	When I press "Next"
 	Then I should see form elements:
 	| File name 	| Data type | Default 	| Description text | Tag action | Delete action|
-	| TheProof.csv 	| form select | Text 	| form input 	| a | a |
-	| CC0_pixel.jpg | form select | Image 	| form input 	| a | a |
+	| TheProof.csv 	| form select | Text 	| form input 	| button | a |
+	| CC0_pixel.jpg | form select | Image 	| form input 	| button | a |
 
 @ok
 Scenario: Making changes to metadata
