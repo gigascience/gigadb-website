@@ -90,6 +90,30 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 		return $result->id;
 	}
 
+	/**
+	 * set Up FUW User account
+	 *
+	 * to be used with fuw database
+	 *
+	 * @param PDO $dbh
+	 * @param string $email
+	 * @return id of just created identity
+	 */
+	public function setUpUserIdentity(PDO $dbh, string $email): void
+	{
+		if ($dbh && $email) {
+			$sql = "insert into public.user (username, auth_key, password_hash, email, created_at, updated_at) values(:username, :auth_key, :password_hash, :email, :created_at, :updated_at)";
+			$sth = $dbh->prepare($sql);
+			$sth->bindValue(":username", Yii::$app->security->generateRandomString(6));
+			$sth->bindValue(":auth_key", Yii::$app->security->generateRandomString(6));
+			$sth->bindValue(":password_hash", Yii::$app->security->generateRandomString(6));
+			$sth->bindValue(":email", $email);
+			$sth->bindValue(":created_at", date("U"));
+			$sth->bindValue(":updated_at", date("U"));
+			$sth->execute();
+			$sth = null;
+		}
+	}
 
 	/**
 	 * tear down FUW User account
@@ -107,6 +131,31 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 			$sth->bindValue(":email", "$email");
 			$sth->execute();
 			$sth = null;
+		}
+	}
+
+	/**
+	 * assert for a FUW User account
+	 *
+	 * to be used with fuw database
+	 *
+	 * @param PDO $dbh
+	 * @param string $email
+
+	 */
+	public function assertUserIdentity(PDO $dbh, string $email): void
+	{
+		if ($dbh && $email) {
+			$q = "select count(*) from public.user where email=:email";
+			$s = $dbh->prepare($q);
+			$s->bindValue(":email", "$email");
+			$s->execute();
+			if ($s) {
+				$this->assertTrue($s->fetchColumn() === 1);
+			}
+			else {
+				$this->fail();
+			}
 		}
 	}
 
@@ -218,6 +267,26 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
         }
         $insertFilesStatement = null;
         return $uploads;
+	}
+
+	/**
+	 * assert that the datatype and description of a praticular upload match parameters
+	 *
+	 * @param PDO $dbh
+	 * @param int $uploadId database Id of an upload record
+	 * @param string $expectedDatatype
+	 * @param string $expectedDescription
+	 */
+	public function assertUploadFields(PDO $dbh, int $uploadId, string $expectedDatatype, string  $expectedDescription)
+	{
+		$q = "select id, datatype, description from upload where id=:id";
+		$s = $dbh->prepare($q);
+		$s->bindValue(':id',$uploadId);
+		$s->execute();
+		$uploadRecord = $s->fetch(PDO::FETCH_OBJ);
+		$this->assertEquals($uploadRecord->datatype, $expectedDatatype);
+		$this->assertEquals($uploadRecord->description, $expectedDescription);
+
 	}
 }
 ?>
