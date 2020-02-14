@@ -53,14 +53,19 @@ class AdminDatasetSendInstructionsActionTest extends FunctionalTesting
     {
         $this->setUpDatasetUploadStatus($this->dbh_gigadb, "100005","Published");
         $this->tearDownFiledropAccount($this->dbh_fuw);
+        $this->tearDownUserIdentity(
+            $this->dbh_fuw,
+            "user@gigadb.org"
+        );
         $this->dbh_gigadb = null;
         $this->dbh_fuw = null;
         $this->url = null;
 
+
         parent::tearDown();
     }
 
-    public function testAddInstructionsToCurationLog() {
+    public function testAddInstructionsToCurationLogAndCreateAuthorisedIdentity() {
 
         $testDOI = "100005";
         $testInstructions = "foo bar is test insructions";
@@ -78,6 +83,10 @@ class AdminDatasetSendInstructionsActionTest extends FunctionalTesting
         // check there is a new curation_log entry
         $this->session->visit("http://gigadb.dev/adminDataset/update/id/213");
         $this->assertTrue($this->session->getPage()->hasContent($testInstructions));
+        
+        // check an identity is created in FUW database to authorize authors workflow
+        $this->assertUserIdentity($this->dbh_fuw, "user@gigadb.org");
+
         $testDOI = null;
         $testInstructions = null;
 
