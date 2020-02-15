@@ -48,6 +48,13 @@ return [
                     'extraPatterns' => [
                         'POST emailSend' => 'emailSend',
                     ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'attribute',
+                    'extraPatterns' => [
+                        'POST replace_for/<upload_id>' => 'replace',
+                    ],
                 ]
             ],
         ],
