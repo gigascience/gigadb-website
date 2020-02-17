@@ -288,5 +288,47 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 		$this->assertEquals($uploadRecord->description, $expectedDescription);
 
 	}
+
+	/**
+	 * Assert that the attributes of a praticular upload match
+	 *
+	 * @param PDO $dbh
+	 * @param int $uploadId database Id of an upload record
+	 * @param array $attributes
+	 */
+	public function assertAttributesForUpload(PDO $dbh, int $uploadId, array $uploadAttributes): void
+	{
+		$q = "select name, value, unit from attribute where upload_id=:uploadId";
+		$s = $dbh->prepare($q);
+		$s->bindValue(':uploadId',$uploadId);
+		$s->execute();
+		$storedAttributes = $s->fetchAll();
+		$this->assertCount(count($uploadAttributes), $storedAttributes);
+		foreach ($storedAttributes as $attribute) {
+			$this->assertNotNull($uploadAttributes[$attribute['name']]);
+			$this->assertEquals($attribute['value'], $uploadAttributes[$attribute['name']]["value"]);
+			$this->assertEquals($attribute['unit'], $uploadAttributes[$attribute['name']]["unit"]);
+		}
+
+	}
+
+	/**
+	 * tearDown attributes
+	 *
+	 * @param PDO $dbh
+	 * @param array $uploadIds database Ids of upload records
+	 */
+	public function tearDownAttributes(PDO $dbh, array $uploadIds): void
+	{
+		foreach($uploadIds as $uploadId) {
+			$q = "delete from attribute where upload_id=:uploadId";
+			$s = $dbh->prepare($q);
+			$s->bindValue(':uploadId',$uploadId);
+			$s->execute();
+		}
+
+	}
+
+
 }
 ?>

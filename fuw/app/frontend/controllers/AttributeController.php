@@ -42,7 +42,10 @@ class AttributeController extends ActiveController
                 $actions['delete']
             );
 
-        $actions['replace']['class'] = 'frontend\actions\AttributeController\ReplaceAction';
+        $actions['replace'] = [
+            'class' => 'frontend\actions\AttributeController\ReplaceAction',
+            'modelClass' => $this->modelClass,
+        ];
 
         return $actions;
 
