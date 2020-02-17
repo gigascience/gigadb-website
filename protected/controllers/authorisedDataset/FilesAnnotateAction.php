@@ -41,16 +41,29 @@ class FilesAnnotateAction extends CAction
         $uploadedFiles = $fileUploadSrv->getUploads($id);
         // Yii::log("uploadedFiles count: ".count($uploadedFiles),'info');
 
-        $completeSuccess = true;
+        $allUploadsSaved = true;
         if(isset($_POST['Upload']))
         {
             foreach($uploadedFiles as $upload)
             {
                 if(isset($_POST['Upload'][$upload['id']])) {
-                    $completeSuccess = $completeSuccess && $fileUploadSrv->updateUpload($upload['id'], $_POST['Upload'][$upload['id']] );
+                    $allUploadsSaved = $allUploadsSaved && $fileUploadSrv->updateUpload($upload['id'], $_POST['Upload'][$upload['id']] );
                 }
             }
-            if ($completeSuccess) {
+        }
+
+        $allAttributesSaved = true;
+        if(isset($_POST['Attributes']))
+        {
+            foreach($uploadedFiles as $upload)
+            {
+                if(isset($_POST['Attributes'][$upload['id']])) {
+                    $allAttributesSaved = $allAttributesSaved && $fileUploadSrv->setAttributes($upload['id'], $_POST['Attributes'][$upload['id']] );
+                }
+            }
+        }
+
+        if ($allUploadsSaved && $allAttributesSaved) {
 
                 $statusChangedAndNotified = $datasetUpload->setStatusToDataAvailableForReview(
                     $datasetUpload->renderNotificationEmailBody(
@@ -59,16 +72,15 @@ class FilesAnnotateAction extends CAction
                 );
                 if($statusChangedAndNotified) {
                     Yii::app()->user->setFlash('fileUpload','File uploading complete');
+                    $this->getController()->redirect("/user/view_profile#submitted");
                 }
                 else {
                     Yii::app()->user->setFlash('error','Error changing and notifying dataset upload status');
                 }
                 
-            }
-            else {
+        }
+        else {
                 Yii::app()->user->setFlash('error','Error with some files');
-            }
-            $this->getController()->redirect("/user/view_profile#submitted");
         }
         $this->getController()->render("filesAnnotate", array("identifier" => $id, "uploads" => $uploadedFiles));
     }

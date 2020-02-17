@@ -13,9 +13,16 @@ namespace frontend\actions\AttributeController;
 
 use Yii;
 use yii\web\ServerErrorHttpException;
+use yii\base\Model;
+use common\models\Attribute;
 
-class ReplaceAction extends \yii\base\Action
+class ReplaceAction extends \yii\rest\Action
 {
+
+    /**
+     * @var string the scenario to be assigned to the model before it is validated and updated.
+     */
+    public $scenario = Model::SCENARIO_DEFAULT;
 
     /**
      * delete/create multiple attributes for a given upload_id
@@ -25,6 +32,46 @@ class ReplaceAction extends \yii\base\Action
      */
     public function run($upload_id)
     {
-        return "{}";
+
+        $modelClass = $this->modelClass ;
+        if ($this->checkAccess) {
+            call_user_func($this->checkAccess, $this->id);
+        }
+
+        $attributes = [];
+        $saved = [];
+
+        // collect POST data from body of the request
+        $attr = Yii::$app->request->getBodyParams();
+        // Yii::warning(var_export($attr,true));
+        if( $attr && isset($attr["Attributes"]) ) {
+
+            // delete existing ones
+            foreach ($modelClass::findAll([ 'upload_id' => $upload_id ]) as $oldModel) {
+                $oldModel->delete();
+            }
+
+            // create an array of models
+            $count = count($attr["Attributes"]);
+            $attributes = [];
+            for($i = 0; $i < $count; $i++) {
+                $attributes[] = new $modelClass([
+                                    'scenario' => $this->scenario,
+                                ]);
+                $attributes[$i]->upload_id = $upload_id;
+                
+            }
+
+            // add new ones
+            $loaded = $modelClass::loadMultiple($attributes, $attr, "Attributes");
+            foreach($attributes as $loadedModel) {
+                if ($loadedModel->save()) {
+                    $saved[] = $loadedModel ;
+                }
+            }
+        }
+
+        // returned saved models
+        return $saved;
     }
 }

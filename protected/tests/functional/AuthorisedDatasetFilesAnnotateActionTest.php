@@ -157,6 +157,80 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
 
     }
 
+    public function testPostUploadsAndAttributesData() {
+        $doi = "100005";
+        // set upload status to the correct UserUploadingData
+        $this->setUpDatasetUploadStatus($this->dbh, $doi ,"UserUploadingData");
+
+
+        // Prepare the http client to be traceable for testing
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
+        $webClient = new Client(['handler' => $stack]);
+
+
+        //log in as a user
+        $jar = new \GuzzleHttp\Cookie\CookieJar;
+        $response = $webClient->request('POST', $this->url . 'site/login', [
+            'cookies' => $jar,
+            form_params => [
+                "LoginForm[username]" => "user@gigadb.org",
+                "LoginForm[password]" => "gigadb",
+                "LoginForm[rememberMe]" => "2592000",
+                "yt0" => "Login",
+            ]
+        ]);
+
+        $this->assertEquals(302, $container[0]['response']->getStatusCode());
+
+
+        //post  metadata for uploaded files and attributes.
+        $metadata = [
+            "Upload[{$this->uploads[0]}][datatype]" => "Rich Text",
+            "Upload[{$this->uploads[0]}][description]" => "The moon",
+            "Upload[{$this->uploads[1]}][datatype]" => "Image",
+            "Upload[{$this->uploads[1]}][description]" => "The sun",
+            "Attributes[{$this->uploads[0]}][Attributes][0][name]" => "Temperature",
+            "Attributes[{$this->uploads[0]}][Attributes][0][value]" => "45",
+            "Attributes[{$this->uploads[0]}][Attributes][0][unit]" => "Celsius",
+            "Attributes[{$this->uploads[0]}][Attributes][1][name]" => "Humidity",
+            "Attributes[{$this->uploads[0]}][Attributes][1][value]" => "75",
+            "Attributes[{$this->uploads[0]}][Attributes][1][unit]" => "%",   
+            "Attributes[{$this->uploads[0]}][Attributes][2][name]" => "Age",
+            "Attributes[{$this->uploads[0]}][Attributes][2][value]" => "33",
+            "Attributes[{$this->uploads[0]}][Attributes][2][unit]" => "Years",
+            "Attributes[{$this->uploads[1]}][Attributes][0][name]" => "Contrast",
+            "Attributes[{$this->uploads[1]}][Attributes][0][value]" => "3000",
+            "Attributes[{$this->uploads[1]}][Attributes][0][unit]" => "Nits",            
+        ];
+        $response = $webClient->request('POST', $this->url . "authorisedDataset/annotateFiles/id/" . $this->doi, [
+            'cookies' => $jar,
+            form_params => $metadata
+        ]);
+        $this->assertEquals(302, $container[0]['response']->getStatusCode());
+
+        // check that the change for uploads went through
+        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[0], "Rich Text", "The moon");
+        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[1], "Image", "The sun");
+
+        // check that the change for attributes went through
+        $example = [
+            $this->uploads[0] => [
+                "Temperature" => ["value" => "45", "unit" => "Celsius"],
+                "Humidity" => [ "value" => "75", "unit" => "%"],
+                "Age" => ["value" => "33", "unit" => "Years"],
+            ],
+            $this->uploads[1] => [
+                "Contrast" => [ "value" => "3000", "unit" => "Nits"],
+            ], 
+        ];
+         $this->assertAttributesForUpload($this->dbhf->getPdoInstance(), $this->uploads[0], $example[$this->uploads[0]]);
+    }
 
 
 }
