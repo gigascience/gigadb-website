@@ -49,7 +49,7 @@ variables:
   CSV_DIR: "prod_like"
 
 services:
-  - docker:dind
+  - docker:19.03.5-dind
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
