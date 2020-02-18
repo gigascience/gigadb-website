@@ -63,7 +63,7 @@ class FilesAnnotateAction extends CAction
             }
         }
 
-        if ($allUploadsSaved && $allAttributesSaved) {
+        if (Yii::$app->request->isPost && $allUploadsSaved && $allAttributesSaved) {
 
                 $statusChangedAndNotified = $datasetUpload->setStatusToDataAvailableForReview(
                     $datasetUpload->renderNotificationEmailBody(
@@ -79,7 +79,7 @@ class FilesAnnotateAction extends CAction
                 }
                 
         }
-        else {
+        elseif ( Yii::$app->request->isPost ) {
                 Yii::app()->user->setFlash('error','Error with some files');
         }
         $this->getController()->render("filesAnnotate", array("identifier" => $id, "uploads" => $uploadedFiles));
