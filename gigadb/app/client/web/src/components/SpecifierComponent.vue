@@ -3,15 +3,15 @@
         <form name="new-attribute-form">
             <label class='control-label'>
                 Name:
-                <input v-model="name" type="text" id="new-attr-name-field" />
+                <input v-model="name" type="text" id="new-attr-name-field" name="name"/>
             </label>
             <label class='control-label'>
                 Value:
-                <input v-model="value" type="text" id="new-attr-value-field" />
+                <input v-model="value" type="text" id="new-attr-value-field" name="value"/>
             </label>
             <label class='control-label'>
                 Unit:
-                <input v-model="unit" type="text" id="new-attr-unit-field" />
+                <input v-model="unit" type="text" id="new-attr-unit-field" name="unit"/>
             </label>
             <button v-on:click="addNewAttribute" class="btn btn-success btn-small" id="add-new-attribute">Add</button>
         </form>

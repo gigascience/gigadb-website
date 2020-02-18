@@ -50,6 +50,37 @@ class MetadataFormSteps
         }
      }
 
+    /**
+     * @Then I should see a text input field :arg1
+     */
+     public function iShouldSeeATextInputField($arg1)
+     {
+         $this->I->seeElement('input', ['name' => mb_strtolower($arg1)]);     }
+
+    /**
+     * @When I fill in :arg1 with :arg2
+     */
+     public function iFillInWith($arg1, $arg2)
+     {
+        $this->I->fillField("form input[name=".mb_strtolower($arg1)."]", $arg2);
+     }
+
+    /**
+     * @Then I should see
+     */
+     public function iShouldSee(TableNode $files)
+     {
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            $this->I->see($row[0]);
+            $this->I->see($row[1]);
+            $this->I->see($row[2]);
+
+        }
+     }
 
 
 
