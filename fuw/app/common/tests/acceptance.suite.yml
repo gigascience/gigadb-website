@@ -37,6 +37,8 @@ modules:
                     w3c: false
         - Filesystem
         - common\tests\Helper\FilesystemCleanupHook
+        - Yii2:
+            part: init
 gherkin:
     contexts:
         default:
