@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { enableAutoDestroy, shallowMount } from '@vue/test-utils'
+import { enableAutoDestroy, mount } from '@vue/test-utils'
 import AnnotatorComponent from '../src/components/AnnotatorComponent.vue'
 
 import { eventBus } from '../src/index.js'
@@ -7,7 +7,7 @@ import testdata from './helper/db.json'
 
 const { uploads } = testdata
 const factory = function(options = {}, values = {}) {
-    return shallowMount(AnnotatorComponent, {
+    return mount(AnnotatorComponent, {
         ...options,
         data() {
             return {
@@ -173,5 +173,14 @@ describe("Annotator component's Attributes button", function () {
         return Vue.nextTick().then(function() {
             expect(wrapper.vm.$refs.drawer.title).toBe("Add attributes to file: TheProof.csv")
         })        
+    })
+
+    it('should set cursor to clicked upload index and upload Id', function() {
+        const wrapper = this.renderedComponent
+        wrapper.findAll(".btn.btn-info.btn-small").at(0).trigger("click")
+        return Vue.nextTick().then(function() {
+            expect(wrapper.vm.drawerIndex).toBe(0)// first upload -> 0
+            expect(wrapper.vm.selectedUpload).toBe(1)//first upload has upload.id = 1 in fixtures
+        })
     })
 })

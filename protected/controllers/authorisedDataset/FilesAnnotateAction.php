@@ -39,7 +39,12 @@ class FilesAnnotateAction extends CAction
         );
         // Fetch list of uploaded files
         $uploadedFiles = $fileUploadSrv->getUploads($id);
-        // Yii::log("uploadedFiles count: ".count($uploadedFiles),'info');
+
+        // Fetch list of attributes
+        $attributes = [];
+        foreach($uploadedFiles as $upload) {
+            $attributes[$upload['id']] = $fileUploadSrv->getAttributes($upload['id']);
+        }
 
         $allUploadsSaved = true;
         if(isset($_POST['Upload']))
@@ -82,7 +87,7 @@ class FilesAnnotateAction extends CAction
         elseif ( Yii::$app->request->isPost ) {
                 Yii::app()->user->setFlash('error','Error with some files');
         }
-        $this->getController()->render("filesAnnotate", array("identifier" => $id, "uploads" => $uploadedFiles));
+        $this->getController()->render("filesAnnotate", array("identifier" => $id, "uploads" => $uploadedFiles, "attributes" => $attributes));
     }
 }
 

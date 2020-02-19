@@ -8,6 +8,9 @@ use \Facebook\WebDriver\WebDriverElement;
 use \Behat\Gherkin\Node\TableNode;
 use \Codeception\Util\ActionSequence;
 
+use Yii;
+use common\models\Upload;
+
 class MetadataFormSteps
 {
 	protected $I;
@@ -82,6 +85,43 @@ class MetadataFormSteps
         }
      }
 
+    /**
+     * @Given file uploads with attributes for DOI :arg1 exist
+     */
+     public function fileUploadsWithAttributesForDOIExist($doi)
+     {
+        // Database record
+        $this->I->amConnectedToDatabase('fuwdb');
+        $uploadId1 = $this->I->haveInDatabase('upload', [
+              'doi' => $doi,
+              'name' => Yii::$app->security->generateRandomString(6).".csv",
+              'size' => 24564343,
+              'status' => Upload::STATUS_UPLOADED,
+              'location' => "ftp://".Yii::$app->security->generateRandomString(6),
+              'extension' => 'CSV',
+              'datatype' => 'Text',
+              'created_at' => date("c"),
+              'updated_at' => date("c"),
+            ]);
+        $uploadId2 = $this->I->haveInDatabase('upload', [
+              'doi' => $doi,
+              'name' => Yii::$app->security->generateRandomString(6).".jpg",
+              'size' => 34564343334,
+              'status' => Upload::STATUS_UPLOADED,
+              'location' => "ftp://".Yii::$app->security->generateRandomString(6),
+              'extension' => 'JPG',
+              'datatype' => 'Image',
+              'created_at' => date("c"),
+              'updated_at' => date("c"),
+            ]);
 
+        $this->I->haveInDatabase('attribute', [
+              'name' => "Attribute A",
+              'value' => "42",
+              'unit' => "Metre",
+              'upload_id' => $uploadId1,
+            ]);
+        $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
+     }
 
 }

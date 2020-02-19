@@ -31,7 +31,7 @@
                         </div>
                     </td>
                     <td>
-                        <el-button v-bind:id="'upload-'+(index+1)+'-tag'" v-on:click="toggleDrawer(index)" type="primary" class="btn btn-info btn-small">
+                        <el-button v-bind:id="'upload-'+(index+1)+'-tag'" v-on:click="toggleDrawer(index, upload.id)" type="primary" class="btn btn-info btn-small">
                             Attributes
                         </el-button>
                         <a href="" v-bind:id="'upload-'+(index+1)+'-delete'" class="btn btn-danger btn-small">Delete</a>
@@ -41,7 +41,7 @@
         </table>
         <el-drawer v-bind:title="'Add attributes to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="drawer" v-bind:with-header="true" ref="drawer">
             <span>
-                <specifier id="attributes-form" />
+                <specifier id="attributes-form" v-bind:fileAttributes="fileAttributes[selectedUpload]" />
             </span>
         </el-drawer>
     </div>
@@ -57,10 +57,11 @@ import { eventBus } from '../index.js'
 import SpecifierComponent from './SpecifierComponent.vue'
 
 export default {
-    props: ['identifier', 'token', 'uploads'],
+    props: ['identifier', 'token', 'uploads', 'attributes'],
     data: function() {
         return {
             uploadedFiles: this.uploads || [],
+            fileAttributes: this.attributes || [],
             metaComplete: [],
             dataTypes: [
                 "Text",
@@ -70,6 +71,7 @@ export default {
             ],
             drawer: false,
             drawerIndex: 0,
+            selectedUpload: -1,
         }
     },
     methods: {
@@ -92,9 +94,9 @@ export default {
         isMetadataComplete() {
             return this.metaComplete.length === this.uploadedFiles.length
         },
-        toggleDrawer(uploadIndex) {
-            // console.log("toggleDrawer with index:"+uploadIndex)
+        toggleDrawer(uploadIndex, uploadId) {
             this.drawerIndex = uploadIndex
+            this.selectedUpload = uploadId
             this.drawer =  !this.drawer
         }
     },

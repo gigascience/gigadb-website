@@ -8,6 +8,8 @@ Background:
 	Given there is a user "Artie" "Dodger"
 	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "UserUploadingData"
 	And filedrop account for DOI "000007" does exist
+	And file uploads with attributes for DOI "000007" exist
+
 @ok
 Scenario: Can trigger a form from metadata form for adding new attribute
 	Given I sign in as the user "Artie" "Dodger"
@@ -27,6 +29,9 @@ Scenario: Can trigger a form from metadata form for adding new attribute
 	Then I should see a text input field "Value"
 	Then I should see a text input field "Unit"
 	And I should see a "Add" button
+	And I should see
+	| Name | Value | Unit |
+	| Attribute A | 42 | Metre |
 
 @ok
 Scenario: Can add new attribute to the attribute list
@@ -49,6 +54,7 @@ Scenario: Can add new attribute to the attribute list
 	And I press "Add"
 	Then I should see
 	| Name | Value | Unit |
+	| Attribute A | 42 | Metre |
 	| Temperature | 33 | Celsius |
 
 # Scenario: there is a button to add attributes in the file metadata page when all mandatory fields are filled in
