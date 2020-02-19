@@ -155,7 +155,9 @@ run_all_tests:
       - protected/config/main.php
       - protected/config/test.php
       - fuw/app/backend/runtime/
+      - fuw/app/frontend/runtime/
       - fuw/app/console/runtime/
+      - fuw/app/common/tests/_output
       - .env
       - composer.lock
     when: always
