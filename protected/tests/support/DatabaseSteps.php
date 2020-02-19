@@ -313,6 +313,28 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 	}
 
 	/**
+	 * setUp attributes
+	 *
+	 * @param PDO $dbh
+	 * @param int $uploadId database Id of an upload record
+	 * @return string attribute's name
+	 */
+	public function setUpAttributes(PDO $dbh, int $uploadId): string
+	{
+
+		$sql = "insert into public.attribute(name, value, unit, upload_id) values(:name, :value,:unit, :upload_id) returning name";
+		$sth = $dbh->prepare($sql);
+		$sth->bindValue(":name", Yii::$app->security->generateRandomString(6));
+		$sth->bindValue(":value", Yii::$app->security->generateRandomString(6));
+		$sth->bindValue(":unit", Yii::$app->security->generateRandomString(6));
+		$sth->bindValue(":upload_id", $uploadId);
+		$sth->execute();
+		$attr = $sth->fetch(PDO::FETCH_OBJ);
+        $sth = null;
+        return $attr->name;
+	}
+
+	/**
 	 * tearDown attributes
 	 *
 	 * @param PDO $dbh

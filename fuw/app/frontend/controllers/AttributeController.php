@@ -47,6 +47,31 @@ class AttributeController extends ActiveController
             'modelClass' => $this->modelClass,
         ];
 
+        $actions['index'] = [
+            'class' => 'yii\rest\IndexAction',
+            'modelClass' => $this->modelClass,
+            'checkAccess' => [$this, 'checkAccess'],
+
+            'prepareDataProvider' => function ($action, $filter) {
+                $model = new $this->modelClass;
+                $query = $model::find();
+                if (!empty($filter)) {
+                    $query->andWhere($filter);
+                }
+
+                $dataProvider = new ActiveDataProvider([
+                    'query' => $query,
+                    'pagination' => false,
+
+                ]);
+                return $dataProvider;
+            },
+            'dataFilter' => [
+                'class' => 'yii\data\ActiveDataFilter',
+                'searchModel' => 'common\models\AttributeSearch'
+            ]
+        ];
+
         return $actions;
 
     }
