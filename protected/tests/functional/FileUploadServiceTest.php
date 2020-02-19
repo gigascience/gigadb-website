@@ -87,7 +87,6 @@ class FiledropServicePublicAPITest extends FunctionalTesting
     /**
      * Test retrieving existing uploaded files from the API
      *
-     * Happy path
      */
     public function testGetUploads()
     {
@@ -324,6 +323,68 @@ class FiledropServicePublicAPITest extends FunctionalTesting
                 ) 
         );
 
+
+    }
+
+/**
+     * Test retrieving existing uploaded files from the API
+     *
+     */
+    public function testGetAttributes()
+    {
+        // create a filedrop acccount
+        $doi = "100004";
+        $this->account = $this->setUpFiledropAccount(
+            $this->dbhf->getPdoInstance(), $doi
+        );
+
+        // set up two attributes on the first upload and return their names
+        $attr1 = $this->setupAttributes(
+            $this->dbhf->getPdoInstance(), $this->uploads[0]
+        );
+        $attr2 = $this->setupAttributes(
+            $this->dbhf->getPdoInstance(), $this->uploads[0]
+        );
+        $attr3 = $this->setupAttributes(
+            $this->dbhf->getPdoInstance(), $this->uploads[0]
+        );
+
+        // Prepare the http client to be traceable for testing
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
+
+        $webClient = new Client(['handler' => $stack]);
+
+        // Instantiate FiledropService
+        $filedropSrv = new FileUploadService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => 31104000,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByPk(344), //admin user
+            "identifier"=> $doi,
+            "dataset" => new DatasetDAO(["identifier" => $this->doi]),
+            "dryRunMode"=> false,
+            ]);
+
+        // invoke the Filedrop Service
+        $response = $filedropSrv->getAttributes($this->uploads[0]);
+
+        // test the response from the API is successful
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
+        // test that getUploads return a value
+        $this->assertNotNull($response);
+        // and that it's an array of files
+        $this->assertEquals(3, count($response));
 
     }
 }

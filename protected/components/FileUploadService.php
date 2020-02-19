@@ -197,6 +197,43 @@ class FileUploadService extends yii\base\Component
 	}
 
 	/**
+	 * Make HTTP GET to File Upload Wizard to retrieve attributes
+	 *
+	 * @param int $uploadId id of the file upload
+	 *
+	 * @return array||null return an array of attributes or null if not found
+	 */
+	public function getAttributes(int $uploadId): ?array
+	{
+		$api_endpoint = "http://fuw-public-api/attributes";
+
+		// reuse token to avoid "You must unsign before making changes" error
+		// when multiple API calls in same session
+		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
+
+		try {
+			$response = $this->webClient->request('GET', $api_endpoint, [
+								    'headers' => [
+								        'Authorization' => "Bearer ".$this->token,
+								    ],
+								    'query' => [ 'filter[upload_id]' => $uploadId ],
+								    'connect_timeout' => 5,
+								]);
+			if (200 === $response->getStatusCode() ) {
+				// Yii::log($response->getBody(),'info');
+				return json_decode($response->getBody(), true);
+			}
+		}
+		catch(RequestException $e) {
+			Yii::log( Psr7\str($e->getRequest()) , "error");
+		    if ($e->hasResponse()) {
+		        Yii::log( Psr7\str($e->getResponse()), "error");
+		    }
+		}
+		return null;
+	}
+
+	/**
 	 * Make HTTP POST to File Upload Wizard to set attributes
 	 *
 	 * approach: delete recorded attributes and add new ones (if any)
