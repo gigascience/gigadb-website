@@ -3,4 +3,4 @@
 profile=${1:-"local"}
 
 docker-compose run --rm test bin/behat --profile $profile -v --stop-on-failure
-docker-compose exec console /app/vendor/bin/codecept -c /app/common run -g ok acceptance --fail-fast
+docker-compose exec -T console /app/vendor/bin/codecept -c /app/common run -g ok acceptance --fail-fast
