@@ -74,7 +74,7 @@ Scenario: Queued files are all uploaded
 	And I press "Upload 2 files"
 	And I wait "1" seconds
 	Then I should see the file upload completed
-	And I wait "60" seconds
+	And I wait "80" seconds
 	And I should see the files in the database
 	| doi 	| name         | status |
     | 000007| TheProof.csv | 0 |

@@ -83,7 +83,7 @@ before_script:
 
 after_script:
   # - docker-compose ps
-  # - docker-compose logs web
+  - docker-compose logs watcher
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-enabled
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-available
   # - docker-compose logs fuw-admin
