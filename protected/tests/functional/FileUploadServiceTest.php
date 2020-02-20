@@ -11,7 +11,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 
-class FiledropServicePublicAPITest extends FunctionalTesting
+class FileUploadServiceTest extends FunctionalTesting
 {
 
     use BrowserSignInSteps;
@@ -50,6 +50,10 @@ class FiledropServicePublicAPITest extends FunctionalTesting
 
         // setup DOI and file drop account for testing
         $this->doi = "100004";
+        // create a filedrop acccount
+        $this->account = $this->setUpFiledropAccount(
+            $this->dbhf->getPdoInstance(), $this->doi
+        );
         // create file uploads associated with that account
         $files =  [
                 ["doi" => "{$this->doi}", "name" =>"somefile.txt", "size" => 325352, "status"=> 1, "location" => "ftp://foobar", "description" => "", "extension" => "TEXT", "datatype"=>"Text"],
@@ -90,13 +94,6 @@ class FiledropServicePublicAPITest extends FunctionalTesting
      */
     public function testGetUploads()
     {
-        // create a filedrop acccount
-        $doi = "100004";
-        $this->account = $this->setUpFiledropAccount(
-            $this->dbhf->getPdoInstance(), $doi
-        );
-
-
         // Prepare the http client to be traceable for testing
 
         $container = [];
@@ -119,13 +116,13 @@ class FiledropServicePublicAPITest extends FunctionalTesting
                                 ]),
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
-            "identifier"=> $doi,
+            "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
             ]);
 
         // invoke the Filedrop Service
-        $response = $filedropSrv->getUploads($doi);
+        $response = $filedropSrv->getUploads($this->doi);
 
         // test the response from the API is successful
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
@@ -143,13 +140,6 @@ class FiledropServicePublicAPITest extends FunctionalTesting
      */
     public function testUpdateUpload()
     {
-        // create a filedrop acccount
-        $doi = "100004";
-        $this->account = $this->setUpFiledropAccount(
-            $this->dbhf->getPdoInstance(), $doi
-        );
-
-
         // Prepare the http client to be traceable for testing
 
         $container = [];
@@ -172,15 +162,15 @@ class FiledropServicePublicAPITest extends FunctionalTesting
                                 ]),
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
-            "identifier"=> $doi,
+            "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
             ]);
 
         // Setup post data
         $postData = [ 
-            $this->uploads[0] => [ 'doi' => $doi, 'name' =>"somefile.txt",'datatype' => 'Text', 'description' => 'foo bar'],
-            $this->uploads[1] => [ 'doi' => $doi, 'name' =>"someimage.png",'datatype' => 'Image', 'description' => 'hello world'],
+            $this->uploads[0] => [ 'doi' => $this->doi, 'name' =>"somefile.txt",'datatype' => 'Text', 'description' => 'foo bar'],
+            $this->uploads[1] => [ 'doi' => $this->doi, 'name' =>"someimage.png",'datatype' => 'Image', 'description' => 'hello world'],
         ];
         // invoke the Filedrop Service
         $response = $filedropSrv->updateUpload($this->uploads[0],$postData[$this->uploads[0]]);
@@ -198,13 +188,6 @@ class FiledropServicePublicAPITest extends FunctionalTesting
      */
     public function testEmailSend()
     {
-        // create a filedrop acccount
-        $doi = "100004";
-        $this->account = $this->setUpFiledropAccount(
-            $this->dbhf->getPdoInstance(), $doi
-        );
-
-
         // Prepare the http client to be traceable for testing
 
         $container = [];
@@ -227,7 +210,7 @@ class FiledropServicePublicAPITest extends FunctionalTesting
                                 ]),
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
-            "identifier"=> $doi,
+            "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
             ]);
@@ -261,13 +244,6 @@ class FiledropServicePublicAPITest extends FunctionalTesting
      */
     public function testSetAttributesFromNone()
     {
-        // create a filedrop acccount
-        $doi = "100004";
-        $this->account = $this->setUpFiledropAccount(
-            $this->dbhf->getPdoInstance(), $doi
-        );
-
-
         // Prepare the http client to be traceable for testing
 
         $container = [];
@@ -290,7 +266,7 @@ class FiledropServicePublicAPITest extends FunctionalTesting
                                 ]),
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
-            "identifier"=> $doi,
+            "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
             ]);
@@ -332,12 +308,6 @@ class FiledropServicePublicAPITest extends FunctionalTesting
      */
     public function testGetAttributes()
     {
-        // create a filedrop acccount
-        $doi = "100004";
-        $this->account = $this->setUpFiledropAccount(
-            $this->dbhf->getPdoInstance(), $doi
-        );
-
         // set up two attributes on the first upload and return their names
         $attr1 = $this->setupAttributes(
             $this->dbhf->getPdoInstance(), $this->uploads[0]
@@ -371,7 +341,7 @@ class FiledropServicePublicAPITest extends FunctionalTesting
                                 ]),
             "webClient" => $webClient,
             "requester" => \User::model()->findByPk(344), //admin user
-            "identifier"=> $doi,
+            "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
             ]);
