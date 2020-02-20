@@ -22,6 +22,15 @@
             </el-table-column>
             <el-table-column prop="unit" label="Unit">
             </el-table-column>
+            <el-table-column fixed="right" width="45">
+                <template slot-scope="scope">
+                    <el-button 
+                        type="danger" icon="el-icon-delete" size="small" 
+                        v-on:click.prevent="removeAttribute(scope.$index, attributes)"
+                    circle>
+                    </el-button>
+                </template>
+            </el-table-column>
         </el-table>
     </div>
 </template>
@@ -45,6 +54,10 @@ export default {
             this.name = ''
             this.value = ''
             this.unit = ''
+        },
+        removeAttribute(index, rows) {
+            rows.splice(index, 1);
+            console.log("remove attribute at "+index)
         }
     }
 }

@@ -47,13 +47,13 @@ describe("Specifier component", function () {
 	it('should display a table of existing attributes', function () {
 		const wrapper = this.renderedComponent
 		return Vue.nextTick().then(function() {
-			expect(wrapper.findAll('table tbody tr').length).toBe(2)
 			expect(wrapper.find('table tbody tr:first-child td:first-child').text()).toBe("Luminosity")
 			expect(wrapper.find('table tbody tr:first-child td:nth-child(2)').text()).toBe("400")
 			expect(wrapper.find('table tbody tr:first-child td:nth-child(3)').text()).toBe("Lux")
 			expect(wrapper.find('table tbody tr:nth-child(2) td:first-child').text()).toBe("Contrast")
 			expect(wrapper.find('table tbody tr:nth-child(2) td:nth-child(2)').text()).toBe("3000")
 			expect(wrapper.find('table tbody tr:nth-child(2) td:nth-child(3)').text()).toBe("Nits")
+			expect(wrapper.find('table tbody tr:nth-child(3)').exists()).toBe(false)
 		})
 	})
 
@@ -72,6 +72,23 @@ describe("Specifier component", function () {
 			expect(wrapper.vm.attributes[2].name).toBe(example.name)
 			expect(wrapper.vm.attributes[2].value).toBe(example.value)
 			expect(wrapper.vm.attributes[2].unit).toBe(example.unit)
+		})
+	})
+
+	it('should display delete button next to each attributes', function () {
+		const wrapper = this.renderedComponent
+		return Vue.nextTick().then(function() {
+			expect(wrapper.find('table tbody tr:first-child td:last-child .el-icon-delete').exists()).toBe(true)
+			expect(wrapper.find('table tbody tr:nth-child(2) td:last-child .el-icon-delete').exists()).toBe(true)
+		})
+	})
+
+	it('should trigger attribute deletion upon clicking delete button', function () {
+		const wrapper = this.renderedComponent
+		return Vue.nextTick().then(function() {
+			wrapper.findAll('.el-button--danger').at(1).trigger('click')
+			expect(wrapper.vm.attributes.length).toBe(1)
+			expect(wrapper.find('table tbody tr:first-child td:first-child').text()).toBe("Luminosity")
 		})
 	})
 
