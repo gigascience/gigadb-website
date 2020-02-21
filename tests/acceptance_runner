@@ -4,3 +4,5 @@ profile=${1:-"local"}
 
 docker-compose run --rm test bin/behat --profile $profile -v --stop-on-failure
 docker-compose exec -T console /app/vendor/bin/codecept -vvv -c /app/common run -g ok acceptance --fail-fast
+docker-compose exec -T watcher ls -alrt /home/downloader/
+docker-compose exec -T watcher ls -alrt /home/uploader/
