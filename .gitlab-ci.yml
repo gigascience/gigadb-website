@@ -95,7 +95,7 @@ after_script:
   # - ls -lart /builds/.containers-data/gigadb/fuw/credentials/
   # - docker-compose logs application
   # - docker-compose logs gigadb
-  # - docker-compose logs database
+  - docker-compose logs database
   # - cat $APPLICATION/.env
   # - cat $APPLICATION/.secrets
   # - echo $DOCKER_HOST

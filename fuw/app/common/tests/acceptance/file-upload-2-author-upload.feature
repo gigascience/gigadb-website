@@ -62,7 +62,7 @@ Scenario: All files in the queue are uploaded
 	And I wait "1" seconds
 	Then I should see the file upload completed
 
-@ok @file-upload
+@ok @file-upload @cifail
 Scenario: Queued files are all uploaded
 	Given I sign in as the user "Artie" "Dodger"
 	And I am on "/user/view_profile#submitted"
