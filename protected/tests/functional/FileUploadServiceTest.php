@@ -11,12 +11,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 
-class FileUploadServiceTest extends FunctionalTesting
+class FileUploadServiceTest extends CTestCase
 {
-
-    use BrowserSignInSteps;
-    use BrowserPageSteps;
-    use CommonDataProviders;
     use DatabaseSteps;
 
     /** @var PDO $dbhf DB handle to FUW database connection */
@@ -56,8 +52,9 @@ class FileUploadServiceTest extends FunctionalTesting
         );
         // create file uploads associated with that account
         $files =  [
-                ["doi" => "{$this->doi}", "name" =>"somefile.txt", "size" => 325352, "status"=> 1, "location" => "ftp://foobar", "description" => "", "extension" => "TEXT", "datatype"=>"Text"],
-                ["doi" => "{$this->doi}", "name" =>"anotherfile.png", "size" => 5463434, "status"=> 1, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
+                ["doi" => "{$this->doi}", "name" =>"somefile.txt", "size" => 325352, "status"=> 0, "location" => "ftp://foobar", "description" => "", "extension" => "TEXT", "datatype"=>"Text"],
+                ["doi" => "{$this->doi}", "name" =>"anotherfile.png", "size" => 5463434, "status"=> 0, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
+                ["doi" => "{$this->doi}", "name" =>"shouldnotdisplay.png", "size" => 5463434, "status"=> 2, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
             ];
         $this->uploads = $this->setUpFileUploads(
             $this->dbhf->getPdoInstance(), $files
@@ -179,6 +176,53 @@ class FileUploadServiceTest extends FunctionalTesting
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
         // test that getUploads return a value
         $this->assertTrue($response);
+
+    }
+
+    /**
+     * Test deleting existing uploaded files from the API
+     *
+     */
+    public function testDeleteUploads()
+    {
+        // Prepare the http client to be traceable for testing
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
+
+        $webClient = new Client(['handler' => $stack]);
+
+        // Instantiate FiledropService
+        $srv = new FileUploadService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => 31104000,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByPk(344), //admin user
+            "identifier"=> $this->doi,
+            "dataset" => new DatasetDAO(["identifier" => $this->doi]),
+            "dryRunMode"=> false,
+            ]);
+
+        // invoke the Filedrop Service
+        $response = $srv->deleteUploads(array_slice($this->uploads,0,2)); //just passing the first two uploads
+
+        // test the response from the API is successful
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
+        // test that getUploads return a value
+        $this->assertNotNull($response);
+        // and that it's an array of files
+        $this->assertEquals(2, count($response)); //return only the two passed in the arguments, no more
+        $this->assertEquals(2, $response[0]['status']);
+        $this->assertEquals(2, $response[1]['status']);
 
     }
 
