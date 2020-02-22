@@ -34,16 +34,19 @@
                         <el-button v-bind:id="'upload-'+(index+1)+'-tag'" v-on:click="toggleDrawer(index, upload.id)" type="primary" class="btn btn-info btn-small">
                             Attributes
                         </el-button>
-                        <a href="" v-bind:id="'upload-'+(index+1)+'-delete'" class="btn btn-danger btn-small">Delete</a>
+                        <el-button v-bind:class="'delete-button-'+index" type="danger" icon="el-icon-delete" v-on:click="deleteUpload(index, upload.id)" circle></el-button>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <el-drawer v-bind:title="'Add attributes to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="drawer" v-bind:with-header="true" ref="drawer">
-            <span>
-                <specifier id="attributes-form" v-bind:fileAttributes="fileAttributes[selectedUpload]" />
-            </span>
-        </el-drawer>
+        <div v-if="uploadedFiles.length > 0">
+            <el-drawer v-bind:title="'Add attributes to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="drawer" v-bind:with-header="true" ref="drawer">
+                <span>
+                    <specifier id="attributes-form" v-bind:fileAttributes="fileAttributes[selectedUpload]" />
+                </span>
+            </el-drawer>
+        </div>
+        <input v-for="(uploadId, index) in filesToDelete" type="hidden" v-bind:name="'DeleteList['+index+']'" v-bind:value="uploadId" />
     </div>
 </template>
 <style>
@@ -62,6 +65,7 @@ export default {
         return {
             uploadedFiles: this.uploads || [],
             fileAttributes: this.attributes || [],
+            filesToDelete: [],
             metaComplete: [],
             dataTypes: [
                 "Text",
@@ -97,7 +101,11 @@ export default {
         toggleDrawer(uploadIndex, uploadId) {
             this.drawerIndex = uploadIndex
             this.selectedUpload = uploadId
-            this.drawer =  !this.drawer
+            this.drawer = !this.drawer
+        },
+        deleteUpload(uploadIndex, uploadId) {
+            this.uploadedFiles.splice(uploadIndex, 1)
+            this.filesToDelete.push(uploadId)
         }
     },
     beforeDestroy: function() {

@@ -132,6 +132,27 @@ describe('Annotator component', function() {
         expect($emitted).toBeTrue()
         expect(this.renderedComponent.vm.isMetadataComplete()).toBeTrue()
     })
+
+    it('should take file from uploads and add to delete list when clicking delete', function() {
+        const wrapper = this.renderedComponent
+        wrapper.findAll(".el-button--danger").at(0).trigger("click")
+        return Vue.nextTick().then(function() {
+            expect(wrapper.vm.uploadedFiles.length).toBe(1)
+            expect(wrapper.vm.filesToDelete.length).toBe(1)
+        })
+    })
+
+    it('should add hidden text input for each files to delete', function () {
+        const wrapper = this.renderedComponent
+        wrapper.findAll(".el-button--danger").at(0).trigger("click")
+        return Vue.nextTick().then(function() {
+            expect(wrapper.findAll('input[type="hidden"]').length).toBe(1)
+            wrapper.findAll(".el-button--danger").at(0).trigger("click")
+            return Vue.nextTick().then(function() {
+                expect(wrapper.findAll('input[type="hidden"]').length).toBe(2)
+            })
+        })        
+    })
 })
 
 describe("Annotator component's Attributes button", function () {
