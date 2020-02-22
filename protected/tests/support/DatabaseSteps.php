@@ -279,7 +279,7 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 	 */
 	public function assertUploadFields(PDO $dbh, int $uploadId, string $expectedDatatype, string  $expectedDescription)
 	{
-		$q = "select id, datatype, description from upload where id=:id";
+		$q = "select id, datatype, description from upload where id=:id and status = 0";
 		$s = $dbh->prepare($q);
 		$s->bindValue(':id',$uploadId);
 		$s->execute();

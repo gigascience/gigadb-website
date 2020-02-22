@@ -129,7 +129,7 @@ class FileUploadService extends yii\base\Component
 								    'headers' => [
 								        'Authorization' => "Bearer ".$this->token,
 								    ],
-								    'query' => [ 'filter[doi]' => $doi ],
+								    'query' => [ 'filter[doi]' => $doi,  'filter[status]' => 0],
 								    'connect_timeout' => 5,
 								]);
 			if (200 === $response->getStatusCode() ) {
@@ -194,6 +194,59 @@ class FileUploadService extends yii\base\Component
 		    }
 		}
 		return false;
+	}
+
+	/**
+	 * Make HTTP PUT to File Upload Wizard to archive an upload
+	 *
+	 * @param array $uploadIds Ids of the upload to delete
+	 *
+	 * @return array ids of archived uploads
+	 */
+	public function deleteUploads(array $uploadIds): array
+	{
+		// Grab the client's handler instance.
+		$clientHandler = $this->webClient->getConfig('handler');
+		// Create a middleware that echoes parts of the request.
+		$tapMiddleware = Middleware::tap(function ($request) {
+		    Yii::log( $request->getHeaderLine('Content-Type') , 'info');
+		    // application/json
+		    Yii::log( $request->getBody(), 'info');
+		    // {"foo":"bar"}
+		});
+
+		$api_endpoint = "http://fuw-public-api/uploads/";
+
+		// reuse token to avoid "You must unsign before making changes" error
+		// when multiple API calls in same session
+		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
+		// Yii::log(print_r($postData,true),'info');
+		$responses = [];
+		$postData = null;
+		foreach($uploadIds as $uploadId) {
+			//prepare post data
+			$postData = ["status" => 2];
+			try {
+				$response = $this->webClient->request('PUT', $api_endpoint."$uploadId", [
+									    'headers' => [
+									        'Authorization' => "Bearer ".$this->token,
+									    ],
+									    'form_params' => $postData,
+									    'connect_timeout' => 5,
+									    'handler' => $tapMiddleware($clientHandler),
+									]);
+				if (200 === $response->getStatusCode() ) {
+					$responses[] =  json_decode($response->getBody(), true);
+				}
+			}
+			catch(RequestException $e) {
+				Yii::log( Psr7\str($e->getRequest()) , "error");
+			    if ($e->hasResponse()) {
+			        Yii::log( Psr7\str($e->getResponse()), "error");
+			    }
+			}
+		}
+		return $responses;
 	}
 
 	/**

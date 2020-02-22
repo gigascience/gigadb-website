@@ -64,8 +64,8 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
             );
 
             $files =  [
-                ["doi" => "{$this->doi}", "name" =>"somefile.txt", "size" => 325352, "status"=> 1, "location" => "ftp://foobar", "description" => "", "extension" => "TEXT", "datatype"=>"Text"],
-                ["doi" => "{$this->doi}", "name" =>"anotherfile.png", "size" => 5463434, "status"=> 1, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
+                ["doi" => "{$this->doi}", "name" =>"somefile.txt", "size" => 325352, "status"=> 0, "location" => "ftp://foobar", "description" => "", "extension" => "TEXT", "datatype"=>"Text"],
+                ["doi" => "{$this->doi}", "name" =>"anotherfile.png", "size" => 5463434, "status"=> 0, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
             ];
             $this->uploads = $this->setUpFileUploads(
                 $this->dbhf->getPdoInstance(), $files
