@@ -24,8 +24,8 @@ Scenario: Metadata form elements for all uploaded files
 	When I press "Next"
 	Then I should see form elements:
 	| File name 	| Data type | Default 	| Description text | Tag action | Delete action|
-	| TheProof.csv 	| form select | Text 	| form input 	| button | a |
-	| CC0_pixel.jpg | form select | Image 	| form input 	| button | a |
+	| TheProof.csv 	| form select | Text 	| form input 	| button | button |
+	| CC0_pixel.jpg | form select | Image 	| form input 	| button | button |
 
 @ok
 Scenario: Making changes to metadata
@@ -68,7 +68,7 @@ Scenario: Saving metadata
 	And I should see "File uploading complete"
 	And I should see "DataAvailableForReview"
 
-@wip
+@ok
 Scenario: Removing uploads
 	Given I sign in as the user "Artie" "Dodger"
 	And The user "Artie" "Dodger" is registered as authorised user in the API
