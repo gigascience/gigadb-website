@@ -46,6 +46,16 @@ class FilesAnnotateAction extends CAction
             $attributes[$upload['id']] = $fileUploadSrv->getAttributes($upload['id']);
         }
 
+
+        if(isset($_POST['DeleteList']))
+        {
+            $deletedlist = $fileUploadSrv->deleteUploads($_POST['DeleteList']);
+            if(count($deletedlist)>0) {
+                Yii::app()->user->setFlash('uploadDeleted',count($deletedlist).' File(s) successfully deleted');
+            }
+
+        }
+
         $allUploadsSaved = true;
         if(isset($_POST['Upload']))
         {

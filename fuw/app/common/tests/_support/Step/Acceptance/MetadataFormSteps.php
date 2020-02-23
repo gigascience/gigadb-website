@@ -124,4 +124,12 @@ class MetadataFormSteps
         $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
      }
 
+    /**
+     * @Given I press the first delete button
+     */
+     public function iPressTheFirstDeleteButton()
+     {
+        $this->I->click('.delete-button-0');
+     }
+
 }
