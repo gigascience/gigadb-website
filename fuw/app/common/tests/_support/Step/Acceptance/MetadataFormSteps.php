@@ -10,6 +10,7 @@ use \Codeception\Util\ActionSequence;
 
 use Yii;
 use common\models\Upload;
+use backend\models\DockerManager;
 
 class MetadataFormSteps
 {
@@ -90,37 +91,40 @@ class MetadataFormSteps
      */
      public function fileUploadsWithAttributesForDOIExist($doi)
      {
+        $docker = new DockerManager();
+        $rand1 = Yii::$app->security->generateRandomString(6);
+        $rand2 = Yii::$app->security->generateRandomString(6);
         // Database record
         $this->I->amConnectedToDatabase('fuwdb');
         $uploadId1 = $this->I->haveInDatabase('upload', [
               'doi' => $doi,
-              'name' => Yii::$app->security->generateRandomString(6).".csv",
+              'name' => $rand1.".csv",
               'size' => 24564343,
-              'status' => Upload::STATUS_UPLOADED,
-              'location' => "ftp://".Yii::$app->security->generateRandomString(6),
+              'status' => Upload::STATUS_UPLOADING,
+              'location' => "ftp://".$rand1,
               'extension' => 'CSV',
-              'datatype' => 'Text',
-              'created_at' => date("c"),
-              'updated_at' => date("c"),
-            ]);
-        $uploadId2 = $this->I->haveInDatabase('upload', [
-              'doi' => $doi,
-              'name' => Yii::$app->security->generateRandomString(6).".jpg",
-              'size' => 34564343334,
-              'status' => Upload::STATUS_UPLOADED,
-              'location' => "ftp://".Yii::$app->security->generateRandomString(6),
-              'extension' => 'JPG',
-              'datatype' => 'Image',
-              'created_at' => date("c"),
-              'updated_at' => date("c"),
-            ]);
+              'datatype' => 'Text'
+        ]);
 
         $this->I->haveInDatabase('attribute', [
               'name' => "Attribute A",
               'value' => "42",
               'unit' => "Metre",
               'upload_id' => $uploadId1,
-            ]);
+        ]);
+
+        $uploadId2 = $this->I->haveInDatabase('upload', [
+              'doi' => $doi,
+              'name' => $rand2.".jpg",
+              'size' => 34564343334,
+              'status' => Upload::STATUS_UPLOADING,
+              'location' => "ftp://".$rand2,
+              'extension' => 'JPG',
+              'datatype' => 'Image'
+        ]);        
+
+        $docker->restartContainer("fuw-public");
+        sleep(3);
         $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
      }
 

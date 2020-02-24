@@ -8,22 +8,13 @@ Background:
 	Given there is a user "Artie" "Dodger"
 	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "UserUploadingData"
 	And filedrop account for DOI "000007" does exist
-	And file uploads with attributes for DOI "000007" exist
 
 @ok
 Scenario: Can trigger a form from metadata form for adding new attribute
 	Given I sign in as the user "Artie" "Dodger"
 	And The user "Artie" "Dodger" is registered as authorised user in the API
-	And I am on "/user/view_profile#submitted"
-	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
-	And I attach the file "TheProof.csv" in the file drop panel
-	And I press "Add more"
-	And I attach the file "CC0_pixel.jpg" in the file drop panel
-	And I press "Upload 2 files"
-	And I wait "60" seconds
-	When I press "Next"
-	And I wait "1" seconds
+	And file uploads with attributes for DOI "000007" exist
+	And I am on "/authorisedDataset/annotateFiles/id/000007"
 	And I press "Attributes"
 	Then I should see a text input field "Name"
 	Then I should see a text input field "Value"
@@ -37,17 +28,9 @@ Scenario: Can trigger a form from metadata form for adding new attribute
 Scenario: Can add new attribute to the attribute list
 	Given I sign in as the user "Artie" "Dodger"
 	And The user "Artie" "Dodger" is registered as authorised user in the API
-	And I am on "/user/view_profile#submitted"
-	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
-	And I attach the file "TheProof.csv" in the file drop panel
-	And I press "Add more"
-	And I attach the file "CC0_pixel.jpg" in the file drop panel
-	And I press "Upload 2 files"
-	And I wait "60" seconds
-	And I press "Next"
-	And I wait "1" seconds
-	When I press "Attributes"
+	And file uploads with attributes for DOI "000007" exist
+	And I am on "/authorisedDataset/annotateFiles/id/000007"
+	And I press "Attributes"
 	And I fill in "Name" with "Temperature"
 	And I fill in "Value" with "33"
 	And I fill in "Unit" with "Celsius"
