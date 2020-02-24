@@ -128,4 +128,43 @@ class DockerManagerTest extends \Codeception\Test\Unit
         $this->dockerManager->setClient($mockDockerClient);
         $response = $this->dockerManager->loadAndRunCommand("foobar",["echo","hello world"]);
     }
+
+    /**
+     * Test it can load and run command on remote docker container
+     */
+    public function testCanRestartContainer()
+    {
+        // ------------------------- stubs configuration ----------------------
+
+        // Create a stub for the container
+        $stubContainer = $this->createMock(\Docker\API\Model\ContainerSummaryItem::class);
+        $stubContainer->method('getId')
+            ->willReturn("xhiauidnfa4");
+        $stubContainer->method('getNames')
+            ->willReturn(["/test_foobar_1"]);
+
+        // ------------------------- mocks configuration ----------------------
+
+        // mock Docker client to expect call to containerList, containerRestart
+        $mockDockerClient = $this->getMockBuilder(\Docker\Docker::class)
+                    ->setMethods(['containerList','containerRestart'])
+                    ->disableOriginalConstructor()
+                    ->getMock();
+
+
+        $mockDockerClient->expects($this->once())
+                ->method('containerList')
+                ->willReturn([$stubContainer]);
+
+        $mockDockerClient->expects($this->once())
+                ->method('containerRestart')
+                ->with(
+                   "/test_foobar_1"
+                );
+
+        // ------------------------- execute system under test ----------------------
+
+        $this->dockerManager->setClient($mockDockerClient);
+        $this->dockerManager->restartContainer("foobar");
+    }
 }

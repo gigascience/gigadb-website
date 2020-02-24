@@ -166,5 +166,19 @@ class DockerManager extends yii\base\BaseObject
 
     	return $result;
     }
+
+    /**
+     * Restart a contaimner
+     *
+     * @param string $service service to execute the command on
+     *
+     */
+    public function restartContainer(string $service): void
+    {
+        $container = $this->getContainer("/${service}_1/");
+
+        $result =  $this->getClient()->containerRestart( $container->getNames()[0] );
+    }
+
 }
 ?>
