@@ -62,7 +62,7 @@ Scenario: All files in the queue are uploaded
 	And I wait "1" seconds
 	Then I should see the file upload completed
 
-@ok @file-upload @cifail
+@ok @file-upload @flaky
 Scenario: Queued files are all uploaded
 	Given I sign in as the user "Artie" "Dodger"
 	And I am on "/user/view_profile#submitted"
@@ -74,7 +74,7 @@ Scenario: Queued files are all uploaded
 	And I press "Upload 2 files"
 	And I wait "1" seconds
 	Then I should see the file upload completed
-	And I wait "80" seconds
+	And I wait "60" seconds
 	And I should see the files in the database
 	| doi 	| name         | status |
     | 000007| TheProof.csv | 0 |
@@ -107,10 +107,7 @@ Scenario: Next button to proceed to file metadata annotation form
 	And I wait "60" seconds
 	When I press "Next"
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
-	Then I should see list of files
-	| doi 	| Name         | Data type 	| Format 	| Size |
-    | 000007| TheProof.csv | Text 	| CSV 	| 117 		|
-    | 000007| TheProof2.csv| Text 	| CSV 	| 112 		|
+
 
 # Scenario: There's no button for uploading files if dataset doesn't have the right status
 # 	Given I sign in as a user
