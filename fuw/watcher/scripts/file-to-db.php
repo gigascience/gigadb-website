@@ -306,7 +306,9 @@ foreach (getDatasetDirectories("/home/downloader/") as $dataset_dir) {
 		$nbRecords = updateFileTable($dbh, $dataset_dir, $files);
 		echo "    Number of records changed for files in $dataset_dir: $nbRecords".PHP_EOL;
 
-		setFlag($dataset_dir);
+		if ($nbRecords > 0) {
+			setFlag($dataset_dir);
+		}
 	}
 }
 
