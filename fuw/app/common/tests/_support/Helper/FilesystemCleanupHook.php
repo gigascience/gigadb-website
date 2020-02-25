@@ -16,13 +16,24 @@ namespace common\tests\Helper;
 class FilesystemCleanupHook extends \Codeception\Module\Filesystem
 {
 
+    // HOOK: after failure
+    // public function _failed(\Codeception\TestInterface $test, $fail)
+    // {
+    // 	$this->writeToFile("/var/tmp/processing_flag/failure", "fail");
+    // }
+
     // HOOK: after each test scenario
     public function _after(\Codeception\TestInterface $test)
     {
-    	$doi = "000007";
-    	$this->deleteDir("/var/incoming/ftp/$doi");
-    	$this->deleteDir("/var/incoming/credentials/$doi");
-    	$this->deleteDir("/var/repo/$doi");
+    	// if( !file_exists("/var/tmp/processing_flag/failure") ) {
+	    	$dois = ["000007","100005","100006"];
+	    	foreach ($dois as $doi) {
+		    	$this->deleteDir("/var/incoming/ftp/$doi");
+		    	$this->deleteDir("/var/incoming/credentials/$doi");
+		    	$this->deleteDir("/var/repo/$doi");
+		    	$this->deleteDir("/var/tmp/processing_flag/$doi");
+	    	}
+    	// }
     }
 }
 

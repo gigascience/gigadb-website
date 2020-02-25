@@ -456,6 +456,7 @@ services:
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      - ${DATA_SAVE_PATH}/fuw/flags:/var/tmp/processing_flag
       # TODO: need to run gigadb's unit tests using the more modern phpunit for coverage aggregation
       - ../../protected:/var/www/protected
       - ../../vendor:/var/www/vendor
