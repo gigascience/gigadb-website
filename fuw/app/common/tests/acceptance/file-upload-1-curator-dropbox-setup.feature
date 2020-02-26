@@ -1,3 +1,4 @@
+@filedrop-account
 Feature:
 	As a curator
 	I want to create a restricted file drop box area on GigaDB server

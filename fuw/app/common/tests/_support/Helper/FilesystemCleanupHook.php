@@ -29,7 +29,7 @@ class FilesystemCleanupHook extends \Codeception\Module\Filesystem
 	    	$dois = ["000007","100005","100006"];
 	    	foreach ($dois as $doi) {
 		    	$this->deleteDir("/var/incoming/ftp/$doi");
-		    	$this->deleteDir("/var/incoming/credentials/$doi");
+		    	$this->deleteDir("/var/private/$doi");
 		    	$this->deleteDir("/var/repo/$doi");
 		    	$this->deleteDir("/var/tmp/processing_flag/$doi");
 	    	}
