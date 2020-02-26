@@ -43,7 +43,16 @@ class DbExtendedWithHooks extends \Codeception\Module\Db
         } catch (\Exception $e) {
             $this->debug("Couldn't delete a record from public.upload");
         }
+
+        $this->_getDriver()->deleteQueryByCriteria('public.user', ["email" => "artie_dodger@gigadb.org"]);
+
         $this->amConnectedToDatabase(self::DEFAULT_DATABASE);
+
+        $this->_getDriver()->deleteQueryByCriteria('dataset', ["identifier" => "000007"]);
+        $this->_getDriver()->deleteQueryByCriteria('dataset', ["identifier" => "100006"]);
+        $this->_getDriver()->deleteQueryByCriteria('gigadb_user', ["email" => "artie_dodger@gigadb.org"]);
+        $this->_getDriver()->deleteQueryByCriteria('gigadb_user', ["email" => "joy_fox@gigadb.org"]);
+
         parent::_after($test);
     }
 }
