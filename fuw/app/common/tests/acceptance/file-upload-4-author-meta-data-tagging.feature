@@ -8,12 +8,12 @@ Background:
 	Given there is a user "Artie" "Dodger"
 	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "UserUploadingData"
 	And filedrop account for DOI "000007" does exist
+	And file uploads with attributes for DOI "000007" exist
 
 @ok
 Scenario: Can trigger a form from metadata form for adding new attribute
-	Given I sign in as the user "Artie" "Dodger"
-	And The user "Artie" "Dodger" is registered as authorised user in the API
-	And file uploads with attributes for DOI "000007" exist
+	Given The user "Artie" "Dodger" is registered as authorised user in the API
+	And I sign in as the user "Artie" "Dodger"
 	And I am on "/authorisedDataset/annotateFiles/id/000007"
 	And I press "Attributes"
 	Then I should see a text input field "Name"
@@ -26,9 +26,8 @@ Scenario: Can trigger a form from metadata form for adding new attribute
 
 @ok
 Scenario: Can add new attribute to the attribute list
-	Given I sign in as the user "Artie" "Dodger"
-	And The user "Artie" "Dodger" is registered as authorised user in the API
-	And file uploads with attributes for DOI "000007" exist
+	Given The user "Artie" "Dodger" is registered as authorised user in the API
+	And I sign in as the user "Artie" "Dodger"
 	And I am on "/authorisedDataset/annotateFiles/id/000007"
 	And I press "Attributes"
 	And I fill in "Name" with "Temperature"
