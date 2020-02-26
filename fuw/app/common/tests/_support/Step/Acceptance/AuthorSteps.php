@@ -37,9 +37,9 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
        	$this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
 
         //Filesystem objects
-        mkdir("/var/incoming/ftp/$doi",0777,true) or exit("failed making directory 1 for $doi");
-        mkdir("/var/incoming/credentials/$doi",0777,true) or exit("failed making directory 2 for $doi");
-        mkdir("/var/repo/$doi",0777,true) or exit("failed making directory 3 for $doi");
+        $filedrop = new FiledropAccount();
+        $filedrop->doi = $doi;
+        $filedrop->prepareAccountSetFields($doi);
      }
 
  	/**
