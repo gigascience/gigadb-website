@@ -91,18 +91,11 @@ class MetadataFormSteps
      */
      public function fileUploadsWithAttributesForDOIExist($doi)
      {
-        $docker = new DockerManager();
         $rand1 = Yii::$app->security->generateRandomString(6);
         $rand2 = Yii::$app->security->generateRandomString(6);
         // Database record
         $this->I->amConnectedToDatabase('fuwdb');
-
-        $max = 3;
-        do {
-          if (0 === $max)
-            break;
-
-          $uploadId1 = $this->I->haveInDatabase('upload', [
+        $uploadId1 = $this->I->haveInDatabase('upload', [
                 'doi' => $doi,
                 'name' => $rand1.".csv",
                 'size' => 24564343,
@@ -111,33 +104,13 @@ class MetadataFormSteps
                 'extension' => 'CSV',
                 'datatype' => 'Text'
           ]);
-          $max -=  1;
-        }
-        while(1 !== $this->I->grabNumRecords('upload',[ "name" => $rand1.".csv" ]));
-        $this->I->seeInDatabase('upload',[ "name" => $rand1.".csv" ]);
-
-        $max = 3;
-        do {
-          if (0 === $max)
-            break;
-
-          $this->I->haveInDatabase('attribute', [
+        $this->I->haveInDatabase('attribute', [
                 'name' => "Attribute A",
                 'value' => "42",
                 'unit' => "Metre",
                 'upload_id' => $uploadId1,
           ]);
-          $max -=  1;
-        }
-        while(1 !== $this->I->grabNumRecords('attribute',[ "name" => "Attribute A" ]));
-        $this->I->seeInDatabase('attribute',[ "name" => "Attribute A" ]);
-
-        $max = 3;
-        do {
-          if (0 === $max)
-            break;
-
-          $uploadId2 = $this->I->haveInDatabase('upload', [
+        $uploadId2 = $this->I->haveInDatabase('upload', [
                 'doi' => $doi,
                 'name' => $rand2.".jpg",
                 'size' => 34564343334,
@@ -145,13 +118,13 @@ class MetadataFormSteps
                 'location' => "ftp://".$rand2,
                 'extension' => 'JPG',
                 'datatype' => 'Image'
-          ]);        
-          $max -=  1;
-        }
-        while(1 !== $this->I->grabNumRecords('upload',[ "name" => $rand2.".jpg" ]));
+          ]);   
+
+        $this->I->seeInDatabase('upload',[ "name" => $rand1.".csv" ]);
+        $this->I->seeInDatabase('attribute',[ "name" => "Attribute A" ]);
         $this->I->seeInDatabase('upload',[ "name" => $rand2.".jpg" ]);
-        $docker->restartContainer("fuw-public");
         $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
+        
      }
 
     /**
