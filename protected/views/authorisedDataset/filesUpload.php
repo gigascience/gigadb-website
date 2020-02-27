@@ -13,7 +13,7 @@
             </header>
             <section>
                 <uploader identifier="<?= $identifier ?>"
-                            endpoint="/files/"
+                            endpoint="<?php echo $tusd_path ?>"
                 />
             </section>
             <footer>
