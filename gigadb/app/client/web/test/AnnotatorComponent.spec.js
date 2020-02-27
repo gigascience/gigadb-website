@@ -205,3 +205,27 @@ describe("Annotator component's Attributes button", function () {
         })
     })
 })
+
+describe("Annotator component's bulk upload form and instructions", function () {
+
+    beforeEach(function () {
+        this.renderedComponent = factory({
+            attachToDocument: true,
+            propsData: {
+                identifier: '000000',
+                uploads: JSON.parse(JSON.stringify( uploads )) //we need a copy, not reference
+            }
+        })
+    })
+
+    afterEach(function () {
+        eventBus.$off()
+    })
+
+    it('should link to example spreadsheet', function () {
+        const wrapper = this.renderedComponent
+        return Vue.nextTick().then(function() {
+            expect(wrapper.find('a[href="/files/examples/bulk-data-upload-example.csv"').exists()).toBe(true)
+        })
+    })
+})

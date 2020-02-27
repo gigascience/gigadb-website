@@ -39,6 +39,11 @@
                 </tr>
             </tbody>
         </table>
+        <aside>
+            <p>If you have many files you may wish to prepare the information in a spreadsheet and upload it to this form using the file input below. Note the columns should have a header row. Please check out <a href="/files/examples/bulk-data-upload-example.csv">this example spreadsheet</a> for header names.</p>
+            <label for="bulkmetadata">Upload file metadata:</label>
+            <input type="file" id="bulkmetadata" name="bulkmetadata" accept=".csv, .tsv">
+        </aside>
         <div v-if="uploadedFiles.length > 0">
             <el-drawer v-bind:title="'Add attributes to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="drawer" v-bind:with-header="true" ref="drawer">
                 <span>
