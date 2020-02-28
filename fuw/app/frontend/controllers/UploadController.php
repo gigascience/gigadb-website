@@ -38,7 +38,6 @@ class UploadController extends ActiveController
         $actions = parent::actions();
         unset(
                 $actions['create'],
-                $actions['update'],
                 $actions['delete']
             );
 
@@ -66,6 +65,11 @@ class UploadController extends ActiveController
         $actions['index']['dataFilter'] = [
             'class' => 'yii\data\ActiveDataFilter',
             'searchModel' => 'common\models\UploadSearch'
+        ];
+        $actions['update']['class'] = 'frontend\actions\UploadController\UpdateAction';
+        $actions['updateMultiple'] = [
+            'class' => 'frontend\actions\UploadController\UpdateMultipleAction',
+            'modelClass' => $this->modelClass,
         ];
     return $actions;
 

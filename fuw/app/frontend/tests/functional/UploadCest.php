@@ -50,4 +50,51 @@ class UploadCest
         $I->seeResponseJsonMatchesJsonPath('$.[1].name');
         $I->dontSeeResponseJsonMatchesJsonPath('$.[2].name');
     }
+
+    /**
+     * Testing PUT on /uploads/ with single upload data 
+     *
+     */
+    public function updateSingleUpload(FunctionalTester $I)
+    {
+        $doi ="010010";
+        $example = [ 
+            1 => [ 'doi' => $doi, 'name' =>"somefile.txt",'datatype' => 'Text', 'description' => 'foo bar'],
+            2 => [ 'doi' => $doi, 'name' =>"someimage.png",'datatype' => 'Image', 'description' => 'hello world'],
+        ];
+        $I->amBearerAuthenticated("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBUEkgQWNjZXNzIHJlcXVlc3QgZnJvbSBjbGllbnQiLCJpc3MiOiJ3d3cuZ2lnYWRiLm9yZyIsImF1ZCI6ImZ1dy5naWdhZGIub3JnIiwiZW1haWwiOiJzZnJpZXNlbkBqZW5raW5zLmluZm8iLCJuYW1lIjoiSm9obiBTbWl0aCIsImFkbWluX3N0YXR1cyI6InRydWUiLCJyb2xlIjoiY3JlYXRlIiwiaWF0IjoiMTU2MTczMDgyMyIsIm5iZiI6IjE1NjE3MzA4MjMiLCJleHAiOiIyNzI5NTEzMjIwIn0.uTZpDB1eCGt3c_23wLaVxpFUw_WFH2Jep_vpzky2o18");
+        $I->sendPUT("/uploads/2", $example[2]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->canSeeResponseContainsJson(
+            [ 'doi' => $doi, 'name' =>"someimage.png",'datatype' => 'Image', 'description' => 'hello world']
+        );
+
+    }
+
+    /**
+     * Testing PUT on /uploads/ with multiple upload data 
+     *
+     */
+    public function updateMultipleUploads(FunctionalTester $I)
+    {
+        $doi ="010010";
+        $example = [
+            "Uploads" => [
+                1 => [ 'doi' => $doi, 'name' =>"FieldDataMethods.doc",'datatype' => 'Text', 'description' => 'foo bar'],
+                2 => [ 'doi' => $doi, 'name' =>"Measurements.csv",'datatype' => 'Image', 'description' => 'hello world'],
+            ] 
+        ];
+        $I->amBearerAuthenticated("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBUEkgQWNjZXNzIHJlcXVlc3QgZnJvbSBjbGllbnQiLCJpc3MiOiJ3d3cuZ2lnYWRiLm9yZyIsImF1ZCI6ImZ1dy5naWdhZGIub3JnIiwiZW1haWwiOiJzZnJpZXNlbkBqZW5raW5zLmluZm8iLCJuYW1lIjoiSm9obiBTbWl0aCIsImFkbWluX3N0YXR1cyI6InRydWUiLCJyb2xlIjoiY3JlYXRlIiwiaWF0IjoiMTU2MTczMDgyMyIsIm5iZiI6IjE1NjE3MzA4MjMiLCJleHAiOiIyNzI5NTEzMjIwIn0.uTZpDB1eCGt3c_23wLaVxpFUw_WFH2Jep_vpzky2o18");
+        $I->sendPUT("/uploads/bulkedit_for_doi/010010", $example);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->canSeeResponseContainsJson(
+            [ 'description' => 'foo bar']
+        );        
+        $I->canSeeResponseContainsJson(
+            [ 'description' => 'hello world']
+        );
+
+    }
 }
