@@ -41,7 +41,13 @@ return [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'upload'],
+                [
+                    'class' => 'yii\rest\UrlRule', 
+                    'controller' => 'upload',
+                    'extraPatterns' => [
+                        'PUT bulkedit_for_doi/<doi>' => 'updateMultiple',
+                    ],
+                ],
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'notification',
