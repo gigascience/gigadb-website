@@ -179,6 +179,56 @@ class FileUploadServiceTest extends CTestCase
 
     }
 
+
+/**
+     * Test updating multiple upload records in FUW API
+     *
+     * Happy path
+     */
+    public function testUpdateUploadMultiple()
+    {
+        // Prepare the http client to be traceable for testing
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
+
+        $webClient = new Client(['handler' => $stack]);
+
+        // Instantiate FiledropService
+        $srv = new FileUploadService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => 31104000,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByPk(344), //admin user
+            "identifier"=> $this->doi,
+            "dataset" => new DatasetDAO(["identifier" => $this->doi]),
+            "dryRunMode"=> false,
+            ]);
+
+        // Setup post data
+        $postData = [ 
+            $this->uploads[0] => [ 'doi' => $this->doi, 'name' =>"somefile.txt",'datatype' => 'Text', 'description' => 'foo bar'],
+            $this->uploads[1] => [ 'doi' => $this->doi, 'name' =>"anotherfile.png",'datatype' => 'Image', 'description' => 'hello world'],
+        ];
+        // invoke the Filedrop Service
+        $response = $srv->updateUploadMultiple($this->doi,$postData);
+
+        // test the response from the API is successful
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
+        // test that getUploads return a value
+        $this->assertTrue($response);
+
+    }
+
     /**
      * Test deleting existing uploaded files from the API
      *

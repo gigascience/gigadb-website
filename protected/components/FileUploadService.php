@@ -196,6 +196,56 @@ class FileUploadService extends yii\base\Component
 		return false;
 	}
 
+/**
+	 * Make HTTP PUT to File Upload Wizard to update multiple uploads
+	 *
+	 * @param string $doi DOI for which to update the uploads for
+	 * @param array $postData array of values to update the uploads's attribute with
+	 *
+	 * @return bool whether or not the update was succesful
+	 */
+	public function updateUploadMultiple(string $doi, array $postData): bool
+	{
+
+		// Grab the client's handler instance.
+		$clientHandler = $this->webClient->getConfig('handler');
+		// Create a middleware that echoes parts of the request.
+		$tapMiddleware = Middleware::tap(function ($request) {
+		    Yii::log( $request->getHeaderLine('Content-Type') , 'info');
+		    // application/json
+		    Yii::log( $request->getBody(), 'info');
+		    // {"foo":"bar"}
+		});
+
+		$api_endpoint = "http://fuw-public-api/uploads/bulkedit_for_doi/$doi";
+
+		// reuse token to avoid "You must unsign before making changes" error
+		// when multiple API calls in same session
+		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
+		// Yii::log(print_r($postData,true),'info');
+		try {
+			$response = $this->webClient->request('PUT', $api_endpoint, [
+								    'headers' => [
+								        'Authorization' => "Bearer ".$this->token,
+								    ],
+								    'form_params' => ["Uploads" => $postData],
+								    'connect_timeout' => 5,
+								    'handler' => $tapMiddleware($clientHandler),
+								]);
+			if (200 === $response->getStatusCode() ) {
+				// Yii::log($response->getBody(),'info');
+				return true;
+			}
+		}
+		catch(RequestException $e) {
+			Yii::log( Psr7\str($e->getRequest()) , "error");
+		    if ($e->hasResponse()) {
+		        Yii::log( Psr7\str($e->getResponse()), "error");
+		    }
+		}
+		return false;
+	}
+
 	/**
 	 * Make HTTP PUT to File Upload Wizard to archive an upload
 	 *
