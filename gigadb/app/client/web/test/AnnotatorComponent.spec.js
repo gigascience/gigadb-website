@@ -228,4 +228,16 @@ describe("Annotator component's bulk upload form and instructions", function () 
             expect(wrapper.find('a[href="/files/examples/bulk-data-upload-example.csv"').exists()).toBe(true)
         })
     })
+    it('should allow upload a spreadsheet file', function () {
+        const wrapper = this.renderedComponent
+        const fileInput = wrapper.find("input[type='file']")
+        expect(fileInput.exists()).toBe(true)
+        const dT = new ClipboardEvent('').clipboardData || new DataTransfer()
+        dT.items.add(new File(['foo'], 'programmatically_created.csv'))
+        fileInput.element.files = dT.files
+        // wrapper.find("#bulkUploadForm button").trigger("click")
+        expect(fileInput.element.files.length).toBe(1)
+        expect(wrapper.find("#bulkUploadForm button").exists()).toBe(true)   
+
+    })
 })
