@@ -33,6 +33,7 @@
         "phpunit/phpunit": "^5.7",
         "phpunit/phpcov": "^3.1",
         "phpunit/php-invoker": "^1.1.4",
+        "phpunit/dbunit": "^2.0",
         "phpunit/php-code-coverage": "*",
         "phpunit/phpunit-mock-objects": "*",
         "aik099/phpunit-mink": "@dev",

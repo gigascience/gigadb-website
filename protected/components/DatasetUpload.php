@@ -1,4 +1,8 @@
 <?php
+
+use \PhpOffice\PhpSpreadsheet\Reader;
+use \yii\helpers\FileHelper;
+
 /**
  * Business object for integration between GigaDB and File Upload Wizard for file upload
  *
@@ -65,6 +69,46 @@ class DatasetUpload extends yii\base\BaseObject
 
 	        // render the email instructions from template
 	        return $twig->render("$targetStatus.twig", $vars);
+	}
+
+	/**
+	 * method to parse a spreadsheet of metadata for uploaded files
+	 *
+	 * @param string $inputType MIME type of the spreadsheet file
+	 * @param string $inputFile path to the spreadsheet
+	 * @return array array of arrays (metadata and errors)
+	 */
+	public function parseFromSpreadsheet(string $mimeType, string $inputFile): array
+	{
+		$errors = [];
+		$metadata = [];
+		$columns = [
+			'File Name' => 'name',
+			'Data Type' => 'datatype',
+			'File Format' => 'extension',
+			'Description' => 'description',
+			'Sample ID' => 'sampleId',
+			'Attribute 1' => 'attr1',
+			'Attribute 2' => 'attr2',
+			'Attribute 3' => 'attr3',
+			'Attribute 4' => 'attr4',
+			'Attribute 5' => 'attr5',
+		];
+
+		/** Determine the extension from the mime type **/
+		$extension = FileHelper::getExtensionsByMimeType($mimeType);
+		$inputType = ucfirst($extension[0]);
+		/**  Create a new Reader of the type defined in $extension  **/
+		$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputType);
+		/**  Load $filepath to a Spreadsheet Object  **/
+		$spreadsheet = $reader->load($inputFile);
+		$sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+		$headers = array_shift($sheetData);
+		$metadata = [] ;
+		foreach($sheetData as $row) {
+			$metadata[] = array_combine($columns, $row);
+		}
+		return [$metadata, $errors];
 	}
 
 }
