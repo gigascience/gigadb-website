@@ -1,4 +1,6 @@
 <?php
+
+use \PhpOffice\PhpSpreadsheet\Reader\Csv;
 /**
  * Unit tests for DatasetUpload
  *
@@ -61,6 +63,24 @@ class DatasetUploadTest extends CTestCase
 		$datasetFileUpload = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv, $config);
 		$renderedContent = $datasetFileUpload->renderNotificationEmailBody("DataAvailableForReview");
 		$this->assertTrue(1 == preg_match('/dataset with DOI 003000/', $renderedContent));
+	}
+
+	/**
+	 * test parsing metadata spreadsheet
+	 */
+	public function testParseFromSpreadsheet()
+	{
+		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
+		$mockFileUploadSrv = $this->createMock(FileUploadService::class);
+
+		$bo = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv,[]);
+		list($metadata, $errors) = $bo->parseFromSpreadsheet("text/csv","/var/www/files/examples/bulk-data-upload-example.csv");
+		$this->assertEquals(2, count($metadata));
+		$this->assertEquals(0, count($errors));
+		$this->assertEquals("method.txt", $metadata[0]["name"]);
+		$this->assertEquals("The methodology", $metadata[0]["description"]);
+		$this->assertEquals("someFile.png", $metadata[1]["name"]);
+		$this->assertEquals("That diagram", $metadata[1]["description"]);		
 	}
 
 	

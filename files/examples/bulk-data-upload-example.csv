@@ -1,2 +1,3 @@
-File Name, Data Type, File Format, Size, Description, Sample ID, Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5
-someFile.png, Image, PNG, 112000, That diagram,, Rating::9::Some guys's scale, MaxTemp::89::Celsius,,,
+File Name,Data Type,File Format,Description,Sample ID,Attribute 1,Attribute 2,Attribute 3,Attribute 4, Attribute 5
+method.txt, Text, TXT,The methodology,,,,,,
+someFile.png, Image, PNG,That diagram,, Rating::9::Some guys's scale, MaxTemp::89::Celsius,,,
