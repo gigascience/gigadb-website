@@ -111,6 +111,48 @@ class DatasetUpload extends yii\base\BaseObject
 		return [$metadata, $errors];
 	}
 
+	/**
+	 * Method to merge metadata from spreadsheet into the existing data
+	 * 
+	 * it uses the filename as commonality. it separate uploads and attributes
+	 * as in the database they go in two different tables
+	 *
+	 * @param string $storedUploads stored uploads metadata with IDs
+	 * @param string $sheetData metadata loaded from spreadsheet
+	 * @return array array of arrays (changed uploads data, attributes and errors)
+	 */
+	public function mergeMetadata(array $storedUploads, array $sheetData): array
+	{
+		$changedUploads = [];
+		$newAttributes = [] ;
+		$errors = [] ;
+		$upload = array_merge($storedUploads, array_slice($sheetData, 0, 5));
+		foreach($storedUploads as $upload) {
+			$dataPos = array_search( $upload['name'], array_column($sheetData, 'name') );
+			if ($dataPos !== false) { // if filename matches
+				$changedUploads[$upload['id']] = array_merge(
+									$upload, 
+									array_slice($sheetData[$dataPos],0,5) 
+								);
+				$tempAttr = [];
+				foreach (range(1, 5) as $number) {
+					if ( isset($sheetData[$dataPos]['attr'.$number])
+						&& $sheetData[$dataPos]['attr'.$number] !== ''
+					) {
+						$tempAttr[$number-1] = [ "upload_id" => $upload['id'] ];
+						list($tempAttr[$number-1]['name'], 
+							$tempAttr[$number-1]['value'], 
+							$tempAttr[$number-1]['unit']
+						) = preg_split("/::/", $sheetData[$dataPos]['attr'.$number]);
+					}			    
+				}
+				if(!empty($tempAttr))
+					$newAttributes = array_merge($newAttributes, $tempAttr);
+			}
+		}
+		return [$changedUploads, $newAttributes, $errors];
+	}
+
 }
 
 ?>
