@@ -7,3 +7,11 @@ modules:
         - REST:
             depends: Yii2
             part: Json
+        - Db:
+            dsn: 'pgsql:host=database;dbname=fuwdb_test'
+            user: 'fuwdb'
+            password: 'yii2advanced'
+            # dump: tests/_data/gigadb_bootstrap.sql
+            cleanup: false # don't reload dump between tests
+            populate: false # don't load dump before all tests
+            

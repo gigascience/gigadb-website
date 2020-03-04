@@ -396,6 +396,71 @@ class FileUploadServiceTest extends CTestCase
 
     }
 
+
+    /**
+     * Test adding attributes of a file uploaded by an author
+     *
+     */
+    public function testAddAttributes()
+    {
+        // Prepare the http client to be traceable for testing
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
+
+        $webClient = new Client(['handler' => $stack]);
+
+        // Instantiate FiledropService
+        $srv = new FileUploadService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => 31104000,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByPk(344), //admin user
+            "identifier"=> $this->doi,
+            "dataset" => new DatasetDAO(["identifier" => $this->doi]),
+            "dryRunMode"=> false,
+            ]);
+
+        // Setup post data
+        $example = [
+            $this->uploads[0] => [
+                "Attributes" => [
+                    0 => ["name" => "Temperature","value" => "45", "unit" => "Celsius"],
+                    1 => ["name" => "Humidity", "value" => "75", "unit" => "%"],
+                    2 => ["name" => "Age","value" => "33", "unit" => "Years"],
+                ]
+            ],
+            $this->uploads[1] => [
+                "Attributes" => [
+                        0 => [ "value" => "3000", "unit" => "Nits"],
+                ]
+            ], 
+        ];
+        // invoke the FileUpload Service
+        $response = $srv->addAttributes($this->uploads[0], $example[$this->uploads[0]]);
+
+        // test the response from the API is successful
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
+        // test that setAttributes return a value
+        $this->assertTrue($response);
+        $this->assertTrue(
+            3 === count( 
+                    json_decode($container[0]['response']->getBody(), true) 
+                ) 
+        );
+
+
+    }
+
 /**
      * Test retrieving existing uploaded files from the API
      *

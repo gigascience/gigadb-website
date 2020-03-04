@@ -60,6 +60,7 @@ return [
                     'controller' => 'attribute',
                     'extraPatterns' => [
                         'POST replace_for/<upload_id>' => 'replace',
+                        'POST add_for/<upload_id>' => 'add',
                     ],
                 ]
             ],
