@@ -7,6 +7,21 @@ instantiating a dev PostgreSQL database.
 
 ## Notes
 
+### Migration script creation
+
+```
+# Log into test container
+docker-compose run --rm test bash
+$ Change directory
+cd /var/www/protected
+# Create migration
+./yiic migrate create create_dataset_table
+```
+
+N.B. The migration PHP files will use tab, and not space characters for indents.
+
+### Redundant files
+
 * The ops/configuration/postgresql-conf directory contains a SQL file 
 `empty_bootstrap.sql` for creating an empty gigadb database that contains no 
 tables.
@@ -20,6 +35,10 @@ tables.
 
 These PHP files should be deleted since they will all be redundant with this
 new database setup.
+
+### Data privacy
+
+Need to be aware of privacy of email addresses in test data, e.g. gigadb_user table.
 
 
 
