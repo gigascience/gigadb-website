@@ -145,11 +145,11 @@ class DatasetUploadTest extends CTestCase
 			],
 			[ 
 				"name" => "someFile.png", 
-				"description" => "That diagram", 
+				"description" => " That diagram", 
 				"datatype" => "Image", 
 				"extension" => "PNG", 
 				"sampleId" => null, 
-				"attr1" => "Rating::9::Some guys's scale", 
+				"attr1" => " Rating::9::Some guys's scale", 
 				"attr2" => null, 
 				"attr3" => null, 
 				"attr4" => null, 
