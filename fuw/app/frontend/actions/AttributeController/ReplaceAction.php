@@ -46,9 +46,18 @@ class ReplaceAction extends \yii\rest\Action
         // Yii::warning(var_export($attr,true));
         if( $attr && isset($attr["Attributes"]) ) {
 
-            // delete existing ones
-            foreach ($modelClass::findAll([ 'upload_id' => $upload_id ]) as $oldModel) {
-                $oldModel->delete();
+            if("attribute/replace" === Yii::$app->requestedRoute) {
+                // delete existing ones
+                Yii::info("Action mode: attribute/replace");
+                foreach ($modelClass::findAll([ 'upload_id' => $upload_id ]) as $oldModel) {
+                    $oldModel->delete();
+                }
+            }
+            elseif("attribute/add" === Yii::$app->requestedRoute) {
+                Yii::info("Action mode: attribute/add");
+            }
+            else {
+                throw new ServerErrorHttpException('Unrecognized action:'.Yii::$app->requestedRoute);
             }
 
             // create an array of models

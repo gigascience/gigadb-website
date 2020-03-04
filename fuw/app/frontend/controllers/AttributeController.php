@@ -47,6 +47,11 @@ class AttributeController extends ActiveController
             'modelClass' => $this->modelClass,
         ];
 
+        $actions['add'] = [
+            'class' => 'frontend\actions\AttributeController\ReplaceAction',
+            'modelClass' => $this->modelClass,
+        ];
+
         $actions['index'] = [
             'class' => 'yii\rest\IndexAction',
             'modelClass' => $this->modelClass,
