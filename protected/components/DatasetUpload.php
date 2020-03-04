@@ -123,6 +123,10 @@ class DatasetUpload extends yii\base\BaseObject
 	 */
 	public function mergeMetadata(array $storedUploads, array $sheetData): array
 	{
+		$array_trim = function($rawCell) { //cells from spreadsheet may have whitespace
+			return trim($rawCell);
+		};
+
 		$changedUploads = [];
 		$newAttributes = [] ;
 		$errors = [] ;
@@ -132,7 +136,7 @@ class DatasetUpload extends yii\base\BaseObject
 			if ($dataPos !== false) { // if filename matches
 				$changedUploads[$upload['id']] = array_merge(
 									$upload, 
-									array_slice($sheetData[$dataPos],0,5) 
+									array_map($array_trim, array_slice($sheetData[$dataPos],0,5))
 								);
 				$tempAttr = [];
 				foreach (range(1, 5) as $number) {
@@ -143,7 +147,7 @@ class DatasetUpload extends yii\base\BaseObject
 						list($tempAttr[$number-1]['name'], 
 							$tempAttr[$number-1]['value'], 
 							$tempAttr[$number-1]['unit']
-						) = preg_split("/::/", $sheetData[$dataPos]['attr'.$number]);
+						) = preg_split("/::/", trim($sheetData[$dataPos]['attr'.$number]));
 					}			    
 				}
 				if(!empty($tempAttr))
