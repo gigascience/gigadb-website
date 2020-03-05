@@ -5,20 +5,41 @@ class m200304_155540_create_image_table extends CDbMigration
     // Use safeUp/safeDown to do migration with transaction
     public function safeUp()
     {
-        $this->createTable('image', array(
-            'id' => 'integer NOT NULL',
-            'location' => 'string DEFAULT \'\'::character varying (255) NOT NULL',
-            'tag' => 'string',
-            'url' => 'string',
-            'license' => 'text NOT NULL',
-            'photographer' => 'string NOT NULL',
-            'source' => 'string NOT NULL'
-        ));
+        // Using plain SQL for schema changes since Yii column
+        // types e.g. string will be converted to only varchar(255)
+        // and cannot specify smaller varchar sizes
+        $sql_createtab = sprintf(
+            'CREATE TABLE image (
+                id integer NOT NULL,
+                location character varying(200) DEFAULT \'\'::character varying NOT NULL,
+                tag character varying(300),
+                url character varying(256),
+                license text NOT NULL,
+                photographer character varying(128) NOT NULL,
+                source character varying(256) NOT NULL);'
+        );
 
-        // Create sequence using plain SQL
-        Yii::app()->db->createCommand('CREATE SEQUENCE image_id_seq START WITH 31 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;')->execute();
-        Yii::app()->db->createCommand('ALTER SEQUENCE image_id_seq OWNED BY image.id;')->execute();
-        Yii::app()->db->createCommand('ALTER TABLE ONLY image ALTER COLUMN id SET DEFAULT nextval(\'image_id_seq\'::regclass);')->execute();
+        $sql_createseq = sprintf(
+            'CREATE SEQUENCE image_id_seq 
+                START WITH 31 
+                INCREMENT BY 1 
+                NO MINVALUE 
+                NO MAXVALUE CACHE 1;'
+        );
+
+        $sql_alterseq = sprintf(
+            'ALTER SEQUENCE image_id_seq 
+                OWNED BY image.id;'
+        );
+
+        $sql_altertab = sprintf(
+            'ALTER TABLE ONLY image 
+                ALTER COLUMN id SET DEFAULT nextval(\'image_id_seq\'::regclass);'
+        );
+
+        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        foreach ($sql_cmds as $sql_cmd)
+            Yii::app()->db->createCommand($sql_cmd)->execute();
 
         // Add data to table
         $this->insert('image', array(

@@ -5,15 +5,39 @@ class m200304_184110_create_type_table extends CDbMigration
     // Use safeUp/safeDown to do migration with transaction
     public function safeUp()
     {
-        $this->createTable('type', array(
-            'id' => 'integer NOT NULL',
-            'name' => 'string NOT NULL',
-            'description' => 'text DEFAULT \'\'::text NOT NULL'
-        ));
-        // Create sequence using plain SQL
-        Yii::app()->db->createCommand('CREATE SEQUENCE type_id_seq START WITH 6 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;')->execute();
-        Yii::app()->db->createCommand('ALTER SEQUENCE type_id_seq OWNED BY type.id;')->execute();
-        Yii::app()->db->createCommand('ALTER TABLE ONLY type ALTER COLUMN id SET DEFAULT nextval(\'type_id_seq\'::regclass);')->execute();
+        // Using plain SQL for schema changes since Yii column
+        // types e.g. string will be converted to only varchar(255)
+        // and cannot specify smaller varchar sizes
+        $sql_createtab = sprintf(
+            'CREATE TABLE type (
+                id integer NOT NULL,
+                name character varying(32) NOT NULL,
+                description text DEFAULT \'\'::text NOT NULL);'
+        );
+
+        $sql_createseq = sprintf(
+            'CREATE SEQUENCE type_id_seq 
+                START WITH 6 
+                INCREMENT BY 1 
+                NO MINVALUE 
+                NO MAXVALUE 
+                CACHE 1;'
+        );
+
+        $sql_alterseq = sprintf(
+            'ALTER SEQUENCE type_id_seq 
+                OWNED BY type.id;'
+        );
+
+        $sql_altertab = sprintf(
+            'ALTER TABLE ONLY type 
+                ALTER COLUMN id SET DEFAULT nextval(\'type_id_seq\'::regclass);'
+        );
+
+        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        foreach ($sql_cmds as $sql_cmd)
+            Yii::app()->db->createCommand($sql_cmd)->execute();
+
         // Add data to table
         $this->insert('type', array(
             'id' => '1',

@@ -5,18 +5,44 @@ class m200304_141919_create_publisher_table extends CDbMigration
     // Use safeUp/safeDown to do migration with transaction
     public function safeUp()
     {
-        $this->createTable('publisher', array(
-            'id' => 'integer NOT NULL',
-            'name' => 'string NOT NULL',
-            'description' => 'text DEFAULT \'\'::text NOT NULL'
-        ));
+        // Using plain SQL for schema changes since Yii column
+        // types e.g. string will be converted to only varchar(255)
+        // and cannot specify smaller varchar sizes
+        $sql_createtab = sprintf(
+            'CREATE TABLE publisher (
+                id integer NOT NULL,
+                name character varying(45) NOT NULL,
+                description text DEFAULT \'\'::text NOT NULL);'
+        );
 
-        // Create sequence using plain SQL
-        Yii::app()->db->createCommand('CREATE SEQUENCE publisher_id_seq START WITH 3 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1 OWNED BY publisher.id;')->execute();
-        Yii::app()->db->createCommand('ALTER SEQUENCE publisher_id_seq OWNED BY publisher.id;')->execute();
-        Yii::app()->db->createCommand('ALTER TABLE ONLY publisher ALTER COLUMN id SET DEFAULT nextval(\'publisher_id_seq\'::regclass);')->execute();
+        $sql_createseq = sprintf(
+            'CREATE SEQUENCE publisher_id_seq 
+                START WITH 3 
+                INCREMENT BY 1 
+                NO MINVALUE 
+                NO MAXVALUE 
+                CACHE 1 
+                OWNED BY publisher.id;'
+        );
 
-        // Add data to table
+        $sql_alterseq = sprintf(
+            'ALTER SEQUENCE publisher_id_seq 
+                OWNED BY publisher.id;'
+        );
+
+        $sql_altertab = sprintf(
+            'ALTER TABLE ONLY publisher
+                ALTER COLUMN id SET DEFAULT nextval(\'publisher_id_seq\'::regclass);'
+        );
+
+        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        foreach ($sql_cmds as $sql_cmd)
+            Yii::app()->db->createCommand($sql_cmd)->execute();
+
+        // Add data to table. Using insert() method from
+        // CDbMigration because the code looks cleaner,
+        // logging is provided and will be easier to update
+        // if required.
         $this->insert('publisher', array(
             'id' => '1',
             'name' =>'GigaScience'
@@ -38,6 +64,8 @@ class m200304_141919_create_publisher_table extends CDbMigration
     public function safeDown()
     {
          $this->dropTable('publisher');
+         // Don't think you can drop SEQUENCE with a
+         // function in CDbMigration
          Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
     }
 }
