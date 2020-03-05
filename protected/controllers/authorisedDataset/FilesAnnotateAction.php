@@ -8,6 +8,10 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
+
+use Yii;
+use \yii\web\UploadedFile;
+
 class FilesAnnotateAction extends CAction
 {
 
@@ -46,6 +50,28 @@ class FilesAnnotateAction extends CAction
             $attributes[$upload['id']] = $fileUploadSrv->getAttributes($upload['id']);
         }
 
+        $bulkStatus = false;
+        if(isset($_FILES) && is_array($_FILES) && isset($_FILES["bulkmetadata"])) {
+            Yii::log("File is attached",'warning');
+            $postedFile = UploadedFile::getInstanceByName("bulkmetadata");
+            Yii::log(var_export($postedFile,true));
+            $postedFile->saveAs("/var/tmp/$id-".$postedFile->name);
+            list($sheetData, $parseErrors) = $datasetUpload->parseFromSpreadsheet("text/csv","/var/tmp/$id-".$postedFile->name);
+            if (isset($sheetData) && is_array($sheetData) && !empty($sheetData)) {
+                list($newUploads, $attributes, $mergeErrors) = $datasetUpload->mergeMetadata($uploadedFiles, $sheetData);
+                Yii::log(var_export($newUploads, true),'info');
+                $bulkStatus = $fileUploadSrv->updateUploadMultiple($id,$newUploads);
+                Yii::log("update Upload Multiple: ", $bulkStatus);
+            }
+            if($bulkStatus) {
+                Yii::app()->user->setFlash('filesAnnotate','Metadata loaded');
+            }
+            foreach(array_merge($parseErrors, $mergeErrors) as $error) {
+                 Yii::app()->user->addFlash('filesAnnotateErrors',$error);
+            }
+
+            $this->getController()->redirect(["authorisedDataset/annotateFiles", "id" => $id]);            
+        }
 
         if(isset($_POST['DeleteList']))
         {

@@ -284,8 +284,8 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 		$s->bindValue(':id',$uploadId);
 		$s->execute();
 		$uploadRecord = $s->fetch(PDO::FETCH_OBJ);
-		$this->assertEquals($uploadRecord->datatype, $expectedDatatype);
-		$this->assertEquals($uploadRecord->description, $expectedDescription);
+		$this->assertEquals($expectedDatatype, $uploadRecord->datatype);
+		$this->assertEquals($expectedDescription, $uploadRecord->description);
 
 	}
 
