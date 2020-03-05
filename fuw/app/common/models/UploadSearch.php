@@ -19,6 +19,7 @@ class UploadSearch extends Model {
     public $doi;
     public $name;
     public $size;
+    public $sample_id;
     public $status;
     public $location;
     public $datatype;
@@ -32,6 +33,7 @@ class UploadSearch extends Model {
             ['doi', 'string'],
             ['name', 'string', 'max' => 128],
             ['size', 'integer'],
+            ['sample_id', 'integer'],
             ['status', 'integer'],
             ['location', 'string', 'max' => 200],
             ['datatype', 'string', 'max' => 32],

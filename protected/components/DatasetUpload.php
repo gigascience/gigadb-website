@@ -87,7 +87,7 @@ class DatasetUpload extends yii\base\BaseObject
 			'Data Type' => 'datatype',
 			'File Format' => 'extension',
 			'Description' => 'description',
-			'Sample ID' => 'sampleId',
+			'Sample ID' => 'sample_id',
 			'Attribute 1' => 'attr1',
 			'Attribute 2' => 'attr2',
 			'Attribute 3' => 'attr3',

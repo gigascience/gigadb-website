@@ -19,6 +19,7 @@ use Yii;
  * @property string $extension
  * @property string $created_at
  * @property string $updated_at
+ * @property int $sample_id
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
@@ -41,7 +42,7 @@ class Upload extends \yii\db\ActiveRecord
         return [
             [['doi', 'name', 'size'], 'required'],
             [['size'], 'default', 'value' => null],
-            [['size'], 'integer'],
+            [['size','sample_id'], 'integer'],
             [['description', 'initial_md5'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['doi', 'status'], 'string', 'max' => 100],
@@ -70,6 +71,7 @@ class Upload extends \yii\db\ActiveRecord
             'extension' => 'Extension',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'sample_id' => 'Sample ID',
         ];
     }
 
