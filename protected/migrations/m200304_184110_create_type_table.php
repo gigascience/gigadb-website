@@ -34,7 +34,17 @@ class m200304_184110_create_type_table extends CDbMigration
                 ALTER COLUMN id SET DEFAULT nextval(\'type_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_createview = sprintf(
+            'CREATE VIEW homepage_dataset_type AS
+                SELECT type.name, count(dataset_type.id) AS count 
+                FROM dataset_type, type, dataset 
+                WHERE (((dataset_type.type_id = type.id) 
+                AND (dataset_type.dataset_id = dataset.id)) 
+                AND ((dataset.upload_status)::text = \'Published\'::text)) 
+                GROUP BY type.name;'
+        );
+
+        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab, $sql_createview);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 
