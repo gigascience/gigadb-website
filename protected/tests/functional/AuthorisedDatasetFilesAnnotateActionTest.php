@@ -64,8 +64,8 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
             );
 
             $files =  [
-                ["doi" => "{$this->doi}", "name" =>"somefile.txt", "size" => 325352, "status"=> 0, "location" => "ftp://foobar", "description" => "", "extension" => "TEXT", "datatype"=>"Text"],
-                ["doi" => "{$this->doi}", "name" =>"anotherfile.png", "size" => 5463434, "status"=> 0, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
+                ["doi" => "{$this->doi}", "name" =>"method.txt", "size" => 325352, "status"=> 0, "location" => "ftp://foobar", "description" => "", "extension" => "TEXT", "datatype"=>"Text"],
+                ["doi" => "{$this->doi}", "name" =>"someFile.png", "size" => 5463434, "status"=> 0, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
             ];
             $this->uploads = $this->setUpFileUploads(
                 $this->dbhf->getPdoInstance(), $files
@@ -232,6 +232,59 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
          $this->assertAttributesForUpload($this->dbhf->getPdoInstance(), $this->uploads[0], $example[$this->uploads[0]]);
     }
 
+public function testPostUploadsMetadataSpreadsheet() {
+        $doi = "100005";
+        // set upload status to the correct UserUploadingData
+        $this->setUpDatasetUploadStatus($this->dbh, $doi ,"UserUploadingData");
+
+
+        // Prepare the http client to be traceable for testing
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
+        $webClient = new Client(['handler' => $stack]);
+
+
+        //log in as a user
+        $jar = new \GuzzleHttp\Cookie\CookieJar;
+        $response = $webClient->request('POST', $this->url . 'site/login', [
+            'cookies' => $jar,
+            form_params => [
+                "LoginForm[username]" => "user@gigadb.org",
+                "LoginForm[password]" => "gigadb",
+                "LoginForm[rememberMe]" => "2592000",
+                "yt0" => "Login",
+            ]
+        ]);
+
+        $this->assertEquals(302, $container[0]['response']->getStatusCode());
+
+
+        //post  data for uploaded files
+        $multipart = [
+                [
+                'name'     => 'bulkmetadata',
+                'contents' => fopen('/var/www/files/examples/bulk-data-upload-example.csv', 'r'),
+                'filename' => 'bulk-data-upload-example.csv'
+            ],
+        ];
+
+
+        $response = $webClient->request('POST', $this->url . "authorisedDataset/annotateFiles/id/" . $this->doi, [
+            'cookies' => $jar,
+            'multipart' => $multipart
+        ]);
+        $this->assertEquals(302, $container[0]['response']->getStatusCode());
+
+        // check that the change for uploads went through
+        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[0], "Text", "The methodology");
+        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[1], "Image", "That diagram");
+
+    }
 
 }
 

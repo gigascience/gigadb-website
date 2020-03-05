@@ -87,6 +87,23 @@ class MetadataFormSteps
      }
 
     /**
+     * @Then I should see metadata
+     */
+     public function iShouldSeeMetadata(TableNode $files)
+     {
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            $this->I->see($row[0]);
+            $this->I->seeElement([ 'css' => 'form input' ], [ 'value' => $row[1] ]);
+            $this->I->seeElement([ 'css' => 'form select' ], [ 'value' => $row[2] ]);
+        }
+     }
+
+
+    /**
      * @Given file uploads with attributes for DOI :arg1 exist
      */
      public function fileUploadsWithAttributesForDOIExist($doi)
@@ -133,6 +150,14 @@ class MetadataFormSteps
      public function iPressTheFirstDeleteButton()
      {
         $this->I->click('.delete-button-0');
+     }
+
+    /**
+     * @When I attach the file :arg1
+     */
+     public function iAttachTheFile($arg1)
+     {
+         $this->I->attachFile('#bulkmetadata',$arg1);
      }
 
 }
