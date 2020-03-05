@@ -75,11 +75,6 @@ Scenario: Queued files are all uploaded
 	And I press "Upload 2 files"
 	And I wait "1" seconds
 	Then I should see the file upload completed
-	And I wait "30" seconds
-	And I should see the files in the database
-	| doi 	| name         | status |
-    | 000007| TheProof.csv | 0 |
-    | 000007| TheProof2.csv| 0 |
 
 @ok
 Scenario: There is a Next button
