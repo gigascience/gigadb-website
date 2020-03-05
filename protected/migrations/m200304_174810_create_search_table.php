@@ -5,21 +5,42 @@ class m200304_174810_create_search_table extends CDbMigration
     // Use safeUp/safeDown to do migration with transaction
     public function safeUp()
     {
-        $this->createTable('search', array(
-            'id' => 'integer NOT NULL',
-            'user_id' => 'integer NOT NULL',
-            'name' => 'string NOT NULL',
-            'query' => 'text NOT NULL',
-            'result' => 'text',
-        ));
+        // Using plain SQL for schema changes since Yii column
+        // types e.g. string will be converted to only varchar(255)
+        // and cannot specify smaller varchar sizes
+        $sql_createtab =
+            'CREATE TABLE search (
+                id integer NOT NULL,
+                user_id integer NOT NULL,
+                name character varying(128) NOT NULL,
+                query text NOT NULL,
+                result text);';
 
+        $sql_createseq = sprintf(
+            'CREATE SEQUENCE search_id_seq 
+                START WITH 1 
+                INCREMENT BY 1 
+                NO MINVALUE 
+                NO MAXVALUE 
+                CACHE 1;'
+        );
 
-        // Create sequence using plain SQL
-        Yii::app()->db->createCommand('CREATE SEQUENCE search_id_seq START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;')->execute();
-        Yii::app()->db->createCommand('ALTER SEQUENCE search_id_seq OWNED BY search.id;')->execute();
-        Yii::app()->db->createCommand('ALTER TABLE ONLY search ALTER COLUMN id SET DEFAULT nextval(\'search_id_seq\'::regclass);')->execute();
+        $sql_alterseq = sprintf(
+            'ALTER SEQUENCE search_id_seq 
+                OWNED BY search.id;'
+        );
 
-        // No search rows to be added
+        $sql_altertab = sprintf(
+            'ALTER TABLE ONLY search 
+                ALTER COLUMN id SET DEFAULT nextval(\'search_id_seq\'::regclass);'
+        );
+
+        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        foreach ($sql_cmds as $sql_cmd)
+            Yii::app()->db->createCommand($sql_cmd)->execute();
+
+        // The search table is empty in production db
+        // so no row data needs to be added
     }
 
     public function safeDown()
