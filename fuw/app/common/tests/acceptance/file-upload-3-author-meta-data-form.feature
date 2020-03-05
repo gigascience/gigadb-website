@@ -20,7 +20,7 @@ Scenario: Metadata form elements for all uploaded files
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "60" seconds
+	And I wait "30" seconds
 	When I press "Next"
 	Then I should see form elements:
 	| File name 	| Data type | Default 	| Description text | Tag action | Delete action|
@@ -38,7 +38,7 @@ Scenario: Making changes to metadata
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "60" seconds
+	And I wait "30" seconds
 	When I press "Next"
 	And I fill in the form with
 	| File name 	| Data type | Description text 	|
@@ -57,7 +57,7 @@ Scenario: Saving metadata
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "60" seconds
+	And I wait "30" seconds
 	And I press "Next"
 	And I fill in the form with
 	| File name 	| Data type | Description text 	|
@@ -79,7 +79,7 @@ Scenario: Removing uploads
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "60" seconds
+	And I wait "30" seconds
 	And I press "Next"
 	And I fill in the form with
 	| File name 	| Data type | Description text 	|

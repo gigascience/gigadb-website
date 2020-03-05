@@ -1,3 +1,4 @@
+@author-fileupload
 Feature:
  	As an author
  	I want to upload from my GigaDB profile page the files for my manuscript's dataset
@@ -74,7 +75,7 @@ Scenario: Queued files are all uploaded
 	And I press "Upload 2 files"
 	And I wait "1" seconds
 	Then I should see the file upload completed
-	And I wait "60" seconds
+	And I wait "30" seconds
 	And I should see the files in the database
 	| doi 	| name         | status |
     | 000007| TheProof.csv | 0 |
@@ -104,7 +105,7 @@ Scenario: Next button to proceed to file metadata annotation form
 	And I press "Add more"
 	And I attach the file "TheProof2.csv" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "60" seconds
+	And I wait "30" seconds
 	When I press "Next"
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
 

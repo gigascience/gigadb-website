@@ -8,27 +8,39 @@ Background:
 	Given there is a user "Artie" "Dodger"
 	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "UserUploadingData"
 	And filedrop account for DOI "000007" does exist
-	And file uploads with attributes for DOI "000007" exist
 
 @ok
 Scenario: Can trigger a form from metadata form for adding new attribute
-	Given The user "Artie" "Dodger" is registered as authorised user in the API
-	And I sign in as the user "Artie" "Dodger"
-	And I am on "/authorisedDataset/annotateFiles/id/000007"
+	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "30" seconds
+	When I press "Next"
 	And I press "Attributes"
 	Then I should see a text input field "Name"
-	Then I should see a text input field "Value"
-	Then I should see a text input field "Unit"
+	And I should see a text input field "Value"
+	And I should see a text input field "Unit"
 	And I should see a "Add" button
-	And I should see
-	| Name | Value | Unit |
-	| Attribute A | 42 | Metre |
 
 @ok
 Scenario: Can add new attribute to the attribute list
-	Given The user "Artie" "Dodger" is registered as authorised user in the API
-	And I sign in as the user "Artie" "Dodger"
-	And I am on "/authorisedDataset/annotateFiles/id/000007"
+	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "30" seconds
+	When I press "Next"
 	And I press "Attributes"
 	And I fill in "Name" with "Temperature"
 	And I fill in "Value" with "33"
@@ -36,7 +48,6 @@ Scenario: Can add new attribute to the attribute list
 	And I press "Add"
 	Then I should see
 	| Name | Value | Unit |
-	| Attribute A | 42 | Metre |
 	| Temperature | 33 | Celsius |
 
 # Scenario: there is a button to add attributes in the file metadata page when all mandatory fields are filled in
