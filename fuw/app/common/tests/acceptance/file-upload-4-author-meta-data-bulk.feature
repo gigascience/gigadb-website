@@ -29,7 +29,7 @@ Scenario: bulk upload form for all uploaded files
 	And I should see "Upload file metadata from spreadsheet:"
 	And I should see a "Upload spreadsheet" button
 
-@ok
+@wip
 Scenario: Uploading CSV spreadsheet to update upload metadata
 	Given I sign in as the user "Artie" "Dodger"
 	And The user "Artie" "Dodger" is registered as authorised user in the API
@@ -50,6 +50,7 @@ Scenario: Uploading CSV spreadsheet to update upload metadata
 	| name         | description | datatype |
     | TheProof.csv | first row | Text |
     | CC0_pixel.jpg| second row | Text |
+    And I should see "Metadata loaded"
 
 
 # Scenario: Well-formated spreadsheet with metadata populated for some or all files with no prior metadata filled in
