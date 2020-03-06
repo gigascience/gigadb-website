@@ -31,7 +31,7 @@ variables:
   APPLICATION: "/builds/$CI_PROJECT_PATH"
   YII_PATH: "/var/www/vendor/yiisoft/yii"
   YII2_PATH: "/var/www/vendor/yiisoft/yii2"
-  DATA_SAVE_PATH: "/builds/$CI_PROJECT_PATH/.containers-data"
+  DATA_SAVE_PATH: "/builds/$CI_PROJECT_PATH/containers-data"
   NGINX_VERSION: "1.15.2"
   PHP_VERSION: "7.1"
   YII_VERSION: "1.1.20"
