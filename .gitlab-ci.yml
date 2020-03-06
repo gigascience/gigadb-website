@@ -47,7 +47,7 @@ variables:
   GITLAB_PRIVATE_TOKEN: $CI_BUILD_TOKEN
   GITLAB_UPSTREAM_PROJECT_ID: "7041674"
   CSV_DIR: "prod_like"
-  YII_ENV_DEV: true
+  YII_ENV_DEV: "true"
 
 services:
   - docker:19.03.5-dind
