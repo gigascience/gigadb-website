@@ -94,6 +94,7 @@ after_script:
   # - docker-compose logs gigadb
   - docker-compose run --rm test  bash -c "pg_dump -h database -U gigadb -d gigadb > /var/www/tmp/gigadb_snapshot.sql"
   - docker-compose run --rm test  bash -c "pg_dump -h database -U fuwdb -d fuwdb > /var/www/tmp/fuwdb_snapshot.sql"
+  - docker-compose run --rm test  bash -c "pg_dump -h database -U fuwdb -d fuwdb_test > /var/www/tmp/fuwdb_test_snapshot.sql"
   # - cat $APPLICATION/.env
   # - cat $APPLICATION/.secrets
   # - echo $DOCKER_HOST
