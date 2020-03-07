@@ -20,7 +20,7 @@ Scenario: Metadata form elements for all uploaded files
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "60" seconds
 	When I press "Next"
 	Then I should see form elements:
 	| File name 	| Data type | Default 	| Description text | Tag action | Delete action|
