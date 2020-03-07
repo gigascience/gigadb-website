@@ -2,6 +2,8 @@
 
 namespace common\tests\Helper;
 
+use \Codeception\Module\Db;
+
 /**
  * Before/After test hooks for the Db module goes here.
  *
@@ -15,6 +17,12 @@ namespace common\tests\Helper;
  */
 class DbExtendedWithHooks extends \Codeception\Module\Db
 {
+
+
+    public function _before(\Codeception\TestInterface $test)
+    {
+        echo var_dump(this->_getDbh());
+    }
 
     /**
      * HOOK: after each test scenario
