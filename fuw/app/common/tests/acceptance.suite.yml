@@ -14,7 +14,7 @@ modules:
             populate: false # don't load dump before all tests
             databases:
                 fuwdb:
-                    dsn: 'pgsql:host=database;dbname=fuwdb_test'
+                    dsn: 'pgsql:host=database;dbname=fuwdb'
                     user: 'fuwdb'
                     password: 'yii2advanced'
                     cleanup: false # don't reload dump between tests
