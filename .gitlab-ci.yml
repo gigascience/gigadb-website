@@ -204,7 +204,8 @@ run_all_tests:
     - chmod -R 777 $DATA_SAVE_PATH/fuw/repo
     - chmod -R 777 $DATA_SAVE_PATH/fuw/credentials
     - cd $APPLICATION
-    - ./tests/all_and_coverage
+    # - ./tests/all_and_coverage
+    - docker-compose exec -T console /app/vendor/bin/codecept -vvv -c /app/common run -g metadata acceptance --fail-fast
     - echo $?
 
 check_coverage:
