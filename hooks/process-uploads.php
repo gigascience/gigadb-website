@@ -48,7 +48,11 @@ function checkPermissions(string $path)
 function moveFilesFromDirToDir(string $source_path, string $target_path): bool
 {
 	echo "Move files from $source_path/ to $target_path...".PHP_EOL;
+	exec("ls -lart $source_path/", $output, $status);
+	error_log(implode("\n",$output));
 	exec("cp -rp $source_path/* $target_path/", $output, $status);
+	error_log(implode("\n",$output));
+	exec("ls -lart $target_path/", $output, $status);
 	error_log(implode("\n",$output));
 	return !$status;
 }
