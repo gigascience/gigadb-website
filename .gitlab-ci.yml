@@ -207,6 +207,7 @@ run_all_tests:
     # - ./tests/all_and_coverage
     - docker-compose run --rm application ./protected/yiic migrate --interactive=0
     - docker-compose exec -T console /app/yii_test migrate --interactive=0
+    - docker-compose exec -T console /app/yii migrate --interactive=0
     - docker-compose exec -T console /app/vendor/bin/codecept -vvv -c /app/common run -g metadata acceptance --fail-fast
     - echo $?
 
