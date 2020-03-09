@@ -40,6 +40,8 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
         $filedrop = new FiledropAccount();
         $filedrop->doi = $doi;
         $filedrop->prepareAccountSetFields($doi);
+        chown("/var/repo/$doi", 1000);
+        chown("/var/private/$doi", 1000);
      }
 
  	/**
