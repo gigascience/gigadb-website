@@ -517,7 +517,9 @@ services:
       - SYS_ADMIN
 
   tusd:
-    image: tusproject/tusd:0.13.1
+    build:
+      context: ../../fuw/tusd
+    # image: tusproject/tusd:0.13.1
     volumes:
       - ../../fuw/tusd/hooks:/var/hooks
       - ${DATA_SAVE_PATH}/fuw/incoming/tusd:/var/inbox/
