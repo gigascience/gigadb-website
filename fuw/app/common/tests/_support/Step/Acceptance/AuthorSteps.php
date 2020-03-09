@@ -42,6 +42,8 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
         $filedrop->prepareAccountSetFields($doi);
         chown("/var/repo/$doi", 1000);
         chown("/var/private/$doi", 1000);
+        exec("ls -alrt /var/repo", $output, $error);
+        echo var_dump($output);
      }
 
  	/**
