@@ -87,6 +87,7 @@ after_script:
   - docker-compose logs watcher
   # - docker-compose logs database
   - docker-compose logs tusd
+  - docker-compose exec -T tusd ls -alrt /var/repo/
   - docker-compose exec -T tusd ls -alrt /var/repo/000007/
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-enabled
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-available
