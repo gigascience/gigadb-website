@@ -162,7 +162,7 @@ class DatasetUploadTest extends CTestCase
 												$storedUploads, 
 												$sheetData
 										);
-		var_dump($uploadData);
+		// var_dump($uploadData);
 		// var_dump($attributes);
 		// var_dump($errors);
 		$this->assertEquals(2, count($uploadData));

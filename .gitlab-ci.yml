@@ -84,11 +84,11 @@ before_script:
 
 after_script:
   # - docker-compose ps
-  - docker-compose logs watcher
+  # - docker-compose logs watcher
   # - docker-compose logs database
-  - docker-compose logs tusd
-  - docker-compose exec -T tusd ls -alrt /var/repo/
-  - docker-compose exec -T tusd ls -alrt /var/repo/000007/
+  # - docker-compose logs tusd
+  # - docker-compose exec -T tusd ls -alrt /var/repo/
+  # - docker-compose exec -T tusd ls -alrt /var/repo/000007/
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-enabled
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-available
   # - docker-compose logs fuw-admin
@@ -207,9 +207,9 @@ run_all_tests:
     - docker-compose run --rm test ping -c 5 gigadb.dev
     - docker-compose exec -T console uname -a
     # - docker-compose run test
-    - chmod -R 777 $DATA_SAVE_PATH/fuw/incoming
-    - chmod -R 777 $DATA_SAVE_PATH/fuw/repo
-    - chmod -R 777 $DATA_SAVE_PATH/fuw/credentials
+    # - chmod -R 777 $DATA_SAVE_PATH/fuw/incoming
+    # - chmod -R 777 $DATA_SAVE_PATH/fuw/repo
+    # - chmod -R 777 $DATA_SAVE_PATH/fuw/credentials
     - cd $APPLICATION
     - ./tests/all_and_coverage
     # - docker-compose run --rm application ./protected/yiic migrate --interactive=0
