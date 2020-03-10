@@ -19,12 +19,12 @@ class DbExtendedWithHooks extends \Codeception\Module\Db
 {
 
 
-    public function _before(\Codeception\TestInterface $test)
-    {
-        parent::_before($test);
-        echo var_dump( $this->_getDbh() );
-        echo var_dump( $this->getDatabases() );
-    }
+    // public function _before(\Codeception\TestInterface $test)
+    // {
+    //     parent::_before($test);
+    //     echo var_dump( $this->_getDbh() );
+    //     echo var_dump( $this->getDatabases() );
+    // }
 
     /**
      * HOOK: after each test scenario
