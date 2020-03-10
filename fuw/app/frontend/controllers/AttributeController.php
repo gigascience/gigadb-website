@@ -37,10 +37,15 @@ class AttributeController extends ActiveController
     {
         $actions = parent::actions();
         unset(
-                $actions['create'],
                 $actions['update'],
                 $actions['delete']
             );
+
+
+        $actions['create'] = [
+            'class' => 'frontend\actions\AttributeController\CreateAction',
+            'modelClass' => $this->modelClass,
+        ];
 
         $actions['replace'] = [
             'class' => 'frontend\actions\AttributeController\ReplaceAction',

@@ -433,16 +433,16 @@ class FileUploadServiceTest extends CTestCase
         // Setup post data
         $example = [
             $this->uploads[0] => [
-                "Attributes" => [
-                    0 => ["name" => "Temperature","value" => "45", "unit" => "Celsius"],
-                    1 => ["name" => "Humidity", "value" => "75", "unit" => "%"],
-                    2 => ["name" => "Age","value" => "33", "unit" => "Years"],
-                ]
+                // "Attributes" => [
+                    0 => ["name" => "Temperature","value" => "45", "unit" => "Celsius", "upload_id" => $this->uploads[0] ],
+                    1 => ["name" => "Humidity", "value" => "75", "unit" => "%", "upload_id" => $this->uploads[0]],
+                    2 => ["name" => "Age","value" => "33", "unit" => "Years", "upload_id" => $this->uploads[0]],
+                // ]
             ],
             $this->uploads[1] => [
-                "Attributes" => [
-                        0 => [ "value" => "3000", "unit" => "Nits"],
-                ]
+                // "Attributes" => [
+                        0 => [ "value" => "3000", "unit" => "Nits", "upload_id" => $this->uploads[1]],
+                // ]
             ], 
         ];
         // invoke the FileUpload Service

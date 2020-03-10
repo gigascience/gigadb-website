@@ -53,9 +53,6 @@ class ReplaceAction extends \yii\rest\Action
                     $oldModel->delete();
                 }
             }
-            elseif("attribute/add" === Yii::$app->requestedRoute) {
-                Yii::info("Action mode: attribute/add");
-            }
             else {
                 throw new ServerErrorHttpException('Unrecognized action:'.Yii::$app->requestedRoute);
             }
