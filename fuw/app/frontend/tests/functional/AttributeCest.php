@@ -89,19 +89,19 @@ class AttributeCest
         $example = [
             1 => [
                     "Attributes" => [
-                        0 => ["name" => "Temperature", "value" => "45", "unit" => "Celsius"],
-                        1 => [ "name" => "Humidity","value" => "75", "unit" => "%"],
-                        2 => ["name" => "Age","value" => "33", "unit" => "Years"],
+                        0 => ["name" => "Temperature", "value" => "45", "unit" => "Celsius", "upload_id" => 1],
+                        1 => [ "name" => "Humidity","value" => "75", "unit" => "%", "upload_id" => 1],
+                        2 => ["name" => "Age","value" => "33", "unit" => "Years", "upload_id" => 1],
                     ]
                 ],
             2 => [
                     "Attributes" => [
-                        0 => [ "name" => "Contrast","value" => "3000", "unit" => "Nits"],
+                        0 => [ "name" => "Contrast","value" => "3000", "unit" => "Nits", "upload_id" => 1],
                     ]
                 ], 
         ];
         $I->amBearerAuthenticated("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBUEkgQWNjZXNzIHJlcXVlc3QgZnJvbSBjbGllbnQiLCJpc3MiOiJ3d3cuZ2lnYWRiLm9yZyIsImF1ZCI6ImZ1dy5naWdhZGIub3JnIiwiZW1haWwiOiJzZnJpZXNlbkBqZW5raW5zLmluZm8iLCJuYW1lIjoiSm9obiBTbWl0aCIsImFkbWluX3N0YXR1cyI6InRydWUiLCJyb2xlIjoiY3JlYXRlIiwiaWF0IjoiMTU2MTczMDgyMyIsIm5iZiI6IjE1NjE3MzA4MjMiLCJleHAiOiIyNzI5NTEzMjIwIn0.uTZpDB1eCGt3c_23wLaVxpFUw_WFH2Jep_vpzky2o18");
-        $I->sendPOST("/attributes/add_for/1", $example[1]);
+        $I->sendPOST("/attributes", $example[1]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->canSeeResponseContainsJson(

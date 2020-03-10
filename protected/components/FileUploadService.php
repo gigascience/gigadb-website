@@ -410,18 +410,18 @@ class FileUploadService extends yii\base\Component
 		    // {"foo":"bar"}
 		});
 
-		$api_endpoint = "http://fuw-public-api/attributes/add_for/$uploadId";
+		$api_endpoint = "http://fuw-public-api/attributes";
 
 		// reuse token to avoid "You must unsign before making changes" error
 		// when multiple API calls in same session
 		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
-		// Yii::log(print_r($postData,true),'info');
+		Yii::log("data to POST: ".var_export($postData,true),'info');
 		try {
 			$response = $this->webClient->request('POST', $api_endpoint, [
 								    'headers' => [
 								        'Authorization' => "Bearer ".$this->token,
 								    ],
-								    'form_params' => $postData,
+								    'form_params' => [ "Attributes" => $postData ],
 								    'connect_timeout' => 5,
 								    'handler' => $tapMiddleware($clientHandler),
 								]);
