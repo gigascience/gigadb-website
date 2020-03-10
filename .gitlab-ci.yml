@@ -211,12 +211,12 @@ run_all_tests:
     - chmod -R 777 $DATA_SAVE_PATH/fuw/repo
     - chmod -R 777 $DATA_SAVE_PATH/fuw/credentials
     - cd $APPLICATION
-    # - ./tests/all_and_coverage
-    - docker-compose run --rm application ./protected/yiic migrate --interactive=0
-    - docker-compose exec -T console /app/yii_test migrate --interactive=0
-    - docker-compose exec -T console /app/yii migrate --interactive=0
-    - docker-compose exec -T console /app/vendor/bin/codecept -vvv -c /app/common run -g metadata acceptance --fail-fast
-    - echo $?
+    - ./tests/all_and_coverage
+    # - docker-compose run --rm application ./protected/yiic migrate --interactive=0
+    # - docker-compose exec -T console /app/yii_test migrate --interactive=0
+    # - docker-compose exec -T console /app/yii migrate --interactive=0
+    # - docker-compose exec -T console /app/vendor/bin/codecept -vvv -c /app/common run -g metadata acceptance --fail-fast
+    # - echo $?
 
 check_coverage:
   stage: conformance
