@@ -1,0 +1,4 @@
+File Name, Data Type, File Format, Description, Sample ID, Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5
+TheProof.csv, Text, CSV, first row,,Max Temp.::210::Fahrenheit,,,,
+CC0_pixel.jpg, Image, JPG, second row,,Rating::9::Some guys's scale,Max Temp.::89::Celsius,MinTemp::-4::Celsius,,
+NotFile.csv, Text, CSV, should not show up,,,,,,

@@ -29,7 +29,7 @@ Scenario: bulk upload form for all uploaded files
 	And I should see "Upload file metadata from spreadsheet:"
 	And I should see a "Upload spreadsheet" button
 
-@wip
+@ok
 Scenario: Uploading CSV spreadsheet to update upload metadata
 	Given I sign in as the user "Artie" "Dodger"
 	And The user "Artie" "Dodger" is registered as authorised user in the API
@@ -52,6 +52,27 @@ Scenario: Uploading CSV spreadsheet to update upload metadata
     | CC0_pixel.jpg| second row | Text |
     And I should see "Metadata loaded"
 
+
+@ok
+Scenario: Uploading CSV spreadsheet to update upload metadata and attributes
+	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "30" seconds
+	And I press "Next"
+	And I attach the file "sample2_attr.csv"
+	And I press "Upload spreadsheet"
+	And I wait "3" seconds
+ 	When I press "Attributes"
+	Then I should see
+	| Name | Value | Unit |
+	| Max Temp. | 210 | Fahrenheit |
 
 # Scenario: Well-formated spreadsheet with metadata populated for some or all files with no prior metadata filled in
 # 	Given I sign in as a user

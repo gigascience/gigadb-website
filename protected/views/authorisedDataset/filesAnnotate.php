@@ -21,9 +21,9 @@
                     </div>
                 </header>
                 <section>
-                    <annotator identifier="<?php echo $identifier; ?>" 
-                                v-bind:uploads='<?php echo json_encode($uploads); ?>' 
-                                v-bind:attributes='<?php echo json_encode($attributes); ?>' 
+                    <annotator identifier="<?php echo $identifier ?>" 
+                                v-bind:uploads='<?php echo json_encode($uploads) ?>' 
+                                v-bind:attributes='<?php echo json_encode($attributes, JSON_HEX_APOS|JSON_HEX_QUOT) ?>' 
                     />
                 </section>
                 <footer>

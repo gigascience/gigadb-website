@@ -51,6 +51,7 @@ class FilesAnnotateAction extends CAction
         }
 
         $bulkStatus = false;
+        $bulkAttrStatus = false;
         if(isset($_FILES) && is_array($_FILES) && isset($_FILES["bulkmetadata"])) {
             Yii::log("File is attached",'warning');
             $postedFile = UploadedFile::getInstanceByName("bulkmetadata");
@@ -59,8 +60,9 @@ class FilesAnnotateAction extends CAction
             list($sheetData, $parseErrors) = $datasetUpload->parseFromSpreadsheet("text/csv","/var/tmp/$id-".$postedFile->name);
             if (isset($sheetData) && is_array($sheetData) && !empty($sheetData)) {
                 list($newUploads, $attributes, $mergeErrors) = $datasetUpload->mergeMetadata($uploadedFiles, $sheetData);
-                Yii::log(var_export($newUploads, true),'info');
                 $bulkStatus = $fileUploadSrv->updateUploadMultiple($id,$newUploads);
+                Yii::log("Parsed attributes: ".var_export($attributes, true),'info');
+                $bulkAttrStatus = $fileUploadSrv->addAttributes($id,$attributes);
                 Yii::log("update Upload Multiple: ", $bulkStatus);
             }
             if($bulkStatus) {
