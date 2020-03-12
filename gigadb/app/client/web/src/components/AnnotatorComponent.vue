@@ -31,7 +31,7 @@
                         </div>
                     </td>
                     <td>
-                        <el-button v-bind:id="'upload-'+(index+1)+'-tag'" v-on:click="toggleDrawer(index, upload.id)" type="primary" class="btn btn-info btn-small">
+                        <el-button v-bind:id="'upload-'+(index+1)+'-tag'" v-on:click="toggleDrawer(index, upload.id)" type="primary" v-bind:class="'btn btn-info btn-small '+upload.name">
                             Attributes
                         </el-button>
                         <el-button v-bind:id="'upload-'+(index+1)+'-delete'" v-bind:class="'delete-button-'+index" type="danger" icon="el-icon-delete" v-on:click="deleteUpload(index, upload.id)" circle></el-button>
