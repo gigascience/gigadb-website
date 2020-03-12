@@ -179,6 +179,98 @@ class DatasetUploadTest extends CTestCase
 		$this->assertEquals(35, $attributes[0]["upload_id"]);
 	}
 
+	/**
+	 * test can reconcile data from spreadsheet with uploads in database
+	 */
+	public function testReconcileSheetDataMalformedAttributes()
+	{
+		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
+		$mockFileUploadSrv = $this->createMock(FileUploadService::class);
+
+		$storedUploads = [
+			[
+				"id" => 23, 
+				"doi" => "00000000", 
+				"name" => "method.txt", 
+				"description" => "", 
+				"datatype" => "Text", 
+				"extension" => "txt", 
+				"size" => "", 
+			],
+			[ 
+				"id" => 35,
+				"doi" => "00000000", 
+				"name" => "someFile.png", 
+				"description" => "Some original description", 
+				"datatype" => "Image", 
+				"extension" => "PNG", 
+				"size" => "345634",
+			],
+			[
+				"id" => 47,
+				"doi" => "00000000", 
+				"name" => "foobar.PDF", 
+				"description" => "", 
+				"datatype" => "Rich Text", 
+				"extension" => "PDF", 
+				"size" => "", 
+			],			
+			
+		];
+
+		$attributesData = [
+			[ 
+				"name" => "Temperature", 
+				"value" => "35", 
+				"unit" => "Celsius", 
+				"upload_id" =>35,
+			]
+		];
+		$sheetData = [
+			[ 
+				"name" => "method.txt", 
+				"description" => "The methodology", 
+				"datatype" => "Text", 
+				"extension" => "txt", 
+				"sampleId" => 342,
+				"attr1" => null, 
+				"attr2" => null, 
+				"attr3" => null, 
+				"attr4" => null, 
+				"attr5" => null, 
+			],
+			[ 
+				"name" => "someFile.png", 
+				"description" => " That diagram", 
+				"datatype" => "Image", 
+				"extension" => "PNG", 
+				"sampleId" => null, 
+				"attr1" => " Rating:9::Some guys's scale", 
+				"attr2" => null, 
+				"attr3" => null, 
+				"attr4" => null, 
+				"attr5" => null, 
+			],		
+		];
+
+		$bo = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv,[]);
+		list($uploadData, $attributes, $errors) = $bo->mergeMetadata(
+												$storedUploads, 
+												$sheetData
+										);
+		// var_dump($uploadData);
+		// var_dump($attributes);
+		// var_dump($errors);
+		$this->assertEquals(2, count($uploadData));
+		$this->assertEquals(23, $uploadData[23]["id"]);
+		$this->assertEquals("method.txt", $uploadData[23]["name"]);
+		$this->assertEquals("The methodology", $uploadData[23]["description"]);
+		$this->assertEquals(35, $uploadData[35]["id"]);
+		$this->assertEquals("someFile.png", $uploadData[35]["name"]);
+		$this->assertEquals("That diagram", $uploadData[35]["description"]);
+		$this->assertTrue(empty($attributes));
+		$this->assertEquals("(someFile.png) Malformed attribute: Rating:9::Some guys's scale", $errors[0]);
+	}
 	
 
 }

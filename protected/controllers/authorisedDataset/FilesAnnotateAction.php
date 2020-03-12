@@ -68,8 +68,8 @@ class FilesAnnotateAction extends CAction
             if($bulkStatus) {
                 Yii::app()->user->setFlash('filesAnnotate','Metadata loaded');
             }
-            foreach(array_merge($parseErrors, $mergeErrors) as $error) {
-                 Yii::app()->user->addFlash('filesAnnotateErrors',$error);
+            if(count(array_merge($parseErrors, $mergeErrors)) > 0 ) {
+                 Yii::app()->user->setFlash('filesAnnotateErrors',implode("\n",array_merge($parseErrors, $mergeErrors)));
             }
 
             $this->getController()->redirect(["authorisedDataset/annotateFiles", "id" => $id]);            
