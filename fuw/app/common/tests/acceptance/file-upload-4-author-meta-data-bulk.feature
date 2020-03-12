@@ -69,7 +69,7 @@ Scenario: Uploading CSV spreadsheet to update upload metadata and attributes
 	And I attach the file "sample2_attr.csv"
 	And I press "Upload spreadsheet"
 	And I wait "3" seconds
- 	When I press "Attributes"
+ 	When I press Attributes button for "TheProof.csv"
 	Then I should see
 	| Name | Value | Unit |
 	| Max Temp. | 210 | Fahrenheit |

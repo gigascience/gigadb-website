@@ -160,4 +160,12 @@ class MetadataFormSteps
          $this->I->attachFile('#bulkmetadata',$arg1);
      }
 
+    /**
+     * @When I press Attributes button for :arg1
+     */
+     public function iPressAttributesButtonFor($arg1)
+     {
+        $this->I->click(".$arg1");
+     }
+
 }
