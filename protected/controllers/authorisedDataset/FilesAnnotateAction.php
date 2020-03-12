@@ -52,6 +52,8 @@ class FilesAnnotateAction extends CAction
 
         $bulkStatus = false;
         $bulkAttrStatus = false;
+        $parseErrors = [] ;
+        $mergeErrors = [] ;
         if(isset($_FILES) && is_array($_FILES) && isset($_FILES["bulkmetadata"])) {
             Yii::log("File is attached",'warning');
             $postedFile = UploadedFile::getInstanceByName("bulkmetadata");

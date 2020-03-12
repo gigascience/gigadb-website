@@ -104,7 +104,12 @@ class DatasetUpload extends yii\base\BaseObject
 		$spreadsheet = $reader->load($inputFile);
 		$sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 		$headers = array_shift($sheetData);
+		$diff = array_diff(array_keys($columns), array_map('trim',$headers));
 		$metadata = [] ;
+		if (isset($diff) && count($diff) > 0 ) {
+			$errors[] = "Could not load spreadsheet, missing column(s): ".implode(",", $diff);
+			return [$metadata, $errors];
+		}
 		foreach($sheetData as $row) {
 			$metadata[] = array_combine($columns, $row);
 		}
