@@ -9,6 +9,11 @@
                         <?php echo Yii::app()->user->getFlash('filesAnnotate'); ?>
                     </div>
                 <? } ?>
+                <?php if (Yii::app()->user->hasFlash('filesAnnotateErrors')) { ?>
+                    <div class="alert alert-error" role="alert">
+                        <?php echo Yii::app()->user->getFlash('filesAnnotateErrors'); ?>
+                    </div>
+                <? } ?>
             </aside>
             <?php echo CHtml::beginForm(); ?>
                 <header class="page-title-section">

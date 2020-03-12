@@ -143,11 +143,17 @@ class DatasetUpload extends yii\base\BaseObject
 					if ( isset($sheetData[$dataPos]['attr'.$number])
 						&& $sheetData[$dataPos]['attr'.$number] !== ''
 					) {
-						$tempAttr[$number-1] = [ "upload_id" => $upload['id'] ];
-						list($tempAttr[$number-1]['name'], 
-							$tempAttr[$number-1]['value'], 
-							$tempAttr[$number-1]['unit']
-						) = preg_split("/::/", trim($sheetData[$dataPos]['attr'.$number]));
+						$matches = preg_split("/::/", trim($sheetData[$dataPos]['attr'.$number]));
+						if (isset($matches) && is_array($matches) && count($matches) === 3) {
+							$tempAttr[$number-1] = [ "upload_id" => $upload['id'] ];
+							list($tempAttr[$number-1]['name'], 
+								$tempAttr[$number-1]['value'], 
+								$tempAttr[$number-1]['unit']
+							) = $matches;
+						}
+						else {
+							$errors[] = "(".$upload['name'].") "."Malformed attribute: ".trim($sheetData[$dataPos]['attr'.$number]);
+						}
 					}			    
 				}
 				if(!empty($tempAttr))
