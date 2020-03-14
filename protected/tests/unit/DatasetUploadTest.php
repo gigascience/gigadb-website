@@ -304,7 +304,6 @@ class DatasetUploadTest extends CTestCase
 		$writer = new Csv($spreadsheet);
 		$tempFileName = tempnam("/tmp", "DatasetUploadTest");
 		$writer->save($tempFileName);
-		echo $tempFileName;
 
 		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
 		$mockFileUploadSrv = $this->createMock(FileUploadService::class);
