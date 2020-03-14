@@ -162,6 +162,18 @@ services:
       - web-tier
       - db-tier
 
+  fileformats:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    image: ${COMPOSE_PROJECT_NAME}_application:latest
+    volumes:
+      - ${APPLICATION}/:/var/www
+    command: bash -c "./protected/yiic generatefileformats"
+    networks:
+      - web-tier
+      - db-tier
+
   fuw:
     environment:
       YII_PATH: ${YII_PATH}

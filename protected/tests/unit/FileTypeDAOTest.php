@@ -5,7 +5,7 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class FileTypeDAOTest extends CTestCase
+class FileTypeDAOTest extends CDbTestCase
 {
 
 	protected $fixtures=array(

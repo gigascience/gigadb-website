@@ -98,7 +98,6 @@ class FileFormat extends CActiveRecord
         $list=array();
         foreach (array_values($models) as $model){
             $list[$model->id] = $model->name;
-            $list[$model->id.'_description'] = $model->description;
         }
         return $list;
     }
