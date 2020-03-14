@@ -42,6 +42,8 @@ $ docker-compose run --rm js
 $ docker-compose up -d fuw
 $ docker-compose up -d web
 $ docker-compose exec web /usr/local/bin/enable_sites fuw-backend.dev.http
+$ docker-compose exec web /usr/local/bin/enable_sites fuw-frontend.dev.http
+$ docker-compose exec application ./protected/yiic generatefiletypes
 ```
 
 **Note:** 
