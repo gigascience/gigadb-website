@@ -94,13 +94,37 @@ class m200304_170422_create_gigadb_user_table extends CDbMigration
 
         // Add data to table
         $this->insert('gigadb_user', array(
+            'id' => '1',
+            'email' => 'admin@gigadb.org',
+            'password' => md5("vagrant"),
+            'first_name' => 'admin',
+            'last_name' => 'user',
+            'affiliation' => 'gigascience',
+            'is_activated' => 'true',
+            'newsletter' => 'true',
+            'previous_newsletter_state' => 'true',
+            'username' => 'test+user@gigasciencejournal.com'
+        ));
+        $this->insert('gigadb_user', array(
+            'id' => '2',
+            'email' => 'user@gigadb.org',
+            'password' => md5("vagrant"),
+            'first_name' => 'test',
+            'last_name' => 'user',
+            'affiliation' => 'gigascience',
+            'is_activated' => 'true',
+            'newsletter' => 'true',
+            'previous_newsletter_state' => 'true',
+            'username' => 'test+admin@gigasciencejournal.com'
+        ));
+        $this->insert('gigadb_user', array(
             'id' => '3',
             'email' => 'test+gigadb_user1@gigasciencejournal.com',
             'password' => '',
             'first_name' => 'test',
             'last_name' => 'gigadb_user1',
             'affiliation' => 'BGI',
-            'is_activated' => 'false',
+            'is_activated' => 'true',
             'newsletter' => 'true',
             'previous_newsletter_state' => 'true',
             'username' => 'test+gigadb_user1@gigasciencejournal.com'
