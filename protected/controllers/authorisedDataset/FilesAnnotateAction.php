@@ -59,7 +59,7 @@ class FilesAnnotateAction extends CAction
             $postedFile = UploadedFile::getInstanceByName("bulkmetadata");
             Yii::log(var_export($postedFile,true));
             $postedFile->saveAs("/var/tmp/$id-".$postedFile->name);
-            list($sheetData, $parseErrors) = $datasetUpload->parseFromSpreadsheet("text/csv","/var/tmp/$id-".$postedFile->name);
+            list($sheetData, $parseErrors) = $datasetUpload->parseFromSpreadsheet("/var/tmp/$id-".$postedFile->name);
             if (isset($sheetData) && is_array($sheetData) && !empty($sheetData)) {
                 list($newUploads, $attributes, $mergeErrors) = $datasetUpload->mergeMetadata($uploadedFiles, $sheetData);
                 $bulkStatus = $fileUploadSrv->updateUploadMultiple($id,$newUploads);

@@ -119,11 +119,10 @@ class DatasetUpload extends yii\base\BaseObject
 	/**
 	 * method to parse a spreadsheet of metadata for uploaded files
 	 *
-	 * @param string $inputType MIME type of the spreadsheet file
 	 * @param string $inputFile path to the spreadsheet
 	 * @return array array of arrays (metadata and errors)
 	 */
-	public function parseFromSpreadsheet(string $mimeType, string $inputFile): array
+	public function parseFromSpreadsheet(string $inputFile): array
 	{
 		$errors = [];
 		$metadata = [];
@@ -140,11 +139,18 @@ class DatasetUpload extends yii\base\BaseObject
 			'Attribute 5' => 'attr5',
 		];
 
-		/** Determine the extension from the mime type **/
+		// Determine the mime type from extension and check it's supported 
+		$mimeType = FileHelper::getMimeTypeByExtension($inputFile);
 		$extension = FileHelper::getExtensionsByMimeType($mimeType);
-		$inputType = ucfirst($extension[0]);
-		/**  Create a new Reader of the type defined in $extension  **/
-		$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputType);
+		if(!in_array($mimeType, $this->_config['spreadsheet_supported_format'])) {
+			$errors[] = "Unsupported format of spreadsheet: $mimeType ($inputFile)" ;
+			return [[],$errors];
+		}
+		$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Csv");
+		if("text/tab-separated-values" === $mimeType) {
+			$reader->setDelimiter("\t");
+		}
+
 		/**  Load $filepath to a Spreadsheet Object  **/
 		$spreadsheet = $reader->load($inputFile);
 		$sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);

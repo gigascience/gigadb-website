@@ -74,8 +74,8 @@ class DatasetUploadTest extends CTestCase
 		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
 		$mockFileUploadSrv = $this->createMock(FileUploadService::class);
 
-		$bo = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv,[]);
-		list($metadata, $errors) = $bo->parseFromSpreadsheet("text/csv","/var/www/files/examples/bulk-data-upload-example.csv");
+		$bo = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv,["spreadsheet_supported_format" => ["text/csv", "text/tab-separated-values"]]);
+		list($metadata, $errors) = $bo->parseFromSpreadsheet("/var/www/files/examples/bulk-data-upload-example.csv");
 		$this->assertEquals(2, count($metadata));
 		$this->assertEquals(0, count($errors));
 		$this->assertEquals("method.txt", $metadata[0]["name"]);
@@ -302,14 +302,14 @@ class DatasetUploadTest extends CTestCase
 		    ->setCellValue('I2', '')
 		    ->setCellValue('J2', '');
 		$writer = new Csv($spreadsheet);
-		$tempFileName = tempnam("/tmp", "DatasetUploadTest");
-		$writer->save($tempFileName);
+		$testFile = sys_get_temp_dir().Yii::$app->security->generateRandomString(4).".csv" ;
+		$writer->save($testFile);
 
 		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
 		$mockFileUploadSrv = $this->createMock(FileUploadService::class);
 
-		$bo = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv,[]);
-		list($metadata, $errors) = $bo->parseFromSpreadsheet("text/csv","$tempFileName");
+		$bo = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv,["spreadsheet_supported_format" => ["text/csv", "text/tab-separated-values"]]);
+		list($metadata, $errors) = $bo->parseFromSpreadsheet("$testFile");
 		$this->assertEquals(0, count($metadata));
 		$this->assertEquals(1, count($errors));
 		$this->assertEquals("Could not load spreadsheet, missing column(s): Description,Attribute 4", $errors[0]);
@@ -509,7 +509,7 @@ class DatasetUploadTest extends CTestCase
 			],	
 		];
 
-		$bo = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv,[]);
+		$bo = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv,["spreadsheet_supported_format" => ["text/csv", "text/tab-separated-values"]]);
 		list($uploadData, $attributes, $errors) = $bo->mergeMetadata(
 												$storedUploads, 
 												$sheetData
@@ -526,6 +526,50 @@ class DatasetUploadTest extends CTestCase
 		$this->assertFalse(isset($uploadData[47]));
 		$this->assertEquals("(someFile.csv) Cannot load file, incorrect File format: CXV", $errors[0]);
 		$this->assertEquals("(foobar.PDF) Cannot load file, incorrect File format: PDG", $errors[1]);
+
+	}
+
+/**
+	 * test parsing metadata from spreadsheet, support .TSV
+	 */
+	public function testParseFromSpreadsheetSupportTsv()
+	{
+		// setup test data
+		//File Name, Data Type, File Format, Description, Sample ID, Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5
+		$spreadsheet = new Spreadsheet();
+		$spreadsheet->setActiveSheetIndex(0)
+		    ->setCellValue('A1', 'File Name')
+		    ->setCellValue('B1', 'Data Type')
+		    ->setCellValue('C1', 'File Format')
+		    ->setCellValue('D1', 'Description')
+		    ->setCellValue('E1', 'Sample ID')
+		    ->setCellValue('F1', 'Attribute 1')
+		    ->setCellValue('G1', 'Attribute 2')
+		    ->setCellValue('H1', 'Attribute 3')
+		    ->setCellValue('I1', 'Attribute 4')
+		    ->setCellValue('J1', 'Attribute 5')
+		    ->setCellValue('A2', 'dummy.gff')
+		    ->setCellValue('B2', 'Script')
+		    ->setCellValue('C2', 'GFF')
+		    ->setCellValue('D2', 'Latest part')
+		    ->setCellValue('E2', '')
+		    ->setCellValue('F2', '')
+		    ->setCellValue('G2', '')
+		    ->setCellValue('H2', '')
+		    ->setCellValue('I2', '')
+		    ->setCellValue('J2', '');
+		$writer = new Csv($spreadsheet);
+		$writer->setDelimiter("\t"); // make it a .TSV file
+		$testFile = sys_get_temp_dir().Yii::$app->security->generateRandomString(4).".tsv" ;
+		$writer->save($testFile);
+
+		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
+		$mockFileUploadSrv = $this->createMock(FileUploadService::class);
+
+		$bo = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv,["spreadsheet_supported_format" => ["text/csv", "text/tab-separated-values"]]);
+		list($metadata, $errors) = $bo->parseFromSpreadsheet("$testFile");
+		$this->assertEquals(1, count($metadata));
+		$this->assertEquals(0, count($errors));
 
 	}
 }

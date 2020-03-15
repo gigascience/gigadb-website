@@ -188,6 +188,27 @@ Scenario: Unknown file format (one spreadsheet entry in error)
     And I should see "Metadata loaded"
     And I should see "(CC0_pixel.jpg) Cannot load file, incorrect File format: ZZZ"
 
+@ok
+Scenario: Uploading TSV spreadsheet to update upload metadata and attributes
+	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "30" seconds
+	And I press "Next"
+	And I attach the file "sample1.tsv"
+	And I press "Upload spreadsheet"
+	And I wait "3" seconds
+ 	When I press Attributes button for "CC0_pixel.jpg"
+	Then I should see
+	| Name | Value | Unit |
+	| Max Temp. | 210 | Fahrenheit |
+
 # Scenario: Well-formated spreadsheet with metadata populated for some or all files with no prior metadata filled in
 # 	Given I sign in as a user
 # 	And I have uploaded a set of files to the drop box for dataset "100006"
