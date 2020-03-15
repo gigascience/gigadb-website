@@ -23,9 +23,9 @@ Scenario: bulk upload form for all uploaded files
 	And I wait "30" seconds
 	When I press "Next"
 	Then I should see form elements:
-	| File name 	| Data type | Default 	| Description text | Tag action | Delete action|
-	| TheProof.csv 	| form select | Text 	| form input 	| button | button |
-	| CC0_pixel.jpg | form select | Image 	| form input 	| button | button |
+	| File name 	| Data type | Default 		| Description text | Tag action | Delete action|
+	| TheProof.csv 	| form select | Script 		| form input 	| button | button |
+	| CC0_pixel.jpg | form select | Annotation 	| form input 	| button | button |
 	And I should see "Upload file metadata from spreadsheet:"
 	And I should see a "Upload spreadsheet" button
 
@@ -48,8 +48,8 @@ Scenario: Uploading CSV spreadsheet to update upload metadata
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
 	And I should see metadata
 	| name         | description | datatype |
-    | TheProof.csv | first row | Text |
-    | CC0_pixel.jpg| second row | Text |
+    | TheProof.csv | first row | Script |
+    | CC0_pixel.jpg| second row | Annotation |
     And I should see "Metadata loaded"
 
 
@@ -93,7 +93,7 @@ Scenario: Spreadsheet with malformed attributes
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
 	And I should see metadata
 	| name         | description | datatype |
-    | TheProof.csv | first row | Text |
+    | TheProof.csv | first row | Script |
     And I should see "Metadata loaded"
     And I should see "(CC0_pixel.jpg) Malformed attribute: Rating:9::Some guys's scale"
 
@@ -116,6 +116,77 @@ Scenario: Spreadsheet with malformed attributes
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
     And I should see "Could not load spreadsheet, missing column(s): Description"
 
+@ok
+Scenario: Unknown Data Type (all spreadsheet entries have error)
+	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "30" seconds
+	And I press "Next"
+	When I attach the file "sample4_unknown_datatype.csv"
+	And I press "Upload spreadsheet"
+	And I wait "3" seconds
+	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
+	And I should not see "Metadata loaded"
+    And I should see "(TheProof.csv) Cannot load file, incorrect Data type: Rich Text"
+    And I should see "(CC0_pixel.jpg) Cannot load file, incorrect Data type: Photo"
+
+@ok
+Scenario: Unknown Data Type (one spreadsheet entry in error)
+	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I press "Add more"
+	And I attach the file "lorem.txt" in the file drop panel	
+	And I press "Upload 3 files"
+	And I wait "30" seconds
+	And I press "Next"
+	When I attach the file "sample4_unknown_datatype2.csv"
+	And I press "Upload spreadsheet"
+	And I wait "3" seconds
+	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
+	And I should see metadata
+	| name         | description | datatype |
+    | TheProof.csv | first row | Repeat sequence |
+    | CC0_pixel.jpg | last row | Annotation |
+    And I should see "Metadata loaded"
+    And I should see "(lorem.txt) Cannot load file, incorrect Data type: Reafme"
+
+@ok
+Scenario: Unknown file format (one spreadsheet entry in error)
+	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I press "Add more"
+	And I attach the file "lorem.txt" in the file drop panel	
+	And I press "Upload 3 files"
+	And I wait "30" seconds
+	And I press "Next"
+	When I attach the file "sample5_unknown_format.csv"
+	And I press "Upload spreadsheet"
+	And I wait "3" seconds
+	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
+	And I should see metadata
+	| name         | description | datatype |
+    | TheProof.csv | first row | Script |
+    And I should see "Metadata loaded"
+    And I should see "(CC0_pixel.jpg) Cannot load file, incorrect File format: ZZZ"
 
 # Scenario: Well-formated spreadsheet with metadata populated for some or all files with no prior metadata filled in
 # 	Given I sign in as a user
