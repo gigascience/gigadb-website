@@ -71,7 +71,6 @@ services:
         mode: host
     volumes:
       - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
-      - ${APPLICATION}/ops/configuration/postgresql-conf/empty-bootstrap.sql:/docker-entrypoint-initdb.d/1-gigadb_testdata.sql
       - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf'
     networks:
