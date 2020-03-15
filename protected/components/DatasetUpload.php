@@ -18,13 +18,58 @@ class DatasetUpload extends yii\base\BaseObject
 	private $_datasetDAO;
 	private $_fileUploadSrv;
 	private $_config;
+	/** @var string $_filetypesJSON list of file types supported by GigaDB, exported to JSON from DB*/
+	private $_fileTypesJSON;
+	/** @var string $_fileformatsJSON list of file formats supported by GigaDB, exported to JSON from DB*/
+	private $_fileFormatsJSON;
 
 
 	public function __construct (DatasetDAO $datasetDAO, FileUploadService $fileUploadSrv, array $config = [])
 	{
+		parent::__construct();
 		$this->_datasetDAO = $datasetDAO;
 		$this->_fileUploadSrv = $fileUploadSrv;
 		$this->_config = $config;
+
+		$this->_fileTypesJSON = file_get_contents("/var/www/files/data/filetypes.json");
+		$this->_fileFormatsJSON = file_get_contents("/var/www/files/data/fileformats.json");
+	}
+
+	/** 
+	 * Getter for _filetypesJSON
+	 * @return array
+	 */
+	public function getFiletypesArray(): array
+	{
+		return json_decode($this->_fileTypesJSON, true);
+	}
+
+	/** 
+	 * Getter for _filetypesJSON
+	 * @return string
+	 */
+	public function getFiletypesJSON(): string
+	{
+		return $this->_fileTypesJSON;
+	}
+
+
+	/** 
+	 * Getter for _fileformatsJSON
+	 * @return array
+	 */
+	public function getFileformatsArray(): array
+	{
+		return json_decode($this->_fileFormatsJSON, true);
+	}
+
+	/** 
+	 * Getter for _fileformatsJSON
+	 * @return string
+	 */
+	public function getFileformatsJSON(): string
+	{
+		return $this->_fileFormatsJSON;
 	}
 
 	/**
@@ -135,14 +180,30 @@ class DatasetUpload extends yii\base\BaseObject
 		$changedUploads = [];
 		$newAttributes = [] ;
 		$errors = [] ;
-		$upload = array_merge($storedUploads, array_slice($sheetData, 0, 5));
+
 		foreach($storedUploads as $upload) {
 			$dataPos = array_search( $upload['name'], array_column($sheetData, 'name') );
 			if ($dataPos !== false) { // if filename matches
+
+				// checking the data type column is correct, if not add error and continue
+				if(!in_array(trim($sheetData[$dataPos]['datatype']), array_keys($this->getFiletypesArray()))) {
+					$errors[] = "(".$upload['name'].") "."Cannot load file, incorrect Data type: ".trim($sheetData[$dataPos]['datatype']);
+					continue;
+				}
+
+				// checking the file format column is correct, if not add error and continue
+				if(!in_array(strtoupper(trim($sheetData[$dataPos]['extension'])), array_keys($this->getFileformatsArray()))) {
+					$errors[] = "(".$upload['name'].") "."Cannot load file, incorrect File format: ".trim($sheetData[$dataPos]['extension']);
+					continue;
+				}
+
+				// merging sheetData into the stored upload data
 				$changedUploads[$upload['id']] = array_merge(
 									$upload, 
 									array_map($array_trim, array_slice($sheetData[$dataPos],0,5))
 								);
+
+				// merging attributes
 				$tempAttr = [];
 				foreach (range(1, 5) as $number) {
 					if ( isset($sheetData[$dataPos]['attr'.$number])
