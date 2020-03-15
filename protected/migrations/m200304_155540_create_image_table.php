@@ -32,12 +32,17 @@ class m200304_155540_create_image_table extends CDbMigration
                 OWNED BY image.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY image 
                 ALTER COLUMN id SET DEFAULT nextval(\'image_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY image
+                ADD CONSTRAINT image_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 

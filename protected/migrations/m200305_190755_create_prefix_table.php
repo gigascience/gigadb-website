@@ -17,21 +17,12 @@ class m200305_190755_create_prefix_table extends CDbMigration
                 icon character varying(100));'
         );
 
-        $sql_createseq = sprintf(
-            'CREATE SEQUENCE news_id_seq
-                START WITH 1
-                INCREMENT BY 1
-                NO MINVALUE
-                NO MAXVALUE
-                CACHE 1;'
+        $sql_altertab = sprintf(
+            'ALTER TABLE ONLY prefix
+                ADD CONSTRAINT link_prefix_pkey PRIMARY KEY (id);'
         );
 
-        $sql_alterseq = sprintf(
-            'ALTER SEQUENCE news_id_seq 
-                OWNED BY news.id;'
-        );
-
-        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq);
+        $sql_cmds = array( $sql_createtab, $sql_altertab);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 
@@ -39,29 +30,33 @@ class m200305_190755_create_prefix_table extends CDbMigration
         // CDbMigration because the code looks cleaner,
         // logging is provided and will be easier to update
         // if required.
-        $this->insert('publisher', array(
-            'id' => '1',
-            'name' =>'GigaScience'
+        $this->insert('prefix', array(
+            'id' => '25',
+            'prefix' =>'GitHub',
+            'url' => 'https://github.com/',
         ));
-        $this->insert('publisher', array(
-            'id' => '2',
-            'name' =>'BGI Shenzhen'
+        $this->insert('prefix', array(
+            'id' => '33',
+            'prefix' =>'Sample',
+            'url' => 'http://www.ncbi.nlm.nih.gov/sra/?term=',
+            'source' => 'NCBI'
         ));
-        $this->insert('publisher', array(
-            'id' => '3',
-            'name' =>'GigaScience Database'
+        $this->insert('prefix', array(
+            'id' => '34',
+            'prefix' =>'Sample',
+            'url' => 'https://www.ebi.ac.uk/ena/data/view/',
+            'source' => 'EBI'
         ));
-        $this->insert('publisher', array(
-            'id' => '4',
-            'name' =>'UC Davis'
+        $this->insert('prefix', array(
+            'id' => '35',
+            'prefix' =>'Sample',
+            'url' => 'http://trace.ddbj.nig.ac.jp/DRASearch/sample?acc=',
+            'source' => 'DDBJ'
         ));
     }
 
     public function safeDown()
     {
-        $this->dropTable('publisher');
-        // Don't think you can drop SEQUENCE with a
-        // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
+        $this->dropTable('prefix');
     }
 }

@@ -33,12 +33,17 @@ class m200305_163621_create_author_table extends CDbMigration
                 OWNED BY author.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY author 
                 ALTER COLUMN id SET DEFAULT nextval(\'author_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY author
+                ADD CONSTRAINT author_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 
@@ -46,29 +51,73 @@ class m200305_163621_create_author_table extends CDbMigration
         // CDbMigration because the code looks cleaner,
         // logging is provided and will be easier to update
         // if required.
-        $this->insert('publisher', array(
-            'id' => '1',
-            'name' =>'GigaScience'
+        $this->insert('author', array(
+            'id' => '566',
+            'surname' =>'Li',
+            'first_name' => 'Dongfang'
         ));
-        $this->insert('publisher', array(
-            'id' => '2',
-            'name' =>'BGI Shenzhen'
+        $this->insert('author', array(
+            'id' => '567',
+            'surname' =>'Xi',
+            'first_name' => 'Feng'
         ));
-        $this->insert('publisher', array(
-            'id' => '3',
-            'name' =>'GigaScience Database'
+        $this->insert('author', array(
+            'id' => '568',
+            'surname' =>'Zhao',
+            'first_name' => 'Meiru'
         ));
-        $this->insert('publisher', array(
-            'id' => '4',
-            'name' =>'UC Davis'
+        $this->insert('author', array(
+            'id' => '569',
+            'surname' =>'Chen',
+            'first_name' => 'Wentong'
+        ));
+        $this->insert('author', array(
+            'id' => '3305',
+            'surname' =>'Yan',
+            'first_name' => 'Guangmei'
+        ));
+        $this->insert('author', array(
+            'id' => '3325',
+            'surname' =>'Zhang',
+            'first_name' => 'Guojie'
+        ));
+        $this->insert('author', array(
+            'id' => '3062',
+            'surname' =>'Fang',
+            'first_name' => 'Xiaodong'
+        ));
+        $this->insert('author', array(
+            'id' => '3337',
+            'surname' =>'Zhang',
+            'first_name' => 'Yanfeng'
+        ));
+        $this->insert('author', array(
+            'id' => '3155',
+            'surname' =>'Li',
+            'first_name' => 'Ruiqiang'
+        ));
+        $this->insert('author', array(
+            'id' => '3063',
+            'surname' =>'Fan',
+            'first_name' => 'Wei'
+        ));
+        $this->insert('author', array(
+            'id' => '3245',
+            'surname' =>'Tian',
+            'first_name' => 'Geng'
+        ));
+        $this->insert('author', array(
+            'id' => '3357',
+            'surname' =>'Zhu',
+            'first_name' => 'Hongmei'
         ));
     }
 
     public function safeDown()
     {
-        $this->dropTable('publisher');
+        $this->dropTable('author');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE author_id_seq;')->execute();
     }
 }

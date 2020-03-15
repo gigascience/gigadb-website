@@ -31,42 +31,44 @@ class m200305_182358_create_exp_attributes_table extends CDbMigration
                 OWNED BY exp_attributes.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY exp_attributes 
                 ALTER COLUMN id SET DEFAULT nextval(\'exp_attributes_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY exp_attributes
+                ADD CONSTRAINT exp_attributes_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_altertab3 = sprintf(
+            'ALTER TABLE ONLY exp_attributes
+                ADD CONSTRAINT exp_attributes_attribute_id_fkey FOREIGN KEY (attribute_id) 
+                REFERENCES attribute(id);'
+        );
+
+        $sql_altertab4 = sprintf(
+            'ALTER TABLE ONLY exp_attributes
+                ADD CONSTRAINT exp_attributes_exp_id_fkey FOREIGN KEY (exp_id) 
+                REFERENCES experiment(id);'
+        );
+
+        $sql_altertab5 = sprintf(
+            'ALTER TABLE ONLY exp_attributes
+                ADD CONSTRAINT exp_attributes_units_id_fkey FOREIGN KEY (units_id) 
+                REFERENCES unit(id);'
+        );
+
+        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2, $sql_altertab3, $sql_altertab4, $sql_altertab5);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
-
-        // Add data to table. Using insert() method from
-        // CDbMigration because the code looks cleaner,
-        // logging is provided and will be easier to update
-        // if required.
-        $this->insert('publisher', array(
-            'id' => '1',
-            'name' =>'GigaScience'
-        ));
-        $this->insert('publisher', array(
-            'id' => '2',
-            'name' =>'BGI Shenzhen'
-        ));
-        $this->insert('publisher', array(
-            'id' => '3',
-            'name' =>'GigaScience Database'
-        ));
-        $this->insert('publisher', array(
-            'id' => '4',
-            'name' =>'UC Davis'
-        ));
     }
 
     public function safeDown()
     {
-        $this->dropTable('publisher');
+        $this->dropTable('exp_attributes');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE exp_attributes_id_seq;')->execute();
     }
 }

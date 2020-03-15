@@ -31,12 +31,29 @@ class m200305_164525_create_dataset_author_table extends CDbMigration
                 OWNED BY dataset_author.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY dataset_author 
                 ALTER COLUMN id SET DEFAULT nextval(\'dataset_author_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY dataset_author
+                ADD CONSTRAINT dataset_author_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_altertab3 = sprintf(
+            'ALTER TABLE ONLY dataset_author
+                ADD CONSTRAINT dataset_author_author_id_fkey FOREIGN KEY (author_id) 
+                REFERENCES author(id) ON DELETE CASCADE;'
+        );
+
+        $sql_altertab4 = sprintf(
+            'ALTER TABLE ONLY dataset_author
+                ADD CONSTRAINT dataset_author_dataset_id_fkey FOREIGN KEY (dataset_id) 
+                REFERENCES dataset(id) ON DELETE CASCADE;'
+        );
+
+        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2, $sql_altertab3, $sql_altertab4);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 
@@ -44,29 +61,112 @@ class m200305_164525_create_dataset_author_table extends CDbMigration
         // CDbMigration because the code looks cleaner,
         // logging is provided and will be easier to update
         // if required.
-        $this->insert('publisher', array(
-            'id' => '1',
-            'name' =>'GigaScience'
-        ));
-        $this->insert('publisher', array(
+        $this->insert('dataset_author', array(
             'id' => '2',
-            'name' =>'BGI Shenzhen'
+            'dataset_id' => '15',
+            'author_id' => '566',
+            'rank' => '1'
         ));
-        $this->insert('publisher', array(
+        $this->insert('dataset_author', array(
             'id' => '3',
-            'name' =>'GigaScience Database'
+            'dataset_id' => '15',
+            'author_id' => '567',
+            'rank' => '2'
         ));
-        $this->insert('publisher', array(
+        $this->insert('dataset_author', array(
             'id' => '4',
-            'name' =>'UC Davis'
+            'dataset_id' => '15',
+            'author_id' => '568',
+            'rank' => '3'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '5',
+            'dataset_id' => '15',
+            'author_id' => '569',
+            'rank' => '4'
+        ));
+
+        $this->insert('dataset_author', array(
+            'id' => '35',
+            'dataset_id' => '29',
+            'author_id' => '3305',
+            'rank' => '1'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '36',
+            'dataset_id' => '29',
+            'author_id' => '3325',
+            'rank' => '2'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '37',
+            'dataset_id' => '29',
+            'author_id' => '3062',
+            'rank' => '3'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '38',
+            'dataset_id' => '29',
+            'author_id' => '3337',
+            'rank' => '4'
+        ));
+
+        $this->insert('dataset_author', array(
+            'id' => '80',
+            'dataset_id' => '13',
+            'author_id' => '3305',
+            'rank' => '1'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '81',
+            'dataset_id' => '13',
+            'author_id' => '3325',
+            'rank' => '2'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '82',
+            'dataset_id' => '13',
+            'author_id' => '3062',
+            'rank' => '3'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '83',
+            'dataset_id' => '13',
+            'author_id' => '3337',
+            'rank' => '4'
+        ));
+
+        $this->insert('dataset_author', array(
+            'id' => '125',
+            'dataset_id' => '25',
+            'author_id' => '3155',
+            'rank' => '1'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '126',
+            'dataset_id' => '25',
+            'author_id' => '3063',
+            'rank' => '2'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '127',
+            'dataset_id' => '25',
+            'author_id' => '3245',
+            'rank' => '3'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '128',
+            'dataset_id' => '25',
+            'author_id' => '3357',
+            'rank' => '4'
         ));
     }
 
     public function safeDown()
     {
-        $this->dropTable('publisher');
+        $this->dropTable('dataset_author');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE dataset_author_id_seq;')->execute();
     }
 }
