@@ -1,6 +1,6 @@
 <?php
 
-class m200305_204550_create_unit_table extends CDbMigration
+class m200305_164150_create_unit_table extends CDbMigration
 {
     // Use safeUp/safeDown to do migration with transaction
     public function safeUp()
@@ -27,12 +27,12 @@ class m200305_204550_create_unit_table extends CDbMigration
             'COMMENT ON COLUMN unit.definition IS \'the inition taken from the unit ontology\';;'
         );
 
-        $sql_alterseq = sprintf(
-            'ALTER SEQUENCE species_id_seq 
-                OWNED BY species.id;'
+        $sql_altertab1 = sprintf(
+            'ALTER TABLE ONLY unit
+                ADD CONSTRAINT unit_pkey PRIMARY KEY (id);'
         );
 
-        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq);
+        $sql_cmds = array( $sql_createtab, $sql_comment1, $sql_comment2, $sql_comment3, $sql_altertab1);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 
@@ -40,29 +40,30 @@ class m200305_204550_create_unit_table extends CDbMigration
         // CDbMigration because the code looks cleaner,
         // logging is provided and will be easier to update
         // if required.
-        $this->insert('publisher', array(
-            'id' => '1',
-            'name' =>'GigaScience'
+        $this->insert('unit', array(
+            'id' => 'UO:0000001',
+            'name' =>'length unit',
+            'definition' => 'A unit which is a standard measure of the distance between two points.'
         ));
-        $this->insert('publisher', array(
-            'id' => '2',
-            'name' =>'BGI Shenzhen'
+        $this->insert('unit', array(
+            'id' => 'UO:0000002',
+            'name' =>'mass unit',
+            'definition' => 'A unit which is a standard measure of the amount of matter/energy of a physical object.'
         ));
-        $this->insert('publisher', array(
-            'id' => '3',
-            'name' =>'GigaScience Database'
+        $this->insert('unit', array(
+            'id' => 'UO:0000003',
+            'name' =>'time unit',
+            'definition' => 'A unit which is a standard measure of the dimension in which events occur in sequence.'
         ));
-        $this->insert('publisher', array(
-            'id' => '4',
-            'name' =>'UC Davis'
+        $this->insert('unit', array(
+            'id' => 'UO:0000004',
+            'name' =>'electric current unit',
+            'definition' => 'A unit which is a standard measure of the flow of electric charge.'
         ));
     }
 
     public function safeDown()
     {
-        $this->dropTable('publisher');
-        // Don't think you can drop SEQUENCE with a
-        // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
+        $this->dropTable('unit');
     }
 }

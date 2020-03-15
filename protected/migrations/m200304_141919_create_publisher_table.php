@@ -30,12 +30,17 @@ class m200304_141919_create_publisher_table extends CDbMigration
                 OWNED BY publisher.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY publisher
                 ALTER COLUMN id SET DEFAULT nextval(\'publisher_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY publisher
+                ADD CONSTRAINT publisher_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 

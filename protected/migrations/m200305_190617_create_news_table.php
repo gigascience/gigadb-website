@@ -31,12 +31,17 @@ class m200305_190617_create_news_table extends CDbMigration
                 OWNED BY news.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY news 
                 ALTER COLUMN id SET DEFAULT nextval(\'news_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY news
+                ADD CONSTRAINT news_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 
@@ -44,29 +49,20 @@ class m200305_190617_create_news_table extends CDbMigration
         // CDbMigration because the code looks cleaner,
         // logging is provided and will be easier to update
         // if required.
-        $this->insert('publisher', array(
-            'id' => '1',
-            'name' =>'GigaScience'
-        ));
-        $this->insert('publisher', array(
-            'id' => '2',
-            'name' =>'BGI Shenzhen'
-        ));
-        $this->insert('publisher', array(
+        $this->insert('news', array(
             'id' => '3',
-            'name' =>'GigaScience Database'
-        ));
-        $this->insert('publisher', array(
-            'id' => '4',
-            'name' =>'UC Davis'
+            'title' =>'New features coming soon',
+            'body' => 'Check back at the end of January to see new features on this website!\r+',
+            'start_date' => '2015-12-04',
+            'end_date' => '2015-12-23'
         ));
     }
 
     public function safeDown()
     {
-        $this->dropTable('publisher');
+        $this->dropTable('news');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE news_id_seq;')->execute();
     }
 }

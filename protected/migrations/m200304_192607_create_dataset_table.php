@@ -46,12 +46,46 @@ class m200304_192607_create_dataset_table extends CDbMigration
                 OWNED BY dataset.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY dataset 
                 ALTER COLUMN id SET DEFAULT nextval(\'dataset_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY dataset
+                ADD CONSTRAINT dataset_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_altertab3 = sprintf(
+            'ALTER TABLE ONLY dataset
+                ADD CONSTRAINT dataset_curator_id FOREIGN KEY (curator_id) 
+                REFERENCES gigadb_user(id);'
+        );
+
+        $sql_altertab4 = sprintf(
+            'ALTER TABLE ONLY dataset
+                ADD CONSTRAINT dataset_image_id_fkey FOREIGN KEY (image_id) 
+                REFERENCES image(id) ON DELETE SET NULL;'
+        );
+
+        $sql_altertab5 = sprintf(
+            'ALTER TABLE ONLY dataset
+                ADD CONSTRAINT dataset_publisher_id_fkey FOREIGN KEY (publisher_id) 
+                REFERENCES publisher(id) ON DELETE SET NULL;'
+        );
+
+        $sql_altertab6 = sprintf(
+            'ALTER TABLE ONLY dataset
+                ADD CONSTRAINT dataset_submitter_id_fkey FOREIGN KEY (submitter_id) 
+                REFERENCES gigadb_user(id) ON DELETE RESTRICT;'
+        );
+
+        $sql_createindex = sprintf(
+            'CREATE UNIQUE INDEX identifier_idx ON dataset 
+                USING btree (identifier);'
+        );
+
+        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2, $sql_altertab3, $sql_altertab4, $sql_altertab5, $sql_altertab6, $sql_createindex);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 
@@ -69,7 +103,6 @@ class m200304_192607_create_dataset_table extends CDbMigration
             'excelfile' => 'GigaDBUploadForm_Ecoli.xls',
             'excelfile_md5' => '8256701ec49424484a7d93b86267f47a',
             'publication_date' => '2011-06-03',
-            'modification_date' => 'date',
             'publisher_id' => '2',
         ));
         $this->insert('dataset', array(

@@ -30,12 +30,23 @@ class m200304_174810_create_search_table extends CDbMigration
                 OWNED BY search.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY search 
                 ALTER COLUMN id SET DEFAULT nextval(\'search_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY search
+                ADD CONSTRAINT search_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_altertab3 = sprintf(
+            'ALTER TABLE ONLY search
+                ADD CONSTRAINT search_user_id_fkey FOREIGN KEY (user_id) 
+                REFERENCES gigadb_user(id) ON DELETE RESTRICT;'
+        );
+
+        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2, $sql_altertab3);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 

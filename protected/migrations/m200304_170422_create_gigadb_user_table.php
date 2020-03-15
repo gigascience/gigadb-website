@@ -43,39 +43,91 @@ class m200304_170422_create_gigadb_user_table extends CDbMigration
                 OWNED BY gigadb_user.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY gigadb_user 
                 ALTER COLUMN id SET DEFAULT nextval(\'gigadb_user_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY gigadb_user
+                ADD CONSTRAINT email_unique UNIQUE (email);'
+        );
+
+        $sql_altertab3 = sprintf(
+            'ALTER TABLE ONLY gigadb_user
+                ADD CONSTRAINT gigadb_user_facebook_id_key UNIQUE (facebook_id);'
+        );
+
+        $sql_altertab4 = sprintf(
+            'ALTER TABLE ONLY gigadb_user
+                ADD CONSTRAINT gigadb_user_google_id_key UNIQUE (google_id);'
+        );
+
+        $sql_altertab5 = sprintf(
+            'ALTER TABLE ONLY gigadb_user
+                ADD CONSTRAINT gigadb_user_linked_id_key UNIQUE (linkedin_id);'
+        );
+
+        $sql_altertab6 = sprintf(
+            'ALTER TABLE ONLY gigadb_user
+                ADD CONSTRAINT gigadb_user_orcid_id_key UNIQUE (orcid_id);'
+        );
+
+        $sql_altertab7 = sprintf(
+            'ALTER TABLE ONLY gigadb_user
+                ADD CONSTRAINT gigadb_user_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_altertab8 = sprintf(
+            'ALTER TABLE ONLY gigadb_user
+                ADD CONSTRAINT gigadb_user_twitter_id_key UNIQUE (twitter_id);'
+        );
+
+        $sql_altertab9 = sprintf(
+            'ALTER TABLE ONLY gigadb_user
+                ADD CONSTRAINT gigadb_user_username_key UNIQUE (username);'
+        );
+
+        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2, $sql_altertab3, $sql_altertab4, $sql_altertab5, $sql_altertab6, $sql_altertab7, $sql_altertab8, $sql_altertab9);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 
         // Add data to table
         $this->insert('gigadb_user', array(
             'id' => '3',
-            'email' => 'test+gigadb_user@gigasciencejournal.com',
+            'email' => 'test+gigadb_user1@gigasciencejournal.com',
             'password' => '',
             'first_name' => 'test',
-            'last_name' => 'gigadb_user',
+            'last_name' => 'gigadb_user1',
             'affiliation' => 'BGI',
             'is_activated' => 'false',
             'newsletter' => 'true',
             'previous_newsletter_state' => 'true',
-            'username' => 'test+gigadb_user@gigasciencejournal.com'
+            'username' => 'test+gigadb_user1@gigasciencejournal.com'
         ));
         $this->insert('gigadb_user', array(
             'id' => '8',
-            'email' => 'test+gigadb_user@gigasciencejournal.com',
+            'email' => 'test+gigadb_user2@gigasciencejournal.com',
             'password' => '',
             'first_name' => 'test',
-            'last_name' => 'gigadb_user',
+            'last_name' => 'gigadb_user2',
             'affiliation' => 'BGI',
             'is_activated' => 'false',
             'newsletter' => 'true',
             'previous_newsletter_state' => 'true',
-            'username' => 'test+gigadb_user@gigasciencejournal.com'
+            'username' => 'test+gigadb_user2@gigasciencejournal.com'
+        ));
+        $this->insert('gigadb_user', array(
+            'id' => '17',
+            'email' => 'test+gigadb_user3@gigasciencejournal.com',
+            'password' => '',
+            'first_name' => 'test',
+            'last_name' => 'gigadb_user3',
+            'affiliation' => 'BGI',
+            'is_activated' => 'false',
+            'newsletter' => 'true',
+            'previous_newsletter_state' => 'true',
+            'username' => 'test+gigadb_user3@gigasciencejournal.com'
         ));
     }
 

@@ -30,12 +30,23 @@ class m200305_190311_create_manuscript_table extends CDbMigration
                 OWNED BY manuscript.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY manuscript 
                 ALTER COLUMN id SET DEFAULT nextval(\'manuscript_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY manuscript
+                ADD CONSTRAINT manuscript_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_altertab3 = sprintf(
+            'ALTER TABLE ONLY manuscript
+                ADD CONSTRAINT manuscript_dataset_id_fkey FOREIGN KEY (dataset_id) 
+                REFERENCES dataset(id) ON DELETE CASCADE;'
+        );
+
+        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2, $sql_altertab3);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 
@@ -43,29 +54,50 @@ class m200305_190311_create_manuscript_table extends CDbMigration
         // CDbMigration because the code looks cleaner,
         // logging is provided and will be easier to update
         // if required.
-        $this->insert('publisher', array(
-            'id' => '1',
-            'name' =>'GigaScience'
+        $this->insert('manuscript', array(
+            'id' => '13',
+            'identifier' =>'10.1056/NEJMoa1107643',
+            'pmid' => '21793736',
+            'dataset_id' => '15'
         ));
-        $this->insert('publisher', array(
-            'id' => '2',
-            'name' =>'BGI Shenzhen'
+        $this->insert('manuscript', array(
+            'id' => '473',
+            'identifier' =>'10.1093/gigascience/gix082',
+            'dataset_id' => '15'
         ));
-        $this->insert('publisher', array(
-            'id' => '3',
-            'name' =>'GigaScience Database'
+        $this->insert('manuscript', array(
+            'id' => '475',
+            'identifier' =>'10.1093/gigascience/gix078',
+            'dataset_id' => '15'
         ));
-        $this->insert('publisher', array(
-            'id' => '4',
-            'name' =>'UC Davis'
+
+        $this->insert('manuscript', array(
+            'id' => '24',
+            'identifier' =>'10.1038/nbt.1992',
+            'pmid' => '22002653',
+            'dataset_id' => '29'
+        ));
+
+        $this->insert('manuscript', array(
+            'id' => '9',
+            'identifier' =>'10.1038/nbt.1992',
+            'pmid' => '22002653',
+            'dataset_id' => '13'
+        ));
+
+        $this->insert('manuscript', array(
+            'id' => '22',
+            'identifier' =>'10.1038/nature08696',
+            'pmid' => '20010809',
+            'dataset_id' => '25'
         ));
     }
 
     public function safeDown()
     {
-        $this->dropTable('publisher');
+        $this->dropTable('manuscript');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE manuscript_id_seq;')->execute();
     }
 }

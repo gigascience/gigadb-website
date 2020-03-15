@@ -16,34 +16,10 @@ class m200305_203829_create_show_project_view extends CDbMigration
         );
 
         Yii::app()->db->createCommand($sql_createview)->execute();
-
-        // Add data to table. Using insert() method from
-        // CDbMigration because the code looks cleaner,
-        // logging is provided and will be easier to update
-        // if required.
-        $this->insert('publisher', array(
-            'id' => '1',
-            'name' =>'GigaScience'
-        ));
-        $this->insert('publisher', array(
-            'id' => '2',
-            'name' =>'BGI Shenzhen'
-        ));
-        $this->insert('publisher', array(
-            'id' => '3',
-            'name' =>'GigaScience Database'
-        ));
-        $this->insert('publisher', array(
-            'id' => '4',
-            'name' =>'UC Davis'
-        ));
     }
 
     public function safeDown()
     {
-        $this->dropTable('publisher');
-        // Don't think you can drop SEQUENCE with a
-        // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP VIEW show_project;')->execute();
     }
 }

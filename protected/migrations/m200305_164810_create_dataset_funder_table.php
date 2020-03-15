@@ -32,12 +32,29 @@ class m200305_164810_create_dataset_funder_table extends CDbMigration
                 OWNED BY dataset_funder.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY dataset_funder 
                 ALTER COLUMN id SET DEFAULT nextval(\'dataset_funder_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY dataset_funder
+                ADD CONSTRAINT dataset_funder_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_altertab3 = sprintf(
+            'ALTER TABLE ONLY dataset_funder
+                ADD CONSTRAINT dataset_funder_dataset_id_fkey FOREIGN KEY (dataset_id) 
+                REFERENCES dataset(id) ON DELETE CASCADE;'
+        );
+
+        $sql_altertab3 = sprintf(
+            'ALTER TABLE ONLY dataset_funder
+                ADD CONSTRAINT dataset_funder_funder_id_fkey FOREIGN KEY (funder_id) 
+                REFERENCES funder_name(id) ON DELETE CASCADE;'
+        );
+
+        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2, $sql_altertab3);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 
@@ -45,29 +62,24 @@ class m200305_164810_create_dataset_funder_table extends CDbMigration
         // CDbMigration because the code looks cleaner,
         // logging is provided and will be easier to update
         // if required.
-        $this->insert('publisher', array(
-            'id' => '1',
-            'name' =>'GigaScience'
+        $this->insert('dataset_funder', array(
+            'id' => '29',
+            'dataset_id' =>'204',
+            'funder_id' => '6171'
         ));
-        $this->insert('publisher', array(
-            'id' => '2',
-            'name' =>'BGI Shenzhen'
-        ));
-        $this->insert('publisher', array(
-            'id' => '3',
-            'name' =>'GigaScience Database'
-        ));
-        $this->insert('publisher', array(
-            'id' => '4',
-            'name' =>'UC Davis'
+        $this->insert('dataset_funder', array(
+            'id' => '25',
+            'dataset_id' =>'41',
+            'funder_id' => '6166',
+            'grant_award' => '2011CB809203'
         ));
     }
 
     public function safeDown()
     {
-        $this->dropTable('publisher');
+        $this->dropTable('dataset_funder');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE dataset_funder_id_seq;')->execute();
     }
 }

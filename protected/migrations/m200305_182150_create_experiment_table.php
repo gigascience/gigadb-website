@@ -1,6 +1,6 @@
 <?php
 
-class m200305_182634_create_experiment_table extends CDbMigration
+class m200305_182150_create_experiment_table extends CDbMigration
 {
     // Use safeUp/safeDown to do migration with transaction
     public function safeUp()
@@ -32,42 +32,32 @@ class m200305_182634_create_experiment_table extends CDbMigration
                 OWNED BY experiment.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY experiment 
                 ALTER COLUMN id SET DEFAULT nextval(\'experiment_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY experiment
+                ADD CONSTRAINT experiment_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_altertab3 = sprintf(
+            'ALTER TABLE ONLY experiment
+                ADD CONSTRAINT experiment_dataset_id_fkey FOREIGN KEY (dataset_id) 
+                REFERENCES dataset(id);'
+        );
+
+        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2, $sql_altertab3);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
-
-        // Add data to table. Using insert() method from
-        // CDbMigration because the code looks cleaner,
-        // logging is provided and will be easier to update
-        // if required.
-        $this->insert('publisher', array(
-            'id' => '1',
-            'name' =>'GigaScience'
-        ));
-        $this->insert('publisher', array(
-            'id' => '2',
-            'name' =>'BGI Shenzhen'
-        ));
-        $this->insert('publisher', array(
-            'id' => '3',
-            'name' =>'GigaScience Database'
-        ));
-        $this->insert('publisher', array(
-            'id' => '4',
-            'name' =>'UC Davis'
-        ));
     }
 
     public function safeDown()
     {
-        $this->dropTable('publisher');
+        $this->dropTable('experiment');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE experiment_id_seq;')->execute();
     }
 }

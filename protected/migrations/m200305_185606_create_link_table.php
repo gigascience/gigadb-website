@@ -31,12 +31,23 @@ class m200305_185606_create_link_table extends CDbMigration
                 OWNED BY link.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY link 
                 ALTER COLUMN id SET DEFAULT nextval(\'link_id_seq\'::regclass);'
         );
 
-        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab);
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY link
+                ADD CONSTRAINT link_pkey PRIMARY KEY (id);'
+        );
+
+        $sql_altertab3 = sprintf(
+            'ALTER TABLE ONLY link
+                ADD CONSTRAINT link_dataset_id_fkey FOREIGN KEY (dataset_id) 
+                REFERENCES dataset(id) ON DELETE CASCADE;'
+        );
+
+        $sql_cmds = array($sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2, $sql_altertab3);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 
@@ -44,29 +55,79 @@ class m200305_185606_create_link_table extends CDbMigration
         // CDbMigration because the code looks cleaner,
         // logging is provided and will be easier to update
         // if required.
-        $this->insert('publisher', array(
-            'id' => '1',
-            'name' =>'GigaScience'
+        $this->insert('link', array(
+            'id' => '30',
+            'dataset_id' =>'15',
+            'is_primary' =>'t',
+            'link' =>'SRA:SRP006916'
         ));
-        $this->insert('publisher', array(
-            'id' => '2',
-            'name' =>'BGI Shenzhen'
+        $this->insert('link', array(
+            'id' => '31',
+            'dataset_id' =>'15',
+            'is_primary' =>'t',
+            'link' =>'BioProject:PRJNA67657'
         ));
-        $this->insert('publisher', array(
-            'id' => '3',
-            'name' =>'GigaScience Database'
+        $this->insert('link', array(
+            'id' => '60',
+            'dataset_id' =>'29',
+            'is_primary' =>'t',
+            'link' =>'GENBANK:AEHK00000000'
         ));
-        $this->insert('publisher', array(
-            'id' => '4',
-            'name' =>'UC Davis'
+        $this->insert('link', array(
+            'id' => '61',
+            'dataset_id' =>'29',
+            'is_primary' =>'f',
+            'link' =>'SRA:SRP003590'
+        ));
+        $this->insert('link', array(
+            'id' => '59',
+            'dataset_id' =>'29',
+            'is_primary' =>'t',
+            'link' =>'BioProject:PRJNA51409'
+        ));
+        $this->insert('link', array(
+            'id' => '27',
+            'dataset_id' =>'13',
+            'is_primary' =>'f',
+            'link' =>'SRA:SRP003591'
+        ));
+        $this->insert('link', array(
+            'id' => '26',
+            'dataset_id' =>'13',
+            'is_primary' =>'t',
+            'link' =>'GENBANK:AEHL00000000'
+        ));
+        $this->insert('link', array(
+            'id' => '25',
+            'dataset_id' =>'13',
+            'is_primary' =>'t',
+            'link' =>'BioProject:PRJNA51411'
+        ));
+        $this->insert('link', array(
+            'id' => '56',
+            'dataset_id' =>'25',
+            'is_primary' =>'t',
+            'link' =>'SRA:SRP000962'
+        ));
+        $this->insert('link', array(
+            'id' => '58',
+            'dataset_id' =>'25',
+            'is_primary' =>'t',
+            'link' =>'GENBANK:ACTA00000000'
+        ));
+        $this->insert('link', array(
+            'id' => '57',
+            'dataset_id' =>'25',
+            'is_primary' =>'t',
+            'link' =>'BioProject:PRJNA38683'
         ));
     }
 
     public function safeDown()
     {
-        $this->dropTable('publisher');
+        $this->dropTable('link');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE link_id_seq;')->execute();
     }
 }

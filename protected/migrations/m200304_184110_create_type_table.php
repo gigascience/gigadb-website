@@ -29,22 +29,17 @@ class m200304_184110_create_type_table extends CDbMigration
                 OWNED BY type.id;'
         );
 
-        $sql_altertab = sprintf(
+        $sql_altertab1 = sprintf(
             'ALTER TABLE ONLY type 
                 ALTER COLUMN id SET DEFAULT nextval(\'type_id_seq\'::regclass);'
         );
 
-        $sql_createview = sprintf(
-            'CREATE VIEW homepage_dataset_type AS
-                SELECT type.name, count(dataset_type.id) AS count 
-                FROM dataset_type, type, dataset 
-                WHERE (((dataset_type.type_id = type.id) 
-                AND (dataset_type.dataset_id = dataset.id)) 
-                AND ((dataset.upload_status)::text = \'Published\'::text)) 
-                GROUP BY type.name;'
+        $sql_altertab2 = sprintf(
+            'ALTER TABLE ONLY type
+                ADD CONSTRAINT type_pkey PRIMARY KEY (id);'
         );
 
-        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab, $sql_createview);
+        $sql_cmds = array( $sql_createtab, $sql_createseq, $sql_alterseq, $sql_altertab1, $sql_altertab2);
         foreach ($sql_cmds as $sql_cmd)
             Yii::app()->db->createCommand($sql_cmd)->execute();
 
@@ -118,10 +113,6 @@ class m200304_184110_create_type_table extends CDbMigration
         $this->insert('type', array(
             'id' => '16',
             'name' => 'Metadata'
-        ));
-        $this->insert('type', array(
-            'id' => '17',
-            'name' => 'Metabarcoding'
         ));
         $this->insert('type', array(
             'id' => '17',
