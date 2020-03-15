@@ -99,7 +99,7 @@ class DatasetUploadTest extends CTestCase
 				"name" => "method.txt", 
 				"description" => "", 
 				"datatype" => "Text", 
-				"extension" => "txt", 
+				"extension" => "TEXT", 
 				"size" => "", 
 			],
 			[ 
@@ -135,8 +135,8 @@ class DatasetUploadTest extends CTestCase
 			[ 
 				"name" => "method.txt", 
 				"description" => "The methodology", 
-				"datatype" => "Text", 
-				"extension" => "txt", 
+				"datatype" => "Readme", 
+				"extension" => "TEXT", 
 				"sampleId" => 342,
 				"attr1" => null, 
 				"attr2" => null, 
@@ -147,7 +147,7 @@ class DatasetUploadTest extends CTestCase
 			[ 
 				"name" => "someFile.png", 
 				"description" => " That diagram", 
-				"datatype" => "Image", 
+				"datatype" => "Annotation", 
 				"extension" => "PNG", 
 				"sampleId" => null, 
 				"attr1" => " Rating::9::Some guys's scale", 
@@ -195,7 +195,7 @@ class DatasetUploadTest extends CTestCase
 				"name" => "method.txt", 
 				"description" => "", 
 				"datatype" => "Text", 
-				"extension" => "txt", 
+				"extension" => "TEXT", 
 				"size" => "", 
 			],
 			[ 
@@ -231,8 +231,8 @@ class DatasetUploadTest extends CTestCase
 			[ 
 				"name" => "method.txt", 
 				"description" => "The methodology", 
-				"datatype" => "Text", 
-				"extension" => "txt", 
+				"datatype" => "Annotation", 
+				"extension" => "text", 
 				"sampleId" => 342,
 				"attr1" => null, 
 				"attr2" => null, 
@@ -243,7 +243,7 @@ class DatasetUploadTest extends CTestCase
 			[ 
 				"name" => "someFile.png", 
 				"description" => " That diagram", 
-				"datatype" => "Image", 
+				"datatype" => "Repeat sequence", 
 				"extension" => "PNG", 
 				"sampleId" => null, 
 				"attr1" => " Rating:9::Some guys's scale", 
@@ -292,7 +292,7 @@ class DatasetUploadTest extends CTestCase
 		    ->setCellValue('H1', 'Attribute 3')
 		    ->setCellValue('J1', 'Attribute 5')
 		    ->setCellValue('A2', 'dummy.tiff')
-		    ->setCellValue('B2', 'Image')
+		    ->setCellValue('B2', 'Script')
 		    ->setCellValue('C2', 'TIFF')
 		    ->setCellValue('D2', 'Some cool picture')
 		    ->setCellValue('E2', '')
@@ -316,5 +316,217 @@ class DatasetUploadTest extends CTestCase
 
 	}
 
+	/**
+	 * test parsing metadata from spreadsheet, detecting missing column
+	 */
+	public function testMergeFromSpreadsheetIncorrectDataType()
+	{
+				$mockDatasetDAO = $this->createMock(DatasetDAO::class);
+		$mockFileUploadSrv = $this->createMock(FileUploadService::class);
+
+		$storedUploads = [
+			[
+				"id" => 23, 
+				"doi" => "00000000", 
+				"name" => "method.txt", 
+				"description" => "", 
+				"datatype" => "Annotation", 
+				"extension" => "txt", 
+				"size" => "", 
+			],
+			[ 
+				"id" => 35,
+				"doi" => "00000000", 
+				"name" => "someFile.csv", 
+				"description" => "Some original description", 
+				"datatype" => "Protein sequence", 
+				"extension" => "CSV", 
+				"size" => "345634",
+			],
+			[
+				"id" => 47,
+				"doi" => "00000000", 
+				"name" => "foobar.PDF", 
+				"description" => "", 
+				"datatype" => "Script", 
+				"extension" => "PDF", 
+				"size" => "", 
+			],			
+			
+		];
+
+		$attributesData = [
+			[ 
+				"name" => "Temperature", 
+				"value" => "35", 
+				"unit" => "Celsius", 
+				"upload_id" =>35,
+			]
+		];
+		$sheetData = [
+			[ 
+				"name" => "method.txt", 
+				"description" => "The methodology", 
+				"datatype" => "Script", 
+				"extension" => "text", 
+				"sampleId" => 342,
+				"attr1" => null, 
+				"attr2" => null, 
+				"attr3" => null, 
+				"attr4" => null, 
+				"attr5" => null, 
+			],
+			[ 
+				"name" => "someFile.csv", 
+				"description" => " That diagram", 
+				"datatype" => "Repea sequence", 
+				"extension" => "CSV", 
+				"sampleId" => null, 
+				"attr1" => " Rating::9::Some guys's scale", 
+				"attr2" => null, 
+				"attr3" => null, 
+				"attr4" => null, 
+				"attr5" => null, 
+			],
+			[ 
+				"name" => "foobar.PDF", 
+				"description" => "The methodology", 
+				"datatype" => "Reap Me",
+				"extension" => "text", 
+				"sampleId" => null,
+				"attr1" => null, 
+				"attr2" => null, 
+				"attr3" => null, 
+				"attr4" => null, 
+				"attr5" => null, 
+			],	
+		];
+
+		$bo = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv,[]);
+		list($uploadData, $attributes, $errors) = $bo->mergeMetadata(
+												$storedUploads, 
+												$sheetData
+										);
+		// var_dump($uploadData);
+		// var_dump($attributes);
+		// var_dump($errors);
+		// echo $bo->getFiletypesJSON();
+		$this->assertEquals(1, count($uploadData));
+		$this->assertEquals(23, $uploadData[23]["id"]);
+		$this->assertEquals("method.txt", $uploadData[23]["name"]);
+		$this->assertEquals("The methodology", $uploadData[23]["description"]);
+		$this->assertFalse(isset($uploadData[35]));
+		$this->assertFalse(isset($uploadData[47]));
+		$this->assertEquals("(someFile.csv) Cannot load file, incorrect Data type: Repea sequence", $errors[0]);
+		$this->assertEquals("(foobar.PDF) Cannot load file, incorrect Data type: Reap Me", $errors[1]);
+
+	}
+
+
+/**
+	 * test parsing metadata from spreadsheet, detecting missing column
+	 */
+	public function testMergeFromSpreadsheetIncorrectFileFormat()
+	{
+				$mockDatasetDAO = $this->createMock(DatasetDAO::class);
+		$mockFileUploadSrv = $this->createMock(FileUploadService::class);
+
+		$storedUploads = [
+			[
+				"id" => 23, 
+				"doi" => "00000000", 
+				"name" => "method.txt", 
+				"description" => "", 
+				"datatype" => "Annotation", 
+				"extension" => "TEXT", 
+				"size" => "", 
+			],
+			[ 
+				"id" => 35,
+				"doi" => "00000000", 
+				"name" => "someFile.csv", 
+				"description" => "Some original description", 
+				"datatype" => "Repeat sequence", 
+				"extension" => "CSV", 
+				"size" => "345634",
+			],
+			[
+				"id" => 47,
+				"doi" => "00000000", 
+				"name" => "foobar.PDF", 
+				"description" => "", 
+				"datatype" => "Script", 
+				"extension" => "PDF", 
+				"size" => "", 
+			],			
+			
+		];
+
+		$attributesData = [
+			[ 
+				"name" => "Temperature", 
+				"value" => "35", 
+				"unit" => "Celsius", 
+				"upload_id" =>35,
+			]
+		];
+		$sheetData = [
+			[ 
+				"name" => "method.txt", 
+				"description" => "The methodology", 
+				"datatype" => "Script", 
+				"extension" => "TEXT", 
+				"sampleId" => 342,
+				"attr1" => null, 
+				"attr2" => null, 
+				"attr3" => null, 
+				"attr4" => null, 
+				"attr5" => null, 
+			],
+			[ 
+				"name" => "someFile.csv", 
+				"description" => " That diagram", 
+				"datatype" => "Repeat sequence", 
+				"extension" => "CXV", 
+				"sampleId" => null, 
+				"attr1" => " Rating::9::Some guys's scale", 
+				"attr2" => null, 
+				"attr3" => null, 
+				"attr4" => null, 
+				"attr5" => null, 
+			],
+			[ 
+				"name" => "foobar.PDF", 
+				"description" => "The methodology", 
+				"datatype" => "Readme",
+				"extension" => "PDG", 
+				"sampleId" => null,
+				"attr1" => null, 
+				"attr2" => null, 
+				"attr3" => null, 
+				"attr4" => null, 
+				"attr5" => null, 
+			],	
+		];
+
+		$bo = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv,[]);
+		list($uploadData, $attributes, $errors) = $bo->mergeMetadata(
+												$storedUploads, 
+												$sheetData
+										);
+		// var_dump($uploadData);
+		// var_dump($attributes);
+		// var_dump($errors);
+		// echo $bo->getFiletypesJSON();
+		$this->assertEquals(1, count($uploadData));
+		$this->assertEquals(23, $uploadData[23]["id"]);
+		$this->assertEquals("method.txt", $uploadData[23]["name"]);
+		$this->assertEquals("The methodology", $uploadData[23]["description"]);
+		$this->assertFalse(isset($uploadData[35]));
+		$this->assertFalse(isset($uploadData[47]));
+		$this->assertEquals("(someFile.csv) Cannot load file, incorrect File format: CXV", $errors[0]);
+		$this->assertEquals("(foobar.PDF) Cannot load file, incorrect File format: PDG", $errors[1]);
+
+	}
 }
 ?>
