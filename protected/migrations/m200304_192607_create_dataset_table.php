@@ -33,7 +33,7 @@ class m200304_192607_create_dataset_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE dataset_id_seq 
-            START WITH 33 
+            START WITH 50 
             INCREMENT BY 1 
             NO MINVALUE 
             NO MAXVALUE 
@@ -91,37 +91,6 @@ class m200304_192607_create_dataset_table extends CDbMigration
 
         // Add data to table
         $this->insert('dataset', array(
-            'id' => '15',
-            'submitter_id' => '3',
-            'image_id' => '15',
-            'identifier' => '100001',
-            'title' => 'Genomic data from <em>Escherichia coli</em> O104:H4 isolate TY-2482',
-            'description' => 'The May 2011 outbreak of an <em>E. coli</em> infection in Europe resulted in serious concerns about the potential appearance of a new deadly strain of bacteria, <em>Escherichia coli</em> O104:H4 TY-2482.  In response to this situation, and immediately after the reports of deaths, the University Medical Centre Hamburg-Eppendorf and BGI-Shenzhen worked together to sequence the bacterium and assess its human health risk.\r\n\r\nThe bacterium’s genome was first sequenced using Life Technologies; Ion Torrent sequencing platform. According to the results of the draft assembly, the estimated genome size of this new <em>E. coli</em> strain is about 5.2 Mb.  Sequence analysis indicated this bacterium is an EHEC serotype O104 <em>E. coli</em> strain.  Comparative analysis showed that this bacterium has 93% sequence similarity with the EAEC 55989 <em>E. coli</em> strain, which was isolated in the Central African Republic and known to cause serious diarrhea.  This strain of <em>E. coli</em>, however, has also acquired specific sequences that appear to be similar to those involved in the pathogenicity of hemorrhagic colitis and hemolytic-uremic syndrome.  The acquisition of these genes may have occurred through horizontal gene transfer.\r\n\r\nTo maximize its utility to the research community and aid those fighting the epidemic, this genomic data was released into the public domain under a <a href="http://creativecommons.org/about/cc0">CC0 license</a>.\r\n\r\nTo the extent possible under law, <a href ="http://www.genomics.cn/">BGI Shenzhen</a>  has waived all copyright and related or neighboring rights to genomic data from the 2011 <em>E. coli</em> outbreak. This work is published from: China.',
-            'dataset_size' => '1696392192',
-            'ftp_site' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100001',
-            'upload_status' => 'Published',
-            'excelfile' => 'GigaDBUploadForm_Ecoli.xls',
-            'excelfile_md5' => '8256701ec49424484a7d93b86267f47a',
-            'publication_date' => '2011-06-03',
-            'publisher_id' => '2',
-        ));
-        $this->insert('dataset', array(
-            'id' => '29',
-            'submitter_id' => '8',
-            'image_id' => '29',
-            'identifier' => '100002',
-            'title' => 'Genomic data from the Chinese Rhesus macaque (<em>Macaca mulatta lasiota</em>).',
-            'description' => 'The Chinese rhesus macaque (<em>Macaca mulatta lasiota</em>) is a subspecies of rhesus macaques that mainly resides in western and central China.  Due to their anatomical and physiological similarity with human beings, macaques are a common laboratory model.  Also, as several macaques species have been sequenced, such as the Indian rhesus macaque and the crab-eating macaque, examination of the Chinese rhesus macaque (CR) genome offers interesting insights into the entire <em>Macaca</em> genus.\r\n\r\nThe DNA sample for data sequencing and analyses was obtained from a five-year old female CR from southwestern China.  The genome was sequenced on the IlluminaGAIIx platform, from which 142-Gb of high-quality sequence, representing 47-fold genome coverage for CR.  The total size of the assembled CR genome was about 2.84 Gb, providing 47-fold on average.  Scaffolds were assigned to the chromosomes according to the synteny displayed with the Indian rhesus macaque and human genome sequences.  About 97% of the CR scaffolds could be placed onto chromosomes.',
-            'dataset_size' => '1054888960',
-            'ftp_site' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100002/',
-            'upload_status' => 'Published',
-            'excelfile' => 'GigaDBUploadForm_RhesusMacaque.xls',
-            'excelfile_md5' => 'bd444e7c591efb00ad3e125c52b337aa',
-            'publication_date' => '2011-07-06',
-            'modification_date' => '2012-04-27',
-            'publisher_id' => '1',
-        ));
-        $this->insert('dataset', array(
             'id' => '13',
             'submitter_id' => '8',
             'image_id' => '13',
@@ -138,6 +107,21 @@ class m200304_192607_create_dataset_table extends CDbMigration
             'publisher_id' => '1',
         ));
         $this->insert('dataset', array(
+            'id' => '15',
+            'submitter_id' => '3',
+            'image_id' => '15',
+            'identifier' => '100001',
+            'title' => 'Genomic data from <em>Escherichia coli</em> O104:H4 isolate TY-2482',
+            'description' => 'The May 2011 outbreak of an <em>E. coli</em> infection in Europe resulted in serious concerns about the potential appearance of a new deadly strain of bacteria, <em>Escherichia coli</em> O104:H4 TY-2482.  In response to this situation, and immediately after the reports of deaths, the University Medical Centre Hamburg-Eppendorf and BGI-Shenzhen worked together to sequence the bacterium and assess its human health risk.\r\n\r\nThe bacterium’s genome was first sequenced using Life Technologies; Ion Torrent sequencing platform. According to the results of the draft assembly, the estimated genome size of this new <em>E. coli</em> strain is about 5.2 Mb.  Sequence analysis indicated this bacterium is an EHEC serotype O104 <em>E. coli</em> strain.  Comparative analysis showed that this bacterium has 93% sequence similarity with the EAEC 55989 <em>E. coli</em> strain, which was isolated in the Central African Republic and known to cause serious diarrhea.  This strain of <em>E. coli</em>, however, has also acquired specific sequences that appear to be similar to those involved in the pathogenicity of hemorrhagic colitis and hemolytic-uremic syndrome.  The acquisition of these genes may have occurred through horizontal gene transfer.\r\n\r\nTo maximize its utility to the research community and aid those fighting the epidemic, this genomic data was released into the public domain under a <a href="http://creativecommons.org/about/cc0">CC0 license</a>.\r\n\r\nTo the extent possible under law, <a href ="http://www.genomics.cn/">BGI Shenzhen</a>  has waived all copyright and related or neighboring rights to genomic data from the 2011 <em>E. coli</em> outbreak. This work is published from: China.',
+            'dataset_size' => '1696392192',
+            'ftp_site' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100001',
+            'upload_status' => 'Published',
+            'excelfile' => 'GigaDBUploadForm_Ecoli.xls',
+            'excelfile_md5' => '8256701ec49424484a7d93b86267f47a',
+            'publication_date' => '2011-06-03',
+            'publisher_id' => '2',
+        ));
+        $this->insert('dataset', array(
             'id' => '25',
             'submitter_id' => '8',
             'image_id' => '25',
@@ -150,6 +134,22 @@ class m200304_192607_create_dataset_table extends CDbMigration
             'excelfile' => 'GigaDBUploadForm_Panda.xls',
             'excelfile_md5' => '1cfb49f6a622ae1c2599e6dd2eed9785',
             'publication_date' => '2011-07-06',
+            'publisher_id' => '1',
+        ));
+        $this->insert('dataset', array(
+            'id' => '29',
+            'submitter_id' => '8',
+            'image_id' => '29',
+            'identifier' => '100002',
+            'title' => 'Genomic data from the Chinese Rhesus macaque (<em>Macaca mulatta lasiota</em>).',
+            'description' => 'The Chinese rhesus macaque (<em>Macaca mulatta lasiota</em>) is a subspecies of rhesus macaques that mainly resides in western and central China.  Due to their anatomical and physiological similarity with human beings, macaques are a common laboratory model.  Also, as several macaques species have been sequenced, such as the Indian rhesus macaque and the crab-eating macaque, examination of the Chinese rhesus macaque (CR) genome offers interesting insights into the entire <em>Macaca</em> genus.\r\n\r\nThe DNA sample for data sequencing and analyses was obtained from a five-year old female CR from southwestern China.  The genome was sequenced on the IlluminaGAIIx platform, from which 142-Gb of high-quality sequence, representing 47-fold genome coverage for CR.  The total size of the assembled CR genome was about 2.84 Gb, providing 47-fold on average.  Scaffolds were assigned to the chromosomes according to the synteny displayed with the Indian rhesus macaque and human genome sequences.  About 97% of the CR scaffolds could be placed onto chromosomes.',
+            'dataset_size' => '1054888960',
+            'ftp_site' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100002/',
+            'upload_status' => 'Published',
+            'excelfile' => 'GigaDBUploadForm_RhesusMacaque.xls',
+            'excelfile_md5' => 'bd444e7c591efb00ad3e125c52b337aa',
+            'publication_date' => '2011-07-06',
+            'modification_date' => '2012-04-27',
             'publisher_id' => '1',
         ));
     }

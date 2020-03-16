@@ -21,7 +21,7 @@ class m200305_163621_create_author_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE author_id_seq
-                START WITH 1
+                START WITH 3500
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -87,9 +87,9 @@ class m200305_163621_create_author_table extends CDbMigration
             'first_name' => 'Xiaodong'
         ));
         $this->insert('author', array(
-            'id' => '3337',
-            'surname' =>'Zhang',
-            'first_name' => 'Yanfeng'
+            'id' => '3063',
+            'surname' =>'Fan',
+            'first_name' => 'Wei'
         ));
         $this->insert('author', array(
             'id' => '3155',
@@ -97,14 +97,14 @@ class m200305_163621_create_author_table extends CDbMigration
             'first_name' => 'Ruiqiang'
         ));
         $this->insert('author', array(
-            'id' => '3063',
-            'surname' =>'Fan',
-            'first_name' => 'Wei'
-        ));
-        $this->insert('author', array(
             'id' => '3245',
             'surname' =>'Tian',
             'first_name' => 'Geng'
+        ));
+        $this->insert('author', array(
+            'id' => '3337',
+            'surname' =>'Zhang',
+            'first_name' => 'Yanfeng'
         ));
         $this->insert('author', array(
             'id' => '3357',

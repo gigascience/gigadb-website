@@ -31,7 +31,7 @@ class m200304_170422_create_gigadb_user_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE gigadb_user_id_seq 
-                START WITH 1 
+                START WITH 20 
                 INCREMENT BY 1 
                 NO MINVALUE 
                 NO MAXVALUE 
@@ -100,6 +100,7 @@ class m200304_170422_create_gigadb_user_table extends CDbMigration
             'first_name' => 'admin',
             'last_name' => 'user',
             'affiliation' => 'gigascience',
+            'role' => 'admin',
             'is_activated' => 'true',
             'newsletter' => 'true',
             'previous_newsletter_state' => 'true',

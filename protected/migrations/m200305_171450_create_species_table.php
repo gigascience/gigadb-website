@@ -20,7 +20,7 @@ class m200305_171450_create_species_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE species_id_seq
-                START WITH 28
+                START WITH 500
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -51,39 +51,24 @@ class m200305_171450_create_species_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('species', array(
+            'id' => '12',
+            'tax_id' => '9541',
+            'common_name' => 'Crab-eating macaque',
+            'genbank_name' => 'crab-eating macaque',
+            'scientific_name' => 'Macaca fascicularis'
+        ));
+        $this->insert('species', array(
             'id' => '14',
             'tax_id' => '563',
             'common_name' => 'E. coli',
             'scientific_name' => 'Escherichia coli'
         ));
         $this->insert('species', array(
-            'id' => '457',
-            'tax_id' => '453',
-            'scientific_name' => 'Legionella feeleii'
-        ));
-        $this->insert('species', array(
-            'id' => '334',
-            'tax_id' => '283',
-            'scientific_name' => 'Comamonas'
-        ));
-        $this->insert('species', array(
-            'id' => '453',
-            'tax_id' => '449',
-            'scientific_name' => 'Legionella hackeliae'
-        ));
-        $this->insert('species', array(
-            'id' => '28',
-            'tax_id' => '6253',
-            'common_name' => 'Pig roundworm',
-            'genbank_name' => 'pig roundworm',
-            'scientific_name' => 'Ascaris suum'
-        ));
-        $this->insert('species', array(
-            'id' => '12',
-            'tax_id' => '9541',
-            'common_name' => 'Crab-eating macaque',
-            'genbank_name' => 'crab-eating macaque',
-            'scientific_name' => 'Macaca fascicularis'
+            'id' => '23',
+            'tax_id' => '9646',
+            'common_name' => 'Giant panda',
+            'genbank_name' => 'giant panda',
+            'scientific_name' => 'Ailuropoda melanoleuca'
         ));
         $this->insert('species', array(
             'id' => '24',
@@ -100,11 +85,26 @@ class m200305_171450_create_species_table extends CDbMigration
             'scientific_name' => 'Macaca mulatta'
         ));
         $this->insert('species', array(
-            'id' => '23',
-            'tax_id' => '9646',
-            'common_name' => 'Giant panda',
-            'genbank_name' => 'giant panda',
-            'scientific_name' => 'Ailuropoda melanoleuca'
+            'id' => '28',
+            'tax_id' => '6253',
+            'common_name' => 'Pig roundworm',
+            'genbank_name' => 'pig roundworm',
+            'scientific_name' => 'Ascaris suum'
+        ));
+        $this->insert('species', array(
+            'id' => '334',
+            'tax_id' => '283',
+            'scientific_name' => 'Comamonas'
+        ));
+        $this->insert('species', array(
+            'id' => '453',
+            'tax_id' => '449',
+            'scientific_name' => 'Legionella hackeliae'
+        ));
+        $this->insert('species', array(
+            'id' => '457',
+            'tax_id' => '453',
+            'scientific_name' => 'Legionella feeleii'
         ));
     }
 

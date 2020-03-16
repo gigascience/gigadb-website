@@ -21,7 +21,7 @@ class m200305_165138_create_dataset_log_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE dataset_log_id_seq
-                START WITH 1
+                START WITH 1200
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -58,6 +58,15 @@ class m200305_165138_create_dataset_log_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('dataset_log', array(
+            'id' => '498',
+            'dataset_id' =>'25',
+            'message' => 'File 080620_I330_FC304NVAAXX_L3_PAfwDADHAAPE_1.fq.clean.gz updated',
+            'created_at' => '2015-11-04 00:07:32.653238',
+            'model' => 'File',
+            'model_id' => '5783',
+            'url' => '/adminFile/update/id/5783'
+        ));
+        $this->insert('dataset_log', array(
             'id' => '1176',
             'dataset_id' =>'15',
             'message' => 'Relationship added : DOI 200029',
@@ -72,15 +81,6 @@ class m200305_165138_create_dataset_log_table extends CDbMigration
             'created_at' => '2017-09-15 03:43:53.252748',
             'model' => 'relation',
             'model_id' => '157'
-        ));
-        $this->insert('dataset_log', array(
-            'id' => '498',
-            'dataset_id' =>'25',
-            'message' => 'File 080620_I330_FC304NVAAXX_L3_PAfwDADHAAPE_1.fq.clean.gz updated',
-            'created_at' => '2015-11-04 00:07:32.653238',
-            'model' => 'File',
-            'model_id' => '5783',
-            'url' => '/adminFile/update/id/5783'
         ));
     }
 

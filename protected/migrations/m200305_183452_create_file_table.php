@@ -28,7 +28,7 @@ class m200305_183452_create_file_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE file_id_seq
-                START WITH 6716
+                START WITH 6300
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -83,130 +83,6 @@ class m200305_183452_create_file_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('file', array(
-            'id' => '4328',
-            'dataset_id' =>'15',
-            'name' => 'Escherichia_coli_TY-2482.plasmid.20110616.fa.gz',
-            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100001/Escherichia_coli_TY-2482.plasmid.20110616.fa.gz',
-            'extension' => 'fa',
-            'size' => '51201',
-            'description' => '16/06/11 Gapless Illumina de novo assembly (plasmid)',
-            'date_stamp' => '2012-02-28',
-            'format_id' => '2',
-            'type_id' => '132',
-            'code' => 'TY-2482',
-            'download_count' => '26'
-        ));
-        $this->insert('file', array(
-            'id' => '4329',
-            'dataset_id' =>'15',
-            'name' => '110601_I238_FCB067HABXX_L3_ESCqslRAADIAAPEI-2_1.fq.gz',
-            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100001/110601_I238_FCB067HABXX_L3_ESCqslRAADIAAPEI-2_1.fq.gz',
-            'extension' => 'fq',
-            'size' => '1618412446',
-            'description' => '11/06/11 Illumina reads',
-            'date_stamp' => '2012-02-28',
-            'format_id' => '7',
-            'type_id' => '9',
-            'code' => 'TY-2482',
-            'download_count' => '38'
-        ));
-        $this->insert('file', array(
-            'id' => '4324',
-            'dataset_id' =>'15',
-            'name' => 'Escherichia_coli_TY-2482.contig.fa.gz',
-            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100001/Escherichia_coli_TY-2482.contig.fa.gz',
-            'extension' => 'fa',
-            'size' => '1761875',
-            'description' => '06/06/11 Ion Torrent+Illumina hybrid assembly',
-            'date_stamp' => '2012-02-28',
-            'format_id' => '2',
-            'type_id' => '132',
-            'code' => 'TY-2482',
-            'download_count' => '33'
-        ));
-        $this->insert('file', array(
-            'id' => '4336',
-            'dataset_id' =>'15',
-            'name' => 'run7.fastq.gz',
-            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100001/run7.fastq.gz',
-            'extension' => 'fastq',
-            'size' => '6543116',
-            'description' => '03/06/11 Ion Torrent run 7',
-            'date_stamp' => '2012-02-28',
-            'format_id' => '7',
-            'type_id' => '9',
-            'code' => 'TY-2482',
-            'download_count' => '21'
-        ));
-
-        $this->insert('file', array(
-            'id' => '6205',
-            'dataset_id' =>'29',
-            'name' => 'CR.kegg.gz',
-            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100002/CR.kegg.gz',
-            'extension' => 'kegg',
-            'size' => '39538',
-            'date_stamp' => '2011-07-06',
-            'format_id' => '12',
-            'type_id' => '6',
-            'code' => 'CR',
-            'download_count' => '4'
-        ));
-        $this->insert('file', array(
-            'id' => '6204',
-            'dataset_id' =>'29',
-            'name' => 'CR.ipr.gz',
-            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100002/CR.ipr.gz',
-            'extension' => 'ipr',
-            'size' => '189037',
-            'date_stamp' => '2011-07-06',
-            'format_id' => '11',
-            'type_id' => '6',
-            'code' => 'CR',
-            'download_count' => '4'
-        ));
-        $this->insert('file', array(
-            'id' => '6201',
-            'dataset_id' =>'29',
-            'name' => 'CR.cds.fa.gz',
-            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100002/CR.cds.fa.gz',
-            'extension' => 'fa',
-            'size' => '10571176',
-            'date_stamp' => '2011-07-06',
-            'format_id' => '2',
-            'type_id' => '4',
-            'code' => 'CR',
-            'download_count' => '6'
-        ));
-        $this->insert('file', array(
-            'id' => '6203',
-            'dataset_id' =>'29',
-            'name' => 'CR.gff.gz',
-            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100002/CR.gff.gz',
-            'extension' => 'gff',
-            'size' => '2325538',
-            'date_stamp' => '2011-07-06',
-            'format_id' => '5',
-            'type_id' => '6',
-            'code' => 'CR',
-            'download_count' => '4'
-        ));
-
-        $this->insert('file', array(
-            'id' => '4298',
-            'dataset_id' =>'13',
-            'name' => 'liver.depth.gz',
-            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100003/transcriptome/liver/liver.depth.gz',
-            'extension' => 'depth',
-            'size' => '163689845',
-            'description' => 'Liver tissue',
-            'date_stamp' => '2011-07-06',
-            'format_id' => '43',
-            'type_id' => '127',
-            'code' => 'CE',
-            'download_count' => '0'
-        ));
-        $this->insert('file', array(
             'id' => '4281',
             'dataset_id' =>'13',
             'name' => 'CE.pep.fa.gz',
@@ -246,19 +122,75 @@ class m200305_183452_create_file_table extends CDbMigration
             'code' => 'CE',
             'download_count' => '1'
         ));
-
         $this->insert('file', array(
-            'id' => '5993',
-            'dataset_id' =>'25',
-            'name' => '080721_I360_FC30ALEAAXX_L2_PAfwDADLBAPE_1.fq.clean.gz',
-            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100004/Sequencing_and_library/080721_I360_FC30ALEAAXX_L2_PAfwDADLBAPE_1.fq.clean.gz',
-            'extension' => 'fq',
-            'size' => '226221193',
+            'id' => '4298',
+            'dataset_id' =>'13',
+            'name' => 'liver.depth.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100003/transcriptome/liver/liver.depth.gz',
+            'extension' => 'depth',
+            'size' => '163689845',
+            'description' => 'Liver tissue',
             'date_stamp' => '2011-07-06',
+            'format_id' => '43',
+            'type_id' => '127',
+            'code' => 'CE',
+            'download_count' => '0'
+        ));
+        $this->insert('file', array(
+            'id' => '4324',
+            'dataset_id' =>'15',
+            'name' => 'Escherichia_coli_TY-2482.contig.fa.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100001/Escherichia_coli_TY-2482.contig.fa.gz',
+            'extension' => 'fa',
+            'size' => '1761875',
+            'description' => '06/06/11 Ion Torrent+Illumina hybrid assembly',
+            'date_stamp' => '2012-02-28',
+            'format_id' => '2',
+            'type_id' => '132',
+            'code' => 'TY-2482',
+            'download_count' => '33'
+        ));
+        $this->insert('file', array(
+            'id' => '4328',
+            'dataset_id' =>'15',
+            'name' => 'Escherichia_coli_TY-2482.plasmid.20110616.fa.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100001/Escherichia_coli_TY-2482.plasmid.20110616.fa.gz',
+            'extension' => 'fa',
+            'size' => '51201',
+            'description' => '16/06/11 Gapless Illumina de novo assembly (plasmid)',
+            'date_stamp' => '2012-02-28',
+            'format_id' => '2',
+            'type_id' => '132',
+            'code' => 'TY-2482',
+            'download_count' => '26'
+        ));
+        $this->insert('file', array(
+            'id' => '4329',
+            'dataset_id' =>'15',
+            'name' => '110601_I238_FCB067HABXX_L3_ESCqslRAADIAAPEI-2_1.fq.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100001/110601_I238_FCB067HABXX_L3_ESCqslRAADIAAPEI-2_1.fq.gz',
+            'extension' => 'fq',
+            'size' => '1618412446',
+            'description' => '11/06/11 Illumina reads',
+            'date_stamp' => '2012-02-28',
             'format_id' => '7',
             'type_id' => '9',
-            'code' => 'SAMPLE:SRS004381',
-            'download_count' => '2'
+            'code' => 'TY-2482',
+            'download_count' => '38'
+        ));
+        $this->insert('file', array(
+            'id' => '4336',
+            'dataset_id' =>'15',
+            'name' => 'run7.fastq.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100001/run7.fastq.gz',
+            'extension' => 'fastq',
+            'size' => '6543116',
+            'description' => '03/06/11 Ion Torrent run 7',
+            'date_stamp' => '2012-02-28',
+            'format_id' => '7',
+            'type_id' => '9',
+            'code' => 'TY-2482',
+            'download_count' => '21'
         ));
         $this->insert('file', array(
             'id' => '5717',
@@ -270,6 +202,19 @@ class m200305_183452_create_file_table extends CDbMigration
             'date_stamp' => '2011-07-06',
             'format_id' => '54',
             'type_id' => '64',
+            'code' => 'SAMPLE:SRS004381',
+            'download_count' => '0'
+        ));
+        $this->insert('file', array(
+            'id' => '5721',
+            'dataset_id' =>'25',
+            'name' => 'panda.scafSeq.gapFilled.noMito.fa.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100004/genome_sequence/panda.scafSeq.gapFilled.noMito.fa.gz',
+            'extension' => 'fa',
+            'size' => '699450409',
+            'date_stamp' => '2011-07-06',
+            'format_id' => '2',
+            'type_id' => '132',
             'code' => 'SAMPLE:SRS004381',
             'download_count' => '0'
         ));
@@ -287,17 +232,69 @@ class m200305_183452_create_file_table extends CDbMigration
             'download_count' => '0'
         ));
         $this->insert('file', array(
-            'id' => '5721',
+            'id' => '5993',
             'dataset_id' =>'25',
-            'name' => 'panda.scafSeq.gapFilled.noMito.fa.gz',
-            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100004/genome_sequence/panda.scafSeq.gapFilled.noMito.fa.gz',
+            'name' => '080721_I360_FC30ALEAAXX_L2_PAfwDADLBAPE_1.fq.clean.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100004/Sequencing_and_library/080721_I360_FC30ALEAAXX_L2_PAfwDADLBAPE_1.fq.clean.gz',
+            'extension' => 'fq',
+            'size' => '226221193',
+            'date_stamp' => '2011-07-06',
+            'format_id' => '7',
+            'type_id' => '9',
+            'code' => 'SAMPLE:SRS004381',
+            'download_count' => '2'
+        ));
+        $this->insert('file', array(
+            'id' => '6201',
+            'dataset_id' =>'29',
+            'name' => 'CR.cds.fa.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100002/CR.cds.fa.gz',
             'extension' => 'fa',
-            'size' => '699450409',
+            'size' => '10571176',
             'date_stamp' => '2011-07-06',
             'format_id' => '2',
-            'type_id' => '132',
-            'code' => 'SAMPLE:SRS004381',
-            'download_count' => '0'
+            'type_id' => '4',
+            'code' => 'CR',
+            'download_count' => '6'
+        ));
+        $this->insert('file', array(
+            'id' => '6203',
+            'dataset_id' =>'29',
+            'name' => 'CR.gff.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100002/CR.gff.gz',
+            'extension' => 'gff',
+            'size' => '2325538',
+            'date_stamp' => '2011-07-06',
+            'format_id' => '5',
+            'type_id' => '6',
+            'code' => 'CR',
+            'download_count' => '4'
+        ));
+        $this->insert('file', array(
+            'id' => '6204',
+            'dataset_id' =>'29',
+            'name' => 'CR.ipr.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100002/CR.ipr.gz',
+            'extension' => 'ipr',
+            'size' => '189037',
+            'date_stamp' => '2011-07-06',
+            'format_id' => '11',
+            'type_id' => '6',
+            'code' => 'CR',
+            'download_count' => '4'
+        ));
+        $this->insert('file', array(
+            'id' => '6205',
+            'dataset_id' =>'29',
+            'name' => 'CR.kegg.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100002/CR.kegg.gz',
+            'extension' => 'kegg',
+            'size' => '39538',
+            'date_stamp' => '2011-07-06',
+            'format_id' => '12',
+            'type_id' => '6',
+            'code' => 'CR',
+            'download_count' => '4'
         ));
     }
 

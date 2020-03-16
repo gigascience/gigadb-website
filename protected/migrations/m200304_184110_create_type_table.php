@@ -17,7 +17,7 @@ class m200304_184110_create_type_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE type_id_seq 
-                START WITH 6 
+                START WITH 30 
                 INCREMENT BY 1 
                 NO MINVALUE 
                 NO MAXVALUE 

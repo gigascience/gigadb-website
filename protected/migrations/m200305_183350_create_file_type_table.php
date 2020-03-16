@@ -18,7 +18,7 @@ class m200305_183350_create_file_type_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE file_type_id_seq
-                START WITH 15
+                START WITH 200
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -49,33 +49,9 @@ class m200305_183350_create_file_type_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('file_type', array(
-            'id' => '132',
-            'name' =>'Sequence assembly',
-            'description' => 'An assembly of fragments of a (typically genomic) DNA sequence. Typically, an assembly is a collection of contigs (for example ESTs and genomic DNA fragments) that are ordered, aligned and merged. Annotation of the assembled sequence might be included.',
-            'edam_ontology_id' => 'data_0925'
-        ));
-        $this->insert('file_type', array(
-            'id' => '9',
-            'name' =>'Genome sequence',
-            'description' => 'nucleotide sequence file, these could be filtered or raw, but usually GigaDB only hosts processed sequence files, the raw should be deposited in the SRA',
-            'edam_ontology_id' => 'data_2977'
-        ));
-        $this->insert('file_type', array(
-            'id' => '6',
-            'name' =>'Annotation',
-            'description' => 'This Is a broad concept and covers all files containing annotation of something, this could be sequence features, or image features or many other things. If possible a more specific type should be used.',
-            'edam_ontology_id' => 'none'
-        ));
-        $this->insert('file_type', array(
             'id' => '4',
             'name' =>'Coding sequence',
             'description' => 'Predcited protein-coding regions (CDS or exon) or open reading frames in nucleotide sequences.',
-            'edam_ontology_id' => 'operation_0436'
-        ));
-        $this->insert('file_type', array(
-            'id' => '127',
-            'name' =>'Expression data',
-            'description' => 'Files representing the analysis of levels and patterns of synthesis of gene products (proteins and/or functional RNA) including interpretation in functional terms of gene expression data.',
             'edam_ontology_id' => 'operation_0436'
         ));
         $this->insert('file_type', array(
@@ -85,9 +61,33 @@ class m200305_183350_create_file_type_table extends CDbMigration
             'edam_ontology_id' => 'data_2976'
         ));
         $this->insert('file_type', array(
+            'id' => '6',
+            'name' =>'Annotation',
+            'description' => 'This Is a broad concept and covers all files containing annotation of something, this could be sequence features, or image features or many other things. If possible a more specific type should be used.',
+            'edam_ontology_id' => 'none'
+        ));
+        $this->insert('file_type', array(
+            'id' => '9',
+            'name' =>'Genome sequence',
+            'description' => 'nucleotide sequence file, these could be filtered or raw, but usually GigaDB only hosts processed sequence files, the raw should be deposited in the SRA',
+            'edam_ontology_id' => 'data_2977'
+        ));
+        $this->insert('file_type', array(
             'id' => '64',
             'name' =>'Article',
             'description' => 'A document of scientific text, for example; a full text article from a scientific journal, or a supplemental file, or even formal unpublished documentation of software/scripts'
+        ));
+        $this->insert('file_type', array(
+            'id' => '127',
+            'name' =>'Expression data',
+            'description' => 'Files representing the analysis of levels and patterns of synthesis of gene products (proteins and/or functional RNA) including interpretation in functional terms of gene expression data.',
+            'edam_ontology_id' => 'operation_0436'
+        ));
+        $this->insert('file_type', array(
+            'id' => '132',
+            'name' =>'Sequence assembly',
+            'description' => 'An assembly of fragments of a (typically genomic) DNA sequence. Typically, an assembly is a collection of contigs (for example ESTs and genomic DNA fragments) that are ordered, aligned and merged. Annotation of the assembled sequence might be included.',
+            'edam_ontology_id' => 'data_0925'
         ));
     }
 

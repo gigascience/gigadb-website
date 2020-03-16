@@ -17,7 +17,7 @@ class m200304_141919_create_publisher_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE publisher_id_seq 
-                START WITH 3 
+                START WITH 10 
                 INCREMENT BY 1 
                 NO MINVALUE 
                 NO MAXVALUE 

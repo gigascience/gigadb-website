@@ -16,7 +16,7 @@ class m200305_184600_create_relationship_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE relationship_id_seq
-                START WITH 1
+                START WITH 40
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE

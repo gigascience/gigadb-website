@@ -23,7 +23,7 @@ class m200305_171500_create_sample_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE sample_id_seq
-                START WITH 210
+                START WITH 500
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE

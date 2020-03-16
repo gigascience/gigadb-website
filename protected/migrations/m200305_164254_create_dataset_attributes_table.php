@@ -21,7 +21,7 @@ class m200305_164254_create_dataset_attributes_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE dataset_attributes_id_seq
-                START WITH 1
+                START WITH 2500
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE

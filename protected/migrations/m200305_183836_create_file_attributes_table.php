@@ -19,7 +19,7 @@ class m200305_183836_create_file_attributes_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE file_attributes_id_seq
-                START WITH 1
+                START WITH 11000
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -68,16 +68,22 @@ class m200305_183836_create_file_attributes_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('file_attributes', array(
+            'id' => '9822',
+            'file_id' =>'4329',
+            'attribute_id' => '605',
+            'value' => '9cc180feee23eb506e28e08f888cdc56'
+        ));
+        $this->insert('file_attributes', array(
             'id' => '9831',
             'file_id' =>'4328',
             'attribute_id' => '605',
             'value' => 'feb40a51c32a0f3ef3124ad0c05ad824'
         ));
         $this->insert('file_attributes', array(
-            'id' => '9822',
-            'file_id' =>'4329',
+            'id' => '9835',
+            'file_id' =>'6203',
             'attribute_id' => '605',
-            'value' => '9cc180feee23eb506e28e08f888cdc56'
+            'value' => '7e44c4e01ec74a89202c505eb731ded8'
         ));
         $this->insert('file_attributes', array(
             'id' => '9836',
@@ -98,16 +104,16 @@ class m200305_183836_create_file_attributes_table extends CDbMigration
             'value' => '4c7f5b5676d7db69bc8581cce9face1d'
         ));
         $this->insert('file_attributes', array(
-            'id' => '9835',
-            'file_id' =>'6203',
-            'attribute_id' => '605',
-            'value' => '7e44c4e01ec74a89202c505eb731ded8'
-        ));
-        $this->insert('file_attributes', array(
             'id' => '9846',
             'file_id' =>'4298',
             'attribute_id' => '605',
             'value' => '246c1c9a13dc5c5810cc0bac66f3f538'
+        ));
+        $this->insert('file_attributes', array(
+            'id' => '9856',
+            'file_id' =>'4289',
+            'attribute_id' => '605',
+            'value' => '78e8864f9496210753494d8b1d52761c'
         ));
         $this->insert('file_attributes', array(
             'id' => '9861',
@@ -122,10 +128,10 @@ class m200305_183836_create_file_attributes_table extends CDbMigration
             'value' => '8a53b61fb22ecf5d9eb5e066f41de1a6'
         ));
         $this->insert('file_attributes', array(
-            'id' => '9856',
-            'file_id' =>'4289',
+            'id' => '10309',
+            'file_id' =>'5937',
             'attribute_id' => '605',
-            'value' => '78e8864f9496210753494d8b1d52761c'
+            'value' => 'b5dbbcf80ea5dee1c46e2a2af315e592'
         ));
         $this->insert('file_attributes', array(
             'id' => '10513',
@@ -140,18 +146,11 @@ class m200305_183836_create_file_attributes_table extends CDbMigration
             'value' => 'f369f3da72bbf6d9e33a7bf5f1c8c9ce'
         ));
         $this->insert('file_attributes', array(
-            'id' => '10309',
-            'file_id' =>'5937',
-            'attribute_id' => '605',
-            'value' => 'b5dbbcf80ea5dee1c46e2a2af315e592'
-        ));
-        $this->insert('file_attributes', array(
             'id' => '10655',
             'file_id' =>'5721',
             'attribute_id' => '605',
             'value' => 'fc98a063f301e4a5a2352b7374d329c6'
         ));
-
     }
 
     public function safeDown()

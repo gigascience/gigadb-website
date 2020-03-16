@@ -18,7 +18,7 @@ class m200305_183300_create_file_format_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE file_format_id_seq
-                START WITH 26
+                START WITH 100
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -55,15 +55,21 @@ class m200305_183300_create_file_format_table extends CDbMigration
             'edam_ontology_id' => 'format_1929'
             ));
         $this->insert('file_format', array(
+            'id' => '5',
+            'name' =>'GFF',
+            'description' => '(.gff) - The General Feature Format (GFF) is used for describing genes and other features of DNA, RNA and protein sequences',
+            'edam_ontology_id' => 'format_2305'
+        ));
+        $this->insert('file_format', array(
+            'id' => '6',
+            'name' =>'UNKNOWN',
+            'description' => 'any other file format not defined here'
+        ));
+        $this->insert('file_format', array(
             'id' => '7',
             'name' =>'FASTQ',
             'description' => '(.fq, .fastq) - the FASTQ format stores sequences (usually nucleotide sequence) and Phred qualities in a single file.',
             'edam_ontology_id' => 'format_1930'
-        ));
-        $this->insert('file_format', array(
-            'id' => '12',
-            'name' =>'KEGG',
-            'description' => '(.kegg) - the Web Gene Ontology (WEGO) Annotation format consists of the protein ID, followed by column(s) that are the KEGG (Kyoto Encyclopedia of Genes and Genomes) ID(s):\r+'
         ));
         $this->insert('file_format', array(
             'id' => '11',
@@ -72,10 +78,9 @@ class m200305_183300_create_file_format_table extends CDbMigration
             'edam_ontology_id' => 'format_1341'
         ));
         $this->insert('file_format', array(
-            'id' => '5',
-            'name' =>'GFF',
-            'description' => '(.gff) - The General Feature Format (GFF) is used for describing genes and other features of DNA, RNA and protein sequences',
-            'edam_ontology_id' => 'format_2305'
+            'id' => '12',
+            'name' =>'KEGG',
+            'description' => '(.kegg) - the Web Gene Ontology (WEGO) Annotation format consists of the protein ID, followed by column(s) that are the KEGG (Kyoto Encyclopedia of Genes and Genomes) ID(s):\r+'
         ));
         $this->insert('file_format', array(
             'id' => '43',
@@ -84,21 +89,16 @@ class m200305_183300_create_file_format_table extends CDbMigration
             'edam_ontology_id' => 'format_3475'
         ));
         $this->insert('file_format', array(
-            'id' => '64',
-            'name' =>'MP4',
-            'description' => '(.mp4) MPEG-4 Part 14 or MP4 is a digital multimedia container format most commonly used to store video and audio,',
-            'edam_ontology_id' => 'format_3475'
-        ));
-        $this->insert('file_format', array(
-            'id' => '6',
-            'name' =>'UNKNOWN',
-            'description' => 'any other file format not defined here'
-        ));
-        $this->insert('file_format', array(
             'id' => '54',
             'name' =>'DOC',
             'description' => '(.doc) microsoft word format',
             'edam_ontology_id' => 'format_3507'
+        ));
+        $this->insert('file_format', array(
+            'id' => '64',
+            'name' =>'MP4',
+            'description' => '(.mp4) MPEG-4 Part 14 or MP4 is a digital multimedia container format most commonly used to store video and audio,',
+            'edam_ontology_id' => 'format_3475'
         ));
     }
 

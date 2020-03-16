@@ -18,7 +18,7 @@ class m200305_190311_create_manuscript_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE manuscript_id_seq
-                START WITH 27
+                START WITH 500
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -55,10 +55,28 @@ class m200305_190311_create_manuscript_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('manuscript', array(
+            'id' => '9',
+            'identifier' =>'10.1038/nbt.1992',
+            'pmid' => '22002653',
+            'dataset_id' => '13'
+        ));
+        $this->insert('manuscript', array(
             'id' => '13',
             'identifier' =>'10.1056/NEJMoa1107643',
             'pmid' => '21793736',
             'dataset_id' => '15'
+        ));
+        $this->insert('manuscript', array(
+            'id' => '22',
+            'identifier' =>'10.1038/nature08696',
+            'pmid' => '20010809',
+            'dataset_id' => '25'
+        ));
+        $this->insert('manuscript', array(
+            'id' => '24',
+            'identifier' =>'10.1038/nbt.1992',
+            'pmid' => '22002653',
+            'dataset_id' => '29'
         ));
         $this->insert('manuscript', array(
             'id' => '473',
@@ -69,27 +87,6 @@ class m200305_190311_create_manuscript_table extends CDbMigration
             'id' => '475',
             'identifier' =>'10.1093/gigascience/gix078',
             'dataset_id' => '15'
-        ));
-
-        $this->insert('manuscript', array(
-            'id' => '24',
-            'identifier' =>'10.1038/nbt.1992',
-            'pmid' => '22002653',
-            'dataset_id' => '29'
-        ));
-
-        $this->insert('manuscript', array(
-            'id' => '9',
-            'identifier' =>'10.1038/nbt.1992',
-            'pmid' => '22002653',
-            'dataset_id' => '13'
-        ));
-
-        $this->insert('manuscript', array(
-            'id' => '22',
-            'identifier' =>'10.1038/nature08696',
-            'pmid' => '20010809',
-            'dataset_id' => '25'
         ));
     }
 
