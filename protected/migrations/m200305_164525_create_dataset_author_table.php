@@ -19,7 +19,7 @@ class m200305_164525_create_dataset_author_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE dataset_author_id_seq
-                START WITH 1
+                START WITH 200
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -85,7 +85,6 @@ class m200305_164525_create_dataset_author_table extends CDbMigration
             'author_id' => '569',
             'rank' => '4'
         ));
-
         $this->insert('dataset_author', array(
             'id' => '35',
             'dataset_id' => '29',
@@ -110,7 +109,6 @@ class m200305_164525_create_dataset_author_table extends CDbMigration
             'author_id' => '3337',
             'rank' => '4'
         ));
-
         $this->insert('dataset_author', array(
             'id' => '80',
             'dataset_id' => '13',

@@ -16,7 +16,7 @@ class m200305_183100_create_external_link_type_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE external_link_type_id_seq
-                START WITH 1
+                START WITH 10
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE

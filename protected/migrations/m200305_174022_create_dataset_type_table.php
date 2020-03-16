@@ -17,7 +17,7 @@ class m200305_174022_create_dataset_type_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE dataset_type_id_seq
-                START WITH 37
+                START WITH 50
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -60,16 +60,6 @@ class m200305_174022_create_dataset_type_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('dataset_type', array(
-            'id' => '18',
-            'dataset_id' => '15',
-            'type_id' =>'2'
-        ));
-        $this->insert('dataset_type', array(
-            'id' => '32',
-            'dataset_id' => '29',
-            'type_id' =>'2'
-        ));
-        $this->insert('dataset_type', array(
             'id' => '14',
             'dataset_id' => '13',
             'type_id' =>'2'
@@ -80,8 +70,18 @@ class m200305_174022_create_dataset_type_table extends CDbMigration
             'type_id' =>'4'
         ));
         $this->insert('dataset_type', array(
+            'id' => '18',
+            'dataset_id' => '15',
+            'type_id' =>'2'
+        ));
+        $this->insert('dataset_type', array(
             'id' => '28',
             'dataset_id' => '25',
+            'type_id' =>'2'
+        ));
+        $this->insert('dataset_type', array(
+            'id' => '32',
+            'dataset_id' => '29',
             'type_id' =>'2'
         ));
     }

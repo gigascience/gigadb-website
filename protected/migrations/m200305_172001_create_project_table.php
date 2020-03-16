@@ -18,7 +18,7 @@ class m200305_172001_create_project_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE project_id_seq
-                START WITH 7
+                START WITH 10
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE

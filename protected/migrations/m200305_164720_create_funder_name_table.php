@@ -18,7 +18,7 @@ class m200305_164720_create_funder_name_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE funder_name_id_seq
-                START WITH 1
+                START WITH 6200
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE

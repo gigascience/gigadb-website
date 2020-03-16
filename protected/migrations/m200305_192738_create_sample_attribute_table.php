@@ -19,7 +19,7 @@ class m200305_192738_create_sample_attribute_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE sample_attribute_id_seq
-                START WITH 1
+                START WITH 30000
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -73,32 +73,6 @@ class m200305_192738_create_sample_attribute_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('sample_attribute', array(
-            'id' => '14770',
-            'sample_id' => '336',
-            'attribute_id' =>'336',
-            'value' => 'TY-2482'
-
-        ));
-        $this->insert('sample_attribute', array(
-            'id' => '14775',
-            'sample_id' => '336',
-            'attribute_id' =>'337',
-            'value' => 'stool sample from patient with hemolytic uremic syndrome (HUS)'
-        ));
-        $this->insert('sample_attribute', array(
-            'id' => '16621',
-            'sample_id' => '336',
-            'attribute_id' =>'383',
-            'value' => 'O104:H4'
-        ));
-        $this->insert('sample_attribute', array(
-            'id' => '25899',
-            'sample_id' => '336',
-            'attribute_id' =>'327',
-            'value' => 'SRS211184'
-        ));
-
-        $this->insert('sample_attribute', array(
             'id' => '5025',
             'sample_id' => '453',
             'attribute_id' =>'282',
@@ -129,6 +103,19 @@ class m200305_192738_create_sample_attribute_table extends CDbMigration
             'value' => 'not recorded'
         ));
         $this->insert('sample_attribute', array(
+            'id' => '14770',
+            'sample_id' => '336',
+            'attribute_id' =>'336',
+            'value' => 'TY-2482'
+
+        ));
+        $this->insert('sample_attribute', array(
+            'id' => '14775',
+            'sample_id' => '336',
+            'attribute_id' =>'337',
+            'value' => 'stool sample from patient with hemolytic uremic syndrome (HUS)'
+        ));
+        $this->insert('sample_attribute', array(
             'id' => '14788',
             'sample_id' => '453',
             'attribute_id' =>'320',
@@ -153,6 +140,12 @@ class m200305_192738_create_sample_attribute_table extends CDbMigration
             'value' => 'Anders Christiansen, Danish racing pigeon association. Original sample destroyed. Obtaining grandchild'
         ));
         $this->insert('sample_attribute', array(
+            'id' => '16621',
+            'sample_id' => '336',
+            'attribute_id' =>'383',
+            'value' => 'O104:H4'
+        ));
+        $this->insert('sample_attribute', array(
             'id' => '17036',
             'sample_id' => '453',
             'attribute_id' =>'200',
@@ -175,6 +168,12 @@ class m200305_192738_create_sample_attribute_table extends CDbMigration
             'sample_id' => '453',
             'attribute_id' =>'316',
             'value' => 'COLLI'
+        ));
+        $this->insert('sample_attribute', array(
+            'id' => '25899',
+            'sample_id' => '336',
+            'attribute_id' =>'327',
+            'value' => 'SRS211184'
         ));
     }
 

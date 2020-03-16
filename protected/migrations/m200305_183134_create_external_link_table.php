@@ -18,7 +18,7 @@ class m200305_183134_create_external_link_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE external_link_id_seq
-                START WITH 17
+                START WITH 30
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -61,27 +61,27 @@ class m200305_183134_create_external_link_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('external_link', array(
-            'id' => '8',
-            'dataset_id' =>'15',
-            'url' => 'https://github.com/ehec-outbreak-crowdsourced/BGI-data-analysis/wiki/',
-            'external_link_type_id' => '1'
-        ));
-        $this->insert('external_link', array(
-            'id' => '16',
-            'dataset_id' =>'29',
-            'url' => 'http://macaque.genomics.org.cn/',
-            'external_link_type_id' => '2'
-        ));
-        $this->insert('external_link', array(
             'id' => '5',
             'dataset_id' =>'13',
             'url' => 'http://macaque.genomics.org.cn/',
             'external_link_type_id' => '2'
         ));
         $this->insert('external_link', array(
+            'id' => '8',
+            'dataset_id' =>'15',
+            'url' => 'https://github.com/ehec-outbreak-crowdsourced/BGI-data-analysis/wiki/',
+            'external_link_type_id' => '1'
+        ));
+        $this->insert('external_link', array(
             'id' => '14',
             'dataset_id' =>'25',
             'url' => 'http://panda.genomics.org.cn/',
+            'external_link_type_id' => '2'
+        ));
+        $this->insert('external_link', array(
+            'id' => '16',
+            'dataset_id' =>'29',
+            'url' => 'http://macaque.genomics.org.cn/',
             'external_link_type_id' => '2'
         ));
     }

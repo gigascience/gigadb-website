@@ -17,7 +17,7 @@ class m200305_172240_create_dataset_sample_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE dataset_sample_id_seq
-                START WITH 211
+                START WITH 500
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -60,24 +60,24 @@ class m200305_172240_create_dataset_sample_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('dataset_sample', array(
-            'id' => '336',
-            'dataset_id' =>'15',
-            'sample_id' =>'336'
-        ));
-        $this->insert('dataset_sample', array(
-            'id' => '457',
-            'dataset_id' =>'29',
-            'sample_id' =>'456'
-        ));
-        $this->insert('dataset_sample', array(
             'id' => '334',
             'dataset_id' =>'13',
             'sample_id' =>'334'
         ));
         $this->insert('dataset_sample', array(
+            'id' => '336',
+            'dataset_id' =>'15',
+            'sample_id' =>'336'
+        ));
+        $this->insert('dataset_sample', array(
             'id' => '453',
             'dataset_id' =>'25',
             'sample_id' =>'452'
+        ));
+        $this->insert('dataset_sample', array(
+            'id' => '457',
+            'dataset_id' =>'29',
+            'sample_id' =>'456'
         ));
     }
 

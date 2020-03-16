@@ -17,7 +17,7 @@ class m200305_172026_create_dataset_project_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE dataset_project_id_seq
-                START WITH 7
+                START WITH 20
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -60,11 +60,6 @@ class m200305_172026_create_dataset_project_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('dataset_project', array(
-            'id' => '12',
-            'dataset_id' =>'29',
-            'project_id' => '2'
-        ));
-        $this->insert('dataset_project', array(
             'id' => '6',
             'dataset_id' =>'13',
             'project_id' => '2'
@@ -72,6 +67,11 @@ class m200305_172026_create_dataset_project_table extends CDbMigration
         $this->insert('dataset_project', array(
             'id' => '9',
             'dataset_id' =>'25',
+            'project_id' => '2'
+        ));
+        $this->insert('dataset_project', array(
+            'id' => '12',
+            'dataset_id' =>'29',
             'project_id' => '2'
         ));
     }

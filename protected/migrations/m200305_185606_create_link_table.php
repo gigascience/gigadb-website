@@ -19,7 +19,7 @@ class m200305_185606_create_link_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE link_id_seq
-                START WITH 66
+                START WITH 80
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -56,6 +56,24 @@ class m200305_185606_create_link_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('link', array(
+            'id' => '25',
+            'dataset_id' =>'13',
+            'is_primary' =>'t',
+            'link' =>'BioProject:PRJNA51411'
+        ));
+        $this->insert('link', array(
+            'id' => '26',
+            'dataset_id' =>'13',
+            'is_primary' =>'t',
+            'link' =>'GENBANK:AEHL00000000'
+        ));
+        $this->insert('link', array(
+            'id' => '27',
+            'dataset_id' =>'13',
+            'is_primary' =>'f',
+            'link' =>'SRA:SRP003591'
+        ));
+        $this->insert('link', array(
             'id' => '30',
             'dataset_id' =>'15',
             'is_primary' =>'t',
@@ -66,42 +84,6 @@ class m200305_185606_create_link_table extends CDbMigration
             'dataset_id' =>'15',
             'is_primary' =>'t',
             'link' =>'BioProject:PRJNA67657'
-        ));
-        $this->insert('link', array(
-            'id' => '60',
-            'dataset_id' =>'29',
-            'is_primary' =>'t',
-            'link' =>'GENBANK:AEHK00000000'
-        ));
-        $this->insert('link', array(
-            'id' => '61',
-            'dataset_id' =>'29',
-            'is_primary' =>'f',
-            'link' =>'SRA:SRP003590'
-        ));
-        $this->insert('link', array(
-            'id' => '59',
-            'dataset_id' =>'29',
-            'is_primary' =>'t',
-            'link' =>'BioProject:PRJNA51409'
-        ));
-        $this->insert('link', array(
-            'id' => '27',
-            'dataset_id' =>'13',
-            'is_primary' =>'f',
-            'link' =>'SRA:SRP003591'
-        ));
-        $this->insert('link', array(
-            'id' => '26',
-            'dataset_id' =>'13',
-            'is_primary' =>'t',
-            'link' =>'GENBANK:AEHL00000000'
-        ));
-        $this->insert('link', array(
-            'id' => '25',
-            'dataset_id' =>'13',
-            'is_primary' =>'t',
-            'link' =>'BioProject:PRJNA51411'
         ));
         $this->insert('link', array(
             'id' => '56',
@@ -120,6 +102,24 @@ class m200305_185606_create_link_table extends CDbMigration
             'dataset_id' =>'25',
             'is_primary' =>'t',
             'link' =>'BioProject:PRJNA38683'
+        ));
+        $this->insert('link', array(
+            'id' => '59',
+            'dataset_id' =>'29',
+            'is_primary' =>'t',
+            'link' =>'BioProject:PRJNA51409'
+        ));
+        $this->insert('link', array(
+            'id' => '60',
+            'dataset_id' =>'29',
+            'is_primary' =>'t',
+            'link' =>'GENBANK:AEHK00000000'
+        ));
+        $this->insert('link', array(
+            'id' => '61',
+            'dataset_id' =>'29',
+            'is_primary' =>'f',
+            'link' =>'SRA:SRP003590'
         ));
     }
 

@@ -20,7 +20,7 @@ class m200305_164810_create_dataset_funder_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE dataset_funder_id_seq
-                START WITH 1
+                START WITH 50
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
@@ -63,15 +63,15 @@ class m200305_164810_create_dataset_funder_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('dataset_funder', array(
-            'id' => '29',
-            'dataset_id' =>'204',
-            'funder_id' => '6171'
-        ));
-        $this->insert('dataset_funder', array(
             'id' => '25',
             'dataset_id' =>'41',
             'funder_id' => '6166',
             'grant_award' => '2011CB809203'
+        ));
+        $this->insert('dataset_funder', array(
+            'id' => '29',
+            'dataset_id' =>'204',
+            'funder_id' => '6171'
         ));
     }
 

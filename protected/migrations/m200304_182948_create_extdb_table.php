@@ -19,7 +19,7 @@ class m200304_182948_create_extdb_table extends CDbMigration
 
         $sql_createseq = sprintf(
             'CREATE SEQUENCE extdb_id_seq
-                START WITH 1
+                START WITH 10
                 INCREMENT BY 1
                 NO MINVALUE
                 NO MAXVALUE
