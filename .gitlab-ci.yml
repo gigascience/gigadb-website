@@ -193,8 +193,8 @@ run_all_tests:
     - sleep 5
     - docker-compose up -d web
     - docker-compose exec -T web /usr/local/bin/enable_sites gigadb.dev.http fuw-backend.dev.http
-    - docker-compose exec -T application ./protected/yiic generatefiletypes
-    - docker-compose exec -T application ./protected/yiic generatefileformats
+    # - docker-compose exec -T application ./protected/yiic generatefiletypes
+    # - docker-compose exec -T application ./protected/yiic generatefileformats
     # build the javascript app
     - docker-compose run --rm js
     # starting the headless browser for acceptance testing
