@@ -157,7 +157,7 @@ class m200304_170422_create_gigadb_user_table extends CDbMigration
 
     public function safeDown()
     {
+        Yii::app()->db->createCommand('DROP SEQUENCE gigadb_user_id_seq CASCADE;')->execute();
         $this->dropTable('gigadb_user');
-        Yii::app()->db->createCommand('DROP SEQUENCE gigadb_user_id_seq;')->execute();
     }
 }

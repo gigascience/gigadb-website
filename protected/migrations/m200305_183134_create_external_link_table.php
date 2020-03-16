@@ -88,9 +88,9 @@ class m200305_183134_create_external_link_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('external_link');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE external_link_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE external_link_id_seq CASCADE;')->execute();
+        $this->dropTable('external_link');
     }
 }

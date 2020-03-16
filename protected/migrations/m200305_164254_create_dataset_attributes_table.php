@@ -79,9 +79,9 @@ class m200305_164254_create_dataset_attributes_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('dataset_attributes');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE dataset_attributes_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE dataset_attributes_id_seq CASCADE;')->execute();
+        $this->dropTable('dataset_attributes');
     }
 }

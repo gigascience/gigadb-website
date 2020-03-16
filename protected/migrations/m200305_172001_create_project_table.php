@@ -58,9 +58,9 @@ class m200305_172001_create_project_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('project');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE project_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE project_id_seq CASCADE;')->execute();
+        $this->dropTable('project');
     }
 }

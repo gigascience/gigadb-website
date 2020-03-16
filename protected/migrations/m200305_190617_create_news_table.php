@@ -60,9 +60,9 @@ class m200305_190617_create_news_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('news');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE news_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE news_id_seq CASCADE;')->execute();
+        $this->dropTable('news');
     }
 }

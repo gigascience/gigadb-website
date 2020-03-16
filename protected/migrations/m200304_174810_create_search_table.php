@@ -56,7 +56,7 @@ class m200304_174810_create_search_table extends CDbMigration
 
     public function safeDown()
     {
+        Yii::app()->db->createCommand('DROP SEQUENCE search_id_seq CASCADE;')->execute();
         $this->dropTable('search');
-        Yii::app()->db->createCommand('DROP SEQUENCE search_id_seq;')->execute();
     }
 }

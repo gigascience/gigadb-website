@@ -68,9 +68,9 @@ class m200304_141919_create_publisher_table extends CDbMigration
 
     public function safeDown()
     {
-         $this->dropTable('publisher');
-         // Don't think you can drop SEQUENCE with a
-         // function in CDbMigration
-         Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq;')->execute();
+        // Don't think you can drop SEQUENCE with a
+        // function in CDbMigration
+        Yii::app()->db->createCommand('DROP SEQUENCE publisher_id_seq CASCADE;')->execute();
+        $this->dropTable('publisher');
     }
 }

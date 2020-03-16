@@ -143,7 +143,7 @@ class m200304_184110_create_type_table extends CDbMigration
 
     public function safeDown()
     {
+        Yii::app()->db->createCommand('DROP SEQUENCE type_id_seq CASCADE;')->execute();
         $this->dropTable('type');
-        Yii::app()->db->createCommand('DROP SEQUENCE type_id_seq;')->execute();
     }
 }

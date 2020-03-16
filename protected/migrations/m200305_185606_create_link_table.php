@@ -125,9 +125,9 @@ class m200305_185606_create_link_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('link');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE link_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE link_id_seq CASCADE;')->execute();
+        $this->dropTable('link');
     }
 }

@@ -59,9 +59,9 @@ class m200305_192601_create_alternative_identifiers_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('alternative_identifiers');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE alternative_identifiers_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE alternative_identifiers_id_seq CASCADE;')->execute();
+        $this->dropTable('alternative_identifiers');
     }
 }

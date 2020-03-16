@@ -59,9 +59,9 @@ class m200305_184607_create_file_relationship_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('file_relationship');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE file_relationship_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE file_relationship_id_seq CASCADE;')->execute();
+        $this->dropTable('file_relationship');
     }
 }

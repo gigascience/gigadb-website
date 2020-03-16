@@ -156,9 +156,9 @@ class m200305_183836_create_file_attributes_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('file_attributes');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE file_attributes_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE file_attributes_id_seq CASCADE;')->execute();
+        $this->dropTable('file_attributes');
     }
 }

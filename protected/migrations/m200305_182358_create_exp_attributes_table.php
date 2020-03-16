@@ -66,9 +66,9 @@ class m200305_182358_create_exp_attributes_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('exp_attributes');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE exp_attributes_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE exp_attributes_id_seq CASCADE;')->execute();
+        $this->dropTable('exp_attributes');
     }
 }

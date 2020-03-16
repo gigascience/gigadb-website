@@ -55,9 +55,9 @@ class m200305_173717_create_dataset_session_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('dataset_session');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE dataset_session_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE dataset_session_id_seq CASCADE;')->execute();
+        $this->dropTable('dataset_session');
     }
 }

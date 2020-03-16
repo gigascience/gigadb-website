@@ -57,9 +57,9 @@ class m200305_164009_create_curation_log_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('curation_log');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE curation_log_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE curation_log_id_seq CASCADE;')->execute();
+        $this->dropTable('curation_log');
     }
 }

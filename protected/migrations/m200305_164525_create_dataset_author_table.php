@@ -164,9 +164,9 @@ class m200305_164525_create_dataset_author_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('dataset_author');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE dataset_author_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE dataset_author_id_seq CASCADE;')->execute();
+        $this->dropTable('dataset_author');
     }
 }
