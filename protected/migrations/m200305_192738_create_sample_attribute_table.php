@@ -180,9 +180,9 @@ class m200305_192738_create_sample_attribute_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('sample_attribute');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE sample_attribute_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE sample_attribute_id_seq CASCADE;')->execute();
+        $this->dropTable('sample_attribute');
     }
 }

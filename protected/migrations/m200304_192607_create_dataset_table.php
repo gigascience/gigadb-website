@@ -156,7 +156,7 @@ class m200304_192607_create_dataset_table extends CDbMigration
 
     public function safeDown()
     {
+        Yii::app()->db->createCommand('DROP SEQUENCE dataset_id_seq CASCADE;')->execute();
         $this->dropTable('dataset');
-        Yii::app()->db->createCommand('DROP SEQUENCE dataset_id_seq;')->execute();
     }
 }

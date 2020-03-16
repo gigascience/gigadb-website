@@ -67,9 +67,9 @@ class m200304_182948_create_extdb_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('extdb');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE extdb_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE extdb_id_seq CASCADE;')->execute();
+        $this->dropTable('extdb');
     }
 }

@@ -77,9 +77,9 @@ class m200305_164810_create_dataset_funder_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('dataset_funder');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE dataset_funder_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE dataset_funder_id_seq CASCADE;')->execute();
+        $this->dropTable('dataset_funder');
     }
 }

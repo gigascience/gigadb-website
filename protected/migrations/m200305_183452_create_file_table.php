@@ -303,10 +303,10 @@ class m200305_183452_create_file_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('file');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE file_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE file_id_seq CASCADE;')->execute();
         Yii::app()->db->createCommand('DROP VIEW file_number;')->execute();
+        $this->dropTable('file');
     }
 }

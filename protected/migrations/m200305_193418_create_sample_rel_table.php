@@ -59,9 +59,9 @@ class m200305_193418_create_sample_rel_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('sample_rel');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE sample_rel_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE sample_rel_id_seq CASCADE;')->execute();
+        $this->dropTable('sample_rel');
     }
 }

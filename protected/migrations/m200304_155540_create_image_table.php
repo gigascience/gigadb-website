@@ -87,7 +87,7 @@ class m200304_155540_create_image_table extends CDbMigration
 
     public function safeDown()
     {
+        Yii::app()->db->createCommand('DROP SEQUENCE image_id_seq CASCADE;')->execute();
         $this->dropTable('image');
-        Yii::app()->db->createCommand('DROP SEQUENCE image_id_seq;')->execute();
     }
 }

@@ -129,9 +129,11 @@ class m200305_171500_create_sample_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('sample');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE sample_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE sample_id_seq CASCADE;')->execute();
+        // Need to use CASCADE to drop view sample_number which is dependent on
+        // Sample table
+        Yii::app()->db->createCommand("DROP TABLE sample CASCADE")->execute();
     }
 }

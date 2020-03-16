@@ -21,7 +21,6 @@ class m200315_042440_create_view_homepage_dataset_type extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('publisher');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
         Yii::app()->db->createCommand('DROP VIEW homepage_dataset_type;')->execute();

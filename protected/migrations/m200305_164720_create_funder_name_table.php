@@ -63,9 +63,9 @@ class m200305_164720_create_funder_name_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('funder_name');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE funder_name_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE funder_name_id_seq CASCADE;')->execute();
+        $this->dropTable('funder_name');
     }
 }

@@ -104,9 +104,9 @@ class m200305_183300_create_file_format_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('file_format');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE file_format_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE file_format_id_seq CASCADE;')->execute();
+        $this->dropTable('file_format');
     }
 }

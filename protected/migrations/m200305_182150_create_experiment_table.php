@@ -55,9 +55,9 @@ class m200305_182150_create_experiment_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('experiment');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE experiment_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE experiment_id_seq CASCADE;')->execute();
+        $this->dropTable('experiment');
     }
 }

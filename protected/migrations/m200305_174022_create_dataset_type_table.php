@@ -88,9 +88,9 @@ class m200305_174022_create_dataset_type_table extends CDbMigration
 
     public function safeDown()
     {
-        $this->dropTable('dataset_type');
         // Don't think you can drop SEQUENCE with a
         // function in CDbMigration
-        Yii::app()->db->createCommand('DROP SEQUENCE dataset_type_id_seq;')->execute();
+        Yii::app()->db->createCommand('DROP SEQUENCE dataset_type_id_seq CASCADE;')->execute();
+        $this->dropTable('dataset_type');
     }
 }
