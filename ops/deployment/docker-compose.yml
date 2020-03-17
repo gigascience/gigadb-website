@@ -387,6 +387,8 @@ services:
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ../../fuw/app:/app
+      # access to files and reference data
+      - ../../files:/var/www/files
       # php config
       - ../../fuw/app/php-conf/fuw.ini:/usr/local/etc/php/conf.d/fuw.ini
       - ../../fuw/app/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
@@ -488,6 +490,8 @@ services:
       # TODO: need to run gigadb's unit tests using the more modern phpunit for coverage aggregation
       - ../../protected:/var/www/protected
       - ../../vendor:/var/www/vendor
+      # access to files and reference data
+      - ../../files:/var/www/files
       # to run tests that interact with containers
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
