@@ -75,9 +75,9 @@ class FileUploadService extends yii\base\Component
 		$clientHandler = $this->webClient->getConfig('handler');
 		// Create a middleware that echoes parts of the request.
 		$tapMiddleware = Middleware::tap(function ($request) {
-		    Yii::log( $request->getHeaderLine('Content-Type') , 'info');
+		    // Yii::log( $request->getHeaderLine('Content-Type') , 'info');
 		    // application/json
-		    Yii::log( $request->getBody(), 'info');
+		    // Yii::log( $request->getBody(), 'info');
 		    // {"foo":"bar"}
 		});
 
@@ -161,9 +161,9 @@ class FileUploadService extends yii\base\Component
 		$clientHandler = $this->webClient->getConfig('handler');
 		// Create a middleware that echoes parts of the request.
 		$tapMiddleware = Middleware::tap(function ($request) {
-		    Yii::log( $request->getHeaderLine('Content-Type') , 'info');
+		    // Yii::log( $request->getHeaderLine('Content-Type') , 'info');
 		    // application/json
-		    Yii::log( $request->getBody(), 'info');
+		    // Yii::log( $request->getBody(), 'info');
 		    // {"foo":"bar"}
 		});
 
@@ -211,9 +211,9 @@ class FileUploadService extends yii\base\Component
 		$clientHandler = $this->webClient->getConfig('handler');
 		// Create a middleware that echoes parts of the request.
 		$tapMiddleware = Middleware::tap(function ($request) {
-		    Yii::log( $request->getHeaderLine('Content-Type') , 'info');
+		    // Yii::log( $request->getHeaderLine('Content-Type') , 'info');
 		    // application/json
-		    Yii::log( $request->getBody(), 'info');
+		    // Yii::log( $request->getBody(), 'info');
 		    // {"foo":"bar"}
 		});
 
@@ -259,9 +259,9 @@ class FileUploadService extends yii\base\Component
 		$clientHandler = $this->webClient->getConfig('handler');
 		// Create a middleware that echoes parts of the request.
 		$tapMiddleware = Middleware::tap(function ($request) {
-		    Yii::log( $request->getHeaderLine('Content-Type') , 'info');
+		    // Yii::log( $request->getHeaderLine('Content-Type') , 'info');
 		    // application/json
-		    Yii::log( $request->getBody(), 'info');
+		    // Yii::log( $request->getBody(), 'info');
 		    // {"foo":"bar"}
 		});
 
@@ -353,9 +353,9 @@ class FileUploadService extends yii\base\Component
 		$clientHandler = $this->webClient->getConfig('handler');
 		// Create a middleware that echoes parts of the request.
 		$tapMiddleware = Middleware::tap(function ($request) {
-		    Yii::log( $request->getHeaderLine('Content-Type') , 'info');
+		    // Yii::log( $request->getHeaderLine('Content-Type') , 'info');
 		    // application/json
-		    Yii::log( $request->getBody(), 'info');
+		    // Yii::log( $request->getBody(), 'info');
 		    // {"foo":"bar"}
 		});
 
@@ -404,9 +404,9 @@ class FileUploadService extends yii\base\Component
 		$clientHandler = $this->webClient->getConfig('handler');
 		// Create a middleware that echoes parts of the request.
 		$tapMiddleware = Middleware::tap(function ($request) {
-		    Yii::log( $request->getHeaderLine('Content-Type') , 'info');
+		    // Yii::log( $request->getHeaderLine('Content-Type') , 'info');
 		    // application/json
-		    Yii::log( $request->getBody(), 'info');
+		    // Yii::log( $request->getBody(), 'info');
 		    // {"foo":"bar"}
 		});
 
@@ -415,7 +415,6 @@ class FileUploadService extends yii\base\Component
 		// reuse token to avoid "You must unsign before making changes" error
 		// when multiple API calls in same session
 		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
-		Yii::log("data to POST: ".var_export($postData,true),'info');
 		try {
 			$response = $this->webClient->request('POST', $api_endpoint, [
 								    'headers' => [

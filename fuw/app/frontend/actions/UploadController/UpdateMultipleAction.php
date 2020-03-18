@@ -40,9 +40,6 @@ class UpdateMultipleAction extends \yii\rest\UpdateAction
         $errors = [];
         $uploads = Upload::find()->where(["doi" => $doi, "status" => Upload::STATUS_UPLOADING])->indexBy('id')->all();
         $areLoaded = Model::loadMultiple($uploads, Yii::$app->request->post(), "Uploads");
-        // $areValid = Model::validateMultiple($uploads);
-        Yii::warning("Are model loaded? ".$areLoaded);
-        // Yii::warning("Are model valid? ".$areValid);
         if ($areLoaded) {
             foreach ($uploads as $upload) {
                 if($upload->validate()) {
