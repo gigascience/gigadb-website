@@ -55,9 +55,7 @@ class FilesAnnotateAction extends CAction
         $parseErrors = [] ;
         $mergeErrors = [] ;
         if(isset($_FILES) && is_array($_FILES) && isset($_FILES["bulkmetadata"])) {
-            Yii::log("File is attached",'warning');
             $postedFile = UploadedFile::getInstanceByName("bulkmetadata");
-            Yii::log(var_export($postedFile,true));
             $postedFile->saveAs("/var/tmp/$id-".$postedFile->name);
             list($sheetData, $parseErrors) = $datasetUpload->parseFromSpreadsheet("/var/tmp/$id-".$postedFile->name);
             if (isset($sheetData) && is_array($sheetData) && !empty($sheetData)) {
