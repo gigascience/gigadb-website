@@ -6,22 +6,17 @@ const FLAG_PATH = "/var/tmp/processing_flag" ;
 const DATA_TYPES = array(
 					"txt" => "Text",
 					"csv" => "Text",
+					"tsv" => "Text",
 					"jpg" => "Image",
 					"png" => "Image",
 					"fa" => "Genome Sequence",
-					"pdf" => "Rich Text",
-					"doc" => "Rich Text",
+					"fq" => "Genome Sequence",
+					"fasta" => "Genome Sequence",
+					"fastq" => "Genome Sequence",
+					"pdf" => "Script",
+					"doc" => "Script",
 				);
 
-const FILE_FORMATS = array(
-					"txt" => "TEXT",
-					"csv" => "TEXT",
-					"jpg" => "JPEG",
-					"png" => "PNG",
-					"fa" => "FASTA",
-					"pdf" => "PDF",
-					"doc" => "MSDOC",
-);
 
 /**
  * Determine an approximate data type based on file extension
@@ -36,7 +31,7 @@ function getApproximateDataTypeFromFile(string $file_name): string
 	if (true == in_array($ext, array_keys(DATA_TYPES)) ) {
 		return DATA_TYPES[$ext];
 	}
-	return "Unknown Data Type" ;
+	return "Other" ;
 }
 
 /**
