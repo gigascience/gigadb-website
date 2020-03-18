@@ -537,6 +537,8 @@ services:
       - ${DATA_SAVE_PATH}/fuw/repo:/home/downloader/
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/access:ro
       - ${DATA_SAVE_PATH}/fuw/flags:/var/tmp/processing_flag
+      # access to files and reference data
+      - ../../files:/var/www/files:ro
     networks:
       - web-tier
       - db-tier
