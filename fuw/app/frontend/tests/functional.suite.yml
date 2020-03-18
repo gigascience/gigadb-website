@@ -13,5 +13,5 @@ modules:
             password: 'yii2advanced'
             # dump: tests/_data/gigadb_bootstrap.sql
             cleanup: false # don't reload dump between tests
-            populate: false # don't load dump before all tests
-            
+            populate: false # don't load dump before all tests         
+        # - Asserts

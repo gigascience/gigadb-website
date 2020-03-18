@@ -4,6 +4,7 @@ use common\fixtures\UserFixture;
 use common\fixtures\UploadFixture;
 
 use common\models\Upload;
+use yii\base\Model;
 
 use Yii;
 
@@ -81,10 +82,21 @@ class UploadCest
         $doi ="010010";
         $example = [
             "Uploads" => [
-                1 => [ 'doi' => $doi, 'name' =>"FieldDataMethods.doc",'datatype' => 'Text', 'description' => 'foo bar'],
-                2 => [ 'doi' => $doi, 'name' =>"Measurements.csv",'datatype' => 'Image', 'description' => 'hello world'],
+                1 => [ 'doi' => $doi, 'name' =>"FieldDataMethods.docx",'datatype' => 'Script', 'description' => 'foo bar'],
+                2 => [ 'doi' => $doi, 'name' =>"Measurements.csv",'datatype' => 'Protein sequence', 'description' => 'hello world'],
             ] 
         ];
+
+
+        // $uploads = Upload::find()->where(["doi" => $doi])->indexBy('id')->all();
+        // $isValid = Model::validateMultiple($uploads);
+        // $getErrors = function ($element) {
+        //     return $element->errors;
+        // };
+        // var_dump(array_map($getErrors,$uploads));
+        // $I->assertTrue($isValid);
+
+
         $I->amBearerAuthenticated("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBUEkgQWNjZXNzIHJlcXVlc3QgZnJvbSBjbGllbnQiLCJpc3MiOiJ3d3cuZ2lnYWRiLm9yZyIsImF1ZCI6ImZ1dy5naWdhZGIub3JnIiwiZW1haWwiOiJzZnJpZXNlbkBqZW5raW5zLmluZm8iLCJuYW1lIjoiSm9obiBTbWl0aCIsImFkbWluX3N0YXR1cyI6InRydWUiLCJyb2xlIjoiY3JlYXRlIiwiaWF0IjoiMTU2MTczMDgyMyIsIm5iZiI6IjE1NjE3MzA4MjMiLCJleHAiOiIyNzI5NTEzMjIwIn0.uTZpDB1eCGt3c_23wLaVxpFUw_WFH2Jep_vpzky2o18");
         $I->sendPUT("/uploads/bulkedit_for_doi/010010", $example);
         $I->seeResponseCodeIs(200);

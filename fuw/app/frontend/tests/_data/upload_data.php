@@ -4,14 +4,14 @@ return [
     [
         'id' => 1,
         'doi' => '010010',
-        'name' => 'FieldDataMethods.doc',
+        'name' => 'FieldDataMethods.docx',
         'size' => 2352636,
         'status' => 0,
-        'location' => 'ftp://some.location/FieldDataMethods.doc',
+        'location' => 'ftp://some.location/FieldDataMethods.docx',
         'initial_md5' => 't5GU9NwpuGYSfb7FEZMAxqtuz2PkEvv',
         'description' => 'methods for field data',
         'datatype' => 'Text',
-        'extension' => 'MSDOC',
+        'extension' => 'DOCX',
     ],
     [
         'id' => 2,

@@ -47,12 +47,12 @@ function getApproximateDataTypeFromFile(string $file_name): string
  */
 function getFileFormatFromFile(string $file_name): string
 {
-
-	$ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-	if (true == in_array($ext, array_keys(FILE_FORMATS)) ) {
-		return FILE_FORMATS[$ext];
+	$reference = json_decode(file_get_contents("/var/www/files/data/fileformats.json"),true);
+	$ext = strtoupper(pathinfo($file_name, PATHINFO_EXTENSION));
+	if (true == in_array($ext, $reference) ) {
+		return $ext;
 	}
-	return "Unknown File Format" ;
+	return "UNKNOWN" ;
 }
 
 /**
@@ -219,7 +219,7 @@ function fileMetadata(string $file_name, string $dataset): array
 					"size" => $file_stats[7],
 					"link" => null,
 					"md5" => null,
-					"extension" => pathinfo($file_path, PATHINFO_EXTENSION) ?? "",
+					"format" => null,
 					"description" => "Enter a description here"
 				);
 
@@ -280,7 +280,7 @@ function updateFileTable(object $dbh, string $dataset_doi, array $uploadedFilesM
 		$name = $file["file_name"] ;
 		$size = $file["size"] ;
 		$location = $file["link"] ;
-		$extension = $file["extension"] ;
+		$extension = $file["format"] ;
 		$data_type = $file["data_type"] ;
 		$summary = $file["description"] ;
 		$result += $insert_statement->execute();

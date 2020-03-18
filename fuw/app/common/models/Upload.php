@@ -50,6 +50,7 @@ class Upload extends \yii\db\ActiveRecord
             [['location'], 'string', 'max' => 200],
             [['datatype'], 'string', 'max' => 32],
             ['datatype', 'validateDataType'],
+            ['extension', 'validateFileFormat'],
             [['extension'], 'string', 'max' => 32],
             [['name', 'description', 'datatype', 'initial_md5', 'extension'],'trim'],
         ];
@@ -86,6 +87,8 @@ class Upload extends \yii\db\ActiveRecord
     }
 
     /**
+     * Validate that the data type is in the GigaDB list of data types
+     *
      * @param string $attribute the attribute currently being validated
      * @param mixed $params the value of the "params" given in the rule
      * @param \yii\validators\InlineValidator $validator related InlineValidator instance.
@@ -95,6 +98,21 @@ class Upload extends \yii\db\ActiveRecord
     {
         if (!in_array($this->$attribute, array_keys(json_decode(file_get_contents('/var/www/files/data/filetypes.json'),true)))) {
             $validator->addError($this, $attribute, 'Data type is not recognized: {value}');
+        }
+    }
+
+    /**
+     * Validate that the file format is in the GigaDB list of file formats
+     *
+     * @param string $attribute the attribute currently being validated
+     * @param mixed $params the value of the "params" given in the rule
+     * @param \yii\validators\InlineValidator $validator related InlineValidator instance.
+     * This parameter is available since version 2.0.11.
+    */
+    public function validateFileFormat($attribute, $params, $validator)
+    {
+        if (!in_array($this->$attribute, array_keys(json_decode(file_get_contents('/var/www/files/data/fileformats.json'),true)))) {
+            $validator->addError($this, $attribute, 'File format is not recognized: {value}');
         }
     }
 }
