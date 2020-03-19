@@ -20,7 +20,7 @@ class FileFormatDAOTest extends CDbTestCase
 		$systemUnderTest = new FileFormatDAO();
 		$fileformats = $systemUnderTest->toJSON();
 		$this->assertNotNull($fileformats);
-		$this->assertEquals(2, count(json_decode($fileformats,true)));
+		$this->assertEquals(5, count(json_decode($fileformats,true)));
 		$this->assertEquals(1,json_decode($fileformats,true)["TEXT"]);
 		$this->assertEquals(2,json_decode($fileformats,true)["GFF"]);
 
