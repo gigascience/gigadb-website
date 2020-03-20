@@ -144,6 +144,18 @@ class DatasetDAO extends yii\base\BaseObject
 		$dataset = Dataset::model()->findByAttributes(["identifier" => $this->_identifier]);
 		return $dataset->submitter;
 	}
+
+	/**
+	 * return Id for given identifier (DOI)
+	 *
+	 * @return int return dataset DB id
+	 */
+	public function getId(): int
+	{
+		$dataset = Dataset::model()->findByAttributes(["identifier" => $this->_identifier]);
+		return $dataset->id;
+	}
+
 }
 
 ?>

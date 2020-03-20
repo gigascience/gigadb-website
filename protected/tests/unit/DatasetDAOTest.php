@@ -133,6 +133,12 @@ class DatasetDAOTest extends CDbTestCase {
         $this->assertEquals($datasetDAO->getSubmitter()->id,345);
     }
 
+    public function testGetId()
+    {
+         $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
+         $this->assertEquals(2, $datasetDAO->getId());
+    }
+
     public function keywordsProvider()
     {
     	return [
