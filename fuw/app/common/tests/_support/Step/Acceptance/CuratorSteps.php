@@ -3,6 +3,8 @@ namespace common\tests\Step\Acceptance;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
+use \FileUploadServicer;
+use \Email\Parse;
 
 class CuratorSteps #extends \common\tests\AcceptanceTester
 {
@@ -185,6 +187,75 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
      public function iAmOn($arg1)
      {
         $this->I->amOnUrl("http://gigadb.test".$arg1);
+     }
+
+    /**
+     * @Given the status of the dataset with DOI :arg1 has changed to :arg2
+     */
+     public function theStatusOfTheDatasetWithDOIHasChangedTo($doi, $status)
+     {
+     	$webClient = new \GuzzleHttp\Client();
+        $fileUploadSrv = new \FileUploadService([
+            "tokenSrv" => new \TokenService([
+                                  'jwtTTL' => 3600,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new \UserDAO(),
+                                  'dt' => new \DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByAttribute(["email"=>"joy_fox@gigadb.org"]),
+            "identifier"=> $doi,
+            "dataset" => new \DatasetDAO(["identifier" => $doi]),
+            "dryRunMode"=>false,
+            ]);
+
+        $datasetUpload = new \DatasetUpload(
+            $fileUploadSrv->dataset, 
+            $fileUploadSrv, 
+            Yii::$app->params['dataset_upload']
+        );
+        $datasetUpload->setStatusToDataAvailableForReview("changed from test scenario");
+     }
+
+	/**
+     * @When I press :arg1 for dataset :arg2
+     */
+     public function iPressForDataset($arg1, $arg2)
+     {
+        $this->I->click("(//a[@title='Update Dataset'])[5]");
+     }
+
+	/**
+     * @When change the status to :arg1
+     */
+    public function changeTheStatusTo($status)
+    {
+    	/* //*[@id="Dataset_upload_status"] */
+        $this->I->selectOption('//*[@id="Dataset_upload_status"]', $status);
+        $this->I->click("Save");
+    }
+
+	/**
+     * @Then An email is sent to :arg1
+     */
+     public function anEmailIsSentTo($email)
+     {
+     	exec("ls -1rt /app/frontend/runtime/mail", $output, $error);
+     	if(count($output) > 0 ) {
+     		$lastEmail = array_pop($output);
+     		$parser = new \Phemail\MessageParser();
+			$message = $parser->parse("/app/frontend/runtime/mail/$lastEmail");
+			$emailDate = $message->getHeaderValue('date');
+			$emailTimestamp = strtotime($emailDate);
+			$currentDate = new \DateTime('NOW');
+			$currentTimestamp = $currentDate->format('U');
+			//test that email was received within the last 10 secs
+			$this->I->assertTrue(abs($emailTimestamp-$currentTimestamp)<10);
+			$addresses = Parse::getInstance()->parse($message->getHeaderValue('to'));
+			$this->I->assertEquals($email, $addresses["email_addresses"][0]["address"]);
+     	}
+
      }
 
 }

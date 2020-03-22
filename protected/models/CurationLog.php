@@ -92,6 +92,7 @@ class CurationLog extends CActiveRecord
         $curationlog->action = "Status changed to ".$status;
         if (!$curationlog->save())
             return false;
+        return true;
     }
     
     public static function createlog_assign_curator($id,$creator,$username) {

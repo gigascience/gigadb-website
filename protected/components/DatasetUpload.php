@@ -94,6 +94,30 @@ class DatasetUpload extends yii\base\BaseObject
 	}
 
 	/**
+	 * method to set Dataset Upload status to Submitted,  notify curators and add curation log
+	 *
+	 * @param string $content email content of notification
+	 * @return bool wether or not operation is successful
+	 */
+	public function setStatusToSubmitted(string $content): bool
+	{
+		$statusChanged = $this->_datasetDAO->transitionStatus("DataAvailableForReview","Submitted");
+		if ($statusChanged) {
+			Yii::log("Status changed to Submitted",'info');
+			$emailSent = $this->_fileUploadSrv->emailSend(
+				$this->_config["sender"], 
+				$this->_config["curators_email"], 
+				"Dataset has been submitted", 
+				$content
+			);
+            $logged = CurationLog::createlog("Submitted", $this->_datasetDAO->getId());
+			return $logged && $emailSent;
+		}
+		Yii::log("Failed to change status to Submitted",'error');
+		return $statusChanged;
+	}
+
+	/**
 	 * method to render the email content to be sent when dataset status change
 	 *
 	 * @param string $targetStatus status we are changing dataset upload status to

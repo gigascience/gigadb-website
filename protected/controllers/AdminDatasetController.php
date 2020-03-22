@@ -143,6 +143,28 @@ class AdminDatasetController extends Controller
     {
         $model = $this->loadModel($id);
 
+        // setting DatasetUpload, the busisness object for File uploading
+        $webClient = new \GuzzleHttp\Client();
+        $fileUploadSrv = new FileUploadService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => 3600,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => Yii::app()->user,
+            "identifier"=> $model->identifier,
+            "dataset" => new DatasetDAO(["identifier" => $model->identifier]),
+            "dryRunMode"=>false,
+            ]);
+        $datasetUpload = new DatasetUpload(
+            $fileUploadSrv->dataset, 
+            $fileUploadSrv, 
+            Yii::$app->params['dataset_upload']
+        );
+
         $dataProvider = new CActiveDataProvider('CurationLog', array(
             'criteria' => array(
                 'condition' => "dataset_id=$id",
@@ -151,7 +173,14 @@ class AdminDatasetController extends Controller
         ));
         if (isset($_POST['Dataset'])) {
             if (isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status) {
-                CurationLog::createlog($_POST['Dataset']['upload_status'], $id);
+                if("Submitted" === $_POST['Dataset']['upload_status']) {
+                    $contentToSend = $datasetUpload->renderNotificationEmailBody("Submitted");
+                    $statusIsSet = $datasetUpload->setStatusToSubmitted($contentToSend);
+                    assert($statusIsSet);
+                }
+                else {
+                    CurationLog::createlog($_POST['Dataset']['upload_status'], $id);
+                }
             }
             if ($_POST['Dataset']['curator_id'] != $model->curator_id) {
                 if ($_POST['Dataset']['curator_id'] != "") {

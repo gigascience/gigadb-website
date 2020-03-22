@@ -45,6 +45,46 @@ class DatasetUploadTest extends CTestCase
 		$result = $datasetFileUpload->setStatusToDataAvailableForReview($content);
 	}
 
+	public function testSetStatusToSubmitted()
+	{
+		$config = [
+			"sender" => "admin@gigadb.org",
+			"curators_email" => "database@gigadb.test",
+			"template_path" => "/var/www/files/templates",
+		];
+
+		$content = "test content";
+
+		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
+		$mockFileUploadSrv = $this->createMock(FileUploadService::class);
+
+        $mockDatasetDAO->expects($this->once())
+                 ->method('transitionStatus')
+                 ->with("DataAvailableForReview", "Submitted")
+                 ->willReturn(true);
+
+        $mockDatasetDAO->expects($this->once())
+                 ->method('getId')
+                 ->willReturn(1);       
+
+        $mockFileUploadSrv->expects($this->once())
+                 ->method('emailSend')
+                 ->with(
+                 	$config["sender"], 
+                 	"database@gigadb.test", 
+                 	"Dataset has been submitted", 
+                 	$content
+                 )
+                 ->willReturn(true);
+
+
+		$datasetFileUpload = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv, $config);
+		$nbItemsInCurationLog = CurationLog::Model()->count();
+		$result = $datasetFileUpload->setStatusToSubmitted($content);
+		$this->assertTrue($result);
+		$this->assertEquals($nbItemsInCurationLog+1, CurationLog::Model()->count());
+	}
+
 	public function testRenderNotificationEmailBody()
 	{
 
