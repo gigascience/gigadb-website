@@ -41,6 +41,7 @@ modules:
         - common\tests\Helper\FilesystemCleanupHook
         - Yii2:
             part: init
+        - Asserts
 gherkin:
     contexts:
         default:

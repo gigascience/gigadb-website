@@ -36,7 +36,9 @@
         "symfony/browser-kit": ">=2.7 <=4.2.4",
         "flow/jsonpath": "~0.4.0",
         "guzzlehttp/guzzle": ">=4.1.4 <7.0",
-        "facebook/webdriver": "^1.0.1"
+        "facebook/webdriver": "^1.0.1",
+        "vaibhavpandeyvpz/phemail":"@dev",
+        "mmucklo/email-parse":"@dev"
     },
     "config": {
         "process-timeout": 1800,
