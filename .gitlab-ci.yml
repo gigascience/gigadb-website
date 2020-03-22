@@ -142,6 +142,7 @@ build_webapp:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/web:latest
     - docker-compose run --rm test composer update
+    - docker-compose run --rm console bash -c "cd /app && composer update"
     - docker-compose run --rm js npm install
   artifacts:
     untracked: true
