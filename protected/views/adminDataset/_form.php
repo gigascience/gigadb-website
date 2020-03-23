@@ -333,7 +333,7 @@ function checkdate() {
 <div class="span12" style="text-align:center">
     <a href="<?=Yii::app()->createUrl('/adminDataset/admin')?>" class="btn"/>Cancel</a>
     <?= CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn-green','onclick'=>'js:checkdate()')); ?>
-        <? if (!$model->isNewRecord && ($model->upload_status != 'Published')) { ?>
+        <? if( "hidden" === $datasetPageSettings->getPageType() ) { ?>
     <a href="<?=Yii::app()->createUrl('/adminDataset/private/identifier/'.$model->identifier)?>" class="btn-green"/>Create/Reset Private URL</a>
         <?if($model->token){?>
         <a href="<?= Yii::app()->createUrl('/dataset/'.$model->identifier.'/token/'.$model->token) ?>">Open Private URL</a>

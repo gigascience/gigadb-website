@@ -59,7 +59,7 @@ class AdminDatasetController extends Controller
         $dataset = new Dataset;
         $dataset->image = new Images;
 
-        Yii::log("actionCreate",'info');
+        $datasetPageSettings = new DatasetPageSettings($dataset);
 
         if (!empty($_POST['Dataset']) && !empty($_POST['Images'])) {
         	Yii::log("Processing submitted data", 'info');
@@ -115,7 +115,7 @@ class AdminDatasetController extends Controller
 
         }
 
-        $this->render('create', array('model'=>$dataset)) ;
+        $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
     }
 
     /**
@@ -164,6 +164,8 @@ class AdminDatasetController extends Controller
             $fileUploadSrv, 
             Yii::$app->params['dataset_upload']
         );
+
+        $datasetPageSettings = new DatasetPageSettings($model);
 
         $dataProvider = new CActiveDataProvider('CurationLog', array(
             'criteria' => array(
@@ -308,12 +310,15 @@ class AdminDatasetController extends Controller
                 }
 
 
-
-                if ($model->upload_status == 'Published') {
-                    $this->redirect('/dataset/' . $model->identifier);
-                } else {
-                    $this->redirect(array('/dataset/view/id/' . $model->identifier.'/token/'.$model->token));
+                switch($datasetPageSettings->getPageType()) {
+                    case "public":
+                        $this->redirect('/dataset/' . $model->identifier);
+                        break;
+                    case "hidden":
+                        $this->redirect(array('/dataset/view/id/' . $model->identifier.'/token/'.$model->token));
+                        break;
                 }
+
             } else {
                 Yii::log(print_r($model->getErrors(), true), 'error');
             }
@@ -321,6 +326,7 @@ class AdminDatasetController extends Controller
 
         $this->render('update', array(
             'model' => $model,
+            'datasetPageSettings' => $datasetPageSettings,
             'curationlog'=>$dataProvider,
             'dataset_id'=>$id,
         ));
@@ -335,9 +341,10 @@ class AdminDatasetController extends Controller
     {
         $id = $_GET['identifier'];
         $model= Dataset::model()->find("identifier=?", array($id));
-        if (!$model) {
+        $datasetPageSettings = new DatasetPageSettings($model);
+        if ( "invalid" === $datasetPageSettings->getPageType() ) {
             $this->redirect('/site/index');
-        } elseif ($model->upload_status == 'Published') {
+        } elseif ( "public" === $datasetPageSettings->getPageType() ) {
             $this->redirect('/dataset/'.$model->identifier);
         }
 

@@ -42,23 +42,16 @@ class DatasetController extends Controller
         $dataset = new Dataset; // Use for auto suggestion
         $this->layout='new_column2';
         $model = Dataset::model()->find("identifier=?", array($id));
-        if (!$model) {
+        $datasetPageSettings = new DatasetPageSettings($model);
+        if( "invalid" === $datasetPageSettings->getPageType() ) {
             $form = new SearchForm;
             $keyword = $id;
             $this->render('invalid', array('model' => $form, 'keyword' => $keyword, 'general_search' => 1));
-            return;
         }
-        $this->metaData['description'] = $model->description;
-        // $status_array = array('Request', 'Incomplete', 'Uploaded');
-
-        if ($model->upload_status != "Published") {
-            if (isset($_GET['token']) && $model->token == $_GET['token']) {
-            } else {
-                $form = new SearchForm;
-                $keyword = $id;
-                $this->render('invalid', array('model' => $form, 'keyword' => $keyword));
-                return;
-            }
+        elseif("hidden" === $datasetPageSettings->getPageType() && $model->token !== $_GET['token']) {
+            $form = new SearchForm;
+            $keyword = $id;
+            $this->render('invalid', array('model' => $form, 'keyword' => $keyword));
         }
 
         $urlToRedirect = trim($model->getUrlToRedirectAttribute());
@@ -71,11 +64,6 @@ class DatasetController extends Controller
             ));
             return;
         }
-        $crit = new CDbCriteria;
-        $crit->addCondition("t.dataset_id = ".$model->id);
-        $crit->select = '*';
-        $crit->join = "LEFT JOIN dataset ON dataset.id = t.dataset_id LEFT JOIN file_type ft ON t.type_id = ft.id
-                LEFT JOIN file_format ff ON t.format_id = ff.id";
 
         $cookies = Yii::app()->request->cookies;
         // file
@@ -250,12 +238,14 @@ class DatasetController extends Controller
             $previous_title = $result[0]->title;
         }
 
+        $this->metaData['description'] = $model->description;
         // Page private ? Disable robot to index
         $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $model->upload_status);
         // Yii::log("ActionView: about to render",CLogger::LEVEL_ERROR,"DatasetController");
 
         $this->render('view', array(
             'model'=>$model,
+            'datasetPageSettings' => $datasetPageSettings,
             'form'=>$form,
             'dataset'=>$dataset,
             'files'=>$filesDataProvider,
