@@ -349,8 +349,7 @@ class AdminDatasetController extends Controller
             $this->redirect('/dataset/'.$model->identifier);
         }
 
-        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        $model->token = substr(str_shuffle($chars), 0, 16);
+        $model->token = Yii::$app->security->generateRandomString(16);
         $model->save();
 
         $this->redirect('/dataset/view/id/'.$model->identifier.'/token/'.$model->token);
