@@ -333,12 +333,17 @@ function checkdate() {
 <div class="span12" style="text-align:center">
     <a href="<?=Yii::app()->createUrl('/adminDataset/admin')?>" class="btn"/>Cancel</a>
     <?= CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn-green','onclick'=>'js:checkdate()')); ?>
-        <? if( "hidden" === $datasetPageSettings->getPageType() ) { ?>
+        <?php if( "hidden" === $datasetPageSettings->getPageType() ) { ?>
     <a href="<?=Yii::app()->createUrl('/adminDataset/private/identifier/'.$model->identifier)?>" class="btn-green"/>Create/Reset Private URL</a>
-        <?if($model->token){?>
-        <a href="<?= Yii::app()->createUrl('/dataset/'.$model->identifier.'/token/'.$model->token) ?>">Open Private URL</a>
-        <?}?>
-        <? } ?>
+            <?php if($model->token){?>
+            <a href="<?= Yii::app()->createUrl('/dataset/'.$model->identifier.'/token/'.$model->token) ?>">Open Private URL</a>
+            <?php }?>
+        <?php } else if ( "mockup" === $datasetPageSettings->getPageType() ) { ?>
+    <a href="<?=Yii::app()->createUrl('/adminDataset/mockup/id/'.$model->id)?>" class="btn-green mockup"/>Generate mockup for reviewers</a>
+            <?php if($model->token) { ?>
+            <a href="<?= Yii::app()->createUrl('/dataset/mockup/'.$model->token) ?>">Open mockup URL</a>
+            <?php } ?>
+        <?php } ?>
 </div>
 <?php $this->endWidget(); ?>
 <script type="text/javascript">
