@@ -31,10 +31,10 @@ class DatasetPageSettings extends yii\base\BaseObject
 		$this->_dao = $dao;
 		$this->_model = $model;
 		if ($this->_model && !$this->_model->isNewRecord && "Published" !== $this->_model->upload_status
-				&& "DataAvailableForReview" !== $this->_model->upload_status) {
+				&& "Submitted" !== $this->_model->upload_status) {
 			$this->_pageType = "hidden";
 		}
-		elseif($this->_model && !$this->_model->isNewRecord && "DataAvailableForReview" === $this->_model->upload_status) {
+		elseif($this->_model && !$this->_model->isNewRecord && "Submitted" === $this->_model->upload_status) {
 			$this->_pageType = "mockup";
 		}
 		elseif($this->_model && !$this->_model->isNewRecord){

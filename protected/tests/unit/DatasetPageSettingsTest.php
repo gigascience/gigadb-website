@@ -53,7 +53,7 @@ class DatasetPageSettingsTest extends CDbTestCase
 	public function testGetPageTypeMockup()
 	{
 		$model = Dataset::model()->findByPk(1);
-		$model->upload_status = "DataAvailableForReview";
+		$model->upload_status = "Submitted";
 		$sut = new DatasetPageSettings($model);
 
 		$pageType = $sut->getPageType();
