@@ -38,32 +38,9 @@ class DatasetController extends Controller
 
     public function actionView($id)
     {
-        $form = new SearchForm;  // Use for Form
-        $dataset = new Dataset; // Use for auto suggestion
         $this->layout='new_column2';
         $model = Dataset::model()->find("identifier=?", array($id));
-        $datasetPageSettings = new DatasetPageSettings($model);
-        if( "invalid" === $datasetPageSettings->getPageType() ) {
-            $form = new SearchForm;
-            $keyword = $id;
-            $this->render('invalid', array('model' => $form, 'keyword' => $keyword, 'general_search' => 1));
-        }
-        elseif("hidden" === $datasetPageSettings->getPageType() && $model->token !== $_GET['token']) {
-            $form = new SearchForm;
-            $keyword = $id;
-            $this->render('invalid', array('model' => $form, 'keyword' => $keyword));
-        }
-
-        $urlToRedirect = trim($model->getUrlToRedirectAttribute());
-        $currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
-
-        if ($urlToRedirect && $currentAbsoluteFullUrl == $urlToRedirect) {
-            $this->metaData['redirect'] = 'http://dx.doi.org/10.5524/'.$model->identifier ;
-            $this->render('interstitial', array(
-                'model'=>$model
-            ));
-            return;
-        }
+        
 
         $cookies = Yii::app()->request->cookies;
         // file
@@ -122,102 +99,6 @@ class DatasetController extends Controller
             Yii::app()->request->cookies['sample_setting'] = $ncookie;
         }
 
-        // Creating a Database cache dependency
-        $cacheDependency = new CDbCacheDependency();
-
-        // Submitter email web component
-        $datasetSubmitter = new AuthorisedDatasetSubmitter(
-                                Yii::app()->user,
-                                new CachedDatasetSubmitter(
-                                    Yii::app()->cache,
-                                    $cacheDependency,
-                                    new StoredDatasetSubmitter(
-                                        $model->id,
-                                        Yii::app()->db
-                                    )
-                                )
-                        );
-        $email = $datasetSubmitter->getEmailAddress();
-
-        // Accesssions links web component
-        $accessions = new FormattedDatasetAccessions(
-                                new AuthorisedDatasetAccessions(
-                                    Yii::app()->user,
-                                    new CachedDatasetAccessions(
-                                        Yii::app()->cache,
-                                        $cacheDependency,
-                                        new StoredDatasetAccessions(
-                                            $model->id,
-                                            Yii::app()->db
-                                        )
-                                    )
-                                ),
-                                'target="_blank"'
-        );
-
-        // Main section with headline, release details, description and citations
-       $mainSection = new FormattedDatasetMainSection(
-                        new CachedDatasetMainSection (
-                            Yii::app()->cache,
-                            $cacheDependency,
-                            new StoredDatasetMainSection(
-                                $model->id,
-                                Yii::app()->db
-                            )
-                    )
-                );
-
-       //Dataset connections (other datasets related to this one)
-       $connections = new FormattedDatasetConnections(
-                            Yii::app()->controller,
-                        new CachedDatasetConnections (
-                            Yii::app()->cache,
-                            $cacheDependency,
-                            new StoredDatasetConnections(
-                                $model->id,
-                                Yii::app()->db,
-                                new \GuzzleHttp\Client()
-                            )
-                    )
-                );
-
-        //External links
-        $external_links = new FormattedDatasetExternalLinks(
-                            new CachedDatasetExternalLinks(
-                                Yii::app()->cache,
-                                $cacheDependency,
-                                new StoredDatasetExternalLinks(
-                                    $model->id,
-                                    Yii::app()->db
-                                )
-                            )
-                        );
-
-        //Files
-         $filesDataProvider = new FormattedDatasetFiles(
-                            $pageSize,
-                            new CachedDatasetFiles(
-                                Yii::app()->cache,
-                                $cacheDependency,
-                                new StoredDatasetFiles(
-                                    $model->id,
-                                    Yii::app()->db
-                                )
-                            )
-                        );
-        //Samples
-         $samplesDataProvider = new FormattedDatasetSamples(
-                            $perPage,
-                            new CachedDatasetSamples(
-                                Yii::app()->cache,
-                                $cacheDependency,
-                                new StoredDatasetSamples(
-                                    $model->id,
-                                    Yii::app()->db
-                                )
-                            )
-                        );
-
         $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {
             $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
@@ -238,30 +119,61 @@ class DatasetController extends Controller
             $previous_title = $result[0]->title;
         }
 
-        $this->metaData['description'] = $model->description;
-        // Page private ? Disable robot to index
-        $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $model->upload_status);
-        // Yii::log("ActionView: about to render",CLogger::LEVEL_ERROR,"DatasetController");
+
+        // Assembling page components and page settings
+
+        $datasetPageSettings = new DatasetPageSettings($model);
+
+        $assembly = DatasetPageAssembly::assemble($model, Yii::app());
+        $assembly->setDatasetSubmitter()
+                    ->setDatasetAccessions()
+                    ->setDatasetMainSection()
+                    ->setDatasetConnections()
+                    ->setDatasetExternalLinks()
+                    ->setDatasetFiles($pageSize)
+                    ->setDatasetSamples($perPage)
+                    ->setSearchForm();
+
+        // Rendering section
+
+        $this->metaData['description'] = $assembly->getDataset()->description;
+
+        $urlToRedirect = trim($assembly->getDataset()->getUrlToRedirectAttribute());
+        $currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
+
+        if ($urlToRedirect && $currentAbsoluteFullUrl == $urlToRedirect) {
+            $this->metaData['redirect'] = 'http://dx.doi.org/10.5524/'.$assembly->getDataset()->identifier ;
+            $this->render('interstitial', array(
+                'model'=>$assembly->getDataset()
+            ));
+        }
+
+        if( "invalid" === $datasetPageSettings->getPageType() ) {
+            $this->render('invalid', array('model' => $assembly->getSearchForm(), 'keyword' => $id, 'general_search' => 1));
+        }
+        elseif("hidden" === $datasetPageSettings->getPageType() && $assembly->getDataset()->token !== $_GET['token']) {
+            // Page private ? Disable robot to index
+            $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $assembly->getDataset()->upload_status);
+            $this->render('invalid', array('model' => $assembly->getSearchForm(), 'keyword' => $id));
+        }
 
         $this->render('view', array(
-            'model'=>$model,
             'datasetPageSettings' => $datasetPageSettings,
-            'form'=>$form,
-            'dataset'=>$dataset,
-            'files'=>$filesDataProvider,
-            'samples'=>$samplesDataProvider,
-            'email' => $email,
-            'accessions' => $accessions,
-            'mainSection' => $mainSection,
-            'connections' => $connections,
-            'links' => $external_links,
+            'model'=>$assembly->getDataset(),
+            'form'=>$assembly->getSearchForm(),
+            'email' => $assembly->getDatasetSubmitter()->getEmailAddress(),
+            'accessions' => $assembly->getDatasetAccessions(),
+            'mainSection' => $assembly->getDatasetMainSection(),
+            'connections' => $assembly->getDatasetConnections(),
+            'links' => $assembly->getDatasetExternalLinks(),
+            'files'=>$assembly->getDatasetFiles(),
+            'samples'=>$assembly->getDatasetSamples(),
             'previous_doi' => $previous_doi,
             'previous_title' => $previous_title,
             'next_title'=> $next_title,
             'next_doi' => $next_doi,
             'setting' => $setting,
             'columns' => $columns,
-            'logs'=>$model->datasetLogs,
             'flag' => $flag,
         ));
     }
