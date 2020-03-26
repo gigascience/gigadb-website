@@ -71,16 +71,13 @@ before_script:
   # Pin docker-compose version to stop installation error
   - pip install docker-compose~=1.23.0
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-  - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest
-  - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest
-  - cd $APPLICATION
-  - docker-compose run --rm config
-  - docker-compose run --rm fuw-config
-  - ls -alrt
-  - cat composer.json
-  - docker-compose ps
-  - docker-compose run --rm test composer install
-  - docker-compose run --rm console bash -c "cd /app && composer install"
+  # - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest
+  # - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest
+  # - cd $APPLICATION
+  # - docker-compose run --rm config
+  # - docker-compose run --rm fuw-config
+  # - docker-compose run --rm test composer install
+  # - docker-compose run --rm console bash -c "cd /app && composer install"
 
 after_script:
   # - docker-compose ps
