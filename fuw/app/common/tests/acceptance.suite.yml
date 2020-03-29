@@ -23,7 +23,7 @@ modules:
                     waitlock: 10
         - WebDriver:
              url: 'http://gigadb.test'
-             window_size: 1440x900
+             window_size: 2000x3500
              # host: 'phantomjs'
              # port: 8910
              # browser: phantomjs
