@@ -50,7 +50,6 @@ class TokenService extends yii\base\Component
             ->setIssuer('www.gigadb.org') // Configures the issuer (iss claim)
             ->setAudience('fuw.gigadb.org') // Configures the audience (aud claim)
             ->setSubject('API Access request from client') // Configures the subject
-            ->setId('4f1g23a12aa', true) // Configures the id (jti claim), replicating as a header item
             ->set('email', $email)
             ->set('name', $user->getFullName())
             ->set('role', $user->role)
@@ -124,7 +123,6 @@ class TokenService extends yii\base\Component
             ->setIssuer('www.gigadb.org') // Configures the issuer (iss claim)
             ->setAudience('fuw.gigadb.org') // Configures the audience (aud claim)
             ->setSubject('JWT token for a unique and time-limited mockup url') // Configures the subject
-            ->setId('3256tag4f1g23a12aa', true) // Configures the id (jti claim), replicating as a header item
             ->set('reviewerEmail', $email)
             ->set('monthsOfValidity', $validity)
             ->setIssuedAt($issuedTime) // Configures the time that the token was issue (iat claim)

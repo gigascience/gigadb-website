@@ -75,7 +75,6 @@ class TokenServiceTest extends CTestCase
     $data = Yii::$app->jwt->getValidationData(); // It will use the current time to validate (iat, nbf and exp)
     $data->setIssuer('www.gigadb.org');
     $data->setAudience('fuw.gigadb.org');
-    $data->setId('4f1g23a12aa');
     $data->setSubject('API Access request from client');
 
     // set the time of usage to be straight after issue
@@ -209,7 +208,6 @@ public function testCreateMockupToken()
     $data = Yii::$app->jwt->getValidationData(); // It will use the current time to validate (iat, nbf and exp)
     $data->setIssuer('www.gigadb.org');
     $data->setAudience('fuw.gigadb.org');
-    $data->setId('3256tag4f1g23a12aa');
     $data->setSubject('JWT token for a unique and time-limited mockup url');
 
     // set the time of usage to be straight after issue
