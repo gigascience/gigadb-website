@@ -258,4 +258,12 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 
      }
 
+    /**
+     * @When I select :arg1 for :arg2
+     */
+     public function iSelectFor($arg1, $arg2)
+     {
+        $this->I->selectOption("input[name=$arg2]", $arg1);
+     }
+
 }

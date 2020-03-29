@@ -10,6 +10,7 @@
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use Ramsey\Uuid\Uuid;
 
 class FiledropServiceTest extends FunctionalTesting
 {
@@ -466,6 +467,65 @@ class FiledropServiceTest extends FunctionalTesting
         // test we can call getAccount a second time within the same session (token reuse)
         $response2 = $filedropSrv->getAccount($this->filedrop_id);
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
+
+    }
+
+    /**
+     * Test making a mockup url associated to a filedrop account
+     *
+     */
+    public function testMakeMockupUrl()
+    {
+        try{
+            $reviewerEmail = "reviewer2@gigadb.org";
+            $monthsOfValidity = 1;
+
+            // Prepare the http client to be traceable for testing
+            $container = [];
+            $history = Middleware::history($container);
+
+            $stack = HandlerStack::create();
+            // Add the history middleware to the handler stack.
+            $stack->push($history);
+
+            $webClient = new Client(['handler' => $stack]);
+
+            // Instantiate FiledropService
+            $srv = new FileDropService([
+                "tokenSrv" => new TokenService([
+                                      'jwtTTL' => 31104000,
+                                      'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                      'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                      'users' => new UserDAO(),
+                                      'dt' => new DateTime(),
+                                    ]),
+                "webClient" => $webClient,
+                "requester" => \User::model()->findByPk(344), //admin user
+                "identifier"=> $this->doi,
+                "dataset" => new DatasetDAO(["identifier" => $this->doi]),
+                "dryRunMode"=> false,
+                ]);
+
+            // Another token service to create mockup token
+            $mockupTokenService = new TokenService([
+                                      'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                      'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                      'dt' => new DateTime(),
+                                    ]);
+
+            // invoke the FileUpload Service
+            $url_fragment = $srv->makeMockupUrl($mockupTokenService, $reviewerEmail,$monthsOfValidity);
+
+            // test the response from the API is successful
+            $this->assertEquals(201, $container[0]['response']->getStatusCode());
+            // test that setAttributes return a value
+            $this->assertNotNull($url_fragment);
+            $this->assertTrue(Uuid::isValid($url_fragment));
+        }
+        catch(Error $e) {
+            throw new Exception($e);
+        }
+
 
     }
 

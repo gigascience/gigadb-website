@@ -2,6 +2,7 @@
 if(Yii::app()->user->hasFlash('saveSuccess'))
     echo Yii::app()->user->getFlash('saveSuccess');
 
+
 $cs = Yii::app()->getClientScript();
 $cssCoreUrl = $cs->getCoreScriptUrl();
 
@@ -9,6 +10,11 @@ $cs->registerCssFile($cssCoreUrl . '/jui/css/base/jquery-ui.css');
 $cs->registerCssFile('/css/jquery.tag-editor.css');
 
 ?>
+<?php if (Yii::app()->user->hasFlash('error')) { ?>
+    <div class="alert alert-danger" role="alert">
+        <?php echo Yii::app()->user->getFlash('error'); ?>
+    </div>
+<? } ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js"></script>
 
@@ -338,14 +344,47 @@ function checkdate() {
             <?php if($model->token){?>
             <a href="<?= Yii::app()->createUrl('/dataset/'.$model->identifier.'/token/'.$model->token) ?>">Open Private URL</a>
             <?php }?>
-        <?php } else if ( "mockup" === $datasetPageSettings->getPageType() ) { ?>
-    <a href="<?=Yii::app()->createUrl('/adminDataset/mockup/id/'.$model->id)?>" class="btn-green mockup"/>Generate mockup for reviewers</a>
-            <?php if($model->token) { ?>
-            <a href="<?= Yii::app()->createUrl('/dataset/mockup/'.$model->token) ?>">Open mockup URL</a>
-            <?php } ?>
-        <?php } ?>
+        <?php } elseif ( "mockup" === $datasetPageSettings->getPageType() ) { 
+                echo CHtml::link('Generate mockup for reviewers','#', array('class' => 'btn btn-primary', 'data-toggle' => "modal", 'data-target' => "#mockupCreation"));
+            }
+            else {
+                echo "<p>".$datasetPageSettings->getPageType()."</p>";
+            }
+            ?>
+
 </div>
 <?php $this->endWidget(); ?>
+<div class="modal fade" id="mockupCreation" tabindex="-1" role="dialog" aria-labelledby="generateMockup">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Generate unique and time-limited mockup url for reviewers</h4>
+      </div>
+    <?php echo CHtml::beginForm("/adminDataset/mockup/id/".$model->id,"POST",["id" =>"mockupform"]); ?>
+      <div class="modal-body">
+            <label for="reviewerEmail" class="control-label">Reviewer's email</label>
+            <input type="text" name="revieweremail" class="form-control" />
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-primary active">
+                <input type="radio" name="monthsofvalidity" id="nbMonths1" value="1" autocomplete="off" checked>1 month
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="monthsofvalidity" id="nbMonths3" value="3" autocomplete="off">3 months
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="monthsofvalidity" id="nbMonths6" value="6" autocomplete="off">6 months
+              </label>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <?php echo CHtml::submitButton("Generate mockup",[ "class" => "btn-green mockup"]); ?>
+      </div>
+    <?php echo CHtml::endForm(); ?>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script type="text/javascript">
 
 $(function() {

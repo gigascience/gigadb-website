@@ -22,7 +22,8 @@
         "docker-php/docker-php": "~2.0.0",
         "sizeg/yii2-jwt": "~1.2.0",
         "creocoder/yii2-flysystem": "~0.9.0",
-        "pear/config_lite": "*@dev"
+        "pear/config_lite": "*@dev",
+        "ramsey/uuid": "^3.9.0"
     },
     "require-dev": {
         "yiisoft/yii2-gii": "~2.1.0",
