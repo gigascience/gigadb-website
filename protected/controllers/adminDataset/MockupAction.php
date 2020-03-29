@@ -19,6 +19,7 @@ class MockupAction extends CAction
             $this->getController()->redirect('/site/index');
         } elseif ( "public" === $datasetPageSettings->getPageType() ) {
             Yii::log("Not making mockup for published dataset","error");
+            Yii::app()->user->setFlash('error',"Not making mockup for published dataset");
            $this->getController()->redirect('/adminDataset/update/id/'.$model->id);
         }
 

@@ -103,58 +103,57 @@ class AdminDatasetMockupActionTest extends FunctionalTesting
 
     }
 
-    // public function testNoMockupButtonIfWrongUploadStatus() {
+    public function testNoMockupButtonIfWrongUploadStatus() {
 
-    //     $testDOI = "100005";
+        $testDOI = "100005";
 
-    //     // set upload status to the  Submitted
-    //     $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","Rejected");
-    //     // ensure there is a filedrop_account
-    //     $filedropAccountId = $this->makeFiledropAccountRecord($this->dbh_fuw,"$testDOI", "");
-    //     //admin user logs in
-    //     $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
-    //         "admin@gigadb.org",
-    //         "gigadb",
-    //         "Admin");
+        // set upload status to the  Submitted
+        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","Rejected");
+        // ensure there is a filedrop_account
+        $filedropAccountId = $this->makeFiledropAccountRecord($this->dbh_fuw,"$testDOI", "");
+        //admin user logs in
+        $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
+            "admin@gigadb.org",
+            "gigadb",
+            "Admin");
         
-    //     $this->session->visit($this->url);
-    //     $this->assertEquals(0, count($this->session->getPage()->findAll('css',"a.mockup")));   
+        $this->session->visit($this->url);
+        $this->assertNotTrue( $this->session->getPage()->hasLink("Generate mockup for reviewers") );
+    }
 
-    // }
+    public function testCreateNewMockupInvalid() {
 
-    // public function testCreateNewMockupInvalid() {
+        $testDOI = "100005";
 
-    //     $testDOI = "100005";
+        // set upload status to the  Submitted
+        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","Rejected");
+        // ensure there is a filedrop_account
+        $filedropAccountId = $this->makeFiledropAccountRecord($this->dbh_fuw,"$testDOI", "");
+        //admin user logs in
+        $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
+            "admin@gigadb.org",
+            "gigadb",
+            "Admin");
+        $this->session->visit("http://gigadb.dev/adminDataset/mockup/id/789");
+        $this->assertEquals("http://gigadb.dev/site/index",$this->session->getCurrentUrl());
+    }
 
-    //     // set upload status to the  Submitted
-    //     $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","Rejected");
-    //     // ensure there is a filedrop_account
-    //     $filedropAccountId = $this->makeFiledropAccountRecord($this->dbh_fuw,"$testDOI", "");
-    //     //admin user logs in
-    //     $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
-    //         "admin@gigadb.org",
-    //         "gigadb",
-    //         "Admin");
-    //     $this->session->visit("http://gigadb.dev/adminDataset/mockup/id/789");
-    //     $this->assertEquals("http://gigadb.dev/site/index",$this->session->getCurrentUrl());
-    // }
+    public function testBackToUpdateFormIfPublished() {
 
-    // public function testBackToUpdateFormIfPublished() {
+        $testDOI = "100005";
 
-    //     $testDOI = "100005";
-
-    //     // set upload status to the  Submitted
-    //     $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","Published");
-    //     // ensure there is a filedrop_account
-    //     $filedropAccountId = $this->makeFiledropAccountRecord($this->dbh_fuw,"$testDOI", "");
-    //     //admin user logs in
-    //     $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
-    //         "admin@gigadb.org",
-    //         "gigadb",
-    //         "Admin");
-    //     $this->session->visit("http://gigadb.dev/adminDataset/mockup/id/213");
-    //     $this->assertEquals($this->url,$this->session->getCurrentUrl());
-    // }
+        // set upload status to the  Submitted
+        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","Published");
+        // ensure there is a filedrop_account
+        $filedropAccountId = $this->makeFiledropAccountRecord($this->dbh_fuw,"$testDOI", "");
+        //admin user logs in
+        $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
+            "admin@gigadb.org",
+            "gigadb",
+            "Admin");
+        $this->session->visit("http://gigadb.dev/adminDataset/mockup/id/213");
+        $this->assertEquals($this->url,$this->session->getCurrentUrl());
+    }
 }
 
 ?>

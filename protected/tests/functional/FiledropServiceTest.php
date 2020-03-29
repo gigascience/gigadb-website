@@ -529,6 +529,66 @@ class FiledropServiceTest extends FunctionalTesting
 
     }
 
+    /**
+     * Test making a mockup url associated to a filedrop account with incorrect parameters
+     *
+     */
+    public function testMakeMockupUrlIncorrectParameters()
+    {
+        try{
+            $reviewerEmail = "reviewer2@gigadb.org";
+            $monthsOfValidity = 1;
+
+            // Prepare the http client to be traceable for testing
+            $container = [];
+            $history = Middleware::history($container);
+
+            $stack = HandlerStack::create();
+            // Add the history middleware to the handler stack.
+            $stack->push($history);
+
+            $webClient = new Client(['handler' => $stack]);
+
+            // Instantiate FiledropService
+            $srv = new FileDropService([
+                "tokenSrv" => new TokenService([
+                                      'jwtTTL' => 31104000,
+                                      'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                      'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                      'users' => new UserDAO(),
+                                      'dt' => new DateTime(),
+                                    ]),
+                "webClient" => $webClient,
+                "requester" => \User::model()->findByPk(344), //admin user
+                "identifier"=> $this->doi,
+                "dataset" => new DatasetDAO(["identifier" => $this->doi]),
+                "dryRunMode"=> false,
+                ]);
+
+            // Another token service to create mockup token
+            $mockupTokenService = new TokenService([
+                                      'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                      'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                      'dt' => new DateTime(),
+                                    ]);
+
+            // invoke the FileUpload Service with incorrect value of months of validity
+            $url_fragment = $srv->makeMockupUrl($mockupTokenService, $reviewerEmail,2);
+            $this->assertNull($url_fragment);
+
+            // invoke the FileUpload Service with malformed reviewer email
+            $url_fragment = $srv->makeMockupUrl($mockupTokenService, "john@",$monthsOfValidity);
+            $this->assertNull($url_fragment);
+
+
+        }
+        catch(Error $e) {
+            throw new Exception($e);
+        }
+
+
+    }
+
 }
 
 ?>
