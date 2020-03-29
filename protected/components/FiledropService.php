@@ -24,6 +24,7 @@
 
 use GuzzleHttp\Middleware;
 use Ramsey\Uuid\Uuid;
+use yii\validators\EmailValidator;
 
 class FiledropService extends yii\base\Component
 {
@@ -278,11 +279,16 @@ class FiledropService extends yii\base\Component
 			return null;
 		}
 
+		$validator = new yii\validators\EmailValidator();
+		if (!$validator->validate($reviewerEmail, $error)) {
+			Yii::log("Malformed value for reviewer's email $reviewerEmail: $error","error");
+		    return null;
+		}
+
 		$api_endpoint = "http://fuw-admin-api/mockup-urls";
 
 		// create a token for the mockup page
 		$mockupToken =  (string) $tokenMaker->generateTokenForMockup($reviewerEmail,$monthsOfValidity);
-		// $mockupToken =  "fasdgadsfa";
 		// reuse token to avoid "You must unsign before making changes" error
 		// when multiple API calls in same session
 		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
