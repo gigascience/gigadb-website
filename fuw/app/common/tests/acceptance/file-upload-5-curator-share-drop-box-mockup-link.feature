@@ -1,3 +1,4 @@
+@create-mockup
 Feature:
 	As a Curator
 	I want to create a private mockup of dataset linked to the privately uploaded files
@@ -34,5 +35,11 @@ Scenario: Generating a mockup when status is Submitted
 	When I go to "/adminDataset/admin"
 	And I press "Update Dataset" for dataset "000007"
 	And I press "Generate mockup for reviewers"
+	And I wait "1" seconds
+	And I fill in "revieweremail" with "reviewer@gigadb.org"
+	And I select "3" for "monthsofvalidity"
+	And I press "Generate mockup"
 	Then I should be on "/adminDataset/admin"
-	And I should see "New mockup ready at http://gigadb.test/dataset/mockup/"
+	And I should see "Unique (reviewer@gigadb.org)"
+	And I should see "time-limited (3 months) mockup url ready"
+	And I should see "at http://gigadb.test/dataset/mockup/"

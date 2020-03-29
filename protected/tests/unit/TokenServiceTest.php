@@ -161,4 +161,75 @@ class TokenServiceTest extends CTestCase
       $this->assertNotNull($userData['username']);
       $this->assertNotNull($userData['email']);
     }
+
+public function testCreateMockupToken()
+  {
+    $email = "foo@bar.com"; //dummy email of requester of the token
+    $validity = 3;
+    $jwt_key = "fooTESTbar$#^%@#"; //private key for JWT tokens
+    $jwt_ttl = 2629800*$validity ; //3 months validity
+    $issuedTime = 1569171152; //dummy time of issue of the token
+
+    // Setup mocks
+
+    $mockDateTime = $this->getMockBuilder(\DateTime::class)
+                          ->setMethods(['modify','format'])
+                          ->getMock();
+
+
+    // 2. calculate validity period (notbefore and expiry datetime)
+    $mockDateTime->expects($this->once())
+                 ->method('modify')
+                 ->with("+$validity months")
+             ->willReturn($mockDateTime);
+
+    //3. format both datetimes as seconds since epoch to feed the JWT builder
+    $mockExpirationTime = $issuedTime + $jwt_ttl ;
+    $mockDateTime->expects($this->exactly(2))
+                 ->method('format')
+                 ->withConsecutive(
+                 ["U"],
+                 ["U"]
+             )
+             ->will($this->onConsecutiveCalls(
+              $issuedTime,
+              $mockExpirationTime
+            ));
+
+    // Instantiate the token service after injecting the mock and invoke token creation
+    $tokenSrv = new TokenService([
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'dt' => $mockDateTime,
+                                ]);
+
+    $token = $tokenSrv->generateTokenForMockup($email,$validity);
+
+    // 4. test that we have a valid token created
+    $data = Yii::$app->jwt->getValidationData(); // It will use the current time to validate (iat, nbf and exp)
+    $data->setIssuer('www.gigadb.org');
+    $data->setAudience('fuw.gigadb.org');
+    $data->setId('3256tag4f1g23a12aa');
+    $data->setSubject('JWT token for a unique and time-limited mockup url');
+
+    // set the time of usage to be straight after issue
+    // (to reflect real call scenario, it should be valid)
+    $data->setCurrentTime($issuedTime);
+    $this->assertTrue($token->validate($data));
+
+
+    // set the time of usage to be just before 3 months later ( it should be valid)
+    $data->setCurrentTime($issuedTime+$jwt_ttl-1);
+    $this->assertTrue($token->validate($data));
+
+    // set the time of usage to more than 3 months later (it should not be valid)
+    $data->setCurrentTime($issuedTime+$jwt_ttl+1);
+    $this->assertFalse($token->validate($data));
+
+    // 5. verify that the necessary user info can be claimed from token
+    $this->assertEquals($token->getClaim('reviewerEmail'), $email);
+    $this->assertEquals($token->getClaim('monthsOfValidity'), $validity);
+
+
+  }
 }

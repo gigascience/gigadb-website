@@ -101,5 +101,40 @@ class TokenService extends yii\base\Component
 		}
 		return false;
 	}
+
+/**
+	 * Generate JWT token for a mockup url
+	 *
+	 * we need to make sure we use a new builder here (by calling Yii::$app->jwt->getBuilder())
+	 * as we cannot use the one ($this->jwtBuilder) for the normal api authentication 
+	 * in generateTokenForUser() as we need to call both methods in the same function
+	 *
+	 * @param string $email the email of the reviewer the mockup url is created for
+	 * @param int $validity how many months the mockup url should be valid for
+	 * @return \Lcobucci\JWT\Token the signed token
+	 */
+	public function generateTokenForMockup(string $email, int $validity): \Lcobucci\JWT\Token
+	{
+		$signer = $this->jwtSigner;
+		$issuedTime = $this->dt->format('U');
+		$notBeforeTime = $issuedTime ;
+		$expirationTime = $this->dt->modify("+$validity months")->format('U');
+
+		$client_token = $this->jwtBuilder
+            ->setIssuer('www.gigadb.org') // Configures the issuer (iss claim)
+            ->setAudience('fuw.gigadb.org') // Configures the audience (aud claim)
+            ->setSubject('JWT token for a unique and time-limited mockup url') // Configures the subject
+            ->setId('3256tag4f1g23a12aa', true) // Configures the id (jti claim), replicating as a header item
+            ->set('reviewerEmail', $email)
+            ->set('monthsOfValidity', $validity)
+            ->setIssuedAt($issuedTime) // Configures the time that the token was issue (iat claim)
+            ->setNotBefore($notBeforeTime) // Configures the time before which the token cannot be accepted (nbf claim)
+            ->setExpiration($expirationTime) // Configures the expiration time of the token (exp claim) 1 year
+            ->sign($signer, Yii::$app->jwt->key)// creates a signature using [[Jwt::$key]]
+            ->getToken(); // Retrieves the generated token
+
+		return $client_token;
+	}
+
 }
 ?>

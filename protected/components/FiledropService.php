@@ -23,9 +23,11 @@
  */
 
 use GuzzleHttp\Middleware;
+use Ramsey\Uuid\Uuid;
 
 class FiledropService extends yii\base\Component
 {
+	const MOCKUP_POSSIBLE_VALIDITY  = [1,3,6];
 	/**
  	 * {@inheritdoc}
    	 */
@@ -260,7 +262,59 @@ class FiledropService extends yii\base\Component
 		return null;
 	}
 
-	
+/**
+	 * Make HTTP POST to File Upload Wizard to create a new mockup_url record
+	 *
+	 * @param TokenService $tokenService token generator service
+	 * @param string $reviewerEmail the email of the reviewer the url is made for
+	 * @param int $monthsOfValidity How many month (1,3, or 6) the url is to be valid
+	 *
+	 * @return ?string UUID used as unique url fragment to the mockup url
+	 */
+	public function makeMockupUrl(TokenService $tokenMaker, string $reviewerEmail, int $monthsOfValidity): ?string
+	{
+		if(!in_array($monthsOfValidity, self::MOCKUP_POSSIBLE_VALIDITY)) {
+			Yii::log("Invalid value for months of validity: $monthsOfValidity","error");
+			return null;
+		}
+
+		$api_endpoint = "http://fuw-admin-api/mockup-urls";
+
+		// create a token for the mockup page
+		$mockupToken =  (string) $tokenMaker->generateTokenForMockup($reviewerEmail,$monthsOfValidity);
+		// $mockupToken =  "fasdgadsfa";
+		// reuse token to avoid "You must unsign before making changes" error
+		// when multiple API calls in same session
+		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
+		// create a new random unique url fragment
+		$uuid = Uuid::uuid4();
+
+
+		try {
+			$response = $this->webClient->request('POST', $api_endpoint, [
+								    'headers' => [
+								        'Authorization' => "Bearer ".$this->token,
+								    ],
+								    'form_params' => [
+								        'jwt_token' => $mockupToken,
+								        'url_fragment' => $uuid->toString(),
+								    ],
+								    'connect_timeout' => 5,
+								]);
+			if (201 === $response->getStatusCode() ) {
+				//convert returned json to a PHP array so we can work with it
+				$responseData = json_decode($response->getBody(), true);
+				return $responseData['url_fragment'];
+			}
+		}
+		catch(RequestException $e) {
+			Yii::log( Psr7\str($e->getRequest()) , "error");
+		    if ($e->hasResponse()) {
+		        Yii::log( Psr7\str($e->getResponse()), "error");
+		    }
+		}
+		return null;
+	}	
 
 }
 ?>
