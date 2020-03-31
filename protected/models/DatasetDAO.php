@@ -156,6 +156,54 @@ class DatasetDAO extends yii\base\BaseObject
 		return $dataset->id;
 	}
 
+	/**
+	 * Return the next Dataset or the current one if none
+	 *
+	 * TODO: identifier is of type string, change the comparison to use either id or string compare
+	 * TODO: cache the result
+	 * TODO: to be used through DatasetPageAssembly is better than directly in DatasetController
+	 *
+	 * @return ?Dataset if it exists, it's the next dataset when sorted by identifier ascending
+	 */
+	public function getNextDataset(): ?Dataset
+	{
+		$result = Dataset::model()->findBySql("select id, identifier,title from dataset where identifier > '" . $this->_identifier . "' and upload_status='Published' order by identifier asc limit 1;");
+        
+        return $result;
+	}
+
+	/**
+	 * Return the previous Dataset or the current one if none
+	 *
+	 * TODO: identifier is of type string, change the comparison to use either id or string compare
+	 * TODO: cache the result
+	 * TODO: to be used through DatasetPageAssembly is better than directly in DatasetController
+	 *
+	 * @return ?Dataset if it exists, it's the next dataset when sorted by identifier ascending
+	 */
+	public function getPreviousDataset(): ?Dataset
+	{
+		$result = Dataset::model()->findBySql("select id, identifier,title from dataset where identifier < '" . $this->_identifier . "' and upload_status='Published' order by identifier desc limit 1;");
+        
+        return $result;
+	}
+
+	/**
+	 * Return the next Dataset or the current one if none
+	 *
+	 * TODO: identifier is of type string, change the comparison to use either id or string compare
+	 * TODO: cache the result
+	 * TODO: to be used through DatasetPageAssembly is better than directly in DatasetController
+	 *
+	 * @return Dataset the first dataset when sorted by identifier ascending
+	 */
+	public function getFirstDataset(): Dataset
+	{
+		$result = Dataset::model()->findBySql("select id, identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
+        
+        return $result;
+	}
+
 }
 
 ?>
