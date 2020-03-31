@@ -40,63 +40,25 @@ class DatasetController extends Controller
     {
         $this->layout='new_column2';
         $model = Dataset::model()->find("identifier=?", array($id));
-        
+        $datasetPageSettings = new DatasetPageSettings($model);
 
         $cookies = Yii::app()->request->cookies;
-        // file
-        $setting = DatasetPageSettings::VIEW_DEFAULT_FILE_COLUMNS;
-        $pageSize = 10;
         $flag=null;
+        // file
+        $fileSettings = $datasetPageSettings->getFileSettings($cookies);
 
-        if (isset($cookies['file_setting'])) {
-            //$ss = json_decode($cookies['sample_setting']);
-            $fcookie = $cookies['file_setting'];
-            $fcookie = json_decode($fcookie->value, true);
-            if ($fcookie['setting']) {
-                $setting = $fcookie['setting'];
-            }
-            $pageSize = $fcookie['page'];
-        }
-
-        if (isset($_POST['setting'])) {
-            $setting = $_POST['setting'];
-            $pageSize = $_POST['pageSize'];
-
-            if (isset($cookies['file_setting'])) {
-                unset(Yii::app()->request->cookies['file_setting']);
-            }
-
-            $nc = new CHttpCookie('file_setting', json_encode(array('setting'=> $setting, 'page'=>$pageSize)));
-            $nc->expire = time() + (60*60*24*30);
-            Yii::app()->request->cookies['file_setting'] = $nc;
+        if (isset($_POST['setting']) && $_POST['pageSize']) {
+            $fileSettings = $datasetPageSettings->setFileSettings($_POST['setting'], $_POST['pageSize'], $cookies);
             $flag="file";
         }
 
 
         //Sample
-        $columns = array('name', 'taxonomic_id', 'genbank_name', 'scientific_name', 'common_name', 'attribute');
-        $perPage = 10;
-        if (isset($cookies['sample_setting'])) {
-            //$ss = json_decode($cookies['sample_setting']);
-            $scookie = $cookies['sample_setting'];
-            $scookie = json_decode($scookie->value, true);
-            if ($scookie['columns']) {
-                $columns = $scookie['columns'];
-            }
-            $perPage = $scookie['page'];
-        }
+        $sampleSettings = $datasetPageSettings->getSampleSettings($cookies);
 
         if (isset($_POST['columns'])) {
-            $columns = $_POST['columns'];
-            $perPage = $_POST['samplePageSize'];
+            $sampleSettings = $datasetPageSettings->setSampleSettings($_POST['columns'], $_POST['samplePageSize'], $cookies);
             $flag="sample";
-            if (isset($cookies['sample_setting'])) {
-                unset(Yii::app()->request->cookies['sample_setting']);
-            }
-
-            $ncookie = new CHttpCookie('sample_setting', json_encode(array('columns'=> $columns, 'page'=>$perPage)));
-            $ncookie->expire = time() + (60*60*24*30);
-            Yii::app()->request->cookies['sample_setting'] = $ncookie;
         }
 
         $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
@@ -122,16 +84,14 @@ class DatasetController extends Controller
 
         // Assembling page components and page settings
 
-        $datasetPageSettings = new DatasetPageSettings($model);
-
         $assembly = DatasetPageAssembly::assemble($model, Yii::app());
         $assembly->setDatasetSubmitter()
                     ->setDatasetAccessions()
                     ->setDatasetMainSection()
                     ->setDatasetConnections()
                     ->setDatasetExternalLinks()
-                    ->setDatasetFiles($pageSize)
-                    ->setDatasetSamples($perPage)
+                    ->setDatasetFiles($fileSettings["pageSize"])
+                    ->setDatasetSamples($sampleSettings["pageSize"])
                     ->setSearchForm();
 
         // Rendering section
@@ -172,8 +132,8 @@ class DatasetController extends Controller
             'previous_title' => $previous_title,
             'next_title'=> $next_title,
             'next_doi' => $next_doi,
-            'setting' => $setting,
-            'columns' => $columns,
+            'setting' => $fileSettings["columns"],
+            'columns' => $sampleSettings["columns"],
             'flag' => $flag,
         ));
     }
