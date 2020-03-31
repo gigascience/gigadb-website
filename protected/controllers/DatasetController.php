@@ -38,13 +38,18 @@ class DatasetController extends Controller
 
     public function actionView($id)
     {
-        $this->layout='new_column2';
+        // Retrieving the data
         $model = Dataset::model()->find("identifier=?", array($id));
+        $dao = new DatasetDAO(["identifier" => $id]) ;
+        $nextDataset =  $dao->getNextDataset() ?? $dao->getFirstDataset();
+        $previousDataset =  $dao->getPreviousDataset() ?? $dao->getFirstDataset();
+
         $datasetPageSettings = new DatasetPageSettings($model);
 
         $cookies = Yii::app()->request->cookies;
         $flag=null;
-        // file
+
+        // configuring files table
         $fileSettings = $datasetPageSettings->getFileSettings($cookies);
 
         if (isset($_POST['setting']) && $_POST['pageSize']) {
@@ -52,35 +57,13 @@ class DatasetController extends Controller
             $flag="file";
         }
 
-
-        //Sample
+        //configuring samples table
         $sampleSettings = $datasetPageSettings->getSampleSettings($cookies);
 
         if (isset($_POST['columns'])) {
             $sampleSettings = $datasetPageSettings->setSampleSettings($_POST['columns'], $_POST['samplePageSize'], $cookies);
             $flag="sample";
         }
-
-        $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
-        if (count($result) == 0) {
-            $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
-            $next_doi = $result[0]->identifier;
-            $next_title = $result[0]->title;
-        } else {
-            $next_doi = $result[0]->identifier;
-            $next_title = $result[0]->title;
-        }
-
-        $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier < '" . $id . "' and upload_status='Published' order by identifier desc limit 1;");
-        if (count($result) == 0) {
-            $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier desc limit 1;");
-            $previous_doi = $result[0]->identifier;
-            $previous_title = $result[0]->title;
-        } else {
-            $previous_doi = $result[0]->identifier;
-            $previous_title = $result[0]->title;
-        }
-
 
         // Assembling page components and page settings
 
@@ -95,6 +78,7 @@ class DatasetController extends Controller
                     ->setSearchForm();
 
         // Rendering section
+         $this->layout='new_column2';
 
         $this->metaData['description'] = $assembly->getDataset()->description;
 
@@ -128,10 +112,10 @@ class DatasetController extends Controller
             'links' => $assembly->getDatasetExternalLinks(),
             'files'=>$assembly->getDatasetFiles(),
             'samples'=>$assembly->getDatasetSamples(),
-            'previous_doi' => $previous_doi,
-            'previous_title' => $previous_title,
-            'next_title'=> $next_title,
-            'next_doi' => $next_doi,
+            'previous_doi' => $previousDataset->identifier,
+            'previous_title' => $previousDataset->title,
+            'next_title'=> $nextDataset->title,
+            'next_doi' => $nextDataset->identifier,
             'setting' => $fileSettings["columns"],
             'columns' => $sampleSettings["columns"],
             'flag' => $flag,

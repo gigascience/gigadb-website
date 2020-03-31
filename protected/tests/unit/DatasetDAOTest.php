@@ -139,6 +139,59 @@ class DatasetDAOTest extends CDbTestCase {
          $this->assertEquals(2, $datasetDAO->getId());
     }
 
+
+    public function testGetNextdatasetWithResult()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
+        $dataset = $datasetDAO->getNextDataset() ;
+        $this->assertEquals(4, $dataset->id);
+        $this->assertNotNull($dataset->title);
+        $this->assertEquals("101000", $dataset->identifier);
+    }
+
+    public function testGetNextdatasetNoResult()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "101001"]);
+        $dataset = $datasetDAO->getNextDataset() ;
+        if (null === $dataset) {
+            $dataset = $datasetDAO->getFirstDataset();
+        }
+        $this->assertEquals(5, $dataset->id);
+        $this->assertNotNull($dataset->title);
+        $this->assertEquals("100038", $dataset->identifier);
+    }
+
+    public function testGetFirstDataset()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100243"]);
+        $dataset = $datasetDAO->getFirstDataset() ;
+        $this->assertEquals(5, $dataset->id);
+        $this->assertNotNull($dataset->title);
+        $this->assertEquals("100038", $dataset->identifier);
+    }
+
+    public function testGetPreviousDatasetWithResult()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
+        $dataset = $datasetDAO->getPreviousDataset() ;
+        $this->assertEquals(7, $dataset->id);
+        $this->assertNotNull($dataset->title);
+        $this->assertEquals("100148", $dataset->identifier);
+    }
+
+    public function testGetPreviousDatasetNoResult()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100038"]);
+        $dataset = $datasetDAO->getPreviousDataset() ;
+        if (null === $dataset) {
+            $dataset = $datasetDAO->getFirstDataset();
+        }
+        $this->assertEquals(5, $dataset->id);
+        $this->assertNotNull($dataset->title);
+        $this->assertEquals("100038", $dataset->identifier);
+    }
+
+
     public function keywordsProvider()
     {
     	return [
