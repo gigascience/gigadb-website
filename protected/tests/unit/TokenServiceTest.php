@@ -165,6 +165,7 @@ public function testCreateMockupToken()
   {
     $email = "foo@bar.com"; //dummy email of requester of the token
     $validity = 3;
+    $doi = "000007";
     $jwt_key = "fooTESTbar$#^%@#"; //private key for JWT tokens
     $jwt_ttl = 2629800*$validity ; //3 months validity
     $issuedTime = 1569171152; //dummy time of issue of the token
@@ -202,7 +203,7 @@ public function testCreateMockupToken()
                                   'dt' => $mockDateTime,
                                 ]);
 
-    $token = $tokenSrv->generateTokenForMockup($email,$validity);
+    $token = $tokenSrv->generateTokenForMockup($email,$validity,$doi);
 
     // 4. test that we have a valid token created
     $data = Yii::$app->jwt->getValidationData(); // It will use the current time to validate (iat, nbf and exp)
@@ -227,6 +228,7 @@ public function testCreateMockupToken()
     // 5. verify that the necessary user info can be claimed from token
     $this->assertEquals($token->getClaim('reviewerEmail'), $email);
     $this->assertEquals($token->getClaim('monthsOfValidity'), $validity);
+    $this->assertEquals($token->getClaim('DOI'), $doi);
 
 
   }

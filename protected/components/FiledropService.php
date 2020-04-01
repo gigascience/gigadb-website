@@ -288,7 +288,11 @@ class FiledropService extends yii\base\Component
 		$api_endpoint = "http://fuw-admin-api/mockup-urls";
 
 		// create a token for the mockup page
-		$mockupToken =  (string) $tokenMaker->generateTokenForMockup($reviewerEmail,$monthsOfValidity);
+		$mockupToken =  (string) $tokenMaker->generateTokenForMockup(
+			$reviewerEmail,
+			$monthsOfValidity,
+			$this->identifier
+		);
 		// reuse token to avoid "You must unsign before making changes" error
 		// when multiple API calls in same session
 		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);

@@ -438,5 +438,58 @@ class FileUploadService extends yii\base\Component
 		return false;
 	}
 
+
+	/**
+	 * Make HTTP GET to File Upload Wizard to get mockup url
+	 *
+	 *
+	 * @param string $url_fragment UUID for the mockup_url record
+	 *
+	 * @return array whether or not the update was succesful
+	 */
+	public function getMockupUrl(string $url_fragment): array
+	{
+
+		// Grab the client's handler instance.
+		$clientHandler = $this->webClient->getConfig('handler');
+		// Create a middleware that echoes parts of the request.
+		$tapMiddleware = Middleware::tap(function ($request) {
+		    // Yii::log( $request->getHeaderLine('Content-Type') , 'info');
+		    // application/json
+		    // Yii::log( $request->getBody(), 'info');
+		    // {"foo":"bar"}
+		});
+
+		$api_endpoint = "http://fuw-public-api/mockup-urls/uuid/$url_fragment";
+
+		// reuse token to avoid "You must unsign before making changes" error
+		// when multiple API calls in same session
+		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
+		try {
+			$response = $this->webClient->request('GET', $api_endpoint, [
+								    // 'headers' => [
+								    //     'Authorization' => "Bearer ".$this->token,
+								    // ],
+								    'connect_timeout' => 5,
+								    'handler' => $tapMiddleware($clientHandler),
+								]);
+			if (200 === $response->getStatusCode() ) {
+				$tokenData = [];
+				$mockupUrl = json_decode($response->getBody(), true);
+				$token = Yii::$app->jwt->getParser()->parse((string) $mockupUrl['jwt_token']);
+				$tokenData['reviewerEmail'] = $token->getClaim('reviewerEmail');
+				$tokenData['monthsOfValidity'] = $token->getClaim('monthsOfValidity');
+				$tokenData['DOI'] = $token->getClaim('DOI');
+				return $tokenData;
+			}
+		}
+		catch(RequestException $e) {
+			Yii::log( Psr7\str($e->getRequest()) , "error");
+		    if ($e->hasResponse()) {
+		        Yii::log( Psr7\str($e->getResponse()), "error");
+		    }
+		}
+		return false;
+	}
 }
 ?>
