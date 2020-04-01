@@ -10,6 +10,7 @@
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use Ramsey\Uuid\Uuid;
 
 class FileUploadServiceTest extends CTestCase
 {
@@ -26,6 +27,10 @@ class FileUploadServiceTest extends CTestCase
 
     /** @var string $doi DOI to use for testing */
     private $doi;
+
+    /** @var string $url_fragment UUID generated for mockupUrl test data */
+    private $url_fragment; 
+    private $mockupUrlId;
 
     /**
      *
@@ -60,6 +65,13 @@ class FileUploadServiceTest extends CTestCase
             $this->dbhf->getPdoInstance(), $files
         );
 
+        list($this->mockupUrlId, $this->url_fragment) = $this->setUpMockupUrl(
+            $this->dbhf->getPdoInstance(),
+            "someone@foobar.test",
+            3,
+            "000007"
+        );
+
     }
 
     public function tearDown()
@@ -79,6 +91,12 @@ class FileUploadServiceTest extends CTestCase
             $this->dbhf->getPdoInstance(),
             $this->uploads
         );
+
+        $this->tearDownMockupUrl(
+            $this->dbhf->getPdoInstance(),
+            $this->url_fragment
+        );
+
         $this->dbhf->active=false;
         $this->dbhf = null;
         $this->doi = null;
@@ -461,7 +479,7 @@ class FileUploadServiceTest extends CTestCase
 
     }
 
-/**
+    /**
      * Test retrieving existing uploaded files from the API
      *
      */
@@ -514,6 +532,57 @@ class FileUploadServiceTest extends CTestCase
         $this->assertNotNull($response);
         // and that it's an array of files
         $this->assertEquals(3, count($response));
+
+    }
+
+
+    /**
+     * Test retrieving mockupUrl given a url fragment
+     *
+     */
+    public function testGetMockupUrl()
+    {
+
+        // setup test data
+
+        // Prepare the http client to be traceable for testing
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
+
+        $webClient = new Client(['handler' => $stack]);
+
+        // Instantiate FileuploadService
+        $srv = new FileUploadService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => 31104000,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByPk(344), //admin user
+
+            ]);
+
+        // invoke the Filedrop Service
+        $response = $srv->getMockupUrl($this->url_fragment);
+
+        // test the response from the API is successful
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
+        // test that getUploads return a value
+        $this->assertNotNull($response);
+
+        $this->assertEquals([
+            "reviewerEmail" => "someone@foobar.test", 
+            "monthsOfValidity" => 3, 
+            "DOI" => "000007", 
+        ], $response);
 
     }
 }

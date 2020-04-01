@@ -1,5 +1,6 @@
 <?php
 
+use Ramsey\Uuid\Uuid;
 /**
  * browser automation steps to setup test users
  *
@@ -351,6 +352,51 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 
 	}
 
+	/**
+	 * setUp mockupUrl
+	 *
+	 * @param PDO $dbh
+	 * @param string $email reviewer's email
+	 * @param int $validity months of validity for the token
+	 * @param string $doi DOI of the dataset associated with the mockup
+	 * @return string url_fragment
+	 */
+	public function setUpMockupUrl(PDO $dbh, string $email, int $validity, string $doi): array
+	{
+
+		$tokenSrv = new TokenService([
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'dt' => new DateTime(),
+                                ]);
+
+	    $token = $tokenSrv->generateTokenForMockup($email,$validity,$doi);
+	    $uuid = Uuid::uuid4();
+
+	    $sql = "insert into public.mockup_url(url_fragment, jwt_token) values(:url_fragment, :jwt_token) returning id, url_fragment";
+		$sth = $dbh->prepare($sql);
+		$sth->bindValue(":url_fragment", $uuid->toString());
+		$sth->bindValue(":jwt_token", $token);
+		$sth->execute();
+		$mockupUrl = $sth->fetch(PDO::FETCH_OBJ);
+
+        return [$mockupUrl->id, $mockupUrl->url_fragment];
+	}
+
+
+	/**
+	 * tearDown mockupUrl
+	 *
+	 * @param PDO $dbh
+	 * @param string $url_fragment uuid of the mockup_url record
+	 */
+	public function tearDownMockupUrl(PDO $dbh, string $url_fragment): void
+	{
+		$q = "delete from mockup_url where url_fragment=:url_fragment";
+		$s = $dbh->prepare($q);
+		$s->bindValue(':url_fragment',$url_fragment);
+		$s->execute();
+	}
 
 }
 ?>

@@ -110,9 +110,10 @@ class TokenService extends yii\base\Component
 	 *
 	 * @param string $email the email of the reviewer the mockup url is created for
 	 * @param int $validity how many months the mockup url should be valid for
+	 * @param string $doi identifier for the dataset for which to create a mockup
 	 * @return \Lcobucci\JWT\Token the signed token
 	 */
-	public function generateTokenForMockup(string $email, int $validity): \Lcobucci\JWT\Token
+	public function generateTokenForMockup(string $email, int $validity, string $doi): \Lcobucci\JWT\Token
 	{
 		$signer = $this->jwtSigner;
 		$issuedTime = $this->dt->format('U');
@@ -125,6 +126,7 @@ class TokenService extends yii\base\Component
             ->setSubject('JWT token for a unique and time-limited mockup url') // Configures the subject
             ->set('reviewerEmail', $email)
             ->set('monthsOfValidity', $validity)
+            ->set('DOI', $doi)
             ->setIssuedAt($issuedTime) // Configures the time that the token was issue (iat claim)
             ->setNotBefore($notBeforeTime) // Configures the time before which the token cannot be accepted (nbf claim)
             ->setExpiration($expirationTime) // Configures the expiration time of the token (exp claim) 1 year

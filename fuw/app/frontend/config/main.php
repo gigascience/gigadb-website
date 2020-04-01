@@ -61,7 +61,13 @@ $config = [
                     'extraPatterns' => [
                         'POST replace_for/<upload_id>' => 'replace',
                     ],
-                ]
+                ],
+                ['class' => 'yii\rest\UrlRule', 
+                    'controller' => 'mockup-url',
+                    'extraPatterns' => [
+                        'GET uuid/<url_fragment>' => 'show',
+                    ],                    
+                ],
             ],
         ],
     ],
