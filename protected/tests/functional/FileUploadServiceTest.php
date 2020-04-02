@@ -507,8 +507,8 @@ class FileUploadServiceTest extends CTestCase
 
         $webClient = new Client(['handler' => $stack]);
 
-        // Instantiate FiledropService
-        $filedropSrv = new FileUploadService([
+        // Instantiate FileUploadService
+        $srv = new FileUploadService([
             "tokenSrv" => new TokenService([
                                   'jwtTTL' => 31104000,
                                   'jwtBuilder' => Yii::$app->jwt->getBuilder(),
@@ -524,7 +524,7 @@ class FileUploadServiceTest extends CTestCase
             ]);
 
         // invoke the Filedrop Service
-        $response = $filedropSrv->getAttributes($this->uploads[0]);
+        $response = $srv->getAttributes($this->uploads[0]);
 
         // test the response from the API is successful
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
@@ -556,19 +556,8 @@ class FileUploadServiceTest extends CTestCase
 
         $webClient = new Client(['handler' => $stack]);
 
-        // Instantiate FileuploadService
-        $srv = new FileUploadService([
-            "tokenSrv" => new TokenService([
-                                  'jwtTTL' => 31104000,
-                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
-                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                                  'users' => new UserDAO(),
-                                  'dt' => new DateTime(),
-                                ]),
-            "webClient" => $webClient,
-            "requester" => \User::model()->findByPk(344), //admin user
-
-            ]);
+        // Instantiate FileUploadService
+        $srv = new FileUploadService(["webClient" => $webClient]);
 
         // invoke the Filedrop Service
         $response = $srv->getMockupUrl($this->url_fragment);
@@ -583,6 +572,40 @@ class FileUploadServiceTest extends CTestCase
             "monthsOfValidity" => 3, 
             "DOI" => "000007", 
         ], $response);
+
+    }
+
+/**
+     * Test retrieving mockupUrl when url_fragment does not exist
+     *
+     */
+    public function testGetMockupUrlNonExistentFragment()
+    {
+
+        // setup test data
+
+        // Prepare the http client to be traceable for testing
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
+
+        $webClient = new Client(['handler' => $stack]);
+
+        // Instantiate FileUploadService
+        $srv = new FileUploadService(["webClient" => $webClient]);
+
+        // invoke the Filedrop Service
+        $response = $srv->getMockupUrl("1ee9aa1b-6510-4105-92b9-7171bb2f3089");
+
+        // test the response from the API return 404 (Not Found)
+        $this->assertEquals(404, $container[0]['response']->getStatusCode());
+        // test that response is null
+        $this->assertNull($response);
+
 
     }
 }

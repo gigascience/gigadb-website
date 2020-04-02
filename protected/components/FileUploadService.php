@@ -19,6 +19,7 @@
  */
 
 use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7;
 
 class FileUploadService extends yii\base\Component
 {
@@ -447,7 +448,7 @@ class FileUploadService extends yii\base\Component
 	 *
 	 * @return array whether or not the update was succesful
 	 */
-	public function getMockupUrl(string $url_fragment): array
+	public function getMockupUrl(string $url_fragment): ?array
 	{
 
 		// Grab the client's handler instance.
@@ -462,32 +463,32 @@ class FileUploadService extends yii\base\Component
 
 		$api_endpoint = "http://fuw-public-api/mockup-urls/uuid/$url_fragment";
 
-		// reuse token to avoid "You must unsign before making changes" error
-		// when multiple API calls in same session
-		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
 		try {
 			$response = $this->webClient->request('GET', $api_endpoint, [
-								    // 'headers' => [
-								    //     'Authorization' => "Bearer ".$this->token,
-								    // ],
 								    'connect_timeout' => 5,
 								    'handler' => $tapMiddleware($clientHandler),
 								]);
 			if (200 === $response->getStatusCode() ) {
 				$tokenData = [];
 				$mockupUrl = json_decode($response->getBody(), true);
-				$token = Yii::$app->jwt->getParser()->parse((string) $mockupUrl['jwt_token']);
+				$token = Yii::$app->jwt->loadToken($mockupUrl['jwt_token']);
 				$tokenData['reviewerEmail'] = $token->getClaim('reviewerEmail');
 				$tokenData['monthsOfValidity'] = $token->getClaim('monthsOfValidity');
 				$tokenData['DOI'] = $token->getClaim('DOI');
 				return $tokenData;
 			}
 		}
-		catch(RequestException $e) {
-			Yii::log( Psr7\str($e->getRequest()) , "error");
-		    if ($e->hasResponse()) {
-		        Yii::log( Psr7\str($e->getResponse()), "error");
-		    }
+		catch(\GuzzleHttp\Exception\BadResponseException $e) {
+			if ($e->hasResponse() && 404 === $e->getResponse()->getStatusCode() ) {
+				Yii::log("Cannot find a mockupUrl record for UUID $url_fragment","error");
+			}
+			else {			
+				Yii::log( Psr7\str($e->getRequest()) , "error");
+			    if ($e->hasResponse()) {
+			        Yii::log( Psr7\str($e->getResponse()), "error");
+			    }
+			}
+		    return null;
 		}
 		return false;
 	}

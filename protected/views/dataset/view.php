@@ -4,6 +4,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 
 ?>
 
+<?php if( Yii::app()->user->hasFlash('mockupMode') ) { ?>
+<div class="alert alert-info">
+    <?php echo Yii::app()->user->getFlash('mockupMode'); ?>
+</div>
+<?php } ?>
+
 <?php $this->renderPartial('_sample_setting',array('columns' => $columns, 'pageSize' => $samples->getDataProvider()->getPagination()->getPageSize() )); ?>
 <?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' => $files->getDataProvider()->getPagination()->getPageSize()));?>
 

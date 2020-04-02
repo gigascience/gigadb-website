@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use yii\rest\ActiveController;
 use common\models\MockupUrl;
+use yii\web\NotFoundHttpException;
 
 /**
  * REST controller for MockupUrl
@@ -49,6 +50,10 @@ class MockupUrlController extends ActiveController
     {
         Yii::info("getting MockupUrl from url_fragment: $url_fragment");
         $model = MockupUrl::findOne(["url_fragment" => $url_fragment]);
+        if(null === $model) {
+            Yii::error("No record found for url_fragment: $url_fragment");
+            throw new NotFoundHttpException("No record found for url_fragment: $url_fragment");
+        }
         return $model;
     }
 }

@@ -26,7 +26,7 @@ class DatasetController extends Controller
     {
         return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
-                'actions'=>array('view'),
+                'actions'=>array('view', 'mockup'),
                 'users'=>array('*'),
             ),
             array('deny',  // deny all users
@@ -35,6 +35,17 @@ class DatasetController extends Controller
         );
     }
 
+  /**
+     * Yii's method for routing urls to an action. Override to use custom actions
+     */
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['mockup'] = [
+            'class' => 'application.controllers.dataset.MockupAction'
+        ];
+        return $actions;
+    }
 
     public function actionView($id)
     {
@@ -95,10 +106,12 @@ class DatasetController extends Controller
         if( "invalid" === $datasetPageSettings->getPageType() ) {
             $this->render('invalid', array('model' => $assembly->getSearchForm(), 'keyword' => $id, 'general_search' => 1));
         }
-        elseif("hidden" === $datasetPageSettings->getPageType() && $assembly->getDataset()->token !== $_GET['token']) {
+        elseif( "hidden" === $datasetPageSettings->getPageType() ) {
             // Page private ? Disable robot to index
-            $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $assembly->getDataset()->upload_status);
-            $this->render('invalid', array('model' => $assembly->getSearchForm(), 'keyword' => $id));
+            $this->metaData['private'] = (Dataset::DATASET_PRIVATE === $assembly->getDataset()->upload_status);
+            if ( isset($_GET['token']) && $assembly->getDataset()->token !== $_GET['token'] ) {
+                $this->render('invalid', array('model' => $assembly->getSearchForm(), 'keyword' => $id));
+            }
         }
 
         $this->render('view', array(
