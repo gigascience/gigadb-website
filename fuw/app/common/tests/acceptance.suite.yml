@@ -52,6 +52,10 @@ gherkin:
             author:
                 - common\tests\Step\Acceptance\AuthorSteps
                 - common\tests\Step\Acceptance\MetadataFormSteps
+            reviewer:
+                - common\tests\Step\Acceptance\AuthorSteps
+                - common\tests\Step\Acceptance\MetadataFormSteps                
+                - common\tests\Step\Acceptance\ReviewerSteps                
 
 extensions:
     enabled:
