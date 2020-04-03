@@ -1,12 +1,12 @@
 <?php
 
  /**
- * Test the actionMockup action in DatasetController.php
+ * Test the MockupView action in DatasetController.php
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
 */
-class DatasetMockupActionTest extends FunctionalTesting
+class DatasetMockupViewActionTest extends FunctionalTesting
 {
     use BrowserSignInSteps;
     use DatabaseSteps;
