@@ -42,7 +42,7 @@ class DatasetController extends Controller
     {
         $actions = parent::actions();
         $actions['mockup'] = [
-            'class' => 'application.controllers.Dataset.MockupAction'
+            'class' => 'application.controllers.Dataset.MockupViewAction'
         ];
         return $actions;
     }
