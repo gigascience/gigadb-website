@@ -155,7 +155,7 @@ class AdminDatasetController extends Controller
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => Yii::app()->user,
+            "requesterEmail" => Yii::app()->user->email,
             "identifier"=> $model->identifier,
             "dataset" => new DatasetDAO(["identifier" => $model->identifier]),
             "dryRunMode"=>false,
