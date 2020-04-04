@@ -109,6 +109,19 @@ class DatasetPageAssemblyTest extends CDbTestCase
 
 	}
 
+	public function testDatasetFilesResourced()
+	{
+		$app = Yii::app() ;
+		$d = Dataset::model()->findByPk(1);
+		$pageSize = 10;
+
+		$assembly = DatasetPageAssembly::assemble($d, $app, $this->srv);
+		$this->assertEquals($assembly, $assembly->setDatasetFiles($pageSize, "resourced"));
+		$this->assertNotNull($assembly->getDatasetFiles());
+		$this->assertTrue(is_a($assembly->getDatasetFiles(),"DatasetFilesInterface"));
+
+	}
+
 	public function testDatasetSamples()
 	{
 		$app = Yii::app() ;

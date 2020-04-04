@@ -14,6 +14,7 @@
  * @property DatasetSamplesInterface $_samplesProvider
  * @property Dataset $_dataset
  * @property SearchForm $_searchForm
+ * @property FileUplooadService $_fileUploadService
  *
  * @uses yii::app()
  *
@@ -34,22 +35,27 @@ class DatasetPageAssembly extends yii\base\Component
 	private $_samples;
 	private $_dataset;
 	private $_searchForm;
+	private $_fileUploadService;
 
 
-	public function __construct(Dataset $dataset, CApplication $app, $config = []) {
+	public function __construct(Dataset $dataset, CApplication $app, FileUploadService $srv, $config = []) {
 		$this->_dataset = $dataset;
 		$this->_app = $app;
+		$this->_fileUploadService = $srv;
 		$this->_cacheDependency = new CDbCacheDependency();
 	}
 
 	/**
-	 * factory function to create an instance of DatasetPageAssembly
+	 * Factory method to create an instance of DatasetPageAssembly
 	 *
 	 * @param Dataset $d Dataset instance to pass to the instanciated Page assembly
+	 * @param CApplication $app Yii web application from which to access cache and database
+	 * @param FileUploadService $srv GigaDB client to File Upload Wizard API
+	 * @return DatasetPageAssembly  a new instance of DatasetAssembly
 	 */
-	public static function assemble(Dataset $d, CApplication $app): DatasetPageAssembly
+	public static function assemble(Dataset $d, CApplication $app, FileUploadService $srv): DatasetPageAssembly
 	{
-		return new DatasetPageAssembly($d, $app);
+		return new DatasetPageAssembly($d, $app, $srv);
 	}
 
 	/**
@@ -216,22 +222,40 @@ class DatasetPageAssembly extends yii\base\Component
 	}
 
 	/**
-	 * Create an files dataset component to be use in a dataset page
+	 * Create a dataset files component to be use in a dataset page
 	 *
 	 * @param int $pageSize item per page settings
+	 * @param string "stored"|"resourced" determines wetheer to pull files from DB or API 
 	 * @return DatasetPageAssembly
 	 */
-	public function setDatasetFiles(int $pageSize): DatasetPageAssembly
+	public function setDatasetFiles(int $pageSize, string $source): DatasetPageAssembly
 	{
+		switch($source) {
+			case "resourced":
+				$datasetFiles = new ResourcedDatasetFiles(
+                                    $this->_dataset->id,
+                                    $this->_app->db,
+                                    $this->_fileUploadService
+                                );
+				break;
+			case "stored":
+				$datasetFiles = new StoredDatasetFiles(
+                                    $this->_dataset->id,
+                                    $this->_app->db
+                                );
+				break;
+			default:
+				$datasetFiles = null;
+				Yii::log("setDatasetFiles second parameter is incorrect. Expects 'stored' or 'resourced', got '$source'", "error");		
+
+		}
+
 		$this->_files = new FormattedDatasetFiles(
 							$pageSize,
                             new CachedDatasetFiles(
                                 $this->_app->cache,
                                  $this->_cacheDependency,
-                                new StoredDatasetFiles(
-                                    $this->_dataset->id,
-                                    $this->_app->db
-                                )
+                                $datasetFiles
                             )
                         );
 		return $this;
