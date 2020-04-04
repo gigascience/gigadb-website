@@ -34,13 +34,23 @@ class TokenService extends yii\base\Component
 
 	/**
 	 * Generate JWT token for a user
+	 * 
+	 * If the last two parameters are not provided or are null, the user is searched in the database
+	 * using email, and full name and role is retrieved from the database record
 	 *
 	 * @param string $email the email of the user to lookup and generate a token for
+	 * @param null|string $fullName name of the user for which to create the token
+	 * @param null|string $role GigaDB role of the user for which to create the token
 	 * @return \Lcobucci\JWT\Token the signed token
 	 */
-	public function generateTokenForUser(string $email): \Lcobucci\JWT\Token
+	public function generateTokenForUser(string $email, string $fullName = null, string $role = null): \Lcobucci\JWT\Token
 	{
-		$user = $this->users->findByEmail($email);
+		if( null === $fullName || null === $role ) {			
+			$user = $this->users->findByEmail($email);
+			$role = $user->role ;
+			$fullName = $user->getFullName() ;
+		}
+
 		$signer = $this->jwtSigner;
 		$issuedTime = $this->dt->format('U');
 		$notBeforeTime = $issuedTime ;
@@ -51,8 +61,8 @@ class TokenService extends yii\base\Component
             ->setAudience('fuw.gigadb.org') // Configures the audience (aud claim)
             ->setSubject('API Access request from client') // Configures the subject
             ->set('email', $email)
-            ->set('name', $user->getFullName())
-            ->set('role', $user->role)
+            ->set('name', $fullName)
+            ->set('role', $role)
             ->setIssuedAt($issuedTime) // Configures the time that the token was issue (iat claim)
             ->setNotBefore($notBeforeTime) // Configures the time before which the token cannot be accepted (nbf claim)
             ->setExpiration($expirationTime) // Configures the expiration time of the token (exp claim) 1 year
@@ -75,21 +85,38 @@ class TokenService extends yii\base\Component
 	public function createUser($token, $webClient, string $username, string $email): ?array
 	{
 
+		$user = null;
 		$api_endpoint = "http://fuw-admin-api/users";
-
 		try {
-			$response = $webClient->request('POST', $api_endpoint, [
+			//lets first get user in case it exists
+			$response = $webClient->request('POST', $api_endpoint."/lookup", [
 								    'headers' => [
 								        'Authorization' => "Bearer ".$token,
 								    ],
 								    'form_params' => [
-								        'username' => $username,
 								        'email' => $email,
 								    ],
 								    'connect_timeout' => 5,
 								]);
-			if (201 === $response->getStatusCode() ) {
-				return json_decode($response->getBody(), true);
+			if (200 === $response->getStatusCode() ) {
+				Yii::log("A user exists, no need to create a new one","info");
+				$user = json_decode($response->getBody(), true);
+			}
+			if(null === $user) { //user doesn't exist, let's create it
+				Yii::log("A user doesn't exists, so creating a new one","info");
+				$response = $webClient->request('POST', $api_endpoint, [
+									    'headers' => [
+									        'Authorization' => "Bearer ".$token,
+									    ],
+									    'form_params' => [
+									        'username' => $username,
+									        'email' => $email,
+									    ],
+									    'connect_timeout' => 5,
+									]);
+				if (201 === $response->getStatusCode() ) {
+					$user =  json_decode($response->getBody(), true);
+				}
 			}
 		}
 		catch(RequestException $e) {
@@ -98,7 +125,8 @@ class TokenService extends yii\base\Component
 		        Yii::log( Psr7\str($e->getResponse()), "error");
 		    }
 		}
-		return false;
+
+		return $user;
 	}
 
 /**

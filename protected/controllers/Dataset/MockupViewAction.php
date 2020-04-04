@@ -13,14 +13,31 @@ class MockupViewAction extends CAction
 
         // Yii::log("MockupAction in DatasetController with uuid: $uuid","info");
         // Retrieve mockup token data (email, validity and dataset DOI) based on url fragment 
-        $srv = new FileUploadService(["webClient" => new \GuzzleHttp\Client()]);
+        $srv = new FileUploadService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => 3600,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => new \GuzzleHttp\Client(),
+            ]);
+
         $tokenData = $srv->getMockupUrl($uuid);
         if (null === $tokenData) {
             throw new CHttpException(404, "Unknown mockup UUID");
         }
+
+        $srv->requesterEmail = $tokenData["reviewerEmail"];
+        $srv->requesterFullName = "Reviewer for dataset ".$tokenData["DOI"];
+        $srv->requesterRole = "system";
+        $srv->identifier = $tokenData["DOI"];
+        $srv->dataset = new DatasetDAO(["identifier" => $tokenData["DOI"]]);
+
         $model = Dataset::model()->findByAttributes(["identifier" => $tokenData["DOI"]]);
         $datasetPageSettings = new DatasetPageSettings($model);
-        $assembly = DatasetPageAssembly::assemble($model, Yii::app());
+        $assembly = DatasetPageAssembly::assemble($model, Yii::app(), $srv);
 
         if( "mockup" !== $datasetPageSettings->getPageType() ) {
             Yii::log("Incorrect page type is not 'mockup', instead got '".$datasetPageSettings->getPageType()."'", "error");
