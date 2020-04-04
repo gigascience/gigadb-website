@@ -61,6 +61,18 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
                 'jwt_token' => (string) $client_token,
           ]);
 
+        // create a user record
+        $this->I->amConnectedToDatabase('fuwdb');
+        $this->I->haveInDatabase('public.user', [
+              'username' => "${reviewerEmail}_$doi",
+              'auth_key' => FiledropAccount::generateRandomString(6),
+              'password_hash' => FiledropAccount::generateRandomString(6),
+              'email' => $reviewerEmail,
+              'created_at' => date("U"),
+              'updated_at' => date("U"),
+            ]);
+        $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
+
         $this->mockupUrl = "/dataset/mockup/uuid/".$uuid->toString();
     }
 

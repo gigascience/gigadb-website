@@ -8,7 +8,7 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class ResourcedDatasetFiles extends DatasetComponents //implements DatasetFilesInterface
+class ResourcedDatasetFiles extends DatasetComponents implements DatasetFilesInterface
 {
 	/** @var DB id of the dataset record for wich to retrieve files */
 	private $_id;
@@ -103,6 +103,11 @@ class ResourcedDatasetFiles extends DatasetComponents //implements DatasetFilesI
 		$command->bindValue(":name", $fileType);
 		$row = $command->queryRow();
 		return $row['id'];
+	}
+
+	public function getDatasetFilesSamples(): array
+	{
+		return [];
 	}
 
 
