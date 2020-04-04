@@ -44,6 +44,10 @@ class UserController extends ActiveController
         // disable the "delete" and "update" actions
         unset($actions['delete'], $actions['update']);
         $actions['create']['class'] = 'backend\actions\UserController\CreateAction';
+        $actions['lookup'] = [
+            "class" => "backend\actions\UserController\LookupAction",
+            "modelClass" => $this->modelClass,
+        ];
 
         return $actions;
     }
