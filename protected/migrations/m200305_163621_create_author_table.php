@@ -72,6 +72,35 @@ class m200305_163621_create_author_table extends CDbMigration
             'first_name' => 'Wentong'
         ));
         $this->insert('author', array(
+            'id' => '2630',
+            'surname' =>'Vattikuti',
+            'first_name' => 'Shashaank'
+        ));
+        $this->insert('author', array(
+            'id' => '2631',
+            'surname' =>'Lee',
+            'middle_name' => 'J',
+            'first_name' => 'James'
+        ));
+        $this->insert('author', array(
+            'id' => '2632',
+            'surname' =>'Chang',
+            'middle_name' => 'C',
+            'first_name' => 'Chris'
+        ));
+        $this->insert('author', array(
+            'id' => '2633',
+            'surname' =>'Hsu',
+            'middle_name' => 'DH',
+            'first_name' => 'S'
+        ));
+        $this->insert('author', array(
+            'id' => '2633',
+            'surname' =>'Chow',
+            'middle_name' => 'C',
+            'first_name' => 'Carson'
+        ));
+        $this->insert('author', array(
             'id' => '3305',
             'surname' =>'Yan',
             'first_name' => 'Guangmei'
@@ -102,14 +131,40 @@ class m200305_163621_create_author_table extends CDbMigration
             'first_name' => 'Geng'
         ));
         $this->insert('author', array(
+            'id' => '3325',
+            'surname' =>'Zhang',
+            'first_name' => 'Guojie'
+        ));
+        $this->insert('author', array(
+            'id' => '3257',
+            'surname' =>'Wang',
+            'first_name' => 'Jun'
+        ));
+        $this->insert('author', array(
             'id' => '3337',
             'surname' =>'Zhang',
             'first_name' => 'Yanfeng'
         ));
         $this->insert('author', array(
+            'id' => '3371',
+            'surname' =>'Lambert',
+            'middle_name' => 'M',
+            'first_name' => 'David'
+        ));
+        $this->insert('author', array(
             'id' => '3357',
             'surname' =>'Zhu',
             'first_name' => 'Hongmei'
+        ));
+        $this->insert('author', array(
+            'id' => '3724',
+            'surname' =>'Alnasir',
+            'first_name' => 'Jamie'
+        ));
+        $this->insert('author', array(
+            'id' => '3725',
+            'surname' =>'Shanahan',
+            'first_name' => 'Hugh'
         ));
     }
 

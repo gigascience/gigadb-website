@@ -122,6 +122,21 @@ class m200304_192607_create_dataset_table extends CDbMigration
             'publisher_id' => '2',
         ));
         $this->insert('dataset', array(
+            'id' => '16',
+            'submitter_id' => '8',
+            'image_id' => '16',
+            'identifier' => '100005',
+            'title' => 'Genomic data from the Emperor penguin (<em>Aptenodytes forsteri</em>).',
+            'description' => 'The Emperor penguin (<em>Aptenodytes forsteri</em>) is a large penguin, standing over 1 meter tall, with distinctive black, yellow and white markings.  Like most penguins, the emperor penguins are indigenous to Antarctica and exist between the 66th and 78th parallels.',
+            'dataset_size' => '760714240',
+            'ftp_site' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100005/',
+            'upload_status' => 'Published',
+            'excelfile' => 'GigaDBUploadForm_EmperorPenguin.xls',
+            'excelfile_md5' => '885969f9bdbed91a3c74d503958a3729',
+            'publication_date' => '2011-07-06',
+            'publisher_id' => '1',
+        ));
+        $this->insert('dataset', array(
             'id' => '25',
             'submitter_id' => '8',
             'image_id' => '25',
@@ -151,6 +166,36 @@ class m200304_192607_create_dataset_table extends CDbMigration
             'publication_date' => '2011-07-06',
             'modification_date' => '2012-04-27',
             'publisher_id' => '1',
+        ));
+        $this->insert('dataset', array(
+            'id' => '144',
+            'submitter_id' => '163',
+            'image_id' => '147',
+            'identifier' => '100094',
+            'title' => 'Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies.',
+            'description' => 'The aim of a genome-wide association study (GWAS) is to isolate DNA markers for variants affecting phenotypes of interest. Linear regression is employed for this purpose, and in recent years a signal-processing paradigm known as compressed sensing (CS) has coalesced around a particular class of regression techniques. CS is not a method in its own right, but rather a body of theory regarding signal recovery when the number of predictor variables (i.e., genotyped markers) exceeds the sample size. The paper shows the applicability of compressed sensing (CS) theory to genome-wide association studies (GWAS), where the purpose is to ﬁnd trait-associated tagging markers (genetic variants). Analysis scripts are contained in the compressed CS file. Mock data and scripts are found in the compressed GD file. The example scripts found in the CS repository require the GD files to be unpacked in a separate folder. Please look at accompanying readme pdfs for both repositories and annotations in the example scripts before using.',
+            'dataset_size' => '171860992',
+            'ftp_site' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100094',
+            'upload_status' => 'Published',
+            'publication_date' => '2014-06-06',
+            'publisher_id' => '1',
+            'token' => 'AWLGPriZKd41XEaS',
+        ));
+        $this->insert('dataset', array(
+            'id' => '200',
+            'submitter_id' => '336',
+            'image_id' => '212',
+            'identifier' => '100142',
+            'title' => 'Supporting scripts and data for "Investigation into the annotation of protocol sequencing steps in the Sequence Read Archive".',
+            'description' => 'The workflow for the production of high-throughput sequencing data from nucleic acid samples is complex. There are a series of protocol steps to be followed in the preparation of samples for next-generation sequencing.  The quantification of bias in a number of protocol steps, namely DNA fractionation, blunting, phosphorylation, adapter ligation and library enrichment, remains to be determined. \r+ We examined the experimental metadata of the public repository Sequence Read Archive (SRA) in order to ascertain the level of annotation of important sequencing steps in submissions to the database.',
+            'dataset_size' => '384263168',
+            'ftp_site' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100142',
+            'upload_status' => 'Published',
+            'excelfile' => '100142newversion.xls',
+            'excelfile_md5' => 'a98f1c13a46501707fb3fba270deb6e3',
+            'publication_date' => '2015-05-11',
+            'publisher_id' => '3',
+            'token' => 'eG8EFsRibZQzrtNw'
         ));
     }
 

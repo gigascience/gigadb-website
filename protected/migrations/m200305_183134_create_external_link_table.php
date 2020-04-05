@@ -84,6 +84,18 @@ class m200305_183134_create_external_link_table extends CDbMigration
             'url' => 'http://macaque.genomics.org.cn/',
             'external_link_type_id' => '2'
         ));
+        $this->insert('external_link', array(
+            'id' => '35',
+            'dataset_id' =>'144',
+            'url' => 'https://github.com/ShashaankV/CS',
+            'external_link_type_id' => '1'
+        ));
+        $this->insert('external_link', array(
+            'id' => '36',
+            'dataset_id' =>'144',
+            'url' => 'https://github.com/ShashaankV/GD',
+            'external_link_type_id' => '1'
+        ));
     }
 
     public function safeDown()

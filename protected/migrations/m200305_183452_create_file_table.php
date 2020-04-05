@@ -193,6 +193,31 @@ class m200305_183452_create_file_table extends CDbMigration
             'download_count' => '21'
         ));
         $this->insert('file', array(
+            'id' => '4340',
+            'dataset_id' =>'16',
+            'name' => 'readme.txt',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100005/readme.txt',
+            'extension' => 'txt',
+            'size' => '140',
+            'date_stamp' => '2011-07-06',
+            'format_id' => '1',
+            'type_id' => '1',
+            'download_count' => '6'
+        ));
+        $this->insert('file', array(
+            'id' => '4341',
+            'dataset_id' =>'16',
+            'name' => 'Aptenodytes_forsteri.scaf.fa.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100005/Aptenodytes_forsteri.scaf.fa.gz',
+            'extension' => 'fa',
+            'size' => '369587895',
+            'date_stamp' => '2011-07-06',
+            'format_id' => '2',
+            'type_id' => '132',
+            'code' => 'Aptenodytes_forsteri\r+',
+            'download_count' => '13'
+        ));
+        $this->insert('file', array(
             'id' => '5717',
             'dataset_id' =>'25',
             'name' => 'Evaluation_result_and_method_with_simulation_data.doc',
@@ -295,6 +320,192 @@ class m200305_183452_create_file_table extends CDbMigration
             'type_id' => '6',
             'code' => 'CR',
             'download_count' => '4'
+        ));
+        $this->insert('file', array(
+            'id' => '80842',
+            'dataset_id' =>'144',
+            'name' => 'readme.txt',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100094/readme.txt',
+            'extension' => 'txt',
+            'size' => '830',
+            'description' => 'Summary of uploaded files.  Read this file first',
+            'date_stamp' => '2014-06-06',
+            'format_id' => '1',
+            'type_id' => '1',
+            'download_count' => '1'
+        ));
+        $this->insert('file', array(
+            'id' => '80843',
+            'dataset_id' =>'144',
+            'name' => 'CS_readme.pdf',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100094/CS_readme.pdf',
+            'extension' => 'pdf',
+            'size' => '-1',
+            'description' => 'Summary of files in the CS-master.gz archive.',
+            'date_stamp' => '2014-06-06',
+            'format_id' => '3',
+            'type_id' => '1',
+            'download_count' => '0'
+        ));
+        $this->insert('file', array(
+            'id' => '80844',
+            'dataset_id' =>'144',
+            'name' => 'GD_readme.pdf',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100094/GD_readme.pdf',
+            'extension' => 'pdf',
+            'size' => '93218',
+            'description' => 'Summary of uploaded files in the GD repository.',
+            'date_stamp' => '2014-06-06',
+            'format_id' => '3',
+            'type_id' => '1',
+            'download_count' => '1'
+        ));
+        $this->insert('file', array(
+            'id' => '80845',
+            'dataset_id' =>'144',
+            'name' => 'CS-master.tar.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100094/CS-master.tar.gz',
+            'extension' => 'tar',
+            'size' => '117066',
+            'description' => 'compressed archive of the Analysis scripts (CS) files',
+            'date_stamp' => '2014-06-06',
+            'format_id' => '17',
+            'type_id' => '113',
+            'download_count' => '2'
+        ));
+        $this->insert('file', array(
+            'id' => '80846',
+            'dataset_id' =>'144',
+            'name' => 'GD-master.tar.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100094/GD-master.tar.gz',
+            'extension' => 'tar',
+            'size' => '171531316',
+            'description' => 'compressed archive of the mock data and scripts GD files',
+            'date_stamp' => '2014-06-06',
+            'format_id' => '17',
+            'type_id' => '125',
+            'download_count' => '4'
+        ));
+        $this->insert('file', array(
+            'id' => '81839',
+            'dataset_id' =>'16',
+            'name' => 'Aptenodytes_forsteri.cds.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100005/phylogeny_study_update/Aptenodytes_forsteri.cds.gz',
+            'extension' => 'cds',
+            'size' => '7111632',
+            'description' => 'coding sequence predictions on assembly',
+            'date_stamp' => '2014-07-09',
+            'format_id' => '2',
+            'type_id' => '4',
+            'code' => 'Aptenodytes_forsteri',
+            'download_count' => '69'
+        ));
+        $this->insert('file', array(
+            'id' => '81840',
+            'dataset_id' =>'16',
+            'name' => 'Aptenodytes_forsteri.fa.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100005/phylogeny_study_update/Aptenodytes_forsteri.fa.gz',
+            'extension' => 'fa',
+            'size' => '369513845',
+            'description' => 'assembled scaffolds from sequence data',
+            'date_stamp' => '2014-07-09',
+            'format_id' => '2',
+            'type_id' => '132',
+            'code' => 'Aptenodytes_forsteri',
+            'download_count' => '46'
+        ));
+        $this->insert('file', array(
+            'id' => '81841',
+            'dataset_id' =>'16',
+            'name' => 'Aptenodytes_forsteri.gff.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100005/phylogeny_study_update/Aptenodytes_forsteri.gff.gz',
+            'extension' => 'gff',
+            'size' => '1755582',
+            'description' => 'coding sequence annotations of assembly',
+            'date_stamp' => '2014-07-09',
+            'format_id' => '5',
+            'type_id' => '6',
+            'code' => 'Aptenodytes_forsteri',
+            'download_count' => '32'
+        ));
+        $this->insert('file', array(
+            'id' => '81842',
+            'dataset_id' =>'16',
+            'name' => 'Aptenodytes_forsteri.pep.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100005/phylogeny_study_update/Aptenodytes_forsteri.pep.gz',
+            'extension' => 'pep',
+            'size' => '4610970',
+            'description' => 'peptide translations of CDS predictions',
+            'date_stamp' => '2014-07-09',
+            'format_id' => '2',
+            'type_id' => '5',
+            'code' => 'Aptenodytes_forsteri',
+            'download_count' => '36'
+        ));
+        $this->insert('file', array(
+            'id' => '81843',
+            'dataset_id' =>'16',
+            'name' => 'Aptenodytes_forsteri.RepeatMasker.out.gz',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100005/phylogeny_study_update/Aptenodytes_forsteri.RepeatMasker.out.gz',
+            'extension' => 'out',
+            'size' => '8113611',
+            'description' => 'repeat masker results',
+            'date_stamp' => '2014-07-09',
+            'format_id' => '6',
+            'type_id' => '73',
+            'code' => 'Aptenodytes_forsteri',
+            'download_count' => '5'
+        ));
+        $this->insert('file', array(
+            'id' => '87516',
+            'dataset_id' =>'200',
+            'name' => 'readme.txt',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100142/readme.txt',
+            'extension' => 'txt',
+            'size' => '2351',
+            'description' => 'image usedin manuscript',
+            'date_stamp' => '2015-04-29',
+            'format_id' => '1',
+            'type_id' => '1',
+            'download_count' => '2'
+        ));
+        $this->insert('file', array(
+            'id' => '87517',
+            'dataset_id' =>'200',
+            'name' => 'Diagram-ALL-FIELDS-Check-annotation.jpg',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100142/Diagram-ALL-FIELDS-Check-annotation.jpg',
+            'extension' => 'jpg',
+            'size' => '55547',
+            'description' => 'image usedin manuscript',
+            'date_stamp' => '2015-04-29',
+            'format_id' => '6',
+            'type_id' => '41',
+            'download_count' => '3'
+        ));
+        $this->insert('file', array(
+            'id' => '87540',
+            'dataset_id' =>'200',
+            'name' => 'SRAmetadb.zip',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100142/SRAmetadb.zip',
+            'extension' => 'zip',
+            'size' => '383892184',
+            'description' => 'Archival copy of SRA metadata at time of experiment',
+            'date_stamp' => '2015-04-29',
+            'format_id' => '6',
+            'type_id' => '7',
+            'download_count' => '2'
+        ));
+        $this->insert('file', array(
+            'id' => '87542',
+            'dataset_id' =>'200',
+            'name' => 'Diagram-SRA-Study-Experiment-Joined-probing.jpg',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100142/Diagram-SRA-Study-Experiment-Joined-probing.jpg',
+            'extension' => 'jpg',
+            'size' => '81717',
+            'date_stamp' => '2015-04-30',
+            'format_id' => '6',
+            'type_id' => '41',
+            'download_count' => '0'
         ));
     }
 

@@ -66,6 +66,15 @@ class m200304_155540_create_image_table extends CDbMigration
             'source' => 'Wikimedia Commons'
         ));
         $this->insert('image', array(
+            'id' => '16',
+            'location' => '100005_Aptenodytes_forsteri.jpg',
+            'tag' => 'Emperor penguins',
+            'url' => 'http://gigadb.org/images/data/cropped/100005_Aptenodytes_forsteri.jpg',
+            'license' => 'Public Domain, US Government',
+            'photographer' => 'Michael Van Woert, 1999',
+            'source' => '<a href="http://www.photolib.noaa.gov/htmls/corp2566.htm">NOAA Photo Library</a>'
+        ));
+        $this->insert('image', array(
             'id' => '25',
             'location' => '100004_Ailuropoda_melanoleuca.jpg',
             'tag' => 'Giant panda',
@@ -82,6 +91,22 @@ class m200304_155540_create_image_table extends CDbMigration
             'license' => 'CC-BY',
             'photographer' => 'Geoff Gallice',
             'source' => 'Flickr: EOL Images'
+        ));
+        $this->insert('image', array(
+            'id' => '147',
+            'tag' => 'CS icon1',
+            'license' => 'public domain',
+            'photographer' => 'Shashaank Vattikuti',
+            'source' => 'Gigascience'
+        ));
+        $this->insert('image', array(
+            'id' => '212',
+            'location' => '100142.jpg',
+            'tag' => 'Overlap between different protocol search terms',
+            'url' => 'http://gigadb.org/images/data/cropped/100142.jpg',
+            'license' => 'CC0',
+            'photographer' => 'Alnasir and Shanahan 2015',
+            'source' => 'Alnasir and Shanahan 2015'
         ));
     }
 

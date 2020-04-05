@@ -158,6 +158,66 @@ class m200305_164525_create_dataset_author_table extends CDbMigration
             'author_id' => '3357',
             'rank' => '4'
         ));
+        $this->insert('dataset_author', array(
+            'id' => '248',
+            'dataset_id' => '16',
+            'author_id' => '3325',
+            'rank' => '2'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '249',
+            'dataset_id' => '16',
+            'author_id' => '3371',
+            'rank' => '3'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '250',
+            'dataset_id' => '16',
+            'author_id' => '3357',
+            'rank' => '5'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '2351',
+            'dataset_id' => '144',
+            'author_id' => '2630',
+            'rank' => '1'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '2352',
+            'dataset_id' => '144',
+            'author_id' => '2631',
+            'rank' => '2'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '2353',
+            'dataset_id' => '144',
+            'author_id' => '2632',
+            'rank' => '3'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '2354',
+            'dataset_id' => '144',
+            'author_id' => '2633',
+            'rank' => '4'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '2355',
+            'dataset_id' => '144',
+            'author_id' => '2634',
+            'rank' => '5'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '8827',
+            'dataset_id' => '200',
+            'author_id' => '3724',
+            'rank' => '1'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '8828',
+            'dataset_id' => '200',
+            'author_id' => '3725',
+            'rank' => '2'
+        ));
     }
 
     public function safeDown()

@@ -58,6 +58,22 @@ class m200305_165138_create_dataset_log_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('dataset_log', array(
+            'id' => '67',
+            'dataset_id' =>'200',
+            'message' => 'Dataset publish',
+            'created_at' => '2015-05-11 03:00:01.186898',
+            'model' => 'dataset',
+            'model_id' => '200',
+        ));
+        $this->insert('dataset_log', array(
+            'id' => '68',
+            'dataset_id' =>'200',
+            'message' => 'Description updated from : The workflow for the production of high-throughput sequencing data from nucleic acid samples is complex. There are a series of protocol steps to be followed in the preparation of samples for next-generation sequencing.  The quantification of bias in a number of protocol steps, namely DNA fractionation, blunting, phosphorylation, adapter ligation and library enrichment, remains to be determined.',
+            'created_at' => '2015-05-11 03:00:01.306238',
+            'model' => 'dataset',
+            'model_id' => '200',
+        ));
+        $this->insert('dataset_log', array(
             'id' => '498',
             'dataset_id' =>'25',
             'message' => 'File 080620_I330_FC304NVAAXX_L3_PAfwDADHAAPE_1.fq.clean.gz updated',

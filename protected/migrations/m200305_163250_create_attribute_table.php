@@ -184,6 +184,11 @@ class m200305_163250_create_attribute_table extends CDbMigration
             'occurance' => '1'
         ));
         $this->insert('attribute', array(
+            'id' => '455',
+            'attribute_name' => 'keyword',
+            'structured_comment_name' => 'serkeywordsovar',
+        ));
+        $this->insert('attribute', array(
             'id' => '497',
             'attribute_name' => 'urltoredirect',
             'structured_comment_name' => 'urltoredirect'

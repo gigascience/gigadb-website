@@ -70,6 +70,11 @@ class m200305_172240_create_dataset_sample_table extends CDbMigration
             'sample_id' =>'336'
         ));
         $this->insert('dataset_sample', array(
+            'id' => '337',
+            'dataset_id' =>'16',
+            'sample_id' =>'337'
+        ));
+        $this->insert('dataset_sample', array(
             'id' => '453',
             'dataset_id' =>'25',
             'sample_id' =>'452'

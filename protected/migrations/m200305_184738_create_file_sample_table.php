@@ -100,6 +100,11 @@ class m200305_184738_create_file_sample_table extends CDbMigration
             'file_id' => '4336'
         ));
         $this->insert('file_sample', array(
+            'id' => '4053',
+            'sample_id' =>'337',
+            'file_id' => '4341'
+        ));
+        $this->insert('file_sample', array(
             'id' => '5203',
             'sample_id' =>'452',
             'file_id' => '5717'
@@ -138,6 +143,31 @@ class m200305_184738_create_file_sample_table extends CDbMigration
             'id' => '5691',
             'sample_id' =>'456',
             'file_id' => '6205'
+        ));
+        $this->insert('file_sample', array(
+            'id' => '15751',
+            'sample_id' =>'337',
+            'file_id' => '81839'
+        ));
+        $this->insert('file_sample', array(
+            'id' => '15752',
+            'sample_id' =>'337',
+            'file_id' => '81840'
+        ));
+        $this->insert('file_sample', array(
+            'id' => '15753',
+            'sample_id' =>'337',
+            'file_id' => '81841'
+        ));
+        $this->insert('file_sample', array(
+            'id' => '15754',
+            'sample_id' =>'337',
+            'file_id' => '81842'
+        ));
+        $this->insert('file_sample', array(
+            'id' => '15755',
+            'sample_id' =>'337',
+            'file_id' => '81843'
         ));
     }
 

@@ -65,6 +65,11 @@ class m200305_172026_create_dataset_project_table extends CDbMigration
             'project_id' => '2'
         ));
         $this->insert('dataset_project', array(
+            'id' => '7',
+            'dataset_id' =>'16',
+            'project_id' => '2'
+        ));
+        $this->insert('dataset_project', array(
             'id' => '9',
             'dataset_id' =>'25',
             'project_id' => '2'
@@ -73,6 +78,11 @@ class m200305_172026_create_dataset_project_table extends CDbMigration
             'id' => '12',
             'dataset_id' =>'29',
             'project_id' => '2'
+        ));
+        $this->insert('dataset_project', array(
+            'id' => '125',
+            'dataset_id' =>'16',
+            'project_id' => '3'
         ));
     }
 
