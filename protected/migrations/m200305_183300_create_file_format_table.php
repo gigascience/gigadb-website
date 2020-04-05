@@ -49,6 +49,12 @@ class m200305_183300_create_file_format_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('file_format', array(
+            'id' => '1',
+            'name' =>'TEXT',
+            'description' => '(.readme, .text, .txt) - a text file',
+            'edam_ontology_id' => 'data_3671'
+        ));
+        $this->insert('file_format', array(
             'id' => '2',
             'name' =>'FASTA',
             'description' => '(.fa, .fasta, .chr, .seq, .cds, .pep, .scaffold, .scafseq, .fna, .ffn, .faa, .frn) A text-based format which begins with a single-line description, followed by lines of sequence data',
