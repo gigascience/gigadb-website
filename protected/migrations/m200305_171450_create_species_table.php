@@ -71,6 +71,13 @@ class m200305_171450_create_species_table extends CDbMigration
             'scientific_name' => 'Aptenodytes forsteri'
         ));
         $this->insert('species', array(
+            'id' => '20',
+            'tax_id' => '4555',
+            'common_name' => 'Foxtail millet',
+            'genbank_name' => 'foxtail millet',
+            'scientific_name' => 'Setaria italica'
+        ));
+        $this->insert('species', array(
             'id' => '23',
             'tax_id' => '9646',
             'common_name' => 'Giant panda',

@@ -166,6 +166,16 @@ class m200305_163621_create_author_table extends CDbMigration
             'surname' =>'Shanahan',
             'first_name' => 'Hugh'
         ));
+        $this->insert('author', array(
+            'id' => '5209',
+            'surname' =>'Ni',
+            'first_name' => 'Xuemei'
+        ));
+        $this->insert('author', array(
+            'id' => '4402',
+            'surname' =>'Xia',
+            'first_name' => 'Qiuju'
+        ));
     }
 
     public function safeDown()

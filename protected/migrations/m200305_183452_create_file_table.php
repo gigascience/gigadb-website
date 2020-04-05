@@ -507,6 +507,54 @@ class m200305_183452_create_file_table extends CDbMigration
             'type_id' => '41',
             'download_count' => '0'
         ));
+        $this->insert('file', array(
+            'id' => '93182',
+            'dataset_id' =>'268',
+            'name' => 'chr1_last.snp',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100213/184RILs_SNP/chr1_last.snp',
+            'extension' => 'snp',
+            'size' => '16434440',
+            'date_stamp' => '2016-07-25',
+            'format_id' => '6',
+            'type_id' => '7',
+            'download_count' => '147'
+        ));
+        $this->insert('file', array(
+            'id' => '93192',
+            'dataset_id' =>'268',
+            'name' => 'chr2.fa',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100213/zhanggu_genome_new_version/chr2.fa',
+            'extension' => 'fa',
+            'size' => '52796915',
+            'date_stamp' => '2016-07-25',
+            'format_id' => '2',
+            'type_id' => '9',
+            'download_count' => '171'
+        ));
+        $this->insert('file', array(
+            'id' => '93194',
+            'dataset_id' =>'268',
+            'name' => 'chr4.fa',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100213/zhanggu_genome_new_version/chr4.fa',
+            'extension' => 'fa',
+            'size' => '44216078',
+            'date_stamp' => '2016-07-25',
+            'format_id' => '2',
+            'type_id' => '9',
+            'download_count' => '151'
+        ));
+        $this->insert('file', array(
+            'id' => '93196',
+            'dataset_id' =>'268',
+            'name' => 'chr6.fa',
+            'location' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100213/zhanggu_genome_new_version/chr6.fa',
+            'extension' => 'fa',
+            'size' => '37667011',
+            'date_stamp' => '2016-07-25',
+            'format_id' => '2',
+            'type_id' => '9',
+            'download_count' => '98'
+        ));
     }
 
     public function safeDown()

@@ -59,6 +59,12 @@ class m200305_164720_create_funder_name_table extends CDbMigration
             'primary_name_display' => 'State Key Development Program for Basic Research of China-973 Program',
             'country' => 'China'
         ));
+        $this->insert('funder_name', array(
+            'id' => '6187',
+            'uri' =>'unknown',
+            'primary_name_display' => 'Basic Research Program Support by Shenzhen  Municipal Government',
+            'country' => 'China'
+        ));
     }
 
     public function safeDown()
