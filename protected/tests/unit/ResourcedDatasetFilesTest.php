@@ -97,6 +97,7 @@ public function testResourcedReturnsDatasetFilesWithResults()
 		        'datatype' => 'Text',
 		        'extension' => 'DOCX',
 		        'sample_id' => null,
+		        'updated_at' => (new DateTime())->format('U'),
 		    ],
 		    [
 		        'id' => 2,
@@ -110,6 +111,7 @@ public function testResourcedReturnsDatasetFilesWithResults()
 		        'datatype' => 'Text',
 		        'extension' => 'CSV',
 		        'sample_id' => null,
+		        'updated_at' => (new DateTime())->format('U'),
 		    ],
 		    [
 		        'id' => 3,
@@ -123,6 +125,7 @@ public function testResourcedReturnsDatasetFilesWithResults()
 		        'datatype' => 'Annotation',
 		        'extension' => 'JPG',
 		        'sample_id' => null,
+		        'updated_at' => (new DateTime())->format('U'),
 		    ],
 		];
 		$fuwClient = $this->createMock(FileUploadService::class);
@@ -144,8 +147,9 @@ public function testResourcedReturnsDatasetFilesWithResults()
 		$this->assertEquals("docx",$datasetFiles[0]["extension"]);
 		$this->assertEquals($uploadedFiles[0]["size"],$datasetFiles[0]["size"]);
 		$this->assertEquals($uploadedFiles[0]["description"],$datasetFiles[0]["description"]);
-		$this->assertEquals(4,$datasetFiles[0]["format_id"]);
-		$this->assertEquals(1,$datasetFiles[0]["type_id"]);
+		$this->assertEquals("DOCX",$datasetFiles[0]["format"]);
+		$this->assertEquals("Text",$datasetFiles[0]["type"]);
+		$this->assertNotNull($datasetFiles[0]["date_stamp"]);
 		//test that the returned array is compatible with an array of File
 		/* 'id' => 1,
 		'dataset_id' => 1,

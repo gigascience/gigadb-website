@@ -19,7 +19,7 @@ modules:
                     password: 'yii2advanced'
                     cleanup: false # don't reload dump between tests
                     populate: false # don't load dump before all tests
-                    reconnect: false
+                    reconnect: true
                     waitlock: 10
         - WebDriver:
              url: 'http://gigadb.test'

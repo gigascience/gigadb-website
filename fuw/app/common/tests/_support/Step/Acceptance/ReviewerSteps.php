@@ -9,6 +9,7 @@ use \Behat\Gherkin\Node\TableNode;
 use \Codeception\Util\ActionSequence;
 use Ramsey\Uuid\Uuid;
 use Lcobucci\JWT\Builder;
+use common\models\Upload;
 Use Yii;
 
 class ReviewerSteps #extends \common\tests\AcceptanceTester
@@ -76,6 +77,33 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
         $this->mockupUrl = "/dataset/mockup/uuid/".$uuid->toString();
     }
 
+    /**
+     * @Given file uploads have been uploaded for DOI :arg1
+     */
+     public function fileUploadsHaveBeenUploadedForDOI($doi)
+     {
+        $this->I->amConnectedToDatabase('fuwdb');
+        $this->I->haveInDatabase('public.upload', [
+                'doi' => $doi,
+                'name' => "seq1.fa",
+                'size' => 24564343,
+                'status' => Upload::STATUS_UPLOADING,
+                'location' => "ftp://seq1.fa",
+                'extension' => 'FASTA',
+                'datatype' => 'Sequence assembly'
+          ]);
+        $this->I->haveInDatabase('public.upload', [
+                'doi' => $doi,
+                'name' => "Specimen.pdf",
+                'size' => 19564,
+                'status' => Upload::STATUS_UPLOADING,
+                'location' => "ftp://Specimen.pdf",
+                'extension' => 'PDF',
+                'datatype' => 'Annotation'
+          ]);
+        $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
+     }
+
      /**
      * @When I browse to the mockup url
      */
@@ -83,5 +111,22 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
     {
         $this->I->amOnPage($this->mockupUrl);
     }
+
+    /**
+     * @Then I should see the files
+     */
+     public function iShouldSeeTheFiles(TableNode $files)
+     {
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            $this->I->see($row[0]);
+            $this->I->see($row[1]);
+            $this->I->see($row[2]);
+            $this->I->see($row[3]);
+        }
+     }
 
 }

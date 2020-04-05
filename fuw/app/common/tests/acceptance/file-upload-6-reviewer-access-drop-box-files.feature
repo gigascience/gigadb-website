@@ -1,3 +1,4 @@
+@view-mockup @mockup
 Feature:
 	As a Reviewer
 	I want to access the privately uploaded files of a submitted dataset
@@ -23,14 +24,15 @@ Scenario: The page at the unique and time-limed url show dataset info
 	And I should see "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo"
 
 
-
-# Scenario: The page at the unique and time-limed url show uploaded files
-# 	Given a mockup url has been created for reviewer "artie_dodger@foobar.com" and dataset with DOI "000007"
-# 	When I browse to the mockup url
-# 	Then I should see "Dataset Fantastic"
-# 	And I should see "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo"
-# 	And I should see "TheProof.csv"
-# 	And I should see "CC0_pixel.jpg"
+@ok
+Scenario: The page at the unique and time-limed url show uploaded files (no sample, attributes)
+	Given file uploads have been uploaded for DOI "000007"
+	And a mockup url has been created for reviewer "artie_dodger@foobar.com" and dataset with DOI "000007"
+	When I browse to the mockup url
+	Then I should see the files
+	| File Name | Data Type | File Format | Size |
+	| seq1.fa | Sequence assembly | FASTA | 23.43 MiB |
+	| Specimen.pdf | Annotation | PDF | 19.11 KiB |
 
 # Scenario: I can download the drop box file locations from the private mockup dataset page
 # 	Given I have a received a link "/dataset/mockup/6ba41e9f81baf4ba2bb6d5ecc3e858b0"
