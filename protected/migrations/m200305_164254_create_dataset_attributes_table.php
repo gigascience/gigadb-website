@@ -70,6 +70,30 @@ class m200305_164254_create_dataset_attributes_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('dataset_attributes', array(
+            'id' => '13',
+            'dataset_id' =>'200',
+            'attribute_id' => '455',
+            'value' => 'Sequence Read Archive'
+        ));
+        $this->insert('dataset_attributes', array(
+            'id' => '14',
+            'dataset_id' =>'200',
+            'attribute_id' => '455',
+            'value' => 'metadata'
+        ));
+        $this->insert('dataset_attributes', array(
+            'id' => '15',
+            'dataset_id' =>'200',
+            'attribute_id' => '455',
+            'value' => 'SQL'
+        ));
+        $this->insert('dataset_attributes', array(
+            'id' => '16',
+            'dataset_id' =>'200',
+            'attribute_id' => '455',
+            'value' => 'experimental protocol'
+        ));
+        $this->insert('dataset_attributes', array(
             'id' => '2436',
             'dataset_id' =>'29',
             'attribute_id' => '497',

@@ -55,6 +55,12 @@ class m200305_183300_create_file_format_table extends CDbMigration
             'edam_ontology_id' => 'format_1929'
             ));
         $this->insert('file_format', array(
+            'id' => '3',
+            'name' =>'PDF',
+            'description' => '(.pdf) - portable document format',
+            'edam_ontology_id' => 'format_3508'
+        ));
+        $this->insert('file_format', array(
             'id' => '5',
             'name' =>'GFF',
             'description' => '(.gff) - The General Feature Format (GFF) is used for describing genes and other features of DNA, RNA and protein sequences',
@@ -81,6 +87,11 @@ class m200305_183300_create_file_format_table extends CDbMigration
             'id' => '12',
             'name' =>'KEGG',
             'description' => '(.kegg) - the Web Gene Ontology (WEGO) Annotation format consists of the protein ID, followed by column(s) that are the KEGG (Kyoto Encyclopedia of Genes and Genomes) ID(s):\r+'
+        ));
+        $this->insert('file_format', array(
+            'id' => '17',
+            'name' =>'TAR',
+            'description' => '(.tar) - an archive containing other files'
         ));
         $this->insert('file_format', array(
             'id' => '43',

@@ -79,6 +79,36 @@ class m200305_190311_create_manuscript_table extends CDbMigration
             'dataset_id' => '29'
         ));
         $this->insert('manuscript', array(
+            'id' => '86',
+            'identifier' =>'10.1186/2047-217X-3-10',
+            'dataset_id' => '144'
+        ));
+        $this->insert('manuscript', array(
+            'id' => '118',
+            'identifier' =>'10.1186/2047-217X-3-26',
+            'dataset_id' => '16'
+        ));
+        $this->insert('manuscript', array(
+            'id' => '162',
+            'identifier' =>'10.1186/2047-217X-3-27',
+            'dataset_id' => '16'
+        ));
+        $this->insert('manuscript', array(
+            'id' => '167',
+            'identifier' =>'10.1126/science.1251385',
+            'dataset_id' => '16'
+        ));
+        $this->insert('manuscript', array(
+            'id' => '218',
+            'identifier' =>'10.1126/science.1253451',
+            'dataset_id' => '16'
+        ));
+        $this->insert('manuscript', array(
+            'id' => '281',
+            'identifier' =>'10.1186/s13742-015-0064-7',
+            'dataset_id' => '200'
+        ));
+        $this->insert('manuscript', array(
             'id' => '473',
             'identifier' =>'10.1093/gigascience/gix082',
             'dataset_id' => '15'

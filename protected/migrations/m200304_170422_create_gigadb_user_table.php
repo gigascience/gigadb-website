@@ -154,6 +154,30 @@ class m200304_170422_create_gigadb_user_table extends CDbMigration
             'previous_newsletter_state' => 'true',
             'username' => 'test+gigadb_user3@gigasciencejournal.com'
         ));
+        $this->insert('gigadb_user', array(
+            'id' => '163',
+            'email' => 'test+gigadb_user4@gigasciencejournal.com',
+            'password' => '',
+            'first_name' => 'test',
+            'last_name' => 'gigadb_user4',
+            'affiliation' => 'BGI',
+            'is_activated' => 'false',
+            'newsletter' => 'true',
+            'previous_newsletter_state' => 'true',
+            'username' => 'test+gigadb_user4@gigasciencejournal.com'
+        ));
+        $this->insert('gigadb_user', array(
+            'id' => '336',
+            'email' => 'test+gigadb_user5@gigasciencejournal.com',
+            'password' => '',
+            'first_name' => 'test',
+            'last_name' => 'gigadb_user5',
+            'affiliation' => 'BGI',
+            'is_activated' => 'false',
+            'newsletter' => 'true',
+            'previous_newsletter_state' => 'true',
+            'username' => 'test+gigadb_user5@gigasciencejournal.com'
+        ));
     }
 
     public function safeDown()

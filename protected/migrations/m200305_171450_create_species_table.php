@@ -64,6 +64,13 @@ class m200305_171450_create_species_table extends CDbMigration
             'scientific_name' => 'Escherichia coli'
         ));
         $this->insert('species', array(
+            'id' => '15',
+            'tax_id' => '9233',
+            'common_name' => 'Emperor penguin',
+            'genbank_name' => 'emperor penguin',
+            'scientific_name' => 'Aptenodytes forsteri'
+        ));
+        $this->insert('species', array(
             'id' => '23',
             'tax_id' => '9646',
             'common_name' => 'Giant panda',

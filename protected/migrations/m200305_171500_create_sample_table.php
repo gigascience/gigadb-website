@@ -99,6 +99,15 @@ class m200305_171500_create_sample_table extends CDbMigration
             'contact_author_email' => 'zhanggj@genomics.cn'
         ));
         $this->insert('sample', array(
+            'id' => '337',
+            'species_id' => '15',
+            'name' => 'Aptenodytes_forsteri',
+            'submitted_id' => '8',
+            'submission_date' => '2011-07-06',
+            'contact_author_name' => 'Guojie Zhang',
+            'contact_author_email' => 'zhanggj@genomics.cn'
+        ));
+        $this->insert('sample', array(
             'id' => '453',
             'species_id' => '27',
             'name' => 'CR',

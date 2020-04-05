@@ -54,6 +54,12 @@ class m200305_172001_create_project_table extends CDbMigration
             'name' => 'Genome 10K',
             'image_location' => 'http://gigadb.org/images/project/G10Klogo.jpg'
         ));
+        $this->insert('project', array(
+            'id' => '3',
+            'url' =>'http://avian.genomics.cn/en/index.html',
+            'name' => 'The Avian Phylogenomic Project',
+            'image_location' => 'http://gigadb.org/images/project/phylogenomiclogo.png'
+        ));
     }
 
     public function safeDown()

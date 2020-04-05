@@ -49,6 +49,11 @@ class m200305_183350_create_file_type_table extends CDbMigration
         // logging is provided and will be easier to update
         // if required.
         $this->insert('file_type', array(
+            'id' => '1',
+            'name' =>'Readme',
+            'description' => 'A text document describing the data/files available from the GigaDB FTP server for this dataset.',
+        ));
+        $this->insert('file_type', array(
             'id' => '4',
             'name' =>'Coding sequence',
             'description' => 'Predcited protein-coding regions (CDS or exon) or open reading frames in nucleotide sequences.',
@@ -67,15 +72,44 @@ class m200305_183350_create_file_type_table extends CDbMigration
             'edam_ontology_id' => 'none'
         ));
         $this->insert('file_type', array(
+            'id' => '7',
+            'name' =>'Other',
+            'description' => 'to be used when no appropriate file type is available',
+            'edam_ontology_id' => 'none'
+        ));
+        $this->insert('file_type', array(
             'id' => '9',
             'name' =>'Genome sequence',
             'description' => 'nucleotide sequence file, these could be filtered or raw, but usually GigaDB only hosts processed sequence files, the raw should be deposited in the SRA',
             'edam_ontology_id' => 'data_2977'
         ));
         $this->insert('file_type', array(
+            'id' => '41',
+            'name' =>'Image',
+            'description' => 'Biological or biomedical data has been rendered into an image, typically for display on screen.',
+            'edam_ontology_id' => 'data_2968'
+        ));
+        $this->insert('file_type', array(
             'id' => '64',
             'name' =>'Article',
             'description' => 'A document of scientific text, for example; a full text article from a scientific journal, or a supplemental file, or even formal unpublished documentation of software/scripts'
+        ));
+        $this->insert('file_type', array(
+            'id' => '73',
+            'name' =>'Repeat sequence',
+            'description' => 'This includes long terminal repeats (LTRs); sequences (typically retroviral) directly repeated at both ends of a defined sequence and other types of repeating unit. Repetitive elements within a nucleic acid sequence.',
+            'edam_ontology_id' => 'topic_3126',
+        ));
+        $this->insert('file_type', array(
+            'id' => '113',
+            'name' =>'Script',
+            'description' => 'includes text files of command lines used to run software applications, as well as more complex scripts such as R, perl and python scripts.'
+        ));
+        $this->insert('file_type', array(
+            'id' => '125',
+            'name' =>'Mixed archive',
+            'description' => 'a compressed file containing a collection of data files of mixed types',
+            'edam_ontology_id' => 'none'
         ));
         $this->insert('file_type', array(
             'id' => '127',

@@ -75,6 +75,11 @@ class m200305_174022_create_dataset_type_table extends CDbMigration
             'type_id' =>'2'
         ));
         $this->insert('dataset_type', array(
+            'id' => '19',
+            'dataset_id' => '16',
+            'type_id' =>'2'
+        ));
+        $this->insert('dataset_type', array(
             'id' => '28',
             'dataset_id' => '25',
             'type_id' =>'2'
@@ -83,6 +88,16 @@ class m200305_174022_create_dataset_type_table extends CDbMigration
             'id' => '32',
             'dataset_id' => '29',
             'type_id' =>'2'
+        ));
+        $this->insert('dataset_type', array(
+            'id' => '163',
+            'dataset_id' => '144',
+            'type_id' =>'6'
+        ));
+        $this->insert('dataset_type', array(
+            'id' => '240',
+            'dataset_id' => '200',
+            'type_id' =>'16'
         ));
     }
 
