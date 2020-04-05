@@ -95,7 +95,7 @@ class m200305_163621_create_author_table extends CDbMigration
             'first_name' => 'S'
         ));
         $this->insert('author', array(
-            'id' => '2633',
+            'id' => '2634',
             'surname' =>'Chow',
             'middle_name' => 'C',
             'first_name' => 'Carson'
@@ -129,11 +129,6 @@ class m200305_163621_create_author_table extends CDbMigration
             'id' => '3245',
             'surname' =>'Tian',
             'first_name' => 'Geng'
-        ));
-        $this->insert('author', array(
-            'id' => '3325',
-            'surname' =>'Zhang',
-            'first_name' => 'Guojie'
         ));
         $this->insert('author', array(
             'id' => '3257',
