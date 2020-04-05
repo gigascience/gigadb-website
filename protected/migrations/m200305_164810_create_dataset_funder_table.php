@@ -73,6 +73,12 @@ class m200305_164810_create_dataset_funder_table extends CDbMigration
             'dataset_id' =>'204',
             'funder_id' => '6171'
         ));
+        $this->insert('dataset_funder', array(
+            'id' => '98',
+            'dataset_id' =>'268',
+            'funder_id' => '6187',
+            'grant_award' => 'NO.JCYJ20120618172523025'
+        ));
     }
 
     public function safeDown()

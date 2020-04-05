@@ -218,6 +218,18 @@ class m200305_164525_create_dataset_author_table extends CDbMigration
             'author_id' => '3725',
             'rank' => '2'
         ));
+        $this->insert('dataset_author', array(
+            'id' => '9587',
+            'dataset_id' => '268',
+            'author_id' => '5209',
+            'rank' => '1'
+        ));
+        $this->insert('dataset_author', array(
+            'id' => '9588',
+            'dataset_id' => '268',
+            'author_id' => '4402',
+            'rank' => '2'
+        ));
     }
 
     public function safeDown()

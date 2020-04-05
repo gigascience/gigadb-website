@@ -99,6 +99,16 @@ class m200305_174022_create_dataset_type_table extends CDbMigration
             'dataset_id' => '200',
             'type_id' =>'16'
         ));
+        $this->insert('dataset_type', array(
+            'id' => '341',
+            'dataset_id' => '268',
+            'type_id' =>'2'
+        ));
+        $this->insert('dataset_type', array(
+            'id' => '342',
+            'dataset_id' => '268',
+            'type_id' =>'13'
+        ));
     }
 
     public function safeDown()

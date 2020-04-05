@@ -134,6 +134,11 @@ class m200305_171500_create_sample_table extends CDbMigration
             'contact_author_name' => 'Guojie Zhang',
             'contact_author_email' => 'zhanggj@genomics.cn'
         ));
+        $this->insert('sample', array(
+            'id' => '17705',
+            'species_id' => '20',
+            'name' => 'ZA977',
+        ));
     }
 
     public function safeDown()

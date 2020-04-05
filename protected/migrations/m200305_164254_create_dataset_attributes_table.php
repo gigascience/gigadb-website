@@ -94,6 +94,12 @@ class m200305_164254_create_dataset_attributes_table extends CDbMigration
             'value' => 'experimental protocol'
         ));
         $this->insert('dataset_attributes', array(
+            'id' => '239',
+            'dataset_id' =>'268',
+            'attribute_id' => '455',
+            'value' => 'genome assembly foxtail millet'
+        ));
+        $this->insert('dataset_attributes', array(
             'id' => '2436',
             'dataset_id' =>'29',
             'attribute_id' => '497',

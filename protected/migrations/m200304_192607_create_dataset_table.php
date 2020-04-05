@@ -197,6 +197,23 @@ class m200304_192607_create_dataset_table extends CDbMigration
             'publisher_id' => '3',
             'token' => 'eG8EFsRibZQzrtNw'
         ));
+        $this->insert('dataset', array(
+            'id' => '268',
+            'submitter_id' => '598',
+            'image_id' => '281',
+            'identifier' => '100213',
+            'title' => 'Gene mapping data of nine agronomic traits and genome assembly data of a foxtail millet RIL population',
+            'description' => 'Foxtail millet (Setaria italica) provides food and fodder in semi-arid regions and infertile land. Resequencing of 184 foxtail millet recombinant inbred lines (RILs) was performed to aid the research on species improvement. Bin map were constructed based on the RILs’ recombination data. By anchoring some unseated scaffolds and filling gap, we update two original millet reference genomes Zhanggu and Yugu to the second edition. Gene mapping of nine agronomic traits were done based on this RIL population. The genome resequencing and QTL mapping provided important tools for foxtail millet research and breeding. Resequencing of the RILs could also provide an effective way for high quantity genome assembly and gene identification.',
+            'dataset_size' => '130531024896',
+            'ftp_site' => 'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100213/',
+            'upload_status' => 'Published',
+            'excelfile' => '100213newversion.xls',
+            'excelfile_md5' => 'fc2e2957b294d36f897f2a3dff061992',
+            'publication_date' => '2016-08-18',
+            'publisher_id' => '3',
+            'token' => 'dE5Vpery41kc9nIt',
+            'manuscript_id' => 'GIGA-D-16-00059',
+        ));
     }
 
     public function safeDown()

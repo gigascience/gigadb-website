@@ -109,6 +109,11 @@ class m200305_190311_create_manuscript_table extends CDbMigration
             'dataset_id' => '200'
         ));
         $this->insert('manuscript', array(
+            'id' => '347',
+            'identifier' =>'10.1101/069625',
+            'dataset_id' => '268'
+        ));
+        $this->insert('manuscript', array(
             'id' => '473',
             'identifier' =>'10.1093/gigascience/gix082',
             'dataset_id' => '15'

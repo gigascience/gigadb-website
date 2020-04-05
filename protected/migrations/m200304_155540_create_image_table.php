@@ -108,6 +108,15 @@ class m200304_155540_create_image_table extends CDbMigration
             'photographer' => 'Alnasir and Shanahan 2015',
             'source' => 'Alnasir and Shanahan 2015'
         ));
+        $this->insert('image', array(
+            'id' => '281',
+            'location' => '100020.jpg',
+            'tag' => 'Foxtail millet',
+            'url' => 'http://gigadb.org/images/data/cropped/100020_Setaria_italica.jpg',
+            'license' => 'GNU free Documentation License, CC, SA',
+            'photographer' => 'Markus Hagenlocher',
+            'source' => 'Wikimedia commons'
+        ));
     }
 
     public function safeDown()

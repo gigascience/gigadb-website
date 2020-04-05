@@ -83,6 +83,22 @@ class m200305_165138_create_dataset_log_table extends CDbMigration
             'url' => '/adminFile/update/id/5783'
         ));
         $this->insert('dataset_log', array(
+            'id' => '742',
+            'dataset_id' =>'268',
+            'message' => 'Dataset publish',
+            'created_at' => '2016-08-18 15:35:59.384278',
+            'model' => 'dataset',
+            'model_id' => '268',
+        ));
+        $this->insert('dataset_log', array(
+            'id' => '743',
+            'dataset_id' =>'268',
+            'message' => 'Fair Use date added :',
+            'created_at' => '2016-08-18 15:35:59.387767',
+            'model' => 'dataset',
+            'model_id' => '268',
+        ));
+        $this->insert('dataset_log', array(
             'id' => '1176',
             'dataset_id' =>'15',
             'message' => 'Relationship added : DOI 200029',
