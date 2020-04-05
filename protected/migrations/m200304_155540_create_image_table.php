@@ -95,6 +95,7 @@ class m200304_155540_create_image_table extends CDbMigration
         $this->insert('image', array(
             'id' => '147',
             'tag' => 'CS icon1',
+            'url' => 'http://gigadb.org/images/uploads/image_upload/Images_147.png',
             'license' => 'public domain',
             'photographer' => 'Shashaank Vattikuti',
             'source' => 'Gigascience'
