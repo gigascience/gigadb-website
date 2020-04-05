@@ -10,6 +10,7 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
 {
 	private $_cachedDatasetFiles;
 	private $_pageSize;
+	private $_nbFiles;
 
 	public function __construct (int $pageSize, DatasetFilesInterface $datasetFiles)
 	{
@@ -57,6 +58,19 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
 			$file['attrDesc'] = implode('',$attribute_strings);
 		}
 		return $files;
+	}
+
+	/**
+	 * count number of files associated to a dataset
+	 *
+	 * @return int how many files are associated with the dataset
+	 */
+	public function countDatasetFiles(): int
+	{
+		if( !isset($this->_nbFiles) ){
+			$this->_nbFiles = count($this->_cachedDatasetFiles->getDatasetFiles());
+		}
+		return $this->_nbFiles;
 	}
 
 	/**

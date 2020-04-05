@@ -228,6 +228,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                         $jb = array();
                         $dmodel = array();
                         $codeocean = array();
+                        Yii::log("Nb of files: ".$files->countDatasetFiles(),"error");
                 ?>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
                         <?php if(count($model->samples) > 0) {
@@ -235,7 +236,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                            <li role="presentation" id="p-sample"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
                         <?php }
                         ?>
-                        <?php if(count($model->files) > 0) {
+                        <?php if( $files->countDatasetFiles() > 0 ) {
 
                               if(count($model->samples) < 1)
                               {
@@ -309,7 +310,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <?php }
                         ?>
                     <?php
-                    if(count($model->files) > 0) {
+                    if( $files->countDatasetFiles() > 0 ) {
 
                         if(count($model->samples) > 0) {
                             ?>

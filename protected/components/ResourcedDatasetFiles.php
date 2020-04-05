@@ -62,8 +62,10 @@ class ResourcedDatasetFiles extends DatasetComponents implements DatasetFilesInt
 			$file["extension"] = strtolower(pathinfo($upload["name"], PATHINFO_EXTENSION));
 			$file["size"] = $upload["size"];
 			$file["description"] = $upload["description"];
-			$file["format_id"] = $this->fileFormatToId($upload["extension"]);
-			$file["type_id"] = $this->fileTypeToId($upload["datatype"]);
+			$file["format"] = $upload["extension"];
+			$file["type"] = $upload["datatype"];
+			$file["date_stamp"] = $upload["updated_at"];
+			$file["file_attributes"] = []; //TODO
 			return $file;
 		};
 
@@ -73,36 +75,6 @@ class ResourcedDatasetFiles extends DatasetComponents implements DatasetFilesInt
         $datasetFiles = array_map($uploadToFile, $uploadedFiles);
 		return $datasetFiles;
 		
-	}
-
-	/**
-	 * Convert file format text into id
-	 *
-	 * @param string $fileFormat label for the file format
-	 * @return int DB id of the file format
-	 */
-	private function fileFormatToId(string $fileFormat): string
-	{
-		$sql="select id from file_format where name=:name";
-		$command = $this->_db->createCommand($sql);
-		$command->bindValue(":name", $fileFormat);
-		$row = $command->queryRow();
-		return $row['id'];
-	}
-
-	/**
-	 * Convert file type text into id
-	 *
-	 * @param string $fileType label for the file type
-	 * @return int DB id of the file type
-	 */
-	private function fileTypeToId(string $fileType): string
-	{
-		$sql="select id from file_type where name=:name";
-		$command = $this->_db->createCommand($sql);
-		$command->bindValue(":name", $fileType);
-		$row = $command->queryRow();
-		return $row['id'];
 	}
 
 	public function getDatasetFilesSamples(): array
