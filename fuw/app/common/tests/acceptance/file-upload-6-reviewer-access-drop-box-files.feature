@@ -34,6 +34,18 @@ Scenario: The page at the unique and time-limed url show uploaded files (no samp
 	| seq1.fa | Sequence assembly | FASTA | 23.43 MiB |
 	| Specimen.pdf | Annotation | PDF | 19.11 KiB |
 
+
+@ok
+Scenario: The page at the unique and time-limed url show uploaded files and attributes (no sample)
+	Given file uploads have been uploaded for DOI "000007"
+	And there are file attributes associated with those files
+	And a mockup url has been created for reviewer "artie_dodger@foobar.com" and dataset with DOI "000007"
+	When I browse to the mockup url
+	Then I should see the files
+	| File Name | Data Type | File Format | Size | File Attributes (1st) | File Attributes (2nd) |
+	| seq1.fa | Sequence assembly | FASTA | 23.43 MiB | Temperature: 45 Celsius | Humidity: 75 |
+	| Specimen.pdf | Annotation | PDF | 19.11 KiB | Temperature: 51 Celsius | Humidity: 90 |
+
 # Scenario: I can download the drop box file locations from the private mockup dataset page
 # 	Given I have a received a link "/dataset/mockup/6ba41e9f81baf4ba2bb6d5ecc3e858b0"
 # 	And a set of files has been uploaded to the drop box

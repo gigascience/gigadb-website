@@ -18,6 +18,7 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
 	protected $I;
     public $mockupUrl;
     public $dt;
+    public $uploadIds;
 
 
 	public function __construct(\common\tests\AcceptanceTester $I)
@@ -83,7 +84,7 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
      public function fileUploadsHaveBeenUploadedForDOI($doi)
      {
         $this->I->amConnectedToDatabase('fuwdb');
-        $this->I->haveInDatabase('public.upload', [
+        $this->uploadIds[] = $this->I->haveInDatabase('public.upload', [
                 'doi' => $doi,
                 'name' => "seq1.fa",
                 'size' => 24564343,
@@ -92,7 +93,7 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
                 'extension' => 'FASTA',
                 'datatype' => 'Sequence assembly'
           ]);
-        $this->I->haveInDatabase('public.upload', [
+        $this->uploadIds[] = $this->I->haveInDatabase('public.upload', [
                 'doi' => $doi,
                 'name' => "Specimen.pdf",
                 'size' => 19564,
@@ -101,6 +102,33 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
                 'extension' => 'PDF',
                 'datatype' => 'Annotation'
           ]);
+        $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
+     }
+
+    /**
+     * @Given there are file attributes associated with those files
+     */
+     public function thereAreFileAttributesAssociatedWithThoseFiles()
+     {
+        $temps = [ 45, 51];
+        $humidities = [ 75, 90];
+        $this->I->amConnectedToDatabase('fuwdb');
+        foreach($this->uploadIds as $uploadId) {
+
+            $this->I->haveInDatabase('public.attribute', [
+                'name' => "Temperature",
+                'value' => array_pop($temps),
+                'unit' => "Celsius",
+                'upload_id' => $uploadId,
+            ]);
+
+            $this->I->haveInDatabase('public.attribute', [
+                'name' => "Humidity",
+                'value' => array_pop($humidities),
+                'unit' => "Celsius",
+                'upload_id' => $uploadId,
+            ]);
+        }
         $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
      }
 
@@ -118,14 +146,15 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
      public function iShouldSeeTheFiles(TableNode $files)
      {
         foreach ($files->getRows() as $index => $row) {
+            $nbColumns = count($row);
             if ($index === 0) { // first row to define fields
                 $keys = $row;
                 continue;
             }
-            $this->I->see($row[0]);
-            $this->I->see($row[1]);
-            $this->I->see($row[2]);
-            $this->I->see($row[3]);
+            foreach(range(0,$nbColumns-1) as $column) {
+                $this->I->see($row[$column]);
+            }
+
         }
      }
 
