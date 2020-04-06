@@ -65,7 +65,7 @@ class DatasetPageSettingsTest extends CDbTestCase
 		$defaultColumns = array('name','size', 'type_id', 'format_id', 'location', 'date_stamp','sample_id','attribute');
 		$defaultPageSize = 10 ;
 		$sut = new DatasetPageSettings($model);
-		$fileSettings = $sut->getFileSettings();
+		$fileSettings = $sut->getFileSettings(null, DatasetPageSettings::MOCKUP_COLUMNS);
 		$this->assertEquals($defaultColumns, $fileSettings["columns"]);
 		$this->assertEquals($defaultPageSize, $fileSettings["pageSize"]);
 	}
