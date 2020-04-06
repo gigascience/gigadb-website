@@ -52,7 +52,7 @@ class MockupViewAction extends CAction
             // Page configuration
             $cookies = Yii::app()->request->cookies;
             $flag=null;
-            $fileSettings = $datasetPageSettings->getFileSettings($cookies);
+            $fileSettings = $datasetPageSettings->getFileSettings($cookies, DatasetPageSettings::MOCKUP_COLUMNS);
             $sampleSettings = $datasetPageSettings->getSampleSettings($cookies);
 
             // Assembling page components and page settings
