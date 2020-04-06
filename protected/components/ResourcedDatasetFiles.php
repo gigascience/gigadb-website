@@ -54,6 +54,10 @@ class ResourcedDatasetFiles extends DatasetComponents implements DatasetFilesInt
 	{
 		// convert the FUW upload record to a GigaDB record
 		$uploadToFile = function ($upload) {
+
+			$toNameValueHash = function ($attrs) {
+				return array( $attrs['name'] => $attrs['value']." ".$attrs['unit'] );
+			};
 			$file=[];
 			$file["id"] = null;
 			$file["dataset_id"] = $this->_id;
@@ -65,7 +69,7 @@ class ResourcedDatasetFiles extends DatasetComponents implements DatasetFilesInt
 			$file["format"] = $upload["extension"];
 			$file["type"] = $upload["datatype"];
 			$file["date_stamp"] = $upload["updated_at"];
-			$file["file_attributes"] = []; //TODO
+			$file["file_attributes"] =  array_map($toNameValueHash, $this->_fuwClient->getAttributes($upload['id']) ?? []);
 			return $file;
 		};
 
