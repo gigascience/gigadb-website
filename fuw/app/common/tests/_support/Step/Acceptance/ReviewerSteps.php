@@ -143,8 +143,8 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
     /**
      * @Then I should see the files
      */
-     public function iShouldSeeTheFiles(TableNode $files)
-     {
+    public function iShouldSeeTheFiles(TableNode $files)
+    {
         foreach ($files->getRows() as $index => $row) {
             $nbColumns = count($row);
             if ($index === 0) { // first row to define fields
@@ -156,6 +156,26 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
             }
 
         }
+    }
+
+    /**
+     * @Then there is a download link for each file associated with DOI :arg1
+     */
+     public function thereIsADownloadLinkForEachFileAssociatedWithDOI($doi,TableNode $files)
+     {
+        foreach ($files->getRows() as $index => $row) {
+            $nbColumns = count($row);
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            
+            $this->I->amConnectedToDatabase('fuwdb');
+            $location = $this->I->grabFromDatabase('public.upload', 'location', ['name' => $row[0] ]);
+            $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
+            $this->I->canSeeElement("a[href='$location']");
+        }
      }
+
 
 }
