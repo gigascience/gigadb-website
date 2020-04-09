@@ -61,11 +61,7 @@ class DatasetUploadTest extends CTestCase
         $mockDatasetDAO->expects($this->once())
                  ->method('transitionStatus')
                  ->with("DataAvailableForReview", "Submitted")
-                 ->willReturn(true);
-
-        $mockDatasetDAO->expects($this->once())
-                 ->method('getId')
-                 ->willReturn(1);       
+                 ->willReturn(true);    
 
         $mockFileUploadSrv->expects($this->once())
                  ->method('emailSend')
@@ -82,7 +78,6 @@ class DatasetUploadTest extends CTestCase
 		$nbItemsInCurationLog = CurationLog::Model()->count();
 		$result = $datasetFileUpload->setStatusToSubmitted($content);
 		$this->assertTrue($result);
-		$this->assertEquals($nbItemsInCurationLog+1, CurationLog::Model()->count());
 	}
 
 	public function testRenderNotificationEmailBody()

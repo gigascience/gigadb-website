@@ -82,29 +82,36 @@ class CurationLog extends CActiveRecord
         );
     }
     
-    public static function createlog($status,$id) {
-       
-        $curationlog = new CurationLog;
-        $curationlog->creation_date = date("Y-m-d");
-        $curationlog->last_modified_date = null;
-        $curationlog->dataset_id = $id;
-        $curationlog->created_by = "System";
-        $curationlog->action = "Status changed to ".$status;
-        if (!$curationlog->save())
-            return false;
-        return true;
-    }
-    
-    public static function createlog_assign_curator($id,$creator,$username) {
-
-        $curationlog = new CurationLog;
+    /**
+     * Factory method to make a new instance of Curation Log
+     * 
+     * @param int $id a Dataset ID associated with the curation log entry
+     * @param string $creator The username of who created the curation log entry
+     * @return CurationLog the new un-saved instance of curation log
+     */
+    public static function makeNewInstanceForDatasetBy(int $id, string $creator): CurationLog
+    {
+        $curationlog = new CurationLog();
         $curationlog->creation_date = date("Y-m-d");
         $curationlog->last_modified_date = null;
         $curationlog->dataset_id = $id;
         $curationlog->created_by = $creator;
+
+        return $curationlog;
+    }
+
+    public static function createlog($status,$id) {
+       
+        $curationlog = self::makeNewInstanceForDatasetBy($id,"System");
+        $curationlog->action = "Status changed to ".$status;
+        return $curationlog->save();
+    }
+    
+    public static function createlog_assign_curator($id,$creator,$username) {
+
+        $curationlog =  self::makeNewInstanceForDatasetBy($id,$creator);
         $curationlog->action = "Curator Assigned"." $username";
-        if (!$curationlog->save())
-            return false;
+        return $curationlog->save();
     }
 
     /**

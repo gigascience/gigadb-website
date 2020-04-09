@@ -176,14 +176,26 @@ class AdminDatasetController extends Controller
         ));
         if (isset($_POST['Dataset'])) {
             if (isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status) {
-                if("Submitted" === $_POST['Dataset']['upload_status']) {
-                    $contentToSend = $datasetUpload->renderNotificationEmailBody("Submitted");
-                    $statusIsSet = $datasetUpload->setStatusToSubmitted($contentToSend);
-                    assert($statusIsSet);
+                $statusIsSet = false;
+                switch( $_POST['Dataset']['upload_status'] )
+                {
+                    case "Submitted":
+                        $contentToSend = $datasetUpload->renderNotificationEmailBody("Submitted");
+                        $statusIsSet = $datasetUpload->setStatusToSubmitted($contentToSend);
+                        break;
+                    case "DataPending":
+                        $contentToSend = $datasetUpload->renderNotificationEmailBody("DataPending");
+                        $statusIsSet = $datasetUpload->setStatusToDataPending(
+                            $contentToSend, $model->submitter->email
+                        );
+                        break;
+                    default:
+                        $statusIsSet = true;                    
                 }
-                else {
+                if ($statusIsSet) {
                     CurationLog::createlog($_POST['Dataset']['upload_status'], $id);
                 }
+
             }
             if ($_POST['Dataset']['curator_id'] != $model->curator_id) {
                 if ($_POST['Dataset']['curator_id'] != "") {
