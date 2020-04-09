@@ -110,10 +110,33 @@ class DatasetUpload extends yii\base\BaseObject
 				"Dataset has been submitted", 
 				$content
 			);
-            $logged = CurationLog::createlog("Submitted", $this->_datasetDAO->getId());
-			return $logged && $emailSent;
+			return $emailSent;
 		}
 		Yii::log("Failed to change status to Submitted",'error');
+		return $statusChanged;
+	}
+
+	/**
+	 * method to set Dataset Upload status to DataPwnding and notify curators
+	 *
+	 * @param string $content email content of notification
+	 * @param string $authorEmail email of the author
+	 * @return bool wether or not operation is successful
+	 */
+	public function setStatusToDataPending(string $content, string $authorEmail): bool
+	{
+		$statusChanged = $this->_datasetDAO->transitionStatus("Submitted","DataPending");
+		if ($statusChanged) {
+			Yii::log("Status changed to DataPending",'info');
+			$emailSent = $this->_fileUploadSrv->emailSend(
+				$this->_config["sender"], 
+				$authorEmail, 
+				"Dataset has been set to DataPending", 
+				$content
+			);
+			return $emailSent;
+		}
+		Yii::log("Failed to change status to DataPending",'error');
 		return $statusChanged;
 	}
 
