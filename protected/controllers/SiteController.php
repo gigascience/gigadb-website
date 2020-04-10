@@ -527,14 +527,7 @@ class SiteController extends Controller {
     		imagefilledrectangle($im, 0, 0, 600, 100, $white);
     		// The text to draw
 
-    		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    		$charactersLength = strlen($characters);
-    		$randomString = '';
-    		for ($i = 0; $i < $length; $i++) {
-    			$randomString .= $characters[rand(0, $charactersLength - 1)];
-    		}
-
-    		$text = $randomString;
+    		$text = Yii::$app->security->generateRandomString($length);
     		$font = '/fonts/times_new_yorker.ttf';
     		imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
 

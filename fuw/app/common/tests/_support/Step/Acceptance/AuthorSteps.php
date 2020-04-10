@@ -7,6 +7,7 @@ use \backend\models\FiledropAccount;
 use \Facebook\WebDriver\WebDriverElement;
 use \Behat\Gherkin\Node\TableNode;
 use \Codeception\Util\ActionSequence;
+use Yii;
 
 class AuthorSteps #extends \common\tests\AcceptanceTester
 {
@@ -28,10 +29,10 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
      	$this->I->amConnectedToDatabase('fuwdb');
         $this->I->haveInDatabase('filedrop_account', [
 			  'doi' => $doi,
-			  'upload_login' => FiledropAccount::generateRandomString(6),
-			  'upload_token' => FiledropAccount::generateRandomString(6),
-			  'download_login' => FiledropAccount::generateRandomString(6),
-			  'download_token' => FiledropAccount::generateRandomString(6),
+			  'upload_login' => Yii::$app->security->generateRandomString(6),
+			  'upload_token' => Yii::$app->security->generateRandomString(6),
+			  'download_login' => Yii::$app->security->generateRandomString(6),
+			  'download_token' => Yii::$app->security->generateRandomString(6),
 			  'status' => FiledropAccount::STATUS_ACTIVE,
 			]);
        	$this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
@@ -63,8 +64,8 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
         $this->I->amConnectedToDatabase('fuwdb');
         $this->I->haveInDatabase('public.user', [
               'username' => "{$firstname}_{$lastname}",
-              'auth_key' => FiledropAccount::generateRandomString(6),
-              'password_hash' => FiledropAccount::generateRandomString(6),
+              'auth_key' => Yii::$app->security->generateRandomString(6),
+              'password_hash' => Yii::$app->security->generateRandomString(6),
               'email' => strtolower("${firstname}_${lastname}@gigadb.org"),
               'created_at' => date("U"),
               'updated_at' => date("U"),
