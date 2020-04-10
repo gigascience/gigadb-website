@@ -221,31 +221,11 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     public function makeToken(string $doi, string $fileName): bool
     {
-        $token = self::generateRandomString(16);
+        $token = Yii::$app->security->generateRandomString(16);
         return Yii::$app->fs->put(
                         "private/$doi/".$fileName,
                         $token.PHP_EOL.$token.PHP_EOL
                     );
-    }
-
-    /**
-     * Generate a random string
-     *
-     * @param int $size size of the string
-     * @return string generated string
-     *
-     */
-    public static function generateRandomString(int $size): string
-    {
-        $range = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $input_length = strlen($range);
-        $random_string = '';
-        for($i = 0; $i < $size; $i++) {
-            $random_character = $range[random_int(0, $input_length - 1)];
-            $random_string .= $random_character;
-        }
-
-        return $random_string;
     }
 
     /**

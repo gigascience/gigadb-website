@@ -67,8 +67,8 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
         $this->I->amConnectedToDatabase('fuwdb');
         $this->I->haveInDatabase('public.user', [
               'username' => "${reviewerEmail}_$doi",
-              'auth_key' => FiledropAccount::generateRandomString(6),
-              'password_hash' => FiledropAccount::generateRandomString(6),
+              'auth_key' => Yii::$app->security->generateRandomString(6),
+              'password_hash' => Yii::$app->security->generateRandomString(6),
               'email' => $reviewerEmail,
               'created_at' => date("U"),
               'updated_at' => date("U"),
