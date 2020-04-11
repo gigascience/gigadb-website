@@ -3,7 +3,6 @@ namespace common\tests\Step\Acceptance;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
-use \backend\models\FiledropAccount;
 use \Facebook\WebDriver\WebDriverElement;
 use \Behat\Gherkin\Node\TableNode;
 use \Codeception\Util\ActionSequence;
@@ -79,6 +78,87 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
     }
 
     /**
+     * @Given file uploads with samples and attributes have been uploaded for DOI :arg1
+     */
+     public function fileUploadsWithSamplesAndAttributesHaveBeenUploadedForDOI($doi)
+     {
+
+        $dbh_fuw = new \PDO("pgsql:host=database;dbname=fuwdb", "fuwdb", "yii2advanced");
+
+        $files = [
+            [
+                'doi' => $doi,
+                'name' => "seq1.fa",
+                'size' => 24564343,
+                'status' => Upload::STATUS_UPLOADING,
+                'location' => "ftp://seq1.fa",
+                'extension' => 'FASTA',
+                'datatype' => 'Sequence assembly',
+                'sample_ids' => 'Sample A, Sample Z'
+                ],
+          [
+                'doi' => $doi,
+                'name' => "Specimen.pdf",
+                'size' => 19564,
+                'status' => Upload::STATUS_UPLOADING,
+                'location' => "ftp://Specimen.pdf",
+                'extension' => 'PDF',
+                'datatype' => 'Annotation',
+                'sample_ids' => 'Sample E'
+                ]
+        ];
+
+        $temps = [ 45, 51];
+        $humidities = [ 75, 90];
+
+        $insertFilesQuery = "insert into upload(doi, name, size, status, location, extension, datatype, sample_ids) values(:doi, :name, :size, :status, :location, :extension, :datatype, :sample_ids) returning id";
+        $insertFilesStatement = $dbh_fuw->prepare($insertFilesQuery);
+        foreach ($files as $file) {
+            $insertFilesStatement->bindValue(':doi',$file['doi']);
+            $insertFilesStatement->bindValue(':name',$file['name']);
+            $insertFilesStatement->bindValue(':size',$file['size']);
+            $insertFilesStatement->bindValue(':status',$file['status']);
+            $insertFilesStatement->bindValue(':location',$file['location']);
+            $insertFilesStatement->bindValue(':extension',$file['extension']);
+            $insertFilesStatement->bindValue(':datatype',$file['datatype']);
+            $insertFilesStatement->bindValue(':sample_ids',$file['sample_ids']);
+            $isSuccess = $insertFilesStatement->execute();
+            if(!$isSuccess) {
+                echo PHP_EOL."Failure creating in DB file {$file['name']}".PHP_EOL;
+            }
+            $returnId = $insertFilesStatement->fetch(\PDO::FETCH_OBJ);
+            $this->uploadIds[] = $returnId->id;
+
+        }
+
+        foreach($this->uploadIds as $uploadId) {
+            $attributes = [
+                [
+                    'name' => "Temperature",
+                    'value' => array_pop($temps),
+                    'unit' => "Celsius",
+                    'upload_id' => $uploadId,
+                ],
+                [
+                    'name' => "Humidity",
+                    'value' => array_pop($humidities),
+                    'unit' => "Celsius",
+                    'upload_id' => $uploadId,
+                ]
+            ];
+
+            $insertAttributesQuery = "insert into public.attribute(name, value, unit, upload_id) values(:name, :value, :unit, :upload_id) returning id";
+            $insertAttributesStatement = $dbh_fuw->prepare($insertAttributesQuery);
+            foreach ($attributes as $attribute) {
+                $insertAttributesStatement->bindValue(':name',$attribute['name']);
+                $insertAttributesStatement->bindValue(':value',$attribute['value']);
+                $insertAttributesStatement->bindValue(':unit',$attribute['unit']);
+                $insertAttributesStatement->bindValue(':upload_id',$attribute['upload_id']);
+                $isSuccess = $insertAttributesStatement->execute();
+            }
+        }
+    }    
+    /**
      * @Given file uploads have been uploaded for DOI :arg1
      */
      public function fileUploadsHaveBeenUploadedForDOI($doi)
@@ -102,7 +182,7 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
                 'extension' => 'PDF',
                 'datatype' => 'Annotation'
           ]);
-        $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
+        // $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
      }
 
     /**
@@ -129,7 +209,36 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
                 'upload_id' => $uploadId,
             ]);
         }
-        $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
+        // $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
+     }
+
+/**
+     * @Given file uploads with samples have been uploaded for DOI :arg1
+     */
+     public function fileUploadsWithSamplesHaveBeenUploadedForDOI($doi)
+     {
+        $this->I->amConnectedToDatabase('fuwdb');
+        $this->I->haveInDatabase('public.upload', [
+                'doi' => $doi,
+                'name' => "seq1.fa",
+                'size' => 24564343,
+                'status' => Upload::STATUS_UPLOADING,
+                'location' => "ftp://seq1.fa",
+                'extension' => 'FASTA',
+                'datatype' => 'Sequence assembly',
+                'sample_ids' => 'Sample A, Sample Z'
+          ]);
+        $this->I->haveInDatabase('public.upload', [
+                'doi' => $doi,
+                'name' => "Specimen.pdf",
+                'size' => 19564,
+                'status' => Upload::STATUS_UPLOADING,
+                'location' => "ftp://Specimen.pdf",
+                'extension' => 'PDF',
+                'datatype' => 'Annotation',
+                'sample_ids' => 'Sample E'                
+          ]);
+        // $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
      }
 
      /**

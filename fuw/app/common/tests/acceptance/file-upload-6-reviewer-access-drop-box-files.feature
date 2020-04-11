@@ -24,7 +24,7 @@ Scenario: The page at the unique and time-limed url show dataset info
 	And I should see "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo"
 
 
-# @ok
+# @wip
 # Scenario: The page at the unique and time-limed url show uploaded files
 # 	Given file uploads have been uploaded for DOI "000007"
 # 	And a mockup url has been created for reviewer "artie_dodger@foobar.com" and dataset with DOI "000007"
@@ -35,15 +35,15 @@ Scenario: The page at the unique and time-limed url show dataset info
 # 	| Specimen.pdf | Annotation | PDF | 19.11 KiB |
 
 
-# @wip
-# Scenario: The page at the unique and time-limed url show uploaded files, attributes and samples
-# 	Given file uploads with samples and attributes have been uploaded for DOI "000007"
-# 	And a mockup url has been created for reviewer "artie_dodger@foobar.com" and dataset with DOI "000007"
-# 	When I browse to the mockup url
-# 	Then I should see the files
-# 	| File Name | Sample ID | Data Type | File Format | Size | File Attributes (1st) | File Attributes (2nd) |
-# 	| seq1.fa | Sample A, Sample Z | Sequence assembly | FASTA | 23.43 MiB | Temperature: 45 Celsius | Humidity: 75 |
-# 	| Specimen.pdf | Sample E | Annotation | PDF | 19.11 KiB | Temperature: 51 Celsius | Humidity: 90 |
+@ok
+Scenario: The page at the unique and time-limed url show uploaded files, attributes and samples
+	Given file uploads with samples and attributes have been uploaded for DOI "000007"
+	And a mockup url has been created for reviewer "artie_dodger@foobar.com" and dataset with DOI "000007"
+	When I browse to the mockup url
+	Then I should see the files
+	| File Name | Sample ID | Data Type | File Format | Size | File Attributes (1st) | File Attributes (2nd) |
+	| seq1.fa | Sample A, Sample Z | Sequence assembly | FASTA | 23.43 MiB | Temperature: 45 Celsius | Humidity: 75 |
+	| Specimen.pdf | Sample E | Annotation | PDF | 19.11 KiB | Temperature: 51 Celsius | Humidity: 90 |
 
 # @ok
 # Scenario: The page at the unique and time-limed url show uploaded files with sample column data
