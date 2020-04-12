@@ -83,7 +83,12 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
      public function fileUploadsWithSamplesAndAttributesHaveBeenUploadedForDOI($doi)
      {
 
-        $dbh_fuw = new \PDO("pgsql:host=database;dbname=fuwdb", "fuwdb", "yii2advanced");
+        $config = require "/app/common/config/main-local.php";
+        $dbh_fuw = new \PDO(
+                            $config["components"]["db"]["dsn"], 
+                            $config["components"]["db"]["username"], 
+                            $config["components"]["db"]["password"]
+                        );
 
         $files = [
             [
@@ -158,89 +163,7 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
             }
         }
     }    
-    /**
-     * @Given file uploads have been uploaded for DOI :arg1
-     */
-     public function fileUploadsHaveBeenUploadedForDOI($doi)
-     {
-        $this->I->amConnectedToDatabase('fuwdb');
-        $this->uploadIds[] = $this->I->haveInDatabase('public.upload', [
-                'doi' => $doi,
-                'name' => "seq1.fa",
-                'size' => 24564343,
-                'status' => Upload::STATUS_UPLOADING,
-                'location' => "ftp://seq1.fa",
-                'extension' => 'FASTA',
-                'datatype' => 'Sequence assembly'
-          ]);
-        $this->uploadIds[] = $this->I->haveInDatabase('public.upload', [
-                'doi' => $doi,
-                'name' => "Specimen.pdf",
-                'size' => 19564,
-                'status' => Upload::STATUS_UPLOADING,
-                'location' => "ftp://Specimen.pdf",
-                'extension' => 'PDF',
-                'datatype' => 'Annotation'
-          ]);
-        // $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
-     }
-
-    /**
-     * @Given there are file attributes associated with those files
-     */
-     public function thereAreFileAttributesAssociatedWithThoseFiles()
-     {
-        $temps = [ 45, 51];
-        $humidities = [ 75, 90];
-        $this->I->amConnectedToDatabase('fuwdb');
-        foreach($this->uploadIds as $uploadId) {
-
-            $this->I->haveInDatabase('public.attribute', [
-                'name' => "Temperature",
-                'value' => array_pop($temps),
-                'unit' => "Celsius",
-                'upload_id' => $uploadId,
-            ]);
-
-            $this->I->haveInDatabase('public.attribute', [
-                'name' => "Humidity",
-                'value' => array_pop($humidities),
-                'unit' => "Celsius",
-                'upload_id' => $uploadId,
-            ]);
-        }
-        // $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
-     }
-
-/**
-     * @Given file uploads with samples have been uploaded for DOI :arg1
-     */
-     public function fileUploadsWithSamplesHaveBeenUploadedForDOI($doi)
-     {
-        $this->I->amConnectedToDatabase('fuwdb');
-        $this->I->haveInDatabase('public.upload', [
-                'doi' => $doi,
-                'name' => "seq1.fa",
-                'size' => 24564343,
-                'status' => Upload::STATUS_UPLOADING,
-                'location' => "ftp://seq1.fa",
-                'extension' => 'FASTA',
-                'datatype' => 'Sequence assembly',
-                'sample_ids' => 'Sample A, Sample Z'
-          ]);
-        $this->I->haveInDatabase('public.upload', [
-                'doi' => $doi,
-                'name' => "Specimen.pdf",
-                'size' => 19564,
-                'status' => Upload::STATUS_UPLOADING,
-                'location' => "ftp://Specimen.pdf",
-                'extension' => 'PDF',
-                'datatype' => 'Annotation',
-                'sample_ids' => 'Sample E'                
-          ]);
-        // $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
-     }
-
+    
      /**
      * @When I browse to the mockup url
      */
@@ -277,12 +200,8 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
             if ($index === 0) { // first row to define fields
                 $keys = $row;
                 continue;
-            }
-            
-            $this->I->amConnectedToDatabase('fuwdb');
-            $location = $this->I->grabFromDatabase('public.upload', 'location', ['name' => $row[0] ]);
-            $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
-            $this->I->canSeeElement("a[href='$location']");
+            }            
+            $this->I->canSeeElement("a[href='ftp://$row[0]']");
         }
      }
 
