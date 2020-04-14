@@ -265,6 +265,21 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
         }
      }
 
+    /**
+     * @Then I should see when hovering file names
+     */
+     public function iShouldSeeWhenHoveringFileNames(TableNode $files)
+     {
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            $this->I->seeInSource('<td><span data-toggle="tooltip" data-placement="bottom" title="md5:'.$row[1].'">'.$row[0].'</span></td>');
+        }
+
+     }
+
 
 
 }

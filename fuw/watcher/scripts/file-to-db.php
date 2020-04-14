@@ -108,7 +108,7 @@ function getDatasetDirectories(string $download_path): array
 function getFiles(string $path): array
 {
 	clearstatcache();
-	$scanned_directory = array_diff(scandir($path), array('..', '.', '.DS_Store'));
+	$scanned_directory = array_diff(scandir($path), array('..', '.', '.DS_Store','meta'));
 	return $scanned_directory;
 }
 
@@ -206,14 +206,25 @@ function is_newer(string $directory_path): bool
 function fileMetadata(string $file_name, string $dataset): array
 {
 	$file_path = "/home/downloader/$dataset/$file_name";
+	$metadata_path = "/home/downloader/$dataset/meta/$file_name.info.json";
 	$file_stats = stat($file_path);
+	$md5 = null;
+	if(is_file($metadata_path)) {
+		echo "    	$metadata_path found".PHP_EOL;
+		$fileInfo = json_decode(file_get_contents($metadata_path), true);
+		if(isset($fileInfo["MetaData"]["checksum"]))
+			$md5 = $fileInfo["MetaData"]["checksum"];
+	}
+	else {
+		echo "    	$metadata_path NOT found".PHP_EOL;
+	}
 	$metadata = array(
 					"file_name" => $file_name,
 					"data_type" => null,
 					"format" => null,
 					"size" => $file_stats[7],
 					"link" => null,
-					"md5" => null,
+					"md5" => $md5,
 					"format" => null,
 					"description" => "Enter a description here"
 				);
@@ -257,7 +268,7 @@ function updateFileTable(object $dbh, string $dataset_doi, array $uploadedFilesM
 	$result = 0;
 
 	$delete = "delete from upload where doi= ? and status = 0";
-	$insert = "insert into upload(doi,name,size,status,location,description, extension, datatype) values(:d , :n , :z , 0, :l, :s, :e, :t)";
+	$insert = "insert into upload(doi,name,size,status,location,description, extension, datatype,initial_md5) values(:d , :n , :z , 0, :l, :s, :e, :t,:m)";
 
 	$delete_statement = $dbh->prepare($delete);
 	$delete_statement->bindParam(1, $dataset_doi);
@@ -271,6 +282,7 @@ function updateFileTable(object $dbh, string $dataset_doi, array $uploadedFilesM
 	$insert_statement->bindParam(':e', $extension);
 	$insert_statement->bindParam(':t', $data_type);
 	$insert_statement->bindParam(':s', $summary);
+	$insert_statement->bindParam(':m', $md5);
 	foreach ($uploadedFilesMetadata as $file) {
 		$name = $file["file_name"] ;
 		$size = $file["size"] ;
@@ -278,6 +290,7 @@ function updateFileTable(object $dbh, string $dataset_doi, array $uploadedFilesM
 		$extension = $file["format"] ;
 		$data_type = $file["data_type"] ;
 		$summary = $file["description"] ;
+		$md5 = $file["md5"] ;
 		$result += $insert_statement->execute();
 	}
 

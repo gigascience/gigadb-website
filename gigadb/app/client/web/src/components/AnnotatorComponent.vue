@@ -13,7 +13,7 @@
             </thead>
             <tbody>
                 <tr v-for="(upload, index) in uploadedFiles">
-                    <td>{{ upload.name }}</td>
+                    <td><span data-toggle='tooltip' data-placement='bottom' v-bind:title="'md5:'+upload.initial_md5">{{ upload.name }}</span></td>
                     <td>
                         <div class="form-group">
                             <select v-model="upload.datatype" v-bind:name="'Upload['+ upload.id +'][datatype]'" v-bind:id="'upload-'+(index+1)+'-datatype'" v-on:change="fieldHasChanged(index, $event)">
