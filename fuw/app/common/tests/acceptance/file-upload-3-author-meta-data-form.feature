@@ -92,6 +92,25 @@ Scenario: Removing uploads
 	And I should see "1 File(s) successfully deleted"
 	And I should see "DataAvailableForReview"
 
+
+@ok
+Scenario: Initial MD5 checksum for upload files shows up as tooltip
+	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "60" seconds
+	When I press "Next"
+	Then I should see when hovering file names
+	| File name 	| checksum 	|
+	| TheProof.csv 	| 58e51b8d263ca3e89712c65c4485a8c9|  
+	| CC0_pixel.jpg | 18e3cdda6af3b1a2947e27bdc209d41f|
+
 # Scenario: Saving all metadata for all files
 # 	Given I sign in as a user
 # 	And I have uploaded a set of files to the drop box for dataset "100006"

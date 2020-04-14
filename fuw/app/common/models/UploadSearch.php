@@ -25,6 +25,7 @@ class UploadSearch extends Model {
     public $datatype;
     public $extension;
     public $description;
+    public $initial_md5;
 
     public function rules()
     {
@@ -39,6 +40,7 @@ class UploadSearch extends Model {
             ['datatype', 'string', 'max' => 32],
             ['extension', 'string','max' => 32],
             ['description', 'string'],
+            ['initial_md5', 'string'],
         ];
     }
 }
