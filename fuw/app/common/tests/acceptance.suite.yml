@@ -37,7 +37,6 @@ modules:
                 "goog:chromeOptions":
                     args: ['--headless']
                     w3c: false
-        - Filesystem
         - common\tests\Helper\FilesystemCleanupHook
         - Yii2:
             part: init
@@ -48,6 +47,8 @@ gherkin:
             - common\tests\AcceptanceTester
         role:
             curator:
+                - common\tests\Step\Acceptance\AuthorSteps
+                - common\tests\Step\Acceptance\MetadataFormSteps
                 - common\tests\Step\Acceptance\CuratorSteps
             author:
                 - common\tests\Step\Acceptance\AuthorSteps
@@ -60,3 +61,4 @@ gherkin:
 extensions:
     enabled:
         - Codeception\Extension\Recorder
+
