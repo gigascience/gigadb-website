@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { shallowMount } from '@vue/test-utils'
 import UploaderComponent from '../src/components/UploaderComponent.vue'
 
+import fileData from './helper/base64image.txt' //base64 of CC0_pixel.jpg, use raw-loader
 import {eventBus} from '../src/index.js'
 
 const factory = function(options = {}, values = {}) {
@@ -84,5 +85,39 @@ describe('Uploader component event handler', function() {
         Vue.nextTick().then(function () {
             expect(changedTo).toEqual('uploading')
         })
+    })
+
+    it('should emit an event to indicate it has calculated MD5 checksum for a file', function () {
+        let checksumDone = ''
+        let notifiedFile = null
+        let checksum = "fccbbbfd60e32f2218acc7ae42f325e0"//checksum for the file from cli (md5deep)
+
+        eventBus.$on('checksummed', function(message, file) {
+            checksumDone = message
+            notifiedFile = file
+        })
+         const renderedComponent = factory({
+                attachToDocument: true,
+                propsData: {
+                    identifier: '000000',
+                    endpoint: '/foobar/',
+                },
+        })
+        const fileReader = new FileReader();
+        renderedComponent.vm.uppy.addFile({
+          name: 'my-file.txt', // file name
+          type: 'text/plain', // file type
+          data: new Blob([fileData], {type : 'text/plain'}), // file blob of the image
+          meta: {
+            // optional, store the directory path of a file so Uppy can tell identical files in different directories apart
+            // relativePath: webkitFileSystemEntry.relativePath,
+          },
+          source: 'Local', // optional, determines the source of the file, for example, Instagram
+          isRemote: false // optional, set to true if actual file is not in the browser, but on some remote server, for example, when using companion in combination with Instagram
+        })
+        return renderedComponent.vm.uppy.upload().then((result) => {
+            expect(checksumDone).toEqual('MD5 checksum for my-file.txt done')
+            expect(renderedComponent.vm.uppy.getFiles()[0].meta.checksum).toEqual(checksum)
+        })  
     })
 })

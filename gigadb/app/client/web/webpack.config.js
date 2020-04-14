@@ -30,7 +30,11 @@ module.exports = {
         options: {
           outputPath: '/assets',
         },
-      }
+      },
+      {
+        test: /\.(txt)$/i,
+        loader: 'raw-loader',
+      }      
     ]
   },
   // This is needed for vue to work, see https://github.com/vuejs-templates/webpack/issues/215

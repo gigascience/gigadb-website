@@ -13,6 +13,7 @@ import Uppy from '@uppy/core'
 import Dashboard from '@uppy/dashboard'
 import Form from '@uppy/form'
 import Tus from '@uppy/tus'
+import {Checksum} from '../plugins/uppy-checksum.js'
 
 import {eventBus} from '../index.js'
 
@@ -57,6 +58,10 @@ export default {
             submitOnSuccess: false
         })
         this.uppy.use(Tus, { endpoint: this.endpoint })
+        this.uppy.use(Checksum, {id: 'Checksum'})
+        this.uppy.on('preprocess-progress', (file, data) => {
+            eventBus.$emit('checksummed', data.message, file)
+        })        
         this.uppy.on('complete', (result) => {
 	      	eventBus.$emit('complete',result)
 	    })
