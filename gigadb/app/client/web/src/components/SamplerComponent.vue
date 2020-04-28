@@ -3,10 +3,10 @@
         <el-tag :key="sample" v-for="sample in samples" closable :disable-transitions="false" @close="handleClose(sample)">
             {{sample}}
         </el-tag>
-        <el-input id="new-sample-field" class="input-new-sample" v-if="inputVisible" v-model="inputValue" ref="saveSampleInput" size="mini" @keyup.enter.native.stop.prevent="handleInputConfirm" @blur="handleInputConfirm">
+        <el-input id="new-sample-field" class="input-new-sample" v-if="inputVisible" v-model="inputValue" ref="saveSampleInput" size="mini" @keyup.enter.native.capture.stop.prevent="handleInputConfirm" @blur="handleInputConfirm">
         </el-input>
         <el-button v-else class="button-new-sample" size="small" @click="showInput">+ New Sample</el-button>
-        <button v-on:click.prevent="saveSamples" class="btn btn-success btn-small" id="save-samples">Save</button>
+        <button type="button" v-on:click.prevent="saveSamples" class="btn btn-success btn-small" id="save-samples">Save</button>
     </div>
 </template>
 <script>
@@ -43,7 +43,7 @@ export default {
 
         saveSamples(event) {
         	console.log("SamplerComponent: saveSamples()")
-            eventBus.$emit("new-samples-input")
+            this.$emit("new-samples-input")
         }
     }
 }

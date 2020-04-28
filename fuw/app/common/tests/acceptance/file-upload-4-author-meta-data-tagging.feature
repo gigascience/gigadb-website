@@ -50,6 +50,31 @@ Scenario: Can add new attribute to the attribute list
 	| Name | Value | Unit |
 	| Temperature | 33 | Celsius |
 
+
+@ok
+Scenario: Can add new samples to a file upload
+	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "30" seconds
+	When I press "Next"
+	And I press "Sample IDs"
+	And I add new sample "Sequence 3"
+	And I add new sample "Sequence 4"
+	And I press "Save"
+	And I wait "2" seconds
+	And I press "Sample IDs"
+	Then I should see
+	| samples |
+	| Sequence 3 |
+	| Sequence 4 |
+
 # Scenario: there is a button to add attributes in the file metadata page when all mandatory fields are filled in
 # 	Given I sign in as a user
 # 	And I am on "/uploader/files"

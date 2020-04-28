@@ -280,6 +280,14 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
 
      }
 
-
+    /**
+     * @When I add new sample :arg1
+     */
+     public function iAddNewSample($arg1)
+     {
+        $this->I->click("New Sample");
+        $this->I->fillField(['id' => "new-sample-field"], $arg1);
+        $this->I->pressKey("#new-sample-field",\Facebook\WebDriver\WebDriverKeys::RETURN_KEY);
+     }
 
 }
