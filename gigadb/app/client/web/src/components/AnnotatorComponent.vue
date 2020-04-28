@@ -132,24 +132,12 @@ export default {
             this.filesToDelete.push(uploadId)
         },
         setSampleIds(uploadIndex) {
-            // console.log("this.samplePanel:" + this.samplePanel)
             if(this.samplesArray[this.selectedUpload]) {
                 this.uploadedFiles[uploadIndex].sample_ids =  this.samplesArray[this.selectedUpload].join(',')
                 console.log(`Assigned sample_ids ${this.uploadedFiles[uploadIndex].sample_ids}`)
             }
             this.toggleSampleDrawer(uploadIndex, this.selectedUpload)
-            // this.$refs.samplesPanel.closeDrawer()
-            // this.$forceUpdate()
-            // console.log("this.samplePanel:" + this.samplePanel)
         },
-      //   handleClose(done) {
-      //       console.log("handle close")
-      //       this.$confirm('Are you sure you want to close this?')
-      //         .then(_ => {
-      //           done();
-      //         })
-      //         .catch(_ => {});
-      // }
     },
     beforeDestroy: function() {
         console.log("before destroy")
@@ -159,12 +147,6 @@ export default {
         console.log("after destroy")
     },
     mounted: function() {
-        // eventBus.$on('new-samples-input', function() {
-        //     console.log("Closing the sample panel")
-        //     this.samplePanel = false
-        //     this.$forceUpdate()
-
-        // })
         this.$nextTick(function() {
             eventBus.$emit("stage-changed", "annotating")
         })
