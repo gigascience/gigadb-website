@@ -1,4 +1,4 @@
-<template>
+    <template>
     <div>
         <table class="table table-striped table-bordered">
             <thead>
@@ -31,9 +31,13 @@
                         </div>
                     </td>
                     <td>
-                        <el-button v-bind:id="'upload-'+(index+1)+'-tag'" v-on:click="toggleDrawer(index, upload.id)" type="primary" v-bind:class="'btn btn-info btn-small '+upload.name">
+                        <input type="hidden" v-bind:name="'Upload['+ upload.id +'][sample_ids]'" v-bind:id="'upload-'+(index+1)+'-sample_ids'" v-bind:value="upload.sample_ids" >
+                        <el-button v-bind:id="'upload-'+(index+1)+'-tag'" v-on:click="toggleAttrDrawer(index, upload.id)" type="primary" v-bind:class="'btn btn-info btn-small attribute-button '+upload.name">
                             Attributes
                         </el-button>
+                        <el-button v-bind:id="'upload-'+(index+1)+'-sample'" v-on:click="toggleSampleDrawer(index, upload.id)" type="primary" v-bind:class="'btn btn-info btn-small sample-button '+upload.name">
+                            Sample IDs
+                        </el-button>                        
                         <el-button v-bind:id="'upload-'+(index+1)+'-delete'" v-bind:class="'delete-button-'+index" type="danger" icon="el-icon-delete" v-on:click="deleteUpload(index, upload.id)" circle></el-button>
                     </td>
                 </tr>
@@ -48,11 +52,19 @@
             </form>
         </aside>
         <div v-if="uploadedFiles.length > 0">
-            <el-drawer v-bind:title="'Add attributes to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="drawer" v-bind:with-header="true" ref="drawer">
+            <el-drawer v-bind:title="'Add attributes to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="attrPanel" v-bind:with-header="true" ref="attrPanel">
                 <span>
                     <specifier id="attributes-form" v-bind:fileAttributes="fileAttributes[selectedUpload]" />
                 </span>
             </el-drawer>
+            <el-drawer v-bind:title="'Add samples to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="samplePanel" v-bind:with-header="true" ref="samplesPanel">
+                <span>
+                    <sampler id="samples-form" 
+                            v-bind:collection="samplesArray[selectedUpload]" 
+                            v-on:new-samples-input="setSampleIds(drawerIndex)"
+                    />
+                </span>
+            </el-drawer>        
         </div>
         <input v-for="(uploadId, index) in filesToDelete" type="hidden" v-bind:name="'DeleteList['+index+']'" v-bind:value="uploadId" />
     </div>
@@ -66,22 +78,20 @@
 <script>
 import { eventBus } from '../index.js'
 import SpecifierComponent from './SpecifierComponent.vue'
+import SamplerComponent from './SamplerComponent.vue'
 
 export default {
-    props: ['identifier', 'token', 'uploads', 'attributes'],
+    props: ['identifier', 'token', 'uploads', 'attributes', 'filetypes'],
     data: function() {
         return {
             uploadedFiles: this.uploads || [],
             fileAttributes: this.attributes || [],
             filesToDelete: [],
+            samplesArray: [],
             metaComplete: [],
-            dataTypes: [
-                "Text",
-                "Image",
-                "Rich Text",
-                "Genome Sequence",
-            ],
-            drawer: false,
+            dataTypes: Object.keys(this.filetypes),
+            attrPanel: false,
+            samplePanel: false,
             drawerIndex: 0,
             selectedUpload: -1,
         }
@@ -106,15 +116,40 @@ export default {
         isMetadataComplete() {
             return this.metaComplete.length === this.uploadedFiles.length
         },
-        toggleDrawer(uploadIndex, uploadId) {
+        toggleAttrDrawer(uploadIndex, uploadId) {
             this.drawerIndex = uploadIndex
             this.selectedUpload = uploadId
-            this.drawer = !this.drawer
+            this.attrPanel = !this.attrPanel
+        },
+        toggleSampleDrawer(uploadIndex, uploadId) {
+            this.drawerIndex = uploadIndex
+            this.selectedUpload = uploadId
+            this.samplePanel = !this.samplePanel
+            console.log(`Toogling sample drawer: ${this.samplePanel}`)
         },
         deleteUpload(uploadIndex, uploadId) {
             this.uploadedFiles.splice(uploadIndex, 1)
             this.filesToDelete.push(uploadId)
-        }
+        },
+        setSampleIds(uploadIndex) {
+            // console.log("this.samplePanel:" + this.samplePanel)
+            if(this.samplesArray[this.selectedUpload]) {
+                this.uploadedFiles[uploadIndex].sample_ids =  this.samplesArray[this.selectedUpload].join(',')
+                console.log(`Assigned sample_ids ${this.uploadedFiles[uploadIndex].sample_ids}`)
+            }
+            this.toggleSampleDrawer(uploadIndex, this.selectedUpload)
+            // this.$refs.samplesPanel.closeDrawer()
+            // this.$forceUpdate()
+            // console.log("this.samplePanel:" + this.samplePanel)
+        },
+      //   handleClose(done) {
+      //       console.log("handle close")
+      //       this.$confirm('Are you sure you want to close this?')
+      //         .then(_ => {
+      //           done();
+      //         })
+      //         .catch(_ => {});
+      // }
     },
     beforeDestroy: function() {
         console.log("before destroy")
@@ -124,12 +159,19 @@ export default {
         console.log("after destroy")
     },
     mounted: function() {
+        // eventBus.$on('new-samples-input', function() {
+        //     console.log("Closing the sample panel")
+        //     this.samplePanel = false
+        //     this.$forceUpdate()
+
+        // })
         this.$nextTick(function() {
             eventBus.$emit("stage-changed", "annotating")
         })
     },
     components: {
         "specifier": SpecifierComponent,
+        "sampler": SamplerComponent,
     }
 }
 </script>

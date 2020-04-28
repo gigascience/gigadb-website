@@ -75,14 +75,14 @@ class MetadataFormSteps
      public function iShouldSee(TableNode $files)
      {
         foreach ($files->getRows() as $index => $row) {
+            $nbColumns = count($row);
             if ($index === 0) { // first row to define fields
                 $keys = $row;
                 continue;
             }
-            $this->I->see($row[0]);
-            $this->I->see($row[1]);
-            $this->I->see($row[2]);
-
+            foreach(range(0,$nbColumns-1) as $column) {
+                $this->I->see($row[$column]);
+            }
         }
      }
 

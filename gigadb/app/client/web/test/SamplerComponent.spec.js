@@ -58,6 +58,7 @@ describe("Sampler component", function () {
 	})
 
 	it("emit an event when saving", function () {
+		const sampleList = ["Sample 1", "Sample 2", "Sample 3"]
 		const renderedComponent = factory({
 			Vue, propsData: {
 				collection: sampleList
@@ -66,18 +67,16 @@ describe("Sampler component", function () {
 				inputVisible: true
 			})
 
-		let $emitted = false
-        eventBus.$on('new-samples-input', function($result) {
-            $emitted = true
-        })
-
 		const textInput = renderedComponent.find('input[id="new-sample-field"]')
 		const saveButton = renderedComponent.find('button[id="save-samples"]')
 
 		textInput.setValue("Sample 4")
 		textInput.trigger('keyup.enter')
 		saveButton.trigger("click")
-		expect($emitted).toBe(true)
+		Vue.nextTick().then(function () {
+			console.log(renderedComponent.emitted())
+			expect(renderedComponent.emitted().new-samples-input).toBeTruthy()
+		})
 
 	})
 })
