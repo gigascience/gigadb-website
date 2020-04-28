@@ -37,6 +37,10 @@ modules:
                 "goog:chromeOptions":
                     args: ['--headless']
                     w3c: false
+                "goog:loggingPrefs":
+                    browser: ALL
+                "loggingPrefs":
+                    browser: ALL                   
         - common\tests\Helper\FilesystemCleanupHook
         - Yii2:
             part: init
