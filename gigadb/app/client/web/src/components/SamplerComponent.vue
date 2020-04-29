@@ -3,7 +3,7 @@
         <el-tag :key="sample" v-for="sample in samples" closable :disable-transitions="false" @close="handleClose(sample)">
             {{sample}}
         </el-tag>
-        <el-input id="new-sample-field" class="input-new-sample" v-if="inputVisible" v-model="inputValue" ref="saveSampleInput" size="mini" @keyup.enter.native.capture.stop.prevent="handleInputConfirm" @blur="handleInputConfirm">
+        <el-input id="new-sample-field" class="input-new-sample" v-if="inputVisible" v-model="inputValue" ref="saveSampleInput" size="mini" @keydown.enter.native.stop="handleInputConfirm" @blur="handleInputConfirm">
         </el-input>
         <el-button v-else class="button-new-sample" size="small" @click="showInput">+ New Sample</el-button>
         <button type="button" v-on:click.prevent="saveSamples" class="btn btn-success btn-small" id="save-samples">Save</button>

@@ -42,7 +42,7 @@ describe("Sampler component", function () {
 		const textInput = renderedComponent.find('input[id="new-sample-field"]')
 
 		textInput.setValue("New Sample")
-		textInput.trigger('keyup.enter')
+		textInput.trigger('keydown.enter')
 		expect(renderedComponent.vm.samples).toContain("New Sample")
 	})
 	it("Remove sample IDs", function () {
