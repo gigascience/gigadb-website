@@ -42,8 +42,7 @@ export default {
         },
 
         saveSamples(event) {
-        	console.log("SamplerComponent: saveSamples()")
-            this.$emit("new-samples-input")
+            this.$emit("new-samples-input", this.samples)
         }
     }
 }
