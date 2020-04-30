@@ -290,4 +290,12 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
         $this->I->pressKey("#new-sample-field",\Facebook\WebDriver\WebDriverKeys::RETURN_KEY);
      }
 
+    /**
+     * @When I press the close button
+     */
+     public function iPressTheCloseButton()
+     {
+        $this->I->click(".el-dialog__close");
+     }
+
 }

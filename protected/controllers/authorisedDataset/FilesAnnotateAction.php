@@ -50,6 +50,7 @@ class FilesAnnotateAction extends CAction
             $attributes[$upload['id']] = $fileUploadSrv->getAttributes($upload['id']);
         }
 
+        $userMessage = "";
         $bulkStatus = false;
         $bulkAttrStatus = false;
         $parseErrors = [] ;
@@ -79,7 +80,7 @@ class FilesAnnotateAction extends CAction
         {
             $deletedlist = $fileUploadSrv->deleteUploads($_POST['DeleteList']);
             if(count($deletedlist)>0) {
-                Yii::app()->user->setFlash('uploadDeleted',count($deletedlist).' File(s) successfully deleted');
+                $userMessage .= count($deletedlist)." File(s) successfully deleted<br>";
             }
 
         }
@@ -101,7 +102,11 @@ class FilesAnnotateAction extends CAction
             foreach($uploadedFiles as $upload)
             {
                 if(isset($_POST['Attributes'][$upload['id']])) {
-                    $allAttributesSaved = $allAttributesSaved && $fileUploadSrv->setAttributes($upload['id'], $_POST['Attributes'][$upload['id']] );
+                    $attributes = $_POST['Attributes'][$upload['id']];
+                    $allAttributesSaved = $allAttributesSaved && $fileUploadSrv->setAttributes($upload['id'], $attributes );
+                    if ($allAttributesSaved) {
+                        $userMessage .= count($attributes)." attribute(s) added for upload ".$upload['id']."<br>";
+                    }
                 }
             }
         }
@@ -114,7 +119,8 @@ class FilesAnnotateAction extends CAction
                     )
                 );
                 if($statusChangedAndNotified) {
-                    Yii::app()->user->setFlash('fileUpload','File uploading complete');
+                    $userMessage .= "File uploading complete<br>";
+                    Yii::app()->user->setFlash('fileUpload', $userMessage);
                     $this->getController()->redirect("/user/view_profile#submitted");
                 }
                 else {
