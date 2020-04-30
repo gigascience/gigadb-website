@@ -60,7 +60,7 @@
             <el-drawer v-bind:title="'Add samples to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="samplePanel" v-bind:with-header="true" ref="samplesPanel">
                 <span>
                     <sampler id="samples-form" 
-                            v-bind:collection="samplesArray[selectedUpload]" 
+                            v-bind:collection="uploadedFiles[drawerIndex].sample_ids" 
                             v-on:new-samples-input="setSampleIds(drawerIndex, $event)"
                     />
                 </span>
@@ -96,7 +96,6 @@ export default {
             uploadedFiles: this.uploads || [],
             fileAttributes: this.attributes || [],
             filesToDelete: [],
-            samplesArray: [],
             metaComplete: [],
             dataTypes: Object.keys(this.filetypes),
             attrPanel: false,
@@ -142,7 +141,6 @@ export default {
         },
         setSampleIds(uploadIndex, samples) {
             if(samples) {
-                this.samplesArray[this.selectedUpload] = samples
                 this.uploadedFiles[uploadIndex].sample_ids =  samples.join(',')
                 // console.log(`Assigned sample_ids ${this.uploadedFiles[uploadIndex].sample_ids}`)
             }
