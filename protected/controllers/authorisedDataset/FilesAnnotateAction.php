@@ -9,7 +9,6 @@
  * @license GPL-3.0
  */
 
-use Yii;
 use \yii\web\UploadedFile;
 
 class FilesAnnotateAction extends CAction
