@@ -9,25 +9,19 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
         </font>
         <? } ?>
     <? if (Yii::app()->user->hasFlash('error')) { ?>
-        <font color="red">
-            <div>
+            <div class="alert alert-danger" role="alert">
                 <?= Yii::app()->user->getFlash('error'); ?>
             </div>
-        </font>
         <? } ?>
     <? if (Yii::app()->user->hasFlash('fileUpload')) { ?>
-        <font color="red">
-            <div>
+             <div class="alert alert-success" role="alert">
                 <?= Yii::app()->user->getFlash('fileUpload'); ?>
             </div>
-        </font>
         <? } ?>
     <? if (Yii::app()->user->hasFlash('uploadDeleted')) { ?>
-        <font color="red">
-            <div>
+             <div class="alert alert-success" role="alert">
                 <?= Yii::app()->user->getFlash('uploadDeleted'); ?>
             </div>
-        </font>
         <? } ?>
                     <div class="content">
                         <div class="container">

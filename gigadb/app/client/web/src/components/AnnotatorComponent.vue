@@ -52,7 +52,7 @@
             </form>
         </aside>
         <div v-if="uploadedFiles.length > 0">
-            <el-drawer v-bind:title="'Add attributes to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="attrPanel" v-bind:with-header="true" ref="attrPanel">
+            <el-drawer v-bind:title="'Add attributes to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="attrPanel" v-bind:with-header="true" ref="attrPanel" :before-close="handleAttrClose">
                 <span>
                     <specifier id="attributes-form" v-bind:fileAttributes="fileAttributes[selectedUpload]" />
                 </span>
@@ -67,6 +67,15 @@
             </el-drawer>        
         </div>
         <input v-for="(uploadId, index) in filesToDelete" type="hidden" v-bind:name="'DeleteList['+index+']'" v-bind:value="uploadId" />
+
+        <div v-for="(attributes, uid) in fileAttributes">
+            <div v-for="(attr, idx) in attributes">
+                <input type="hidden" v-bind:name="'Attributes['+uid+'][Attributes]['+idx+'][name]'" v-bind:value="attr['name']" />
+                <input type="hidden" v-bind:name="'Attributes['+uid+'][Attributes]['+idx+'][value]'" v-bind:value="attr['value']" />
+                <input type="hidden" v-bind:name="'Attributes['+uid+'][Attributes]['+idx+'][unit]'" v-bind:value="attr['unit']" />
+            </div>
+        </div>
+  
     </div>
 </template>
 <style>
@@ -125,7 +134,7 @@ export default {
             this.drawerIndex = uploadIndex
             this.selectedUpload = uploadId
             this.samplePanel = !this.samplePanel
-            console.log(`Toogling sample drawer: ${this.samplePanel}`)
+            // console.log(`Toogling sample drawer: ${this.samplePanel}`)
         },
         deleteUpload(uploadIndex, uploadId) {
             this.uploadedFiles.splice(uploadIndex, 1)
@@ -138,6 +147,11 @@ export default {
             }
             this.toggleSampleDrawer(uploadIndex, this.selectedUpload)
         },
+        handleAttrClose(done) {
+            console.log("Closing Attributes panel")
+            console.log(JSON.stringify(this.fileAttributes))
+            done()
+        }
     },
     beforeDestroy: function() {
         console.log("before destroy")

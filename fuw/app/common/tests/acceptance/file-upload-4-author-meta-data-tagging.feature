@@ -75,6 +75,41 @@ Scenario: Can add new samples to a file upload
 	| Sequence 3 |
 	| Sequence 4 |
 
+@ok
+Scenario: Saving file metadata with attributes and samples
+	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "30" seconds
+	When I press "Next"
+	And I fill in the form with
+	| File name 	| Data type | Description text 	|
+	| TheProof.csv 	| Script 	| foo bar 			| 
+	| CC0_pixel.jpg | Annotation| hello world 		|
+	# And I press "Sample IDs"
+	# And I add new sample "Sequence 3"
+	# And I add new sample "Sequence 4"
+	# And I press "Save"
+	# And I wait "2" seconds
+	And I press "Attributes"
+	And I fill in "Name" with "Temperature"
+	And I fill in "Value" with "33"
+	And I fill in "Unit" with "Celsius"
+	And I press "Add"
+	And I press the close button
+	And I wait "2" seconds
+	When I press "Complete and return to Your Uploaded Datasets page"
+	Then I should be on "/user/view_profile#submitted"
+	And I should see "File uploading complete"
+	And I should see "1 attribute(s) added for upload"
+	And I should see "DataAvailableForReview"
+
 # Scenario: there is a button to add attributes in the file metadata page when all mandatory fields are filled in
 # 	Given I sign in as a user
 # 	And I am on "/uploader/files"
