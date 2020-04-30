@@ -22,19 +22,22 @@ const factory = function(options = {}, values = {}) {
 }
 
 describe("Sampler component", function () {
-	const sampleList = ["Sample 1", "Sample 2", "Sample 3"]
+	const sampleString = "Sample 1, Sample 2, Sample 3"
+
 	it("Load existing sample ids", function () {
 		const renderedComponent = factory({
 			Vue, propsData: {
-				collection: sampleList
+				collection: sampleString
 			}
 		})
-		expect(renderedComponent.vm.samples).toContain("Sample 1")	
+		return Vue.nextTick().then(function () {
+			expect(renderedComponent.vm.samples).toContain("Sample 1")
+		})
 	})
 	it("Add new sample IDs", function () {
 		const renderedComponent = factory({
 			Vue, propsData: {
-				collection: sampleList
+				collection: sampleString
 			}
 		}, {
 				inputVisible: true
@@ -46,22 +49,23 @@ describe("Sampler component", function () {
 		expect(renderedComponent.vm.samples).toContain("New Sample")
 	})
 	it("Remove sample IDs", function () {
-		const sampleList = ["Sample 1", "Sample 2", "Sample 3"]
 		const renderedComponent = factory({
 			Vue, propsData: {
-				collection: sampleList
+				collection: sampleString
 			}
 		})
-		const existingSamples = renderedComponent.findAll(ElTag)
-		existingSamples.at(1).vm.$emit("close")
-		expect(renderedComponent.vm.samples).not.toContain("Sample 2")
+
+		return Vue.nextTick().then(function () {
+			const existingSamples = renderedComponent.findAll(ElTag)
+			existingSamples.at(1).vm.$emit("close")
+			expect(renderedComponent.vm.samples).not.toContain("Sample 2")
+		})
 	})
 
 	it("emit an event when saving", function () {
-		const sampleList = ["Sample 1", "Sample 2", "Sample 3"]
 		const renderedComponent = factory({
 			Vue, propsData: {
-				collection: sampleList
+				collection: sampleString
 			}
 		}, {
 				inputVisible: true

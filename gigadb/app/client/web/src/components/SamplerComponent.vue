@@ -15,7 +15,8 @@ export default {
     props: ['collection'],
     data() {
         return {
-            samples: this.collection || [],
+            samplesString: this.collection || "",
+            samples: [],
             inputVisible: false,
             inputValue: ''
         };
@@ -44,7 +45,14 @@ export default {
         saveSamples(event) {
             this.$emit("new-samples-input", this.samples)
         }
-    }
+    },
+    mounted: function () {
+        this.$nextTick(function() {
+            if(this.samplesString) {
+                this.samples = this.samplesString.split(',').map(Function.prototype.call, String.prototype.trim)
+            }
+        })
+    },
 }
 </script>
 <style>
