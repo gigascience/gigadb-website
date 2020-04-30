@@ -279,13 +279,23 @@ describe("Annotator component's Samples button", function () {
         })
     })
 
-    it("should update the upload's sample_ids field in a hidden text input", function () {
+    it("should update the upload's sample_ids field", function () {
         const wrapper = this.renderedComponent
         wrapper.findAll(".sample-button").at(0).trigger("click")
         wrapper.vm.samplesArray[wrapper.vm.selectedUpload] = ["Sample 1", "Sample 2", "Sample 3"]
-        wrapper.vm.setSampleIds(wrapper.vm.selectedUpload)
+        wrapper.vm.setSampleIds(wrapper.vm.selectedUpload, wrapper.vm.samplesArray[wrapper.vm.selectedUpload])
         return Vue.nextTick().then(function() {
             expect(wrapper.vm.uploadedFiles[wrapper.vm.selectedUpload].sample_ids).toBe("Sample 1,Sample 2,Sample 3")
+        })
+    })
+
+   it("should maintain an array of samples so user can add samples not all at once", function () {
+        const wrapper = this.renderedComponent
+        wrapper.findAll(".sample-button").at(0).trigger("click")
+        const samples = ["Sample 1", "Sample 2", "Sample 3"]
+        wrapper.vm.setSampleIds(wrapper.vm.selectedUpload, samples)
+        return Vue.nextTick().then(function() {
+            expect(wrapper.vm.samplesArray[wrapper.vm.selectedUpload]).toEqual(samples)
         })
     })
 

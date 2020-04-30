@@ -61,7 +61,7 @@
                 <span>
                     <sampler id="samples-form" 
                             v-bind:collection="samplesArray[selectedUpload]" 
-                            v-on:new-samples-input="setSampleIds(drawerIndex)"
+                            v-on:new-samples-input="setSampleIds(drawerIndex, $event)"
                     />
                 </span>
             </el-drawer>        
@@ -140,10 +140,11 @@ export default {
             this.uploadedFiles.splice(uploadIndex, 1)
             this.filesToDelete.push(uploadId)
         },
-        setSampleIds(uploadIndex) {
-            if(this.samplesArray[this.selectedUpload]) {
-                this.uploadedFiles[uploadIndex].sample_ids =  this.samplesArray[this.selectedUpload].join(',')
-                console.log(`Assigned sample_ids ${this.uploadedFiles[uploadIndex].sample_ids}`)
+        setSampleIds(uploadIndex, samples) {
+            if(samples) {
+                this.samplesArray[this.selectedUpload] = samples
+                this.uploadedFiles[uploadIndex].sample_ids =  samples.join(',')
+                // console.log(`Assigned sample_ids ${this.uploadedFiles[uploadIndex].sample_ids}`)
             }
             this.toggleSampleDrawer(uploadIndex, this.selectedUpload)
         },

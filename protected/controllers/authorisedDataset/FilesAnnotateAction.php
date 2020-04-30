@@ -92,6 +92,10 @@ class FilesAnnotateAction extends CAction
             {
                 if(isset($_POST['Upload'][$upload['id']])) {
                     $allUploadsSaved = $allUploadsSaved && $fileUploadSrv->updateUpload($upload['id'], $_POST['Upload'][$upload['id']] );
+                    if($allUploadsSaved && isset($_POST['Upload'][$upload['id']]['sample_ids'])) {
+                        $samples = explode(",",$_POST['Upload'][$upload['id']]['sample_ids']);
+                        $userMessage .= count($samples)." sample(s) added for upload ".$upload['id']."<br>";
+                    }
                 }
             }
         }
