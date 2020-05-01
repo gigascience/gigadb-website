@@ -22,7 +22,6 @@ services:
       - ${APPLICATION}/assets:/var/www/assets
       - ${APPLICATION}/images:/var/www/images
       - ${APPLICATION}/css:/var/www/css
-      - ${APPLICATION}/style-guide:/var/www/style-guide
       # File Upload Wizard admin application
       - ${APPLICATION}/fuw/app:/app
       - le_config:/etc/letsencrypt
@@ -55,7 +54,6 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=true
         - INSTALL_APCU=true
-        - INSTALL_MAILPARSE=true
         - INSTALL_GIT=true
     volumes:
       # Gigadb webapp
@@ -212,8 +210,6 @@ services:
         - INSTALL_LIBSODIUM=true
         - INSTALL_GIT=true
         - INSTALL_APCU=true
-        - INSTALL_MAILPARSE=true
-        - INSTALL_CSSLINT_JSHINT=true
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
@@ -238,20 +234,6 @@ services:
       - "gigadb.test:172.16.238.10"
       - "fuw-admin-api:172.16.238.10"
     command: bash -c "./tests/all_and_coverage"
-
-  chrome:
-    image: selenium/standalone-chrome:3.141.59-oxygen # latest version with Chrome 74
-    shm_size: '1gb' # to avoid a known issue
-    ports:
-      # - "5900:5900" #for VNC access
-      - "4444:4444" #for webdriver access
-    networks:
-      - web-tier
-    extra_hosts:
-      - "gigadb.test:172.16.238.10"
-      - "gigadb.dev:172.16.238.10"
-    environment: # to run headless, set false and comment out port 5900 above and make sure to pass --headless arg in acceptance.suite.yml
-      START_XVFB: "false"
 
   csv-to-migrations:
     image: node:14.9.0-buster
@@ -564,6 +546,18 @@ services:
       - NET_ADMIN
       - SYS_ADMIN
 
+  beanstalkd:
+    build:
+      context: .
+      dockerfile: ../packaging/Beanstalkd-Dockerfile
+    volumes:
+      - ${APPLICATION}/:/var/www
+    networks:
+      - web-tier
+      - db-tier
+    expose:
+      - "3000"
+
   local-cert:
     build:
       context: ..
@@ -578,7 +572,7 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.16.238.0/24
+      - subnet: 172.16.238.0/24
   db-tier:
 
 volumes:
