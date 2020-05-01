@@ -218,6 +218,16 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
         $datasetUpload->setStatusToDataAvailableForReview("changed from test scenario");
      }
 
+    /**
+     * @Given all files have be moved to the public ftp repository
+     *
+     * this step need to exercice the backend job triggered by completion of files move
+     */
+     public function allFilesHaveBeMovedToThePublicFtpRepository()
+     {
+        // post a backend job to Beanstalkd for copying the metadata to GigaDB
+        $this->I->fail();
+     } 
 	/**
      * @When I press :arg1 for dataset :arg2
      */
