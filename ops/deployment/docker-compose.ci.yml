@@ -20,6 +20,11 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest"
 
+  fuw-public:
+    build:
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest"
+
   fuw-proto:
     build:
       cache_from:
