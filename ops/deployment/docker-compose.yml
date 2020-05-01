@@ -22,6 +22,7 @@ services:
       - ${APPLICATION}/assets:/var/www/assets
       - ${APPLICATION}/images:/var/www/images
       - ${APPLICATION}/css:/var/www/css
+      - ${APPLICATION}/style-guide:/var/www/style-guide
       # File Upload Wizard admin application
       - ${APPLICATION}/fuw/app:/app
       - le_config:/etc/letsencrypt
@@ -54,6 +55,7 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=true
         - INSTALL_APCU=true
+        - INSTALL_MAILPARSE=true
         - INSTALL_GIT=true
     volumes:
       # Gigadb webapp
@@ -210,6 +212,8 @@ services:
         - INSTALL_LIBSODIUM=true
         - INSTALL_GIT=true
         - INSTALL_APCU=true
+        - INSTALL_MAILPARSE=true
+        - INSTALL_CSSLINT_JSHINT=true
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
@@ -572,7 +576,7 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.16.238.0/24
+        - subnet: 172.16.238.0/24
   db-tier:
 
 volumes:
