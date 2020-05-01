@@ -54,6 +54,7 @@ gherkin:
                 - common\tests\Step\Acceptance\AuthorSteps
                 - common\tests\Step\Acceptance\MetadataFormSteps
                 - common\tests\Step\Acceptance\CuratorSteps
+                - common\tests\Step\Acceptance\ReviewerSteps
             author:
                 - common\tests\Step\Acceptance\AuthorSteps
                 - common\tests\Step\Acceptance\MetadataFormSteps
