@@ -10,7 +10,6 @@ set +a
 ./tests/functional_runner
 ./tests/css_check
 ./tests/javascript_check
-./tests/acceptance_runner ci
 ./tests/acceptance_runner ci-js
 ./tests/coverage_runner
 
