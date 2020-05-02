@@ -167,25 +167,27 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                 </div>
                                 <div class="controls">
                                     <div class="span1">
-                                        <?php echo $form->textField($model,'identifier',array('size'=>32,
-                                                                                                'maxlength'=>32,
-                                                                                                'disabled'=>$model->upload_status == 'Published',
-                                                                                                'class' => "input-mini",
-                                                                                                'ajax' => array(
-                                                                                                    'type' => 'POST',
-                                                                                                    'url' => array('adminDataset/checkDOIExist'),
-                                                                                                    'dataType' => 'JSON',
-                                                                                                    'data'=>array('doi'=>'js:$(this).val()'),
-                                                                                                    'success'=>'function(data){
-                                                                                                        if(data.status){
-                                                                                                            $("#Dataset_identifier").addClass("error");
-                                                                                                        }else {
-                                                                                                            $("#Dataset_identifier").removeClass("error");
+                                        <?php echo $form->textField($model,'identifier',
+                                            array('size'=>32,
+                                                'maxlength'=>32,
+                                                'disabled'=>$model->upload_status == 'Published',
+                                                'class' => "input-mini",
+                                                'ajax' => array(
+                                                    'type' => 'POST',
+                                                    'url' => array('adminDataset/checkDOIExist'),
+                                                    'dataType' => 'JSON',
+                                                    'data'=>array('doi'=>'js:$(this).val()'),
+                                                    'success'=>'function(data){
+                                                        if(data.status){
+                                                            $("#Dataset_identifier").addClass("error");
+                                                        }else {
+                                                            $("#Dataset_identifier").removeClass("error");
 
-                                                                                                        }
-                                                                                                    }',
-                                                                                                ),
-                                                                                                )); ?>
+                                                        }
+                                                    }',
+                                                ),
+                                            )
+                                        ); ?>
                                         <?php echo $form->error($model,'identifier'); ?>
                                     </div>
 
@@ -308,37 +310,9 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
     </div>
 </div>
 
-<script language="javascript">
-function checkdate() {
-
-
-
-    var date= document.getElementById("pdate").value;
-    var current = new Date();
-    var month = current.getMonth()+1;
-
-    var today = current.getFullYear()+'-'+month + '-'+current.getDate();
-
-
-    if(date !== today)
-    {
-        var r= window.confirm("The publication date is currently "+ date+", Do you want this changed to todays date "+ today);
-        if(r==true) {
-
-            document.getElementById("pdate").value=today;
-        }else {
-
-
-        }
-
-    }
-
-}
-
-</script>
 <div class="span12" style="text-align:center">
     <a href="<?=Yii::app()->createUrl('/adminDataset/admin')?>" class="btn"/>Cancel</a>
-    <?= CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn-green','onclick'=>'js:checkdate()')); ?>
+    <?= CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn-green')); ?>
         <?php if( "hidden" === $datasetPageSettings->getPageType() ) { ?>
     <a href="<?=Yii::app()->createUrl('/adminDataset/private/identifier/'.$model->identifier)?>" class="btn-green"/>Create/Reset Private URL</a>
             <?php if($model->token){?>
