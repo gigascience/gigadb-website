@@ -10,7 +10,12 @@ $config =  [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log','queue'],
+    'aliases' => [
+        '@gigadb-data' => '/var',
+        '@uploads' => '@gigadb-data/fuw/uploads',
+        '@publicftp'   => '@gigadb-data/ftp/public',
+    ],
     'modules' => [],
     'components' => [
         'request' => [
@@ -47,7 +52,13 @@ $config =  [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'filedrop-account'],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'filedrop-account',
+                    'extraPatterns' => [
+                        'POST move/<id>' => 'move',
+                    ],
+                ],                    
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'mockup-url'],
                 'site/login' => 'site/login',
                 [
@@ -56,7 +67,7 @@ $config =  [
                     'extraPatterns' => [
                         'POST lookup' => 'lookup',
                     ],
-                ],                
+                ],
             ],
         ],
 
@@ -65,6 +76,17 @@ $config =  [
                 'application/json' => 'yii\web\JsonParser',
             ]
         ],
+        'fs' => [
+            'class' => 'creocoder\flysystem\LocalFilesystem',
+            'path' => '@gigadb-data',
+        ],        
+        'queue' => [
+            'class' => \yii\queue\beanstalk\Queue::class,
+            'as log' => \yii\queue\LogBehavior::class,
+            'host' => 'beanstalkd',
+            'port' => 11300,
+            'tube' => 'moveFilesQueue',
+        ],        
 
     ],
     'params' => $params,

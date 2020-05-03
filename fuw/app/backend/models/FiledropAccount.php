@@ -286,6 +286,14 @@ class FiledropAccount extends \yii\db\ActiveRecord
     }
 
     /**
+     * return related uploads objects
+     */
+    public function getUploads()
+    {
+        return $this->hasMany(Upload::className(), ['doi' => 'doi']);
+    }
+
+    /**
      * remove uploads associated with this FiledropAccount object by marking them as archived
      *
      * @return int number of uploads successfully archived

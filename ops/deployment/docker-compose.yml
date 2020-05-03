@@ -560,7 +560,7 @@ services:
       - web-tier
       - db-tier
     expose:
-      - "3000"
+      - "11300"
 
   local-cert:
     build:
