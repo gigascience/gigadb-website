@@ -186,6 +186,7 @@ services:
       - fuw-admin
       - fuw-public
       - database
+      - beanstalkd
       # - phantomjs
     command: composer install
     networks:
