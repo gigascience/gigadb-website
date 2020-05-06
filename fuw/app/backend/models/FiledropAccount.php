@@ -290,7 +290,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     public function getUploads()
     {
-        return $this->hasMany(Upload::className(), ['doi' => 'doi']);
+        return Upload::find()->where(['doi' => $this->doi])->all();
     }
 
     /**

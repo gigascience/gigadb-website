@@ -40,8 +40,9 @@ class MoveFilesAction extends \yii\rest\Action
      */
     public function run($id)
     {
-        Yii::info("Move Files for $id");
+        Yii::info("* Move files for filedrop account $id");
         $filedrop = $this->findModel($id);
+        Yii::debug(var_export($filedrop,true));
 
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $filedrop);
@@ -50,11 +51,12 @@ class MoveFilesAction extends \yii\rest\Action
         $jobs = [];
         $files = $filedrop->getUploads();
         foreach ($files as $file) {
+            Yii::debug("** create job for {$file->name} of DOI {$filedrop->doi}");
             $jid = Yii::$app->queue->push(new MoveJob([
                 'doi' => $filedrop->doi,
-                'file' => $file,
+                'file' => $file->name,
             ]));       
-            $jobs[] =  ["file" => $file, "jobId" => $jid];   
+            $jobs[] =  ["file" => $file->name, "jobId" => $jid];   
         }
 
         return [ "doi" => $filedrop->doi, "jobs" => $jobs ];
