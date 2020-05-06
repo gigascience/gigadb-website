@@ -42,6 +42,10 @@ class FiledropAccountController extends ActiveController
             "class" => "backend\actions\FiledropAccountController\MoveFilesAction",
             "modelClass" => $this->modelClass,
         ];
+        $actions['index']['dataFilter'] = [
+            'class' => 'yii\data\ActiveDataFilter',
+            'searchModel' => 'backend\models\FiledropAccountSearch'
+        ];
         return $actions;
     }
 }

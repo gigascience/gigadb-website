@@ -418,11 +418,58 @@ class FiledropServiceTest extends FunctionalTesting
     }
 
     /**
+     * Test retrieving filedrop account for a DOI from the API
+     *
+     */
+    public function testGetAccounts()
+    {
+        // Prepare the http client to be traceable for testing
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
+
+        $webClient = new Client(['handler' => $stack]);
+
+        // Instantiate FiledropService
+        $srv = new FiledropService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => 31104000,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByPk(344),
+            "identifier"=> $this->doi,
+            "dataset" => new DatasetDAO(["identifier" => $this->doi]),
+            "dryRunMode"=> false,
+            ]);
+
+        // invoke the Filedrop Service
+        $response = $srv->getAccounts($this->doi);
+
+        // test the response from the API is successful
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
+        // test that getUploads return a value
+        $this->assertNotNull($response);
+        $this->assertEquals($this->filedrop_id, $response["id"]);
+        $this->assertEquals($this->doi, $response["doi"]);
+        $this->assertEquals(1, $response["status"]);
+
+
+    }
+
+    /**
      * Test retrieving existing filedrop account from the API
      *
      * Happy path
      */
-    public function testGetAccount()
+    public function testGetAccountDetails()
     {
 
         // Prepare the http client to be traceable for testing
@@ -453,7 +500,7 @@ class FiledropServiceTest extends FunctionalTesting
             ]);
 
         // invoke the Filedrop Service
-        $response = $filedropSrv->getAccount($this->filedrop_id);
+        $response = $filedropSrv->getAccountDetails($this->filedrop_id);
 
         // test the response from the API is successful
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
@@ -464,8 +511,8 @@ class FiledropServiceTest extends FunctionalTesting
         $this->assertEquals($this->doi, $response["doi"]);
         $this->assertEquals("uploader-{$this->doi}", $response["upload_login"]);
 
-        // test we can call getAccount a second time within the same session (token reuse)
-        $response2 = $filedropSrv->getAccount($this->filedrop_id);
+        // test we can call getAccountDetails a second time within the same session (token reuse)
+        $response2 = $filedropSrv->getAccountDetails($this->filedrop_id);
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
     }

@@ -26,7 +26,7 @@ class DatasetFiledropTest extends CTestCase
 		$mockFiledropSrv = $this->createMock(FiledropService::class);
 
         $mockFiledropSrv->expects($this->once())
-                 ->method('getAccount')
+                 ->method('getAccountDetails')
                  ->with($filedrop_id)
                  ->willReturn($filedropAccountHash);
 
