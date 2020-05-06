@@ -31,7 +31,7 @@ class DatasetFiledrop extends yii\base\BaseObject
 	 */
 	public function getFiledropAccountDetails(): array
 	{
-		return $this->_filedrop->getAccount($this->_id);
+		return $this->_filedrop->getAccountDetails($this->_id);
 	}
 
 	/**

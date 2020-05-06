@@ -228,6 +228,44 @@ class FiledropService extends yii\base\Component
 		return null;
 	}
 
+/**
+	 * Make HTTP GET to File Upload Wizard to retrieve an active filedrop account by its DOI
+	 *
+	 * @param string $doi DOI of the files to return
+	 *
+	 * @return array||null return an array of uploads or null if not found
+	 */
+	public function getAccounts(string $doi): ?array
+	{
+		$api_endpoint = "http://fuw-admin-api/filedrop-accounts";
+
+		// reuse token to avoid "You must unsign before making changes" error
+		// when multiple API calls in same session
+		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
+
+		try {
+			$response = $this->webClient->request('GET', $api_endpoint, [
+								    'headers' => [
+								        'Authorization' => "Bearer ".$this->token,
+								    ],
+								    'query' => [ 'filter[doi]' => $doi,  'filter[status]' => 1 ],
+								    'connect_timeout' => 5,
+								]);
+			if (200 === $response->getStatusCode() ) {
+				// Yii::log($response->getBody(),'info');
+				$accounts =  json_decode($response->getBody(), true);
+				return $accounts[0];
+			}
+		}
+		catch(RequestException $e) {
+			Yii::log( Psr7\str($e->getRequest()) , "error");
+		    if ($e->hasResponse()) {
+		        Yii::log( Psr7\str($e->getResponse()), "error");
+		    }
+		}
+		return null;
+	}
+
 	/**
 	 * Make HTTP GET to File Upload Wizard to retrieve Filedrop account
 	 *
@@ -235,7 +273,7 @@ class FiledropService extends yii\base\Component
 	 *
 	 * @return array||null return an array of attributes or null if not found
 	 */
-	public function getAccount(int $filedrop_id): ?array
+	public function getAccountDetails(int $filedrop_id): ?array
 	{
 		$api_endpoint = "http://fuw-admin-api/filedrop-accounts/$filedrop_id";
 
