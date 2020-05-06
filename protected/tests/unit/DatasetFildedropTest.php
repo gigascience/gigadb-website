@@ -184,5 +184,79 @@ class DatasetFiledropTest extends CTestCase
 		$this->assertTrue(0 == preg_match('/a97b3/', $renderedInstructions));
 	}
 
+	public function testMoveUploadedFilesSuccess()
+	{
+		$config = [
+			"ftpd_endpoint" => "localhost",
+			"ftpd_port" => "9021",
+			"template_path" => "/var/www/files/templates",
+		];
+
+		$filedrop_id = 1;
+
+		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
+		$mockFiledropSrv = $this->createMock(FiledropService::class);
+
+        $mockDatasetDAO->expects($this->once())
+                 ->method('getTitleAndStatus')
+                 ->willReturn(array('title' => 'foo', 'status' => 'Curation'));
+
+      	$mockFiledropSrv->dataset = $mockDatasetDAO;
+
+      	$jobReceipt = [ 
+					"doi" => "000007", 
+					"jobs" => [ ["file" => "a.jpg", "jobId" => "4tfadf"],
+								["file" => "b.jpg", "jobId" => "8tfadf"] 
+							], 
+				];
+
+		$mockFiledropSrv->expects($this->once())
+			->method('triggerMoveFiles')
+			->with($filedrop_id)
+			->willReturn($jobReceipt);
+
+		$sut = new DatasetFiledrop($filedrop_id, $mockFiledropSrv, $config);
+
+		$this->assertEquals($jobReceipt,$sut->moveUploadedFiles());
+
+	}
+
+	public function testMoveUploadedFilesWrongStatus()
+	{
+		$config = [
+			"ftpd_endpoint" => "localhost",
+			"ftpd_port" => "9021",
+			"template_path" => "/var/www/files/templates",
+		];
+
+		$filedrop_id = 1;
+
+		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
+		$mockFiledropSrv = $this->createMock(FiledropService::class);
+
+        $mockDatasetDAO->expects($this->once())
+                 ->method('getTitleAndStatus')
+                 ->willReturn(array('title' => 'foo', 'status' => 'UserDataUploading'));
+
+      	$mockFiledropSrv->dataset = $mockDatasetDAO;
+
+      	$jobReceipt = [ 
+					"doi" => "000007", 
+					"jobs" => [ ["file" => "a.jpg", "jobId" => "4tfadf"],
+								["file" => "b.jpg", "jobId" => "8tfadf"] 
+							], 
+				];
+
+		$mockFiledropSrv->expects($this->never())
+			->method('triggerMoveFiles')
+			->with($filedrop_id)
+			->willReturn($jobReceipt);
+
+		$sut = new DatasetFiledrop($filedrop_id, $mockFiledropSrv, $config);
+
+		$this->assertNull($sut->moveUploadedFiles());
+
+	}
+
 }
 ?>

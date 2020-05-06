@@ -193,6 +193,59 @@ class FiledropServiceTest extends \CTestCase
 
 	}
 
+    /**
+     * test emailInstructions() with incorrect arguments
+     *
+     */
+    public function testTriggerMoveFiles()
+    {
+
+        // set mocks
+        $mockTokenSrv = $this->createMock(\TokenService::class);
+        $mockToken = $this->createMock(\Lcobucci\JWT\Token::class);
+        $mockWebClient = $this->createMock(\GuzzleHttp\Client::class);
+        $mockResponse = $this->createMock(\GuzzleHttp\Psr7\Response::class);
+
+         // set expected parameters to the HTTP request:
+        $filedrop_id = 1;
+        $api_endpoint = "http://fuw-admin-api/filedrop-accounts/move/$filedrop_id";
+        $method = "POST";
+        $connect_timeout = 5 ;
+        $auth_header = ['Authorization' => "Bearer ".$this->mockToken];
+
+        $mockTokenSrv->expects($this->once())
+                 ->method('generateTokenForUser')
+                 ->willReturn($mockToken);
+
+        $mockWebClient->expects($this->once())
+                 ->method('request')
+                 ->with($method, $api_endpoint, [ 'headers' => $auth_header,
+                                                'connect_timeout' => $connect_timeout
+                        ])
+                 ->willReturn($mockResponse);
+
+        $mockResponse->expects($this->once())
+                 ->method('getStatusCode')
+                 ->willReturn(200);
+
+        $mockResponse->expects($this->once())
+                 ->method('getBody')
+                 ->willReturn('{"doi": "000007", "jobs": [{"jobId": 1},{"jobId": 2}]}');             
+
+        // Instantiate FiledropService
+        $filedropSrv = new \FiledropService([
+            "tokenSrv" => $mockTokenSrv,
+            "webClient" => $mockWebClient,
+            "requester" => \User::model()->findByPk(344),
+            "identifier"=> "foobar",
+            "dryRunMode"=>true,
+            ]);
+
+        $this->assertNotNull($filedropSrv->triggerMoveFiles($filedrop_id));
+
+
+    }
+
 }
 
 
