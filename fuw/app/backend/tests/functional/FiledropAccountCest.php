@@ -3,6 +3,8 @@ use backend\tests\FunctionalTester;
 use common\fixtures\UserFixture;
 
 use backend\models\FiledropAccount;
+use common\models\Upload;
+use common\fixtures\UploadFixture;
 use backend\models\DockerManager;
 
 use Yii;
@@ -26,7 +28,7 @@ class FiledropAccountCest
                 'dataFile' => codecept_data_dir() . 'login_data.php'
             ],
             'upload' => [
-                'class' => UserFixture::className(),
+                'class' => UploadFixture::className(),
                 'dataFile' => codecept_data_dir() . 'upload.php'
             ],        
         ];
@@ -283,10 +285,14 @@ class FiledropAccountCest
         $I->seeResponseIsJson();
         $I->canSeeResponseContains("jobId");
         $I->seeResponseContainsJson(array('doi' => "$doi"));
+        $I->seeResponseContainsJson(array('file' => "084.fq"));
+        $I->seeResponseContainsJson(array('file' => "085.fq"));
         $I->canSeeResponseJsonMatchesJsonPath("$.jobs[0].file");
         $I->canSeeResponseJsonMatchesJsonPath("$.jobs[0].jobId");
         $I->canSeeResponseJsonMatchesJsonPath("$.jobs[1].file");
         $I->canSeeResponseJsonMatchesJsonPath("$.jobs[1].jobId");
+
+
     }
 }
 
