@@ -362,6 +362,41 @@ class FiledropService extends yii\base\Component
 		    }
 		}
 		return null;
+	}
+
+	/**
+	 * Make HTTP POST to File Upload Wizard to trigger the job to move files
+	 *
+	 * @param int $filedrop_id internal id of filedrop account
+	 * @return ?array doi and list of jobs ids
+	 */
+	public function triggerMoveFiles(int $filedrop_id): ?array
+	{
+		$api_endpoint = "http://fuw-admin-api/filedrop-accounts/move/$filedrop_id";
+
+		// reuse token to avoid "You must unsign before making changes" error
+		// when multiple API calls in same session
+		$this->token = $this->token ?? $this->tokenSrv->generateTokenForUser($this->requester->email);
+
+		try {
+			$response = $this->webClient->request('POST', $api_endpoint, [
+								    'headers' => [
+								        'Authorization' => "Bearer ".$this->token,
+								    ],
+								    'connect_timeout' => 5,
+								]);
+			if (200 === $response->getStatusCode() ) {
+				// Yii::log($response->getBody(), "debug");
+				return  json_decode($response->getBody(), true);
+			}
+		}
+		catch(RequestException $e) {
+			Yii::log( Psr7\str($e->getRequest()) , "error");
+		    if ($e->hasResponse()) {
+		        Yii::log( Psr7\str($e->getResponse()), "error");
+		    }
+		}
+		return null;
 	}	
 
 }

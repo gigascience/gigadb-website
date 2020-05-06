@@ -92,6 +92,21 @@ class DatasetFiledrop extends yii\base\BaseObject
 
 		return $instructions;
 	}
+
+	/**
+	 * When dataset is set to Curation status, trigger the job to move files to public ftp
+	 *
+	 * @return array||null returned the list of job Id created to move uploaded files
+	 */
+	public function moveUploadedFiles(): ?array
+	{
+		$datasetInfo  = $this->_filedrop->dataset->getTitleAndStatus();
+		if ("Curation" === $datasetInfo['status']) {
+			return $this->_filedrop->triggerMoveFiles($this->_id);
+		}
+		return null;
+	}
+
 }
 
 ?>
