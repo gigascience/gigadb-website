@@ -191,7 +191,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                         <?php echo $form->error($model,'identifier'); ?>
                                     </div>
 
-                                    <div class="span3">
+                                    <div class="span2">
                                         <?php
                                         $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
                                         echo CHtml::ajaxLink('Mint DOI',Yii::app()->createUrl('/adminDataset/mint/'),
@@ -216,6 +216,32 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 
                                         ?>
                                         <div id="minting"></div>
+                                    </div>
+                                    <div class="span2">
+                                        <?php
+                                        $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
+                                        echo CHtml::ajaxLink('Move files to public ftp',Yii::app()->createUrl('/adminDataset/moveFiles/'),
+                                        array(
+                                            'type'=>'POST',
+                                            'data'=> array('doi'=>'js:$("#Dataset_identifier").val()'),
+                                            'dataType'=>'json',
+                                            'success'=>'js:function(output){
+                                                console.log(output);
+                                                if(output.status){
+                                                    $("#movingFiles").html("Triggered moving files to public ftp");
+
+                                                }else {
+                                                    $("#movingFiles").html("error triggering move");
+                                                }
+                                                $("#move_files_button").toggleClass("active");
+                                            }',
+                                        ),array('class'=>'btn btn-green',
+                                                'id' =>'move_files_button',
+                                                'disabled'=>in_array($model->upload_status, $status_array),
+                                        ));
+
+                                        ?>
+                                        <div id="movingFiles"></div>
                                     </div>
 
                                 </div>
