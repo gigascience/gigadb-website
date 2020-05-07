@@ -25,12 +25,13 @@ Scenario: there's no button to trigger file transfer for dataset if status not C
 	And I press "Update Dataset" for dataset "000008"
 	Then I should not see a "Move files to public ftp" link
 
+@ok
 Scenario: Clicking the move button create a job for the workers
 	Given I sign in as an admin
 	When I go to "/adminDataset/admin"
 	And I press "Update Dataset" for dataset "000007"
 	And I press "Move files to public ftp"
-	Then I should see "files are being moved to public ftp"
+	Then I should see "Files are being moved to public ftp. It may take a moment"
 
 Scenario: The completion of moving all files triggers update of the file database table
 	Given all files have be moved to the public ftp repository

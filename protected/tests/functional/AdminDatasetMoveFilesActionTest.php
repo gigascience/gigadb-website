@@ -66,8 +66,7 @@ class AdminDatasetMoveFilesActionTest extends FunctionalTesting
             "Admin");
         
         $this->session->visit($endpointUrl);
-        $this->assertTrue($this->session->getPage()->hasContent("doi"));
-        $this->assertTrue($this->session->getPage()->hasContent("job"));
+        $this->assertTrue($this->session->getPage()->hasContent("Files are being moved to public ftp. It may take a moment"));
 	}
 
 	public function tearDown()
