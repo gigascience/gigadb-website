@@ -212,36 +212,21 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                         ),array('class'=>'btn btn-green',
                                                 'id' =>'mint_doi_button',
                                                 'disabled'=>in_array($model->upload_status, $status_array),
+                                                
                                         ));
 
                                         ?>
                                         <div id="minting"></div>
                                     </div>
                                     <div class="span2">
+                                    
                                         <?php
-                                        $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
-                                        echo CHtml::ajaxLink('Move files to public ftp',Yii::app()->createUrl('/adminDataset/moveFiles/'),
-                                        array(
-                                            'type'=>'POST',
-                                            'data'=> array('doi'=>'js:$("#Dataset_identifier").val()'),
-                                            'dataType'=>'json',
-                                            'success'=>'js:function(output){
-                                                console.log(output);
-                                                if(output.status){
-                                                    $("#movingFiles").html("Triggered moving files to public ftp");
-
-                                                }else {
-                                                    $("#movingFiles").html("error triggering move");
-                                                }
-                                                $("#move_files_button").toggleClass("active");
-                                            }',
-                                        ),array('class'=>'btn btn-green',
-                                                'id' =>'move_files_button',
-                                                'disabled'=>in_array($model->upload_status, $status_array),
-                                        ));
-
+                                            if("Curation" === $model->upload_status) {
+                                                echo CHtml::link("Move files to public ftp",
+                                                    "/adminDataset/moveFiles/doi/{$model->identifier}",
+                                                    ["class" => "btn btn-green btn-mini"]);
+                                            }
                                         ?>
-                                        <div id="movingFiles"></div>
                                     </div>
 
                                 </div>
@@ -428,9 +413,6 @@ $(function() {
 
 });
 
-</script>
-
-<script>
 <?php
 $js_array = json_encode($model->getSemanticKeywords());
 echo "var existingTags = ". $js_array . ";\n";

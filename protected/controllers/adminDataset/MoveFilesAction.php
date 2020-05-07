@@ -45,8 +45,13 @@ class MoveFilesAction extends CAction
         $response = $filedrop->moveUploadedFiles();
         Yii::log(var_export($response,true),"debug");
 
-        echo json_encode($response);
-        Yii::app()->end();     
+        if ($response) {
+          Yii::app()->user->setFlash('success',"Files are being moved to public ftp. It may take a moment");
+          $this->getController()->redirect("/adminDataset/admin/"); 
+        }
+        else {
+          throw new CHttpException(500, "Error happened with the request to move files");
+        }
     }
 }
 
