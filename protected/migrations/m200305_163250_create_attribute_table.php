@@ -169,6 +169,14 @@ class m200305_163250_create_attribute_table extends CDbMigration
             'occurance' => '1'
         ));
         $this->insert('attribute', array(
+            'id' => '356',
+            'attribute_name' => 'Description',
+            'definition' => 'description of the sample (may include many attributes as human readable text, but these should also be added as independent attribute:value pairs).',
+            'structured_comment_name' => 'description',
+            'value_syntax' => 'text',
+            'occurance' => '1'
+        ));
+        $this->insert('attribute', array(
             'id' => '376',
             'attribute_name' => 'estimated genome size',
             'definition' => 'An estimate of the size of the genome of the species being studied, in basepairs (Gb, Mb or Kb)',
