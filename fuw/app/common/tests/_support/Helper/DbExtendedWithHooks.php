@@ -59,6 +59,7 @@ class DbExtendedWithHooks extends \Codeception\Module\Db
         $this->amConnectedToDatabase(self::DEFAULT_DATABASE);
 
         $this->_getDriver()->deleteQueryByCriteria('dataset', ["identifier" => "000007"]);
+        $this->_getDriver()->deleteQueryByCriteria('dataset', ["identifier" => "000008"]);
         $this->_getDriver()->deleteQueryByCriteria('dataset', ["identifier" => "100006"]);
         $this->_getDriver()->deleteQueryByCriteria('gigadb_user', ["email" => "artie_dodger@gigadb.org"]);
         $this->_getDriver()->deleteQueryByCriteria('gigadb_user', ["email" => "joy_fox@gigadb.org"]);

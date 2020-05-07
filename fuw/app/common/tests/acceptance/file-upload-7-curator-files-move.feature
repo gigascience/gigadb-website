@@ -17,21 +17,20 @@ Scenario: there's a button to trigger file transfer for dataset with status Cura
 	And I press "Update Dataset" for dataset "000007"
 	Then I should see a "Move files to public ftp" link
 
-
+@ok
 Scenario: there's no button to trigger file transfer for dataset if status not Curation
-	Given a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "DataPending"
-	And I sign in as an admin
-	And I am on "/site/admin"
-	When I press "Datasets"
+	Given I sign in as an admin
+	And a dataset with DOI "000008" owned by user "Artie" "Dodger" has status "Published"
+	When I go to "/adminDataset/admin"
+	And I press "Update Dataset" for dataset "000008"
 	Then I should not see a "Move files to public ftp" link
 
-@wip
 Scenario: Clicking the move button create a job for the workers
 	Given I sign in as an admin
 	When I go to "/adminDataset/admin"
 	And I press "Update Dataset" for dataset "000007"
 	And I press "Move files to public ftp"
-	Then I should see "The files are being moved to public ftp"
+	Then I should see "files are being moved to public ftp"
 
 Scenario: The completion of moving all files triggers update of the file database table
 	Given all files have be moved to the public ftp repository

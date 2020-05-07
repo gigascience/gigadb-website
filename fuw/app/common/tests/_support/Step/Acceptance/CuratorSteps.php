@@ -233,7 +233,7 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
      */
      public function iPressForDataset($arg1, $arg2)
      {
-        $this->I->click("(//a[@title='Update Dataset'])[5]");
+        $this->I->click("tr.dataset-$arg2 td.button-column a[title='$arg1']");
      }
 
 	/**
