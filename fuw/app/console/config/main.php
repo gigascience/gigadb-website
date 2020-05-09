@@ -20,6 +20,15 @@ return [
             'class' => 'yii\console\controllers\FixtureController',
             'namespace' => 'common\fixtures',
           ],
+        'migrate' => [
+            'class' => \yii\console\controllers\MigrateController::class,
+            'migrationNamespaces' => [
+                'zhuravljov\yii\queue\monitor\migrations',
+            ],
+        ],          
+        'monitor' => [
+            'class' => \zhuravljov\yii\queue\monitor\console\GcController::class,
+        ],
     ],
     'components' => [
         'log' => [

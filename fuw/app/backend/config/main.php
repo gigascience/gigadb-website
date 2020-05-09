@@ -10,13 +10,17 @@ $config =  [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log','queue'],
+    'bootstrap' => ['log','queue','monitor'],
     'aliases' => [
         '@gigadb-data' => '/var',
         '@uploads' => '@gigadb-data/fuw/uploads',
         '@publicftp'   => '@gigadb-data/ftp/public',
     ],
-    'modules' => [],
+    'modules' => [
+        'monitor' => [
+                'class' => \zhuravljov\yii\queue\monitor\Module::class,
+            ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -83,6 +87,8 @@ $config =  [
         'queue' => [
             'class' => \yii\queue\beanstalk\Queue::class,
             'as log' => \yii\queue\LogBehavior::class,
+            'as jobMonitor' => \zhuravljov\yii\queue\monitor\JobMonitor::class,
+            'as workerMonitor' => \zhuravljov\yii\queue\monitor\WorkerMonitor::class,            
             'host' => 'beanstalkd',
             'port' => 11300,
             'tube' => 'moveFilesQueue',
