@@ -69,6 +69,35 @@ class AdminDatasetMoveFilesActionTest extends FunctionalTesting
         $this->assertTrue($this->session->getPage()->hasContent("2 files are being moved to public ftp. It may take a moment"));
 	}
 
+    public function testMoveFilesWhenNoActiveFiles()
+    {
+        $testInstructions = "instructions";
+        // set upload status to the  Curation
+        $this->setUpDatasetUploadStatus($this->dbh_gigadb, $this->doi,"Curation");
+        // ensure there is a filedrop_account
+        $filedropAccountId = $this->makeFiledropAccountRecord($this->dbh_fuw, $this->doi, $testInstructions);
+        // create file uploads associated with that account (archived, not active)
+        $files =  [
+                ["doi" => "{$this->doi}", "name" =>"somefile.txt", "size" => 325352, "status"=> 2, "location" => "ftp://foobar", "description" => "", "extension" => "TEXT", "datatype"=>"Text"],
+                ["doi" => "{$this->doi}", "name" =>"anotherfile.png", "size" => 5463434, "status"=> 2, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
+                ["doi" => "{$this->doi}", "name" =>"shouldnotdisplay.png", "size" => 5463434, "status"=> 2, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
+            ];
+        $this->uploads = $this->setUpFileUploads(
+            $this->dbh_fuw, $files
+        );
+        // setup URL
+        $endpointUrl = "http://gigadb.dev/adminDataset/moveFiles/doi/{$this->doi}" ;
+
+        //admin user logs in
+        $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
+            "admin@gigadb.org",
+            "gigadb",
+            "Admin");
+        
+        $this->session->visit($endpointUrl);
+        $this->assertTrue($this->session->getPage()->hasContent("No files found to move"));
+    }
+
 	public function tearDown()
 	{
    		$this->setUpDatasetUploadStatus($this->dbh_gigadb, $this->doi,"Published");

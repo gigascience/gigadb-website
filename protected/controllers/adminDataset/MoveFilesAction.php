@@ -51,7 +51,8 @@ class MoveFilesAction extends CAction
           $this->getController()->redirect("/adminDataset/admin/"); 
         }
         else {
-          throw new CHttpException(500, "Error happened with the request to move files");
+          Yii::app()->user->setFlash('error',"No files found to move");
+          $this->getController()->redirect("/adminDataset/admin/");
         }
     }
 }
