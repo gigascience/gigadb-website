@@ -66,12 +66,16 @@ class AdminDatasetMoveFilesActionTest extends FunctionalTesting
             "Admin");
         
         $this->session->visit($endpointUrl);
-        $this->assertTrue($this->session->getPage()->hasContent("Files are being moved to public ftp. It may take a moment"));
+        $this->assertTrue($this->session->getPage()->hasContent("2 files are being moved to public ftp. It may take a moment"));
 	}
 
 	public function tearDown()
 	{
    		$this->setUpDatasetUploadStatus($this->dbh_gigadb, $this->doi,"Published");
+        $this->tearDownFileUploads(
+            $this->dbh_fuw,
+            $this->uploads
+        );
         $this->tearDownFiledropAccount($this->dbh_fuw);
         $this->tearDownUserIdentity(
             $this->dbh_fuw,

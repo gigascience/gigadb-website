@@ -43,10 +43,11 @@ class MoveFilesAction extends CAction
                     );
 
         $response = $filedrop->moveUploadedFiles();
+        $nbJobs = count($response['jobs']);
         Yii::log(var_export($response,true),"debug");
 
-        if ($response) {
-          Yii::app()->user->setFlash('success',"Files are being moved to public ftp. It may take a moment");
+        if ( $nbJobs > 0 ) {
+          Yii::app()->user->setFlash('success'," $nbJobs files are being moved to public ftp. It may take a moment");
           $this->getController()->redirect("/adminDataset/admin/"); 
         }
         else {
