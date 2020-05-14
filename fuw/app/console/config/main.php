@@ -14,6 +14,9 @@ return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+        '@gigadb-data' => '/var',
+        '@uploads' => '@gigadb-data/repo',
+        '@publicftp'   => '@gigadb-data/ftp/public',        
     ],
     'controllerMap' => [
         'fixture' => [
@@ -31,6 +34,10 @@ return [
         ],
     ],
     'components' => [
+        'fs' => [
+            'class' => 'creocoder\flysystem\LocalFilesystem',
+            'path' => '@gigadb-data',
+        ],     
         'queue' => [
             'class' => \yii\queue\beanstalk\Queue::class,
             'as log' => \yii\queue\LogBehavior::class,

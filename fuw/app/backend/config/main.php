@@ -13,7 +13,7 @@ $config =  [
     'bootstrap' => ['log','queue','monitor'],
     'aliases' => [
         '@gigadb-data' => '/var',
-        '@uploads' => '@gigadb-data/fuw/uploads',
+        '@uploads' => '@gigadb-data/repo',
         '@publicftp'   => '@gigadb-data/ftp/public',
     ],
     'modules' => [
