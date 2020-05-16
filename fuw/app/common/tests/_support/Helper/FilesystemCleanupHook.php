@@ -25,15 +25,16 @@ class FilesystemCleanupHook extends \Codeception\Module\Filesystem
     // HOOK: after each test scenario
     public function _after(\Codeception\TestInterface $test)
     {
-    	// if( !file_exists("/var/tmp/processing_flag/failure") ) {
-	    	$dois = ["000007","100005","100006"];
-	    	foreach ($dois as $doi) {
-		    	$this->deleteDir("/var/incoming/ftp/$doi");
-		    	$this->deleteDir("/var/private/$doi");
-		    	$this->deleteDir("/var/repo/$doi");
-		    	$this->deleteDir("/var/tmp/processing_flag/$doi");
-	    	}
-    	// }
+    	$dois = ["000007","100005","100006"];
+    	foreach ($dois as $doi) {
+	    	$this->deleteDir("/var/incoming/ftp/$doi");
+	    	$this->deleteDir("/var/private/$doi");
+	    	$this->deleteDir("/var/repo/$doi");
+            $this->deleteDir("/var/ftp/public/$doi");
+	    	$this->deleteDir("/var/tmp/processing_flag/$doi");
+    	}
+        // clear out the message queue
+        exec("./yii monitor/clear-all --interactive=0");
     }
 }
 

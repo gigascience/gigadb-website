@@ -306,6 +306,7 @@ services:
       - web-tier
     extra_hosts:
       - "gigadb.test:172.16.238.10"
+      - "fuw-admin-api:172.16.238.10"      
     environment: # to run headless, set false and comment out port 5900 above and make sure to pass --headless arg in acceptance.suite.yml
       START_XVFB: "false"
 
@@ -486,6 +487,7 @@ services:
       - db-tier
     extra_hosts:
       - "gigadb.dev:172.16.238.10"
+      - "fuw-admin-api:172.16.238.10"
 
   ftpd:
     build:
