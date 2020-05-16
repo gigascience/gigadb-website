@@ -162,6 +162,9 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
                 $isSuccess = $insertAttributesStatement->execute();
             }
         }
+
+        file_put_contents("/var/repo/$doi/".$files[0]["name"], Yii::$app->security->generateRandomString(32));
+        file_put_contents("/var/repo/$doi/".$files[1]["name"], Yii::$app->security->generateRandomString(32));
     }    
     
      /**

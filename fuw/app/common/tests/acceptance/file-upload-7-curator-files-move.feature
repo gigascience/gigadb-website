@@ -33,11 +33,22 @@ Scenario: Clicking the move button create a job for the workers
 	And I press "Move files to public ftp"
 	Then I should see "2 files are being moved to public ftp. It may take a moment"
 
+@ok
+Scenario: The files are copied to the new location when the workers complete the job
+	Given I sign in as an admin
+	And file uploads with samples and attributes have been uploaded for DOI "000007"
+	And I go to "/adminDataset/admin"
+	And I press "Update Dataset" for dataset "000007"
+	And I press "Move files to public ftp"
+	And I wait "1" seconds
+	When all files have been moved to the public ftp repository
+	Then files exist at new location "ftp/public"
+	| doi | file name |
+	| 000007 | seq1.fa |
+	| 000007 | Specimen.pdf |
 
+@not-yet
 Scenario: The completion of moving all files triggers update of the file database table
-	Given I am on "/monitor"
-	And all files have be moved to the public ftp repository
-	When I go to "/datasets/000007"
 	Then I should see
 	| name         | description | datatype |
     | TheProof.csv | first row | Script |

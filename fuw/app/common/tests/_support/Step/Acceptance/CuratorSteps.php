@@ -5,6 +5,7 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
 use \FileUploadServicer;
 use \Email\Parse;
+use \Behat\Gherkin\Node\TableNode;
 
 class CuratorSteps #extends \common\tests\AcceptanceTester
 {
@@ -219,15 +220,20 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
      }
 
     /**
-     * @Given all files have be moved to the public ftp repository
+     * @When all files have been moved to the public ftp repository
      *
      * this step need to exercice the backend job triggered by completion of files move
      */
-     public function allFilesHaveBeMovedToThePublicFtpRepository()
+     public function allFilesHaveBeenMovedToThePublicFtpRepository()
      {
-        // post a backend job to Beanstalkd for copying the metadata to GigaDB
-        $this->I->fail();
-     } 
+        // All the jobs should be marked as done
+        $this->I->amOnUrl("http://fuw-admin-api/monitor/jobs");
+        $this->I->amOnPage('/monitor/jobs');
+        $this->I->cantSeeInPageSource('<div class="job-status">Buried</div>');
+        $this->I->canSeeInPageSource('<div class="job-status">Done</div>');
+     }
+
+
 	/**
      * @When I press :arg1 for dataset :arg2
      */
@@ -274,6 +280,21 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
      public function iSelectFor($arg1, $arg2)
      {
         $this->I->selectOption("input[name=$arg2]", $arg1);
+     }
+
+    /**
+     * @Then files exist at new location :dest
+     */
+     public function filesExistAtNewLocation(string $dest, TableNode $files)
+     {
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+
+            $this->I->assertTrue( \Yii::$app->fs->has("$dest/{$row[0]}/{$row[1]}") );
+        }
      }
 
 }

@@ -37,7 +37,7 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
     	$source = Yii::getAlias("@uploads/{$this->doi}/{$this->file}");
     	$dest = Yii::getAlias("@publicftp/{$this->doi}/{$this->file}");
     	
-        Yii::warning("source: ".Yii::getAlias($source).", destination: ".Yii::getAlias($dest));
+        Yii::warning("source: $source, destination: $dest");
         $this->_fs->copy($source,$dest);
     }
 }
