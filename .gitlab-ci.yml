@@ -202,7 +202,8 @@ run_all_tests:
     # - docker-compose exec -T application ./protected/yiic generatefileformats
     # build the javascript app
     - docker-compose run --rm js
-    # starting the Yii2 workers service and its dependent beanstalkd service
+    # starting the Yii2 workers service and its dependent beanstalkd service after running required migrations
+    - docker-compose exec -T console /app/yii migrate --interactive=0
     - docker-compose up -d fuw-worker
     # starting the headless browser for acceptance testing
     - docker-compose up -d chrome
