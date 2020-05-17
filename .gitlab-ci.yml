@@ -89,7 +89,7 @@ after_script:
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-enabled
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-available
   # - docker-compose logs fuw-admin
-  # - docker-compose top fuw-admin
+  - docker-compose top
   # - docker-compose logs application
   - docker-compose run --rm test  bash -c "pg_dump -h database -U gigadb -d gigadb > /var/www/tmp/gigadb_snapshot.sql"
   - docker-compose run --rm test  bash -c "pg_dump -h database -U fuwdb -d fuwdb > /var/www/tmp/fuwdb_snapshot.sql"
