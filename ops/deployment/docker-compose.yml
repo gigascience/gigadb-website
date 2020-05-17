@@ -186,7 +186,7 @@ services:
       - fuw-admin
       - fuw-public
       - database
-      - beanstalkd
+
       # - phantomjs
     command: composer install
     networks:
@@ -396,13 +396,14 @@ services:
       - web-tier
       - db-tier
 
-  fuw-proto:
+  fuw-worker:
+    environment:
+      YII_ENV_DEV: ${YII_ENV_DEV}
     build:
       context: ../../fuw/app
-      dockerfile: common/Dockerfile
+      dockerfile: backend/Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
-        - APP_PORT=9003
+        - PHP_BASE_IMAGE_VERSION=7.2-cli
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
@@ -410,8 +411,6 @@ services:
         - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
         - INSTALL_DOCKER_API_ACCESS=true
-    expose:
-      - "9003"
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer/cache:/root/.composer/cache:delegated
@@ -426,17 +425,19 @@ services:
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # to support systemd running in a container
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      # volume mount the location of public ftp directory
+      - /tmp:/var/ftp/public
     depends_on:
       - database
-      - console
-      - ftpd
-      - tusd
-      - watcher
+      - beanstalkd
     networks:
       - web-tier
       - db-tier
-    extra_hosts:
-      - "fuw-admin-api:172.16.238.10"
+    stop_signal: SIGRTMIN+3
+    tmpfs: /run
+    command: "/lib/systemd/systemd"
 
   console:
     build:
@@ -482,6 +483,8 @@ services:
       - ../../files:/var/www/files
       # to run tests that interact with containers
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      # volume mount the location of public ftp directory
+      - /tmp:/var/ftp/public      
     networks:
       - web-tier
       - db-tier
