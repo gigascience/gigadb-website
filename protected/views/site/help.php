@@ -302,7 +302,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                             <p><a href="http://gigadb.org/api/search?datasettype=Genomic" target="_blank">http://gigadb.org/api/search?datasettype=Genomic</a></p>
                             <p>14. refine search to project names</p>
                             <p><a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
-                            <p>15. list all dataset doi</p>
+                            <p>15. list all published dataset DOIs (listed in publication date order)</p>
                             <p><a href="http://gigadb.org/api/list" target="_blank">http://gigadb.org/api/list</a></p>
                             <p>16. dump the database</p>
                             <p><a href="http://gigadb.org/api/dump" target="_blank">http://gigadb.org/api/dump</a></p>
