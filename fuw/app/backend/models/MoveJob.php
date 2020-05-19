@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use \Yii;
+use common\models\Upload;
 
 /**
  * yii2-queue job class (DTO) for moving files
@@ -38,7 +39,17 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
     	$dest = Yii::getAlias("@publicftp/{$this->doi}/{$this->file}");
     	
         Yii::warning("source: $source, destination: $dest");
-        $this->_fs->copy($source,$dest);
+        if ( $this->_fs->copy($source,$dest) ) {
+            $upload = Upload::findOne(["doi" => $this->doi, "name" => $this->file]);
+            if (!isset($upload)) {
+                Yii::error("Cannot find an Upload record for DOI {$this->doi} and file name {$this->file}");
+                return false;
+            }
+            $upload->status = Upload::STATUS_SYNCHRONIZED;
+            return $upload->save();
+
+        }
+        return false;
     }
 }
 

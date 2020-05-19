@@ -3,6 +3,8 @@
 namespace backend\tests;
 
 use backend\models\MoveJob;
+use common\models\Upload;
+use common\fixtures\UploadFixture;
 use \League\Flysystem\Filesystem as NativeFilesystem;
 
 
@@ -24,6 +26,12 @@ class MoveJobTest extends \Codeception\Test\Unit
 
     protected function _before()
     {
+        $this->tester->haveFixtures([
+            'uploads' => [
+                'class' => UploadFixture::className(),
+                'dataFile' => codecept_data_dir() . 'upload.php'
+            ],
+        ]);
     }
 
     protected function _after()
@@ -32,6 +40,7 @@ class MoveJobTest extends \Codeception\Test\Unit
 
     /**
      * Test that the worker call copy on Flysystem with the correct file paths
+     * and that the upload is updated with the appropriate status
      *
      */
     public function testMoveJobSuccess()
@@ -41,10 +50,10 @@ class MoveJobTest extends \Codeception\Test\Unit
         $mockLocal = $this->createMock(\League\Flysystem\Adapter\Local::class);
         $mockNativeFilesystem = $this->createMock(\League\Flysystem\Filesystem::class);
         $job = new MoveJob();
-        $job->doi = "000007";
-        $job->file = "someFile.png";
-        $source = "/var/repo/000007/someFile.png";
-        $dest = "/var/ftp/public/000007/someFile.png";
+        $job->doi = "200001";
+        $job->file = "084.fq";
+        $source = "/var/repo/200001/084.fq";
+        $dest = "/var/ftp/public/200001/084.fq";
 
         $mockNativeFilesystem->expects($this->once())
                 ->method('copy')
@@ -55,7 +64,76 @@ class MoveJobTest extends \Codeception\Test\Unit
             "nativeFilesystem" => $mockNativeFilesystem,
             "path" => "/var"
         ]);
-        $job->execute($mockQueue);
+        $result = $job->execute($mockQueue);
+        $this->assertTrue($result);
+        $this->tester->seeRecord('common\models\Upload', [
+            'doi' => $job->doi, 
+            'name' => $job->file, 
+            'status' => Upload::STATUS_SYNCHRONIZED,
+        ]);
+    }
+
+
+    /**
+     * Test that the worker call copy on Flysystem with the correct file paths
+     * and that the upload cannot be found
+     *
+     */
+    public function testMoveJobUploadNotFoundFailure()
+    {
+        $mockQueue = $this->createMock(\yii\queue\Queue::class);
+        $mockLocalFileSystem = $this->createMock(\creocoder\flysystem\LocalFilesystem::class);
+        $mockLocal = $this->createMock(\League\Flysystem\Adapter\Local::class);
+        $mockNativeFilesystem = $this->createMock(\League\Flysystem\Filesystem::class);
+        $job = new MoveJob();
+        $job->doi = "000009";
+        $job->file = "084.fq";
+        $source = "/var/repo/000009/084.fq";
+        $dest = "/var/ftp/public/000009/084.fq";
+
+        $mockNativeFilesystem->expects($this->once())
+                ->method('copy')
+                ->with($source, $dest)
+                ->willReturn(true);
+
+        $job->fs = new TestFilesystem(["adapter" => $mockLocal,
+            "nativeFilesystem" => $mockNativeFilesystem,
+            "path" => "/var"
+        ]);
+        $result = $job->execute($mockQueue);
+        $this->assertFalse($result);
+  
+    }
+
+    /**
+     * Test that the worker call copy on Flysystem with the correct file paths
+     * and copy failed and returned false
+     *
+     */
+    public function testMoveJobCopyFailure()
+    {
+        $mockQueue = $this->createMock(\yii\queue\Queue::class);
+        $mockLocalFileSystem = $this->createMock(\creocoder\flysystem\LocalFilesystem::class);
+        $mockLocal = $this->createMock(\League\Flysystem\Adapter\Local::class);
+        $mockNativeFilesystem = $this->createMock(\League\Flysystem\Filesystem::class);
+        $job = new MoveJob();
+        $job->doi = "000009";
+        $job->file = "084.fq";
+        $source = "/var/repo/000009/084.fq";
+        $dest = "/var/ftp/public/000009/084.fq";
+
+        $mockNativeFilesystem->expects($this->once())
+                ->method('copy')
+                ->with($source, $dest)
+                ->willReturn(false);
+
+        $job->fs = new TestFilesystem(["adapter" => $mockLocal,
+            "nativeFilesystem" => $mockNativeFilesystem,
+            "path" => "/var"
+        ]);
+        $result = $job->execute($mockQueue);
+        $this->assertFalse($result);
+  
     }
 
     /**
