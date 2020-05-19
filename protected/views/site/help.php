@@ -241,7 +241,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="interface">
                             <h4 style="color: #099242; margin-bottom: 10px;">Availability</h4>
-                            <p>The current API version is available on our main production database. This version will be periodically updated with new additional functionality, we will whenever possible maintain backwards compatability, but occassionally this may not be possible, for this reason we recomend regularly checking and updating you usage of our API. </p>
+                            <p>The current API version is available on our main production database. This version will be periodically updated with new additional functionality and we will whenever possible maintain backwards compatibility. Occasionally this may not be possible and for this reason we recommend regularly checking and updating your usage of our API. </p>
                             <p>The basic functionality of the API is to retrieve dataset metadata held in <em>GigaDB</em>. The actual data files will still need to be pulled by FTP, but you can gather the exact FTP locations from the metadata using the API, then use that to pull only the files you actually need/want.</p>
                             <p>Search function is based on the web-search function and will therefore give the same results.</p>
                             <hr style="border-top-style: dashed;">
