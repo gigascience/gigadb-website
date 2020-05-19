@@ -429,6 +429,8 @@ services:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
       # volume mount the location of public ftp directory
       - /tmp:/var/ftp/public
+      # access to files and reference data
+      - ../../files:/var/www/files      
     depends_on:
       - database
       - beanstalkd

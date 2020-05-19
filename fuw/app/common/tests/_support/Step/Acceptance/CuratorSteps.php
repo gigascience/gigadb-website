@@ -6,6 +6,7 @@ use League\Flysystem\Adapter\Local;
 use \FileUploadServicer;
 use \Email\Parse;
 use \Behat\Gherkin\Node\TableNode;
+use common\models\Upload;
 
 class CuratorSteps #extends \common\tests\AcceptanceTester
 {
@@ -296,5 +297,23 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
             $this->I->assertTrue( \Yii::$app->fs->has("$dest/{$row[0]}/{$row[1]}") );
         }
      }
+
+      /**
+     * @Then uploads are flagged as :arg1
+     */
+     public function uploadsAreFlaggedAs($arg1, TableNode $files)
+     {
+        $this->I->amConnectedToDatabase('fuwdb');
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            $this->I->seeInDatabase("public.upload",["doi" => $row[0], "name" => $row[1], "status" => Upload::STATUS_SYNCHRONIZED ] );
+        }
+        $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
+     }
+
+
 
 }
