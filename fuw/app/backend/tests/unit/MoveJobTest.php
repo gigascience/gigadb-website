@@ -5,7 +5,10 @@ namespace backend\tests;
 use backend\models\MoveJob;
 use common\models\Upload;
 use common\fixtures\UploadFixture;
+use common\fixtures\AttributeFixture;
 use \League\Flysystem\Filesystem as NativeFilesystem;
+use \app\models\UpdateGigaDBJob;
+use \Yii;
 
 
 /**
@@ -31,6 +34,10 @@ class MoveJobTest extends \Codeception\Test\Unit
                 'class' => UploadFixture::className(),
                 'dataFile' => codecept_data_dir() . 'upload.php'
             ],
+            'attributes' => [
+                'class' => AttributeFixture::className(),
+                'dataFile' => codecept_data_dir() . 'attribute.php'
+            ],            
         ]);
     }
 
@@ -46,12 +53,14 @@ class MoveJobTest extends \Codeception\Test\Unit
     public function testMoveJobSuccess()
     {
         $mockQueue = $this->createMock(\yii\queue\Queue::class);
+        $mockGigaDBQueue = $this->createMock(\yii\queue\Queue::class);
         $mockLocalFileSystem = $this->createMock(\creocoder\flysystem\LocalFilesystem::class);
         $mockLocal = $this->createMock(\League\Flysystem\Adapter\Local::class);
         $mockNativeFilesystem = $this->createMock(\League\Flysystem\Filesystem::class);
         $job = new MoveJob();
         $job->doi = "200001";
         $job->file = "084.fq";
+        $job->gigaDBQueue = $mockGigaDBQueue;
         $source = "/var/repo/200001/084.fq";
         $dest = "/var/ftp/public/200001/084.fq";
 
@@ -59,6 +68,16 @@ class MoveJobTest extends \Codeception\Test\Unit
                 ->method('copy')
                 ->with($source, $dest)
                 ->willReturn(true);
+
+        $jobReceipt = 3;
+        $mockGigaDBQueue->expects($this->once())
+                ->method('push')
+                ->with(
+                    $this->callback(function($argument) {
+                        return $argument->className()  === "app\models\UpdateGigaDBJob";
+                    })
+                )
+                ->willReturn($jobReceipt);
 
         $job->fs = new TestFilesystem(["adapter" => $mockLocal,
             "nativeFilesystem" => $mockNativeFilesystem,
@@ -155,6 +174,24 @@ class MoveJobTest extends \Codeception\Test\Unit
         $dest = "/var/ftp/public/000007/someFile.png";
 
         $job->execute($mockQueue);        
+    }
+
+    public function testMoveJobCreateJobToUpdateGigaDB()
+    {
+        $mockQueue = $this->createMock(\yii\queue\Queue::class);
+        $moveJob = new MoveJob();
+        $moveJob->doi = "200001";
+        $moveJob->file = "084.fq";
+
+        $updateJob = $moveJob->createUpdateGigaDBJob(Upload::findOne(2));
+        $this->assertEquals($moveJob->doi, $updateJob->doi);
+        $this->assertEquals($this->tester->grabFixture('uploads')[1]['size'], $updateJob->file['size']);
+        $this->assertEquals($this->tester->grabFixture('uploads')[1]['status'], $updateJob->file['status']);
+        $this->assertEquals($this->tester->grabFixture('uploads')[1]['location'], $updateJob->file['location']);
+        $this->assertEquals($this->tester->grabFixture('uploads')[1]['extension'], $updateJob->file['extension']);
+        $this->assertEquals($this->tester->grabFixture('uploads')[1]['datatype'], $updateJob->file['datatype']);
+        $this->assertEquals(['sample-1','sample-2','sample-3'], $updateJob->sample_ids);
+        $this->assertEquals(2, count($updateJob->file_attributes));
     }
 
 }
