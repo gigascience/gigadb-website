@@ -92,7 +92,16 @@ $config =  [
             'host' => 'beanstalkd',
             'port' => 11300,
             'tube' => 'moveFilesQueue',
-        ],        
+        ],
+       'updateGigaDBqueue' => [
+            'class' => \yii\queue\beanstalk\Queue::class,
+            'as log' => \yii\queue\LogBehavior::class,
+            'as jobMonitor' => \zhuravljov\yii\queue\monitor\JobMonitor::class,
+            'as workerMonitor' => \zhuravljov\yii\queue\monitor\WorkerMonitor::class,            
+            'host' => 'beanstalkd',
+            'port' => 11300,
+            'tube' => 'updateGigaDB',
+        ],                
 
     ],
     'params' => $params,

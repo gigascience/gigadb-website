@@ -4,9 +4,12 @@ namespace backend\models;
 
 use \Yii;
 use common\models\Upload;
+use \app\models\UpdateGigaDBJob;
 
 /**
  * yii2-queue job class (DTO) for moving files
+ *
+ * @uses \app\models\UpdateGigaDBJob;
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
@@ -15,11 +18,18 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
 {
     public $doi;
     public $file;
+
+    /** 
+    * @var $_fs Create a local proxy of Yii::$app->fs so we can inject mock in unit test */
     private $_fs;
+    /** 
+    * @var $_gigaDBQueue Create a local proxy of Yii::$app->updateGigaDB so we can inject mock in unit test */
+    private $_gigaDBQueue;
     
     public function init()
     {
         $this->_fs = Yii::$app->fs ;
+        $this->_gigaDBQueue = Yii::$app->updateGigaDBqueue ;
     }
 
     public function getFs()
@@ -32,6 +42,21 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
         $this->_fs = $fs;
     }
 
+
+    public function getGigaDBQueue()
+    {
+        return $this->_gigaDBQueue;
+    }
+
+    public function setGigaDBQueue($gigaDBQueue)
+    {
+        $this->_gigaDBQueue = $gigaDBQueue;
+    }
+
+    /**
+     * Executed by the queue listener: copy files, change status and push GigaDB job
+     * @param yii\queue\Queue $queue
+     */
     public function execute($queue)
     {
     	Yii::warning("Move job for {$this->file} ({$this->doi})");
@@ -46,10 +71,30 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
                 return false;
             }
             $upload->status = Upload::STATUS_SYNCHRONIZED;
-            return $upload->save();
+
+
+            return $upload->save() && $this->_gigaDBQueue->push($this->createUpdateGigaDBJob($upload));
 
         }
         return false;
+    }
+
+    /** 
+     * Create a job class to be pushed into the updateGigaDBqueue
+     * @param \common\models\Upload $upload Upload instance to serialize
+     * @return \app\models\UpdateGigaDBJob
+     */
+    public function createUpdateGigaDBJob(\common\models\Upload $upload): ?UpdateGigaDBJob
+    {
+        if($upload) {
+            $updateJob = new UpdateGigaDBJob();
+            $updateJob->doi = $this->doi;
+            $updateJob->file = $upload->attributes;
+            $updateJob->file_attributes = $upload->uploadAttributes;
+            $updateJob->sample_ids = explode(",",$upload->sample_ids);
+            return $updateJob;
+        }
+        return $upload;
     }
 }
 
