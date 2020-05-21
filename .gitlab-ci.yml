@@ -146,6 +146,7 @@ build_webapp:
     - docker-compose run --rm fuw-config
     - docker-compose run --rm test composer update
     - docker-compose run --rm console bash -c "cd /app && composer update"
+    - docker-compose run --rm console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer update'
     - docker-compose run --rm js npm install
   artifacts:
     untracked: true

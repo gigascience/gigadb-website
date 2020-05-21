@@ -37,7 +37,7 @@ class UpdateGigaDBJob extends \yii\base\Component implements \yii\queue\JobInter
 
     public function execute($queue)
     {
-        return false;
+        return true;
     }
 }
 
