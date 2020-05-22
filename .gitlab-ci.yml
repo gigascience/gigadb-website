@@ -61,6 +61,8 @@ cache:
     - fuw/app/vendor/
     - fuw/app/bin/
     - fuw/app/composer.lock
+    - gigadb/app/worker/file-worker/vendor
+    - gigadb/app/worker/file-worker/composer.lock
     - gigadb/app/client/web/node_modules
 
 before_script:
