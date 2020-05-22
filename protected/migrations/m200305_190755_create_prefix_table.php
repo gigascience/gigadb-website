@@ -53,6 +53,12 @@ class m200305_190755_create_prefix_table extends CDbMigration
             'url' => 'http://trace.ddbj.nig.ac.jp/DRASearch/sample?acc=',
             'source' => 'DDBJ'
         ));
+        $this->insert('prefix', array(
+            'id' => '36',
+            'prefix' =>'BioProject',
+            'url' => 'http://www.ncbi.nlm.nih.gov/bioproject/',
+            'source' => 'NCBI'
+        ));
     }
 
     public function safeDown()
