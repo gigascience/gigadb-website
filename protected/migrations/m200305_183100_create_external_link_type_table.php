@@ -54,6 +54,26 @@ class m200305_183100_create_external_link_type_table extends CDbMigration
             'id' => '2',
             'name' =>'Genome browser'
         ));
+        $this->insert('external_link_type', array(
+            'id' => '3',
+            'name' =>'Protocols.io'
+        ));
+        $this->insert('external_link_type', array(
+            'id' => '4',
+            'name' =>'JBrowse'
+        ));
+        $this->insert('external_link_type', array(
+            'id' => '5',
+            'name' =>'3D Models'
+        ));
+        $this->insert('external_link_type', array(
+            'id' => '6',
+            'name' =>'Code Ocean'
+        ));
+        $this->insert('external_link_type', array(
+            'id' => '7',
+            'name' =>'Github links'
+        ));
     }
 
     public function safeDown()
