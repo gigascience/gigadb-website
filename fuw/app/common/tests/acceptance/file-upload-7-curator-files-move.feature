@@ -33,7 +33,7 @@ Scenario: Clicking the move button create a job for the workers
 	And I press "Move files to public ftp"
 	Then I should see "2 files are being moved to public ftp. It may take a moment"
 
-@ok
+@ok @no-ci
 Scenario: The files are copied to the new location when the workers complete the job
 	Given I sign in as an admin
 	And file uploads with samples and attributes have been uploaded for DOI "000007"
@@ -47,7 +47,7 @@ Scenario: The files are copied to the new location when the workers complete the
 	| 000007 | seq1.fa |
 	| 000007 | Specimen.pdf |
 
-@ok
+@ok @no-ci
 Scenario: Files that have been moved are marked as such in File Upload Wizard API
 	Given I sign in as an admin
 	And file uploads with samples and attributes have been uploaded for DOI "000007"

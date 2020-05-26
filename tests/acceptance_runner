@@ -12,4 +12,4 @@ docker-compose run --rm application ./protected/yiic migrate --interactive=0
 # before running tests, run migration for main database first (FUW)
 docker-compose exec -T console /app/yii migrate --interactive=0
 docker-compose run --rm test bin/behat --profile $profile -v --stop-on-failure
-docker-compose exec -T console /app/vendor/bin/codecept -c /app/common run -g ok acceptance --fail-fast
+docker-compose exec -T console /app/vendor/bin/codecept -c /app/common run -g ok --skip-group no-ci acceptance --fail-fast
