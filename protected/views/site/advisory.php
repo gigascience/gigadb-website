@@ -17,7 +17,7 @@ $this->pageTitle='GigaDB - About';
                 </section>
                 <div class="subsection">
                     <p>In order to aid <a href="/site/index" target="_blank">GigaDB</a> in following best practices, advancing community needs, and taking advantage of novel ideas/tools that can promote innovation as the database evolves, we not only leverage the excellent <a href="https://academic.oup.com/gigascience/pages/Editorial_Board">Editorial Board</a> that advises <a href="http://www.gigasciencejournal.com/" target="_blank"><em>GigaScience</em></a> Journal, we also have the following more focused GigaDB Advisory panel that we can ask for advice and guidance on specific topics.</p>
-                    <p>We strongly encourage community feedback and involvement, so please feel free to contact any of the <a href="http://gigadb.org/site/team"><em>GigaScience team</em></a>, or use the <a href="http://gigadb.org/site/contact">contact us</a> form.</p>
+                    <p>We strongly encourage community feedback and involvement, so please feel free to contact any of the <a href="/site/team"><em>GigaScience team</em></a>, or use the <a href="/site/contact">contact us</a> form.</p>
                     <p>To further enable transparency, the GigaDB website is under continuous development in <a href="https://github.com/gigascience/gigadb-website">GitHub</a>, and users may comment and contribute any questions, problems or ideas for GigaDB through the website <a href="https://github.com/gigascience/gigadb-website/issues">issue ticketing</a> system.</p>
                 </div>
                 <section>
