@@ -110,7 +110,7 @@
                                 </div>
                             </div>
                             <ul class="fa-ul">
-                                <li><i class="fa-li fa fa-home"></i> BGI-HK building 4/F, 16 DaiFu Street, TaiPo, NT, Hong Kong</li>
+                                <li><i class="fa-li fa fa-home"></i> Room A-D, 26/F, Kings Wing Plaza 2, 1 On Kwan Street, Shek Mun, Shatin, NT, Hong Kong</li>
                                 <li><i class="fa-li fa fa-envelope"></i> database@gigasciencejournal.com</li>
                                 <li><i class="fa-li fa fa-phone"></i> (852) 36103533</li>
                                 <li><i class="fa-li fa fa-globe"></i> http://www.gigadb.org</li>
