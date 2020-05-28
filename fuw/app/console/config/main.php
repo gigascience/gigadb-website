@@ -9,7 +9,7 @@ $params = array_merge(
 return [
     'id' => 'app-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log','queue'],
+    'bootstrap' => ['log','queue','updateGigaDBqueue'],
     'controllerNamespace' => 'console\controllers',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -50,7 +50,7 @@ return [
          'updateGigaDBqueue' => [
             'class' => \yii\queue\beanstalk\Queue::class,
             'as log' => \yii\queue\LogBehavior::class,
-            'as jobMonitor' => \zhuravljov\yii\queue\monitor\JobMonitor::class,
+            'as jobMonitor' => \common\models\LocalJobMonitor::class,
             'as workerMonitor' => \zhuravljov\yii\queue\monitor\WorkerMonitor::class,            
             'host' => 'beanstalkd',
             'port' => 11300,
