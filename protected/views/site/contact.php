@@ -23,7 +23,7 @@
                     </div>
                 </section>
                 <div class="subsection">
-                    <img src="../images/new_interface_image/map.png">
+                    <img src="../images/new_interface_image/new_map.png">
                 </div>
                 <section>
                     <div class="row">
