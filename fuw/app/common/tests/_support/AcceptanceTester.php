@@ -65,6 +65,18 @@ class AcceptanceTester extends \Codeception\Actor
             ]);
     }
 
+    /**
+     * @When I browse to the dataset page for :arg1
+     *
+     * Use amOnUrl instead of amOnPage or instead of relative url 
+     * because we might have been on a different domain in previous steps
+     * and amOnUrl will set the host to the host part of the url
+     */
+     public function iBrowseToTheDatasetPageFor($doi)
+     {
+        $this->amOnUrl("http://gigadb.test/dataset/$doi");
+     }
+
      /**
      * @Then I should be on :arg1
      */
@@ -73,3 +85,4 @@ class AcceptanceTester extends \Codeception\Actor
         $this->canSeeInCurrentUrl($arg1);
      }
 }
+
