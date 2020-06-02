@@ -498,12 +498,12 @@ Files:
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel33" aria-expanded="false" aria-controls="panel33">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel32" aria-expanded="false" aria-controls="panel32">
                                     What is Hypothes.is?    
                                     </a>
                                 </h4>
                             </div>
-                            <div id="panel33" class="panel-collapse collapse" role="tabpanel">
+                            <div id="panel32" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
                                     <p><a href="http://hypothes.is/">Hypothes.is</a> is an open source project helping to bring a discussion, annotation and curation layer to the web, we are collaborating with Hypothes.is in order to make all our datasets open to discussion by anyone (with a hypothesis user account). Simply highlight the text of interest on the page and click "New Note" icon that appears. To see previous notes, click the number on the side bar, or open the side bar to see all previous public annotations.</p>
                                 </div>
@@ -512,12 +512,12 @@ Files:
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel34" aria-expanded="false" aria-controls="panel34">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel33" aria-expanded="false" aria-controls="panel33">
                                     How do I report missing values in my metadata?    
                                     </a>
                                 </h4>
                             </div>
-                            <div id="panel34" class="panel-collapse collapse" role="tabpanel">
+                            <div id="panel33" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
                                     <p>There are various reason why certain data values may need to not be included in the sample metadata, but you still want it to be compliant with particular Minimum Information standards such the GSC MIxS. To maintain compliance when there are missing values within the mandatory fields please use the following terms only:</p>
                                     <p>Term - Definition</p>
@@ -531,12 +531,12 @@ Files:
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel35" aria-expanded="false" aria-controls="panel35">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel34" aria-expanded="false" aria-controls="panel34">
                                     Why do you request so many sample attributes?    
                                     </a>
                                 </h4>
                             </div>
-                            <div id="panel35" class="panel-collapse collapse" role="tabpanel">
+                            <div id="panel34" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
                                     <p>The addition of comprehensive sample metadata will ensure the best possible reach of these data and help users find and filter relevant data.</p>
                                 </div>
@@ -545,12 +545,12 @@ Files:
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel36" aria-expanded="false" aria-controls="panel36">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel35" aria-expanded="false" aria-controls="panel35">
                                     Why is the directory structure missing from the file table view on my dataset page?   
                                     </a>
                                 </h4>
                             </div>
-                            <div id="panel36" class="panel-collapse collapse" role="tabpanel">
+                            <div id="panel35" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
                                     <p>This is simply a display issue. In the longer term, we wish to display the directory structure on the GigaDB dataset pages, however, for the moment the files appear as a flat list. By mousing over a filename in the list you can see the complete filepath which shows the directory structure has been maintained. Additionally you can click the "FTP site" link at the top of any file table to be taken to the FTP server which displays the complete directory structure.</p>
                                 </div>
@@ -559,12 +559,12 @@ Files:
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel37" aria-expanded="false" aria-controls="panel37">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel36" aria-expanded="false" aria-controls="panel36">
                                     What should I do if I accidentally identify an individual from anonymized human (meta)data within a dataset?   
                                     </a>
                                 </h4>
                             </div>
-                            <div id="panel37" class="panel-collapse collapse" role="tabpanel">
+                            <div id="panel36" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
                                     <p>If you inadvertently discover the identity of any patient/individual, then (a) you agree that you will make no use of this knowledge, (b) that you will notify us (<a href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a>) of the incident, and (c) that you will inform no one else of the discovered identity.
 We will assess the specific case and remove/reduce the amount of metadata available for the subjects involved, and inform the data owners/submitters of the situation.</p>
@@ -574,12 +574,12 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel38" aria-expanded="false" aria-controls="panel38">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel37" aria-expanded="false" aria-controls="panel37">
                                     What curation do you carry out?  
                                     </a>
                                 </h4>
                             </div>
-                            <div id="panel38" class="panel-collapse collapse" role="tabpanel">
+                            <div id="panel37" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
                                     <p>All datasets are curated to a high standard including but not limited to; the checking and conversion of file formats if required to ensure open (non-proprietary) and stable formats are used whenever possible; Sample metadata to meet appropriate standards and to include ontology terms where possible; creation of specialist display formats like 3D images from STL image stacks and JBrowse genome browser files from genome assemblies and annotation files. All datasets are manually curated with email correspondence to the submitting author to ensure completeness. Where possible our curators follow guidelines provided by international bodies such as the Genomics Standards Consortium (gensc.org) for the minimal information about any genomic sequences. Dataset level metadata is also checked and curated to go above and beyond DataCite standards.</p>
                                 </div>
@@ -588,12 +588,12 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel39" aria-expanded="false" aria-controls="panel39">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel38" aria-expanded="false" aria-controls="panel38">
                                     What procedures are in place to ensure data integrity?
                                     </a>
                                 </h4>
                             </div>
-                            <div id="panel39" class="panel-collapse collapse" role="tabpanel">
+                            <div id="panel38" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
                                     <p>We ensure data files provided are not corrupt in transfer by use of md5 checksums whenever files are received or moved. All changes to the datafiles and or metadata (after publication) are tracked in a history log present on each dataset page. In the event that a major update is requested we would initiate a full new dataset and maintain the previous dataset as the archival record, placing a notice on the archival record informing users that there is a newer version available, with a link.</p>
                                     <p>When curation is complete the dataset is registered with a datacite DOI. Each dataset can have multiple links to external repositories / websites, these are manually curated at the time of submission and automatic link resolution checks are performed weekly to try to catch links to sites that move / disappear. We check validity of email addresses from submitting author and ask for identifiers such as ORCID if available for all named authors, but no additional checks are made on those authors.</p>
@@ -603,12 +603,12 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel40" aria-expanded="false" aria-controls="panel40">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel39" aria-expanded="false" aria-controls="panel39">
                                     What data storage procedures do you follow?
                                     </a>
                                 </h4>
                             </div>
-                            <div id="panel40" class="panel-collapse collapse" role="tabpanel">
+                            <div id="panel39" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
                                     <p>GigaDB data is currently hosted in <a href="https://www.cngb.org/aboutUs.html?i18nlang=en_US">China National GeneBank (CNGB)</a> servers in Shenzhen, who promise persistent and stable storage. CNGB is a central government and Shenzhen government funded research organisation tasked with supporting public welfare, innovation and scientific research. These servers are built on the Alibaba Cloud Elastic Compute Service (ECS), with Anti-DDoS protection to safeguard the data. This infrastructure is covered by the Alibaba service level agreements. Regular data backup uses the Alibaba Cloud Object Storage Service (OSS) to backup and archive all data in the data repository, and automatically storing two copies of data in different locations (please see Alibaba Cloud help pages for more details <a href="https://www.alibabacloud.com/help/">https://www.alibabacloud.com/help/</a>). As well as providing rapid data recovery. We ensure data files provided are not corrupt in transfer by use of md5 checksums whenever files are received or moved (see the data integrity FAQ  for more). As full members of DataCite, CC0 metadata is sent to them upon public release and is discoverable and searchable via <a href="search.datacite.org">search.datacite.org</a> and other linked data search indexes.</p>
                                 </div>
@@ -617,12 +617,12 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel41" aria-expanded="false" aria-controls="panel41">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel40" aria-expanded="false" aria-controls="panel40">
                                         What's the relationship between <i>GigaScience</i> and <em>GigaDB</em>?
                                     </a>
                                 </h4>
                             </div>
-                            <div id="panel41" class="panel-collapse collapse" role="tabpanel">
+                            <div id="panel40" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
                                     <p>GigaDB - is the data repository. <i>GigaScience</i> - is the journal that created the GigaDB platform and has been used for the initial test case application of GigaDB.
                                     Additionally other organisations involved with <i>GigaScience</i> and GigaDB include:
@@ -638,12 +638,12 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab">
                                     <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel42" aria-expanded="false" aria-controls="panel42">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel41" aria-expanded="false" aria-controls="panel41">
                                             What is the long term preservation plan for <em>GigaDB</em>?
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="panel42" class="panel-collapse collapse" role="tabpanel">
+                                <div id="panel41" class="panel-collapse collapse" role="tabpanel">
                                     <div class="panel-body">
                                         <p>The agreements with CNGB and BGI ensures GigaDB will be actively maintained for the foreseeable future. The linking of GigaDB to datasets accompanying open access journal articles with included article and data processing charges to help cover storage and curation costs also provides a model to enable the sustained growth of GigaDB. </p>
                                     </div>
@@ -652,12 +652,12 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab">
                                     <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel43" aria-expanded="false" aria-controls="panel43">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel42" aria-expanded="false" aria-controls="panel42">
                                             What metadata do you collect?
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="panel43" class="panel-collapse collapse" role="tabpanel">
+                                <div id="panel42" class="panel-collapse collapse" role="tabpanel">
                                     <div class="panel-body">
                                         <p>We follow a variety of standards for metadata collection, primarily the DataCite specification (<a href="https://schema.datacite.org/">https://schema.datacite.org/</a>) for the dataset level metadata and the <a href="https://press3.mcs.anl.gov/gensc/mixs/">Genomics Standards Consortium minimal information standards</a> for the sample level metadata. We also follow community norms for file metadata. Additionally all dataset pages are marked up with Schema.org compliant metadata to facilitate discovery by generic web search engines such as Google.
                                         </p>
@@ -667,12 +667,12 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                             <div class="panel panel-default">
                                 <div class="panel-heading" role="tab">
                                     <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel44" aria-expanded="false" aria-controls="panel44">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel43" aria-expanded="false" aria-controls="panel43">
                                             Does <em>GigaDB</em> use community-supported Open Source software?
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="panel44" class="panel-collapse collapse" role="tabpanel">
+                                <div id="panel43" class="panel-collapse collapse" role="tabpanel">
                                     <div class="panel-body">
                                         <p>GigaDBs code is open source (available on GitHub <a href="https://github.com/gigascience/gigadb-website">https://github.com/gigascience/gigadb-website</a>), based on PostgreSQL database and Yii PHP frameworks, and we utilise and integrate with a growing number of open source plugins and widgets. e.g. Jbrowse, a community supported genome browser. All of the servers run on Centos 7, which is also open source.
                                         </p>
