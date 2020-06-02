@@ -155,12 +155,7 @@ class MoveJobTest extends \Codeception\Test\Unit
   
     }
 
-    /**
-     * Test that exception is thrown when source path not found
-     *
-     * @expectedException League\Flysystem\FileNotFoundException
-     * @expectedExceptionMessage File not found at path: var/repo/000007/someFile.png
-     */
+
     public function testMoveJobThrowsFileNotFound()
     {
         $mockQueue = $this->createMock(\yii\queue\Queue::class);
@@ -173,6 +168,8 @@ class MoveJobTest extends \Codeception\Test\Unit
         $source = "/var/repo/000007/someFile.png";
         $dest = "/var/ftp/public/000007/someFile.png";
 
+        $this->expectException(\League\Flysystem\FileNotFoundException::class);
+        $this->expectExceptionMessage("File not found at path: var/repo/000007/someFile.png");
         $job->execute($mockQueue);        
     }
 
