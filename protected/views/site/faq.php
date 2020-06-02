@@ -679,6 +679,36 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                                     </div>
                                 </div>
                             </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel44" aria-expanded="false" aria-controls="panel44">
+                                            Do you allow comments, moderation or annotation of dataset entries?
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="panel44" class="panel-collapse collapse" role="tabpanel">
+                                    <div class="panel-body">
+                                        <p>If you spot errors in data or metadata or anywhere in this website please contact the GigaDB curators via database@gigasciencejournal.com. We also provide a moderation space for more interactive feedback or discussion on our datasets using hypothes.is integration. <a href="https://web.hypothes.is/">Hypothes.is</a> is an open-source open annotation tool to enable users of its website to make comments, highlight important sections of articles and engage with fellow readers online. Anyone who might question any of the information or have additional things to link can do so via this functionality, producing a conversation layer over our datasets. We have integrated a plugin to allow public annotations to be highlighted on the landing pages, and using the hypothes.is icon that hovers over the top-right of GigaDB landing pages you can login and join the discussion. Adding comments and your own annotations.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel45" aria-expanded="false" aria-controls="panel45">
+                                            Which BUSCO genome completeness files should I include in my dataset?
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="panel45" class="panel-collapse collapse" role="tabpanel">
+                                    <div class="panel-body">
+                                        <p>You must include the "full_table.tsv" and the "missing_busco_list.tsv" files, any other output files are optional. It is acceptable to include the entire "output" of a BUSCO run in a tar.gz archive if you prefer. See this website for more details about the various outputs from <a href="https://busco.ezlab.org/busco_userguide.html#outputs">BUSCOv4</a>.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
