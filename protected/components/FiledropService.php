@@ -26,6 +26,8 @@ use GuzzleHttp\Middleware;
 use Ramsey\Uuid\Uuid;
 use yii\validators\EmailValidator;
 
+use \backend\models\FiledropAccount;
+
 class FiledropService extends yii\base\Component
 {
 	const MOCKUP_POSSIBLE_VALIDITY  = [1,3,6];
@@ -248,7 +250,7 @@ class FiledropService extends yii\base\Component
 								    'headers' => [
 								        'Authorization' => "Bearer ".$this->token,
 								    ],
-								    'query' => [ 'filter[doi]' => $doi,  'filter[status]' => 1 ],
+								    'query' => [ 'filter[doi]' => $doi,  'filter[status]' => FiledropAccount::STATUS_ACTIVE ],
 								    'connect_timeout' => 5,
 								]);
 			if (200 === $response->getStatusCode() ) {
@@ -308,9 +310,9 @@ class FiledropService extends yii\base\Component
 	 * @param string $reviewerEmail the email of the reviewer the url is made for
 	 * @param int $monthsOfValidity How many month (1,3, or 6) the url is to be valid
 	 *
-	 * @return ?string UUID used as unique url fragment to the mockup url
+	 * @return ?array UUID used as unique url fragment to the mockup url, and userId of corresponding new user record
 	 */
-	public function makeMockupUrl(TokenService $tokenMaker, string $reviewerEmail, int $monthsOfValidity): ?string
+	public function makeMockupUrl(TokenService $tokenMaker, string $reviewerEmail, int $monthsOfValidity): ?array
 	{
 		if(!in_array($monthsOfValidity, self::MOCKUP_POSSIBLE_VALIDITY)) {
 			Yii::log("Invalid value for months of validity: $monthsOfValidity","error");
@@ -352,7 +354,10 @@ class FiledropService extends yii\base\Component
 			if (201 === $response->getStatusCode() ) {
 				//convert returned json to a PHP array so we can work with it
 				$responseData = json_decode($response->getBody(), true);
-				return $responseData['url_fragment'];
+				// add reviewer to fuw users so they can authenticate using JWT token when they annotate files
+				$userData = $this->tokenSrv->createUser(
+					$this->token, $this->webClient,$reviewerEmail."_".$this->identifier, $reviewerEmail);
+				return [ $responseData['url_fragment'], $userData['id'] ] ;
 			}
 		}
 		catch(RequestException $e) {
