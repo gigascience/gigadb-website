@@ -1,5 +1,5 @@
-File Name, Data Type, File Format, Description, Sample ID, Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5
-TheProof.csv, Text, CSV, first row,,MaxTemp::210::Fahrenheit,,,,
-CC0_pixel.jpg, Image, JPG, with malformed first attribute,,Rating:9::Some guys's scale,MaxTemp::89::Celsius,MinTemp::-4::Celsius,,
-NotFile.csv, Text, CSV, should not show up,,,,,,
-lorem.txt, Text, TXT, should be there,,,,,,
+File Name, Data Type, File Format, Description, Sample IDs, Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5
+TheProof.csv, Script, CSV, first row,,MaxTemp::210::Fahrenheit,,,,
+CC0_pixel.jpg, Annotation, JPG, with malformed first attribute,,Rating:9::Some guys's scale,MaxTemp::89::Celsius,MinTemp::-4::Celsius,,
+NotFile.csv, Script, CSV, should not show up,,,,,,
+lorem.txt, Script, TXT, should be there,,,,,,
