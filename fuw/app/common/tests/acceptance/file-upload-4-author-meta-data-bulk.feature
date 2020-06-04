@@ -75,6 +75,28 @@ Scenario: Uploading CSV spreadsheet to update upload metadata and attributes
 	| Max Temp. | 210 | Fahrenheit |
 
 @ok
+Scenario: Uploading CSV spreadsheet to update upload metadata, attributes and samples
+	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
+	And I am on "/user/view_profile#submitted"
+	And the "Your Uploaded Datasets" tab is active
+	And I press "Upload Dataset Files"
+	And I attach the file "TheProof.csv" in the file drop panel
+	And I press "Add more"
+	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I press "Upload 2 files"
+	And I wait "30" seconds
+	And I press "Next"
+	And I attach the file "sample2_attr_sample.csv"
+	And I press "Upload spreadsheet"
+	And I wait "3" seconds
+	And I press "Sample IDs"
+	Then I should see
+	| samples |
+	| Sample 5 |
+	| Sample 6 |
+
+@ok
 Scenario: Spreadsheet with malformed attributes
 	Given I sign in as the user "Artie" "Dodger"
 	And The user "Artie" "Dodger" is registered as authorised user in the API

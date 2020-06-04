@@ -1,3 +1,3 @@
-File Name,Data Type,File Format,Description,Sample ID,Attribute 1,Attribute 2,Attribute 3,Attribute 4, Attribute 5
+File Name,Data Type,File Format,Description,Sample IDs,Attribute 1,Attribute 2,Attribute 3,Attribute 4, Attribute 5
 method.txt, Readme, TEXT,The methodology,,,,,,
 someFile.png, Annotation, PNG,That diagram,, Rating::9::Some guys's scale, MaxTemp::89::Celsius,,,

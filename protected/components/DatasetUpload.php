@@ -178,7 +178,7 @@ class DatasetUpload extends yii\base\BaseObject
 			'Data Type' => 'datatype',
 			'File Format' => 'extension',
 			'Description' => 'description',
-			'Sample ID' => 'sample_id',
+			'Sample IDs' => 'sample_ids',
 			'Attribute 1' => 'attr1',
 			'Attribute 2' => 'attr2',
 			'Attribute 3' => 'attr3',
@@ -249,6 +249,16 @@ class DatasetUpload extends yii\base\BaseObject
 					$errors[] = "(".$upload['name'].") "."Cannot load file, incorrect File format: ".trim($sheetData[$dataPos]['extension']);
 					continue;
 				}
+
+				// checking and converting sample ids
+				if($sheetData[$dataPos]['sample_ids']) {
+					$newSamples = explode(";",$sheetData[$dataPos]['sample_ids']);
+					$oldSamples = $upload['sample_ids'] ? explode(",",$upload['sample_ids']) : [];
+					$allSamples = array_merge($oldSamples,$newSamples);
+					$sheetData[$dataPos]['sample_ids'] = implode(", ", array_map('trim',$allSamples));
+
+				}
+
 
 				// merging sheetData into the stored upload data
 				$changedUploads[$upload['id']] = array_merge(
