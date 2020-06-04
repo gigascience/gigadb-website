@@ -709,6 +709,21 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                                     </div>
                                 </div>
                             </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel46" aria-expanded="false" aria-controls="panel46">
+                                            Which prefix (decimal or binary) is used for file size display?
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="panel46" class="panel-collapse collapse" role="tabpanel">
+                                    <div class="panel-body">
+                                        <p>GigaDB displays file sizes using the binary prefixes (e.g. 1KB = 1024 byte; 1GB= 1073741824 byte)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
