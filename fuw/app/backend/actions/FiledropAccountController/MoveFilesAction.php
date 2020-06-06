@@ -12,6 +12,7 @@ use yii\base\Model;
 use yii\helpers\Url;
 use yii\web\ServerErrorHttpException;
 use backend\models\MoveJob;
+use common\models\Upload;
 
 /**
  * A custom RestController action to create and post a worker job for moving files to public ftp
@@ -49,7 +50,9 @@ class MoveFilesAction extends \yii\rest\Action
         }
 
         $jobs = [];
-        $files = $filedrop->getUploads();
+        $files = $filedrop->getUploads()
+                    ->where(['status' => Upload::STATUS_UPLOADING])
+                    ->all();
         foreach ($files as $file) {
             Yii::warning("** create job for {$file->name} of DOI {$filedrop->doi}");
             $jid = Yii::$app->queue->push(new MoveJob([

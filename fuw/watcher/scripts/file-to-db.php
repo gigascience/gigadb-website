@@ -267,8 +267,16 @@ function updateFileTable(object $dbh, string $dataset_doi, array $uploadedFilesM
 {
 	$result = 0;
 
+	# first we retrieve the filedrop acccount to associate the upload with
+	$accountQuery = "select * from filedrop_account where doi=:d";
+	$sth = $dbh->prepare($accountQuery);
+	$sth->bindValue(':d', $dataset_doi);
+	$sth->execute();
+	$account = $sth->fetch(PDO::FETCH_ASSOC);
+	# then we delete existing records
 	$delete = "delete from upload where doi= ? and status = 0";
-	$insert = "insert into upload(doi,name,size,status,location,description, extension, datatype,initial_md5) values(:d , :n , :z , 0, :l, :s, :e, :t,:m)";
+	# then we insert those uploaded by the author
+	$insert = "insert into upload(doi,name,size,status,location,description, extension, datatype,initial_md5,filedrop_account_id) values(:d , :n , :z , 0, :l, :s, :e, :t,:m,:f)";
 
 	$delete_statement = $dbh->prepare($delete);
 	$delete_statement->bindParam(1, $dataset_doi);
@@ -291,6 +299,7 @@ function updateFileTable(object $dbh, string $dataset_doi, array $uploadedFilesM
 		$data_type = $file["data_type"] ;
 		$summary = $file["description"] ;
 		$md5 = $file["md5"] ;
+		$insert_statement->bindValue(':f', $account["id"]);
 		$result += $insert_statement->execute();
 	}
 

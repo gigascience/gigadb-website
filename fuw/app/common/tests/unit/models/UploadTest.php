@@ -24,7 +24,8 @@ class UploadTest extends \Codeception\Test\Unit
                 'status' => Upload::STATUS_UPLOADING,
                 'location' => "ftp://sequence",
                 'extension' => 'CSV',
-                'datatype' => 'Monologue'
+                'datatype' => 'Monologue',
+                'filedrop_account_id' => 1,
           ]);
 
         $model->validate();
@@ -41,7 +42,8 @@ class UploadTest extends \Codeception\Test\Unit
                 'status' => Upload::STATUS_UPLOADING,
                 'location' => "ftp://sequence",
                 'extension' => 'CSV',
-                'datatype' => 'Annotation'
+                'datatype' => 'Annotation',
+                'filedrop_account_id' => 1,
           ]);
 
         $model->validate();
@@ -57,7 +59,8 @@ class UploadTest extends \Codeception\Test\Unit
                 'status' => Upload::STATUS_UPLOADING,
                 'location' => "ftp://sequence",
                 'extension' => 'ZZZ',
-                'datatype' => 'Annotation'
+                'datatype' => 'Annotation',
+                'filedrop_account_id' => 1,
           ]);
 
         $model->validate();
@@ -74,12 +77,29 @@ class UploadTest extends \Codeception\Test\Unit
                 'status' => Upload::STATUS_UPLOADING,
                 'location' => "ftp://sequence",
                 'extension' => 'CSV',
-                'datatype' => 'Annotation'
+                'datatype' => 'Annotation',
+                'filedrop_account_id' => 1,
           ]);
 
         $model->validate();
         expect('error message should not be set', $model->errors)->hasntKey('extension');
     }
 
+
+    public function testValidateFiledropAccountMissing()
+    {
+        $model = new Upload([
+                'doi' => "000000",
+                'name' => "sequence.csv",
+                'size' => 24564343,
+                'status' => Upload::STATUS_UPLOADING,
+                'location' => "ftp://sequence",
+                'extension' => 'CSV',
+                'datatype' => 'Annotation'
+          ]);
+
+        $model->validate();
+        expect('error raised', $model->errors)->hasKey('filedrop_account_id');
+    }
 
 }

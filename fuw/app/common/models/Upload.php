@@ -20,6 +20,7 @@ use Yii;
  * @property string $created_at
  * @property string $updated_at
  * @property string $sample_ids
+ * @property int $filedrop_account_id
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
@@ -45,9 +46,9 @@ class Upload extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['doi', 'name', 'size'], 'required'],
+            [['name', 'size','filedrop_account_id'], 'required'],
             [['size'], 'default', 'value' => null],
-            [['size'], 'integer'],
+            [['size','filedrop_account_id'], 'integer'],
             [['description', 'initial_md5','sample_ids'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['doi'], 'string', 'max' => 100],
@@ -82,6 +83,7 @@ class Upload extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'sample_ids' => 'Sample IDs',
+            'filedrop_account_id' => 'FiledropAccount ID',
         ];
     }
 
@@ -98,7 +100,7 @@ class Upload extends \yii\db\ActiveRecord
      */
     public function getFiledropAccount()
     {
-        return $this->hasOne(FiledropAccount::className(), ['doi' => 'doi']);
+        return $this->hasOne(FiledropAccount::className(), ['id' => 'filedrop_account_id']);
     }
 
     /**

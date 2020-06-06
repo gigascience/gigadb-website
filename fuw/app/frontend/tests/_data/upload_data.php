@@ -12,6 +12,7 @@ return [
         'description' => 'methods for field data',
         'datatype' => 'Text',
         'extension' => 'DOCX',
+        'filedrop_account_id' =>1,
     ],
     [
         'id' => 2,
@@ -24,6 +25,7 @@ return [
         'description' => 'measurements',
         'datatype' => 'Text',
         'extension' => 'CSV',
+        'filedrop_account_id' =>1,
     ],
     [
         'id' => 3,
@@ -36,5 +38,6 @@ return [
         'description' => 'An image',
         'datatype' => 'Image',
         'extension' => 'JPEG',
+        'filedrop_account_id' =>1,
     ],
 ];

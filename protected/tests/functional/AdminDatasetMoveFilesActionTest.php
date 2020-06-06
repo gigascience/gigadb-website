@@ -54,7 +54,7 @@ class AdminDatasetMoveFilesActionTest extends FunctionalTesting
                 ["doi" => "{$this->doi}", "name" =>"shouldnotdisplay.png", "size" => 5463434, "status"=> 2, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
             ];
         $this->uploads = $this->setUpFileUploads(
-            $this->dbh_fuw, $files
+            $this->dbh_fuw, $files, $filedropAccountId
         );
         // setup URL
         $endpointUrl = "http://gigadb.dev/adminDataset/moveFiles/doi/{$this->doi}" ;
@@ -83,7 +83,7 @@ class AdminDatasetMoveFilesActionTest extends FunctionalTesting
                 ["doi" => "{$this->doi}", "name" =>"shouldnotdisplay.png", "size" => 5463434, "status"=> 2, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
             ];
         $this->uploads = $this->setUpFileUploads(
-            $this->dbh_fuw, $files
+            $this->dbh_fuw, $files, $filedropAccountId
         );
         // setup URL
         $endpointUrl = "http://gigadb.dev/adminDataset/moveFiles/doi/{$this->doi}" ;

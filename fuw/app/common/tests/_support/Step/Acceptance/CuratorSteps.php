@@ -103,6 +103,32 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	   $this->I->amOnPage($arg1);
 	}
 
+
+/**
+     * @Given reference data for Attribute for Unit is created for
+     */
+     public function referenceDataForAttributeForUnitIsCreatedFor(TableNode $files)
+     {
+        $this->I->amConnectedToDatabase('default');
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+
+            if("attribute" === $row[0]) {
+                $this->I->haveInDatabase("public.{$row[0]}",["attribute_name" => $row[1] ] );
+            }
+            elseif("sample" === $row[0]) {
+                $this->I->haveInDatabase("public.{$row[0]}",["species_id" => 1128856 ,"name" => $row[1] ] );
+            }            
+            else {
+                $this->I->haveInDatabase("public.{$row[0]}",["id" => $row[1], "name" => $row[1] ] );
+            }
+        }
+     }
+
+
 	/**
 	 * @When I press :arg1
 	 */
@@ -268,7 +294,7 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 			$currentDate = new \DateTime('NOW');
 			$currentTimestamp = $currentDate->format('U');
 			//test that email was received within the last 10 secs
-			$this->I->assertTrue(abs($emailTimestamp-$currentTimestamp)<10);
+			$this->I->assertTrue(abs($emailTimestamp-$currentTimestamp)<30);
 			$addresses = Parse::getInstance()->parse($message->getHeaderValue('to'));
 			$this->I->assertEquals($email, $addresses["email_addresses"][0]["address"]);
      	}

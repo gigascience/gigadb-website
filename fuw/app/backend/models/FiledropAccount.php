@@ -290,7 +290,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     public function getUploads()
     {
-        return Upload::find()->where(['doi' => $this->doi, 'status' => Upload::STATUS_UPLOADING])->all();
+        return $this->hasMany(Upload::className(), ['filedrop_account_id' => 'id']);
     }
 
     /**
