@@ -83,6 +83,13 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
      public function fileUploadsWithSamplesAndAttributesHaveBeenUploadedForDOI($doi)
      {
 
+        //Retrieve the filedrop_account to attach the uploads
+        $this->I->amConnectedToDatabase('fuwdb');
+        $filedropId = $this->I->grabFromDatabase('filedrop_account','id', array('doi' => $doi));
+        if(!$filedropId) {
+            Yii::error("FiledropAccount ID could not be retrieved");
+        }
+
         $config = require "/app/common/config/main-local.php";
         $dbh_fuw = new \PDO(
                             $config["components"]["db"]["dsn"], 
@@ -116,7 +123,7 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
         $temps = [ 45, 51];
         $humidities = [ 75, 90];
 
-        $insertFilesQuery = "insert into upload(doi, name, size, status, location, extension, datatype, sample_ids) values(:doi, :name, :size, :status, :location, :extension, :datatype, :sample_ids) returning id";
+        $insertFilesQuery = "insert into upload(doi, name, size, status, location, extension, datatype, sample_ids,filedrop_account_id) values(:doi, :name, :size, :status, :location, :extension, :datatype, :sample_ids, :account) returning id";
         $insertFilesStatement = $dbh_fuw->prepare($insertFilesQuery);
         foreach ($files as $file) {
             $insertFilesStatement->bindValue(':doi',$file['doi']);
@@ -127,9 +134,10 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
             $insertFilesStatement->bindValue(':extension',$file['extension']);
             $insertFilesStatement->bindValue(':datatype',$file['datatype']);
             $insertFilesStatement->bindValue(':sample_ids',$file['sample_ids']);
+            $insertFilesStatement->bindValue(':account',$filedropId);
             $isSuccess = $insertFilesStatement->execute();
             if(!$isSuccess) {
-                echo PHP_EOL."Failure creating in DB file {$file['name']}".PHP_EOL;
+                Yii::error("Failed to write DB record for {$file['name']}");
             }
             $returnId = $insertFilesStatement->fetch(\PDO::FETCH_OBJ);
             $this->uploadIds[] = $returnId->id;

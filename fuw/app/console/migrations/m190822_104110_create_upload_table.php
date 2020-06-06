@@ -14,7 +14,7 @@ class m190822_104110_create_upload_table extends Migration
     {
         $this->createTable('{{%upload}}', [
             'id' => $this->primaryKey(),
-            'doi' => $this->string(100)->notNull(),
+            'doi' => $this->string(100),
             'name' => $this->string(128)->notNull(),
             'size' => $this->bigInteger()->notNull(),
             'status' => $this->integer(),
@@ -24,6 +24,7 @@ class m190822_104110_create_upload_table extends Migration
             'extension' => $this->string(32),
             'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
             'updated_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'filedrop_account_id' => $this->integer()->notNull(),
         ]);
 
         $this->execute("CREATE OR REPLACE FUNCTION update_modified_column()

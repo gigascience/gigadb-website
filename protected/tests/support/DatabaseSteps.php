@@ -242,10 +242,10 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 	 *
 	 * @return array Ids of the just created records
 	 */
-	public function setUpFileUploads(PDO $dbh, array $files): array
+	public function setUpFileUploads(PDO $dbh, array $files, int $filedropAccountId): array
 	{
 		$uploads = [];
-		$insertFilesQuery = "insert into upload(doi, name, size, status, location, description, extension, datatype) values(:doi, :name, :size, :status, :location, :description, :extension, :datatype) returning id";
+		$insertFilesQuery = "insert into upload(doi, name, size, status, location, description, extension, datatype, filedrop_account_id) values(:doi, :name, :size, :status, :location, :description, :extension, :datatype,:account) returning id";
         $insertFilesStatement = $dbh->prepare($insertFilesQuery);
         foreach ($files as $file) {
             $insertFilesStatement->bindValue(':doi',$file['doi']);
@@ -256,6 +256,7 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
             $insertFilesStatement->bindValue(':description',$file['description']);
             $insertFilesStatement->bindValue(':extension',$file['extension']);
             $insertFilesStatement->bindValue(':datatype',$file['datatype']);
+            $insertFilesStatement->bindValue(':account',$filedropAccountId);
             $isSuccess = $insertFilesStatement->execute();
             if(!$isSuccess) {
             	echo PHP_EOL."Failure creating in DB file {$file['name']}".PHP_EOL;

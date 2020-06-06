@@ -5,6 +5,7 @@ use common\fixtures\UserFixture;
 use backend\models\FiledropAccount;
 use common\models\Upload;
 use common\fixtures\UploadFixture;
+use backend\fixtures\FiledropAccountFixture;
 use backend\models\DockerManager;
 
 use Yii;
@@ -30,7 +31,11 @@ class FiledropAccountCest
             'upload' => [
                 'class' => UploadFixture::className(),
                 'dataFile' => codecept_data_dir() . 'upload.php'
-            ],        
+            ],
+            'filedrop_account' => [
+                'class' => FiledropAccountFixture::className(),
+                'dataFile' => codecept_data_dir() . 'filedrop_account.php'
+            ],                     
         ];
     }
 
@@ -271,13 +276,7 @@ class FiledropAccountCest
     {
 
         $doi = "200001"; //we use the DOI from uploads fixture data
-
-        $filedrop = new FiledropAccount();
-        $dockerManager = new DockerManager();
-        $filedrop->setDOI($doi);
-        $filedrop->setDockerManager($dockerManager);
-        $filedrop->status = FiledropAccount::STATUS_ACTIVE;
-        $filedrop->save();
+        $filedrop = FiledropAccount::findOne(["doi" => $doi]);
 
         $I->amBearerAuthenticated("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBUEkgQWNjZXNzIHJlcXVlc3QgZnJvbSBjbGllbnQiLCJpc3MiOiJ3d3cuZ2lnYWRiLm9yZyIsImF1ZCI6ImZ1dy5naWdhZGIub3JnIiwiZW1haWwiOiJzZnJpZXNlbkBqZW5raW5zLmluZm8iLCJuYW1lIjoiSm9obiBTbWl0aCIsImFkbWluX3N0YXR1cyI6InRydWUiLCJyb2xlIjoiY3JlYXRlIiwiaWF0IjoiMTU2MTczMDgyMyIsIm5iZiI6IjE1NjE3MzA4MjMiLCJleHAiOiIyNzI5NTEzMjIwIn0.uTZpDB1eCGt3c_23wLaVxpFUw_WFH2Jep_vpzky2o18");
         $I->sendPOST("/filedrop-accounts/move/{$filedrop->id}");

@@ -14,6 +14,7 @@ return [
         'datatype' => 'Protein sequence',
         'created_at' => '2019-08-22 13:02:12',
         'updated_at' => '2019-08-22 13:02:12',
+        'filedrop_account_id' =>100,
     ],
     [
         'id' => 2,
@@ -27,6 +28,7 @@ return [
         'sample_ids' => 'sample-1,sample-2,sample-3',
         'created_at' => '2019-08-22 13:02:12',
         'updated_at' => '2019-08-22 13:02:12',
+        'filedrop_account_id' =>100,
     ],
     [
         'id' => 3,
@@ -39,5 +41,6 @@ return [
         'datatype' => 'Protein sequence',
         'created_at' => '2019-08-22 13:02:12',
         'updated_at' => '2019-08-22 13:02:12',
+        'filedrop_account_id' =>100,
     ],
 ];

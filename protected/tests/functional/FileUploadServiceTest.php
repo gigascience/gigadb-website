@@ -62,7 +62,7 @@ class FileUploadServiceTest extends CTestCase
                 ["doi" => "{$this->doi}", "name" =>"shouldnotdisplay.png", "size" => 5463434, "status"=> 2, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
             ];
         $this->uploads = $this->setUpFileUploads(
-            $this->dbhf->getPdoInstance(), $files
+            $this->dbhf->getPdoInstance(), $files, $this->account
         );
 
         list($this->mockupUrlId, $this->url_fragment) = $this->setUpMockupUrl(
