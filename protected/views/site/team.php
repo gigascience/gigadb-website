@@ -24,16 +24,6 @@
                         </td>
                         <td>
                             <div class="thumbnail">
-                                <img src="../images/team/jesse.jpg">
-                                <div class="caption">
-                                    <h3>SiZhe Xiao - Jesse<br><small>Database Manager</small></h3>
-                                    <p>Managing the database and the servers, developing the tools, website, API et
-                                        c ...</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="thumbnail">
                                 <img src="../images/team/chrisa.jpg">
                                 <div class="caption">
                                     <h3>Chris Armit<br><small>Data Scientist</small></h3>
@@ -142,6 +132,15 @@
                                         she carries out manuscript writing seminars and owns the USA-based company Goodman Writing & Editing, which provides hi
                                         gh-level editing of scientific manuscripts and grants, with a specialty in editing manuscripts from non-native English
                                         speakers.</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="thumbnail">
+                                <img src="../images/team/rija.jpg">
+                                <div class="caption">
+                                    <h3>Rija Ménagé<br><small>Principal Software Engineer</small></h3>
+                                    <p>Crafting software since 1999.</p>
                                 </div>
                             </div>
                         </td>
