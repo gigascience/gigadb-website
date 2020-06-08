@@ -20,7 +20,7 @@ Scenario: bulk upload form for all uploaded files
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	When I press "Next"
 	Then I should see form elements:
 	| File name 	| Data type | Default 		| Description text | Tag action | Delete action|
@@ -40,7 +40,7 @@ Scenario: Uploading CSV spreadsheet to update upload metadata
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	And I press "Next"
 	When I attach the file "sample1.csv"
 	And I press "Upload spreadsheet"
@@ -64,7 +64,7 @@ Scenario: Uploading CSV spreadsheet to update upload metadata and attributes
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	And I press "Next"
 	And I attach the file "sample2_attr.csv"
 	And I press "Upload spreadsheet"
@@ -85,7 +85,7 @@ Scenario: Uploading CSV spreadsheet to update upload metadata, attributes and sa
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	And I press "Next"
 	And I attach the file "sample2_attr_sample.csv"
 	And I press "Upload spreadsheet"
@@ -107,7 +107,7 @@ Scenario: Spreadsheet with malformed attributes
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	And I press "Next"
 	When I attach the file "sample3_malformed_attr.csv"
 	And I press "Upload spreadsheet"
@@ -130,7 +130,7 @@ Scenario: Spreadsheet with malformed attributes
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	And I press "Next"
 	When I attach the file "sample6_unknown_column.csv"
 	And I press "Upload spreadsheet"
@@ -149,7 +149,7 @@ Scenario: Unknown Data Type (all spreadsheet entries have error)
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	And I press "Next"
 	When I attach the file "sample4_unknown_datatype.csv"
 	And I press "Upload spreadsheet"
@@ -172,7 +172,7 @@ Scenario: Unknown Data Type (one spreadsheet entry in error)
 	And I press "Add more"
 	And I attach the file "lorem.txt" in the file drop panel	
 	And I press "Upload 3 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	And I press "Next"
 	When I attach the file "sample4_unknown_datatype2.csv"
 	And I press "Upload spreadsheet"
@@ -199,7 +199,7 @@ Scenario: Unknown file format (one spreadsheet entry in error)
 	And I press "Add more"
 	And I attach the file "lorem.txt" in the file drop panel	
 	And I press "Upload 3 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	And I press "Next"
 	When I attach the file "sample5_unknown_format.csv"
 	And I press "Upload spreadsheet"
@@ -222,7 +222,7 @@ Scenario: Uploading TSV spreadsheet to update upload metadata and attributes
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	And I press "Next"
 	And I attach the file "sample1.tsv"
 	And I press "Upload spreadsheet"
