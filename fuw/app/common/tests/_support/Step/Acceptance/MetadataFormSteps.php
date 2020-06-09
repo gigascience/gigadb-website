@@ -165,7 +165,21 @@ class MetadataFormSteps
      */
      public function iPressAttributesButtonFor($arg1)
      {
-        $this->I->click(".$arg1");
+        $this->iPressButtonFor("attribute", $arg1);
      }
+
+    /**
+     * @When I press Samples button for :arg1
+     */
+     public function iPressSamplesButtonFor($arg1)
+     {
+        $this->iPressButtonFor("sample", $arg1);
+     }
+
+     private function iPressButtonFor($nameAsClass, $fileAsclass)
+     {
+        $fileCSSClass = str_replace(["."], ["\."], $fileAsclass);
+        $this->I->click(".$nameAsClass-button.$fileCSSClass");
+     }   
 
 }

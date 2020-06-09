@@ -90,7 +90,7 @@ Scenario: Uploading CSV spreadsheet to update upload metadata, attributes and sa
 	And I attach the file "sample2_attr_sample.csv"
 	And I press "Upload spreadsheet"
 	And I wait "3" seconds
-	And I press "Sample IDs"
+	When I press Samples button for "CC0_pixel.jpg"
 	Then I should see
 	| samples |
 	| Sample 5 |
