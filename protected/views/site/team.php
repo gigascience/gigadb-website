@@ -24,16 +24,6 @@
                         </td>
                         <td>
                             <div class="thumbnail">
-                                <img src="../images/team/jesse.jpg">
-                                <div class="caption">
-                                    <h3>SiZhe Xiao - Jesse<br><small>Database Manager</small></h3>
-                                    <p>Managing the database and the servers, developing the tools, website, API et
-                                        c ...</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="thumbnail">
                                 <img src="../images/team/chrisa.jpg">
                                 <div class="caption">
                                     <h3>Chris Armit<br><small>Data Scientist</small></h3>
@@ -53,11 +43,17 @@
                                 </div>
                             </div>
                         </td>
+                        <td>
+                            <div class="thumbnail">
+                                <img src="../images/team/rija.jpg">
+                                <div class="caption">
+                                    <h3>Rija Ménagé<br><small>Principal Software Engineer</small></h3>
+                                    <p>Crafting software since 1999.</p>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
-
-
                     <tr>
-
                         <td>
                             <div class="thumbnail">
                                 <img src="../images/team/hongling.png">
@@ -104,7 +100,6 @@
                             </div>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
                             <div class="thumbnail">
@@ -112,6 +107,15 @@
                                 <div class="caption">
                                     <h3>Peter Li<br><small>Lead Data Manager</small></h3>
                                     <p></p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="thumbnail">
+                                <img src="../images/team/kencho.png">
+                                <div class="caption">
+                                    <h3>Ken Cho<br><small>Systems Programmer Analyst</small></h3>
+                                    <p>Bioinformatics graduate from The Chinese University of Hong Kong.</p>
                                 </div>
                             </div>
                         </td>
