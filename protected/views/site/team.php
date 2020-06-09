@@ -43,11 +43,17 @@
                                 </div>
                             </div>
                         </td>
+                        <td>
+                            <div class="thumbnail">
+                                <img src="../images/team/rija.jpg">
+                                <div class="caption">
+                                    <h3>Rija Ménagé<br><small>Principal Software Engineer</small></h3>
+                                    <p>Crafting software since 1999.</p>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
-
-
                     <tr>
-
                         <td>
                             <div class="thumbnail">
                                 <img src="../images/team/hongling.png">
@@ -94,7 +100,6 @@
                             </div>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
                             <div class="thumbnail">
@@ -102,6 +107,15 @@
                                 <div class="caption">
                                     <h3>Peter Li<br><small>Lead Data Manager</small></h3>
                                     <p></p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="thumbnail">
+                                <img src="../images/team/kencho.png">
+                                <div class="caption">
+                                    <h3>Ken Cho<br><small>Systems Programmer Analyst</small></h3>
+                                    <p>Bioinformatics graduate from The Chinese University of Hong Kong.</p>
                                 </div>
                             </div>
                         </td>
@@ -132,15 +146,6 @@
                                         she carries out manuscript writing seminars and owns the USA-based company Goodman Writing & Editing, which provides hi
                                         gh-level editing of scientific manuscripts and grants, with a specialty in editing manuscripts from non-native English
                                         speakers.</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="thumbnail">
-                                <img src="../images/team/rija.jpg">
-                                <div class="caption">
-                                    <h3>Rija Ménagé<br><small>Principal Software Engineer</small></h3>
-                                    <p>Crafting software since 1999.</p>
                                 </div>
                             </div>
                         </td>
