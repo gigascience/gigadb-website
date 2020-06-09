@@ -89,6 +89,23 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
 	   $this->I->amOnPage($arg1);
 	}
 
+
+    /**
+     * @Given there are files uploaded by ftp
+     */
+     public function thereAreFilesUploadedByFtp(TableNode $files)
+     {
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            // row[0] -> file name
+            // row[1] -> doi
+            $this->I->writeToFile("/var/incoming/ftp/{$row[1]}/{$row[0]}", Yii::$app->security->generateRandomString(3));
+        }
+     }
+
 	/**
 	 * @When I press :arg1
 	 */
