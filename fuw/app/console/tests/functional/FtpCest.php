@@ -22,7 +22,7 @@ class FtpCest
     	$doi = "300001";
 
         $I->copyDir(codecept_data_dir()."ftp",codecept_output_dir());
-        $I->copyDir(codecept_data_dir()."repo",codecept_output_dir());
+        $I->copyDir(codecept_data_dir()."testrepo",codecept_output_dir());
 
     	$accountId = $I->haveInDatabase('filedrop_account',	[
 	        'doi' => $doi,
