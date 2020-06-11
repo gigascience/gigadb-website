@@ -75,6 +75,8 @@ services:
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
+      # access to File Upload Wizard model classes
+      - ../../fuw/app:/app      
     expose:
       - "9000"
     extra_hosts:
@@ -230,6 +232,8 @@ services:
       - ${DATA_SAVE_PATH}/fuw/credentials:/home/credentials
       - ${DATA_SAVE_PATH}/pure-ftpd:/etc/pure-ftpd
       - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+      # access to File Upload Wizard model classes
+      - ../../fuw/app:/app      
 
     networks:
       - web-tier
@@ -532,10 +536,14 @@ services:
       - ../../fuw/watcher/scripts:/commands:ro
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/home/uploader
       - ${DATA_SAVE_PATH}/fuw/repo:/home/downloader/
-      - ${DATA_SAVE_PATH}/fuw/credentials:/var/access:ro
       - ${DATA_SAVE_PATH}/fuw/flags:/var/tmp/processing_flag
-      # access to files and reference data
-      - ../../files:/var/www/files:ro
+      # access to the ftp tokens so the upload's location attribute can be populated
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private    
+      # access to the fuw/console so tusd hooks can trigger upload update
+      - ../../fuw/app:/app
+      # access to data feeds
+      - ${APPLICATION}/files:/var/www/files:ro
+
     networks:
       - web-tier
       - db-tier
@@ -551,7 +559,13 @@ services:
       - ../../fuw/tusd/hooks:/var/hooks
       - ${DATA_SAVE_PATH}/fuw/incoming/tusd:/var/inbox/
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo/
-    command: -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
+      # access to the ftp tokens so the upload's location attribute can be populated
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private    
+      # access to the fuw/console so tusd hooks can trigger upload update
+      - ../../fuw/app:/app
+      # access to data feeds
+      - ${APPLICATION}/files:/var/www/files:ro
+    command: -dir /var/inbox -base-path /fileserver/ -hooks-dir /var/hooks
     networks:
       - web-tier
       - db-tier

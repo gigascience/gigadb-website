@@ -19,15 +19,6 @@ use yii\console\ExitCode;
 class TusdController extends Controller
 {
 
-	const COMMON_EXTENSION_MAPPINGS = array(
-					"TXT" => "TEXT",
-					"MD" => "TEXT",
-					"RDF" => "XML",
-					"JPG" => "JPG",
-					"JPEG" => "JPG",
-					"FA" => "FASTA",
-					"FQ" => "FASTQ",
-				);
 	/**
 	 * @var string $doi Identifier of the dataset associated to the file in the wizard by the author */
 	public $doi;
@@ -80,24 +71,12 @@ class TusdController extends Controller
  		if($this->jsonfile) {
  			$this->json = file_get_contents($this->jsonfile);
  		}
- 		$metadata = json_decode($this->json, true);
- 		if( $metadata === null || count($metadata) === 0) {
- 			Yii::error("The JSON string is empty or not readable");
- 			Yii::error($this->json);
- 			return ExitCode::NOINPUT;
- 		}
- 		Yii::warning($metadata);
-		if($this->doi !== $metadata["MetaData"]["dataset"]) {
- 			Yii::error("DOI mismatch, exiting abnormally");
- 			return ExitCode::DATAERR;	 				
-		}
 
 		$datafeedPath = "/var/www/files/data/";
-		$tusd = new UploadFactory($this->doi, $datafeedPath, $this->token_path);
-		$result = $tusd->createUpload(
-					new Upload(), 
-					$metadata, 
-					$this->dropboxAccount->id
+		$factory = new UploadFactory($this->doi, $datafeedPath, $this->token_path);
+		$result = $factory->createUploadFromJSON(
+					$this->dropboxAccount->id,
+					$this->json
 				);
 
  		if( $result ) {

@@ -11,4 +11,4 @@ COPY repositories39 /etc/apk/repositories
 RUN apk upgrade -U --available
 
 # needed for making command written in php that connect to postgresql
-RUN	apk add --no-cache postgresql-dev php7 php7-pgsql php7-pdo php7-pdo_pgsql php7-json
+RUN	apk add --no-cache postgresql-dev php7 php7-pgsql php7-pdo php7-pdo_pgsql php7-json findutils

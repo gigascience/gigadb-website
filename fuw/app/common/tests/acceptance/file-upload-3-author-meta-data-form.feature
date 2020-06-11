@@ -111,20 +111,6 @@ Scenario: Initial MD5 checksum for upload files shows up as tooltip
 	| TheProof.csv 	| 58e51b8d263ca3e89712c65c4485a8c9|  
 	| CC0_pixel.jpg | 18e3cdda6af3b1a2947e27bdc209d41f|
 
-@ok
-Scenario: ftp upload triggers new upload record saved in database
-	Given I sign in as the user "Artie" "Dodger"
-	And The user "Artie" "Dodger" is registered as authorised user in the API
-	And there are files uploaded by ftp
-	| File name 	| DOI 	 |
-	| TheProof.csv 	| 000007 |  
-	| CC0_pixel.jpg | 000007 |
-	And I wait "30" seconds
-	When I am on "/authorisedDataset/annotateFiles/id/000007"
-	Then I should see form elements:
-	| File name 	| Data type | Default 	| Description text | Tag action | Delete action|
-	| TheProof.csv 	| form select | Text 	| form input 	| button | button |
-	| CC0_pixel.jpg | form select | Image 	| form input 	| button | button |
 # Scenario: Saving all metadata for all files
 # 	Given I sign in as a user
 # 	And I have uploaded a set of files to the drop box for dataset "100006"

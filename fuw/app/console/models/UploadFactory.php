@@ -87,15 +87,28 @@ class UploadFactory extends \yii\base\BaseObject
 	}
 
 	/**
-	 * Construct and save the upload model from supplied metadata array
+	 * Construct and save the upload model from supplied metadata json
 	 *
-	 * @param object $upload 
-	 * @param array $metadata
 	 * @param int $filedropAccountId
+	 * @param string $json
+	 * @param object||null $upload An instance of upload, crewate here if not supplied
 	 * @return bool whether or not the upload was successfully saved
 	 */
-	public function createUpload(object $upload, array $metadata, int $filedropAccountId): bool
+	public function createUploadFromJSON(int $filedropAccountId, string $json, object $upload = null): bool
 	{
+
+		$metadata = json_decode($json, true);
+ 		if( $metadata === null || count($metadata) === 0) {
+ 			Yii::error("The JSON string is empty or not readable");
+ 			Yii::error($json);
+ 			return false;
+ 		}
+		if($this->doi !== $metadata["MetaData"]["dataset"]) {
+ 			Yii::error("DOI mismatch, exiting abnormally");
+ 			return false;	 				
+		}
+
+		$upload = $upload ?? new Upload();
  		$upload->filedrop_account_id = $filedropAccountId;
  		$upload->status = Upload::STATUS_UPLOADING;
  		$upload->doi = $metadata["MetaData"]["dataset"];
@@ -117,4 +130,37 @@ class UploadFactory extends \yii\base\BaseObject
  		Yii::error($upload->errors);
  		return false;
 	}
+
+	/**
+	 * Construct and save the upload model from supplied path to file
+	 *
+	 * @param int $filedropAccountId
+	 * @param array $file array (with keys 'doi', 'path' and 'name') with info about the file
+	 * @param object||null $upload An instance of upload, crewate here if not supplied
+	 * @return bool whether or not the upload was successfully saved
+	 */
+	public function createUploadFromFile(int $filedropAccountId, array $file, object $upload = null): bool
+	{
+		$upload = $upload ?? new Upload();
+		$file_stats = stat("{$file['path']}/{$file['name']}");
+ 		$upload->filedrop_account_id = $filedropAccountId;
+ 		$upload->status = Upload::STATUS_UPLOADING;
+ 		$upload->doi = $file["doi"];
+ 		$upload->name = $file["name"];
+ 		$upload->size = $file_stats[7];
+ 		$upload->extension = $this->getFileFormatFromFile(
+					 			$file["name"]
+					 		);
+ 		$upload->location = $this->generateFTPLink(
+ 			$file["name"],
+ 			$file["doi"]
+ 		);
+
+ 		$outcome = $upload->save();
+ 		if($outcome) {
+ 			return true;
+ 		}
+ 		Yii::error($upload->errors);
+ 		return false;
+	}	
 }
