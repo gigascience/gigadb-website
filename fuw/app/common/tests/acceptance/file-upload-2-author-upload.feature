@@ -16,7 +16,7 @@ Scenario: Upload files button when dataset has appropriate status
 	When I go to "/user/view_profile#submitted"
 	Then I should see "Your profile page"
 	And the "Your Uploaded Datasets" tab is active
-	And I should see a "Upload Dataset Files" link
+	And I should see a "Upload Files" link
 
 @ok
 Scenario: No Upload files button when dataset hasn't got to the appropriate status yet
@@ -27,7 +27,7 @@ Scenario: No Upload files button when dataset hasn't got to the appropriate stat
 	When I go to "/user/view_profile#submitted"
 	Then I should see "Your profile page"
 	And the "Your Uploaded Datasets" tab is active
-	And I should not see a "Upload Dataset Files" link
+	And I should not see a "Upload Files" link
 
 
 @ok
@@ -35,7 +35,7 @@ Scenario: Pressing the upload button bring up File Upload Wizard upload screen
 	Given I sign in as the user "Artie" "Dodger"
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	When I press "Upload Dataset Files"
+	When I press "Upload Files"
 	Then I should be on "/authorisedDataset/uploadFiles/"
 	And I should see "Uploading files for the dataset 000007"
 	And I should see "Drop files here, paste or browse"
@@ -45,7 +45,7 @@ Scenario: Can add files to the upload queue
 	Given I sign in as the user "Artie" "Dodger"
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	And I should be on "/authorisedDataset/uploadFiles/"
 	And I wait "1" seconds
 	When I attach the file "TheProof.csv" in the file drop panel
@@ -57,7 +57,7 @@ Scenario: All files in the queue are uploaded
 	Given I sign in as the user "Artie" "Dodger"
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	When I attach the file "TheProof.csv" in the file drop panel
 	And I press "Upload 1 file"
 	And I wait "1" seconds
@@ -68,7 +68,7 @@ Scenario: Queued files are all uploaded
 	Given I sign in as the user "Artie" "Dodger"
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	When I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "TheProof2.csv" in the file drop panel
@@ -81,7 +81,7 @@ Scenario: There is a Next button
 	Given I sign in as the user "Artie" "Dodger"
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	When I press "Upload Dataset Files"
+	When I press "Upload Files"
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "TheProof2.csv" in the file drop panel
@@ -95,7 +95,7 @@ Scenario: Next button to proceed to file metadata annotation form
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "TheProof2.csv" in the file drop panel

@@ -78,14 +78,16 @@
                                 </td>
                                 <td>
                                     <? if ($data[$i]->upload_status !='Published' && $data[$i]->upload_status!='AuthorReview' && $data[$i]->upload_status!='Private'){ ?>
-                                        <a class="update" title="Update" href=<? echo "/datasetSubmission/datasetManagement/id/" . $data[$i]->id ?> ><img src="/images/update.png" alt="Update" /></a>
-                                        <a class="js-delete-dataset" did="<?=$data[$i]->id?>" title="Delete"><img alt="Delete" src="/images/delete.png"></a>
-                                        <?php if ($data[$i]->upload_status == "UserUploadingData") { ?>
-                                            <a href=<?php echo "/authorisedDataset/uploadFiles/id/".$data[$i]->identifier ?> class="update" title="Upload Dataset Files">Upload Dataset Files</a>
-                                    <?php } ?>
-
+                                        <div>
+                                            <a class="update btn" title="Update" href=<? echo "/datasetSubmission/datasetManagement/id/" . $data[$i]->id ?> >Update</a>
+                                            <a class="js-delete-dataset btn" did="<?=$data[$i]->id?>" title="Delete">
+                                       Delete</a>
+                                            <?php if ($data[$i]->upload_status == "UserUploadingData") { 
+                                            echo CHtml::link('Upload Files', array('/authorisedDataset/uploadFiles', 'id'=>$data[$i]->identifier), array('class' => 'upload btn'));
+                                            } ?>
+                                        </div>
                                     <? } ?>
-                </tr>
+                                </td></tr>
                 <? } ?>
         </tbody>
     </table>
