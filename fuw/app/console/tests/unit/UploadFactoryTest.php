@@ -70,32 +70,14 @@ class UploadFactoryTest extends \Codeception\Test\Unit
         $this->assertEquals("ftp://downloader-300001:foobar@gigadb.org:9021/somefile.fq", $link);
     }
 
-    // tests for creating and saving the upload object
-
-    public function testCreateUploadWithSuccess()
+    public function testCreateUploadFromFileWithSuccess()
     {
-        $metadata = [
-              'ID' => '8cd11d9b349dbf7d4539d25a2af03fe2',
-              'Size' => 117,
-              'SizeIsDeferred' => false,
-              'Offset' => 0,
-              'MetaData' => [
-                  'checksum' => '58e51b8d263ca3e89712c65c4485a8c9',
-                  'dataset' => '300001',
-                  'filename' => 'seq1.fq',
-                  'filetype' => 'text/plain',
-                  'name' => 'seq1.fa',
-                  'relativePath' => 'null',
-                  'type' => 'text/plain',
-              ],
-              'IsPartial' => false,
-              'IsFinal' => false,
-              'PartialUploads' => null,
-          ];
+
         $doi = "300001";
         $filedropAccountId =1 ;
         $datafeedPath = codecept_data_dir();
         $tokenPath = codecept_data_dir();
+        $inputFileArray = ["doi" => $doi, "path" => codecept_data_dir()."ftp/$doi", "name" => "seq1.fa"];
         $tusd = new UploadFactory($doi,$datafeedPath,$tokenPath);
         $mockUpload = $this->createMock(\common\models\Upload::class);
 
@@ -103,34 +85,18 @@ class UploadFactoryTest extends \Codeception\Test\Unit
             ->method("save")
             ->willReturn(true);
 
-        $outcome = $tusd->createUpload($mockUpload, $metadata, $filedropAccountId);
+        $outcome = $tusd->createUploadFromFile($filedropAccountId, $inputFileArray, $mockUpload);
         $this->assertTrue($outcome);
     }
 
-   public function testCreateUploadWithFailure()
+    public function testCreateUploadFromFileWithFailure()
     {
-        $metadata = [
-              'ID' => '8cd11d9b349dbf7d4539d25a2af03fe2',
-              'Size' => 117,
-              'SizeIsDeferred' => false,
-              'Offset' => 0,
-              'MetaData' => [
-                  'checksum' => '58e51b8d263ca3e89712c65c4485a8c9',
-                  'dataset' => '300001',
-                  'filename' => 'seq1.fq',
-                  'filetype' => 'text/plain',
-                  'name' => 'seq1.fa',
-                  'relativePath' => 'null',
-                  'type' => 'text/plain',
-              ],
-              'IsPartial' => false,
-              'IsFinal' => false,
-              'PartialUploads' => null,
-          ];
+
         $doi = "300001";
         $filedropAccountId =1 ;
         $datafeedPath = codecept_data_dir();
         $tokenPath = codecept_data_dir();
+        $inputFileArray = ["doi" => $doi, "path" => codecept_data_dir()."ftp/$doi", "name" => "seq1.fa"];
         $tusd = new UploadFactory($doi,$datafeedPath,$tokenPath);
         $mockUpload = $this->createMock(\common\models\Upload::class);
 
@@ -138,10 +104,84 @@ class UploadFactoryTest extends \Codeception\Test\Unit
             ->method("save")
             ->willReturn(false);
 
-        $outcome = $tusd->createUpload($mockUpload, $metadata, $filedropAccountId);
+        $outcome = $tusd->createUploadFromFile($filedropAccountId, $inputFileArray, $mockUpload);
         $this->assertFalse($outcome);
     }
 
+    public function testCreateUploadFromJSONWithSuccess()
+    {
 
+        $doi = "300001";
+        $filedropAccountId =1 ;
+        $datafeedPath = codecept_data_dir();
+        $tokenPath = codecept_data_dir();
+        $inputJSON = file_get_contents(codecept_data_dir()."tusd.info");
+        $tusd = new UploadFactory($doi,$datafeedPath,$tokenPath);
+        $mockUpload = $this->createMock(\common\models\Upload::class);
+
+        $mockUpload->expects($this->once())
+            ->method("save")
+            ->willReturn(true);
+
+        $outcome = $tusd->createUploadFromJSON($filedropAccountId, $inputJSON, $mockUpload);
+        $this->assertTrue($outcome);
+    }
+
+    public function testCreateUploadFromJSONWithMalformedJSON()
+    {
+
+        $doi = "300001";
+        $filedropAccountId =1 ;
+        $datafeedPath = codecept_data_dir();
+        $tokenPath = codecept_data_dir();
+        $inputJSON = "{foo:bar}";
+        $tusd = new UploadFactory($doi,$datafeedPath,$tokenPath);
+        $mockUpload = $this->createMock(\common\models\Upload::class);
+
+        $mockUpload->expects($this->never())
+            ->method("save")
+            ->willReturn(true);
+
+        $outcome = $tusd->createUploadFromJSON($filedropAccountId, $inputJSON, $mockUpload);
+        $this->assertFalse($outcome);
+    }
+
+    public function testCreateUploadFromJSONWithDOIMismatch()
+    {
+
+        $doi = "300001";
+        $filedropAccountId =1 ;
+        $datafeedPath = codecept_data_dir();
+        $tokenPath = codecept_data_dir();
+        $inputJSON = '{"MetaData": {"dataset": "300009"}}';
+        $tusd = new UploadFactory($doi,$datafeedPath,$tokenPath);
+        $mockUpload = $this->createMock(\common\models\Upload::class);
+
+        $mockUpload->expects($this->never())
+            ->method("save")
+            ->willReturn(true);
+
+        $outcome = $tusd->createUploadFromJSON($filedropAccountId, $inputJSON, $mockUpload);
+        $this->assertFalse($outcome);
+    }
+
+    public function testCreateUploadFromJSONWithSaveFailure()
+    {
+
+        $doi = "300001";
+        $filedropAccountId =1 ;
+        $datafeedPath = codecept_data_dir();
+        $tokenPath = codecept_data_dir();
+        $inputJSON = file_get_contents(codecept_data_dir()."tusd.info");
+        $tusd = new UploadFactory($doi,$datafeedPath,$tokenPath);
+        $mockUpload = $this->createMock(\common\models\Upload::class);
+
+        $mockUpload->expects($this->once())
+            ->method("save")
+            ->willReturn(false);
+
+        $outcome = $tusd->createUploadFromJSON($filedropAccountId, $inputJSON, $mockUpload);
+        $this->assertFalse($outcome);
+    }
 
 }

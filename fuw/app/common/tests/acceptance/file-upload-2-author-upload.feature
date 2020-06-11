@@ -1,4 +1,4 @@
-@author-fileupload
+@author-fileupload @tusd
 Feature:
  	As an author
  	I want to upload from my GigaDB profile page the files for my manuscript's dataset
