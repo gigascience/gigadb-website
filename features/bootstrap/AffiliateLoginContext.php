@@ -307,7 +307,12 @@ class AffiliateLoginContext implements Context
             if( $this->minkContext->getSession()->getPage()->findButton("Allow") ) {
                 $this->minkContext->pressButton("Allow");
             }
-
+        }
+        else if ($arg1 == "LinkedIn") {
+            $this->minkContext->getSession()->wait(15000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
+            if( $this->minkContext->getSession()->getPage()->findButton("Allow") ) {
+                $this->minkContext->pressButton("Allow");
+            }
         }
         else if ($arg1 == "Orcid") {
             $this->minkContext->getSession()->wait(15000, '(typeof jQuery != "undefined" && 0 === jQuery.active)');
