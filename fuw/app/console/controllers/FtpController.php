@@ -24,7 +24,7 @@ class FtpController extends Controller
 
 	/**
 	 * @var string $file_repo filedropbox repository for dataset files to be reviewed */
-	public $file_repo = "/home/downloader";
+	public $file_repo = "/var/repo";
 
 
 	/**
@@ -91,9 +91,14 @@ class FtpController extends Controller
 						$fileArray
 					);
 
-			$copied = copy($this->dataset_dir."/$file", $this->file_repo."/$doi/$file");
+			$copied = Yii::$app->fs->copy(
+				str_replace(Yii::$app->fs->path, "", $this->dataset_dir."/$file"), 
+				str_replace(Yii::$app->fs->path,"", $this->file_repo."/$doi/$file")
+			);
 
-			$deleted = $copied && unlink($this->dataset_dir."/$file");
+			$deleted = $copied && Yii::$app->fs->delete(
+				str_replace(Yii::$app->fs->path, "", $this->dataset_dir."/$file")
+			);
 
 			if( !$saved || !$copied || !$deleted) {
 				$this->stdout("Error while processing upload for: ".$this->dataset_dir."/$file".PHP_EOL, Console::FG_RED);
