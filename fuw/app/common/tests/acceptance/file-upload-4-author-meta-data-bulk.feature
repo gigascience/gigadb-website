@@ -15,7 +15,7 @@ Scenario: bulk upload form for all uploaded files
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
@@ -35,7 +35,7 @@ Scenario: Uploading CSV spreadsheet to update upload metadata
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
@@ -59,7 +59,7 @@ Scenario: Uploading CSV spreadsheet to update upload metadata and attributes
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
@@ -80,7 +80,7 @@ Scenario: Uploading CSV spreadsheet to update upload metadata, attributes and sa
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
@@ -102,7 +102,7 @@ Scenario: Spreadsheet with malformed attributes
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
@@ -125,7 +125,7 @@ Scenario: Spreadsheet with malformed attributes
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
@@ -144,7 +144,7 @@ Scenario: Unknown Data Type (all spreadsheet entries have error)
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
@@ -165,7 +165,7 @@ Scenario: Unknown Data Type (one spreadsheet entry in error)
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
@@ -191,7 +191,7 @@ Scenario: Unknown file format (one spreadsheet entry in error)
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
@@ -217,7 +217,7 @@ Scenario: Uploading TSV spreadsheet to update upload metadata and attributes
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
-	And I press "Upload Dataset Files"
+	And I press "Upload Files"
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
