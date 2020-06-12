@@ -48,3 +48,6 @@ proto/appconfig.ini
 # ignore Yii2 generated environments/ as conflict with Gigadb config build
 
 environments/*
+
+# directory created by tests in _output
+file_repo
