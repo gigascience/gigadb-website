@@ -1,11 +1,7 @@
 #!/bin/sh
 
-echo "Upload $TUS_ID ($TUS_SIZE bytes) finished"
+echo "Processing Upload $TUS_ID ($TUS_SIZE bytes)"
 json_data=$(cat /dev/stdin | jq .)
-# echo $json_data
-filename=$(echo $json_data | jq -r .MetaData.filename)
 datasetid=$(echo $json_data | jq -r .MetaData.dataset)
-echo "Moving the file /var/inbox/$TUS_ID.bin to /var/repo/$datasetid/$filename (and metadata file too)"
-mv "/var/inbox/$TUS_ID.bin" "/var/repo/$datasetid/$filename"
-mkdir -p "/var/repo/$datasetid/meta"
-mv "/var/inbox/$TUS_ID.info" "/var/repo/$datasetid/meta/$filename.info.json"
+
+cd /app && ./yii tusd/upload --doi $datasetid --jsonfile /var/inbox/$TUS_ID.info

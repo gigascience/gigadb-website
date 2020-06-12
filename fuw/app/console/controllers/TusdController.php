@@ -43,6 +43,13 @@ class TusdController extends Controller
 	* @var backend\models\FiledropAccount $dropboxAccount DropBox account for the upload */
 	private $dropboxAccount;
 
+	/**
+	 * @var string $file_inbox directory where Tusd save files */
+	public $file_inbox = "/var/inbox";
+	
+	/**
+	 * @var string $file_repo filedropbox repository for dataset files to be reviewed */
+	public $file_repo = "/var/repo";
 
 	/**
      * Command to create an Upload record from Tusd metadata json file
@@ -79,17 +86,47 @@ class TusdController extends Controller
 					$this->json
 				);
 
- 		if( $result ) {
+		$moved = $this->moveFiles();
+
+ 		if( $result && $moved ) {
 		 	return ExitCode::OK;
 		}
 		return ExitCode::CANTCREAT;
 
 	 }
 
+
+	/**
+	 * Move the file to the filedrop box directory
+	 *
+	 * @return bool
+	 */
+	public function moveFiles(): bool
+	{
+		$metadata = json_decode($this->json, true);
+		$copiedFile = Yii::$app->fs->copy(
+			str_replace(Yii::$app->fs->path, "",$this->file_inbox."/".$metadata["ID"].".bin"), 
+			str_replace(Yii::$app->fs->path,"",$this->file_repo."/".$this->doi."/".$metadata["MetaData"]["filename"])
+			);
+		$copiedMeta = Yii::$app->fs->copy(
+			str_replace(Yii::$app->fs->path, "",$this->file_inbox."/".$metadata["ID"].".info"), 
+			str_replace(Yii::$app->fs->path,"",$this->file_repo."/".$this->doi."/meta/".$metadata["MetaData"]["filename"].".info.json")
+			);
+		$deletedFile = $copiedFile && Yii::$app->fs->delete(
+			str_replace(Yii::$app->fs->path, "",$this->file_inbox."/".$metadata["ID"].".bin")
+		);
+		$deletedMeta = $copiedMeta && Yii::$app->fs->delete(
+			str_replace(Yii::$app->fs->path, "",$this->file_inbox."/".$metadata["ID"].".info")
+		);		
+
+		return $copiedFile && $copiedMeta && $deletedFile && $deletedMeta;
+	}
+
+
 	public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','doi', 'json','jsonfile', 'datafeed_path','token_path'];
+        return ['color', 'interactive', 'help','doi', 'json','jsonfile', 'datafeed_path','token_path','file_inbox', 'file_repo'];
     }
 
 }
