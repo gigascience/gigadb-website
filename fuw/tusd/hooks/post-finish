@@ -4,4 +4,4 @@ echo "Processing Upload $TUS_ID ($TUS_SIZE bytes)"
 json_data=$(cat /dev/stdin | jq .)
 datasetid=$(echo $json_data | jq -r .MetaData.dataset)
 
-cd /app && ./yii tusd/upload --doi $datasetid --jsonfile /var/inbox/$TUS_ID.info
+cd /app && ./yii tusd/process-upload --doi $datasetid --jsonfile /var/inbox/$TUS_ID.info

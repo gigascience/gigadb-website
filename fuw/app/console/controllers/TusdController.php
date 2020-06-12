@@ -54,13 +54,13 @@ class TusdController extends Controller
 	/**
      * Command to create an Upload record from Tusd metadata json file
      * Usage:
-     * "yii tusd/upload --doi <DOI associated to the file> --json <Tusd manifest JSON string>"
+     * "yii tusd/process-upload --doi <DOI associated to the file> --json <Tusd manifest JSON string>"
      * or:
-     * "yii tusd/upload --doi <DOI associated to the file> --jsonfile <Tusd manifest JSON file>"
+     * "yii tusd/process-upload --doi <DOI associated to the file> --jsonfile <Tusd manifest JSON file>"
      * @uses \common\models\Upload
      * @uses \common\models\FiledropAccount
     */
-	 public function actionUpload()
+	 public function actionProcessUpload()
 	 {
 	 	$this->stdout("actionUpload begins...\n", Console::BOLD);
 

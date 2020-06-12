@@ -46,7 +46,7 @@ public function _before(FunctionalTester $I)
 	        'status' => FiledropAccount::STATUS_ACTIVE,
 	    ]);
 
-    	$outcome = Yii::$app->createControllerByID('tusd')->run('upload',[
+    	$outcome = Yii::$app->createControllerByID('tusd')->run('process-upload',[
     		"doi" => $doi, 
     		"json" => $tusdFileManifest,
     		"datafeed_path" => "/app/console/tests/_data",
@@ -83,7 +83,7 @@ public function _before(FunctionalTester $I)
 	        'status' => FiledropAccount::STATUS_ACTIVE,
 	    ]);
 
-    	$outcome = Yii::$app->createControllerByID('tusd')->run('upload',[
+    	$outcome = Yii::$app->createControllerByID('tusd')->run('process-upload',[
     		"doi" => $doi, 
     		"jsonfile" => codecept_data_dir()."tusd.info",
     		"datafeed_path" => "/app/console/tests/_data",
