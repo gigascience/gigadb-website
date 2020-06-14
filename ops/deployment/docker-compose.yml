@@ -98,6 +98,8 @@ services:
         mode: host
     volumes:
       - ${DATA_SAVE_PATH}/postgres/${POSTGRES_VERSION}/data:/var/lib/postgresql/data
+      - ${APPLICATION}/ops/configuration/postgresql-conf/bootstrap.sql:/docker-entrypoint-initdb.d/1-gigadb_schema.sql
+      - ${APPLICATION}/ops/configuration/postgresql-conf/test_bootstrap.sql:/docker-entrypoint-initdb.d/2-gigadb_test_schema.sql
       - ${APPLICATION}/fuw/app/common/config/bootstrap.sql:/docker-entrypoint-initdb.d/3-fuw.sql
       - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf'
@@ -243,14 +245,6 @@ services:
       - "gigadb.test:172.16.238.10"
       - "fuw-admin-api:172.16.238.10"
     command: bash -c "./tests/all_and_coverage"
-
-  csv-to-migrations:
-    image: node:14.9.0-buster
-    working_dir: /var/www/ops/scripts
-    volumes:
-      - ${APPLICATION}/:/var/www
-    shm_size: '1gb' # to avoid a known issue
-    command: bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR"
 
   js:
     build:
@@ -405,8 +399,8 @@ services:
     environment:
       YII_ENV_DEV: ${YII_ENV_DEV}
     build:
-      context: ../../fuw/app
-      dockerfile: backend/Worker-Dockerfile
+      context: ../../fuw/app/console
+      dockerfile: Worker-Dockerfile
       args:
         - PHP_BASE_IMAGE_VERSION=7.2-cli
         - INSTALL_OPCACHE=true
@@ -446,6 +440,53 @@ services:
     stop_signal: SIGRTMIN+3
     tmpfs: /run
     command: "/lib/systemd/systemd"
+
+  gigadb-worker:
+    environment:
+      YII_ENV_DEV: ${YII_ENV_DEV}
+    build:
+      context: ..
+      dockerfile: packaging/Worker-Dockerfile
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2-cli
+        - INSTALL_OPCACHE=true
+        - INSTALL_INTL=true
+        - INSTALL_COMPOSER=true
+        - INSTALL_TIDEWAYS_XHPROF=false
+        - INSTALL_LIBSODIUM=false
+        - INSTALL_APCU=true
+        - INSTALL_DOCKER_API_ACCESS=true
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ../../fuw/app:/app
+      - ../../gigadb/app:/gigadb-apps        
+      # php config
+      - ../../fuw/app/php-conf/fuw.ini:/usr/local/etc/php/conf.d/fuw.ini
+      - ../../fuw/app/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ../../fuw/app/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # to support systemd running in a container
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      # volume mount the location of public ftp directory
+      - /tmp:/var/ftp/public
+      # access to files and reference data
+      - ../../files:/var/www/files      
+    depends_on:
+      - database
+      - beanstalkd
+    networks:
+      - web-tier
+      - db-tier
+    stop_signal: SIGRTMIN+3
+    tmpfs: /run
+    command: "/lib/systemd/systemd"
+
 
   console:
     build:
