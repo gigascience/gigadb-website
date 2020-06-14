@@ -108,6 +108,7 @@ build_webapp:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-worker:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest || true
@@ -118,6 +119,7 @@ build_webapp:
     - docker-compose build test
     - docker-compose build fuw-admin
     - docker-compose build fuw-worker
+    - docker-compose build gigadb-worker
     - docker-compose build fuw-public
     - docker-compose build console
     - docker-compose build ftpd
@@ -128,6 +130,7 @@ build_webapp:
     - docker tag ${CI_PROJECT_NAME}_test:latest registry.gitlab.com/$CI_PROJECT_PATH/test:latest
     - docker tag ${CI_PROJECT_NAME}_fuw-admin:latest registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest
     - docker tag ${CI_PROJECT_NAME}_fuw-worker:latest registry.gitlab.com/$CI_PROJECT_PATH/fuw-worker:latest
+    - docker tag ${CI_PROJECT_NAME}_gigadb-worker:latest registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest
     - docker tag ${CI_PROJECT_NAME}_fuw-public:latest registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest
     - docker tag ${CI_PROJECT_NAME}_console:latest registry.gitlab.com/$CI_PROJECT_PATH/console:latest
     - docker tag ${CI_PROJECT_NAME}_ftpd:latest registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest
@@ -138,6 +141,7 @@ build_webapp:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/test:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/fuw-worker:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/console:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest
@@ -187,6 +191,7 @@ run_all_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-worker:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest || true
     # - env
     # generate config and css for gigadb webapp
@@ -207,7 +212,7 @@ run_all_tests:
     - docker-compose run --rm js
     # starting the Yii2 workers service and its dependent beanstalkd service after running required migrations
     - docker-compose exec -T console /app/yii migrate --interactive=0
-    - docker-compose up -d fuw-worker
+    - docker-compose up -d fuw-worker gigadb-worker
     # starting the headless browser for acceptance testing
     - docker-compose up -d chrome
     # - docker-compose top
