@@ -25,6 +25,12 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest"
 
+
+  gigadb-worker:
+    build:
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest"
+
   fuw-worker:
     build:
       cache_from:
