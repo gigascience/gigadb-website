@@ -81,7 +81,7 @@
     body:
       value: "{{ ca_pem['content'] | b64decode }}"
     status_code: 200
-    register: ca_put_outcome
+  register: ca_put_outcome
   when: ca_post_outcome.status == 400
 
 - name: Copy the cert pem to GITLAB CI environment variable
@@ -110,7 +110,7 @@
     body:
       value: "{{ cert_pem['content'] | b64decode }}"
     status_code: 200
-    register: cert_put_outcome
+  register: cert_put_outcome
   when: cert_post_outcome.status == 400
 
 - name: Copy the key pem to GITLAB CI environment variable
@@ -139,7 +139,7 @@
     body:
       value: "{{ key_pem['content'] | b64decode }}"
     status_code: 200
-    register: key_put_outcome
+  register: key_put_outcome
   when: key_post_outcome.status == 400
 
 - name: copy the private ip address to GITLAB CI environment variable (first time)
@@ -168,7 +168,7 @@
     body:
       value: "{{ ansible_eth0.ipv4.address }}"
     status_code: 200
-    register: private_ip_put_outcome
+  register: private_ip_put_outcome
   when: private_ip_post_outcome.status == 400
 
 - name: copy the public ip address to GITLAB CI environment variable (first time)
@@ -197,5 +197,5 @@
     body:
       value: "{{ inventory_hostname }}"
     status_code: 200
-    register: public_ip_put_outcome
+  register: public_ip_put_outcome
   when: public_ip_post_outcome.status == 400

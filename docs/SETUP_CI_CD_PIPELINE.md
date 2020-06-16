@@ -169,6 +169,7 @@ $ export TF_VAR_deployment_target=staging
 $ export TF_VAR_aws_vpc_id=<AWS VPC id>
 $ export TF_VAR_aws_access_key=<AWS Access key>
 $ export TF_VAR_aws_secret_key=<AWS Secret key>
+$ export TF_STATE=.
 ```
 
 >You could also add the above lines into your `~/.bash_profile` file to save 
@@ -306,6 +307,13 @@ Our `hosts` file does not list any machines. Instead, a tool called
 [`terraform-inventory`](https://github.com/adammck/terraform-inventory)  
 generates a dynamic Ansible inventory from a Terraform state file. Nonetheless, 
 the `hosts` file is still used to reference variables for hosts.
+
+The terraform-inventory binary must be present on your dev machine. On mac, you can use Homebrew to install it
+
+```
+$ brew install terraform-inventory
+```
+Also the terraform environment variable TF_STATE needs to be set as a relative path to the .tfstate file for terraform-inventory to function without error.
 
 * One particular variable to note is `gitlab_private_token`. The value of `gitlab_private_token`
 is the contents of a file located at `~/.gitlab_private_token`.  Create this 
