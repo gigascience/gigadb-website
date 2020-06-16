@@ -1,6 +1,7 @@
 - name: install PostgreSQL 9.6 repository
   yum:
-    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-6-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    
     state: present
 
 - name: install system packages

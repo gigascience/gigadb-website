@@ -1,7 +1,7 @@
 resource "aws_security_group" "docker_host_sg" {
   name        = "docker_host_sg"
   description = "Allow connection to docker host for ${var.deployment_target}"
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 80
@@ -65,7 +65,7 @@ resource "aws_instance" "docker_host" {
     Hosting = "ec2-as1-t2m-centos"
   }
 
-  root_block_device = {
+  root_block_device {
     delete_on_termination = "true"
   }
 }
@@ -78,6 +78,6 @@ data "aws_eip" "docker_host_eip" {
 }
 
 resource "aws_eip_association" "docker_host_eip_assoc" {
-  instance_id   = "${aws_instance.docker_host.id}"
-  allocation_id = "${data.aws_eip.docker_host_eip.id}"
+  instance_id   = aws_instance.docker_host.id
+  allocation_id = data.aws_eip.docker_host_eip.id
 }
