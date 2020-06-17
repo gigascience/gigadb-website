@@ -13,7 +13,7 @@ services:
       - le_webrootpath:/var/www/.le
 #      - tempcaptcha:/var/www/images/tempcaptcha
       - type: bind
-        source: /tmp/tempcaptcha
+        source: /tmp
         target: /var/www/images/tempcaptcha
     ports:
       - "${STAGING_PUBLIC_HTTP_PORT}:80"
