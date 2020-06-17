@@ -1,5 +1,5 @@
 <?php
-$this->pageTitle = 'GigaDB - Genomic Dataset checklists';
+$this->pageTitle = 'GigaDB - Imaging Dataset checklists';
 
 //echo $this->renderInternal('Yii::app()->basePath'.'/../files/html/about.html');
 ?>
