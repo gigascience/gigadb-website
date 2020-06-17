@@ -29,7 +29,7 @@ class SiteController extends Controller {
 	public function accessRules() {
         return array(
             array('allow',  // allow all users
-                // 'actions'=>array('index','error','contact','mapbrowse','team','about','advisory','faq','term','help','privacy', 'login', 'loginAffiliate', 'logout', 'revoke', 'feed' ),
+                'actions'=>array('index','error','contact','mapbrowse','team','about','advisory','faq','term','help','privacy', 'login', 'loginAffiliate', 'logout', 'revoke', 'feed', 'Guide', 'Guidegenomic', 'Guideimaging', 'Guidemetabolomic', 'Guideepigenomic', 'Guidemetagenomic'),
                 'users'=>array('*'),
             ),
             array('allow', # admins
