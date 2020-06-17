@@ -14,7 +14,7 @@ services:
         - GIGADB_ENV=${GIGADB_ENV}
     volumes:
       - ../../assets:/var/www/assets
-      - ../../images:/var/www/images
+#      - ../../images:/var/www/images
 
   production_app:
     build:
