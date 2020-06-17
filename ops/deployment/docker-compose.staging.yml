@@ -11,10 +11,10 @@ services:
       - assets:/var/www/assets
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le
-      - tempcaptcha:/var/www/images/tempcaptcha
-#      - type: bind
-#        source: /tmp/tempcaptcha
-#        target: /var/www/images/tempcaptcha
+#      - tempcaptcha:/var/www/images/tempcaptcha
+      - type: bind
+        source: /tmp/tempcaptcha
+        target: /var/www/images/tempcaptcha
     ports:
       - "${STAGING_PUBLIC_HTTP_PORT}:80"
       - "${STAGING_PUBLIC_HTTPS_PORT}:443"
