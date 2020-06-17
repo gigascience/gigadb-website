@@ -10,7 +10,6 @@ COPY css /var/www/css
 COPY docs /var/www/docs
 COPY favicon.ico /var/www/favicon.ico
 COPY fonts /var/www/fonts
-COPY images /var/www/images
 COPY index.php /var/www/index.php
 COPY js /var/www/js
 COPY less /var/www/less
