@@ -8,7 +8,7 @@ services:
       YII2_PATH: ${YII2_PATH}
     build:
       context: ../..
-      dockerfile: ops/packaging/Web-Dockerfile
+      dockerfile: ops/packaging/Production-Web-Dockerfile
       args:
         - NGINX_VERSION=${NGINX_VERSION}
         - GIGADB_ENV=${GIGADB_ENV}
