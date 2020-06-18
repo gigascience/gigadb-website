@@ -34,6 +34,17 @@ services:
         - INSTALL_LIBSODIUM=true
         - INSTALL_APCU=true
 
+  production_gigadb-worker:
+    build:
+      context: ../..
+      dockerfile: ops/packaging/Production-Worker-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:latest"
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_IPROUTE2=true
+
   production_fuw-console:
     build:
       context: ../../fuw/app
@@ -60,17 +71,39 @@ services:
     expose:
       - "9002"
 
-  production_fuw-proto:
+  production_fuw-worker:
+    build:
+      context: ../../fuw/app
+      dockerfile: console/Production-Worker-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:latest"
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_IPROUTE2=true
+
+  production_fuw-public:
     build:
       context: ../../fuw/app
       dockerfile: common/Production-Dockerfile
       cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest"
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:latest"
       args:
         - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
-        - APP_PORT=9003
+        - APP_PORT=9001
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_IPROUTE2=true
     expose:
-      - "9003"
+      - "9001"
+
+  production_beanstalkd:
+    build:
+      context: .
+      dockerfile: ../packaging/Beanstalkd-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:latest"      
+    expose:
+      - "11300"
 
   production_ftpd:
     build:

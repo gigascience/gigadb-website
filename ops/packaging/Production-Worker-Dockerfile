@@ -1,5 +1,5 @@
-ARG PHP_VERSION=7.1
-FROM php:${PHP_VERSION}-fpm-stretch
+ARG PHP_BASE_IMAGE_VERSION=7.1-fpm-stretch
+FROM php:${PHP_BASE_IMAGE_VERSION}
 
 
 # basic dependencies
@@ -14,17 +14,29 @@ RUN apt-get update -yq && \
         libpng-dev \
         libfreetype6-dev \
         libssl-dev \
-        libmcrypt-dev \
         bc \
+        # and systemd dependencies
+        procps \
+        initscripts \
+        libsystemd0 \
+        libudev1 \
+        systemd \
+        sysvinit-utils \
+        udev util-linux \
         --no-install-recommends && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# install mcrypt to work with PHP 7.2 (first version that lacks mcrypt source)
+RUN apt-get update && apt-get install -y libmcrypt-dev && \
+    pecl install mcrypt-1.0.2 && \
+    docker-php-ext-enable mcrypt && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN docker-php-ext-install mcrypt
-
-# Install the PHP pdo_pgsql extention
+# Install extensions for the postgresql and PHP integration
 RUN docker-php-ext-install pdo_pgsql
+RUN docker-php-ext-install pgsql
 
 # Install the PHP bcmath extention
 RUN docker-php-ext-install bcmath
@@ -32,10 +44,12 @@ RUN docker-php-ext-install bcmath
 # Install the PHP gd library
 RUN docker-php-ext-install gd && \
     docker-php-ext-configure gd \
-        --enable-gd-native-ttf \
         --with-jpeg-dir=/usr/lib \
         --with-freetype-dir && \
     docker-php-ext-install gd
+
+# set random root password
+RUN P="$(dd if=/dev/random bs=1 count=8 2>/dev/null | base64)" ; echo $P && echo "root:$P" | chpasswd
 
 # Set Environment Variables
 ENV DEBIAN_FRONTEND noninteractive
@@ -43,7 +57,9 @@ ENV DEBIAN_FRONTEND noninteractive
 # always run apt update when start and after add new source list, then clean up at end.
 RUN apt-get update -yqq && \
     apt-get install -y apt-utils && \
-    pecl channel-update pecl.php.net
+    pecl channel-update pecl.php.net && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
 ARG INSTALL_OPCACHE=false
@@ -63,7 +79,9 @@ RUN if [ ${INSTALL_INTL} = true ]; then \
     apt-get update -yq && \
     apt-get install -y zlib1g-dev libicu-dev g++ && \
     docker-php-ext-configure intl && \
-    docker-php-ext-install intl \
+    docker-php-ext-install intl && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 ;fi
 
 
@@ -83,7 +101,9 @@ RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
     mkdir -p /usr/share/man/man7 && \
     # Install the pgsql client
     apt-get update -yq && \
-    apt-get install -y postgresql-client-${PG_CLIENT_VERSION} \
+    apt-get install -y postgresql-client-${PG_CLIENT_VERSION} && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 ;fi
 
 
@@ -108,14 +128,18 @@ RUN if [ ${INSTALL_NETCAT_JQ} = true ]; then \
     mkdir -p /usr/share/man/man7 && \
     # Install netcat-openbsd and jq
     apt-get update -yq && \
-    apt-get install -y netcat-openbsd inetutils-ping jq \
+    apt-get install -y netcat-openbsd jq && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 ;fi
 
 ARG INSTALL_GRAPHVIZ=false
 
 RUN if [ ${INSTALL_GRAPHVIZ} = true ]; then \
     apt-get update -yq && \
-    apt-get install -y graphviz \
+    apt-get install -y graphviz && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 ;fi
 
 ARG INSTALL_COMPOSER=false
@@ -131,7 +155,9 @@ RUN if [ ${INSTALL_COMPOSER} = true ]; then \
     && test $EXPECTED_SIGNATURE = $ACTUAL_SIGNATURE  \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer --quiet \
     && rm composer-setup.php \
-    && composer config --global repo.packagist composer https://packagist.org \
+    && composer config --global repo.packagist composer https://packagist.org && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 ;fi
 
 ARG INSTALL_TIDEWAYS_XHPROF=false
@@ -160,13 +186,17 @@ RUN if [ ${INSTALL_LIBSODIUM} = true ]; then \
     apt-get update -yq && \
     apt-get install -y libsodium-dev && \
     pecl install libsodium && \
-    echo "extension=sodium.so" >  /usr/local/etc/php/conf.d/libsodium.ini \
+    echo "extension=sodium.so" >  /usr/local/etc/php/conf.d/libsodium.ini && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 ;fi
 
 ARG INSTALL_GIT=false
 RUN if [ ${INSTALL_GIT} = true ]; then \
     apt-get update -yq && \
-    apt-get install -y git \
+    apt-get install -y git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 ;fi
 
 ARG INSTALL_APCU=false
@@ -180,27 +210,63 @@ RUN if [ ${INSTALL_APCU} = true ]; then \
 
 RUN usermod -u 1000 www-data
 
-COPY ./protected /var/www/protected/
-COPY ./vendor /var/www/vendor/
-COPY ./images /var/www/images/
-COPY ./files /var/www/files/
-COPY ./fonts /var/www/fonts/
-COPY ./js /var/www/js/
-COPY ./less /var/www/less/
-COPY ./css /var/www/css/
-COPY ./sql /var/www/sql/
-COPY ./index.php /var/www/index.php
+ARG INSTALL_DOCKER_API_ACCESS=false
+
+RUN if [ ${INSTALL_DOCKER_API_ACCESS} = true ]; then \
+    apt-get update -yq && \
+    apt-get install -y sudo && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    echo 'www-data ALL=(ALL) NOPASSWD: /usr/bin/curl -s --unix-socket /var/run/docker.sock *' >> /etc/sudoers \
+;fi
+
+ARG INSTALL_IPROUTE2=false
+
+RUN if [ ${INSTALL_IPROUTE2} = true ]; then \
+    apt-get update -yq && \
+    apt-get install -y iproute2 && \
+    apt-get clean \
+;fi
+
+WORKDIR /app
+RUN cd /lib/systemd/system/sysinit.target.wants/ && \
+        ls | grep -v systemd-tmpfiles-setup.service | xargs rm -f && \
+        rm -f /lib/systemd/system/sockets.target.wants/*udev* && \
+        systemctl mask -- \
+            tmp.mount \
+            etc-hostname.mount \
+            etc-hosts.mount \
+            etc-resolv.conf.mount \
+            -.mount \
+            swap.target \
+            getty.target \
+            getty-static.service \
+            dev-mqueue.mount \
+            cgproxy.service \
+            systemd-tmpfiles-setup-dev.service \
+            systemd-remount-fs.service \
+            systemd-ask-password-wall.path \
+            systemd-logind.service && \
+        systemctl set-default multi-user.target || true
+
+RUN sed -ri /etc/systemd/journald.conf \
+            -e 's!^#?Storage=.*!Storage=volatile!'
+ADD configuration/systemd-conf/container-boot.service /etc/systemd/system/container-boot.service
+RUN mkdir -p /etc/container-boot.d && \
+        systemctl enable container-boot.service
+
+# Add application code
+
 COPY fuw/app/common/models/Upload.php /app/common/models/
-COPY fuw/app/backend/models/FiledropAccount.php /app/backend/models/
+COPY gigadb/app/worker/file-worker /gigadb-apps/worker/
+COPY files/data/fileformats.json files/data/filetypes.json /var/www/files/
 
-ARG TARGET_PHP_VERSION=7.0
-COPY ops/configuration/php-conf/php-${TARGET_PHP_VERSION}-production.ini /usr/local/etc/php/php.ini
-COPY ops/configuration/php-conf/gigadb.pool.conf /usr/local/etc/php-fpm.d/gigadb.pool.conf
-COPY ops/configuration/php-conf/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
-COPY ops/configuration/php-conf/gigadb.ini /usr/local/etc/php/conf.d/gigadb.ini
 
-WORKDIR /var/www
+# run stuff
+ADD configuration/systemd-conf/configurator.sh configuration/systemd-conf/configurator_dumpenv.sh /root/
+ADD configuration/systemd-conf/configurator.service configuration/systemd-conf/configurator_dumpenv.service configuration/systemd-conf/yii-queue@.service /etc/systemd/system/
+RUN chmod 700 /root/configurator.sh /root/configurator_dumpenv.sh && \
+        systemctl enable configurator.service configurator_dumpenv.service yii-queue@1 yii-queue@2
 
-CMD ["php-fpm"]
-
-EXPOSE 9000
+VOLUME [ "/sys/fs/cgroup", "/run", "/run/lock", "/tmp" ]
+CMD ["/lib/systemd/systemd"]

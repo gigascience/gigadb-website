@@ -82,6 +82,75 @@ services:
       - SYS_ADMIN
     restart: unless-stopped
 
+  fuw-public:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:latest
+    expose:
+      - "9001"
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # mount client certificates for connecting to docker daemon
+      - /home/centos/.docker:/etc/certs:ro
+    depends_on:
+      - console
+      - ftpd
+      - tusd
+      - watcher
+    networks:
+      - web-tier
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped    
+
+
+fuw-worker:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:latest
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # to support systemd running in a container
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      # volume mount the location of public ftp directory
+      - /tmp:/var/ftp/public   
+    depends_on:
+      - database
+      - beanstalkd
+    networks:
+      - db-tier
+    stop_signal: SIGRTMIN+3
+    tmpfs: /run
+    command: "/lib/systemd/systemd"
+
+  gigadb-worker:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:latest
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # to support systemd running in a container
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      # volume mount the location of public ftp directory
+      - /tmp:/var/ftp/public    
+    depends_on:
+      - database
+      - beanstalkd
+    networks:
+      - db-tier
+    stop_signal: SIGRTMIN+3
+    tmpfs: /run
+    command: "/lib/systemd/systemd"
+
   console:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
     expose:
@@ -102,30 +171,6 @@ services:
       - NET_ADMIN
       - SYS_ADMIN
     restart: unless-stopped
-
-  fuw-proto:
-    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-proto:latest
-    expose:
-      - "9003"
-    volumes:
-      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
-      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
-      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
-      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
-    depends_on:
-      - console
-      - ftpd
-      - tusd
-      - watcher
-    networks:
-      - web-tier
-    extra_hosts:
-      - "dockerhost:${staging_private_ip}"
-      - "fuw-admin-api:172.16.238.10"
-    cap_drop:
-      - NET_ADMIN
-      - SYS_ADMIN
-
 
   ftpd:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
@@ -174,6 +219,17 @@ services:
       - "1080"
     networks:
       - web-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  beanstalkd:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:latest
+    expose:
+      - "11300"
+    networks:
+      - db-tier
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
