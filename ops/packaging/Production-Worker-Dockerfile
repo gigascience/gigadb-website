@@ -251,7 +251,7 @@ RUN cd /lib/systemd/system/sysinit.target.wants/ && \
 
 RUN sed -ri /etc/systemd/journald.conf \
             -e 's!^#?Storage=.*!Storage=volatile!'
-ADD configuration/systemd-conf/container-boot.service /etc/systemd/system/container-boot.service
+ADD ops/configuration/systemd-conf/container-boot.service /etc/systemd/system/container-boot.service
 RUN mkdir -p /etc/container-boot.d && \
         systemctl enable container-boot.service
 
@@ -263,8 +263,8 @@ COPY files/data/fileformats.json files/data/filetypes.json /var/www/files/
 
 
 # run stuff
-ADD configuration/systemd-conf/configurator.sh configuration/systemd-conf/configurator_dumpenv.sh /root/
-ADD configuration/systemd-conf/configurator.service configuration/systemd-conf/configurator_dumpenv.service configuration/systemd-conf/yii-queue@.service /etc/systemd/system/
+ADD ops/configuration/systemd-conf/configurator.sh ops/configuration/systemd-conf/configurator_dumpenv.sh /root/
+ADD ops/configuration/systemd-conf/configurator.service ops/configuration/systemd-conf/configurator_dumpenv.service ops/configuration/systemd-conf/yii-queue@.service /etc/systemd/system/
 RUN chmod 700 /root/configurator.sh /root/configurator_dumpenv.sh && \
         systemctl enable configurator.service configurator_dumpenv.service yii-queue@1 yii-queue@2
 
