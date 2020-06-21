@@ -33,9 +33,7 @@ class CaptchaImageTest extends FunctionalTesting
         // Get size info for captcha image
         $img_url = 'http://gigadb.dev'.$img_path;
         $img_size = getimagesize($img_url);
-        $img_mime = strtolower(substr($img_size['mime'], 0, 5));
-
-        $this->assertEquals("image", $img_mime, $img_url." is not an image");
+        $this->assertEquals("image/png", $img_size['mime'], $img_url." is not a PNG image");
         $this->assertEquals("600", $img_size[0], "Captcha image has wrong width");
         $this->assertEquals("100", $img_size[1], "Captcha image has wrong height");
     }
