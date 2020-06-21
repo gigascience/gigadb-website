@@ -91,11 +91,11 @@ after_script:
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-enabled
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-available
   # - docker-compose logs fuw-admin
-  - docker-compose top
+  # - docker-compose top
   # - docker-compose logs application
-  - docker-compose run --rm test  bash -c "pg_dump -h database -U gigadb -d gigadb > /var/www/tmp/gigadb_snapshot.sql"
-  - docker-compose run --rm test  bash -c "pg_dump -h database -U fuwdb -d fuwdb > /var/www/tmp/fuwdb_snapshot.sql"
-  - docker-compose run --rm test  bash -c "pg_dump -h database -U fuwdb -d fuwdb_test > /var/www/tmp/fuwdb_test_snapshot.sql"
+  # - docker-compose run --rm test  bash -c "pg_dump -h database -U gigadb -d gigadb > /var/www/tmp/gigadb_snapshot.sql"
+  # - docker-compose run --rm test  bash -c "pg_dump -h database -U fuwdb -d fuwdb > /var/www/tmp/fuwdb_snapshot.sql"
+  # - docker-compose run --rm test  bash -c "pg_dump -h database -U fuwdb -d fuwdb_test > /var/www/tmp/fuwdb_test_snapshot.sql"
   # - cat $APPLICATION/.env
   # - cat $APPLICATION/.secrets
   # - echo $DOCKER_HOST
@@ -523,7 +523,7 @@ deploy_apps:
     when: on_failure
     expire_in: 1 week
 
-deploy_fuw:
+build_fuw:
   variables:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -606,6 +606,29 @@ deploy_fuw:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:latest
+   
+  environment:
+    name: staging
+    url: $STAGING_HOME_URL
+  when: manual
+  # only:
+  #   - develop
+  artifacts:
+    untracked: true
+    when: always
+    expire_in: 1 week
+
+deploy_fuw:
+  variables:
+    GIGADB_ENV: staging
+    COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
+    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
+    DATA_SAVE_PATH: "/home/centos/app_data"
+  stage: staging
+  script:
+    # appending staging variables at the end of the .env and .secrets
+    - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
+    - env | grep -iE "^staging_" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
@@ -613,6 +636,7 @@ deploy_fuw:
     - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
     - echo "$staging_tlsauth_key" > ~/.docker/key.pem
     # Pull production container from our private registry
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST info
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest

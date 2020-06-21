@@ -29,7 +29,7 @@ services:
     volumes:
       - le_config:/etc/letsencrypt
       - assets:/var/www/assets
-    command: bash -c "cp /le.staging.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets"
+    command: cp /le.staging.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets
 
   certbot:
     image: certbot/certbot
@@ -106,10 +106,10 @@ services:
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
-    restart: unless-stopped    
+    restart: unless-stopped
 
 
-fuw-worker:
+  fuw-worker:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:latest
     volumes:
       # directories used for filedrop files
@@ -120,9 +120,8 @@ fuw-worker:
       # to support systemd running in a container
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
       # volume mount the location of public ftp directory
-      - /tmp:/var/ftp/public   
+      - /tmp:/var/ftp/public
     depends_on:
-      - database
       - beanstalkd
     networks:
       - db-tier
@@ -141,9 +140,8 @@ fuw-worker:
       # to support systemd running in a container
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
       # volume mount the location of public ftp directory
-      - /tmp:/var/ftp/public    
+      - /tmp:/var/ftp/public
     depends_on:
-      - database
       - beanstalkd
     networks:
       - db-tier
@@ -241,11 +239,10 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.16.238.0/24
+        - subnet: 172.16.238.0/24
 
 volumes:
   assets:
   le_config:
   le_webrootpath:
   tempcaptcha:
-
