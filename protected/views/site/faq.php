@@ -734,7 +734,7 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                                 </div>
                                 <div id="panel47" class="panel-collapse collapse" role="tabpanel">
                                     <div class="panel-body">
-                                        <p>The submission of data to GigaDB is integrated with the submission of a manuscript to journals GigaScience, the general workflow followed is outlined <a href="/site/guide" target="_blank">here</a>. During the process you may track the progress in "<a href="/site/login#submitted" target="_blank">your datasets</a>" on your personal profile page in GigaDB. Each of your datasets will have one of the statuses listed below.
+                                        <p>The submission of data to GigaDB is integrated with the submission of a manuscript to GigaScience, the general workflow followed is outlined <a href="/site/guide" target="_blank">here</a>. During the process you may track the progress in "<a href="/site/login#submitted" target="_blank">your datasets</a>" on your personal profile page in GigaDB. Each of your datasets will have one of the statuses listed below.
                                         </p>
                                         <img src="../images//status_flow.png">
                                         <p>Green steps are those carried out by Giga-staff, yellow are performed by Authors, Red indicates the end of the line for that dataset.
