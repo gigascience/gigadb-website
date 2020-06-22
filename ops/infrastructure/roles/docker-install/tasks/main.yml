@@ -13,6 +13,11 @@
 - name: enable Docker-CE edge repo
   shell: yum-config-manager --enable docker-ce-edge
 
+- name: Disable Centos firewall for now (still have AWS SG safety net)
+  systemd:
+    name: firewalld
+    enabled: no
+
 - name: Install Docker-CE package
   yum:
     name: docker-ce
