@@ -124,7 +124,7 @@ services:
     depends_on:
       - beanstalkd
     networks:
-      - db-tier
+      - back-office
     stop_signal: SIGRTMIN+3
     tmpfs: /run
     command: "/lib/systemd/systemd"
@@ -144,7 +144,7 @@ services:
     depends_on:
       - beanstalkd
     networks:
-      - db-tier
+      - back-office
     stop_signal: SIGRTMIN+3
     tmpfs: /run
     command: "/lib/systemd/systemd"
@@ -227,7 +227,7 @@ services:
     expose:
       - "11300"
     networks:
-      - db-tier
+      - back-office
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
@@ -240,6 +240,7 @@ networks:
       driver: default
       config:
         - subnet: 172.16.238.0/24
+  back-office:
 
 volumes:
   assets:
