@@ -616,7 +616,7 @@ build_fuw:
   artifacts:
     untracked: true
     paths:
-      - config/
+      - fuw/app/console/config/
     when: always
     expire_in: 1 week
 
