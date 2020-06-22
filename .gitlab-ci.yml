@@ -615,8 +615,6 @@ build_fuw:
   #   - develop
   artifacts:
     untracked: true
-    paths:
-      - fuw/app/console/config/
     when: always
     expire_in: 1 week
 
@@ -688,6 +686,8 @@ deploy_fuw:
   #   - develop
   artifacts:
     untracked: true
+    paths:
+      - fuw/app/console/config/    
     when: always
     expire_in: 1 week
 
