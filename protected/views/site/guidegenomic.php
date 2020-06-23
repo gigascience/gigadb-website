@@ -143,7 +143,7 @@ th, td {
                                 </tr>
                                 <tr>
                                     <td>
-                                     BUSCO output file(s) (text)
+                                     Full (not summary) BUSCO results output files (text)
                                     </td>
                                     <td>
                                      text  
