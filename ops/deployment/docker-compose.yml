@@ -17,6 +17,7 @@ services:
       - "${PUBLIC_HTTPS_PORT}:443"
     volumes:
       - ${APPLICATION}/assets:/var/www/assets
+      - ${APPLICATION}/images:/var/www/images
       - ${APPLICATION}/css:/var/www/css
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le

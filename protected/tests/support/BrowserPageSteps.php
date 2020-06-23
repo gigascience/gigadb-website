@@ -48,6 +48,22 @@ trait BrowserPageSteps
         return $feed;
 	}
 
+    /**
+     * Visit a page at $url, fetch content and return metadata for a given $tag
+     *
+     * @param string $url
+     * @return string[][]
+     */
+    public function getTagsWithSessionAndUrl($url, $tag)
+    {
+        $this->session->visit($url);
+        $html = $this->session->getPage()->getContent();
+        // Match text in $html with regexp and output results to array. Matches
+        // are case insensitive with "i" option
+        preg_match_all('/<'.$tag.'[^>]+>/i', $html, $matching_tags);
+        return $matching_tags;
+    }
+
 	/**
 	 * Assert for presence of $content in the current page
 	 *
