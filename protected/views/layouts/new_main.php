@@ -134,6 +134,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="/site/help">Help</a></li>
                                 <li><a href="/site/faq">FAQ</a></li>
+                                <li><a href="/site/guide">Guidelines</a></li>
                             </ul>
                         </li>
                         <li><a href="/site/term">Terms of use</a></li>

@@ -29,7 +29,7 @@ class SiteController extends Controller {
 	public function accessRules() {
         return array(
             array('allow',  // allow all users
-                'actions'=>array('index','error','contact','mapbrowse','team','about','advisory','faq','term','help','privacy', 'login', 'loginAffiliate', 'logout', 'revoke', 'feed' ),
+                'actions'=>array('index','error','contact','mapbrowse','team','about','advisory','faq','term','help','privacy', 'login', 'loginAffiliate', 'logout', 'revoke', 'feed', 'Guide', 'Guidegenomic', 'Guideimaging', 'Guidemetabolomic', 'Guideepigenomic', 'Guidemetagenomic'),
                 'users'=>array('*'),
             ),
             array('allow', # admins
@@ -234,6 +234,38 @@ class SiteController extends Controller {
             }
 	    }
 	}
+    /**
+     * These are the actions to handle Guideline page
+     */
+
+    public function actionGuide() {
+        $this->layout='new_main';
+        $this->render('guide');
+    }
+    public function actionGuidegenomic() {
+        $this->layout='new_main';
+        $this->render('guidegenomic');
+    }
+
+    public function actionGuideimaging() {
+        $this->layout='new_main';
+        $this->render('guideimaging');
+    }
+
+    public function actionGuidemetabolomic() {
+        $this->layout='new_main';
+        $this->render('guidemetabolomic');
+    }
+
+    public function actionGuideepigenomic() {
+        $this->layout='new_main';
+        $this->render('guideepigenomic');
+    }
+
+    public function actionGuidemetagenomic() {
+        $this->layout='new_main';
+        $this->render('guidemetagenomic');
+    }
 
 	/**
 	 * Displays the contact page
