@@ -29,7 +29,7 @@ class SiteController extends Controller {
 	public function accessRules() {
         return array(
             array('allow',  // allow all users
-                'actions'=>array('index','error','contact','mapbrowse','team','about','advisory','faq','term','help','privacy', 'login', 'loginAffiliate', 'logout', 'revoke', 'feed', 'Guide', 'Guidegenomic', 'Guideimaging', 'Guidemetabolomic', 'Guideepigenomic', 'Guidemetagenomic'),
+                'actions'=>array('index','error','contact','mapbrowse','team','about','advisory','faq','term','help','privacy', 'login', 'loginAffiliate', 'logout', 'revoke', 'feed', 'Guide', 'Guidegenomic', 'Guideimaging', 'Guidemetabolomic', 'Guideepigenomic', 'Guidemetagenomic', 'Guidesoftware'),
                 'users'=>array('*'),
             ),
             array('allow', # admins
@@ -265,6 +265,11 @@ class SiteController extends Controller {
     public function actionGuidemetagenomic() {
         $this->layout='new_main';
         $this->render('guidemetagenomic');
+    }
+
+    public function actionGuidesoftware() {
+        $this->layout='new_main';
+        $this->render('guidesoftware');
     }
 
 	/**
