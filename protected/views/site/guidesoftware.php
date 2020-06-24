@@ -16,7 +16,7 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
 </style>
 <div class="content">
     <div class ="container">
-        <section class="page-title-section" style="...">
+        <section class="page-title-section" style="margin-bottom: 10px;">
             <div class="page-title">
                 <ol class="breadcrumb pull-right">
                     <li><a href="/">Home</a> </li>
@@ -25,10 +25,10 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
                 <h4>General Submission Guidelines</h4>
             </div>
         </section>
-        <section style="...">
-            <div style="...">
+        <section style="margin-bottom: 5px;">
+            <div style="display:inline-block;">
                 <ul class="nav nav-tabs nav-border-tabs" role="tablist" style="margin-top: 1px; margin-bottom: 1px">
-                    <li><a href="/site/guide" style="...">General Submission Guidelines</a></li>
+                    <li><a href="/site/guide" style="padding-left: 0px">General Submission Guidelines</a></li>
                     <li class="dropdown active">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                             Datasets Checklists&nbsp;<i class="fa fa-angle-down"></i>
@@ -47,23 +47,23 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
         <section>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 style="...">Software Dataset Checklist</h4>
+                        <h4 style="color: #099242; margin-bottom: 10px;">Software Dataset Checklist </h4>
                         <div class="subsection">
-                            <h5 style="...">Minimal requirements</h5>
+                            <h5 style="padding-left: 1px">Minimal requirements</h5>
                             <p>The minimal requirement for a GigaDB dataset associated with a manuscript describing software is that the source-code be made openly available under an <a href="https://web.archive.org/web/20160412003944/https://opensource.org/licenses">Open Source Initiative</a> approved licence. Most authors host their open-source projects in a GitHub repository, and as a standard procedure we would take a snapshot of the GitHub repository at the point of publication as a version of record to ensure the version as published is always available even when the GitHub repositories are updated. Note- All archival GitHub files are labeled with download date and a description suggesting users visit the current GitHub repository for the most recent updates.</p>
                             <p>In addition we encourage submission of your code to <a href="https://codeocean.com/">Code Ocean</a>, a cloud-based computational reproducibility platform. Once your code is published in Code Ocean, they will issue a DOI for it, which should be included in your GigaDB dataset.</p>
                             <p>GigaScience journal expects all new software tools to be registered at <a href="https://scicrunch.org/">SciCrunch.org</a> - a database to register new software applications. You will be assigned an <a href="https://scicrunch.org/resources">RRID</a> which provides a persistent and unique identifier for referencing your research resource, which in turn will facilitate tracking, reproducibility and re-use of your tool, and should be included in the manuscript and dataset.</p>
                             <p>Where authors have demonstrated the utility of software/tools with example data, we would expect those data to be fully open and accessible in a stable international database with permanent IDs (PIDs). If the authors have generated the data themselves/own the data we can host it in GigaDB if required, otherwise links to the PIDs should be included in the dataset. The metadata to accompany example data would be expected to comply with the regular checklists for that particular data type (see other dataset type checklists).</p>
                         </div>
-                        <table border="1" style="...">
+                        <table border="1" style="text-align: center;">
                             <tr>
-                            <th style="...">
+                            <th style="text-align: center; width: 60%">
                              Item
                             </th>
-                            <th style="...">
+                            <th style="text-align: center; width: 30%">
                             File format
                             </th>
-                            <th style="...">
+                            <th style="text-align: center; width: 20%">
                             Check
                             </th>
                             </tr>
@@ -126,25 +126,25 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
         <section>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="general">
-                    <h4 style="...">Example Software dataset</h4>
+                    <h5 style="padding-left: 1px">Example Software dataset</h5>
                     <div class="subsection">
                         <p>Below is an example software dataset, you can see the final dataset of this example <a href="http://dx.doi.org/10.5524/100753">here</a>.</p>
                     </div>
-                    <table border="1" style="...">
+                    <table border="1" style="text-align: center;">
                         <tr>
-                            <th style="...">
+                            <th style="text-align: center; width: 12.5%">
                                 Item
                             </th>
-                            <th style="...">
+                            <th style="text-align: center; width: 12.5%">
                                 File Name
                             </th>
-                            <th style="...">
+                            <th style="text-align: center; width: 50%">
                                 Description
                             </th>
-                            <th style="...">
+                            <th style="text-align: center; width: 12.5%">
                                 Data Type
                             </th>
-                            <th style="...">
+                            <th style="text-align: center; width: 12.5%">
                                 File Format
                             </th>
                         </tr>
