@@ -39,7 +39,7 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
                             <li><a href="/site/guidemetabolomic">Metabolomic and Lipidomic Dataset Checklist</a></li>
                             <li><a href="/site/guideepigenomic">Epigenomic Dataset Checklist</a></li>
                             <li><a href="/site/guidemetagenomic">Metagenomic Dataset Checklist</a></li>
-                            <li><a href="/site/guidesoftware">Software Dataset Checklist</a> </li>
+                            <li><a href="/site/guidesoftware">Software Dataset Checklist</a></li>
                         </ul>
                     </li>
             </div>
