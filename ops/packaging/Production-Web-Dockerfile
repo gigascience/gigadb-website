@@ -3,7 +3,6 @@ FROM nginx:${NGINX_VERSION}-alpine
 
 ARG GIGADB_ENV=dev
 
-COPY ops/configuration/nginx-conf/sites/gigadb.${GIGADB_ENV}.* /etc/nginx/sites-available/
 COPY ops/configuration/nginx-conf/nginx.conf /etc/nginx/nginx.conf
 COPY ops/configuration/nginx-conf/upstream.conf /etc/nginx/conf.d/upstream.conf
 COPY ops/configuration/nginx-conf/enable_sites /usr/local/bin/enable_sites
