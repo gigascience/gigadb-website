@@ -16,6 +16,7 @@
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.14",
+        "yiisoft/yii2-gii": "~2.1.0",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "pda/pheanstalk":"~3.2.0",
         "yiisoft/yii2-queue": "~2.3.0",
@@ -29,7 +30,6 @@
         "ramsey/uuid": "^3.9.0"
     },
     "require-dev": {
-        "yiisoft/yii2-gii": "~2.1.0",
         "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-faker": "~2.0.0",
         "codeception/base": "^2.4.0",
