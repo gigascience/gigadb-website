@@ -56,6 +56,16 @@ services:
       - SYS_ADMIN
     restart: unless-stopped
 
+  less:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
+    volumes:
+      - assets:/var/www/assets
+      - captchas:/var/www/images/tempcaptcha
+    command: bash -c "./protected/yiic lesscompiler"
+
   fuw-admin:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest
     expose:
