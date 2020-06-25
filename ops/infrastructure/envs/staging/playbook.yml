@@ -49,6 +49,7 @@
         password: "{{ pg_password}}"
       postgresql_databases:
       - name: "{{ pg_database}}"
+      - name: "fuw"
       postgresql_global_config_options:
       - option: listen_addresses
         value: '*'
