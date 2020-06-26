@@ -12,6 +12,7 @@ class OnlyAdmin extends FunctionalTesting
         $email = 'admin@gigadb.org';
         $password = 'gigadb';
 
-        $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org", "gigadb", "Admin");
+        // $this->loginToWebSiteWithSessionAndCredentialsThenAssert();
+        $this->assertEquals($email, 'abc@gmail.com');
     }
 }
