@@ -1,8 +1,9 @@
 stages:
-  - build
+  - build for test
   - test
   - security
   - conformance
+  - build for production
   - deployment
   - operation
 
@@ -101,7 +102,7 @@ after_script:
   # - echo $DOCKER_HOST
 
 test_build:
-  stage: build
+  stage: build for test
   script:
     - echo "Building app"
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
@@ -340,7 +341,7 @@ stage_build:
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
-  stage: build
+  stage: build for production
   script:
     # appending staging variables at the end of the .env and .secrets
     - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
