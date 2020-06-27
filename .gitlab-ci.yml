@@ -678,7 +678,7 @@ deploy_fuw:
     # post-install script to run
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm less
     # Generate the web certificate for TLS termination on web container.
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config cp /le.staging.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config bash -c "cp /le.staging.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets"
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config ls -alrt /etc/letsencrypt
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot certonly -d $STAGING_HOME_URL
     # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
