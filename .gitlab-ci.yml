@@ -700,7 +700,38 @@ deploy_fuw:
     when: always
     expire_in: 1 week
 
-
+teardown_fuw:
+  variables:
+    GIGADB_ENV: staging
+    COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
+    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
+    DATA_SAVE_PATH: "/home/centos/app_data"
+  stage: staging
+  script:
+    # appending staging variables at the end of the .env and .secrets
+    - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
+    - env | grep -iE "^staging_" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
+    # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
+    # Create client certificate files for authenticating with remote docker daemon
+    - mkdir -pv ~/.docker
+    - echo "$staging_tlsauth_ca" >  ~/.docker/ca.pem
+    - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
+    - echo "$staging_tlsauth_key" > ~/.docker/key.pem
+    # FUW specific steps
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml down
+    
+  environment:
+    name: staging
+    url: $STAGING_HOME_URL
+  when: manual
+  # only:
+  #   - develop
+  artifacts:
+    untracked: true
+    paths:
+      - fuw/app/console/config/    
+    when: always
+    expire_in: 1 week
 
 release_app:
   stage: live
