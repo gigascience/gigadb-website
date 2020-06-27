@@ -3,8 +3,8 @@ stages:
   - test
   - security
   - conformance
-  - staging
-  - live
+  - deployment
+  - operation
 
 image: docker:stable
 
@@ -340,7 +340,7 @@ stage_build:
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
-  stage: staging
+  stage: build
   script:
     # appending staging variables at the end of the .env and .secrets
     - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
@@ -421,8 +421,7 @@ stage_build:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:latest
-  dependencies:
-    - test_run
+
   environment:
     name: staging
     url: $STAGING_HOME_URL
@@ -440,7 +439,7 @@ stage_deploy:
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
-  stage: staging
+  stage: deployment
   script:
     # appending staging variables at the end of the .env and .secrets
     - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
@@ -516,7 +515,7 @@ stage_teardown:
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
-  stage: staging
+  stage: operation
   script:
     # appending staging variables at the end of the .env and .secrets
     - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
@@ -550,7 +549,7 @@ stage_stop:
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
-  stage: staging
+  stage: operation
   script:
     # appending staging variables at the end of the .env and .secrets
     - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
@@ -584,7 +583,7 @@ stage_start:
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
-  stage: staging
+  stage: operation
   script:
     # appending staging variables at the end of the .env and .secrets
     - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
