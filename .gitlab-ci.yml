@@ -342,6 +342,7 @@ stage_build:
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: build for production
+  allow_failure: false
   script:
     # appending staging variables at the end of the .env and .secrets
     - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
@@ -441,6 +442,7 @@ stage_deploy:
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: deployment
+  allow_failure: false
   script:
     # appending staging variables at the end of the .env and .secrets
     - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
