@@ -249,7 +249,7 @@ test_run:
     # - docker-compose exec -T console /app/vendor/bin/codecept -vvv -c /app/common run -g metadata acceptance --fail-fast
     # - echo $?
 
-test_coverage:
+check_coverage:
   stage: conformance
   cache:
     key: coverage-cache
@@ -335,7 +335,7 @@ check_DAST:
   allow_failure: true
   when: manual
 
-stage_build:
+build:
   variables:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -435,7 +435,7 @@ stage_build:
     when: always
     expire_in: 1 week
 
-stage_deploy:
+staging_deploy:
   variables:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -498,7 +498,7 @@ stage_deploy:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d fuw-worker gigadb-worker
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web /usr/local/bin/enable_sites fuw-backend.$GIGADB_ENV.http fuw-frontend.$GIGADB_ENV.http
   dependencies:
-    - stage_build
+    - build
   environment:
     name: staging
     url: $STAGING_HOME_URL
@@ -512,7 +512,7 @@ stage_deploy:
     when: always
     expire_in: 1 week
 
-stage_teardown:
+staging_teardown:
   variables:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -532,7 +532,7 @@ stage_teardown:
     # FUW specific steps
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml down
   dependencies:
-    - stage_deploy
+    - staging_deploy
   environment:
     name: staging
     url: $STAGING_HOME_URL
@@ -546,7 +546,7 @@ stage_teardown:
     when: always
     expire_in: 1 week
 
-stage_stop:
+staging_stop:
   variables:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -566,7 +566,7 @@ stage_stop:
     # FUW specific steps
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml stop
   dependencies:
-    - stage_deploy
+    - staging_deploy
   environment:
     name: staging
     url: $STAGING_HOME_URL
@@ -580,7 +580,7 @@ stage_stop:
     when: always
     expire_in: 1 week
 
-stage_start:
+staging_start:
   variables:
     GIGADB_ENV: staging
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -602,7 +602,7 @@ stage_start:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d fuw-worker gigadb-worker
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d web
   dependencies:
-    - stage_deploy
+    - staging_deploy
   environment:
     name: staging
     url: $STAGING_HOME_URL
