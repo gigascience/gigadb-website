@@ -14,7 +14,7 @@ class OnlyLoggedInTest extends FunctionalTesting
 
     public function testNonLoggedInCannotVisitAdmin()
     {
-        $this->loginToWebAsNonLoggedInThenAssert("abc@gigadb.org", "gigadb", "Admin");
+        $this->nonLoggedInAndCannotVisitAdminThenAssert("abc@gigadb.org", "gigadb", "Admin");
     }
 }
 
