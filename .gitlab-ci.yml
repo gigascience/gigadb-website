@@ -424,9 +424,6 @@ build:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:latest
 
-  environment:
-    name: staging
-    url: $STAGING_HOME_URL
   when: manual
   # only:
   #   - develop
@@ -494,7 +491,7 @@ deploy:
     # Generate the web certificate for TLS termination on web container.
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config bash -c "cp /le.staging.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets"
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config ls -alrt /etc/letsencrypt
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot certonly -d $STAGING_HOME_URL
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot certonly -d $REMOTE_HOME_URL
     # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web /usr/local/bin/enable_sites gigadb.$GIGADB_ENV.https
     # FUW specific steps
@@ -503,8 +500,8 @@ deploy:
   dependencies:
     - build
   environment:
-    name: staging
-    url: $STAGING_HOME_URL
+    name: $DEPLOYMENT_ENV
+    url: $REMOTE_HOME_URL
   when: manual
   # only:
   #   - develop
@@ -540,8 +537,8 @@ teardown:
   dependencies:
     - deploy
   environment:
-    name: staging
-    url: $STAGING_HOME_URL
+    name: $DEPLOYMENT_ENV
+    url: $REMOTE_HOME_URL
   when: manual
   # only:
   #   - develop
@@ -577,8 +574,8 @@ stop:
   dependencies:
     - deploy
   environment:
-    name: staging
-    url: $STAGING_HOME_URL
+    name: $DEPLOYMENT_ENV
+    url: $REMOTE_HOME_URL
   when: manual
   # only:
   #   - develop
@@ -616,8 +613,8 @@ start:
   dependencies:
     - deploy
   environment:
-    name: staging
-    url: $STAGING_HOME_URL
+    name: $DEPLOYMENT_ENV
+    url: $REMOTE_HOME_URL
   when: manual
   # only:
   #   - develop
@@ -654,8 +651,8 @@ top:
   dependencies:
     - deploy
   environment:
-    name: staging
-    url: $STAGING_HOME_URL
+    name: $DEPLOYMENT_ENV
+    url: $REMOTE_HOME_URL
   when: manual
   # only:
   #   - develop
