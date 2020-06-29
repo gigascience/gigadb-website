@@ -337,7 +337,7 @@ check_DAST:
 
 build:
   variables:
-    GIGADB_ENV: staging
+    GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
@@ -437,7 +437,7 @@ build:
 
 deploy:
   variables:
-    GIGADB_ENV: staging
+    GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
@@ -450,9 +450,12 @@ deploy:
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
-    - echo "$staging_tlsauth_ca" >  ~/.docker/ca.pem
-    - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
-    - echo "$staging_tlsauth_key" > ~/.docker/key.pem
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_ca' >  ~/.docker/ca.pem"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_cert' > ~/.docker/cert.pem"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_key' > ~/.docker/key.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem"
     # Pull production container from our private registry
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST info
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
@@ -514,7 +517,7 @@ deploy:
 
 teardown:
   variables:
-    GIGADB_ENV: staging
+    GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
@@ -526,9 +529,12 @@ teardown:
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
-    - echo "$staging_tlsauth_ca" >  ~/.docker/ca.pem
-    - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
-    - echo "$staging_tlsauth_key" > ~/.docker/key.pem
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_ca' >  ~/.docker/ca.pem"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_cert' > ~/.docker/cert.pem"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_key' > ~/.docker/key.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem"
     # FUW specific steps
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml down
   dependencies:
@@ -548,7 +554,7 @@ teardown:
 
 stop:
   variables:
-    GIGADB_ENV: staging
+    GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
@@ -560,9 +566,12 @@ stop:
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
-    - echo "$staging_tlsauth_ca" >  ~/.docker/ca.pem
-    - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
-    - echo "$staging_tlsauth_key" > ~/.docker/key.pem
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_ca' >  ~/.docker/ca.pem"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_cert' > ~/.docker/cert.pem"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_key' > ~/.docker/key.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem"
     # FUW specific steps
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml stop
   dependencies:
@@ -582,7 +591,7 @@ stop:
 
 start:
   variables:
-    GIGADB_ENV: staging
+    GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
@@ -594,13 +603,54 @@ start:
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
-    - echo "$staging_tlsauth_ca" >  ~/.docker/ca.pem
-    - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
-    - echo "$staging_tlsauth_key" > ~/.docker/key.pem
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_ca' >  ~/.docker/ca.pem"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_cert' > ~/.docker/cert.pem"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_key' > ~/.docker/key.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem"
     # FUW specific steps
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d fuw-admin fuw-public application
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d fuw-worker gigadb-worker
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d web
+  dependencies:
+    - deploy
+  environment:
+    name: staging
+    url: $STAGING_HOME_URL
+  when: manual
+  # only:
+  #   - develop
+  artifacts:
+    untracked: true
+    paths:
+      - fuw/app/console/config/
+    when: always
+    expire_in: 1 week
+
+
+top:
+  variables:
+    GIGADB_ENV: $DEPLOYMENT_ENV
+    COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
+    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
+    DATA_SAVE_PATH: "/home/centos/app_data"
+  stage: operation
+  script:
+    # appending staging variables at the end of the .env and .secrets
+    - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
+    - env | grep -iE "^staging_" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
+    # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
+    # Create client certificate files for authenticating with remote docker daemon
+    - mkdir -pv ~/.docker
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_ca' >  ~/.docker/ca.pem"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_cert' > ~/.docker/cert.pem"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_key' > ~/.docker/key.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem"
+    # FUW specific steps
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml top
   dependencies:
     - deploy
   environment:
