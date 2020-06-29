@@ -12,7 +12,7 @@ class OnlyAdminTest extends FunctionalTesting
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org", "gigadb", "Admin");
     }
 
-    public function testNonAdminLogin()
+    public function testNonAdminCannotLogin()
     {
         $this->loginToWebAsNonAdminThenAssert("abc@gigadb.org", "gigadb", "Admin");
     }
