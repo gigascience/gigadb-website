@@ -6,6 +6,7 @@
 class OnlyLoggedInTest extends FunctionalTesting
 {
     use BrowserSignInSteps;
+    use BrowserPageSteps;
 
     public function testLoggedInCanVisitAdmin ()
     {
@@ -15,7 +16,10 @@ class OnlyLoggedInTest extends FunctionalTesting
     public function testNonLoggedInCannotVisitAdmin()
     {
         $this->nonLoggedInAndCannotVisitAdminThenAssert("abc@gigadb.org", "gigadb", "Admin");
+        $url = "http://gigadb.dev/site/admin";
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "$login");
     }
+
 }
 
 ?>
