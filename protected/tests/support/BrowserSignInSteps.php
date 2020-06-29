@@ -14,7 +14,7 @@ trait BrowserSignInSteps
 	public function loginToWebSiteWithSessionAndCredentialsThenAssert($email,$password,$to_assert)
 	{
 
-        $this->session->visit("http://gigadb.dev/site/login");
+        $this->session->visit("http://gigadb.dev/site/admin");
         $this->session->getPage()->fillField("LoginForm_username", $email);
         $this->session->getPage()->fillField("LoginForm_password", $password);
         $this->session->getPage()->pressButton("Login");
@@ -22,9 +22,9 @@ trait BrowserSignInSteps
         $this->assertTrue($this->session->getPage()->hasContent($to_assert));
 	}
 
-	public function loginToWebAsNonAdminThenAssert($email,$password,$to_assert)
+	public function nonLoggedInAndCannotVisitAdminThenAssert($email,$password,$to_assert)
     {
-        $this->session->visit("http://gigadb.dev/site/login");
+        $this->session->visit("http://gigadb.dev/site/admin");
         $this->session->getPage()->fillField("LoginForm_username", $email);
         $this->session->getPage()->fillField("LoginForm_password", $password);
         $this->session->getPage()->pressButton("Login");
