@@ -6,16 +6,15 @@
 class OnlyAdminTest extends FunctionalTesting
 {
     use BrowserSignInSteps;
-    use BrowserPageSteps;
 
     public function testAdminCanLogin ()
     {
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org", "gigadb", "Admin");
     }
 
-    public function testNotAdminCannotLogin ()
+    public function testNonAdminLogin()
     {
-        $this->loginToWebSiteWithSessionAndCredentialsThenAssert("abc@gigadb.org", "gigadb", "Admin");
+        $this->loginToWebAsNonAdminThenAssert("abc@gigadb.org", "gigadb", "Admin");
     }
 }
 
