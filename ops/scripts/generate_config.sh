@@ -48,15 +48,15 @@ fi
 echo "Sourcing secrets"
 source "./.secrets"
 
-# If we are on staging environment override variable name with STAGING_* counterpart
+# If we are on staging environment override variable name with STAGING_* or REMOTE_* counterpart
 if [ $GIGADB_ENV == "staging" ];then
     GIGADB_HOST=$STAGING_GIGADB_HOST
     GIGADB_USER=$STAGING_GIGADB_USER
     GIGADB_PASSWORD=$STAGING_GIGADB_PASSWORD
     GIGADB_DB=$STAGING_GIGADB_DB
-    HOME_URL=$STAGING_HOME_URL
-    PUBLIC_HTTP_PORT=$STAGING_PUBLIC_HTTP_PORT
-    PUBLIC_HTTPS_PORT=$STAGING_PUBLIC_HTTPS_PORT
+    HOME_URL=$REMOTE_HOME_URL
+    PUBLIC_HTTP_PORT=$REMOTE_PUBLIC_HTTP_PORT
+    PUBLIC_HTTPS_PORT=$REMOTE_PUBLIC_HTTPS_PORT
 fi
 # restore default settings for variables
 set +a

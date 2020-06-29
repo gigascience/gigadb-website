@@ -13,9 +13,9 @@ services:
       - le_webrootpath:/var/www/.le
       - tempcaptcha:/var/www/images/tempcaptcha
     ports:
-      - "${STAGING_PUBLIC_HTTP_PORT}:80"
-      - "${STAGING_PUBLIC_HTTPS_PORT}:443"
-    command: ["/usr/local/bin/enable_sites", "gigadb.staging.http", "fuw-backend.staging.http"]
+      - "${REMOTE_PUBLIC_HTTP_PORT}:80"
+      - "${REMOTE_PUBLIC_HTTPS_PORT}:443"
+    command: ["/usr/local/bin/enable_sites", "gigadb.staging.http"]
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
@@ -189,8 +189,8 @@ services:
       - ${DATA_SAVE_PATH}/pure-ftpd:/etc/pure-ftpd
       - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
     environment:
-      PUBLICHOST: "$STAGING_HOME_URL"
-    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $STAGING_HOME_URL
+      PUBLICHOST: "$REMOTE_HOME_URL"
+    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $REMOTE_HOME_URL
     ports:
       - target: 21
         published: 9021
