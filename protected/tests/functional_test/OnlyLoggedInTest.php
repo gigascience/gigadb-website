@@ -11,13 +11,18 @@ class OnlyLoggedInTest extends FunctionalTesting
     public function testLoggedInCanVisitAdmin ()
     {
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org", "gigadb", "Admin");
+        $url = "http://gigadb.dev/site/admin";
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Administration Page");
     }
 
-    public function testNonLoggedInCannotVisitAdmin()
+
+
+    public function testNonLoggedInCanOnlyVisitLogin ()
     {
+        // Using incorrect email account
         $this->nonLoggedInAndCannotVisitAdminThenAssert("abc@gigadb.org", "gigadb", "Admin");
         $url = "http://gigadb.dev/site/admin";
-        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "$login");
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Create account");
     }
 
 }
