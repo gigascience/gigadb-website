@@ -19,7 +19,7 @@ printf "\nRunning PHPUnit functional tests\n"
 #exec 1>&3
 
 #./bin/phpunit protected/tests/functional  --verbose --configuration protected/tests/phpunit.xml --no-coverage
-./bin/phpunit protected/tests/functional_test  --verbose --configuration protected/tests/phpunit.xml --no-coverage
+./bin/phpunit protected/tests/functional_test  --verbose  --debug --configuration protected/tests/phpunit.xml --no-coverage
 
 #printf "\nRunning PHPUnit unit tests\n"
 
