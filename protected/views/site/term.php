@@ -16,9 +16,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
 <section style="margin-bottom: 15px;">
     <div>
         <ul class="nav nav-tabs nav-border-tabs" role="tablist">
-            <li id="lipolicies" role="presentation" class="active"><a href="#policies" aria-controls="policies"
-                                                                      role="tab" data-toggle="tab">GigaScience Database
-                    (<em>GigaDB</em>) Use Policies</a></li>
+            <li id="lipolicies" role="presentation" class="active"><a href="#policies" aria-controls="policies" role="tab" data-toggle="tab"><em>GigaDB</em> User Policies</a></li>
             <li id="liprivacy" role="presentation" id="privacytab"><a href="#privacy" aria-controls="privacy" role="tab"
                                                                       data-toggle="tab">Privacy</a></li>
             <li id="liinformation" role="presentation"><a href="#information" aria-controls="information" role="tab"
