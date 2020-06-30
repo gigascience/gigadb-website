@@ -22,7 +22,7 @@ class OnlyLoggedInTest extends FunctionalTesting
         // Using incorrect email account
         $this->nonLoggedInAndCannotVisitAdminThenAssert("abc@gigadb.org", "gigadb", "Admin");
         $url = "http://gigadb.dev/site/admin";
-        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Create account");
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Lost Password");
     }
 
 }
