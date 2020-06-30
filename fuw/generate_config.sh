@@ -42,10 +42,10 @@ set +a
 # If we are on staging environment override variable name with STAGING_* or REMOTE_* counterpart
 export DEBUG=true
 if [ $GIGADB_ENV == "staging" ];then
-    FUW_DB_HOST=$STAGING_FUW_DB_HOST
-    FUW_DB_USER=$STAGING_FUW_DB_USER
-    FUW_DB_PASSWORD=$STAGING_FUW_DB_PASSWORD
-    FUW_DB_NAME=$STAGING_FUW_DB_NAME
+    FUW_DB_HOST=$REMOTE_FUW_DB_HOST
+    FUW_DB_USER=$REMOTE_FUW_DB_USER
+    FUW_DB_PASSWORD=$REMOTE_FUW_DB_PASSWORD
+    FUW_DB_NAME=$REMOTE_FUW_DB_NAME
     DEBUG=false
     HOME_URL=$REMOTE_HOME_URL
 fi
