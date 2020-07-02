@@ -41,7 +41,7 @@ set +a
 
 # If we are on staging environment override variable name with STAGING_* or REMOTE_* counterpart
 export DEBUG=true
-if [ $GIGADB_ENV != "dev" ];then
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     FUW_DB_HOST=$REMOTE_FUW_DB_HOST
     FUW_DB_USER=$REMOTE_FUW_DB_USER
     FUW_DB_PASSWORD=$REMOTE_FUW_DB_PASSWORD
