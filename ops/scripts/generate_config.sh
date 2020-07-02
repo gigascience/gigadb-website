@@ -42,14 +42,14 @@ if ! [ -f  ./.secrets ];then
     echo "Retrieving variables from ${GROUP_VARIABLES_URL}"
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${GROUP_VARIABLES_URL}" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > .group_var
     echo "Retrieving variables from ${PROJECT_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | select(.key != "TLSAUTH_CERT") | select(.key != "TLSAUTH_KEY") | select(.key != "TLSAUTH_CA") | select(.key != "staging_tlsauth_ca") | select(.key != "staging_tlsauth_key") | select(.key != "staging_tlsauth_cert") | select(.key != "production_tlsauth_ca") | select(.key != "production_tlsauth_cert") | select(.key != "production_tlsauth_key") |.key + "=" + .value' > .project_var
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | select(.key != "TLSAUTH_CERT") | select(.key != "TLSAUTH_KEY") | select(.key != "TLSAUTH_CA") | select(.key != "staging_tlsauth_ca") | select(.key != "staging_tlsauth_key") | select(.key != "staging_tlsauth_cert") | select(.key != "live_tlsauth_ca_ca") | select(.key != "live_tlsauth_ca_cert") | select(.key != "live_tlsauth_ca_key") |.key + "=" + .value' > .project_var
     cat .group_var .project_var > .secrets && rm .group_var && rm .project_var
 fi
 echo "Sourcing secrets"
 source "./.secrets"
 
 # If we are on staging environment override variable name with STAGING_* or REMOTE_* counterpart
-if [ $GIGADB_ENV == "staging" ];then
+if [ $GIGADB_ENV != "dev" ];then
     GIGADB_HOST=$REMOTE_GIGADB_HOST
     GIGADB_USER=$REMOTE_GIGADB_USER
     GIGADB_PASSWORD=$REMOTE_GIGADB_PASSWORD
