@@ -16,16 +16,11 @@ $this->pageTitle = 'GigaDB - Terms of use';
 <section style="margin-bottom: 15px;">
     <div>
         <ul class="nav nav-tabs nav-border-tabs" role="tablist">
-            <li id="lipolicies" role="presentation" class="active"><a href="#policies" aria-controls="policies"
-                                                                      role="tab" data-toggle="tab">GigaScience Database
-                    (<em>GigaDB</em>) Use Policies</a></li>
-            <li id="liprivacy" role="presentation" id="privacytab"><a href="#privacy" aria-controls="privacy" role="tab"
-                                                                      data-toggle="tab">Privacy</a></li>
-            <li id="liinformation" role="presentation"><a href="#information" aria-controls="information" role="tab"
-                                                          data-toggle="tab">Collection of Web-traffic Information</a>
-            </li>
-            <li id="lipersonal" role="presentation"><a href="#personal" aria-controls="personal" role="tab"
-                                                       data-toggle="tab">Personal Data</a></li>
+            <li id="lipolicies" role="presentation" class="active"><a href="#policies" aria-controls="policies" role="tab" data-toggle="tab"><em>GigaDB</em> User Policies</a></li>
+            <li id="lihosting" role="presentation"><a href="#hosting" aria-controls="hosting" role="tab" data-toggle="tab">Hosting Statement</a></li>
+            <li id="liprivacy" role="presentation" id="privacytab"><a href="#privacy" aria-controls="privacy" role="tab" data-toggle="tab">Privacy</a></li>
+            <li id="liinformation" role="presentation"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Collection of Web-traffic Information</a></li>
+            <li id="lipersonal" role="presentation"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal Data</a></li>
         </ul>
     </div>
 </section>
@@ -148,7 +143,42 @@ $this->pageTitle = 'GigaDB - Terms of use';
                 </p>
             </div>
         </div>
-
+        <div role="tabpanel", class="tab-pane" id="hosting">
+            <p>GigaScience, including GigaDB, was launched in 2012 in partnership with BGI. The stability of future hosting
+                of content is guaranteed and protected by the host organisations BGI - an international company with over
+                7,000 employees and data-centres in multiple countries - and China National GeneBank (CNGB) - a Shenzhen
+                Government run non-profit organisation. CNGB is a key infrastructure project coming out of the Chinese Government's
+                12th Five-Year Plan; this initial funding provides much of the current infrastructure/ hardware and staffing costs for
+                GigaScience. Already having received a second phase of funding for another 5 years, once completed it is envisaged that
+                a continuation of this grant will be secured for at least 5 years more. Additionally, the founding company of both CNGB
+                and GigaScience (BGI) provides a fall-back position to ensure continued preservation of the metadata and data,
+                and have provided guarantees on storage through the next 5-year funding period and beyond.</p>
+            <p>There are three technical parts to GigaDB: (1) The data hosting (FTP server); (2) the website GigaDB.org; and (3)
+                the metadata database. The latter two parts are hosted together on a server physically located in Hong Kong,
+                whereas the data hosting server is located in Shenzhen, China.</p>
+            <br>
+            <h4 style="color: #099242; margin-bottom: 10px;">The GigaDB data repository (FTP server)</h4>
+            <div class="subsection">
+                <p>GigaDB has two types of data hosting: (a) public open access; and (b) private FTP access. The open access public FTP server has security measures in place to prevent removal or modification of data hosted on the server. These measures are ensured by READ only access to data files. The private FTP server is administered by GigaDB staff and individual submitters are provided with login details to allow them to upload their data prior to publication. Those details are shared with editors, who then share them with the selected reviewers to enable the reviewers to access the data for the purpose of review. The login details grant access to the data of one manuscript/dataset, and the passwords are revoked after completion of the submission. At this point there are two options, namely: 1) the manuscript is accepted and the accompanying data are moved to the public server; or 2) the manuscript is rejected and the data are deleted.</p>
+                <p>Both private and public FTP servers that host GigaDB data are installed and maintained by Ali Cloud in the data center of China National GeneBank (CNGB) in Dapeng, Shenzhen. The physical security of the servers is guaranteed in terms of power supply, fire protection equipment and temperature/humidity control. There is a dedicated server room at CNGB and this area has CCTV monitoring and access control. Importantly, access to the server room and activities are recorded. Network security is maintained with a firewall that ensures that only data flows that comply with the security policy can pass through the firewall. This is an important measure to ensure the legality of data access. Host system security is maintained by identifying and restricting access to data through authorisation controls, and maintenance of sufficiently detailed logs are collected for auditors to audit and monitor.</p>
+                <p>As an open data repository, public data can be viewed, retrieved and downloaded by external users. In contrast, private data can only be viewed by the submitter or authorized reviewer(s). Public and private data are stored separately, preventing illegal access to private data. The FTP node uses the hot standby policy to ensure that upload and download services are available in the event of a failure. The CNGB data centre currently has certification for the following information security standards: ISO-27001; Certification China Information Security Level Protection Level 3; and Trusted Cloud Service Certification issued by China Information and Communication Research Institute <a href="https://www.cngb.org/database.html?i18nlang=en_US">(see here).</a> Alibaba NAS storage promises 99.9999999% data reliability, which can effectively reduce data security risks. The NAS Backup Service is responsible for the entire backup process, including automated backup tasks. This includes periodic backups with a new backup every 24 hours. Alibaba NAS also provides the ability to restore backup to an empty NAS storage system on Ali Cloud <a href=" https://www.alibabacloud.com/help/doc-detail/27518.htm">(see here)</a>.</p>
+                <p>The database holds md5sum values of all original files.These are provided for users to ensure data transfer was accomplished successfully. In addition we compare them to the files in the FTP server on a regular basis to ensure integrity. </p>
+                <p>GigaDB is also now a member of CLOCKSS (Controlled LOCKSS -"Lots of Copies Keep Stuff Safe"), ensuring all curated metadata, external links and documentation are preserved in the long term (see 3 below). In addition, we are exploring the feasibility and costs of CCLOCKS archiving the data files hosted on our FTP server as a longer term succession plan.</p>
+                <p>As an option to increase accessibility worldwide, we also are working with Complete Genomics - a subsidiary of BGI group of companies - to provide a mirror ftp server in California, USA which will be a further backup copy of the data.</p>
+            </div>
+            <h4 style="color: #099242; margin-bottom: 10px;">GigaDB.org website</h4>
+            <div class="subsection">
+                <p>The GigaDB.org website is currently hosted on and served from BGI-Hong Kong Co. Ltd (a subsidiary of BGI group of companies) located in Hong Kong. The Hong Kong data centre is maintained by BGI, who have been running it since 2010 to a very high standard in line with  ISO/IEC 27001 certification. The GigaDB source code is <a href="https://github.com/gigascience/gigadb-website">available in our GitHub repository</a> under an Open Source GPLv3 license. A Behavior-Driven Development process is now coupled with Test-Driven Development and unit testing techniques for developing the GigaDB application. We have also adopted Continuous Integration and Continuous Deployment approaches to automate checking of the GigaDB source code so that the application is not broken and that new functionality is made available in a timely manner on the website. In the future we intend to move the website to a cloud service provider in an effort to deliver certified guarantees of stability and availability.</p>
+            </div>
+            <h4 style="color: #099242; margin-bottom: 10px;">Metadata</h4>
+            <div class="subsection">
+                <p>ll metadata collected by GigaDB is stored in a bespoke pSQL database. Only individual user information is kept private to comply with local and international data privacy laws. All GigaDB dataset metadata is openly available and as such has likely been duplicated in various archives and search engines (e.g. Google, utilising schema.org metadata) around the world. This offers greater discoverability for our datasets.</p>
+                <p>The pSQL database is hosted on the BGI-Hong Kong Co. Ltd servers in Hong Kong, with automatic nightly back-ups taken.</p>
+                <p>A complete dump of all dataset metadata is available from our API in XML format. We publish all datasets through the DataCite DOI register which also ensures the continued availability of basic dataset level metadata submitted as part of the registration.</p>
+                <p>GigaDB utilises CLOCKSS as an additional method to ensure persistence of all metadata beyond any unforeseen business continuity issues. The CLOCKS subscription means a copy of the dataset metadata in the form of an XML dump from API is stored indefinitely, and this ensures that the curated metadata, external links and documentation are all preserved in the long term. This is a guarantee to ensure future availability of all metadata in the event of GigaDB services being terminated for any reason.</p>
+                <p>In the future we intend to move the GigaDB database and website to a cloud service provider. This will provide additional certified guarantees of stability and availability. </p>
+            </div>
+        </div>
         <div role="tabpanel" class="tab-pane" id="privacy">
             <p><em>GigaDB</em> has implemented appropriate technical and organisational measures to ensure a level of
                 security which we deem appropriate, taking into account the categories of data we collect and the way we
