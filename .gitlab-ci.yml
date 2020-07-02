@@ -535,8 +535,7 @@ teardown:
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
     # FUW specific steps
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml down
-  dependencies:
-    - deploy
+
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
@@ -572,8 +571,7 @@ stop:
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
     # FUW specific steps
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml stop
-  dependencies:
-    - deploy
+
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
@@ -611,8 +609,7 @@ start:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d fuw-admin fuw-public application
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d fuw-worker gigadb-worker
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d web
-  dependencies:
-    - deploy
+
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
@@ -649,8 +646,7 @@ top:
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
     # FUW specific steps
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml top
-  dependencies:
-    - deploy
+
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
