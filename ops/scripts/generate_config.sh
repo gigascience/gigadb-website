@@ -141,6 +141,10 @@ fi
 #   tar -xzvf ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz -C ${APP_SOURCE}/vsftpd/files
 # fi
 
+# Install NodeJS for running javascript
+apk add --update nodejs npm
+echo $(which node)
+node /var/www/ops/scripts/test.js
 
 echo "done."
 exit 0
