@@ -49,7 +49,7 @@ echo "Sourcing secrets"
 source "./.secrets"
 
 # If we are on staging environment override variable name with STAGING_* or REMOTE_* counterpart
-if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI"]];then
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     GIGADB_HOST=$REMOTE_GIGADB_HOST
     GIGADB_USER=$REMOTE_GIGADB_USER
     GIGADB_PASSWORD=$REMOTE_GIGADB_PASSWORD
