@@ -84,7 +84,6 @@ before_script:
 
 after_script:
   # - docker-compose ps
-  # - docker-compose logs watcher
   # - docker-compose logs database
   # - docker-compose logs tusd
   # - docker-compose exec -T tusd ls -alrt /var/repo/
@@ -498,6 +497,8 @@ deploy:
     # FUW specific steps
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d fuw-worker gigadb-worker
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web /usr/local/bin/enable_sites fuw-backend.$GIGADB_ENV.http fuw-frontend.$GIGADB_ENV.http
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml logs fuw-worker
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml logs console
   dependencies:
     - build
   environment:
