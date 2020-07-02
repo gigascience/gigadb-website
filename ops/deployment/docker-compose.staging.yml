@@ -138,6 +138,8 @@ services:
     stop_signal: SIGRTMIN+3
     tmpfs: /run
     command: "/lib/systemd/systemd"
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"    
 
   gigadb-worker:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:latest
@@ -158,6 +160,8 @@ services:
     stop_signal: SIGRTMIN+3
     tmpfs: /run
     command: "/lib/systemd/systemd"
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"    
 
   console:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
