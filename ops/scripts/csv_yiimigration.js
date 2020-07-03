@@ -1,15 +1,11 @@
+const fs = require('fs');
+var fsPath = require('fs-path');
 
 // Global scope
-var infile = "/Volumes/PLEXTOR/PhpstormProjects/gigadb-website/data/dev/dataset.csv";
-var outfile = "/Volumes/PLEXTOR/PhpstormProjects/gigadb-website/tmp/dataset.php";
-
-const fs = require('fs');
-
+var project_dir = process.env.PWD;  // Need to run script from gigadb-website project root
+var files = fs.readdirSync(project_dir.concat("/data/dev"));
 var NEWLINE = "\n";
 var INDENT = "    ";
-var OUT = "";
-var COLNAMES = [];
-var ids = [];
 
 const processHeader = csv => {
     var lines = csv.split("\n");
@@ -21,7 +17,7 @@ const processHeader = csv => {
 const csvStringToArray = strData => {
     const objPattern = new RegExp(("(\\,|\\r?\\n|\\r|^)(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|([^\\,\\r\\n]*))"),"gi");
     let arrMatches = null, arrData = [[]];
-    while (arrMatches = objPattern.exec(strData)){
+    while (arrMatches = objPattern.exec(strData)) {
         if (arrMatches[1].length && arrMatches[1] !== ",") {
             arrData.push([]);
         }
@@ -32,25 +28,62 @@ const csvStringToArray = strData => {
     return arrData;
 };
 
-OUT = OUT.concat("<?php", NEWLINE);
-OUT = OUT.concat(NEWLINE);
-OUT = OUT.concat("class m200529_084657_insert_data_", "dataset", "_tab extends CDbMigration", NEWLINE);
-OUT = OUT.concat("{", NEWLINE);
-OUT = OUT.concat(INDENT, "public function safeUp()", NEWLINE, "    {", NEWLINE);
-OUT = OUT.concat(INDENT, INDENT, "$this->insert('dataset', array(", NEWLINE);
+for(var a = 0; a < files.length; a ++) {
+    // Create file paths
+    console.log("project_dir: ", project_dir);
+    var file_path = project_dir.concat("/data/dev/", files[a]);
+    console.log("file_path: ", file_path);
+    var tokens = files[a].split(".");
+    var table_name = tokens[0];
+    console.log("table_name: ", table_name);
+    var outfile = project_dir.concat("/protected/migrations/data/dev/", table_name, ".php");
+    console.log("outfile: ", outfile);
 
-var text = fs.readFileSync(infile, 'utf8');
-var data = processHeader(text);
-let dataStrArr = csvStringToArray(data);
+    var OUT = "";
+    var COLNAMES = [];
+    var ids = [];
 
-for(var x = 0; x < dataStrArr.length; x++) {
-    var row = dataStrArr[x];
-    for(var i = 0; i < COLNAMES.length; i++) {
-        OUT = OUT.concat(INDENT, INDENT, INDENT, "'", COLNAMES[i], "' => '", row[i], "',", NEWLINE);
+    OUT = OUT.concat("<?php", NEWLINE);
+    OUT = OUT.concat(NEWLINE);
+    OUT = OUT.concat("class m200529_084657_insert_data_", table_name, "_tab extends CDbMigration", NEWLINE);
+    OUT = OUT.concat("{", NEWLINE);
+    OUT = OUT.concat(INDENT, "public function safeUp()", NEWLINE, "    {", NEWLINE);
+    OUT = OUT.concat(INDENT, INDENT, "$this->insert('dataset', array(", NEWLINE);
+
+    var text = fs.readFileSync(file_path, 'utf8');
+    var data = processHeader(text);
+    let dataStrArr = csvStringToArray(data);
+
+    for(var x = 0; x < dataStrArr.length; x++) {
+        var row = dataStrArr[x];
+        for(var i = 0; i < COLNAMES.length; i++) {
+            // Put id values for datasets in array
+            if(COLNAMES[i] === "id") {
+                ids.push(row[i]);
+            }
+            OUT = OUT.concat(INDENT, INDENT, INDENT, "'", COLNAMES[i], "' => '", row[i], "',", NEWLINE);
+        }
     }
-}
-OUT = OUT.concat(INDENT, INDENT, "));", NEWLINE);
-OUT = OUT.concat(INDENT, "}", NEWLINE);
-OUT = OUT.concat("}", NEWLINE);
-console.log(OUT);
 
+    OUT = OUT.concat(INDENT, INDENT, "));", NEWLINE);
+    OUT = OUT.concat(INDENT, "}", NEWLINE, NEWLINE);
+    OUT = OUT.concat(INDENT, "public function safeDown()", NEWLINE, "    {", NEWLINE);
+    OUT = OUT.concat(INDENT, INDENT, "$ids = array(");
+    for (var y = 0; y < ids.length; y ++) {
+        OUT = OUT.concat("'", ids[y], "'");
+    }
+    OUT = OUT.concat(");", NEWLINE);
+    OUT = OUT.concat(INDENT, INDENT, "foreach ($ids as $id) {", NEWLINE,
+        INDENT, INDENT, INDENT, "$this->delete('sample', 'id=:id', array(':id' => $id));", NEWLINE,
+        INDENT, INDENT, "}", NEWLINE);
+
+    OUT = OUT.concat(INDENT, "}", NEWLINE);
+    OUT = OUT.concat("}", NEWLINE);
+
+    // Output Yii migration script
+    fsPath.writeFile(outfile, OUT, function (err) {
+        if (err) {
+            return console.log(err);
+        }
+    });
+}
