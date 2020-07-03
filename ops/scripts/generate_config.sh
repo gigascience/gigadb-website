@@ -142,9 +142,9 @@ fi
 # fi
 
 # Install NodeJS for running javascript
-apk add --update nodejs npm
+apk add --update nodejs npm csv-parser
 echo $(which node)
-node /var/www/ops/scripts/test.js
+node /var/www/ops/scripts/csv_yiimigration.js
 
 echo "done."
 exit 0
