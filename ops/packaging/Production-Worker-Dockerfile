@@ -258,7 +258,7 @@ RUN mkdir -p /etc/container-boot.d && \
 # Add application code
 
 COPY fuw/app/common/models/Upload.php /app/common/models/
-COPY gigadb/app/worker/file-worker /gigadb-apps/worker/
+COPY gigadb/app/worker/file-worker /gigadb-apps/worker/file-worker/
 COPY files/data/fileformats.json files/data/filetypes.json /var/www/files/
 
 
