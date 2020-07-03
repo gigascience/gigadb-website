@@ -12,11 +12,11 @@ set +a
 
 printf "\nRunning PHPUnit functional tests\n"
 
-#echo "Preparing the database for functional tests..."
-#exec 3>&1
-#exec 1> /dev/null
-#pg_restore -h $GIGADB_HOST -U $GIGADB_USER -d $GIGADB_DB --clean --no-owner -v /var/www/sql/gigadb_testdata.pgdmp || true
-#exec 1>&3
+echo "Preparing the database for functional tests..."
+exec 3>&1
+exec 1> /dev/null
+pg_restore -h $GIGADB_HOST -U $GIGADB_USER -d $GIGADB_DB --clean --no-owner -v /var/www/sql/gigadb_testdata.pgdmp || true
+exec 1>&3
 
 #./bin/phpunit protected/tests/functional  --verbose --configuration protected/tests/phpunit.xml --no-coverage
 ./bin/phpunit protected/tests/functional_test  --verbose  --debug --configuration protected/tests/phpunit.xml --no-coverage
