@@ -142,8 +142,6 @@ services:
       - "dockerhost:${staging_private_ip}"    
 
   gigadb-worker:
-    environment:
-      YII_ENV: "staging"
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:latest
     volumes:
       # directories used for filedrop files
