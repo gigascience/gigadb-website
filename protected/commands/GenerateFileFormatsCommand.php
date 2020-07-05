@@ -8,7 +8,7 @@
 class GenerateFileFormatsCommand extends CConsoleCommand {
 	
 	public function getHelp() {
-        return 'Usage: yiic generatefiletypes';
+        return 'Usage for generating file formats JSON feed: yiic generatefileformats';
     }
 
     public function run($args) {
