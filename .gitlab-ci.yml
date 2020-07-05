@@ -497,8 +497,6 @@ deploy:
     # FUW specific steps
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d fuw-worker gigadb-worker
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web /usr/local/bin/enable_sites fuw-backend.$GIGADB_ENV.http fuw-frontend.$GIGADB_ENV.http
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T fuw-worker bash -c "journalctl -xn"
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T gigadb-worker bash -c "journalctl -xn"
   dependencies:
     - build
   environment:

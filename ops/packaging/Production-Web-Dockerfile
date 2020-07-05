@@ -29,5 +29,4 @@ RUN apk --no-cache add openssl && \
     mkdir -vp /etc/ssl/nginx/certs && chmod 700 /etc/ssl/nginx/certs && \
     mkdir -vp /var/www/.le && \
     openssl dhparam -out /etc/ssl/nginx/dhparam.pem 2048 && \
-    mkdir -vp /etc/nginx/sites-enabled && \
-    ln -s /etc/nginx/sites-available/gigadb.${GIGADB_ENV}.http.conf /etc/nginx/sites-enabled/http.server.conf
+    mkdir -vp /etc/nginx/sites-enabled
