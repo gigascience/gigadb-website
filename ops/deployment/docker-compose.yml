@@ -481,6 +481,8 @@ services:
 
 
   console:
+    environment:
+      GIGADB_ENV: $GIGADB_ENV
     build:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
