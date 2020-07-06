@@ -41,7 +41,7 @@ class AdminSiteAccessTest extends FunctionalTesting
         $out = $this->session->getPage()->getContent();
         //print($out);
         //there is no "Administration Page' can be found in the $out content.
-        $this->assertFalse(strpos($out, "Adminstration Page"), "Ordinary User cannot visit admin page");
+        $this->assertFalse(strpos($out, "Administration Page"), "Ordinary User cannot visit admin page");
 
     }
 
