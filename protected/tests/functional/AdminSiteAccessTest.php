@@ -35,8 +35,11 @@ class AdminSiteAccessTest extends FunctionalTesting
 
         $url = "http://gigadb.dev/site/admin";
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Login");
-        //$current_site = $this->getCurrentUrl();
-        //print($current_site);
+
+        // To confirm User has been re-directed to /site/login
+        $current_site = $this->getCurrentUrl();
+        print($current_site); // expect: "http://gigadb.dev/site/login"
+
         $this->session->visit($url);
         $out = $this->session->getPage()->getContent();
         //print($out);
