@@ -8,7 +8,7 @@ class AdminSiteAccessTest extends FunctionalTesting
     use BrowserSignInSteps;
     use BrowserPageSteps;
 
-    public function testItShouldBeDisplayedToUsersWithAdminRole ()
+    public function testItShouldBeDisplayedToUsersWithAdminRole()
     {
         // Logged in as Admin, and can visit to /site/admin page.
         // 2 assertions: 2 passes.
@@ -17,7 +17,7 @@ class AdminSiteAccessTest extends FunctionalTesting
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Administration Page");
     }
 
-    public function testItShouldNotBeDisplayedToUsersWithUserRole ()
+    public function testItShouldNotBeDisplayedToUsersWithUserRole()
     {
         // Logged in as User, but cannot visit to /site/admin page.
         // 2 assertions: login pass, visit to admin page fail as assertTrue that the content has "Error 403".
@@ -27,7 +27,7 @@ class AdminSiteAccessTest extends FunctionalTesting
 
     }
 
-    public function testItShouldNotBeDisplayedToOrdinaryUsers ()
+    public function testItShouldNotBeDisplayedToOrdinaryUsers()
     {
         // No login was tested.
         // 2 assertions, visit to /site/admin, but would be redirected to /site/login, confirmed by seeing "Login in" as assertTrue is true.
