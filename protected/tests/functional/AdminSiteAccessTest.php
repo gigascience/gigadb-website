@@ -38,11 +38,13 @@ class AdminSiteAccessTest extends FunctionalTesting
 
         // To confirm User has been re-directed to /site/login
         $current_site = $this->getCurrentUrl();
-        print($current_site); // expect: "http://gigadb.dev/site/login"
+        //print($current_site);
+        $this->assertTrue($current_site=="http://gigadb.dev/site/login", "The current site has not been re-directed.");
 
         $this->session->visit($url);
         $out = $this->session->getPage()->getContent();
         //print($out);
+
         //there is no "Administration Page' can be found in the $out content.
         $this->assertFalse(strpos($out, "Administration Page"), "Ordinary User can visit admin page");
 
