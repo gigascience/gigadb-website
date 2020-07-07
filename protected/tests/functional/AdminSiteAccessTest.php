@@ -1,6 +1,7 @@
 <?php
 /**
- * Functional test for only logged in admin user can access /site/admin.
+ * Functional test for only logged in as admin user can access Administration Page.
+ *
  */
 
 class AdminSiteAccessTest extends FunctionalTesting
@@ -8,48 +9,54 @@ class AdminSiteAccessTest extends FunctionalTesting
     use BrowserSignInSteps;
     use BrowserPageSteps;
 
+    /**
+     * To test admin user can login and access Administration Page.
+     *
+     * @uses \BrowserSignInSteps::loginToWebSiteWithSessionAndCredentialsThenAssert()
+     * @uses \BrowserPageSteps::visitPageWithSessionAndUrlThenAssertContentHasOrNull()
+     *
+     */
     public function testItShouldBeDisplayedToUsersWithAdminRole()
     {
-        // Logged in as Admin, and can visit to /site/admin page.
-        // 2 assertions: 2 passes.
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org","gigadb","Joe's GigaDB Page");
         $url = "http://gigadb.dev/site/admin";
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Administration Page");
     }
 
+    /**
+     * To test registered user can login, but cannot access Administration Page.
+     *
+     * @uses \BrowserSignInSteps::loginToWebSiteWithSessionAndCredentialsThenAssert()
+     * @uses \BrowserPageSteps::visitPageWithSessionAndUrlThenAssertContentHasOrNull()
+     *
+     */
     public function testItShouldNotBeDisplayedToUsersWithUserRole()
     {
-        // Logged in as User, but cannot visit to /site/admin page.
-        // 2 assertions: login pass, visit to admin page fail as assertTrue that the content has "Error 403".
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("user@gigadb.org","gigadb","John's GigaDB Page");
         $url = "http://gigadb.dev/site/admin";
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Error 403");
-
     }
 
+    /**
+     * To test ordinary user fails to access Administration Page and would be re-directed to Login page.
+     *
+     * @uses \BrowserPageSteps::visitPageWithSessionAndUrlThenAssertContentHasOrNull()
+     * @uses \BrowserPageSteps::getCurrentUrl()
+     *
+     */
     public function testItShouldNotBeDisplayedToOrdinaryUsers()
     {
-        // No login was tested.
-        // 2 assertions, visit to /site/admin, but would be redirected to /site/login, confirmed by seeing "Login in" as assertTrue is true.
-        // Fail to get "Administration Page" from the content of /site/admin, so assertFalse is false.
-
         $url = "http://gigadb.dev/site/admin";
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Login");
 
         // To confirm User has been re-directed to /site/login
         $current_site = $this->getCurrentUrl();
-        //print($current_site);
-        $this->assertTrue($current_site=="http://gigadb.dev/site/login", "The current site has not been re-directed.");
+        $this->assertTrue($current_site == "http://gigadb.dev/site/login", "The current site has not been re-directed.");
 
         $this->session->visit($url);
         $out = $this->session->getPage()->getContent();
-        //print($out);
 
-        //there is no "Administration Page' can be found in the $out content.
-        $this->assertFalse(strpos($out, "Administration Page"), "Ordinary User can visit admin page");
-
+        $this->assertFalse(strpos($out, "Administration Page"), "Ordinary User can visit admin page.");
     }
-
 }
-
 ?>
