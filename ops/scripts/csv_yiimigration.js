@@ -163,20 +163,43 @@ for(var a = 0; a < files.length; a ++) {
     out = out.concat("class ", getMigrationFileName(tableName), " extends CDbMigration", NEWLINE);
     out = out.concat("{", NEWLINE);
     out = out.concat(INDENT, "public function safeUp()", NEWLINE, "    {", NEWLINE);
-    out = out.concat(INDENT, INDENT, "$this->insert('", tableName, "', array(", NEWLINE);
 
     var csvHeaderData = fs.readFileSync(file_path, 'utf8');
     var csvData = processHeader(csvHeaderData);
     let csvDataStrArr = csvStringToArray(csvData);
+    console.log("No. arrays in csvDataStrArr: ", csvDataStrArr.length);
+    console.log("Length of csv data: ", csvDataStrArr[0].length);
+    console.log("No. column names: ", colNames.length);
 
-    for(var x = 0; x < csvDataStrArr.length; x++) {
-        var row = csvDataStrArr[x];
-        for(var i = 0; i < colNames.length; i++) {
-            // Put id values in array
-            if(colNames[i] === "id") {
-                ids.push(row[i]);
-            }
-            out = out.concat(INDENT, INDENT, INDENT, "'", colNames[i], "' => '", row[i], "',", NEWLINE);
+
+    var i = 0;
+    var x = 0;
+    for(var x = 0; x < csvDataStrArr[0].length; x++) {
+        console.log("csvDataStrArr x is: ", x);
+        console.log("colNames i is: ", i);
+
+        // Put id values in array
+        if(colNames[i] === "id") {
+            ids.push(csvDataStrArr[0][x]);
+        }
+
+        if (i === 0) {
+            console.log(INDENT, INDENT, "$this->insert('", tableName, "', array(", NEWLINE);
+            out = out.concat(INDENT, INDENT, "$this->insert('", tableName, "', array(", NEWLINE);
+        }
+
+        if (i === colNames.length-1) {
+            console.log(x, ": ", colNames[i], " => ",csvDataStrArr[0][x]);
+            out = out.concat(INDENT, INDENT, INDENT, "'", colNames[i], "' => '", csvDataStrArr[0][x], "',", NEWLINE);
+            console.log(i, ": ", INDENT, INDENT, "));", NEWLINE);
+            out = out.concat(INDENT, INDENT, "));", NEWLINE);
+            i = 0;
+        }
+        else {
+            console.log(x, ": ", colNames[i], " => ",csvDataStrArr[0][x]);
+            out = out.concat(INDENT, INDENT, INDENT, "'", colNames[i], "' => '", csvDataStrArr[0][x], "',", NEWLINE);
+            i++;
+
         }
     }
 
@@ -189,7 +212,7 @@ for(var a = 0; a < files.length; a ++) {
     }
     out = out.concat(");", NEWLINE);
     out = out.concat(INDENT, INDENT, "foreach ($ids as $id) {", NEWLINE,
-        INDENT, INDENT, INDENT, "$this->delete('",tableName, "', 'id=:id', array(':id' => $id));", NEWLINE,
+        INDENT, INDENT, INDENT, "$this->delete('", tableName, "', 'id=:id', array(':id' => $id));", NEWLINE,
         INDENT, INDENT, "}", NEWLINE);
     out = out.concat(INDENT, "}", NEWLINE);
     out = out.concat("}", NEWLINE);
