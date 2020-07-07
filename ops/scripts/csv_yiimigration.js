@@ -121,8 +121,10 @@ const getMigrationFileName = tableName => {
  */
 const processHeader = csv => {
     var lines = csv.split("\n");
+    console.log("No. lines in processHeader(): ",  lines.length);
     colNames = lines[0].split(",");
     lines.shift();
+    console.log("No. lines after removing header row: ",  lines.length);
     return lines;
 };
 
@@ -158,7 +160,7 @@ for(var a = 0; a < files.length; a ++) {
 
     out = out.concat("<?php", NEWLINE);
     out = out.concat(NEWLINE);
-    out = out.concat("class ", getMigrationFileName(tableName), "_tab extends CDbMigration", NEWLINE);
+    out = out.concat("class ", getMigrationFileName(tableName), " extends CDbMigration", NEWLINE);
     out = out.concat("{", NEWLINE);
     out = out.concat(INDENT, "public function safeUp()", NEWLINE, "    {", NEWLINE);
     out = out.concat(INDENT, INDENT, "$this->insert('", tableName, "', array(", NEWLINE);
