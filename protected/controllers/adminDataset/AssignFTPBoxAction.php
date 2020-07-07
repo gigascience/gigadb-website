@@ -23,7 +23,7 @@ class AssignFTPBoxAction extends CAction
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => \User::model()->findByPk(344), //admin user
+            "requester" => User::model()->findByPk(Yii::app()->user->id), //admin user
             "identifier"=> $id,
             "dataset" => new DatasetDAO(["identifier" => $id]),
             "dryRunMode"=>false,

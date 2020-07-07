@@ -31,6 +31,25 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 		$sth = null;
 	}
 
+
+	/**
+	 * Change a user's role in the database
+	 *
+	 * to be used with gigadb database
+	 *
+	 * @param PDO $dbh
+	 * @param string $role
+	 * @param string $email
+	 */
+	public function changeUserRole(PDO $dbh, string $role, string $email): void
+	{
+		$sql = "update gigadb_user set role=:role where email=:email";
+		$sth = $dbh->prepare($sql);
+		$sth->bindValue(":role", $role);
+		$sth->bindValue(":email", $email);
+		$sth->execute();
+		$sth = null;
+	}
 	/**
 	 * tear down user in the database
 	 *
