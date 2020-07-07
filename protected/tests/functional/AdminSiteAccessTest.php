@@ -18,7 +18,7 @@ class AdminSiteAccessTest extends FunctionalTesting
      */
     public function testItShouldBeDisplayedToUsersWithAdminRole()
     {
-        $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org","gigadb","Joe's GigaDB Page");
+        $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org", "gigadb", "Joe's GigaDB Page");
         $url = "http://gigadb.dev/site/admin";
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Administration Page");
     }
@@ -32,7 +32,7 @@ class AdminSiteAccessTest extends FunctionalTesting
      */
     public function testItShouldNotBeDisplayedToUsersWithUserRole()
     {
-        $this->loginToWebSiteWithSessionAndCredentialsThenAssert("user@gigadb.org","gigadb","John's GigaDB Page");
+        $this->loginToWebSiteWithSessionAndCredentialsThenAssert("user@gigadb.org", "gigadb", "John's GigaDB Page");
         $url = "http://gigadb.dev/site/admin";
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Error 403");
     }
@@ -60,3 +60,4 @@ class AdminSiteAccessTest extends FunctionalTesting
     }
 }
 ?>
+
