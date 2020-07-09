@@ -51,6 +51,8 @@ services:
       - web-tier
     extra_hosts:
       - "dockerhost:${staging_private_ip}"
+      - "fuw-admin-api:${staging_private_ip}"
+      - "fuw-public-api:${staging_private_ip}"
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
@@ -179,6 +181,8 @@ services:
       - web-tier
     extra_hosts:
       - "dockerhost:${staging_private_ip}"
+      - "fuw-admin-api:${staging_private_ip}"
+      - "fuw-public-api:${staging_private_ip}"      
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
