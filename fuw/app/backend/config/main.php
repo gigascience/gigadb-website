@@ -45,6 +45,18 @@ $config =  [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                // [
+                //     'class' => 'codemix\streamlog\Target',
+                //     'url' => 'php://stdout',
+                //     'levels' => ['info','trace'],
+                //     'logVars' => [],
+                // ],
+                [
+                    'class' => 'codemix\streamlog\Target',
+                    'url' => 'php://stderr',
+                    'levels' => ['error', 'warning'],
+                    'logVars' => [],
+                ],                
             ],
         ],
         'errorHandler' => [
