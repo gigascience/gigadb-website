@@ -32,7 +32,7 @@
                                 <div class="row">
                                     <div class="span3"><?= Yii::t('app','File Description') ?></div>
                                     <div class="span1"><input id="description" type="checkbox" name="setting[]" value="description"
-                                        <?= (in_array("description", $setting))? "" : "checked"?> />
+                                        <?= (in_array("description", $setting))? "checked" : ""?> />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -77,7 +77,7 @@
                                 <div class="row">
                                     <div class="span3"><?= Yii::t('app','File Attributes') ?></div>
                                     <div class="span1"><input id="attribute" type="checkbox" name="setting[]" value="attribute"
-                                    <?= (in_array("attribute", $setting))? "" : "checked"?> />
+                                    <?= (in_array("attribute", $setting))? "checked" : ""?> />
                                     </div>
                                 </div>
                             </div>
