@@ -39,38 +39,15 @@ function elog() {
   fi
 }
 
-OPTIND=1
-while getopts ":fsVG" opt; do
-  case $opt in
-  f)
-    edebug "Setting input file: $3"
-    INPUT_FILE=$3
-    if ! test -f "$INPUT_FILE"; then
-      eerror "${INPUT_FILE} does not exist!!"
-    fi
-    ;;
-  s)
-    verbosity=$silent_lvl
-    edebug "-s specified: Silent mode"
-    ;;
-  V)
-    verbosity=$inf_lvl
-    edebug "-V specified: Verbose mode"
-    ;;
-  G)
-    verbosity=$dbg_lvl
-    edebug "-G specified: Debug mode"
-    ;;
-  esac
-done
+# Set verbosity level to debug for logging
+verbosity=$dbg_lvl
 
 #########################
 # Set up and sanity check
 #########################
 
-# Initialise variables
-#DATASET_IDS=('41' '27' '58' '196' '40')
-DATASET_IDS=('41')
+# Initialise dataset ids from command line arguments as an array
+DATASET_IDS=("$@")
 
 # Set working directory to this script directory
 WD=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
@@ -86,26 +63,21 @@ einfo "PROJECT_DIR: "$PROJECT_DIR
 einfo "WORKING DIR: "$WD
 einfo "OUTPUT_DIR: "$OUTPUT_DIR
 
-myArray=( "$@" )
-echo $myArray
-
 ##############
 # Main program
 ##############
 
 output_sql_condition1() {
   foo=""
-  pos=$(( ${#DATASET_IDS[*]} - 1 ))
+  pos=$((${#DATASET_IDS[*]} - 1))
   last=${DATASET_IDS[$pos]}
 
-  for ID in "${DATASET_IDS[@]}"
-  do
+  for ID in "${DATASET_IDS[@]}"; do
     bar="id = $ID"
 
-    if [[ $ID == "$last" ]]
-    then
-       foo=$foo" ${bar}"
-       echo "$foo"
+    if [[ $ID == "$last" ]]; then
+      foo=$foo" ${bar}"
+      echo "$foo"
     else
       foo=$foo" ${bar} or"
     fi
@@ -117,17 +89,15 @@ edebug "SQL sub-string for SELECT query: ${out_ids}"
 
 output_sql_condition2() {
   foo=""
-  pos=$(( ${#DATASET_IDS[*]} - 1 ))
+  pos=$((${#DATASET_IDS[*]} - 1))
   last=${DATASET_IDS[$pos]}
 
-  for ID in "${DATASET_IDS[@]}"
-  do
+  for ID in "${DATASET_IDS[@]}"; do
     bar="dataset_id = $ID"
 
-    if [[ $ID == "$last" ]]
-    then
-       foo=$foo" ${bar}"
-       echo "$foo"
+    if [[ $ID == "$last" ]]; then
+      foo=$foo" ${bar}"
+      echo "$foo"
     else
       foo=$foo" ${bar} or"
     fi
@@ -249,7 +219,7 @@ EOF
 
 einfo "Creating: search.csv"
 PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb gigadbv3_20200210 <<EOF
-  \copy (select * from "search" where user_id in (select submitter_id from dataset where $out_ids) or id in (select curator_id from dataset where $out_ids)) To '${OUTPUT_DIR}search.csv' With (FORMAT CSV, HEADER)
+  \copy (select * from "search" where user_id in (select submitter_id from dataset where $out_ids) or user_id in (select curator_id from dataset where $out_ids)) To '${OUTPUT_DIR}search.csv' With (FORMAT CSV, HEADER)
 EOF
 
 einfo "Creating: dataset_sample.csv"
@@ -355,9 +325,4 @@ EOF
 einfo "Creating: rss_message.csv"
 PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb gigadbv3_20200210 <<EOF
   \copy (select * from rss_message) To '${OUTPUT_DIR}rss_message.csv' With (FORMAT CSV, HEADER)
-EOF
-
-einfo "Creating: search.csv"
-PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb gigadbv3_20200210 <<EOF
-  \copy (select * from search) To '${OUTPUT_DIR}search.csv' With (FORMAT CSV, HEADER)
 EOF
