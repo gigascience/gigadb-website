@@ -16,6 +16,8 @@ COPY js /var/www/js
 COPY less /var/www/less
 COPY style-guide /var/www/style-guide
 
+COPY fuw/app /app
+
 COPY ops/configuration/nginx-conf/sites/${GIGADB_ENV} /tmp/sites-available/
 ARG FIX_SITE_CONFIGS=false
 RUN if [ ${FIX_SITE_CONFIGS} = true ]; then \
