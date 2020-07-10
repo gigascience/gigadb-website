@@ -160,7 +160,20 @@ for(var a = 0; a < files.length; a ++) {
                 ids.push(jsonData.data[t][field]);
             }
 
-            out = out.concat(INDENT, INDENT, INDENT, "'", field, "' => '", jsonData.data[t][field], "',", NEWLINE);
+            var value = jsonData.data[t][field];
+
+            if(field === "password") {
+                out = out.concat(INDENT, INDENT, INDENT, "'", field, "' => 'gigadb',", NEWLINE);
+            }
+            else if (value.length === 0) {  // Deal with fields having empty values
+                if(h === jsonData.meta.fields.length-1) {  // if field is last one in jsonData.meta.fields array
+                    out = out.concat(INDENT, INDENT, "));", NEWLINE);
+                }
+                continue;
+            }
+            else {
+                out = out.concat(INDENT, INDENT, INDENT, "'", field, "' => '", jsonData.data[t][field], "',", NEWLINE);
+            }
 
             if(h === jsonData.meta.fields.length-1) {
                 out = out.concat(INDENT, INDENT, "));", NEWLINE);
