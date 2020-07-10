@@ -2,16 +2,19 @@
 
 class m200528_052407_create_yiisession_tab extends CDbMigration
 {
-    public function safeUp()
+public function up()
     {
-        $this->execute("CREATE TABLE YiiSession (
-            id character varying(32) NOT NULL,
-            expire integer,
-            data bytea);");
+        Yii::app()->db->createCommand()->createTable('YiiSession', array(
+            'id'=>'CHAR(32) PRIMARY KEY',
+            'expire'=> 'integer',
+            'data'=> 'BYTEA'
+        ));
     }
 
-    public function safeDown()
+    public function down()
     {
-        $this->dropTable('YiiSession');
+        // YiiSession table is essential
+        echo "m200528_052407_create_yiisession_tab does not support migration down.\n";
+        return false;
     }
 }
