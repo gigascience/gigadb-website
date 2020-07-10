@@ -18,7 +18,7 @@ class SmokeTestCommand extends CConsoleCommand {
     	echo "Creating smoke test data...".PHP_EOL;
     	// Create a test author
     	$sql = "insert into gigadb_user(id, email, password, first_name, last_name, affiliation, role, is_activated, newsletter, previous_newsletter_state, facebook_id, twitter_id, linkedin_id, google_id, username, orcid_id, preferred_link) 
-values(9999,'joy_fox@gigadb.org','5a4f75053077a32e681f81daa8792f95','Joy','Fox','BGI','user','t','f','t',NULL,NULL,NULL,NULL,'joy_fox@gigadb.org',NULL,'EBI')";
+values(9999,'gigadb-smoke-test-user@rijam.sent.as','5a4f75053077a32e681f81daa8792f95','Joy','Fox','BGI','user','t','f','t',NULL,NULL,NULL,NULL,'gigadb-smoke-test-user@rijam.sent.as',NULL,'EBI')";
 
 		Yii::app()->db->createCommand($sql)->execute();
     	// Create a test dataset

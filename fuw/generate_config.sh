@@ -91,10 +91,15 @@ VARS=''
 envsubst $VARS < $SOURCE > $TARGET
 
 # generate config for Yii2 main configs in FUW webapps
-
-SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/main-local.php.dist
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/production/main-local.php.dist
 TARGET=${APP_SOURCE}/fuw/app/common/config/main-local.php
-VARS='$FUW_DB_HOST:$FUW_DB_NAME:$FUW_DB_USER:$FUW_DB_PASSWORD'
+VARS='$FUW_DB_HOST:$FUW_DB_NAME:$FUW_DB_USER:$FUW_DB_PASSWORD:$REMOTE_SMTP_HOST:$REMOTE_SMTP_PORT:$REMOTE_SMTP_USERNAME:$REMOTE_SMTP_PASSWORD'
+else
+    SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/main-local.php.dist
+    TARGET=${APP_SOURCE}/fuw/app/common/config/main-local.php
+    VARS='$FUW_DB_HOST:$FUW_DB_NAME:$FUW_DB_USER:$FUW_DB_PASSWORD'
+fi
 envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/console/main-local.php.dist
