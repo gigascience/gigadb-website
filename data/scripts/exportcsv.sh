@@ -264,7 +264,7 @@ EOF
 
 einfo "Creating: attribute.csv"
 PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb gigadbv3_20200210 <<EOF
-  \copy (select * from attribute where id in (select attribute_id from sample_attribute where sample_id in (select sample_id from dataset_sample where $out_dataset_ids))) To '${OUTPUT_DIR}attribute.csv' With (FORMAT CSV, HEADER)
+  \copy (select * from attribute where id=(select attribute_id from sample_attribute where sample_id in (select sample_id from dataset_sample where $out_dataset_ids)) or id=(select distinct attribute_id from file_attributes where file_id in (select id from file where $out_dataset_ids))) To '${OUTPUT_DIR}attribute.csv' With (FORMAT CSV, HEADER)
 EOF
 
 einfo "Creating: file.csv"
