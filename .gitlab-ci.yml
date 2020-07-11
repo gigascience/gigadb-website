@@ -338,7 +338,7 @@ build:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
+    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: build for production
   allow_failure: false
@@ -436,7 +436,7 @@ deploy:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
+    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: deployment
   allow_failure: false
@@ -516,7 +516,7 @@ teardown:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
+    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: operation
   script:
@@ -552,7 +552,7 @@ stop:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
+    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: operation
   script:
@@ -588,7 +588,7 @@ start:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
+    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: operation
   script:
@@ -628,7 +628,7 @@ top:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
+    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: operation
   script:
