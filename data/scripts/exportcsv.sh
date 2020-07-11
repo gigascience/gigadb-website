@@ -211,6 +211,9 @@ einfo "Creating: gigadb_user.csv"
 PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb gigadbv3_20200210 <<EOF
   \copy (SELECT * FROM gigadb_user WHERE id IN (SELECT submitter_id FROM dataset WHERE $out_ids) or id IN (SELECT curator_id FROM dataset WHERE $out_ids)) To '${OUTPUT_DIR}gigadb_user.csv' With (FORMAT CSV, HEADER)
 EOF
+# Append 2 rows into gigadb_user.csv to provide test user and admin accounts
+echo ",admin@gigadb.org,5a4f75053077a32e681f81daa8792f95,Joe,Bloggs,BGI,admin,true,false,true,,,,,admin@gigadb.org,,EBI" >> ${OUTPUT_DIR}gigadb_user.csv
+echo ",user@gigadb.org,5a4f75053077a32e681f81daa8792f95,John,Smith,BGI,user,true,false,true,,,,,user@gigadb.org,,EBI" >> ${OUTPUT_DIR}gigadb_user.csv
 
 einfo "Creating: author.csv"
 PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb gigadbv3_20200210 <<EOF
