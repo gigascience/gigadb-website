@@ -23,7 +23,8 @@
          "twig/twig": "~v1.42.0",
          "phpoffice/phpspreadsheet": "^1.10",
          "creocoder/yii2-flysystem": "~0.9.0",
-         "ramsey/uuid": "^3.9.0"
+         "ramsey/uuid": "^3.9.0",
+         "neam/yii-streamlog": "^1.0.0"
     },
     "require-dev": {
         "behat/behat":  "^3.5",
