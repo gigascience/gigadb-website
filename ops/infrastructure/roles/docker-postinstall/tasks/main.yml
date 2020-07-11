@@ -151,7 +151,7 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "{{ gigadb_environment }}_private_ip"
+      key: "remote_private_ip"
       value: "{{ ansible_eth0.ipv4.address }}"
     status_code:
       - 201
@@ -160,7 +160,7 @@
 
 - name: copy the private ip address to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_private_ip"
+    url: "{{ gitlab_url }}/variables/remote_private_ip"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -180,7 +180,7 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "{{ gigadb_environment }}_public_ip"
+      key: "remote_public_ip"
       value: "{{ inventory_hostname }}"
     status_code:
       - 201
@@ -189,7 +189,7 @@
 
 - name: copy the public ip address to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_public_ip"
+    url: "{{ gitlab_url }}/variables/remote_public_ip"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -199,3 +199,4 @@
     status_code: 200
   register: public_ip_put_outcome
   when: public_ip_post_outcome.status == 400
+
