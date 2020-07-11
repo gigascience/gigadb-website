@@ -11,7 +11,7 @@ return [
             'useFileTransport' => false,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'encryption' => 'tls',
+                'encryption' => 'ssl',
                 'host' => "$REMOTE_SMTP_HOST",
                 'port' => "$REMOTE_SMTP_PORT",
                 'username' => "$REMOTE_SMTP_USERNAME",
