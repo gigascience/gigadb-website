@@ -162,8 +162,9 @@ for(var a = 0; a < files.length; a ++) {
 
             var value = jsonData.data[t][field];
 
+            // Hard-code encrypted user password into migration script for testing purposes
             if(field === "password") {
-                out = out.concat(INDENT, INDENT, INDENT, "'", field, "' => 'gigadb',", NEWLINE);
+                out = out.concat(INDENT, INDENT, INDENT, "'", field, "' => '5a4f75053077a32e681f81daa8792f95',", NEWLINE);
             }
             else if (value.length === 0) {  // Deal with fields having empty values
                 if(h === jsonData.meta.fields.length-1) {  // if field is last one in jsonData.meta.fields array
