@@ -59,9 +59,11 @@ $config = [
         'log' => [
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => 'codemix\streamlog\Target',
+                    'url' => 'php://stderr',
                     'levels' => ['error', 'warning'],
-                ],
+                    'logVars' => [],
+                ], 
             ],
         ],
     ],

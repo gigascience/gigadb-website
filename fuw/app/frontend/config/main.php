@@ -28,9 +28,11 @@ $config = [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => 'codemix\streamlog\Target',
+                    'url' => 'php://stderr',
                     'levels' => ['error', 'warning'],
-                ],
+                    'logVars' => [],
+                ], 
             ],
         ],
         'errorHandler' => [
