@@ -172,7 +172,11 @@ for(var a = 0; a < files.length; a ++) {
                 continue;
             }
             else {
-                out = out.concat(INDENT, INDENT, INDENT, "'", field, "' => '", jsonData.data[t][field], "',", NEWLINE);
+                var field_value_str = jsonData.data[t][field];
+                // Deal with single quote characters in values which causes
+                // problems when running Yii migrations
+                field_value_str = field_value_str.split("'").join("\\'");
+                out = out.concat(INDENT, INDENT, INDENT, "'", field, "' => '", field_value_str, "',", NEWLINE);
             }
 
             if(h === jsonData.meta.fields.length-1) {
