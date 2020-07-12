@@ -6,7 +6,7 @@ return [
 		"cafile" => "$cafile",
 		"local_cert" => "$local_cert",
 		"local_pk" => "$local_pk",
-		"peer_name" => "$peer_name"
+		"peer_name" => "$peer_name",
 		"verify_peer" => false,
       	"verify_peer_name" => false,
       	"allow_self_signed" => false
