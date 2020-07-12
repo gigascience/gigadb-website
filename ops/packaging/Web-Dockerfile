@@ -43,7 +43,6 @@ RUN if [ ${FIX_SITE_CONFIGS} = true ]; then \
 	mkdir -vp /app/ && \
 	mv /tmp/proto-conf/* /app/ && \
 	mv /tmp/fuw-conf/* /app/ \
-
 ;fi
 
 RUN apk --no-cache add openssl && \
