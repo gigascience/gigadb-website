@@ -211,7 +211,17 @@ einfo "Creating: gigadb_user.csv"
 PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb gigadbv3_20200210 <<EOF
   \copy (SELECT * FROM gigadb_user WHERE id IN (SELECT submitter_id FROM dataset WHERE $out_ids) or id IN (SELECT curator_id FROM dataset WHERE $out_ids)) To '${OUTPUT_DIR}gigadb_user.csv' With (FORMAT CSV, HEADER)
 EOF
-# Append 2 rows into gigadb_user.csv to provide test user and admin accounts
+einfo "Replacing user email addresses with test gigasciencejournal.com account"
+count=0
+while IFS=, read -r id email password; do
+  if [[ "$count" -ne 0 ]]  # Skip header line in CSV file
+  then
+    new_email=test+"$id"@gigasciencejournal.com
+    sed -i '' "s/${email}/${new_email}/g" "${OUTPUT_DIR}gigadb_user.csv"
+  fi
+  (( count=count+1 ))
+done < ${OUTPUT_DIR}gigadb_user.csv
+einfo "Append 2 rows to provide test user@gigadb.org and admin@gigadb.org accounts"
 echo ",admin@gigadb.org,5a4f75053077a32e681f81daa8792f95,Joe,Bloggs,BGI,admin,true,false,true,,,,,admin@gigadb.org,,EBI" >> ${OUTPUT_DIR}gigadb_user.csv
 echo ",user@gigadb.org,5a4f75053077a32e681f81daa8792f95,John,Smith,BGI,user,true,false,true,,,,,user@gigadb.org,,EBI" >> ${OUTPUT_DIR}gigadb_user.csv
 
