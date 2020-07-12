@@ -140,6 +140,7 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     cafile="/etc/certs/ca.pem"
     local_cert="/etc/certs/cert.pem"
     local_pk="/etc/certs/key.pem"
+    peer_name=$remote_public_ip
 fi
 export REMOTE_DOCKER_HOSTNAME
 echo "Writing REMOTE_DOCKER_HOSTNAME to params-local as '$REMOTE_DOCKER_HOSTNAME'"
@@ -147,8 +148,9 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     export $cafile
     export $local_cert
     export $local_pk
+    export $peer_name
     SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/production/params-local.php.dist
-    VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$cafile:$local_cert:$local_pk'
+    VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$cafile:$local_cert:$local_pk:$peer_name'
 else
     SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/params-local.php.dist
     VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME'
