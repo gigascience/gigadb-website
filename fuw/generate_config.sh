@@ -135,19 +135,19 @@ then
 else
 	REMOTE_DOCKER_HOSTNAME="tcp://$default_route_via_host:2375"
 fi
-if [ $GIGADB_ENV == "staging" ];then
-    REMOTE_DOCKER_HOSTNAME=tcp://$staging_public_ip:2376
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+    REMOTE_DOCKER_HOSTNAME=tcp://$remote_public_ip:2376
     cafile="/etc/certs/ca.pem"
     local_cert="/etc/certs/cert.pem"
     local_pk="/etc/certs/key.pem"
 fi
 export REMOTE_DOCKER_HOSTNAME
 echo "Writing REMOTE_DOCKER_HOSTNAME to params-local as '$REMOTE_DOCKER_HOSTNAME'"
-if [ $GIGADB_ENV == "staging" ];then
-    export cafile
-    export local_cert
-    export local_pk
-    SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/params-local.php.staging.dist
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+    export $cafile
+    export $local_cert
+    export $local_pk
+    SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/production/params-local.php.dist
     VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$cafile:$local_cert:$local_pk'
 else
     SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/params-local.php.dist
