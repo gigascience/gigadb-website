@@ -142,9 +142,9 @@ fi
 # fi
 
 # Install NodeJS for running javascript
-apk add --update nodejs npm csv-parser
-echo $(which node)
-node /var/www/ops/scripts/csv_yiimigration.js
+echo "Converting CSV to Yii migrations"
+apk add --update nodejs npm
+node /var/www/ops/scripts/csv_yii_migration.js
 
 echo "done."
 exit 0
