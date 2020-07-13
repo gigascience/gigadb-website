@@ -1,0 +1,7 @@
+id,name,description,edam_ontology_id
+1,TEXT,"(.readme, .text, .txt) - a text file",data_3671
+2,FASTA,"(.fa, .fasta, .chr, .seq, .cds, .pep, .scaffold, .scafseq, .fna, .ffn, .faa, .frn) A text-based format which begins with a single-line description, followed by lines of sequence data",format_1929
+3,PDF, (.pdf) - portable document format,format_3508
+5,GFF,"(.gff) - The General Feature Format (GFF) is used for describing genes and other features of DNA, RNA and protein sequences",format_2305
+6,UNKNOWN,any other file format not defined here,
+17,TAR, (.tar) - an archive containing other files,

@@ -1,0 +1,12 @@
+id,name,description,edam_ontology_id
+1,Readme,A text document describing the data/files available from the GigaDB FTP server for this dataset.,
+4,Coding sequence,Predcited protein-coding regions (CDS or exon) or open reading frames in nucleotide sequences.,operation_0436
+5,Protein sequence,"One or more protein sequences, possibly with associated annotation. Usually translations of coding region predictions.",data_2976
+6,Annotation,"This Is a broad concept and covers all files containing annotation of something, this could be sequence features, or image features or many other things. If possible a more specific type should be used.",none
+7,Other,to be used when no appropriate file type is available,none
+9,Genome sequence,"nucleotide sequence file, these could be filtered or raw, but usually GigaDB only hosts processed sequence files, the raw should be deposited in the SRA",data_2977
+41,Image,"Biological or biomedical data has been rendered into an image, typically for display on screen.",data_2968
+73,Repeat sequence,This includes long terminal repeats (LTRs); sequences (typically retroviral) directly repeated at both ends of a defined sequence and other types of repeating unit. Repetitive elements within a nucleic acid sequence.,topic_3126
+113,Script,"includes text files of command lines used to run software applications, as well as more complex scripts such as R, perl and python scripts.",
+125,Mixed archive,a compressed file containing a collection of data files of mixed types,none
+132,Sequence assembly,"An assembly of fragments of a (typically genomic) DNA sequence. Typically, an assembly is a collection of contigs (for example ESTs and genomic DNA fragments) that are ordered, aligned and merged. Annotation of the assembled sequence might be included.",data_0925
