@@ -1,9 +1,82 @@
 # Database setup
 
+Data for deploying GigaDB's PostgreSQL database is now kept in a collection of
+CSV files which are located in the `gigadb-website/data` directory. For example,
+the CSV files to deploy a database for development work are in `data/dev`:
+```
+$ pwd
+/path/to/gigadb-website/data/dev
+$ ls -lh
+alternative_identifiers.csv dataset_funder.csv          extdb.csv                   file_relationship.csv       manuscript.csv              rss_message.csv             type.csv
+attribute.csv               dataset_log.csv             external_link.csv           file_sample.csv             news.csv                    sample.csv                  unit.csv
+author.csv                  dataset_project.csv         external_link_type.csv      file_type.csv               prefix.csv                  sample_attribute.csv
+curation_log.csv            dataset_sample.csv          file.csv                    funder_name.csv             project.csv                 sample_experiment.csv
+dataset.csv                 dataset_type.csv            file_attributes.csv         gigadb_user.csv             publisher.csv               sample_rel.csv
+dataset_attributes.csv      exp_attributes.csv          file_experiment.csv         image.csv                   relation.csv                search.csv
+dataset_author.csv          experiment.csv              file_format.csv             link.csv                    relationship.csv            species.csv
+```
+
+Each file is named after the PostgreSQL table whose data can be found in CSV
+format in the file.
+
+## Creating CSV files
+
+These CSV files have been created using 
+`gigadb-website/data/scripts/export_csv.sh` which queries a production GigaDB 
+PostgreSQL database for data corresponding to a list of internal dataset ids. 
+These identifiers are used in a list of SQL SELECT commands to export data 
+associated with GigaDB datasets that the internal dataset ids correspond to:
+```
+$ pwd
+/path/to/gigadb-website
+# Execute script to export CSV data
+$ data/scripts/export_csv.sh 8 144 200 268
+```
+
+## Converting CSV files into Yii migration scripts
+
+The CSV files must be converted to Yii migration scripts before the data can be
+uploaded into a database. This is done automatically done as part of the config
+step:
+```
+$ docker-compose run --rm config            # generate the configuration using variables in .env, GitLab, then exit
+```
+
+This step executes `generate_config.sh` which now includes a step that
+
+
+--
+
 The local dev and production deployments of the GigaDB application have 
 discrepancies in their PostgreSQL database schemas. These differences need to be
 removed for development work. Rija suggested using Yii database migrations for
 instantiating a dev PostgreSQL database.
+
+--
+
+Postgresql can import and export CSV natively so why not exporting the data dump as a collection of CSV files?
+
+Then write some console command that uses phpspreadsheet and Faker's Person provider to replace name and email of authors and users before creating migration scripts or fixture files.
+
+It didn't occurred to me of doing the last step in an interactive tool, but so it seems that PHP Storm can load the CSV and apply a custom extractor that will do what I describe in the last step.
+
+I think we do update test data occassionally but not regularly, so an interactive tool could be enough. Especially, that the context we need to think of test data is when we code the automated tests which make the IDE the ideal place to do the processing.
+
+Also, the data editor in PHPStorm allow  manual edit of the spreadsheets if needed.
+
+https://www.jetbrains.com/help/phpstorm/working-with-the-data-editor.html
+
+Following up that line of thiniking, I was wondering whether it's preferable to maintain test data as CSV only in git.  We have some tests (acceptance) that expect the database to be in certain state (migrations) and other tests that load data fixtures for their test data (unit and functional).
+
+In both case, the test data needs to be  kept up-to-date. So if we keep CSV as the main source of truth, we can export to both fixtures for unit and functional tests, and migrations for acceptance tests in a particular environment.
+
+Going further, we could also keep the reference data as CSV and export them as migrations, fixtures and other formats:
+
+At the moment, the Vue.js application in File Upload Wizard needs to consume a json file for the list of formats and data types.  We could have a third custom extractor that would transform the reference data CSVs into JSON files. (at the moment, they are created with console commands, but an interactive data editor sounds preferable for the same reason stated above)
+
+
+Re custom data extractor: Javascript would be preferable to Groovy as in theory we can tap (to confirm) the vast library from NPM. (e.g: the javascript Faker is far more richer than it’s PHP counterpart) and we already use Javascript in the codebase.
+ 
 
 ## Notes
 

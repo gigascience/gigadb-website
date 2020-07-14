@@ -72,7 +72,10 @@ repeatedly.
 
 Some code changes are database schemas changes. You will need to run Yii migration to create postgresql database used by GigaDB as follows:
 ```
-$ docker-compose run --rm  application ./protected/yiic migrate --interactive=0
+# Create schema tables
+$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
+# Upload data into tables
+$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.dev --interactive=0
 ```
 
 You can then navigate to the website at:
