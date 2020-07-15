@@ -339,7 +339,7 @@ EOF
 
 einfo "Creating: gigadb_user.csv"
 PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb $DATABASE_NAME <<EOF
-  \copy (SELECT * FROM gigadb_user WHERE id IN (SELECT submitter_id FROM dataset WHERE $out_ids) or id IN (SELECT curator_id FROM dataset WHERE $out_ids) ORDER BY id ASC) To '${output_dir_path}/gigadb_user.csv' With (FORMAT CSV, HEADER)
+  \copy (SELECT DISTINCT * FROM gigadb_user WHERE id IN (SELECT submitter_id FROM dataset WHERE $out_ids) OR id IN (SELECT curator_id FROM dataset WHERE $out_ids) OR id IN (SELECT submitted_id FROM sample where id IN (SELECT sample_id FROM dataset_sample WHERE $out_dataset_ids)) ORDER BY id ASC) To '${output_dir_path}/gigadb_user.csv' With (FORMAT CSV, HEADER)
 EOF
 einfo "Replacing user email addresses with test gigasciencejournal.com account"
 count=0
