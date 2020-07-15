@@ -127,14 +127,18 @@ let config = {
     skipEmptyLines: true,
 };
 
+var myArgs = process.argv.slice(2);
+console.log('directory: ', myArgs[0]);
+var out_dir = myArgs[0];
+
 // A loop to create Yii migration scripts for each CSV file
 // containing table data
 for(var a = 0; a < files.length; a ++) {
     // Create file paths
-    var file_path = project_dir.concat("/data/dev/", files[a]);
+    var file_path = project_dir.concat("/data/", out_dir, "/", files[a]);
     var tokens = files[a].split(".");
     var tableName = tokens[0];
-    var outfile = project_dir.concat("/protected/migrations/data/dev/", getMigrationFileName(tableName), ".php");
+    var outfile = project_dir.concat("/protected/migrations/data/", out_dir, "/", getMigrationFileName(tableName), ".php");
 
     var out = "";
     var ids = [];

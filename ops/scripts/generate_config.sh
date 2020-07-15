@@ -144,7 +144,12 @@ fi
 # Install NodeJS for running javascript
 echo "Converting CSV to Yii migrations"
 apk add --update nodejs npm
-node /var/www/ops/scripts/csv_yii_migration.js
+# Install packages
+npm install fs
+npm install fs-path
+npm install papaparse
+# Run script
+node /var/www/ops/scripts/csv_yii_migration.js $TARGET_DIR
 
 echo "done."
 exit 0
