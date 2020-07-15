@@ -452,8 +452,9 @@ PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb $DATABASE_NAME <<EOF
 EOF
 
 einfo "Creating: unit.csv"
+# Export all rows from unit table
 PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb $DATABASE_NAME <<EOF
-  \copy (SELECT * FROM unit WHERE id IN (SELECT units_id FROM exp_attributes WHERE exp_id IN (SELECT id FROM experiment WHERE $out_dataset_ids)) ORDER BY id ASC) To '${output_dir_path}/unit.csv' With (FORMAT CSV, HEADER)
+  \copy (SELECT * FROM unit ORDER BY id ASC) To '${output_dir_path}/unit.csv' With (FORMAT CSV, HEADER)
 EOF
 
 einfo "Creating: news.csv"
