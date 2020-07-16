@@ -184,7 +184,11 @@ Feature: a user visit the dataset page
 	Scenario: Files
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
+		#When I go to "/dataset/100004"
 		Then I should see "Files" tab with table
+#		| File name        | Description                                               | Data Type         | Size          | File Attribute| Link |
+#		| CS-master.tar.gz | compressed archive of the Analysis scripts (CS) files     | Script            | 114B          |               | ftp://climb.genomics.cn/pub/10.5524/100001_101000/100094/CS-master.tar.gz |
+#		| GD-master.tar.gz | compressed archive of the mock data and scripts GD files  | Mixed archive     | 163B          |               | ftp://climb.genomics.cn/pub/10.5524/100001_101000/100094/GD-master.tar.gz |
 		| File name              							| Sample ID  	| Data Type       	| File Format 	| Size  		| Release date| link |
 		| Anas_platyrhynchos.cds 							| Pekin duck 	| Coding sequence  	| FASTA 	   	| 21.50 MiB     | 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.cds |
 	 	| Anas_platyrhynchos.gff 							| Pekin duck 	| Annotation 		| GFF        	| 10.10 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.gff |
