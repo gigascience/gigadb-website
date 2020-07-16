@@ -185,7 +185,7 @@ Feature: a user visit the dataset page
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
 		Then I should see "Files" tab with table
-		| File Name              							| Description  	                                                                    | Data Type       	|  Size  		| File Attributes | link |
+		| File Name              							| Description  	                                                                    | Data Type       	| Size  		| File Attributes | link |
 		| Anas_platyrhynchos.cds 							| predicted coding sequences from draft genome, confirmed with RNAseq data.	        | Coding sequence  	| 21.50 MiB     |                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.cds |
 		| Anas_platyrhynchos.gff 							| genome annotations	                                                            | Annotation 		| 10.10 MiB 	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.gff |
 		| Anas_platyrhynchos.pep 							| amino acid translations of coding sequences                                       | Protein sequence 	| 7.80 MiB  	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.pep |
