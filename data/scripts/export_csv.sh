@@ -371,8 +371,9 @@ PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb $DATABASE_NAME <<EOF
 EOF
 
 einfo "Creating: sample.csv"
+# contact_author_name and contact_author_email not exported to ensure data privacy
 PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb $DATABASE_NAME <<EOF
-  \copy (SELECT * FROM sample WHERE id IN (SELECT sample_id FROM dataset_sample WHERE $out_dataset_ids) ORDER BY id ASC) To '${output_dir_path}/sample.csv' With (FORMAT CSV, HEADER)
+  \copy (SELECT id, species_id, name, consent_document, submitted_id, submission_date, sampling_protocol FROM sample WHERE id IN (SELECT sample_id FROM dataset_sample WHERE $out_dataset_ids) ORDER BY id ASC) To '${output_dir_path}/sample.csv' With (FORMAT CSV, HEADER)
 EOF
 
 einfo "Creating: species.csv"
