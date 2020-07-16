@@ -1,0 +1,11 @@
+[Unit]
+description=Local non-SSL access to Docker Daemon using TCP
+
+[Socket]
+ListenStream={{ ansible_eth0.ipv4.address }}:2375
+Accept=no
+FreeBind=true
+Service=docker.service
+
+[Install]
+WantedBy=sockets.target

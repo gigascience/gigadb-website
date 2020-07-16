@@ -9,6 +9,14 @@
     path: /etc/systemd/system/docker.service.d/
     state: directory
 
+- name: Create an systemd socket for local non-ssl TCP access to docker service
+  template:
+    src: docker-tcp.j2
+    dest: /etc/systemd/system/docker-tcp.socket
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Create an override for docker systemd service
   template:
     src: override.j2
