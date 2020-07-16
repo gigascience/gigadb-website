@@ -1,0 +1,50 @@
+id,email,password,first_name,last_name,affiliation,role,is_activated,newsletter,previous_newsletter_state,facebook_id,twitter_id,linkedin_id,google_id,username,orcid_id,preferred_link
+38,test+38@gigasciencejournal.com,bcf839ae349d13cb0c3c4a9ec0cc243e,Chris,Hunter,BGI,admin,t,t,t,,,,114715812788877222335,test+38@gigasciencejournal.com,,EBI
+481,test+481@gigasciencejournal.com,466f501b28cf5bde31a52d12d462fd2e,Guilhem,Sempéré,CIRAD,user,t,f,t,,,,,test+481@gigasciencejournal.com,,NCBI
+642,test+642@gigasciencejournal.com,"",Angel,Munoz,"Princeton University, Princeton, NJ, UNITED STATES","",t,t,f,,,,,test+642@gigasciencejournal.com,,EBI
+653,test+653@gigasciencejournal.com,"",Victor,Resco de Dios,"Department of Crop and Forest Sciences-AGROTECNIO Center, Universitat de Lleida, 25198 Lleida, Spain","",f,t,f,,,,,test+653@gigasciencejournal.com,,EBI
+808,test+808@gigasciencejournal.com,"",Sung Chan,Jun,"School of Electrical Engineering and Computer Science, Gwangju Institute of Science and Technology, Gwangju, Korea","",f,t,f,,,,,test+808@gigasciencejournal.com,,EBI
+835,test+835@gigasciencejournal.com,"",Junhua,Li,BGI-Shenzhen,"",t,t,f,,,,,test+835@gigasciencejournal.com,,EBI
+951,test+951@gigasciencejournal.com,"",Cong,Peng,"Xiangya Hospital, Central South University, Changsha, Hunan, China","",f,t,f,,,,,test+951@gigasciencejournal.com,,EBI
+978,test+978@gigasciencejournal.com,cacd427aa91d2a24c915669c7549f8f5,Patricia,Soranno,"Michigan State University, East Lansing, MI, USA","",t,t,f,,,,,test+978@gigasciencejournal.com,,EBI
+988,test+988@gigasciencejournal.com,25a57ffdedcba0010cae20983ac20a54,Chris,Armit,GigaScience,admin,t,t,t,,,,,test+988@gigasciencejournal.com,,EBI
+989,test+989@gigasciencejournal.com,7d1cb5211394497300ef8d375a50754f,Mary Ann,Tuli,GigaScience,admin,t,t,f,,,,,test+989@gigasciencejournal.com,,NCBI
+1190,test+1190@gigasciencejournal.com,261f256a6a63cc1ea5673775968ae3b7,Hao-Chun,Hsu,"Department of Bio-Industrial Mechatronics Engineering, Natio",user,t,t,t,,,,,test+1190@gigasciencejournal.com,,NCBI
+1312,test+1312@gigasciencejournal.com,"",Andrew,Stubbs,"Erasmus University Medical Centre, Rotterdam, The Netherlands","",t,t,f,,,,,test+1312@gigasciencejournal.com,,EBI
+1370,test+1370@gigasciencejournal.com,9d7080189d5383827faea78a9e93c188,Paul,Pavlidis,University of British Columbia,"",t,f,f,,,,,test+1370@gigasciencejournal.com,,EBI
+1392,test+1392@gigasciencejournal.com,f0d86df0a5434938db42f797542bf857,Simon,Sadedin,"Bioinformatics, Murdoch Children’s Research Institute, Royal Children's Hospital, Flemington Road, Parkville, Victoria 3052 Australia","",t,f,f,,,,,test+1392@gigasciencejournal.com,,EBI
+1470,test+1470@gigasciencejournal.com,0244188d6e4262998d7edfb50f7e1667,Michael,Hiller,"Max Planck Institute of Molecular Cell Biology and Genetics, Dresden, Germany","",t,f,f,,,,,test+1470@gigasciencejournal.com,,EBI
+1480,test+1480@gigasciencejournal.com,"",Ameet,Pinto,"Department of Civil & Environmental Engineering, Northeastern University, USA","",t,f,f,,,,,test+1480@gigasciencejournal.com,,EBI
+1505,test+1505@gigasciencejournal.com,ce154cb1e08c1746f5b7ad575069e8fd,Kristian,Peters,IPB Halle,user,t,f,t,,,,,test+1505@gigasciencejournal.com,,EBI
+1509,test+1509@gigasciencejournal.com,e117a5939c351005a3cce3e249a8fac9,Seong-Whan,Lee,"Korea University, Seoul, Korea","",t,f,f,,,,,test+1509@gigasciencejournal.com,,EBI
+1529,test+1529@gigasciencejournal.com,6a888903809a86c90c87238524ce194c,Francesca,Buffa,"University of Oxford, Oxford, UK","",t,t,t,,,,,test+1529@gigasciencejournal.com,,EBI
+1586,test+1586@gigasciencejournal.com,c0b15ada38a119c6af96fd52191742e8,Henrik,Krehenwinkel,University of Trier,"",t,f,f,,,,,test+1586@gigasciencejournal.com,,EBI
+1592,test+1592@gigasciencejournal.com,02fd90e275b01b3d1d7b8fbb1577c051,Cenk,Sahinalp,"Department of Computer Science, Indiana University Bloomington",user,t,f,t,,,,,test+1592@gigasciencejournal.com,,EBI
+1602,test+1602@gigasciencejournal.com,cff8f306769ce89ab6b97c5e61e733cb,Jan,Axtner,"Leibniz Institute for Zoo and Wildlife Research (Leibniz-IZW), Alfred-Kowalke-Str. 17, 10315 Berlin, Germany","",t,f,f,,,,,test+1602@gigasciencejournal.com,,EBI
+1645,test+1645@gigasciencejournal.com,3c5e3ea44d7978a00f2d4c4a646905b1,Dirk,Hincha,"Max-Planck-Institut fur Molekulare Pflanzenphysiologie, Potsdam, GERMANY","",t,f,f,,,,,test+1645@gigasciencejournal.com,,EBI
+1679,test+1679@gigasciencejournal.com,bb5f236930df1a1bed0641a4baae1ee5,Angela,Tam,"Centre de Recherche de l'Institut Universitaire de Gériatrie de Montréal, Montréal, Canada","",t,f,f,,,,,test+1679@gigasciencejournal.com,,EBI
+1687,test+1687@gigasciencejournal.com,f87266d2576a246536c67eb5d0007709,Bernd,Helms,"Department of Biochemistry and Cell Biology, Faculty of Veterinary Medicine, Utrecht University, 3584 CM, Utrecht, The Netherlands","",t,f,f,,,,,test+1687@gigasciencejournal.com,,EBI
+1733,test+1733@gigasciencejournal.com,49b1035b3ea55a7711691bd5546d0ea3,Artem,Barski,"Division of Allergy and Immunology, Cincinnati Children’s Hospital Medical Center and Department of Pediatrics, College of Medicine, University of Cincinnati, Cincinnati, OH","",t,f,f,,,,,test+1733@gigasciencejournal.com,,EBI
+1803,test+1803@gigasciencejournal.com,8aaf3f320192a1910c58f729b5d03eb8,Chuan,Lu,Aberystwyth University,user,t,f,f,,,,,test+1803@gigasciencejournal.com,,NCBI
+1810,test+1810@gigasciencejournal.com,4b8894c2eba2d67e472dc11db57ef25e,Thomas Cameron,Waller,University of California San Diego,"",t,f,f,,,,,test+1810@gigasciencejournal.com,,NCBI
+1815,test+1815@gigasciencejournal.com,6a1043183b7ac3a202e1d86f1593ba5e,Han-Jeong,Hwang,"Kumoh National Institute of Technology, Gumi, REPUBLIC OF KOREA","",t,f,f,,,,,test+1815@gigasciencejournal.com,,EBI
+1816,test+1816@gigasciencejournal.com,7afc935991d6a44bbf32a3152a9099e4,Julien,Tremblay,"Energy Mining and Environment, National Research Council Canada, Montreal, QC, Canada H4P-2R2","",t,t,f,,,,,test+1816@gigasciencejournal.com,,EBI
+1821,test+1821@gigasciencejournal.com,4209475ebab2540a7da8dca543498314,Melanie,Foell,"University of Freiburg, Germany","",t,f,f,,,,,test+1821@gigasciencejournal.com,,EBI
+1833,test+1833@gigasciencejournal.com,af1e3442d787c387e86df7cffae383f6,Pedro,Crevillén,"Centro de Biotecnología y Genómica de Plantas (CBGP), Pozuelo de Alarcón (Madrid), Spain","",t,f,f,,,,,test+1833@gigasciencejournal.com,,EBI
+1841,test+1841@gigasciencejournal.com,9b15c43497ac7fbc184eb034334fb369,Rute R.,da Fonseca,"Center for Macroecology, Evolution and Climate, Natural History Museum of Denmark, University of Copenhagen, Copenhagen, Denmark","",t,f,f,,,,,test+1841@gigasciencejournal.com,,EBI
+1844,test+1844@gigasciencejournal.com,f9fc4d6a903ba990b3aaf409b39e6ce5,Benjamin,Rosen,NA,"",t,f,f,,,,,test+1844@gigasciencejournal.com,,EBI
+1849,test+1849@gigasciencejournal.com,cb123674c770310caba5e376455b068f,Stephen,Bush,University of Oxford,user,t,f,t,,,,,test+1849@gigasciencejournal.com,,EBI
+1850,test+1850@gigasciencejournal.com,ee44609105f78d985916607f13ed9169,Jerven,Bolleman,,user,t,f,f,,,,106776679669351766441,Google:106776679669351766441,,EBI
+1870,test+1870@gigasciencejournal.com,bd4bb8a63a2692a30b3e505d36c3e2da,Diego,Restrepo,University of Colorado Anschutz Medical Campus,user,t,f,t,,,,,test+1870@gigasciencejournal.com,,EBI
+1874,test+1874@gigasciencejournal.com,88d3abf19069ca8bfbe8248f24914a4c,Patrick,Browne,"Department of Plant and Environmental Sciences, University of Copenhagen, Copenhagen, Denmark","",t,f,f,,,,,test+1874@gigasciencejournal.com,,EBI
+1878,test+1878@gigasciencejournal.com,6799ea5faeabfdfbc5fb532e777d754b,Haotian,Lin,"Sun Yat-sen University, Guangzhou, China","",t,f,f,,,,,test+1878@gigasciencejournal.com,,EBI
+1881,test+1881@gigasciencejournal.com,"",Jean-Daniel,Zucker,"Institute of Research for development, Bondy, France","",f,f,f,,,,,test+1881@gigasciencejournal.com,,EBI
+1883,test+1883@gigasciencejournal.com,0cd258759be5943633cd3410ec98d08e,Marcus,Wagner,"Institute for Medical Informatics, Statistics and Epidemiology (IMISE), University of Leipzig, Härtelstr. 16-18, D-04107 Leipzig, Germany","",t,f,f,,,,,test+1883@gigasciencejournal.com,,EBI
+1887,test+1887@gigasciencejournal.com,d3f17b4a0cf89aaa4ad56828e6bf9523,Hongjun,Yuan,"Tibet Academy of Agricultural and Animal Husbandry Sciences, Lhasa, China","",t,f,f,,,,,test+1887@gigasciencejournal.com,,EBI
+1889,test+1889@gigasciencejournal.com,d568a782de580e49b7b799c19a73f85f,Jun,Ren,"South China Agricultural University, Guangzhou, China","",t,f,f,,,,,test+1889@gigasciencejournal.com,,EBI
+1891,test+1891@gigasciencejournal.com,79ae26d3415b0ad3acb9a771e5deb593,Richa,Agarwala,"National Center for Biotechnology Information, National Library of Medicine, Bethesda, MD, USA","",t,f,f,,,,,test+1891@gigasciencejournal.com,,EBI
+1893,test+1893@gigasciencejournal.com,bda9545e8d92834e77c4cc7cce51461d,Vi Nguyen Thanh,Le,"Electronic Science Research Institute, Edith Cowan University, Western Australia, Australia","",t,t,f,,,,,test+1893@gigasciencejournal.com,,EBI
+1894,test+1894@gigasciencejournal.com,c8e81a700bb5d270c1ad9d22dc14abc1,Jin,Zhang,"Oak Ridge National Laboratory, TN, USA","",t,f,f,,,,,test+1894@gigasciencejournal.com,,EBI
+1898,test+1898@gigasciencejournal.com,47f7b2c23a53b01cac55c3c692760e23,Xueying,Zhang,"Forestry and Pomology Research Institute, Shanghai Key Lab of Protected Horticultural Technology, Shanghai Academy of Agricultural Sciences, Shanghai, 201403, China","",t,f,f,,,,,test+1898@gigasciencejournal.com,,EBI
+,admin@gigadb.org,5a4f75053077a32e681f81daa8792f95,Joe,Bloggs,BGI,admin,true,false,true,,,,,admin@gigadb.org,,EBI
+,user@gigadb.org,5a4f75053077a32e681f81daa8792f95,John,Smith,BGI,user,true,false,true,,,,,user@gigadb.org,,EBI

@@ -1,0 +1,22 @@
+id,name,description
+1,Epigenomic,methylation and histone modification data
+2,Genomic,genetic and genomic data e.g. sequence and assemblies
+3,Metagenomic,genetic and genomic data from environmental samples
+4,Transcriptomic,data relating to mRNA
+5,Workflow,data analysis pipelines
+6,Software,computational tools for analysing and managing biological data
+7,Imaging,data involving the visual depiction of biological samples
+8,Metabolomic,""
+10,Proteomic,large scale protein analysis dataset
+11,Neuroscience,Data from neuroscience studies.
+12,Network-Analysis,"Data relating to network-analysis studies, either the results of network analysis or the methods."
+13,Genome-Mapping,""
+14,Virtual-Machine,""
+15,ElectroEncephaloGraphy(EEG),""
+16,Metadata,""
+17,Metabarcoding,""
+18,Climate,""
+19,Ecology,""
+20,Lipidomic,""
+21,Phenotyping,""
+22,Electrophysiology,"Data relating to the flow of ions (ion current) in biological tissues and, in particular, to the electrical recording techniques that enable the measurement of this flow."
