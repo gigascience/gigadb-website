@@ -37,7 +37,7 @@ class DockerManager extends yii\base\BaseObject
 	public function init()
 	{
         if ( Yii::$app->params['docker_ssl'] ) {
-            Yii::warn("DockerManager: using SSL client");
+            Yii::warning("DockerManager: using SSL client");
             $context = stream_context_create([
                 'ssl' => Yii::$app->params['docker_ssl']
             ]);
@@ -49,7 +49,7 @@ class DockerManager extends yii\base\BaseObject
 
         }
         else {
-            Yii::warn("DockerManager: using non-SSL client");
+            Yii::warning("DockerManager: using non-SSL client");
             $client = DockerClientFactory::create([
                 'remote_socket' => Yii::$app->params['remote_docker_hostname'],
                 'ssl' => false,
