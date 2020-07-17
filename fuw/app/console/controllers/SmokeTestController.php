@@ -21,8 +21,13 @@ class SmokeTestController extends \yii\console\Controller
     {
         $manager = new DockerManager();
         $manager->setClient(Docker::create());
-
-        $this->stdout($manager->getContainer("/ftpd_1/")->getNames()[0].PHP_EOL, Console::BOLD);
+        try {
+	        $this->stdout($manager->getContainer("/ftpd_1/")->getNames()[0].PHP_EOL, Console::BOLD);
+        }
+        catch(Exception $e) {
+        	$this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
+        	$this->stdout("DOCKER_HOST: ".getenv("DOCKER_HOST").PHP_EOL,Console::FG_RED);
+        }
     }
 
 }
