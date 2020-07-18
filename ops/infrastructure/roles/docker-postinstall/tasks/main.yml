@@ -1,21 +1,12 @@
 - name: Allow centos user to use docker (add centos to group)
   command: usermod -aG docker centos
 
-- name: Enable systemd service
-  command: systemctl enable docker
 
 - name: Creates directory
   file:
     path: /etc/systemd/system/docker.service.d/
     state: directory
 
-- name: Create an systemd socket for local non-ssl TCP access to docker service
-  template:
-    src: docker-tcp.j2
-    dest: /etc/systemd/system/docker-tcp.socket
-    owner: root
-    group: root
-    mode: 0644
 
 - name: Create an override for docker systemd service
   template:
@@ -25,11 +16,20 @@
     group: root
     mode: 0644
 
+- name: Enable systemd socket for unix socket access
+  command: systemctl enable docker.socket
+
+- name: Enable systemd service
+  command: systemctl enable docker
+
 - name: Reload systemd docker service
   command: systemctl daemon-reload
 
 - name: Restart systemd docker service
   command: systemctl restart docker.service
+
+- name: Start a TCP tunnel on 2375 for local docker access
+  command: docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p {{ ansible_eth0.ipv4.address }}:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
 
 - name: Backup the CA
   fetch:
