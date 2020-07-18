@@ -646,6 +646,28 @@ top:
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
     # FUW specific steps
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml top
+smoke_tests:
+  variables:
+    GIGADB_ENV: $DEPLOYMENT_ENV
+    COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
+    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
+    DATA_SAVE_PATH: "/home/centos/app_data"
+  stage: operation
+  script:
+    # appending staging variables at the end of the .env and .secrets
+    - env | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
+    - env | grep -iE "^(staging_|remote_)" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
+    # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
+    # Create client certificate files for authenticating with remote docker daemon
+    - mkdir -pv ~/.docker
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_ca' >  ~/.docker/ca.pem || true"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_cert' > ~/.docker/cert.pem || true"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_key' > ~/.docker/key.pem || true"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem || true"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
+    # FUW specific steps
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T console ./yii smoke-test/check-docker-php
 
   environment:
     name: $DEPLOYMENT_ENV
