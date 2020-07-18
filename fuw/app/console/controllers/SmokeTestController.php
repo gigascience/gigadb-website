@@ -2,6 +2,7 @@
 
 namespace console\controllers;
 
+use Yii;
 use \yii\helpers\Console;
 use \Docker\Docker;
 use backend\models\DockerManager;
@@ -26,6 +27,8 @@ class SmokeTestController extends \yii\console\Controller
 	        $this->stdout($manager->getContainer("/ftpd_1/")->getNames()[0].PHP_EOL, Console::BOLD);
         }
         catch(Exception $e) {
+        	$this->stdout("remote_docker_hostname: ".Yii::$app->params['remote_docker_hostname'].PHP_EOL);
+            $this->stdout("DOCKER_HOST: ".getenv("DOCKER_HOST").PHP_EOL);
         	$this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
         }
     }
