@@ -157,6 +157,9 @@ else
 fi
 TARGET=${APP_SOURCE}/fuw/app/common/config/params-local.php
 envsubst $VARS < $SOURCE > $TARGET
+if [[ $GIGADB_ENV == "CI" ]];then
+    echo "REMOTE_DOCKER_HOSTNAME=$REMOTE_DOCKER_HOSTNAME" >> ./.env
+fi
 set -e
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/frontend/params-local.php.dist
