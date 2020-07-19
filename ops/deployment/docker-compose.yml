@@ -483,6 +483,7 @@ services:
   console:
     environment:
       GIGADB_ENV: $GIGADB_ENV
+      DOCKER_HOST: "tcp://host.docker.internal:2375"
     build:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
@@ -526,7 +527,7 @@ services:
       # access to files and reference data
       - ../../files:/var/www/files
       # to run tests that interact with containers
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # - /var/run/docker.sock:/var/run/docker.sock:ro
       # volume mount the location of public ftp directory
       - /tmp:/var/ftp/public      
     networks:
