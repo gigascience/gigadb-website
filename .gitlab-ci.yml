@@ -678,7 +678,7 @@ socat:
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
     # start the port 2375 for docker
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p {{ ansible_eth0.ipv4.address }}:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
+    - docker --tlsverify -H=$REMOTE_DOCKER_HOST run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p $remote_private_ip:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
