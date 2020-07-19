@@ -182,6 +182,7 @@ test_run:
       - fuw/app/frontend/runtime/
       - fuw/app/console/runtime/
       - fuw/app/common/tests/_output
+      - fuw/app/common/config/params-local.php
       - .env
       - composer.lock
       - containers-data
