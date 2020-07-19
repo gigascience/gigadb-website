@@ -166,6 +166,8 @@ services:
       - "dockerhost:${staging_private_ip}"    
 
   console:
+    environment:
+      DOCKER_HOST: "tcp://${remote_private_ip}:2375"    
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
     expose:
       - "9001"
