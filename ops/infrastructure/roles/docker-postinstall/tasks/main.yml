@@ -28,9 +28,6 @@
 - name: Restart systemd docker service
   command: systemctl restart docker.service
 
-- name: Start a TCP tunnel on 2375 for local docker access
-  command: docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p {{ ansible_eth0.ipv4.address }}:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
-
 - name: Backup the CA
   fetch:
     src: /home/centos/.docker/ca.pem
