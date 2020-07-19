@@ -1,5 +1,5 @@
 id,name,description
+1,Epigenomic,methylation and histone modification data
 2,Genomic,genetic and genomic data e.g. sequence and assemblies
 6,Software,computational tools for analysing and managing biological data
-13,Genome-Mapping,""
 16,Metadata,""

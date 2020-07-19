@@ -30,7 +30,7 @@ with GigaDB datasets from database tables.
 $ pwd
 /path/to/gigadb-website
 # Execute script to export CSV data
-$ data/scripts/export_csv.sh -v 6 -i "8 144 200 268" -o dev -d gigadbv3_20200210
+$ data/scripts/export_csv.sh -v 6 -i "8 22 144 200" -o dev -d gigadbv3_20200210
 ```
  The identifiers are provided to `export_csv.sh` as a string in a command line
  argument using the `-i` flag. Other arguments which are required include `-o` 
@@ -48,7 +48,7 @@ $ docker-compose run --rm config            # generate the configuration using v
 
 This process executes `generate_config.sh` which now includes a new step:
 ```
-node /var/www/ops/scripts/csv_yii_migration.js
+node /var/www/ops/scripts/csv_yii_migration.js $TARGET_DIR
 ```
 
 A JavaScript program called `csv_yii_migration.js` is executed which will 
