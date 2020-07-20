@@ -11,7 +11,7 @@ class m200528_071227_create_external_link_tab extends CDbMigration
             external_link_type_id integer NOT NULL);");
 
         $this->execute("CREATE SEQUENCE external_link_id_seq
-            START WITH 30
+            START WITH 1000
             INCREMENT BY 1
             NO MINVALUE
             NO MAXVALUE

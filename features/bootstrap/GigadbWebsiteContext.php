@@ -354,9 +354,7 @@ class GigadbWebsiteContext implements Context
     */
     public function removeCreatedUsers() {
         print_r("Removing Created Users... ");
-        // Update ids in gigadb_user table not to be deleted because
-        // of new users in new database setup using Yii migration scripts
-        $sql = "delete from gigadb_user where id not in (1, 2, 3, 8, 17)";
+        $sql = "delete from gigadb_user where id not in (344,345)";
         $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
