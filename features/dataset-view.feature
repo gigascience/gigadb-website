@@ -180,7 +180,7 @@ Feature: a user visit the dataset page
 		When I go to "/dataset/101001"
 		Then I should see "JBrowse" tab with text "Open the JBrowse"
 
-	@wip @files
+	@ok @files
 	Scenario: Files
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
@@ -203,7 +203,7 @@ Feature: a user visit the dataset page
 #		| pre_03AUG2015_update 								|				| Directory 		| UNKNOWN 		| 50.00 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
 #		| readme.txt 										|				| Readme 			| TEXT 			| 337 B 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
-	@ok @files
+	@ok @files @pr464
 	Scenario: Files - Call to Actions
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
@@ -211,7 +211,7 @@ Feature: a user visit the dataset page
 		Then I should see a link "(FTP site)" to "ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/" with title "FTP site"
 		Then I should see a button "Table Settings"
 
-	@ok @files
+	@ok @files @pr464
 	Scenario: Files - Table settings controls
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
@@ -222,21 +222,21 @@ Feature: a user visit the dataset page
 		And I should see an "select.selectPageSize" element
 		And I should see "Columns:"
 		And I should see "File Description"
-		And the "description" checkbox is unchecked
+		And the "description" checkbox is checked
 		And I should see "Sample ID"
-		And the "sample_id" checkbox is checked
+		And the "sample_id" checkbox is unchecked
 		And I should see "Data Type"
 		And the "type_id" checkbox is checked
 		And I should see "File Format"
-		And the "format_id" checkbox is checked
+		And the "format_id" checkbox is unchecked
 		And I should see "Size"
 		And the "size" checkbox is checked
 		And I should see "Release Date"
-		And the "date_stamp" checkbox is checked
+		And the "date_stamp" checkbox is unchecked
 		And I should see "Download Link"
 		And the "location" checkbox is checked
 		And I should see "File Attributes"
-		And the "attribute" checkbox is unchecked
+		And the "attribute" checkbox is checked
 		And I should see a button "Save changes" with no link
 		And I should see a button "Close" with no link
 
@@ -258,7 +258,7 @@ Feature: a user visit the dataset page
 		| pre_03AUG2015_update |
 		| readme.txt |
 
-	@ok @files
+	@wip @files
 	Scenario: Files - Columns
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
@@ -269,8 +269,8 @@ Feature: a user visit the dataset page
 		And I uncheck "location"
 		And I follow "save-files-settings"
 		Then I should see "Files" tab with table
-		| File name | Description | Sample ID  	| Data Type       	| File Format 	| Size  		| Release date|
-		| Anas_platyrhynchos.cds | predicted coding sequences from draft genome, confirmed with RNAseq data. | Pekin duck 	| Coding sequence  	| FASTA 	   	| 21.50 MiB     | 2015-08-03  |
+		| File name | Description |  Data Type    | Size  		| File Attributes|
+		| Anas_platyrhynchos.cds | predicted coding sequences from draft genome, confirmed with RNAseq data. | Coding sequence  	| 21.50 MiB     |  |
 
 	@ok @files @javascript
 	Scenario: Files - Pagination
