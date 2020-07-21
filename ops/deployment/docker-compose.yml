@@ -309,6 +309,9 @@ services:
       START_XVFB: "false"
 
   fuw-admin:
+    environment:
+      GIGADB_ENV: $GIGADB_ENV
+      DOCKER_HOST: "tcp://host.docker.internal:2375"    
     build:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
