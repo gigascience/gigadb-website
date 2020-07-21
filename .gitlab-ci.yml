@@ -228,6 +228,8 @@ test_run:
     - docker-compose up -d fuw-worker gigadb-worker
     # starting the headless browser for acceptance testing
     - docker-compose up -d chrome
+    # start socat to make docker api available on port 2375
+    - docker run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
     # - docker-compose top
     # - docker network inspect rija-gigadb-website_web-tier
     # - docker network inspect rija-gigadb-website_db-tier
