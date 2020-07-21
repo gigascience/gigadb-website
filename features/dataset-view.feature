@@ -231,7 +231,7 @@ Feature: a user visit the dataset page
 		And I should see a button "Save changes" with no link
 		And I should see a button "Close" with no link
 
-	@ok @pageSize @files @javascript @pr464
+	@wip @pageSize @files @javascript @pr464
 	Scenario: Files - Items per page
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
@@ -244,7 +244,7 @@ Feature: a user visit the dataset page
 		| Anas_platyrhynchos.pep 							| amino acid translations of coding sequences                                       | Protein sequence 	| 7.80 MiB  	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.pep |
 		| Anas_platyrhynchos_domestica.RepeatMasker.out.gz 	| repeat masker output 	                                                            | Other 			| 7.79 MiB  	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos_domestica.RepeatMasker.out.gz |
 		| duck.scafSeq.gapFilled.noMito 					| draft genome assembly                                                             | Sequence assembly	| 1.03 GiB 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/duck.scafSeq.gapFilled.noMito |
-		And I sould not see "Files" tab with table
+		And I should not see "Files" tab with table
 		| File name |
 		| pre_03AUG2015_update |
 		| readme.txt |
