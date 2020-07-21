@@ -180,7 +180,7 @@ Feature: a user visit the dataset page
 		When I go to "/dataset/101001"
 		Then I should see "JBrowse" tab with text "Open the JBrowse"
 
-	@ok @files
+	@wip @files
 	Scenario: Files
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
@@ -258,7 +258,7 @@ Feature: a user visit the dataset page
 		| pre_03AUG2015_update |
 		| readme.txt |
 
-	@wip @files
+	@ok @files @pr464
 	Scenario: Files - Columns
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
