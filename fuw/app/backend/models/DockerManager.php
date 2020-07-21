@@ -52,7 +52,7 @@ class DockerManager extends yii\base\BaseObject
             Yii::warning("DockerManager: using non-SSL client");
             Yii::warning("DOCKER_HOST:".getenv("DOCKER_HOST"));
             $client = DockerClientFactory::create([
-                'remote_socket' => Yii::$app->params['remote_docker_hostname'],
+                'remote_socket' => getenv("DOCKER_HOST"),
                 'ssl' => false,
             ]);
 
