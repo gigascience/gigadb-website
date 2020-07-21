@@ -46,6 +46,7 @@ variables:
   MAIN_BRANCH: "nolegacy-dep-ux-php7"
   GITLAB_PRIVATE_TOKEN: $CI_BUILD_TOKEN
   GITLAB_UPSTREAM_PROJECT_ID: "7041674"
+  TARGET_DIR: "dev"
 
 services:
   - docker:dind

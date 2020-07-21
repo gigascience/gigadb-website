@@ -4,7 +4,8 @@ const papa = require('papaparse');
 
 // Global scope
 var project_dir = process.env.PWD;  // Need to run script from gigadb-website project root
-var files = fs.readdirSync(project_dir.concat("/data/dev"));
+// var files = fs.readdirSync(project_dir.concat("/data/dev"));
+var files = fs.readdirSync("/var/www/data/dev");
 var NEWLINE = "\n";
 var INDENT = "    ";
 
@@ -135,10 +136,11 @@ var out_dir = myArgs[0];
 // containing table data
 for(var a = 0; a < files.length; a ++) {
     // Create file paths
-    var file_path = project_dir.concat("/data/", out_dir, "/", files[a]);
+    var new_project_dir = "/var/www";
+    var file_path = new_project_dir.concat("/data/", out_dir, "/", files[a]);
     var tokens = files[a].split(".");
     var tableName = tokens[0];
-    var outfile = project_dir.concat("/protected/migrations/data/", out_dir, "/", getMigrationFileName(tableName), ".php");
+    var outfile = new_project_dir.concat("/protected/migrations/data/", out_dir, "/", getMigrationFileName(tableName), ".php");
 
     var out = "";
     var ids = [];
