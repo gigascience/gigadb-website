@@ -16,6 +16,8 @@ services:
         - "registry.gitlab.com/$CI_PROJECT_PATH/test:latest"
 
   fuw-admin:
+    environment:
+      DOCKER_HOST: ${REMOTE_DOCKER_HOSTNAME}    
     build:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest"
