@@ -338,9 +338,9 @@ class DatasetViewContext implements Context
     }
 
     /**
-     * @Then I sould not see :arg1 tab with table
+     * @Then I should not see :arg1 tab with table
      */
-    public function iSouldNotSeeTabWithTable($arg1, TableNode $table)
+    public function iShouldNotSeeTabWithTable($arg1, TableNode $table)
     {
         //| File name                                        | Sample ID  | Data Type         | File Format | Size      | Release date | link |
         foreach($table as $row) {
