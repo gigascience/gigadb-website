@@ -79,7 +79,7 @@ class DatasetController extends Controller
 
         $cookies = Yii::app()->request->cookies;
         // file
-        $setting = array('name','size', 'type_id' , 'location',  'description', 'attribute'); // 'format_id','date_stamp', 'sample_id' are hidden by default
+        $setting = DatasetPageSettings::VIEW_DEFAULT_FILE_COLUMNS;
         $pageSize = 10;
         $flag=null;
 
