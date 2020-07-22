@@ -3,11 +3,15 @@ const fsPath = require('fs-path');
 const papa = require('papaparse');
 
 // Global scope
-var project_dir = process.env.PWD;  // Need to run script from gigadb-website project root
-// var files = fs.readdirSync(project_dir.concat("/data/dev"));
-var files = fs.readdirSync("/var/www/data/dev");
+var PROJECT_DIR = "/var/www";
 var NEWLINE = "\n";
 var INDENT = "    ";
+
+// Sort out command line argument to this script
+var CMD_ARGS = process.argv.slice(2);
+console.log('CSV directory: ', CMD_ARGS[0]);
+var csv_dir = CMD_ARGS[0];
+var csv_dir_path = PROJECT_DIR.concat("/data/", csv_dir);
 
 /*
  * Returns file name for Yii migration script based on table name.
@@ -128,19 +132,15 @@ let config = {
     skipEmptyLines: true,
 };
 
-var myArgs = process.argv.slice(2);
-console.log('directory: ', myArgs[0]);
-var out_dir = myArgs[0];
-
 // A loop to create Yii migration scripts for each CSV file
 // containing table data
+var files = fs.readdirSync(csv_dir_path);
 for(var a = 0; a < files.length; a ++) {
     // Create file paths
-    var new_project_dir = "/var/www";
-    var file_path = new_project_dir.concat("/data/", out_dir, "/", files[a]);
+    var file_path = PROJECT_DIR.concat("/data/", csv_dir, "/", files[a]);
     var tokens = files[a].split(".");
     var tableName = tokens[0];
-    var outfile = new_project_dir.concat("/protected/migrations/data/", out_dir, "/", getMigrationFileName(tableName), ".php");
+    var outfile = PROJECT_DIR.concat("/protected/migrations/data/", csv_dir, "/", getMigrationFileName(tableName), ".php");
 
     var out = "";
     var ids = [];

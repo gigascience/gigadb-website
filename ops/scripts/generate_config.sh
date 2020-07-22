@@ -141,15 +141,15 @@ fi
 #   tar -xzvf ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz -C ${APP_SOURCE}/vsftpd/files
 # fi
 
+echo "Converting CSV files to Yii migration scripts"
 # Install NodeJS for running javascript
-echo "Converting CSV to Yii migrations"
 apk add --update nodejs npm
-# Install packages
+# Install JS packages
 npm install fs
 npm install fs-path
 npm install papaparse
-# Run script
-node /var/www/ops/scripts/csv_yii_migration.js $TARGET_DIR
+# Run JS to do conversion
+node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR
 
 echo "done."
 exit 0
