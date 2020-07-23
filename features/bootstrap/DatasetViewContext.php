@@ -275,7 +275,7 @@ class DatasetViewContext implements Context
             }
         }
         elseif("Files" == $arg1) {
-            //| File Name                                        | Sample ID  | Data Type         | File Format | Size      | Release date | link |
+            //| File Name | Description | Data Type | Size | File Attributes | link |
             foreach($table as $row) {
                 $link = $row['link'];
                 PHPUnit_Framework_Assert::assertTrue(
