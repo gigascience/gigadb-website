@@ -314,7 +314,7 @@ Feature: a user visit the dataset page
 		And I should see a button "Save changes" with no link
 		And I should see a button "Close" with no link
 
-	@ok @samples @javascript
+	@ok @samples @javascript @pr464
 	Scenario: Samples - Items per page
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/100197"
@@ -327,11 +327,11 @@ Feature: a user visit the dataset page
 		| Ssol.cltw.A.07 	| |	Schistocephalus solidus |	Description:short PE reads| 70667 | |
 		| Ssol.cltw.A.12 	| |	Schistocephalus solidus |	Description:long PE reads | 70667 | |
 		| Ssol.cltw.I.01 	| |	Schistocephalus solidus |	Description:short PE reads| 70667 | |
-		And I sould not see "Sample" tab with table
+		And I should not see "Sample" tab with table
 		| Sample ID 	 |
 		| Ssol.cltw.I.67 |
 
-	@ok @samples @javascript
+	@ok @samples @javascript @pr464
 	Scenario: Samples - Columns
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
@@ -343,7 +343,7 @@ Feature: a user visit the dataset page
 		Then I should see "Sample" tab with table
 		| Sample ID  	| Scientific Name 			| Sample Attributes | Taxonomic ID | Genbank Name |
 		| Pekin duck 	| Anas platyrhynchos 	| Estimated genome size:1.4 | 8839  |	mallard |
-		And I sould not see "Sample" tab with table
+		And I should not see "Sample" tab with table
 		| Common Name 	 |
 		| Mallard duck |
 
