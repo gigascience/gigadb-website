@@ -1,17 +1,22 @@
+/**
+ * Transforms CSV files in a directory into Yii migration scripts
+ */
+
 const fs = require('fs');
 const fsPath = require('fs-path');
 const papa = require('papaparse');
 
 // Global scope
 var PROJECT_DIR = "/var/www";
+var OUTPUT_DIR = "/protected/migrations/data/";
 var NEWLINE = "\n";
 var INDENT = "    ";
 
 // Sort out command line argument to this script
 var CMD_ARGS = process.argv.slice(2);
 console.log('CSV directory: ', CMD_ARGS[0]);
-var csv_dir = CMD_ARGS[0];
-var csv_dir_path = PROJECT_DIR.concat("/data/", csv_dir);
+var csvDir = CMD_ARGS[0];
+var csvDirPath = PROJECT_DIR.concat("/data/", csvDir);
 
 /*
  * Returns file name for Yii migration script based on table name.
@@ -134,13 +139,13 @@ let config = {
 
 // A loop to create Yii migration scripts for each CSV file
 // containing table data
-var files = fs.readdirSync(csv_dir_path);
+var files = fs.readdirSync(csvDirPath);
 for(var a = 0; a < files.length; a ++) {
     // Create file paths
-    var file_path = PROJECT_DIR.concat("/data/", csv_dir, "/", files[a]);
+    var filePath = PROJECT_DIR.concat("/data/", csvDir, "/", files[a]);
     var tokens = files[a].split(".");
     var tableName = tokens[0];
-    var outfile = PROJECT_DIR.concat("/protected/migrations/data/", csv_dir, "/", getMigrationFileName(tableName), ".php");
+    var outfile = PROJECT_DIR.concat(OUTPUT_DIR, csvDir, "/", getMigrationFileName(tableName), ".php");
 
     var out = "";
     var ids = [];
@@ -151,16 +156,17 @@ for(var a = 0; a < files.length; a ++) {
     out = out.concat("{", NEWLINE);
     out = out.concat(INDENT, "public function safeUp()", NEWLINE, "    {", NEWLINE);
 
-    var csvHeaderData = fs.readFileSync(file_path, 'utf8');
+    var csvHeaderData = fs.readFileSync(filePath, 'utf8');
     // Parse CSV string
     var jsonData = papa.parse(csvHeaderData, config);
     console.log("No. rows: ", jsonData.data.length);
-    for(var t = 0; t < jsonData.data.length; t++) {
-        for(var h = 0; h < jsonData.meta.fields.length; h++) {
+    for(var t = 0; t < jsonData.data.length; t++) {  // Go thru each row
+        for(var h = 0; h < jsonData.meta.fields.length; h++) { // Go thru each column
             if(h === 0) {
                 out = out.concat(INDENT, INDENT, "$this->insert('", tableName, "', array(", NEWLINE);
             }
 
+            // Record ids to help with creating safeDown() function below
             var field = jsonData.meta.fields[h];
             if(field === "id") {
                 ids.push(jsonData.data[t][field]);
@@ -193,6 +199,7 @@ for(var a = 0; a < files.length; a ++) {
     }
 
     out = out.concat(INDENT, "}", NEWLINE, NEWLINE);
+    
     out = out.concat(INDENT, "public function safeDown()", NEWLINE, "    {", NEWLINE);
     out = out.concat(INDENT, INDENT, "$ids = array(");
     for (var y = 0; y < ids.length; y ++) {
