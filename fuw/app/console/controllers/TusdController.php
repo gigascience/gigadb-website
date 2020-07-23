@@ -79,7 +79,7 @@ class TusdController extends Controller
 		$datafeedPath = "/var/www/files/data/";
 		$factory = new UploadFactory($this->doi, $datafeedPath, $this->token_path);
 		$result = $factory->createUploadFromJSON(
-					$account->id,
+					$account['id'],
 					$this->json
 				);
 
