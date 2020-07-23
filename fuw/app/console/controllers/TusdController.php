@@ -6,7 +6,6 @@ use Yii;
 use \yii\helpers\Console;
 use \yii\console\Controller;
 use common\models\Upload;
-use backend\models\FiledropAccount;
 use console\models\UploadFactory;
 use yii\console\ExitCode;
 
@@ -40,10 +39,6 @@ class TusdController extends Controller
 	public $token_path = "/var/private" ;
 
 	/**
-	* @var backend\models\FiledropAccount $dropboxAccount DropBox account for the upload */
-	private $dropboxAccount;
-
-	/**
 	 * @var string $file_inbox directory where Tusd save files */
 	public $file_inbox = "/var/inbox";
 	
@@ -58,7 +53,6 @@ class TusdController extends Controller
      * or:
      * "yii tusd/process-upload --doi <DOI associated to the file> --jsonfile <Tusd manifest JSON file>"
      * @uses \common\models\Upload
-     * @uses \common\models\FiledropAccount
     */
 	 public function actionProcessUpload()
 	 {
@@ -69,8 +63,11 @@ class TusdController extends Controller
 	 		return ExitCode::USAGE;
 	 	}
 
- 		$this->dropboxAccount = FiledropAccount::findOne([ "doi" => $this->doi]);
- 		if(!$this->dropboxAccount) {
+ 		$account = (new \yii\db\Query())
+		    ->from('filedrop_account')
+		    ->where(['doi' => $this->doi])
+		    ->one();
+ 		if(!$account) {
  			Yii::error("Filedrop account not found for DOI {$this->doi}, exiting abnormally");
  			return ExitCode::DATAERR;
  		}
@@ -82,7 +79,7 @@ class TusdController extends Controller
 		$datafeedPath = "/var/www/files/data/";
 		$factory = new UploadFactory($this->doi, $datafeedPath, $this->token_path);
 		$result = $factory->createUploadFromJSON(
-					$this->dropboxAccount->id,
+					$account->id,
 					$this->json
 				);
 
