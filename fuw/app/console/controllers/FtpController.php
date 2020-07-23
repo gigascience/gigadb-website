@@ -6,7 +6,6 @@ use Yii;
 use \yii\helpers\Console;
 use \yii\console\Controller;
 use common\models\Upload;
-use backend\models\FiledropAccount;
 use console\models\UploadFactory;
 use yii\console\ExitCode;
 
@@ -40,10 +39,6 @@ class FtpController extends Controller
 	public $token_path = "/var/private" ;
 
 	/**
-	* @var backend\models\FiledropAccount $dropboxAccount DropBox account for the upload */
-	private $dropboxAccount;
-
-	/**
 	* @var string $datafeedPath path to the data feeds */
 	private $datafeedPath = "/var/www/files/data/";
 
@@ -66,8 +61,12 @@ class FtpController extends Controller
 	 	$dirComponents = explode("/",$this->dataset_dir) ;
 	 	$doi = $dirComponents[count($dirComponents)-1];
 		$this->stdout("ftp: DOI $doi extracted...".PHP_EOL, Console::FG_GREEN);
- 		$this->dropboxAccount = FiledropAccount::findOne([ "doi" => $doi]);
- 		if(!$this->dropboxAccount) {
+
+		$account = (new \yii\db\Query())
+		    ->from('filedrop_account')
+		    ->where(['doi' => $doi])
+		    ->one();
+	    if (!$account) {
  			$this->stdout("Filedrop account not found for DOI $doi, exiting abnormally".PHP_EOL, Console::FG_RED);
  			Yii::error("Filedrop account not found for DOI $doi, exiting abnormally");
  			return ExitCode::DATAERR;
@@ -87,7 +86,7 @@ class FtpController extends Controller
 
 			$fileArray = ["doi" => $doi, "path" => $this->dataset_dir, "name" => $file];
 			$saved = $this->uploadFactory->createUploadFromFile(
-						$this->dropboxAccount->id,
+						$account['id'],
 						$fileArray
 					);
 
