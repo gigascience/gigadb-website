@@ -154,10 +154,13 @@ Terraform and Ansible.
 [Terraform](https://www.terraform.io) is a tool which allows you to describe and
 instantiate infrastructure as code.
 
-Install Terraform by downloading the installer from the 
+Install Terraform-0.11 by downloading the installer from the 
 [Terraform](https://www.terraform.io) web site or it can be installed using a 
 package manager for your operating system. For example, MacOSX users can use 
-[Macports](https://www.macports.org).
+[Macports](https://www.macports.org):
+```
+$ sudo port install terraform-0.11
+```
 
 Create the following environment variables with the required values which 
 Terraform will use to access AWS:
@@ -220,11 +223,12 @@ The Ansible software is a tool for provisioning, managing configuration and
 deploying applications using its own declarative language. SSH is used to 
 connect to remote servers to perform its provisioning tasks.
 [Ansible](https://www.ansible.com) is used to install the EC2 instance 
-with a Docker daemon. In addition, a PostgreSQL server is installed on the EC2
-instance which will host the database that GigaDB uses to manage information
-abouts its datasets. Note that this setup for a staging instance of GigaDB is
-different to a local GigaDB application whose PostgreSQL database is provided by
-a custom Docker container.
+with a Docker daemon. Currently, Ansible version 2.9.10 is able to deploy an AWS
+server for installing GigaDB. In addition, a PostgreSQL server is installed on 
+the EC2 instance which will host the database that GigaDB uses to manage 
+information abouts its datasets. Note that this setup for a staging instance of 
+GigaDB is different to a local GigaDB application whose PostgreSQL database is 
+provided by a custom Docker container.
 
 #### Ansible setup and configuration
 
@@ -375,7 +379,9 @@ provisioning has completed. This is done by the `docker-postinstall` role.
 |----------------------|-------------|
 | staging_tlsauth_ca | Certificate authority for staging server - this is provided by the staging server during Ansible provisioning |
 | staging_tlsauth_cert | Public certificate for staging server - this is provided by staging server during Ansible provisioning |
-| staging_tlsauth_key | the server key for the above CA - this is provided by staging server during Ansible provisioning |
+| staging_tlsauth_key  | the server key for the above CA - this is provided by staging server during Ansible provisioning |
+| staging_public_ip    | Public IP address of staging server |
+| staging_private_ip   | Private IP address of staging server |
  
 This is for running a secure Docker engine on a cloud virtual server so that the 
 Docker API is secured over TCP and we know we are communicating with the correct 
