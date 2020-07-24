@@ -55,8 +55,7 @@ class AdminSiteAccessTest extends FunctionalTesting
 
         // To confirm Guest visits to /admin/page will be redirect to /site/login
         $this->session->visit($url);
-        $out = $this->session->getPage()->hasContent("Login");
-        $this->assertTrue($out=="True", "Guest can see Administration Page");
+        $this->assertTrue($this->session->getPage()->hasContent("Login"), "Guest can see Administration Page");
     }
 }
 ?>
