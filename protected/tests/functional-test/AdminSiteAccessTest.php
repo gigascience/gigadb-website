@@ -44,7 +44,7 @@ class AdminSiteAccessTest extends FunctionalTesting
      * @uses \BrowserPageSteps::getCurrentUrl()
      *
      */
-    public function testItShouldNotBeDisplayedToGuest()
+    public function testItShouldNotBeDisplayedToOrdinaryUsers()
     {
         $url = "http://gigadb.dev/site/admin";
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Login");
@@ -56,7 +56,7 @@ class AdminSiteAccessTest extends FunctionalTesting
         $this->session->visit($url);
         $out = $this->session->getPage()->getContent();
 
-        $this->assertFalse(strpos($out, "Administration Page"), "Guest can visit admin page.");
+        $this->assertFalse(strpos($out, "Administration Page"), "Ordinary User can visit admin page.");
     }
 }
 ?>
