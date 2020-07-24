@@ -234,7 +234,7 @@ services:
     volumes:
       - ${DATA_SAVE_PATH}/fuw/incoming/tusd:/var/inbox/
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo/
-    command: -dir /var/inbox -base-path /files/ -hooks-dir /var/hooks
+    command: -dir /var/inbox -base-path /fileserver/ -hooks-dir /var/hooks
     expose:
       - "1080"
     networks:
