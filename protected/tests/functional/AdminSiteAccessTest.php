@@ -53,10 +53,10 @@ class AdminSiteAccessTest extends FunctionalTesting
         $current_site = $this->getCurrentUrl();
         $this->assertTrue($current_site == "http://gigadb.dev/site/login", "The current site has not been re-directed.");
 
+        // To confirm Guest visits to /admin/page will be redirect to /site/login
         $this->session->visit($url);
-        $out = $this->session->getPage()->getContent();
-
-        $this->assertFalse(strpos($out, "Administration Page"), "Guest can visit admin page.");
+        $out = $this->session->getPage()->hasContent();
+        $this->assertTrue($out=="True", "Out has no content");
     }
 }
 ?>
