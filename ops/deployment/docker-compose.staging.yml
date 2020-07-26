@@ -234,6 +234,8 @@ services:
     volumes:
       - ${DATA_SAVE_PATH}/fuw/incoming/tusd:/var/inbox/
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo/
+      # access to the ftp tokens so the upload's location attribute can be populated
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private          
     command: -dir /var/inbox -base-path /fileserver/ -hooks-dir /var/hooks
     expose:
       - "1080"
