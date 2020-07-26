@@ -239,6 +239,8 @@ services:
       - "1080"
     networks:
       - web-tier
+    extra_hosts:
+      - "dockerhost:${remote_private_ip}"      
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
