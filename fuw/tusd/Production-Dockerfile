@@ -1,3 +1,4 @@
 FROM tusproject/tusd:0.13.1
 
-COPY ./hooks /var/hooks/
+COPY ./tusd/hooks /var/hooks/
+COPY ./app /app
