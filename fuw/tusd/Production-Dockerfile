@@ -18,6 +18,6 @@ RUN apk --update --no-cache add wget \
 
 	curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer 
 
-COPY ./tusd/hooks /var/hooks/
-COPY ./app /app
+COPY ./fuw/tusd/hooks /var/hooks/
+COPY ./fuw/app /app
 COPY ./files /var/www/files

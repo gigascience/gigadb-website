@@ -120,8 +120,8 @@ services:
 
   production_tusd:
     build:
-      context: ../../fuw
-      dockerfile: ./tusd/Production-Dockerfile
+      context: ../..
+      dockerfile: ./fuw/tusd/Production-Dockerfile
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest"
 
