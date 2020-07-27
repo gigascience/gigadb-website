@@ -84,8 +84,8 @@ services:
 
   production_fuw-public:
     build:
-      context: ../../fuw/app
-      dockerfile: common/Production-Dockerfile
+      context: ../..
+      dockerfile: fuw/app/common/Production-Dockerfile
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:latest"
       args:
