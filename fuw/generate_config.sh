@@ -150,10 +150,10 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     export $local_pk
     export $peer_name
     SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/production/params-local.php.dist
-    VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$cafile:$local_cert:$local_pk:$peer_name:$HOME_URL'
+    VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$cafile:$local_cert:$local_pk:$peer_name'
 else
     SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/params-local.php.dist
-    VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$PUBLIC_HTTP_PORT:$HOME_URL'
+    VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME'
 fi
 TARGET=${APP_SOURCE}/fuw/app/common/config/params-local.php
 envsubst $VARS < $SOURCE > $TARGET
