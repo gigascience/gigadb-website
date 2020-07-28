@@ -6,6 +6,9 @@ return [
 		"ftpd_endpoint" => "gigadb.org",
 		"ftpd_port" => "9021",
 		"template_path" => "/var/www/files/templates",
+		"tusd_path" => "/fileserver/",
+		"tusd_host" => "$HOME_URL",
+		"tusd_port" => "$PUBLIC_HTTP_PORT",
 	],
 	"dataset_upload" => [
 		"sender" => "admin@gigadb.org",

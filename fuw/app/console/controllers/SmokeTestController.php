@@ -33,4 +33,23 @@ class SmokeTestController extends \yii\console\Controller
         }
     }
 
+    /** 
+    * Check tusd is configured and up and running
+    *
+    * i.e: GET on https://<gigadb url>/fileserver should return "405 Method not allowed" 
+    */
+    public function actionCheckTusdEndpoint() 
+    {
+        if ( in_array( YII_ENV, ["dev","CI"]) ) {
+            $tusdFullUrl = "http://gigadb.dev/fileserver" ;
+        }
+        else {
+            $tusdFullUrl = "https://".Yii::$app->params["dataset_filedrop"]['tusd_host']."/fileserver";
+        }
+        $response = system("curl -sL $tusdFullUrl");
+        assert("Method Not Allowed" == $response, "Should return 'Method Not Allowed' for $tusdFullUrl on ". YII_ENV);
+    }
+
+
+
 }

@@ -2,6 +2,20 @@
 return [
 	"jwt_key" => "$FUW_JWT_KEY",
 	"remote_docker_hostname" => "$REMOTE_DOCKER_HOSTNAME",
+	"dataset_filedrop" => [
+		"ftpd_endpoint" => "gigadb.org",
+		"ftpd_port" => "9021",
+		"template_path" => "/var/www/files/templates",
+		"tusd_path" => "/fileserver/",
+		"tusd_host" => "$HOME_URL",
+	],
+	"dataset_upload" => [
+		"sender" => "admin@gigadb.org",
+		"recipient" => "editorial@gigasciencejournal.com",
+		"curators_email" => "database@gigasciencejournal.com",
+		"template_path" => "/var/www/files/templates",
+		"spreadsheet_supported_format" => ["text/csv", "text/tab-separated-values"],
+	],	
 	// "docker_ssl" => [
 	// 	"cafile" => "$cafile",
 	// 	"local_cert" => "$local_cert",
