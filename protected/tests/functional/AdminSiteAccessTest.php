@@ -19,8 +19,7 @@ class AdminSiteAccessTest extends FunctionalTesting
     public function testItShouldBeDisplayedToUsersWithAdminRole()
     {
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org", "gigadb", "Joe's GigaDB Page");
-        $url = "http://gigadb.dev/site/admin";
-        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Administration Page");
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull("http://gigadb.dev/site/admin", "Administration Page");
     }
 
     /**
@@ -33,12 +32,11 @@ class AdminSiteAccessTest extends FunctionalTesting
     public function testItShouldNotBeDisplayedToUsersWithUserRole()
     {
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("user@gigadb.org", "gigadb", "John's GigaDB Page");
-        $url = "http://gigadb.dev/site/admin";
-        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Error 403");
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull("http://gigadb.dev/site/admin", "Error 403");
     }
 
     /**
-     * To test ordinary user fails to access Administration Page and would be re-directed to Login page.
+     * To test guest fails to access Administration Page and would be re-directed to Login page.
      *
      * @uses \BrowserPageSteps::visitPageWithSessionAndUrlThenAssertContentHasOrNull()
      * @uses \BrowserPageSteps::getCurrentUrl()
@@ -50,8 +48,7 @@ class AdminSiteAccessTest extends FunctionalTesting
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Login");
 
         // To confirm User has been re-directed to /site/login
-        $current_site = $this->getCurrentUrl();
-        $this->assertTrue($current_site == "http://gigadb.dev/site/login", "The current site has not been re-directed.");
+        $this->assertTrue($this->getCurrentUrl() == "http://gigadb.dev/site/login", "The current site has not been re-directed.");
 
         // To confirm Guest visits to /admin/page will be redirect to /site/login
         $this->session->visit($url);
