@@ -231,7 +231,7 @@ Feature: a user visit the dataset page
 		And I should see a button "Save changes" with no link
 		And I should see a button "Close" with no link
 
-	@wip @pageSize @files @javascript @pr464
+	@ok @pageSize @files @javascript @pr464
 	Scenario: Files - Items per page
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
