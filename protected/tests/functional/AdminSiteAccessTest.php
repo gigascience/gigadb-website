@@ -48,7 +48,7 @@ class AdminSiteAccessTest extends FunctionalTesting
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Login");
 
         // To confirm User has been re-directed to /site/login
-        $this->assertTrue($this->getCurrentUrl() == "http://gigadb.dev/site/login", "The current site has not been re-directed.");
+        $this->assertTrue($this->getCurrentUrl() === "http://gigadb.dev/site/login", "The current site has not been re-directed.");
 
         // To confirm Guest visits to /admin/page will be redirect to /site/login
         $this->session->visit($url);
