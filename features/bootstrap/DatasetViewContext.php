@@ -343,12 +343,12 @@ class DatasetViewContext implements Context
             elseif("Sample" == $arg1) {
                 if ($row['Sample ID']) {
                     PHPUnit_Framework_Assert::assertFalse(
-                        $this->minkContext->getSession()->getPage()->hasContent($row['Sample ID']), "File Name match"
+                        $this->minkContext->getSession()->getPage()->hasContent($row['Sample ID']), "Sample ID match"
                     );
                 }
                 if ($row['Common Name']) {
                     PHPUnit_Framework_Assert::assertFalse(
-                        $this->minkContext->getSession()->getPage()->hasContent($row['Common Name']), "File Name match"
+                        $this->minkContext->getSession()->getPage()->hasContent($row['Common Name']), "Common Name match"
                     );
                 }
             }
