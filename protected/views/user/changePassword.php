@@ -1,9 +1,23 @@
-<h2><?= Yii::t('app', 'Change Password') ?></h2>
+
+<div class="content">
+    <div class="container">
+        <section class="page-title-section">
+            <div class="page-title">
+                <ol class="breadcrumb pull-right">
+                    <li><a href="/">Home</a></li>
+                    <li class="active">Change Password</li>
+                </ol>
+                <h4><?= Yii::t('app', 'Change Password') ?></h4>
+            </div>
+        </section>
+    </div>
+</div>
+
 <div class="clear"></div>
 <div class="container">
     <div class="row">
         <div class="col-xs-8 col-xs-offset-2">
-            <div class="panel panel-default profile-panel">
+            <div class="form well user-profile-box">
                 <div class="panel-body">
 
                     <?php
@@ -57,7 +71,7 @@
                     </div>                     
 
 
-                    <div class="pull-right">
+                    <div class="text-center">
                         <a href="/user/view_profile" class="btn background-btn"><?= Yii::t('app', 'Cancel') ?></a>
                     <?php echo CHtml::submitButton(Yii::t('app', 'Save'), array('class' => 'btn background-btn')); ?>
                     </div>
