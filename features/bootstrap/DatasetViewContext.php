@@ -275,26 +275,23 @@ class DatasetViewContext implements Context
             }
         }
         elseif("Files" == $arg1) {
-            //| File name                                        | Sample ID  | Data Type         | File Format | Size      | Release date | link |
+            //| File Name | Description | Data Type | Size | File Attributes | link |
             foreach($table as $row) {
                 $link = $row['link'];
                 PHPUnit_Framework_Assert::assertTrue(
-                    $this->minkContext->getSession()->getPage()->hasContent($row['File name']), "File name match"
+                    $this->minkContext->getSession()->getPage()->hasContent($row['File Name']), "File Name match"
                 );
                 PHPUnit_Framework_Assert::assertTrue(
-                    $this->minkContext->getSession()->getPage()->hasContent($row['Sample ID']), "Sample ID match"
+                    $this->minkContext->getSession()->getPage()->hasContent($row['Description']), "Description match"
                 );
                 PHPUnit_Framework_Assert::assertTrue(
                     $this->minkContext->getSession()->getPage()->hasContent($row['Data Type']), "Data Type match"
                 );
                 PHPUnit_Framework_Assert::assertTrue(
-                    $this->minkContext->getSession()->getPage()->hasContent($row['File Format']), "File Format match"
-                );
-                PHPUnit_Framework_Assert::assertTrue(
                     $this->minkContext->getSession()->getPage()->hasContent($row['Size']), "Size match"
                 );
                 PHPUnit_Framework_Assert::assertTrue(
-                    $this->minkContext->getSession()->getPage()->hasContent($row['Release date']), "Release date match"
+                    $this->minkContext->getSession()->getPage()->hasContent($row['File Attributes']), "File Attributes match"
                 );
                 if ($link) {
                     $this->minkContext->assertSession()->elementExists('css',"a.download-btn[href='$link']");
@@ -332,26 +329,26 @@ class DatasetViewContext implements Context
     }
 
     /**
-     * @Then I sould not see :arg1 tab with table
+     * @Then I should not see :arg1 tab with table
      */
-    public function iSouldNotSeeTabWithTable($arg1, TableNode $table)
+    public function iShouldNotSeeTabWithTable($arg1, TableNode $table)
     {
-        //| File name                                        | Sample ID  | Data Type         | File Format | Size      | Release date | link |
+        //| File Name                                        | Sample ID  | Data Type         | File Format | Size      | Release date | link |
         foreach($table as $row) {
             if ("Files" == $arg1) {
                 PHPUnit_Framework_Assert::assertFalse(
-                    $this->minkContext->getSession()->getPage()->hasContent($row['File name']), "File name match"
+                    $this->minkContext->getSession()->getPage()->hasContent($row['File Name']), "File Name match"
                 );
             }
             elseif("Sample" == $arg1) {
                 if ($row['Sample ID']) {
                     PHPUnit_Framework_Assert::assertFalse(
-                        $this->minkContext->getSession()->getPage()->hasContent($row['Sample ID']), "File name match"
+                        $this->minkContext->getSession()->getPage()->hasContent($row['Sample ID']), "Sample ID match"
                     );
                 }
                 if ($row['Common Name']) {
                     PHPUnit_Framework_Assert::assertFalse(
-                        $this->minkContext->getSession()->getPage()->hasContent($row['Common Name']), "File name match"
+                        $this->minkContext->getSession()->getPage()->hasContent($row['Common Name']), "Common Name match"
                     );
                 }
             }

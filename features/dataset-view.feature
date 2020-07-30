@@ -180,21 +180,21 @@ Feature: a user visit the dataset page
 		When I go to "/dataset/101001"
 		Then I should see "JBrowse" tab with text "Open the JBrowse"
 
-	@ok @files
+	@ok @files @pr464
 	Scenario: Files
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
 		Then I should see "Files" tab with table
-		| File name              							| Sample ID  	| Data Type       	| File Format 	| Size  		| Release date| link |
-		| Anas_platyrhynchos.cds 							| Pekin duck 	| Coding sequence  	| FASTA 	   	| 21.50 MiB     | 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.cds |
-	 	| Anas_platyrhynchos.gff 							| Pekin duck 	| Annotation 		| GFF        	| 10.10 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.gff |
-		| Anas_platyrhynchos.pep 							| Pekin duck 	| Protein sequence 	| FASTA      	| 7.80 MiB  	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.pep |
-		| Anas_platyrhynchos_domestica.RepeatMasker.out.gz 	| Pekin duck 	| Other 			| UNKNOWN    	| 7.79 MiB  	| 2015-03-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos_domestica.RepeatMasker.out.gz |
-		| duck.scafSeq.gapFilled.noMito 					| Pekin duck 	| Sequence assembly	| FASTA 		| 1.03 GiB 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/duck.scafSeq.gapFilled.noMito |
-		| pre_03AUG2015_update 								|				| Directory 		| UNKNOWN 		| 50.00 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
-		| readme.txt 										|				| Readme 			| TEXT 			| 337 B 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
+		| File Name              							| Description  	                                                                    | Data Type       	| Size  		| File Attributes | link |
+		| Anas_platyrhynchos.cds 							| predicted coding sequences from draft genome, confirmed with RNAseq data.	        | Coding sequence  	| 21.50 MiB     |                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.cds |
+		| Anas_platyrhynchos.gff 							| genome annotations	                                                            | Annotation 		| 10.10 MiB 	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.gff |
+		| Anas_platyrhynchos.pep 							| amino acid translations of coding sequences                                       | Protein sequence 	| 7.80 MiB  	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.pep |
+		| Anas_platyrhynchos_domestica.RepeatMasker.out.gz 	| repeat masker output 	                                                            | Other 			| 7.79 MiB  	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos_domestica.RepeatMasker.out.gz |
+		| duck.scafSeq.gapFilled.noMito 					| draft genome assembly                                                             | Sequence assembly	| 1.03 GiB 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/duck.scafSeq.gapFilled.noMito |
+		| pre_03AUG2015_update 								| folder containing originally submitted data files, prior to update Aug 3rd 2015.	| Directory 		| 50.00 MiB 	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
+		| readme.txt 										|				                                                                    | Readme 			| 337 B 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
-	@ok @files
+	@ok @files @pr464
 	Scenario: Files - Call to Actions
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
@@ -202,7 +202,7 @@ Feature: a user visit the dataset page
 		Then I should see a link "(FTP site)" to "ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/" with title "FTP site"
 		Then I should see a button "Table Settings"
 
-	@ok @files
+	@ok @files @pr464
 	Scenario: Files - Table settings controls
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
@@ -213,43 +213,43 @@ Feature: a user visit the dataset page
 		And I should see an "select.selectPageSize" element
 		And I should see "Columns:"
 		And I should see "File Description"
-		And the "description" checkbox is unchecked
+		And the "description" checkbox is checked
 		And I should see "Sample ID"
-		And the "sample_id" checkbox is checked
+		And the "sample_id" checkbox is unchecked
 		And I should see "Data Type"
 		And the "type_id" checkbox is checked
 		And I should see "File Format"
-		And the "format_id" checkbox is checked
+		And the "format_id" checkbox is unchecked
 		And I should see "Size"
 		And the "size" checkbox is checked
 		And I should see "Release Date"
-		And the "date_stamp" checkbox is checked
+		And the "date_stamp" checkbox is unchecked
 		And I should see "Download Link"
 		And the "location" checkbox is checked
 		And I should see "File Attributes"
-		And the "attribute" checkbox is unchecked
+		And the "attribute" checkbox is checked
 		And I should see a button "Save changes" with no link
 		And I should see a button "Close" with no link
 
-	@ok @pageSize @files @javascript
+	@ok @pageSize @files @javascript @pr464
 	Scenario: Files - Items per page
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
 		When I follow "Files"
 		And I have set pageSize to "5" on "files_table_settings"
 		Then I should see "Files" tab with table
-		| File name              							| Sample ID  	| Data Type       	| File Format 	| Size  		| Release date| link |
-		| Anas_platyrhynchos.cds 							| Pekin duck 	| Coding sequence  	| FASTA 	   	| 21.50 MiB     | 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.cds |
-	 	| Anas_platyrhynchos.gff 							| Pekin duck 	| Annotation 		| GFF        	| 10.10 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.gff |
-		| Anas_platyrhynchos.pep 							| Pekin duck 	| Protein sequence 	| FASTA      	| 7.80 MiB  	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.pep |
-		| Anas_platyrhynchos_domestica.RepeatMasker.out.gz 	| Pekin duck 	| Other 			| UNKNOWN    	| 7.79 MiB  	| 2015-03-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos_domestica.RepeatMasker.out.gz |
-		| duck.scafSeq.gapFilled.noMito 					| Pekin duck 	| Sequence assembly	| FASTA 		| 1.03 GiB 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/duck.scafSeq.gapFilled.noMito |
-		And I sould not see "Files" tab with table
-		| File name |
+		| File Name              							| Description  	                                                                    | Data Type       	| Size  		| File Attributes | link |
+		| Anas_platyrhynchos.cds 							| predicted coding sequences from draft genome, confirmed with RNAseq data.	        | Coding sequence  	| 21.50 MiB     |                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.cds |
+		| Anas_platyrhynchos.gff 							| genome annotations	                                                            | Annotation 		| 10.10 MiB 	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.gff |
+		| Anas_platyrhynchos.pep 							| amino acid translations of coding sequences                                       | Protein sequence 	| 7.80 MiB  	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.pep |
+		| Anas_platyrhynchos_domestica.RepeatMasker.out.gz 	| repeat masker output 	                                                            | Other 			| 7.79 MiB  	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos_domestica.RepeatMasker.out.gz |
+		| duck.scafSeq.gapFilled.noMito 					| draft genome assembly                                                             | Sequence assembly	| 1.03 GiB 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/duck.scafSeq.gapFilled.noMito |
+		And I should not see "Files" tab with table
+		| File Name |
 		| pre_03AUG2015_update |
 		| readme.txt |
 
-	@ok @files
+	@ok @files @pr464
 	Scenario: Files - Columns
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
@@ -260,10 +260,10 @@ Feature: a user visit the dataset page
 		And I uncheck "location"
 		And I follow "save-files-settings"
 		Then I should see "Files" tab with table
-		| File name | Description | Sample ID  	| Data Type       	| File Format 	| Size  		| Release date|
-		| Anas_platyrhynchos.cds | predicted coding sequences from draft genome, confirmed with RNAseq data. | Pekin duck 	| Coding sequence  	| FASTA 	   	| 21.50 MiB     | 2015-08-03  |
+		| File Name | Description |  Data Type    | Size  		| File Attributes|
+		| Anas_platyrhynchos.cds | predicted coding sequences from draft genome, confirmed with RNAseq data. | Coding sequence  	| 21.50 MiB     |  |
 
-	@ok @files @javascript
+	@ok @files @javascript @pr464
 	Scenario: Files - Pagination
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
@@ -273,9 +273,9 @@ Feature: a user visit the dataset page
 		# And I take a screenshot named "Files tab before clicking pager"
 		And I follow "2"
 		Then I should see "Files" tab with table
-		| File name | Sample ID | Data Type | File Format 	| Size | Release date | link |
-		| pre_03AUG2015_update 								|				| Directory 		| UNKNOWN 		| 50.00 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
-		| readme.txt 										|				| Readme 			| TEXT 			| 337 B 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
+		| File Name              							| Description  	                                                                    | Data Type       	| Size  		| File Attributes | link |
+		| pre_03AUG2015_update 								| folder containing originally submitted data files, prior to update Aug 3rd 2015.	| Directory 		| 50.00 MiB 	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
+		| readme.txt 										|				                                                                    | Readme 			| 337 B 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
 	@ok @samples
 	Scenario: Samples
@@ -314,7 +314,7 @@ Feature: a user visit the dataset page
 		And I should see a button "Save changes" with no link
 		And I should see a button "Close" with no link
 
-	@ok @samples @javascript
+	@ok @samples @javascript @pr464
 	Scenario: Samples - Items per page
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/100197"
@@ -327,11 +327,11 @@ Feature: a user visit the dataset page
 		| Ssol.cltw.A.07 	| |	Schistocephalus solidus |	Description:short PE reads| 70667 | |
 		| Ssol.cltw.A.12 	| |	Schistocephalus solidus |	Description:long PE reads | 70667 | |
 		| Ssol.cltw.I.01 	| |	Schistocephalus solidus |	Description:short PE reads| 70667 | |
-		And I sould not see "Sample" tab with table
+		And I should not see "Sample" tab with table
 		| Sample ID 	 |
 		| Ssol.cltw.I.67 |
 
-	@ok @samples @javascript
+	@ok @samples @javascript @pr464
 	Scenario: Samples - Columns
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
@@ -343,7 +343,7 @@ Feature: a user visit the dataset page
 		Then I should see "Sample" tab with table
 		| Sample ID  	| Scientific Name 			| Sample Attributes | Taxonomic ID | Genbank Name |
 		| Pekin duck 	| Anas platyrhynchos 	| Estimated genome size:1.4 | 8839  |	mallard |
-		And I sould not see "Sample" tab with table
+		And I should not see "Sample" tab with table
 		| Common Name 	 |
 		| Mallard duck |
 
