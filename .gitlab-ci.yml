@@ -705,8 +705,9 @@ smoke_tests:
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem || true"
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
-    # FUW specific steps
+    # FUW smoke tests
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T console ./yii smoke-test/check-docker-php
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T console ./yii smoke-test/check-tusd-endpoint
 
   environment:
     name: $DEPLOYMENT_ENV
