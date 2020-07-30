@@ -52,7 +52,7 @@
             </form>
         </aside>
         <div v-if="uploadedFiles.length > 0">
-            <el-drawer v-bind:title="'Add attributes to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="attrPanel" v-bind:with-header="true" ref="attrPanel" :before-close="handleAttrClose">
+            <el-drawer v-bind:title="'Add attributes to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="attrPanel" v-bind:with-header="true" ref="attrPanel" :before-close="handleAttrClose" destroy-on-close>
                 <span>
                     <specifier id="attributes-form" v-bind:fileAttributes="fileAttributes[selectedUpload]" />
                 </span>
@@ -125,6 +125,8 @@ export default {
             return this.metaComplete.length === this.uploadedFiles.length
         },
         toggleAttrDrawer(uploadIndex, uploadId) {
+            // console.log(`Attr, uploadIndex: ${uploadIndex}, selectedUpload: ${uploadId}`)
+            // console.log("filesAttributes:"+JSON.stringify(this.fileAttributes[uploadId]))
             this.drawerIndex = uploadIndex
             this.selectedUpload = uploadId
             this.attrPanel = !this.attrPanel
