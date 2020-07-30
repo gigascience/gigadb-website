@@ -268,12 +268,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                         <table id="samples_table" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Sample ID</th>
-                                    <th>Common Name</th>
-                                    <th>Scientific Name</th>
-                                    <th>Sample Attributes</th>
-                                    <th>Taxonomic ID</th>
-                                    <th>Genbank Name</th>
+                                    <th title="User-specified name or identifier of the sample object. Note: a DNA sample and an RNA sample from the same donor are classed as two separate samples.">Sample ID</th>
+                                    <th title="A well recognized commonly used name of the species,  usually this is in synonym held in the NCBI taxonomy for the tax ID provided.">Common Name</th>
+                                    <th title="The scientific binomial name of the species, usually this is in direct accordance with the NCBI taxonomy ID provided.">Scientific Name</th>
+                                    <th title="This is a list of Key:Value pairs, where the Keys are from our Attributes list, and the Value is the specific value for the sample. See our metadata guide for the Attributes list with definitions of all available attributes.">Sample Attributes</th>
+                                    <th title="Species taxonomy ID of the sampled species, we currently use the NCBI taxonomy as the source of this identifier.">Taxonomic ID</th>
+                                    <th title="The preferred display name used by NCBI taxonomy for the tax ID provided">Genbank Name</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -319,24 +319,15 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <table id="files_table" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <td title="The name of the file. Click header to sort by A-Z/Z-A.">File Name</td>
-                                        <td title="Short description of file contents. Click header to sort by A-Z/Z-A.">Description</td>
-                                        <td title="Name or ID of sample used to generate this file.">Sample ID</td>
-                                        <td title="The type of data in the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual data types.  Click header to sort by A-Z/Z-A.">Data Type</td>
-                                        <td title="The format of the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual file formats. Click header to sort by A-Z/Z-A.">File Format</td>
-                                        <td title="The size on disk of the file. Click header to sort by A-Z/Z-A.">Size</td>
-                                        <td title="Date of release of the file, see the history log for details of any changes made after initial release date. Click header to sort by A-Z/Z-A.">Release Date</td>
-                                        <td title="Additional information about the file presented as Key:Value pairs.">File Attributes</td>
-                                        <td title="The direct link to the files server location.">Download</td>
-<!--                                        <th>File Name</th>-->
-<!--                                        <th>Description</th>-->
-<!--                                        <th>Sample ID</th>-->
-<!--                                        <th>Data Type</th>-->
-<!--                                        <th>File Format</th>-->
-<!--                                        <th>Size</th>-->
-<!--                                        <th>Release Date</th>-->
-<!--                                        <th>File Attributes</th>-->
-<!--                                        <th>Download</th>-->
+                                        <th title="The name of the file. Click header to sort by A-Z/Z-A.">File Name</th>
+                                        <th title="Short description of file contents. Click header to sort by A-Z/Z-A.">Description</th>
+                                        <th title="Name or ID of sample used to generate this file.">Sample ID</th>
+                                        <th title="The type of data in the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual data types.  Click header to sort by A-Z/Z-A.">Data Type</th>
+                                        <th title="The format of the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual file formats. Click header to sort by A-Z/Z-A.">File Format</th>
+                                        <th title="The size on disk of the file. Click header to sort by A-Z/Z-A.">Size</th>
+                                        <th title="Date of release of the file, see the history log for details of any changes made after initial release date. Click header to sort by A-Z/Z-A.">Release Date</th>
+                                        <th title="Additional information about the file presented as Key:Value pairs.">File Attributes</th>
+                                        <th title="The direct link to the files server location.">Download</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -384,10 +375,10 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                     <table class="table table-bordered text-center">
                         <thead>
                             <tr>
-                                <th>Funding body</th>
-                                <th>Awardee</th>
-                                <th>Award ID</th>
-                                <th>Comments</th>
+                                <th title="The name of the funding agency providing funding. Where possible this should be from the FundRef list of funding bodies (https://www.e-sciencecentral.org/funder/).">Funding body</th>
+                                <th title="The name of the person responsible for getting the award.">Awardee</th>
+                                <th title="The grant or contract number of the project that sponsored the effort.">Award ID</th>
+                                <th title="Some agencies have multiple award programs through which they distribute funding, if appropriate that information can be added here.">Comments</th>
                             </tr>
                         </thead>
                         <tbody>
