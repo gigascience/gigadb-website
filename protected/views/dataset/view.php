@@ -319,15 +319,24 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <table id="files_table" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>File Name</th>
-                                        <th>Description</th>
-                                        <th>Sample ID</th>
-                                        <th>Data Type</th>
-                                        <th>File Format</th>
-                                        <th>Size</th>
-                                        <th>Release Date</th>
-                                        <th>File Attributes</th>
-                                        <th>Download</th>
+                                        <td title="The name of the file. Click header to sort by A-Z/Z-A.">File Name</td>
+                                        <td title="Short description of file contents. Click header to sort by A-Z/Z-A.">Description</td>
+                                        <td title="Name or ID of sample used to generate this file.">Sample ID</td>
+                                        <td title="The type of data in the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual data types.  Click header to sort by A-Z/Z-A.">Data Type</td>
+                                        <td title="The format of the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual file formats. Click header to sort by A-Z/Z-A.">File Format</td>
+                                        <td title="The size on disk of the file. Click header to sort by A-Z/Z-A.">Size</td>
+                                        <td title="Date of release of the file, see the history log for details of any changes made after initial release date. Click header to sort by A-Z/Z-A.">Release Date</td>
+                                        <td title="Additional information about the file presented as Key:Value pairs.">File Attributes</td>
+                                        <td title="The direct link to the files server location.">Download</td>
+<!--                                        <th>File Name</th>-->
+<!--                                        <th>Description</th>-->
+<!--                                        <th>Sample ID</th>-->
+<!--                                        <th>Data Type</th>-->
+<!--                                        <th>File Format</th>-->
+<!--                                        <th>Size</th>-->
+<!--                                        <th>Release Date</th>-->
+<!--                                        <th>File Attributes</th>-->
+<!--                                        <th>Download</th>-->
                                     </tr>
                                 </thead>
                                 <tbody>
