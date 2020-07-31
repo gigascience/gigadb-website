@@ -91,9 +91,9 @@ class FilesAnnotateAction extends CAction
             {
                 if(isset($_POST['Upload'][$upload['id']])) {
                     $allUploadsSaved = $allUploadsSaved && $fileUploadSrv->updateUpload($upload['id'], $_POST['Upload'][$upload['id']] );
-                    if($allUploadsSaved && isset($_POST['Upload'][$upload['id']]['sample_ids'])) {
+                    if($allUploadsSaved && isset($_POST['Upload'][$upload['id']]['sample_ids']) && "" !== $_POST['Upload'][$upload['id']]['sample_ids']) {
                         $samples = explode(",",$_POST['Upload'][$upload['id']]['sample_ids']);
-                        $userMessage .= count($samples)." sample(s) added for upload ".$upload['id']."<br>";
+                        $userMessage .= count($samples)." sample(s) added for upload ".$_POST['Upload'][$upload['id']]['name']."<br>";
                     }
                 }
             }
@@ -108,7 +108,7 @@ class FilesAnnotateAction extends CAction
                     $attributes = $_POST['Attributes'][$upload['id']];
                     $allAttributesSaved = $allAttributesSaved && $fileUploadSrv->setAttributes($upload['id'], $attributes );
                     if ($allAttributesSaved) {
-                        $userMessage .= count($attributes)." attribute(s) added for upload ".$upload['id']."<br>";
+                        $userMessage .= count($attributes)." attribute(s) added for upload ".$_POST['Upload'][$upload['id']]['name']."<br>";
                     }
                 }
             }

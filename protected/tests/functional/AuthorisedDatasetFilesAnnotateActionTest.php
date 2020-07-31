@@ -140,9 +140,9 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
 
         //post  metadata for uploaded files.
         $metadata = [
-            "Upload[{$this->uploads[0]}][datatype]" => "Rich Text",
+            "Upload[{$this->uploads[0]}][datatype]" => "Script",
             "Upload[{$this->uploads[0]}][description]" => "The moon",
-            "Upload[{$this->uploads[1]}][datatype]" => "Image",
+            "Upload[{$this->uploads[1]}][datatype]" => "Repeat sequence",
             "Upload[{$this->uploads[1]}][description]" => "The sun",
         ];
         $response = $webClient->request('POST', $this->url . "authorisedDataset/annotateFiles/id/" . $this->doi, [
@@ -152,8 +152,8 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         $this->assertEquals(302, $container[0]['response']->getStatusCode());
 
         // check that the change went through
-        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[0], "Rich Text", "The moon");
-        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[1], "Image", "The sun");
+        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[0], "Script", "The moon");
+        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[1], "Repeat sequence", "The sun");
 
     }
 
@@ -191,9 +191,11 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
 
         //post  metadata for uploaded files and attributes.
         $metadata = [
-            "Upload[{$this->uploads[0]}][datatype]" => "Rich Text",
+            "Upload[{$this->uploads[0]}][name]" => "someFile.csv",
+            "Upload[{$this->uploads[0]}][datatype]" => "Script",
             "Upload[{$this->uploads[0]}][description]" => "The moon",
-            "Upload[{$this->uploads[1]}][datatype]" => "Image",
+            "Upload[{$this->uploads[1]}][name]" => "anotherFile.csv",
+            "Upload[{$this->uploads[1]}][datatype]" => "Repeat sequence",
             "Upload[{$this->uploads[1]}][description]" => "The sun",
             "Attributes[{$this->uploads[0]}][Attributes][0][name]" => "Temperature",
             "Attributes[{$this->uploads[0]}][Attributes][0][value]" => "45",
@@ -215,8 +217,8 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         $this->assertEquals(302, $container[0]['response']->getStatusCode());
 
         // check that the change for uploads went through
-        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[0], "Rich Text", "The moon");
-        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[1], "Image", "The sun");
+        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[0], "Script", "The moon");
+        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[1], "Repeat sequence", "The sun");
 
         // check that the change for attributes went through
         $example = [
@@ -281,8 +283,8 @@ public function testPostUploadsMetadataSpreadsheet() {
         $this->assertEquals(302, $container[0]['response']->getStatusCode());
 
         // check that the change for uploads went through
-        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[0], "Text", "The methodology");
-        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[1], "Image", "That diagram");
+        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[0], "Readme", "The methodology");
+        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[1], "Annotation", "That diagram");
 
     }
 
