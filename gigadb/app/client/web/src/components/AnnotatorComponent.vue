@@ -13,7 +13,9 @@
             </thead>
             <tbody>
                 <tr v-for="(upload, index) in uploadedFiles">
-                    <td><span data-toggle='tooltip' data-placement='bottom' v-bind:title="'md5:'+upload.initial_md5">{{ upload.name }}</span></td>
+                    <td><span data-toggle='tooltip' data-placement='bottom' v-bind:title="'md5:'+upload.initial_md5">{{ upload.name }}</span>
+                        <input type="hidden" v-bind:name="'Upload['+ upload.id +'][name]'" v-bind:value="upload.name">
+                    </td>
                     <td>
                         <div class="form-group">
                             <select v-model="upload.datatype" v-bind:name="'Upload['+ upload.id +'][datatype]'" v-bind:id="'upload-'+(index+1)+'-datatype'" v-on:change="fieldHasChanged(index, $event)">
@@ -57,7 +59,7 @@
                     <specifier id="attributes-form" v-bind:fileAttributes="fileAttributes[selectedUpload]" />
                 </span>
             </el-drawer>
-            <el-drawer v-bind:title="'Add samples to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="samplePanel" v-bind:with-header="true" ref="samplesPanel">
+            <el-drawer v-bind:title="'Add samples to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="samplePanel" v-bind:with-header="true" ref="samplesPanel" destroy-on-close>
                 <span>
                     <sampler id="samples-form" 
                             v-bind:collection="uploadedFiles[drawerIndex].sample_ids" 
