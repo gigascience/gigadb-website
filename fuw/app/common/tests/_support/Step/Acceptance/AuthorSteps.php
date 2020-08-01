@@ -292,7 +292,7 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
                 $keys = $row;
                 continue;
             }
-            $this->I->seeInSource('<td><span data-toggle="tooltip" data-placement="bottom" title="md5:'.$row[1].'">'.$row[0].'</span></td>');
+            $this->I->seeInSource('<td><span data-toggle="tooltip" data-placement="bottom" title="md5:'.$row[1].'">'.$row[0].'</span>');
         }
 
      }
