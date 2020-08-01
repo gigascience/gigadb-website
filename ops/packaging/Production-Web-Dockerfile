@@ -15,6 +15,7 @@ COPY index.php /var/www/index.php
 COPY js /var/www/js
 COPY less /var/www/less
 COPY style-guide /var/www/style-guide
+COPY assets /var/www/assets
 
 COPY fuw/app /app
 
