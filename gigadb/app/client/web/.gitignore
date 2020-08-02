@@ -13,5 +13,6 @@ yarn-error.log
 node_modules
 # don't commit the compiled bundle (main.js), execute 'npm run build'
 dist/main.js
+dist/images
 # no need to commit coverage data
 coverage

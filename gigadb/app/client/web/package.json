@@ -50,7 +50,7 @@
     "test": "npx cross-env BABEL_ENV=test karma start --single-run",
     "build": "webpack",
     "clean": "rm -r dist/*",
-    "deploy": "cp dist/main.js /var/www/js/fuw-$npm_package_version.js;cp dist/assets/* /var/www/assets/",
+    "deploy": "cp dist/main.js /var/www/js/fuw-$npm_package_version.js;cp -r dist/images/* /var/www/images/",
     "env": "env"
   },
   "author": {
