@@ -22,6 +22,7 @@ describe('Pager component', function() {
             attachToDocument: true,
             propsData: {
                 identifier: '000000',
+                uploadsExist: false,
             }
         })
 
@@ -32,10 +33,18 @@ describe('Pager component', function() {
         eventBus.$emit('complete', {})
         const wrapper = this.renderedComponent
         return Vue.nextTick().then(function() {
-            expect(wrapper.find('.btn').text()).toEqual('Next')
+            expect(wrapper.find('.btn').text()).toEqual('Next (Metadata Form)')
         })
     })
 
+    it('should show Next button if uploads exists serverside', function () {
+        eventBus.$emit('stage-changed', "uploading")
+        const wrapper = this.renderedComponent
+        wrapper.setProps({uploadsExist: 3})
+        return Vue.nextTick().then(function() {
+            expect(wrapper.find('.btn').text()).toEqual('Next (Metadata Form)')
+        })
+    })
     it('should not show Next button in upload stage when file upload not complete', function() {
         eventBus.$emit('stage-changed', "uploading")
         const wrapper = this.renderedComponent

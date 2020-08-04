@@ -33,6 +33,7 @@ Scenario: No Upload files button when dataset hasn't got to the appropriate stat
 @ok
 Scenario: Pressing the upload button bring up File Upload Wizard upload screen
 	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
 	When I press "Upload Files"
@@ -43,6 +44,7 @@ Scenario: Pressing the upload button bring up File Upload Wizard upload screen
 @ok @file-upload
 Scenario: Can add files to the upload queue
 	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
 	And I press "Upload Files"
@@ -55,6 +57,7 @@ Scenario: Can add files to the upload queue
 @ok @file-upload
 Scenario: All files in the queue are uploaded
 	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
 	And I press "Upload Files"
@@ -66,6 +69,7 @@ Scenario: All files in the queue are uploaded
 @ok @file-upload
 Scenario: Queued files are all uploaded
 	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
 	And I press "Upload Files"
@@ -79,6 +83,7 @@ Scenario: Queued files are all uploaded
 @ok
 Scenario: There is a Next button
 	Given I sign in as the user "Artie" "Dodger"
+	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
 	And the "Your Uploaded Datasets" tab is active
 	When I press "Upload Files"
@@ -87,7 +92,7 @@ Scenario: There is a Next button
 	And I attach the file "TheProof2.csv" in the file drop panel
 	And I press "Upload 2 files"
 	And I wait "1" seconds
-	Then I should see a "Next" link to "/authorisedDataset/annotateFiles/id/000007"
+	Then I should see a "Next (Metadata Form)" link to "/authorisedDataset/annotateFiles/id/000007"
 
 @ok
 Scenario: Next button to proceed to file metadata annotation form
@@ -101,7 +106,7 @@ Scenario: Next button to proceed to file metadata annotation form
 	And I attach the file "TheProof2.csv" in the file drop panel
 	And I press "Upload 2 files"
 	And I wait "30" seconds
-	When I press "Next"
+	When I press "Next (Metadata Form)"
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
 
 
