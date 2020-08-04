@@ -108,7 +108,7 @@ class FilesAnnotateAction extends CAction
                     $attributes = $_POST['Attributes'][$upload['id']];
                     $allAttributesSaved = $allAttributesSaved && $fileUploadSrv->setAttributes($upload['id'], $attributes );
                     if ($allAttributesSaved) {
-                        $userMessage .= count($attributes)." attribute(s) added for upload ".$_POST['Upload'][$upload['id']]['name']."<br>";
+                        $userMessage .= count($attributes['Attributes'])." attribute(s) added for upload ".$_POST['Upload'][$upload['id']]['name']."<br>";
                     }
                 }
             }
