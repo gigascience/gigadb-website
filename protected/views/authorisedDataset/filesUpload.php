@@ -12,12 +12,10 @@
                 </div>
             </header>
             <section>
-                <uploader identifier="<?= $identifier ?>"
-                            endpoint="<?php echo $tusd_path ?>"
-                />
+                <uploader identifier="<?= $identifier ?>" endpoint="<?php echo $tusd_path ?>" />
             </section>
             <footer>
-                <pager identifier="<?= $identifier ?>"/>
+                <pager identifier="<?= $identifier ?>" <?php echo "uploads-exist=\"$uploadsCount\"" ?>/>
             </footer>
         </article>
     </div>
