@@ -215,6 +215,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
             form_params => $metadata
         ]);
         $this->assertEquals(302, $container[0]['response']->getStatusCode());
+        $this->assertTrue(preg_match("/3 attribute\(s\) added for upload someFile\.csv/", $response->getBody()) == 1);
 
         // check that the change for uploads went through
         $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[0], "Script", "The moon");
