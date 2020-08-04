@@ -126,6 +126,21 @@ export default {
         isMetadataComplete() {
             return this.metaComplete.length === this.uploadedFiles.length
         },
+        checkFieldsState() {
+            for (var uploadIndex = 0; uploadIndex< this.uploadedFiles.length ; uploadIndex++ ) {
+                if (this.uploadedFiles[uploadIndex].datatype != undefined && this.uploadedFiles[uploadIndex].datatype.length > 0 && this.uploadedFiles[uploadIndex].description != undefined && this.uploadedFiles[uploadIndex].description.length > 0) {
+                    this.metaComplete[uploadIndex] = true
+                    // console.log(`all fields complete for upload ${uploadIndex}`)
+                }
+            }
+
+            if (this.isMetadataComplete()) {
+                // console.log(`Emitting metadata-ready-status`)
+                eventBus.$emit('metadata-ready-status', true)
+            } else {
+                eventBus.$emit('metadata-ready-status', false)
+            }
+        },
         toggleAttrDrawer(uploadIndex, uploadId) {
             // console.log(`Attr, uploadIndex: ${uploadIndex}, selectedUpload: ${uploadId}`)
             // console.log("filesAttributes:"+JSON.stringify(this.fileAttributes[uploadId]))
@@ -166,6 +181,7 @@ export default {
     mounted: function() {
         this.$nextTick(function() {
             eventBus.$emit("stage-changed", "annotating")
+            this.checkFieldsState()
         })
     },
     components: {

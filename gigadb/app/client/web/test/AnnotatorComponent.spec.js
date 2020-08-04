@@ -4,6 +4,7 @@ import AnnotatorComponent from '../src/components/AnnotatorComponent.vue'
 
 import { eventBus } from '../src/index.js'
 import testdata from './helper/db.json'
+import completedata from './helper/complete.json'
 
 const { uploads } = testdata
 const factory = function(options = {}, values = {}) {
@@ -18,6 +19,36 @@ const factory = function(options = {}, values = {}) {
 }
 
 // enableAutoDestroy(afterEach)
+
+describe('Annotator component initial state', function () {
+    const { uploaded } = completedata
+
+    it('should emit a ready event if uploads are already complete', function () {
+        let $emitted = false
+        eventBus.$on('metadata-ready-status', function(status) {
+            $emitted = status //event bus would catch our component's 'complete' event
+        })
+
+        this.renderedComponent = factory({
+            attachToDocument: true,
+            propsData: {
+                identifier: '000000',
+                uploads: JSON.parse(JSON.stringify( uploaded )), //we need a copy, not reference
+                filetypes: JSON.parse('{"Readme":112,"Sequence assembly":113,"Annotation":114,"Protein sequence":115,"Repeat sequence":116,"Coding sequence":117,"Script":118,"Mixed archive":119}')
+            }
+        })
+
+        const wrapper = this.renderedComponent
+        return Vue.nextTick().then(function() {
+            expect(wrapper.vm.isMetadataComplete()).toBeTrue()
+            expect($emitted).toBeTrue()
+        })
+    })
+
+    afterEach(function () {
+        eventBus.$off()
+    })
+})
 
 describe('Annotator component', function() {
 
