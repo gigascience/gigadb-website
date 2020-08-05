@@ -179,6 +179,12 @@ RUN if [ ${INSTALL_APCU} = true ]; then \
     echo 'apc.shm_size="64M"' | tee -a /usr/local/etc/php/conf.d/apcu.ini \
 ;fi
 
+ARG INSTALL_MSMTP=false
+RUN if [ ${INSTALL_MSMTP} = true ]; then \
+    apt-get update && \
+    apt-get install -y msmtp msmtp-mta \
+;fi
+
 RUN usermod -u 1000 www-data
 
 WORKDIR /var/www
