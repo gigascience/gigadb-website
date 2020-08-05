@@ -358,7 +358,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                 $this->widget('SiteLinkPager', array(
                                     'id' => 'files-pager',
                                     'pages'=>$files->getDataProvider()->getPagination(),
-                            ));
+                                    ));
+                                $this->widget('CListPager', array(
+                                    'id' => 'files-pager',
+                                    'pages'=>$files->getDataProvider()->getPagination(),
+                                    ));
+
 
                             ?>
                         </div>
