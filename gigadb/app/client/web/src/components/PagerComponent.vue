@@ -1,6 +1,6 @@
 <template>
     <nav>
-        <div v-if="stage === 'uploading' && (uploadsComplete === true || uploadsExist)">
+        <div v-if="stage === 'uploading' && (uploadsComplete === true || uploadsExist > 0)">
             <a v-bind:href="annotationUrl" class="btn">Next (Metadata Form)</a>
         </div>
         <div v-if="stage === 'annotating' && metadataComplete === true">

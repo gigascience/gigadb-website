@@ -22,7 +22,7 @@ describe('Pager component', function() {
             attachToDocument: true,
             propsData: {
                 identifier: '000000',
-                uploadsExist: false,
+                uploadsExist: "0",
             }
         })
 
