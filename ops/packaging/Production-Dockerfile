@@ -174,6 +174,12 @@ RUN if [ ${INSTALL_APCU} = true ]; then \
     echo 'apc.shm_size="64M"' | tee -a /usr/local/etc/php/conf.d/apcu.ini \
 ;fi
 
+ARG INSTALL_MSMTP=false
+RUN if [ ${INSTALL_MSMTP} = true ]; then \
+    apt-get update && \
+    apt-get install -y msmtp msmtp-mta \
+;fi
+
 
 RUN usermod -u 1000 www-data
 
@@ -183,6 +189,7 @@ COPY ops/configuration/php-conf/php-${TARGET_PHP_VERSION}-production.ini /usr/lo
 COPY ops/configuration/php-conf/gigadb.pool.conf /usr/local/etc/php-fpm.d/gigadb.pool.conf
 COPY ops/configuration/php-conf/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 COPY ops/configuration/php-conf/gigadb.ini /usr/local/etc/php/conf.d/gigadb.ini
+COPY ops/configuration/mstmp-conf/msmtprc /etc/msmtprc
 
 WORKDIR /var/www
 

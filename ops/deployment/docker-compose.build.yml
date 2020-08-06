@@ -27,6 +27,7 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=true
         - INSTALL_APCU=true
+        - INSTALL_MSMTP=true
     volumes:
       - ../../assets:/var/www/assets
 
