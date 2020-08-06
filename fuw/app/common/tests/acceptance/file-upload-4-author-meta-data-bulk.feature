@@ -169,6 +169,7 @@ Scenario: Unknown Data Type (one spreadsheet entry in error)
 	And I attach the file "TheProof.csv" in the file drop panel
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
+	And I wait "1" seconds
 	And I press "Add more"
 	And I attach the file "lorem.txt" in the file drop panel	
 	And I press "Upload 3 files"

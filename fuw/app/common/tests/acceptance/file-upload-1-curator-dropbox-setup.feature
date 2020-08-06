@@ -77,6 +77,8 @@ Scenario: Popup composer for customizing and sending email instructions
 	And I press "Save changes"
 	And I wait "2" seconds
 	Then I should see "New instructions saved."
+	And I should see a "Send instructions by email" link
+	And I should see a "Customize instructions" link
 
 
 # Scenario: Creating the drop box and emailing the author custom instructions
