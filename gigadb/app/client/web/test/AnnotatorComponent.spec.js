@@ -45,6 +45,28 @@ describe('Annotator component initial state', function () {
         })
     })
 
+    it('should not emit a ready event if uploads are not complete', function () {
+        let $emitted = false
+        eventBus.$on('metadata-ready-status', function(status) {
+            $emitted = status //event bus would catch our component's 'complete' event
+        })
+
+        this.renderedComponent = factory({
+            attachToDocument: true,
+            propsData: {
+                identifier: '000000',
+                uploads: JSON.parse(JSON.stringify( uploads )), //we need a copy, not reference
+                filetypes: JSON.parse('{"Readme":112,"Sequence assembly":113,"Annotation":114,"Protein sequence":115,"Repeat sequence":116,"Coding sequence":117,"Script":118,"Mixed archive":119}')
+            }
+        })
+
+        const wrapper = this.renderedComponent
+        return Vue.nextTick().then(function() {
+            expect(wrapper.vm.isMetadataComplete()).toBeFalse()
+            expect($emitted).toBeFalse()
+        })
+    })
+
     afterEach(function () {
         eventBus.$off()
     })
