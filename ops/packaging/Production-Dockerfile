@@ -189,7 +189,7 @@ RUN if [ ${INSTALL_MSMTP} = true ]; then \
     echo '    from           ${SERVER_EMAIL}' | tee -a /etc/msmtprc \
     echo '    user           ${SERVER_EMAIL}' | tee -a /etc/msmtprc \
     echo '    password       ${SERVER_EMAIL_PASSWORD}' | tee -a /etc/msmtprc \
-    echo '    account default : gmail' | tee -a /etc/msmtprc 
+    echo '    account default : gmail' | tee -a /etc/msmtprc \
 ;fi
 
 
