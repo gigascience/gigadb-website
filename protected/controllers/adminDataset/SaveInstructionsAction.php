@@ -45,7 +45,6 @@ class SaveInstructionsAction extends CAction
 
         $message = "New instructions saved.";
         Yii::app()->user->setFlash('success',$message);
-        unset(Yii::app()->session["filedrop_id_".Yii::app()->user->id]);
 
         $this->getController()->redirect("/adminDataset/admin/");
     }
