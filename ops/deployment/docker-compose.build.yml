@@ -28,6 +28,8 @@ services:
         - INSTALL_LIBSODIUM=true
         - INSTALL_APCU=true
         - INSTALL_MSMTP=true
+        - SERVER_EMAIL=${SERVER_EMAIL}
+        - SERVER_EMAIL_PASSWORD=${SERVER_EMAIL_PASSWORD}
     volumes:
       - ../../assets:/var/www/assets
 

@@ -175,6 +175,10 @@ RUN if [ ${INSTALL_APCU} = true ]; then \
 ;fi
 
 ARG INSTALL_MSMTP=false
+RUN echo $SERVER_EMAIL
+RUN echo $SERVER_EMAIL_PASSWORD
+RUN echo ${SERVER_EMAIL}
+RUN echo ${SERVER_EMAIL_PASSWORD}
 RUN if [ ${INSTALL_MSMTP} = true ]; then \
     apt-get update && \
     apt-get install -y msmtp msmtp-mta && \
