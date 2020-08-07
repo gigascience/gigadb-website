@@ -72,6 +72,7 @@ class DatasetFiledrop extends yii\base\BaseObject
 	{
         // Retrieve info about the dataset
         $dataset_info = $this->_filedrop->dataset->getTitleAndStatus();
+        $dataset_info["author"] = $this->_filedrop->dataset->getSubmitter()->getFullName();
 
         $instructions = $filedropAccount['instructions']; //preferably use saved instructions
         if (!$instructions) { // otherwise create from template and interpolate properties

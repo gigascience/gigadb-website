@@ -111,10 +111,20 @@ class DatasetFiledropTest extends CTestCase
 
 		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
 		$mockFiledropSrv = $this->createMock(FiledropService::class);
+		$mockUser = $this->createMock(User::class);
 
         $mockDatasetDAO->expects($this->once())
                  ->method('getTitleAndStatus')
                  ->willReturn(array('title' => 'foo', 'status' => 'bar'));
+
+
+        $mockDatasetDAO->expects($this->once())
+                 ->method('getSubmitter')
+                 ->willReturn($mockUser);
+
+        $mockUser->expects($this->once())
+        		->method('getFullName')
+        		->willReturn('Joy Fox');
 
         $mockFiledropSrv->dataset = $mockDatasetDAO;
 
@@ -131,6 +141,7 @@ class DatasetFiledropTest extends CTestCase
 		$this->assertTrue(1 == preg_match('/port: 9021/', $renderedInstructions));
 		$this->assertTrue(1 == preg_match('/username: uploader-232452/', $renderedInstructions));
 		$this->assertTrue(1 == preg_match('/password: 9ad4sf/', $renderedInstructions));
+		$this->assertTrue(1 == preg_match('/Dear Joy Fox/', $renderedInstructions));
 
 		// makes sure that unusued template tags don't get interpolated
 		$this->assertTrue(0 == preg_match('/downloader-286652/', $renderedInstructions));
@@ -157,10 +168,19 @@ class DatasetFiledropTest extends CTestCase
 
 		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
 		$mockFiledropSrv = $this->createMock(FiledropService::class);
-
+		$mockUser = $this->createMock(User::class);
+		
         $mockDatasetDAO->expects($this->once())
                  ->method('getTitleAndStatus')
                  ->willReturn(array('title' => 'foo', 'status' => 'bar'));
+
+        $mockDatasetDAO->expects($this->once())
+                 ->method('getSubmitter')
+                 ->willReturn($mockUser);
+
+        $mockUser->expects($this->once())
+        		->method('getFullName')
+        		->willReturn('Joy Fox');
 
         $mockFiledropSrv->dataset = $mockDatasetDAO;
 
