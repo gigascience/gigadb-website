@@ -80,6 +80,10 @@ class AdminDatasetSendInstructionsActionTest extends FunctionalTesting
             "Admin");
         //and send email instructions
         $this->session->visit($this->url."/id/$testDOI/fid/$filedropAccountId");
+
+        // Check the confirmation message
+        $this->assertTrue($this->session->getPage()->hasContent("Instructions sent to user@gigadb."));
+        
         // check there is a new curation_log entry
         $this->session->visit("http://gigadb.dev/adminDataset/update/id/213");
         $this->assertTrue($this->session->getPage()->hasContent($testInstructions));
