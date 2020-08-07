@@ -46,6 +46,8 @@ variables:
   MAIN_BRANCH: "nolegacy-dep-ux-php7"
   GITLAB_PRIVATE_TOKEN: $CI_BUILD_TOKEN
   GITLAB_UPSTREAM_PROJECT_ID: "7041674"
+  SERVER_EMAIL: ${SERVER_EMAIL}
+  SERVER_EMAIL_PASSWORD: ${SERVER_EMAIL_PASSWORD}
 
 services:
   - docker:dind
@@ -306,6 +308,8 @@ deploy_app:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web ln -s /etc/nginx/sites-available/gigadb.staging.https.conf /etc/nginx/sites-enabled/https.server.conf
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml kill -s HUP web
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml logs
+    # Check access to secret variable
+    - echo $SERVER_EMAIL
   environment:
     name: staging
     url: http://ec2-13-250-112-56.ap-southeast-1.compute.amazonaws.com
