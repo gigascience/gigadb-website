@@ -175,6 +175,7 @@ RUN if [ ${INSTALL_APCU} = true ]; then \
 ;fi
 
 ARG INSTALL_MSMTP=false
+ARG SERVER_EMAIL
 RUN echo $SERVER_EMAIL
 RUN echo $SERVER_EMAIL_PASSWORD
 RUN echo ${SERVER_EMAIL}
@@ -192,7 +193,7 @@ RUN if [ ${INSTALL_MSMTP} = true ]; then \
     echo '    port           587' | tee -a /etc/msmtprc && \
     echo '    from           ${SERVER_EMAIL}' | tee -a /etc/msmtprc && \
     echo '    user           ${SERVER_EMAIL}' | tee -a /etc/msmtprc && \
-    echo '    password       ${SERVER_EMAIL_PASSWORD}' | tee -a /etc/msmtprc && \
+    echo '    password       "${SERVER_EMAIL_PASSWORD}"' | tee -a /etc/msmtprc && \
     echo '    account default : gmail' | tee -a /etc/msmtprc \
 ;fi
 
