@@ -48,7 +48,7 @@ Scenario: send default email instructions
 	And I press "New Dropbox for this dataset"
 	And I wait "2" seconds
 	And I press "Send instructions by email"
-	Then I should see "Instructions sent."
+	Then I should see "Instructions sent to joy_fox@gigadb.org."
 	And I should not see a "Send instructions by email" link
 
 @ok
