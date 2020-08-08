@@ -188,7 +188,7 @@ RUN if [ ${INSTALL_MSMTP} = true ]; then \
     echo '    auth           on' | tee -a /etc/msmtprc && \
     echo '    tls            on' | tee -a /etc/msmtprc && \
     echo '    tls_trust_file /etc/ssl/certs/ca-certificates.crt' | tee -a /etc/msmtprc && \
-    echo '    logfile        ~/.msmtp.log' | tee -a /etc/msmtprc && \
+    echo '    logfile        /var/log/msmtp.log' | tee -a /etc/msmtprc && \
     echo '    account        gmail' | tee -a /etc/msmtprc && \
     echo '    host           smtp.gmail.com' | tee -a /etc/msmtprc && \
     echo '    port           587' | tee -a /etc/msmtprc && \
