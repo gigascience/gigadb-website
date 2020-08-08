@@ -192,9 +192,9 @@ RUN if [ ${INSTALL_MSMTP} = true ]; then \
     echo '    account        gmail' | tee -a /etc/msmtprc && \
     echo '    host           smtp.gmail.com' | tee -a /etc/msmtprc && \
     echo '    port           587' | tee -a /etc/msmtprc && \
-    echo '    from           $SERVER_EMAIL' | tee -a /etc/msmtprc && \
-    echo '    user           ${SERVER_EMAIL}' | tee -a /etc/msmtprc && \
-    echo '    password       $SERVER_EMAIL_PASSWORD' | tee -a /etc/msmtprc && \
+    echo "    from           $SERVER_EMAIL" | tee -a /etc/msmtprc && \
+    echo "    user           ${SERVER_EMAIL}" | tee -a /etc/msmtprc && \
+    echo "    password       $SERVER_EMAIL_PASSWORD" | tee -a /etc/msmtprc && \
     echo '    account default : gmail' | tee -a /etc/msmtprc \
 ;fi
 
