@@ -74,7 +74,7 @@ class MockupAction extends CAction
         }
 
         // Show a flash message
-        Yii::app()->user->setFlash('success',"Unique ($reviewerEmail), time-limited ($monthsOfValidity months) mockup url ready at http://gigadb.test/dataset/mockup/$token");
+        Yii::app()->user->setFlash('success',"Unique ($reviewerEmail), time-limited ($monthsOfValidity months) mockup url ready at ".Yii::app()->params['home_url']."/dataset/mockup/uuid/$token");
 
         $this->getController()->redirect("/adminDataset/admin/");
     }
