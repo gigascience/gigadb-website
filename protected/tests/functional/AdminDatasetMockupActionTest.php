@@ -72,7 +72,8 @@ class AdminDatasetMockupActionTest extends FunctionalTesting
             $testDOI = "100005";
             $reviewerEmail = "reviewer@gigadb.dev";
             $monthsOfValidity = 6 ;
-            $newMockupMessage = "Unique ($reviewerEmail), time-limited ($monthsOfValidity months) mockup url ready at http://gigadb.test/dataset/mockup/";
+            $newMockupPreMessage = "Unique ($reviewerEmail), time-limited ($monthsOfValidity months) mockup url ready";
+            $newMockupPostMessage = "/dataset/mockup/uuid";
             $curationMessage = "Mockup url created for $reviewerEmail for $monthsOfValidity months";
 
             // set upload status to the  Submitted
@@ -90,7 +91,8 @@ class AdminDatasetMockupActionTest extends FunctionalTesting
             $this->session->getPage()->fillField("revieweremail", $reviewerEmail);
             $this->session->getPage()->selectFieldOption("monthsofvalidity", $monthsOfValidity);
             $this->session->getPage()->pressButton("Generate mockup");
-            $this->assertTrue($this->session->getPage()->hasContent($newMockupMessage));
+            $this->assertTrue($this->session->getPage()->hasContent($newMockupPreMessage));
+            $this->assertTrue($this->session->getPage()->hasContent($newMockupPostMessage));
             $this->session->visit($this->url);
             $this->assertTrue($this->session->getPage()->hasContent($curationMessage));
 
