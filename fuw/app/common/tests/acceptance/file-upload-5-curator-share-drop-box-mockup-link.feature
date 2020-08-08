@@ -42,4 +42,4 @@ Scenario: Generating a mockup when status is Submitted
 	Then I should be on "/adminDataset/admin"
 	And I should see "Unique (reviewer@gigadb.org)"
 	And I should see "time-limited (3 months) mockup url ready"
-	And I should see "at http://gigadb.test/dataset/mockup/"
+	And I should see "/dataset/mockup/uuid/"
