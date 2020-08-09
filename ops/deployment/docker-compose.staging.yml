@@ -1,0 +1,275 @@
+version: '3.7'
+
+services:
+
+  web:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    volumes:
+      - assets:/var/www/assets
+      - le_config:/etc/letsencrypt
+      - le_webrootpath:/var/www/.le
+      - tempcaptcha:/var/www/images/tempcaptcha
+    ports:
+      - "${REMOTE_PUBLIC_HTTP_PORT}:80"
+      - "${REMOTE_PUBLIC_HTTPS_PORT}:443"
+    command: ["/usr/local/bin/enable_sites", "gigadb.staging.http"]
+    networks:
+      web-tier:
+        ipv4_address: 172.16.238.10
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  config:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
+    volumes:
+      - le_config:/etc/letsencrypt
+      - assets:/var/www/assets
+    command: cp /le.staging.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - le_config:/etc/letsencrypt
+      - le_webrootpath:/var/www/.le
+
+  application:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    volumes:
+      - assets:/var/www/assets
+      - tempcaptcha:/var/www/images/tempcaptcha
+    expose:
+      - "9000"
+    networks:
+      - web-tier
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"
+      - "fuw-admin-api:${staging_private_ip}"
+      - "fuw-public-api:${staging_private_ip}"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  less:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
+    volumes:
+      - assets:/var/www/assets
+      - captchas:/var/www/images/tempcaptcha
+    command: bash -c "./protected/yiic lesscompiler"
+
+  fuw-admin:
+    environment:
+      DOCKER_HOST: "tcp://${remote_private_ip}:2375"    
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest
+    expose:
+      - "9002"
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # mount client certificates for connecting to docker daemon
+      - /home/centos/.docker:/etc/certs:ro
+    depends_on:
+      - console
+      - ftpd
+      - tusd
+      - watcher
+    networks:
+      - web-tier
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  fuw-public:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:latest
+    expose:
+      - "9001"
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # mount client certificates for connecting to docker daemon
+      - /home/centos/.docker:/etc/certs:ro
+    depends_on:
+      - console
+      - ftpd
+      - tusd
+      - watcher
+    networks:
+      - web-tier
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+
+  fuw-worker:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:latest
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # to support systemd running in a container
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      # volume mount the location of public ftp directory
+      - /tmp:/var/ftp/public
+    depends_on:
+      - beanstalkd
+    networks:
+      - back-office
+    stop_signal: SIGRTMIN+3
+    tmpfs: /run
+    command: "/lib/systemd/systemd"
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"    
+
+  gigadb-worker:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:latest
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # to support systemd running in a container
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      # volume mount the location of public ftp directory
+      - /tmp:/var/ftp/public
+    depends_on:
+      - beanstalkd
+    networks:
+      - back-office
+    stop_signal: SIGRTMIN+3
+    tmpfs: /run
+    command: "/lib/systemd/systemd"
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"    
+
+  console:
+    environment:
+      DOCKER_HOST: "tcp://${remote_private_ip}:2375"    
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
+    expose:
+      - "9001"
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # mount client certificates for connecting to docker daemon
+      - /home/centos/.docker:/etc/certs:ro
+    networks:
+      - web-tier
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"
+      - "fuw-admin-api:${staging_private_ip}"
+      - "fuw-public-api:${staging_private_ip}"      
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  ftpd:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
+    volumes:
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/home/uploader
+      - ${DATA_SAVE_PATH}/fuw/repo:/home/downloader/:ro
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      - ${DATA_SAVE_PATH}/pure-ftpd:/etc/pure-ftpd
+      - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+    environment:
+      PUBLICHOST: "$REMOTE_HOSTNAME"
+    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $REMOTE_HOSTNAME
+    ports:
+      - target: 21
+        published: 9021
+        protocol: tcp
+        mode: host
+      - "30000-30009:30000-30009"
+    networks:
+      - web-tier
+    restart: unless-stopped
+
+  watcher:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest
+    volumes:
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/home/uploader
+      - ${DATA_SAVE_PATH}/fuw/repo:/home/downloader/
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/access:ro
+      - ${DATA_SAVE_PATH}/fuw/flags:/var/tmp/processing_flag
+    networks:
+      - web-tier
+    extra_hosts:
+      - "dockerhost:${staging_private_ip}"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  tusd:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest
+    volumes:
+      - ${DATA_SAVE_PATH}/fuw/incoming/tusd:/var/inbox/
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo/
+      # access to the ftp tokens so the upload's location attribute can be populated
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private          
+    command: -dir /var/inbox -base-path /fileserver/ -hooks-dir /var/hooks
+    expose:
+      - "1080"
+    networks:
+      - web-tier
+    extra_hosts:
+      - "dockerhost:${remote_private_ip}"      
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  beanstalkd:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:latest
+    expose:
+      - "11300"
+    networks:
+      - back-office
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+networks:
+  web-tier:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+  back-office:
+
+volumes:
+  assets:
+  le_config:
+  le_webrootpath:
+  tempcaptcha:
