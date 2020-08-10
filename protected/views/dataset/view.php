@@ -370,8 +370,8 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     color: #fff;
                                 }
                             </style>
-                            <button class="btn_click" onclick="goToPage()" >Go to page </button>
-                            <input type="number" id="pageTarget" style="border: #3fbe5f solid 1px ">
+                            <button class="btn_click" onclick="goToPage()">Go to page </button>
+                            <input type="number" id="pageTarget" style="border: #3fbe5f solid 1px">
                         </div>
                     <?php } ?>
 
@@ -760,10 +760,24 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
 <script>
     function goToPage() {
         var targetPageNumber = document.getElementById('pageTarget').value;
+        //To validate page number
+        var userInput = parseInt(targetPageNumber);
+        var max = <?= $files->getDataProvider()->getPagination()->getPageCount() ?>;
+        //To output total pages
+        // console.log(max);
+        var min = 1;
+        if (userInput >= min && userInput <= max) {
+            console.log("Valid page number!");
+        }else {
+            console.log("Error");
+            alert("Page number " + userInput + " is out of range! The LAST page is: " + max);
+            return;
+        }
         var targetUrlArray = Array.apply(null, Array(5)).map(function(_,i) { return window.location.pathname.split("/")[i]});
         targetUrlArray.push('Files_page', targetPageNumber);
         window.location = window.location.origin + targetUrlArray.join("/");
         // Uncomment will show the target url in console.
         // console.log(window.location.origin + targetUrlArray.join("/"))
     }
+
 </script>
