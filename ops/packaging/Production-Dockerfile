@@ -175,7 +175,7 @@ RUN if [ ${INSTALL_APCU} = true ]; then \
 ;fi
 
 ARG INSTALL_MSMTP=false
-#ARG SERVER_EMAIL
+ARG SERVER_EMAIL
 ARG SERVER_EMAIL_PASSWORD
 RUN if [ ${INSTALL_MSMTP} = true ]; then \
     apt-get update && \
