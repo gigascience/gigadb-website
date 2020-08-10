@@ -770,7 +770,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
             console.log("Valid page number!");
         }else {
             console.log("Error");
-            alert("Page number " + userInput + " is out of range! The LAST page is: " + max);
+            alert("Page number " + userInput + " is out of range! The HIGHEST page number is: " + max);
             return;
         }
         var targetUrlArray = Array.apply(null, Array(5)).map(function(_,i) { return window.location.pathname.split("/")[i]});
