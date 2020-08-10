@@ -360,8 +360,18 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     'pages'=>$files->getDataProvider()->getPagination(),
                                     ));
                             ?>
-                            <button onclick="goToPage()">Go to page </button>
-                            <input type="number" id="pageTarget">
+                            <style>
+                                .btn_click {
+                                    text-decoration: none;
+                                    border: #3fbe5f solid 1px;
+                                    padding: 5px 10px 3px;
+                                    font-size: 12px;
+                                    background-color: #09af38;
+                                    color: #fff;
+                                }
+                            </style>
+                            <button class="btn_click" onclick="goToPage()" >Go to page </button>
+                            <input type="number" id="pageTarget" style="border: #3fbe5f solid 1px ">
                         </div>
                     <?php } ?>
 
