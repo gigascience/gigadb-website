@@ -308,8 +308,6 @@ deploy_app:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web ln -s /etc/nginx/sites-available/gigadb.staging.https.conf /etc/nginx/sites-enabled/https.server.conf
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml kill -s HUP web
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml logs
-    # Check access to secret variable
-    - echo $SERVER_EMAIL
   environment:
     name: staging
     url: http://ec2-13-250-112-56.ap-southeast-1.compute.amazonaws.com
