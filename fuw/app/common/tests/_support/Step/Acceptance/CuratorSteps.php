@@ -7,6 +7,7 @@ use \FileUploadServicer;
 use \Email\Parse;
 use \Behat\Gherkin\Node\TableNode;
 use common\models\Upload;
+use Yii;
 
 class CuratorSteps #extends \common\tests\AcceptanceTester
 {
@@ -282,8 +283,14 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	/**
      * @Then An email is sent to :arg1
      */
-     public function anEmailIsSentTo($email)
+     public function anEmailIsSentTo($recipient)
      {
+        if("Curators" === $recipient) {
+            $email = Yii::$app->params["dataset_upload"]["curators_email"];
+        }
+        else {
+            $email = $recipient;
+        }
      	exec("ls -1rt /app/frontend/runtime/mail", $output, $error);
      	if(count($output) > 0 ) {
      		$lastEmail = array_pop($output);

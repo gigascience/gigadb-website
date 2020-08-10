@@ -27,4 +27,4 @@ Scenario: Editor set the status to "Submitted" causing a curation log entry and 
 	And I go to "/adminDataset/admin"
 	And I press "Update Dataset" for dataset "000007"
 	Then I should see "Status changed to Submitted"
-	And An email is sent to "database@gigasciencejournal.com"
+	And An email is sent to "Curators"
