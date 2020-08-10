@@ -359,13 +359,9 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     'id' => 'files-pager',
                                     'pages'=>$files->getDataProvider()->getPagination(),
                                     ));
-                                $this->widget('CListPager', array(
-                                    'id' => 'files-pager',
-                                    'pages'=>$files->getDataProvider()->getPagination(),
-                                    ));
-
-
                             ?>
+                            <button onclick="goToPage()">Go to page </button>
+                            <input type="number" id="pageTarget">
                         </div>
                     <?php } ?>
 
@@ -750,4 +746,14 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
 
 
     });
+</script>
+<script>
+    function goToPage() {
+        var targetPageNumber = document.getElementById('pageTarget').value;
+        var targetUrlArray = Array.apply(null, Array(5)).map(function(_,i) { return window.location.pathname.split("/")[i]});
+        targetUrlArray.push('Files_page', targetPageNumber);
+        window.location = window.location.origin + targetUrlArray.join("/");
+        // Uncomment will show the target url in console.
+        // console.log(window.location.origin + targetUrlArray.join("/"))
+    }
 </script>
