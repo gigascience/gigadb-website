@@ -777,10 +777,12 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
         var min = 1;
         if (userInput >= min && userInput <= max) {
             console.log("Valid page number!");
-        }else {
-            console.log("Error");
-            alert("Page number " + userInput + " is out of range! The HIGHEST page number is: " + max);
-            return;
+        }else if (userInput > max) {
+            targetPageNumber = max;
+            console.log("Error, return to " + max);
+        } else if (userInput < min) {
+            targetPageNumber = min;
+            console.log("Error, return to " + min);
         }
         var targetUrlArray = Array.apply(null, Array(5)).map(function(_,i) { return window.location.pathname.split("/")[i]});
         targetUrlArray.push('Files_page', targetPageNumber);
