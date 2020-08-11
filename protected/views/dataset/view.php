@@ -361,14 +361,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     ));
                             ?>
                             <style>
-                                /*.btn_click {*/
-                                /*    text-decoration: none;*/
-                                /*    border: #3fbe5f solid 1px;*/
-                                /*    padding: 5px 10px 3px;*/
-                                /*    font-size: 12px;*/
-                                /*    background-color: #09af38;*/
-                                /*    color: #fff;*/
-                                /*}*/
+                                .btn_click {
+                                    text-decoration: none;
+                                    border: 1px #099242 solid;
+                                    padding: 5px 10px 3px;
+                                    font-size: 14px;
+                                }
                                 input {
                                     width: 3%;
                                 }
@@ -377,10 +375,15 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     -webkit-appearance: none;
                                     margin: 0;
                                 }
+                                .text_box {
+                                    color: #099242;
+                                    background: #fff;
+                                    border: 1px #099242 solid;
+                                }
                             </style>
-                            <button class="btn_click" onclick="goToPage()">Go to page</button>
-                            <input type="number" id="pageTarget">
-                            <strong>of <?= $files->getDataProvider()->getPagination()->getPageCount()?></strong>
+                            <button class="btn_click background-btn-o" onclick="goToPage()"><strong>Go to page</strong></button>
+                            <input type="number" id="pageTarget" class="text_box">
+                            <a class="color-background"><strong> of <?= $files->getDataProvider()->getPagination()->getPageCount()?></strong></a>
                         </div>
                     <?php } ?>
 
