@@ -33,12 +33,39 @@ class AdminDatasetMoveFilesActionTest extends FunctionalTesting
 
             $this->dbh_fuw = new PDO("pgsql:host=".getenv("FUW_DB_HOST").";dbname=".getenv("FUW_DB_NAME"), getenv("FUW_DB_USER"), getenv("FUW_DB_PASSWORD"));
             $this->dbh_fuw->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
+
+
+            $this->setUpUsers($this->dbh_gigadb, "Erin","Dot","admin","erin_dot@gigadb.org");
+            $this->setUpUserIdentity($this->dbh_fuw, "erin_dot@gigadb.org");
+            $this->changeUserRole($this->dbh_gigadb, "user","admin@gigadb.org");
         }
         catch (PDOException $e) {
             exit("Failed connecting to database gigadb:". $e->getMessage());
         }
 
 	}
+
+    public function tearDown()
+    {
+        $this->changeUserRole($this->dbh_gigadb, "admin","admin@gigadb.org");
+        $this->tearDownUserIdentity($this->dbh_fuw, "erin_dot@gigadb.org");
+        $this->tearDownUsers($this->dbh_gigadb, "erin_dot@gigadb.org");
+        $this->setUpDatasetUploadStatus($this->dbh_gigadb, $this->doi,"Published");
+        $this->tearDownFileUploads(
+            $this->dbh_fuw,
+            $this->uploads
+        );
+        $this->tearDownFiledropAccount($this->dbh_fuw);
+        $this->tearDownUserIdentity(
+            $this->dbh_fuw,
+            "user@gigadb.org"
+        );
+        $this->dbh_gigadb = null;
+        $this->dbh_fuw = null;
+        $this->doi = null;
+
+        parent::tearDown();
+    }    
 
 	public function testMoveFiles()
 	{
@@ -61,7 +88,7 @@ class AdminDatasetMoveFilesActionTest extends FunctionalTesting
 
 		//admin user logs in
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
-            "admin@gigadb.org",
+            "erin_dot@gigadb.org",
             "gigadb",
             "Admin");
         
@@ -90,7 +117,7 @@ class AdminDatasetMoveFilesActionTest extends FunctionalTesting
 
         //admin user logs in
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
-            "admin@gigadb.org",
+            "erin_dot@gigadb.org",
             "gigadb",
             "Admin");
         
@@ -98,23 +125,5 @@ class AdminDatasetMoveFilesActionTest extends FunctionalTesting
         $this->assertTrue($this->session->getPage()->hasContent("No files found to move"));
     }
 
-	public function tearDown()
-	{
-   		$this->setUpDatasetUploadStatus($this->dbh_gigadb, $this->doi,"Published");
-        $this->tearDownFileUploads(
-            $this->dbh_fuw,
-            $this->uploads
-        );
-        $this->tearDownFiledropAccount($this->dbh_fuw);
-        $this->tearDownUserIdentity(
-            $this->dbh_fuw,
-            "user@gigadb.org"
-        );
-        $this->dbh_gigadb = null;
-        $this->dbh_fuw = null;
-        $this->doi = null;
-
-		parent::tearDown();
-	}
 }
 ?>

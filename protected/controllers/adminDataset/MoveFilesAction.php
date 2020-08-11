@@ -28,7 +28,7 @@ class MoveFilesAction extends CAction
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => \User::model()->findByPk(344), //admin user
+            "requester" => User::model()->findByPk(Yii::app()->user->id), //admin user
             "identifier"=> $doi,
             "dataset" => new DatasetDAO(["identifier" => $doi]),
             "dryRunMode"=>false,
