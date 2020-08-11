@@ -277,6 +277,13 @@ Feature: a user visit the dataset page
 		| pre_03AUG2015_update 								|				| Directory 		| UNKNOWN 		| 50.00 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
 		| readme.txt 										|				| Readme 			| TEXT 			| 337 B 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
+	@wip @files @javascript @pr437
+	Scenario: Files - Pagination
+		Given I am not logged in to Gigadb web site
+		And I am on "/dataset/101001"
+		And I follow "Files"
+		Then I should see a button "Go to page"
+
 	@ok @samples
 	Scenario: Samples
 		Given I am not logged in to Gigadb web site
