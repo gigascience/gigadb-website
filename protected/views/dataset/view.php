@@ -774,7 +774,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
         var targetPageNumber = document.getElementById('pageTarget').value;
         //To validate page number
         var userInput = parseInt(targetPageNumber);
-        var max = <?= $files->getDataProvider()->getPagination()->getPageCount() ?>;
+        var max = <?php echo $files->getDataProvider()->getPagination()->getPageCount() ?>;
         //To output total pages
         // console.log(max);
         var min = 1;
