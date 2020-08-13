@@ -282,7 +282,7 @@ Feature: a user visit the dataset page
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
 		And I follow "Files"
-		Then I should see a button "Go to page"
+		Then I should see onclick button "Go to page"
 
 	@ok @samples
 	Scenario: Samples
