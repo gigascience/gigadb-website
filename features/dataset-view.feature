@@ -282,7 +282,17 @@ Feature: a user visit the dataset page
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
 		And I follow "Files"
-		Then I should see onclick button "Go to page"
+		Then I should see an onclick button "Go to page"
+		When I input page number 2
+		Then I should see "Files" tab with table
+#		| File name | Description | Data Type | Size | File Attributes | link |
+#		| pre_03AUG2015_update | folder containing originally submitted data files, prior to update Aug 3rd 2015. | Directory | 50.00 MiB |     | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
+#		| readme.txt           |                                                                                  | Readme    | 337B      |     | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
+		| File name | Sample ID | Data Type | File Format 	| Size | Release date | link |
+		| pre_03AUG2015_update 								|				| Directory 		| UNKNOWN 		| 50.00 MiB 	| 2015-08-03  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
+		| readme.txt 										|				| Readme 			| TEXT 			| 337 B 		| 2013-01-23  | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
+
+
 
 	@ok @samples
 	Scenario: Samples
