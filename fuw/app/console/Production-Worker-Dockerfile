@@ -264,7 +264,7 @@ RUN chmod 700 /root/configurator.sh /root/configurator_dumpenv.sh && \
         systemctl enable configurator.service configurator_dumpenv.service yii-queue@1 yii-queue@2
 
 COPY . /app/
-COPY fileformats.json filetypes.json /var/www/files/
+COPY fileformats.json filetypes.json /var/www/files/data/
 COPY UpdateGigaDBJob.php /gigadb-apps/worker/file-worker/models/
 WORKDIR /app
 
