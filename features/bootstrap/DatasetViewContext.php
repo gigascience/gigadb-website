@@ -246,6 +246,15 @@ class DatasetViewContext implements Context
     }
 
     /**
+     * @when /^I input page number (\d+)$/
+     */
+    public function iInputPageNumber($num)
+    {
+        $this->minkContext->fillField("pageTarget", $num);
+        $this->minkContext->pressButton("Go to page");
+    }
+
+    /**
      * @Then I should not see a button :arg1
      */
     public function iShouldNotSeeAButton($arg1)
