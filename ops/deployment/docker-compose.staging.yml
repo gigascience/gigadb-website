@@ -89,6 +89,7 @@ services:
       - watcher
     networks:
       - web-tier
+      - back-office      
     extra_hosts:
       - "dockerhost:${staging_private_ip}"
     cap_drop:
