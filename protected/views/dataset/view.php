@@ -362,10 +362,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             ?>
                             <style>
                                 .btn_click {
+                                    border: solid 1px #0eb23c;
+                                    color: #0fad59;
+                                    padding: 4px 6px 3px 6px;
                                     text-decoration: none;
-                                    border: 1px #099242 solid;
-                                    padding: 5px 10px 3px;
-                                    font-size: 14px;
+                                    background-color: Transparent;
+                                    outline:none;
                                 }
                                 input {
                                     width: 3%;
@@ -376,12 +378,13 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     margin: 0;
                                 }
                                 .text_box {
-                                    color: #099242;
+                                    color: #0fad59;
                                     background: #fff;
-                                    border: 1px #099242 solid;
+                                    border: solid 1px #0eb23c;
+                                    outline:none;
                                 }
                             </style>
-                            <button class="btn_click background-btn-o" onclick="goToPage()"><strong>Go to page</strong></button>
+                            <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
                             <input type="number" id="pageTarget" class="text_box">
                             <a class="color-background"><strong> of <?= $files->getDataProvider()->getPagination()->getPageCount()?></strong></a>
                         </div>
