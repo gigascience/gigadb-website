@@ -110,6 +110,46 @@ public function _before(FunctionalTester $I)
         $I->dontSeeFileFound("8cd11d9b349dbf7d4539d25a2af03fe2.info", codecept_output_dir());      	  	
     }
 
+
+    public function tryCreateUploadForFileFromJSONFileDestinationAlreadyExists(FunctionalTester $I)
+    {
+        $doi = "300001";
+
+        Yii::$app->fs->write("file_repo/300001/seq1.fa","foobar");
+        Yii::$app->fs->write("file_repo/300001/meta/seq1.fa.info.json", file_get_contents(codecept_data_dir()."tusd.info"));
+
+        $accountId = $I->haveInDatabase('filedrop_account', [
+            'doi' => $doi,
+            'status' => FiledropAccount::STATUS_ACTIVE,
+        ]);
+
+        $outcome = Yii::$app->createControllerByID('tusd')->run('process-upload',[
+            "doi" => $doi, 
+            "jsonfile" => codecept_data_dir()."tusd.info",
+            "datafeed_path" => "/app/console/tests/_data",
+            "token_path" => "/app/console/tests/_data",
+            "file_inbox" => codecept_output_dir(),
+            "file_repo" => codecept_output_dir()."file_repo",           
+        ]);
+
+        $I->assertEquals(Exitcode::OK, $outcome);
+
+        $I->assertEquals(1, Upload::find([
+            "doi" => $doi,
+            "name" => "seq1.fa", 
+            "status" => Upload::STATUS_UPLOADING, 
+            "extension" =>"FASTA",
+            "size" => "117",
+            "initial_md5" => "58e51b8d263ca3e89712c65c4485a8c9",
+            "filedrop_account_id" => $accountId,
+        ])->count());
+
+        $I->seeFileFound("seq1.fa", codecept_output_dir()."file_repo/$doi");
+        $I->seeFileFound("seq1.fa.info.json", codecept_output_dir()."file_repo/$doi/meta");
+        $I->dontSeeFileFound("8cd11d9b349dbf7d4539d25a2af03fe2.bin", codecept_output_dir());
+        $I->dontSeeFileFound("8cd11d9b349dbf7d4539d25a2af03fe2.info", codecept_output_dir());           
+    }
+
     public function tryWithDefaultOptions(FunctionalTester $I)
     {
     	$controller = Yii::$app->createControllerByID('tusd');
