@@ -101,20 +101,22 @@ class TusdController extends Controller
 	public function moveFiles(): bool
 	{
 		$metadata = json_decode($this->json, true);
-		$copiedFile = Yii::$app->fs->copy(
-			str_replace(Yii::$app->fs->path, "",$this->file_inbox."/".$metadata["ID"].".bin"), 
-			str_replace(Yii::$app->fs->path,"",$this->file_repo."/".$this->doi."/".$metadata["MetaData"]["filename"])
-			);
-		$copiedMeta = Yii::$app->fs->copy(
-			str_replace(Yii::$app->fs->path, "",$this->file_inbox."/".$metadata["ID"].".info"), 
-			str_replace(Yii::$app->fs->path,"",$this->file_repo."/".$this->doi."/meta/".$metadata["MetaData"]["filename"].".info.json")
-			);
-		$deletedFile = $copiedFile && Yii::$app->fs->delete(
-			str_replace(Yii::$app->fs->path, "",$this->file_inbox."/".$metadata["ID"].".bin")
-		);
-		$deletedMeta = $copiedMeta && Yii::$app->fs->delete(
-			str_replace(Yii::$app->fs->path, "",$this->file_inbox."/".$metadata["ID"].".info")
-		);		
+
+		$sourceFile = str_replace(Yii::$app->fs->path, "",$this->file_inbox."/".$metadata["ID"].".bin");
+		$targetFile = str_replace(Yii::$app->fs->path,"",$this->file_repo."/".$this->doi."/".$metadata["MetaData"]["filename"]);
+		$sourceMeta = str_replace(Yii::$app->fs->path, "",$this->file_inbox."/".$metadata["ID"].".info");
+		$targetMeta = str_replace(Yii::$app->fs->path,"",$this->file_repo."/".$this->doi."/meta/".$metadata["MetaData"]["filename"].".info.json");
+
+		if ( Yii::$app->fs->has( $targetFile ) ) {
+			Yii::$app->fs->delete( $targetFile );
+		}
+		if ( Yii::$app->fs->has( $targetMeta ) ) {
+			Yii::$app->fs->delete( $targetMeta );
+		}
+		$copiedFile = Yii::$app->fs->copy( $sourceFile, $targetFile );
+		$copiedMeta = Yii::$app->fs->copy( $sourceMeta, $targetMeta );
+		$deletedFile = $copiedFile && Yii::$app->fs->delete( $sourceFile );
+		$deletedMeta = $copiedMeta && Yii::$app->fs->delete( $sourceMeta );
 
 		return $copiedFile && $copiedMeta && $deletedFile && $deletedMeta;
 	}
