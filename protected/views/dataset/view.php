@@ -775,6 +775,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
 <script>
     function goToPage() {
         var targetPageNumber = document.getElementById('pageTarget').value;
+        var pageID = <?php echo $model->identifier?>;
         //To validate page number
         var userInput = parseInt(targetPageNumber);
         var max = <?php echo $files->getDataProvider()->getPagination()->getPageCount() ?>;
@@ -790,7 +791,9 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
             targetPageNumber = min;
             console.log("Error, return to " + min);
         }
-        var targetUrlArray = Array.apply(null, Array(5)).map(function(_,i) { return window.location.pathname.split("/")[i]});
+        // var targetUrlArray = Array.apply(null, Array(5)).map(function(_,i) { return window.location.pathname.split("/")[i]});]
+        // Create array with default values
+        let targetUrlArray = ["", "dataset", "view", "id", pageID];
         targetUrlArray.push('Files_page', targetPageNumber);
         window.location = window.location.origin + targetUrlArray.join("/");
         // Uncomment will show the target url in console.
