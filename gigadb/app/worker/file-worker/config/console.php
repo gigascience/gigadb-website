@@ -18,11 +18,24 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'log' => [
+            'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
+                // [
+                //     'class' => 'yii\log\FileTarget',
+                //     'levels' => ['error', 'warning'],
+                // ],
+                // [
+                //     'class' => 'codemix\streamlog\Target',
+                //     'url' => 'php://stdout',
+                //     'levels' => ['info','trace'],
+                //     'logVars' => [],
+                // ],
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => 'codemix\streamlog\Target',
+                    'url' => 'php://stderr',
                     'levels' => ['error', 'warning'],
-                ],
+                    'logVars' => [],
+                ],                
             ],
         ],
         'queue' => [
