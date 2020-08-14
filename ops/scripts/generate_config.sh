@@ -162,6 +162,11 @@ TARGET=${APP_SOURCE}/protected/config/yii2/params-local.php
 VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME'
 envsubst $VARS < $SOURCE > $TARGET
 
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/gigadb/file-worker/db.php.dist
+TARGET=${APP_SOURCE}/gigadb/app/worker/file-worker/config/db.php
+VARS='$GIGADB_DB:$GIGADB_HOST:$GIGADB_USER:$GIGADB_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET
+
 if [ $GIGADB_ENV != "CI" ];then
     cp ops/configuration/nginx-conf/le.${GIGADB_ENV}.ini /etc/letsencrypt/cli.ini
 fi

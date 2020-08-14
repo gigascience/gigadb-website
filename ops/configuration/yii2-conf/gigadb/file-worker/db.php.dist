@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => "pgsql:host=database;dbname=gigadb",
-    'username' => "gigadb",
-    'password' => "vagrant",
+    'dsn' => "pgsql:host=$GIGADB_HOST;dbname=$GIGADB_DB",
+    'username' => "$GIGADB_USER",
+    'password' => "$GIGADB_PASSWORD",
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
