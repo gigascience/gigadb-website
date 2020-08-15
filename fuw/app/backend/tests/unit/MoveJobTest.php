@@ -64,6 +64,12 @@ class MoveJobTest extends \Codeception\Test\Unit
         $source = "/var/repo/200001/084.fq";
         $dest = "/var/ftp/public/200001/084.fq";
 
+
+        $mockNativeFilesystem->expects($this->once())
+                ->method('has')
+                ->with($dest)
+                ->willReturn(false);
+
         $mockNativeFilesystem->expects($this->once())
                 ->method('copy')
                 ->with($source, $dest)
@@ -92,6 +98,65 @@ class MoveJobTest extends \Codeception\Test\Unit
         ]);
     }
 
+
+/**
+     * Test that the worker call copy on Flysystem with the correct file paths
+     * and that the upload is updated with the appropriate status
+     * scenario where file already exists at destination, so should overwrite
+     *
+     */
+    public function testMoveJobSuccessFileExists()
+    {
+        $mockQueue = $this->createMock(\yii\queue\Queue::class);
+        $mockGigaDBQueue = $this->createMock(\yii\queue\Queue::class);
+        $mockLocalFileSystem = $this->createMock(\creocoder\flysystem\LocalFilesystem::class);
+        $mockLocal = $this->createMock(\League\Flysystem\Adapter\Local::class);
+        $mockNativeFilesystem = $this->createMock(\League\Flysystem\Filesystem::class);
+        $job = new MoveJob();
+        $job->doi = "200001";
+        $job->file = "084.fq";
+        $job->gigaDBQueue = $mockGigaDBQueue;
+        $source = "/var/repo/200001/084.fq";
+        $dest = "/var/ftp/public/200001/084.fq";
+
+
+        $mockNativeFilesystem->expects($this->once())
+                ->method('has')
+                ->with($dest)
+                ->willReturn(true);
+
+        $mockNativeFilesystem->expects($this->once())
+                ->method('rename')
+                ->with($dest, "$dest.todelete")
+                ->willReturn(true);
+
+        $mockNativeFilesystem->expects($this->once())
+                ->method('copy')
+                ->with($source, $dest)
+                ->willReturn(true);
+
+        $jobReceipt = 3;
+        $mockGigaDBQueue->expects($this->once())
+                ->method('push')
+                ->with(
+                    $this->callback(function($argument) {
+                        return $argument->className()  === "app\models\UpdateGigaDBJob";
+                    })
+                )
+                ->willReturn($jobReceipt);
+
+        $job->fs = new TestFilesystem(["adapter" => $mockLocal,
+            "nativeFilesystem" => $mockNativeFilesystem,
+            "path" => "/var"
+        ]);
+        $result = $job->execute($mockQueue);
+        $this->assertTrue($result);
+        $this->tester->seeRecord('common\models\Upload', [
+            'doi' => $job->doi, 
+            'name' => $job->file, 
+            'status' => Upload::STATUS_SYNCHRONIZED,
+        ]);
+    }
 
     /**
      * Test that the worker call copy on Flysystem with the correct file paths
