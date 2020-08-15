@@ -68,7 +68,7 @@ class MockupAction extends CAction
         $curationlog->created_by = "System";
         $curationlog->dataset_id = $id;
         $curationlog->action = "Mockup url created for $reviewerEmail for $monthsOfValidity months";
-        $curationlog->comments = "Mockup url created for $reviewerEmail for $monthsOfValidity months at http://gigadb.test/dataset/mockup/$token";
+        $curationlog->comments = "Mockup url created for $reviewerEmail for $monthsOfValidity months at ".Yii::app()->params['home_url']."/dataset/mockup/uuid/$token";
         if (!$curationlog->save()) {
             Yii::log("Error saving Curation log entry for mockup creation on dataset_id $id","error");
         }
