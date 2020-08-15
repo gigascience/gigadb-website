@@ -95,6 +95,8 @@ class AdminDatasetMockupActionTest extends FunctionalTesting
             $this->assertTrue($this->session->getPage()->hasContent($newMockupPostMessage));
             $this->session->visit($this->url);
             $this->assertTrue($this->session->getPage()->hasContent($curationMessage));
+            $this->assertTrue($this->session->getPage()->hasContent($newMockupPostMessage));
+            $this->assertTrue($this->session->getPage()->hasContent(Yii::app()->params['home_url']));
 
         }
         catch(Error $e) {
