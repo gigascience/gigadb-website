@@ -62,9 +62,10 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
     	Yii::warning("Move job for {$this->file} ({$this->doi})");
     	$source = Yii::getAlias("@uploads/{$this->doi}/{$this->file}");
     	$dest = Yii::getAlias("@publicftp/{$this->doi}/{$this->file}");
-    	
+    	$timestamp = (new \DateTime())->format('U');
+
         if ( $this->_fs->has($dest) ) {
-            $this->_fs->rename($dest, $dest.".todelete");
+            $this->_fs->rename($dest, $dest.".todelete.$timestamp");
         }
         Yii::warning("source: $source, destination: $dest");
         if ( $this->_fs->copy($source,$dest) ) {
