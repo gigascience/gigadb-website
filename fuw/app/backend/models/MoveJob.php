@@ -75,6 +75,7 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
                 return false;
             }
             $upload->status = Upload::STATUS_SYNCHRONIZED;
+            $upload->location = "ftp://climb.genomics.cn/pub/10.5524/{$this->doi}/{$this->file}";
 
 
             return $upload->save() && $this->_gigaDBQueue->push($this->createUpdateGigaDBJob($upload));
