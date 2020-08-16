@@ -127,7 +127,11 @@ class MoveJobTest extends \Codeception\Test\Unit
 
         $mockNativeFilesystem->expects($this->once())
                 ->method('rename')
-                ->with($dest, "$dest.todelete")
+                ->with($dest, 
+                    $this->callback(function($subject) {
+                        return 1 === preg_match('/\.todelete\.\d+$/', $subject);
+                    })
+                )
                 ->willReturn(true);
 
         $mockNativeFilesystem->expects($this->once())
