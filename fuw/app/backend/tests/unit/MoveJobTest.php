@@ -95,7 +95,9 @@ class MoveJobTest extends \Codeception\Test\Unit
             'doi' => $job->doi, 
             'name' => $job->file, 
             'status' => Upload::STATUS_SYNCHRONIZED,
+            'location' => "ftp://climb.genomics.cn/pub/10.5524/{$job->doi}/{$job->file}"
         ]);
+
     }
 
 
