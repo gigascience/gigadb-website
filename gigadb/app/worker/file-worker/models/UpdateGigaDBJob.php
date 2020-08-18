@@ -81,7 +81,7 @@ class UpdateGigaDBJob extends \yii\base\Component implements \yii\queue\JobInter
      **/
     public function saveFile(int $datasetId): int
     {
-        Yii::error("Creating file record for file".$this->file['name']." for dataset ".$this->doi);
+        Yii::warning("Creating file record for file".$this->file['name']." for dataset ".$this->doi);
         $file = new File();
         $file->dataset_id = $datasetId;
         $file->attributes = $this->file;
