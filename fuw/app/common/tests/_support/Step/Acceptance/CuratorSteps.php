@@ -123,8 +123,8 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
             elseif("sample" === $row[0]) {
                 $this->I->haveInDatabase("public.{$row[0]}",["species_id" => 1128856 ,"name" => $row[1] ] );
             }            
-            else {
-                $this->I->haveInDatabase("public.{$row[0]}",["id" => $row[1], "name" => $row[1] ] );
+            elseif("unit" === $row[0])  {
+                $this->I->haveInDatabase("public.{$row[0]}",["id" => $row[2], "name" => $row[1] ] );
             }
         }
      }

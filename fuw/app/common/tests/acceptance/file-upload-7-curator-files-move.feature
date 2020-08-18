@@ -90,11 +90,11 @@ Scenario: Completion of moving files triggers update of the file, attributes tab
 	And file uploads with samples and attributes have been uploaded for DOI "000007"
 	And I wait "1" seconds
 	And reference data for Attribute for Unit is created for
-	| Table | Name |
-	| attribute | Temperature |
-	| attribute | Humidity |
-	| unit | Celsius |
-	| unit | Percent |
+	| Table | Name | Id |
+	| attribute | Temperature ||
+	| attribute | Brightness ||
+	| unit | degree celsius | UO:000002 |
+	| unit | lumen | UO:0000118 |	
 	And I go to "/adminDataset/admin"
 	And I press "Update Dataset" for dataset "000007"
 	And I press "Move files to public ftp"
@@ -103,8 +103,8 @@ Scenario: Completion of moving files triggers update of the file, attributes tab
 	And I browse to the dataset page for "000007"
 	Then I should see the files
 	| File Name | Data Type | File Format | Size | File Attributes (1st) | File Attributes (2nd) |
-	| seq1.fa | Sequence assembly | FASTA | 23.43 MiB | Temperature: 45 | Humidity: 75 |
-	| Specimen.pdf | Annotation | PDF | 19.11 KiB | Temperature: 51 | Humidity: 90 |
+	| seq1.fa | Sequence assembly | FASTA | 23.43 MiB | Temperature: 45 | Brightness: 75 |
+	| Specimen.pdf | Annotation | PDF | 19.11 KiB | Temperature: 51 | Brightness: 90 |
 	And there is a download link for each file associated with DOI "000007"
 	| File Name |
 	| seq1.fa | 
@@ -116,14 +116,14 @@ Scenario: Completion of moving files triggers update of the file, attributes and
 	And file uploads with samples and attributes have been uploaded for DOI "000007"
 	And I wait "1" seconds
 	And reference data for Attribute for Unit is created for
-	| Table | Name |
-	| attribute | Temperature |
-	| attribute | Humidity |
-	| unit | Celsius |
-	| unit | Percent |	
-	| sample | Sample A |	
-	| sample | Sample E |	
-	| sample | Sample Z |	
+	| Table | Name | Id |
+	| attribute | Temperature ||
+	| attribute | Brightness ||
+	| unit | degree celsius | UO:000002 |
+	| unit | lumen | UO:0000118 |	
+	| sample | Sample A ||	
+	| sample | Sample E ||	
+	| sample | Sample Z ||	
 	And I go to "/adminDataset/admin"
 	And I press "Update Dataset" for dataset "000007"
 	And I press "Move files to public ftp"
@@ -132,8 +132,8 @@ Scenario: Completion of moving files triggers update of the file, attributes and
 	And I browse to the dataset page for "000007"
 	Then I should see the files
 	| File Name | Sample ID | Data Type | File Format | Size | File Attributes (1st) | File Attributes (2nd) |
-	| seq1.fa | Sample A, Sample Z | Sequence assembly | FASTA | 23.43 MiB | Temperature: 45 | Humidity: 75 |
-	| Specimen.pdf | Sample E | Annotation | PDF | 19.11 KiB | Temperature: 51 | Humidity: 90 |
+	| seq1.fa | Sample A, Sample Z | Sequence assembly | FASTA | 23.43 MiB | Temperature: 45 | Brightness: 75 |
+	| Specimen.pdf | Sample E | Annotation | PDF | 19.11 KiB | Temperature: 51 | Brightness: 90 |
 	And there is a download link for each file associated with DOI "000007"
 	| File Name |
 	| seq1.fa | 
