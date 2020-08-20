@@ -386,7 +386,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             </style>
                             <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
                             <input type="number" id="pageTarget" class="text_box">
-                            <a class="color-background"><strong> of <?= $files->getDataProvider()->getPagination()->getPageCount()?></strong></a>
+                            <a class="color-background"><strong> of <?php echo $files->getDataProvider()->getPagination()->getPageCount()?></strong></a>
                         </div>
                     <?php } ?>
 
