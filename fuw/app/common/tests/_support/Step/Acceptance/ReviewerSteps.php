@@ -103,7 +103,7 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
                 'name' => "seq1.fa",
                 'size' => 24564343,
                 'status' => Upload::STATUS_UPLOADING,
-                'location' => "ftp://seq1.fa",
+                'location' => "ftp://climb.genomics.cn/pub/10.5524/000007/seq1.fa",
                 'extension' => 'FASTA',
                 'datatype' => 'Sequence assembly',
                 'sample_ids' => 'Sample A, Sample Z'
@@ -113,7 +113,7 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
                 'name' => "Specimen.pdf",
                 'size' => 19564,
                 'status' => Upload::STATUS_UPLOADING,
-                'location' => "ftp://Specimen.pdf",
+                'location' => "ftp://climb.genomics.cn/pub/10.5524/000007/Specimen.pdf",
                 'extension' => 'PDF',
                 'datatype' => 'Annotation',
                 'sample_ids' => 'Sample E'

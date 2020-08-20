@@ -31,8 +31,8 @@ Scenario: The page at the unique and time-limed url show uploaded files, attribu
 	When I browse to the mockup url
 	Then I should see the files
 	| File Name | Sample ID | Data Type | File Format | Size | File Attributes (1st) | File Attributes (2nd) |
-	| seq1.fa | Sample A, Sample Z | Sequence assembly | FASTA | 23.43 MiB | Temperature: 45 Celsius | Humidity: 75 |
-	| Specimen.pdf | Sample E | Annotation | PDF | 19.11 KiB | Temperature: 51 Celsius | Humidity: 90 |
+	| seq1.fa | Sample A, Sample Z | Sequence assembly | FASTA | 23.43 MiB | Temperature: 45 degree celsius | Brightness: 75 lumen|
+	| Specimen.pdf | Sample E | Annotation | PDF | 19.11 KiB | Temperature: 51 degree celsius | Brightness: 90 lumen|
 	And there is a download link for each file associated with DOI "000007"
 	| File Name |
 	| seq1.fa | 
