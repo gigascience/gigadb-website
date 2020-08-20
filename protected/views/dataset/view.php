@@ -358,9 +358,35 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                 $this->widget('SiteLinkPager', array(
                                     'id' => 'files-pager',
                                     'pages'=>$files->getDataProvider()->getPagination(),
-                            ));
-
+                                    ));
                             ?>
+                            <style>
+                                .btn_click {
+                                    border: solid 1px #0eb23c;
+                                    color: #0fad59;
+                                    padding: 4px 6px 3px 6px;
+                                    text-decoration: none;
+                                    background-color: Transparent;
+                                    outline:none;
+                                }
+                                input {
+                                    width: 3%;
+                                }
+                                input::-webkit-outer-spin-button,
+                                input::-webkit-inner-spin-button {
+                                    -webkit-appearance: none;
+                                    margin: 0;
+                                }
+                                .text_box {
+                                    color: #0fad59;
+                                    background: #fff;
+                                    border: solid 1px #0eb23c;
+                                    outline:none;
+                                }
+                            </style>
+                            <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
+                            <input type="number" id="pageTarget" class="text_box">
+                            <a class="color-background"><strong> of <?= $files->getDataProvider()->getPagination()->getPageCount()?></strong></a>
                         </div>
                     <?php } ?>
 
@@ -745,4 +771,33 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
 
 
     });
+</script>
+<script>
+    function goToPage() {
+        var targetPageNumber = document.getElementById('pageTarget').value;
+        var pageID = <?php echo $model->identifier?>;
+        //To validate page number
+        var userInput = parseInt(targetPageNumber);
+        var max = <?php echo $files->getDataProvider()->getPagination()->getPageCount() ?>;
+        //To output total pages
+        // console.log(max);
+        var min = 1;
+        if (userInput >= min && userInput <= max) {
+            console.log("Valid page number!");
+        }else if (userInput > max) {
+            targetPageNumber = max;
+            console.log("Error, return to " + max);
+        } else if (userInput < min) {
+            targetPageNumber = min;
+            console.log("Error, return to " + min);
+        }
+        // var targetUrlArray = Array.apply(null, Array(5)).map(function(_,i) { return window.location.pathname.split("/")[i]});]
+        // Create array with default values
+        let targetUrlArray = ["", "dataset", "view", "id", pageID];
+        targetUrlArray.push('Files_page', targetPageNumber);
+        window.location = window.location.origin + targetUrlArray.join("/");
+        // Uncomment will show the target url in console.
+        // console.log(window.location.origin + targetUrlArray.join("/"))
+    }
+
 </script>
