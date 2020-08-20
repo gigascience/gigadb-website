@@ -4,11 +4,10 @@ class m200528_052407_create_yiisession_tab extends CDbMigration
 {
 public function up()
     {
-        Yii::app()->db->createCommand()->createTable('YiiSession', array(
-            'id'=>'CHAR(32) PRIMARY KEY',
-            'expire'=> 'integer',
-            'data'=> 'BYTEA'
-        ));
+        $this->execute("CREATE TABLE IF NOT EXISTS YiiSession (
+            id CHAR(32) PRIMARY KEY,
+            expire integer,
+            data bytea);");
     }
 
     public function down()

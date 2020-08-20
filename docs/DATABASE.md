@@ -75,6 +75,20 @@ database using the migration scripts in `gigadb-website/protected/migrations/sch
 The second command will upload data into the tables using migration scripts that
 were created as part of `docker-compose run --rm config` execution.
 
+If you make changes to the schema and/or add new data by updating by creating 
+new Yii migration scripts then you might want to reset the PostgreSQL database 
+and re-run the schema creation and data upload migration scripts:
+```
+# Delete tables and other database objects
+$ docker-compose run --rm  application ./protected/yiic migrate to 300000_000000 --migrationPath=application.migrations.admin --interactive=0
+# Reset tbl_migration table for logging database migrations
+$ docker-compose run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
+# Re-create schema tables
+$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
+# Upload data into tables
+$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.dev --interactive=0
+```
+
 
 
 
