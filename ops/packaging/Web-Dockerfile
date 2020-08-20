@@ -12,7 +12,6 @@ COPY configuration/gigadb-public/index.php /var/www/index.php
 
 COPY configuration/nginx-conf/sites/${GIGADB_ENV} /tmp/sites-available/
 COPY configuration/nginx-static /tmp/nginx-static/
-COPY configuration/proto-conf /tmp/proto-conf/
 COPY configuration/fuw-conf /tmp/fuw-conf/
 ARG FIX_SITE_CONFIGS=false
 RUN if [ ${FIX_SITE_CONFIGS} = true ]; then \
@@ -41,7 +40,6 @@ RUN if [ ${FIX_SITE_CONFIGS} = true ]; then \
 	mv /tmp/nginx-static/* /var/www/ && \
 	# bake in proto files
 	mkdir -vp /app/ && \
-	mv /tmp/proto-conf/* /app/ && \
 	mv /tmp/fuw-conf/* /app/ \
 ;fi
 
