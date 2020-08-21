@@ -382,7 +382,6 @@ build:
     # build the javascript app, so that the Vue.js app can be baked in production_app
     - docker-compose run --rm js
     # build Nginx web container, making sure static assets are baked in
-    - cp -R fuw/app/proto ops/configuration/proto-conf/
     - cp -R fuw/app/backend ops/configuration/fuw-conf/
     - docker-compose build production_web
     # build and push production containers for PHP-FPM with application code and vendor code baked in and publish to registry
