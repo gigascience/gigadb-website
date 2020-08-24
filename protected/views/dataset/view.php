@@ -361,7 +361,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     ));
                             ?>
                             <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
-                            <input type="number" id="pageTarget" class="page_box" onkeypress="goToPage()">
+                            <input type="number" id="pageTarget" class="page_box" onkeypress="pressEnter()">
                             <a class="color-background"><strong> of <?php echo $files->getDataProvider()->getPagination()->getPageCount()?></strong></a>
                         </div>
                     <?php } ?>
@@ -775,14 +775,13 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
         window.location = window.location.origin + targetUrlArray.join("/");
         // Uncomment will show the target url in console.
         // console.log(window.location.origin + targetUrlArray.join("/"))
+    }
 
-        var pressEnter = document.getElementById("pageTarget");
-        pressEnter.addEventListener("keyup", function(event) {
-            event.preventDefault();
-            if (event.keyCode === 13 || event.which == 13 ) {
-                console.log("Enter is pressed, go to page:" + userInput);
-            }
-        });
+    function pressEnter() {
+        if(event.which === 13 || event.keyCode === 13 || event.key === "Enter") {
+            console.log("Enter is pressed");
+            return goToPage();
+        };
     }
 
 </script>
