@@ -57,10 +57,10 @@ ul.yiiPager .hidden a
 }
 
 /**
- * Show first and last buttons by default.
+ * Hide first and last buttons by default.
  */
 ul.yiiPager .first,
 ul.yiiPager .last
 {
-	display:inline;
+	display:none;
 }
