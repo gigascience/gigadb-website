@@ -360,32 +360,8 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     'pages'=>$files->getDataProvider()->getPagination(),
                                     ));
                             ?>
-                            <style>
-                                .btn_click {
-                                    border: solid 1px #0eb23c;
-                                    color: #0fad59;
-                                    padding: 4px 6px 3px 6px;
-                                    text-decoration: none;
-                                    background-color: Transparent;
-                                    outline:none;
-                                }
-                                input {
-                                    width: 3%;
-                                }
-                                input::-webkit-outer-spin-button,
-                                input::-webkit-inner-spin-button {
-                                    -webkit-appearance: none;
-                                    margin: 0;
-                                }
-                                .text_box {
-                                    color: #0fad59;
-                                    background: #fff;
-                                    border: solid 1px #0eb23c;
-                                    outline:none;
-                                }
-                            </style>
                             <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
-                            <input type="number" id="pageTarget" class="text_box" onkeypress="goToPage()">
+                            <input type="number" id="pageTarget" class="page_box" onkeypress="goToPage()">
                             <a class="color-background"><strong> of <?php echo $files->getDataProvider()->getPagination()->getPageCount()?></strong></a>
                         </div>
                     <?php } ?>
