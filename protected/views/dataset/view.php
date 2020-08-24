@@ -781,7 +781,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
         if(event.which === 13 || event.keyCode === 13 || event.key === "Enter") {
             console.log("Enter is pressed");
             return goToPage();
-        };
+        }
     }
 
 </script>
