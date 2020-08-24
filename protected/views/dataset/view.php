@@ -385,7 +385,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                 }
                             </style>
                             <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
-                            <input type="number" id="pageTarget" class="text_box">
+                            <input type="number" id="pageTarget" class="text_box" onkeypress="goToPage()">
                             <a class="color-background"><strong> of <?php echo $files->getDataProvider()->getPagination()->getPageCount()?></strong></a>
                         </div>
                     <?php } ?>
@@ -793,11 +793,20 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
         }
         // var targetUrlArray = Array.apply(null, Array(5)).map(function(_,i) { return window.location.pathname.split("/")[i]});]
         // Create array with default values
+        //TODO: This array is hardcoded
         let targetUrlArray = ["", "dataset", "view", "id", pageID];
         targetUrlArray.push('Files_page', targetPageNumber);
         window.location = window.location.origin + targetUrlArray.join("/");
         // Uncomment will show the target url in console.
         // console.log(window.location.origin + targetUrlArray.join("/"))
+
+        var pressEnter = document.getElementById("pageTarget");
+        pressEnter.addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13 || event.which == 13 ) {
+                console.log("Enter is pressed, go to page:" + userInput);
+            }
+        });
     }
 
 </script>
