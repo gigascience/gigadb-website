@@ -283,8 +283,10 @@ Feature: a user visit the dataset page
 		And I am on "/dataset/101001"
 		And I follow "Files"
 		And I have set pageSize to "5" on "files_table_settings"
-		Then I should see an onclick button "Go to page"
-		When I input page number 2
+		Then I should see a button input "Go to page"
+		When I fill in "pageTarget" with "2"
+		And I press "Enter"
+		And I wait "3" seconds
 		And I take a screenshot named "file_tab_test"
 		Then I should see "Files" tab with table
 		| File Name              							| Description  	                                                                    | Data Type       	| Size  		| File Attributes | link |
