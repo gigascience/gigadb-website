@@ -236,17 +236,6 @@ class DatasetViewContext implements Context
     }
 
     /**
-     * @Then I should see an onclick button :arg1
-     */
-    public function iShouldSeeOnclickButton($arg1)
-    {
-        PHPUnit_Framework_Assert::assertTrue(
-            $this->minkContext->getSession()->getPage()->hasButton($arg1)
-        );
-    }
-
-
-    /**
      * @Then I should not see a button :arg1
      */
     public function iShouldNotSeeAButton($arg1)
