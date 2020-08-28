@@ -326,7 +326,8 @@ Feature: a user visit the dataset page
 		When I fill in "pageTarget" with "2"
 		And I manually hit return
 #		And I take a screenshot named "file_tab_enter"
-		Then I should see "Files" tab with table
+		Then I should be on "/dataset/view/id/101001/Files_page/2"
+		And I should see "Files" tab with table
 		| File Name              							| Description  	                                                                    | Data Type       	| Size  		| File Attributes | link |
 		| pre_03AUG2015_update 								| folder containing originally submitted data files, prior to update Aug 3rd 2015.	| Directory 		| 50.00 MiB 	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
 		| readme.txt 										|				                                                                    | Readme 			| 337 B 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
