@@ -218,6 +218,15 @@ class DatasetViewContext implements Context
     }
 
     /**
+     * @Then I manually hit return
+     */
+    public function iManuallyHitReturn()
+    {
+        $xpath = '//*[@id="pageTarget"]';
+        $this->minkContext->getSession()->getDriver()->getWebDriverSession()->element('xpath', $xpath)->postValue(['value' => ["\r\n"]]);
+    }
+
+    /**
      * @Then I should see a button :arg1 with no link
      */
     public function iShouldSeeAButtonWithNoLink($arg1)
