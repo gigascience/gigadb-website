@@ -60,8 +60,16 @@ class DatasetController extends Controller
         $cookies = Yii::app()->request->cookies;
         $flag=null;
 
+        $userHostAddress = Yii::app()->request->getUserHostAddress();
+        $userHostSubnet = substr($userHostAddress,0,strrpos($userHostAddress,"."));
+
         // configuring files table
-        $fileSettings = $datasetPageSettings->getFileSettings($cookies);
+        if("172.16.238" == $userHostSubnet && $id !== "101001") { //always displays all columns in tests
+            $fileSettings = $datasetPageSettings->getFileSettings($cookies, DatasetPageSettings::MOCKUP_COLUMNS);
+        }
+        else {
+            $fileSettings = $datasetPageSettings->getFileSettings($cookies);
+        }
 
         if (isset($_POST['setting']) && $_POST['pageSize']) {
             $fileSettings = $datasetPageSettings->setFileSettings($_POST['setting'], $_POST['pageSize'], $cookies);
