@@ -222,7 +222,7 @@ class DatasetViewContext implements Context
      */
     public function iManuallyHitReturn()
     {
-        $xpath = '//*[@id="pageTarget"]';
+        $xpath = '//*[@id="pageNumber"]';
         $this->minkContext->getSession()->getDriver()->getWebDriverSession()->element('xpath', $xpath)->postValue(['value' => ["\r\n"]]);
     }
 
