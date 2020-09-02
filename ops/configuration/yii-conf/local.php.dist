@@ -2,6 +2,12 @@
 
 return array(
     'components' => array(
+        'mailService' => array(
+            'class'     => 'application.components.MailService',
+            'username'    => '${SERVER_EMAIL}',
+            'password'    => '${SERVER_EMAIL_PASSWORD}',
+            'smtp_host'    => '${SERVER_EMAIL_SMTP_HOST}',
+        ),
         'newsletter' => array(
             'class'     => 'application.components.NewsletterService',
             'api_key'    => '${MAILCHIMP_API_KEY}',

@@ -1,5 +1,8 @@
 <?php
 
+use yii\swiftmailer\mailer;
+use yii\swiftmailer\Message;
+
 class UserCommandController extends CController
 {
     // Members
@@ -159,8 +162,14 @@ class UserCommandController extends CController
 
     }
 
-      # Send notification email to admins about new user
-    private function sendNotificationEmail($user,$author,$dataset) {
+    /**
+     * Send notification email to admins about new submitted dataset.
+     *
+     * @param integer $user, user id
+     * @param integer $dataset_id, dataset id
+     * @param integer $author_id, author id
+     */
+    private function sendNotificationEmail($user, $author, $dataset) {
         $app_email_name = Yii::app()->params['app_email_name'];
         $app_email = Yii::app()->params['app_email'];
         $email_prefix = Yii::app()->params['email_prefix'];
@@ -172,20 +181,19 @@ class UserCommandController extends CController
         $dataset_url = $this->createAbsoluteUrl('dataset/view',array('id'=>$dataset->identifier));
         $cta_url = $this->createAbsoluteUrl('user/update', array('id'=>$user->id));
         $body = <<<EO_MAIL
-
-New claim on an author made by user from this dataset:
-$dataset_url
-
-Claimant: {$user->first_name} {$user->last_name}
-Author claimed:  {$author->getFullAuthor()}
-
-Click the following url to validate or reject the claim:
-
-$cta_url
-
+<p><img src="cid:top" /></p>
+<p>New claim on an author made by user from this dataset:</p>
+<p>$dataset_url</p>
+<p>Claimant: {$user->first_name} {$user->last_name}</p>
+<p>Author claimed:  {$author->getFullAuthor()}</p>
+<p>Click the following url to validate or reject the claim:</p>
+<p>$cta_url</p>
+<p><img src="cid:bottom" /></p>
+<p><img src="cid:logo" /></p>
 EO_MAIL;
-        mail($recipient, $subject, $body, $headers);
-        Yii::log(__FUNCTION__."> Sent email to $recipient, about: $subject with body: $body");
+
+        Yii::app()->mailService->sendEmailMessage("database@gigasciencejournal.com", $recipient, $subject, $body);
+        Yii::log(__FUNCTION__."> Sent email to $recipient, about: $subject");
     }
 
 }
