@@ -361,7 +361,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     ));
                             ?>
                             <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
-                            <input type="number" id="pageTarget" class="page_box" onkeypress="pressEnter()">
+                            <input type="number" id="pageNumber" class="page_box" onkeypress="pressEnter()">
                             <a class="color-background"><strong> of <?php echo $files->getDataProvider()->getPagination()->getPageCount()?></strong></a>
                         </div>
                     <?php } ?>
@@ -750,7 +750,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
 </script>
 <script>
     function goToPage() {
-        var targetPageNumber = document.getElementById('pageTarget').value;
+        var targetPageNumber = document.getElementById('pageNumber').value;
         var pageID = <?php echo $model->identifier?>;
         //To validate page number
         var userInput = parseInt(targetPageNumber);
