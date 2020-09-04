@@ -9,3 +9,7 @@ require_once($yiit);
 require_once($composer);
 Yii::$enableIncludePath = false;
 Yii::createWebApplication($config);
+
+# load Yii 2 (but don't run the web application)
+$yii2Config = require('/var/www/protected/config/yii2/web.php');
+new yii\web\Application($yii2Config);
