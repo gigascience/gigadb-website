@@ -126,6 +126,11 @@ TARGET=${APP_SOURCE}/protected/config/db.json
 VARS='$GIGADB_DB:$GIGADB_HOST:$GIGADB_USER:$GIGADB_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
+SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/web.php.dist
+TARGET=${APP_SOURCE}/protected/config/yii2/web.php
+VARS='$SERVER_EMAIL_SMTP_HOST:$SERVER_EMAIL_SMTP_PORT:$SERVER_EMAIL:$SERVER_EMAIL_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET
+
 
 if [ $GIGADB_ENV != "CI" ];then
     cp ops/configuration/nginx-conf/le.${GIGADB_ENV}.ini /etc/letsencrypt/cli.ini
