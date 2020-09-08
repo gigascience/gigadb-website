@@ -100,6 +100,7 @@ services:
       - web
       - database
       - phantomjs
+      - chrome
     command: ./ops/scripts/webapp_setup.sh
     networks:
       - web-tier
