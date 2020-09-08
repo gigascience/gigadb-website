@@ -91,7 +91,6 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
 		    'pagination' => null
 		    )
 		);
-//		$files_pagination = new CPagination(count($files));
         $files_pagination = new FilesPagination(count($files));
         $files_pagination->setPageSize($this->_pageSize);
         $files_pagination->pageVar = "Files_page";
