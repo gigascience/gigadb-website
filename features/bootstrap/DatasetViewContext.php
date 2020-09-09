@@ -227,6 +227,14 @@ class DatasetViewContext implements Context
     }
 
     /**
+     * @When I hit return
+     */
+    public function iHitReturn()
+    {
+        $this->sendKeyPressFromField("\r\n","pageNumber");
+    }
+
+    /**
      * @Then I should see a button :arg1 with no link
      */
     public function iShouldSeeAButtonWithNoLink($arg1)
