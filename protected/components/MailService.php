@@ -1,16 +1,24 @@
 <?php
 
+/**
+ * Service for sending emails
+ *
+ * @author Peter Li <peter+git@gigasciencejournal.com>
+ * @author Rija Menage <rija+git@cinecinetique.com>
+ * @license GPL-3.0
+ */
 class MailService extends CApplicationComponent
 {
-    public $mailer;
+    protected $mailer;
 
     public function init()
     {
+        $this->mailer = Yii::$app->mailer;
         parent::init();
     }
 
     /**
-     * send email message
+     * Send email message
      *
      * @param string $from sender email
      * @param string $to recipient email
@@ -20,12 +28,7 @@ class MailService extends CApplicationComponent
      */
     public function sendEmailMessage(string $from, string $to, string $subject, string $content)
     {
-        $log1 = get_class(Yii::app()); // outputs 'CWebApplication'
-        $log2 = get_class(Yii::$app);  // outputs 'yii\web\Application'
-        Yii::log(__FUNCTION__."MailService > $log1");
-        Yii::log(__FUNCTION__."MailService > $log2");
-        
-        Yii::$app->mailer->compose()
+        return $this->mailer->compose()
             ->setFrom($from)
             ->setTo($to)
             ->setSubject($subject)
@@ -33,5 +36,24 @@ class MailService extends CApplicationComponent
             ->send();
     }
 
+    /**
+     * Send HTML email message
+     *
+     * @param string $from sender email
+     * @param string $to recipient email
+     * @param string $subject email's subject
+     * @param string $content content to send
+     * @return bool whether sending the email is successful or not
+     */
+    public function sendHTMLEmailMessage(string $from, string $to, string $subject, string $content)
+    {
+        return $this->mailer->compose('test')
+            ->setFrom($from)
+            ->setTo($to)
+            ->setSubject($subject)
+//            ->setHtmlBody($content)
+            ->send();
+
+    }
 }
 ?>

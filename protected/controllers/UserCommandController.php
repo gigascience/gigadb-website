@@ -192,7 +192,7 @@ class UserCommandController extends CController
 <p><img src="cid:logo" /></p>
 EO_MAIL;
 
-        Yii::app()->mailService->sendEmailMessage("database@gigasciencejournal.com", $recipient, $subject, $body);
+        Yii::app()->mailService->sendHTMLEmailMessage("database@gigasciencejournal.com", $recipient, $subject, $body);
         Yii::log(__FUNCTION__."> Sent email to $recipient, about: $subject");
     }
 
