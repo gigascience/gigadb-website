@@ -227,6 +227,18 @@ class DatasetViewContext implements Context
     }
 
     /**
+     * A function to simulate a key press
+     * @param $key
+     * @param $field_name
+     */
+    public function sendKeyPressFromField($key, $field_name)
+    {
+        if ($field_name) {
+            $this->minkContext->getSession()->getDriver()->getWebDriverSession()->pressKey($key);
+        }
+    }
+
+    /**
      * @When I hit return
      */
     public function iHitReturn()
