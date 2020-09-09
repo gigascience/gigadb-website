@@ -317,14 +317,15 @@ Feature: a user visit the dataset page
 		| Anas_platyrhynchos_domestica.RepeatMasker.out.gz 	| repeat masker output 	                                                            | Other 			| 7.79 MiB  	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos_domestica.RepeatMasker.out.gz |
 		| duck.scafSeq.gapFilled.noMito 					| draft genome assembly                                                             | Sequence assembly	| 1.03 GiB 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/duck.scafSeq.gapFilled.noMito |
 
-	@ok @files @javascript @pr437
+	@wip @files @javascript @pr437
 	Scenario: Files - Pagination
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
 		And I follow "Files"
 		And I have set pageSize to "5" on "files_table_settings"
 		When I fill in "pageNumber" with "2"
-		And I manually hit return
+#		And I manually hit return
+		And I hit return
 		Then I should be on "/dataset/view/id/101001/Files_page/2"
 		And I should see "Files" tab with table
 		| File Name              							| Description  	                                                                    | Data Type       	| Size  		| File Attributes | link |
