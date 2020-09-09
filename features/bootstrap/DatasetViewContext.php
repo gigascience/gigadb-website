@@ -233,9 +233,8 @@ class DatasetViewContext implements Context
      */
     public function sendKeyPressFromField($key, $field_name)
     {
-        if ($field_name) {
-            $this->minkContext->getSession()->getDriver()->getWebDriverSession()->pressKey($key);
-        }
+        $xpath = '//*[@id="'.$field_name.'"]';
+        $this->minkContext->getSession()->getDriver()->getWebDriverSession()->element('xpath', $xpath)->postValue(['value' =>[$key]]);
     }
 
     /**
