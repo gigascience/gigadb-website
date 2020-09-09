@@ -26,5 +26,5 @@ services:
       - application
       - web
       - database
-      - phantomjs
       - xhgui
+      - chrome
