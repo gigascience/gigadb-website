@@ -99,7 +99,6 @@ services:
       - application
       - web
       - database
-      - phantomjs
       - chrome
     command: ./ops/scripts/webapp_setup.sh
     networks:
@@ -138,16 +137,6 @@ services:
     extra_hosts:
       - "gigadb.dev:172.16.238.10"
     command: ./tests/all_and_coverage
-
-  phantomjs:
-    image: wernight/phantomjs:2.1.1
-    command: phantomjs --webdriver=8910
-    expose:
-      - "8910"
-    networks:
-      - web-tier
-    extra_hosts:
-      - "gigadb.dev:172.16.238.10"
 
   chrome:
     image: selenium/standalone-chrome:3.141.59-oxygen # latest version with Chrome 74
