@@ -181,21 +181,16 @@ class UserCommandController extends CController
         $dataset_url = $this->createAbsoluteUrl('dataset/view',array('id'=>$dataset->identifier));
         $cta_url = $this->createAbsoluteUrl('user/update', array('id'=>$user->id));
         $body = <<<EO_MAIL
-<p><img src="cid:top" /></p>
 <p>New claim on an author made by user from this dataset:</p>
 <p>$dataset_url</p>
 <p>Claimant: {$user->first_name} {$user->last_name}</p>
 <p>Author claimed:  {$author->getFullAuthor()}</p>
 <p>Click the following url to validate or reject the claim:</p>
 <p>$cta_url</p>
-<p><img src="cid:bottom" /></p>
-<p><img src="cid:logo" /></p>
 EO_MAIL;
-
         Yii::app()->mailService->sendHTMLEmailMessage("database@gigasciencejournal.com", $recipient, $subject, $body);
         Yii::log(__FUNCTION__."> Sent email to $recipient, about: $subject");
     }
-
 }
 
 ?>
