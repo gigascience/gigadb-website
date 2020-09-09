@@ -47,7 +47,7 @@ class MailService extends CApplicationComponent
      */
     public function sendHTMLEmailMessage(string $from, string $to, string $subject, string $content)
     {
-        return $this->mailer->compose('test')
+        return $this->mailer->compose('html')
             ->setFrom($from)
             ->setTo($to)
             ->setSubject($subject)
