@@ -6,7 +6,6 @@ return [
     'components' => [
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            'viewPath' => '/var/www/protected/views/mail',
             'useFileTransport' => false,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
