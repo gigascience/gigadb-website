@@ -3,4 +3,19 @@ FROM tusproject/tusd:0.13.1
 USER root
 RUN apk add --no-cache sudo
 
+RUN apk --update --no-cache add wget \ 
+		     curl \
+		     git \
+		     php7 \
+		     php7-curl \
+		     php7-openssl \
+		     php7-iconv \
+		     php7-json \
+		     php7-mbstring \
+		     php7-pdo_pgsql \
+		     php7-pgsql \
+		     php7-phar && \
+
+	curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer 
+
 COPY ./hooks /var/hooks/

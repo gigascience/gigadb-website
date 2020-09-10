@@ -88,6 +88,7 @@ class DatasetUpload extends yii\base\BaseObject
 				"Data available for review", 
 				$content
 			);
+            CurationLog::createlog("DataAvailableForReview", $this->_datasetDAO->getId());
 			return $statusChanged && $emailSent;
 		}
 		return false;

@@ -22,6 +22,7 @@
 
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7;
+Use \common\models\Upload;
 
 class FileUploadService extends yii\base\Component
 {
@@ -144,7 +145,7 @@ class FileUploadService extends yii\base\Component
 								    'headers' => [
 								        'Authorization' => "Bearer ".$this->token,
 								    ],
-								    'query' => [ 'filter[doi]' => $doi,  'filter[status]' => 0],
+								    'query' => [ 'filter[doi]' => $doi,  'filter[status]' => Upload::STATUS_UPLOADING],
 								    'connect_timeout' => 5,
 								]);
 			if (200 === $response->getStatusCode() ) {

@@ -54,6 +54,7 @@ class DatasetController extends Controller
         $dao = new DatasetDAO(["identifier" => $id]) ;
         $nextDataset =  $dao->getNextDataset() ?? $dao->getFirstDataset();
         $previousDataset =  $dao->getPreviousDataset() ?? $dao->getFirstDataset();
+        $srv = new FileUploadService(["webClient" => new \GuzzleHttp\Client()]);
 
         $datasetPageSettings = new DatasetPageSettings($model);
 
@@ -86,13 +87,13 @@ class DatasetController extends Controller
 
         // Assembling page components and page settings
 
-        $assembly = DatasetPageAssembly::assemble($model, Yii::app());
+        $assembly = DatasetPageAssembly::assemble($model, Yii::app(),$srv);
         $assembly->setDatasetSubmitter()
                     ->setDatasetAccessions()
                     ->setDatasetMainSection()
                     ->setDatasetConnections()
                     ->setDatasetExternalLinks()
-                    ->setDatasetFiles($fileSettings["pageSize"])
+                    ->setDatasetFiles($fileSettings["pageSize"],"stored")
                     ->setDatasetSamples($sampleSettings["pageSize"])
                     ->setSearchForm();
 

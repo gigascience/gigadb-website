@@ -12,4 +12,4 @@ docker-compose run --rm test ./bin/phpunit --testsuite functional --bootstrap pr
 # running functional tests for File Upload Wizard's backend and frontend apps
 docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run functional
 docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run functional
-
+docker-compose exec -T console /app/vendor/bin/codecept -c /app/console run functional

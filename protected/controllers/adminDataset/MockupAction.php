@@ -60,7 +60,7 @@ class MockupAction extends CAction
             "dryRunMode"=>false,
             ]);
 
-        $token = $filedropSrv->makeMockupUrl($mockupTokenService, $reviewerEmail, $monthsOfValidity);
+        list($token, $user_id) = $filedropSrv->makeMockupUrl($mockupTokenService, $reviewerEmail, $monthsOfValidity);
 
         // Add entry to curation log
         $curationlog = new CurationLog;

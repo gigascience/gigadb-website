@@ -5,9 +5,8 @@ namespace backend\models;
 use Yii;
 use Docker\Docker;
 use Docker\API\Model\ContainerSummaryItem;
-use Docker\API\Model\{ContainersIdExecPostBody,
-                      ExecIdStartPostBody,
-                    };
+use Docker\API\Model\ContainersIdExecPostBody;              
+use Docker\API\Model\ExecIdStartPostBody;              
 
 use common\models\Upload;
 

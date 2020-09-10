@@ -62,6 +62,10 @@ class FiledropServiceTest extends FunctionalTesting
             $this->dbhf->pdoInstance,
             $datasetDAO->getSubmitter()->email
         );
+        $this->tearDownUserIdentity(
+            $this->dbhf->pdoInstance,
+            "reviewer2@gigadb.org"
+        );
         $this->tearDownFiledropAccount(
             $this->dbhf->getPdoInstance(),
             $this->filedrop_id
@@ -561,13 +565,16 @@ class FiledropServiceTest extends FunctionalTesting
                                     ]);
 
             // invoke the FileUpload Service
-            $url_fragment = $srv->makeMockupUrl($mockupTokenService, $reviewerEmail,$monthsOfValidity);
+            list($url_fragment, $user_id) = $srv->makeMockupUrl($mockupTokenService, $reviewerEmail,$monthsOfValidity);
 
             // test the response from the API is successful
             $this->assertEquals(201, $container[0]['response']->getStatusCode());
             // test that setAttributes return a value
             $this->assertNotNull($url_fragment);
             $this->assertTrue(Uuid::isValid($url_fragment));
+            // Test that a FUW user was created for the reviewer
+            $this->assertNotNull($user_id);
+
         }
         catch(Error $e) {
             throw new Exception($e);
@@ -620,12 +627,13 @@ class FiledropServiceTest extends FunctionalTesting
                                     ]);
 
             // invoke the FileUpload Service with incorrect value of months of validity
-            $url_fragment = $srv->makeMockupUrl($mockupTokenService, $reviewerEmail,2);
+            list($url_fragment, $user_id) = $srv->makeMockupUrl($mockupTokenService, $reviewerEmail,2);
             $this->assertNull($url_fragment);
 
             // invoke the FileUpload Service with malformed reviewer email
             $url_fragment = $srv->makeMockupUrl($mockupTokenService, "john@",$monthsOfValidity);
             $this->assertNull($url_fragment);
+            $this->assertNull($user_id);
 
 
         }

@@ -3,11 +3,19 @@
 
 class DatasetPageAssemblyTest extends CDbTestCase
 {
+	private $srv ;
+
+	public function setUp()
+	{
+		parent::setUp();
+		$this->srv = new FileUploadService();
+	}
+
 	public function testAssemble()
 	{
 		$mockApp = $this->createMock(CApplication::class);
 		$d = new Dataset();
-		$assembly = DatasetPageAssembly::assemble($d, $mockApp);
+		$assembly = DatasetPageAssembly::assemble($d, $mockApp, $this->srv);
 		$this->assertNotNull($assembly);
 		$this->assertTrue(is_a($assembly,"DatasetPageAssembly"));
 	}
@@ -17,7 +25,7 @@ class DatasetPageAssemblyTest extends CDbTestCase
 		$app = Yii::app() ;
 		$d = Dataset::model()->findByPk(1);
 
-		$assembly = DatasetPageAssembly::assemble($d, $app);
+		$assembly = DatasetPageAssembly::assemble($d, $app, $this->srv);
 		$this->assertEquals($d, $assembly->getDataset());
 	}
 
@@ -26,7 +34,7 @@ class DatasetPageAssemblyTest extends CDbTestCase
 		$app = Yii::app() ;
 		$d = Dataset::model()->findByPk(1);
 
-		$assembly = DatasetPageAssembly::assemble($d, $app);
+		$assembly = DatasetPageAssembly::assemble($d, $app, $this->srv);
 		$this->assertEquals($assembly, $assembly->setDatasetSubmitter());
 		$this->assertNotNull($assembly->getDatasetSubmitter());
 		$this->assertTrue(is_a($assembly->getDatasetSubmitter(),"DatasetSubmitterInterface"));
@@ -38,7 +46,7 @@ class DatasetPageAssemblyTest extends CDbTestCase
 		$app = Yii::app() ;
 		$d = Dataset::model()->findByPk(1);
 
-		$assembly = DatasetPageAssembly::assemble($d, $app);
+		$assembly = DatasetPageAssembly::assemble($d, $app, $this->srv);
 		$this->assertEquals($assembly, $assembly->setDatasetAccessions());
 		$this->assertNotNull($assembly->getDatasetAccessions());
 		$this->assertTrue(is_a($assembly->getDatasetAccessions(),"DatasetAccessionsInterface"));
@@ -50,7 +58,7 @@ class DatasetPageAssemblyTest extends CDbTestCase
 		$app = Yii::app() ;
 		$d = Dataset::model()->findByPk(1);
 
-		$assembly = DatasetPageAssembly::assemble($d, $app);
+		$assembly = DatasetPageAssembly::assemble($d, $app, $this->srv);
 		$this->assertEquals($assembly, $assembly->setDatasetMainSection());
 		$this->assertNotNull($assembly->getDatasetMainSection());
 		$this->assertTrue(is_a($assembly->getDatasetMainSection(),"DatasetMainSectionInterface"));
@@ -77,7 +85,7 @@ class DatasetPageAssemblyTest extends CDbTestCase
 
 		$d = Dataset::model()->findByPk(1);
 
-		$assembly = DatasetPageAssembly::assemble($d, $mockApp);
+		$assembly = DatasetPageAssembly::assemble($d, $mockApp, $this->srv);
 		$this->assertEquals($assembly, $assembly->setDatasetConnections());
 		$this->assertNotNull($assembly->getDatasetConnections());
 		$this->assertTrue(is_a($assembly->getDatasetConnections(),"DatasetConnectionsInterface"));
@@ -89,7 +97,7 @@ class DatasetPageAssemblyTest extends CDbTestCase
 		$app = Yii::app() ;
 		$d = Dataset::model()->findByPk(1);
 
-		$assembly = DatasetPageAssembly::assemble($d, $app);
+		$assembly = DatasetPageAssembly::assemble($d, $app, $this->srv);
 		$this->assertEquals($assembly, $assembly->setDatasetExternalLinks());
 		$this->assertNotNull($assembly->getDatasetExternalLinks());
 		$this->assertTrue(is_a($assembly->getDatasetExternalLinks(),"DatasetExternalLinksInterface"));
@@ -102,7 +110,7 @@ class DatasetPageAssemblyTest extends CDbTestCase
 		$d = Dataset::model()->findByPk(1);
 		$pageSize = 10;
 
-		$assembly = DatasetPageAssembly::assemble($d, $app);
+		$assembly = DatasetPageAssembly::assemble($d, $app, $this->srv);
 		$this->assertEquals($assembly, $assembly->setDatasetFiles($pageSize, "stored"));
 		$this->assertNotNull($assembly->getDatasetFiles());
 		$this->assertTrue(is_a($assembly->getDatasetFiles(),"DatasetFilesInterface"));
@@ -128,7 +136,7 @@ class DatasetPageAssemblyTest extends CDbTestCase
 		$d = Dataset::model()->findByPk(1);
 		$pageSize = 10;
 
-		$assembly = DatasetPageAssembly::assemble($d, $app);
+		$assembly = DatasetPageAssembly::assemble($d, $app, $this->srv);
 		$this->assertEquals($assembly, $assembly->setDatasetSamples($pageSize));
 		$this->assertNotNull($assembly->getDatasetSamples());
 		$this->assertTrue(is_a($assembly->getDatasetSamples(),"DatasetSamplesInterface"));
@@ -140,7 +148,7 @@ class DatasetPageAssemblyTest extends CDbTestCase
 		$app = Yii::app() ;
 		$d = Dataset::model()->findByPk(1);
 
-		$assembly = DatasetPageAssembly::assemble($d, $app);
+		$assembly = DatasetPageAssembly::assemble($d, $app, $this->srv);
 		$this->assertEquals($assembly, $assembly->setSearchForm());
 		$this->assertNotNull($assembly->getSearchForm());
 		$this->assertTrue(is_a($assembly->getSearchForm(),"SearchForm"));

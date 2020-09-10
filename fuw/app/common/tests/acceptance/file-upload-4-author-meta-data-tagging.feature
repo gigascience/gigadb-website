@@ -20,7 +20,7 @@ Scenario: Can trigger a form from metadata form for adding new attribute
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	When I press "Next"
 	And I press "Attributes"
 	Then I should see a text input field "Name"
@@ -39,7 +39,7 @@ Scenario: Can add new attribute to the attribute list
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	When I press "Next"
 	And I press "Attributes"
 	And I fill in "Name" with "Temperature"
@@ -62,7 +62,7 @@ Scenario: Can add new samples to a file upload
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	When I press "Next"
 	And I press "Sample IDs"
 	And I add new sample "Sequence 3"
@@ -86,7 +86,7 @@ Scenario: Saving file metadata with attributes and samples
 	And I press "Add more"
 	And I attach the file "CC0_pixel.jpg" in the file drop panel
 	And I press "Upload 2 files"
-	And I wait "30" seconds
+	And I wait "5" seconds
 	When I press "Next"
 	And I fill in the form with
 	| File name 	| Data type | Description text 	|
