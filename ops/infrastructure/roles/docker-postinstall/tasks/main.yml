@@ -204,4 +204,3 @@
     status_code: 200
   register: public_ip_put_outcome
   when: public_ip_post_outcome.status == 400
-

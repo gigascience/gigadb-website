@@ -130,7 +130,7 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => \User::model()->findByPk(344), //admin user
+            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -176,7 +176,7 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => \User::model()->findByPk(344), //admin user
+            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -226,7 +226,7 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => \User::model()->findByPk(344), //admin user
+            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -274,7 +274,7 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => \User::model()->findByPk(344), //admin user
+            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -321,7 +321,7 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => \User::model()->findByPk(344), //admin user
+            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -377,7 +377,7 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => \User::model()->findByPk(344), //admin user
+            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -442,7 +442,7 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => \User::model()->findByPk(344), //admin user
+            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -517,7 +517,7 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => \User::model()->findByPk(344), //admin user
+            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,

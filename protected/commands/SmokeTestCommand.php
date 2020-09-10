@@ -30,9 +30,9 @@ values(9999,'gigadb-smoke-test-user@rijam.sent.as','5a4f75053077a32e681f81daa879
 
 	public function actionRemoveData($args) {
 		echo "Removing smoke test data...".PHP_EOL;
-		$sql = "delete from gigadb_user where id=9999";
-		Yii::app()->db->createCommand($sql)->execute();
 		$sql = "delete from dataset where id=9999";
+		Yii::app()->db->createCommand($sql)->execute();
+		$sql = "delete from gigadb_user where id=9999";
 		Yii::app()->db->createCommand($sql)->execute();
 		return 0;
 	}

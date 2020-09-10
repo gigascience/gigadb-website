@@ -70,7 +70,11 @@
             "/var/www/vendor/swiftmailer/swiftmailer/lib/dependency_maps/message_deps.php",
             "/var/www/vendor/swiftmailer/swiftmailer/lib/dependency_maps/transport_deps.php",
             "/var/www/vendor/swiftmailer/swiftmailer/lib/preferences.php"
-        ]
+        ],
+        "psr-4": {
+            "common\\models\\" : "/app/common/models",     
+            "backend\\models\\" : "/app/backend/models"     
+        }        
     },
     "repositories": [
         {

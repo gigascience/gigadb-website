@@ -66,4 +66,3 @@ gherkin:
 extensions:
     enabled:
         - Codeception\Extension\Recorder
-

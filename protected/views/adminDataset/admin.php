@@ -94,6 +94,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
                         ),
                 'update' => array(
 	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/update_new.png',
+	                	'options'=>array("title"=>"Update Dataset"),
                         ),
                 'delete' => array(
 	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/delete_new.png',

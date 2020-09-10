@@ -49,7 +49,15 @@ class AcceptanceTester extends \Codeception\Actor
     public function aDatasetWithDOIOwnedByUserHasStatus($doi, $firstname, $lastname, $status)
     {
     	$submitter_id = $this->grabFromDatabase('gigadb_user', 'id', array('username' => strtolower("${firstname}_${lastname}")));
-         $dataset_id = $this->haveInDatabase('dataset', [
+
+        $image_id = $this->haveInDatabase('image', [
+            "location" => "no_image.jpg",
+            "license" => "Public domain",
+            "photographer" => "GigaDB",
+            "source" => "GigaDB",
+            "url" => "http://gigadb.org/images/data/cropped/no_image.png",
+        ]);
+        $dataset_id = $this->haveInDatabase('dataset', [
 			  'submitter_id' => $submitter_id,
 			  'identifier' => "$doi",
 			  'title' => "Dataset Fantastic",
@@ -57,6 +65,7 @@ class AcceptanceTester extends \Codeception\Actor
 			  'dataset_size' => 3453534634,
 			  'ftp_site' => 'ftp://data.org',
 			  'upload_status' => "$status",
+              'image_id' => $image_id,
 			]);
 
          $this->haveInDatabase('dataset_type', [

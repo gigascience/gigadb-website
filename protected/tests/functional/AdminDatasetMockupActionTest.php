@@ -51,6 +51,10 @@ class AdminDatasetMockupActionTest extends FunctionalTesting
             $this->dbh_fuw,
             "user@gigadb.org"
         );
+        $this->tearDownUserIdentity(
+            $this->dbh_fuw,
+            "reviewer@gigadb.dev"
+        );
         $this->dbh_gigadb = null;
         $this->dbh_fuw = null;
         $this->url = null;

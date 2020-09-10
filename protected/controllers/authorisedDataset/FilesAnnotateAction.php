@@ -29,7 +29,7 @@ class FilesAnnotateAction extends CAction
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => Yii::app()->user,
+            "requesterEmail" => Yii::app()->user->email,
             "identifier"=> $id,
             "dataset" => new DatasetDAO(["identifier" => $id]),
             "dryRunMode"=>false,

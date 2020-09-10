@@ -3,6 +3,7 @@ include:
     - common
     - frontend
     - backend
+    - console
 coverage:
     show_only_summary: true
 paths:
