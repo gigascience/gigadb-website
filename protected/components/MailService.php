@@ -47,10 +47,10 @@ class MailService extends CApplicationComponent
      */
     public function sendHTMLEmailMessage(string $from, string $to, string $subject, string $content)
     {
-        return $this->mailer->compose('template', 
-            ['top_img' => '/var/www/images/email/top.gif', 
-                'bottom_img' => '/var/www/images/email/bottom.gif',
-                'logo_img' => '/var/www/images/email/logo.gif',
+        return $this->mailer->compose('template',
+            ['top_img' => '/var/www/images/email/top.png',
+                'bottom_img' => '/var/www/images/email/bottom.png',
+                'logo_img' => '/var/www/images/email/logo.png',
                 'content' => $content])
             ->setFrom($from)
             ->setTo($to)
