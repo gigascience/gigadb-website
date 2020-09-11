@@ -440,6 +440,9 @@ class AdminFileController extends Controller
 
                 $this->redirect(array('view', 'id' => $model->id));
             }
+        } elseif (isset($_POST['delete_attr'])) {
+            $args = $_POST['FileAttributes'];
+            FileAttributes::model()->findByPk($args['id'])->delete();
         }
 
         $this->render('update', array(
@@ -469,24 +472,23 @@ class AdminFileController extends Controller
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-   public function actionDelete($file_id)
+   public function actionDelete($id)
     {
 
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
-            $file = File::model()->findByPk($file_id);
+            $file = File::model()->findByPk($id);
+            // $file->fileSamples->delete();
+          foreach ($file->fileAttributes as $fileattributes) {
+              print_r($fileattributes);
+              $fileattributes->delete();
 
-          // $file->fileSamples->delete();
-//          foreach ($file->fileAttributes as $fileattributes) {
-//              print_r($fileattributes);
-//              $fileattributes->delete();
-//
-//          }
-//         foreach ($file->fileSamples as $filesample) {
-//              print_r($filesample);
-//              $filesample->delete();
-//
-//          }
+          }
+         foreach ($file->fileSamples as $filesample) {
+              print_r($filesample);
+              $filesample->delete();
+
+          }
 
          $file->delete();
 
