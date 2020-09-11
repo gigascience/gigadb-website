@@ -72,10 +72,10 @@ class MailServiceTest extends FunctionalTesting
     public function testItShouldSendEmailUsingMailService() {
         try {
             $result = Yii::app()->mailService->sendEmail("foo@bar.com", "hello@world.com", "Testing", "lorem ipsum");
-            $this->assertTrue($result, "Problem sending email using sendEmailMessage function");
+            $this->assertTrue($result, "Problem sending email using sendEmail function");
 
             $result = Yii::app()->mailService->sendHTMLEmail("foo@bar.com", "hello@world.com", "HTML email test", "<h1>lorem ipsum</h1>");
-            $this->assertTrue($result, "Problem sending email using sendHTMLEmailMessage function");
+            $this->assertTrue($result, "Problem sending email using sendHTMLEmail function");
         }
         catch(Error $e) {
             $this->fail("Exception thrown: ".$e->getMessage());
