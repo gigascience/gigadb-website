@@ -11,6 +11,6 @@
 <td>
     <div>
 	<input type="submit" class="btn" name="edit_attr" value="Save"/>
-    <a href="/adminFile/delete/file_id/88256" class="btn" >Delete!</a>
+    <input type="submit" class="btn" name="delete_attr" value="Delete!"/>
     </div>
 </td>
