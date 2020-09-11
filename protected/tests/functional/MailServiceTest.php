@@ -36,7 +36,7 @@ class MailServiceTest extends FunctionalTesting
     /**
      * Test Yii2 swiftmailer component is able to send emails
      */
-    public function testItShouldSendEmailUsingYii2SwiftmailerComponent() {
+    public function testItShouldSendEmailUsingYii2Swiftmailer() {
         try {
             $from = "admin@gigadb.org";
             $to = "user@gigadb.org";
@@ -69,7 +69,7 @@ class MailServiceTest extends FunctionalTesting
     /**
      * Test functions in MailService Component can send emails
      */
-    public function testItShouldSendEmail() {
+    public function testItShouldSendEmailUsingMailService() {
         try {
             $result = Yii::app()->mailService->sendEmail("foo@bar.com", "hello@world.com", "Testing", "lorem ipsum");
             $this->assertTrue($result, "Problem sending email using sendEmailMessage function");
