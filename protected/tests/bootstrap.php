@@ -11,5 +11,5 @@ Yii::$enableIncludePath = false;
 Yii::createWebApplication($config);
 
 # load Yii 2 (but don't run the web application)
-$yii2Config = require('/var/www/protected/config/yii2/web.php');
+$yii2Config = require(dirname(__FILE__).'/../config/yii2/test.php');
 new yii\web\Application($yii2Config);
