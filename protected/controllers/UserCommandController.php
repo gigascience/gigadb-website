@@ -188,7 +188,7 @@ class UserCommandController extends CController
 <p>Click the following url to validate or reject the claim:</p>
 <p>$cta_url</p>
 EO_MAIL;
-        Yii::app()->mailService->sendHTMLEmailMessage("database@gigasciencejournal.com", $recipient, $subject, $body);
+        Yii::app()->mailService->sendHTMLEmail("database@gigasciencejournal.com", $recipient, $subject, $body);
         Yii::log(__FUNCTION__."> Sent email to $recipient, about: $subject");
     }
 }
