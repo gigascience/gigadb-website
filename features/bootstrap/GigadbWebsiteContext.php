@@ -429,16 +429,21 @@ class GigadbWebsiteContext implements Context
         $dotsecrets = Dotenv\Dotenv::create('/var/www', '.secrets');
         $dotsecrets->load();
         print_r("Backing up current database... ".PHP_EOL);
-        exec("pg_dump gigadb -U gigadb -h database -F custom  -f /var/www/sql/before-run.pgdmp 2>&1",$output);
+        exec("pg_dump ".getenv("GIGADB_DB")." -U ".getenv("GIGADB_USER")." -h ".getenv("GIGADB_HOST")." -F custom  -f /var/www/sql/before-run.pgdmp 2>&1",$output);
     }
 
     /** @AfterSuite */
     public static function restoreCurrentDB(AfterSuiteScope $scope)
     {
+        print_r("Loading environment variables... ".PHP_EOL);
+        $dotenv = Dotenv\Dotenv::create('/var/www', '.env');
+        $dotenv->load();
+        $dotsecrets = Dotenv\Dotenv::create('/var/www', '.secrets');
+        $dotsecrets->load();        
         print_r("Restoring current database... ".PHP_EOL);
         GigadbWebsiteContext::call_pg_terminate_backend("gigadb");
         GigadbWebsiteContext::recreateDB("gigadb");
-        exec("pg_restore -h database  -U gigadb -d gigadb --clean --no-owner -v /var/www/sql/before-run.pgdmp 2>&1",$output);
+        exec("pg_restore -h ".getenv("GIGADB_HOST")."  -U ".getenv("GIGADB_USER")." -d ".getenv("GIGADB_DB")." --clean --no-owner -v /var/www/sql/before-run.pgdmp 2>&1",$output);
         GigadbWebsiteContext::containerRestart();
     }
 
