@@ -8,6 +8,7 @@ Background:
 	Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 	And default admin user exists
 	When I go to "/dataset/100002"
+	And I take a screenshot named "testwinsize_2"
 	Then I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
 
 @ok @admin-author-form-add-user
