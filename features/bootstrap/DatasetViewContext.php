@@ -218,15 +218,6 @@ class DatasetViewContext implements Context
     }
 
     /**
-     * @Then I manually hit return
-     */
-    public function iManuallyHitReturn()
-    {
-        $xpath = '//*[@id="pageNumber"]';
-        $this->minkContext->getSession()->getDriver()->getWebDriverSession()->element('xpath', $xpath)->postValue(['value' => ["\r\n"]]);
-    }
-
-    /**
      * A function to simulate a key press
      * @param $key
      * @param $field_name
