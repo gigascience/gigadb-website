@@ -324,7 +324,6 @@ Feature: a user visit the dataset page
 		And I follow "Files"
 		And I have set pageSize to "5" on "files_table_settings"
 		When I fill in "pageNumber" with "2"
-#		And I manually hit return
 		And I hit return
 		Then I should be on "/dataset/view/id/101001/Files_page/2"
 		And I should see "Files" tab with table
