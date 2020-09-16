@@ -11,6 +11,5 @@
 <td>
     <div>
 	<input type="submit" class="btn" name="edit_attr" value="Save"/>
-    <input type="submit" class="btn" name="delete_attr" value="Delete!"/>
     </div>
 </td>
