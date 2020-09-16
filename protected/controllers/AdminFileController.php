@@ -440,9 +440,6 @@ class AdminFileController extends Controller
 
                 $this->redirect(array('view', 'id' => $model->id));
             }
-        } elseif (isset($_POST['delete_attr'])) {
-            $args = $_POST['FileAttributes'];
-            FileAttributes::model()->findByPk($args['id'])->delete();
         }
 
         $this->render('update', array(
