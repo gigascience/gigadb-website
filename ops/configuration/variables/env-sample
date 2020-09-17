@@ -69,4 +69,4 @@ MAIN_BRANCH=develop
 
 
 ### CSV to Yii migration script conversion configuration ################################################################
-TARGET_DIR=dev
+CSV_DIR=dev
