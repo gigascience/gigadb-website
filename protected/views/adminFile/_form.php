@@ -112,7 +112,7 @@
                             <?= $fa->unit ? $fa->unit->name : '' ?>
                         </td>
                         <td><a role="button" class="btn btn-edit js-edit" data="<?= $fa->id ?>">Edit</a></td>
-                        <td><a role="button" class="btn btn-edit" data="<?= $fa->id ?>">Delete</a></td>
+                        <td><a role="button" class="btn js-delete" name="delete_attr" data="<?= $fa->id ?>">Delete</a></td>
                     </tr>
                     <?php } ?>
                 </tbody>
@@ -147,5 +147,21 @@ $('.js-edit').click(function(e) {
             }
         }, 'json');
     }
+})
+
+$('.js-delete').click(function (e) {
+    e.preventDefault();
+    id = $(this).attr('data');
+    console.log(id);
+    row = $('.row-edit-' + id);
+    console.log(row);
+    if (id) {
+        $.post('/adminFile/deleteAttr', { 'id': id }, function(result) {
+            if (result) {
+                // console.log(result);
+            }
+        }, 'json');
+    }
+    window.location.reload();
 })
 </script>
