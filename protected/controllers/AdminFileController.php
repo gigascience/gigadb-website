@@ -27,7 +27,7 @@ class AdminFileController extends Controller
     {
         return array(
             array('allow', // admin only
-                    'actions'=>array('linkFolder','admin','delete','index','view','create','update','update1', 'editAttr', 'uploadAttr'),
+                    'actions'=>array('linkFolder','admin','delete','index','view','create','update','update1', 'editAttr', 'uploadAttr', 'deleteAttr'),
                     'roles'=>array('admin'),
             ),
                             array('allow',
@@ -462,6 +462,20 @@ class AdminFileController extends Controller
             }
         }
         echo CJSON::encode(array('success' => false));
+    }
+
+    public function actionDeleteAttr()
+    {
+        if (!Yii::app()->request->isPostRequest)
+            throw new CHttpException(404, "The requested page does not exist.");
+
+        if (isset($_POST['id'])) {
+            $attribute = FileAttributes::model()->findByPk($_POST['id']);
+            if ($attribute) {
+                $attribute->delete();
+                Yii::app()->end();
+            }
+        }
     }
 
     /**
