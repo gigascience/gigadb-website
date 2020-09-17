@@ -8,7 +8,7 @@ id,sample_id,attribute_id,value,unit_id
 15808,154,277,diploid,
 16172,154,319,"David Lambert, Griffith University",
 16222,154,318,"Antarctica, Inexpressible Island, Ross Sea",
-17035,154,200,male,
+17035,154,200,male [PATO:0000384],
 17659,154,282,not available,
 18645,154,315,UBERON:0000178(blood),
 25716,154,316,PYGAD,

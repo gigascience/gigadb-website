@@ -5,18 +5,15 @@
 const fs = require('fs');
 const fsPath = require('fs-path');
 const papa = require('papaparse');
+const handlebars = require('handlebars');
+const jp = require('jsonpath');
 
 // Global scope
-var PROJECT_DIR = "/var/www";
-var OUTPUT_DIR = "/protected/migrations/data/";
-var NEWLINE = "\n";
-var INDENT = "    ";
-
-// Sort out command line argument to this script
-var CMD_ARGS = process.argv.slice(2);
-console.log('CSV directory: ', CMD_ARGS[0]);
-var csvDir = CMD_ARGS[0];
-var csvDirPath = PROJECT_DIR.concat("/data/", csvDir);
+let CMD_ARGS = process.argv.slice(2);
+let PROJECT_DIR = "/var/www";
+let INPUT_CSV_DIR = PROJECT_DIR + "/data/" + CMD_ARGS[0];
+let OUTPUT_MIGRATION_SCRIPT_DIR = PROJECT_DIR + "/protected/migrations/data/" + CMD_ARGS[0];
+let HANDLEBARS_TEMPLATE_FILE = PROJECT_DIR + "/ops/configuration/yii-conf/migration.php.dist";
 
 /*
  * Returns file name for Yii migration script based on table name.
@@ -126,7 +123,7 @@ const getMigrationFileName = tableName => {
     }
 };
 
-// Configuration to using Papa Parse CSV parser
+// Configuration for using Papa Parse CSV parser
 let config = {
     delimiter: ",",
     newline: "\n",
@@ -137,83 +134,35 @@ let config = {
     skipEmptyLines: true,
 };
 
-// A loop to create Yii migration scripts for each CSV file
-// containing table data
-var files = fs.readdirSync(csvDirPath);
-for(var a = 0; a < files.length; a ++) {
+// Main program
+var files = fs.readdirSync(INPUT_CSV_DIR);
+for(let a = 0; a < files.length; a ++) {
     // Create file paths
-    var filePath = PROJECT_DIR.concat("/data/", csvDir, "/", files[a]);
-    var tokens = files[a].split(".");
-    var tableName = tokens[0];
-    var outfile = PROJECT_DIR.concat(OUTPUT_DIR, csvDir, "/", getMigrationFileName(tableName), ".php");
-
-    var out = "";
-    var ids = [];
-
-    out = out.concat("<?php", NEWLINE);
-    out = out.concat(NEWLINE);
-    out = out.concat("class ", getMigrationFileName(tableName), " extends CDbMigration", NEWLINE);
-    out = out.concat("{", NEWLINE);
-    out = out.concat(INDENT, "public function safeUp()", NEWLINE, "    {", NEWLINE);
-
-    var csvHeaderData = fs.readFileSync(filePath, 'utf8');
+    let csvFile = INPUT_CSV_DIR + "/" + files[a];
+    let tokens = files[a].split(".");
+    let tableName = tokens[0];
+    let outputMigrationFile = OUTPUT_MIGRATION_SCRIPT_DIR + "/" + getMigrationFileName(tableName) + ".php";
+    let csvHeaderData = fs.readFileSync(csvFile, 'utf8');
     // Parse CSV string
-    var jsonData = papa.parse(csvHeaderData, config);
-    console.log("No. rows: ", jsonData.data.length);
-    for(var t = 0; t < jsonData.data.length; t++) {  // Go thru each row
-        for(var h = 0; h < jsonData.meta.fields.length; h++) { // Go thru each column
-            if(h === 0) {
-                out = out.concat(INDENT, INDENT, "$this->insert('", tableName, "', array(", NEWLINE);
-            }
-
-            // Record ids to help with creating safeDown() function below
-            var field = jsonData.meta.fields[h];
-            if(field === "id") {
-                ids.push(jsonData.data[t][field]);
-            }
-
-            var value = jsonData.data[t][field];
-
-            // Hard-code encrypted user password into migration script for testing purposes
-            if(field === "password") {
-                out = out.concat(INDENT, INDENT, INDENT, "'", field, "' => '5a4f75053077a32e681f81daa8792f95',", NEWLINE);
-            }
-            else if (value.length === 0) {  // Deal with fields having empty values
-                if(h === jsonData.meta.fields.length-1) {  // if field is last one in jsonData.meta.fields array
-                    out = out.concat(INDENT, INDENT, "));", NEWLINE);
-                }
-                continue;
-            }
-            else {
-                var field_value_str = jsonData.data[t][field];
-                // Deal with single quote characters in values which causes
-                // problems when running Yii migrations
-                field_value_str = field_value_str.split("'").join("\\'");
-                out = out.concat(INDENT, INDENT, INDENT, "'", field, "' => '", field_value_str, "',", NEWLINE);
-            }
-
-            if(h === jsonData.meta.fields.length-1) {
-                out = out.concat(INDENT, INDENT, "));", NEWLINE);
-            }
-        }
-    }
-
-    out = out.concat(INDENT, "}", NEWLINE, NEWLINE);
-    
-    out = out.concat(INDENT, "public function safeDown()", NEWLINE, "    {", NEWLINE);
-    out = out.concat(INDENT, INDENT, "$ids = array(");
-    for (var y = 0; y < ids.length; y ++) {
-        out = out.concat("'", ids[y], "',");
-    }
-    out = out.concat(");", NEWLINE);
-    out = out.concat(INDENT, INDENT, "foreach ($ids as $id) {", NEWLINE,
-        INDENT, INDENT, INDENT, "$this->delete('", tableName, "', 'id=:id', array(':id' => $id));", NEWLINE,
-        INDENT, INDENT, "}", NEWLINE);
-    out = out.concat(INDENT, "}", NEWLINE);
-    out = out.concat("}", NEWLINE);
-
+    let jsonData = papa.parse(csvHeaderData, config);
+    let ids = jp.query(jsonData, '$..id');
+    // Remove empty strings in ids array
+    var filtered_ids = ids.filter(function (el) {
+        return el !== "";
+    });
+    var data = JSON.stringify(jsonData);
+    var parsed = JSON.parse(data);
+    let context = {
+        class_name: getMigrationFileName(tableName),
+        table_name: tokens[0],
+        safeup_data: parsed.data,
+        safedown_data: filtered_ids
+    };
+    // Read handlebars template as string
+    let template = fs.readFileSync(HANDLEBARS_TEMPLATE_FILE, "utf8");
+    const templateScript = handlebars.compile(template);
     // Output Yii migration script
-    fsPath.writeFile(outfile, out, function (err) {
+    fsPath.writeFile(outputMigrationFile, templateScript(context), function (err) {
         if (err) {
             return console.log(err);
         }

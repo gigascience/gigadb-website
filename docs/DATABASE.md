@@ -25,30 +25,24 @@ These CSV files have been created using
 `gigadb-website/data/scripts/export_csv.sh` which queries a GigaDB PostgreSQL 
 database for data corresponding to a list of internal dataset ids. These 
 identifiers are used in a list of SQL SELECT commands to export data associated 
-with GigaDB datasets from database tables.
+with GigaDB datasets from database tables. We can run the `export_csv.sh` script 
+through the `test` service container making use of its `psql` client:
 ```
-$ pwd
-/path/to/gigadb-website
-# Execute script to export CSV data
-$ data/scripts/export_csv.sh -i "8 22 144 200" -o dev -d gigadbv3_20200210
+$ docker-compose run --rm test data/scripts/export_csv.sh -i "8 22 144 200" -o custom -d gigadbv3_20200210
 ```
- The identifiers are provided to `export_csv.sh` as a string in a command line
- argument using the `-i` flag. Other arguments which are required include `-o` 
- an output directory where CSV will be saved to, and `-d` the name of the
- database for querying. 
+
+The identifiers are provided to `export_csv.sh` as a string in a command line
+argument using the `-i` flag. Other arguments which are required include `-o` 
+an output directory where CSV will be saved to, and `-d` the name of the
+database for querying. 
 
 ## Converting CSV files into Yii migration scripts
 
 The CSV files must be converted to Yii migration scripts before the data can be
-uploaded into a database. However, this is done automatically done as part of 
-the config process:
+uploaded into a database. This is achieved using the `csv-to-migrations` docker
+service as follows:
 ```
-$ docker-compose run --rm config            # generate the configuration using variables in .env, GitLab, then exit
-```
-
-This process executes `generate_config.sh` which now includes a new step:
-```
-node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR
+$ docker-compose up csv-to-migrations
 ```
 
 A JavaScript program called `csv_yii_migration.js` is executed which will 

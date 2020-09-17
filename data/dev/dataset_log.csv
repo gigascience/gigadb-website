@@ -5,3 +5,5 @@ We examined the experimental metadata of the public repository Sequence Read Arc
 202,22,File Millet.fa.glean.pep.v3.gz updated,2015-10-17 05:21:18.422221,File,5107,/adminFile/update/id/5107
 531,8,File Pygoscelis_adeliae.scaf.fa.gz updated,2015-11-04 18:04:04.405775,File,664,/adminFile/update/id/664
 4790,8,Relationship added : DOI 100649,2019-09-02 13:01:58.051129,relation,247,""
+7538,144,CS_readme.pdf : additional file attribute added,2020-05-01 12:48:12.131625,FileAttributes,370374,/adminFile/update/id/80843
+7539,144,File size of CS_readme.pdf  updated,2020-05-01 12:48:18.549043,File,80843,/adminFile/update/id/80843

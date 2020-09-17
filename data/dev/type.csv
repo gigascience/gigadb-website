@@ -1,5 +1,5 @@
 id,name,description
-1,Epigenomic,methylation and histone modification data
-2,Genomic,genetic and genomic data e.g. sequence and assemblies
-6,Software,computational tools for analysing and managing biological data
+1,Epigenomic,"Epigenetics the study of the chemical modification of specific genes or gene-associated proteins of an organism  (e.g. methylation and histone modification). Includes Epigenomics - The study of the epigenetic modifications of a whole cell, tissue, organism etc.; http://edamontology.org/topic_3295"
+2,Genomic,"The branch of biology that deals with heredity, especially the mechanisms of hereditary transmission and the variation of inherited characteristics among similar or related organisms. Includes Genomics - The study of comprehensive sets of genes via high throughput methods.e.g.  sequence analysis and assemblies; http://purl.obolibrary.org/obo/NCIT_C16624 "
+6,Software,"The application of a systematic, disciplined, quantifiable approach to the development, operation, and maintenance of computer software, e.g. computational tools for analysing and managing biological data; http://purl.obolibrary.org/obo/NCIT_C17147"
 16,Metadata,""

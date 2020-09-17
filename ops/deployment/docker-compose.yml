@@ -137,6 +137,14 @@ services:
       - "gigadb.dev:172.16.238.10"
     command: ./tests/all_and_coverage
 
+  csv-to-migrations:
+    image: node:14.9.0-buster
+    working_dir: /var/www/ops/scripts
+    volumes:
+      - ${APPLICATION}/:/var/www
+    shm_size: '1gb' # to avoid a known issue
+    command: bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR"
+
   phantomjs:
     image: wernight/phantomjs:2.1.1
     command: phantomjs --webdriver=8910
