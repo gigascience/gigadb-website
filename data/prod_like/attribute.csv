@@ -22,7 +22,7 @@ id,attribute_name,definition,model,structured_comment_name,value_syntax,allowed_
 268,experimental factor,"Experimental factors are essentially the variable aspects of an experiment design which can be used to describe an experiment, or set of experiments, in an increasingly detailed manner. This field accepts ontology terms from Experimental Factor Ontology (EFO) and/or Ontology for Biomedical Investigations (OBI). For a browser of EFO (v132) terms, please see http://bioportal.bioontology.org/visualize/44641 for a browser of OBI (v1.0) terms please see http://bioportal.bioontology.org/visualize/40832",GSC_MIxS_v3,experimental_factor,text or EFO and/or OBI,"",1,http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=EFOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=POhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=PATOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=DOID,""
 269,geographic location (latitude and longitude),The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and in WGS84 system,GSC_MIxS_v3,lat_lon,decimal degrees,"",1,"",""
 270,"geographic location (country and/or sea,region)","The geographical origin of the sample as defined by the country or sea name followed by specific region name. Country or sea names should be chosen from the INSDC country list (http://insdc.org/country.html), or the GAZ ontology (v1.446) (http://bioportal.bioontology.org/visualize/40651)",GSC_MIxS_v3,geo_loc_name,country or sea name (INSDC or GAZ):region(GAZ):specific location name,"",1,http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=GAZhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=EFOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=POhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=PATOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=DOID,""
-271,collection date,"The time of sampling, either as an instance (single point in time) or interval. In case no exact time is available, the date/time can be right truncated i.e. all of these are valid times: 2008-01-23T19:23:10+00:00; 2008-01-23T19:23:10; 2008-01-23; 2008-01; 2008; Except: 2008-01; 2008 all are ISO8601 compliant",GSC_MIxS_v3,collection_date,date and time,"",1,http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ENVOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ENVOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ENVOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=GAZhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=EFOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=POhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=PATOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=DOID,""
+271,collection date,"The time of sampling, either as an instance (single point in time) or interval. In case no exact time is available, the date/time can be right truncated i.e. all of these are valid times: 2008-01-23T19:23:10+00:00, 2008-01-23T19:23:10, 2008-01-23, 2008-01, 2008, Except: 2008-01, 2008 all are ISO8601 compliant",GSC_MIxS_v3,collection_date,date and time,"",1,http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ENVOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ENVOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ENVOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=GAZhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=EFOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=POhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=PATOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=DOID,""
 272,environment (biome),"In environmental biome level are the major classes of ecologically similar communities of plants, animals, and other organisms. Biomes are defined based on factors such as plant structures, leaf types, plant spacing, and other factors like climate. Examples include: desert, taiga, deciduous woodland, or coral reef. EnvO (v1.53) terms listed under environmental biome can be found from the link: http://bioportal.bioontology.org/visualize/44405/?conceptid=ENVO%3A00000428",GSC_MIxS_v3,biome,EnvO,"",1,http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ENVOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=GAZhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=EFOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=POhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=PATOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=DOID,""
 273,environment (feature),"Environmental feature level includes geographic environmental features. Examples include: harbor, cliff, or lake. EnvO (v1.53) terms listed under environmental feature can be found from the link: http://bioportal.bioontology.org/visualize/44405/?conceptid=ENVO%3A00002297",GSC_MIxS_v3,feature,EnvO,"",1,http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ENVOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ENVOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=GAZhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=EFOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=POhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=PATOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=DOID,""
 274,environment (material),"The environmental material level refers to the matter that was displaced by the sample, prior to the sampling event. Environmental matter terms are generally mass nouns. Examples include: air, soil, or water. EnvO (v1.53) terms listed under environmental matter can be found from the link: http://bioportal.bioontology.org/visualize/44405/?conceptid=ENVO%3A00010483",GSC_MIxS_v3,material,EnvO,"",1,http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ENVOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ENVOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=ENVOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=GAZhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=EFOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=POhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=PATOhttp://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=DOID,""
@@ -36,7 +36,7 @@ id,attribute_name,definition,model,structured_comment_name,value_syntax,allowed_
 315,tissue,UBERON http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=UBERON,"",tissue_type,UBERON http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=UBERON,"",m,http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=UBERON,""
 316,alternative names,the list of alternative identifiers used for this sample,"",alternative_names,"","",m,"",""
 318,sample source,"additional information about where the sample came from, e.g. the particular zoo/avery/lab name","",sample_source,"","",m,"",""
-321,antibody details,"Details about the antibody used, minimally include manufacturer and catalog number., example ""Eurogentecc;BI-MECY-0100;070809""","",antibody_details,manufacturer;catalog#;lot#,"",m,"",m
+321,antibody details,"Details about the antibody used, minimally include manufacturer and catalog number., example ""Eurogentecc: BI-MECY-0100: 070809""","",antibody_details,manufacturer:catalog#:lot#,"",m,"",m
 322,alternative accession-BioSample,accession number given to the same sample in the BioSamples database at either NCBI (http://www.ncbi.nlm.nih.gov/biosample/?term=SAMNnnnnnnn ) or EBI (http://www.ebi.ac.uk/ena/data/view/SAMEAnnnnnnn ) or DDBJ,"",alt_acc_BioSample,"","",m,"",""
 323,alternative accession-BioProject,accession number given to the Project containing the BioSample by the BioProjects database at either NCBI (http://www.ncbi.nlm.nih.gov/) or EBI (http://www.ebi.ac.uk/ena/data/view/ ) or DDBJ,"",alt_acc_BioProject,"","",m,"",""
 324,collected by,"name of person attributed with the collection of the wild specimen, uppercase the surname, e.g. Christopher I HUNTER","",collected_by,First_name SURNAME,"",1,"",""
@@ -51,10 +51,11 @@ id,attribute_name,definition,model,structured_comment_name,value_syntax,allowed_
 351,Analyte type,"The analyte being assayed from the sample (e.g. DNA for sequencing, peptide for MS, etc.)","",analyte_type,"","",m,"",""
 354,cultivar,The cultivar name. Cultivar is a plant or grouping of plants that can be maintained by propagation. Most cultivars have arisen in cultivation but a few are special selections from the wild.,"",cultivar,text,"",1,"",""
 356,Description,"description of the sample (may include many attributes as human readable text, but these should also be added as independent attribute:value pairs).","",description,text,"",1,"",""
-357,Exp-Scan method,"","",Exp_Scan method,"","",m,"",""
-358,Exp-Scan name,"","",Exp_Scan_name,"","",m,"",""
-359,Exp-Scan parameters,"","",Exp_Scan_parameters,"","",m,"",""
-361,Exp-Scanner,"","",Exp_Scanner,"","",m,"",""
+357,Exp-Scan method,Short description of the experimental method of scanning used,"",Exp_Scan method,"","",m,"",""
+358,Exp-Scan name,The name of the Scan generated,"",Exp_Scan_name,"","",m,"",""
+359,Exp-Scan parameters,List the user defined parameters of the scanner,"",Exp_Scan_parameters,"","",m,"",""
+360,Exp-Scan resolution,List the resolution parameters of the scanner,"",Exp_Scan_resolution,"","",m,"",""
+361,Exp-Scanner,Manufacturer and model name of the scanner,"",Exp_Scanner,"","",m,"",""
 362,Experiment type,"the name of the type of experiment perfromed, e.g. MS/MS, sequencing, DNA extraction, imaging, etc.","",experiment_type,text,"",m,"",""
 367,molecular data type,"","",mol_data_type,text,"",1,"",""
 373,breed,"A breed is a specific group of domestic animals (nb. for plants use the term variety instead) having homogeneous appearance, homogeneous behavior, and other characteristics that distinguish it from other animals of the same species and that were arrived at through selective breeding.","",breed,text,"",1,"",""
@@ -62,14 +63,14 @@ id,attribute_name,definition,model,structured_comment_name,value_syntax,allowed_
 378,growth temperature,temperature at which the sample was grown/cultured prior to sampling,"",growth_temp,enumerate,degree Celcius,1,"",""
 382,sample type,"The type of sample/sampling used /collected, this could be DNA for sequencing experiments, or tissue samples for microscopy etc.","",sample_type,text,"",1,"",""
 428,cell line,"Please provide the cell line name and supplier of the immortalised cell line used in your experiments, e.g. HEK-293:Addex Bio","",cell_line,"","","","",""
-429,biomaterial provider,"","",biomaterial_provider,"","","","",""
+429,biomaterial provider,The name of the person or institute that provided the biomaterial/specimen,"",biomaterial_provider,"","","","",""
 455,keyword,"","",keywords,"","","","",""
 497,urltoredirect,"","",urltoredirect,"","","","",""
 505,handedness,"Handedness is the dominance of one hand over the other, or the unequal distribution of fine motor skills between the left and right hands. It refers to the tendency of humans to be more dextrous or skilled with one hand over the other.",,handedness,,,,,
-514,time point,"","",time_point,,,,,
+514,time point,"Used to specify the relative time point of this sampling event, usually used in part of a time series of samples.","",time_point,"","","","",""
 519,eco-type,,,eco-type,,,,,
 538,psoriasis area and severity index (PASI),,,psoriasis area and severity index (PASI),,,,,
-556,pixel resolution,imaging resolution in pixels,,pixel resolution,text,,,,
+556,pixel resolution,imaging resolution in pixels,"",pixel_resolution,text,"","","",""
 571,replicate,the name/ID used to denote this is a biological or technical replicate of other samples in the same dataset,,,,,,,
 572,license,the license under which this file has been released,,license,,,,,
 605,MD5 checksum,"The MD5 hash functions as a compact digital fingerprint of a file and is calculated by using the MD5 hashing algorithm md5sum, a program that is included in most Unix-like systems, Windows and Mac OS system alternatives are also readily available. md5sum is used to verify the integrity of files, as virtually any change to a file will cause its MD5 hash to change",,MD5sum,,,,,
@@ -83,11 +84,8 @@ id,attribute_name,definition,model,structured_comment_name,value_syntax,allowed_
 749,developmental stage,,,developmental_stage,,,,,
 765,broad-scale environmental context,,,,,,,,
 774,Growth protocol,Growth protocol,,Growth protocol,,,,,
-776,"","",,"",,,,,
-780,Exp-Scan method,,,,,,,,
-781,Exp-Scan_parameters,,,,,,,,
-782,Exp-Scan_resolution,,,,,,,,
 786,approval,,,,,,,,
 787,stain,,,,,,,,
 790,alternative accession-SRA_file,,,,,,,,
 852,time point,,,,,,,,
+868,attributes,,,,,,,,

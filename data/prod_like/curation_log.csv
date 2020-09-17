@@ -156,3 +156,14 @@ id,dataset_id,creation_date,created_by,last_modified_date,last_modified_by,actio
 1022,2038,2020-02-07,Mary Ann Tuli,,,Status changed to Private,
 1023,2038,2020-02-07,Mary Ann Tuli,,,Status changed to Published,
 1025,2034,2020-02-10,Mary Ann Tuli,,,Status changed to Published,
+1178,2029,2020-04-28,Chris Hunter,,,Comment,"ChrisA spotted issue with some file sizes. Unfortunately its far worse than it looks on first inspection :-(. Half the files that are on the server never even made it into GigaDB for some reason?! and some of those that did, have missing file sizes and/or md5sum values. This must be down to me (and the author) not spotting it in the spreadsheet, but the error log from Jesse doesn't show it either, which is odd..<br>The one file that is actually missing from the server is the github-master.zip file! luckily its the one that I can get from elsewhere so nothing is lost, just an odd date stamp on the downloaded archival copy of it 3 months after publication! <br>I'm going to have to make a fairly major update to this dataset. I will create a spreadsheet with all the required file updates then get Jesse to do the bulk update, and add an line item to the dataset history with an explanation of why the update was made."
+1243,2039,2020-06-01,Chris Hunter,,,Comment,"I (CIH) noticed when cleaning private drop boxes this dataset is missing full BUSCO output files, too late to do anything about it now, just wanted to note it somewhere for future reference."
+1377,1980,2020-08-12,Mary Ann Tuli,2020-08-12,Mary Ann Tuli,Comment,"Author needed to update 2 of the MatLab files:
+1) S24's Day1 (cnt_HIGH(2))  did not load into MATLAB and any Python version.
+2) Author comment: The data we uploaded includes a cnt file containing a biosignal and an mrk file that provides the event timing of the signal.
+Considering the total data capacity, we released the data after down-sampled the raw signal measured at 1000 Hz sampling rate to 200 Hz.
+Unfortunately, we haven't corrected the event point information in the mrk file.
+This is thought to cause confusion for readers.
+We want to re-upload the corrected mrk file.
+
+It was more straightforward for him to upload all the files again (including the 2 updated one) and then for me to compress and tar the whole set again. Renamed for ease of update. "

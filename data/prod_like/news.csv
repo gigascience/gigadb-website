@@ -35,3 +35,14 @@ For further details about GSC19, please see the meeting <a href=http://wiki.gens
 <br>
 GigaScience Editor Nicole interviews Daniel Chitwood, author of the recent GigaScience publication ""<a href=https://doi.org/10.1093/gigascience/giw008 target=_blank>Morphometric analysis of Passiflora leaves: the relationship between landmarks of the vasculature and elliptical Fourier descriptors of the blade</a>"" and GigaDB dataset <a href=http://dx.doi.org/10.5524/100251 target=_blank>100251</a>.",2017-05-03,2017-05-29
 8,ISMB2018 Chicago ,"GigaScience and GigaDB teams will be attending <a href=""https://www.iscb.org/ismb2018"" target=blank>ISMB 2018</a>  in Chicago next month. Lookout for the GigaDB poster demonstrating our new look webpage being launched in time to for the GigaScience 6th birthday at ISMB.",2018-06-18,2018-07-08
+9,PAG conference blog,"<a href=""http://gigasciencejournal.com/blog/plant-and-animal-genome/"" target=""blank"">Under Construction: Plant and Animal Genomes Get a Refurb</a>",2020-03-01,2020-03-31
+11,Planned maintenance 31st May 20:00 – 1st Jun 07:00(CST),"Due to essential maintenance of the server room, our database will be offline for up to 11 hours on the night of May 31st between the hours of 8pm (CST) and 7am the following morning (June 1st). All times are stated in local time (China Standard Time), which is GMT+8.
+During this time the website will be unable to display any datasets or perform any search queries.
+The data files within datasets are served from a different location and are un-effected, so you may access the FTP server directly here: 
+ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/
+You can find the data files for each dataset under their respective DOI sub-folders:
+e.g.
+ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100748/
+Please accept our apologies for any inconvenience caused.
+Best Wishes
+The GigaDB Team",2020-05-29,2020-06-01

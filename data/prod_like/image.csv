@@ -1,7 +1,7 @@
 id,location,tag,url,license,photographer,source
 318,100243.gif,Fig3. Temperature variation 2013-15,http://gigadb.org/images/data/cropped/100243.gif,CC0,Munoz et al 2016,Munoz et al 2016
 319,100244.jpg,coupedome3,http://gigadb.org/images/data/cropped/100244.jpg,Unknown,"Cros,Saubion, Billet, Chabiky",http://www.ecotron.cnrs.fr/images/stories/coupedome3.jpg
-384,Images_384.png,Fig6. Trained spatial filter left/right hand MI,http://gigadb.org/images/uploads/image_upload/Images_384.png,CC0,SC Jun,SC Jun
+384,no_image.png,Fig6. Trained spatial filter left/right hand MI,"",CC0,SC Jun,SC Jun
 388,100306.jpg,LC-MS/MS untargeted plasma lipidomics of Chinese adults,http://gigadb.org/images/data/cropped/100306.jpg,CC0,Chao Fang,BGI-Shenzhen
 438,100341.jpg,Psoriasis,http://gigadb.org/images/data/cropped/100341.jpg,CC0,Cong Peng,Cong Peng
 448,100350-LAGOS.jpg,LAGOS logo,http://gigadb.org/images/data/cropped/100350.jpg,CC0,Soranno et al. 2017,Soranno et al. 2017
@@ -9,38 +9,38 @@ id,location,tag,url,license,photographer,source
 641,100488.png,Overview of approach in constructing GOTrack,http://gigadb.org/images/data/cropped/100488.png,CC0,Jacobson et al 2018,Jacobson et al 2018
 650,100495.png,The Ximmer Process,http://gigadb.org/images/data/cropped/100495.png,CC0,sadedin et al 2018,sadedin et al 2018
 697,100530.png,Concatemerization of amplicons,http://gigadb.org/images/data/cropped/100530.png,CC0,Szymon Calus,Szymon Calus
-702,Images_702.png,PhenoMeNal,http://gigadb.org/images/uploads/image_upload/Images_702.png,CC0,PhenoMeNal,PhenoMeNal
-845,Images_845.png,EEG,http://gigadb.org/images/uploads/image_upload/Images_845.png,This work is licensed under a Creative Commons Attribution 4.0 International License,"Min-ho, Lee","Min-ho, Lee"
-858,Images_858.png,Modelling Genotypes with microC,http://gigadb.org/images/uploads/image_upload/Images_858.png,CC0,"Voukantsis et al., 2018","Voukantsis et al., 2018"
-1602,Images_1602.png,cd-CAP - combinatorial detection of Conserved Alteration Patterns,http://gigadb.org/images/uploads/image_upload/Images_1602.png,CC0,"Hodzic et al., 2019","Hodzic et al., 2019"
-1612,Images_1612.png,Haemadipsa sp.,http://gigadb.org/images/uploads/image_upload/Images_1612.png,CC0,Andrew R. Tilker,Andrew R. Tilker
+702,"",PhenoMeNal,"",CC0,PhenoMeNal,PhenoMeNal
+845,no_image.png,EEG,"",This work is licensed under a Creative Commons Attribution 4.0 International License,"Min-ho, Lee","Min-ho, Lee"
+858,"",Modelling Genotypes with microC,"",CC0,"Voukantsis et al., 2018","Voukantsis et al., 2018"
+1602,"",cd-CAP - combinatorial detection of Conserved Alteration Patterns,"",CC0,"Hodzic et al., 2019","Hodzic et al., 2019"
+1612,"",Haemadipsa sp.,"",CC0,Andrew R. Tilker,Andrew R. Tilker
 1614,100552.png,minibar workflow,http://gigadb.org/images/data/cropped/100552.png,CC0,Krehenwinkel et al 2019,Krehenwinkel et al 2019
-1636,Images_1636.png,gigwa-architecture,http://gigadb.org/images/uploads/image_upload/Images_1636.png,CC0,Sempéré et al (2019),Sempéré et al (2019)
-1648,Images_1648.png,Alzheimer's disease subtyping procedure,http://gigadb.org/images/uploads/image_upload/Images_1648.png,CC0,"Tam et al., 2019","Tam et al., 2019"
-1652,Images_1652.png,LION-icon,http://gigadb.org/images/uploads/image_upload/Images_1652.png,CC0,Martijn Molenaar,Martijn Molenaar
+1636,"",gigwa-architecture,"",CC0,Sempéré et al (2019),Sempéré et al (2019)
+1648,"",Alzheimer's disease subtyping procedure,"",CC0,"Tam et al., 2019","Tam et al., 2019"
+1652,iconLION.png,LION-icon,"",CC0,Martijn Molenaar,Martijn Molenaar
 1680,100618.png,CWL-Airflow diagram,http://gigadb.org/images/data/cropped/100618.png,CC0,"Kotliar et al., 2019","Kotliar et al., 2019"
-1697,Images_1697.png,Rice fields exposed to well-watered and mild drought stress for metabolomic analysis,http://gigadb.org/images/uploads/image_upload/Images_1697.png,CC0,"Heat Stress Physiology Team, IRRI","Heat Stress Physiology Team, IRRI"
-1740,Images_1740.png,Visualization and analysis of metabolic networks to contextualize metabolomic experiments,http://gigadb.org/images/uploads/image_upload/Images_1740.png,CC0,T. Cameron Waller,T. Cameron Waller
-1743,Images_1743.png,SSVEP_SNR_topographic_maps,http://gigadb.org/images/uploads/image_upload/Images_1743.png,CC0,Choi at al (2019),Choi at al (2019)
-1744,Images_1744.png,AmpliconTagger,http://gigadb.org/images/uploads/image_upload/Images_1744.png,CC0,"Tremblay & Yergeau, 2019","Tremblay & Yergeau, 2019"
-1748,Images_1748.png,MSI tools in Galaxy,http://gigadb.org/images/uploads/image_upload/Images_1748.png,CC0,Melanie Föll,Melanie Föll
-1755,Images_1755.png,Brassica rapa,http://gigadb.org/images/uploads/image_upload/Images_1755.png,CC0,"Payá-Milans et al., 2019","Payá-Milans et al., 2019"
-1760,Images_1760.png,"Giant squid, Architeuthis dux",http://gigadb.org/images/uploads/image_upload/Images_1760.png,CC0,Craig Henderson,Craig Henderson
-1763,Images_1763.png,L1 Dominette 01449,http://gigadb.org/images/uploads/image_upload/Images_1763.png,CC0,Mike McNeil,Mike McNeil
-1767,Images_1767.png,HAMAP-SPARQL,http://gigadb.org/images/uploads/image_upload/Images_1767.png,CC0,Jerven Bolleman,Jerven Bolleman
+1697,"",Rice fields exposed to well-watered and mild drought stress for metabolomic analysis,"",CC0,"Heat Stress Physiology Team, IRRI","Heat Stress Physiology Team, IRRI"
+1740,"",Visualization and analysis of metabolic networks to contextualize metabolomic experiments,"",CC0,T. Cameron Waller,T. Cameron Waller
+1743,"",SSVEP_SNR_topographic_maps,"",CC0,Choi at al (2019),Choi at al (2019)
+1744,logo_AT.png,AmpliconTagger,"",CC0,"Tremblay & Yergeau, 2019","Tremblay & Yergeau, 2019"
+1748,Figure1.png,MSI tools in Galaxy,"",CC0,Melanie Föll,Melanie Föll
+1755,Brassica rapa.jpg,Brassica rapa,"",CC0,"Payá-Milans et al., 2019","Payá-Milans et al., 2019"
+1760,"","Giant squid, Architeuthis dux","",CC0,Craig Henderson,Craig Henderson
+1763,"",L1 Dominette 01449,"",CC0,Mike McNeil,Mike McNeil
+1767,"",HAMAP-SPARQL,"",CC0,Jerven Bolleman,Jerven Bolleman
 1768,100681.png,Side-view of the corolla of the species in clade Corytholoma,http://gigadb.org/images/data/cropped/100681.png,CC0,Hsu et al 2019,Hsu et al 2019
-1770,Images_1770.png,Phylogeny of 120 mammals included in alignment and number of annotated genes,http://gigadb.org/images/uploads/image_upload/Images_1770.png,CC0,Hecker & Hiller (2019),Hecker & Hiller (2019)
+1770,100685.png,Phylogeny of 120 mammals included in alignment and number of annotated genes,"",CC0,Hecker & Hiller (2019),Hecker & Hiller (2019)
 1778,100694.png,Overview of SNP calling evaluation,http://gigadb.org/images/data/cropped/100694.png,CC0,Bush et al. 2020,Bush et al. 2020
 1781,100697.png,"Hyles vespertilio specimen collected in Vallonina (Italy) in 2018, used to sequence the genome.",http://gigadb.org/images/data/cropped/100697.png,CC0,"Senckenberg Natural History Collections Dresden, Germany","Senckenberg Natural History Collections Dresden, Germany"
-1784,Images_1784.png,Coverage biases in the sequencing of Fusobacterium sp. C1.,http://gigadb.org/images/uploads/image_upload/Images_1784.png,CC0,"Browne et al., 2020","Browne et al., 2020"
-1787,Images_1787.png,The overall workflow of color prediction and odor prediction,http://gigadb.org/images/uploads/image_upload/Images_1787.png,CC0,Zhang et al (2020),Zhang et al (2020)
-1788,Images_1788.png,PredOmics Logo,http://gigadb.org/images/uploads/image_upload/Images_1788.png,CC0,Prifti et al (2020),Prifti et al (2020)
+1784,"",Coverage biases in the sequencing of Fusobacterium sp. C1.,"",CC0,"Browne et al., 2020","Browne et al., 2020"
+1787,Figure 1.png,The overall workflow of color prediction and odor prediction,"",CC0,Zhang et al (2020),Zhang et al (2020)
+1788,no_image.png,PredOmics Logo,"",CC0,Prifti et al (2020),Prifti et al (2020)
 1789,100699.png,Behavioral task apparatus. Mouse self-initiates trials by breaking a photodiode beam.,http://gigadb.org/images/data/cropped/100699.png,CC0,"Losacco et al., 2020.","Losacco et al., 2020."
-1791,Images_1791.png,Automated macrophage detection in immunostained lymphoma tissue samples,http://gigadb.org/images/uploads/image_upload/Images_1791.png,CC0,"Wagner et al., 2020","Wagner et al., 2020"
-1792,Images_1792.png,Labelling on reconstructed plant images using DenseNet patch based classification,http://gigadb.org/images/uploads/image_upload/Images_1792.png,CC0,"Hamidinekoo et al., 2020","Hamidinekoo et al., 2020"
-1794,Images_1794.png,Tibetan barley under osmotic stress,http://gigadb.org/images/uploads/image_upload/Images_1794.png,CC0,Wang et al 2020,Wang et al 2021
-1795,Images_1795.png,Phylogenetic tree of pigs from different regions,http://gigadb.org/images/uploads/image_upload/Images_1795.png,CC0,"Chen et al., 2020","Chen et al., 2020"
-1796,Images_1796.png,SRPRISM read aligner,http://gigadb.org/images/uploads/image_upload/Images_1796.png,Public domain,Morgulis et. al.,Morgulis et. al.
-1797,Images_1797.png,Canola with varying thicknesses of the contour lines,http://gigadb.org/images/uploads/image_upload/Images_1797.png,CC0,"Le et al., 2020","Le et al., 2020"
-1798,Images_1798.png,100706-image,http://gigadb.org/images/uploads/image_upload/Images_1798.png,CC0,Zhang et al (2020),Zhang et al (2020)
-1799,Images_1799.png,Loquat,http://gigadb.org/images/uploads/image_upload/Images_1799.png,CC0,"Jiang et al., 2020","Jiang et al., 2020"
+1791,"",Automated macrophage detection in immunostained lymphoma tissue samples,"",CC0,"Wagner et al., 2020","Wagner et al., 2020"
+1792,"",Labelling on reconstructed plant images using DenseNet patch based classification,"",CC0,"Hamidinekoo et al., 2020","Hamidinekoo et al., 2020"
+1794,"",Tibetan barley under osmotic stress,"",CC0,Wang et al 2020,Wang et al 2021
+1795,"",Phylogenetic tree of pigs from different regions,"",CC0,"Chen et al., 2020","Chen et al., 2020"
+1796,gigadb_image.JPG,SRPRISM read aligner,"",Public domain,Morgulis et. al.,Morgulis et. al.
+1797,"",Canola with varying thicknesses of the contour lines,"",CC0,"Le et al., 2020","Le et al., 2020"
+1798,Figure 1.png,100706-image,"",CC0,Zhang et al (2020),Zhang et al (2020)
+1799,"",Loquat,"",CC0,"Jiang et al., 2020","Jiang et al., 2020"
