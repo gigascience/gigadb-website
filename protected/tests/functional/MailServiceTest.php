@@ -53,13 +53,10 @@ class MailServiceTest extends FunctionalTesting
 
             $msg = $this->getLastMessage();
             $msg_content = $this->getMessageContent($msg);
-            $this->assertTrue(str_replace("Subject: ", "", $msg_content[2]) === $subject, "Email doesn't contain correct subject");
-            $this->assertTrue(str_replace("From: ", "", $msg_content[3]) === $from, "Email doesn't contain sender email address");
-            $this->assertTrue(str_replace("To: ", "", $msg_content[4]) === $to, "Email doesn't contain recipient email address");
-
-            // Check message body
-            $msg_body = end($msg_content);
-            $this->assertTrue(trim($msg_body) === trim($body), "Mailtrap email doesn't contain content");
+            $this->assertNotFalse(strpos($msg_content, "Subject: ".$subject), "Email doesn't contain correct subject");
+            $this->assertNotFalse(strpos($msg_content, "From: ".$from), "Email doesn't contain sender email address");
+            $this->assertNotFalse(strpos($msg_content, "To: ".$to), "Email doesn't contain recipient email address");
+            $this->assertNotFalse(strpos($msg_content, $body), "Email doesn't contain message body");
         }
         catch(Error $e) {
             $this->fail("Exception thrown: ".$e->getMessage());
@@ -67,15 +64,46 @@ class MailServiceTest extends FunctionalTesting
     }
 
     /**
-     * Test functions in MailService Component can send emails
+     * Test functions in MailService Component can send plain text email
      */
     public function testItShouldSendEmailUsingMailService() {
         try {
-            $result = Yii::app()->mailService->sendEmail("foo@bar.com", "hello@world.com", "Testing", "lorem ipsum");
-            $this->assertTrue($result, "Problem sending email using sendEmail function");
+            $from = "foo@bar.com";
+            $to = "hello@world.com";
+            $subject = "Testing";
+            $body = "lorem ipsum";
+            $result = Yii::app()->mailService->sendEmail($from, $to, $subject, $body);
+            $this->assertTrue($result, "Problem sending email using MailService sendEmail function");
 
-            $result = Yii::app()->mailService->sendHTMLEmail("foo@bar.com", "hello@world.com", "HTML email test", "<h1>lorem ipsum</h1>");
-            $this->assertTrue($result, "Problem sending email using sendHTMLEmail function");
+            $msg = $this->getLastMessage();
+            $msg_content = $this->getMessageContent($msg);
+            $this->assertNotFalse(strpos($msg_content, "Subject: ".$subject), "Email doesn't contain correct subject");
+            $this->assertNotFalse(strpos($msg_content, "From: ".$from), "Email doesn't contain sender email address");
+            $this->assertNotFalse(strpos($msg_content, "To: ".$to), "Email doesn't contain recipient email address");
+            $this->assertNotFalse(strpos($msg_content, $body), "Email doesn't contain message body");
+        }
+        catch(Error $e) {
+            $this->fail("Exception thrown: ".$e->getMessage());
+        }
+    }
+
+    /**
+     * Test functions in MailService Component can send HTML email
+     */
+    public function testItShouldSendHTMLEmailUsingMailService() {
+        try {
+            $from = "foo@xyzzy.com";
+            $to = "xyzzy@world.com";
+            $subject = "Test HTML message";
+            $body = "<h1>Hello World</h1>";
+            $result = Yii::app()->mailService->sendHTMLEmail($from, $to, $subject, $body);
+            $this->assertTrue($result, "Problem sending email using MailService sendHTMLEmail function");
+            $msg = $this->getLastMessage();
+            $msg_content = $this->getMessageContent($msg);
+            $this->assertNotFalse(strpos($msg_content, "Subject: ".$subject), "HTML email doesn't contain correct subject");
+            $this->assertNotFalse(strpos($msg_content, "From: ".$from), "HTML email doesn't contain sender email address");
+            $this->assertNotFalse(strpos($msg_content, "To: ".$to), "HTML email doesn't contain recipient email address");
+            $this->assertNotFalse(strpos($msg_content, $body), "HTML email doesn't contain message body");
         }
         catch(Error $e) {
             $this->fail("Exception thrown: ".$e->getMessage());
@@ -111,6 +139,6 @@ class MailServiceTest extends FunctionalTesting
      */
     private function getMessageContent($eml_file)
     {
-        return $lines = file($eml_file, FILE_IGNORE_NEW_LINES);
+        return $content = file_get_contents($eml_file);
     }
 }
