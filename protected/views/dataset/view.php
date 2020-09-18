@@ -361,7 +361,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     ));
                             ?>
                             <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
-                            <input type="number" id="pageNumber" class="page_box" onkeypress="pressEnter()">
+                            <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()">
                             <a class="color-background"><strong> of <?php echo $files->getDataProvider()->getPagination()->getPageCount()?></strong></a>
                         </div>
                     <?php } ?>
@@ -773,7 +773,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
         window.location = window.location.origin + targetUrlArray.join("/");
     }
 
-    function pressEnter() {
+    function detectEnterKeyPress() {
         if(event.which === 13 || event.keyCode === 13 || event.key === "Enter") {
             console.log("Enter is pressed");
             return goToPage();
