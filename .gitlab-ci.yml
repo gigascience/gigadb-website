@@ -215,6 +215,8 @@ with_new_cert_deploy:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker-compose run --rm config
     - docker-compose run --rm webapp composer install -a
+    # Generate Yii migration scripts
+    - docker-compose up csv-to-migrations
     # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
     - docker-compose build production_web
     - docker-compose build production_app
@@ -240,8 +242,6 @@ with_new_cert_deploy:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
     # Redeploy all containers (run --rm webapp alone won't redeploy the containers)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d
-    # Run csv-yii-migration.js script to create database migrations
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm csv-to-migrations
     # Run database migrations if any
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate to 300000_000000 --migrationPath=application.migrations.admin --interactive=0
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
@@ -277,6 +277,8 @@ deploy_app:
     # pulling the CI build of the application and configure it for staging for the purpose of building production containers
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker-compose run --rm config
+    # Generate Yii migration scripts
+    - docker-compose up csv-to-migrations
     # Install dependencies, but make sure the --no-dev parameter is passed so that development-only deps are not installed in vendor/
     - docker-compose run --rm webapp
     # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
