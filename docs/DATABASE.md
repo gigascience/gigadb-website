@@ -33,7 +33,6 @@ EXPORT_CSV_GIGADB_DB=
 EXPORT_CSV_GIGADB_HOST=
 EXPORT_CSV_GIGADB_USER=
 EXPORT_CSV_GIGADB_PASSWORD=
-EXPORT_CSV_GIGADB_PORT=
 ```
 
 We can now run the `export_csv.sh` script through the `test` service container 
