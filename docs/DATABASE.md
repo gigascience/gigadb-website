@@ -25,10 +25,21 @@ These CSV files have been created using
 `gigadb-website/data/scripts/export_csv.sh` which queries a GigaDB PostgreSQL 
 database for data corresponding to a list of internal dataset ids. These 
 identifiers are used in a list of SQL SELECT commands to export data associated 
-with GigaDB datasets from database tables. We can run the `export_csv.sh` script 
-through the `test` service container making use of its `psql` client:
+with GigaDB datasets from database tables. To use the `export_csv.sh` script, we
+need to ensure that the following variables have been configured in the .secrets 
+file:
 ```
-$ docker-compose run --rm test data/scripts/export_csv.sh -i "8 22 144 200" -o custom -d gigadbv3_20200210
+EXPORT_CSV_GIGADB_DB=
+EXPORT_CSV_GIGADB_HOST=
+EXPORT_CSV_GIGADB_USER=
+EXPORT_CSV_GIGADB_PASSWORD=
+EXPORT_CSV_GIGADB_PORT=
+```
+
+We can now run the `export_csv.sh` script through the `test` service container 
+making use of its `psql` client:
+```
+$ docker-compose run --rm test data/scripts/export_csv.sh -i "8 22 144 200" -o custom
 ```
 
 The identifiers are provided to `export_csv.sh` as a string in a command line
