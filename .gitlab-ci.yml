@@ -84,7 +84,7 @@ before_script:
 
 after_script:
   - docker-compose ps
-  # - docker-compose logs database
+  - docker-compose logs database
   # - docker-compose logs tusd
   # - docker-compose exec -T tusd ls -alrt /var/repo/
   # - docker-compose exec -T tusd ls -alrt /var/repo/000007/
