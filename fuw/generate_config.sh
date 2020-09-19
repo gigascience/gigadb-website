@@ -122,14 +122,9 @@ envsubst $VARS < $SOURCE > $TARGET
 # generate variable files for Yii2
 set +e
 default_route_via_host=$(/sbin/ip route|awk '/default/ { print $3 }')
-nc -zv docker 2375
-name_is_docker=$?
-nc -zv host.docker.internal 2375
+nc -zv host.docker.internal 2375 2> /dev/null
 name_is_host_docker=$?
-if [ $name_is_docker -eq 0 ];
-then
-	REMOTE_DOCKER_HOSTNAME="tcp://docker:2375"
-elif [ $name_is_host_docker -eq 0 ];
+if [ $name_is_host_docker -eq 0 ];
 then
 	REMOTE_DOCKER_HOSTNAME="tcp://host.docker.internal:2375"
 else

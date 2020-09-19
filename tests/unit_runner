@@ -25,6 +25,7 @@ if [ "$console_running" -eq "0" ];then
 	docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run unit
 	docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run unit
 	docker-compose exec -T console /app/vendor/bin/codecept -c /app/common run unit
+	docker-compose exec -T console /app/vendor/bin/codecept -c /app/console run unit
 	# run unit tests for Gigadb Workers
 	docker-compose exec -T console /gigadb-apps/worker/file-worker/vendor/bin/codecept -c /gigadb-apps/worker/file-worker run unit
 else
