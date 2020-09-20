@@ -1,0 +1,3 @@
+CREATE USER fuwdb WITH PASSWORD 'yii2advanced';
+CREATE DATABASE fuwdb WITH OWNER fuwdb;
+CREATE DATABASE fuwdb_test WITH OWNER fuwdb;
