@@ -64,12 +64,25 @@ repeatedly.
 
 **(3)** Upon success, three services will be started in detached mode.
 
+>**Note**: The first time, it will take longer to start the services as the 
+**application** container needs to be built first.
+
+
+### Running database migrations
+
+Some code changes are database schemas changes. You will need to run Yii migration to create postgresql database used by GigaDB as follows:
+```
+# Create schema tables
+$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
+# Create migration scripts for uploading data
+$ docker-compose up csv-to-migrations
+# Upload data into tables
+$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.dev --interactive=0
+```
+
 You can then navigate to the website at:
 
  * [http://gigadb.gigasciencejournal.com:9170/](http://gigadb.gigasciencejournal.com:9170/)
-
->**Note**: The first time, it will take longer to start the services as the 
-**application** container needs to be built first.
 
 
 ### Configuration variables
@@ -80,13 +93,6 @@ file and its overrides (`docker-compose.*.yml`). Finally, passwords, api keys
 and tokens are managed as *secret variables* in `.secrets`.
 
 
-### Running database migrations
-
-Some code changes are database schemas changes. To ensure you have the latest 
-database schema, you will need to run Yii migration as below:
-```
-$ docker-compose run --rm  application ./protected/yiic migrate --interactive=0
-```
 ## Testing
 
 To run the tests:

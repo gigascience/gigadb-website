@@ -71,7 +71,6 @@ services:
         mode: host
     volumes:
       - ${DATA_SAVE_PATH}/postgres:/var/lib/postgresql/data
-      - ${APPLICATION}/ops/configuration/postgresql-conf/bootstrap.sql:/docker-entrypoint-initdb.d/1-gigadb_testdata.sql
       - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf'
     networks:
@@ -137,6 +136,14 @@ services:
     extra_hosts:
       - "gigadb.dev:172.16.238.10"
     command: ./tests/all_and_coverage
+
+  csv-to-migrations:
+    image: node:14.9.0-buster
+    working_dir: /var/www/ops/scripts
+    volumes:
+      - ${APPLICATION}/:/var/www
+    shm_size: '1gb' # to avoid a known issue
+    command: bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR"
 
   phantomjs:
     image: wernight/phantomjs:2.1.1
