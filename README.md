@@ -74,6 +74,8 @@ Some code changes are database schemas changes. You will need to run Yii migrati
 ```
 # Create schema tables
 $ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
+# Create migration scripts for uploading data
+$ docker-compose up csv-to-migrations
 # Upload data into tables
 $ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.dev --interactive=0
 ```
