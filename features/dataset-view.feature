@@ -299,7 +299,7 @@ Feature: a user visit the dataset page
 		| readme.txt 										|				                                                                    | Readme 			| 337 B 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
 
-	@ok @files @javascript @pr437
+	@wip @files @javascript @pr437
 	Scenario: Files - Pagination
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
@@ -308,7 +308,6 @@ Feature: a user visit the dataset page
 		And I fill in "pageNumber" with "2"
 		And I press "Go to page"
 		When I follow "1"
-		And I take a screenshot named "file_tab_p1"
 		Then I should see "Files" tab with table
 		| File Name              							| Description  	                                                                    | Data Type       	| Size  		| File Attributes | link |
 		| Anas_platyrhynchos.cds 							| predicted coding sequences from draft genome, confirmed with RNAseq data.	        | Coding sequence  	| 21.50 MiB     |                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.cds |
