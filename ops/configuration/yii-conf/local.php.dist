@@ -30,7 +30,6 @@ return array(
         'email_prefix' => '[Giga DB] ',
 
         'support_email' => '${SERVER_EMAIL}',
-        'email_prefix' => '', // put at the beginning of the subject line
 
         // Notified when a new user signs up
         'notify_email' => '${SERVER_EMAIL}',

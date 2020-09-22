@@ -170,14 +170,8 @@ class UserCommandController extends CController
      * @param integer $author_id, author id
      */
     private function sendNotificationEmail($user, $author, $dataset) {
-        $app_email_name = Yii::app()->params['app_email_name'];
-        $app_email = Yii::app()->params['app_email'];
-        $email_prefix = Yii::app()->params['email_prefix'];
-        $headers = "From: $app_email_name <$app_email>\r\n"; //optional header fields
-        ini_set('sendmail_from', $app_email);
-
         $recipient = Yii::app()->params['notify_email'];
-        $subject = $email_prefix . "New claim on a dataset author";
+        $subject = Yii::app()->params['email_prefix'] . "New claim on a dataset author";
         $dataset_url = $this->createAbsoluteUrl('dataset/view',array('id'=>$dataset->identifier));
         $cta_url = $this->createAbsoluteUrl('user/update', array('id'=>$user->id));
         $body = <<<EO_MAIL
@@ -188,7 +182,7 @@ class UserCommandController extends CController
 <p>Click the following url to validate or reject the claim:</p>
 <p>$cta_url</p>
 EO_MAIL;
-        Yii::app()->mailService->sendHTMLEmail("database@gigasciencejournal.com", $recipient, $subject, $body);
+        Yii::app()->mailService->sendHTMLEmail(Yii::app()->params['app_email'], $recipient, $subject, $body);
         Yii::log(__FUNCTION__."> Sent email to $recipient, about: $subject");
     }
 }
