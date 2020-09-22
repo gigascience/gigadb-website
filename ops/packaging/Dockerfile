@@ -179,6 +179,14 @@ RUN if [ ${INSTALL_APCU} = true ]; then \
     echo 'apc.shm_size="64M"' | tee -a /usr/local/etc/php/conf.d/apcu.ini \
 ;fi
 
+ARG INSTALL_MAILPARSE=false
+RUN if [ ${INSTALL_MAILPARSE} = true ]; then \
+    # Install mailparse extension
+    pecl install mailparse && \
+    docker-php-ext-enable mailparse \
+;fi
+
+
 RUN usermod -u 1000 www-data
 
 WORKDIR /var/www

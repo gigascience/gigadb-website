@@ -50,13 +50,13 @@ class MailServiceTest extends FunctionalTesting
                 ->setSubject($subject)
                 ->setTextBody($body)
                 ->send();
-
             $msg = $this->getLastMessage();
-            $msg_content = $this->getMessageContent($msg);
-            $this->assertNotFalse(strpos($msg_content, "Subject: ".$subject), "Email doesn't contain correct subject");
-            $this->assertNotFalse(strpos($msg_content, "From: ".$from), "Email doesn't contain sender email address");
-            $this->assertNotFalse(strpos($msg_content, "To: ".$to), "Email doesn't contain recipient email address");
-            $this->assertNotFalse(strpos($msg_content, $body), "Email doesn't contain message body");
+
+            $parser = new PhpMimeMailParser\Parser();
+            $parser->setPath($msg);
+            $this->assertTrue($parser->getHeader('to') === $to, "Email doesn't contain recipient email address");
+            $this->assertTrue($parser->getHeader('from') === $from, "Email doesn't contain sender email address");
+            $this->assertTrue($parser->getHeader('subject') === $subject, "Email doesn't contain correct subject");
         }
         catch(Error $e) {
             $this->fail("Exception thrown: ".$e->getMessage());
@@ -74,13 +74,13 @@ class MailServiceTest extends FunctionalTesting
             $body = "lorem ipsum";
             $result = Yii::app()->mailService->sendEmail($from, $to, $subject, $body);
             $this->assertTrue($result, "Problem sending email using MailService sendEmail function");
-
             $msg = $this->getLastMessage();
-            $msg_content = $this->getMessageContent($msg);
-            $this->assertNotFalse(strpos($msg_content, "Subject: ".$subject), "Email doesn't contain correct subject");
-            $this->assertNotFalse(strpos($msg_content, "From: ".$from), "Email doesn't contain sender email address");
-            $this->assertNotFalse(strpos($msg_content, "To: ".$to), "Email doesn't contain recipient email address");
-            $this->assertNotFalse(strpos($msg_content, $body), "Email doesn't contain message body");
+
+            $parser = new PhpMimeMailParser\Parser();
+            $parser->setPath($msg);
+            $this->assertTrue($parser->getHeader('to') === $to, "Email doesn't contain recipient email address");
+            $this->assertTrue($parser->getHeader('from') === $from, "Email doesn't contain sender email address");
+            $this->assertTrue($parser->getHeader('subject') === $subject, "Email doesn't contain correct subject");
         }
         catch(Error $e) {
             $this->fail("Exception thrown: ".$e->getMessage());
@@ -99,11 +99,19 @@ class MailServiceTest extends FunctionalTesting
             $result = Yii::app()->mailService->sendHTMLEmail($from, $to, $subject, $body);
             $this->assertTrue($result, "Problem sending email using MailService sendHTMLEmail function");
             $msg = $this->getLastMessage();
-            $msg_content = $this->getMessageContent($msg);
-            $this->assertNotFalse(strpos($msg_content, "Subject: ".$subject), "HTML email doesn't contain correct subject");
-            $this->assertNotFalse(strpos($msg_content, "From: ".$from), "HTML email doesn't contain sender email address");
-            $this->assertNotFalse(strpos($msg_content, "To: ".$to), "HTML email doesn't contain recipient email address");
-            $this->assertNotFalse(strpos($msg_content, $body), "HTML email doesn't contain message body");
+
+            $parser = new PhpMimeMailParser\Parser();
+            $parser->setPath($msg);
+            $this->assertTrue($parser->getHeader('to') === $to, "HTML email doesn't contain recipient email address");
+            $this->assertTrue($parser->getHeader('from') === $from, "HTML email doesn't contain sender email address");
+            $this->assertTrue($parser->getHeader('subject') === $subject, "HTML email doesn't contain correct subject");
+
+            $attachments = $parser->getAttachments();
+            $this->assertTrue(count($attachments) === 3, "Email doesn't contain 3 attachment images");
+            $this->assertTrue($attachments[0]->getFilename() === "top.png", "First attachment is not top.png");
+            $this->assertTrue($attachments[0]->getContentType() === "image/png", "Content-Type is not image/png");
+            $this->assertTrue($attachments[1]->getFilename() === "bottom.png", "Second attachment is not bottom.png");
+            $this->assertTrue($attachments[2]->getFilename() === "logo.png", "Second attachment is not logo.png");
         }
         catch(Error $e) {
             $this->fail("Exception thrown: ".$e->getMessage());

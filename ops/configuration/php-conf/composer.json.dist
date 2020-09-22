@@ -36,7 +36,8 @@
         "friendsofphp/php-cs-fixer": "^v2.2",
         "sebastian/phpcpd": "^3.0",
         "phpmd/phpmd": "2.6.0",
-        "php-coveralls/php-coveralls": "v2.1.0"
+        "php-coveralls/php-coveralls": "v2.1.0",
+        "php-mime-mail-parser/php-mime-mail-parser": "5.0.5"
     },
     "minimum-stability": "stable",
     "config": {
