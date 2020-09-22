@@ -8,15 +8,27 @@
     When I go to "/adminFile/update/"
     Then I should see "Login"
 
-  @wip @issue-457 @javascript
+  @ok @issue-457 @javascript
   Scenario: Sign in as admin and visit admin file update page
     Given I sign in as an admin
-    When I go to "/adminFile/update/id/88252"
+    When I go to "/adminFile/update/id/13973"
     Then I should see a button "New Attribute"
 
-  @test @issue-457 @javascript
-    Scenario: Sign in as admin to add new attribute and to see a delete button
-      Given I sign in as an admin
-      And I am on "/adminFile/update/id/88252"
-      And I should see a button "New Attribute"
-      And I take a screenshot named "test"
+  @ok @issue-457 @javascript
+  Scenario: Sign in as admin and see a Delete button
+    Given I sign in as an admin
+    When I go to "/adminFile/update/id/13973"
+    Then I should see a button input "Delete"
+
+  @ok @issue-457 @javascript
+  Scenario: Sign in as admin and delete attribute
+    Given I sign in as an admin
+    When I go to "/adminFile/update/id/13973"
+    And I take a screenshot named "before_delete"
+    And I press "Delete"
+    And I wait "3" seconds
+    Then I take a screenshot named "after_delete"
+
+
+
+
