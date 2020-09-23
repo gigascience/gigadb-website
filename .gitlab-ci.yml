@@ -106,7 +106,7 @@ run_all_tests:
     # - env
     - docker-compose run --rm config
     - docker-compose run --rm webapp
-    - docker-compose up -d phantomjs
+    - docker-compose up -d chrome
     # - docker-compose top
     # - docker network inspect rija-gigadb-website_web-tier
     # - docker network inspect rija-gigadb-website_db-tier

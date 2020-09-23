@@ -98,7 +98,7 @@ services:
       - application
       - web
       - database
-      - phantomjs
+      - chrome
     command: ./ops/scripts/webapp_setup.sh
     networks:
       - web-tier
@@ -137,6 +137,20 @@ services:
       - "gigadb.dev:172.16.238.10"
     command: ./tests/all_and_coverage
 
+  chrome:
+    image: selenium/standalone-chrome:3.141.59-oxygen # latest version with Chrome 74
+    shm_size: '1gb' # to avoid a known issue
+    ports:
+      # - "5900:5900" #for VNC access
+      - "4444:4444" #for webdriver access
+    networks:
+      - web-tier
+    extra_hosts:
+      - "gigadb.test:172.16.238.10"
+      - "gigadb.dev:172.16.238.10"
+    environment: # to run headless, set false and comment out port 5900 above and make sure to pass --headless arg in acceptance.suite.yml
+      START_XVFB: "false"
+
   csv-to-migrations:
     image: node:14.9.0-buster
     working_dir: /var/www/ops/scripts
@@ -145,23 +159,13 @@ services:
     shm_size: '1gb' # to avoid a known issue
     command: bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR"
 
-  phantomjs:
-    image: wernight/phantomjs:2.1.1
-    command: phantomjs --webdriver=8910
-    expose:
-      - "8910"
-    networks:
-      - web-tier
-    extra_hosts:
-      - "gigadb.dev:172.16.238.10"
-
 networks:
   web-tier:
     driver: bridge
     ipam:
       driver: default
       config:
-      - subnet: 172.16.238.0/24
+        - subnet: 172.16.238.0/24
   db-tier:
 
 volumes:

@@ -18,5 +18,11 @@ default:
           base_url: "http://gigadb.dev/"
           goutte: ~
           selenium2:
-            wd_host: http://phantomjs:8910/wd/hub
-
+            wd_host: "http://chrome:4444/wd/hub"
+            browser: chrome
+            capabilities:
+              chrome:
+                switches:
+                  - "--headless"
+                  - "--disable-gpu"
+                  - "--window-size=1024,768"

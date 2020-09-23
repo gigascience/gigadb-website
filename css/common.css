@@ -2076,3 +2076,27 @@ body{
   width: 1px;
 }
 
+.btn_click {
+    border: solid 1px #0eb23c;
+    color: #0fad59;
+    padding: 4px 6px 3px 6px;
+    text-decoration: none;
+    background-color: Transparent;
+    outline:none;
+}
+
+.page_box {
+    color: #0fad59;
+    background: #fff;
+    border: solid 1px #0eb23c;
+    outline:none;
+}
+
+input {
+    width: 3%;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

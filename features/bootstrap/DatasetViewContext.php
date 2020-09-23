@@ -218,6 +218,25 @@ class DatasetViewContext implements Context
     }
 
     /**
+     * A function to simulate a key press
+     * @param $key
+     * @param $field_name
+     */
+    public function sendKeyPressFromField($key, $field_name)
+    {
+        $xpath = '//*[@id="'.$field_name.'"]';
+        $this->minkContext->getSession()->getDriver()->getWebDriverSession()->element('xpath', $xpath)->postValue(['value' =>[$key]]);
+    }
+
+    /**
+     * @When I hit return
+     */
+    public function iHitReturn()
+    {
+        $this->sendKeyPressFromField("\r\n","pageNumber");
+    }
+
+    /**
      * @Then I should see a button :arg1 with no link
      */
     public function iShouldSeeAButtonWithNoLink($arg1)

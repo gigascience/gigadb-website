@@ -358,9 +358,11 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                 $this->widget('SiteLinkPager', array(
                                     'id' => 'files-pager',
                                     'pages'=>$files->getDataProvider()->getPagination(),
-                            ));
-
+                                    ));
                             ?>
+                            <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
+                            <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()">
+                            <a class="color-background"><strong> of <?php echo $files->getDataProvider()->getPagination()->getPageCount()?></strong></a>
                         </div>
                     <?php } ?>
 
@@ -745,4 +747,37 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
 
 
     });
+</script>
+<script>
+    function goToPage() {
+        var targetPageNumber = document.getElementById('pageNumber').value;
+        var pageID = <?php echo $model->identifier?>;
+        //To validate page number
+        var userInput = parseInt(targetPageNumber);
+        var max = <?php echo $files->getDataProvider()->getPagination()->getPageCount() ?>;
+        //To output total pages
+        // console.log(max);
+        var min = 1;
+        if (userInput >= min && userInput <= max) {
+            console.log("Valid page number!");
+        }else if (userInput > max) {
+            targetPageNumber = max;
+            console.log("Error, return to " + max);
+        } else if (userInput < min) {
+            targetPageNumber = min;
+            console.log("Error, return to " + min);
+        }
+        // Create array with default values
+        let targetUrlArray = ["", "dataset", "view", "id", pageID];
+        targetUrlArray.push('Files_page', targetPageNumber);
+        window.location = window.location.origin + targetUrlArray.join("/");
+    }
+
+    function detectEnterKeyPress() {
+        if(event.which === 13 || event.keyCode === 13 || event.key === "Enter") {
+            console.log("Enter is pressed");
+            return goToPage();
+        }
+    }
+
 </script>

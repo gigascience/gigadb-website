@@ -277,6 +277,59 @@ Feature: a user visit the dataset page
 		| pre_03AUG2015_update 								| folder containing originally submitted data files, prior to update Aug 3rd 2015.	| Directory 		| 50.00 MiB 	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
 		| readme.txt 										|				                                                                    | Readme 			| 337 B 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
+	@ok @files @javascript @pr437
+	Scenario: Files - Pagination
+		Given I am not logged in to Gigadb web site
+		And I am on "/dataset/101001"
+		And I follow "Files"
+		Then I should see a button input "Go to page"
+
+	@ok @files @javascript @pr437
+	Scenario: Files - Pagination
+		Given I am not logged in to Gigadb web site
+		And I am on "/dataset/101001"
+		And I follow "Files"
+		And I have set pageSize to "5" on "files_table_settings"
+		When I fill in "pageNumber" with "2"
+		And I press "Go to page"
+		Then I should be on "/dataset/view/id/101001/Files_page/2"
+		And I should see "Files" tab with table
+		| File Name              							| Description  	                                                                    | Data Type       	| Size  		| File Attributes | link |
+		| pre_03AUG2015_update 								| folder containing originally submitted data files, prior to update Aug 3rd 2015.	| Directory 		| 50.00 MiB 	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
+		| readme.txt 										|				                                                                    | Readme 			| 337 B 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
+
+
+	@wip @files @javascript @pr437
+	Scenario: Files - Pagination
+		Given I am not logged in to Gigadb web site
+		And I am on "/dataset/101001"
+		And I follow "Files"
+		And I have set pageSize to "5" on "files_table_settings"
+		And I fill in "pageNumber" with "2"
+		And I press "Go to page"
+		When I follow "1"
+		Then I should see "Files" tab with table
+		| File Name              							| Description  	                                                                    | Data Type       	| Size  		| File Attributes | link |
+		| Anas_platyrhynchos.cds 							| predicted coding sequences from draft genome, confirmed with RNAseq data.	        | Coding sequence  	| 21.50 MiB     |                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.cds |
+		| Anas_platyrhynchos.gff 							| genome annotations	                                                            | Annotation 		| 10.10 MiB 	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.gff |
+		| Anas_platyrhynchos.pep 							| amino acid translations of coding sequences                                       | Protein sequence 	| 7.80 MiB  	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos.pep |
+		| Anas_platyrhynchos_domestica.RepeatMasker.out.gz 	| repeat masker output 	                                                            | Other 			| 7.79 MiB  	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/Anas_platyrhynchos_domestica.RepeatMasker.out.gz |
+		| duck.scafSeq.gapFilled.noMito 					| draft genome assembly                                                             | Sequence assembly	| 1.03 GiB 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/duck.scafSeq.gapFilled.noMito |
+
+	@ok @files @javascript @pr437
+	Scenario: Files - Pagination
+		Given I am not logged in to Gigadb web site
+		And I am on "/dataset/101001"
+		And I follow "Files"
+		And I have set pageSize to "5" on "files_table_settings"
+		When I fill in "pageNumber" with "2"
+		And I hit return
+		Then I should be on "/dataset/view/id/101001/Files_page/2"
+		And I should see "Files" tab with table
+		| File Name              							| Description  	                                                                    | Data Type       	| Size  		| File Attributes | link |
+		| pre_03AUG2015_update 								| folder containing originally submitted data files, prior to update Aug 3rd 2015.	| Directory 		| 50.00 MiB 	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
+		| readme.txt 										|				                                                                    | Readme 			| 337 B 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
+
 	@ok @samples
 	Scenario: Samples
 		Given I am not logged in to Gigadb web site
