@@ -25,4 +25,4 @@ default:
                 switches:
                   - "--headless"
                   - "--disable-gpu"
-                  - "--window-size=1024,1024"
+                  - "--window-size=1920,1080"
