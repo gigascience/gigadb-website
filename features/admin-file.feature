@@ -2,6 +2,7 @@
   Feature: An admin user can edit and delete attribute in admin file page
     As an admin user
     I can edit/delete attribute
+    So that I can associate various attributes to files
 
   Background:
     Given Gigadb web site is loaded with production-like data
