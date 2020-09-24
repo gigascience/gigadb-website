@@ -152,9 +152,7 @@ $('.js-edit').click(function(e) {
 $('.js-delete').click(function (e) {
     e.preventDefault();
     id = $(this).attr('data');
-    console.log(id);
     row = $('.row-edit-' + id);
-    console.log(row);
     if (id) {
         $.post('/adminFile/deleteAttr', { 'id': id }, function(result) {
             if (result) {
