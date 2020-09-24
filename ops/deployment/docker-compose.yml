@@ -166,20 +166,6 @@ services:
       - web-tier
       - db-tier
 
-  chrome:
-    image: selenium/standalone-chrome:3.141.59-oxygen # latest version with Chrome 74
-    shm_size: '1gb' # to avoid a known issue
-    ports:
-      # - "5900:5900" #for VNC access
-      - "4444:4444" #for webdriver access
-    networks:
-      - web-tier
-    extra_hosts:
-      - "gigadb.test:172.16.238.10"
-      - "gigadb.dev:172.16.238.10"
-    environment: # to run headless, set false and comment out port 5900 above and make sure to pass --headless arg in acceptance.suite.yml
-      START_XVFB: "false"
-
 networks:
   web-tier:
     driver: bridge
