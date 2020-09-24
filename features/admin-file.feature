@@ -14,7 +14,7 @@
     When I go to "/adminFile/update/"
     Then I should see "Login"
 
-  @wip @issue-457 @javascript
+  @ok @issue-457 @javascript
   Scenario: Sign in as admin and visit admin file update page and see New Attribute, Edit, Delete buttons
     Given I sign in as an admin
     When I am on "/adminFile/update/id/13973"
@@ -22,7 +22,7 @@
     And I should see a button input "Edit"
     And I should see a button input "Delete"
 
-  @wip @issue-457 @javascript
+  @ok @issue-457 @javascript
   Scenario: Sign in as admin to delete attribute
     Given I sign in as an admin
     And I am on "/adminFile/update/id/13973"
