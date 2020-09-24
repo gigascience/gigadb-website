@@ -9,7 +9,7 @@
 
 
   @ok @issue-457 @javascript
-  Scenario: Non admin user cannot visit admin file update page
+  Scenario: Guest user cannot visit admin file update page
     Given I am not logged in to Gigadb web site
     When I go to "/adminFile/update/"
     Then I should see "Login"
@@ -27,11 +27,9 @@
     Given I sign in as an admin
     And I am on "/adminFile/update/id/13973"
     And I should see a button input "Delete"
-#    And I take a screenshot named "before_delete"
     When I press "Delete"
     And I wait "3" seconds
     Then I should not see a button "Delete"
-#    And I take a screenshot named "after_delete"
 
 
 
