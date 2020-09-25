@@ -25,9 +25,9 @@ return array(
         'adminEmail'=> '${SERVER_EMAIL}',
 
         // This is used as the sender of emails
-        'app_email_name' => 'Giga DB',
+        'app_email_name' => 'GigaDB',
         'app_email' => '${SERVER_EMAIL}',
-        'email_prefix' => '[Giga DB] ',
+        'email_prefix' => '[GigaDB] ',
 
         'support_email' => '${SERVER_EMAIL}',
 
