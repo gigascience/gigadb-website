@@ -1,0 +1,21 @@
+<?php
+
+return [
+    'id' => 'GigaDB Web Site',
+    'basePath' => '/var/www',
+    'components' => [
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'encryption' => 'ssl',
+                'host' => '${SERVER_EMAIL_SMTP_HOST}',
+                'port' => '${SERVER_EMAIL_SMTP_PORT}',
+                'username' => '${SERVER_EMAIL}',
+                'password' => '${SERVER_EMAIL_PASSWORD}',
+            ],
+        ],
+    ],
+];
+?>

@@ -1,0 +1,7 @@
+# Using this .gitignore file to add yii2 directory into repo.
+# This directory is required for the Yii2 web.php config file.
+
+# Ignore everything in this directory
+*
+# Do not ignore this .gitgnore file though
+!.gitignore
