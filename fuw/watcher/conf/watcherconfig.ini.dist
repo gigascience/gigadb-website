@@ -1,0 +1,4 @@
+db_user = "$FUW_DB_USER"
+db_password = "$FUW_DB_PASSWORD"
+db_dsn = "pgsql:host=$FUW_DB_HOST;dbname=$FUW_DB_NAME"
+ftpd_endpoint = "$HOME_URL"
