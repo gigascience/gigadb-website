@@ -83,6 +83,7 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
      public function fileUploadsWithSamplesAndAttributesHaveBeenUploadedForDOI($doi)
      {
 
+        file_put_contents("/var/tmp/processing_flag/$doi", "flag");
         //Retrieve the filedrop_account to attach the uploads
         $this->I->amConnectedToDatabase('fuwdb');
         $filedropId = $this->I->grabFromDatabase('filedrop_account','id', array('doi' => $doi));
