@@ -258,7 +258,7 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
                                   'dt' => new \DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requester" => \User::model()->findByAttribute(["email"=>"joy_fox@gigadb.org"]),
+            "requesterEmail" =>"joy_fox@gigadb.org",
             "identifier"=> $doi,
             "dataset" => new \DatasetDAO(["identifier" => $doi]),
             "dryRunMode"=>false,
