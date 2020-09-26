@@ -65,7 +65,7 @@ services:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
     volumes:
       - assets:/var/www/assets
-      - captchas:/var/www/images/tempcaptcha
+      - tempcaptcha:/var/www/images/tempcaptcha
     command: bash -c "./protected/yiic lesscompiler"
 
   fuw-admin:
