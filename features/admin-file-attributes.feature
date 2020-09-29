@@ -24,7 +24,7 @@
     And I should see a button input "Edit"
     And I should see a button input "Delete"
 
-  @wip @issue-457 @javascript
+  @ok @issue-457 @javascript
   Scenario: Sign in as admin to delete attribute
     Given I sign in as an admin
     And I am on "/adminFile/update/id/13973"
