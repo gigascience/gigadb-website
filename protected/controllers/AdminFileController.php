@@ -464,18 +464,14 @@ class AdminFileController extends Controller
         echo CJSON::encode(array('success' => false));
     }
 
-    public function actionDeleteFileAttribute()
+    /**
+     * Yii's method for routing urls to an action. Override to use custom actions
+     */
+    public function actions()
     {
-        if (!Yii::app()->request->isPostRequest)
-            throw new CHttpException(404, "The requested page does not exist.");
-
-        if (isset($_POST['id'])) {
-            $attribute = FileAttributes::model()->findByPk($_POST['id']);
-            if ($attribute) {
-                $attribute->delete();
-                Yii::app()->end();
-            }
-        }
+        return array(
+            'deleteFileAttribute'=>'application.controllers.adminFile.DeleteFileAttributeAction',
+        );
     }
 
     /**
