@@ -1,7 +1,7 @@
 @admin-file @issue-457
-  Feature: An admin user can edit and delete attribute in admin file page
-    As an admin user
-    I can edit/delete attribute
+  Feature: A curator can manage file attributes in admin file update page
+    As a curator,
+    I want to manage file attributes from the update form
     So that I can associate various attributes to files
 
   Background:
