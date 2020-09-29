@@ -27,7 +27,7 @@ class AdminFileController extends Controller
     {
         return array(
             array('allow', // admin only
-                    'actions'=>array('linkFolder','admin','delete','index','view','create','update','update1', 'editAttr', 'uploadAttr', 'deleteAttr'),
+                    'actions'=>array('linkFolder','admin','delete','index','view','create','update','update1', 'editAttr', 'uploadAttr', 'deleteFileAttribute'),
                     'roles'=>array('admin'),
             ),
                             array('allow',
@@ -464,7 +464,7 @@ class AdminFileController extends Controller
         echo CJSON::encode(array('success' => false));
     }
 
-    public function actionDeleteAttr()
+    public function actionDeleteFileAttribute()
     {
         if (!Yii::app()->request->isPostRequest)
             throw new CHttpException(404, "The requested page does not exist.");
