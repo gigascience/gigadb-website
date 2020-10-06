@@ -8,13 +8,13 @@
     Given Gigadb web site is loaded with production-like data
 
 
-  @ok @issue-457 @javascript
+  @ok @issue-457
   Scenario: Guest user cannot visit admin file update page
     Given I am not logged in to Gigadb web site
     When I go to "/adminFile/update/"
     Then I should see "Login"
 
-  @ok @issue-457 @javascript
+  @ok @issue-457
   Scenario: Sign in as admin and visit admin file update page and see New Attribute, Edit, Delete buttons
     Given I sign in as an admin
     When I am on "/adminFile/update/id/13973"
