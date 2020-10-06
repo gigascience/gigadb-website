@@ -17,6 +17,9 @@ return array(
             "key_file" => realpath(dirname(__FILE__)."/keyfile.json"),
             "app_name" => "GigaDB",
         ),
+        'curationLogService' => array(
+            'class'           => 'application.components.CurationLogService',
+        ),
     ),
     'params'=>array(
         'home_url' => 'http://${HOME_URL}', // Where top level link goes to
