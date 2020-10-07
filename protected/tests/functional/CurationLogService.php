@@ -19,7 +19,7 @@ class CurationLogService extends FunctionalTesting
     public function testItShouldNotBeDisplayedToGuestUsers()
     {
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("user@gigadb.org", "gigadb", "John's GigaDB Page");
-        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull("http://gigadb.gigasciencejournal.com:9170/site/adminFile/", "Login");
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull("http://gigadb.dev/adminFile/update1/?id=211/", "Error");
     }
 
     /**
@@ -32,7 +32,7 @@ class CurationLogService extends FunctionalTesting
     public function testItShouldBeDisplayedToAdminUser()
     {
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org", "gigadb", "Joe's GigaDB Page");
-        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull("http://gigadb.dev/site/adminFile/", "Files");
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull("http://gigadb.dev/adminFile/update1/?id=211", "Update File");
     }
 
 }
