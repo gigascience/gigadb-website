@@ -9,7 +9,7 @@ class CurationLogServiceTest extends FunctionalTesting
     public function testItShouldCreateEntryInCurationLogTableUsingCurationLogService()
     {
         try {
-            $result = Yii::app()->curationLogService->createNewEntry("210", "20", "Stuff");
+            $result = Yii::app()->curationLogService->createNewEntry("22", "20", "Stuff");
             $this->assertTrue("true" === "true", "stuff");
         } catch (Error $e) {
             $this->fail("Exception thrown: " . $e->getMessage());
