@@ -16,10 +16,10 @@ class CurationLogService extends FunctionalTesting
      * @uses \BrowserPageSteps::visitPageWithSessionAndUrlThenAssertContentHasOrNull()
      *
      */
-    public function testItShouldBeDisplayedToGuestUsers()
+    public function testItShouldDisplayToGuestUsers()
     {
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("user@gigadb.org", "gigadb", "John's GigaDB Page");
-        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull("http://gigadb.dev/adminFile/update1/?id=211/", "Error 403");
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull("http://gigadb.dev/adminFile/update1/id/211", "Error 403");
     }
 
     /**
@@ -29,10 +29,24 @@ class CurationLogService extends FunctionalTesting
      * @uses \BrowserPageSteps::visitPageWithSessionAndUrlThenAssertContentHasOrNull()
      *
      */
-    public function testItShouldBeDisplayedToAdminUser()
+    public function testItShouldDisplayToAdminUser()
     {
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org", "gigadb", "Joe's GigaDB Page");
-        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull("http://gigadb.dev/adminFile/update1/?id=211", "Update File");
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull("http://gigadb.dev/adminFile/update1/id/211", "Update File");
     }
 
+    /**
+     * To test admin user can see New Attribute, Edit and Delete buttons
+     *
+     * @uses \BrowserSignInSteps::loginToWebSiteWithSessionAndCredentialsThenAssert()
+     * @uses \BrowserPageSteps::getCurrentUrl()
+     */
+    public function testItShouldBeSeenByAdminUser()
+    {
+        $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org", "gigadb", "Joe's GigaDB Page");
+        $url = "http://gigadb.dev/adminFile/update1/id/211";
+        $this->session->visit($url);
+        $this->assertTrue($this->session->getPage()->hasContent("New Attribute"), "Admin cannot see New Attribute");
+
+    }
 }
