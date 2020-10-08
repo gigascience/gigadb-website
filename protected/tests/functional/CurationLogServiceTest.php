@@ -4,7 +4,7 @@
  * Functional test for curation logging of new entry
  */
 
-class CurationLogService extends FunctionalTesting
+class CurationLogServiceTest extends FunctionalTesting
 {
     use BrowserSignInSteps;
     use BrowserPageSteps;
