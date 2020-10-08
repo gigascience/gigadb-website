@@ -13,7 +13,7 @@ class CurationLogService extends CApplicationComponent
     }
 
     /**
-     * Create a log in the curation_log table.
+     * Create a log in the curation_log table when dataset status is not Published.
      * @param $id
      * @param $creator
      * @param $message
@@ -22,7 +22,6 @@ class CurationLogService extends CApplicationComponent
     public function createCurationLogEntry($id, $creator, $message )
     {
         $model = Dataset::model()->findByPk($id);
-        // Save log to curation_log when dataset status is Published
         if ($model->upload_status !== "Published") {
             $curationlog = new CurationLog;
             $curationlog->creation_date = date("Y-m-d");
