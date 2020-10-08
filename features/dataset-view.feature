@@ -299,7 +299,7 @@ Feature: a user visit the dataset page
 		| readme.txt 										|				                                                                    | Readme 			| 337 B 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
 
-	@wip @files @javascript @pr437
+	@ok @files @javascript @pr437
 	Scenario: Files - Pagination
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
