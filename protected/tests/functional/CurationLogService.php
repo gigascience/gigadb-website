@@ -16,10 +16,10 @@ class CurationLogService extends FunctionalTesting
      * @uses \BrowserPageSteps::visitPageWithSessionAndUrlThenAssertContentHasOrNull()
      *
      */
-    public function testItShouldNotBeDisplayedToGuestUsers()
+    public function testItShouldBeDisplayedToGuestUsers()
     {
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert("user@gigadb.org", "gigadb", "John's GigaDB Page");
-        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull("http://gigadb.dev/adminFile/update1/?id=211/", "Error");
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull("http://gigadb.dev/adminFile/update1/?id=211/", "Error 403");
     }
 
     /**
