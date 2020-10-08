@@ -12,3 +12,118 @@ label {
 .form-group {
   margin-bottom: 20px;
 }
+
+.checkbox input[type="checkbox"] {
+  opacity: 0;
+  margin-right: 5px;
+}
+.checkbox > input[type="checkbox"] + label::before {
+  content: "\f096";
+  font-size: 16px;
+  font-family: FontAwesome;
+  color: #e5e5e5;
+  position: absolute;
+  left: 0;
+  display: inline-block;
+}
+.checkbox > input[type="checkbox"]:checked + label::before {
+  content: "\f14a";
+  font-size: 16px;
+  font-family: FontAwesome;
+  color: #099242;
+  position: absolute;
+  left: 0;
+  display: inline-block;
+}
+
+.form-control,
+.form-control:hover,
+.form-control:focus {
+  border-color: #e5e5e5;
+  box-shadow: none;
+  color: #656565;
+  font-size: 13px;
+}
+
+.carousel-doi {
+  left: 30px;
+  border-radius: 23px;
+  color: #ffffff;
+  margin-top: -26px;
+  position: absolute;
+  top: 65%;
+  font-weight: 100;
+  text-align: center;
+  font-size: 28px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+  border: 0px;
+  filter: alpha(opacity=100);
+  -moz-opacity: 1;
+  -khtml-opacity: 1;
+  opacity: 1;
+  text-decoration: none;
+  background: #a5cc7e;
+  background: -webkit-gradient(linear,0 0,0 bottom,from(#a5cc7e),to(#6ea23a));
+  background: -webkit-linear-gradient(#a5cc7e,#6ea23a);
+  background: -moz-linear-gradient(#a5cc7e,#6ea23a);
+  background: -ms-linear-gradient(#a5cc7e,#6ea23a);
+  background: -o-linear-gradient(#a5cc7e,#6ea23a);
+  background: linear-gradient(#a5cc7e,#6ea23a);
+  -pie-background: linear-gradient(#a5cc7e,#6ea23a);
+  behavior: url(/css/PIE.htc);
+}
+.form-search {
+  margin: 0px auto 40px auto;
+}
+.form-search.well {
+  text-align: center;
+  background: #5a9c7b;
+  background: -webkit-gradient(linear,0 0,0 bottom,from(#5a9c7b),to(#005b2d));
+  background: -webkit-linear-gradient(#5a9c7b,#005b2d);
+  background: -moz-linear-gradient(#5a9c7b,#005b2d);
+  background: -ms-linear-gradient(#5a9c7b,#005b2d);
+  background: -o-linear-gradient(#5a9c7b,#005b2d);
+  background: linear-gradient(#5a9c7b,#005b2d);
+  -pie-background: linear-gradient(#5a9c7b,#005b2d);
+  behavior: url(/css/PIE.htc);
+}
+.form-search.well .btn-green {
+  font-size: 1.2em;
+  height: 28px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.form-search.well input .btn {
+  height: 28px;
+}
+.form-search.well a {
+  height: 20px;
+}
+.form-search input,
+.form-search textarea,
+.form-search select,
+.form-search .help-inline,
+.form-search .uneditable-input,
+.form-search .input-prepend,
+.form-search .input-append,
+.form-inline input,
+.form-inline textarea,
+.form-inline select,
+.form-inline .help-inline,
+.form-inline .uneditable-input,
+.form-inline .input-prepend,
+.form-inline .input-append,
+.form-horizontal input,
+.form-horizontal textarea,
+.form-horizontal select,
+.form-horizontal .help-inline,
+.form-horizontal .uneditable-input,
+.form-horizontal .input-prepend,
+.form-horizontal .input-append {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  margin-bottom: 0;
+}
