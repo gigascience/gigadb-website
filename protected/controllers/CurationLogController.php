@@ -169,4 +169,9 @@ class CurationLogController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
+
+	public function createCurationLog($id, $username, $message)
+    {
+        Yii::app()->CurationLogService->createNewEntry($id, $username, $message);
+    }
 }
