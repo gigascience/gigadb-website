@@ -19,7 +19,7 @@ class CurationLogService extends CApplicationComponent
      * @param $message
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function createNewEntry($id, $creator, $message )
+    public function createCurationLogEntry($id, $creator, $message )
     {
         $model = Dataset::model()->findByPk($id);
         // Save log to curation_log when dataset status is Published
