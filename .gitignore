@@ -71,3 +71,6 @@ vault
 # docs
 docs/apidocs/phpdoc-cache-*
 docs/cache
+
+!style-guide/vendor
+!style-guide/index.php
