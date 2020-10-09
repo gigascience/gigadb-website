@@ -20,9 +20,6 @@ return array(
         'curationLogService' => array(
             'class'           => 'application.components.CurationLogService',
         ),
-        'datasetLogServive' => array(
-            'class'           => 'application.components.DatasetLogService',
-        ),
     ),
     'params'=>array(
         'home_url' => 'http://${HOME_URL}', // Where top level link goes to
