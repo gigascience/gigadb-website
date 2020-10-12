@@ -46,10 +46,10 @@ class CurationLog extends CActiveRecord
         return array(
             array('dataset_id', 'required'),
             array('dataset_id', 'numerical', 'integerOnly'=>true),
-            array('comments, creation_date, created_by, last_modified_date, last_modified_by, action', 'safe'),
+            array('comments, creation_date, created_by, last_modified_date, last_modified_by, upload_status, action', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, dataset_id, comments, action, created_by, last_modified_by', 'safe', 'on'=>'search'),
+            array('id, dataset_id, comments, action, created_by, last_modified_by, upload_status', 'safe', 'on'=>'search'),
         );
     }
 
@@ -82,49 +82,40 @@ class CurationLog extends CActiveRecord
         );
     }
 
-    public static function createLogEntry($id)
-    {
-        $curationlog = new CurationLog;
-        $curationlog->creation_date = date("Y-m-d");
-        $curationlog->last_modified_date = null;
-        $curationlog->dataset_id = $id;
-    }
-
-    public static function createlog($status,$id) {
-       
+//    public static function createLogEntry($id)
+//    {
 //        $curationlog = new CurationLog;
 //        $curationlog->creation_date = date("Y-m-d");
 //        $curationlog->last_modified_date = null;
 //        $curationlog->dataset_id = $id;
-        static::createLogEntry($id);
-        $curationlog->created_by = "System";
-        $curationlog->action = "Status changed to ".$status;
-        if (!$curationlog->save())
-            return false;
-    }
-    
-    public static function createlog_assign_curator($id,$creator,$username) {
-
-//        $curationlog = new CurationLog;
-//        $curationlog->creation_date = date("Y-m-d");
-//        $curationlog->last_modified_date = null;
-//        $curationlog->dataset_id = $id;
-        static::createLogEntry($id);
-        $curationlog->created_by = $creator;
-        $curationlog->action = "Curator Assigned"." $username";
-        if (!$curationlog->save())
-            return false;
-    }
+//    }
+//
+//    public static function createlog($status,$id) {
+//
+//        self::createLogEntry($id);
+//        $curationlog->created_by = "System";
+//        $curationlog->action = "Status changed to ".$status;
+//        if (!$curationlog->save())
+//            return false;
+//    }
+//
+//    public static function createlog_assign_curator($id,$creator,$username) {
+//
+//        self::createLogEntry($id);
+//        $curationlog->created_by = $creator;
+//        $curationlog->action = "Curator Assigned"." $username";
+//        if (!$curationlog->save())
+//            return false;
+//    }
 
     public static function createCurationLogEntry($id)
     {
         $model = Dataset::model()->findByPk($id);
-        if ($model->upload_status !== "Published") {
-//            $curationlog = new CurationLog;
-//            $curationlog->creation_date = date("Y-m-d");
-//            $curationlog->last_modified_date = null;
-//            $curationlog->dataset_id = $id;
-            static::createLogEntry($id);
+        if ($model->upload_status === "Published") {
+            $curationlog = new CurationLog;
+            $curationlog->creation_date = date("Y-m-d");
+            $curationlog->last_modified_date = null;
+            $curationlog->dataset_id = $id;
             $curationlog->created_by = "System";
             $curationlog->action = "Status changed to stuff";
             if (!$curationlog->save())
