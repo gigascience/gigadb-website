@@ -391,37 +391,40 @@
                 </div>
 
                 <!-- Manually add your fonts here. -->
+                <!--
+                // In common.css font-family: 'Open Sans', Lato, 'PT Sans', Arial, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Zen Hei Mono', sans-serif;
+                -->
                 <div class="sg-font-stacks sg-section">
                     <h2 id="sg-fontStacks" class="sg-h2">Font Stacks</h2>
                     <dl class="sg-font-list">
                         <dt>Primary Font:</dt>
-                        <dd style='font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;'>
-                            "HelveticaNeue", Helvetica, Arial, sans-serif;
+                        <dd style='font-family: "Open Sans", Lato, "PT Sans", Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Zen Hei Mono", sans-serif;'>
+                            "Open Sans", Lato, "PT Sans", Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Zen Hei Mono", sans-serif;
                         </dd>
 
                         <dt>Primary Font Italic:</dt>
-                        <dd style='font-family: "HelveticaNeue", Helvetica, Arial, sans-serif; font-style: italic;'>
-                            "HelveticaNeue", Helvetica, Arial, sans-serif;
+                        <dd style='font-family: "Open Sans", Lato, "PT Sans", Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Zen Hei Mono", sans-serif; font-style: italic;'>
+                            "Open Sans", Lato, "PT Sans", Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Zen Hei Mono", sans-serif;
                         </dd>
 
                         <dt>Primary Font Bold:</dt>
-                        <dd style='font-family: "HelveticaNeue", Helvetica, Arial, sans-serif; font-weight: 800;'>
-                            "HelveticaNeue", Helvetica, Arial, sans-serif;
+                        <dd style='font-family: "Open Sans", Lato, "PT Sans", Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Zen Hei Mono", sans-serif; font-weight: 800;'>
+                            "Open Sans", Lato, "PT Sans", Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Zen Hei Mono", sans-serif;
                         </dd>
 
                         <dt>Secondary Font:</dt>
-                        <dd style='font-family: Georgia, Times, "Times New Roman", serif;'>
-                            Georgia, Times, "Times New Roman", serif;
+                        <dd>
+                            No secondary font italic configured!
                         </dd>
 
                         <dt>Secondary Font Italic:</dt>
-                        <dd style='font-family: Georgia, Times, "Times New Roman", serif; font-style: italic;'>
-                            Georgia, Times, "Times New Roman", serif;
+                        <dd>
+                            No secondary font italic configured!
                         </dd>
 
                         <dt>Secondary Font Bold:</dt>
-                        <dd style='font-family: Georgia, Times, "Times New Roman", serif; font-weight: 800;'>
-                            Georgia, Times, "Times New Roman", serif;
+                        <dd>
+                            No secondary font bold configured!
                         </dd>
                     </dl>
                     <div class="sg-markup-controls"><a class="sg-btn--top"
