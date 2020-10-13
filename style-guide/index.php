@@ -414,7 +414,7 @@
 
                         <dt>Secondary Font:</dt>
                         <dd>
-                            No secondary font italic configured!
+                            No secondary font configured!
                         </dd>
 
                         <dt>Secondary Font Italic:</dt>
