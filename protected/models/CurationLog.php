@@ -46,10 +46,10 @@ class CurationLog extends CActiveRecord
         return array(
             array('dataset_id', 'required'),
             array('dataset_id', 'numerical', 'integerOnly'=>true),
-            array('comments, creation_date, created_by, last_modified_date, last_modified_by, upload_status, action', 'safe'),
+            array('comments, creation_date, created_by, last_modified_date, last_modified_by, action', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, dataset_id, comments, action, created_by, last_modified_by, upload_status', 'safe', 'on'=>'search'),
+            array('id, dataset_id, comments, action, created_by, last_modified_by', 'safe', 'on'=>'search'),
         );
     }
 
