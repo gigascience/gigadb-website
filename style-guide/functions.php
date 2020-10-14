@@ -57,8 +57,9 @@
     $content = file_get_contents($path);
     echo '<div class="sg-section">';
     renderTitleFromPath($path, 'h2');
-    renderFileDoc($path);
-    renderFileExample($content);
+    renderFileDoc($path);  // Displays content from doc directory
+    // Don't display example content in markup directory
+    // renderFileExample($content);
     renderFileSource($content);
     echo '</div>';
   }
@@ -83,7 +84,8 @@
 
       // Check if html doc exists
       if (file_exists($doc)) {
-        echo '<div class="sg-sub-section sg-doc">';
+        // echo '<div class="sg-sub-section sg-doc">';
+        echo '<div class="sg-sub-section">';  // Don't display line break after HTML component
         include($doc);
         echo '</div>';
       }
