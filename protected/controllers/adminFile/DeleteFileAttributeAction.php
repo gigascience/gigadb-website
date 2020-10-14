@@ -14,6 +14,7 @@ class DeleteFileAttributeAction extends CAction
             $attribute = FileAttributes::model()->findByPk($_POST['id']);
             if ($attribute) {
                 $attribute->delete();
+                CurationLog::createCurationLogEntry(8);
                 Yii::app()->end();
             }
         }
