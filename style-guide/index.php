@@ -78,13 +78,13 @@
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #099242;"></div>
-                            <div class="sg-color-name">@brand-primary</div>
+                            <div class="sg-color-name">@color-brand-primary</div>
                             <div class="sg-color-value">#099242</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #ff2020;"></div>
-                            <div class="sg-color-name">@brand-danger</div>
+                            <div class="sg-color-name">@color-brand-danger</div>
                             <div class="sg-color-value">#ff2020</div>
                         </div>
                     </div><!--/.sg-color-grid-->
@@ -95,7 +95,7 @@
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #fff;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-white</div>
                             <div class="sg-color-value">#fff</div>
                         </div>
                         <div class="sg-color">
@@ -257,13 +257,39 @@
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #000;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-black</div>
                             <div class="sg-color-value">#000</div>
                         </div>
                     </div><!--/.sg-color-grid-->
                 </div>
                 <div class="sg-colors sg-section">
                     <h2 id="sg-colors" class="sg-h2">Utility Colors</h2>
+                    <div class="sg-color-grid">
+                        <div class="sg-color">
+                            <div class="sg-color-swatch"
+                                 style="background-color: #32bca3;"></div>
+                            <div class="sg-color-name">@color-datatype-1</div>
+                            <div class="sg-color-value">#32bca3</div>
+                        </div>
+                        <div class="sg-color">
+                            <div class="sg-color-swatch"
+                                 style="background-color: #25b6d3;"></div>
+                            <div class="sg-color-name">@color-datatype-2</div>
+                            <div class="sg-color-value">#25b6d3</div>
+                        </div>
+                        <div class="sg-color">
+                            <div class="sg-color-swatch"
+                                 style="background-color: #f7bb41;"></div>
+                            <div class="sg-color-name">@color-datatype-3</div>
+                            <div class="sg-color-value">#f7bb41</div>
+                        </div>
+                        <div class="sg-color">
+                            <div class="sg-color-swatch"
+                                 style="background-color: #e04f5e;"></div>
+                            <div class="sg-color-name">@color-datatype-4</div>
+                            <div class="sg-color-value">#e04f5e</div>
+                        </div>
+                    </div>
                     <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
@@ -342,32 +368,6 @@
                             <div class="sg-color-value">#F3FAF6</div>
                         </div>
                     </div>
-                    <div class="sg-color-grid">
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #32bca3;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#32bca3</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #25b6d3;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#25b6d3</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #f7bb41;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#f7bb41</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #e04f5e;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#e04f5e</div>
-                        </div>
-                    </div><!--/.sg-color-grid-->
                     <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
