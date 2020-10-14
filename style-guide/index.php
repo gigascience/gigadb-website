@@ -434,7 +434,7 @@
                 </div><!--/.sg-font-stacks-->
             </div><!--/.sg-info-->
 
-            <?php renderFilesInFolder('markup'); ?>
+            <?php renderFilesInFolder('doc'); ?>
         </div><!--/.sg-container-->
     </div><!--/.sg-main-->
 </div><!--/.sg-wrapper-->
