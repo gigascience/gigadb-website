@@ -9,6 +9,7 @@
   },
   "main": "dist/main.js",
   "dependencies": {
+    "@babel/runtime": "^7.8.3",
     "@uppy/core": "^1.7.0",
     "@uppy/dashboard": "^1.5.1",
     "@uppy/drag-drop": "^1.4.1",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.7.5",
+    "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.7.6",
     "@vue/test-utils": "^1.0.0-beta.30",
     "babel-loader": "^8.0.6",

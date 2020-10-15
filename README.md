@@ -97,10 +97,14 @@ Avoiding using it when not necessary will speed up container startup by not buil
 
 ### Running database migrations
 
-A shell script containing Yii migrations is used to create the postgresql 
-database for GigaDB as follows:
+Some code changes are database schemas changes. You will need to run Yii migration to create postgresql database used by GigaDB as follows:
 ```
-$ ops/scripts/setup_devdb.sh
+# Create schema tables
+$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
+# Create migration scripts for uploading data
+$ docker-compose up csv-to-migrations
+# Upload data into tables
+$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.dev --interactive=0
 ```
 
 ### Configuration variables
@@ -315,6 +319,30 @@ $ docker-compose pull
 
 ## Generating the documentation
 
+Install mkdocs. On mac you can use brew:
+
+```
+$ brew install mkdocs
+```
+
+Otherwise you can use Python pip:
+
+```
+pip install mkdocs
+```
+
+To start the server, from this project root directory, run the command:
+
+```
+$ mkdocs serve
+```
+
+the documentation will be available at: (http://127.0.0.1:8000)
+
+
+### PHPDocs
+
+
 To update the browsable API Docs (PHPDoc), run the command below and then commit 
 the changes:
 ```
@@ -324,26 +352,4 @@ $ docker-compose run --rm test ./docs/make_phpdoc
 ## Licensing
 
 Please see the file called [LICENSE](./LICENSE).
-=======
-# tus-uppy-proto
 
-## deploy
-```
-$ terraform plan
-
-$ terraform apply
-
-$ ansible-playbook -i inventories/hosts -i /usr/local/bin/terraform-inventory playbook.yml --vault-password-file ~/.vault_pass.txt
-```
-
-## access the database
-
-```
-$ docker-compose exec database psql -h localhost -U proto -d proto
-```
-
-## show ftp account for a user
-
-```
-$ docker-compose exec ftpd pure-pw show d-100003 -f /etc/pure-ftpd/passwd/pureftpd.passwd
-```
