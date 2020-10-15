@@ -9,24 +9,24 @@
 
     <!-- Style Guide Boilerplate Styles -->
     <link rel="stylesheet" href="css/sg-style.css">
-    <!--[if lt IE 9]>
-    <link rel="stylesheet" href="css/sg-style-old-ie.css"><![endif]-->
-
-    <!-- https://github.com/sindresorhus/github-markdown-css -->
-    <link rel="stylesheet" href="css/github-markdown.css">
+<!--    <!--[if lt IE 9]>-->
+<!--    <link rel="stylesheet" href="css/sg-style-old-ie.css"><![endif]-->-->
+<!---->
+<!--    <!-- https://github.com/sindresorhus/github-markdown-css -->-->
+<!--    <link rel="stylesheet" href="css/github-markdown.css">-->
 
     <!-- Replace below stylesheet with your own stylesheet -->
     <!-- <link rel="stylesheet" href="css/style.css"> -->
-<!--    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">-->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-<!--    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
-<!--    <link rel="stylesheet" type="text/css" href="../fonts/open_sans/v13/open_sans.css">-->
-<!--    <link rel="stylesheet" type="text/css" href="../fonts/pt_sans/v8/pt_sans.css">-->
-<!--    <link rel="stylesheet" type="text/css" href="../fonts/lato/v11/lato.css">-->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/open_sans/v13/open_sans.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/pt_sans/v8/pt_sans.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/lato/v11/lato.css">
     <link rel="stylesheet" href="../css/current.css">
 
     <!-- prism Syntax Highlighting Styles -->
-    <link rel="stylesheet" href="vendor/prism/prism.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/themes/prism.min.css">
 </head>
 <body>
 <a href="#main" class="sg-visually-hidden sg-visually-hidden-focusable">Skip to
@@ -489,7 +489,7 @@
 </div><!--/.sg-wrapper-->
 
 <!--[if gt IE 8]><!-->
-<script src="vendor/prism/prism.js"></script><!--<![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/prism.min.js"></script><!--<![endif]-->
 <script src="js/sg-scripts.js"></script>
 </body>
 </html>
