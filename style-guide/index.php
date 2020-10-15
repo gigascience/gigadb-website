@@ -17,6 +17,12 @@
 
     <!-- Replace below stylesheet with your own stylesheet -->
     <!-- <link rel="stylesheet" href="css/style.css"> -->
+<!--    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">-->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<!--    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+<!--    <link rel="stylesheet" type="text/css" href="../fonts/open_sans/v13/open_sans.css">-->
+<!--    <link rel="stylesheet" type="text/css" href="../fonts/pt_sans/v8/pt_sans.css">-->
+<!--    <link rel="stylesheet" type="text/css" href="../fonts/lato/v11/lato.css">-->
     <link rel="stylesheet" href="../css/current.css">
 
     <!-- prism Syntax Highlighting Styles -->
