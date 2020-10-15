@@ -89,7 +89,7 @@ class CurationLog extends CActiveRecord
 //        $curationlog->last_modified_date = null;
 //        $curationlog->dataset_id = $id;
 //    }
-//
+
 //    public static function createlog($status,$id) {
 //
 //        self::createLogEntry($id);
@@ -111,7 +111,7 @@ class CurationLog extends CActiveRecord
     public static function createCurationLogEntry($id)
     {
         $model = Dataset::model()->findByPk($id);
-        if ($model->upload_status === "Published") {
+        if ($model->upload_status !== "Published") {
             $curationlog = new CurationLog;
             $curationlog->creation_date = date("Y-m-d");
             $curationlog->last_modified_date = null;
