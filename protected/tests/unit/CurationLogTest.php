@@ -2,13 +2,9 @@
 
 class CurationLogTest extends CDbTestCase
 {
-    protected $fixtures=array(
-        'log'=>'CurationLog',
-        'dataset'=>'Dataset',
-    );
-
-    public function testCreateLogEntry()
+    public function testNoLastModifiedDate()
     {
-        $this->assertEquals(date("Y-m-d"), $this->log(0)->creation_date, "Different date format with CurationLog");
+        $expectation = null;
+        $this->assertEquals($expectation, CurationLog::createCurationLogEntry(8)->last_modified_date, "Last modified date created");
     }
 }
