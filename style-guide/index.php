@@ -58,7 +58,7 @@
             </li>
         </ul>
 
-        <?php listFilesInFolder('markup'); ?>
+        <?php listFilesInFolder('doc'); ?>
     </div><!--/.sg-sidebar-->
 
     <div id="main" class="sg-main" role="main">
