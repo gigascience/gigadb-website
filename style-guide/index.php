@@ -3,7 +3,7 @@
 <html lang="en" class="no-js">
 <head>
     <meta charset="utf-8">
-    <title>Style Guide Boilerplate</title>
+    <title>GigaDB - Style Guide</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#000000">
 
@@ -36,7 +36,7 @@
     <div class="sg-container">
         <h1 class="sg-logo">
             <span class="sg-logo-initials">SG</span>
-            <span class="sg-logo-full">STYLE GUIDE</span> <em>BOILERPLATE</em>
+            <span class="sg-logo-full">STYLE GUIDE</span>
             <span class="sg-logo-full">FOR GIGADB</span>
         </h1>
         <button type="button" class="sg-nav-toggle">Menu</button>
