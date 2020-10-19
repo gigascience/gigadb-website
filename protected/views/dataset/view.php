@@ -222,6 +222,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                         $jb = array();
                         $dmodel = array();
                         $codeocean = array();
+                        $tumourmap = array();
                 ?>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
                         <?php if(count($model->samples) > 0) {
@@ -246,7 +247,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                         <?php }
                         ?>
                         <?php
-                            foreach ( $links->getDatasetExternalLinksTypesNames(["Protocols.io","JBrowse","3D Models", "Code Ocean"]) as $linkType => $linkCode ) {
+                            foreach ( $links->getDatasetExternalLinksTypesNames(["Protocols.io","JBrowse","3D Models", "Code Ocean", "UCSC Tumour Map"]) as $linkType => $linkCode ) {
                                 ?>
                                 <li role="presentation" id="p-<?= $linkCode ?>"><a href="#<?= $linkCode ?>" aria-controls="<?= $linkCode ?>" role="tab" data-toggle="tab"><?= $linkType ?></a></li>
                         <?php
@@ -402,7 +403,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                         ?>
 
                     <?php
-                        foreach ( $links->getDatasetExternalLinksTypesNames(["Protocols.io","JBrowse","3D Models", "Code Ocean"]) as $linkType => $linkCode ) {
+                        foreach ( $links->getDatasetExternalLinksTypesNames(["Protocols.io","JBrowse","3D Models", "Code Ocean", "UCSC Tumour Map"]) as $linkType => $linkCode ) {
                     ?>
                             <div role="tabpanel" class="tab-pane" id="<?= $linkCode ?>">
                             <p><?= $linkType ?>:</p>
@@ -425,6 +426,11 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     case "Code Ocean" :
                                         echo "<p>$p</p>";
                                         break;
+                                    case "UCSC Tumour Map" :
+                                        $ps = HTTPSHelper::httpsize($p);
+                                        echo "<iframe src=\"$ps\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                        break;
+
                                 }
                             }
                     ?>
