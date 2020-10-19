@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="../fonts/pt_sans/v8/pt_sans.css">
     <link rel="stylesheet" type="text/css" href="../fonts/lato/v11/lato.css">
     <link rel="stylesheet" href="../css/current.css">
+    <link rel="stylesheet" href="../css/datatables.css.css">
 
     <!-- prism Syntax Highlighting Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/themes/prism.min.css">
@@ -491,6 +492,11 @@
 <!--[if gt IE 8]><!-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/prism.min.js"></script><!--<![endif]-->
 <script src="js/sg-scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js" defer></script>
 </body>
 </html>
 
