@@ -2,11 +2,15 @@
 
 class CurationLogTest extends CDbTestCase
 {
-    public function testNoLastModifiedDate()
+    public function testCreateLogEntry()
     {
-        $expectation = null;
-//        $this->assertEquals($expectation, CurationLog::createCurationLogEntry(8)->last_modified_date, "Last modified date created");
-        $out = CurationLog::createCurationLogEntry(8);
-        file_put_contents('test.log', var_export($out, true));
+        $datasetId = 8;
+        $creator = "System";
+        $curationLog = CurationLog::createLogEntry($datasetId, $creator);
+        $this->assertNotNull($curationLog);
+        $this->assertTrue(is_a($curationLog, CurationLog::class));
+        $this->assertEquals($datasetId, $curationLog->dataset_id);
+        $this->assertEquals($creator, $curationLog->created_by);
+        $this->assertTrue($curationLog->isNewRecord);
     }
 }
