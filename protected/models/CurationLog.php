@@ -82,44 +82,44 @@ class CurationLog extends CActiveRecord
         );
     }
 
-//    public static function createLogEntry($id)
-//    {
-//        $curationlog = new CurationLog;
-//        $curationlog->creation_date = date("Y-m-d");
-//        $curationlog->last_modified_date = null;
-//        $curationlog->dataset_id = $id;
-//    }
+    /**
+     * Factory method to make a new instance and factor out the common code
+     *
+     * @param int $id
+     * @param string $creator
+     * @return CurationLog
+     */
+    public static function createLogEntry(int $id, string $creator): CurationLog
+    {
+        $curationlog = new CurationLog();
+        $curationlog->creation_date = date("Y-m-d");
+        $curationlog->last_modified_date = null;
+        $curationlog->dataset_id = $id;
+        $curationlog->created_by = $creator;
+        return $curationlog;
+    }
 
-//    public static function createlog($status,$id) {
-//
-//        self::createLogEntry($id);
-//        $curationlog->created_by = "System";
-//        $curationlog->action = "Status changed to ".$status;
-//        if (!$curationlog->save())
-//            return false;
-//    }
-//
-//    public static function createlog_assign_curator($id,$creator,$username) {
-//
-//        self::createLogEntry($id);
-//        $curationlog->created_by = $creator;
-//        $curationlog->action = "Curator Assigned"." $username";
-//        if (!$curationlog->save())
-//            return false;
-//    }
+    public static function createlog($status,$id) {
+
+        $curationlog = self::createLogEntry($id, "System");
+        $curationlog->action = "Status changed to ".$status;
+        return $curationlog->save();
+    }
+
+    public static function createlog_assign_curator($id,$creator,$username) {
+
+        $curationlog = self::createLogEntry($id, $creator);
+        $curationlog->action = "Curator Assigned"." $username";
+        return $curationlog->save();
+    }
 
     public static function createCurationLogEntry($id)
     {
         $model = Dataset::model()->findByPk($id);
-        if ($model->upload_status !== "Published") {
-            $curationlog = new CurationLog;
-            $curationlog->creation_date = date("Y-m-d");
-            $curationlog->last_modified_date = null;
-            $curationlog->dataset_id = $id;
-            $curationlog->created_by = "System";
+        if ($model->upload_status === "Published") {
+            $curationlog = self::createLogEntry($id, "System");
             $curationlog->action = "Status changed to stuff";
-            if (!$curationlog->save())
-                return false;
+            return $curationlog->save();
         }
     }
 
