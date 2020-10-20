@@ -15,8 +15,11 @@ class DeleteFileAttributeAction extends CAction
 
             if ($attribute) {
                 $out = $attribute->file->dataset_id;
+                $model = Dataset::model()->findByPk($out);
+                if ($model->upload_status === "Published") {
+                    CurationLog::createCurationLogEntry($out); //Pass in dataset_id returned from File object.
+                }
                 $attribute->delete();
-                CurationLog::createCurationLogEntry($out); //Pass in dataset_id returned from File object.
                 Yii::app()->end();
             }
         }
