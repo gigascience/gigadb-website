@@ -13,6 +13,8 @@
  *
  * The followings are the available model relations:
  * @property Dataset $dataset
+ * @property FileAttributes $attributes
+ * @property File $file
  */
 class DatasetLog extends CActiveRecord
 {
@@ -80,6 +82,20 @@ class DatasetLog extends CActiveRecord
             'doi' => 'DOI',
         );
     }
+
+    public static function createDatasetLogEntry($id, $fileName, $fileModel, $modelId, $fileId)
+    {
+        $datasetlog = new DatasetLog();
+        $datasetlog->created_at = date("Y-m-d H:i:s");
+        $datasetlog->dataset_id = $id;
+        $datasetlog->message = $fileName. ": file attribute deleted";
+        $datasetlog->model = $fileModel;
+        $datasetlog->model_id = $modelId;
+        $datasetlog->url = Yii::app()->createUrl('/adminFile/update', array('id'=>$fileId));
+        return $datasetlog->save();
+        
+    }
+
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.

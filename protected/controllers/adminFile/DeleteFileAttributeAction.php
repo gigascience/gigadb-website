@@ -15,9 +15,13 @@ class DeleteFileAttributeAction extends CAction
 
             if ($attribute) {
                 $out = $attribute->file->dataset_id;
+                $fileName = $attribute->file->name;
+                $fileModel = get_class($attribute);
+                $fileId = $attribute->file->id;
+                $modelId = $attribute->id;
                 $model = Dataset::model()->findByPk($out);
                 if ($model->upload_status === "Published") {
-                    DatasetLog::createDatasetLogEntry($out);
+                    DatasetLog::createDatasetLogEntry($out, $fileName, $fileModel, $modelId, $fileId);
                 } else {
                     CurationLog::createCurationLogEntry($out); //Pass in dataset_id returned from File object.
                 }
