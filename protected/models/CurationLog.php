@@ -115,12 +115,9 @@ class CurationLog extends CActiveRecord
 
     public static function createCurationLogEntry($id)
     {
-        $model = Dataset::model()->findByPk($id);
-        if ($model->upload_status === "Published") {
-            $curationlog = self::createLogEntry($id, "System");
-            $curationlog->action = "Status changed to stuff";
-            return $curationlog->save();
-        }
+        $curationlog = self::createLogEntry($id, "System");
+        $curationlog->action = "Status changed to stuff";
+        return $curationlog->save();
     }
 
     /**
