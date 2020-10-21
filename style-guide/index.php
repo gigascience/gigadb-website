@@ -126,13 +126,6 @@
                             <div class="sg-color-value">#eeeeee</div>
                             <div class="sg-color-name">Used 4 times in .filter .disabled, nav and nav-tabs</div>
                         </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #e6e6e6;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#e6e6e6</div>
-                            <div class="sg-color-name">Used 11 times in btn-green and btn-green[disabled] only</div>
-                        </div>
                     </div>
                     <div class="sg-color-grid">
                         <div class="sg-color">
@@ -140,7 +133,7 @@
                                  style="background-color: #e5e5e5;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#e5e5e5</div>
-                            <div class="sg-color-name">Used 27 times</div>
+                            <div class="sg-color-name">Used 38 times</div>
                         </div>
                     </div>
                     <div class="sg-color-grid">
