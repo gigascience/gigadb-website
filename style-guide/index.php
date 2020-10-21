@@ -222,13 +222,6 @@
                             <div class="sg-color-value">#a5cc7e</div>
                             <div class="sg-color-name">Used 32 times</div>
                         </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #7AB441;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#7AB441</div>
-                            <div class="sg-color-name">Used 4 times</div>
-                        </div>
                     </div>
                     <div class="sg-color-grid">
                         <div class="sg-color">
@@ -236,7 +229,7 @@
                                  style="background-color: #6ea23a;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#6ea23a</div>
-                            <div class="sg-color-name">Used 28 times</div>
+                            <div class="sg-color-name">Used 32 times</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
