@@ -199,13 +199,6 @@
                             <div class="sg-color-value">#B9DFC9</div>
                             <div class="sg-color-name">Used 1 time in .fixed-btn-left, .fixed-btn-right</div>
                         </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #00B050;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#00B050</div>
-                            <div class="sg-color-name">Used 7 times</div>
-                        </div>
                     </div>
                     <div class="sg-color-grid">
                         <div class="sg-color">
