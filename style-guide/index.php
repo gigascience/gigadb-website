@@ -98,9 +98,9 @@
                     <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
-                                 style="background-color: #fff;"></div>
+                                 style="background-color: #ffffff;"></div>
                             <div class="sg-color-name">@color-true-white</div>
-                            <div class="sg-color-value">#fff</div>
+                            <div class="sg-color-value">#ffffff</div>
                             <div class="sg-color-name">Used 45 times</div>
                         </div>
                         <div class="sg-color">
@@ -285,9 +285,9 @@
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
-                                 style="background-color: #000;"></div>
-                            <div class="sg-color-name">@color-black</div>
-                            <div class="sg-color-value">#000</div>
+                                 style="background-color: #000000;"></div>
+                            <div class="sg-color-name">@color-true-black</div>
+                            <div class="sg-color-value">#000000</div>
                             <div class="sg-color-name">Used 2 time in .result-cell li a and .nav > .dropdown.active > a:hover</div>
                         </div>
                     </div><!--/.sg-color-grid-->
