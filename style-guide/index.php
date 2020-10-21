@@ -171,17 +171,10 @@
                     <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
-                                 style="background-color: #404040;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#404040</div>
-                            <div class="sg-color-name">Used 2 times in .base-footer-bar, .base-footer-social-bar li</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
                                  style="background-color: #333;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#333</div>
-                            <div class="sg-color-name">Used 16 times</div>
+                            <div class="sg-color-name">Used 18 times</div>
                         </div>
                     </div>
                     <div class="sg-color-grid">
