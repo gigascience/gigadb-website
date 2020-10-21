@@ -67,25 +67,20 @@
             <div class="sg-info">
                 <div class="sg-about sg-section">
                     <h2 id="sg-about" class="sg-h2">Getting Started</h2>
-                    <p>A living style guide is a great tool to promote visual
-                        consistency, unify UX designers and front-end
-                        developers, as well as speed up development times. Add
-                        some documentation here on how to get started with your
-                        new style guide and start customizing this boilerplate
-                        to your liking.</p>
-                    <p>If you are looking for resources on style guides, check
-                        out <a href="http://styleguides.io">styleguides.io</a>.
-                        There are a ton of great articles, books, podcasts,
-                        talks, and other style guide tools!</p>
+                    <p>This pattern library contains the components of 
+                        gigadb.org - the web interface to the GigaDB database. 
+                        Having a living style guide helps us keep up to date 
+                        with the brand guidelines for gigadb.org and aids its 
+                        development.</p>
                 </div><!--/.sg-about-->
                 <!-- Manually add your UI colors here. -->
                 <div class="sg-colors sg-section">
-                    <h2 id="sg-colors" class="sg-h2">Brand Colors</h2>
+                    <h2 id="sg-colors" class="sg-h2">Canonical Colors</h2>
                     <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #099242;"></div>
-                            <div class="sg-color-name">@color-brand-primary</div>
+                            <div class="sg-color-name">@color-gigadb-green</div>
                             <div class="sg-color-value">#099242</div>
                             <div class="sg-color-name">Used 45 times</div>
                         </div>
@@ -104,7 +99,7 @@
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #fff;"></div>
-                            <div class="sg-color-name">@color-white</div>
+                            <div class="sg-color-name">@color-true-white</div>
                             <div class="sg-color-value">#fff</div>
                             <div class="sg-color-name">Used 45 times</div>
                         </div>
@@ -328,17 +323,24 @@
                     <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
+                                 style="background-color: #F3FAF6;"></div>
+                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-value">#F3FAF6</div>
+                            <div class="sg-color-name">Used 1 time in .search-box</div>
+                        </div>
+                        <div class="sg-color">
+                            <div class="sg-color-swatch"
+                                 style="background-color: #B9DFC9;"></div>
+                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-value">#B9DFC9</div>
+                            <div class="sg-color-name">Used 1 time in .fixed-btn-left, .fixed-btn-right</div>
+                        </div>
+                        <div class="sg-color">
+                            <div class="sg-color-swatch"
                                  style="background-color: #00B050;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#00B050</div>
                             <div class="sg-color-name">Used 3 times</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #7AB441;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#7AB441</div>
-                            <div class="sg-color-name">Used 4 times</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
@@ -347,28 +349,14 @@
                             <div class="sg-color-value">#0fad59</div>
                             <div class="sg-color-name">Used 2 times in .btn_click and .page_box</div>
                         </div>
+                    </div>
+                    <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #0eb23c;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#0eb23c</div>
                             <div class="sg-color-name">Used 2 times in .btn_click and .page_box</div>
-                        </div>
-                    </div>
-                    <div class="sg-color-grid">
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #a5cc7e;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#a5cc7e</div>
-                            <div class="sg-color-name">Used 32 times</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #6ea23a;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#6ea23a</div>
-                            <div class="sg-color-name">Used 28 times</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
@@ -379,19 +367,26 @@
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
-                                 style="background-color: #005b2d;"></div>
+                                 style="background-color: #a5cc7e;"></div>
                             <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#005b2d</div>
-                            <div class="sg-color-name">Used 21 times</div>
+                            <div class="sg-color-value">#a5cc7e</div>
+                            <div class="sg-color-name">Used 32 times</div>
+                        </div>
+                        <div class="sg-color">
+                            <div class="sg-color-swatch"
+                                 style="background-color: #7AB441;"></div>
+                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-value">#7AB441</div>
+                            <div class="sg-color-name">Used 4 times</div>
                         </div>
                     </div>
                     <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
-                                 style="background-color: #B9DFC9;"></div>
+                                 style="background-color: #6ea23a;"></div>
                             <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#B9DFC9</div>
-                            <div class="sg-color-name">Used 1 time in .fixed-btn-left, .fixed-btn-right</div>
+                            <div class="sg-color-value">#6ea23a</div>
+                            <div class="sg-color-name">Used 28 times</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
@@ -409,10 +404,10 @@
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
-                                 style="background-color: #F3FAF6;"></div>
+                                 style="background-color: #005b2d;"></div>
                             <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#F3FAF6</div>
-                            <div class="sg-color-name">Used 1 time in .search-box</div>
+                            <div class="sg-color-value">#005b2d</div>
+                            <div class="sg-color-name">Used 21 times</div>
                         </div>
                     </div>
                     <div class="sg-color-grid">
@@ -425,17 +420,17 @@
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
-                                 style="background-color: #005580;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#005580</div>
-                            <div class="sg-color-name">Used 2 times in .nav-tabs .dropdown-toggle:hover .caret</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
                                  style="background-color: #099292;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#099292</div>
                             <div class="sg-color-name">Used 1 time in .advisory-img-block a:hover</div>
+                        </div>
+                        <div class="sg-color">
+                            <div class="sg-color-swatch"
+                                 style="background-color: #005580;"></div>
+                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-value">#005580</div>
+                            <div class="sg-color-name">Used 2 times in .nav-tabs .dropdown-toggle:hover .caret</div>
                         </div>
                     </div><!--/.sg-color-grid-->
                 </div>
