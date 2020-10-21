@@ -121,17 +121,10 @@
                     <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
-                                 style="background-color: #eee;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#eee</div>
-                            <div class="sg-color-name">Used 3 times in nav and nav-tabs</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
                                  style="background-color: #eeeeee;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#eeeeee</div>
-                            <div class="sg-color-name">Used 1 time in .filter .disabled</div>
+                            <div class="sg-color-name">Used 4 times in .filter .disabled, nav and nav-tabs</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
