@@ -179,14 +179,7 @@
                                  style="background-color: #656565;"></div>
                             <div class="sg-color-name">@gray-dark</div>
                             <div class="sg-color-value">#656565</div>
-                            <div class="sg-color-name">Used 12 times</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #666666;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#666666</div>
-                            <div class="sg-color-name">Used 2 times in .btn-green and .create-div .form-group p</div>
+                            <div class="sg-color-name">Used 14 times</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
