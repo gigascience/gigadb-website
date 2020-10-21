@@ -106,27 +106,21 @@
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #f8f8f8;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-lighter-gray</div>
                             <div class="sg-color-value">#f8f8f8</div>
                             <div class="sg-color-name">Used 20 times</div>
                         </div>
-                    </div>
-                    <div class="sg-color-grid">
-                    </div>
-                    <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #e5e5e5;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-light-gray</div>
                             <div class="sg-color-value">#e5e5e5</div>
                             <div class="sg-color-name">Used 42 times</div>
                         </div>
-                    </div>
-                    <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #cccccc;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-medium-gray</div>
                             <div class="sg-color-value">#cccccc</div>
                             <div class="sg-color-name">Used 18 times</div>
                         </div>
@@ -135,28 +129,24 @@
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #999;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-dark-gray</div>
                             <div class="sg-color-value">#999</div>
                             <div class="sg-color-name">Used 13 times</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #656565;"></div>
-                            <div class="sg-color-name">@gray-dark</div>
+                            <div class="sg-color-name">@color-darker-gray</div>
                             <div class="sg-color-value">#656565</div>
                             <div class="sg-color-name">Used 16 times</div>
                         </div>
-                    </div>
-                    <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #333;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-warm-black</div>
                             <div class="sg-color-value">#333</div>
                             <div class="sg-color-name">Used 18 times</div>
                         </div>
-                    </div>
-                    <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #000000;"></div>
@@ -164,7 +154,7 @@
                             <div class="sg-color-value">#000000</div>
                             <div class="sg-color-name">Used 3 times in .result-cell li a and .nav > .dropdown.active > a:hover, .page-title > h4</div>
                         </div>
-                    </div><!--/.sg-color-grid-->
+                    </div>
                 </div>
                 <div class="sg-colors sg-section">
                     <h2 id="sg-colors" class="sg-h2">Utility Colors</h2>
