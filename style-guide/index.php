@@ -163,14 +163,7 @@
                                  style="background-color: #cccccc;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#cccccc</div>
-                            <div class="sg-color-name">Used 1 times in .btn-green:active</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #bfbfbf;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#bfbfbf</div>
-                            <div class="sg-color-name">Used 1 times in .btn-green</div>
+                            <div class="sg-color-name">Used 2 times in .btn-green</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
