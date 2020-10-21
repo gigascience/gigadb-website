@@ -181,14 +181,7 @@
                                  style="background-color: #404040;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#404040</div>
-                            <div class="sg-color-name">Used 1 times in .base-footer-bar</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #454545;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#454545</div>
-                            <div class="sg-color-name">Used 1 times in .base-footer-social-bar li</div>
+                            <div class="sg-color-name">Used 2 times in .base-footer-bar, .base-footer-social-bar li</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
