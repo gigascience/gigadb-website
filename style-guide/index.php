@@ -179,14 +179,7 @@
                                  style="background-color: #656565;"></div>
                             <div class="sg-color-name">@gray-dark</div>
                             <div class="sg-color-value">#656565</div>
-                            <div class="sg-color-name">Used 14 times</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #666;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#666</div>
-                            <div class="sg-color-name">Used 2 times in .main-nav-bar li a and .main-nav-bar li .dropdown-menu li a</div>
+                            <div class="sg-color-name">Used 16 times</div>
                         </div>
                     </div>
                     <div class="sg-color-grid">
