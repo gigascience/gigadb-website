@@ -112,13 +112,6 @@
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
-                                 style="background-color: #f5f5f5;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#f5f5f5</div>
-                            <div class="sg-color-name">Used 1 time in btn-green only</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
                                  style="background-color: #f2f2f2;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#f2f2f2</div>
