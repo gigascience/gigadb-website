@@ -218,13 +218,6 @@
                             <div class="sg-color-value">#333</div>
                             <div class="sg-color-name">Used 16 times</div>
                         </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #222;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#222</div>
-                            <div class="sg-color-name">Used 1 time in .search-box .search-bar .search-input</div>
-                        </div>
                     </div>
                     <div class="sg-color-grid">
                         <div class="sg-color">
