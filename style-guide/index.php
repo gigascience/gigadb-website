@@ -208,17 +208,10 @@
                     <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
-                                 style="background-color: #151515;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#151515</div>
-                            <div class="sg-color-name">Used 1 time in .page-title > h4</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
                                  style="background-color: #000000;"></div>
                             <div class="sg-color-name">@color-true-black</div>
                             <div class="sg-color-value">#000000</div>
-                            <div class="sg-color-name">Used 2 time in .result-cell li a and .nav > .dropdown.active > a:hover</div>
+                            <div class="sg-color-name">Used 3 times in .result-cell li a and .nav > .dropdown.active > a:hover, .page-title > h4</div>
                         </div>
                     </div><!--/.sg-color-grid-->
                 </div>
