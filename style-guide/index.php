@@ -128,13 +128,6 @@
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
-                                 style="background-color: #ededed;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#ededed</div>
-                            <div class="sg-color-name">Used 1 time in .filter .search-result-container</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
                                  style="background-color: #e6e6e6;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#e6e6e6</div>
