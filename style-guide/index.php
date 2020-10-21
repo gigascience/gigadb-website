@@ -108,14 +108,7 @@
                                  style="background-color: #f8f8f8;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#f8f8f8</div>
-                            <div class="sg-color-name">Used 12 times</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #f2f2f2;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#f2f2f2</div>
-                            <div class="sg-color-name">Used 8 times in btn-green only</div>
+                            <div class="sg-color-name">Used 20 times</div>
                         </div>
                     </div>
                     <div class="sg-color-grid">
