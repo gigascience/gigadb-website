@@ -204,17 +204,10 @@
                                  style="background-color: #00B050;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#00B050</div>
-                            <div class="sg-color-name">Used 5 times</div>
+                            <div class="sg-color-name">Used 7 times</div>
                         </div>
                     </div>
                     <div class="sg-color-grid">
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #0eb23c;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#0eb23c</div>
-                            <div class="sg-color-name">Used 2 times in .btn_click and .page_box</div>
-                        </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #5a9c7b;"></div>
