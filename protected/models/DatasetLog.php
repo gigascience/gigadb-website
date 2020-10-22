@@ -83,7 +83,16 @@ class DatasetLog extends CActiveRecord
         );
     }
 
-    public static function createDatasetLogEntry($id, $fileName, $fileModel, $modelId, $fileId)
+    /**
+     * Factory method to call for common attributes
+     * @param int $id
+     * @param string $fileName
+     * @param string $fileModel
+     * @param int $modelId
+     * @param int $fileId
+     * @return DatasetLog
+     */
+    public static function datasetLogEntryFactory (int $id, string $fileName, string $fileModel, int $modelId, int $fileId): DatasetLog
     {
         $datasetlog = new DatasetLog();
         $datasetlog->created_at = date("Y-m-d H:i:s");
@@ -92,6 +101,20 @@ class DatasetLog extends CActiveRecord
         $datasetlog->model = $fileModel;
         $datasetlog->model_id = $modelId;
         $datasetlog->url = Yii::app()->createUrl('/adminFile/update', array('id'=>$fileId));
+        return $datasetlog;
+    }
+
+
+    public static function createDatasetLogEntry(int $id, string $fileName, string $fileModel, int $modelId, int $fileId): bool
+    {
+//        $datasetlog = new DatasetLog();
+//        $datasetlog->created_at = date("Y-m-d H:i:s");
+//        $datasetlog->dataset_id = $id;
+//        $datasetlog->message = $fileName. ": file attribute deleted";
+//        $datasetlog->model = $fileModel;
+//        $datasetlog->model_id = $modelId;
+//        $datasetlog->url = Yii::app()->createUrl('/adminFile/update', array('id'=>$fileId));
+        $datasetlog = self::datasetLogEntryFactory($id, $fileName, $fileModel, $modelId, $fileId);
         return $datasetlog->save();
         
     }
