@@ -188,7 +188,7 @@
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #F3FAF6;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-pale-green</div>
                             <div class="sg-color-value">#F3FAF6</div>
                             <div class="sg-color-name">Used 1 time in .search-box</div>
                         </div>
@@ -197,28 +197,28 @@
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #a5cc7e;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-light-green</div>
                             <div class="sg-color-value">#a5cc7e</div>
                             <div class="sg-color-name">Used 32 times</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #6ea23a;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-medium-green</div>
                             <div class="sg-color-value">#6ea23a</div>
                             <div class="sg-color-name">Used 33 times</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #5a9c7b;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-odd-green</div>
                             <div class="sg-color-value">#5a9c7b</div>
                             <div class="sg-color-name">Used 24 times</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #005b2d;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-dark-green</div>
                             <div class="sg-color-value">#005b2d</div>
                             <div class="sg-color-name">Used 22 times</div>
                         </div>
@@ -227,14 +227,14 @@
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #08c;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-medium-blue</div>
                             <div class="sg-color-value">#08c</div>
                             <div class="sg-color-name">Used 4 times in .nav*</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #005580;"></div>
-                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-name">@color-dark-blue</div>
                             <div class="sg-color-value">#005580</div>
                             <div class="sg-color-name">Used 2 times in .nav-tabs .dropdown-toggle:hover .caret</div>
                         </div>
