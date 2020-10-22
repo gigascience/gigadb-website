@@ -196,26 +196,24 @@
                     <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
-                                 style="background-color: #5a9c7b;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#5a9c7b</div>
-                            <div class="sg-color-name">Used 24 times</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
                                  style="background-color: #a5cc7e;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#a5cc7e</div>
                             <div class="sg-color-name">Used 32 times</div>
                         </div>
-                    </div>
-                    <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #6ea23a;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#6ea23a</div>
                             <div class="sg-color-name">Used 33 times</div>
+                        </div>
+                        <div class="sg-color">
+                            <div class="sg-color-swatch"
+                                 style="background-color: #5a9c7b;"></div>
+                            <div class="sg-color-name">Not named</div>
+                            <div class="sg-color-value">#5a9c7b</div>
+                            <div class="sg-color-name">Used 24 times</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
@@ -232,13 +230,6 @@
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#08c</div>
                             <div class="sg-color-name">Used 4 times in .nav*</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #099292;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#099292</div>
-                            <div class="sg-color-name">Used 1 time in .advisory-img-block a:hover</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
