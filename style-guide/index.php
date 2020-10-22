@@ -215,14 +215,7 @@
                                  style="background-color: #6ea23a;"></div>
                             <div class="sg-color-name">Not named</div>
                             <div class="sg-color-value">#6ea23a</div>
-                            <div class="sg-color-name">Used 32 times</div>
-                        </div>
-                        <div class="sg-color">
-                            <div class="sg-color-swatch"
-                                 style="background-color: #4F6228;"></div>
-                            <div class="sg-color-name">Not named</div>
-                            <div class="sg-color-value">#4F6228</div>
-                            <div class="sg-color-name">Used 1 time in .filter-your-result</div>
+                            <div class="sg-color-name">Used 33 times</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
