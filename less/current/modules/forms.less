@@ -5,7 +5,7 @@
 label {
   font-weight: normal;
   font-size: 13px;
-  color: #656565;
+  color: @color-darker-gray;
   margin-bottom: 10px;
 }
 
@@ -21,7 +21,7 @@ label {
   content: "\f096";
   font-size: 16px;
   font-family: FontAwesome;
-  color: #e5e5e5;
+  color: @color-light-gray;
   position: absolute;
   left: 0;
   display: inline-block;
@@ -30,7 +30,7 @@ label {
   content: "\f14a";
   font-size: 16px;
   font-family: FontAwesome;
-  color: #099242;
+  color: @brand-primary-green;
   position: absolute;
   left: 0;
   display: inline-block;
@@ -39,9 +39,9 @@ label {
 .form-control,
 .form-control:hover,
 .form-control:focus {
-  border-color: #e5e5e5;
+  border-color: @color-light-gray;
   box-shadow: none;
-  color: #656565;
+  color: @color-darker-gray;
   font-size: 13px;
 }
 
@@ -79,14 +79,14 @@ label {
 }
 .form-search.well {
   text-align: center;
-  background: #5a9c7b;
-  background: -webkit-gradient(linear,0 0,0 bottom,from(#5a9c7b),to(#005b2d));
-  background: -webkit-linear-gradient(#5a9c7b,#005b2d);
-  background: -moz-linear-gradient(#5a9c7b,#005b2d);
-  background: -ms-linear-gradient(#5a9c7b,#005b2d);
-  background: -o-linear-gradient(#5a9c7b,#005b2d);
-  background: linear-gradient(#5a9c7b,#005b2d);
-  -pie-background: linear-gradient(#5a9c7b,#005b2d);
+  background: @color-odd-green;
+  background: -webkit-gradient(linear,0 0,0 bottom,from(@color-odd-green),to(@color-dark-green));
+  background: -webkit-linear-gradient(@color-odd-green,@color-dark-green);
+  background: -moz-linear-gradient(@color-odd-green,@color-dark-green);
+  background: -ms-linear-gradient(@color-odd-green,@color-dark-green);
+  background: -o-linear-gradient(@color-odd-green,@color-dark-green);
+  background: linear-gradient(@color-odd-green,@color-dark-green);
+  -pie-background: linear-gradient(@color-odd-green,@color-dark-green);
   behavior: url(/css/PIE.htc);
 }
 .form-search.well .btn-green {

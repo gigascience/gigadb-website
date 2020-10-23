@@ -6,7 +6,7 @@
 
 .nav-border-tabs {
   margin-bottom: 15px;
-  border-bottom-color: #e5e5e5;
+  border-bottom-color: @color-light-gray;
 }
 .nav-tabs.nav-border-tabs > li > a,
 .nav-tabs.nav-border-tabs > li > a:focus,
@@ -15,17 +15,17 @@
   border-top-width: 2px;
   border-radius: 0px;
   text-decoration: none;
-  color: #999;
+  color: @color-dark-gray;
   background-color: @color-true-white;
-  border-bottom-color: #e5e5e5;
+  border-bottom-color: @color-light-gray;
 }
 .nav-tabs.nav-border-tabs > li.active > a,
 .nav-tabs.nav-border-tabs > li.active > a:focus,
 .nav-tabs.nav-border-tabs > li.active > a:hover {
-  border-color: #e5e5e5;
+  border-color: @color-light-gray;
   border-bottom-color: @color-true-white;
-  border-top: 2px solid #099242;
-  color: #333;
+  border-top: 2px solid @brand-primary-green;
+  color: @color-warm-black;
   text-decoration: none;
   background-color: transparent;
 }
@@ -44,7 +44,7 @@
 }
 .nav > li > a:hover {
   text-decoration: none;
-  background-color: #e5e5e5;
+  background-color: @color-light-gray;
 }
 .nav > .pull-right {
   float: right;
@@ -55,7 +55,7 @@
   font-size: 11px;
   font-weight: bold;
   line-height: 18px;
-  color: #999;
+  color: @color-dark-gray;
   text-shadow: 0 1px 0 rgba(255,255,255,0.5);
   text-transform: uppercase;
 }
@@ -91,7 +91,7 @@
   margin: 8px 1px;
   *margin: -5px 0 5px;
   overflow: hidden;
-  background-color: #e5e5e5;
+  background-color: @color-light-gray;
   border-bottom: 1px solid @color-true-white;
 }
 .nav-tabs,
@@ -121,7 +121,7 @@
   line-height: 14px;
 }
 .nav-tabs {
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid @color-medium-gray;
 }
 .nav-tabs > li {
   margin-bottom: -1px;
@@ -136,13 +136,13 @@
   border-radius: 4px 4px 0 0;
 }
 .nav-tabs > li > a:hover {
-  border-color: #e5e5e5 #e5e5e5 #cccccc;
+  border-color: @color-light-gray @color-light-gray @color-medium-gray;
 }
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover {
   color: #555;
   background-color: @color-true-white;
-  border: 1px solid #cccccc;
+  border: 1px solid @color-medium-gray;
   border-bottom-color: transparent;
   cursor: default;
 }
@@ -170,7 +170,7 @@
   border-bottom: 0;
 }
 .nav-tabs.nav-stacked > li > a {
-  border: 1px solid #cccccc;
+  border: 1px solid @color-medium-gray;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -186,7 +186,7 @@
   border-radius: 0 0 4px 4px;
 }
 .nav-tabs.nav-stacked > li > a:hover {
-  border-color: #cccccc;
+  border-color: @color-medium-gray;
   z-index: 2;
 }
 .nav-pills.nav-stacked > li > a {
@@ -218,8 +218,8 @@
 }
 .nav-tabs .active .dropdown-toggle .caret,
 .nav-pills .active .dropdown-toggle .caret {
-  border-top-color: #333;
-  border-bottom-color: #333;
+  border-top-color: @color-warm-black;
+  border-bottom-color: @color-warm-black;
 }
 .nav > .dropdown.active > a:hover {
   color: @color-true-black;
@@ -229,8 +229,8 @@
 .nav-pills .open .dropdown-toggle,
 .nav > li.dropdown.open.active > a:hover {
   color: @color-true-white;
-  background-color: #999;
-  border-color: #999;
+  background-color: @color-dark-gray;
+  border-color: @color-dark-gray;
 }
 .nav li.dropdown.open .caret,
 .nav li.dropdown.open.active .caret,
@@ -248,7 +248,7 @@
   width: 100%;
   height: 34px;
   margin: 33px 0;
-  /*background: #099242;*/
+  /*background: @brand-primary-green;*/
   /*color: @color-true-white;*/
 }
 .main-nav-bar li{
@@ -258,15 +258,15 @@
 .main-nav-bar li a{
   display: inline-block;
   height: 34px;
-  color: #656565;
+  color: @color-darker-gray;
   text-decoration: none !important;
 }
 .main-nav-bar li .dropdown-menu{
   box-sizing: border-box;
   border-radius: 0;
   box-shadow: none;
-  border: 1px solid #E5E5E5;
-  border-top-color: #099242;
+  border: 1px solid @color-light-gray;
+  border-top-color: @brand-primary-green;
   margin-top: 32px;
   padding: 15px;
 }
@@ -282,7 +282,7 @@
   padding: 0px 5px;
   font-size:12px;
   line-height: 20px;
-  color: #656565;
+  color: @color-darker-gray;
 }
 .main-nav-bar li .dropdown-menu li:hover,
 .main-nav-bar li .dropdown-menu li:active,
@@ -293,7 +293,7 @@
 .main-nav-bar li .dropdown-menu li:active a,
 .main-nav-bar li .dropdown-menu li:focus a{
   background: transparent;
-  color: #099242;
+  color: @brand-primary-green;
 }
 .nav-pills>li+li{
   margin-left:9px;
@@ -301,5 +301,5 @@
 
 .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
   color: @color-true-white;
-  background-color: #099242;
+  background-color: @brand-primary-green;
 }

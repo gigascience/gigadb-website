@@ -10,19 +10,19 @@
 .background-btn:focus,
 .background-btn:hover {
   color: @color-true-white;
-  background: #099242;
-  border: 1px #099242 solid;
+  background: @brand-primary-green;
+  border: 1px @brand-primary-green solid;
 }
 .background-btn-o,
 .background-btn-o:focus,
 .background-btn-o:hover {
-  color: #099242;
+  color: @brand-primary-green;
   background: @color-true-white;
-  border: 1px #099242 solid;
+  border: 1px @brand-primary-green solid;
 }
 .background-btn-o:hover {
   color: @color-true-white;
-  background: #099242;
+  background: @brand-primary-green;
 }
 
 // Looks like this is not used in GigaDB so commented out
@@ -55,19 +55,19 @@
 }
 
 .btn-green {
-  background: #f8f8f8;
-  background: -webkit-gradient(linear,0 0,0 bottom,from(#f8f8f8),to(#dddddd));
-  background: -webkit-linear-gradient(#f8f8f8,#dddddd);
-  background: -moz-linear-gradient(#f8f8f8,#dddddd);
-  background: -ms-linear-gradient(#f8f8f8,#dddddd);
-  background: -o-linear-gradient(#f8f8f8,#dddddd);
-  background: linear-gradient(#f8f8f8,#dddddd);
-  -pie-background: linear-gradient(#f8f8f8,#dddddd);
+  background: @color-lighter-gray;
+  background: -webkit-gradient(linear,0 0,0 bottom,from(@color-lighter-gray),to(#dddddd));
+  background: -webkit-linear-gradient(@color-lighter-gray,#dddddd);
+  background: -moz-linear-gradient(@color-lighter-gray,#dddddd);
+  background: -ms-linear-gradient(@color-lighter-gray,#dddddd);
+  background: -o-linear-gradient(@color-lighter-gray,#dddddd);
+  background: linear-gradient(@color-lighter-gray,#dddddd);
+  -pie-background: linear-gradient(@color-lighter-gray,#dddddd);
   behavior: url(/css/PIE.htc);
   font-weight: bold;
   border: 0;
   text-shadow: none;
-  color: #656565;
+  color: @color-darker-gray;
   text-decoration: none;
   box-shadow: 0 0 0;
   position: relative;
@@ -80,27 +80,27 @@
   font-size: 13px;
   line-height: 18px;
   *line-height: 20px;
-  color: #333;
+  color: @color-warm-black;
   text-align: center;
   text-shadow: 0 1px 1px rgba(255,255,255,0.75);
   vertical-align: middle;
   cursor: pointer;
-  background-color: #f8f8f8;
-  background-image: -moz-linear-gradient(top,@color-true-white,#e5e5e5);
-  background-image: -ms-linear-gradient(top,@color-true-white,#e5e5e5);
-  background-image: -webkit-gradient(linear,0 0,0 100%,from(@color-true-white),to(#e5e5e5));
-  background-image: -webkit-linear-gradient(top,@color-true-white,#e5e5e5);
-  background-image: -o-linear-gradient(top,@color-true-white,#e5e5e5);
-  background-image: linear-gradient(top,@color-true-white,#e5e5e5);
+  background-color: @color-lighter-gray;
+  background-image: -moz-linear-gradient(top,@color-true-white,@color-light-gray);
+  background-image: -ms-linear-gradient(top,@color-true-white,@color-light-gray);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(@color-true-white),to(@color-light-gray));
+  background-image: -webkit-linear-gradient(top,@color-true-white,@color-light-gray);
+  background-image: -o-linear-gradient(top,@color-true-white,@color-light-gray);
+  background-image: linear-gradient(top,@color-true-white,@color-light-gray);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@color-true-whitefff', endColorstr='#e5e5e5', GradientType=0);
-  border-color: #e5e5e5 #e5e5e5 #cccccc;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@color-true-whitefff', endColorstr='@color-light-gray', GradientType=0);
+  border-color: @color-light-gray @color-light-gray @color-medium-gray;
   border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
-  *background-color: #e5e5e5;
+  *background-color: @color-light-gray;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   border: 1px solid #ccc;
   *border: 0;
-  border-bottom-color: #cccccc;
+  border-bottom-color: @color-medium-gray;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -132,12 +132,12 @@
 .btn-green.active,
 .btn-green.disabled,
 .btn-green[disabled] {
-  background-color: #e5e5e5;
-  *background-color: #cccccc;
+  background-color: @color-light-gray;
+  *background-color: @color-medium-gray;
 }
 .btn-green:active,
 .btn-green.active {
-  background-color: #cccccc \9;
+  background-color: @color-medium-gray \9;
 }
 .btn-green:first-child {
   *margin-left: 0;
@@ -145,14 +145,14 @@
 .btn-green:hover {
   text-decoration: none;
   color: @color-true-white;
-  background: #5a9c7b;
-  background: -webkit-gradient(linear,0 0,0 bottom,from(#5a9c7b),to(#005b2d));
-  background: -webkit-linear-gradient(#5a9c7b,#005b2d);
-  background: -moz-linear-gradient(#5a9c7b,#005b2d);
-  background: -ms-linear-gradient(#5a9c7b,#005b2d);
-  background: -o-linear-gradient(#5a9c7b,#005b2d);
-  background: linear-gradient(#5a9c7b,#005b2d);
-  -pie-background: linear-gradient(#5a9c7b,#005b2d);
+  background: @color-odd-green;
+  background: -webkit-gradient(linear,0 0,0 bottom,from(@color-odd-green),to(@color-dark-green));
+  background: -webkit-linear-gradient(@color-odd-green,@color-dark-green);
+  background: -moz-linear-gradient(@color-odd-green,@color-dark-green);
+  background: -ms-linear-gradient(@color-odd-green,@color-dark-green);
+  background: -o-linear-gradient(@color-odd-green,@color-dark-green);
+  background: linear-gradient(@color-odd-green,@color-dark-green);
+  -pie-background: linear-gradient(@color-odd-green,@color-dark-green);
   behavior: url(/css/PIE.htc);
 }
 
@@ -180,21 +180,21 @@
   padding-bottom: 2px !important;
 }
 .gigadb-arrow-button:hover {
-  background: #5a9c7b;
-  background: -webkit-gradient(linear,0 0,0 bottom,from(#5a9c7b),to(#005b2d));
-  background: -webkit-linear-gradient(#5a9c7b,#005b2d);
-  background: -moz-linear-gradient(#5a9c7b,#005b2d);
-  background: -ms-linear-gradient(#5a9c7b,#005b2d);
-  background: -o-linear-gradient(#5a9c7b,#005b2d);
-  background: linear-gradient(#5a9c7b,#005b2d);
-  -pie-background: linear-gradient(#5a9c7b,#005b2d);
+  background: @color-odd-green;
+  background: -webkit-gradient(linear,0 0,0 bottom,from(@color-odd-green),to(@color-dark-green));
+  background: -webkit-linear-gradient(@color-odd-green,@color-dark-green);
+  background: -moz-linear-gradient(@color-odd-green,@color-dark-green);
+  background: -ms-linear-gradient(@color-odd-green,@color-dark-green);
+  background: -o-linear-gradient(@color-odd-green,@color-dark-green);
+  background: linear-gradient(@color-odd-green,@color-dark-green);
+  -pie-background: linear-gradient(@color-odd-green,@color-dark-green);
 }
 
 .fixed-btn-left, .fixed-btn-right{
   width: 60px;
   height: 60px;
   font-size: 60px;
-  color: #5a9c7b;
+  color: @color-odd-green;
   text-align: center;
   position: fixed;
   top: 50%;
@@ -210,12 +210,12 @@
 }
 .fixed-btn-left:hover,
 .fixed-btn-right:hover{
-  color: #099242;
+  color: @brand-primary-green;
 }
 
 .btn_click {
-  border: solid 1px #099242;
-  color: #099242;
+  border: solid 1px @brand-primary-green;
+  color: @brand-primary-green;
   padding: 4px 6px 3px 6px;
   text-decoration: none;
   background-color: Transparent;

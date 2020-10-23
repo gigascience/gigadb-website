@@ -9,7 +9,7 @@
 .pagination > li > span,
 .pagination > li > a {
   padding: 7px 15px;
-  color: #333;
+  color: @color-warm-black;
   float: none;
   margin-left: -5px;
   display: block;
@@ -20,17 +20,17 @@
 .pagination > .active > span,
 .pagination > .active > span:focus,
 .pagination > .active > span:hover {
-  background-color: #f8f8f8;
-  color: #333;
-  border-color: #e5e5e5;
+  background-color: @color-lighter-gray;
+  color: @color-warm-black;
+  border-color: @color-light-gray;
 }
 .pagination > li > a:focus,
 .pagination > li > a:hover,
 .pagination > li > span:focus,
 .pagination > li > span:hover {
-  border-color: #e5e5e5;
-  background-color: #f8f8f8;
-  color: #333;
+  border-color: @color-light-gray;
+  background-color: @color-lighter-gray;
+  color: @color-warm-black;
 }
 .pagination-component > .pagination {
   margin-right: 10px;
@@ -43,5 +43,5 @@
 .pagination-component > .form-inline .form-control:focus {
   width: 50px;
   box-shadow: none;
-  border-color: #cccccc;
+  border-color: @color-medium-gray;
 }
