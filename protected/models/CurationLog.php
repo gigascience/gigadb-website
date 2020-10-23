@@ -14,7 +14,7 @@
  * @property string $last_modified_by
  *
  * The followings are the available model relations:
- * @property Dataset $dataset
+ * @property CurationLog $curationlog
  */
 class CurationLog extends CActiveRecord
 {
