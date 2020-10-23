@@ -3,7 +3,7 @@
 
 class DatasetLogTest extends CDbTestCase
 {
-    public function testCreateDatasetLogEntryFactory()
+    public function testDatasetLogEntryFactory()
     {
         $datasetId = 8;
         $fileName = "Pygoscelis_adeliae.scaf.fa.gz";
