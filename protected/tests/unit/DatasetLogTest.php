@@ -7,7 +7,7 @@ class DatasetLogTest extends CDbTestCase
     {
         $datasetId = 8;
         $fileName = "Pygoscelis_adeliae.scaf.fa.gz";
-        $fileModel = "FileAttribute";
+        $fileModel = "FileAttributes";
         $modelId = 11020;
         $fileId = 664;
         $datasetlog = DatasetLog::datasetLogEntryFactory($datasetId, $fileName, $fileModel, $modelId, $fileId);
@@ -24,15 +24,12 @@ class DatasetLogTest extends CDbTestCase
     {
         $datasetId = 8;
         $fileName = "Pygoscelis_adeliae.scaf.fa.gz";
-        $fileModel = "FileAttribute";
+        $fileModel = "FileAttributes";
         $modelId = 11020;
         $fileId = 664;
         $datasetlog = new DatasetLog(); //Instantiate a new Object
-        $this->assertNotNull($datasetlog);
-        $this->assertTrue(is_a($datasetlog, DatasetLog::class));
         $result = $datasetlog->createDatasetLogEntry($datasetId, $fileName, $fileModel, $modelId, $fileId);
         $this->assertTrue(true===$result, "No new entry in dataset log table");
         $this->assertTrue($datasetlog->isNewRecord);
-
     }
 }

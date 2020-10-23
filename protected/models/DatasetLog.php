@@ -104,19 +104,19 @@ class DatasetLog extends CActiveRecord
         return $datasetlog;
     }
 
-
+    /**
+     * Retrieves attributes and store them in dataset_log table when triggered.
+     * @param int $id
+     * @param string $fileName
+     * @param string $fileModel
+     * @param int $modelId
+     * @param int $fileId
+     * @return bool
+     */
     public static function createDatasetLogEntry(int $id, string $fileName, string $fileModel, int $modelId, int $fileId): bool
     {
-//        $datasetlog = new DatasetLog();
-//        $datasetlog->created_at = date("Y-m-d H:i:s");
-//        $datasetlog->dataset_id = $id;
-//        $datasetlog->message = $fileName. ": file attribute deleted";
-//        $datasetlog->model = $fileModel;
-//        $datasetlog->model_id = $modelId;
-//        $datasetlog->url = Yii::app()->createUrl('/adminFile/update', array('id'=>$fileId));
         $datasetlog = self::datasetLogEntryFactory($id, $fileName, $fileModel, $modelId, $fileId);
         return $datasetlog->save();
-        
     }
 
 
