@@ -1,15 +1,17 @@
 <?php
 
 /**
- * This is the model class for table "dataset_log".
+ * This is the model class for table "curation_log".
  *
- * The followings are the available columns in table 'dataset_log':
+ * The followings are the available columns in table 'curation_log':
  * @property integer $id
  * @property integer $dataset_id
- * @property string $message
- * @property string $created_at
- * @property string $model
- * @property string $model_id
+ * @property string $comments
+ * @property string $action
+ * @property string $creation_date
+ * @property string $created_by
+ * @property string $last_modified_date
+ * @property string $last_modified_by
  *
  * The followings are the available model relations:
  * @property Dataset $dataset
@@ -19,9 +21,10 @@ class CurationLog extends CActiveRecord
     public $doi;
 
     /**
+     *
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return DatasetLog the static model class
+     * @return CurationLog the static model class
      */
     public static function model($className=__CLASS__)
     {
@@ -89,7 +92,7 @@ class CurationLog extends CActiveRecord
      * @param string $creator
      * @return CurationLog
      */
-    public static function createLogEntry(int $id, string $creator): CurationLog
+    public static function createLogEntryFactory(int $id, string $creator): CurationLog
     {
         $curationlog = new CurationLog();
         $curationlog->creation_date = date("Y-m-d");
@@ -101,21 +104,26 @@ class CurationLog extends CActiveRecord
 
     public static function createlog($status,$id) {
 
-        $curationlog = self::createLogEntry($id, "System");
+        $curationlog = self::createLogEntryFactory($id, "System");
         $curationlog->action = "Status changed to ".$status;
         return $curationlog->save();
     }
 
     public static function createlog_assign_curator($id,$creator,$username) {
 
-        $curationlog = self::createLogEntry($id, $creator);
+        $curationlog = self::createLogEntryFactory($id, $creator);
         $curationlog->action = "Curator Assigned"." $username";
         return $curationlog->save();
     }
 
-    public static function createCurationLogEntry($id)
+    /**
+     * Retrieves attributes and store them in curation_log table when triggered
+     * @param $id
+     * @return bool
+     */
+    public static function createCurationLogEntry(int $id): bool
     {
-        $curationlog = self::createLogEntry($id, "System");
+        $curationlog = self::createLogEntryFactory($id, "System");
         $curationlog->action = "Status changed to stuff";
         return $curationlog->save();
     }
