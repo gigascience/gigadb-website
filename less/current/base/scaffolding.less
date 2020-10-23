@@ -5,7 +5,7 @@
 * {
   font-size: @font-size-base;
   font-family: @font-family-base;
-  line-height: 1;
+  line-height: @line-height-base;
 }
 
 // Links
@@ -29,10 +29,10 @@ a.btn:focus {
 .home-tags-list > li > .btn-default,
 .home-tags-list > li > .btn-default:hover,
 .home-tags-list > li > .btn-default:focus {
-  border-color: #e5e5e5;
+  border-color: @color-light-gray;
   background: @color-true-white;
   font-size: 13px;
-  color: #656565;
+  color: @color-darker-gray;
 }
 
 .logo-container {
@@ -87,7 +87,7 @@ a.btn:focus {
 
 .result-cell li .result-main-link {
   font-size: 17px !important;
-  color: #099242 !important;
+  color: @brand-primary-green !important;
 }
 .result-cell li .result-main-link:hover {
   color: #6ea23a !important;
@@ -103,24 +103,15 @@ a.btn:focus {
 .clearfix {
   zoom: 1;   /*兼容IE6/7*/
 }
-.clearfix::before, .clearfix::after {
-  content:"";
-  display: table;
-  clear: both;
-}
-
-.clearfix {
-  zoom: 1;   /*兼容IE6/7*/
-}
 
 body{
   position:relative;
 }
 
 .page_box {
-  color: #099242;
+  color: @brand-primary-green;
   background: @color-true-white;
-  border: solid 1px #099242;
+  border: solid 1px @brand-primary-green;
   outline:none;
 }
 
