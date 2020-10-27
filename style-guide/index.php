@@ -24,7 +24,6 @@
     <link rel="stylesheet" type="text/css" href="../fonts/pt_sans/v8/pt_sans.css">
     <link rel="stylesheet" type="text/css" href="../fonts/lato/v11/lato.css">
     <link rel="stylesheet" href="../css/current.css">
-    <link rel="stylesheet" href="../css/datatables.css">
 
     <!-- prism Syntax Highlighting Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/themes/prism.min.css">
