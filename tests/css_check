@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -e
+
+set -a
+echo "Loading environment..."
+source "./.env"
+source "./.secrets"
+set +a
+
+echo "Checking for CSS errors..."
+
+if [[ $(csslint css/current.css | grep -c "error" || true) -eq "0" ]]; then
+  echo "No CSS errors detected by CSSLint"
+  exit 0
+else
+  echo "CSSLint detected CSS errors!"
+  exit 1
+fi
