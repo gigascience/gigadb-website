@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -e
+
+set -a
+echo "Loading environment..."
+source "./.env"
+source "./.secrets"
+set +a
+
+echo "Checking for Javascript errors..."
+
+output=$(jshint --verbose style-guide/js/sg-scripts.js | grep -E "E[0-9]+.$")
+echo "$output" | wc -l
+
+if [[ $(echo "$output" | wc -l) -ge "0" ]]; then
+  echo "JSHint detected Javascript errors!"
+  exit 0
+else
+  echo "No Javascript errors detected by JSHint"
+  exit 1
+fi
