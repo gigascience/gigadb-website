@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
-
-set -e  # Stop script execution if error encountered
+set -e
 
 echo "Checking for CSS errors..."
-
 csslint_output=$(csslint css/current.css)
 
-if [[ $(echo "$csslint_output" | grep -c "warn" || true) -eq "0" ]]; then
+if [[ $(echo "$csslint_output" | grep -c "error" || true) -eq "0" ]]; then
   echo "No CSS errors detected by CSSLint"
   exit 0
 else
