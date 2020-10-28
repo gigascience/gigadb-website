@@ -124,7 +124,7 @@ services:
         - INSTALL_GIT=true
         - INSTALL_APCU=true
         - INSTALL_MAILPARSE=true
-        - INSTALL_CSSLINT=true
+        - INSTALL_CSSLINT_JSHINT=true
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}

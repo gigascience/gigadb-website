@@ -186,13 +186,13 @@ RUN if [ ${INSTALL_MAILPARSE} = true ]; then \
     docker-php-ext-enable mailparse \
 ;fi
 
-ARG INSTALL_CSSLINT=false
-RUN if [ ${INSTALL_CSSLINT} = true ]; then \
+ARG INSTALL_CSSLINT_JSHINT=false
+RUN if [ ${INSTALL_CSSLINT_JSHINT} = true ]; then \
     curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh && \
     bash nodesource_setup.sh && \
     apt-get install -y nodejs && \
     rm nodesource_setup.sh && \
-    npm install -g csslint \
+    npm install -g csslint jshint \
 ;fi
 
 RUN usermod -u 1000 www-data
