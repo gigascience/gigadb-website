@@ -6,4 +6,4 @@ set -e -u
 ./tests/unit_functional
 ./tests/coverage
 ./tests/css_check
-
+./tests/javascript_check
