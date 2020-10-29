@@ -35,14 +35,11 @@ class DatasetLogTest extends CDbTestCase
         $modelId = 16945;
         $fileId = 16945; //mockup ID
         $saveNewEntry = DatasetLog::createDatasetLogEntry($datasetId, $fileName, $fileModel, $modelId, $fileId);
-        $this->assertNotNull($saveNewEntry);
-        $this->assertTrue(is_bool($saveNewEntry) === true, "No bool is returned");
-        // To assert the delete message will be generated as expected
-        if ($saveNewEntry === true) {
-            $datasetlog = new DatasetLog();
-            $datasetlog->message = $fileName. ": file attribute deleted";
-            $this->assertEquals("File Tinamus_guttatus.fa.gz: file attribute deleted", $datasetlog->message, "Delete message was generated in different format");
-        }
+        $this->assertTrue(is_bool($saveNewEntry) === true, "bool is returned");
         $this->assertTrue(true===$saveNewEntry, "No new entry is saved to dataset log table");
+
+        // To assert the delete message will be generated as expected
+        $datasetlog = DatasetLog::model()->findByPk($datasetId);
+        $this->assertEquals("File Tinamus_guttatus.fa.gz: file attribute deleted", $datasetlog->message, "Delete message was generated in different format");
     }
 }
