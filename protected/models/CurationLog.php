@@ -92,7 +92,7 @@ class CurationLog extends CActiveRecord
      * @param string $creator
      * @return CurationLog
      */
-    public static function makeNewInstanceForDatasetBy(int $id, string $creator): CurationLog
+    public static function makeNewInstanceForCurationLogBy(int $id, string $creator): CurationLog
     {
         $curationlog = new CurationLog();
         $curationlog->creation_date = date("Y-m-d");
@@ -104,14 +104,14 @@ class CurationLog extends CActiveRecord
 
     public static function createlog($status,$id) {
 
-        $curationlog = self::makeNewInstanceForDatasetBy($id, "System");
+        $curationlog = self::makeNewInstanceForCurationLogBy($id, "System");
         $curationlog->action = "Status changed to ".$status;
         return $curationlog->save();
     }
 
     public static function createlog_assign_curator($id,$creator,$username) {
 
-        $curationlog = self::makeNewInstanceForDatasetBy($id, $creator);
+        $curationlog = self::makeNewInstanceForCurationLogBy($id, $creator);
         $curationlog->action = "Curator Assigned"." $username";
         return $curationlog->save();
     }
@@ -123,7 +123,7 @@ class CurationLog extends CActiveRecord
      */
     public static function createCurationLogEntry(int $id): bool
     {
-        $curationlog = self::makeNewInstanceForDatasetBy($id, "System");
+        $curationlog = self::makeNewInstanceForCurationLogBy($id, "System");
         $curationlog->action = "Status changed to stuff";
         return $curationlog->save();
     }

@@ -6,7 +6,7 @@ class CurationLogTest extends CDbTestCase
     {
         $datasetId = 1;
         $creator = "System";
-        $curationLog = CurationLog::makeNewInstanceForDatasetBy($datasetId, $creator);
+        $curationLog = CurationLog::makeNewInstanceForCurationLogBy($datasetId, $creator);
         $this->assertNotNull($curationLog);
         $this->assertTrue(is_a($curationLog, CurationLog::class));
         $this->assertEquals($datasetId, $curationLog->dataset_id);
