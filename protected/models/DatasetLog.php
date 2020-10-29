@@ -97,7 +97,7 @@ class DatasetLog extends CActiveRecord
         $datasetlog = new DatasetLog();
         $datasetlog->created_at = date("Y-m-d H:i:s");
         $datasetlog->dataset_id = $id;
-        $datasetlog->message = $fileName. ": file attribute deleted";
+        $datasetlog->message = $fileName;
         $datasetlog->model = $fileModel;
         $datasetlog->model_id = $modelId;
         $datasetlog->url = Yii::app()->createUrl('/adminFile/update', array('id'=>$fileId));
@@ -116,6 +116,7 @@ class DatasetLog extends CActiveRecord
     public static function createDatasetLogEntry(int $id, string $fileName, string $fileModel, int $modelId, int $fileId): bool
     {
         $datasetlog = self::makeNewInstanceForDatasetLogBy($id, $fileName, $fileModel, $modelId, $fileId);
+        $datasetlog->message = $fileName. ": file attribute deleted";
         return $datasetlog->save();
     }
 
