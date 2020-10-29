@@ -51,7 +51,6 @@ h4 {
     font-size: 16px;
     margin: 0px 0px 30px;
 }
-/* In scaffolding.less */
 img {
     max-width: 100%;
 }
@@ -60,8 +59,6 @@ hr {
     border: 0px;
     border-top: 1px solid #e5e5e5;
 }
-/* DONE!!!! */
-
 section {
     margin-bottom: 40px;
 }
