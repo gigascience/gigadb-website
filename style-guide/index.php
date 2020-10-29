@@ -161,25 +161,25 @@
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #32bca3;"></div>
-                            <div class="sg-color-name">@color-datatype-1</div>
+                            <div class="sg-color-name">@color-datatype-green</div>
                             <div class="sg-color-value">#32bca3</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #25b6d3;"></div>
-                            <div class="sg-color-name">@color-datatype-2</div>
+                            <div class="sg-color-name">@color-datatype-blue</div>
                             <div class="sg-color-value">#25b6d3</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #f7bb41;"></div>
-                            <div class="sg-color-name">@color-datatype-3</div>
+                            <div class="sg-color-name">@color-datatype-yellow</div>
                             <div class="sg-color-value">#f7bb41</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #e04f5e;"></div>
-                            <div class="sg-color-name">@color-datatype-4</div>
+                            <div class="sg-color-name">@color-datatype-red</div>
                             <div class="sg-color-value">#e04f5e</div>
                         </div>
                     </div>
@@ -191,8 +191,6 @@
                             <div class="sg-color-value">#F3FAF6</div>
                             <div class="sg-color-name">Used 1 time in .search-box</div>
                         </div>
-                    </div>
-                    <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #a5cc7e;"></div>
@@ -210,9 +208,18 @@
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #5a9c7b;"></div>
-                            <div class="sg-color-name">@color-odd-green</div>
+                            <div class="sg-color-name">@color-patina-green</div>
                             <div class="sg-color-value">#5a9c7b</div>
                             <div class="sg-color-name">Used 24 times</div>
+                        </div>
+                    </div>
+                    <div class="sg-color-grid">
+                        <div class="sg-color">
+                            <div class="sg-color-swatch"
+                                 style="background-color: #087A38;"></div>
+                            <div class="sg-color-name">@color-watercourse-green</div>
+                            <div class="sg-color-value">#087A38</div>
+                            <div class="sg-color-name">Used 1 time in .search-box</div>
                         </div>
                         <div class="sg-color">
                             <div class="sg-color-swatch"
@@ -221,8 +228,6 @@
                             <div class="sg-color-value">#005b2d</div>
                             <div class="sg-color-name">Used 22 times</div>
                         </div>
-                    </div>
-                    <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
                                  style="background-color: #08c;"></div>
@@ -237,7 +242,7 @@
                             <div class="sg-color-value">#005580</div>
                             <div class="sg-color-name">Used 2 times in .nav-tabs .dropdown-toggle:hover .caret</div>
                         </div>
-                    </div><!--/.sg-color-grid-->
+                    </div>
                 </div>
 
                 <!-- Manually add your fonts here. -->
