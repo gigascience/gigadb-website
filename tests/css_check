@@ -8,7 +8,7 @@ if [[ $(echo "$csslint_output" | grep -c "error" || true) -eq "0" ]]; then
   echo "No CSS errors detected by CSSLint"
   exit 0
 else
-  echo "CSSLint detected CSS errors!"
+  echo "CSSLint detected CSS errors - check tmp/css_errors.txt"
   # Output file with errors
   echo "$csslint_output" > "tmp/css_errors.txt"
   exit 1
