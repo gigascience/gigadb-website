@@ -92,7 +92,7 @@ class DatasetLog extends CActiveRecord
      * @param int $fileId
      * @return DatasetLog
      */
-    public static function datasetLogEntryFactory (int $id, string $fileName, string $fileModel, int $modelId, int $fileId): DatasetLog
+    public static function makeNewInstanceForDatasetLogBy (int $id, string $fileName, string $fileModel, int $modelId, int $fileId): DatasetLog
     {
         $datasetlog = new DatasetLog();
         $datasetlog->created_at = date("Y-m-d H:i:s");
@@ -115,7 +115,7 @@ class DatasetLog extends CActiveRecord
      */
     public static function createDatasetLogEntry(int $id, string $fileName, string $fileModel, int $modelId, int $fileId): bool
     {
-        $datasetlog = self::datasetLogEntryFactory($id, $fileName, $fileModel, $modelId, $fileId);
+        $datasetlog = self::makeNewInstanceForDatasetLogBy($id, $fileName, $fileModel, $modelId, $fileId);
         return $datasetlog->save();
     }
 
