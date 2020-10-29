@@ -28,15 +28,6 @@ return array(
 		'model_id'=>2,
 		'url'=>"",
 	),
-    array(
-        'id'=>4,
-        'dataset_id'=>1,
-        'message'=>"Pygoscelis_adeliae.scaf.fa.gz: file attribute deleted",
-        'created_at'=>"2020-10-27 16:36:23.106366",
-        'model'=>"FileAttributes",
-        'model_id'=>11020,
-        'url'=>"./bin/adminFile/update/id/664",
-    ),
 );
 
 ?>
