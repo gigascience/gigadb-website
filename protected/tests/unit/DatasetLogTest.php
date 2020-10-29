@@ -3,37 +3,46 @@
 
 class DatasetLogTest extends CDbTestCase
 {
-    protected $fixtures=array(
-        'log'=>'DatasetLog',
-    );
-
     public function testDataSetLogEntryFactory()
     {
+        // With reference to the entry in dataset_log fixture
         $datasetId = 1;
-        $fileName = "Pygoscelis_adeliae.scaf.fa.gz";
-        $fileModel = "FileAttributes";
-        $modelId = 11020;
-        $fileId = 664;
-        $datasetlog = DatasetLog::datasetLogEntryFactory($datasetId, $fileName, $fileModel, $modelId, $fileId);
+        $fileName = "File Tinamus_guttatus.fa.gz";
+        $fileModel = "File";
+        $modelId = 16945;
+        $fileId = 16945; //mockup ID
+        $datasetlog = DatasetLog::makeNewInstanceForDatasetLogBy($datasetId, $fileName, $fileModel, $modelId, $fileId);
         $this->assertNotNull($datasetlog);
         $this->assertTrue(is_a($datasetlog, DatasetLog::class));
-        $this->assertEquals($datasetlog->dataset_id, $this->log(3)->dataset_id);
-        $this->assertEquals($datasetlog->message, $this->log(3)->message);
-        $this->assertEquals($datasetlog->model, $this->log(3)->model);
-        $this->assertEquals($datasetlog->model_id, $this->log(3)->model_id);
-        $this->assertEquals($datasetlog->url, $this->log(3)->url);
+        $this->assertEquals($datasetId, $datasetlog->dataset_id);
+        $this->assertEquals($fileName, $datasetlog->message);
+        $this->assertEquals($fileModel, $datasetlog->model);
+        $this->assertEquals($modelId, $datasetlog->model_id);
+        $this->assertEquals("./bin/adminFile/update/id/$fileId", $datasetlog->url);
+        $this->assertTrue($datasetlog->isNewRecord);
     }
 
-//    public function testCreateDatasetLogEntry()
-//    {
-//        $datasetId = 1;
-//        $fileName = "Pygoscelis_adeliae.scaf.fa.gz";
-//        $fileModel = "FileAttributes";
-//        $modelId = 11020;
-//        $fileId = 664;
-//        $datasetlog = new DatasetLog(); //Instantiate a new Object
-//        $result = $datasetlog->createDatasetLogEntry($datasetId, $fileName, $fileModel, $modelId, $fileId);
-//        $this->assertTrue(true===$result, "No new entry in dataset log table");
-//        $this->assertTrue($datasetlog->isNewRecord);
-//    }
+    // Includde Dataset fixture to avoid unique duplicate key value violation with dataset_log_pkey
+    protected $fixtures=array(
+        'datasets'=>'Dataset',
+    );
+
+    public function testCreateDatasetLogEntry()
+    {
+        $datasetId = 1;
+        $fileName = "File Tinamus_guttatus.fa.gz";
+        $fileModel = "File";
+        $modelId = 16945;
+        $fileId = 16945; //mockup ID
+        $saveNewEntry = DatasetLog::createDatasetLogEntry($datasetId, $fileName, $fileModel, $modelId, $fileId);
+        $this->assertNotNull($saveNewEntry);
+        $this->assertTrue(is_bool($saveNewEntry) === true, "No bool is returned");
+        // To assert the delete message will be generated as expected
+        if ($saveNewEntry === true) {
+            $datasetlog = new DatasetLog();
+            $datasetlog->message = $fileName. ": file attribute deleted";
+            $this->assertEquals("File Tinamus_guttatus.fa.gz: file attribute deleted", $datasetlog->message, "Delete message was generated in different format");
+        }
+        $this->assertTrue(true===$saveNewEntry, "No new entry is saved to dataset log table");
+    }
 }
