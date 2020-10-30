@@ -416,7 +416,13 @@ class DatasetViewContext implements Context
         }
     }
 
-
+    /**
+     *@Then there should be a :arg1 element with attribute :arg2 and value :arg3
+     */
+    public function thereShouldBeElementOnPage($arg1, $arg2, $arg3)
+    {
+        $this->minkContext->assertSession()->elementExists('css', sprintf('%s[%s="%s"]', $arg1, $arg2, $arg3));
+    }
 
 
 }
