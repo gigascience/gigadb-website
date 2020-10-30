@@ -51,6 +51,16 @@ class DatasetAdminContext implements Context
     }
 
     /**
+     * @Then I should not see a form element labelled :arg1
+     */
+    public function iShouldNotSeeFormElementLabelled($arg1)
+    {
+        PHPUnit_Framework_Assert::assertFalse(
+            $this->minkContext->getSession()->getPage()->hasField($arg1)
+        );
+    }
+
+    /**
      * @Then I should see a button input :arg1
      */
     public function iShouldSeeAButtonInput($arg1)
