@@ -7,7 +7,7 @@ Background:
 	Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 	And default admin user exists
 
-@ok
+@ok @issue-381
 Scenario: form loading with all necessary fields
 	Given I sign in as an admin
 	When I go to "/adminDataset/update/id/210"
@@ -44,13 +44,7 @@ Scenario: form loading with all necessary fields
 	And I should see a form element labelled "URL to redirect"
 	And I should see a button input "Save"
 	And I should see a button "Create New Log"
-
-@ok @issue-381
-Scenario: Admin user can visit admin dataset update page and will not see publisher option
-	Given I sign in as an admin
-	When I am on "/adminDataset/update/id/210"
-	And I should see "Update Dataset 100002"
-	Then I should not see "Publisher"
+	And I should not see a form element labelled "Publisher"
 
 @ok @javascript
 Scenario: Mint A DOI
