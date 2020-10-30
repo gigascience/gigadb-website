@@ -424,5 +424,17 @@ class DatasetViewContext implements Context
         $this->minkContext->assertSession()->elementExists('css', sprintf('%s[%s="%s"]', $arg1, $arg2, $arg3));
     }
 
+    /**
+     * @Then There should be a meta tag element has attribute :arg1 with value :arg2 and attribute :arg3 with value :arg4
+     */
+    public function thereShouldBeElementWithDoi($arg1, $arg2, $arg3, $arg4)
+    {
+        $metaNode = $this->minkContext->getSession()->getPage()->find('css', "meta[$arg1='$arg2']");
+//        file_put_contents('behat.log', print_r($metaNode, true));
+        if( $metaNode->hasAttribute($arg1) && $metaNode->hasAttribute($arg3)) {
+            PHPUnit_Framework_Assert::assertEquals($arg2, $metaNode->getAttribute($arg1));
+            PHPUnit_Framework_Assert::assertEquals($arg4, $metaNode->getAttribute($arg3));
+        }
+    }
 
 }
