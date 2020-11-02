@@ -227,14 +227,6 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     </div>
 
                     <div class="control-group">
-                        <label for="Dataset_publisher_id" class="control-label">Publisher</label>
-                        <div class="controls">
-                            <?php echo $form->dropDownList($model,'publisher_id',CHtml::listData(Publisher::model()->findAll(),'id','name'), array('class'=>'span4')); ?>
-                            <?php echo $form->error($model,'publisher_id'); ?>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
                         <?php echo $form->labelEx($model,'fairnuse',array('class'=>'control-label')); ?>
                         <div class="controls">
                         <?php echo $form->textField($model,'fairnuse',array('class'=>'span4 date')); ?>
