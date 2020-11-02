@@ -61,7 +61,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                 <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge"><?= $mainSection->getReleaseDetails()['full_doi']; ?></span></a></p>
                                 <details>
                                     <summary>Click to cite</summary>
-                                    <p><a href="http://data.datacite.org/application/x-datacite+text/10.5524/<?php $mainSection->getReleaseDetails()['full_doi']; ?>">TEXT</a></p>
+                                    <p><a target="_self" href="http://data.datacite.org/application/x-datacite+text/10.5524/<?php $mainSection->getReleaseDetails()['full_doi']; ?>">Text</a></p>
                                 </details>
                             </div>
                         </div>
