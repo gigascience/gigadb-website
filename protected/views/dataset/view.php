@@ -8,6 +8,47 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 <?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' => $files->getDataProvider()->getPagination()->getPageSize()));?>
 
 
+<style>
+    .dropdown-btn {
+        background-color: #099242;
+        color: white;
+        padding: 6px;
+        font-size: 13px;
+        border-radius: 4px 4px 4px 4px;
+        border: none;
+    }
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #ffffff;
+        min-width: 160px;
+        box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+    .dropdown-content a {
+        color: black;
+        padding: 6px 8px;
+        text-decoration: none;
+        display: block;
+    }
+    .dropdown-content a:hover {background-color: #ddd;}
+    .dropdown:hover .dropdown-content {display: block;}
+
+    a.button {
+        -webkit-appearance: button;
+        -moz-appearance: button;
+        appearance: button;
+        /*display: inline;*/
+        text-decoration: none;
+        color: initial;
+    }
+
+</style>
+
 <div class="content">
     <div class="container">
 
@@ -38,6 +79,9 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <div class="color-background color-background-block dataset-color-background-block">
                                 <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?>">http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?></a></p>
                                 <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge"><?= $mainSection->getReleaseDetails()['full_doi']; ?></span></a></p>
+                                <a href="http://data.datacite.org/application/x-research-info-systems/10.5524/<?php $mainSection->getReleaseDetails()['full_doi']; ?>">RIS</a>
+                                <a href="http://data.datacite.org/application/x-bibtex/10.5524/<?php $mainSection->getReleaseDetails()['full_doi']; ?>">BIBTEXT</a>
+                                <a class="button" href="http://data.datacite.org/application/x-datacite+text/10.5524/<?php $mainSection->getReleaseDetails()['full_doi']; ?>">TEXT</a>
                             </div>
                         </div>
                     </div>
