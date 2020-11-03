@@ -9,6 +9,5 @@ Feature: Add the metadata schema on dataset page to allow Hypothesis to parse ci
     Given I am not logged in to Gigadb web site
     When I go to "/dataset/100002"
     Then I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
-    And There should be a meta-tag element has attribute "name" with value "citation_doi"
-    And There should be a meta-tag element has attribute "content" with value "10.5072/100002"
+    And There should be a meta-tag element has attribute "name" with value "citation_doi" and attribute "content" with value "10.5072/100002"
 
