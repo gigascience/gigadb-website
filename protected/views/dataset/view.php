@@ -36,7 +36,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <h4 class="left-border-title left-border-title-lg"><?= $mainSection->getHeadline()['title']; ?></h4>
                             <p class="dataset-release-date-text">Dataset type:  <?= $mainSection->getHeadline()['types'];?> <br> Data released on <?= $mainSection->getHeadline()['release_date'] ?></p>
                             <div class="color-background color-background-block dataset-color-background-block">
-                                <meta name="citation_doi" content="<?php $mainSection->getReleaseDetails()['full_doi']; ?>">
+                                <meta name="citation_doi" content="<?php echo $mainSection->getReleaseDetails()['full_doi']; ?>">
                                 <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?>">http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?></a></p>
                                 <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge"><?= $mainSection->getReleaseDetails()['full_doi']; ?></span></a></p>
                             </div>
