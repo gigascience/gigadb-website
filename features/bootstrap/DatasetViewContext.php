@@ -417,14 +417,14 @@ class DatasetViewContext implements Context
     }
 
     /**
-     * @Then There should be a meta-tag element has attribute :arg1 with value :arg2
+     * @Then There should be a meta-tag element has attribute :arg1 with value :arg2 and attribute :arg3 with value :arg4
      */
-    public function thereShouldBeElementWithDoi($arg1, $arg2)
+    public function thereShouldBeMetaElementWithDoi($arg1, $arg2, $arg3, $arg4)
     {
         $metaNode = $this->minkContext->getSession()->getPage()->find('css', "meta[$arg1='$arg2']");
-        if( $metaNode->hasAttribute($arg1)) {
+        if( $metaNode->hasAttribute($arg1) && $metaNode->hasAttribute($arg3)) {
             PHPUnit_Framework_Assert::assertEquals($arg2, $metaNode->getAttribute($arg1));
+            PHPUnit_Framework_Assert::assertEquals($arg4, $metaNode->getAttribute($arg3));
         }
     }
-
 }
