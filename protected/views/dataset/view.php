@@ -35,8 +35,8 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <div class="color-background color-background-block dataset-color-background-block">
                                 <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?>">http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?></a></p>
                                 <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge"><?= $mainSection->getReleaseDetails()['full_doi']; ?></span></a></p>
-                                <select name="cite-source" id="cite-source">
-                                    <option value="source">Cite Dataset</option>
+                                <select name="cite-source" id="cite-source" onclick="getCitation()">
+                                    <option value="dataset">Cite Dataset</option>
                                     <option value="endnote">EndNote XML</option>
                                     <option value="ris">RIS</option>
                                     <option value="bibtex">BibTeX</option>
@@ -783,4 +783,25 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
         }
     }
 
+</script>
+<script>
+    function getCitation() {
+         var source = document.getElementById("cite-source");
+         source.addEventListener("click", function () {
+             // console.log(source.value);
+             if(source.value === "endnote") {
+                 var url_endnote = 'http://data.datacite.org/application/x-datacite+text/<?= $mainSection->getReleaseDetails()['full_doi'];?>';
+                 console.log("Endnote citation was chosen!!!");
+                 window.location.assign(url_endnote);
+             } else if (source.value === "ris") {
+                 var url_ris = 'http://data.datacite.org/application/x-research-info-systems/<?= $mainSection->getReleaseDetails()['full_doi'];?>';
+                 console.log("RIS citation was chosen!!!");
+                 window.location.assign(url_ris);
+             } else if (source.value === "bibtex") {
+                 var url_bibtex = 'http://data.datacite.org/application/x-bibtex/<?= $mainSection->getReleaseDetails()['full_doi'];?>';
+                 console.log("BibTeX citation was chosen!!!");
+                 window.location.assign(url_bibtex);
+             }
+         })
+    }
 </script>
