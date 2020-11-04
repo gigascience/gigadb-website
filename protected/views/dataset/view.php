@@ -8,33 +8,8 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 <?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' => $files->getDataProvider()->getPagination()->getPageSize()));?>
 
 
-<style>
-    details > p {
-        background-color: white;
-        padding: 4px;
-        margin: 0;
-        font-size: 13px;
-        /*box-shadow: 1px 1px 2px #bbbbbb;*/
-    }
-    details > summary {
-        padding: 4px;
-        width: 100px;
-        background-color: #099242;
-        color: white;
-        border: none;
-        /*box-shadow: 1px 1px 2px #bbbbbb;*/
-        border-radius: 4px 4px 4px 4px;
-        cursor: pointer;
-    }
-
-
-</style>
-
 <div class="content">
     <div class="container">
-
-
-
                 <section></section>
                 <div class="subsection">
                     <div class="media">
@@ -60,13 +35,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <div class="color-background color-background-block dataset-color-background-block">
                                 <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?>">http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?></a></p>
                                 <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge"><?= $mainSection->getReleaseDetails()['full_doi']; ?></span></a></p>
-                                <details>
-                                    <summary>Click to cite</summary>
-<!--                                    <p><strong>HOW TO CITE THIS ARTICLE</strong></p>-->
-                                    <div>
-                                        <p><embed src="http://data.datacite.org/application/x-bibtex/<?=$mainSection->getReleaseDetails()['full_doi'];?>" width="600" height="100" style="background: white;"/>
-                                    </div>
-                                </details>
+                                <select name="cite-source" id="cite-source">
+                                    <option value="source">Cite Dataset</option>
+                                    <option value="endnote">EndNote XML</option>
+                                    <option value="ris">RIS</option>
+                                    <option value="bibtex">BibTeX</option>
+                                </select>
                             </div>
                         </div>
                     </div>
