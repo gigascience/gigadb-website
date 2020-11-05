@@ -18,16 +18,13 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
         border-radius: 4px 4px 4px 4px;
         text-decoration: none;
     }
-
     .drop-citation-btn:hover, .drop-citation-btn:focus {
         background-color: #087A38;
     }
-
     .citation-dropdown-box {
         position: relative;
         display: inline-block;
     }
-
     .citation-content {
         display: none;
         position: absolute;
@@ -38,18 +35,14 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
         border-radius: 4px 4px 4px 4px;
         z-index: 1; /*stack in front */
     }
-
     .citation-content a {
         color: black;
         padding: 8px 14px;
         text-decoration: none;
         display: block;
-        font-size: 13px;
+        font-size: 12px;
     }
-
     .citation-dropdown-box a:hover {background-color: #F3FAF6;}
-
-    .show {display: block;}
 </style>
 
 <div class="content">
@@ -80,9 +73,9 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                 <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?>">http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?></a></p>
                                 <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge"><?= $mainSection->getReleaseDetails()['full_doi']; ?></span></a></p>
                                 <div class="citation-dropdown-box">
-                                    <button onclick="showCitation()" class="drop-citation-btn">Cite Dataset</button>
+                                    <button onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></button>
                                     <div id="citationDropdown" class="citation-content">
-                                        <a href='http://data.datacite.org/application/x-datacite+text/<?= $mainSection->getReleaseDetails()['full_doi'];?>'>EndNote XML</a>
+                                        <a href='http://data.datacite.org/application/x-datacite+text/<?= $mainSection->getReleaseDetails()['full_doi'];?>'>Text</a>
                                         <a href='http://data.datacite.org/application/x-research-info-systems/<?= $mainSection->getReleaseDetails()['full_doi'];?>'>RIS</a>
                                         <a href='http://data.datacite.org/application/x-bibtex/<?= $mainSection->getReleaseDetails()['full_doi'];?>'>BibTeX</a>
                                     </div>
