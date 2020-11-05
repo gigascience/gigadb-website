@@ -1,0 +1,96 @@
+<div class="container">
+    <div class="subsection row" style="margin-bottom: 130px;">
+        <div class="col-xs-6">
+            <div class="subsection-login">
+                <p>Please fill out the following form with your login credentials:</p>
+                <p>Fields with <span class="symbol">*</span> are required.</p>
+            </div>
+    
+            <div class="login-div">
+                <form class="form-horizontal" id="yw0" action="/site/login"
+                      method="post">
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label required"
+                               for="LoginForm_username">Email Address <span class="required">*</span>
+                        </label>
+                        <div class="col-xs-9">
+                            <input size="50" class="form-control"
+                                   name="LoginForm[username]"
+                                   id="LoginForm_username" type="text"/>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label required"
+                               for="LoginForm_password">Password <span
+                                class="required">*</span></label>
+                        <div class="col-xs-9">
+                            <input size="50" class="form-control"
+                                   name="LoginForm[password]"
+                                   id="LoginForm_password" type="password"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-9" style="float:right;">
+                            <div class="checkbox" style="padding-top: 0;">
+                                <input id="ytLoginForm_rememberMe" type="hidden"
+                                       value="0"
+                                       name="LoginForm[rememberMe]"/>
+                                <input name="LoginForm[rememberMe]"
+                                    id="LoginForm_rememberMe" value="1"
+                                    type="checkbox"/>
+                                    <label disabled="disabled" for="LoginForm_rememberMe">Remember me next time</label>
+                                &nbsp;
+                                <a href="/user/reset/username//style/float%3Aright">Lost Password</a>
+                                <a href="/user/create" style="float:right;">Create account</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="button-div">
+                        <input class="btn background-btn" style="width:236px;hight:40px;float:center;"
+                               type="submit" name="yt0" value="Login"/>
+                    </div>
+                </form>    
+            </div>
+        </div>
+    
+        <div class="col-xs-6">
+            <div class="subsection-login">
+                <p>Or login with your preferred identity provider:</p>
+            </div>
+            <br>
+            <br>
+            <div class="ouath-div">
+                <div>
+                    <span>
+                        <a href="/opauth/facebook">
+                            <img src="/images/new_interface_image/facebook.png">
+                            <span class="logotext">Facebook</span>
+                        </a>
+                    </span>
+                    <span>
+                        <a href="/opauth/google">
+                            <img src="/images/new_interface_image/google.png">
+                            <span class="logotext">Google</span>
+                        </a>
+                    </span>
+                    <span>
+                        <a href="/opauth/twitter">
+                            <img src="/images/new_interface_image/twitter.png">
+                            <span class="logotext">Twitter</span>
+                        </a>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <a href="/opauth/linkedin">
+                            <img src="/images/new_interface_image/linkedin.png">
+                            <span class="logotext">LinkedIn</span>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

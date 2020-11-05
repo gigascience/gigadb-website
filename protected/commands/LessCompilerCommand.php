@@ -4,5 +4,6 @@ class LessCompilerCommand extends CConsoleCommand {
     $less = new lessc;
     $basePath = Yii::app()->basePath;
     $less->compileFile($basePath."/../less/site.less", $basePath."/../css/site.css");
+    $less->compileFile($basePath."/../less/current.less", $basePath."/../css/current.css");
   }
 }

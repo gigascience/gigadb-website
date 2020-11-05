@@ -1,0 +1,83 @@
+//
+// Tables.less
+// Tables for, you guessed it, tabular data
+// ----------------------------------------
+
+table.table th,
+table.table td {
+  vertical-align: middle;
+}
+table.table td {
+  color: @color-darker-gray;
+}
+table.table a {
+  text-decoration: none;
+}
+
+.table > thead > tr > th {
+  text-align: center;
+  font-weight: normal;
+  border-bottom: 0px;
+  background-color: @color-lighter-gray;
+}
+
+.new-upload-table {
+  margin: 0px;
+}
+.new-upload-table > tbody > tr > td {
+  border-top: 0px;
+  padding: 0px;
+}
+table.submitted-table > thead > tr > th {
+  white-space: nowrap;
+}
+table.submitted-table > thead > tr > th,
+table.submitted-table > tbody > tr > td,
+table.saved-table > thead > tr > th,
+table.saved-table > tbody > tr > td {
+  padding: 10px 13px;
+  vertical-align: middle;
+  line-height: 20px;
+}
+table.submitted-table > tbody > tr > td:nth-child(1),
+table.submitted-table > tbody > tr > td:nth-child(4),
+table.submitted-table > tbody > tr > td:nth-child(5),
+table.submitted-table > tbody > tr > td:nth-child(6),
+table.submitted-table > tbody > tr > td:nth-child(7),
+table.submitted-table > tbody > tr > td:nth-child(8),
+table.submitted-table > tbody > tr > td:nth-child(9) {
+  text-align: center;
+  white-space: nowrap;
+}
+table.submitted-table > tbody > tr > td:nth-child(9) > a {
+  font-size: 14px;
+}
+table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
+  margin-right: 15px;
+}
+.member-table > tbody > tr > td {
+  width: 25%;
+  border: 0px;
+}
+
+.span4 {
+  width: 300px;
+}
+.span3 {
+  width: 220px;
+}
+.span2 {
+  width: 140px;
+}
+.span1 {
+  width: 60px;
+}
+.span8 {
+  width: 620px;
+}
+.span9 {
+  width: 700px;
+}
+.offset3 {
+  margin-left: 260px;
+}

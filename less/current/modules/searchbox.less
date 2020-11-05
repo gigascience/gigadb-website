@@ -1,0 +1,64 @@
+.search-box{
+  box-sizing: border-box;
+  width: 100%;
+  height: 105px;
+  background: #F3FAF6;
+  margin-bottom: 20px;
+  padding: 30px 195px;
+  position: relative;
+}
+.search-box .search-bar{
+  box-sizing: border-box;
+  width: 100%;
+  height: 45px;
+  /*border-radius: 5px;*/
+}
+.search-box .search-bar .search-input{
+  box-sizing: border-box;
+  float:left;
+  width: 690px;
+  height: 45px;
+  border:0;
+  outline: 0;
+  border-radius: 5px 0 0 5px;
+  padding: 10px 15px;
+  font: 500 14px/25px "Arial","Microsoft YaHei";
+  color: @color-warm-black;
+}
+.search-box .search-bar .btn-search{
+  float: left;
+  width: 58px;
+  height: 45px;
+  text-align: center;
+  background: @color-gigadb-green;
+  border:0;
+  outline: 0;
+  border-radius: 0 5px 5px 0;
+  font-size: 0;
+  color:@color-true-white;
+  cursor:pointer;
+}
+.search-box .search-bar .btn-search span{
+  font-size: 20px;
+}
+.search-box .btn-left,
+.search-box .btn-right {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 50%;
+  margin-top:-9px;
+  font-size: 18px;
+  color: #ccc;
+  cursor:pointer;
+}
+.search-box .btn-left:hover,
+.search-box .btn-right:hover{
+  color: @color-gigadb-green;
+}
+.search-box .btn-left{
+  left: 150px;
+}
+.search-box .btn-right{
+  right: 150px;
+}

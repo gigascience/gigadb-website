@@ -1,0 +1,366 @@
+<div class="container">
+    <div class="row">
+
+        <div class="col-xs-4 search-filter-sidebar">
+            <h4 class="search-result-title">Search result for <span><i>millet</i></span></h4>
+            <p></p><p>
+            Showing
+            <strong>1 - 1 of 1</strong> datasets
+        </p> <p></p>
+
+            <div>
+                <div class="filter-your-result">Filter your result</div>
+                <!--
+                <a data-toggle="modal" href="#how-to-use-filters" class="btn filter">How to use filters</a>
+                <div class="modal hide fade" id="how-to-use-filters">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>How to use filters</h3>
+                  </div>
+                  <div class="modal-body">
+                    <p>To see all search results for your keywords, leave all these filters disabled or disable a filter if it is already enabled. If you want to hide some results based on some criteria, choose the filter for your criteria, and select the options that match what you want to see. Search results that are not defined for a filter will show only if the filter is disabled (default).</p>
+                  </div>
+                  <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                  </div>
+                </div>-->
+                <form id="filter_form" method="GET">
+                    <input type="hidden" name="keyword" value="millet">
+
+                    <!-- FILTERS FOR DATASETS -->
+                    <div id="dataset_filter">
+                        <div class="filter">
+                            <h4 class="heading">Type</h4>
+                            <div class="filter-content" style="display:none;">
+                                <button class="btn btn_filter" id="btn_type">Enable All</button>
+                                <div class="options disabled ">
+                                    <span id="type"><input class="type" value="dataset" id="type_0" type="checkbox" name="type[]"> <label for="type_0">Dataset</label><br><input class="type" value="sample" id="type_1" type="checkbox" name="type[]"> <label for="type_1">Sample</label><br><input class="type" value="file" id="type_2" type="checkbox" name="type[]"> <label for="type_2">File</label></span>                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter">
+                            <h4 class="heading">Common Name</h4>
+                            <div class="filter-content" style="display:none;">
+                                <button class="btn btn_filter" id="btn_common_name">Enable All</button>
+                                <div class="options disabled ">
+                                    <span id="common_name"><input class="common_name" value="Foxtail millet" id="common_name_0" type="checkbox" name="common_name[]"> <label for="common_name_0">Foxtail millet</label></span>                </div>
+                            </div>
+                        </div>
+                        <div class="filter">
+                            <h4 class="heading">Dataset Type</h4>
+                            <div class="filter-content" style="display:none;">
+                                <button class="btn btn_filter" id="btn_dataset_type">Enable All</button>
+                                <div class="options disabled">
+                                    <span id="dataset_type"><input class="dataset_type" value="1" id="dataset_type_0" type="checkbox" name="dataset_type[]"> <label for="dataset_type_0">Epigenomic</label></span>                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter">
+                            <h4 class="heading">Project</h4>
+                            <div class="filter-content" style="display:none;">
+                                <button class="btn btn_filter" id="btn_project">Enable All</button>
+                                <div class="options disabled">
+                                    <span id="project"></span>                </div>
+                            </div>
+                        </div>
+                        <div class="filter">
+                            <h4 class="heading">External Link Types</h4>
+                            <div class="filter-content" style="display:none;">
+                                <button class="btn btn_filter" id="btn_link">Enable All</button>
+                                <div class="options disabled">
+                                    <span id="external_link_type"><input class="external_link_type" value="Genome browser" id="external_link_type_0" type="checkbox" name="external_link_type[]"> <label for="external_link_type_0">Genome browser</label></span>                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter">
+                            <h4 class="heading">Publication Date</h4>
+                            <div class="filter-content" style="display:none;">
+                                <button class="btn btn_filter" id="btn_publication_date">Enable</button>
+                                <div class="options disabled">
+                                    <label>From</label><input class="date hasDatepicker" placeholder="dd-mm-yyyy" type="text" value="" name="pubdate_from" id="pubdate_from">                    <div style="clear:both"></div>
+                                    <label>To</label> <input class="date hasDatepicker" placeholder="dd-mm-yyyy" type="text" value="" name="pubdate_to" id="pubdate_to">                    <div style="clear:both"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FILTERS FOR FILES -->
+
+                    <div id="file_filter">
+                        <div class="filter">
+                            <h4 class="heading">File Type</h4>
+                            <div class="filter-content" style="display:none;">
+                                <button class="btn btn_filter" id="btn_file_type">Enable All</button>
+                                <div class="options disabled">
+                                    <span id="file_type"><input class="file_type" value="Coding sequence" id="file_type_0" type="checkbox" name="file_type[]"> <label for="file_type_0">Coding sequence</label><br><input class="file_type" value="Protein sequence" id="file_type_1" type="checkbox" name="file_type[]"> <label for="file_type_1">Protein sequence</label><br><input class="file_type" value="Annotation" id="file_type_2" type="checkbox" name="file_type[]"> <label for="file_type_2">Annotation</label><br><input class="file_type" value="Sequence assembly" id="file_type_3" type="checkbox" name="file_type[]"> <label for="file_type_3">Sequence assembly</label></span>                </div>
+                            </div>
+                        </div>
+                        <div class="filter">
+                            <h4 class="heading">File Format</h4>
+                            <div class="filter-content" style="display:none;">
+                                <button class="btn btn_filter" id="btn_file_format">Enable All</button>
+                                <div class="options disabled">
+                                    <span id="file_format"><input class="file_format" value="FASTA" id="file_format_0" type="checkbox" name="file_format[]"> <label for="file_format_0">FASTA</label><br><input class="file_format" value="GFF" id="file_format_1" type="checkbox" name="file_format[]"> <label for="file_format_1">GFF</label><br><input class="file_format" value="AGP" id="file_format_2" type="checkbox" name="file_format[]"> <label for="file_format_2">AGP</label></span>                </div>
+                            </div>
+                        </div>
+                        <div class="filter">
+                            <h4 class="heading">File Size</h4>
+                            <div class="filter-content" style="display:none;">
+                                <button class="btn btn_filter" id="btn_release_date">Enable</button>
+                                <div class="options disabled">
+                                    <label>From</label> <input class="size" type="text" value="" name="size_from" id="size_from"><select class="unit" name="size_from_unit" id="size_from_unit">
+                                    <option value="1">KB</option>
+                                    <option value="2">MB</option>
+                                    <option value="3">GB</option>
+                                    <option value="4">TB</option>
+                                </select>                    <div style="clear:both"></div>
+                                    <label>To</label> <input class="size" type="text" value="" name="size_to" id="size_to"><select class="unit" name="size_to_unit" id="size_to_unit">
+                                    <option value="1">KB</option>
+                                    <option value="2">MB</option>
+                                    <option value="3">GB</option>
+                                    <option value="4">TB</option>
+                                </select>                    <div style="clear:both"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <input class="span2 btn-green filter" type="submit" name="yt0" value="Apply Filters"></form>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
+                        $(function(){
+                            //$(".filter-content").hide();
+                            //toggle the componenet with class msg_body
+                            $(".heading").click(function()
+                            {
+                                $(this).next(".filter-content").slideToggle(500);
+                            });
+                            /*$('#filter_form input:checkbox').click(function(){
+                                document.forms['filter_form'].submit();
+                            });*/
+                        });
+
+                        submitFilter = function(){
+                            var action=$(this).attr("action");
+                            var tab=$("#filter_tab").val();
+                            if(tab!="" && action.indexOf("#") ==-1){
+                                action=action+tab;
+                            }
+                            $(this).attr("action",action);
+                            $(this).submit();
+                            return false;
+                        };
+
+                        $(function () {
+                            $('.date, .size').focus(function() {
+                                $(this).parent().removeClass('disabled');
+                            });
+                            $('.date, .size').focusout(function() {
+                                $(this).parent().children("input").each(function(index,ele){
+                                    if($(ele).val()!=""){
+                                        $(this).parent().removeClass('disabled');
+                                        return false;
+                                    }
+                                    $(this).parent().addClass('disabled');
+                                });
+                            });
+                            $('.date, .size').change(function() {
+
+                                $(this).parent().children("input").each(function(index,ele){
+                                    if($(ele).val()!=""){
+                                        $(this).parent().removeClass('disabled');
+                                        $(this).parent().parent().find("button").html('Disable');
+                                        return false;
+                                    }
+                                    $(this).parent().parent().find("button").html("Enable");
+                                    $(this).parent().addClass('disabled');
+                                });
+
+                            });
+
+                            $('.date').datepicker({dateFormat: 'dd-mm-yy'});
+
+                            $('.btn_filter').click(function () {
+                                var action=$(this).html();
+                                var alt="";
+                                if($(this).next().has("input:text").length==0){
+                                    alt="Enable All";
+                                }else{
+                                    alt="Enable";
+                                }
+
+                                var status;
+                                if(action=='Disable'){
+                                    $(this).html(alt);
+                                    status=false;
+                                    $(this).next().addClass('disabled');
+                                }else {
+                                    $(this).html('Disable');
+                                    status=true;
+                                    $(this).next().removeClass('disabled');
+                                }
+                                $(this).next().find(':checkbox').attr('checked', status);
+                                $(this).next().find(':text').attr('value', "");
+                                document.forms['filter_form'].submit(submitFilter);
+                                return false;
+                            });
+
+                            $('input:checkbox').click(function (e) {
+                                var disable=true;
+                                $(this).parent().children("input:checkbox").each(function(index,ele){
+                                    if($(ele).attr("checked")){
+                                        $(ele).parent().parent().parent().children("button").html('Disable');
+                                        $(ele).parent().parent().removeClass('disabled');
+                                        disable = false;
+                                    }
+                                });
+                                if(disable){
+                                    $(this).parent().parent().parent().children("button").html("Enable All");
+                                    $(this).parent().parent().addClass('disabled');
+                                }
+                                //document.forms['filter_form'].submit(submitFilter);
+                            });
+
+                        });
+
+
+                        $('#filter_form').submit(submitFilter);
+                        //$('#filter_form').submit(function() {
+                        //    var action=$(this).attr("action");
+                        //    var tab=$("#filter_tab").val();
+                        //    if(tab!="" && action.indexOf("#") ==-1){
+                        //        action=action+tab;
+                        //    }
+                        //    $(this).attr("action",action);
+                        //    $(this).submit();
+                        //    return false;
+                        //});
+
+                        $.fn.serializeObject = function()
+                        {
+                            var o = {};
+                            var a = this.serializeArray();
+                            $.each(a, function() {
+                                if (o[this.name] !== undefined) {
+                                    if (!o[this.name].push) {
+                                        o[this.name] = [o[this.name]];
+                                    }
+                                    o[this.name].push(this.value || '');
+                                } else {
+                                    o[this.name] = this.value || '';
+                                }
+                            });
+                            return o;
+                        };
+                    });
+                </script>
+            </div>
+        </div>
+
+        <div class="col-xs-8">
+            <div class="span9 result" id="result"><div class="tab-content">
+                <div class="search-result-container">
+                    <!--Dataset section-->
+                    <div class="row1">
+                        <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-blue" style="margin-right: 0px;">G
+                        </div></div>
+                        <div class="span8 main-content" style="float:right">
+                            <ul class="nav nav-tabs nav-stacked result-cell">
+                                <li><a data-content="Foxtail millet (&amp;lt;em&amp;gt;Setaria italica&amp;lt;/em&amp;gt;) (2n&amp;#x3D;18), is an annual grass grown both as cereal crop (grain production) and as forage food.  It is primarily grown in temperate, subtropical and tropical areas.  With approximately 6,000 varieties, millet is one member of the Panicoideae (grasses subfamily), which includes maize (&amp;lt;em&amp;gt;Zea mays&amp;lt;/em&amp;gt;), sorghum (&amp;lt;em&amp;gt;Sorghum bicolor&amp;lt;/em&amp;gt;), and sugar cane (&amp;lt;em&amp;gt;Saccharum officinarum&amp;lt;/em&amp;gt;).  It is a nutritious dietary staple, containing starch, proteins, and a number of vitamins and minerals, such as calcium, iron, and sodium.  It feeds nearly one-third of the world population with main daily-calories intake, and is especially prevalent in dry climates or soil-poor regions that are not suited for the cultivation of many other crops.  Millet is self-pollinating, has a short lifecycle, is small in stature, and has a small genome size; all of these useful attributes make it an invaluable functional genomics model system, and an excellent reference genome to aid in the sequencing of other larger grasses genomes." class="result-main-link left content-popup" href="http://gigadb.gigasciencejournal.com:9170/dataset/100020">Genome data from foxtail millet (&lt;em&gt;Setaria italica&lt;/em&gt;).</a></li>
+                                <li>
+                                    <strong>
+                                        <a class="result-sub-links" href="/search/new?keyword=Liu X&amp;author_id=3168">Liu X</a>; <a class="result-sub-links" href="/search/new?keyword=Quan Z&amp;author_id=651">Quan Z</a>; <a class="result-sub-links" href="/search/new?keyword=Cheng S&amp;author_id=3031">Cheng S</a>; <a class="result-sub-links" href="/search/new?keyword=Xu X&amp;author_id=3295">Xu X</a>; <a class="result-sub-links" href="/search/new?keyword=Pan S&amp;author_id=3203">Pan S</a>; <a class="result-sub-links" href="/search/new?keyword=Zeng P&amp;author_id=3320">Zeng P</a>; <a class="result-sub-links" href="/search/new?keyword=Xie M&amp;author_id=3289">Xie M</a>; <a class="result-sub-links" href="/search/new?keyword=Yue Z&amp;author_id=3316">Yue Z</a>; <a class="result-sub-links" href="/search/new?keyword=Zhan D&amp;author_id=3321">Zhan D</a>; <a class="result-sub-links" href="/search/new?keyword=Li Y&amp;author_id=3173">Li Y</a>; <a class="result-sub-links" href="/search/new?keyword=Wang J&amp;author_id=14">Wang J</a>; <a class="result-sub-links" href="/search/new?keyword=Zhao Z&amp;author_id=659">Zhao Z</a>; <a class="result-sub-links" href="/search/new?keyword=Zhang G&amp;author_id=3324">Zhang G</a>                    </strong>
+                                </li>
+                                <li class="searchID">DOI:10.5524/100020</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!--Sample section-->
+                    <div class="row1">
+                        <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-green" style="margin-right: 0px;">S
+                        </div></div>
+                        <div class="span8 main-content" style="float:right">
+                            <ul class="nav nav-tabs nav-stacked result-cell">
+                                <li><a class="result-main-link" href="http://gigadb.gigasciencejournal.com:9170/dataset/100020">Zhang gu</a></li>
+                                <li>
+                                    <strong>
+                                        Foxtail millet
+                                        NCBI taxonomy :
+                                        <a class="result-sub-links" target="_blank" href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&amp;id=4555">
+                                            4555                            </a>
+                                    </strong>
+                                </li>
+                                <li class="searchID"><a class="result-sub-links" href="http://gigadb.gigasciencejournal.com:9170/dataset/100020">DOI:10.5524/100020</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--Download File list-->
+                    <div class="row1 file-container">
+                        <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-yellow" style="margin-right: 0px;">F
+                        </div></div>
+                        <div class="span3 file-name"><a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet_scaffoldVersion2.3.fa.gz">Millet_scaffoldVersi...</a></div>
+                        <div class="span2 file-type">Sequence assembly</div>
+                        <div class="span2 file-size">109.37 MiB</div>
+                        <div class="span1 file-checkbox"><input type="checkbox"></div>
+                    </div>
+                    <div class="row1 file-container">
+                        <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-yellow" style="margin-right: 0px;">F
+                        </div></div>
+                        <div class="span3 file-name"><a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz">millet.chr.version2....</a></div>
+                        <div class="span2 file-type">Sequence assembly</div>
+                        <div class="span2 file-size">109.92 MiB</div>
+                        <div class="span1 file-checkbox"><input type="checkbox"></div>
+                    </div>
+                    <div class="row1 file-container">
+                        <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-yellow" style="margin-right: 0px;">F
+                        </div></div>
+                        <div class="span3 file-name"><a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/millet.version2.agp">millet.version2.agp</a></div>
+                        <div class="span2 file-type">Sequence assembly</div>
+                        <div class="span2 file-size">31.42 KiB</div>
+                        <div class="span1 file-checkbox"><input type="checkbox"></div>
+                    </div>
+                    <div class="row1 file-container">
+                        <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-yellow" style="margin-right: 0px;">F
+                        </div></div>
+                        <div class="span3 file-name"><a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.cds.v3.gz">Millet.fa.glean.cds....</a></div>
+                        <div class="span2 file-type">Coding sequence</div>
+                        <div class="span2 file-size">13.10 MiB</div>
+                        <div class="span1 file-checkbox"><input type="checkbox"></div>
+                    </div>
+                    <div class="row1 file-container">
+                        <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-yellow" style="margin-right: 0px;">F
+                        </div></div>
+                        <div class="span3 file-name"><a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.pep.v3.gz">Millet.fa.glean.pep....</a></div>
+                        <div class="span2 file-type">Protein sequence</div>
+                        <div class="span2 file-size">8.50 MiB</div>
+                        <div class="span1 file-checkbox"><input type="checkbox"></div>
+                    </div>
+                    <div class="row1 file-container">
+                        <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-yellow" style="margin-right: 0px;">F
+                        </div></div>
+                        <div class="span3 file-name"><a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.v3.gff">Millet.fa.glean.v3.g...</a></div>
+                        <div class="span2 file-type">Annotation</div>
+                        <div class="span2 file-size">14.04 MiB</div>
+                        <div class="span1 file-checkbox"><input type="checkbox"></div>
+                    </div>
+                </div>
+
+                <div style="clear:both;"></div>
+                <br>
+
+            </div>
+            </div>
+            <div class="row1">
+                <div class="span9 offset3" style="margin-left: 50px;height:72px;">
+                    <ul id="search-pg" class="pagination-sm pagination" style="margin: auto;width: 100%"><li class="page-item first disabled"><a href="#" class="page-link">First</a></li><li class="page-item prev disabled"><a href="#" class="page-link">Previous</a></li><li class="page-item active"><a href="#" class="page-link">1</a></li><li class="page-item next disabled"><a href="#" class="page-link">Next</a></li><li class="page-item last disabled"><a href="#" class="page-link">Last</a></li></ul>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>

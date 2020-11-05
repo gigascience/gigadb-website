@@ -1,0 +1,86 @@
+/* usercreate */
+.create-div {
+  background-color: @color-lighter-gray;
+  padding: 50px;
+  width: 650px;
+  margin: 10px auto;
+}
+.create-div .form-control {
+  height: 36px;
+}
+.create-div .col-xs-3.control-label {
+  padding-right: 12px;
+}
+.create-div label::before{
+  color: red;
+  line-height: initial;
+  padding-right: 3px;
+}
+.create-div hr {
+  margin: 30px 0 30px 0;
+}
+.create-div .button-div {
+  text-align: center;
+}
+.create-div button {
+  width: 236px;
+  height: 40px;
+  font-size: 18px;
+  text-align: center;
+}
+.create-div .form-group > span {
+  line-height: 22px;
+}
+.create-div .has-feedback .btn-group {
+  width: 100%;
+}
+.create-div .has-feedback button {
+  height: 36px;
+  font-size: 13px;
+  width: 100%;
+}
+.btn-default, .btn-default:hover {
+  border-color: @color-light-gray;
+}
+.btn-group:after {
+  content: "\f0d7";
+  font-family: FontAwesome;
+  line-height: 3;
+  position: absolute;
+  right: 11px;
+  color: @color-dark-gray;
+  z-index: 999;
+}
+.btn-group.open:after {
+  content: "\f0d8";
+  font-family: FontAwesome;
+  line-height: 3;
+  position: absolute;
+  right: 11px;
+  color: @color-dark-gray;
+  z-index: 999;
+}
+.captchadiv .has-feedback {
+  display: inline-block;
+  width: 76%;
+  float: left;
+}
+.captchadiv .input-group {
+  width: 100%;
+}
+.captchadiv .has-feedback input.form-control {
+  border-radius: 6px;
+}
+.captchadiv .input-group  img{
+  float: right;
+}
+.create-div label {
+  color: @color-warm-black;
+}
+.create-div .form-group p {
+  margin: 0;
+  color: @color-darker-gray;
+}
+.notlogged {
+  background-image: -webkit-linear-gradient(top,#cccccc,@color-dark-gray) !important;
+}

@@ -14,6 +14,7 @@ COPY images /var/www/images
 COPY index.php /var/www/index.php
 COPY js /var/www/js
 COPY less /var/www/less
+COPY style-guide /var/www/style-guide
 
 RUN apk --no-cache add openssl && \
     mkdir -vp /etc/ssl/nginx && chmod 700 /etc/ssl/nginx && \

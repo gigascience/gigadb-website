@@ -1,0 +1,66 @@
+<div class="row">
+    <div class="col-xs-8 col-xs-offset-2">
+        <div class="form well user-profile-box">
+            <form class="form-horizontal" id="EditProfile-form" action="/user/view_profile" method="post">
+                <div class="form-group">
+                    <label class="col-xs-5 control-label" for="EditProfileForm_email">Email</label>
+                    <div class="col-xs-5">
+                        <label class="profile-label" style="padding-right: 0px;">admin@gigadb.org</label>
+                        <input size="30" maxlength="128" class="profile-textbox" style="display:none" name="EditProfileForm[email]" id="EditProfileForm_email" type="text" value="admin@gigadb.org" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label" for="EditProfileForm_first_name">First Name</label>
+                    <div class="col-xs-5">
+                        <label class="profile-label" style="padding-right: 0px;">Joe</label>
+                        <input size="30" maxlength="60" class="profile-textbox" style="display:none" name="EditProfileForm[first_name]" id="EditProfileForm_first_name" type="text" value="Joe" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label" for="EditProfileForm_last_name">Last Name</label>
+                    <div class="col-xs-5">
+                        <label class="profile-label" style="padding-right: 0px;">Bloggs</label>
+                        <input size="30" maxlength="60" class="profile-textbox" style="display:none" name="EditProfileForm[last_name]" id="EditProfileForm_last_name" type="text" value="Bloggs" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label" for="EditProfileForm_affiliation">Affiliation</label>
+                    <div class="col-xs-5">
+                        <label class="profile-label" style="padding-right: 0px;">BGI</label>
+                        <input size="30" maxlength="60" class="profile-textbox" style="display:none" name="EditProfileForm[affiliation]" id="EditProfileForm_affiliation" type="text" value="BGI" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label" for="EditProfileForm_preferred_link">Link out preference</label>
+                    <div class="col-xs-5">
+                        <label class="profile-label" style="padding-right: 0px;">EBI</label>
+                    <select class="profile-textbox" style="display:none" name="EditProfileForm[preferred_link]" id="EditProfileForm_preferred_link">
+                        <option value="EBI" selected="selected">EBI</option>
+                        <option value="NCBI">NCBI</option>
+                        <option value="DDBJ">DDBJ</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="text-center">
+                        <input id="ytEditProfileForm_newsletter" disabled="disabled" type="hidden" value="0" name="EditProfileForm[newsletter]" />
+                        <input disabled="disabled" class="checkbox" style="position: relative; display: inline-block" name="EditProfileForm[newsletter]" id="EditProfileForm_newsletter" value="1" type="checkbox" />
+                        <label disabled="disabled">Add me to GigaDB's mailing list</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="text-center">
+                        <div class="controls">
+                            <a id="cancel-btn" class="btn background-btn" style="display:none">Cancel</a>
+                            <input id="save-btn" class="btn background-btn" style="display:none" type="submit" name="yt0" value="Save" />
+                        </div>
+                        <br>
+                        <button id="edit-btn" type="button" class="btn background-btn">Edit</button>
+                        <a href="/user/changePassword" class="btn background-btn">Change Password</a>
+                        <a href="/datasetSubmission/upload" class="btn background-btn">Submit new dataset</a>
+                    </div>
+                </div>
+            </form>
+        </div>                                            
+    </div>
+</div>

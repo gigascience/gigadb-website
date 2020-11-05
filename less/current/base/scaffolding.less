@@ -1,0 +1,125 @@
+//
+// Scaffolding
+// --------------------------------------------------
+
+* {
+  font-size: @font-size-base;
+  font-family: @font-family-base;
+  line-height: @line-height-base;
+}
+
+// Links
+a,
+a:focus,
+a:hover {
+  text-decoration: underline;
+  color: @link-color;
+}
+
+a.btn,
+a.btn:hover,
+a.btn:focus {
+  text-decoration: none;
+}
+
+// Not sure if this is the right place for this
+.home-tags-list > li {
+  margin-bottom: 10px;
+}
+.home-tags-list > li > .btn-default,
+.home-tags-list > li > .btn-default:hover,
+.home-tags-list > li > .btn-default:focus {
+  border-color: @color-light-gray;
+  background: @color-true-white;
+  font-size: 13px;
+  color: @color-darker-gray;
+}
+
+.logo-container {
+  padding-top: 10px !important;
+}
+.logo-container img {
+  max-width: 30px;
+  margin-left: 20px !important;
+}
+.main-content {
+  margin-left: 10px !important;
+}
+.file-container .logo-container-file {
+  padding-top: 10px !important;
+  padding-top: 5px !important;
+}
+.file-container .logo-container-file img {
+  max-width: 30px;
+  margin-left: 20px !important;
+}
+.file-container .file-name,
+.file-container .file-type,
+.file-container .file-size,
+.file-container .file-checkbox {
+  padding-top: 15px;
+  margin-left: 0px !important;
+  float: left;
+  text-align: center;
+}
+.file-container .file-name {
+  text-align: left !important;
+  margin-left: 20px !important;
+  font-size: 15px !important;
+}
+.result .nav-tabs .active a,
+.result .nav-tabs a:hover {
+  background: transparent !important;
+}
+
+.row1 {
+  margin-left: -20px;
+  *zoom: 1;
+}
+.row1:before,
+.row1:after {
+  display: table;
+  content: "";
+}
+.row1:after {
+  clear: both;
+}
+
+.result-cell li .result-main-link {
+  font-size: 17px !important;
+  color: @color-gigadb-green !important;
+}
+.result-cell li .result-main-link:hover {
+  color: #6ea23a !important;
+  background-color: transparent !important;
+}
+
+.clearfix::before, .clearfix::after {
+  content:"";
+  display: table;
+  clear: both;
+}
+
+.clearfix {
+  zoom: 1;   /*兼容IE6/7*/
+}
+
+body{
+  position:relative;
+}
+
+.page_box {
+  color: @color-gigadb-green;
+  background: @color-true-white;
+  border: solid 1px @color-gigadb-green;
+  outline:none;
+}
+
+//input {
+//  width: 3%;
+//}
+//input::-webkit-outer-spin-button,
+//input::-webkit-inner-spin-button {
+//  -webkit-appearance: none;
+//  margin: 0;
+//}

@@ -19,6 +19,7 @@ services:
       - ${APPLICATION}/assets:/var/www/assets
       - ${APPLICATION}/images:/var/www/images
       - ${APPLICATION}/css:/var/www/css
+      - ${APPLICATION}/style-guide:/var/www/style-guide
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le
     networks:
@@ -123,6 +124,7 @@ services:
         - INSTALL_GIT=true
         - INSTALL_APCU=true
         - INSTALL_MAILPARSE=true
+        - INSTALL_CSSLINT_JSHINT=true
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}

@@ -1,0 +1,47 @@
+/* nav bar */
+.base-nav-bar {
+  height: 100px;
+  border-bottom: 1px @color-light-gray solid;
+}
+.base-nav-logo-img {
+  margin: 25px 0px;
+}
+.base-nav-bar-main {
+  margin: 0px;
+  padding: 0px;
+}
+.base-nav-bar-main > li {
+  margin: 0px;
+  padding: 0px;
+}
+.base-nav-bar-main > li > a {
+  padding: 43px 20px;
+  font-size: 14px;
+  display: block;
+  color: @color-darker-gray;
+  text-decoration: none;
+}
+.base-nav-bar-main > li:last-child > a {
+  padding-right: 0px;
+}
+.base-nav-bar-main > li a:hover,
+.base-nav-bar-main > li.active > a,
+.base-nav-bar-main > li.active > a:hover {
+  color: @color-gigadb-green;
+}
+ul.base-nav-bar-main > li.dropdown > ul.dropdown-menu {
+  border-radius: 0px;
+  border-color: @color-light-gray;
+  box-shadow: none;
+}
+ul.base-nav-bar-main > li.dropdown > ul.dropdown-menu > li > a {
+  color: @color-darker-gray;
+}
+ul.base-nav-bar-main > li.dropdown > ul.dropdown-menu > li > a:hover {
+  background-color: @color-true-white;
+  color: @color-gigadb-green;
+}
+ul.base-nav-bar-main > li.dropdown:hover > ul.dropdown-menu {
+  display: block;
+  margin-top: -1px;
+}

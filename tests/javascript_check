@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Checking for Javascript errors..."
+if [[ $(jshint --verbose style-guide/js/sg-scripts.js | grep -E "E[0-9]+.$" | wc -l) -eq "0" ]]; then
+  echo "No Javascript errors detected by JSHint"
+  exit 0
+else
+  echo "JSHint detected Javascript errors - check tmp/js_errors.txt"
+  output=$(jshint --verbose style-guide/js/sg-scripts.js | grep -E "E[0-9]+.$")
+  echo "$output" > "tmp/js_errors.txt"
+  exit 1
+fi

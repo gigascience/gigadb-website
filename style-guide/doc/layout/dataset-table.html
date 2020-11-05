@@ -1,0 +1,253 @@
+<div class="container">
+    <section>
+        <ul class="nav nav-tabs nav-border-tabs" role="tablist">
+            <li role="presentation" class="active" id="p-sample">
+                <a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a>
+            </li>
+            <li role="presentation" id="p-file">
+                <a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a>
+            </li>
+            <li role="presentation" id="p-history">
+                <a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a>
+            </li>
+        </ul>
+    
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="sample">
+                <a id="samples_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#samples_settings" href="#">
+                    <span class="glyphicon glyphicon-adjust"></span>
+                    Table Settings
+                </a>
+                <table id="samples_table" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th title="User-specified name or identifier of the sample object. Note: a DNA sample and an RNA sample from the same donor are classed as two separate samples.">Sample ID</th>
+                        <th title="A well recognized commonly used name of the species, usually this is a synonym held in the NCBI taxonomy for the tax ID provided.">Common Name</th>
+                        <th title="The scientific binomial name of the species, usually this is in direct accordance with the NCBI taxonomy ID provided.">Scientific Name</th>
+                        <th title="This is a list of Key:Value pairs, where the Keys are from our Attributes list, and the Value is the specific value for the sample. See our metadata guide for the Attributes list with definitions of all available attributes.">Sample Attributes</th>
+                        <th title="Species taxonomy ID of the sampled species, we currently use the NCBI taxonomy as the source of this identifier.">Taxonomic ID</th>
+                        <th title="The preferred display name used by NCBI taxonomy for the tax ID provided">Genbank Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Zhang gu</td>
+                            <td>Foxtail millet</td>
+                            <td>Setaria italica</td>
+                            <td></td>
+                            <td>
+                                <a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&amp;id=4555">4555</a>
+                            </td>
+                            <td>foxtail millet</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="files">
+                <span class="glyphicon glyphicon-adjust"></span>
+                <a target="_blank" class="button" title="FTP site" href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/">(FTP site)</a>
+                <a id="files_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#files_settings" href="#">
+                    <span class="glyphicon glyphicon-adjust"></span>
+                    Table Settings
+                </a>
+                <br>
+                <br>
+                <table id="files_table" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th title="The name of the file. Click header to sort by A-Z/Z-A.">File Name</th>
+                            <th title="Short description of file contents. Click header to sort by A-Z/Z-A.">Description</th>
+                            <th title="Name or ID of sample used to generate this file.">Sample ID</th>
+                            <th title="The type of data in the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual data types.  Click header to sort by A-Z/Z-A.">Data Type</th>
+                            <th title="The format of the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual file formats. Click header to sort by A-Z/Z-A.">File Format</th>
+                            <th title="The size on disk of the file. Click header to sort by A-Z/Z-A.">Size</th>
+                            <th title="Date of release of the file, see the history log for details of any changes made after initial release date. Click header to sort by A-Z/Z-A.">Release Date</th>
+                            <th title="Additional information about the file presented as Key:Value pairs.">File Attributes</th>
+                            <th title="The direct link to the files server location.">Download</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div title="">
+                                <a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.cds.v3.gz" target='_blank'>Millet.fa.glean.cds.v3.gz</a>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="js-short-5106">Zhang gu</span>
+                        </td>
+                        <td>Coding sequence</td>
+                        <td>FASTA</td>
+                        <td>13.10 MiB</td>
+                        <td>2011-11-12</td>
+                        <td>
+                            MD5 checksum: 27ba3ccd6094d221a820543f9c87fc8d<br>
+                        </td>
+                        <td>
+                            <a class="download-btn js-download-count" href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.cds.v3.gz">&nbsp;</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div title="">
+                                <a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.pep.v3.gz" target='_blank'>Millet.fa.glean.pep.v3.gz</a>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="js-short-5107">Zhang gu</span>
+                        </td>
+                        <td>Protein sequence</td>
+                        <td>FASTA</td>
+                        <td>8.50 MiB</td>
+                        <td>2011-11-12</td>
+                        <td>
+                            MD5 checksum: dc2e782a81d5ca78833637e0fd2fdb56
+                            <br>
+                        </td>
+                        <td>
+                            <a class="download-btn js-download-count" href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.pep.v3.gz">&nbsp;</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div title="">
+                                <a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.v3.gff" target='_blank'>Millet.fa.glean.v3.gff</a>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="js-short-5108">Zhang gu</span>
+                        </td>
+                        <td>Annotation</td>
+                        <td>GFF</td>
+                        <td>14.04 MiB</td>
+                        <td>2011-11-12</td>
+                        <td>
+                            MD5 checksum: b5c8fecc5a51141f8ac0f8db1cd1646b
+                            <br>
+                        </td>
+                        <td>
+                            <a class="download-btn js-download-count" href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.v3.gff">&nbsp;</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div title="">
+                                <a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet_scaffoldVersion2.3.fa.gz" target='_blank'>Millet_scaffoldVersion2.3.fa.gz</a>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="js-short-5103">Zhang gu</span>
+                        </td>
+                        <td>Sequence assembly</td>
+                        <td>FASTA</td>
+                        <td>109.37 MiB</td>
+                        <td>2011-11-12</td>
+                        <td>
+                            MD5 checksum: 57d285e88d163d12da2915c2b3ec7e39
+                            <br>
+                        </td>
+                        <td>
+                            <a class="download-btn js-download-count" href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet_scaffoldVersion2.3.fa.gz">&nbsp;</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div title="">
+                                <a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz" target='_blank'>millet.chr.version2.3.fa.gz</a>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="js-short-5104">Zhang gu</span>
+                        </td>
+                        <td>Sequence assembly</td>
+                        <td>FASTA</td>
+                        <td>109.92 MiB</td>
+                        <td>2011-11-12</td>
+                        <td>
+                            MD5 checksum: d8ab90f61de63bbbf6d95617f9cdad1c
+                            <br>
+                        </td>
+                        <td>
+                            <a class="download-btn js-download-count" href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz">&nbsp;</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div title="">
+                                <a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/millet.version2.agp" target='_blank'>millet.version2.agp</a>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="js-short-5105">Zhang gu</span>
+                        </td>
+                        <td>Sequence assembly</td>
+                        <td>AGP</td>
+                        <td>31.42 KiB</td>
+                        <td>2011-11-12</td>
+                        <td>
+                            MD5 checksum: e149a0a30f90f5bda3d35675acee498e
+                            <br>
+                        </td>
+                        <td>
+                            <a class="download-btn js-download-count" href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/millet.version2.agp">&nbsp;</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div title="">
+                                <a href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/readme.txt" target='_blank'>readme.txt</a>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="js-short-5102">Zhang gu</span>
+                        </td>
+                        <td>Readme</td>
+                        <td>TEXT</td>
+                        <td>526 B</td>
+                        <td>2011-11-12</td>
+                        <td>
+                            MD5 checksum: ef4d6433dfd78de1023e3d040f2c8c3f
+                            <br>
+                        </td>
+                        <td>
+                            <a class="download-btn js-download-count" href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/readme.txt">&nbsp;</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="btn_click" onclick="goToPage()">
+                    <strong>Go to page</strong>
+                </button>
+                <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()">
+                <a class="color-background">
+                    <strong> of 1</strong>
+                </a>
+            </div>
+    
+            <div role="tabpanel" class="tab-pane" id="history">
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>October 17, 2015</td>
+                            <td>File Millet.fa.glean.pep.v3.gz updated</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
