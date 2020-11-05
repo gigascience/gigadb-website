@@ -8,12 +8,48 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 <?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' => $files->getDataProvider()->getPagination()->getPageSize()));?>
 
 <style>
-    select::-ms-expand {display: none; }
-    select{
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
+    .drop-citation-btn {
+        color: white;
+        font-size: 12px;
+        border: none;
+        cursor: pointer;
+        background-color: #099242;
+        padding: 5px 10px;
+        border-radius: 4px 4px 4px 4px;
+        text-decoration: none;
     }
+
+    .drop-citation-btn:hover, .drop-citation-btn:focus {
+        background-color: #087A38;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .citation-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 120px;
+        overflow: auto;
+        border:  1px solid darkseagreen;
+        border-radius: 4px 4px 4px 4px;
+        z-index: 1; /*stack in front */
+    }
+
+    .citation-content a {
+        color: black;
+        padding: 8px 14px;
+        text-decoration: none;
+        display: block;
+        font-size: 13px;
+    }
+
+    .dropdown a:hover {background-color: #F3FAF6;}
+
+    .show {display: block;}
 </style>
 
 <div class="content">
@@ -43,12 +79,20 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <div class="color-background color-background-block dataset-color-background-block">
                                 <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?>">http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?></a></p>
                                 <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge"><?= $mainSection->getReleaseDetails()['full_doi']; ?></span></a></p>
-                                <select name="cite-source" id="cite-source" onclick="getCitation()">
-                                    <option value="dataset">Cite Dataset</option>
-                                    <option value="endnote">EndNote XML</option>
-                                    <option value="ris">RIS</option>
-                                    <option value="bibtex">BibTeX</option>
-                                </select>
+<!--                                <select name="cite-source" id="cite-source" onclick="getCitation()">-->
+<!--                                    <option value="dataset">Cite Dataset</option>-->
+<!--                                    <option value="endnote">EndNote XML</option>-->
+<!--                                    <option value="ris">RIS</option>-->
+<!--                                    <option value="bibtex">BibTeX</option>-->
+<!--                                </select>-->
+                                <div class="dropdown">
+                                    <button onclick="showCitation()" class="drop-citation-btn">Cite Dataset</button>
+                                    <div id="citationDropdown" class="citation-content">
+                                        <a href='http://data.datacite.org/application/x-datacite+text/<?= $mainSection->getReleaseDetails()['full_doi'];?>'>EndNote XML</a>
+                                        <a href='http://data.datacite.org/application/x-research-info-systems/<?= $mainSection->getReleaseDetails()['full_doi'];?>'>RIS</a>
+                                        <a href='http://data.datacite.org/application/x-bibtex/<?= $mainSection->getReleaseDetails()['full_doi'];?>'>BibTeX</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -793,23 +837,22 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
 
 </script>
 <script>
-    function getCitation() {
-         var source = document.getElementById("cite-source");
-         source.addEventListener("click", function () {
-             // console.log(source.value);
-             if(source.value === "endnote") {
-                 var url_endnote = 'http://data.datacite.org/application/x-datacite+text/<?= $mainSection->getReleaseDetails()['full_doi'];?>';
-                 console.log("Endnote citation was chosen!!!");
-                 window.location.assign(url_endnote);
-             } else if (source.value === "ris") {
-                 var url_ris = 'http://data.datacite.org/application/x-research-info-systems/<?= $mainSection->getReleaseDetails()['full_doi'];?>';
-                 console.log("RIS citation was chosen!!!");
-                 window.location.assign(url_ris);
-             } else if (source.value === "bibtex") {
-                 var url_bibtex = 'http://data.datacite.org/application/x-bibtex/<?= $mainSection->getReleaseDetails()['full_doi'];?>';
-                 console.log("BibTeX citation was chosen!!!");
-                 window.location.assign(url_bibtex);
-             }
-         })
+    /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+    function showCitation() {
+        document.getElementById("citationDropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.drop-citation-btn')) {
+            var dropdowns = document.getElementsByClassName("citation-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
     }
 </script>
