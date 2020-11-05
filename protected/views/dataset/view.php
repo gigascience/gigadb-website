@@ -23,7 +23,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
         background-color: #087A38;
     }
 
-    .dropdown {
+    .citation-dropdown-box {
         position: relative;
         display: inline-block;
     }
@@ -47,7 +47,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
         font-size: 13px;
     }
 
-    .dropdown a:hover {background-color: #F3FAF6;}
+    .citation-dropdown-box a:hover {background-color: #F3FAF6;}
 
     .show {display: block;}
 </style>
@@ -79,13 +79,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <div class="color-background color-background-block dataset-color-background-block">
                                 <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?>">http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?></a></p>
                                 <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge"><?= $mainSection->getReleaseDetails()['full_doi']; ?></span></a></p>
-<!--                                <select name="cite-source" id="cite-source" onclick="getCitation()">-->
-<!--                                    <option value="dataset">Cite Dataset</option>-->
-<!--                                    <option value="endnote">EndNote XML</option>-->
-<!--                                    <option value="ris">RIS</option>-->
-<!--                                    <option value="bibtex">BibTeX</option>-->
-<!--                                </select>-->
-                                <div class="dropdown">
+                                <div class="citation-dropdown-box">
                                     <button onclick="showCitation()" class="drop-citation-btn">Cite Dataset</button>
                                     <div id="citationDropdown" class="citation-content">
                                         <a href='http://data.datacite.org/application/x-datacite+text/<?= $mainSection->getReleaseDetails()['full_doi'];?>'>EndNote XML</a>
