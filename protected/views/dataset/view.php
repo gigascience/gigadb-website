@@ -7,44 +7,6 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 <?php $this->renderPartial('_sample_setting',array('columns' => $columns, 'pageSize' => $samples->getDataProvider()->getPagination()->getPageSize() )); ?>
 <?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' => $files->getDataProvider()->getPagination()->getPageSize()));?>
 
-<style>
-    .drop-citation-btn {
-        color: white;
-        font-size: 12px;
-        border: none;
-        cursor: pointer;
-        background-color: #099242;
-        padding: 5px 10px;
-        border-radius: 4px 4px 4px 4px;
-        text-decoration: none;
-    }
-    .drop-citation-btn:hover, .drop-citation-btn:focus {
-        background-color: #087A38;
-    }
-    .citation-dropdown-box {
-        position: relative;
-        display: inline-block;
-    }
-    .citation-content {
-        display: none;
-        position: absolute;
-        background-color: white;
-        min-width: 120px;
-        overflow: auto;
-        border:  1px solid darkseagreen;
-        border-radius: 4px 4px 4px 4px;
-        z-index: 1; /*stack in front */
-    }
-    .citation-content a {
-        color: black;
-        padding: 8px 14px;
-        text-decoration: none;
-        display: block;
-        font-size: 12px;
-    }
-    .citation-dropdown-box a:hover {background-color: #F3FAF6;}
-</style>
-
 <div class="content">
     <div class="container">
                 <section></section>
