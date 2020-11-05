@@ -346,7 +346,7 @@ Feature: a user visit the dataset page
 		And I am on "/dataset/101001"
 		And I press "Cite Dataset"
 		When I click on the "Text" button
-		Then I should be on "https://data.crosscite.org/text/x-bibliography/10.5072/101001"
+		Then I should be on "http://data.datacite.org/text/x-bibliography/10.5072/101001"
 
 	@ok @javascript @pr521
 	Scenario: To get RIS file after clicking the RIS in the citation box
