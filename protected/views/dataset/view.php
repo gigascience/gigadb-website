@@ -37,7 +37,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                 <div class="citation-dropdown-box">
                                     <button onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></button>
                                     <div id="citationDropdown" class="citation-content">
-                                        <a href='http://data.datacite.org/application/x-datacite+text/<?= $mainSection->getReleaseDetails()['full_doi'];?>'>Text</a>
+                                        <a href='https://data.crosscite.org/text/x-bibliography/<?= $mainSection->getReleaseDetails()['full_doi'];?>'>Text</a>
                                         <a href='http://data.datacite.org/application/x-research-info-systems/<?= $mainSection->getReleaseDetails()['full_doi'];?>'>RIS</a>
                                         <a href='http://data.datacite.org/application/x-bibtex/<?= $mainSection->getReleaseDetails()['full_doi'];?>'>BibTeX</a>
                                     </div>
