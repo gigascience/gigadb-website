@@ -347,6 +347,7 @@ Feature: a user visit the dataset page
 		And I press "Cite Dataset"
 		When I click on the "Text" button
 		Then I should be on "http://data.datacite.org/text/x-bibliography/10.5072/101001"
+		And I should see "The resource you are looking for doesn't exist."
 
 	@ok @javascript @pr521
 	Scenario: To get RIS file after clicking the RIS in the citation box
