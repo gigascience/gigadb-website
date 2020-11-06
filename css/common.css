@@ -2135,4 +2135,4 @@ input::-webkit-inner-spin-button {
     display: block;
     font-size: 12px;
 }
-.citation-dropdown-box a:hover {background-color: #F3FAF6;}
+.citation-content a:hover {background-color: #F3FAF6;}
