@@ -40,6 +40,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     <a id="citeText" href='http://data.datacite.org/text/x-bibliography/<?php echo $mainSection->getReleaseDetails()['full_doi'];?>' target="_blank">Text</a>
                                     <a id="citeRis" href='http://data.datacite.org/application/x-research-info-systems/<?php echo $mainSection->getReleaseDetails()['full_doi'];?>' target="_self">RIS</a>
                                     <a id="citeBibTeX" href='http://data.datacite.org/application/x-bibtex/<?php echo $mainSection->getReleaseDetails()['full_doi'];?>' target="_self">BibTeX</a>
+                                    <a id="citeEndNote" href="#" target="_self">EndNote</a>
                                 </div>
                             </div>
                         </div>
