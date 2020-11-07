@@ -16,7 +16,6 @@ return CMap::mergeArray(
 			 // uncomment the following to provide test database connection
 			'db'=>array(
 				'connectionString'=>"pgsql:dbname={$testdb['database']};host={$testdb['host']}",
-				'driverMap' => array('pgsql' => 'CUnitTestPgsqlSchema'),
 			),
 
 		),

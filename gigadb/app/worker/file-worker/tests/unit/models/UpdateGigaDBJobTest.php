@@ -42,6 +42,16 @@ class UpdateGigaDBJobTest extends \Codeception\Test\Unit
           ];
     }
 
+    public function _before()
+    {
+        Yii::$app->db->createCommand("SELECT setval(pg_get_serial_sequence('file', 'id'), coalesce(max(id),0) + 1, false) FROM file;")->execute();
+    }
+
+    public function _after()
+    {
+        // Yii::$app->db->createCommand()->delete('file', 'status = 0')->execute();
+    }
+
     public function testSaveFiles()
     {
         $update = new UpdateGigaDBJob();
