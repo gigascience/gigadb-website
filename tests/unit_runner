@@ -8,7 +8,7 @@ source .env
 set +a
 
 # before running tests, run migration for test database first (GigaDB)
-docker-compose run --rm application ./protected/yiic_test migrate --interactive=0
+docker-compose run --rm application ./protected/yiic migrate --connectionID=testdb --migrationPath=application.migrations.schema --interactive=0
 # running javascript tests for GigaDB
 docker-compose run --rm js npm test
 # running unit tests for GigaDB, make sure to reference the appropriate bootstrap as unit and functional tests have different ones

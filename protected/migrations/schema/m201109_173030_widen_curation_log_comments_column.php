@@ -1,6 +1,6 @@
 <?php
 
-class m191224_025216_widen_curation_log_comments_column extends CDbMigration
+class m201109_173030_widen_curation_log_comments_column extends CDbMigration
 {
 	public function up()
 	{
