@@ -67,6 +67,8 @@ tmp
 files/html/help.html
 features.txt
 features.xml
+sql/gigadb_testdata.pgdmp
+
 .terraform
 terraform.tfstate*
 output

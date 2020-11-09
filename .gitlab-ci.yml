@@ -211,7 +211,9 @@ test_run:
     # generate config for File upload wizard webapp
     - docker-compose run --rm fuw-config
     # Generate Yii migration scripts
-    - docker-compose up csv-to-migrations      
+    - docker-compose up csv-to-migrations
+    # Setup test db
+    - ./ops/scripts/setup_testdb.sh      
     # build the nginx container
     # - docker-compose build web
     # starting two webapps: gigadb website and File Upload Wizard Admin, then the web server
