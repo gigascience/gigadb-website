@@ -4,7 +4,7 @@ Feature: Add the metadata schema on dataset page to allow Hypothesis to parse ci
   I want the Hypothesis annotation tool to recognise a GigaDB dataset page url as an alias of its DOI
   So that I can correctly cite it irrespective of which website it appears on or I annotate from
 
-  @wip @javascript @issue-85
+  @ok @javascript @issue-85
   Scenario: Go to dataset page and there is a meta-tag with DOI
     Given I am not logged in to Gigadb web site
     When I go to "/dataset/100006"
