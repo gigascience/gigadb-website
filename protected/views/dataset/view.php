@@ -33,9 +33,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <p class="dataset-release-date-text">Dataset type:  <?= $mainSection->getHeadline()['types'];?> <br> Data released on <?= $mainSection->getHeadline()['release_date'] ?></p>
                             <div class="color-background color-background-block dataset-color-background-block">
                                 <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?>">http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?></a></p>
-                                <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge"><?= $mainSection->getReleaseDetails()['full_doi']; ?></span></a></p>
-                                <div class="citation-dropdown-box"></div>
-                                <button onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></button>
+                                <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge"><?= $mainSection->getReleaseDetails()['full_doi']; ?></span></a><button onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></button></p>
                                 <div id="citationDropdown" class="citation-content">
                                     <a id="citeText" href='http://data.datacite.org/text/x-bibliography/<?php echo $mainSection->getReleaseDetails()['full_doi'];?>' target="_blank">Text</a>
                                     <a id="citeRis" href='http://data.datacite.org/application/x-research-info-systems/<?php echo $mainSection->getReleaseDetails()['full_doi'];?>' target="_self">RIS</a>
