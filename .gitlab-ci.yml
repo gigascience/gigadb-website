@@ -245,7 +245,7 @@ test_run:
     - chmod -R 777 $DATA_SAVE_PATH/fuw/repo
     - chmod -R 777 $DATA_SAVE_PATH/fuw/credentials
     - cd $APPLICATION
-    - ./tests/all_and_coverage
+    - ./tests/functional_runner
     # - docker-compose run --rm application ./protected/yiic migrate --interactive=0
     # - docker-compose exec -T console /app/yii_test migrate --interactive=0
     # - docker-compose exec -T console /app/yii migrate --interactive=0

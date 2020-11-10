@@ -4,7 +4,7 @@ set -e
 set -u
 
 # before running tests, run migration for main database first (GigaDB)
-docker-compose run --rm application ./protected/yiic migrate --interactive=0
+docker-compose run --rm application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.schema --interactive=0
 # before running tests, run migration for main database first (FUW)
 docker-compose exec -T console /app/yii migrate --interactive=0
 # running functional tests for GigaDB, make sure to reference the appropriate bootstrap, so database can be loaded and restored properly
