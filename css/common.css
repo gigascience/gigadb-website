@@ -2113,8 +2113,7 @@ input::-webkit-inner-spin-button {
     position: relative;
     right: -10px;
 }
-.drop-citation-btn:hover, .drop-citation-btn:focus {
-    background-color: #087A38;
+.drop-citation-btn:focus {
     outline: none;
 }
 .citation-content {
