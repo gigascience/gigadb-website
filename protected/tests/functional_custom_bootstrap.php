@@ -39,6 +39,8 @@ print_r("Loading test database... ".PHP_EOL);
 // GigadbWebsiteContext::call_pg_terminate_backend($db_name);
 // GigadbWebsiteContext::recreateDB($db_name);
 exec("pg_restore -h $db_host -U $db_user -d $db_name --clean --no-owner -v /var/www/sql/gigadb_testdata.pgdmp 2>&1",$output);
+print_r($output);
+
 GigadbWebsiteContext::containerRestart();
 
 // After hooks for our functional tests
