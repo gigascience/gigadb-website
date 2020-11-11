@@ -84,7 +84,7 @@ before_script:
 
 after_script:
   # - docker-compose ps
-  - docker-compose logs database
+  # - docker-compose logs database
   # - docker-compose logs tusd
   # - docker-compose exec -T tusd ls -alrt /var/repo/
   # - docker-compose exec -T tusd ls -alrt /var/repo/000007/
@@ -92,11 +92,11 @@ after_script:
   # - docker-compose exec -T web ls -alrt /etc/nginx/sites-available
   # - docker-compose logs fuw-admin
   # - docker-compose top
-  - docker-compose logs gigadb
-  - docker-compose logs application
-  - docker-compose run --rm test  bash -c "pg_dump -h database -U gigadb -d gigadb > /var/www/tmp/gigadb_snapshot.sql"
-  - docker-compose run --rm test  bash -c "pg_dump -h database -U fuwdb -d fuwdb > /var/www/tmp/fuwdb_snapshot.sql"
-  - docker-compose run --rm test  bash -c "pg_dump -h database -U fuwdb -d fuwdb_test > /var/www/tmp/fuwdb_test_snapshot.sql"
+  # - docker-compose logs gigadb
+  # - docker-compose logs application
+  # - docker-compose run --rm test  bash -c "pg_dump -h database -U gigadb -d gigadb > /var/www/tmp/gigadb_snapshot.sql"
+  # - docker-compose run --rm test  bash -c "pg_dump -h database -U fuwdb -d fuwdb > /var/www/tmp/fuwdb_snapshot.sql"
+  # - docker-compose run --rm test  bash -c "pg_dump -h database -U fuwdb -d fuwdb_test > /var/www/tmp/fuwdb_test_snapshot.sql"
   # - cat $APPLICATION/.env
   # - cat $APPLICATION/.secrets
   # - echo $DOCKER_HOST
@@ -247,8 +247,7 @@ test_run:
     - chmod -R 777 $DATA_SAVE_PATH/fuw/repo
     - chmod -R 777 $DATA_SAVE_PATH/fuw/credentials
     - cd $APPLICATION
-    - ./tests/unit_runner
-    - ./tests/functional_runner
+    - ./tests/all_and_coverage
     # - docker-compose run --rm application ./protected/yiic migrate --interactive=0
     # - docker-compose exec -T console /app/yii_test migrate --interactive=0
     # - docker-compose exec -T console /app/yii migrate --interactive=0
