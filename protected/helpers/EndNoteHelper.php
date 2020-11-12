@@ -4,15 +4,22 @@
  *
  * Class EndNoteHelper
  *
+ * The followings are the available model relations:
+ * @property Dataset $dataset
  *
  */
 
 class EndNoteHelper
 {
-    public static function getRecords(string $full_doi)
+    public static function getRecords($full_doi)
     {
-        $identifier = explode("/", $full_doi);
-        return $identifier[1];
+        $splitFull = explode("/", $full_doi);
+        $identifier = $splitFull[1];
+        $dataset = Dataset::model()->findAllByAttributes(array("identifier"=>'100002'));
+//        $dataset = Dataset::model()->findAll($criteria);
+        file_put_contents('model.log', print_r($dataset, true));
+
+        return $identifier;
 
     }
 

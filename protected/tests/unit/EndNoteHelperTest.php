@@ -6,10 +6,10 @@ class EndNoteHelperTest extends CDbTestCase
 {
     public function testGetCorrectIdentifier()
     {
-        $full_doi = "10.5524/101001";
-        $identifier = "101001";
+        $full_doi = "10.5524/100002";
+        $identifier = "100002";
 
-        $this->assertEquals($identifier, \EndNoteHelperTest::getRecords($full_doi));
+        $this->assertEquals($identifier, \EndNoteHelper::getRecords($full_doi));
 
     }
 
