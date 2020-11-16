@@ -147,6 +147,7 @@ RUN if [ ${INSTALL_TIDEWAYS_XHPROF} = true ]; then \
     cd /usr/local/src/ && \
     tar xzvf /usr/local/src/xhgui.tar.gz && \
     cd xhgui-0.8.1 && \
+    apt-get install -y git && \
     composer install && \
     echo "auto_prepend_file=/usr/local/src/xhgui-0.8.1/external/header.php" > /usr/local/etc/php/conf.d/xhgui.ini \
 ;fi
