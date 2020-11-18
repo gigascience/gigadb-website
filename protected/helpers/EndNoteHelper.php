@@ -15,12 +15,11 @@ class EndNoteHelper
     {
         $splitFull = explode("/", $full_doi);
         $identifier = $splitFull[1];
-        $dataset = Dataset::model()->findAllByAttributes(array("identifier"=>'100002'));
+        $dataset = Dataset::model()->findAllByAttributes(array("identifier"=>'100243'));
 //        $dataset = Dataset::model()->findAll($criteria);
         file_put_contents('model.log', print_r($dataset, true));
 
         return $identifier;
 
     }
-
 }
