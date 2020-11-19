@@ -217,13 +217,13 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         $doi = "200001";
         $this->filedrop->setDOI($doi);
         $count = Upload::find()
-            ->where(['status' => 'archived'])
+            ->where(['status' => Upload::STATUS_ARCHIVED])
             ->count();
         $this->assertEquals(0, $count);
         $result = $this->filedrop->removeUploads();
         $this->assertEquals(2,$result);
         $count = Upload::find()
-            ->where(['status' => 'archived'])
+            ->where(['status' => Upload::STATUS_ARCHIVED])
             ->count();
         $this->assertEquals(2, $count);
 
