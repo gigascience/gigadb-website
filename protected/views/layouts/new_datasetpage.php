@@ -6,7 +6,7 @@
     <meta name="language" content="en" />
     <meta name="robots" content="noindex">
     <meta name="googlebot" content="noindex">
-    <meta name="citation_doi" content="<?php echo $mainSection->getReleaseDetails()['full_doi']; ?>">
+    <meta name="citation_doi" content="<?php echo CHtml::encode($this->fullDOI); ?>">
 
     <?php if ($metaData['redirect']) {
             Yii::app()->clientScript->registerMetaTag("5;url={$metaData['redirect']}", null, 'refresh');
