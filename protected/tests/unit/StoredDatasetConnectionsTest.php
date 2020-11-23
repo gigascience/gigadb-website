@@ -139,19 +139,17 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 						[
 							'GET', 'https://doi.org/10.1186/gb-2012-13-10-r100', [
 							    'headers' => [
-							        'style' => 'apa',
 							        'Accept' => 'text/x-bibliography',
 							    ],
-							    'connect_timeout' => 5
+							    'connect_timeout' => 30
 							]
 						],
 						[
 							'GET', 'https://doi.org/10.1038/nature10158', [
 							    'headers' => [
-							        'style' => 'apa',
 							        'Accept' => 'text/x-bibliography',
 							    ],
-							    'connect_timeout' => 5
+							    'connect_timeout' => 30
 							]
 						]
 					)

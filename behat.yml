@@ -38,7 +38,7 @@ local:
   suites:
     default:
       filters:
-        tags: "@ok&&~@affiliate-login"
+        tags: "@ok&&~@affiliate-login&&~@timeout-prone"
 
 ci:
   suites:

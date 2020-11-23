@@ -98,13 +98,12 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
 			try {
 				$response = $this->_web->request('GET', 'https://doi.org/'. $result['identifier'], [
 									    'headers' => [
-									        'style' => 'apa',
 									        'Accept' => 'text/x-bibliography',
 									    ],
-									    'connect_timeout' => 5
+									    'connect_timeout' => 30
 									]);
 			}
-			catch(RequestException $e) {
+			catch(GuzzleException $e) {
 				Yii::log( Psr7\str($e->getRequest()) , "error");
 			    if ($e->hasResponse()) {
 			        Yii::log( Psr7\str($e->getResponse()), "error");
