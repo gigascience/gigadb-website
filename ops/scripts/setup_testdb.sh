@@ -8,9 +8,11 @@ set -u
 
 # create database if not existing
 docker-compose run --rm test bash -c "psql -h database -U gigadb -c 'create database gigadb_test'" || true
-# set gigadb env variables to point to test database
 
-# generate migrations and run them
+# generate migrations 
+docker run -v `pwd`:/var/www node:14.9.0-buster bash -c "node /var/www/ops/scripts/csv_yii_migration.js test"
+
+# and run them
 docker-compose run --rm  application ./protected/yiic migrate to 300000_000000 --connectionID=testdb --migrationPath=application.migrations.admin --interactive=0
 docker-compose run --rm  application ./protected/yiic migrate mark 000000_000000 --connectionID=testdb --interactive=0
 docker-compose run --rm  application ./protected/yiic migrate --connectionID=testdb --migrationPath=application.migrations.schema --interactive=0
