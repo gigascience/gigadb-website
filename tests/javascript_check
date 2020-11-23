@@ -8,6 +8,6 @@ if [[ $(jshint --verbose style-guide/js/sg-scripts.js | grep -E "E[0-9]+.$" | wc
 else
   echo "JSHint detected Javascript errors - check tmp/js_errors.txt"
   output=$(jshint --verbose style-guide/js/sg-scripts.js | grep -E "E[0-9]+.$")
-  echo "$output" > "tmp/js_errors.txt"
+  echo "$output" > "/var/www/tmp/js_errors.txt"
   exit 1
 fi
