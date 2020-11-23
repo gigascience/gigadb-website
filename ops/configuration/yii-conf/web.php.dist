@@ -1,12 +1,18 @@
 <?php
 
+$params = array_merge(
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php'
+);
+
 return [
     'id' => 'GigaDB Web Site',
     'basePath' => '/var/www',
     'components' => [
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            'useFileTransport' => false,
+            'useFileTransport' => true,
+            'fileTransportPath'=>'/var/www/protected/runtime/mail',
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'encryption' => 'ssl',
@@ -16,6 +22,15 @@ return [
                 'password' => '${SERVER_EMAIL_PASSWORD}',
             ],
         ],
+        'jwt' => [
+            'class' => 'sizeg\jwt\Jwt',
+            'key'   => $params['jwt_key'],
+        ],
+        'fs' => [
+            'class' => 'creocoder\flysystem\LocalFilesystem',
+            'path' => '@webroot/files',
+        ],        
     ],
+    'params' => $params,
 ];
 ?>
