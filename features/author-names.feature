@@ -1,4 +1,4 @@
-@author-names-display @issue-80 @issue-81 @issue-82 @ok-docker
+@author-names-display @issue-80 @issue-81 @issue-82 @ok-docker @timeout-prone
 Feature: Standardizing the display of names of a paper's authors
 	As a Gigascience editor,
 	I want the name of the authors of papers to be the same between Gigascience Journal and GigaDB.org

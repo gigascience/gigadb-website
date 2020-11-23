@@ -66,6 +66,7 @@ services:
       - ${APPLICATION}/files:/var/www/files
       - ${APPLICATION}/fonts:/var/www/fonts
       - ${APPLICATION}/js:/var/www/js
+      - ${APPLICATION}/mail:/var/www/mail
       - ${APPLICATION}/less:/var/www/less
       - ${APPLICATION}/css:/var/www/css
       - ${APPLICATION}/sql:/var/www/sql
