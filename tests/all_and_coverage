@@ -8,8 +8,8 @@ set +a
 
 ./tests/unit_runner
 ./tests/functional_runner
-./tests/css_check
-./tests/javascript_check
+docker-compose run --rm test ./tests/css_check
+docker-compose run --rm test ./tests/javascript_check
 ./tests/acceptance_runner ci-js
 ./tests/coverage_runner
 
