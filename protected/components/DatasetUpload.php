@@ -80,7 +80,7 @@ class DatasetUpload extends yii\base\BaseObject
 	 */
 	public function setStatusToDataAvailableForReview(string $content): bool
 	{
-		$statusChanged = $this->_datasetDAO->transitionStatus("UserUploadingData","DataAvailableForReview");
+		$statusChanged = $this->_datasetDAO->transitionStatus("UserUploadingData","DataAvailableForReview") || $this->_datasetDAO->transitionStatus("DataPending","DataAvailableForReview");
 		if ($statusChanged) {
 			$emailSent = $this->_fileUploadSrv->emailSend(
 				$this->_config["sender"], 

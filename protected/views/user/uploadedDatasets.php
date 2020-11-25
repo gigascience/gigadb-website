@@ -82,7 +82,7 @@
                                             <a class="update btn" title="Update" href=<? echo "/datasetSubmission/datasetManagement/id/" . $data[$i]->id ?> >Update</a>
                                             <a class="js-delete-dataset btn" did="<?=$data[$i]->id?>" title="Delete">
                                        Delete</a>
-                                            <?php if ($data[$i]->upload_status == "UserUploadingData") { 
+                                            <?php if ($data[$i]->upload_status === "UserUploadingData" || $data[$i]->upload_status === "DataPending") { 
                                             echo CHtml::link('Upload Files', array('/authorisedDataset/uploadFiles', 'id'=>$data[$i]->identifier), array('class' => 'upload btn'));
                                             } ?>
                                         </div>
