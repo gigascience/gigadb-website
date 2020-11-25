@@ -10,8 +10,18 @@ Background:
 	And filedrop account for DOI "000007" does exist
 
 @ok
-Scenario: Upload files button when dataset has appropriate status
+Scenario: Upload files button when dataset has appropriate status (UserUploadingData)
 	Given I sign in as the user "Artie" "Dodger"
+	And I wait "2" seconds
+	When I go to "/user/view_profile#submitted"
+	Then I should see "Your profile page"
+	And the "Your Uploaded Datasets" tab is active
+	And I should see a "Upload Files" link
+
+@ok
+Scenario: Upload files button when dataset has appropriate status (DataPending)
+	Given a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "DataPending"
+	And I sign in as the user "Artie" "Dodger"
 	And I wait "2" seconds
 	When I go to "/user/view_profile#submitted"
 	Then I should see "Your profile page"

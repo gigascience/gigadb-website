@@ -48,7 +48,7 @@ class AuthorisedDatasetController extends Controller
     {
         $doi = $filterChain->controller->getActionParams()['id'] ?? false ;
         $dataset = Dataset::model()->findByAttributes(["identifier" => $doi]) ?? false ;
-        if ($dataset && 'UserUploadingData' === $dataset->upload_status) {
+        if ($dataset && in_array($dataset->upload_status, ['UserUploadingData','DataPending'])) {
             $filterChain->run(); // continue with executing further filters and the action
         }
         else {
