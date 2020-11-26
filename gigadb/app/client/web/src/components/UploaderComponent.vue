@@ -36,6 +36,8 @@ export default {
         })
         this.uppy.use(Dashboard, {
             inline: true,
+            width: 750,
+            height: 450,            
             target: '.drag-drop-area',
             hideAfterFinish: true,
             showProgressDetails: true,

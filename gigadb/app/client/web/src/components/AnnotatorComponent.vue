@@ -28,7 +28,7 @@
                     <td>
                         <div class="form-group required">
                             <label class='control-label'>
-                                <input v-model="upload.description" type="text" v-bind:name="'Upload['+ upload.id +'][description]'" v-bind:id="'upload-'+(index+1)+'-description'" v-on:input="fieldHasChanged(index, $event)" required>
+                                <input v-model="upload.description" class="form-control" type="text" v-bind:name="'Upload['+ upload.id +'][description]'" v-bind:id="'upload-'+(index+1)+'-description'" v-on:input="fieldHasChanged(index, $event)" required>
                             </label>
                         </div>
                     </td>

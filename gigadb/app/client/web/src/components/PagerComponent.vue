@@ -1,10 +1,10 @@
 <template>
     <nav>
         <div v-if="stage === 'uploading' && (uploadsComplete === true || uploadsExist > 0)">
-            <a v-bind:href="annotationUrl" class="btn">Next (Metadata Form)</a>
+            <a v-bind:href="annotationUrl" class="btn background-btn">Next (Metadata Form)</a>
         </div>
         <div v-if="stage === 'annotating' && metadataComplete === true">
-            <a href="#" class="btn btn-success complete">Complete and return to Your Uploaded Datasets page</a>
+            <button class="btn background-btn complete" type="submit">Complete and return to Your Uploaded Datasets page</button>
         </div>
 <!--         <div v-else>
         	stage: {{ stage }}
