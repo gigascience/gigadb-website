@@ -70,6 +70,7 @@ services:
       - ${APPLICATION}/less:/var/www/less
       - ${APPLICATION}/css:/var/www/css
       - ${APPLICATION}/sql:/var/www/sql
+      - ${APPLICATION}/style-guide:/var/www/style-guide      
       - ${APPLICATION}/index.php:/var/www/index.php
       - ${APPLICATION}/composer.json:/var/www/composer.json
       - ${APPLICATION}/ops/configuration/php-conf/php-${PHP_VERSION}-${GIGADB_ENV}.ini:/usr/local/etc/php/php.ini
