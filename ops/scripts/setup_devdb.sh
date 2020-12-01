@@ -2,30 +2,25 @@
 
 # bail out upon error
 set -e
+
 # bail out if an unset variable is used
 set -u
 
-# Use database variables in .secrets
-set -a
-source ./.env
-source ./.secrets
-set +a
 
-# docker-compose executable
-if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
-	DOCKER_COMPOSE="docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml"
-else
-	DOCKER_COMPOSE="docker-compose"
-fi
+# Load .env se we can access CSV_DIR
+source "./.env"
 
-# create test database if not existing
-$DOCKER_COMPOSE run --rm test bash -c "psql -h database -U gigadb -c 'create database gigadb'" || true
+# create database if not existing
+docker-compose run --rm test bash -c "psql -h database -U gigadb -c 'create database gigadb'" || true
 
-# generate migrations
-$DOCKER_COMPOSE run --rm csv-to-migrations bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js dev"
+# generate migrations (by default "test" data is loaded in the dev db)
+docker run -v `pwd`:/var/www node:14.9.0-buster bash -c "node /var/www/ops/scripts/csv_yii_migration.js test"
 
 # and run them
-$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate to 300000_000000 --connectionID=db --migrationPath=application.migrations.admin --interactive=0
-$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate mark 000000_000000 --connectionID=db --interactive=0
-$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.schema --interactive=0
-$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.data.dev --interactive=0
+docker-compose run --rm  application ./protected/yiic migrate to 300000_000000 --connectionID=db --migrationPath=application.migrations.admin --interactive=0
+docker-compose run --rm  application ./protected/yiic migrate mark 000000_000000 --connectionID=db --interactive=0
+docker-compose run --rm  application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.schema --interactive=0
+docker-compose run --rm  application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.data.test --interactive=0
+
+# run migration for FUW database
+docker-compose exec -T console /app/yii migrate/fresh --interactive=0
