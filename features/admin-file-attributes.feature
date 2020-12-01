@@ -63,9 +63,9 @@
 
     @wip @issue-#457 @javascript
     Scenario: Go to a non published dataset found in production-like database
-      Given I am not logged in to Gigadb web site
-      And I go to "dataset/100193"
-      And I take a screenshot named "test-100193"
+      Given I sign in as an admin
+      And I go to "/adminFile/update/id/249"
+      And I take a screenshot named "test_314"
 
 
 
