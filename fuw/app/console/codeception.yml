@@ -13,7 +13,7 @@ paths:
 settings:
     bootstrap: _bootstrap.php
     colors: true
-    memory_limit: 1024M    
+    memory_limit: 1024M
 actor_suffix: Tester
 extensions:
     enabled:
@@ -21,4 +21,4 @@ extensions:
 modules:
     config:
         Yii2:
-            configFile: 'config/codeception-local.php'        
+            configFile: 'config/codeception-local.php'
