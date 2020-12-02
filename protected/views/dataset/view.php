@@ -1,7 +1,6 @@
 <?php
 $title= strlen($model->title)>100?strip_tags(substr($model->title, 0,100))." ...":strip_tags($model->title);
 $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title;
-$this->fullDOI = $mainSection->getReleaseDetails()['full_doi'];
 ?>
 
 <?php $this->renderPartial('_sample_setting',array('columns' => $columns, 'pageSize' => $samples->getDataProvider()->getPagination()->getPageSize() )); ?>
