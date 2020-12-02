@@ -1,0 +1,21 @@
+id,email,password,first_name,last_name,affiliation,role,is_activated,newsletter,previous_newsletter_state,facebook_id,twitter_id,linkedin_id,google_id,username,orcid_id,preferred_link
+2,test+gigadb2@gigasciencejournal.com,5a4f75053077a32e681f81daa8792f95,example,user,BGI,"",t,t,t,,,,,test+gigadb2@gigasciencejournal.com,,EBI
+5,test+gigadb5@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb5,University of Puerto Rico,"",f,t,t,,,,,test+gigadb5@gigasciencejournal.com,,EBI
+6,test+gigadb6@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb6,BGI,"",f,t,t,,,,,test+gigadb6@gigasciencejournal.com,,EBI
+8,test+gigadb8@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb8,BGI,"",f,t,t,,,,,test+gigadb8@gigasciencejournal.com,,EBI
+14,test+gigadb14@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb14,BGI,"",f,t,t,,,,,test+gigadb14@gigasciencejournal.com,,EBI
+23,test+gigadb23@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb23,BGI,"",f,t,t,,,,,test+gigadb23@gigasciencejournal.com,,EBI
+27,test+gigadb27@gigasciencejournal.com,5a4f75053077a32e681f81daa8792f95,test,gigadb27,GigaScience,"",true,true,false,NULL,NULL,NULL,NULL,test+gigadb27@gigasciencejournal.com,NULL,EBI
+112,test+gigadb112@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb112,BGI-shenzhen,"",f,t,f,,,,,test+gigadb112@gigasciencejournal.com,,EBI
+113,test+gigadb113@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb113,"","",f,f,f,,,,,test+gigadb113@gigasciencejournal.com,,EBI
+115,test+gigadb115@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb115,China National GeneBank,"",f,t,f,,,,,test+gigadb115@gigasciencejournal.com,,EBI
+345,test+gigadb345@gigasciencejournal.com,b93e3d35059d0fb1797d0d6a251c2a42,test,gigadb345,BGI-Shenzhen,user,t,t,f,,,,,test+gigadb345@gigasciencejournal.com,,EBI
+453,test+gigadb453@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb453,"Computational and Systems Biology, Genome Institute of Singapore, 60 Biopolis Street, 138672 Singapore","",f,t,f,,,,,test+gigadb453@gigasciencejournal.com,,EBI
+532,test+gigadb532@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb532,The Walter and Eliza Hall Institute of Medical Research,"",f,t,f,,,,,test+gigadb532@gigasciencejournal.com,,EBI
+541,test+gigadb541@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb541,Laval University,"",f,t,f,,,,,test+gigadb541@gigasciencejournal.com,,EBI
+562,test+gigadb562@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb562,"School of Informatics and Computing, Indiana University, Bloomington, Indiana 47405","",f,t,f,,,,,test+gigadb562@gigasciencejournal.com,,EBI
+593,test+gigadb593@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb593,"Genome Institute of Singapore, Singapore 138672, Singapore","",f,t,f,,,,,test+gigadb593@gigasciencejournal.com,,EBI
+642,test+gigadb642@gigasciencejournal.com,"5a4f75053077a32e681f81daa8792f95",test,gigadb642,"Princeton University, Princeton, NJ, UNITED STATES","",f,t,f,,,,,test+gigadb642@gigasciencejournal.com,,EBI
+,admin@gigadb.org,5a4f75053077a32e681f81daa8792f95,Joe,Bloggs,BGI,admin,true,false,true,,,,,admin@gigadb.org,,EBI
+,user@gigadb.org,5a4f75053077a32e681f81daa8792f95,John,Smith,BGI,user,true,false,true,,,,,user@gigadb.org,,EBI
+,local-gigadb-admin@rijam.ml1.net,5a4f75053077a32e681f81daa8792f95,Joe,Bloggs,BGI,admin,true,false,true,,,,,local-gigadb-admin@rijam.ml1.net,,EBI

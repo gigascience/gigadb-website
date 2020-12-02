@@ -1,0 +1,2 @@
+id,experiment_type,experiment_name,exp_description,dataset_id,protocols.io
+1,assembly,YH genome assembly,"The latest version of SOAPdenovo2 was used to reassemble, improve and update the previously assembled genome (tools and pipelines available here: http://dx.doi.org/10.5524/100044). ",40,

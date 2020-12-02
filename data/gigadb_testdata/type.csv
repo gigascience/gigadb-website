@@ -1,0 +1,11 @@
+id,name,description
+17,Workflow,data analysis pipelines
+18,Epigenomic,methylation and histone modification data
+19,Metagenomic,genetic and genomic data from environmental samples
+20,Transcriptomic,data relating to mRNA
+21,Software,computational tools for analysing and managing biological data
+22,Imaging,data involving the visual depiction of biological samples
+23,Metabolomic,""""""
+24,Proteomic,large scale protein analysis dataset
+25,Genomic,genetic and genomic data e.g. sequence and assemblies
+26,Metadata,""""""

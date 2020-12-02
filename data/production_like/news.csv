@@ -1,0 +1,8 @@
+id,title,body,start_date,end_date
+2,Test,Testing News item ,2013-05-07,2013-05-08
+3,New features coming soon,"Check back at the end of January to see new features on this website!
+",2015-01-12,2015-01-23
+4,Repositive official launch,"Repositive Launches Full Version of its Platform.
+GigaDB has all its Human related data indexed in repositive.
+Read their blog about the launch here <a href=""http://blog.repositive.io/repositive-launches-full-version/"">http://blog.repositive.io/repositive-launches-full-version</a>
+",2016-09-02,2016-09-16
