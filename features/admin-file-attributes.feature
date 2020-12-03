@@ -64,8 +64,14 @@
     @wip @issue-#457 @javascript
     Scenario: Go to a non published dataset found in production-like database
       Given I sign in as an admin
-      And I go to "/adminFile/update/id/249"
-      And I take a screenshot named "test_314"
+      And I am on "/adminFile/update/id/249"
+      And I press "New Attribute"
+      And I click on the "Select name" button
+#      And I fill in the "keyword" field with "test nanopore sequencing"
+#      And I follow "Save"
+#      And I go to "datasetLog/admin/"
+#      And I press "New Attribute"
+      And I take a screenshot named "test_249"
 
 
 
