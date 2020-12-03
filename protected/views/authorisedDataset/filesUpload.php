@@ -6,6 +6,7 @@
                 <div class="page-title">
                     <ol class="breadcrumb pull-right">
                         <li><a href="/">Home</a></li>
+                        <li><a href="/user/view_profile#submitted">Profile</a></li>
                         <li class="active">File Upload Wizard</li>
                     </ol>
                     <dataset-info identifier="<?= $identifier ?>" />
@@ -16,7 +17,7 @@
                     <uploader identifier="<?= $identifier ?>" endpoint="<?php echo $tusd_path ?>" />
                 </section>
                 <aside class="span4">
-                    <div class="panel panel-success">
+                    <div class="panel panel-success" style="margin:3em;width:100%">
                         <div class="panel-heading">
                             <h3 class="panel-title">Step 1: Uploading the files</h3>
                         </div>
