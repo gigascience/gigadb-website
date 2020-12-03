@@ -61,7 +61,7 @@
     And I should not see "2013-7-15"
     And I should not see a button "Delete"
 
-  @wip @issue-457 @javascript @NonPublished
+  @ok @issue-457 @javascript @NonPublished
   Scenario: Go to a non published dataset found in production-like database, create then delete a keyword attribute
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
