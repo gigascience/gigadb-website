@@ -1,5 +1,6 @@
     <template>
-    <div>
+    <div class="container">
+        <div class="row">
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -45,14 +46,57 @@
                 </tr>
             </tbody>
         </table>
+        </div>
+
+        
         <aside>
-            <form id="bulkUploadForm" method="post" enctype="multipart/form-data">
-                <p>If you have many files you may wish to prepare the information in a spreadsheet and upload it to this form using the file input below. Note the columns should have a header row. Please check out <a href="/files/examples/bulk-data-upload-example.csv">this example spreadsheet</a> for header names.</p>
-                <label for="bulkmetadata">Upload file metadata from spreadsheet:</label>
-                <input type="file" id="bulkmetadata" name="bulkmetadata" accept=".csv, .tsv">
-                <button class="btn btn-primary btn-small">Upload spreadsheet</button>
-            </form>
+                <p>If you have many files, you may wish to prepare the information in a spreadsheet and upload that using the form below. The metadata table above will be overwritten to reflect the content of the spreadsheet.
+
+The uploader will only parse CSV and TSV files. Do not try to upload in other formats.
+
+With this method of bulk metadata upload, you can also associate references to existing samples and to up to five existing file attributes. (if the sample or the file attribute do not exist in the GigaDB, they are simply ignored).</p>
+            <div class="row">
+                <div class="col-md-8">
+                <form id="bulkUploadForm" method="post" enctype="multipart/form-data" class="form-horizontal well" style="padding:5em;">
+
+                    <div class="form-group">
+                        <label for="bulkmetadata">Select a spreadsheet:</label>
+                        <input type="file" id="bulkmetadata" name="bulkmetadata" accept=".csv, .tsv">
+                    </div>
+                    <button class="btn btn-primary btn-small">Upload metadata from spreadsheet</button>
+                </form>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-success" style="margin:1em;width:100%">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Tips</h4>
+                        </div>
+                        <div class="panel-body">
+<p>            In order for the metadata to be parsed correctly there are a couple of requirements to follow when preparing the spreadsheet:
+
+<ul>
+<li> Ensure the first row is a header with the name with the columns (you can copy the text into the spreadsheet):
+    <ul>
+    <li> TSV:<pre>File Name    Data Type   File Format     Description     Sample IDs  Attribute 1     Attribute 2     Attribute 3     Attribute 4     Attribute 5</pre></li>
+    <li> CSV: <pre>File Name, Data Type, File Format, Description, Sample IDs, Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5</pre></li>
+    </ul>
+</li>
+ <li> When adding attributes, enter each one with the format "name::value::unit"</li>
+ <li> If there is no unit, the last "::"" is still needed: "name::value::"</li>
+<li> After uploading the spreadsheet, you can still tweak the metadata in the table above</li>
+</ul>
+
+Here is an example of a valid spreadsheet to illustrate these requirements:</p> 
+<ul>
+<li><a href="/files/examples/bulk-data-upload-example.csv">bulk-data-upload-example.csv</a></li>
+</ul>
+</div>
+                </div>
+            </div>
+            </div>
         </aside>
+
+
         <div v-if="uploadedFiles.length > 0">
             <el-drawer v-bind:title="'Add attributes to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="attrPanel" v-bind:with-header="true" ref="attrPanel" :before-close="handleAttrClose" destroy-on-close>
                 <span>
@@ -79,6 +123,7 @@
         </div>
   
     </div>
+</div>
 </template>
 <style>
 .form-group.required .control-label:after {

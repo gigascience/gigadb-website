@@ -26,8 +26,8 @@ Scenario: bulk upload form for all uploaded files
 	| File name 	| Data type | Default 		| Description text | Tag action | Delete action|
 	| TheProof.csv 	| form select | Script 		| form input 	| button | button |
 	| CC0_pixel.jpg | form select | Annotation 	| form input 	| button | button |
-	And I should see "Upload file metadata from spreadsheet:"
-	And I should see a "Upload spreadsheet" button
+	And I should see "Select a spreadsheet:"
+	And I should see a "Upload metadata from spreadsheet" button
 
 @ok
 Scenario: Uploading CSV spreadsheet to update upload metadata
@@ -43,7 +43,7 @@ Scenario: Uploading CSV spreadsheet to update upload metadata
 	And I wait "5" seconds
 	And I press "Next"
 	When I attach the file "sample1.csv"
-	And I press "Upload spreadsheet"
+	And I press "Upload metadata from spreadsheet"
 	And I wait "3" seconds
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
 	And I should see metadata
@@ -67,7 +67,7 @@ Scenario: Uploading CSV spreadsheet to update upload metadata and attributes
 	And I wait "5" seconds
 	And I press "Next"
 	And I attach the file "sample2_attr.csv"
-	And I press "Upload spreadsheet"
+	And I press "Upload metadata from spreadsheet"
 	And I wait "3" seconds
  	When I press Attributes button for "TheProof.csv"
 	Then I should see
@@ -88,7 +88,7 @@ Scenario: Uploading CSV spreadsheet to update upload metadata, attributes and sa
 	And I wait "5" seconds
 	And I press "Next"
 	And I attach the file "sample2_attr_sample.csv"
-	And I press "Upload spreadsheet"
+	And I press "Upload metadata from spreadsheet"
 	And I wait "3" seconds
 	When I press Samples button for "CC0_pixel.jpg"
 	Then I should see
@@ -110,7 +110,7 @@ Scenario: Spreadsheet with malformed attributes
 	And I wait "5" seconds
 	And I press "Next"
 	When I attach the file "sample3_malformed_attr.csv"
-	And I press "Upload spreadsheet"
+	And I press "Upload metadata from spreadsheet"
 	And I wait "3" seconds
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
 	And I should see metadata
@@ -133,7 +133,7 @@ Scenario: Spreadsheet with malformed attributes
 	And I wait "5" seconds
 	And I press "Next"
 	When I attach the file "sample6_unknown_column.csv"
-	And I press "Upload spreadsheet"
+	And I press "Upload metadata from spreadsheet"
 	And I wait "3" seconds
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
     And I should see "Could not load spreadsheet, missing column(s): Description"
@@ -152,7 +152,7 @@ Scenario: Unknown Data Type (all spreadsheet entries have error)
 	And I wait "5" seconds
 	And I press "Next"
 	When I attach the file "sample4_unknown_datatype.csv"
-	And I press "Upload spreadsheet"
+	And I press "Upload metadata from spreadsheet"
 	And I wait "3" seconds
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
 	And I should not see "Metadata loaded"
@@ -176,7 +176,7 @@ Scenario: Unknown Data Type (one spreadsheet entry in error)
 	And I wait "5" seconds
 	And I press "Next"
 	When I attach the file "sample4_unknown_datatype2.csv"
-	And I press "Upload spreadsheet"
+	And I press "Upload metadata from spreadsheet"
 	And I wait "3" seconds
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
 	And I should see metadata
@@ -203,7 +203,7 @@ Scenario: Unknown file format (one spreadsheet entry in error)
 	And I wait "5" seconds
 	And I press "Next"
 	When I attach the file "sample5_unknown_format.csv"
-	And I press "Upload spreadsheet"
+	And I press "Upload metadata from spreadsheet"
 	And I wait "3" seconds
 	Then I should be on "/authorisedDataset/annotateFiles/id/000007"
 	And I should see metadata
@@ -226,7 +226,7 @@ Scenario: Uploading TSV spreadsheet to update upload metadata and attributes
 	And I wait "5" seconds
 	And I press "Next"
 	And I attach the file "sample1.tsv"
-	And I press "Upload spreadsheet"
+	And I press "Upload metadata from spreadsheet"
 	And I wait "3" seconds
  	When I press Attributes button for "CC0_pixel.jpg"
 	Then I should see
