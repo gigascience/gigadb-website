@@ -417,7 +417,7 @@ class DatasetViewContext implements Context
     }
 
     /**
-     * @Then There is a meta tag :arg1 with DOI :arg2
+     * @Then There is a meta tag :arg1 with value :arg2
      */
     public function thereIsAMetaTagWithDOI($arg1, $arg2)
     {
