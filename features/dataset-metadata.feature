@@ -10,7 +10,7 @@ Feature: Add the metadata schema on dataset page to allow Hypothesis to parse ci
     Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 
   @ok @issue-85 @issue-515
-  Scenario: Go to dataset page and there is a meta-tag with value
+  Scenario: Go to dataset page, Hypothesis tag is found and search engines recognition is indexed
     Given I am not logged in to Gigadb web site
     When I go to "/dataset/100002"
     Then I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)."
@@ -19,14 +19,14 @@ Feature: Add the metadata schema on dataset page to allow Hypothesis to parse ci
     And There is a meta tag "googlebot" with value "index"
 
   @ok @issue-515
-  Scenario: Go to faq page and there is a meta-tag with value
+  Scenario: Go to faq page and search engines recognition is indexed
     Given I am not logged in to Gigadb web site
     When I go to "/site/faq"
     Then There is a meta tag "robots" with value "index"
     And There is a meta tag "googlebot" with value "index"
 
   @ok @issue-515
-  Scenario: Go to main page and there is a meta-tag with value
+  Scenario: Go to main page and search engines recognition is indexed
     Given I am not logged in to Gigadb web site
     When I go to "/index.php"
     Then There is a meta tag "robots" with value "index"
