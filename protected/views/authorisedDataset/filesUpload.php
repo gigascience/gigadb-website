@@ -7,7 +7,7 @@
                     <ol class="breadcrumb pull-right">
                         <li><a href="/">Home</a></li>
                         <li><a href="/user/view_profile#submitted">Your profile</a></li>
-                        <li class="active">File Upload Wizard</li>
+                        <li class="active">Step 1/2: Upload files</li>
                     </ol>
                     <dataset-info identifier="<?= $identifier ?>" />
                 </div>

@@ -21,7 +21,8 @@
                         <ol class="breadcrumb pull-right">
                             <li><a href="/">Home</a></li>
                             <li><a href="/user/view_profile#submitted">Your profile</a></li>
-                            <li class="active">File Upload Wizard</li>
+                            <li><a href="/authorisedDataset/uploadFiles/id/<?php echo $identifier; ?>">Step 1/2: Upload files</a></li>
+                            <li class="active">Step 2/2: Annotate files</li>
                         </ol>
                         <dataset-info identifier="<?php echo $identifier; ?>" />
                     </div>
