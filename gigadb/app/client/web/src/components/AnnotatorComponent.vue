@@ -1,5 +1,6 @@
     <template>
     <div class="container">
+        <p>Please, use this table to annotate the files you've just uploaded with metadata. Once you're done with mandatory fields (Data Type and Description) for all files, a "Complete and return to Your Uploaded Datasets page" button will appear at the bottom of the page. You must click it to effect your file submission.</p>
         <div class="row">
         <table class="table table-striped table-bordered">
             <thead>
@@ -35,10 +36,10 @@
                     </td>
                     <td>
                         <input type="hidden" v-bind:name="'Upload['+ upload.id +'][sample_ids]'" v-bind:id="'upload-'+(index+1)+'-sample_ids'" v-bind:value="upload.sample_ids" >
-                        <el-button v-bind:id="'upload-'+(index+1)+'-tag'" v-on:click="toggleAttrDrawer(index, upload.id)" type="primary" v-bind:class="'btn btn-info btn-small attribute-button '+upload.name">
+                        <el-button v-bind:id="'upload-'+(index+1)+'-tag'" v-on:click="toggleAttrDrawer(index, upload.id)" type="info" v-bind:class="'btn btn-green btn-small attribute-button '+upload.name">
                             Attributes
                         </el-button>
-                        <el-button v-bind:id="'upload-'+(index+1)+'-sample'" v-on:click="toggleSampleDrawer(index, upload.id)" type="primary" v-bind:class="'btn btn-info btn-small sample-button '+upload.name">
+                        <el-button v-bind:id="'upload-'+(index+1)+'-sample'" v-on:click="toggleSampleDrawer(index, upload.id)" type="info" v-bind:class="'btn btn-green btn-small sample-button '+upload.name">
                             Sample IDs
                         </el-button>                        
                         <el-button v-bind:id="'upload-'+(index+1)+'-delete'" v-bind:class="'delete-button-'+index" type="danger" icon="el-icon-delete" v-on:click="deleteUpload(index, upload.id)" circle></el-button>
@@ -63,7 +64,7 @@ With this method of bulk metadata upload, you can also associate references to e
                         <label for="bulkmetadata">Select a spreadsheet:</label>
                         <input type="file" id="bulkmetadata" name="bulkmetadata" accept=".csv, .tsv">
                     </div>
-                    <button class="btn btn-primary btn-small">Upload metadata from spreadsheet</button>
+                    <button class="btn btn-green btn-small">Upload metadata from spreadsheet</button>
                 </form>
                 </div>
                 <div class="col-md-4">
@@ -102,6 +103,22 @@ Here is an example of a valid spreadsheet to illustrate these requirements:</p>
                 <span>
                     <specifier id="attributes-form" v-bind:fileAttributes="fileAttributes[selectedUpload]" />
                 </span>
+                <div class="panel panel-success" style="margin:1em;width:90%">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Tips</h4>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                            <li>The name and unit must be already existing in GigaDB.
+If there is a typo or they don't exist, they will just be ignored upon finalising 
+the process.</li>
+
+<li>You can alternate adding and removing any number of file attributes in this panel with editing the metadata in the table on the main form. Your selection won't be lost.</li>
+
+<li>If you leave/reload the web page, the entries made in the panel will be lost.</li>
+</ul>
+                        </div>
+                </div>
             </el-drawer>
             <el-drawer v-bind:title="'Add samples to file: '+uploadedFiles[drawerIndex].name" v-bind:visible.sync="samplePanel" v-bind:with-header="true" ref="samplesPanel" destroy-on-close>
                 <span>
@@ -110,6 +127,26 @@ Here is an example of a valid spreadsheet to illustrate these requirements:</p>
                             v-on:new-samples-input="setSampleIds(drawerIndex, $event)"
                     />
                 </span>
+                <div class="panel panel-success" style="margin:1em;width:90%">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Tips</h4>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                            <li>Keep clicking "New Sample" to to keep adding  new file samples then press return or click "Save" when you're done typing the name of a sample.  When you're done adding sample, you must click "Save" again to validate your entries</li>
+
+<li>The sample name must be already existing in GigaDB.
+If there is a typo or they don't exist, they will be ignored upon finalising 
+the upload process
+</li>
+
+<li>You can alternate adding and removing any number of file samples in this panel with editing the metadata in the table on the main form. Your selection won't be lost.
+</li>
+<li>If you leave/reload the web page, the entries made in the panel will be lost.</li>
+
+</ul>
+                        </div>
+                </div>                
             </el-drawer>        
         </div>
         <input v-for="(uploadId, index) in filesToDelete" type="hidden" v-bind:name="'DeleteList['+index+']'" v-bind:value="uploadId" />
