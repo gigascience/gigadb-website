@@ -214,7 +214,7 @@ services:
         - INSTALL_PGSQL=true
         - INSTALL_PG_CLIENT=true
         - PG_CLIENT_VERSION=${POSTGRES_VERSION}
-        # - INSTALL_XDEBUG=true
+        - INSTALL_XDEBUG=true
         - INSTALL_NETCAT_JQ=true
         - INSTALL_GRAPHVIZ=true
         - INSTALL_COMPOSER=true
