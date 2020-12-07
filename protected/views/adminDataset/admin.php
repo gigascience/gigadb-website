@@ -80,29 +80,33 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		// 'excelfile',
 		// 'excelfile_md5',
 		'publication_date',
-		array('name'=> 'curator_id', 'value'=>'$data->getCuratorName()'),
-                'modification_date',
-                'upload_status',
+		// array('name'=> 'curator_id', 'value'=>'$data->getCuratorName()'),
+  //               'modification_date',
+  //               'upload_status',
 
 		array(
 			'class'=>'CButtonColumn',
+			'header' => "Actions",
+			'headerHtmlOptions'=>array('style'=>'width: 100px'),
 			'template' => '{view}{update}{dropbox}{delete}',
             'buttons'=>array(
                 'view' => array(
 	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/view_new.png',
-                        'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))'
+                        'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))',
+	                	'options'=>array("title"=>"View Dataset", "style" => "margin:2px;"),
                         ),
                 'update' => array(
 	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/update_new.png',
-	                	'options'=>array("title"=>"Update Dataset"),
+	                	'options'=>array("title"=>"Update Dataset", "style" => "margin:2px;"),
                         ),
                 'delete' => array(
 	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/delete_new.png',
+	                	'options'=>array("title"=>"Delete Dataset", "style" => "margin:2px;"),	                	
                         ),
                 'dropbox' => array(
 	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/dropbox.png',
                 		'url' => 'Yii::app()->createUrl("adminDataset/assignFTPBox" , array("id" => $data->identifier))',
-                		'options'=>array('title'=>'New Dropbox for this dataset'),
+                		'options'=>array('title'=>'New Dropbox for this dataset',"style" => "margin:2px;"),
                 		'label' => 'New Dropbox for this dataset',
                 		'visible' => '"AssigningFTPbox" === $data->upload_status'
                 	)
