@@ -81,8 +81,8 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		// 'excelfile_md5',
 		'publication_date',
 		// array('name'=> 'curator_id', 'value'=>'$data->getCuratorName()'),
-  //               'modification_date',
-  //               'upload_status',
+                'modification_date',
+                'upload_status',
 
 		array(
 			'class'=>'CButtonColumn',
@@ -122,7 +122,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Write custom upload instructions</h4>
+        <h4 class="modal-title">Customise upload instructions</h4>
       </div>
       <div class="modal-body">
         <form id="instructionsForm">
@@ -131,6 +131,15 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
       class="form-control" rows="6" cols="120" tabindex="0">
 			</textarea>
         </form>
+        <div class="panel panel-success" style="margin:1em;width:100%">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Tips</h4>
+                        </div>
+                        <div class="panel-body">
+                        	Clicking the "Save changes" button won't send the email yet.
+                        	You will still need to click on "Send instructions by email" to do so.
+                        </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
