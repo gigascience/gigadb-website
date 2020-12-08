@@ -417,9 +417,9 @@ class DatasetViewContext implements Context
     }
 
     /**
-     * @Then There is a meta tag :arg1 with value :arg2
+     * @Then there is a meta tag :arg1 with value :arg2
      */
-    public function thereIsAMetaTagWithDOI($arg1, $arg2)
+    public function thereIsAMetaTagWithValue($arg1, $arg2)
     {
         $metaNode = $this->minkContext->getSession()->getPage()->find('xpath', "//meta[@name='$arg1' and @content='$arg2']");
         PHPUnit_Framework_Assert::assertNotNull($metaNode);
