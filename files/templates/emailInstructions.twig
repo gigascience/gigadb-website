@@ -4,9 +4,9 @@ A new filedrop account has been created on our server to allow the uploading of 
 
 {{ title }}
 
-To upload the assets simply navigate to "Submitted dataset" tab of your user profile after loggging on gigadb.org with your registered credentials: There will be an upload button next the dataset you have submitted.
+To upload the assets simply navigate to "Submitted dataset" tab of your user profile after loggging on gigadb.org with your registered credentials: There will be an upload button ("Upload Files") next to the dataset you have submitted that will take you to a file upload wizard that will take you all the way from uploading to associating metadata and linking with existing samples and file attributes.
 
-That's the preferred approach. However you can alternatively use FTP to upload file using the connection details below:
+That's the preferred approach. However, for the upload part of the process,  you can alternatively use FTP to upload file using the connection details below:
 
 
 host: {{ ftpd_endpoint }}
@@ -14,14 +14,26 @@ port: {{ ftpd_port }}
 username: {{ upload_login }}
 password: {{ upload_token }}
 
+(these credentials were generated specifically for you, please do not share them)
+
 Example usage:
 
-$ ncftpput -u $username -P <?= {{ ftpd_port }} ?> -p token <?=  {{ ftpd_endpoint }} ?> / some_local_file
-my_data.csv:                         119.83 kB  159.64 kB/s
+$ ncftpput -u {{ upload_login }} -P {{ ftpd_port }}  -p {{ upload_token }}  {{ ftpd_endpoint }} / some_local_file
 
 
-Once you have finished the uploading the files and the metadata.
-You can change the status from {{ status }} to "DataAvalaibleForReview" to allow review of the submission and its dataset.
+
+Once you've uploaded the files by ftp, you need to go back to the file upload wizard to associate metadata to the uploaded files, upload more files and complete the submission of the files.
+
+
+
+Once you have finished the uploading the files and filling in the associated metadata,
+you can click "Complete and return to Your Uploaded Datasets page" to confirm your files submission. 
+This will change the status from {{ status }} to "DataAvalaibleForReview" to allow review of the submission and its dataset by our curators.
+
+If the review shows that files are missing or metadata is incomplete/has error, the curators will mark the dataset as "DataPending" which will allow you to access the file upload wizard again from your user profile in order to amend your submission.
+
 
 Any question, don't hesitate to contact us at info@gigasciencejournal.com
+
+The GigaScience Team.
 
