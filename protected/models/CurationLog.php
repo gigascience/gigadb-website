@@ -119,12 +119,13 @@ class CurationLog extends CActiveRecord
     /**
      * Retrieves attributes and store them in curation_log table when triggered
      * @param $id
+     * @param string $fileName
      * @return bool
      */
-    public static function createCurationLogEntry(int $id): bool
+    public static function createCurationLogEntry(int $id, string $fileName): bool
     {
         $curationlog = self::makeNewInstanceForCurationLogBy($id, "System");
-        $curationlog->action = "Status changed to stuff";
+        $curationlog->action = $fileName.": file attribute deleted";
         return $curationlog->save();
     }
 
