@@ -16,7 +16,7 @@
   @ok @issue-457
   Scenario: Go to a published dataset found in production-like database
     Given I am not logged in to Gigadb web site
-    And I go to "dataset/100056"
+    When I go to "dataset/100056"
     And I should see "Termitomyces sp. J132 fungus genome assembly data."
     And I follow "History"
     Then I should see "History" tab with text "File Termitomyces_assembly_v1.0.fa.gz updated"
