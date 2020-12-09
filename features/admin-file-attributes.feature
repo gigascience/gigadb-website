@@ -27,13 +27,14 @@
     And I should see "History" tab with text "File Termitomyces_gene_v1.0.pep.fa updated"
     And I should see "History" tab with text "File Termitomyces_gene_v1.0.pep.fa updated"
 
-  @ok @issue-457 @Published
+  @wip @issue-457 @Published
   Scenario: Sign in as admin and visit admin file update page and see New Attribute, Edit, Delete buttons
     Given I sign in as an admin
     When I am on "/adminFile/update/id/13973"
     Then I should see a button "New Attribute"
-    And I should see "last_modified"
-    And I should see "2013-7-15"
+    And I should see a file attribute table
+      | Attribute Name | Value | Unit |
+      | last_modified  | 2013-7-15 |  |
     And I should see a button input "Edit"
     And I should see a button input "Delete"
 
@@ -48,12 +49,13 @@
     And I follow "History"
     And I should see "History" tab with text "Termitomyces_assembly_v1.0.fa.gz: file attribute deleted"
 
-  @ok @issue-457 @javascript @Published
+  @wip @issue-457 @javascript @Published
   Scenario: Sign in as admin, no delete button should be seen after delete action has been triggered
     Given I sign in as an admin
     And I am on "/adminFile/update/id/13973"
-    And I should see "last_modified"
-    And I should see "2013-7-15"
+    And I should see a file attribute table
+    | Attribute Name | Value | Unit |
+    | last_modified  | 2013-7-15 |  |
     And I should see a button input "Delete"
     When I press "Delete"
     And I wait "3" seconds

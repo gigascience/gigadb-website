@@ -271,6 +271,24 @@ class DatasetViewContext implements Context
     }
 
     /**
+     * @Then I should see a file attribute table
+     */
+    public function iShouldSeeATable(TableNode $table)
+    {
+        foreach ($table as $row) {
+            PHPUnit_Framework_Assert::assertTrue(
+                $this->minkContext->getSession()->getPage()->hasContent($row['Attribute Name'])
+            );
+            PHPUnit_Framework_Assert::assertTrue(
+                $this->minkContext->getSession()->getPage()->hasContent($row['Value'])
+            );
+            PHPUnit_Framework_Assert::assertTrue(
+                $this->minkContext->getSession()->getPage()->hasContent($row['Unit'])
+            );
+        }
+    }
+
+    /**
      * @Then I should see :arg1 tab with table
      */
     public function iShouldSeeTabWithTable($arg1, TableNode $table)
