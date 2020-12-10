@@ -380,6 +380,9 @@ the password when prompted.
 $ ansible-vault edit ops/infrastructure/envs/stagings/group_vars/all/vault
 ```
 
+**Note:**
+> You can find a sample vault file at ops/variables/vault-sample
+  
 Provide Ansible with the password to access the vault file during the 
 execution of playbooks by storing the password to the vault file in a 
 `~/.vault_pass.txt` file. 
@@ -393,7 +396,8 @@ public repositories.
 
 Download these roles:
 ```
-$ ansible-galaxy install -r requirements.yml
+$ cd ops/infrastructure/envs/staging 
+$ ansible-galaxy install -r ../../../infrastructure/requirements.yml
 ```
 
 #### Ansible playbook execution

@@ -27,6 +27,7 @@ If more than one person need to manage the infrastructure, make sure everyone ha
 
 ```
 $ cd ops/infrastructure
+$ export TF_STATE=.
 $ export TF_VAR_deployment_target=staging
 $ export TF_VAR_aws_vpc_id=<AWS VPC id>
 $ export TF_VAR_aws_access_key=<AWS Access key>
@@ -34,6 +35,7 @@ $ export TF_VAR_aws_secret_key=<AWS Secret key>
 
 $ terraform plan
 $ terraform apply
+$ terraform refresh
 ```
 
 ## Ansible (for managing the platform)
