@@ -74,3 +74,38 @@ p.dataset-release-date-text {
   }
 }
 .left-border-title-lg i{ font-size:15px;}
+
+.drop-citation-btn {
+  color: white;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+  background-color: #099242;
+  padding: 0.1px 3px 1px 3px;
+  border-radius: 4px 4px 4px 4px;
+  display: inline-block;
+  position: relative;
+  right: -10px;
+}
+.drop-citation-btn:focus {
+  outline: none;
+}
+.citation-content {
+  display: none;
+  position: absolute;
+  left: 45%;
+  background-color: white;
+  min-width: 120px;
+  overflow: auto;
+  border:  1px solid darkseagreen;
+  border-radius: 4px 4px 4px 4px;
+  z-index: 1; /*stack in front */
+}
+.citation-content a {
+  color: black;
+  padding: 8px 14px;
+  text-decoration: none;
+  display: block;
+  font-size: 12px;
+}
+.citation-content a:hover {background-color: #F3FAF6;}
