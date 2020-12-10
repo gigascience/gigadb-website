@@ -96,7 +96,7 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
 		foreach ($rows as $result) {
 			$response = null;
 			try {
-				$response = $this->_web->request('GET', 'http://dx.doi.org/'. $result['identifier'], [
+				$response = $this->_web->request('GET', 'https://doi.org/'. $result['identifier'], [
 									    'headers' => [
 									        'style' => 'apa',
 									        'Accept' => 'text/x-bibliography',
