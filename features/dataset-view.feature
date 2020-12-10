@@ -349,7 +349,7 @@ Feature: a user visit the dataset page
 		Then I go to "http://data.datacite.org/text/x-bibliography/10.5524/101001"
 		And I should see "Genome sequence of the duck (Anas platyrhynchos)"
 
-	@wip @javascript @pr521
+	@ok @javascript @pr521
 	Scenario: To get RIS file after clicking the RIS in the citation box
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
