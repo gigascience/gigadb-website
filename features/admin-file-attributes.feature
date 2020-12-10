@@ -27,7 +27,7 @@
     And I should see "History" tab with text "File Termitomyces_gene_v1.0.pep.fa updated"
     And I should see "History" tab with text "File Termitomyces_gene_v1.0.pep.fa updated"
 
-  @wip @issue-457 @Published
+  @ok @issue-457 @Published
   Scenario: Sign in as admin and visit admin file update page and see New Attribute, Edit, Delete buttons
     Given I sign in as an admin
     When I am on "/adminFile/update/id/13973"
