@@ -340,14 +340,14 @@ Feature: a user visit the dataset page
 		And I should see "RIS"
 		And I should see "BibTeX"
 
-	@wip @javascript @pr521
+	@ok @javascript @pr521
 	Scenario: To get Text file after clicking the Text button in the citation box
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
 		And I press "Cite Dataset"
 		When I click on the "Text" button
-		Then I go to "http://data.datacite.org/text/x-bibliography/10.5072/101001"
-		And I should see "The resource you are looking for doesn't exist."
+		Then I go to "http://data.datacite.org/text/x-bibliography/10.5524/101001"
+		And I should see "Genome sequence of the duck (Anas platyrhynchos)"
 
 	@wip @javascript @pr521
 	Scenario: To get RIS file after clicking the RIS in the citation box
@@ -355,15 +355,20 @@ Feature: a user visit the dataset page
 		And I am on "/dataset/101001"
 		And I press "Cite Dataset"
 		When I click on the "RIS" button
-		Then I should be on "http://data.datacite.org/application/x-research-info-systems/10.5524/101001"
+		Then the response should contain "101001"
+		# 200: the request completed successfully
+		And the response should contain "200"
 
-	@wip @javascript @pr521
+	@ok @javascript @pr521
 	Scenario: To get BibTeX file after clicking the BibTeX in the citation box
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
 		And I press "Cite Dataset"
 		When I click on the "BibTeX" button
-		Then I should be on "http://data.datacite.org/application/x-bibtex/10.5072/101001"
+		Then the response should contain "101001"
+		# 200: the request completed successfully
+		And the response should contain "200"
+
 
 	@ok @samples
 	Scenario: Samples
