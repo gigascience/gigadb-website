@@ -57,6 +57,7 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     HOME_URL=https://$REMOTE_HOME_URL
     PUBLIC_HTTP_PORT=$REMOTE_PUBLIC_HTTP_PORT
     PUBLIC_HTTPS_PORT=$REMOTE_PUBLIC_HTTPS_PORT
+    SERVER_HOSTNAME=$REMOTE_HOSTNAME
 fi
 
 
@@ -159,7 +160,7 @@ envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/params-local.php.dist
 TARGET=${APP_SOURCE}/protected/config/yii2/params-local.php
-VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME'
+VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$SERVER_HOSTNAME'
 envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/gigadb/file-worker/db.php.dist

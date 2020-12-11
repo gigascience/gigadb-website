@@ -3,7 +3,7 @@ return [
 	"jwt_key" => "$FUW_JWT_KEY",
 	"remote_docker_hostname" => "$REMOTE_DOCKER_HOSTNAME",
 	"dataset_filedrop" => [
-		"ftpd_endpoint" => "gigadb.org",
+		"ftpd_endpoint" => "$SERVER_HOSTNAME",
 		"ftpd_port" => "9021",
 		"template_path" => "/var/www/files/templates",
 		"tusd_path" => "/fileserver/",

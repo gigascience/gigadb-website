@@ -67,7 +67,7 @@ class UploadFactoryTest extends \Codeception\Test\Unit
         $tusd = new UploadFactory($doi,$datafeedPath,$tokenPath);
         
         $link = $tusd->generateFTPLink("somefile.fq");
-        $this->assertEquals("ftp://downloader-300001:foobar@gigadb.org:9021/somefile.fq", $link);
+        $this->assertEquals("ftp://downloader-300001:foobar@gigadb.gigasciencejournal.com:9021/somefile.fq", $link);
     }
 
     public function testCreateUploadFromFileWithSuccess()

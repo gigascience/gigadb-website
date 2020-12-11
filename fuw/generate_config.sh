@@ -48,6 +48,7 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     FUW_DB_NAME=$REMOTE_FUW_DB_NAME
     DEBUG=false
     HOME_URL=$REMOTE_HOME_URL
+    SERVER_HOSTNAME=$REMOTE_HOSTNAME
 fi
 
 # generate config for Yii2 test configs in FUW webapps
@@ -148,7 +149,7 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$cafile:$local_cert:$local_pk:$peer_name:$REMOTE_HOSTNAME'
 else
     SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/params-local.php.dist
-    VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME'
+    VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$SERVER_HOSTNAME'
 fi
 TARGET=${APP_SOURCE}/fuw/app/common/config/params-local.php
 envsubst $VARS < $SOURCE > $TARGET
