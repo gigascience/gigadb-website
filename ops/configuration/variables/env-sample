@@ -57,6 +57,7 @@ YII2_VERSION=2.0.15.1
 HOME_URL=gigadb.gigasciencejournal.com
 PUBLIC_HTTP_PORT=9170
 PUBLIC_HTTPS_PORT=8043
+SERVER_HOSTNAME=gigadb.gigasciencejournal.com
 
 
 ### Certificates for TLS termination configuration ######################################################################

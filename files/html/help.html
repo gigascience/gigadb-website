@@ -458,54 +458,54 @@ The search results are grouped by GigaDB Datasets (G), Samples (S) and Files (F)
 <div><strong>project</strong> = restricts search to the project name, e.g. Genome 10K</div>
 <div>eg.<br>.../search?taxno=9606</div><br>
 <div>To specify results to be returned are ONLY a particular level of data, add the phrase <strong>&amp;results=dataset</strong> ,or file or sample: </div>e.g.<br>
-<div><a href="/api/search?project=Genome%2010K&amp;result=sample" target="_blank">gigadb.gigasciencejournal.com/api/search?<wbr>project=Genome%2010K&amp;result=<wbr>sample</a></div>
+<div><a href="/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/search?<wbr>project=Genome%2010K&amp;result=<wbr>sample</a></div>
 <div>NB - the search still looks everywhere, but the results returned are only those samples that are in datasets that are found by the search.</div>
 <div><strong>Default results are &quot;dataset&quot; only.</strong></div><br>
 <h3><a name="0.1_Examples">Examples</a></h3><br>
 <div>1. retrieve known datasets by doi</div>
-<div><a href="/api/dataset?doi=100051" target="_blank">gigadb.gigasciencejournal.com/api/dataset?<wbr>doi=100051</a></div><br>
+<div><a href="/api/dataset?doi=100051" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/dataset?<wbr>doi=100051</a></div><br>
 <div>2. retrieve samples from a known DOI</div>
-<div><a href="/api/sample?doi=100051" target="_blank">gigadb.gigasciencejournal.com/api/sample?<wbr>doi=100051</a></div><br>
+<div><a href="/api/sample?doi=100051" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/sample?<wbr>doi=100051</a></div><br>
 <div>3. retrieve file information from a known DOI</div>
-<div><a href="/api/file?doi=100051" target="_blank">gigadb.gigasciencejournal.com/api/file?<wbr>doi=100051</a></div><br>
+<div><a href="/api/file?doi=100051" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/file?<wbr>doi=100051</a></div><br>
 <div>4. Search all GigaDB by keyword, return only the top level dataset metadata</div>
-<div><a href="/api/search?keyword=chimp&amp;result=dataset" target="_blank">gigadb.gigasciencejournal.com/api/search?<wbr>keyword=chimp&amp;result=dataset</a></div><br>
+<div><a href="/api/search?keyword=chimp&amp;result=dataset" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/search?<wbr>keyword=chimp&amp;result=dataset</a></div><br>
 <div>5.Search all GigaDB by keyword, return only the sample level metadata</div>
-<div><a href="/api/search?keyword=chimp&amp;result=sample" target="_blank">gigadb.gigasciencejournal.com/api/search?<wbr>keyword=chimp&amp;result=sample</a></div><br>
+<div><a href="/api/search?keyword=chimp&amp;result=sample" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/search?<wbr>keyword=chimp&amp;result=sample</a></div><br>
 <div>6.Search all GigaDB by keyword, return only the file level metadata</div>
-<div><a href="/api/search?keyword=chimp&amp;result=file" target="_blank">gigadb.gigasciencejournal.com/api/search?<wbr>keyword=chimp&amp;result=file</a></div><br>
+<div><a href="/api/search?keyword=chimp&amp;result=file" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/search?<wbr>keyword=chimp&amp;result=file</a></div><br>
 <div>7. refine search to just the title of the dataset</div>
-<div><a href="/api/search?keyword=title:human&amp;result=dataset" target="_blank">gigadb.gigasciencejournal.com/api/search?<wbr>keyword=title:human&amp;result=<wbr>dataset</a></div><br>
+<div><a href="/api/search?keyword=title:human&amp;result=dataset" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/search?<wbr>keyword=title:human&amp;result=<wbr>dataset</a></div><br>
 <div>8. refine search to the descriptions of datasets</div>
-<div><a href="/api/search?keyword=description:human&amp;result=dataset" target="_blank">gigadb.gigasciencejournal.com/api/search?<wbr>keyword=description:human&amp;<wbr>result=dataset</a></div><br>
+<div><a href="/api/search?keyword=description:human&amp;result=dataset" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/search?<wbr>keyword=description:human&amp;<wbr>result=dataset</a></div><br>
 <div>9.refine search to NCBI taxonomic ID</div>
-<div><a href="/api/search?taxno=9606&amp;result=dataset" target="_blank">gigadb.gigasciencejournal.com/api/search?<wbr>taxno=9606&amp;result=dataset</a></div><br>
+<div><a href="/api/search?taxno=9606&amp;result=dataset" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/search?<wbr>taxno=9606&amp;result=dataset</a></div><br>
 <div>10. refine search to taxonomic names</div>
-<div><a href="/api/search?taxname=Homo%20sapiens&amp;result=dataset" target="_blank">gigadb.gigasciencejournal.com/api/search?<wbr>taxname=Homo%20sapiens&amp;result=<wbr>dataset</a></div><br>
+<div><a href="/api/search?taxname=Homo%20sapiens&amp;result=dataset" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/search?<wbr>taxname=Homo%20sapiens&amp;result=<wbr>dataset</a></div><br>
 <div>11. refine search to Authors</div>
-<div><a href="/api/search?author=Wang%20Jun" target="_blank">gigadb.gigasciencejournal.com/api/search?<wbr>author=Wang%20Jun</a></div><br>
+<div><a href="/api/search?author=Wang%20Jun" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/search?<wbr>author=Wang%20Jun</a></div><br>
 <div>12. refine search to linked manuscript IDs</div>
-<div><a href="/api/search?manuscript=10.1371/journal.pone.0005795" target="_blank">gigadb.gigasciencejournal.com/api/search?<wbr>manuscript=10.1371/journal.<wbr>pone.0005795</a></div><br>
+<div><a href="/api/search?manuscript=10.1371/journal.pone.0005795" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/search?<wbr>manuscript=10.1371/journal.<wbr>pone.0005795</a></div><br>
 <div>13. refine search to dataset types</div>
-<div><a href="/api/search?datasettype=Genomic" target="_blank">gigadb.gigasciencejournal.com/api/search?<wbr>datasettype=Genomic</a></div><br>
+<div><a href="/api/search?datasettype=Genomic" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/search?<wbr>datasettype=Genomic</a></div><br>
 <div>14. refine search to project names</div>
-<div><a href="/api/search?project=Genome%2010K&amp;result=sample" target="_blank">gigadb.gigasciencejournal.com/api/search?<wbr>project=Genome%2010K&amp;result=<wbr>sample</a></div><br>
+<div><a href="/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/search?<wbr>project=Genome%2010K&amp;result=<wbr>sample</a></div><br>
 <div>15. list all published dataset DOIs (listed in publication date order)</div>
-<div><a href="/api/list" target="_blank">gigadb.gigasciencejournal.com/api/list</a></div><br>
+<div><a href="/api/list" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/list</a></div><br>
 <div>16. dump the database</div>
-<div><a href="/api/dump" target="_blank">gigadb.gigasciencejournal.com/api/dump</a></div><br>
+<div><a href="/api/dump" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/dump</a></div><br>
 <div>17. list all dataset DOI's published in a date range (results ordered by publication date)</div>
-<div><a href="/api/list?start_date=2018-01-01&end_date=2018-01-30" target="_blank">gigadb.gigasciencejournal.com/api/list?start_date=2018-01-01&end_date=2018-01-30</a></div><br>
+<div><a href="/api/list?start_date=2018-01-01&end_date=2018-01-30" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/list?start_date=2018-01-01&end_date=2018-01-30</a></div><br>
 
 <h3><a name="0.1_Curl">Command line usage</a></h3>
 <div>You can also use the curl commands on the command line to retrieve metadata :</div><br>
 <div>eg.</div><br>
-<div><p style="color:rgb(34,34,34);font-family:arial,sans-serif;font-size:12.8px">curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">gigadb.gigasciencejournal.com/api/dataset?<wbr>doi=100051</a><br></p></div>
+<div><p style="color:rgb(34,34,34);font-family:arial,sans-serif;font-size:12.8px">curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/dataset?<wbr>doi=100051</a><br></p></div>
 <div><br>
 </div>
 <div>If you want to check whether a search will work you can use the -I flag:</div><br>
 <div>
-<p style="color:rgb(34,34,34);font-family:arial,sans-serif;font-size:12.8px"><span>curl -I <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">gigadb.gigasciencejournal.com/api/dataset?<wbr>doi=100051</a></span></p>
+<p style="color:rgb(34,34,34);font-family:arial,sans-serif;font-size:12.8px"><span>curl -I <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.gigasciencejournal.com:9170/api/dataset?<wbr>doi=100051</a></span></p>
 <p style="color:rgb(34,34,34);font-family:arial,sans-serif;font-size:12.8px"><span>HTTP/1.1 200 OK</span></p>
 <p style="color:rgb(34,34,34);font-family:arial,sans-serif;font-size:12.8px"><span>or </span></p>
 <p style="color:rgb(34,34,34);font-family:arial,sans-serif;font-size:12.8px"><span>HTTP/1.1 404 Not Found / </span>HTTP/1.1 500 Internal server error</p>
