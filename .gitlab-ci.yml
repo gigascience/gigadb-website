@@ -49,6 +49,7 @@ variables:
   GITLAB_UPSTREAM_PROJECT_ID: "7041674"
   CSV_DIR: "test"
   YII_ENV_DEV: "true"
+  SERVER_HOSTNAME: "gigadb.gigasciencejournal.com"
 
 services:
   - docker:19.03.5-dind
