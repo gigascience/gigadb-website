@@ -137,7 +137,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 					->method('request')
 					->withConsecutive(
 						[
-							'GET', 'http://dx.doi.org/10.1186/gb-2012-13-10-r100', [
+							'GET', 'https://doi.org/10.1186/gb-2012-13-10-r100', [
 							    'headers' => [
 							        'style' => 'apa',
 							        'Accept' => 'text/x-bibliography',
@@ -146,7 +146,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 							]
 						],
 						[
-							'GET', 'http://dx.doi.org/10.1038/nature10158', [
+							'GET', 'https://doi.org/10.1038/nature10158', [
 							    'headers' => [
 							        'style' => 'apa',
 							        'Accept' => 'text/x-bibliography',
