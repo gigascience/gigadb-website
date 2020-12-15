@@ -325,6 +325,9 @@ class AdminDatasetController extends Controller
 
 
                 switch($datasetPageSettings->getPageType()) {
+                    case "draft":
+                        $this->redirect('/adminDataset/admin/');
+                        break;                    
                     case "public":
                         $this->redirect('/dataset/' . $model->identifier);
                         break;

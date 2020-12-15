@@ -50,6 +50,17 @@ class DatasetPageSettingsTest extends CDbTestCase
 		$this->assertEquals("hidden", $pageType);
 	}
 
+
+	public function testGetPageTypeDraft()
+	{
+		$model = Dataset::model()->findByPk(1);
+		$model->upload_status = "DataPending";
+		$sut = new DatasetPageSettings($model);
+
+		$pageType = $sut->getPageType();
+		$this->assertEquals("draft", $pageType);
+	}
+
 	public function testGetPageTypeMockup()
 	{
 		$model = Dataset::model()->findByPk(1);
