@@ -19,6 +19,7 @@ Scenario: Curator set the status to "DataPending" if something is missing, causi
 	And I go to "/adminDataset/admin"
 	And I press "Update Dataset" for dataset "000007"
 	Then I should see "Status changed to DataPending"
+	And I am on "/adminDataset/admin"
 	And An email is sent to "artie_dodger@gigadb.org"
 
 @ok

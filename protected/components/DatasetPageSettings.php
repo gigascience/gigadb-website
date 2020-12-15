@@ -33,7 +33,10 @@ class DatasetPageSettings extends yii\base\BaseObject
 		parent::__construct();
 		$this->_dao = $dao;
 		$this->_model = $model;
-		if ($this->_model && !$this->_model->isNewRecord && "Published" !== $this->_model->upload_status
+		if ($this->_model && !$this->_model->isNewRecord && in_array($this->_model->upload_status, ["UserUploading","DataAvailableForReview", "DataPending", "Curation", "AuthorReview"])) {
+			$this->_pageType = "draft";
+		}
+		elseif ($this->_model && !$this->_model->isNewRecord && "Published" !== $this->_model->upload_status
 				&& "Submitted" !== $this->_model->upload_status) {
 			$this->_pageType = "hidden";
 		}
