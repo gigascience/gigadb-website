@@ -217,10 +217,15 @@ services:
   watcher:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest
     volumes:
-      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/home/uploader
-      - ${DATA_SAVE_PATH}/fuw/repo:/home/downloader/
-      - ${DATA_SAVE_PATH}/fuw/credentials:/var/access:ro
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/inbox
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo/
       - ${DATA_SAVE_PATH}/fuw/flags:/var/tmp/processing_flag
+      # access to the ftp tokens so the upload's location attribute can be populated
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private:ro    
+      # access to the fuw/console so tusd hooks can trigger upload update
+      - ../../fuw/app:/app
+      # access to data feeds
+      - ${DATA_SAVE_PATH}/files:/var/www/files:ro
     networks:
       - web-tier
     extra_hosts:
