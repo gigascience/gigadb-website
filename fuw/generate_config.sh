@@ -219,3 +219,7 @@ SOURCE=${APP_SOURCE}/fuw/watcher/conf/watcherconfig.ini.dist
 TARGET=${APP_SOURCE}/fuw/watcher/conf/watcherconfig.ini
 VARS='$FUW_DB_HOST:$FUW_DB_NAME:$FUW_DB_USER:$FUW_DB_PASSWORD:$HOME_URL'
 envsubst $VARS < $SOURCE > $TARGET
+
+# Copy reference data in deployment host's filesystem
+mkdir -p /opt/local/files/data
+cp ${APP_SOURCE}/files/data/*.json /opt/local/files/data

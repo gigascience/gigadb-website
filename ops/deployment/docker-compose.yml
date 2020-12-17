@@ -127,6 +127,7 @@ services:
     image: rija/docker-alpine-shell-tools:1.0.1
     volumes:
       - ${APPLICATION}/:/var/www
+      - ${DATA_SAVE_PATH}:/opt/local
     command: /var/www/fuw/generate_config.sh
 
   gigadb:
