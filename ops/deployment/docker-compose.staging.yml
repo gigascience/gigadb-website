@@ -225,7 +225,7 @@ services:
       # access to the fuw/console so tusd hooks can trigger upload update
       - ../../fuw/app:/app
       # access to data feeds
-      - ${DATA_SAVE_PATH}/files:/var/www/files:ro
+      - ${DATA_SAVE_PATH}/files/data:/var/www/files:ro
     networks:
       - web-tier
     extra_hosts:
