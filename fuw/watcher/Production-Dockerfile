@@ -15,3 +15,4 @@ RUN	apk add --no-cache postgresql-dev php7 php7-pgsql php7-pdo php7-pdo_pgsql
 
 COPY ./scripts /commands/
 COPY ./conf /config/
+COPY fileformats.json filetypes.json /var/www/files/data/
