@@ -370,6 +370,8 @@ build:
     - docker-compose run --rm console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer install -a --no-dev'
     - cp files/data/fileformats.json fuw/app/
     - cp files/data/filetypes.json fuw/app/
+    - cp files/data/fileformats.json fuw/watcher/
+    - cp files/data/filetypes.json fuw/watcher/    
     - cp gigadb/app/worker/file-worker/models/UpdateGigaDBJob.php fuw/app/
     # Generate Yii migration scripts
     - docker-compose up csv-to-migrations     
