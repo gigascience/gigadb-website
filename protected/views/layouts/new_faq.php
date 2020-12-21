@@ -5,7 +5,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="language" content="en" />
     <meta name="robots" content="index">
-    <meta name="googlebot" content="index">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">

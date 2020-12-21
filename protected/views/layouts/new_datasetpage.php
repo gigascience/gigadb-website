@@ -5,7 +5,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="language" content="en" />
     <meta name="robots" content="index">
-    <meta name="googlebot" content="index">
     <meta name="citation_doi" content="<?php echo $metaData['fullDOI']; ?>">
 
     <?php if ($metaData['redirect']) {
