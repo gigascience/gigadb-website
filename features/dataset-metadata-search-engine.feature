@@ -11,19 +11,16 @@ Feature: Allow search engines to crawl and index GigaDB pages
   Scenario: Go to faq page and search engines recognition is allowed
     Given I am not logged in to Gigadb web site
     When I go to "/site/faq"
-    Then There is a meta tag "robots" with value "index"
-    And There is a meta tag "googlebot" with value "index"
+    Then There is a meta tag "robots" with values "index" and "nofollow"
 
   @ok @issue-515
   Scenario: Go to main page and search engines recognition is allowed
     Given I am not logged in to Gigadb web site
     When I go to "/index.php"
-    Then There is a meta tag "robots" with value "index"
-    And There is a meta tag "googlebot" with value "index"
+    Then There is a meta tag "robots" with values "index" and "nofollow"
 
   @ok @issue-515
   Scenario: Go to dataset page and search engines recognition is allowed
     Given I am not logged in to Gigadb web site
     When I go to "/dataset/100002"
-    Then There is a meta tag "robots" with value "index"
-    And There is a meta tag "googlebot" with value "index"
+    Then There is a meta tag "robots" with values "index" and "nofollow"
