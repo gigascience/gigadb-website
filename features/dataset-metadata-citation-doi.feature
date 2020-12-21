@@ -7,7 +7,7 @@ Feature: Add the metadata schema on dataset page to allow Hypothesis to parse ci
   Background:
     Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 
-  @wip @issue-85
+  @ok @issue-85
   Scenario: Go to dataset page, Hypothesis tag is found
     Given I am not logged in to Gigadb web site
     When I go to "/dataset/100002"
