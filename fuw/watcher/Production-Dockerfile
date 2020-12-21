@@ -16,8 +16,8 @@ RUN	apk add --no-cache postgresql-dev php7 php7-pgsql php7-pdo php7-pdo_pgsql
 COPY watcher/scripts /commands/
 COPY watcher/conf /config/
 COPY watcher/fileformats.json watcher/filetypes.json /var/www/files/data/
-COPY app/console /app/console/
-COPY app/common /app/common/
-COPY app/vendor /app/vendor/
-COPY app/composer.json /app/
-COPY app/yii* /app/
+COPY app/console /fuw/app/console/
+COPY app/common /fuw/app/common/
+COPY app/vendor /fuw/app/vendor/
+COPY app/composer.json /fuw/app/
+COPY app/yii* /fuw/app/
