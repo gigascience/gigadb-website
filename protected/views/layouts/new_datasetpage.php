@@ -4,6 +4,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="language" content="en" />
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="<?php echo $metaData['title']; ?>" />
+    <meta name="description" content="<?php echo $metaData['description'] ?>" />
     <meta name="robots" content="noindex, nofollow" />
     <?php if ($metaData['redirect']) {
             Yii::app()->clientScript->registerMetaTag("5;url={$metaData['redirect']}", null, 'refresh');
