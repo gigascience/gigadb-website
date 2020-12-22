@@ -6,7 +6,10 @@
     <meta name="language" content="en" />
     <!-- Primary Meta Tags -->
     <meta name="title" content="<?php echo $metaData['title']; ?>" />
-    <meta name="description" content="<?php echo $metaData['description'] ?>" />
+    <meta name="description" content="<?php echo $metaData['description']; ?>" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://doi.org/<?php echo $metaData['full_doi']; ?>">
     <meta name="robots" content="noindex, nofollow" />
     <?php if ($metaData['redirect']) {
             Yii::app()->clientScript->registerMetaTag("5;url={$metaData['redirect']}", null, 'refresh');
