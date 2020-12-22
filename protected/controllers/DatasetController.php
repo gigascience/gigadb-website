@@ -254,6 +254,10 @@ class DatasetController extends Controller
         $this->metaData['private'] = (Dataset::DATASET_PRIVATE == $model->upload_status);
         // Yii::log("ActionView: about to render",CLogger::LEVEL_ERROR,"DatasetController");
 
+        // Store dataset title, description into metaData array
+        $this->metaData['title'] = $mainSection->getReleaseDetails()['dataset_title'];
+        $this->metaData['description'] = $mainSection->getDescription()['description'];
+
         $this->render('view', array(
             'model'=>$model,
             'form'=>$form,
