@@ -29,6 +29,7 @@ class Controller extends CController
             'title' => '',
             'description' => '',
             'full_doi' => '',
+            'image_url' => '',
             'private' => false,
             'redirect' => false,
         );
