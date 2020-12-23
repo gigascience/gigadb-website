@@ -9,12 +9,12 @@
     <meta name="description" content="<?php echo $metaData['description']; ?>" />
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content="<?php echo $metaData['title']; ?>" />
-    <meta property="og:url" content="http://doi.org/<?php echo $metaData['full_doi']; ?>" />
+    <meta property="og:url" content="https://doi.org/<?php echo $metaData['full_doi']; ?>" />
     <meta property="og:image" content="<?php echo $metaData['image_url']; ?>" />
     <meta property="og:description" content="<?php echo $metaData['description']; ?>" />
     <!-- Twitter -->
     <meta property="twitter:title" content="<?php echo $metaData['title']; ?>" />
-    <meta property="twitter:url" content="http://doi.org/<?php echo $metaData['full_doi']; ?>" />
+    <meta property="twitter:url" content="https://doi.org/<?php echo $metaData['full_doi']; ?>" />
     <meta property="twitter:image" content="<?php echo $metaData['image_url']; ?>" />
     <meta property="twitter:description" content="<?php echo $metaData['description']; ?>" />
 
