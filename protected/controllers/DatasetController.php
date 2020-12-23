@@ -256,7 +256,7 @@ class DatasetController extends Controller
 
         // Store full doi, dataset title, description, image url into metaData array
         $this->metaData['full_doi'] = $mainSection->getReleaseDetails()['full_doi'];
-        $this->metaData['title'] = $mainSection->getReleaseDetails()['dataset_title'];
+        $this->metaData['title'] = "GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$mainSection->getReleaseDetails()['dataset_title'];
         $this->metaData['description'] = $mainSection->getDescription()['description'];
         $this->metaData['image_url'] = $model->getImageUrl();
 
