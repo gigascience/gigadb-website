@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# bail out upon error
-set -e
-
 # bail out if an unset variable is used
 set -u
 
@@ -19,7 +16,7 @@ else
 fi
 
 echo "Checking whether the certificate exists"
-$DOCKER_COMPOSE exec -T web ls -alrt /etc/letsencrypt/live/$REMOTE_HOSTNAME/fullchain.pem
+$DOCKER_COMPOSE exec -T web test -f /etc/letsencrypt/live/$REMOTE_HOSTNAME/fullchain.pem
 
 if [[ $? -eq 0 ]];then
 	echo "Renewing the certificate for $REMOTE_HOSTNAME"
