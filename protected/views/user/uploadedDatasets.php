@@ -1,4 +1,5 @@
 <section>
+    <div class="table-responsive">
     <table class="table table-bordered submitted-table" id="list">
         <thead>
             <tr>
@@ -91,4 +92,5 @@
                 <? } ?>
         </tbody>
     </table>
+    </div>
 </section>
