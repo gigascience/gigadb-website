@@ -1,4 +1,5 @@
 <section>
+    <div class="table-responsive">
     <table class="table table-bordered" id="list">
         <thead>
             <tr>
@@ -69,4 +70,5 @@
             </tr>
             <? } ?>
     </table>
+    </div>
 </section>
