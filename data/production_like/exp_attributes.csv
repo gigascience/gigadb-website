@@ -1,2 +1,6 @@
 id,exp_id,attribute_id,value,units_id
 1,1,306,SOAPdeNovo2,
+2,3,293,"Insect samples were collected using a 15W black-light trap (Bioquip, CA, USA) and a white pan filled with 99.5% ethanol.",
+3,3,293,"Insect samples were collected using a 15W black-light trap (Bioquip, CA, USA) and a white pan filled with 99.5% ethanol.",
+4,2,294,"99.5% ethonal, 4 ℃, 1 week before DNA extraction",
+5,3,294,"99.5% ethonal, 4 ℃, 1 week before DNA extraction",

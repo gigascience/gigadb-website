@@ -2,4 +2,16 @@ id,url,name,image_location
 1,http://www.potatogenome.net/,The Potato Genome Sequencing Consortium,http://gigadb.org/images/project/PGSClogo.jpg
 2,http://www.genome10k.org/,Genome 10K,http://gigadb.org/images/project/G10Klogo.jpg
 3,http://avian.genomics.cn/en/index.html ,The Avian Phylogenomic Project,http://gigadb.org/images/project/phylogenomiclogo.png
+4,http://projects.ensembl.org/heroic/,HEROIC,http://gigadb.org/images/project/HEROIC.jpg
+5,http://www.sheephapmap.org/,International Sheep Genetics Consortium,http://gigadb.org/images/project/ISGClogo.jpg
+6,http://english.ib.cas.cn/,"The Institute of Botany, The Chinese Academy of Sciences",http://gigadb.org/images/project/IB-CASlogo.jpg
+7,http://www.tll.org.sg/,Temasek LifeSciences Laboratory,http://gigadb.org/images/project/TEMASEKlogo.jpg
 8,http://www.1000genomes.org/,1000 Genomes,http://gigadb.org/images/project/1000Genomeslogo.jpg
+9,http://peargenome.njau.edu.cn:8004/,Pear Genome Project,http://gigadb.org/images/project/Pearprojectlogo.jpg
+10,https://www.carmen.org.uk,https://www.carmen.org.uk,http://gigadb.org/images/project/carmen-image.jpg
+11,http://irri.org/our-work/seeds,IRGC,http://gigadb.org/images/project/IRRIlogo.jpg
+12,http://icgr.caas.net.cn/cgris_english.html,CNCGB,http://gigadb.org/images/project/cgrislogo.jpg
+13,http://meta.genomics.cn/metagene/meta/home,Integrated reference catalog of the human gut mircobiome,http://gigadb.org/images/project/humangut.jpg
+14,http://garfield.dobzhanskycenter.org/cgi-bin/hgGateway,Cat Genome Browser Gateway,http://gigadb.org/images/project/catgenome.jpg
+15,http://www.crocgenomes.org/,Crocodilian Genomes Project,http://gigadb.org/images/project/croc.jpg
+16,http://www.well.ox.ac.uk/converge,CONVERGE Project,
