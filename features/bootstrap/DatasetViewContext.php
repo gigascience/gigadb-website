@@ -426,5 +426,17 @@ class DatasetViewContext implements Context
         PHPUnit_Framework_Assert::assertNotNull($metaNode);
     }
 
+    /**
+     * @Then the page meta description should be :arg1
+     */
+    public function thePageMetaDescriptionShouldBe($arg1)
+    {
+        $metaNode = $this->minkContext->getSession()->getPage()->find('xpath', "//meta[@name='description']");
+        $content = $metaNode->getAttribute('content');
+//        file_put_contents('test_description.txt', print_r($abc, true));
+        PHPUnit_Framework_Assert::assertNotNull($content);
+        PHPUnit_Framework_Assert::assertEquals($arg1, $content);
+    }
+
 
 }
