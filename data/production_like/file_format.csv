@@ -6,6 +6,7 @@ id,name,description,edam_ontology_id
 5,GFF,"(.gff) - The General Feature Format (GFF) is used for describing genes and other features of DNA, RNA and protein sequences",format_2305
 6,UNKNOWN,any other file format not defined here,
 7,FASTQ,"(.fq, .fastq) - the FASTQ format stores sequences (usually nucleotide sequence) and Phred qualities in a single file.",format_1930
+8,CONTIG,(.contig) - the CONTIG format is a direct output from the SOAPdenovo alignment program,
 9,VCF,"(.vcf) - the Variant Call Format (VCF) is a text file format for representing eg SNPs, InDels, CNVs, SVs, microsatellites, genotypes",format_3016
 10,PNG,(.png) - portable network graphics,format_3603
 11,IPR," (.ipr) - the Web Gene Ontology (WEGO) Annotation format consists of the protein ID, followed by column(s) that are the IPR (InterPro) ID(s):
@@ -51,6 +52,9 @@ See AGP Specification v2.0",
 26,SFF,sequence format file for Roche 454 nucleotide sequences.,format_3284
 27,Galaxy workflow,"",
 28,HDF5,(.h5),format_3590
+29,wmv,Windows movie file format,
+30,WORD,a MS word document,
+31,mzXML,"",format_3654
 32,zip,"",
 33,LSM,Laser Scanning Microscope format,
 34,TIF,Tagged Image File Format,format_3591
@@ -71,6 +75,7 @@ See AGP Specification v2.0",
 50,Cytoscape,Format of the cytoscape input file of gene expression ratios or values are specified over one or more experiments.,format_3477
 51,BLAST results,"Format of results of a sequence database search using some variant of BLAST. This includes score data, alignment data and summary table.",format_1333
 52,BAI,BAM indexing format,format_3327
+53,CIGAR,Compact Idiosyncratic Gapped Alignment Report format is a compressed (run-length encoded) pairwise alignment format. It is useful for representing long (e.g. genomic) pairwise alignments. See http://wiki.bits.vib.be/index.php/CIGAR for more details.,
 54,DOC,microsoft word format,format_3507
 55,DOCX,microsoft word format,format_3506
 56,archive,"",

@@ -6,7 +6,6 @@ id,prefix,url,source,icon
 5,DDBJ                ,http://www.ddbj.nig.ac.jp/,DDBJ,
 6,DOI                 ,http://dx.doi.org/10.1186/,"",
 7,DOID                ,http://purl.obolibrary.org/obo/DOID_,"",
-8,EGA                 ,https://www.ebi.ac.uk/ega/studies/,EBI,
 9,ENA                 ,http://www.ebi.ac.uk/ena/data/view/,EBI,
 11,GEO                 ,http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=,NCBI,
 12,MedDRA              ,http://purl.bioontology.org/ontology/MDR/,"",
@@ -41,3 +40,4 @@ id,prefix,url,source,icon
 43,Genbank             ,http://www.ebi.ac.uk/ena/data/view/,EBI,
 44,Genbank             ,http://getentry.ddbj.nig.ac.jp/getentry/na/,DDBJ,
 45,MetaboLights        ,http://www.ebi.ac.uk/metabolights/,"",
+8,EGA                 ,https://www.ebi.ac.uk/ega/studies/,EBI,
