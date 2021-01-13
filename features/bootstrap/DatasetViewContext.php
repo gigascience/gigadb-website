@@ -425,4 +425,19 @@ class DatasetViewContext implements Context
         PHPUnit_Framework_Assert::assertNotNull($metaNode);
     }
 
+    /**
+     * @Then there should be a :arg1 meta tag :arg2 with lines:
+     */
+    public function thereShouldBeAMetaTagWithMultiplines($arg1, $arg2, \Behat\Gherkin\Node\PyStringNode $arg3 )
+    {
+        $expectContent = $arg3->getRaw();
+
+        $metaNode = $this->minkContext->getSession()->getPage()->find('xpath', "//meta[@$arg1='$arg2']");
+        $actualContent = $metaNode->getAttribute('content');
+//        file_put_contents('test_expect.txt', print_r($expectContent, true));
+
+        PHPUnit_Framework_Assert::assertEquals($expectContent, $actualContent);
+
+    }
+
 }
