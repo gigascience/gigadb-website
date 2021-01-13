@@ -436,7 +436,7 @@ class DatasetViewContext implements Context
         $actualContent = $metaNode->getAttribute('content');
 //        file_put_contents('test_expect.txt', print_r($expectContent, true));
 
-        PHPUnit_Framework_Assert::assertEquals($expectContent, $actualContent);
+        PHPUnit_Framework_Assert::assertEquals(implode(" ", preg_split('/\r\n|\r|\n/', $expectContent)), implode(" ", preg_split('/\r\n|\r|\n/', $actualContent)));
 
     }
 
