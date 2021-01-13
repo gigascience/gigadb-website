@@ -431,12 +431,13 @@ class DatasetViewContext implements Context
     public function thereShouldBeAMetaTagWithMultiplines($arg1, $arg2, \Behat\Gherkin\Node\PyStringNode $arg3 )
     {
         $expectContent = $arg3->getRaw();
+        $expectContent = implode(" ", preg_split('/\r\n|\r|\n/', $expectContent));
 
         $metaNode = $this->minkContext->getSession()->getPage()->find('xpath', "//meta[@$arg1='$arg2']");
         $actualContent = $metaNode->getAttribute('content');
-//        file_put_contents('test_expect.txt', print_r($expectContent, true));
+        $actualContent = preg_replace('/\s\s/', ' ', implode(" ", preg_split('/\r\n|\r|\n/', $actualContent)));
 
-        PHPUnit_Framework_Assert::assertEquals(implode(" ", preg_split('/\r\n|\r|\n/', $expectContent)), implode(" ", preg_split('/\r\n|\r|\n/', $actualContent)));
+        PHPUnit_Framework_Assert::assertEquals($expectContent, $actualContent, 'The content is different!');
 
     }
 
