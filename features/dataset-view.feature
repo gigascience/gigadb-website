@@ -336,18 +336,18 @@ Feature: a user visit the dataset page
 		And I am on "/dataset/101001"
 		And I should see a button input "Cite Dataset"
 		When I press "Cite Dataset"
-		Then I should see "Text"
+		Then I should see "Formatted Text"
 		And I should see "RIS"
 		And I should see "BibTeX"
 
 	@ok @javascript @pr521
-	Scenario: To get Text file after clicking the Text button in the citation box
+	Scenario: To show the citation text from CorssCite after clicking the Formatted Text button in the citation box
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
 		And I press "Cite Dataset"
-		When I click on the "Text" button
+		When I click on the "Formatted Text" button
 		Then I go to "http://data.datacite.org/text/x-bibliography/10.5524/101001"
-		And I should see "Genome sequence of the duck (Anas platyrhynchos)"
+		And I should see "Huang, Y., Li, Y., Burt, D. W., Chen, H., Zhang, Y., Qian, W., Kim, H., Gan, S., Zhao, Y., Li, J., Yi, K., Feng, H., Zhu, P., Li, B., Liu, Q., Fairley, S., Magor, K. E., Du, Z., Hu, X., … Li, N. (2013). <i>Genome sequence of the duck (Anas platyrhynchos)</i> [Data set]. GigaScience Database. https://doi.org/10.5524/101001"
 
 	@ok @javascript @pr521
 	Scenario: To get RIS file after clicking the RIS in the citation box
