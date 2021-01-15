@@ -12,7 +12,7 @@ class m200305_155409_add_sample_id_column_to_upload_table extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('{{%upload}}', 'sample_id', $this->integer()->defaultValue(null));
+        $this->addColumn('{{%upload}}', 'sample_ids', $this->string(512)->defaultValue(null));
     }
 
     /**
@@ -20,6 +20,6 @@ class m200305_155409_add_sample_id_column_to_upload_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropColumn('{{%upload}}', 'sample_id');
+        $this->dropColumn('{{%upload}}', 'sample_ids');
     }
 }

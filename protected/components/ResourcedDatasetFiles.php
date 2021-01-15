@@ -17,6 +17,8 @@ class ResourcedDatasetFiles extends DatasetComponents implements DatasetFilesInt
 	/** @var $_fuwClient GigaDB client to connect to FUW REST API to get the files */
 	private $_fuwClient;
 
+	private $_uploadedFiles;
+
 	public function __construct (int $dataset_id, CDbConnection $dbConnection, FileUploadService $fuwClient)
 	{
 		parent::__construct();
@@ -59,7 +61,7 @@ class ResourcedDatasetFiles extends DatasetComponents implements DatasetFilesInt
 				return array( $attrs['name'] => $attrs['value']." ".$attrs['unit'] );
 			};
 			$file=[];
-			$file["id"] = null;
+			$file["id"] = $upload["id"];
 			$file["dataset_id"] = $this->_id;
 			$file["name"] = $upload["name"];
 			$file["location"] = $upload["location"];
@@ -74,16 +76,37 @@ class ResourcedDatasetFiles extends DatasetComponents implements DatasetFilesInt
 		};
 
         // Fetch list of uploaded files
-        $uploadedFiles = $this->_fuwClient->getUploads($this->getDatasetDOI());
+        $this->_uploadedFiles = $this->_fuwClient->getUploads($this->getDatasetDOI());
 
-        $datasetFiles = array_map($uploadToFile, $uploadedFiles);
+        $datasetFiles = array_map($uploadToFile, $this->_uploadedFiles);
 		return $datasetFiles;
 		
 	}
 
+	/**
+	 * TODO: get samples associated with files uploaded for the dataset
+	 */
 	public function getDatasetFilesSamples(): array
 	{
-		return [];
+		$samples = [] ;
+		// Fetch list of uploaded files
+        $uploadedFiles = $this->_uploadedFiles ?? $this->_fuwClient->getUploads($this->getDatasetDOI());
+
+       foreach($uploadedFiles as $upload) {
+
+       		if (!isset($upload['sample_ids']))
+       			continue;
+
+        	$extractSamples = function ($sampleStr) use ($upload) {
+        		return ["sample_id" => null, "sample_name" => $sampleStr, "file_id" => $upload["id"] ];
+        	};
+
+        	$uploadSamples = array_map( $extractSamples, array_map('trim', explode(",", $upload['sample_ids'])) );
+        	foreach($uploadSamples as $sample) {
+        		$samples[] = $sample;
+        	}
+        }
+		return $samples;
 	}
 
 

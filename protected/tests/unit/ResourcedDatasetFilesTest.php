@@ -96,7 +96,7 @@ public function testResourcedReturnsDatasetFilesWithResults()
 		        'description' => 'methods for field data',
 		        'datatype' => 'Text',
 		        'extension' => 'DOCX',
-		        'sample_id' => null,
+		        'sample_ids' => null,
 		        'updated_at' => (new DateTime())->format('U'),
 		    ],
 		    [
@@ -110,7 +110,7 @@ public function testResourcedReturnsDatasetFilesWithResults()
 		        'description' => 'measurements',
 		        'datatype' => 'Text',
 		        'extension' => 'CSV',
-		        'sample_id' => null,
+		        'sample_ids' => null,
 		        'updated_at' => (new DateTime())->format('U'),
 		    ],
 		    [
@@ -124,7 +124,7 @@ public function testResourcedReturnsDatasetFilesWithResults()
 		        'description' => 'An image',
 		        'datatype' => 'Annotation',
 		        'extension' => 'JPG',
-		        'sample_id' => null,
+		        'sample_ids' => null,
 		        'updated_at' => (new DateTime())->format('U'),
 		    ],
 		];
@@ -140,7 +140,7 @@ public function testResourcedReturnsDatasetFilesWithResults()
 			->willReturn($uploadedFiles);
 		$datasetFiles = $daoUnderTest->getDatasetFiles();
 		$this->assertEquals(count($uploadedFiles), count($datasetFiles) ) ;
-		$this->assertEquals(null,$datasetFiles[0]["id"]);
+		$this->assertEquals(1,$datasetFiles[0]["id"]);
 		$this->assertEquals(1,$datasetFiles[0]["dataset_id"]);
 		$this->assertEquals($uploadedFiles[0]["name"],$datasetFiles[0]["name"]);
 		$this->assertEquals($uploadedFiles[0]["location"],$datasetFiles[0]["location"]);
@@ -183,7 +183,7 @@ public function testResourcedReturnsDatasetFilesWithResults()
 		        'description' => 'methods for field data',
 		        'datatype' => 'Text',
 		        'extension' => 'DOCX',
-		        'sample_id' => null,
+		        'sample_ids' => null,
 		        'updated_at' => (new DateTime())->format('U'),
 		    ],
 		    [
@@ -197,7 +197,7 @@ public function testResourcedReturnsDatasetFilesWithResults()
 		        'description' => 'measurements',
 		        'datatype' => 'Text',
 		        'extension' => 'CSV',
-		        'sample_id' => null,
+		        'sample_ids' => null,
 		        'updated_at' => (new DateTime())->format('U'),
 		    ],
 		    [
@@ -211,7 +211,7 @@ public function testResourcedReturnsDatasetFilesWithResults()
 		        'description' => 'An image',
 		        'datatype' => 'Annotation',
 		        'extension' => 'JPG',
-		        'sample_id' => null,
+		        'sample_ids' => null,
 		        'updated_at' => (new DateTime())->format('U'),
 		    ],
 		];
@@ -269,7 +269,7 @@ public function testResourcedReturnsDatasetFilesWithResults()
 
 		$datasetFiles = $daoUnderTest->getDatasetFiles();
 		$this->assertEquals(count($uploadedFiles), count($datasetFiles) ) ;
-		$this->assertEquals(null,$datasetFiles[0]["id"]);
+		$this->assertEquals(1,$datasetFiles[0]["id"]);
 		$this->assertEquals(1,$datasetFiles[0]["dataset_id"]);
 		$this->assertEquals($uploadedFiles[0]["name"],$datasetFiles[0]["name"]);
 		$this->assertEquals($uploadedFiles[0]["location"],$datasetFiles[0]["location"]);
@@ -286,6 +286,151 @@ public function testResourcedReturnsDatasetFilesWithResults()
 		$this->assertEquals(["Attribute A" => "54 Metre"],$datasetFiles[2]["file_attributes"][0]);
 	}
 
+	public function testResourcedReturnsDatasetSamples()
+	{
+		$dataset_id = 1;
+		$doi = 100243;
+		$uploadedFiles = [
+		    [
+		        'id' => 1,
+		        'doi' => '010010',
+		        'name' => 'FieldDataMethods.docx',
+		        'size' => 2352636,
+		        'status' => 0,
+		        'location' => 'ftp://some.location/FieldDataMethods.docx',
+		        'initial_md5' => 't5GU9NwpuGYSfb7FEZMAxqtuz2PkEvv',
+		        'description' => 'methods for field data',
+		        'datatype' => 'Text',
+		        'extension' => 'DOCX',
+		        'sample_ids' => "Sample E",
+		        'updated_at' => (new DateTime())->format('U'),
+		    ],
+		    [
+		        'id' => 2,
+		        'doi' => '010010',
+		        'name' => 'Measurements.csv',
+		        'size' => 3252654,
+		        'status' => 0,
+		        'location' => 'ftp://some.location/Measurements.csv',
+		        'initial_md5' => 'X5GU9NwpuGYSfb7FEZMAxqtuz2PkEvv',
+		        'description' => 'measurements',
+		        'datatype' => 'Text',
+		        'extension' => 'CSV',
+		        'sample_ids' => null,
+		        'updated_at' => (new DateTime())->format('U'),
+		    ],
+		    [
+		        'id' => 3,
+		        'doi' => '010020',
+		        'name' => 'SomeImage.jpg',
+		        'size' => 3252654,
+		        'status' => 0,
+		        'location' => 'ftp://some.location/SomeImage.jpg',
+		        'initial_md5' => 'Y5GU9NwpuGYSfb7FEZMAxqtuz2PkEvv',
+		        'description' => 'An image',
+		        'datatype' => 'Annotation',
+		        'extension' => 'JPG',
+		        'sample_ids' => "Sample A, Sample B, Sample Z",
+		        'updated_at' => (new DateTime())->format('U'),
+		    ],
+		];
+		// 'sample_id' => 1,
+		// 'sample_name' => "Sample 1",
+		// 'file_id' => 1,
+		// samples: [ [ "id" => 1, "name" => "sample A", "file_id" => 4], [ "id" => 1, "name" => "sample A", "file_id" => 4] ]
+		$fuwClient = $this->createMock(FileUploadService::class);
+		$daoUnderTest = new ResourcedDatasetFiles(
+								$dataset_id,
+								$this->getFixtureManager()->getDbConnection(),
+								$fuwClient
+							);
+
+		$fuwClient->expects($this->once())
+			->method("getUploads")
+			->with($doi)
+			->willReturn($uploadedFiles);
+
+		$datasetSamples = $daoUnderTest->getDatasetFilesSamples();
+		$this->assertEquals(4, count($datasetSamples));
+		$this->assertEquals(["sample_id" => null, "sample_name" => "Sample E", "file_id" => 1 ], $datasetSamples[0]);
+		$this->assertEquals(["sample_id" => null, "sample_name" => "Sample A", "file_id" => 3 ], $datasetSamples[1]);
+		$this->assertEquals(["sample_id" => null, "sample_name" => "Sample B", "file_id" => 3 ], $datasetSamples[2]);
+		$this->assertEquals(["sample_id" => null, "sample_name" => "Sample Z", "file_id" => 3 ], $datasetSamples[3]);
+	}
+
+
+public function testResourcedReturnsDatasetSamplesNoCallToGetUploads()
+	{
+		$dataset_id = 1;
+		$doi = 100243;
+		$uploadedFiles = [
+		    [
+		        'id' => 1,
+		        'doi' => '010010',
+		        'name' => 'FieldDataMethods.docx',
+		        'size' => 2352636,
+		        'status' => 0,
+		        'location' => 'ftp://some.location/FieldDataMethods.docx',
+		        'initial_md5' => 't5GU9NwpuGYSfb7FEZMAxqtuz2PkEvv',
+		        'description' => 'methods for field data',
+		        'datatype' => 'Text',
+		        'extension' => 'DOCX',
+		        'sample_ids' => "Sample E",
+		        'updated_at' => (new DateTime())->format('U'),
+		    ],
+		    [
+		        'id' => 2,
+		        'doi' => '010010',
+		        'name' => 'Measurements.csv',
+		        'size' => 3252654,
+		        'status' => 0,
+		        'location' => 'ftp://some.location/Measurements.csv',
+		        'initial_md5' => 'X5GU9NwpuGYSfb7FEZMAxqtuz2PkEvv',
+		        'description' => 'measurements',
+		        'datatype' => 'Text',
+		        'extension' => 'CSV',
+		        'sample_ids' => null,
+		        'updated_at' => (new DateTime())->format('U'),
+		    ],
+		    [
+		        'id' => 3,
+		        'doi' => '010020',
+		        'name' => 'SomeImage.jpg',
+		        'size' => 3252654,
+		        'status' => 0,
+		        'location' => 'ftp://some.location/SomeImage.jpg',
+		        'initial_md5' => 'Y5GU9NwpuGYSfb7FEZMAxqtuz2PkEvv',
+		        'description' => 'An image',
+		        'datatype' => 'Annotation',
+		        'extension' => 'JPG',
+		        'sample_ids' => "Sample A, Sample B, Sample Z",
+		        'updated_at' => (new DateTime())->format('U'),
+		    ],
+		];
+		// 'sample_id' => 1,
+		// 'sample_name' => "Sample 1",
+		// 'file_id' => 1,
+		// samples: [ [ "id" => 1, "name" => "sample A", "file_id" => 4], [ "id" => 1, "name" => "sample A", "file_id" => 4] ]
+		$fuwClient = $this->createMock(FileUploadService::class);
+		$daoUnderTest = new ResourcedDatasetFiles(
+								$dataset_id,
+								$this->getFixtureManager()->getDbConnection(),
+								$fuwClient
+							);
+
+		$fuwClient->expects($this->once())
+			->method("getUploads")
+			->with($doi)
+			->willReturn($uploadedFiles);
+
+		$datasetFiles = $daoUnderTest->getDatasetFiles();
+		$datasetSamples = $daoUnderTest->getDatasetFilesSamples(); //should not make a call to getUploads()
+		$this->assertEquals(4, count($datasetSamples));
+		$this->assertEquals(["sample_id" => null, "sample_name" => "Sample E", "file_id" => 1 ], $datasetSamples[0]);
+		$this->assertEquals(["sample_id" => null, "sample_name" => "Sample A", "file_id" => 3 ], $datasetSamples[1]);
+		$this->assertEquals(["sample_id" => null, "sample_name" => "Sample B", "file_id" => 3 ], $datasetSamples[2]);
+		$this->assertEquals(["sample_id" => null, "sample_name" => "Sample Z", "file_id" => 3 ], $datasetSamples[3]);
+	}
 }
 
 ?>

@@ -77,7 +77,14 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
             $upload->status = Upload::STATUS_SYNCHRONIZED;
             $upload->location = "ftp://climb.genomics.cn/pub/10.5524/{$this->doi}/{$this->file}";
 
-
+            $isSaved = $upload->save();
+            if(!$isSaved) {
+                Yii::error($upload->errors);
+                foreach ($upload->errors as $error) {
+                    throw new \Exception(implode("\n",$error));
+                }
+                throw new \Exception($error);
+            }
             return $upload->save() && $this->_gigaDBQueue->push($this->createUpdateGigaDBJob($upload));
 
         }
@@ -96,9 +103,11 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
             $updateJob->doi = $this->doi;
             $updateJob->file = $upload->attributes;
             $updateJob->file_attributes = $upload->uploadAttributes;
-            $updateJob->sample_ids = explode(",",$upload->sample_ids);
+            $updateJob->sample_ids = array_map('trim',explode(",",$upload->sample_ids));
+            Yii::warning("Created instance of UpdateGigaDBJob for file".$upload->name." for dataset ".$this->doi);
             return $updateJob;
         }
+        Yii::error("Upload record is null");
         return $upload;
     }
 }

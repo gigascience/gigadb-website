@@ -5,7 +5,9 @@ Feature:
 	So that the curated files of submitted datasets are available to the public
 
 Background:
-	Given there is a user "Artie" "Dodger"
+	Given there is "user" "Artie" "Dodger"
+	And there is "admin" "Ben" "Hur"
+	And The user "Ben" "Hur" is registered as authorised user in the API	
 	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "Curation"
 	And filedrop account for DOI "000007" does exist
 
@@ -91,10 +93,9 @@ Scenario: Completion of moving files triggers update of the file, attributes tab
 	And I wait "1" seconds
 	And reference data for Attribute for Unit is created for
 	| Table | Name | Id |
-	| attribute | Temperature ||
-	| attribute | Brightness ||
-	| unit | degree celsius | UO:000002 |
-	| unit | lumen | UO:0000118 |	
+	| attribute | growth temperature ||
+	| attribute | MD5 checksum ||
+	| unit | degree celsius | UO:0000027 |	
 	And I go to "/adminDataset/admin"
 	And I press "Update Dataset" for dataset "000007"
 	And I press "Move files to public ftp"
@@ -103,8 +104,8 @@ Scenario: Completion of moving files triggers update of the file, attributes tab
 	And I browse to the dataset page for "000007"
 	Then I should see the files
 	| File Name | Data Type | File Format | Size | File Attributes (1st) | File Attributes (2nd) |
-	| seq1.fa | Sequence assembly | FASTA | 23.43 MiB | Temperature: 45 | Brightness: 75 |
-	| Specimen.pdf | Annotation | PDF | 19.11 KiB | Temperature: 51 | Brightness: 90 |
+	| seq1.fa | Sequence assembly | FASTA | 23.43 MiB | growth temperature: 45 | MD5 checksum: 75 |
+	| Specimen.pdf | Annotation | PDF | 19.11 KiB | growth temperature: 51 | MD5 checksum: 90 |
 	And there is a download link for each file associated with DOI "000007"
 	| File Name |
 	| seq1.fa | 
@@ -117,13 +118,9 @@ Scenario: Completion of moving files triggers update of the file, attributes and
 	And I wait "1" seconds
 	And reference data for Attribute for Unit is created for
 	| Table | Name | Id |
-	| attribute | Temperature ||
-	| attribute | Brightness ||
-	| unit | degree celsius | UO:000002 |
-	| unit | lumen | UO:0000118 |	
-	| sample | Sample A ||	
-	| sample | Sample E ||	
-	| sample | Sample Z ||	
+	| attribute | growth temperature ||
+	| attribute | MD5 checksum ||
+	| unit | degree celsius | UO:0000027 |		
 	And I go to "/adminDataset/admin"
 	And I press "Update Dataset" for dataset "000007"
 	And I press "Move files to public ftp"
@@ -132,8 +129,8 @@ Scenario: Completion of moving files triggers update of the file, attributes and
 	And I browse to the dataset page for "000007"
 	Then I should see the files
 	| File Name | Sample ID | Data Type | File Format | Size | File Attributes (1st) | File Attributes (2nd) |
-	| seq1.fa | Sample A, Sample Z | Sequence assembly | FASTA | 23.43 MiB | Temperature: 45 | Brightness: 75 |
-	| Specimen.pdf | Sample E | Annotation | PDF | 19.11 KiB | Temperature: 51 | Brightness: 90 |
+	| seq1.fa | Sample A, Sample Z | Sequence assembly | FASTA | 23.43 MiB | growth temperature: 45 | MD5 checksum: 75 |
+	| Specimen.pdf | Sample E | Annotation | PDF | 19.11 KiB | growth temperature: 51 | MD5 checksum: 90 |
 	And there is a download link for each file associated with DOI "000007"
 	| File Name |
 	| seq1.fa | 

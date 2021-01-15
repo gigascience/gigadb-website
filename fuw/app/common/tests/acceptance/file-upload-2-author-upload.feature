@@ -5,7 +5,7 @@ Feature:
  	So that the dataset can be reviewed and made available online
 
 Background:
-	Given there is a user "Artie" "Dodger"
+	Given there is "user" "Artie" "Dodger"
 	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "UserUploadingData"
 	And filedrop account for DOI "000007" does exist
 
@@ -30,7 +30,7 @@ Scenario: Upload files button when dataset has appropriate status (DataPending)
 
 @ok
 Scenario: No Upload files button when dataset hasn't got to the appropriate status yet
-	Given there is a user "Chloe" "Decker"
+	Given there is "user" "Chloe" "Decker"
 	And a dataset with DOI "100008" owned by user "Chloe" "Decker" has status "AssigningFTPbox"
 	And I sign in as the user "Chloe" "Decker"
 	And I wait "2" seconds
@@ -124,7 +124,7 @@ Scenario: Next button to proceed to file metadata annotation form
 # 	Given I sign in as a user
 # 	And I am on "/user/view_profile#submitted"
 # 	And the uploaded dataset has status "UserStartedIncomplete"
-# 	Then I should not see a "Upload Files for dataset 100006" button
+# 	Then I should not see a "Upload Files for dataset 000005" button
 
 # Scenario: Selecting files to upload using file dialog box
 # 	Given I sign in as a user
@@ -171,4 +171,4 @@ Scenario: Next button to proceed to file metadata annotation form
 # 	And I am on "/uploader/files"
 # 	When I add a set of files to the uploading queue
 # 	And all the files have been uploaded
-# 	Then all the files are transfered to the file drop box for dataset "100006"
+# 	Then all the files are transfered to the file drop box for dataset "000005"

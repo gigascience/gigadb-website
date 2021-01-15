@@ -5,7 +5,7 @@ Feature:
 	So that the dataset can be reviewed and made available online despite web access restriction
 
 Background:
-	Given there is a user "Artie" "Dodger"
+	Given there is "user" "Artie" "Dodger"
 	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "UserUploadingData"
 	And filedrop account for DOI "000007" does exist	
 

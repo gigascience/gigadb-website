@@ -5,7 +5,7 @@ Feature:
 	So that the files associated with my dataset can be queried precisely
 
 Background:
-	Given there is a user "Artie" "Dodger"
+	Given there is "user" "Artie" "Dodger"
 	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "UserUploadingData"
 	And filedrop account for DOI "000007" does exist
 
@@ -113,7 +113,7 @@ Scenario: Initial MD5 checksum for upload files shows up as tooltip
 
 # Scenario: Saving all metadata for all files
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	When I fill in the "file-1-data-type" field with "Text"
 # 	And I fill in the "file-1-description" field with "this is file description for file 1"
@@ -127,7 +127,7 @@ Scenario: Initial MD5 checksum for upload files shows up as tooltip
 
 # Scenario: Saving all mandatory metadata for some files
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	When I fill in the "file-1-data-type" field with "Text"
 # 	And I fill in the "file-1-description" field with "this is file description for file 1"
@@ -139,7 +139,7 @@ Scenario: Initial MD5 checksum for upload files shows up as tooltip
 
 # Scenario: Saving some mandatory metadata for some files is not allowed
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	When I fill in the "file-1-data-type" field with "Text"
 # 	And I fill in the "file-1-description" field with "this is file description for file 1"
@@ -149,23 +149,23 @@ Scenario: Initial MD5 checksum for upload files shows up as tooltip
 
 # Scenario: Completion: status set to DataAvailableForReview, email sent to editors, author taken to Your Uploaded Dataset page
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	When I saved all mandatory file metadata for all files
 # 	And I press "Complete and return to Your Uploaded Datasets page"
 # 	Then the response should contain "Your Uploaded Datasets"
-# 	And the response sould contain "10.5524/100006"
+# 	And the response sould contain "10.5524/000005"
 # 	And the response sould contain "DataAvailableForReview"
 # 	And an email notification is sent to "editorial@gigasciencejournal.com"
 # 	And I should be on "/user/view_profile#submitted"
 
 # Scenario: Return to previous page (file upload page)
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	When I press "Previous"
 # 	Then I should be on "/uploader/files"
-# 	And I should see "File Uploader for dataset 100006"
+# 	And I should see "File Uploader for dataset 000005"
 # 	And all the files should be shown as complete
 # 	And I should see a "Choose file" button
 # 	And I should see a "Next" button

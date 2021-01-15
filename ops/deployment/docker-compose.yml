@@ -7,8 +7,8 @@ services:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
     build:
-      context: ../..
-      dockerfile: ops/packaging/Web-Dockerfile
+      context: ..
+      dockerfile: packaging/Web-Dockerfile
       args:
         - NGINX_VERSION=${NGINX_VERSION}
         - GIGADB_ENV=${GIGADB_ENV}
@@ -21,6 +21,9 @@ services:
       # Gigadb webapp
       - ${APPLICATION}/assets:/var/www/assets
       - ${APPLICATION}/images:/var/www/images
+      - ${APPLICATION}/fonts:/var/www/fonts
+      - ${APPLICATION}/js:/var/www/js
+      - ${APPLICATION}/less:/var/www/less
       - ${APPLICATION}/css:/var/www/css
       - ${APPLICATION}/style-guide:/var/www/style-guide
       # File Upload Wizard admin application
@@ -85,6 +88,7 @@ services:
       - "9000"
     extra_hosts:
       - "fuw-admin-api:172.16.238.10"
+      - "fuw-public-api:172.16.238.10"
     networks:
       - web-tier
       - db-tier
@@ -102,8 +106,6 @@ services:
         mode: host
     volumes:
       - ${DATA_SAVE_PATH}/postgres/${POSTGRES_VERSION}/data:/var/lib/postgresql/data
-      - ${APPLICATION}/ops/configuration/postgresql-conf/bootstrap.sql:/docker-entrypoint-initdb.d/1-gigadb_schema.sql
-      - ${APPLICATION}/ops/configuration/postgresql-conf/test_bootstrap.sql:/docker-entrypoint-initdb.d/2-gigadb_test_schema.sql
       - ${APPLICATION}/fuw/app/common/config/bootstrap.sql:/docker-entrypoint-initdb.d/3-fuw.sql
       - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf'
@@ -248,7 +250,16 @@ services:
       - "gigadb.dev:172.16.238.10"
       - "gigadb.test:172.16.238.10"
       - "fuw-admin-api:172.16.238.10"
+      - "fuw-public-api:172.16.238.10"
     command: bash -c "./tests/all_and_coverage"
+
+  csv-to-migrations:
+    image: node:14.9.0-buster
+    working_dir: /var/www/ops/scripts
+    volumes:
+      - ${APPLICATION}/:/var/www
+    shm_size: '1gb' # to avoid a known issue
+    command: bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR"
 
   js:
     build:
@@ -583,7 +594,7 @@ services:
       # access to the ftp tokens so the upload's location attribute can be populated
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private:ro    
       # access to the fuw/console so tusd hooks can trigger upload update
-      - ../../fuw/app:/app
+      - ../../fuw/app:/fuw/app
       # access to data feeds
       - ${APPLICATION}/files:/var/www/files:ro
 

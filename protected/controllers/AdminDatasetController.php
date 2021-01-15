@@ -125,6 +125,15 @@ class AdminDatasetController extends Controller
      */
     public function actionAdmin()
     {
+
+        $criteria=new CDbCriteria(array(                    
+            'order'=>'identifier asc',
+        ));
+
+        $dataProvider=new CActiveDataProvider('Dataset', array(
+            'criteria'=>$criteria,
+        ));
+
         $model=new Dataset('search');
         $model->unsetAttributes();  // clear any default values
         if (isset($_GET['Dataset'])) {
@@ -133,6 +142,7 @@ class AdminDatasetController extends Controller
 
         $this->render('admin', array(
             'model'=>$model,
+            'dataProvider'=>$dataProvider,
         ));
     }
 

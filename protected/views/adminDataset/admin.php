@@ -64,7 +64,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'dataset-grid',
-	'dataProvider'=>$model->search(),
+	'dataProvider'=>$dataProvider,
 	'itemsCssClass'=>"table table-bordered table-fixed",
 	'rowCssClassExpression' => '"dataset-".$data["identifier"]',
 	'filter'=>$model,
