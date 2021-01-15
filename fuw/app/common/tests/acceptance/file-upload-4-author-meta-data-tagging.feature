@@ -5,7 +5,7 @@ Feature:
 	So that I can describe it better for more precise querying
 
 Background:
-	Given there is a user "Artie" "Dodger"
+	Given there is "user" "Artie" "Dodger"
 	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "UserUploadingData"
 	And filedrop account for DOI "000007" does exist
 
@@ -116,7 +116,7 @@ Scenario: Saving file metadata with attributes and samples
 # Scenario: there is a button to add attributes in the file metadata page when all mandatory fields are filled in
 # 	Given I sign in as a user
 # 	And I am on "/uploader/files"
-# 	And I add a set of files to the uploading queue for dataset "100006"
+# 	And I add a set of files to the uploading queue for dataset "000005"
 # 	And all the files have been uploaded
 # 	When I press "Next"
 # 	And I fill in the "file-1-data-type" field with "Text"
@@ -128,7 +128,7 @@ Scenario: Saving file metadata with attributes and samples
 
 # Scenario: adding an attribute to a file
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	And I fill in the "file-2-data-type" field with "Text"
 # 	And I fill in the "file-2-description" field with "this is file description for file 2"
@@ -141,7 +141,7 @@ Scenario: Saving file metadata with attributes and samples
 
 # Scenario: seeing added attributes
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	And I have added an attribute to "file2.csv"
 # 	When I press "Add attributes to file file2.csv"
@@ -156,7 +156,7 @@ Scenario: Saving file metadata with attributes and samples
 
 # Scenario: form element to link with a sample
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	When I press "Add attributes to file file2.csv"
 # 	Then A Dialog box "file-2-attributes" reads "Attributes"
@@ -165,7 +165,7 @@ Scenario: Saving file metadata with attributes and samples
 
 # Scenario: link a file with a sample
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	And I have a sample with ID "100"
 # 	And I press "Add attributes to file file2.csv"

@@ -4,7 +4,9 @@ Feature:
 	So that I can audit or troubleshoot the dataset files and metadata upload process
 
 Background:
-	Given there is a user "Artie" "Dodger"
+	Given there is "user" "Artie" "Dodger"
+	And there is "admin" "Ben" "Hur"
+	And The user "Ben" "Hur" is registered as authorised user in the API
 	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "UserUploadingData"
 	And filedrop account for DOI "000007" does exist
 

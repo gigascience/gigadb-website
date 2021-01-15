@@ -5,7 +5,7 @@ Feature:
 	So that the large number of files associated with my manuscript's dataset can be queried precisely
 
 Background:
-	Given there is a user "Artie" "Dodger"
+	Given there is "user" "Artie" "Dodger"
 	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "UserUploadingData"
 	And filedrop account for DOI "000007" does exist
 
@@ -235,7 +235,7 @@ Scenario: Uploading TSV spreadsheet to update upload metadata and attributes
 
 # Scenario: Well-formated spreadsheet with metadata populated for some or all files with no prior metadata filled in
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	When I press "Upload Files Metadata"
 # 	And I select a spreadsheet with metadata for some or all files
@@ -243,7 +243,7 @@ Scenario: Uploading TSV spreadsheet to update upload metadata and attributes
 
 # Scenario: Well-formated spreadsheet with metadata populated for some files with pre-existing metadata
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	And I have filled in metadata for all the files
 # 	When I press "Upload Files Metadata"
@@ -254,7 +254,7 @@ Scenario: Uploading TSV spreadsheet to update upload metadata and attributes
 
 # Scenario: The file is not valid TSV or CSV
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	When I press "Upload Files Metadata"
 # 	And I select a malformed file
@@ -262,7 +262,7 @@ Scenario: Uploading TSV spreadsheet to update upload metadata and attributes
 
 # Scenario: file 2 has following problems: missing data type, missing description
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	When I press "Upload Files Metadata"
 # 	And I select a spreadsheet that include one problematic file with missing metadata
@@ -270,7 +270,7 @@ Scenario: Uploading TSV spreadsheet to update upload metadata and attributes
 
 # Scenario: file 2 has following problems: file name doesn't match with any uploaded file
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	When I press "Upload Files Metadata"
 # 	And I select a spreadsheet that include one problematic file with filename not recognised
@@ -278,7 +278,7 @@ Scenario: Uploading TSV spreadsheet to update upload metadata and attributes
 
 # Scenario: file 2 has following problems: Sample ID not recognized
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	When I press "Upload Files Metadata"
 # 	And I select a spreadsheet that include one problematic file with filename not recognised
@@ -286,7 +286,7 @@ Scenario: Uploading TSV spreadsheet to update upload metadata and attributes
 
 # Scenario: file 2 has following problems: tag1 is malformed, tag3 is malformed
 # 	Given I sign in as a user
-# 	And I have uploaded a set of files to the drop box for dataset "100006"
+# 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
 # 	When I press "Upload Files Metadata"
 # 	And I select a spreadsheet that include one problematic file with malformed tags

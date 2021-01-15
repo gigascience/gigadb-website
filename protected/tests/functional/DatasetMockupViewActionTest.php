@@ -30,6 +30,9 @@ class DatasetMockupViewActionTest extends FunctionalTesting
     {
         parent::setUp();
 
+        $this->url = "http://gigadb.dev/dataset/mockup" ;
+        $this->doi = "100005";
+
         try {
             $this->dbh_gigadb = new PDO("pgsql:host=".getenv("GIGADB_HOST").";dbname=".getenv("GIGADB_DB"), getenv("GIGADB_USER"), getenv("GIGADB_PASSWORD"));
             $this->dbh_gigadb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
@@ -39,22 +42,27 @@ class DatasetMockupViewActionTest extends FunctionalTesting
         }
 
         try {
+
             $this->dbh_fuw = new PDO("pgsql:host=".getenv("FUW_DB_HOST").";dbname=".getenv("FUW_DB_NAME"), getenv("FUW_DB_USER"), getenv("FUW_DB_PASSWORD"));
             $this->dbh_fuw->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
+
+            list($this->mockupUrlId, $this->url_fragment) = $this->setUpMockupUrl(
+                $this->dbh_fuw,
+                "someone@foobar.test",
+                3,
+                $this->doi
+            );
+            $this->setUpUserIdentity(
+            $this->dbh_fuw,
+            "someone@foobar.test"
+        );
+
         }
         catch (PDOException $e) {
             exit("Failed connecting to database fuw:". $e->getMessage());
         }
 
-        $this->url = "http://gigadb.dev/dataset/mockup" ;
-        $this->doi = "100005";
         
-        list($this->mockupUrlId, $this->url_fragment) = $this->setUpMockupUrl(
-            $this->dbh_fuw,
-            "someone@foobar.test",
-            3,
-            $this->doi
-        );
 
     }
 
@@ -65,6 +73,10 @@ class DatasetMockupViewActionTest extends FunctionalTesting
         $this->tearDownUserIdentity(
             $this->dbh_fuw,
             "user@gigadb.org"
+        );
+         $this->tearDownUserIdentity(
+            $this->dbh_fuw,
+            "someone@foobar.test"
         );
         $this->tearDownMockupUrl(
             $this->dbh_fuw,

@@ -5,9 +5,11 @@
 		$this->resetTable($tableName);
 		//$this->loadFixture($tableName);
 	}
+	
 	$this->loadFixture("rss_message");
 	$this->loadFixture("author");
 	$this->loadFixture("publisher");
+	$this->loadFixture("gigadb_user");
 	$this->loadFixture("dataset");
 	$this->loadFixture("dataset_author");
 
@@ -21,7 +23,6 @@
 
 	$this->loadFixture("file_format");
 	$this->loadFixture("file_type");
-
 	// $this->loadFixture("species");
 	// $this->loadFixture("file");
 	// $this->loadFixture("sample");

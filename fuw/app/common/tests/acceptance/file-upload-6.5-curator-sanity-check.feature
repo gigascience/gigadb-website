@@ -5,7 +5,9 @@ Feature:
 	So that we avoid missing information or files once the dataset is public
 
 Background:
-	Given there is a user "Artie" "Dodger"
+	Given there is "user" "Artie" "Dodger"
+	And there is "admin" "Ben" "Hur"
+	And The user "Ben" "Hur" is registered as authorised user in the API	
 	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "Submitted"
 	And filedrop account for DOI "000007" does exist
 

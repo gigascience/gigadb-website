@@ -227,10 +227,6 @@ class DatasetUpload extends yii\base\BaseObject
 	 */
 	public function mergeMetadata(array $storedUploads, array $sheetData): array
 	{
-		$array_trim = function($rawCell) { //cells from spreadsheet may have whitespace
-			return trim($rawCell);
-		};
-
 		$changedUploads = [];
 		$newAttributes = [] ;
 		$errors = [] ;
@@ -264,7 +260,7 @@ class DatasetUpload extends yii\base\BaseObject
 				// merging sheetData into the stored upload data
 				$changedUploads[$upload['id']] = array_merge(
 									$upload, 
-									array_map($array_trim, array_slice($sheetData[$dataPos],0,5))
+									array_map('trim', array_slice($sheetData[$dataPos],0,5))
 								);
 
 				// merging attributes
