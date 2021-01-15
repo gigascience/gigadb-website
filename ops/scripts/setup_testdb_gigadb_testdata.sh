@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# bail out upon error
+set -e
+# bail out if an unset variable is used
+set -u
+
+# Use database variables in .secrets
+set -a
+source ./.secrets
+set +a
+
 # create test database if not existing
 docker-compose run --rm test bash -c "psql -h database -U gigadb -c 'create database gigadb_testdata'" || true
 
@@ -13,4 +23,4 @@ docker-compose run --rm  application ./protected/yiic migrate --connectionID=tes
 docker-compose run --rm  application ./protected/yiic migrate --connectionID=testdb --migrationPath=application.migrations.data.gigadb_testdata --interactive=0
 
 # export a binary dump
-docker-compose run --rm test bash -c "pg_dump --no-owner -U gigadb -h database -p 5432 -F custom -d gigadb_testdata -f /var/www/sql/gigadb_testdata.pgdmp"
+docker-compose run --rm test bash -c "PGPASSWORD=$GIGADB_PASSWORD pg_dump --no-owner -U gigadb -h database -p 5432 -F custom -d gigadb_testdata -f /var/www/sql/gigadb_testdata.pgdmp"
