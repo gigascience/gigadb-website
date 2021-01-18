@@ -11,9 +11,9 @@ id,name,description
 11,Neuroscience,Data from neuroscience studies.
 12,Network-Analysis,"Data relating to network-analysis studies, either the results of network analysis or the methods."
 13,Genome-Mapping,""
+14,Virtual-Machine,""
 15,ElectroEncephaloGraphy(EEG),""
 16,Metadata,""
 17,Metabarcoding,""
-14,Virtual-Machine,""
 18,Climate,""
 19,Ecology,""

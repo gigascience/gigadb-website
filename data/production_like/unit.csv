@@ -285,7 +285,7 @@ UO:0000283,kilogram per hectare,An area density unit which is equal to the mass 
 UO:0000284,count per nanomolar,A rate unit which is equal to one over one nanomolar.
 UO:0000285,count per molar,A rate unit which is equal to one over one molar.
 UO:0000301,microgram per liter,A mass unit density which is equal to mass of an object in micrograms divided by the volume in liters.
+UO:0000308,milligram per kilogram,A dose unit which is equal to 1 milligram of a toxic or pharmaceutical substance per kilogram body weight of the recipient subject.
 UO:0000328,kilobasepair,"A unit equal to one thousand base pairs. (1,000)"
 UO:0000329,megabasepair,"A unit equal to one million base pairs (nucleotides) (1,000,000)"
 UO:0000330,gigabasepair,"A count unit which contains one thousand million nucleotides (1,000,000,000)."
-UO:0000308,milligram per kilogram,A dose unit which is equal to 1 milligram of a toxic or pharmaceutical substance per kilogram body weight of the recipient subject.
