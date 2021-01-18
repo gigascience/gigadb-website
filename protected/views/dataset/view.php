@@ -35,7 +35,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                 <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="https://doi.org/10.5524/<?php echo $model->identifier;?>">https://doi.org/10.5524/<?php echo $model->identifier;?></a></p>
                                 <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?php echo $model->identifier;?></span></a><button onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></button></p>
                                 <div id="citationDropdown" class="citation-content">
-                                    <a id="citeText" href='https://data.datacite.org/text/x-bibliography/10.5524/<?php echo $model->identifier;?>' target="_blank" rel="noopener noreferrer">Formatted Text</a>
+                                    <?php
+                                    $identifier = $model->identifier;
+                                    $text = file_get_contents('https://data.datacite.org/text/x-bibliography/10.5524/'.$identifier);
+                                    $clean_text = strip_tags(preg_replace("/&#?[a-z0-9]+;/i","", $text));
+                                    ?>
+                                    <a id="citeText" onclick="showText()">Text</a>
                                     <a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier;?>' target="_self">RIS</a>
                                     <a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier;?>' target="_self">BibTeX</a>
                                 </div>
@@ -800,5 +805,13 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
                 }
             }
         }
+    }
+
+    //Write the clean text to a new window
+    function showText() {
+        var text = `<?php echo $clean_text; ?>`
+        console.log(text);
+        var textWindow = window.open();
+        textWindow.document.write(text);
     }
 </script>
