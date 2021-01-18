@@ -11,7 +11,7 @@ source ./.secrets
 set +a
 
 # create test database if not existing
-docker-compose run --rm test bash -c "PGPASSWORD=$GIGADB_PASSWORD psql -h database -U gigadb -c 'create database production_like'" || true
+docker-compose run --rm test bash -c "psql -h database -U gigadb -c 'create database production_like'" || true
 
 # create schema for production_like database
 docker-compose run --rm  application ./protected/yiic migrate to 300000_000000 --connectionID=testdb_production_like --migrationPath=application.migrations.admin --interactive=0
