@@ -10,17 +10,24 @@ set -a
 source ./.secrets
 set +a
 
+# docker-compose executable
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+	DOCKER_COMPOSE="docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml"
+else
+	DOCKER_COMPOSE="docker-compose"
+fi
+
 # create test database if not existing
-docker-compose run --rm test bash -c "psql -h database -U gigadb -c 'create database gigadb_testdata'" || true
+$DOCKER_COMPOSE run --rm test bash -c "psql -h database -U gigadb -c 'create database gigadb_testdata'" || true
 
 # generate migrations
-docker run -v `pwd`:/var/www node:14.9.0-buster bash -c "node /var/www/ops/scripts/csv_yii_migration.js gigadb_testdata"
+$DOCKER_COMPOSE run --rm js bash -c "node /var/www/ops/scripts/csv_yii_migration.js gigadb_testdata"
 
 # and run them
-docker-compose run --rm  application ./protected/yiic migrate to 300000_000000 --connectionID=testdb --migrationPath=application.migrations.admin --interactive=0
-docker-compose run --rm  application ./protected/yiic migrate mark 000000_000000 --connectionID=testdb --interactive=0
-docker-compose run --rm  application ./protected/yiic migrate --connectionID=testdb --migrationPath=application.migrations.schema --interactive=0
-docker-compose run --rm  application ./protected/yiic migrate --connectionID=testdb --migrationPath=application.migrations.data.gigadb_testdata --interactive=0
+$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate to 300000_000000 --connectionID=testdb --migrationPath=application.migrations.admin --interactive=0
+$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate mark 000000_000000 --connectionID=testdb --interactive=0
+$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=testdb --migrationPath=application.migrations.schema --interactive=0
+$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=testdb --migrationPath=application.migrations.data.gigadb_testdata --interactive=0
 
 # export a binary dump
-docker-compose run --rm test bash -c "PGPASSWORD=$GIGADB_PASSWORD pg_dump --no-owner -U gigadb -h database -p 5432 -F custom -d gigadb_testdata -f /var/www/sql/gigadb_testdata.pgdmp"
+$DOCKER_COMPOSE run --rm test bash -c "PGPASSWORD=$GIGADB_PASSWORD pg_dump --no-owner -U gigadb -h database -p 5432 -F custom -d gigadb_testdata -f /var/www/sql/gigadb_testdata.pgdmp"

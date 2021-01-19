@@ -10,18 +10,25 @@ set -a
 source ./.secrets
 set +a
 
+# docker-compose executable
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+	DOCKER_COMPOSE="docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml"
+else
+	DOCKER_COMPOSE="docker-compose"
+fi
+
 # create test database if not existing
-docker-compose run --rm test bash -c "psql -h database -U gigadb -c 'create database production_like'" || true
+$DOCKER_COMPOSE run --rm test bash -c "psql -h database -U gigadb -c 'create database production_like'" || true
 
 # create schema for production_like database
-docker-compose run --rm  application ./protected/yiic migrate to 300000_000000 --connectionID=testdb_production_like --migrationPath=application.migrations.admin --interactive=0
-docker-compose run --rm  application ./protected/yiic migrate mark 000000_000000 --connectionID=testdb_production_like --interactive=0
-docker-compose run --rm  application ./protected/yiic migrate --connectionID=testdb_production_like --migrationPath=application.migrations.schema --interactive=0
+$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate to 300000_000000 --connectionID=testdb_production_like --migrationPath=application.migrations.admin --interactive=0
+$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate mark 000000_000000 --connectionID=testdb_production_like --interactive=0
+$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=testdb_production_like --migrationPath=application.migrations.schema --interactive=0
 
 # Migration scripts are not generated and used to create the production_like
 # database since the size of the scripts causes memory execution problems.
 # Tables in production_like database are loaded with data using CSV files
-docker-compose run --rm test bash -c "PGPASSWORD=$GIGADB_PASSWORD psql -U gigadb -h database -p 5432 -d production_like -c \"\copy publisher FROM '/var/www/data/production_like/publisher.csv' delimiter ',' CSV HEADER\" &&
+$DOCKER_COMPOSE run --rm test bash -c "PGPASSWORD=$GIGADB_PASSWORD psql -U gigadb -h database -p 5432 -d production_like -c \"\copy publisher FROM '/var/www/data/production_like/publisher.csv' delimiter ',' CSV HEADER\" &&
   PGPASSWORD=$GIGADB_PASSWORD psql -U gigadb -h database -p 5432 -d production_like -c \"\copy image FROM '/var/www/data/production_like/image.csv' delimiter ',' CSV HEADER\" &&
   PGPASSWORD=$GIGADB_PASSWORD psql -U gigadb -h database -p 5432 -d production_like -c \"\copy gigadb_user FROM '/var/www/data/production_like/gigadb_user.csv' delimiter ',' CSV HEADER\" &&
   PGPASSWORD=$GIGADB_PASSWORD psql -U gigadb -h database -p 5432 -d production_like -c \"\copy search FROM '/var/www/data/production_like/search.csv' delimiter ',' CSV HEADER\" &&
@@ -67,4 +74,4 @@ docker-compose run --rm test bash -c "PGPASSWORD=$GIGADB_PASSWORD psql -U gigadb
   PGPASSWORD=$GIGADB_PASSWORD psql -U gigadb -h database -p 5432 -d production_like -c \"\copy sample_rel FROM '/var/www/data/production_like/sample_rel.csv' delimiter ',' CSV HEADER\""
 
 # export a binary dump
-docker-compose run --rm test bash -c "PGPASSWORD=$GIGADB_PASSWORD pg_dump --no-owner -U gigadb -h database -p 5432 -F custom -d production_like -f /var/www/sql/production_like.pgdmp"
+$DOCKER_COMPOSE run --rm test bash -c "PGPASSWORD=$GIGADB_PASSWORD pg_dump --no-owner -U gigadb -h database -p 5432 -F custom -d production_like -f /var/www/sql/production_like.pgdmp"
