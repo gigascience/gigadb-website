@@ -163,6 +163,18 @@ services:
     shm_size: '1gb' # to avoid a known issue
     command: bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js $CSV_DIR"
 
+  js:
+    build:
+      context: .
+      dockerfile: ../packaging/VueDev-Dockerfile
+    volumes:
+      - ${APPLICATION}/:/var/www
+    shm_size: '1gb' # to avoid a known issue
+    command: bash -c "npm test ; npm run build ; npm run deploy"
+    networks:
+      - web-tier
+      - db-tier
+
 networks:
   web-tier:
     driver: bridge
