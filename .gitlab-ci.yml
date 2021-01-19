@@ -105,6 +105,8 @@ run_all_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     # - env
     - docker-compose run --rm config
+    - docker-compose build js
+    - docker-compose run --rm js npm install
     # Setup dev and test db
     - ./ops/scripts/setup_testdb_gigadb_testdata.sh
     - ./ops/scripts/setup_testdb_production_like.sh
@@ -115,8 +117,6 @@ run_all_tests:
     # - docker network inspect rija-gigadb-website_db-tier
     # - docker-compose logs database
     # - docker images
-    - docker-compose build js
-    - docker-compose run --rm js npm install
     - docker-compose run --rm test ping -c 5 database
     - docker-compose run --rm test ping -c 5 gigadb.dev
     - docker-compose run test
