@@ -106,6 +106,7 @@ run_all_tests:
     # - env
     - docker-compose run --rm config
     # Setup dev and test db
+    - which bash
     - ./ops/scripts/setup_testdb_gigadb_testdata.sh
     - ./ops/scripts/setup_testdb_production_like.sh
     - docker-compose run --rm webapp
