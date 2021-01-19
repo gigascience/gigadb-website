@@ -339,6 +339,7 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
+        - INSTALL_GIT=true
         - INSTALL_DOCKER_API_ACCESS=true
     expose:
       - "9002"
@@ -380,6 +381,7 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
+        - INSTALL_GIT=true
         - INSTALL_DOCKER_API_ACCESS=true
     expose:
       - "9001"

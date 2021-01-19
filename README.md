@@ -30,8 +30,17 @@ variables
 * You have git cloned the [gigascience/gigadb-website](https://github.com/gigascience/gigadb-website)
 project locally under `gigadb-website`
 
+### Get started quickly
 
-### Getting started in 3 steps
+```
+$ cd gigadb-website
+$ ./up.sh
+```
+
+### Detailed instructions to set up and start the applications
+
+>**Note 0**: You can also read, pick and choose the steps in ``up.sh``
+
 
 **(1)** To setup the web application locally, do the following:
 
