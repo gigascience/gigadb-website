@@ -170,7 +170,7 @@ services:
     volumes:
       - ${APPLICATION}/:/var/www
     shm_size: '1gb' # to avoid a known issue
-    command: bash -c "npm install ; npm test ; npm run build ; npm run deploy"
+    command: bash -c "npm test ; npm run build ; npm run deploy"
     networks:
       - web-tier
       - db-tier
