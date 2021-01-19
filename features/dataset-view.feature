@@ -330,13 +330,13 @@ Feature: a user visit the dataset page
 		| pre_03AUG2015_update 								| folder containing originally submitted data files, prior to update Aug 3rd 2015.	| Directory 		| 50.00 MiB 	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
 		| readme.txt 										|				                                                                    | Readme 			| 337 B 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
-	@ok @javascript @pr521
+	@wip @javascript @pr521
 	Scenario: To see the citation box and and the citation source
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
 		And I should see a button input "Cite Dataset"
 		When I press "Cite Dataset"
-		Then I should see "Formatted Text"
+		Then I should see "Text"
 		And I should see "RIS"
 		And I should see "BibTeX"
 
