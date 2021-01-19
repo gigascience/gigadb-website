@@ -19,12 +19,35 @@ class DbExtendedWithHooks extends \Codeception\Module\Db
 {
 
 
-    // public function _before(\Codeception\TestInterface $test)
-    // {
-    //     parent::_before($test);
-    //     echo var_dump( $this->_getDbh() );
-    //     echo var_dump( $this->getDatabases() );
-    // }
+    public function _before(\Codeception\TestInterface $test)
+    {
+        parent::_before($test);
+        $this->debug("******* _before@DbExtendedWithHooks *******");
+        $this->amConnectedToDatabase('default');
+        $dbh =  $this->_getDbh() ;
+        $sth = $dbh->prepare("SELECT setval(pg_get_serial_sequence('sample', 'id'), coalesce(max(id),0) + 1, false) FROM sample;");
+        $sth->execute();
+        $sth = $dbh->prepare("SELECT setval(pg_get_serial_sequence('gigadb_user', 'id'), coalesce(max(id),0) + 1, false) FROM gigadb_user;");
+        $sth->execute();
+        $sth = $dbh->prepare("SELECT setval(pg_get_serial_sequence('dataset_type', 'id'), coalesce(max(id),0) + 1, false) FROM dataset_type;");
+        $sth->execute();
+        $sth = $dbh->prepare("SELECT setval(pg_get_serial_sequence('dataset', 'id'), coalesce(max(id),0) + 1, false) FROM dataset;");
+        $sth->execute();
+        $sth = $dbh->prepare("SELECT setval(pg_get_serial_sequence('file', 'id'), coalesce(max(id),0) + 1, false) FROM file;");
+        $sth->execute();
+        $sth = $dbh->prepare("SELECT setval(pg_get_serial_sequence('file_sample', 'id'), coalesce(max(id),0) + 1, false) FROM file_sample;");
+        $sth->execute();
+        $sth = $dbh->prepare("SELECT setval(pg_get_serial_sequence('image', 'id'), coalesce(max(id),0) + 1, false) FROM image;");
+        $sth->execute();
+        $sth = $dbh->prepare("SELECT setval(pg_get_serial_sequence('attribute', 'id'), coalesce(max(id),0) + 1, false) FROM attribute;");
+        $sth->execute(); 
+        $sth = $dbh->prepare("insert into sample(species_id, name) values(1128855,'Sample A')");
+        $sth->execute();
+        $sth = $dbh->prepare("insert into sample(species_id, name) values(1128855,'Sample E')");
+        $sth->execute();
+        $sth = $dbh->prepare("insert into sample(species_id, name) values(1128855,'Sample Z')");
+        $sth->execute();      
+    }
 
     /**
      * HOOK: after each test scenario
@@ -37,6 +60,7 @@ class DbExtendedWithHooks extends \Codeception\Module\Db
     */
     public function _after(\Codeception\TestInterface $test)
     {
+        $this->debug("******* _after@DbExtendedWithHooks *******");
     	$this->amConnectedToDatabase('fuwdb');
     	$userCriteria = ['username' => 'joyfox'] ;
     	try {
@@ -49,11 +73,15 @@ class DbExtendedWithHooks extends \Codeception\Module\Db
         $uploadCriteria2 = ['doi' => '000007', 'name' => 'TheProof2.csv'];
         $uploadCriteria3 = ['doi' => '000007', 'name' => 'CC0_pixel.jpg'];
         $uploadCriteria4 = ['doi' => '000007', 'name' => 'lorem.txt'];
+        $uploadCriteria5 = ['doi' => '000007', 'name' => 'seq1.fa'];
+        $uploadCriteria6 = ['doi' => '000007', 'name' => 'Specimen.pdf'];        
         try {
             $this->_getDriver()->deleteQueryByCriteria('public.upload', $uploadCriteria);
             $this->_getDriver()->deleteQueryByCriteria('public.upload', $uploadCriteria2);
             $this->_getDriver()->deleteQueryByCriteria('public.upload', $uploadCriteria3);
             $this->_getDriver()->deleteQueryByCriteria('public.upload', $uploadCriteria4);
+            $this->_getDriver()->deleteQueryByCriteria('public.upload', $uploadCriteria5);
+            $this->_getDriver()->deleteQueryByCriteria('public.upload', $uploadCriteria6);
         } catch (\Exception $e) {
             $this->debug("Couldn't delete a record from public.upload");
         }
@@ -67,13 +95,16 @@ class DbExtendedWithHooks extends \Codeception\Module\Db
         $this->_getDriver()->sqlQuery("delete from file_sample where file_id in (select id from file where name='Specimen.pdf')");
         $this->_getDriver()->deleteQueryByCriteria('file', ["name" => "seq1.fa"]);
         $this->_getDriver()->deleteQueryByCriteria('file', ["name" => "Specimen.pdf"]);
+        $this->_getDriver()->deleteQueryByCriteria('sample', ["name" => "Sample A"]);        
+        $this->_getDriver()->deleteQueryByCriteria('sample', ["name" => "Sample E"]);        
+        $this->_getDriver()->deleteQueryByCriteria('sample', ["name" => "Sample Z"]);        
         $this->_getDriver()->deleteQueryByCriteria('attribute', ["attribute_name" => "Temperature"]);
         $this->_getDriver()->deleteQueryByCriteria('attribute', ["attribute_name" => "Brightness"]);
         $this->_getDriver()->deleteQueryByCriteria('unit', ["id" => "UO:000002"]);
         $this->_getDriver()->deleteQueryByCriteria('unit', ["id" => "UO:0000118"]);
         $this->_getDriver()->deleteQueryByCriteria('dataset', ["identifier" => "000007"]);
         $this->_getDriver()->deleteQueryByCriteria('dataset', ["identifier" => "000008"]);
-        $this->_getDriver()->deleteQueryByCriteria('dataset', ["identifier" => "100006"]);
+        $this->_getDriver()->deleteQueryByCriteria('dataset', ["identifier" => "000005"]);
         $this->_getDriver()->deleteQueryByCriteria('gigadb_user', ["email" => "artie_dodger@gigadb.org"]);
         $this->_getDriver()->deleteQueryByCriteria('gigadb_user', ["email" => "joy_fox@gigadb.org"]);
 
