@@ -122,13 +122,21 @@ class AuthorSteps #extends \common\tests\AcceptanceTester
 	   $this->I->canSee($arg1);
 	}
 
-	/**
-	 * @Then I should see a :arg1 button
-	 */
-	public function iShouldSeeAButton($arg1)
-	{
-		$this->I->seeElement("//img[@alt='$arg1']");
-	}
+    /**
+     * @Then I should see a :arg1 icon button
+     */
+    public function iShouldSeeAIconButton($arg1)
+    {
+        $this->I->seeElement("//img[@alt='$arg1']");
+    }
+
+    /**
+     * @Then I should see a :arg1 button
+     */
+    public function iShouldSeeAButton($arg1)
+    {
+        $this->I->seeElement("//form/*[@type='submit']");
+    }
 
     /**
      * @Then I should see a :arg1 link

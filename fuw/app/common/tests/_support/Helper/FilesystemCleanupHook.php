@@ -22,10 +22,23 @@ class FilesystemCleanupHook extends \Codeception\Module\Filesystem
     // 	$this->writeToFile("/var/tmp/processing_flag/failure", "fail");
     // }
 
+    public function _before(\Codeception\TestInterface $test)
+    {
+        $dois = ["000007","100005","000005"];
+        foreach ($dois as $doi) {
+            $this->deleteDir("/var/incoming/ftp/$doi");
+            $this->deleteDir("/var/private/$doi");
+            $this->deleteDir("/var/repo/$doi");
+            $this->deleteDir("/var/ftp/public/$doi");
+            $this->deleteDir("/var/tmp/processing_flag/$doi");
+        }
+        
+    }
+
     // HOOK: after each test scenario
     public function _after(\Codeception\TestInterface $test)
     {
-    	$dois = ["000007","100005","100006"];
+    	$dois = ["000007","100005","000005"];
     	foreach ($dois as $doi) {
 	    	$this->deleteDir("/var/incoming/ftp/$doi");
 	    	$this->deleteDir("/var/private/$doi");

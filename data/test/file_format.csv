@@ -1,0 +1,6 @@
+id,name,description,edam_ontology_id
+41,FASTA,"A text-based format which begins with a single-line description, followed by lines of sequence data",
+42,GFF,"The General Feature Format (GFF) is used for describing genes and other features of DNA, RNA and protein sequences",
+43,TEXT,"(.doc, .readme, .text, .txt) - a text file",
+44,TAR,(.tar) - an archive containing other files,
+45,PDF,(.pdf) - portable document format,

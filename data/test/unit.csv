@@ -1,0 +1,291 @@
+id,name,definition
+UO:0000001,length unit,A unit which is a standard measure of the distance between two points.
+UO:0000002,mass unit,A unit which is a standard measure of the amount of matter/energy of a physical object.
+UO:0000003,time unit,A unit which is a standard measure of the dimension in which events occur in sequence.
+UO:0000004,electric current unit,A unit which is a standard measure of the flow of electric charge.
+UO:0000005,temperature unit,A unit which is a standard measure of the average kinetic energy of the particles in a sample of matter.
+UO:0000006,substance unit,A unit which is a standardised quantity of an element or compound with uniform composition.
+UO:0000007,luminous intensity unit,A unit which is a standard measure of the wavelength-weighted power emitted by a light source in a particular direction.
+UO:0000008,meter,A length unit which is equal to the length of the path traveled by light in vacuum during a time interval of 1/299 792 458 of a second.
+UO:0000009,kilogram,"A mass unit which is equal to the mass of the International Prototype Kilogram kept by the BIPM at Svres, France."
+UO:0000010,second,A time unit which is equal to the duration of 9 192 631 770 periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of the caesium 133 atom.
+UO:0000011,ampere,"An electric current unit which is equal to the constant current which, if maintained in two straight parallel conductors of infinite length, of negligible circular cross-section, and placed 1 m apart in vacuum, would p"
+UO:0000012,kelvin,A thermodynamic temperature unit which is equal to the fraction 1/273.16 of the thermodynamic temperature of the triple point of water.
+UO:0000013,mole,A substance unit which is equal to the amount of substance of a molecular system which contains as many elementary entities as there are atoms in 0.012 kilogram of carbon 12.
+UO:0000014,candela,"A luminous intensity unit which equal to the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequency 540 x 1012 hertz and that has a radiant intensity in that direction of"
+UO:0000015,centimeter,A length unit which is equal to one hundredth of a meter or 10^[-2] m.
+UO:0000016,millimeter,A length unit which is equal to one thousandth of a meter or 10^[-3] m.
+UO:0000017,micrometer,A length unit which is equal to one millionth of a meter or 10^[-6] m.
+UO:0000018,nanometer,A length unit which is equal to one thousandth of one millionth of a meter or 10^[-9] m.
+UO:0000019,angstrom,A length unit which is equal to 10 [-10] m.
+UO:0000020,picometer,A length unit which is equal to 10^[-12] m.
+UO:0000021,gram,A mass unit which is equal to one thousandth of a kilogram or 10^[-3] kg.
+UO:0000022,milligram,A mass unit which is equal to one thousandth of a gram or 10^[-3] g.
+UO:0000023,microgram,A mass unit which is equal to one millionth of a gram or 10^[-6] g.
+UO:0000024,nanogram,A mass unit which is equal to one thousandth of one millionth of a gram or 10^[-9] g.
+UO:0000025,picogram,A mass unit which is equal to 10^[-12] g.
+UO:0000026,femtogram,A mass unit which is equal to 10^[-15] g.
+UO:0000027,degree celsius,"A temperature unit which is equal to one Kelvin degree. However, they have their zeros at different points. The Centigrade scale has its zero at 273.15 K."
+UO:0000028,millisecond,A time unit which is equal to one thousandth of a second or 10^[-3] s.
+UO:0000029,microsecond,A time unit which is equal to one millionth of a second or 10^[-6] s.
+UO:0000030,picosecond,A time unit which is equal to 10^[-12] s.
+UO:0000031,minute,A time unit which is equal to 60 seconds.
+UO:0000032,hour,A time unit which is equal to 3600 seconds or 60 minutes.
+UO:0000033,day,A time unit which is equal to 24 hours.
+UO:0000034,week,A time unit which is equal to 7 days.
+UO:0000035,month,A time unit which is approximately equal to the length of time of one of cycle of the moon's phases which in science is taken to be equal to 30 days.
+UO:0000036,year,A time unit which is equal to 12 months which is science is taken to be equal to 365.25 days.
+UO:0000037,milliampere,An electric current unit current which is equal to one thousandth of an ampere or 10^[-3] A.
+UO:0000038,microampere,An electric current unit current which is equal to one millionth of an ampere or 10^[-6] A.
+UO:0000039,micromole,A substance unit equal to a millionth of a mol or 10^[-6] mol.
+UO:0000040,millimole,A substance unit equal to a thousandth of a mol or 10^[-3] mol.
+UO:0000041,nanomole,A substance unit equal to one thousandth of one millionth of a mole or 10^[-9] mol.
+UO:0000042,picomole,A substance unit equal to 10^[-12] mol.
+UO:0000043,femtomole,A substance unit equal to 10^[-15] mol.
+UO:0000044,attomole,A substance unit equal to 10^[-18] mol.
+UO:0000045,base unit,A unit which is one of a particular measure to which all measures of that type can be related.
+UO:0000046,derived unit,A unit which is derived from base units.
+UO:0000047,area unit,A unit which is a standard measure of the amount of a 2-dimensional flat surface.
+UO:0000048,acceleration unit,A unit which is a standard measure of the rate of change of velocity in either speed or direction.
+UO:0000049,angular velocity unit,A unit which is a standard measure of the rate of angular movement about an axis; the angle rotated in a given time.
+UO:0000050,angular acceleration unit,A unit which is a standard measure of the rate of change of angular velocity.
+UO:0000051,concentration unit,A unit which represents a standard measurement of how much of a given substance there is mixed with another substance.
+UO:0000052,mass density unit,A density unit which is a standard measure of the mass of a substance in a given volume.
+UO:0000053,luminance unit,A unit which is a standard measure of the luminous intensity impinging on a given area.
+UO:0000054,area density unit,A density unit which is a standard measure of the mass exerting an influence on a given area.
+UO:0000055,molar mass unit,A unit which is a standard measure of the mass of a homogeneous substance containing 6.02 x 1023 atoms or molecules.
+UO:0000056,molar volume unit,A unit which is a standard measure of the volume of a homogeneous substance containing 6.02 x 1023 atoms or molecules.
+UO:0000057,momentum unit,A unit which is a standard measure of the quantity of motion measured by the product of mass and velocity.
+UO:0000058,rotational frequency unit,A unit which is a standard measure of the number of rotations in a given time.
+UO:0000059,specific volume unit,A unit which is a standard measure of the volume of a given mass of substance (the reciprocal of density).
+UO:0000060,speed/velocity unit,"A unit which is a standard measure of the rate of movement. Speed is measured in the same physical units of measurement as velocity, but does not contain the element of direction that velocity has. Speed i"
+UO:0000061,unit of molarity,A concentration unit which is a standard measure of the number of moles of a given substance per liter of solution.
+UO:0000062,molar,A unit of concentration which expresses a concentration of 1 mole of solute per liter of solution (mol/L).
+UO:0000063,millimolar,A unit of molarity which is equal to one thousandth of a molar or 10^[-3] M.
+UO:0000064,micromolar,A unit of molarity which is equal to one millionth of a molar or 10^[-6] M.
+UO:0000065,nanomolar,A unit of molarity which is equal to one thousandth of one millionth of a molar or 10^[-9] M.
+UO:0000066,picomolar,A unit of molarity which is equal to 10^[-12] M.
+UO:0000067,unit of molality,A concentration unit which is a standard measure of the number of moles of a given substance per kilogram of solvent.
+UO:0000068,molal,A unit of concentration which expresses a concentration of a solution of 1 mole per kilogram of solvent (mol/kg).
+UO:0000069,millimolal,A molality unit which is equal to one thousandth of a molal or 10^[-3] m.
+UO:0000070,micromolal,A molality unit which is equal to one millionth of a molal or 10^[-6] m.
+UO:0000071,nanomolal,A molality unit which is equal to one thousandth of one millionth of a molal or 10^[-9] m.
+UO:0000072,picomolal,A molality unit which is equal to 10^[-12] m.
+UO:0000073,femtomolar,A unit of molarity which is equal to 10^[-15] M.
+UO:0000074,unit of normality,A unit of concentration which highlights the chemical nature of salts.
+UO:0000075,normal,A unit of concentration which is one gram equivalent of a solute per liter of solution. A gram equivalent weight or equivalent is a measure of the reactive capacity of a given molecule.
+UO:0000076,mole fraction,A concentration unit which denotes the number of moles of solute as a proportion of the total number of moles in a solution.
+UO:0000077,meter per second per second,An acceleration unit which is equal to the acceleration an object changing its velocity by 1meter/s over a time period that equals one second.
+UO:0000078,radian per second per second,An angular unit acceleration which is equal to the angular acceleration of an object changing its angular velocity by 1rad/s over a time period that equals one second.
+UO:0000079,radian per second,An angular unit velocity which is equal to about 9.54930 rpm (revolutions per minute).
+UO:0000080,square meter,An area unit which is equal to an area enclosed by a square with sides each 1 meter long.
+UO:0000081,square centimeter,An area unit which is equal to one thousand of square meter or 10^[-3] m^[2].
+UO:0000082,square millimeter,An area unit which is equal to one millionth of a square meter or 10^[-6] m^[2].
+UO:0000083,kilogram per cubic meter,A mass unit density which is equal to mass of an object in kilograms divided by the volume in cubic meters.
+UO:0000084,gram per cubic centimeter,A mass unit density which is equal to mass of an object in grams divided by the volume in cubic centimeters.
+UO:0000085,candela per square meter,A luminance unit which is equal to a luminous intensity of one candela radiating from a surface whose area is one square meter.
+UO:0000086,kilogram per square meter,An area density unit which is equal to the mass of an object in kilograms divided by the surface area in meters squared.
+UO:0000087,kilogram per mole,A molar mass unit which is equal to one kilogram of mass of one mole of chemical element or chemical compound.
+UO:0000088,gram per mole,A molar mass unit which is equal to one gram of mass of one mole of chemical element or chemical compound.
+UO:0000089,cubic meter per mole,"A molar volume unit which is equal to 1 cubic meter occupied by one mole of a substance in the form of a solid, liquid, or gas."
+UO:0000090,cubic centimeter per mole,"A molar volume unit which is equal to 1 cubic centimeter occupied by one mole of a substance in the form of a solid, liquid, or gas."
+UO:0000091,kilogram meter per second,A momentum unit which is equal to the momentum of a one kilogram mass object with a speed of one meter per second.
+UO:0000092,turns per second,A rotational frequency unit which is equal to the number complete turn in a period of time that equals to 1 second.
+UO:0000093,cubic meter per kilogram,A specific volume unit which is equal to one cubic meter volume occupied by one kilogram of a particular substance.
+UO:0000094,meter per second,A speed/velocity unit which is equal to the speed of an object traveling 1 meter distance in one second.
+UO:0000095,volume unit,"A unit which is a standard measure of the amount of space occupied by any substance, whether solid, liquid, or gas."
+UO:0000096,cubic meter,A volume unit which is equal to the volume of a cube with edges one meter in length. One cubic meter equals to 1000 liters.
+UO:0000097,cubic centimeter,"A volume unit which is equal to one millionth of a cubic meter or 10^[-9] m^[3], or to 1 ml."
+UO:0000098,milliliter,"A volume unit which is equal to one thousandth of a liter or 10^[-3] L, or to 1 cubic centimeter."
+UO:0000099,liter,"A volume unit which is equal to one thousandth of a cubic meter or 10^[-3] m^[3], or to 1 decimeter."
+UO:0000100,cubic decimeter,"A volume unit which is equal to one thousand of a cubic meter or 10^[-3] m^[3], or to 1 L."
+UO:0000101,microliter,A volume unit which is equal to one millionth of a liter or 10^[-6] L.
+UO:0000102,nanoliter,A volume unit which is equal to one thousandth of one millionth of a liter or 10^[-9] L.
+UO:0000103,picoliter,A volume unit which is equal to 10^[-12] L.
+UO:0000104,femtoliter,A volume unit which is equal to 10^[-15] L.
+UO:0000105,frequency unit,A unit which is a standard measure of the number of repetitive actions in a particular time.
+UO:0000106,hertz,A frequency unit which is equal to 1 complete cycle of a recurring phenomenon in 1 second.
+UO:0000107,force unit,A unit which is a standard measure of the force is applied when a mass is accelerated.
+UO:0000108,newton,A force unit which is equal to the force required to cause an acceleration of 1m/s2 of a mass of 1 Kg in the direction of the force.
+UO:0000109,pressure unit,A unit which is a standard measure of the force applied to a given area.
+UO:0000110,pascal,A pressure unit which is equal to the pressure or stress on a surface caused by a force of 1 newton spread over a surface of 1 m^[2].
+UO:0000111,energy unit,"A unit which is a standard measure of the work done by a certain force (gravitational, electric, magnetic, force of inertia, etc)."
+UO:0000112,joule,An energy unit which is equal to the energy required when a force of 1 newton moves an object 1 meter in the direction of the force.
+UO:0000113,power unit,A unit which is a standard measure power or the rate of doing work.
+UO:0000114,watt,A power unit which is equal to the power used when work is done at the rate of 1 joule per second.
+UO:0000115,illuminance unit,A unit which is a standard measure of the luminous flux incident on a unit area.
+UO:0000116,lux,An illuminance unit which is equal to the illuminance produced by 1 lumen evenly spread over an area 1 m^[2].
+UO:0000117,luminous flux unit,A unit which is a standard measure of the flow of radiant energy.
+UO:0000118,lumen,A luminous flux unit which is equal to the luminous flux emitted into 1 steradian by a point source of 1 candela.
+UO:0000119,catalytic activity unit,A unit which is a standard measure of the amount of the action of a catalyst.
+UO:0000120,katal,"A catalytic unit activity which is equal to the activity of a catalyst in moles per second, such as the amount of an enzyme needed to transform one mole of substrate per second."
+UO:0000121,angle unit,A unit which is a standard measure of the figure or space formed by the junction of two lines or planes.
+UO:0000122,plane angle unit,A unit which is a standard measure of the angle formed by two straight lines in the same plane.
+UO:0000123,radian,"A plane angle unit which is equal to the angle subtended at the center of a circle by an arc equal in length to the radius of the circle, approximately 57 degrees 17 minutes and 44.6 seconds."
+UO:0000124,solid angle unit,A unit which is a standard measure of the angle formed by three or more planes intersecting at a common point.
+UO:0000125,steradian,A solid angle unit which is equal to the solid angle subtended at the center of a sphere by an area on the surface of the sphere that is equal to the radius squared.
+UO:0000126, temperature unit,alternative to UO:0000006
+UO:0000127,radiation unit,A unit which is a standard measure of the amount of radiation emitted by a given radiation source as well as the amount of radiation absorbed or deposited in a specific material by a radiation source.
+UO:0000128,activity (of a radionuclide) unit,A unit which is a standard measure of the transformation (disintegration) rate of a radioactive substance.
+UO:0000129,absorbed dose unit,A unit which is a standard measure of the energy imparted by ionizing radiation to unit mass of matter such as tissue.
+UO:0000130,dose equivalent unit,A unit which is a standard measure of the expression of dose in terms of its biological effect.
+UO:0000131,exposure unit,A unit which is a standard measure of the quantity that expresses the ability of radiation to ionize air and thereby create electric charges which can be collected and measured.
+UO:0000132,becquerel,An activity (of a radionuclide) unit which is equal to the activity of a quantity of radioactive material in which one nucleus decays per second or there is one atom disintegration per second (dps).
+UO:0000133,curie,An activity (of a radionuclide) unit which is equal to the activity of a quantity of radioactive material in which there are 3.7 x 10^[10] atom disintegration per second (dps).
+UO:0000134,gray,An absorbed dose unit which is equal to the absorption of one joule of radiation energy by one kilogram of matter.
+UO:0000135,rad,An absorbed dose unit which is equal to 0.01 gray (Gy).
+UO:0000136,roentgen,An exposure unit which is equal to the amount of radiation required to liberate positive and negative charges of one electrostatic unit of charge in 1 cm^[3] of air at standard temperature and pressure (STP). This co
+UO:0000137,sievert,A dose equivalent unit which is equal to the absorption of one joule of radiation energy by one kilogram of matter.
+UO:0000138,millisievert,A dose equivalent unit which is equal to one thousandth of a sievert or 10^[-3] Sv.
+UO:0000139,microsievert,A dose equivalent unit which is equal to one millionth of a sievert or 10^[-6] Sv.
+UO:0000140,Roentgen equivalent man,A dose equivalent unit which when multiplied by hundred is equal to one sievert or 1 Sv. 1 Sv is equal to 100 rem.
+UO:0000141,microgray,An absorbed dose unit which is equal to one millionth of a gray or 10^[-6] Gy.
+UO:0000142,milligray,An absorbed dose unit which is equal to one thousandth of a gray or 10^[-3] Gy.
+UO:0000143,nanogray,An absorbed dose unit which is equal to one thousandth of a millionth of a gray or 10^[-9] Gy.
+UO:0000144,nanosievert,A dose equivalent unit which is equal to one thousandth of a millionth of a sievert or 10^[-9] Sv.
+UO:0000145,millicurie,An activity (of a radionuclide) unit which is equal to one thousandth of a curie or 10^[-3] Ci.
+UO:0000146,microcurie,An activity (of a radionuclide) unit which is equal to one millionth of a curie or 10^[-6] Ci.
+UO:0000147,disintegrations per minute,An activity (of a radionuclide) unit which is equal to the activity of a quantity of radioactive material in which one nucleus decays per minute or there is one atom disintegration per minute.
+UO:0000148,counts per minute,An activity (of a radionuclide) unit which is equal to the number of light emissions produced by ionizing radiation in one minute.
+UO:0000149, time unit,alternative to UO:0000003
+UO:0000150,nanosecond,A time unit which is equal to one thousandth of one millionth of a second or 10^[-9] s.
+UO:0000151,century,A time unit which is equal to 100 years.
+UO:0000152,half life,A time unit which represents the period over which the activity or concentration of a specified chemical or element falls to half its original activity or concentration.
+UO:0000153,foot candle,An illuminance unit which is equal to the illuminance produced by 1 lumen evenly spread over an area 1 foot^[2]. One footcandle is equal to 10.76 lux.
+UO:0000154,irradiance unit,"A unit which is a standard measure of the power of electromagnetic radiation at a surface, per unit area."
+UO:0000155,watt per square meter,An irradiance unit which is equal to 1 watt of radiant power incident per one square meter surface area.
+UO:0000156,einstein per square meter per second,"An irradiance unit which is equal to one einstein per square meter per second. One einstein is one mole of photons, regardless of their frequency. Therefore, the number of photons in an ei"
+UO:0000157,light unit,A unit which is a standard measure of the intensity of light.
+UO:0000158,watt per steradian per square meter,"A radiance unit which is equal to one watt of radiant power incident per steradian solid angle per one square meter projected area of the source, as viewed from the given direction."
+UO:0000159,radiant intensity unit,A unit which is a standard measure of the intensity of electromagnetic radiation.
+UO:0000160,microeinstein per square meter per second,An irradiance unit which is equal to one microeinstein per square meter per second or 10^[-6] microeinstein/sm^[2].
+UO:0000161,radiance unit,A unit which is a standard measure of the power of electromagnetic radiation through space or through a material medium in the form of electromagnetic waves.
+UO:0000162,watt per steradian,A radiant intensity unit which is equal to one kilogram meter squared per second cubed per steradian.
+UO:0000163,mass percentage,A dimensionless concentration unit which denotes the mass of a substance in a mixture as a percentage of the mass of the entire mixture.
+UO:0000164,mass volume percentage,A dimensionless concentration unit which denotes the mass of the substance in a mixture as a percentage of the volume of the entire mixture.
+UO:0000165,volume percentage,A dimensionless concentration unit which denotes the volume of the solute in mL per 100 mL of the resulting solution.
+UO:0000166,parts per notation unit,A dimensionless concentration notation which describes the amount of one substance in another. It is the ratio of the amount of the substance of interest to the amount of that substance plus the amount
+UO:0000167,parts per hundred,A dimensionless concentration notation which denotes the amount of a given substance in a total amount of 100 regardless of the units of measure as long as they are the same.
+UO:0000168,parts per thousand,A dimensionless concentration notation which denotes the amount of a given substance in a total amount of 1000 regardless of the units of measure as long as they are the same.
+UO:0000169,parts per million,"A dimensionless concentration notation which denotes the amount of a given substance in a total amount of 1,000,000 regardless of the units of measure used as long as they are the same or 1 part in 10^[6]."
+UO:0000170,parts per billion,"A dimensionless concentration notation which denotes the amount of a given substance in a total amount of 1,000,000,000 regardless of the units of measure as long as they are the same or 1 part in 10^[9]."
+UO:0000171,parts per trillion,"A dimensionless concentration notation which denotes the amount of a given substance in a total amount of 1,000,000,000 regardless of the units of measure used as long as they are the same or 1 part in 10^["
+UO:0000172,parts per quadrillion,"A dimensionless concentration notation which denotes the amount of a given substance in a total amount of 1,000,000,000,000 regardless of the units of measure used as long as they are the same or 1 part"
+UO:0000173,gram per milliliter,A mass unit density which is equal to mass of an object in grams divided by the volume in milliliter.
+UO:0000174,kilogram per liter,A mass unit density which is equal to mass of an object in kilograms divided by the volume in liters.
+UO:0000175,gram per liter,A mass unit density which is equal to mass of an object in grams divided by the volume in liters.
+UO:0000176,milligram per milliliter,A mass unit density which is equal to mass of an object in milligrams divided by the volume in milliliters.
+UO:0000177,unit per volume unit,"A concentration unit which is a standard measure of the number of units, as an agreed arbitrary amount, of a given substance per a specific volume of solution."
+UO:0000178,unit per milliliter,A unit per milliliter unit which is equal to one unit of an agreed arbitrary amount per one milliliter.
+UO:0000179,unit per liter,A unit per milliliter unit which is equal to one unit of an agreed arbitrary amount per one liter.
+UO:0000180,mass per unit volume,A concentration unit which is a standard measure of the mass of a substance in a given volume (density).
+UO:0000181,enzyme unit,A catalytic unit activity which is equal to the amount of the enzyme that catalyzes the conversion of 1 micro mole of substrate per minute.
+UO:0000182,density unit,A unit which is a standard measure of the influence exerted by some mass.
+UO:0000183,linear density unit,A density unit which is a standard measure of the mass exerting an influence on a one-dimensional object.
+UO:0000184,kilogram per meter,An area density unit which is equal to the mass of an object in kilograms divided by one meter.
+UO:0000185,degree,A plane angle unit which is equal to 1/360 of a full rotation or 1.7453310^[-2] rad.
+UO:0000186,dimensionless unit,A unit which is a standard measure of physical quantity consisting of only a numerical number without any units.
+UO:0000187,percent,A dimensionless ratio unit which denotes numbers as fractions of 100.
+UO:0000188,pi,"A dimensionless unit which denoted an irrational real number, approximately equal to 3.14159 which is the ratio of a circle's circumference to its diameter in Euclidean geometry."
+UO:0000189,count unit,A dimensionless unit which denotes a simple count of things.
+UO:0000190,ratio,A dimensionless unit which denotes an amount or magnitude of one quantity relative to another.
+UO:0000191,fraction,A dimensionless ratio unit which relates the part (the numerator) to the whole (the denominator).
+UO:0000192,molecule count,A dimensionless count unit which denotes the number of molecules.
+UO:0000193,purity percentage,A dimensionless percent unit which denotes the homogeneity of a biomaterial.
+UO:0000194,confluence percentage,"A dimensionless percent unit which denotes the density of an attached or monolayer culture (e.g., cell culture)."
+UO:0000195,degree fahrenheit,A temperature unit which is equal to 5/9ths of a kelvin. Negative 40 degrees Fahrenheit is equal to negative 40 degrees Celsius.
+UO:0000196,pH,A dimensionless concentration notation which denotes the acidity of a solution in terms of activity of hydrogen ions (H+).
+UO:0000197,liter per kilogram,A specific volume unit which is equal to one liter volume occupied by one kilogram of a particular substance.
+UO:0000198,milliliter per kilogram,A specific volume unit which is equal to a thousandth of a liter per kilogram or 10^[-3] l/kg.
+UO:0000199,microliter per kilogram,A specific volume unit which is equal to one millionth of a liter per kilogram or 10^[-6] l/kg.
+UO:0000200,cell concentration unit,A concentration unit which denotes the average cell number in a given volume.
+UO:0000201,cells per milliliter,A unit of cell concentration which is equal to one cell in a volume of 1 milliliter.
+UO:0000202,catalytic (activity) concentration unit,A concentration unit which is a standard measure of the amount of the action of a catalyst in a given volume.
+UO:0000203,katal per cubic meter,A catalytic (activity) concentration unit which is equal to 1 katal activity of a catalyst in a given volume of one cubic meter.
+UO:0000204,katal per liter,A catalytic (activity) concentration unit which is equal to 1 katal activity of a catalyst in a given volume of one thousandth of a cubic meter.
+UO:0000205,volume per unit volume,A dimensionless concentration unit which denotes the given volume of the solute in the total volume of the resulting solution.
+UO:0000206,milliliter per cubic meter,A volume per unit volume unit which is equal to one millionth of a liter of solute in one cubic meter of solution.
+UO:0000207,milliliter per liter,A volume per unit volume unit which is equal to one millionth of a liter of solute in one liter of solution.
+UO:0000208,gram per deciliter,A mass density unit which is equal to mass of an object in grams divided by the volume in deciliters.
+UO:0000209,deciliter,A volume unit which is equal to one tenth of a liter or 10^[-1] L.
+UO:0000210,colony forming unit,A dimensionless count unit which a measure of viable bacterial numbers.
+UO:0000211,plaque forming unit,A dimensionless count unit which a measure of plague forming units in a given volume.
+UO:0000212,colony forming unit per volume,A concentration unit which a measure of viable bacterial numbers in a given volume.
+UO:0000213,colony forming unit per milliliter,A colony forming unit which a measure of viable bacterial numbers in one milliliter.
+UO:0000214,plaque forming unit per volume,A concentration unit which a measure of plague forming units in a given volume.
+UO:0000215,plaque forming unit per milliliter,A concentration unit which a measure of plague forming units in one milliliter.
+UO:0000216,disintegrations per second,An activity (of a radionuclide) unit which is equal to the activity of a quantity of radioactive material in which one nucleus decays per second or there is one atom disintegration per second.
+UO:0000217,electric potential difference unit,A unit which is a standard measure of the work done per unit charge as a charge is moved between two points in an electric field.
+UO:0000218,volt,An electric potential difference unit which is equal to the work per unit charge. One volt is the potential difference required to move one coulomb of charge between two points in a circuit while using one joule of energ
+UO:0000219,electric charge,A unit which is a standard measure of the quantity of unbalanced electricity in a body (either positive or negative) and construed as an excess oriciency of electrons.
+UO:0000220,coulomb,An electrical charge unit which is equal to the amount of charge transferred by a current of 1 ampere in 1 second.
+UO:0000221,dalton,"An independently to the base SI unitsined mass unit which is equal to one twelfth of the mass of an unbound atom of the carbon-12 nuclide, at rest and in its ground state."
+UO:0000222,kilodalton,A mass unit which is equal to one thousand daltons.
+UO:0000223,watt-hour,An energy unit which is equal to the amount of electrical energy equivalent to a one-watt load drawing power for one hour.
+UO:0000224,kilowatt-hour,"An energy unit which is equal to 1,000 watt-hours."
+UO:0000225,magnetic flux unit,"A unit which is a standard measure of quantity of magnetism, taking account of the strength and the extent of a magnetic field."
+UO:0000226,weber,A magnetic flux unit which is equal to the amount of flux that when linked with a single turn of wire for an interval of one second will induce an electromotive force of one volt.
+UO:0000227,magnetic flux density unit,A unit which is a standard measure of the strength of a magnetic field.
+UO:0000228,tesla,A magnetic flux density unit which is equal to one weber per square meter.
+UO:0000229,volt-hour,A magnetic flux unit which is equal to 3600 Wb.
+UO:0000230,kilovolt-hour,A magnetic flux unit which is equal to one thousand volt-hours.
+UO:0000231,information unit,A unit which is a standard measure of the amount of information.
+UO:0000232,bit,"An information unit which refers to a digit in the binary numeral system, which consists of base 2 digits (ie there are only 2 possible values"
+UO:0000233,byte,An information unit which is equal to 8 bits.
+UO:0000234,kilobyte,An information unit which is equal to 1000 bytes.
+UO:0000235,megabyte,An information unit which is equal to 1000 kB.
+UO:0000236,image resolution unit,An information unit which is a standard measure of the detail an image holds.
+UO:0000237,chroma sampling unit,An image resolution unit which is a standard measure of the amount of spatial detail in an image.
+UO:0000238,dynamic range unit,An image resolution unit which is a standard measure of the amount of contrast available in a pixel.
+UO:0000239,spatial resolution unit,An image resolution unit which is a standard measure of the way luminance and chrominance may be sampled at different levels.
+UO:0000240,dots per inch,"A spatial resolution unit which is a standard measure of the printing resolution, in particular the number of individual dots of ink a printer or toner can produce within a linear one-inch space."
+UO:0000241,micron pixel,A spatial resolution unit which is equal to a pixel size of one micrometer.
+UO:0000242,pixels per inch,"A spatial resolution unit which is a standard measure of the resolution of a computer display, related to the size of the display in inches and the total number of pixels in the horizontal and vertical directi"
+UO:0000243,pixels per millimeter,A spatial resolution unit which is a standard measure of the number of pixels in one millimeter length or width of a digital image divided by the physical length or width of a printed image.
+UO:0000244,base pair,A count unit which contains one nucleotide.
+UO:0000245,kibibyte,An information unit which is equal to 1024 B.
+UO:0000246,mebibyte,An information unit which is equal to 1024 KiB.
+UO:0000247,millivolt,An electric potential difference unit which is equal to one thousandth of a volt or 10^[-3] V.
+UO:0000248,kilovolt,An electric potential difference unit which is equal to one thousand volts or 10^[3] V.
+UO:0000249,microvolt,An electric potential difference unit which is equal to one millionth of a volt or 10^[-6] V.
+UO:0000250,nanovolt,An electric potential difference unit which is equal to one billionth of a volt or 10^[-12] V.
+UO:0000251,picovolt,An electric potential difference unit which is equal to one trillionth of a volt or 10^[-12] V.
+UO:0000252,megavolt,An electric potential difference unit which is equal to one million volts or 10^[6] V.
+UO:0000253,surface tension unit,A unit which is a standard measure of the ability of a liguid to attraction of molecules at its surface as a result of unbalanced molecular cohesive forces.
+UO:0000254,newton per meter,A surface tension unit which is equal to one newton per meter.
+UO:0000255,dyne per cm,A surface tension unit which is equal to one dyne per centimeter.
+UO:0000256,viscosity unit,A unit which is a standard measure of the internal resistance of fluids to flow.
+UO:0000257,pascal second,A viscosity unit which is equal to one pascale per second.
+UO:0000258,poise,A viscosity unit which is equal to one dyne second per square centimeter.
+UO:0000259,decibel,An ratio unit which is an indicator of sound power per unit area.
+UO:0000260,effective dose unit,A unit which is a standard measure of the estimate of the stochastic effect that a non-uniform radiation dose has on a human.
+UO:0000261,conduction unit,A unit which represents a standard measurement of the transmission of an entity through a medium.
+UO:0000262,electrical conduction unit,A unit which represents a standard measurement of the movement of electrically charged particles through a transmission medium (electrical conductor).
+UO:0000263,heat conduction unit,"A unit which represents a standard measurement of the spontaneous transfer of thermal energy through matter, from a region of higher temperature to a region of lower temperature."
+UO:0000264,siemens,An electrical conduction unit which is equal to A/V.
+UO:0000265,watt per meter kelvin,An heat conduction unit which is equal to one watt divided by meter kelvin.
+UO:0000266,electronvolt,A non-SI unit of energy (eV)ined as the energy acquired by a single unbound electron when it passes through an electrostatic potential difference of one volt. An electronvolt is equal to 1.602 176 53(14) x 10
+UO:0000267,electric field strength unit,The electric field strength is a unit which is a measure of the potential difference between two points some distance apart.
+UO:0000268,volt per meter,The volt per meter is a unit of electric field strength equal to the a potential difference of 1 volt existing between two points that are 1 meter apart.
+UO:0000269,absorbance unit,"A dimensionless logarithmic unit assigned to a measure of absorbance of light through a partially absorbing substance,ined as -log10(I/I_0) where I = transmitted light and I_0 = incident light."
+UO:0000270,volumetric flow rate unit,A unit which is a standard measure of the volume of fluid which passes through a given surface per unit time .
+UO:0000271,microliters per minute,A volumetric flow rate unit which is equal to one microliter volume through a given surface in one minute.
+UO:0000272,millimetres of mercury,A unit of pressure equal to the amount of fluid pressure one millimeter deep in mercury at zero degrees centigrade on Earth.
+UO:0000273,milligram per liter,A mass unit density which is equal to mass of an object in milligrams divided by the volume in liters.
+UO:0000274,microgram per milliliter,A mass unit density which is equal to mass of an object in micrograms divided by the volume in millliters.
+UO:0000275,nanogram per milliliter,A mass unit density which is equal to mass of an object in nanograms divided by the volume in milliliters.
+UO:0000276,amount per container,A concentration unit which is a standard measure of the amount of a substance in a given container.
+UO:0000277,ug/disk,"A unit which is equal to one microgram per disk, where a disk is some physical surface/container upon which the substance is deposited."
+UO:0000278,nmole/disk,"A unit which is equal to one nanomole per disk, where a disk is some physical surface/container upon which the substance is deposited."
+UO:0000279,milliunits per milliliter,A unit per milliliter unit which is equal to one thousandth of a unit of an agreed arbitrary amount per one milliliter.
+UO:0000280,rate unit,A unit which represents a standard measurement occurrence of a process per unit time.
+UO:0000281,count per nanomolar second,A rate unit which is equal to one over one nanomolar second.
+UO:0000282,count per molar second,A rate unit which is equal to one over one molar second.
+UO:0000283,kilogram per hectare,An area density unit which is equal to the mass of an object in kilograms divided by the surface area in hectares..
+UO:0000284,count per nanomolar,A rate unit which is equal to one over one nanomolar.
+UO:0000285,count per molar,A rate unit which is equal to one over one molar.
+UO:0000301,microgram per liter,A mass unit density which is equal to mass of an object in micrograms divided by the volume in liters.
+UO:0000308,milligram per kilogram,A dose unit which is equal to 1 milligram of a toxic or pharmaceutical substance per kilogram body weight of the recipient subject. 
+UO:0000328,kilobasepair,"A unit equal to one thousand base pairs. (1,000)"
+UO:0000329,megabasepair,"A unit equal to one million base pairs (nucleotides) (1,000,000)"
+UO:0000330,gigabasepair,"A count unit which contains one thousand million nucleotides (1,000,000,000)."

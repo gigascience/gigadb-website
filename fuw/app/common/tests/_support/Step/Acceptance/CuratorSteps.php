@@ -75,9 +75,10 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 	{
 		$this->I->amOnUrl('http://gigadb.test');
 		$this->I->amOnPage('/site/login');
-		$this->I->fillField(['name' => 'LoginForm[username]'], 'admin@gigadb.org');
+		$this->I->fillField(['name' => 'LoginForm[username]'], 'Ben_Hur@gigadb.org');
 		$this->I->fillField(['name' => 'LoginForm[password]'], 'gigadb');
 		$this->I->click('Login');
+        $this->I->waitForText("Home",10);
 	}
 
 	/**
@@ -118,13 +119,21 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
             }
 
             if("attribute" === $row[0]) {
+                if (!$this->I->grabFromDatabase("public.{$row[0]}",'id',['attribute_name' => $row[1]])) { 
                 $this->I->haveInDatabase("public.{$row[0]}",["attribute_name" => $row[1] ] );
+                }
             }
-            elseif("sample" === $row[0]) {
-                $this->I->haveInDatabase("public.{$row[0]}",["species_id" => 1128856 ,"name" => $row[1] ] );
-            }            
+            // elseif("sample" === $row[0]) {
+            //     if ( !$this->I->grabFromDatabase('public.species', 'id', array('id' => 1128856)) ) {
+            //         $this->I->haveInDatabase("public.species", ["id" => 1128856, "tax_id" => "-1", "scientific_name" => "None assigned" ]);
+            //     }
+            //     // $this->I->haveInDatabase("public.{$row[0]}",["species_id" => 1128856 ,"name" => $row[1] ] );
+
+            // }            
             elseif("unit" === $row[0])  {
-                $this->I->haveInDatabase("public.{$row[0]}",["id" => $row[2], "name" => $row[1] ] );
+                if(!$this->I->grabFromDatabase("public.{$row[0]}",'id',['name' => $row[1]])) {
+                    $this->I->haveInDatabase("public.{$row[0]}",["id" => $row[2], "name" => $row[1] ] );
+                }
             }
         }
      }
