@@ -18,7 +18,7 @@ else
 fi
 
 # create test database if not existing
-$DOCKER_COMPOSE run --rm test bash -c "psql -h docker -U gigadb -c 'create database gigadb_testdata'" || true
+$DOCKER_COMPOSE run --rm test bash -c "psql -h staging_dockerhost -U gigadb -c 'create database gigadb_testdata'" || true
 
 # generate migrations
 $DOCKER_COMPOSE run --rm js bash -c "node /var/www/ops/scripts/csv_yii_migration.js gigadb_testdata"
@@ -30,4 +30,4 @@ $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=te
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=testdb --migrationPath=application.migrations.data.gigadb_testdata --interactive=0
 
 # export a binary dump
-$DOCKER_COMPOSE run --rm test bash -c "PGPASSWORD=$GIGADB_PASSWORD pg_dump --no-owner -U gigadb -h docker -p 5432 -F custom -d gigadb_testdata -f /var/www/sql/gigadb_testdata.pgdmp"
+$DOCKER_COMPOSE run --rm test bash -c "PGPASSWORD=$GIGADB_PASSWORD pg_dump --no-owner -U gigadb -h staging_dockerhost -p 5432 -F custom -d gigadb_testdata -f /var/www/sql/gigadb_testdata.pgdmp"
