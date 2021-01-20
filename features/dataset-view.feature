@@ -330,7 +330,7 @@ Feature: a user visit the dataset page
 		| pre_03AUG2015_update 								| folder containing originally submitted data files, prior to update Aug 3rd 2015.	| Directory 		| 50.00 MiB 	|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/pre_03AUG2015_update |
 		| readme.txt 										|				                                                                    | Readme 			| 337 B 		|                 | ftp://climb.genomics.cn/pub/10.5524/101001_102000/101001/readme.txt |
 
-	@wip @javascript @pr521
+	@ok @javascript @pr521
 	Scenario: To see the citation box and and the citation source
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
@@ -345,9 +345,8 @@ Feature: a user visit the dataset page
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
 		And I press "Cite Dataset"
-		When I click on the "Formatted Text" button
-		Then I go to "http://data.datacite.org/text/x-bibliography/10.5524/101001"
-		And I should see "Huang, Y., Li, Y., Burt, D. W., Chen, H., Zhang, Y., Qian, W., Kim, H., Gan, S., Zhao, Y., Li, J., Yi, K., Feng, H., Zhu, P., Li, B., Liu, Q., Fairley, S., Magor, K. E., Du, Z., Hu, X., … Li, N. (2013). <i>Genome sequence of the duck (Anas platyrhynchos)</i> [Data set]. GigaScience Database. https://doi.org/10.5524/101001"
+		When I press "Text"
+		Then I go to new tab and should see "Huang, Y., Li, Y., Burt, D. W., Chen, H., Zhang, Y., Qian, W., Kim, H., Gan, S., Zhao, Y., Li, J., Yi, K., Feng, H., Zhu, P., Li, B., Liu, Q., Fairley, S., Magor, K. E., Du, Z., Hu, X., … Li, N. (2013). Genome sequence of the duck (Anas platyrhynchos) [Data set]. GigaScience Database. https://doi.org/10.5524/101001"
 
 	@ok @javascript @pr521
 	Scenario: To get RIS file after clicking the RIS in the citation box
