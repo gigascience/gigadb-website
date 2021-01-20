@@ -40,7 +40,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     $text = file_get_contents('https://data.datacite.org/text/x-bibliography/10.5524/'.$identifier);
                                     $clean_text = strip_tags(preg_replace("/&#?[a-z0-9]+;/i","", $text));
                                     ?>
-                                    <a id="citeText" onclick="showText()">Text</a>
+                                    <button onclick="showText()" class="text-button">Text</button>
                                     <a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier;?>' target="_self">RIS</a>
                                     <a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier;?>' target="_self">BibTeX</a>
                                 </div>
