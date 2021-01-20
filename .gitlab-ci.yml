@@ -82,6 +82,8 @@ build_webapp:
     expire_in: 1 week
 
 run_all_tests:
+  variables:
+    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
   stage: test
   cache:
     paths:
