@@ -428,17 +428,11 @@ class DatasetViewContext implements Context
     /**
      * @Then there should be a :arg1 meta tag :arg2 with lines:
      */
-    public function thereShouldBeAMetaTagWithMultiplines($arg1, $arg2, \Behat\Gherkin\Node\PyStringNode $arg3 )
+    public function thereShouldBeAMetaTagWithMultiplines($arg1, $arg2, \Behat\Gherkin\Node\PyStringNode $expectedValue )
     {
-        $expectContent = $arg3->getRaw();
-        $expectContent = implode(" ", preg_split('/\r\n|\r|\n/', $expectContent));
-
-        $metaNode = $this->minkContext->getSession()->getPage()->find('xpath', "//meta[@$arg1='$arg2']");
-        $actualContent = $metaNode->getAttribute('content');
-        $actualContent = preg_replace('/\s\s/', ' ', implode(" ", preg_split('/\r\n|\r|\n/', $actualContent)));
-
+        $actualNode = $this->minkContext->getSession()->getPage()->find('xpath', "//meta[@$arg1='$arg2']");
+        [$expectContent, $actualContent] = str_replace(["\r","\n","\r\n","\t","\v","\0"," "], "", [$expectedValue->getRaw(), $actualNode->getAttribute('content')]);
         PHPUnit_Framework_Assert::assertEquals($expectContent, $actualContent, 'The content is different!');
-
     }
 
 }
