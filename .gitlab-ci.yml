@@ -109,9 +109,6 @@ run_all_tests:
     - docker-compose run --rm config
     - docker-compose build js
     - docker-compose run --rm js npm install
-    # Setup dev and test db
-    - ./ops/scripts/setup_testdb_gigadb_testdata.sh
-    - ./ops/scripts/setup_testdb_production_like.sh
     - docker-compose run --rm webapp
     - docker-compose up -d chrome
     # - docker-compose top
@@ -121,6 +118,9 @@ run_all_tests:
     # - docker images
     - docker-compose run --rm test ping -c 5 database
     - docker-compose run --rm test ping -c 5 gigadb.dev
+    # Setup dev and test db
+    - ./ops/scripts/setup_testdb_gigadb_testdata.sh
+    - ./ops/scripts/setup_testdb_production_like.sh
     - docker-compose run test
     - echo $?
 
