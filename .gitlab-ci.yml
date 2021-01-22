@@ -105,9 +105,11 @@ run_all_tests:
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/js:latest || true
     # - env
     - docker-compose run --rm config
     - docker-compose build js
+    - docker tag ${CI_PROJECT_NAME}_js:latest registry.gitlab.com/$CI_PROJECT_PATH/js:latest
     - docker-compose run --rm js npm install
     - docker-compose run --rm webapp
     - docker-compose up -d chrome
