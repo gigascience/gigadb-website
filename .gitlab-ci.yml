@@ -70,12 +70,18 @@ build_webapp:
     - echo "Building app"
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/js:latest || true
     - docker-compose build application
     - docker-compose build test
+    - docker-compose build js
     - docker tag ${CI_PROJECT_NAME}_application:latest registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker tag ${CI_PROJECT_NAME}_test:latest registry.gitlab.com/$CI_PROJECT_PATH/test:latest
+    - docker tag ${CI_PROJECT_NAME}_js:latest registry.gitlab.com/$CI_PROJECT_PATH/js:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/test:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/js:latest
+    - docker-compose run --rm config
+    - docker-compose run --rm js npm install
   artifacts:
     untracked: true
     when: on_failure
@@ -108,11 +114,10 @@ run_all_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/js:latest || true
     # - env
     - docker-compose run --rm config
-    - docker-compose build js
-    - docker tag ${CI_PROJECT_NAME}_js:latest registry.gitlab.com/$CI_PROJECT_PATH/js:latest
-    - docker-compose run --rm js npm install
     - docker-compose run --rm webapp
     - docker-compose up -d chrome
+    # build the javascript app
+    - docker-compose run --rm js
     # - docker-compose top
     # - docker network inspect rija-gigadb-website_web-tier
     # - docker network inspect rija-gigadb-website_db-tier
