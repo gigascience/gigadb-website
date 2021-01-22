@@ -75,10 +75,8 @@ build_webapp:
     - docker-compose build js-generate-migrations
     - docker tag ${CI_PROJECT_NAME}_application:latest registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker tag ${CI_PROJECT_NAME}_test:latest registry.gitlab.com/$CI_PROJECT_PATH/test:latest
-    - docker tag ${CI_PROJECT_NAME}_js-generate-migrations:latest registry.gitlab.com/$CI_PROJECT_PATH/js-generate-migrations:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/test:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/js-generate-migrations:latest
     - docker-compose run --rm config
     - docker-compose run --rm js-generate-migrations npm install
   artifacts:
