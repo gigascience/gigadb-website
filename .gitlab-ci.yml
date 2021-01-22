@@ -70,7 +70,7 @@ build_webapp:
     - echo "Building app"
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/js-generate-migrations:latest || true
+    # - docker pull registry.gitlab.com/$CI_PROJECT_PATH/js-generate-migrations:latest || true
     - docker-compose build application
     - docker-compose build test
     - docker-compose build js-generate-migrations
