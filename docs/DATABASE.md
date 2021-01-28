@@ -49,51 +49,14 @@ database for querying.
 ## Converting CSV files into Yii migration scripts
 
 The CSV files must be converted to Yii migration scripts before the data can be
-uploaded into a database. This is achieved using the `csv-to-migrations` docker
-service as follows:
+uploaded into a database. This is achieved using a `setup_devdb.sh` shell script 
+as follows:
 ```
-$ docker-compose up csv-to-migrations
-```
-
-A JavaScript program called `csv_yii_migration.js` is executed which will 
-convert a directory containing CSV files into Yii migration scripts. This 
-directory is specified by the `CSV_DIR` variable in the `.env` file and has a 
-default value of `dev` which means that the CSV files in 
-`gigadb-website/data/dev` will be transformed into Yii migration scripts and 
-these will be located in the `gigadb-website/protected/migrations/data/dev`
-directory.
-
-## Running database migrations
-
-Now that Yii migration scripts are available, a database can be deployed for the
-GigaDB website. This is achieved with two commands:
-```
-# Create schema tables
-$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
-# Upload data into tables
-$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.dev --interactive=0
+$ ops/scripts/setup_devdb.sh
 ```
 
-The first command will create the schema tables for GigaDB's PostgreSQL 
-database using the migration scripts in `gigadb-website/protected/migrations/schema`.
-The second command will upload data into the tables using migration scripts that
-were created as part of `docker-compose run --rm config` execution.
-
-If you make changes to the schema and/or add new data by updating by creating 
-new Yii migration scripts then you might want to reset the PostgreSQL database 
-and re-run the schema creation and data upload migration scripts:
-```
-# Delete tables and other database objects
-$ docker-compose run --rm  application ./protected/yiic migrate to 300000_000000 --migrationPath=application.migrations.admin --interactive=0
-# Reset tbl_migration table for logging database migrations
-$ docker-compose run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
-# Re-create schema tables
-$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
-# Upload data into tables
-$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.dev --interactive=0
-```
-
-
-
-
-
+The shell script executes a JavaScript program called `csv_yii_migration.js` 
+which will convert the `data/dev` directory containing CSV files into Yii 
+migration scripts in the `protected/migrations/data/dev` directory. Next, this 
+shell script will run a series of Yii migration scripts to create a new dev
+database containing data for development work. 

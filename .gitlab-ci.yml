@@ -46,7 +46,6 @@ variables:
   MAIN_BRANCH: "nolegacy-dep-ux-php7"
   GITLAB_PRIVATE_TOKEN: $CI_BUILD_TOKEN
   GITLAB_UPSTREAM_PROJECT_ID: "7041674"
-  CSV_DIR: "prod_like"
 
 services:
   - docker:dind
@@ -72,13 +71,13 @@ build_webapp:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker-compose build application
     - docker-compose build test
-    - docker-compose build js-generate-migrations
+    - docker-compose build csv-to-migrations
     - docker tag ${CI_PROJECT_NAME}_application:latest registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker tag ${CI_PROJECT_NAME}_test:latest registry.gitlab.com/$CI_PROJECT_PATH/test:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/test:latest
     - docker-compose run --rm config
-    - docker-compose run --rm js-generate-migrations npm install
+    - docker-compose run --rm csv-to-migrations npm install
   artifacts:
     untracked: true
     when: on_failure
@@ -108,13 +107,13 @@ run_all_tests:
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/js-generate-migrations:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/csv-to-migrations:latest || true
     # - env
     - docker-compose run --rm config
     - docker-compose run --rm webapp
     - docker-compose up -d chrome
     # build the javascript app
-    - docker-compose run --rm js-generate-migrations
+    - docker-compose run --rm csv-to-migrations
     # - docker-compose top
     # - docker network inspect rija-gigadb-website_web-tier
     # - docker network inspect rija-gigadb-website_db-tier
@@ -122,7 +121,7 @@ run_all_tests:
     # - docker images
     - docker-compose run --rm test ping -c 5 database
     - docker-compose run --rm test ping -c 5 gigadb.dev
-    # Setup dev and test db
+    # Setup test db
     - ./ops/scripts/setup_testdb_gigadb_testdata.sh
     - ./ops/scripts/setup_testdb_production_like.sh
     - docker-compose run test
@@ -227,7 +226,9 @@ with_new_cert_deploy:
     - docker-compose run --rm config
     - docker-compose run --rm webapp composer install -a
     # Generate Yii migration scripts
-    - docker-compose up csv-to-migrations
+    - docker-compose run --rm csv-to-migrations
+    # Setup db with prod_like data
+    - ./ops/scripts/setup_prod_likedb.sh
     # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
     - docker-compose build production_web
     - docker-compose build production_app
@@ -289,7 +290,9 @@ deploy_app:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker-compose run --rm config
     # Generate Yii migration scripts
-    - docker-compose up csv-to-migrations
+    - docker-compose run --rm csv-to-migrations
+    # Setup db with prod_like data
+    - ./ops/scripts/setup_prod_likedb.sh
     # Install dependencies, but make sure the --no-dev parameter is passed so that development-only deps are not installed in vendor/
     - docker-compose run --rm webapp
     # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry

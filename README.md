@@ -70,14 +70,11 @@ repeatedly.
 
 ### Running database migrations
 
-Some code changes are database schemas changes. You will need to run Yii migration to create postgresql database used by GigaDB as follows:
+Some code changes are database schemas changes. You will need to run Yii 
+migration scripts to create the postgresql database used by GigaDB with a shell
+script as follows:
 ```
-# Create schema tables
-$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
-# Create migration scripts for uploading data
-$ docker-compose up csv-to-migrations
-# Upload data into tables
-$ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.dev --interactive=0
+$ ops/scripts/setup_devdb.sh
 ```
 
 You can then navigate to the website at:
