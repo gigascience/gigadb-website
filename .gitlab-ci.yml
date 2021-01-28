@@ -223,6 +223,8 @@ with_new_cert_deploy:
     - env | grep -iE "^staging_" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
     # pulling the CI build of the application and configure it for staging for the purpose of building production containers
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    # Pull latest build of csv-to-migrations for creating prod_like database
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/csv-to-migrations:latest || true
     - docker-compose run --rm config
     - docker-compose run --rm webapp composer install -a
     # Generate Yii migration scripts
@@ -288,6 +290,8 @@ deploy_app:
     - env | grep -iE "^staging_" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth" >> $APPLICATION/.secrets
     # pulling the CI build of the application and configure it for staging for the purpose of building production containers
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    # Pull latest build of csv-to-migrations for creating prod_like database
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/csv-to-migrations:latest || true
     - docker-compose run --rm config
     # Generate Yii migration scripts
     - docker-compose run --rm csv-to-migrations
