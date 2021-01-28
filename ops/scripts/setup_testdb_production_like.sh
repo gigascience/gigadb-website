@@ -7,6 +7,7 @@ set -u
 
 # Use database variables in .secrets
 set -a
+source ./.env
 source ./.secrets
 set +a
 
