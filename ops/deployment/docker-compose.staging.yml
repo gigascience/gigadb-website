@@ -71,12 +71,6 @@ services:
     volumes:
       - le_config:/etc/letsencrypt
 
-  csv-to-migrations:
-    image: node:14.9.0-buster
-    working_dir: /var/www/ops/scripts
-    shm_size: '1gb' # to avoid a known issue
-    command: bash -c "npm install /var/www/ops/scripts"
-
 networks:
   web-tier:
     driver: bridge
