@@ -70,9 +70,8 @@ repeatedly.
 
 ### Running database migrations
 
-Some code changes are database schemas changes. You will need to run Yii 
-migration scripts to create the postgresql database used by GigaDB with a shell
-script as follows:
+A shell script containing Yii migrations is used to create the postgresql 
+database for GigaDB as follows:
 ```
 $ ops/scripts/setup_devdb.sh
 ```
