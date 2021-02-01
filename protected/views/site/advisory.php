@@ -38,7 +38,7 @@ $this->pageTitle='GigaDB - About';
                             <img src="/images/profile/Francis.png">
                             <p><a href="http://oicr.on.ca/person/researcher/francis-ouellette">Dr B F Francis Ouellette</a></p>
                         </div>
-                        <div class="col-xs-2 advisory-img-block" style="float: left">
+                        <div class="col-xs-2 advisory-img-block" >
                             <img src="/images/profile//ZhouXin.png">
                             <p><a href="https://www.linkedin.com/profile/view?id=157662709&trk=nav_responsive_tab_profile_pic">Dr Xin Zhou</a></p>
                         </div>
