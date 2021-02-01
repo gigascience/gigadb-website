@@ -75,17 +75,12 @@ build_webapp:
     - docker tag ${CI_PROJECT_NAME}_test:latest registry.gitlab.com/$CI_PROJECT_PATH/test:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/test:latest
-#    - docker-compose run --rm config
-#    - docker-compose build csv-to-migrations
-#    - docker-compose run --rm csv-to-migrations npm install
   artifacts:
     untracked: true
     when: on_failure
     expire_in: 1 week
 
 run_all_tests:
-#  variables:
-#    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
   stage: test
   cache:
     paths:
@@ -107,7 +102,6 @@ run_all_tests:
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
-#    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/csv-to-migrations:latest || true
     # - env
     - docker-compose run --rm config
     - docker-compose run --rm webapp
