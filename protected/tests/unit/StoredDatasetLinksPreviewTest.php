@@ -7,8 +7,7 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
     {
         $dataset_id = 1;
 
-        $webClient = $this->createMock(GuzzleHttp\Client::class);
-        $idUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
+        $idUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection());
         $this->assertEquals($dataset_id, $idUnderTest->getDatasetId()) ;
 
     }
@@ -18,8 +17,7 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
         $dataset_id = 1;
         $doi = 100243;
 
-        $webClient = $this->createMock(GuzzleHttp\Client::class);
-        $doiUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
+        $doiUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection());
         $this->assertEquals($doi, $doiUnderTest->getDatasetDOI());
     }
 
@@ -32,8 +30,7 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
             ),
         );
 
-        $webClient = $this->createMock(GuzzleHttp\Client::class);
-        $imageUrlUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
+        $imageUrlUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection());
         $this->assertEquals($expected, $imageUrlUnderTest->getImageUrl());
     }
 
@@ -50,8 +47,7 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
             )
         );
 
-        $webClient = $this->createMock(GuzzleHttp\Client::class);
-        $previewDataUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
+        $previewDataUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection());
         $this->assertEquals($expected, $previewDataUnderTest->getPreviewDataForLinks());
 
 
