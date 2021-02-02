@@ -45,4 +45,20 @@ class StoredDatasetLinksPreview extends DatasetComponents
         return $results;
     }
 
+    public function getPreviewDataForLinks(): array
+    {
+        $sql = "select identifier as short_doi, identifier as url, title, description, img.url as image_url from dataset dd, image img  where dd.id = img.id and dd.id = :id";
+        $command = $this->_db->createCommand($sql);
+        $command->bindParam( ":id", $this->_id , PDO::PARAM_INT);
+        $rows = $command->queryAll();
+        $results = [];
+
+        foreach ( $rows as $result) {
+            $result['url'] = "https://doi.org/10.5524/".$result['url'];
+            $results[]=$result;
+        }
+
+        return $results;
+    }
+
 }
