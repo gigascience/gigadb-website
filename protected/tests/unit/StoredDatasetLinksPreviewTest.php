@@ -2,14 +2,6 @@
 
 class StoredDatasetLinksPreviewTest extends CDbTestCase
 {
-    protected $fixtures=array(
-        'datasets'=>'Dataset',
-    );
-
-    public function setUp()
-    {
-        parent::setUp();
-    }
 
     public function testGetDatasetId()
     {
@@ -27,5 +19,18 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
 
         $doiUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection());
         $this->assertEquals($doi, $doiUnderTest->getDatasetDOI());
+    }
+
+    public function testGetImageUrl()
+    {
+        $dataset_id =1;
+        $expected = array(
+            array(
+                'url'=>'http://gigadb.org/images/data/cropped/100043_Trichinella-spiralis.jpg',
+            ),
+        );
+
+        $imageUrlUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $this->assertEquals($expected, $imageUrlUnderTest->getImageUrl());
     }
 }
