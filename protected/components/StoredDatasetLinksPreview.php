@@ -5,14 +5,14 @@ class StoredDatasetLinksPreview extends DatasetComponents
 {
     private $_id;
     private $_db;
-//    private $_web;
+    private $_web;
 
-    public function __construct (int $id, CDbConnection $db_connection)
+    public function __construct (int $id, CDbConnection $db_connection, GuzzleHttp\Client $webClient)
     {
         parent::__construct();
         $this->_id = $id;
         $this->_db = $db_connection;
-//        $this->_web = $webClient;
+        $this->_web = $webClient;
     }
 
     /**
