@@ -16,7 +16,7 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
     public function testGetDatasetDOI()
     {
         $dataset_id = 1;
-        $doi = 100043;
+        $doi = 100243;
 
         $webClient = $this->createMock(GuzzleHttp\Client::class);
         $doiUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
@@ -28,7 +28,7 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
         $dataset_id =1;
         $expected = array(
             array(
-                'url'=>'http://gigadb.org/images/data/cropped/100043_Trichinella-spiralis.jpg',
+                'url'=>'http://gigadb.org/images/data/cropped/100243.gif',
             ),
         );
 
