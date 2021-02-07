@@ -330,12 +330,10 @@ Create the `vault` file in the ops/infrastructure/envs/staging/group_vars/all di
 ```
 $ pwd
 ~/gigadb-website
-# Make a directory for group variables
-$ mkdir ops/infrastructure/group_vars 
 # Make a directory for all
-$ mkdir ops/infrastructure/group_vars/all
+$ mkdir -p ops/infrastructure/envs/staging/group_vars/all
 # Create vault file
-$ ansible-vault create ops/infrastructure/group_vars/all/vault
+$ ansible-vault create ops/infrastructure/envs/staging/group_vars/all/vault
 ```
 
 You will be prompted to enter a password, which you will need to share with 
@@ -381,7 +379,7 @@ $ ansible-vault edit ops/infrastructure/envs/stagings/group_vars/all/vault
 ```
 
 **Note:**
-> You can find a sample vault file at ops/variables/vault-sample
+> You can find a sample vault file at ops/configuration/variables/vault-sample
   
 Provide Ansible with the password to access the vault file during the 
 execution of playbooks by storing the password to the vault file in a 
