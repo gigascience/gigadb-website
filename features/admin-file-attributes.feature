@@ -6,14 +6,15 @@
 
   Background:
     Given Gigadb web site is loaded with production-like data
+    And an admin user exists
 
-  @ok @issue-457
+  @ok
   Scenario: Guest user cannot visit admin file update page
     Given I am not logged in to Gigadb web site
     When I go to "/adminFile/update/"
     Then I should see "Login"
 
-  @ok @issue-457
+  @ok
   Scenario: Go to a published dataset found in production-like database
     Given I am not logged in to Gigadb web site
     When I go to "dataset/100056"
@@ -27,7 +28,7 @@
     And I should see "History" tab with text "File Termitomyces_gene_v1.0.pep.fa updated"
     And I should see "History" tab with text "File Termitomyces_gene_v1.0.pep.fa updated"
 
-  @ok @issue-457 @Published
+  @ok @Published
   Scenario: Sign in as admin and visit admin file update page and see New Attribute, Edit, Delete buttons
     Given I sign in as an admin
     When I am on "/adminFile/update/id/13973"
@@ -38,7 +39,7 @@
     And I should see a button input "Edit"
     And I should see a button input "Delete"
 
-  @ok @issue-457 @javascript @Published
+  @ok @javascript @Published
   Scenario: Sign in as admin, delete an attribute of a published dataset and check history tab
     Given I sign in as an admin
     And I am on "/adminFile/update/id/13973"
@@ -49,7 +50,7 @@
     And I follow "History"
     And I should see "History" tab with text "Termitomyces_assembly_v1.0.fa.gz: file attribute deleted"
 
-  @wip @issue-457 @javascript @Published
+  @ok @javascript @Published
   Scenario: Sign in as admin, no delete button should be seen after delete action has been triggered
     Given I sign in as an admin
     And I am on "/adminFile/update/id/13973"
@@ -63,7 +64,7 @@
     And I should not see "2013-7-15"
     And I should not see a button "Delete"
 
-  @ok @issue-457 @javascript @NonPublished
+  @ok @javascript @NonPublished
   Scenario: Go to a non published dataset found in production-like database, create then delete a keyword attribute
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
