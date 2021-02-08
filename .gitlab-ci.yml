@@ -116,8 +116,8 @@ run_all_tests:
     - docker-compose run --rm test ping -c 5 database
     - docker-compose run --rm test ping -c 5 gigadb.dev
     # Setup test db
-    - ./ops/scripts/setup_testdb_gigadb_testdata.sh
-    - ./ops/scripts/setup_testdb_production_like.sh
+    - ./ops/scripts/make_pgdmp_gigadb_testdata.sh
+    - ./ops/scripts/make_pgdmp_production_like.sh
     - docker-compose run test
     - echo $?
 
