@@ -341,7 +341,7 @@ Feature: a user visit the dataset page
 		And I should see "BibTeX"
 
 	@ok @javascript @pr521
-	Scenario: To show the citation text from CorssCite after clicking the Formatted Text button in the citation box
+	Scenario: To show the citation text from CrossCite after clicking the Formatted Text button in the citation box
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
 		And I press "Cite Dataset"
