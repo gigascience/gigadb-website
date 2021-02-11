@@ -491,10 +491,7 @@ deploy:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d web
 
     # Run database migrations if any
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate to 300000_000000 --migrationPath=application.migrations.admin --interactive=0
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.prod_like --interactive=0
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T console /app/yii migrate --interactive=0
     # post-install script to run
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm less
@@ -635,6 +632,49 @@ start:
     when: always
     expire_in: 1 week
 
+
+bootstrapDB_with_productionlike:
+  variables:
+    GIGADB_ENV: $DEPLOYMENT_ENV
+    COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
+    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
+    DATA_SAVE_PATH: "/home/centos/app_data"
+  stage: operation
+  script:
+    # appending staging variables at the end of the .env and .secrets
+    - env | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
+    - env | grep -iE "^(staging_|remote_)" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
+    # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
+    # Create client certificate files for authenticating with remote docker daemon
+    - mkdir -pv ~/.docker
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_ca' >  ~/.docker/ca.pem || true"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_cert' > ~/.docker/cert.pem || true"
+    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_key' > ~/.docker/key.pem || true"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem || true"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
+    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
+    # Run all database migrations for schema and production like example data
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate to 300000_000000 --migrationPath=application.migrations.admin --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.prod_like --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T console /app/yii migrate --interactive=0
+    # Adjusting the sequences
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T test bash -c "psql -h database -U gigadb -d gigadb -c 'SELECT setval(pg_get_serial_sequence(\'curation_log\', \'id\'), coalesce(max(id),0) + 1, false) FROM curation_log;'"
+
+
+  environment:
+    name: $DEPLOYMENT_ENV
+    url: $REMOTE_HOME_URL
+  when: manual
+  # only:
+  #   - develop
+  artifacts:
+    untracked: true
+    paths:
+      - fuw/app/console/config/
+    when: always
+    expire_in: 1 week
 
 top:
   variables:
