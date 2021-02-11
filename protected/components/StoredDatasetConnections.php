@@ -111,12 +111,12 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
 			        Yii::log( Psr7\str($e->getResponse()), "error");
 			    }
 			}
-			catch(GuzzleHttp\Exception\ServerException $e) {
-//				Yii::log( Psr7\str($e->getRequest()) , "error");
-//				$response = $e->getResponse();
-//				$responseBodyAsString = $response->getBody()->getContents();
-//				Yii::log( $responseBodyAsString , "error");
-				Yii::log( "Gateway timeout problem" , "error");
+			catch(GuzzleHttp\Exception\ServerException $se) {
+				$exceptionResponse = $se->getResponse()->getBody()->getContents();
+				if(strpos($exceptionResponse, "504")) {
+					Yii::log( '504 Gateway timeout problem with https://doi.org/'. $result['identifier'], "error");
+				}
+				Yii::log($exceptionResponse, "error");
 			}
 			$result['citation'] = $response !== null ? (string) $response->getBody() : null;
 			$result['pmurl'] = null;
