@@ -34,7 +34,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
         <div class="container">
 
             <div class="row">
-                <div class="span6">
+                <div class="span4">
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'submitter_id',array('class'=>'control-label')); ?>
                         <div class="controls">
@@ -101,8 +101,10 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     </div>
 
                 </div>
-
-                <div class="span6">
+                <div class="span1">
+                    &nbsp;
+                </div>
+                <div class="span5">
                     <?
                         $img_url = $model->image->image('image_upload');
                         $fn = '' ;
@@ -275,7 +277,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 
             <div class="row">
 
-                <div class="span12">
+                <div class="span9">
 
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'title',array('class'=>'control-label')); ?>
@@ -331,9 +333,6 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
             <?php }?>
         <?php } elseif ( "mockup" === $datasetPageSettings->getPageType() ) { 
                 echo CHtml::link('Generate mockup for reviewers','#', array('class' => 'btn btn-primary', 'data-toggle' => "modal", 'data-target' => "#mockupCreation"));
-            }
-            else {
-                echo "<p>".$datasetPageSettings->getPageType()."</p>";
             }
             ?>
 
