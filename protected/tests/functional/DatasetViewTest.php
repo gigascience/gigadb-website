@@ -28,13 +28,10 @@ class DatasetViewTest extends FunctionalTesting
 
     }
 
-    public function testItShouldLoadPageWithoutGatewayTimeoutError() {
-        // Go to parrot dataset page which sometimes returns timeout error
-        //$url = "http://gigadb.dev/dataset/100039";
-        $url = "http://gigadb.dev/test_gateway_error";
-        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, null);
-        //$this->assertTrue($this->getStatusCode() === 200, "Return status is not 200");
-        $this->assertFalse($this->getStatusCode() === 504, "Return status is 504 Gateway Timeout error");
+    public function testItShouldDisplayCitations() {
+        // Go to parrot dataset page which can sometimes return timeout error
+        $url = "http://gigadb.dev/dataset/100039";
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Martinez-Cruzado, J.-C. (2012). A locally funded Puerto Rican parrot");
     }
 
 }
