@@ -82,8 +82,12 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'publication_date',
 		// array('name'=> 'curator_id', 'value'=>'$data->getCuratorName()'),
                 'modification_date',
-                'upload_status',
-
+        array(
+            'class'=>'CDataColumn',
+            'header' => "Upload Status",
+            'headerHtmlOptions'=>array('style'=>'width: 150px'),
+            'value'  => '$data->upload_status'
+        ),
 		array(
 			'class'=>'CButtonColumn',
 			'header' => "Actions",
