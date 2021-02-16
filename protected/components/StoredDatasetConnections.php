@@ -103,7 +103,6 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
 									    ],
 									    'connect_timeout' => 5
 									]);
-//				$response = $this->_web->request('GET', 'http://web/test_gateway_error');
 			}
 			catch(RequestException $e) {
 				Yii::log( Psr7\str($e->getRequest()) , "error");
