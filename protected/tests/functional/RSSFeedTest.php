@@ -25,7 +25,7 @@ class RSSFeedTest extends FunctionalTesting
         $feed = $this->getXMLWithSessionAndUrl($url);
 
         $this->assertEquals("10.5072/100004", $feed->channel->item[0]->guid);
-        $this->assertEquals("10.5072/100003", $feed->channel->item[3]->guid);
+        $this->assertEquals("10.5072/100039", $feed->channel->item[3]->guid);
 
 
     }

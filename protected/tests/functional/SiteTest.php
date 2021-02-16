@@ -24,7 +24,7 @@ class SiteTest extends FunctionalTesting
     public function testItShouldShowLatestNews()
     {
     	// this is the order we expect the news  to be in
-    	$expectations = ["2016-05-11", "2016-05-11", "2016-05-09", "2011-11-12"];
+    	$expectations = ["2016-05-11", "2016-05-11", "2016-05-09", "2012-09-11", "2011-11-12"];
     	$actual = [];
 
         $url = "http://gigadb.dev/site/" ;
