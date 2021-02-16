@@ -44,11 +44,14 @@ class FuwController extends Controller {
      */
     public function actionRemoveDropbox() {
 
+
         if(!($this->doi)) {
             Yii::error("wrong number of arguments (DOI missing), exiting abnormally");
             $this->stdout("wrong number of arguments (DOI missing), exiting abnormally".PHP_EOL, Console::FG_RED);
             return ExitCode::USAGE;
         }
+
+        $this->stdout("About to remove the dropbox for {$this->doi}...\n", Console::BOLD);
 
         try {
             $docker = new DockerManager();
