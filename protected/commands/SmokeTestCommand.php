@@ -35,6 +35,20 @@ values(999999,'gigadb-smoke-test-user@rijam.sent.as','5a4f75053077a32e681f81daa8
     	return 0;
 	}
 
+
+	public function actionResetData($args) {
+	    echo "Reset the test data".PHP_EOL;
+	    $sql = "update dataset set upload_status='AssigningFTPbox' where id=999999";
+        Yii::app()->db->createCommand($sql)->execute();
+        $sql = "delete from file_attributes where file_id in (select id from file where dataset_id=999999)";
+        Yii::app()->db->createCommand($sql)->execute();
+        $sql = "delete from file_sample where file_id in (select id from file where dataset_id=999999)";
+        Yii::app()->db->createCommand($sql)->execute();
+        $sql = "delete from file where dataset_id=999999";
+        Yii::app()->db->createCommand($sql)->execute();
+
+        return 0;
+    }
 	public function actionRemoveData($args) {
 		echo "Removing smoke test data...".PHP_EOL;
 		$sql = "delete from dataset where id=999999";
@@ -48,7 +62,7 @@ values(999999,'gigadb-smoke-test-user@rijam.sent.as','5a4f75053077a32e681f81daa8
         $sql = "delete from file_sample where file_id in (select id from file where dataset_id=999999)";
         Yii::app()->db->createCommand($sql)->execute();
         $sql = "delete from file where dataset_id=999999";
-        
+
 		return 0;
 	}
 }
