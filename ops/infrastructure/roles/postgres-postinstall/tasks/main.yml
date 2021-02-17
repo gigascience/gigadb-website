@@ -9,7 +9,3 @@
     owner: root
     group: root
     mode: 0644
-
-- name: Load the bootstrap database
-  command: pg_restore -p 5432 -U {{ pg_user }} -d {{ pg_database }} -v database_bootstrap.pgdmp
-  ignore_errors: true
