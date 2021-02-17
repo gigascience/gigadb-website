@@ -661,7 +661,8 @@ bootstrapDB_with_productionlike:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.prod_like --interactive=0
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T console /app/yii migrate --interactive=0
     # Adjusting the sequences
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T application bash -c "psql -h database -U gigadb -d gigadb -c 'SELECT setval(pg_get_serial_sequence(\'curation_log\', \'id\'), coalesce(max(id),0) + 1, false) FROM curation_log;'"
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T console psql -h database -U gigadb -d gigadb -c "SELECT setval(pg_get_serial_sequence('curation_log', 'id'), coalesce(max(id),0) + 1, false) FROM curation_log;"
+
 
 
   environment:
