@@ -1,0 +1,332 @@
+id,location,tag,url,license,photographer,source
+1,100043_Trichinella spiralis.jpg,Life cycle of Trichinella spiralis,http://gigadb.org/images/data/cropped/100043_Trichinella-spiralis.jpg,Public domain,Unknown,Public Health Image Library
+2,100016_Solanum.jpg,Potato,http://gigadb.org/images/data/cropped/100016_Solanum.jpg,"Public Domain, US Government (USDA)",Scott Bauer,www.ars.usda.gov Image Number K9152-1
+3,100036_T2D_metagenomes.jpg,T2D metagenome biosynthesis pathway,http://gigadb.org/images/data/cropped/100036_T2D_Metagenomes.jpg,Copyright-free,Junjie Qin (author),Junjie Qin
+4,100030_Crassostrea_gigas.jpg,Pacific oyster,http://gigadb.org/images/data/cropped/100030_Crassostrea_gigas_p1040847.jpg,"GNU Free Documentation License, CC-SA",David Monniaux,Wikimedia Commons
+5,100039_Amazona_vittata.jpg,Puerto Rican parrot,http://gigadb.org/images/data/cropped/100039_parrot.jpg,CC0,Taras Oleksyk,"University of Puerto Rico at Mayagüez, PUERTO RICO"
+6,100040_Geospiza_fortis.jpg,Darwin finch,http://gigadb.org/images/data/cropped/100040_Geospiza_fortis.jpg,Public Domain,John Gould (14.Sep.1804 - 3.Feb.1881),Wikimedia Commons
+7,100010_Aboriginal_Australian_individual.jpg,Aboriginal Australian individual,http://gigadb.org/images/data/cropped/100010_Aboriginal_Australian_individual.jpg,public domain because its term of copyright has expired,Unknown,"local history museum in Devonport, Tasmania, Australia"
+8,100006_Pygoscelis_adeliae.jpg,Adelie penguin,http://gigadb.org/images/data/cropped/100006_Pygoscelis_adeliae.jpg,"Public Domain, US Government","Michael Van Woert, 1998","<a href=""http://www.photolib.noaa.gov/htmls/corp2479.htm"">NOAA Photo Library</a>"
+9,100027_Pantholops_hodgsonii.jpg,Tibetan antelope,http://gigadb.org/images/data/cropped/100027_Pantholops_hodgsonii.jpg,CC Attribution 2.0 Generic,B_cool,Flickr
+10,100009_CHO-K1.jpg,Chinese hamster ovary (CHO) K1 cell line,http://gigadb.org/images/data/cropped/100009_CHO-K1.jpg,Creative Commons Attribution License,Stubbs et al.,"BMC Cell Biology 2005, 6:22 doi:10.1186/1471-2121-6-22"
+11,100021_Brassica_rapa.jpg,Chinese cabbage,http://gigadb.org/images/data/cropped/100021_Brassica_rapa.jpg,Creative Commons BY,Forest & Kim Starr,BioLib.cz
+12,100034_Hepatocellular_carcinoma.jpg,Hepatocellular carcinoma,http://gigadb.org/images/data/cropped/100034_Hepatocellular_carcinoma.jpg,"Creative Commons Attribution-Share Alike 3.0 Unported license, GNU Free Documentation License, Version 1.2 or any later version",Nephron,"own work, Wikimedia Commons"
+13,100003_Macaca_fascicularis.jpg,Crab-eating macaque,http://gigadb.org/images/data/cropped/100003_Macaca_fascicularis.jpg,CC-BY,Michael Nordine,Flickr: EOL Images
+14,100025_Cucumis_sativus.jpg,Domestic cucumber,http://gigadb.org/images/data/cropped/100025_Cucumis_sativus.jpg,CC BY,Miroslav Deml,BioLib.cz
+15,100001_Escherichia_coli.jpg,E. coli,http://gigadb.org/images/data/cropped/100001_Diverse_e_Coli.png,"Public Domain, “I grant anyone the right to use this work for any purpose, without any conditions, unless such conditions are required by law.”","Michael Van Woert, 1999",Wikimedia Commons
+16,100005_Aptenodytes_forsteri.jpg,Emperor penguins,http://gigadb.org/images/data/cropped/100005_Aptenodytes_forsteri.jpg,"Public Domain, US Government","Michael Van Woert, 1999","<a href=""http://www.photolib.noaa.gov/htmls/corp2566.htm"">NOAA Photo Library</a>"
+17,100018_Camponotus.jpg,Florida carpenter ant,http://gigadb.org/images/data/cropped/100018_Camponotus.jpg,"GNU Free Documentation License, CC SA",Robert Friebe,"Wikimedia Commons, originally uploaded to de.wikipedia"
+18,100029_Hepatitis-B.jpg,Human exome – chronic hepatitis B infection predisposing variants,http://gigadb.org/images/data/cropped/100029_Hepatitis-B.jpg,"Public Domain, US Government (CDC)",CDC,"Centers for Disease Control and Prevention's Public Health Image Library(PHIL), with identification number #5631."
+19,100019_Harpegnathos_saltator.jpg,Jerdon's jumping ant,http://gigadb.org/images/data/cropped/100019_Harpegnathos_saltator.jpg,"This work has been released into the public domain by its author: Example at the Kalyanvarma project grants anyone the right to use this work for any purpose, without any conditions, unless such conditions are required by law.","Kalyan Varma, Example at the Kalyanvarma project",http://kalyanvarma.net/photography. Originally uploaded to en.wikipedia. Transferred to Wikimedia Commons by User:Sarefo.
+20,100011_Acromyrmex_echinatior.jpg,Leaf-cutting ant,http://gigadb.org/images/data/cropped/100011_Acromyrmex_echinatior.jpg,the content of all PLoS journals is published under the Creative Commons Attribution 2.5 license,"Scott Bauer, US Department of Agriculture","Restoring Nature's Backbone. Nicholls H, PLoS Biology Vol. 4/6/2006, e202 http://dx.doi.org/10.1371/journal.pbio.0040202"
+21,100031_Wuzhishan_inbred_pig.jpg,Wuzhishan pig,http://gigadb.org/images/data/cropped/100031_Wuzhishan_inbred_pig.jpg,CC0,Yong Li (data author),Yong Li
+22,100020_Setaria_italica.jpg,Foxtail millet,http://gigadb.org/images/data/cropped/100020_Setaria_italica.jpg,"GNU Free Documentation License, CC SA",Markus Hagenlocher,Wikimedia Commons
+23,100035_Methyl_mouse.jpg,Mouse methlyomes,http://gigadb.org/images/data/cropped/100035_mouse_methylome.jpg,This work is free software; you can redistribute it or modify it under the terms of the CeCILL. The terms of the CeCILL license are available at www.cecill.info,Rama,Own work
+24,100022_Heterocephalus_glaber.jpg,Naked mole rat,http://gigadb.org/images/data/cropped/100022_Heterocephalus_glaber.jpg,"I, the copyright holder of this work, release this work into the public domain. I grant anyone the right to use this work for any purpose, without any conditions, unless such conditions are required by law.",Ltshears - Trisha M Shears,Own work
+25,100004_Ailuropoda_melanoleuca.jpg,Giant panda,http://gigadb.org/images/data/cropped/100004_Ailuropoda_melanoleuca.jpg,CC BY-SA,Shizhao,Wikimedia Commons
+26,100007_Columba_livia.jpg,Domestic pigeon,"",public domain,Tom Gilbert,The actual Danish tumbler sequenced
+27,100008_Ursus_maritimus.jpg,Polar bear,http://gigadb.org/images/data/cropped/100008_Ursus_maritimus.jpg,CC BY-SA,Alan D. Wilson,Wikimedia Commons
+28,100028_Cajanus_cajan.jpg,Pigeonpea,http://gigadb.org/images/data/cropped/100028_Cajanus_cajan.jpg,CC BY,Forest & Kim Starr,BioLib.cz
+29,100002_Macaca_mulatta.jpg,Chinese Rhesus macaque,http://gigadb.org/images/data/cropped/100002_Macaca_mulatta.jpg,CC-BY,Geoff Gallice,Flickr: EOL Images
+30,100017_Ascaris.jpg,Roundworm,http://gigadb.org/images/data/cropped/100017_Ascaris.jpg,"GNU Free Documentation License, CC SA",John Alan Elson,http://www.3dham.com/microgallery/
+31,100026_Saqqaq.jpg,Saqqaq eskimo,http://gigadb.org/images/data/cropped/100026_Saqqaq.jpg,"GNU Free Documentation License, CC SA",Michael Haferkamp,self made
+32,100032_Schistosoma_haematobium.jpg,Schistosoma haematobium,http://gigadb.org/images/data/cropped/100032_Schistosoma_haematobium.jpg,"Public Domain, US Government (CDC) - they do say they want to be notified as well as credited","CDC/ Dr. Edwin P. Ewing, Jr.","Centers for Disease Control and Prevention's Public Health Image Library (PHIL), with identification number #35; Wikimedia Commons"
+33,100023_Ovis_aries.jpg,Domesic sheep,http://gigadb.org/images/data/cropped/100023_Ovis_aries.jpg,"I, the copyright holder of this work, release this work into the public domain. I grant anyone the right to use this work for any purpose, without any conditions, unless such conditions are required by law.",Unknown,"Wonx2150, Wikipedia"
+34,100024_Bombyx_mori.jpg,Domestic and wild silkworms,http://gigadb.org/images/data/cropped/100024_Bombyx_mori.jpg,"GNU Free Documentation License, CC SA",Gerd A.T. Müller,Wikimedia Commons
+35,100037_Single_cell_bladder_cancer.jpg,Primary muscle-invasive bladder tumor,http://gigadb.org/images/data/cropped/100037_Single_cell_cancer.jpg,CC0,Zesong Li,"Shenzhen Key Laboratory of Genitourinary Tumor, Shenzhen Second People's Hospital, First Affiliated Hospital of Shenzhen University, Shenzhen 518035, China"
+36,100012_Sorghum_bicolor.jpg,Sorghum bicolor,http://gigadb.org/images/data/cropped/100012_Sorghum_bicolor.jpg,CC BY,Forest & Kim Starr,BioLib.cz
+37,100013_YH.jpg,Han Chinese individual,http://gigadb.org/images/data/cropped/100013_YH.jpg,public domain because its copyright has expired,Unknown,"Wikimedia Commons, en:Image:HanGaozu.jpg"
+38,100044_SOAPdenovo2.jpg,SOAPdenovo2 workflow,http://gigadb.org/images/data/cropped/100044_SOAPdenovo2.jpg,CC0,Peter Li,"Peter Li, GigaScience"
+39,100045_NGS_Biodiveristy.jpg,NGS Biodiversity,http://gigadb.org/images/data/cropped/100045_NGS_Biodiversity.jpg,CC0,Yiyuan Li,BGI Shenzhen
+40,100050_Wildeinkorn.jpg,Wildeinkorn,http://gigadb.org/images/data/cropped/100050_Wildeinkorn.jpg,CC0,Mark Nesbitt,Wikipedia
+41,100054_Aegilops_tauschii_ARS-1.jpg,Aegilops tauschii ARS-1,http://gigadb.org/images/data/cropped/100054_Aegilops_tauschii_ARS-1.jpg,CC0,Mark Nesbitt,Wikipedia
+42,100051_group_3d_ffl_complex.png,3D FFL complex,https://www.dropbox.com/s/6key0djxzyqfh12/group_3d_ffl_complex.png,CC0,"Gorgolewski, KJ","Gorgolewski, KJ"
+43,"","","",dfdf,dff,dfdfdf
+44,"","","",dfdf,dff,dfdfdf
+45,"","","",dfdf,dff,dfdfdf
+46,"","","",dfdf,dff,dfdfdf
+47,"",Assemblathon 2 banner,"",CC0,Keith Bradnam,http://
+49,"",Assemblathon 2 banner,"",CC0,Keith Bradnam,http://
+50,"",Assemblathon 2 banner,"",CC0,Keith Bradnam,http://
+51,100048_TTE.png,TTE,http://gigadb.org/images/data/cropped/100048_TTE.png,CC0,"Balk et al., Extremophiles, 2009","Balk et al., Extremophiles, 2009"
+52,100055_landing.jpg,Macrotermes Natalensis queen,http://gigadb.org/images/data/cropped/100055_langing.png,BY-NC,xxxx,http://192.168.174.43/images/data/cropped/100055_langing.jpg
+53,100051_complex.png,3D FFL complex,"",CC0,"Gorgolewski, KJ","Gorgolewski, KJ"
+54,100047_MRM.png,MRM,http://gigadb.org/images/data/cropped/100047_MRM.png,CC0,PDB,PDB
+55,100042_Brownrat.jpg,Rattus norvegicus,http://gigadb.org/images/data/cropped/100042_Brownrat.jpg,CC0,Reg McKenna,http://eol.org/data_objects/5868635
+56,100048_TTE.jpg,TTE,http://gigadb.org/images/data/cropped/100048_TTE.png,CC0,National Cancer Institute,National Cancer Institute
+57,"","","",CC0,ME,HOME
+58,"","","",dasa,dasdsa,dsa
+59,no_image.png,295695-parrot_wavy_budgerigar_branch_blue,"",CCBY,http://www.gdefon.com,http://www.gdefon.com
+60,RicePlant.jpg,"Rice plants at stages; Flowering(A), 6 days after pollination(DAP) (B), 12DAP (C), 18 DAP (D), 24 DAP (E), 30 DAP (F).",http://gigadb.org/images/data/cropped/100063_RicePlant.jpg,CC0,Jin Zi,Jin Zi
+61,100049_Metacellosomics.jpg,Soil,http://gigadb.org/images/data/cropped/100049_Metacellosomics.jpg,CC0,Yizhuang Zhou,http://g.hiphotos.bdimg.com/album/w%3D2048%3Bq%3D90/sign=fc34c48210dfa9ecfd2e511756e8cc72/ca1349540923dd5458a901f6d009b3de9d824851.jpg
+62,100055_langing.png,Macrotermes Natalensis queen,http://gigadb.org/images/data/cropped/100055_langing.png,BY-NC,xxxx,http://192.168.174.43/images/data/cropped/100055_langing.jpg
+63,100055_langing.jpg,Macrotermes Natalensis queen,http://gigadb.org/images/data/cropped/100055_langing.png,BY-NC,NA,http://g.hiphotos.bdimg.com/album/w%3D2048%3Bq%3D90/sign=fc34c48210dfa9ecfd2e511756e8cc72/ca1349540923dd5458a901f6d009b3de9d824851.jpg
+64,"","","",ac,ac,ac
+65,"","","",ac,ac,ac
+66,"","","",ac,ac,ac
+67,"","","",ac,ac,ac
+68,"",Eupolybothrus sp.,"",public,Ana Komerički,Pavel Stoev
+69,transcriptomics.jpg,A gene expression heatmap,http://gigadb.org/images/data/cropped/transcriptomics.jpg,Public domain,Miguel Andrade,Wikipedia
+70,genomics.jpg,genomics icon,http://gigadb.org/images/data/cropped/genomics.jpg,Public domain,GigaDB,GigaDB
+71,workflow.jpg,workflow icon,http://gigadb.org/images/data/cropped/workflow.jpg,Public domain,GigaDB,GigaDB
+72,no_image.png,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+73,100064_GutMicrobiota.jpg,The human gut is home for trillions of microbes.,http://gigadb.org/images/data/cropped/100064_GutMicrobiota.jpg,CC-BY-SA 3.0,"Junda Peng, Jianqing Zhao and Lihua Xie",BGI
+74,100066_Pteropus_alecto.jpg,A small group of Black flying-foxes,http://gigadb.org/images/data/cropped/Pteropus_alecto2.jpg,CC-BY,Welbergen,Own work
+75,100067_Myotis davidii.jpg,Myotis davidii,http://gigadb.org/images/data/cropped/08986_orig.jpg,CC-BY,EOL China Regional Center,IUCN
+76,100065_Myotis brandti.jpg,Myotis brandti.jpg,http://gigadb.org/images/data/cropped/Myotis_brandti.jpg,"GNU Free Documentation License, CC SA",Борисенко,http://zmmu.msu.ru/bats/rusbats/gallery/pmbra.html#a
+77,100068_Emperor.png,Emperor.png,http://gigadb.org/images/data/cropped/100068_Emperor.png,CC-BY,Rob Knight,"University of Colorado at Boulder, Boulder, CO, USA"
+78,100071_Yak.png,yak_nepal.jpg,http://gigadb.org/images/data/cropped/100071_Yak.png,CC-BY,Simon@pixabay (http://pixabay.com/en/users/Simon/),Pixabay
+79,1000070_pig.png,pigs at BGI Shenzhen,http://gigadb.org/images/data/cropped/100070_pig.png,CC0,Scott Edmunds,GigaScience
+80,100075_Saker.png,Saker falcon closeup,http://gigadb.org/images/data/cropped/100075_Saker.png,CC0,Unknown,Unknown
+81,101006_Peregrine.png,Unknown,http://gigadb.org/images/data/cropped/101006_Peregrine.png,CC0,Unknown,Unknown
+82,101001_Duck.png,Unknown,http://gigadb.org/images/data/cropped/101001_Duck.png,Public domain,Mallard duck,Unknown
+83,101000.jpg,Bird moziac of darwin,http://gigadb.org/images/data/cropped/101000.jpg,CC0,individual bird images by Jon Fjeldså.,BGI
+84,egretta_garzetta.png,Little egret (<em>Egretta garzetta</em>).,http://gigadb.org/images/data/cropped/bird/egretta_garzetta.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+85,101003.jpg,taxidermy of crested ibis,http://gigadb.org/images/data/cropped/101003.jpg,public domain,N/A,http://commons.wikimedia.org/wiki/File:Nipponia_nippon.png
+86,calypte_anna.png,Annas hummingbird (<em>Calypte anna</em>).,http://gigadb.org/images/data/cropped/bird/calypte_anna.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+87,chaetura_pelagica.png,Chimney swift (<em>Chaetura pelagica</em>).,http://gigadb.org/images/data/cropped/bird/chaetura_pelagica.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+88,charadrius_vociferus.png,Killdeer (<em>Charadrius vociferus</em>).,http://gigadb.org/images/data/cropped/bird/charadrius_vociferus.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+89,corvus_brachyrhynchos.png,American Crow (<em>Corvus brachyrhynchos</em>).,http://gigadb.org/images/data/cropped/bird/corvus_brachyrhynchos.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+90,cuculus_canorus.png,Common Cuckoo (<em>Cuculus canorus</em>).,http://gigadb.org/images/data/cropped/bird/cuculus_canorus.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+91,manacus_vitellinus.png,Golden-collared Manakin (<em>Manacus vitellinus</em>).,http://gigadb.org/images/data/cropped/bird/manacus_vitellinus.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+92,opisthocomus_hoazin.png,The Hoatzin (<em>Opisthocomus hoazin</em>).,http://gigadb.org/images/data/cropped/bird/opisthocomus_hoazin.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+93,picoides_pubescens.png,Downy Woodpecker (<em>Picoides pubescens</em>).,http://gigadb.org/images/data/cropped/bird/picoides_pubescens.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+94,struthio_camelus.png,Ostrich (<em>Struthio camelus australis</em>).,http://gigadb.org/images/data/cropped/bird/struthio_camelus.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+95,tinamus_major.png,White throated tinamou (<em>Tinamus guttatus</em>).,http://gigadb.org/images/data/cropped/bird/tinamus_major.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+96,101015.jpg,"Rifleman, male. Endemic to New Zealand.",http://gigadb.org/images/data/cropped/101015.jpg,public domain,N/A,http://commons.wikimedia.org/wiki/File:RiflemanMaleFemaleBuller.jpg
+97,apaloderma_vittatum.png,Bar-tailed trogon (<em>Apaloderma vittatum</em>).,http://gigadb.org/images/data/cropped/bird/apaloderma_vittatum.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+98,phaethon_lepturus-balearica_regulorum.png,Crowned crane and White-tailed tropicbird,http://gigadb.org/images/data/cropped/bird/phaethon_lepturus-balearica_regulorum.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+99,101018.jpg,Buceros rhinoceros silvestris - adult,http://gigadb.org/images/data/cropped/101018.jpg,public domain,N/A,http://commons.wikimedia.org/wiki/File:Buceros_rhinoceros_silvestris_1838.jpg
+100,antrostomus_carolinensis.png,Chuk-wills-widow (<em>Antrostomus carolinensis</em>).,http://gigadb.org/images/data/cropped/bird/antrostomus_carolinensis.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+101,cariama_cristata.png,Red-legged seriema (<em>Cariama cristata</em>).,http://gigadb.org/images/data/cropped/bird/cariama_cristata.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+102,cathartes_aura.png,Turkey vulture (<em>Cathartes aura</em>).,http://gigadb.org/images/data/cropped/bird/cathartes_aura.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+103,101022.jpg,MacQueen's Bustard (MacQueen's Bustard),http://gigadb.org/images/data/cropped/101022.jpg,public domain,N/A,http://commons.wikimedia.org/wiki/File:Chlamydotis_macqueenii_1921.jpg
+104,colius_striatus.png,Speckled mousebird (<em>Colius striatus</em>).,http://gigadb.org/images/data/cropped/bird/colius_striatus.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+105,eurypyga_helias.png,Sunbittern (<em>Eurypyga helias</em>).,http://gigadb.org/images/data/cropped/bird/eurypyga_helias.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+106,fulmarus_glacialis.png,Northern Fulmar (<em>Fulmarus glacialis</em>).,http://gigadb.org/images/data/cropped/bird/fulmarus_glacialis.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+107,gavia_stellata.png,Red throated loon (<em>Gavia stellata</em>).,http://gigadb.org/images/data/cropped/bird/gavia_stellata.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+108,haliaeetus_albicilla.png,White tailed eagle (<em>Haliaeetus albicilla</em>).,http://gigadb.org/images/data/cropped/bird/haliaeetus_albicilla.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+109,leptosomus_discolor.png,Cuckoo roller (<em>Leptosomus discolor</em>).,http://gigadb.org/images/data/cropped/bird/leptosomus_discolor.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+110,merops_nubicus.png,Northern Carmine bee-eater (<em>Merops nubicus</em>).,http://gigadb.org/images/data/cropped/bird/merops_nubicus.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+111,101030.jpg,Brown Mesite,http://gigadb.org/images/data/cropped/101030.jpg,public domain,N/A,http://commons.wikimedia.org/wiki/File:Mesitornis_unicolor_1849.jpg
+112,nestor_notabilis.png,Kea (<em>Nestor notabilis</em>).,http://gigadb.org/images/data/cropped/bird/nestor_notabilis.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+113,pelecanus_crispus.png,Dalmatian pelican (<em>Pelecanus crispus</em>).,http://gigadb.org/images/data/cropped/bird/pelecanus_crispus.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+114,phaethon_lepturus-balearica_regulorum.png,Crowned crane and White-tailed tropicbird,http://gigadb.org/images/data/cropped/bird/phaethon_lepturus-balearica_regulorum.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+115,phalacrocorax_carbo.png,Great black cormorant (<em>Phalacrocorax carbo</em>).,http://gigadb.org/images/data/cropped/bird/phalacrocorax_carbo.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+116,phoenicopterus_ruber.png,American Flamingo (<em>Phoenicopterus ruber ruber</em>).,http://gigadb.org/images/data/cropped/bird/phoenicopterus_ruber.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+117,podiceps_cristatus.png,Great-crested grebe (<em>Podiceps cristatus</em>).,http://gigadb.org/images/data/cropped/bird/podiceps_cristatus.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+118,101037.jpg,Pterocles gutturalis = Pterocles gutturalis,http://gigadb.org/images/data/cropped/101037.jpg,public domain,N/A,http://commons.wikimedia.org/wiki/File:Pterocles_gutturalis.jpg
+119,tauraco_erythrolophus.png,Angola turaco (<em>Tauraco erythrolophus</em>).,http://gigadb.org/images/data/cropped/bird/tauraco_erythrolophus.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+120,tyto_alba.png,Barn owl (<em>Tyto alba</em>).,http://gigadb.org/images/data/cropped/bird/tyto_alba.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+121,100088.jpg,A foraging Hume Ground Tit,http://gigadb.org/images/data/cropped/100088.jpg,public domain,Unknown,wikimedia
+122,100076.jpg,pods of Cicer arietinum,http://gigadb.org/images/data/cropped/100076.jpg,public domain,Eitan f,wikimedia
+123,100077.jpg,Chinese Alligator (Alligator sinensis),http://gigadb.org/images/data/cropped/100077.jpg,public domain,N/A,wikimedia
+124,100078.jpg,"Plutella xylostella, Rodà de Bara, Spain, May'13",http://gigadb.org/images/data/cropped/100078.jpg,CC-BY-2.0,Donald Hobern,flickr
+125,100079.jpg,cotton plant,http://gigadb.org/images/data/cropped/100079.jpg,public domain,N/A,wikimedia
+126,100080.jpg,Equus asinus at Hannover Zoo,http://gigadb.org/images/data/cropped/100080.jpg,public domain,N/A,wikimedia
+127,100081.jpg,Linum usitatissimum,http://gigadb.org/images/data/cropped/100081.jpg,public domain,N/A,"Original book source: Prof. Dr. Otto Wilhelm Thomé Flora von Deutschland, Österreich und der Schweiz 1885, Gera, Germany"
+128,100082.jpg,Domestic goat,http://gigadb.org/images/data/cropped/100082.jpg,public domain,N/A,wikimedia
+129,100083.jpg,Pair of pears,http://gigadb.org/images/data/cropped/100083.jpg,public domain,N/A,wikimedia
+130,100084.jpg,1909 illustrations by Alois Lunzer,http://gigadb.org/images/data/cropped/100084.jpg,public domain,N/A,wikimedia
+131,100085.jpg,Green sea turtle underwater,http://gigadb.org/images/data/cropped/100085.jpg,public domain,N/A,wikimedia
+132,100087.jpg,Watermelon,http://gigadb.org/images/data/cropped/100087.jpg,public domain,N/A,wikimedia
+133,100072.jpg,Tupaia splendidula,http://gigadb.org/images/data/cropped/100072.jpg,public domain,Chromolithograph by Joseph Wolf (1865),Unknown
+134,100086.jpg,Soft shell turtle,http://gigadb.org/images/data/cropped/100086.jpg,public domain,N/A,wikimedia
+135,100089.jpg,Figure1 from paper,"",CC0,Carmen,Carmen
+136,Unknown,data workflow,http://gigadb.org/images/uploads/image_upload/Images_136.png,CC0,Unknown,valentini@di.unimi.it
+137,"","","",asdasdas,asdasd,asdas
+138,Horseshoe_crab_close_up_photography_of_arthropod.jpg,Horseshoe crab close up photography of arthropod.,http://gigadb.org/images/data/cropped/Horseshoe_crab_close_up_photography_of_arthropod.jpg,public domain,"Pos Robert, U.S. Fish and Wildlife Service",Wikimedia
+139,"",Virtual sections through a stained earthworm.,http://gigadb.org/images/uploads/image_upload/Images_139.png,CCO,Alexander Ziegler,"Museum of Comparative Zoology, Department of Organismic and Evolutionary Biology,  Harvard University."
+140,200001.jpg,Exploded diagram of a rice plant.,http://gigadb.org/images/data/cropped/200001.jpg,public domain,Franz Eugen Köhler,http://en.wikipedia.org/wiki/File:Oryza_sativa_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-232.jpg
+141,101040.png,Bald Eagle (<em>Haliaeetus leucocephalus</em>),http://gigadb.org/images/data/cropped/101040.png,public domain,Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk),Jon Fjeldsa (jfjeldsaa@zmuc.ku.dk)
+142,100095.jpg,Two Asian elephants at Ostrava Zoo in 2008,http://gigadb.org/images/data/cropped/100095.jpg,public domain,wikimedia,wikimedia
+143,"",f,"",f,f,fe
+144,yh_bionano.png,Flowchart of consensus genome map .,http://gigadb.org/images/data/cropped/yh_bionano.png,public domain,GigaScience,GigaScience
+145,"",ddd,dsa,ddd,dddd,ddd
+146,"",ddd,dsa,ddd,dddd,ddd
+147,"",CS icon1,"",public domain,Shashaank Vattikuti ,Gigascience
+148,wmiller.png,workflow,http://gigadb.org/images/data/cropped/wmiller.png,public domain,Peter Li,"Peter Li, GigaScience"
+149,genomics.jpg,genomic icon,http://gigadb.org/images/data/cropped/genomics.jpg,Public domain,GigaDB,GigaDB
+150,100098.jpg,A domestic cat named Cinnamon,http://gigadb.org/images/data/cropped/100098.jpg,public domain,"Dr. Kristina Narfstrom, University of Missouri-Columbia",NHGRI
+151,no_image.jpg,"PCA plot of metabolites, -ve ion mode","",Public domain,GigaDB,GigaDB
+152,no_image.jpg,SmileFinder heatmap,"",Public domain,Wilfried M Guiblet,GigaScience
+153,black_truffle.jpg,Tuber melanosporum,http://gigadb.org/images/data/cropped/100101.jpg,CC BY,Barbara Montanini,http://paoyang.ipmb.sinica.edu.tw/images
+154,no_image.jpg,CpG sites detected in this validation data,"",Public domain,Hanlin Lu,Hanlin Lu
+155,100013_YH.jpg,Han Chinese individual,http://gigadb.org/images/data/cropped/100013_YH.jpg,Public domain,Unknown,"Wikimedia Commons, en:Image:HanGaozu.jpg"
+156,"",Virtual section through a sea urchin,"",CC0,Alexander Ziegler,Ziegler Biosolutions
+157,"",Virtual section through a sea urchin,"",CC0,Alexander Ziegler,Ziegler Biosolutions
+158,no_image.jpg,Nicks' ONT MinION™ nanopore sequencer,"",Public Domain,Nick Loman,Nick Loman
+159,marmoset.jpg,Common marmoset callithrix jacchus,http://gigadb.org/images/data/cropped/marmoset.jpg,Public Domain,Rosendahl,http://www.public-domain-image.com/full-image/fauna-animals-public-domain-images-pictures/monkeys-public-domain-images-pictures/common-marmoset-callithrix-jacchus.jpg.html
+160,mongolia.jpg,Mongolian Genome,http://gigadb.org/images/data/cropped/mongolia.jpg,CC0,Unknown,Unknown
+161,100105.jpg,Wright's stained bone marrow smear of precursor B-cell ALL,http://gigadb.org/images/data/cropped/100105.jpg,CC-BY-SA3.0,Dybdal,http://en.wikipedia.org/wiki/Acute_lymphoblastic_leukemia#/media/File:Acute_leukemia-ALL.jpg
+162,no_image.png,artistic colouring of a scan image,"",Public Domain,GigaDB,GigaDB
+163,no_image.jpg,mirnaTA logo,"",Public Domain,ReginaCer,ReginaCer
+164,"",Sorghum bicolor,http://eol.org/pages/1115166/overview,CC BY-NC,Forest & Kim Starr,BioLib.cz
+165,gwatch_logo_and_screenshot.jpg,GWATCH logo and screenshot,http://gigadb.org/images/data/cropped/gwatch_logo_and_screenshot.jpg,CC0,GWATCH team,gen-watch.org
+166,genomics.jpg,genomic icon,http://gigadb.org/images/data/cropped/genomics.jpg,Public domain,GigaDB,GigaDB
+167,genomics.jpg,genomic icon,http://gigadb.org/images/data/cropped/genomics.jpg,Public domain,GigaDB,GigaDB
+168,craft_etal2014.jpg,Axial views of the four cases.,http://gigadb.org/images/data/cropped/craft_etal2014.jpg,Public Domain,David Craft,David Craft
+169,no_image.jpg,"","",Public Domain,Petr Bruha,Petr Bruha
+170,gharial.jpg,Indian Gharial. Taken at the San Diego Zoo.,http://gigadb.org/images/data/cropped/gharial.jpg,Public Domain,Justin Griffiths,wikimedia
+171,saltwater_croc.jpg,Salwater crocodile at a farm in Australia,http://gigadb.org/images/data/cropped/saltwater_croc.jpg,Public Domain,David Ray,David Ray
+172,aligator.jpg,American alligator,http://gigadb.org/images/data/cropped/aligator.jpg,Public Domain,David Ray,David Ray
+173,croc_genome_project.jpg,International Crocodilian Genome Working Group,http://gigadb.org/images/data/cropped/croc_genome_project.jpg,Public Domain,International Crocodilian Genome Working Group,International Crocodilian Genome Working Group
+174,transcriptomics.jpg,transcriptomics icon,http://gigadb.org/images/data/cropped/transcriptomics.jpg,Public domain,GigaDB,GigaDB
+175,transcriptomics.jpg,transcriptomics icon,http://gigadb.org/images/data/cropped/transcriptomics.jpg,Public domain,GigaDB,GigaDB
+176,transcriptomics.jpg,transcriptomics icon,http://gigadb.org/images/data/cropped/transcriptomics.jpg,Public domain,GigaDB,GigaDB
+177,"",CITIC Xiangya Hospital and BGI PGD/PGS DAC,"",public domain,N/A,CITIC-Xiangya_BGI
+178,VirAmp2.jpg,VirAmp,http://gigadb.org/images/data/cropped/VirAmp2.jpg,public domain,VirAmp,VirAmp
+179,"",phylogeny of birds,"",CC-BY,Avian phylogenomics consortium,Avian phylogenomics consortium
+180,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public Domain,GigaScience,GigaScience
+181,Images_181.png,Mouse Gut Metagenome,http://gigadb.org/images/uploads/image_upload/Images_181.png,Public Domain,BGI,BGI
+182,"","","",cc0,xcv,xc
+183,genomics.jpg,genomic icon,http://gigadb.org/images/data/cropped/genomics.jpg,Public domain,GigaDB,GigaDB
+184,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+185,http://commons.wikimedia.org/wiki/File%3ABlausen_0624_Lymphocyte_B_cell.png,3D image of Lymphocyte B-cell,http://gigadb.org/images/data/cropped/100115.png,CC-BY 3.0,"Blausen.com staff. ""Blausen gallery 2014"". Wikiversity Journal of Medicine. DOI:10.15347/wjm/2014.010. ISSN 20018762",Blausen.com
+186,workflow.jpg,workflow icon,http://gigadb.org/images/data/cropped/workflow.jpg,Public domain,GigaDB,GigaDB
+187,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+188,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+189,wong_fig1.jpg,Venn diagrams summary,http://gigadb.org/images/data/cropped/wong_fig1.jpg,Public domain,Nick Wong,GigaDB
+190,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+191,Blueberry.jpg,Simple Blueberry,http://gigadb.org/images/data/cropped/Blueberry.jpg,Public domain,Famest,wikimedia
+192,no_image.jpg,Cell migration during healing,"",Public domain,Assaf Zaritsky,Assaf Zaritsky
+193,plinklogo.jpg,PLINK logo,http://gigadb.org/images/data/cropped/plinklogo.jpg,CC0,Chris Chang,Chris Chang
+194,no_image.jpg,Amphipholis capensis,"",CC0,Landschoff,Landschoff
+195,Nanorana_parkeri.png,Nanorana parkeri,"",public domain,Junxiao Yang,"Herpetological Diversity and Evolution, Kunming Institute of Zoology, Chinese Academy of Sciences."
+196,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+197,no_image.jpg,Benchmark datasets for 3D MALDI & DESI-Imaging MS,"",Public domain,Theodore Alexandrov et al. (2015),"Oetjen, J. et al. GigaScience Database (2015)"
+198,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+199,Images_199.png,infant,http://gigadb.org/images/uploads/image_upload/Images_199.png,CC-BY,BGI,BGI
+200,no_image.png,Nanopore,http://gigadb.org/images/data/cropped/no_image.png,public domain,GigaDB,GigaDB
+201,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+202,100134_minion.jpg,Amplicon Sequencing on the MinION™,http://gigadb.org/images/data/cropped/100134_minion.jpg,CC0,Kelly Outram,Edgewood Chemical Biological Center
+203,100135.jpg,Melon fly/Bactrocera cucurbitae on leaf,http://gigadb.org/images/data/cropped/100135.jpg,public domain,USDA Agricultural Research Service,WikiMedia commons
+204,100136_yoshizaki.jpg,GO enrichment analysis summary,http://gigadb.org/images/data/cropped/100136_yoshizaki.jpg,Public domain,H Yoshizaki,H Yoshizaki
+205,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+206,no_imge.jpg,http://de.wikipedia.org/wiki/Dopasia,"",Public domain,http://de.wikipedia.org/wiki/Dopasia,Wikipedia
+207,100137.jpg,juvenile chimpanzee,http://gigadb.org/images/data/cropped/100137.jpg,GFDL1.2,Ikiwaner,wikimedia
+208,100139.jpg,brown planthopper,http://gigadb.org/images/data/cropped/100139.jpg,Public Domain,BGI,BGI
+209,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+210,100141.jpg,Example wing image from D. melanogaster,http://gigadb.org/images/data/cropped/100141.jpg,public domain,Ian Dworkin,Ian Dworkin
+211,100138.png,BioMAJ logo,http://gigadb.org/images/data/cropped/100138.png,CeCILL,BioMAJ,BioMAJ
+212,100142.jpg,Overlap between different protocol search terms,http://gigadb.org/images/data/cropped/100142.jpg,CC0,Alnasir and Shanahan 2015,Alnasir and Shanahan 2015
+213,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+214,100140.jpg,colon diagram,http://gigadb.org/images/data/cropped/100140.jpg,CC0,BGI,BGI
+215,100149_cock.png,NCBI BLAST+ logo,http://gigadb.org/images/data/cropped/100149_cock.png,CC0,Cock et al 2015.,Cock et al 2015.
+216,100143_SMAP_workflow.jpg,Brief workflow of SMAP,http://gigadb.org/images/data/cropped/100143_SMAP_workflow.jpg,CC0,Gao et al 2015,Gao et al 2015
+217,100044_SOAPdenovo2.jpg,SOAPdenovo2 workflow,http://gigadb.org/images/data/cropped/100044_SOAPdenovo2.jpg,CC0,Peter Li,Peter Li Gigascience
+218,100144_drummond.jpg,figure from manuscript showing  island sampled,http://gigadb.org/images/data/cropped/100144_drummond.jpg,CC0,Drummond et al. 2015,Drummond et al. 2015
+219,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+220,100151.jpg,RPKM Metagenome,http://gigadb.org/images/data/cropped/100151.jpg,Public Domain,Andreas Bremges,Center for Biotechnology. Bielefeld University
+221,100152.jpg,Tentacle core workflow,http://gigadb.org/images/data/cropped/100152.jpg,CC0,Fredrik Boulund,Unknown
+222,100155.jpg,Sorrowing old man,http://gigadb.org/images/data/cropped/100155.jpg,CC0,Vincent Willem van Gogh,WiKi
+223,100158.jpg,Head - Lateral,http://gigadb.org/images/data/cropped/100158.jpg,CC0,"Carmichael, A.",Amy Carmichael Queensland University of Technology
+224,100159.jpg,links,http://gigadb.org/images/data/cropped/100159.jpg,Public Domain,Rene Warren,bcgsc
+225,100162.jpg,Fig1. Phase diagram,http://gigadb.org/images/data/cropped/100162.jpg,Public Domain,Chiu Man Ho,GigaScience
+226,100153.jpg,Protein function prediction evaluation protocols,http://gigadb.org/images/data/cropped/100153.jpg,CC0,NA,NA
+227,proteomics.jpg,proteomics icon,http://gigadb.org/images/data/cropped/proteomics.jpg,Public Domain,GigaScience,GigaScience
+228,100157.jpg,Canadian_cattle,http://gigadb.org/images/data/cropped/100157.jpg,Public Domain,"Tom Lynch-Staunton, June 2013","Tom Lynch-Staunton, June 2013"
+229,100154.jpg,Color-enhanced magnetic resonance image (MRI) of individual breast,http://gigadb.org/images/data/cropped/100154.jpg,Public Domain,"Dr. Steven Harmes. Baylor University Medical Center, Dallas Texas",wikimedia.org
+230,no_image.jpg,HLA diversity in Han Chinese,"",CC0,Liu et al 2015,Liu et al 2015
+231,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public Domain,GigaScience,GigaScience
+232,no_image.jpg,Galaxy M,"",Public Domain,Rob Davidson,GigaScience
+233,100163.jpg,"Multidimensional Scaling (MDS) plot, 1 microbiome sample for two donors (A & B), three conditions (before during and after dysbiosis).",http://gigadb.org/images/data/cropped/100163.jpg,CC0,Larsen & Dai 2015,Larsen & Dai 2015
+234,100166.jpg,Central Bearded Dragon,http://gigadb.org/images/data/cropped/100166.jpg,CCO,Arthur Georges,iPhone
+235,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+236,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+237,100171.jpg,Rcorrector logo,http://gigadb.org/images/data/cropped/100171.jpg,CC0,rcorrector,rcorrector
+238,tibet_hulless_barley.jpg,tibet_hulless_barley.jpg,http://gigadb.org/images/data/cropped/100175.jpg,CC-BY,fig1 hulless barley genome,Zeng etal 2014
+239,100173.jpg,AsmVar_oval.gif,http://gigadb.org/images/data/cropped/100173.jpg,CC0,AsmVar,AsmVar
+240,100176.jpg,Figure4 from manuscript,http://gigadb.org/images/data/cropped/100176.jpg,Public Domain,ME Aranguren and MD Wilkinson,ME Aranguren and MD Wilkinson
+241,100179.jpg,Paired-end CE plot (FRC) for assembly evaluation.,http://gigadb.org/images/data/cropped/100179.jpg,CC0,Remi-Andre Olsen,Remi-Andre Olsen
+242,100178.jpg,GenomeTester4 image,http://gigadb.org/images/data/cropped/100178.jpg,CC0,http://bioinfo.ut.ee/gtester4/GTester4.png,http://bioinfo.ut.ee/gtester4/GTester4.png
+243,100168_multiscale_imaging_data.jpg,Fig2. Selected fluorescence image data,http://gigadb.org/images/data/cropped/100168.jpg,CC0,Cursons et al.,Cursons et al.
+244,"Wu et al. 2015, Fig 1","Figure 1, schematic diagram of MIRALCS",http://gigadb.org/images/data/cropped/100160.jpg,CC0,"Wu et al. 2015, GigaScience","Wu et al. 2015, GigaScience"
+245,100167.jpg,Typical Methpat output.,http://gigadb.org/images/data/cropped/100167.jpg,CCBY,Bernard J. Pope,Methpat
+246,no_image.jpg,microRNAs and hepatoblastoma,"",CC0,Anna Leichter,Created for this publication
+247,no_image.jpg,B.fragilis (enhanced microscopy image),"",public domain,"CDC/Dr. V.R. Dowell, Jr.",wikimedia
+248,no_image.jpg,HLA diversity in Han Chinese,"",CC0,Liu et al 2015,Liu et al 2015
+249,100164.png,Chinese Red Sage,http://gigadb.org/images/data/cropped/100164.png,Public domain,GigaDB,GigaDB
+250,no_image.jpg,Representation of candidate alignments as a function of alignment features,"",CC-BY,Davide Verzotto,Generated with R
+251,no_image.jpg,Partial optical map of GM12878 HapMap cell line,"",CC-BY,Audrey Teo,OpGen Argus system image
+252,no_image.jpg,TMA data,"",CC0,"Cui, Y","Cui,Y et al 2016"
+253,100185.jpg,no image,http://gigadb.org/images/data/cropped/100185.jpg,CC0,gigascience,gigascience
+254,100172.jpg,<em>Lygus hesperus</em> female,http://gigadb.org/images/data/cropped/100172.jpg,Public Domain,Colin S. Brent,Colin S. Brent
+255,no_image.jpg,omegaplus page header,"",CC0,Pavlidis,Pavlidis
+256,100174.jpg,P. nicontianae infested burley tobacco field in the mountains of NC.,http://gigadb.org/images/data/cropped/100174.jpg,CC-BY,phytophthora database,http://www.phytophthoradb.org/species.php?a=dv&id=16086
+257,colibread_100170.jpg,Colib'read icon,http://gigadb.org/images/data/cropped/100170.jpg,CC0,Colib'read,Colib'read
+258,100186_mitten_crab.png,mitten crab = tasty hairy-crab,"",public domain,S Edmunds,S Edmunds
+259,100188.jpg,Circos plot of the BT-474 genome,http://gigadb.org/images/data/cropped/100188.jpg,CC-BY,"Complete Genomics, Inc.","Complete Genomics, Inc."
+260,100190.jpg,photo of paratype MZUSP PL 1573 living specimen,http://gigadb.org/images/data/cropped/100190.jpg,public domain,Fernando Carbayo,Fernando Carbayo
+261,100187.jpg,The pig-gut microbiome,http://gigadb.org/images/data/cropped/100187.jpg,public domain,BGI Shenzhen,BGI Shenzhen
+262,100187.jpg,Conus betulinus,http://gigadb.org/images/data/cropped/100169.jpg,CC0,Peng et al 2016,Chao Peng
+263,100192.jpg,Pearl Millet,http://gigadb.org/images/data/cropped/100192.jpg,CC0,Rajeev K. Varshney,"International Crops Research Institute for the Semi-Arid Tropics(ICRISAT),Hyderabad,India"
+264,100193.jpg,outline of china,"",CC0,about.com,http://0.tqn.com/d/geography/1/S/Q/K/china.jpg
+265,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+266,100194.png,"Drawing of Patiriella regularis, Ophionereis fasciata, and Australostichopus mollis",http://gigadb.org/images/data/cropped/100194.png,CC0,Joseph Ryan,drawing
+267,"",no image icon,/var/www/hosts/localhost/htdocs/images/uploads/,Public domain,GigaDB,GigaDB
+268,100198.jpg,Male and female sarcoptes scabiei,http://gigadb.org/images/data/cropped/100198.jpg,Public Domain,wikimedia,By Unknown - Popular Science Monthly Volume 14
+269,100199.png,Gigwa logo,http://gigadb.org/images/data/cropped/100199.png,CC-BY,G Sempere et al.,G Sempere et al.
+270,100197_ssol.jpg,Schistocephalus solidus,http://gigadb.org/images/data/cropped/100197_ssol.jpg,CC-BY-SA,F. Olivier Hebert,"University of Leicester, England"
+271,100201-olive.jpg,Santander olive tree,http://gigadb.org/images/data/cropped/100201-olive.jpg,CC0,Tyler Alioto,Tyler Alioto
+272,100204_keemei.jpg,Keemei logo,"",CC-BY,John Chase (@johnchase),keemei.qiime.org/
+273,100203.jpg,Pink bollworm larvae emerging from cotton boll,http://gigadb.org/images/data/cropped/100203.jpg,CC0,Peggy Greb,http://www.ars.usda.gov/is/graphics/photos/nov02/k10075-6.htm
+274,no_image.jpg,Fig3. Example of a Jupyter notebook. ,"",Public domain,S Piccolo and M Frampton,GigaScience
+275,100195.jpg,Agouti workflow,http://gigadb.org/images/data/cropped/100195.jpg,CC0,Simo Zhang,Simo Zhang
+276,no_image.jpg,figure from manuscript,"",Public Domain,L Coin,L Coin
+277,100189.jpg,Fruits of apple cultivars - Golden Delicious,http://gigadb.org/images/data/cropped/100189.jpg,CC-BY-SA,Glysiak 2006,wikimedia
+278,100208.jpg,INC-Seq,http://gigadb.org/images/data/cropped/100208.jpg,CC0,GIS,GIS
+279,no_image.png,figure from manuscript,"",Public domain,G Tamazian,GigaScience
+280,"",no image icon,/var/www/hosts/localhost/htdocs/images/uploads/,Public domain,GigaDB,GigaDB
+281,100020.jpg,Foxtail millet,http://gigadb.org/images/data/cropped/100020_Setaria_italica.jpg,"GNU free Documentation License, CC, SA",Markus Hagenlocher,Wikimedia commons
+282,100207.jpg,"Porites astreoides, Puerto Rico",http://gigadb.org/images/data/cropped/100207.jpg,CC0,Unknown,Wiki
+283,"",larva of Parochlus steinenii,/var/www/hosts/localhost/htdocs/images/uploads/,Sanghee Kim 2015,Sanghee Kim 2015,larva was collected from King George Island
+284,100212.jpg,Channel catfish (Ictalurus punctatus),http://gigadb.org/images/data/cropped/100212.jpg,Public Domain,Duane Rivers,U.S. Fish and Wildlife Service
+285,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+286,100211.png,RES-Scanner: a software package for genome-wide identification of RNA-editing sites,http://gigadb.org/images/data/cropped/100211.png,CC0,"Zongji Wang, Qiye Li",BGI
+287,100214.jpg,"Mola Mola, Sunfish",http://gigadb.org/images/data/cropped/100214.jpg,Public Domain,Per-Ola Norman - Own work,WikiPedia
+288,100196.jpg,Sharp-Nosed Viper (Deinagkistrodon acutus) at Wilmington's Serpentarium.,http://gigadb.org/images/data/cropped/100196.jpg,CC-BY,Danleo~commonswiki,wikipedia
+289,100215.jpg,brainhack logo,"",brainhack.org,brainhack.org,brainhack.org
+290,100209.jpg,"Ginkgo biloba tree; Beijing, Old Summer Palace","",CC0,Scott Edmunds,Scott Edmunds
+291,a1-brainspell.jpg,3D brain volume and mesh,http://gigadb.org/images/data/cropped/a1-brainspell.jpg,CC0,brainspell,brainspell
+292,a2-nidata.jpg,nidata logo,http://gigadb.org/images/data/cropped/a2-nidata.jpg,CC-BY,nidata,http://nidata.github.io/_images/nidata-logo.jpg
+293,a3-bids.jpg,bids logo,http://gigadb.org/images/data/cropped/a3-bids.jpg,CC-BY,BIDS,https://bids.neuroimaging.io/
+294,a4-afni.jpg,bids logo,http://gigadb.org/images/data/cropped/a4-afni.jpg,CC-BY,BIDS,https://bids.neuroimaging.io/
+295,a5-dicat.jpg,DICAT (DICOM Anonymization Tool) logo,http://gigadb.org/images/data/cropped/a5-dicat.jpg,CC-BY,DICAT,http://github.com/aces/DICOM_anonymizer
+296,a6-clubs.jpg,Fig1. Coauthorship network,http://gigadb.org/images/data/cropped/a6-clubs.jpg,CC0,brainhack MS,brainhack MS
+297,a7-niftyview.jpg,NiftyView user interface,http://gigadb.org/images/data/cropped/a7-niftyview.jpg,CC0,NiftyView,https://github.com/Brainhack-Proceedings-2015/Ding-OHBM-niftyview/blob/master/niftyview_ui.png
+298,no_image.png,GigaDB,http://gigadb.org/images/data/cropped/no_image.png,GigaDB,GigaDB,GigaDB
+299,a9-music.jpg,Fig1.rsfMRI to music,http://gigadb.org/images/data/cropped/a9-music.jpg,CC0,brainhack MS,brainhack MS
+300,a10-hctsa.jpg,Fig1. Illiustration of comparative analysis,http://gigadb.org/images/data/cropped/a10-hctsa.jpg,CC0,brainhack MS,brainhack MS
+301,a11-nipye.jpg,Nipype: Neuroimaging in Python Pipelines and Interfaces,http://gigadb.org/images/data/cropped/a11-nipye.jpg,CC-BY,Nipype,http://nipype.readthedocs.io/en/0.12.0/_static/nipype-banner-bg.png
+302,no_image.png,GigaDB,http://gigadb.org/images/data/cropped/no_image.png,GigaDB,GigaDB,GigaDB
+303,a13-dogvest.jpg,Fig1d. Dog wearing dogvest device,http://gigadb.org/images/data/cropped/a13-dogvest.jpg,CC0,brainhack MS,brainhack MS
+304,a14-li.jpg,Fig1. Comparison of different stroke lesion profiles,http://gigadb.org/images/data/cropped/a14-li.jpg,CC0,brainhack MS,brainhack MS
+305,no_image.png,wrapping freesurfer 6,"",public domain,GigaScience,GigaScience
+306,a16-enigma.jpg,ENIGMA logo,http://gigadb.org/images/data/cropped/a16-enigma.jpg,CC-BY,ENIGMA protocols,http://enigma.ini.usc.edu/protocols/
+307,a17-surfdist.jpg,Fig1. Schematic of surface rendering,http://gigadb.org/images/data/cropped/a17-surfdist.jpg,CC0,brainhack MS,brainhack MS
+308,no_image.png,FCP and INDI in the cloud,"",public domain,GigaScience,GigaScience
+309,no_image.png,GigaDB,http://gigadb.org/images/data/cropped/no_image.png,GigaDB,GigaDB,GigaDB
+310,a20-sobf.jpg,Fig2. ,"",CC0,brainhack MS,brainhack MS
+311,a21-nidm.jpg,NIDM-API logo,http://gigadb.org/images/data/cropped/a21-nidm.jpg,CC-BY,NIDM-API,http://nidm-api.readthedocs.io/en/latest/_static/nidm.png
+312,a22-nueroview.jpg,Neuroview logo,http://gigadb.org/images/data/cropped/a22-nueroview.jpg,CC-BY,Neuroview,https://raw.githubusercontent.com/lsa-pucrs/neuroview/master/examples/svm_coeffs/img/logo-inscer.png
+313,a23-dipy.jpg,Fig1. Example segmentations,http://gigadb.org/images/data/cropped/a23-dipy.jpg,CC0,brainhack MS,brainhack MS
+314,Aj_colorvariant.png,"",/var/www/hosts/localhost/htdocs/images/uploads/Aj_colorvariant.png,CC0,Chungoo Park,direct pictured image
+315,100191.jpg,endangered blunt-nosed leopard lizard (Gambelia sila),http://gigadb.org/images/data/cropped/100191.jpg,public domain,Taylor Noble,Taylor Noble
+316,100241.jpg,Fig1. Axial and coronal slices before and after manual editing,http://gigadb.org/images/data/cropped/100241.jpg,CC0,Puccio et al. 2016,Puccio et al. 2016
+317,100242.jpg,Personal Genome Project logo,http://gigadb.org/images/data/cropped/100242.jpg,CC0,Personal Genome Project,Personal Genome Project
+318,100243.gif,Fig3. Temperature variation 2013-15,http://gigadb.org/images/data/cropped/100243.gif,CC0,Munoz et al 2016,Munoz et al 2016
+319,100244.jpg,coupedome3,http://gigadb.org/images/data/cropped/100244.jpg,Unknown,"Cros,Saubion, Billet, Chabiky",http://www.ecotron.cnrs.fr/images/stories/coupedome3.jpg
+320,100246.jpg,Leopard gecko (Eublepharis macularius),http://gigadb.org/images/data/cropped/100246.jpg,public domain,George Chernilevsky,WikiMedia
+321,100247.jpg,Fig2. Snapshots from a Staphylococcus aureus Simulation. Congruent flocks will absorb one another while incongruent flocks repel,http://gigadb.org/images/data/cropped/100247.jpg,CC0,Narechania et al.,Narechania et al.
+322,"",brain-derived neurotrophic factor,/var/www/hosts/localhost/htdocs/images/uploads/,4,Sergio Gomes da Silva,Plos one
+323,no_image.jpg,no image icon,http://gigadb.org/images/data/cropped/no_image.png,Public domain,GigaDB,GigaDB
+324,no_image.jpg,Oil on Oak. Wisent in forest clearing. c1800,"",Public domain,National Museum in Warsaw (MNW) www.weranda.pl,wikimedia
+325,100250.jpg,gsc-logo.jpg,"",CC-BY,Genomics Standards Consortium,www.gensc.org
+326,100251.jpg,Fig2. Shapes of Passiflora leaves measured using landmarks,http://gigadb.org/images/data/cropped/100251.jpg,Public Domain,"Chitwood & Otoni, 2016","Chitwood & Otoni, 2016"
+327,100249.jpg,Image of an adult Tigriopus kingsejongensis specimen.,http://gigadb.org/images/data/cropped/100249.jpg,CC0,Sanghee Kim,Sanghee Kim
+328,no_image.jpg,image made from free clipartpanda.com images,"",Public domain,GigaDB,GigaDB
+329,100252.jpg,BGISEQ-500 machine,"",CC-BY,BGI,BGI
+330,no_image.jpg,Oil on Oak. Wisent in forest clearing. c1800,"",Public domain,National Museum in Warsaw (MNW) www.weranda.pl,wikimedia
+331,100248.jpg,"Chinese pangolin (M. pentadactyla) at Leipzig zoo, named ""Tou Feng""",http://gigadb.org/images/data/cropped/100248.jpg,public domain,wiki-user:nachbarnebenan,wikipedia
+332,100245.jpg,The Bauhinia genome project logo,http://gigadb.org/images/data/cropped/100245.jpg,CC0,Bauhinia Genome Project,http://bauhiniagenome.hk/

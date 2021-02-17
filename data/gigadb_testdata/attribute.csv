@@ -1,0 +1,5 @@
+id,attribute_name,definition,model,structured_comment_name,value_syntax,allowed_units,occurance,ontology_link,note
+269,Geographic location (latitude and longitude),,,,,,,,
+422,Source material identifiers,,,,,,,,
+455,keyword,,,keywords,,,,,
+497,urltoredirect,,,urltoredirect,,,,,
