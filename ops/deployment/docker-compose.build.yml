@@ -57,6 +57,7 @@ services:
         - INSTALL_NETCAT_JQ=true
         - INSTALL_IPROUTE2=true
         - INSTALL_PG_CLIENT=true
+        - PG_CLIENT_VERSION=9.6
 
   production_fuw-admin:
     build:
