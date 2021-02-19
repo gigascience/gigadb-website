@@ -12,6 +12,9 @@ docker run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0
 docker-compose run --rm config
 docker-compose run --rm fuw-config
 
+# Build console and web containers (needed when switching between branches often)
+docker-compose build web test console
+
 # Launch the services required by GigaDB and FUW, and then start nginx (web server) 
 docker-compose up --build gigadb fuw && docker-compose up -d web
 
