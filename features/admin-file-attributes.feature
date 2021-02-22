@@ -68,10 +68,6 @@
   Scenario: Go to a non published dataset found in production-like database, create then delete a keyword attribute
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
-    And I press "New Attribute"
-    And I select "keyword" from "FileAttributes_attribute_id"
-    And I fill in "FileAttributes_value" with "test Bauhinia"
-    And I press "Add"
     And I should see "test Bauhinia"
     And I press "Delete"
     And I should not see "test Bauhinia"
