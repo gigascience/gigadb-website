@@ -37,7 +37,13 @@ class CachedDatasetLinksPreview extends DatasetComponents implements DatasetLink
 
     public function getImageUrl(): array
     {
-        // TODO: Implement getImageUrl() method.
+        $imageUrl = $this->getCachedLocalData($this->getDatasetId());
+        if (false == $imageUrl) {
+            $imageUrl = $this->_storeDatasetLinksPreview->getImageUrl();
+            $this->saveLocaldataInCache($this->getDatasetId(), $imageUrl);
+        }
+
+        return $imageUrl;
     }
 
     public function getPreviewDataForLinks(): array
