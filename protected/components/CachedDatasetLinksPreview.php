@@ -32,7 +32,7 @@ class CachedDatasetLinksPreview extends DatasetComponents implements DatasetLink
 
     public function getDatasetDOI(): string
     {
-        // TODO: Implement getDatasetDOI() method.
+        return $this->_storeDatasetLinksPreview->getDatasetDOI();
     }
 
     public function getImageUrl(): array
