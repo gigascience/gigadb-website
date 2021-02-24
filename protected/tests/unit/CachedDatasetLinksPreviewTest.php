@@ -9,7 +9,7 @@ class CachedDatasetLinksPreviewTest extends CTestCase
 
     public function testGetDatasetId()
     {
-        $dataset_id = 1;
+        $expected_dataset_id = 1;
 
         $storedDatasetLinksPreview = $this->getMockBuilder(StoredDatasetLinksPreview::class)
             ->setMethods(['getDatasetId'])
@@ -23,13 +23,13 @@ class CachedDatasetLinksPreviewTest extends CTestCase
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $idUnderTest = new CachedDatasetLinksPreview($cache, $cacheDependency, $storedDatasetLinksPreview);
-        $this->assertEquals($dataset_id, $idUnderTest->getDatasetId());
+        $this->assertEquals($expected_dataset_id, $idUnderTest->getDatasetId());
 
     }
 
     public function testGetDatasetDOI()
     {
-        $doi = '100243';
+        $expected_doi = '100243';
 
         $storedDatasetLinksPreview = $this->getMockBuilder(StoredDatasetLinksPreview::class)
             ->setMethods(['getDatasetDOI'])
@@ -43,7 +43,7 @@ class CachedDatasetLinksPreviewTest extends CTestCase
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $doiUnderTest = new CachedDatasetLinksPreview($cache, $cacheDependency, $storedDatasetLinksPreview);
-        $this->assertEquals($doi, $doiUnderTest->getDatasetDOI());
+        $this->assertEquals($expected_doi, $doiUnderTest->getDatasetDOI());
 
     }
 }
