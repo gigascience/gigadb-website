@@ -81,9 +81,9 @@ class UploadFactory extends \yii\base\BaseObject
 		}
 		fclose($handle);
 
-		$ftpd_endpoint = Yii::$app->params['dataset_filedrop']["ftpd_endpoint"] ?? "localhost";
-		$ftp_link = "ftp://downloader-{$this->doi}:$downloader_token@$ftpd_endpoint:9021/$fileName";
-		return $ftp_link;
+        $downloadBaseUrl = Yii::$app->params['dataset_filedrop']["download_base_url"] ?? "localhost";
+
+		return "$downloadBaseUrl/filedrop/{$this->doi}/$fileName";
 	}
 
 	/**

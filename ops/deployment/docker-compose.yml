@@ -32,6 +32,8 @@ services:
       - ${APPLICATION}/files:/var/www/files
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le
+      # filedrop files for reviewers to download
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/www/filedrop
     networks:
       web-tier:
         ipv4_address: 172.16.238.10
