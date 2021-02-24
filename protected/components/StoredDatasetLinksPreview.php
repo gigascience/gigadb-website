@@ -1,7 +1,7 @@
 <?php
 
 
-class StoredDatasetLinksPreview extends DatasetComponents
+class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLinksPreviewInterface
 {
     private $_id;
     private $_db;
