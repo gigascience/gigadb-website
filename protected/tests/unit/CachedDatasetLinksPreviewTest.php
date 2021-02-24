@@ -11,11 +11,13 @@ class CachedDatasetLinksPreviewTest extends CTestCase
     {
         $expected_dataset_id = 1;
 
+        //create mock object for calling the method
         $storedDatasetLinksPreview = $this->getMockBuilder(StoredDatasetLinksPreview::class)
             ->setMethods(['getDatasetId'])
             ->disableOriginalConstructor()
             ->getMock();
 
+        //expect the mock method to return 1
         $storedDatasetLinksPreview->method('getDatasetId')
             ->willReturn(1);
 
@@ -36,6 +38,7 @@ class CachedDatasetLinksPreviewTest extends CTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        //expect the mock method to return '100243'
         $storedDatasetLinksPreview->method('getDatasetDOI')
             ->willReturn('100243');
 
@@ -57,10 +60,10 @@ class CachedDatasetLinksPreviewTest extends CTestCase
             );
 
         $storedDatasetLinksPreview = $this->createMock(StoredDatasetLinksPreview::class);
-
         $storedDatasetLinksPreview->method('getDatasetId')
             ->willReturn(1);
 
+        //create mock cache object that get the cached url
         $cache = $this->getMockBuilder(CApcCache::class)
             ->setMethods(['get'])
             ->getMock();
@@ -90,7 +93,7 @@ class CachedDatasetLinksPreviewTest extends CTestCase
             ),
         );
 
-        //create mock StoredDatasetLinksPreview object to call getDatasetId and getImageUrl methods
+        //create mock StoredDatasetLinksPreview object to call getDatasetId and getImageUrl methods for the caching
         $storedDatasetLinksPreview = $this->getMockBuilder(StoredDatasetLinksPreview::class)
             ->setMethods(['getDatasetId', 'getImageUrl'])
             ->disableOriginalConstructor()
@@ -133,8 +136,8 @@ class CachedDatasetLinksPreviewTest extends CTestCase
             ->willReturn(true);
 
 
-
         $cacheDependency = $this->createMock(CCacheDependency::class);
+
         $imageUrlUnderTest = new CachedDatasetLinksPreview($cache, $cacheDependency, $storedDatasetLinksPreview);
         $this->assertEquals($expected_imageurl, $imageUrlUnderTest->getImageUrl());
     }
