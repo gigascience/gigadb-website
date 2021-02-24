@@ -15,7 +15,7 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
     public function testGetDatasetDOI()
     {
         $dataset_id = 1;
-        $doi = 100243;
+        $doi = '100243';
 
         $doiUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection());
         $this->assertEquals($doi, $doiUnderTest->getDatasetDOI());
