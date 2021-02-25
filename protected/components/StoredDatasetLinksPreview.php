@@ -47,18 +47,19 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
 
     public function getPreviewDataForLinks(): array
     {
-        $sql = "select identifier as short_doi, identifier as url, title, description, img.url as image_url from dataset dd, image img  where dd.id = img.id and dd.id = :id";
+        $sql = "select identifier as short_doi, exl.url as external_url, ext.name as type, title, description, img.url as image_url from dataset dd, image img, external_link exl, external_link_type ext  where dd.id = img.id and dd.id = exl.dataset_id and exl.external_link_type_id = ext.id and dd.id = :id;";
         $command = $this->_db->createCommand($sql);
         $command->bindParam( ":id", $this->_id , PDO::PARAM_INT);
         $rows = $command->queryAll();
+//        print_r($rows, true);
         $results = [];
 
         foreach ( $rows as $result) {
-            $result['url'] = "https://doi.org/10.5524/".$result['url'];
             $results[]=$result;
         }
 
         return $results;
+
     }
 
 }
