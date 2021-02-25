@@ -2,6 +2,11 @@
 
 class StoredDatasetLinksPreviewTest extends CDbTestCase
 {
+    protected $fixtures=array( //include in fixture to avoid foreign key constraint error
+        'external_link_types'=>'ExternalLinkType',
+        'datasets'=>'Dataset',
+        'external_links'=>'ExternalLink',
+    );
 
     public function testGetDatasetId()
     {
@@ -36,14 +41,15 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
 
     public function testGetPreviewDataForLinks()
     {
-        $dataset_id = 1;
+        $dataset_id = 2;
         $expected = array(
             array(
-                'short_doi'=>'100243',
-                'url'=>'https://doi.org/10.5524/100243',
+                'short_doi'=>'100249',
+                'external_url'=>'http://foo6.com',
+                'type' =>'3D Models',
                 'title'=>'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
                 'description'=>'The emergence of Zika virus (ZIKV) as a public health emergency in Latin America and the Caribbean (LAC) occurred during a period of severe drought and unusually high temperatures. Speculation in the literature exists that these climate conditions were associated with the 2015/2016 El Niño event and/or climate change but to date no quantitative ',
-                'image_url'=>'http://gigadb.org/images/data/cropped/100243.gif',
+                'image_url'=>'http://gigadb.org/images/data/cropped/100249.jpg',
             )
         );
 
