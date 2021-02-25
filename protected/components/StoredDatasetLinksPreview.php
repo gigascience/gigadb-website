@@ -51,7 +51,6 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
         $command = $this->_db->createCommand($sql);
         $command->bindParam( ":id", $this->_id , PDO::PARAM_INT);
         $rows = $command->queryAll();
-//        print_r($rows, true);
         $results = [];
 
         foreach ( $rows as $result) {
