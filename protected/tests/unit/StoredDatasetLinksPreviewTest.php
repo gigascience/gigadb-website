@@ -12,7 +12,10 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
     {
         $dataset_id = 1;
 
-        $idUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection());
+        //create mock webClient
+        $webClient = $this->createMock(GuzzleHttp\Client::class);
+
+        $idUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
         $this->assertEquals($dataset_id, $idUnderTest->getDatasetId()) ;
 
     }
@@ -22,7 +25,9 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
         $dataset_id = 1;
         $doi = '100243';
 
-        $doiUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $webClient = $this->createMock(GuzzleHttp\Client::class);
+
+        $doiUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
         $this->assertEquals($doi, $doiUnderTest->getDatasetDOI());
     }
 
@@ -35,7 +40,9 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
             ),
         );
 
-        $imageUrlUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $webClient = $this->createMock(GuzzleHttp\Client::class);
+
+        $imageUrlUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
         $this->assertEquals($expected, $imageUrlUnderTest->getImageUrl());
     }
 
@@ -53,7 +60,9 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
             )
         );
 
-        $previewDataUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $webClient = $this->createMock(GuzzleHttp\Client::class);
+
+        $previewDataUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
         $this->assertEquals($expected, $previewDataUnderTest->getPreviewDataForLinks());
 
 
