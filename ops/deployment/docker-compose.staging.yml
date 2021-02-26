@@ -12,6 +12,8 @@ services:
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le
       - tempcaptcha:/var/www/images/tempcaptcha
+      # filedrop files for reviewers to download
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/www/filedrop
     ports:
       - "${REMOTE_PUBLIC_HTTP_PORT}:80"
       - "${REMOTE_PUBLIC_HTTPS_PORT}:443"
