@@ -4,10 +4,10 @@ return [
 	"remote_docker_hostname" => "$REMOTE_DOCKER_HOSTNAME",
 	"dataset_filedrop" => [
 		"ftpd_endpoint" => "$SERVER_HOSTNAME",
-		"download_base_url" => "$HOME_URL",
 		"ftpd_port" => "9021",
 		"template_path" => "/var/www/files/templates",
 		"tusd_path" => "/fileserver/",
+		"download_base_url" => "$HOME_URL",
 	],
 	"dataset_upload" => [
 		"sender" => "admin@gigadb.org",

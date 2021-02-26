@@ -81,7 +81,7 @@ class UploadFactory extends \yii\base\BaseObject
 		}
 		fclose($handle);
 
-        $downloadBaseUrl = Yii::$app->params['dataset_filedrop']["download_base_url"] ?? "localhost";
+        $downloadBaseUrl = Yii::$app->params['dataset_filedrop']["download_base_url"] ?? "http://localhost";
 
 		return "$downloadBaseUrl/filedrop/{$this->doi}/$fileName";
 	}
