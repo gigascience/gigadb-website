@@ -8,6 +8,7 @@ return [
 		"template_path" => "/var/www/files/templates",
 		"tusd_path" => "/fileserver/",
 		"tusd_host" => "$REMOTE_HOSTNAME",
+		"download_base_url" => "$HOME_URL",
 	],
 	"dataset_upload" => [
 		"sender" => "admin@gigadb.org",
