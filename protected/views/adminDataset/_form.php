@@ -219,14 +219,12 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 
                                         ?>
                                         <div id="minting"></div>
-                                    </div>
-                                    <div class="span2">
                                     
                                         <?php
                                             if("Curation" === $model->upload_status) {
                                                 echo CHtml::link("Move files to public ftp",
                                                     "/adminDataset/moveFiles/doi/{$model->identifier}",
-                                                    ["class" => "btn btn-green btn-mini"]);
+                                                    ["class" => "btn btn-green btn-mini", "style"=>"margin-left:2px;margin-top:2px;"]);
                                             }
                                         ?>
                                     </div>
