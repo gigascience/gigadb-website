@@ -53,15 +53,16 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
     }
 
     /**
+     * Get doi from dataset, external link url and external link type from external_link and external_link_type
+     * Then browse the external link url, and get title, description and image url
      * @return array
      * @uses \GuzzleHttp\Client
      */
     public function getPreviewDataForLinks(): array
     {
-        $sql = "select identifier as short_doi, exl.url as external_url, ext.name as type, title, description, img.url as image_url 
-            from dataset dd, image img, external_link exl, external_link_type ext  
-            where dd.id = img.id 
-            and dd.id = exl.dataset_id 
+        $sql = "select identifier as short_doi, exl.url as external_url, ext.name as type
+            from dataset dd, external_link exl, external_link_type ext  
+            where dd.id = exl.dataset_id 
             and exl.external_link_type_id = ext.id 
             and dd.id = :id;";
         $command = $this->_db->createCommand($sql);
@@ -70,19 +71,19 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
         $results = [];
 
         foreach ( $rows as $result) {
-            $response = null;
-            try {
-                $this->_web = new \GuzzleHttp\Client();
-                $response = $this->_web->request('GET', $result['url']);
-//                $response = $this->_web->request('GET', 'https://api.github.com/repos/guzzle/guzzle');
-            }
-            catch (RequestException $e) {
-                Yii::log( Psr7\str($e->getRequest()) , "error");
-                if ($e->hasResponse()) {
-                    Yii::log( Psr7\str($e->getResponse()), "error");
-                }
-            }
-            $result['response'] = $response !== null ? (string) $response->getBody() : null;
+//            $response = null;
+//            try {
+//                $this->_web = new \GuzzleHttp\Client();
+//                $response = $this->_web->request('GET', $result['url']);
+////                $response = $this->_web->request('GET', 'https://api.github.com/repos/guzzle/guzzle');
+//            }
+//            catch (RequestException $e) {
+//                Yii::log( Psr7\str($e->getRequest()) , "error");
+//                if ($e->hasResponse()) {
+//                    Yii::log( Psr7\str($e->getResponse()), "error");
+//                }
+//            }
+//            $result['response'] = $response !== null ? (string) $response->getBody() : null;
             $results[]=$result;
         }
         return $results;
