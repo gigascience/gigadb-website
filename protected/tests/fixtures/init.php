@@ -22,8 +22,6 @@
 	$this->loadFixture("file_format");
 	$this->loadFixture("file_type");
 
-	$this->loadFixture("image");
-
 	// $this->loadFixture("species");
 	// $this->loadFixture("file");
 	// $this->loadFixture("sample");
