@@ -39,14 +39,17 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
             array(
                 'short_doi'=>'100249',
                 'external_url'=>'http://foo6.com',
-                'type' =>'3D Models',
+                'type'=>'3D Models',
+                'external_title'=>'Exercise generates immune cells in bone',
+                'external_description'=>'Mechanosensing stem-cell niche promotes lymphocyte production.',
+                'external_imageUrl'=>'https://media.nature.com/lw1024/magazine-assets/d41586-021-00419-y/d41586-021-00419-y_18880568.png',
             )
         );
 
         $webClient = $this->createMock(GuzzleHttp\Client::class);
 
         $previewDataUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
-//        file_put_contents('test-external.txt', print_r($previewDataUnderTest->getPreviewDataForLinks()));
+//        file_put_contents('test-tags.txt', print_r($previewDataUnderTest->getPreviewDataForLinks(), true));
         $this->assertEquals($expected, $previewDataUnderTest->getPreviewDataForLinks());
 
 

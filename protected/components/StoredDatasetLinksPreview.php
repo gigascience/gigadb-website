@@ -65,8 +65,8 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
 //            $response = null;
 //            try {
 //                $this->_web = new \GuzzleHttp\Client();
-//                $response = $this->_web->request('GET', $result['url']);
-////                $response = $this->_web->request('GET', 'https://api.github.com/repos/guzzle/guzzle');
+////                $response = $this->_web->request('GET', $result['url']);
+//                $response = $this->_web->request('GET', 'https://www.nature.com/articles/d41586-021-00419-y');
 //            }
 //            catch (RequestException $e) {
 //                Yii::log( Psr7\str($e->getRequest()) , "error");
@@ -75,6 +75,13 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
 //                }
 //            }
 //            $result['response'] = $response !== null ? (string) $response->getBody() : null;
+
+            $url = 'https://www.nature.com/articles/d41586-021-00419-y';
+            $meta_tags = get_meta_tags($url);
+//            print_r($meta_tags, true);
+            $result['external_title'] = $meta_tags['twitter:title'];
+            $result['external_description'] = $meta_tags['twitter:description'];
+            $result['external_imageUrl'] = $meta_tags['twitter:image'];
             $results[]=$result;
         }
         return $results;
