@@ -22,12 +22,6 @@ interface DatasetLinksPreviewInterface
     public function getDatasetDOI(): string;
 
     /**
-     * return the image url
-     * @return array
-     */
-    public function getImageUrl(): array;
-
-    /**
      * extract short doi, url, title, description and image url
      * @return array of string for previewing the links
      */

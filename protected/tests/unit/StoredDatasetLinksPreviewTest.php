@@ -31,20 +31,6 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
         $this->assertEquals($doi, $doiUnderTest->getDatasetDOI());
     }
 
-    public function testGetImageUrl()
-    {
-        $dataset_id =1;
-        $expected = array(
-            array(
-                'url'=>'http://gigadb.org/images/data/cropped/100243.gif',
-            ),
-        );
-
-        $webClient = $this->createMock(GuzzleHttp\Client::class);
-
-        $imageUrlUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
-        $this->assertEquals($expected, $imageUrlUnderTest->getImageUrl());
-    }
 
     public function testGetPreviewDataForLinks()
     {

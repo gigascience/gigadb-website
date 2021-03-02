@@ -42,15 +42,6 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
         return $this->getDOIfromId($this->_db, $this->_id);
     }
 
-    public function getImageUrl(): array
-    {
-        $sql = "select url from image where id = :id";
-
-        $command = $this->_db->createCommand($sql);
-        $command->bindParam( ":id", $this->_id , PDO::PARAM_INT);
-        $results = $command->queryAll();
-        return $results;
-    }
 
     /**
      * Get doi from dataset, external link url and external link type from external_link and external_link_type
