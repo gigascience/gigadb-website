@@ -46,10 +46,30 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
             )
         );
 
+//        $response = $this->getMockBuilder(StoredDatasetLinksPreview::class)
+//            ->setMethods(['get_meta_tags'])
+//            ->disableOriginalConstructor()
+//            ->getMock();
+//
+//        $response->expects($this->once())
+//            ->method('get_meta_tags')
+//            ->willReturn(
+//                array(
+//                    'twitter:title'=>'Exercise generates immune cells in bone',
+//                    'twitter:description'=>'Mechanosensing stem-cell niche promotes lymphocyte production.',
+//                    'twitter:image'=>'https://media.nature.com/lw1024/magazine-assets/d41586-021-00419-y/d41586-021-00419-y_18880568.png',
+//                )
+//            );
+
         $webClient = $this->createMock(GuzzleHttp\Client::class);
 
+//        $webClient->expects($this->once())
+//            ->willReturn($response);
+
+
+
         $previewDataUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
-//        file_put_contents('test-tags.txt', print_r($previewDataUnderTest->getPreviewDataForLinks(), true));
+        file_put_contents('test-guzzle-return.txt', print_r($previewDataUnderTest->getPreviewDataForLinks(), true));
         $this->assertEquals($expected, $previewDataUnderTest->getPreviewDataForLinks());
 
 

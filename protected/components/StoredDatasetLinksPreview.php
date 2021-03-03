@@ -14,7 +14,7 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
     private $_db;
     private $_web;
 
-    public function __construct (int $id, CDbConnection $db_connection, GuzzleHttp\Client $webClient)
+    public function __construct (int $id, CDbConnection $db_connection, \GuzzleHttp\Client $webClient)
     {
         parent::__construct();
         $this->_id = $id;
@@ -62,26 +62,31 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
         $results = [];
 
         foreach ( $rows as $result) {
-//            $response = null;
-//            try {
-//                $this->_web = new \GuzzleHttp\Client();
-////                $response = $this->_web->request('GET', $result['url']);
-//                $response = $this->_web->request('GET', 'https://www.nature.com/articles/d41586-021-00419-y');
-//            }
-//            catch (RequestException $e) {
-//                Yii::log( Psr7\str($e->getRequest()) , "error");
-//                if ($e->hasResponse()) {
-//                    Yii::log( Psr7\str($e->getResponse()), "error");
-//                }
-//            }
-//            $result['response'] = $response !== null ? (string) $response->getBody() : null;
-
-            $url = 'https://www.nature.com/articles/d41586-021-00419-y';
-            $meta_tags = get_meta_tags($url);
-//            print_r($meta_tags, true);
-            $result['external_title'] = $meta_tags['twitter:title'];
-            $result['external_description'] = $meta_tags['twitter:description'];
-            $result['external_imageUrl'] = $meta_tags['twitter:image'];
+            $response = null;
+            try {
+                $this->_web = new GuzzleHttp\Client();
+                $response = $this->_web->request('GET', 'https://www.nature.com/articles/d41586-021-00419-y');
+//                $response = get_meta_tags($result['url']);
+//                $response = get_meta_tags('https://www.nature.com/articles/d41586-021-00419-y');
+            }
+            catch (RequestException $e) {
+                Yii::log( Psr7\str($e->getRequest()) , "error");
+                if ($e->hasResponse()) {
+                    Yii::log( Psr7\str($e->getResponse()), "error");
+                }
+            }
+            $contents = $response !== null ? (string) $response->getBody() : null;
+            $metas = [];
+            if (preg_match_all('~<\s*meta\s+name="(twitter:[^"]+)"\s+content="([^"]*)~i', $contents, $matches)) {
+                for($i=0;$i<count($matches[1]);$i++) {
+                    $metas[$matches[1][$i]]=$matches[2][$i];
+                }
+            }
+//            print_r($metas);
+//            file_put_contents('test-body.txt', print_r($contents, true));
+            $result['external_title'] = $metas['twitter:title'];
+            $result['external_description'] = $metas['twitter:description'];
+            $result['external_imageUrl'] = $metas['twitter:image'];
             $results[]=$result;
         }
         return $results;
