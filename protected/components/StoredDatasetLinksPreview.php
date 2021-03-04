@@ -65,9 +65,8 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
             $response = null;
             try {
                 $this->_web = new GuzzleHttp\Client();
-                $response = $this->_web->request('GET', 'https://www.nature.com/articles/d41586-021-00419-y');
-//                $response = get_meta_tags($result['url']);
-//                $response = get_meta_tags('https://www.nature.com/articles/d41586-021-00419-y');
+                $response = $this->_web->request('GET', $result['external_url']);
+//                $response = $this->_web->request('GET', 'https://www.nature.com/articles/d41586-021-00419-y');
             }
             catch (RequestException $e) {
                 Yii::log( Psr7\str($e->getRequest()) , "error");
@@ -77,16 +76,28 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
             }
             $contents = $response !== null ? (string) $response->getBody() : null;
             $metas = [];
+
+            // To store either twitter or og meta tags into metas array
             if (preg_match_all('~<\s*meta\s+name="(twitter:[^"]+)"\s+content="([^"]*)~i', $contents, $matches)) {
                 for($i=0;$i<count($matches[1]);$i++) {
                     $metas[$matches[1][$i]]=$matches[2][$i];
                 }
+            } elseif (preg_match_all('~<\s*meta\s+property="(og:[^"]+)"\s+content="([^"]*)~i', $contents, $matches)) {
+                for ($i=0;$i<count($matches[1]);$i++) {
+                    $metas[$matches[1][$i]]=$matches[2][$i];
+                }
             }
-//            print_r($metas);
-//            file_put_contents('test-body.txt', print_r($contents, true));
-            $result['external_title'] = $metas['twitter:title'];
-            $result['external_description'] = $metas['twitter:description'];
-            $result['external_imageUrl'] = $metas['twitter:image'];
+
+            // Add new keys and values to the expected output array
+            if (array_key_exists('twitter:title', $metas)) {
+                $result['external_title'] = $metas['twitter:title'];
+                $result['external_description'] = $metas['twitter:description'];
+                $result['external_imageUrl'] = $metas['twitter:image'];
+            } else {
+                $result['external_title'] = $metas['og:title'];
+                $result['external_description'] = $metas['og:description'];
+                $result['external_imageUrl'] = $metas['og:image'];
+            }
             $results[]=$result;
         }
         return $results;
