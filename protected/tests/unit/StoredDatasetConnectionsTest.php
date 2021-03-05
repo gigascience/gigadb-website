@@ -183,6 +183,45 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 		$this->assertEquals($expected, $daoUnderTest->getPublications());
 	}
 
+	public function testStoredReturnsPublicationsWithGatewayTimeoutError()
+	{
+		// Create mock handler with two 504 responses in its queue
+		$mock = new GuzzleHttp\Handler\MockHandler([
+			new GuzzleHttp\Psr7\Response(504, ['Foo' => 'Bar'], "Simulating first time out"),
+			new GuzzleHttp\Psr7\Response(504, ['Fred' => 'Waldo'], "Simulating second time out error")
+		]);
+		$handler = GuzzleHttp\HandlerStack::create($mock);
+		$webClient = new GuzzleHttp\Client(['handler' => $handler]);
+
+		$dataset_id = 1;
+
+		// Value for citation key pair is null if there is a gateway time out
+		// error when trying to retrieve citation information using identifier
+		$expected = array(
+						array(
+							'id' => 1,
+							'identifier' => "10.1186/gb-2012-13-10-r100",
+							'pmid' => 23075480,
+							'dataset_id'=>1,
+							'citation' => null,
+							'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+						),
+						array(
+							'id' => 2,
+							'identifier' => "10.1038/nature10158",
+							'pmid' => null,
+							'dataset_id'=>1,
+							'citation' => null,
+							'pmurl' => null,
+						),
+					);
+		$daoUnderTest = new StoredDatasetConnections($dataset_id,
+			$this->getFixtureManager()->getDbConnection(),
+			$webClient
+		);
+		$this->assertEquals($expected, $daoUnderTest->getPublications(), "Array from getPublications() did not match contents expected by testStoredReturnsPublicationsWithGatewayTimeoutError()");
+	}
+
 	public function testStoredReturnsProjects()
 	{
 		$dataset_id = 1;

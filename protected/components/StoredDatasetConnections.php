@@ -110,6 +110,10 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
 			        Yii::log( Psr7\str($e->getResponse()), "error");
 			    }
 			}
+			catch(GuzzleHttp\Exception\ServerException $se) {
+				Yii::log( "{$se->getResponse()->getStatusCode()} {$se->getResponse()->getReasonPhrase()} with https://doi.org/". $result['identifier'], "error");
+				Yii::log($se->getTrace(), "debug");
+			}
 			$result['citation'] = $response !== null ? (string) $response->getBody() : null;
 			$result['pmurl'] = null;
 			if (null !== $result['pmid']) {
