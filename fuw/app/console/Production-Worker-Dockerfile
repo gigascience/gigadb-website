@@ -15,14 +15,7 @@ RUN apt-get update -yq && \
         libfreetype6-dev \
         libssl-dev \
         bc \
-        # and systemd dependencies
-        procps \
-        initscripts \
-        libsystemd0 \
-        libudev1 \
-        systemd \
-        sysvinit-utils \
-        udev util-linux \
+
         --no-install-recommends && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -229,44 +222,8 @@ RUN if [ ${INSTALL_IPROUTE2} = true ]; then \
 ;fi
 
 WORKDIR /app
-RUN cd /lib/systemd/system/sysinit.target.wants/ && \
-        ls | grep -v systemd-tmpfiles-setup.service | xargs rm -f && \
-        rm -f /lib/systemd/system/sockets.target.wants/*udev* && \
-        systemctl mask -- \
-            tmp.mount \
-            etc-hostname.mount \
-            etc-hosts.mount \
-            etc-resolv.conf.mount \
-            -.mount \
-            swap.target \
-            getty.target \
-            getty-static.service \
-            dev-mqueue.mount \
-            cgproxy.service \
-            systemd-tmpfiles-setup-dev.service \
-            systemd-remount-fs.service \
-            systemd-ask-password-wall.path \
-            systemd-logind.service && \
-        systemctl set-default multi-user.target || true
-
-RUN sed -ri /etc/systemd/journald.conf \
-            -e 's!^#?Storage=.*!Storage=volatile!'
-ADD console/systemd-conf/container-boot.service /etc/systemd/system/container-boot.service
-RUN mkdir -p /etc/container-boot.d && \
-        systemctl enable container-boot.service
-
-
-
-# run stuff
-ADD console/systemd-conf/configurator.sh console/systemd-conf/configurator_dumpenv.sh /root/
-ADD console/systemd-conf/configurator.service console/systemd-conf/configurator_dumpenv.service console/systemd-conf/yii-queue@.service /etc/systemd/system/
-RUN chmod 700 /root/configurator.sh /root/configurator_dumpenv.sh && \
-        systemctl enable configurator.service configurator_dumpenv.service yii-queue@1 yii-queue@2
 
 COPY . /app/
 COPY fileformats.json filetypes.json /var/www/files/data/
 COPY UpdateGigaDBJob.php /gigadb-apps/worker/file-worker/models/
 WORKDIR /app
-
-VOLUME [ "/sys/fs/cgroup", "/run", "/run/lock", "/tmp" ]
-CMD ["/lib/systemd/systemd"]

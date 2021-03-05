@@ -453,9 +453,7 @@ services:
     networks:
       - web-tier
       - db-tier
-    stop_signal: SIGRTMIN+3
-    tmpfs: /run
-    command: "/lib/systemd/systemd"
+    command: "/usr/local/bin/php /app/yii queue/listen --verbose"
 
   gigadb-worker:
     build:
@@ -497,9 +495,7 @@ services:
     networks:
       - web-tier
       - db-tier
-    stop_signal: SIGRTMIN+3
-    tmpfs: /run
-    command: "/lib/systemd/systemd"
+    command: "/usr/local/bin/php /gigadb-apps/worker/file-worker/yii queue/listen --verbose"
 
 
   console:
