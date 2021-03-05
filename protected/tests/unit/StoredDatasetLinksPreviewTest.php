@@ -46,30 +46,38 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
             )
         );
 
-//        $response = $this->getMockBuilder(StoredDatasetLinksPreview::class)
-//            ->setMethods(['get_meta_tags'])
-//            ->disableOriginalConstructor()
-//            ->getMock();
-//
-//        $response->expects($this->once())
-//            ->method('get_meta_tags')
-//            ->willReturn(
-//                array(
-//                    'twitter:title'=>'Exercise generates immune cells in bone',
-//                    'twitter:description'=>'Mechanosensing stem-cell niche promotes lymphocyte production.',
-//                    'twitter:image'=>'https://media.nature.com/lw1024/magazine-assets/d41586-021-00419-y/d41586-021-00419-y_18880568.png',
-//                )
-//            );
+        $head ='<meta property="og:title" content="Exercise generates immune cells in bone"/>
+                <meta property="og:description" content="Mechanosensing stem-cell niche promotes lymphocyte production."/>
+                <meta property="og:image" content="https://media.nature.com/lw1024/magazine-assets/d41586-021-00419-y/d41586-021-00419-y_18880568.png"/>
+                <meta name="twitter:title" content="Exercise generates immune cells in bone"/>
+                <meta name="twitter:description" content="Mechanosensing stem-cell niche promotes lymphocyte production."/>
+                <meta name="twitter:image" content="https://media.nature.com/lw1024/magazine-assets/d41586-021-00419-y/d41586-021-00419-y_18880568.png"/>
+                ';
 
-        $webClient = $this->createMock(GuzzleHttp\Client::class);
+        $response = $this->getMockBuilder(GuzzleHttp\Psr7\Response::class)
+            ->setMethods(['getBody'])
+            ->disableOriginalConstructor()
+            ->getMock();
 
-//        $webClient->expects($this->once())
-//            ->willReturn($response);
+        $response->expects($this->once())
+            ->method('getBody')
+            ->willReturn($head);
 
+        $webClient = $this->getMockBuilder(GuzzleHttp\Client::class)
+            ->setMethods(['request'])
+            ->disableOriginalConstructor()
+            ->getMock();
 
+        $webClient->expects($this->once())
+            ->method('request')
+            ->with(
+                ['GET', 'https://www.nature.com/articles/d41586-021-00419-y']
+            )
+            ->willReturn($response);
 
         $previewDataUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
-        file_put_contents('test-guzzle-return.txt', print_r($previewDataUnderTest->getPreviewDataForLinks(), true));
+        file_put_contents('test-mock-response.txt', print_r($response, true));
+        file_put_contents('test-array-return.txt', print_r($previewDataUnderTest->getPreviewDataForLinks(), true));
         $this->assertEquals($expected, $previewDataUnderTest->getPreviewDataForLinks());
 
 
