@@ -113,6 +113,7 @@ RUN if [ ${INSTALL_NETCAT_JQ} = true ]; then \
 ARG INSTALL_GRAPHVIZ=false
 
 RUN if [ ${INSTALL_GRAPHVIZ} = true ]; then \
+    apt-get update -yq && \
     apt-get install -y graphviz \
 ;fi
 
