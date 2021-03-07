@@ -19,6 +19,7 @@ id,name,description,edam_ontology_id
 38,mzML,(.mzml) Mass spectrometry data,format_3244
 42,HTML,"(.html) Hypertext Markup Language, a standardized system for tagging text files to achieve font, colour, graphic, and hyperlink effects on World Wide Web pages.",
 43,TSV,(.tsv) Tabular data represented as tab-separated values in a text file.,format_3475
+44,JPG,(.jpg) JPEG file format for images,format_3579
 45,BED,"(.bed) Browser Extensible Data (BED) format of sequence annotation track, typically to be displayed in a genome browser. BED detail format includes 2 additional columns (http://genome.ucsc.edu/FAQ/FAQformat#format1.7) and BED 15 includes 3 additional columns for experiment scores (http://genomewiki.ucsc.edu/index.php/Microarray_track).",format_3003
 48,Newick,(.newick) Phylogenetic tree Newick (text) format.,format_1910
 56,archive,(.zip) Zip archive,
