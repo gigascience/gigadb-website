@@ -36,3 +36,6 @@ $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=db
 
 # run migration for FUW database
 $DOCKER_COMPOSE exec -T console /app/yii migrate/fresh --interactive=0
+
+# Fix sequences
+$DOCKER_COMPOSE run --rm application ./protected/yiic sequencefixer fixcurationlog
