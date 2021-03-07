@@ -59,8 +59,11 @@ class FuwController extends Controller {
 
             $fileDrop = FiledropAccount::findOne(["doi" => $this->doi]);
             if (!$fileDrop) {
-                $this->stdout("Filedrop account not found for DOI {$this->doi}, exiting abnormally".PHP_EOL, Console::FG_RED);
-                Yii::error("Filedrop account not found for DOI {$this->doi}, exiting abnormally");
+                $this->stdout("Filedrop account not found for DOI {$this->doi}, will try removing files anyways before exiting".PHP_EOL, Console::FG_RED);
+                Yii::error("Filedrop account not found for DOI {$this->doi}, will try removing files anyways before exiting");
+                if ( FiledropAccount::removeDirectories($this->doi) ) {
+                    return ExitCode::OK;
+                }
                 return ExitCode::DATAERR;
             }
 

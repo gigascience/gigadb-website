@@ -99,7 +99,7 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         exec("mkdir -p /var/repo/dummydir/some-subdir");
         exec("mkdir -p /var/private/dummydir");
 
-        $result = $this->filedrop->removeDirectories("dummydir");
+        $result = FiledropAccount::removeDirectories("dummydir");
 
         $this->assertNotTrue(file_exists("/var/incoming/ftp/dummydir/some-subdir"));
         $this->assertNotTrue(file_exists("/var/repo/dummydir/some-subdir"));
@@ -111,7 +111,7 @@ class FiledropAccountTest extends \Codeception\Test\Unit
      */
     public function testNoOpRemoveDirectories()
     {
-        $result = $this->filedrop->removeDirectories("dummydir");
+        $result = FiledropAccount::removeDirectories("dummydir");
         $this->assertTrue($result);
     }
     /**
@@ -448,14 +448,14 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         // and don't add to setMethods that are the system under test
         // and only add those that specify expected behaviour
         $filedropAccount = $this->getMockBuilder(FiledropAccount::class)
-                 ->setMethods(['getDOI','getIsNewRecord', 'getStatus','getDockerManager','removeDirectories', 'removeFTPAccount', 'removeUploads' ])
+                 ->setMethods(['getDOI','getIsNewRecord', 'getStatus','getDockerManager','removeAccountDirectories', 'removeFTPAccount', 'removeUploads' ])
                  ->getMock();
 
         // preparation
         $doi = "100001";
 
         // expected behaviours
-        $filedropAccount->expects($this->exactly(2))
+        $filedropAccount->expects($this->once())
                 ->method('getDOI')
                 ->willReturn($doi);
 
@@ -472,10 +472,7 @@ class FiledropAccountTest extends \Codeception\Test\Unit
                 ->willReturn($stubDockerManager);
 
         $filedropAccount->expects($this->once())
-                ->method('removeDirectories')
-                ->with(
-                    $this->equalTo("$doi")
-                )
+                ->method('removeAccountDirectories')
                 ->willReturn(true);
 
         $filedropAccount->expects($this->once())

@@ -184,10 +184,23 @@ class FiledropAccount extends \yii\db\ActiveRecord
     /**
      * Remove directories required for suspending a filedrop account
      *
+     * @return bool whether or not the operation is successful
+     */
+    function removeAccountDirectories(): bool
+    {
+        return self::removeDirectories($this->getDOI());
+    }
+
+    /**
+     * Remove directories associated with a filedrop acccount
+     *
+     * We need it to be static as it can be needed in context where there's no instance
+     * of this class
+     *
      * @param string $doi dataset identifier for which to remove directory
      * @return bool whether or not the operation is successful
      */
-    function removeDirectories(string $doi): bool
+    public static function removeDirectories(string $doi): bool
     {
         if ( Yii::$app->fs->has("incoming/ftp/$doi") ) {
             if ( ! Yii::$app->fs->deleteDir("incoming/ftp/$doi") ) {
@@ -391,7 +404,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
                 return false;
             }
             else if ( self::STATUS_TERMINATED === $this->getStatus() ) {
-                $directoryRemoved = $this->removeDirectories($this->getDOI());
+                $directoryRemoved = $this->removeAccountDirectories();
                 $directoryAndFTPremoved = $directoryRemoved && $this->removeFTPAccount(
                     $this->getDockerManager(),
                     $this->getDOI()
