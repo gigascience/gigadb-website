@@ -68,13 +68,14 @@ class MockupAction extends CAction
         $curationlog->created_by = "System";
         $curationlog->dataset_id = $id;
         $curationlog->action = "Mockup url created for $reviewerEmail for $monthsOfValidity months";
-        $curationlog->comments = "Mockup url created for $reviewerEmail for $monthsOfValidity months at ".Yii::app()->params['home_url']."/dataset/mockup/uuid/$token";
+        $mockupUrl = Yii::app()->params['home_url'] . "/dataset/mockup/uuid/$token";
+        $curationlog->comments = "Mockup url created for $reviewerEmail for $monthsOfValidity months at " . $mockupUrl;
         if (!$curationlog->save()) {
             Yii::log("Error saving Curation log entry for mockup creation on dataset_id $id","error");
         }
 
         // Show a flash message
-        Yii::app()->user->setFlash('success',"Unique ($reviewerEmail), time-limited ($monthsOfValidity months) mockup url ready at ".Yii::app()->params['home_url']."/dataset/mockup/uuid/$token");
+        Yii::app()->user->setFlash('success',"Unique ($reviewerEmail), time-limited ($monthsOfValidity months) mockup url ready at <a href=\"$mockupUrl\">$mockupUrl</a>");
 
         $this->getController()->redirect("/adminDataset/admin/");
     }
