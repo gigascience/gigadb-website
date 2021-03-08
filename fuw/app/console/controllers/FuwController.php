@@ -57,7 +57,7 @@ class FuwController extends Controller {
             $docker = new DockerManager();
             $docker->setClient(Docker::create());
 
-            $fileDrop = FiledropAccount::findOne(["doi" => $this->doi]);
+            $fileDrop = FiledropAccount::findOne(["doi" => $this->doi, "status" => FiledropAccount::STATUS_ACTIVE]);
             if (!$fileDrop) {
                 $this->stdout("Filedrop account not found for DOI {$this->doi}, will try removing files anyways before exiting".PHP_EOL, Console::FG_RED);
                 Yii::error("Filedrop account not found for DOI {$this->doi}, will try removing files anyways before exiting");

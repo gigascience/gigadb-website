@@ -78,6 +78,11 @@ public function _before(FunctionalTester $I)
     {
     	$doi = "300001";
 
+        $notTheOne = $I->haveInDatabase('filedrop_account',	[
+            'doi' => $doi,
+            'status' => FiledropAccount::STATUS_TERMINATED,
+        ]);
+
     	$accountId = $I->haveInDatabase('filedrop_account',	[
 	        'doi' => $doi,
 	        'status' => FiledropAccount::STATUS_ACTIVE,
@@ -94,7 +99,7 @@ public function _before(FunctionalTester $I)
 
     	$I->assertEquals(Exitcode::OK, $outcome);
 
-		$I->assertEquals(1, Upload::find([
+		$I->assertEquals(1, Upload::find()->where([
     		"doi" => $doi,
     		"name" => "seq1.fa", 
     		"status" => Upload::STATUS_UPLOADING, 
