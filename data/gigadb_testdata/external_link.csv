@@ -1,3 +1,5 @@
 id,dataset_id,url,external_link_type_id
+2,5,http://genomes.uprm.edu/parrot/,3
+3,5,http://genomes.uprm.edu/drupal/,3
 60,212,https://github.com/ShashaankV/CS,3
 61,212,https://github.com/ShashaankV/GD,3
