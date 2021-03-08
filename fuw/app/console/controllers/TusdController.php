@@ -2,6 +2,7 @@
 
 namespace console\controllers;
 
+use backend\models\FiledropAccount;
 use Yii;
 use \yii\helpers\Console;
 use \yii\console\Controller;
@@ -65,7 +66,7 @@ class TusdController extends Controller
 
  		$account = (new \yii\db\Query())
 		    ->from('filedrop_account')
-		    ->where(['doi' => $this->doi])
+		    ->where(['doi' => $this->doi, 'status' => FiledropAccount::STATUS_ACTIVE])
 		    ->one();
  		if(!$account) {
  			Yii::error("Filedrop account not found for DOI {$this->doi}, exiting abnormally");
