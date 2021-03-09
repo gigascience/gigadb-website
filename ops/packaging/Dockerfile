@@ -125,6 +125,7 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /tmp
 RUN if [ ${INSTALL_COMPOSER} = true ]; then \
     docker-php-ext-install zip \
+    && apt-get update -yq \
     && apt-get install -y unzip wget \
     && EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" \
     && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
