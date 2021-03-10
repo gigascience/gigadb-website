@@ -96,7 +96,7 @@ class CachedDatasetLinksPreviewTest extends CTestCase
         $this->assertEquals($expected_previewData, $previewDataUnderTest->getPreviewDataForLinks());
     }
 
-    public function testtestGetPreviewDataForLinksCacheMiss()
+    public function testGetPreviewDataForLinksCacheMiss()
     {
         $dataset_id = 2;
         $expected_previewData = array(
