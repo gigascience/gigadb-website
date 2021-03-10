@@ -54,32 +54,18 @@ class StoredDatasetLinksPreviewTest extends CDbTestCase
                 <meta name="twitter:image" content="https://media.nature.com/lw1024/magazine-assets/d41586-021-00419-y/d41586-021-00419-y_18880568.png"/>
                 ';
 
-        $response = $this->getMockBuilder(GuzzleHttp\Psr7\Response::class)
-            ->setMethods(['getBody'])
-            ->disableOriginalConstructor()
-            ->getMock();
 
-        $response->expects($this->once())
-            ->method('getBody')
-            ->willReturn($head);
+        //create a mock object and queue 1 response
+        $mock = new GuzzleHttp\Handler\MockHandler([
+            new GuzzleHttp\Psr7\Response(200, ['Foo' => 'Bar'], $head),
+            new GuzzleHttp\Exception\RequestException('Fail to make a request', new GuzzleHttp\Psr7\Request('GET', 'https://www.nature.com/articles/d41586-021-00419-y'))
+        ]);
 
-        $webClient = $this->getMockBuilder(GuzzleHttp\Client::class)
-            ->setMethods(['request'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $webClient->expects($this->once())
-            ->method('request')
-            ->with(
-                ['GET', 'https://www.nature.com/articles/d41586-021-00419-y']
-            )
-            ->willReturn($response);
+        $handler = GuzzleHttp\HandlerStack::create($mock);
+        $webClient = new GuzzleHttp\Client(['handler' => $handler]);
 
         $previewDataUnderTest = new StoredDatasetLinksPreview($dataset_id, $this->getFixtureManager()->getDbConnection(), $webClient);
-        file_put_contents('test-mock-response.txt', print_r($response, true));
-        file_put_contents('test-array-return.txt', print_r($previewDataUnderTest->getPreviewDataForLinks(), true));
         $this->assertEquals($expected, $previewDataUnderTest->getPreviewDataForLinks());
-
 
     }
 }
