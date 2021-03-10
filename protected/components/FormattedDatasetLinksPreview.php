@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Format the cached information that can be displayed in the view page.
+ * Class FormattedDatasetLinksPreview
+ */
 
 class FormattedDatasetLinksPreview extends DatasetComponents implements DatasetLinksPreviewInterface
 {
@@ -26,6 +29,14 @@ class FormattedDatasetLinksPreview extends DatasetComponents implements DatasetL
 
     public function getPreviewDataForLinks(): array
     {
-        // TODO: Implement getPreviewDataForLinks() method.
+        $formattedPreviewData = [];
+        $previewData = $this->_cachedDatasetLinksPreview->getPreviewDataForLinks();
+        foreach ($previewData as $data) {
+            $data['preview_title'] = '<a href="'.$data['external_url'].'">'.$data['external_title'].'</a>';
+            $data['preview_description'] = '<p>'.$data['external_description'].'</p>';
+            $data['preview_imageUrl'] = '<img src="'.$data['external_imageUrl'].'alt="Image">';
+            $formattedPreviewData[] = $data;
+        }
+        return $formattedPreviewData;
     }
 }
