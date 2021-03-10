@@ -14,7 +14,7 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
     private $_db;
     private $_web;
 
-    public function __construct (int $id, CDbConnection $db_connection, \GuzzleHttp\Client $webClient)
+    public function __construct (int $id, CDbConnection $db_connection, GuzzleHttp\Client $webClient)
     {
         parent::__construct();
         $this->_id = $id;
@@ -64,9 +64,7 @@ class StoredDatasetLinksPreview extends DatasetComponents implements DatasetLink
         foreach ( $rows as $result) {
             $response = null;
             try {
-                $this->_web = new GuzzleHttp\Client();
                 $response = $this->_web->request('GET', $result['external_url']);
-//                $response = $this->_web->request('GET', 'https://www.nature.com/articles/d41586-021-00419-y');
             }
             catch (RequestException $e) {
                 Yii::log( Psr7\str($e->getRequest()) , "error");
