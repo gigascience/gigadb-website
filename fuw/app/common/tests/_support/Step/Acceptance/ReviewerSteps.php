@@ -82,14 +82,14 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
      */
      public function fileUploadsWithSamplesAndAttributesHaveBeenUploadedForDOI($doi)
      {
-
-        file_put_contents("/var/tmp/processing_flag/$doi", "flag");
-        //Retrieve the filedrop_account to attach the uploads
-        $this->I->amConnectedToDatabase('fuwdb');
-        $filedropId = $this->I->grabFromDatabase('filedrop_account','id', array('doi' => $doi));
-        if(!$filedropId) {
+         $reviewerDownloadUrl = Yii::$app->params['dataset_filedrop']["download_base_url"];
+         file_put_contents("/var/tmp/processing_flag/$doi", "flag");
+         //Retrieve the filedrop_account to attach the uploads
+         $this->I->amConnectedToDatabase('fuwdb');
+         $filedropId = $this->I->grabFromDatabase('filedrop_account','id', array('doi' => $doi));
+         if(!$filedropId) {
             Yii::error("FiledropAccount ID could not be retrieved");
-        }
+         }
 
         $config = require "/app/common/config/main-local.php";
         $dbh_fuw = new \PDO(
@@ -104,7 +104,7 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
                 'name' => "seq1.fa",
                 'size' => 24564343,
                 'status' => Upload::STATUS_UPLOADING,
-                'location' => "ftp://climb.genomics.cn/pub/10.5524/000007/seq1.fa",
+                'location' => "$reviewerDownloadUrl/000007/seq1.fa",
                 'extension' => 'FASTA',
                 'datatype' => 'Sequence assembly',
                 'sample_ids' => 'Sample A, Sample Z'
@@ -114,7 +114,7 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
                 'name' => "Specimen.pdf",
                 'size' => 19564,
                 'status' => Upload::STATUS_UPLOADING,
-                'location' => "ftp://climb.genomics.cn/pub/10.5524/000007/Specimen.pdf",
+                'location' => "$reviewerDownloadUrl/000007/Specimen.pdf",
                 'extension' => 'PDF',
                 'datatype' => 'Annotation',
                 'sample_ids' => 'Sample E'
@@ -207,13 +207,15 @@ class ReviewerSteps #extends \common\tests\AcceptanceTester
      */
      public function thereIsADownloadLinkForEachFileAssociatedWithDOI($doi,TableNode $files)
      {
-        foreach ($files->getRows() as $index => $row) {
+         $reviewerDownloadUrl = Yii::$app->params['dataset_filedrop']["download_base_url"];
+
+         foreach ($files->getRows() as $index => $row) {
             $nbColumns = count($row);
             if ($index === 0) { // first row to define fields
                 $keys = $row;
                 continue;
             }
-            $this->I->canSeeElement("a[href='ftp://climb.genomics.cn/pub/10.5524/000007/$row[0]']");
+            $this->I->canSeeElement("a[href='$reviewerDownloadUrl/000007/$row[0]']");
         }
      }
 

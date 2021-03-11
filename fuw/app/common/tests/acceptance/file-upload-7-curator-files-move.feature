@@ -81,7 +81,7 @@ Scenario: Completion of moving files triggers update of the file database table
 	| File Name | Data Type | File Format | Size |
 	| seq1.fa |  Sequence assembly | FASTA | 23.43 MiB |
 	| Specimen.pdf | Annotation | PDF | 19.11 KiB |
-	And there is a download link for each file associated with DOI "000007"
+	And there is a public download link for each file associated with DOI "000007"
 	| File Name |
 	| seq1.fa | 
 	| Specimen.pdf |
@@ -106,7 +106,7 @@ Scenario: Completion of moving files triggers update of the file, attributes tab
 	| File Name | Data Type | File Format | Size | File Attributes (1st) | File Attributes (2nd) |
 	| seq1.fa | Sequence assembly | FASTA | 23.43 MiB | growth temperature: 45 | MD5 checksum: 75 |
 	| Specimen.pdf | Annotation | PDF | 19.11 KiB | growth temperature: 51 | MD5 checksum: 90 |
-	And there is a download link for each file associated with DOI "000007"
+	And there is a public download link for each file associated with DOI "000007"
 	| File Name |
 	| seq1.fa | 
 	| Specimen.pdf |
@@ -131,7 +131,7 @@ Scenario: Completion of moving files triggers update of the file, attributes and
 	| File Name | Sample ID | Data Type | File Format | Size | File Attributes (1st) | File Attributes (2nd) |
 	| seq1.fa | Sample A, Sample Z | Sequence assembly | FASTA | 23.43 MiB | growth temperature: 45 | MD5 checksum: 75 |
 	| Specimen.pdf | Sample E | Annotation | PDF | 19.11 KiB | growth temperature: 51 | MD5 checksum: 90 |
-	And there is a download link for each file associated with DOI "000007"
+	And there is a public download link for each file associated with DOI "000007"
 	| File Name |
 	| seq1.fa | 
 	| Specimen.pdf |
