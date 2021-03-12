@@ -48,6 +48,7 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     FUW_DB_NAME=$REMOTE_FUW_DB_NAME
     DEBUG=false
     HOME_URL=$REMOTE_HOME_URL
+    FILES_PUBLIC_URL=$REMOTE_FILES_PUBLIC_URL
     SERVER_HOSTNAME=$REMOTE_HOSTNAME
 fi
 
@@ -146,10 +147,10 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     export $local_pk
     export $peer_name
     SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/production/params-local.php.dist
-    VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$cafile:$local_cert:$local_pk:$peer_name:$REMOTE_HOSTNAME:$HOME_URL'
+    VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$cafile:$local_cert:$local_pk:$peer_name:$REMOTE_HOSTNAME:$HOME_URL:$FILES_PUBLIC_URL'
 else
     SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/params-local.php.dist
-    VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$SERVER_HOSTNAME:$HOME_URL'
+    VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$SERVER_HOSTNAME:$HOME_URL:$FILES_PUBLIC_URL'
 fi
 TARGET=${APP_SOURCE}/fuw/app/common/config/params-local.php
 envsubst $VARS < $SOURCE > $TARGET
