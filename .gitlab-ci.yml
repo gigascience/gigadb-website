@@ -39,6 +39,7 @@ variables:
   YII2_VERSION: "2.0.15.1"
   POSTGRES_VERSION: "9.6"
   HOME_URL: "gigadb.gigasciencejournal.com"
+  FILES_PUBLIC_URL: "http://gigadb.gigasciencejournal.com:9170"
   PUBLIC_HTTP_PORT: "9170"
   PUBLIC_HTTPS_PORT: "8043"
   COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml"
