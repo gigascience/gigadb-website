@@ -46,4 +46,38 @@ class FormattedDatasetLinksPreviewTest extends CTestCase
         $this->assertEquals($expected_doi, $doiUnderTest->getDatasetDOI());
     }
 
+    public function testGetPreviewDataForLinks()
+    {
+        $expected_FormatedData = array(
+            array(
+                'preview_title'=>'<a href="http://foo6.com">Exercise generates immune cells in bone</a>',
+                'preview_description'=>'<p>Mechanosensing stem-cell niche promotes lymphocyte production.</p>',
+                'preview_imageUrl'=>'<a href="http://foo6.com">'.'<img src="https://media.nature.com/lw1024/magazine-assets/d41586-021-00419-y/d41586-021-00419-y_18880568.png" alt="Go to site"/></a>',
+            )
+        );
+
+        $cachedDatasetLinksPreview = $this->getMockBuilder(CachedDatasetLinksPreview::class)
+            ->setMethods(['getPreviewDataForLinks'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $cachedDatasetLinksPreview->expects($this->once())
+            ->method('getPreviewDataForLinks')
+            ->willReturn(
+                array(
+                    array(
+                        'preview_title'=>'<a href="http://foo6.com">Exercise generates immune cells in bone</a>',
+                        'preview_description'=>'<p>Mechanosensing stem-cell niche promotes lymphocyte production.</p>',
+                        'preview_imageUrl'=>'<a href="http://foo6.com">'.'<img src="https://media.nature.com/lw1024/magazine-assets/d41586-021-00419-y/d41586-021-00419-y_18880568.png" alt="Go to site"/></a>',
+                    )
+                )
+            );
+
+        $controller = $this->createMock(CController::class);
+
+        $formattedDataUnderTest = new FormattedDatasetLinksPreview($controller, $cachedDatasetLinksPreview);
+        $this->assertEquals($expected_FormatedData, $formattedDataUnderTest->getPreviewDataForLinks());
+
+
+    }
 }

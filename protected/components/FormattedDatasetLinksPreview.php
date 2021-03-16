@@ -32,11 +32,14 @@ class FormattedDatasetLinksPreview extends DatasetComponents implements DatasetL
         $formattedPreviewData = [];
         $previewData = $this->_cachedDatasetLinksPreview->getPreviewDataForLinks();
         foreach ($previewData as $data) {
-            $data['preview_title'] = '<a href="'.$data['external_url'].'">'.$data['external_title'].'</a>';
-            $data['preview_description'] = '<p>'.$data['external_description'].'</p>';
-            $data['preview_imageUrl'] = '<img src="'.$data['external_imageUrl'].'alt="Image">';
+            if (null !== $data['external_title']) {
+                $data['preview_title'] = '<a href="'.$data['external_url'].'">'.$data['external_title'].'</a>';
+                $data['preview_description'] = '<p>'.$data['external_description'].'</p>';
+                $data['preview_imageUrl'] = '<a href="'.$data['external_url'].'">'.'<img src="'.$data['external_imageUrl'].'" alt="Go to site"/></a>';
+            }
             $formattedPreviewData[] = $data;
         }
         return $formattedPreviewData;
+
     }
 }
