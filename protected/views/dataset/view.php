@@ -154,7 +154,15 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             ?>
                         </p>
                     <?php } ?>
+                    <div class="underline-title">
+                        <div>
+                            <h5>Additional information</h5>
+                        </div>
+                    </div>
+                    <?php
+                    echo count($previewData->getPreviewDataForLinks());
 
+                    ?>
                 <?php
                     $relations = $connections->getRelations();
                     if (count($relations) > 0) {
