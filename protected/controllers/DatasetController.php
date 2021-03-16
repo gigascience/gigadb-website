@@ -230,6 +230,21 @@ class DatasetController extends Controller
                             )
                         );
 
+        //Dataset links to preview
+        $previewData = new FormattedDatasetLinksPreview(
+                            Yii::app()->controller,
+                            new CachedDatasetLinksPreview(
+                                Yii::app()->cache,
+                                $cacheDependency,
+                                new StoredDatasetLinksPreview(
+                                    $model->id,
+                                    Yii::app()->db,
+                                    new \GuzzleHttp\Client()
+                                )
+                            )
+                        );
+
+
         $result = Dataset::model()->findAllBySql("select identifier,title from dataset where identifier > '" . $id . "' and upload_status='Published' order by identifier asc limit 1;");
         if (count($result) == 0) {
             $result = Dataset::model()->findAllBySql("select identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
@@ -273,6 +288,7 @@ class DatasetController extends Controller
             'columns' => $columns,
             'logs'=>$model->datasetLogs,
             'flag' => $flag,
+            'previewData'=>$previewData,
         ));
     }
 
