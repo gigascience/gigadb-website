@@ -67,7 +67,8 @@ class UpdateGigaDBJob extends \yii\base\Component implements \yii\queue\JobInter
             }
             $fileId = $this->self->saveFile($dataset->id);
             $someSaved = $this->self->saveAttributes($fileId);
-            return $fileId && $someSaved && $this->self->saveSamples($fileId);
+            $sampleSaved = $this->self->saveSamples($fileId);
+            return $fileId;
         }
         throw new \Exception("Dataset record not found for DOI {$this->doi}");
 
@@ -137,7 +138,7 @@ class UpdateGigaDBJob extends \yii\base\Component implements \yii\queue\JobInter
     {
         $someSaved = false;
         foreach($this->sample_ids as $sample_id) {
-            Yii::warning("Creating file_sample associated to {$this->file['name']} ({$this->doi}) for sample $sample_id");
+            Yii::warning("Creating file_sample associated to {$this->file['name']} ({$this->doi}) for sample '$sample_id'");
             $sample = Sample::findOne(["name" => $sample_id]);
             if ($sample) {
                 $fs = new FileSample();
