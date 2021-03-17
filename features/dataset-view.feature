@@ -345,7 +345,7 @@ Feature: a user visit the dataset page
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
 		And I press "Cite Dataset"
-		When I press "Text"
+		When I click "Text"
 		Then I go to new tab and should see "Huang, Y., Li, Y., Burt, D. W., Chen, H., Zhang, Y., Qian, W., Kim, H., Gan, S., Zhao, Y., Li, J., Yi, K., Feng, H., Zhu, P., Li, B., Liu, Q., Fairley, S., Magor, K. E., Du, Z., Hu, X., … Li, N. (2013). Genome sequence of the duck (Anas platyrhynchos) [Data set]. GigaScience Database. https://doi.org/10.5524/101001"
 
 	@ok @javascript @pr521

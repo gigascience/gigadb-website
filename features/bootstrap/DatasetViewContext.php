@@ -432,5 +432,13 @@ class DatasetViewContext implements Context
         PHPUnit_Framework_Assert::assertTrue($session->getPage()->hasContent($arg1));
     }
 
-
+    /**
+     * @When /^I click "([^"]*)"$/
+     * To trigger onclick event
+     */
+    public function iClick($arg1)
+    {
+        $element = $this->minkContext->getSession()->getPage()->find('css', "a[id='$arg1']" );
+        $element->click();
+    }
 }
