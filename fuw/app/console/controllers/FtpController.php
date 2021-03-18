@@ -2,6 +2,7 @@
 
 namespace console\controllers;
 
+use backend\models\FiledropAccount;
 use Yii;
 use \yii\helpers\Console;
 use \yii\console\Controller;
@@ -64,7 +65,7 @@ class FtpController extends Controller
 
 		$account = (new \yii\db\Query())
 		    ->from('filedrop_account')
-		    ->where(['doi' => $doi])
+            ->where(['doi' => $doi, 'status' => FiledropAccount::STATUS_ACTIVE])
 		    ->one();
 	    if (!$account) {
  			$this->stdout("Filedrop account not found for DOI $doi, exiting abnormally".PHP_EOL, Console::FG_RED);
