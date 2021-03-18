@@ -37,6 +37,11 @@ class FtpCest
     {
     	$doi = "300001";
 
+        $accountId = $I->haveInDatabase('filedrop_account',	[
+            'doi' => $doi,
+            'status' => FiledropAccount::STATUS_TERMINATED,
+        ]);
+
     	$accountId = $I->haveInDatabase('filedrop_account',	[
 	        'doi' => $doi,
 	        'status' => FiledropAccount::STATUS_ACTIVE,
