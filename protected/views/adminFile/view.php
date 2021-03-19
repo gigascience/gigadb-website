@@ -11,13 +11,15 @@ $sample_id = FileSample::model()->find('file_id=:file_id', array(':file_id'=>$mo
  if(isset($sample_id))
  {
  $sample_name= Sample::model()->find('id=:id',array(':id'=>$sample_id->sample_id));
+ $attribute = FileAttributes::model()->find('file_id=:file_id', array(':file_id'=>$sample_id->file_id));
  }
  
  $name="Not Set";
  
- if(isset($sample_id)&&isset($sample_name))
+ if(isset($sample_id)&&isset($sample_name)&&isset($attribute))
  {
      $name=$sample_name->name;
+     $attribute_id = $attribute->id;
  }
  $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
@@ -37,5 +39,9 @@ $sample_id = FileSample::model()->find('file_id=:file_id', array(':file_id'=>$mo
                     'value'=> $name,
                     
                 ),
+          array(
+                  'name'=>'FileAttribute ID',
+                  'value'=>$attribute_id,
+          )
 	),
 )); ?>
