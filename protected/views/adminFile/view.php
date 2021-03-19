@@ -15,6 +15,7 @@ $sample_id = FileSample::model()->find('file_id=:file_id', array(':file_id'=>$mo
  }
  
  $name="Not Set";
+ $attribute_id = "Not Set";
  
  if(isset($sample_id)&&isset($sample_name)&&isset($attribute))
  {
