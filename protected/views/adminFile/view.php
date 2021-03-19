@@ -15,11 +15,14 @@ $sample_id = FileSample::model()->find('file_id=:file_id', array(':file_id'=>$mo
  }
  
  $name="Not Set";
- $attribute_id = "Not Set";
+ $attribute_id = "Deleted";
  
- if(isset($sample_id)&&isset($sample_name)&&isset($attribute))
+ if(isset($sample_id)&&isset($sample_name))
  {
      $name=$sample_name->name;
+ }
+ if(isset($sample_id)&&isset($attribute))
+ {
      $attribute_id = $attribute->id;
  }
  $this->widget('zii.widgets.CDetailView', array(
