@@ -419,7 +419,7 @@ class AdminFileController extends Controller
                     } else {
                         $fs = $fs[0];
                     }
-                    $sample = Sample::model()->findbyAttributes(array('name'=>$_POST['File']['sample_name']));
+                    $sample = Sample::model()->findByPk(array('name'=>$_POST['File']['sample_name']));
                     $fs->sample_id = $sample->id;
                     $fs->file_id = $model->id;
                     if( $fs->sample_id !='None'&& $fs->sample_id !="" )
