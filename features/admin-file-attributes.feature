@@ -40,40 +40,48 @@
     And I should see a button input "Delete"
 
   @ok @javascript @Published
-  Scenario: Sign in as admin, delete an attribute of a published dataset and check history tab
+  Scenario: Sign in as admin, delete an attribute of a published dataset and save, then check for history tab
     Given I sign in as an admin
     And I am on "/adminFile/update/id/13973"
     And I should see "last_modified"
-    When I press "Delete"
+    And I press "Delete"
+    And I press "Save"
+    When I go to "/adminFile/view/id/13973"
+    And I should see "Deleted"
     And I go to "dataset/100056"
     Then I should see "Termitomyces sp. J132 fungus genome assembly data."
     And I follow "History"
     And I should see "History" tab with text "Termitomyces_assembly_v1.0.fa.gz: file attribute deleted"
 
   @ok @javascript @Published
-  Scenario: Sign in as admin, no delete button should be seen after delete action has been triggered
+  Scenario: Sign in as admin, no delete button should be seen after delete action has been triggered and save
     Given I sign in as an admin
     And I am on "/adminFile/update/id/13973"
     And I should see a file attribute table
     | Attribute Name | Value | Unit |
     | last_modified  | 2013-7-15 |  |
     And I should see a button input "Delete"
-    When I press "Delete"
-    And I wait "3" seconds
-    Then I should not see "last_modified"
+    And I press "Delete"
+    And I should not see "last_modified"
     And I should not see "2013-7-15"
     And I should not see a button "Delete"
+    When I press "Save"
+    Then I go to "/adminFile/view/id/13973"
+    And I should see "Deleted"
 
   @ok @javascript @NonPublished
-  Scenario: Go to a non published dataset found in production-like database, create then delete a keyword attribute
+  Scenario: Go to a non published dataset found in production-like database, delete a keyword attribute and save, then check the last page of dataset log
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
     And I should see "test Bauhinia"
     And I press "Delete"
     And I should not see "test Bauhinia"
+    When I press "Save"
+    Then I go to "/adminFile/view/id/95354"
+    And I should see "Deleted"
     #Go to the last page of dataset log
-    When I go to "datasetLog/admin/DatasetLog_page/74"
-    Then I should not see "100245"
+    And I go to "datasetLog/admin/DatasetLog_page/74"
+    And I should not see "100245"
     And I should not see "FCHCGJYBBXX-HKBAUpcgEAACRAAPEI-201_L2_2.fq.gz: file attribute added"
     And I should not see "FCHCGJYBBXX-HKBAUpcgEAACRAAPEI-201_L2_2.fq.gz: file attribute deleted"
 
