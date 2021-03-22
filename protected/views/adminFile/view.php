@@ -50,7 +50,7 @@ $sample_id = FileSample::model()->find('file_id=:file_id', array(':file_id'=>$mo
                     
                 ),
           array(
-                  'name'=>'FileAttribute ID',
+                  'name'=>'FileAttributeID',
                   'value'=>$attribute_id,
           )
 	),
