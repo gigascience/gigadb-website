@@ -289,6 +289,26 @@ class DatasetViewContext implements Context
     }
 
     /**
+     * @Then I should see field :arg1 with value :arg2
+     */
+    public function iShouldSeeFieldWithValue($arg1, $arg2)
+    {
+        PHPUnit_Framework_Assert::assertNotNull(
+            $row = $this->minkContext->getSession()->getPage()->find('css', sprintf('table tr:contains("%s""$s")', $arg1, $arg2))
+        );
+    }
+
+    /**
+     * @Then I should see field :arg1 without value :arg2
+     */
+    public function iShouldSeeFieldWithoutValue($arg1, $arg2)
+    {
+        $row = $this->minkContext->getSession()->getPage()->find('css', sprintf('table tr:contains("%s""$s")', $arg1, $arg2));
+        $value = preg_match('/<td>\d*\s<\/td>/', $row->getHtml());
+        PHPUnit_Framework_Assert::assertEquals(0, $value);
+    }
+
+    /**
      * @Then I should see :arg1 tab with table
      */
     public function iShouldSeeTabWithTable($arg1, TableNode $table)
