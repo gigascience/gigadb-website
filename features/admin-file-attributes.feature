@@ -29,7 +29,7 @@
     And I should see "History" tab with text "File Termitomyces_gene_v1.0.pep.fa updated"
 
   @ok @Published
-  Scenario: Sign in as admin and visit admin file update page and see New Attribute, Edit, Delete buttons
+  Scenario: Sign in as admin and visit admin file update page and see New Attribute, Edit, Delete, Save buttons
     Given I sign in as an admin
     When I am on "/adminFile/update/id/13973"
     Then I should see a button "New Attribute"
@@ -38,6 +38,7 @@
       | last_modified  | 2013-7-15 |  |
     And I should see a button input "Edit"
     And I should see a button input "Delete"
+    And I should see a button input "Save"
 
   @ok @javascript @Published
   Scenario: Sign in as admin, delete an attribute of a published dataset and save, then check for history tab
@@ -45,20 +46,6 @@
     And I go to "/adminFile/view/id/13973"
     And I should see field "File Attribute Id" with value "1"
     When  I go to "/adminFile/update/id/13973"
-    And I should see "last_modified"
-    And I press "Delete"
-    And I press "Save"
-    Then I go to "/adminFile/view/id/13973"
-    And I should see field "File Attribute Id" without value "1"
-    And I go to "dataset/100056"
-    And I should see "Termitomyces sp. J132 fungus genome assembly data."
-    And I follow "History"
-    And I should see "History" tab with text "Termitomyces_assembly_v1.0.fa.gz: file attribute deleted"
-
-  @ok @javascript @Published
-  Scenario: Sign in as admin, no delete button should be seen after delete action has been triggered and save
-    Given I sign in as an admin
-    And I am on "/adminFile/update/id/13973"
     And I should see a file attribute table
     | Attribute Name | Value | Unit |
     | last_modified  | 2013-7-15 |  |
@@ -67,32 +54,36 @@
     And I should not see "last_modified"
     And I should not see "2013-7-15"
     And I should not see a button "Delete"
-    When I press "Save"
+    And I press "Save"
     Then I go to "/adminFile/view/id/13973"
     And I should see field "File Attribute Id" without value "1"
+    And I go to "dataset/100056"
+    And I should see "Termitomyces sp. J132 fungus genome assembly data."
+    And I follow "History"
+    And I should see "History" tab with text "Termitomyces_assembly_v1.0.fa.gz: file attribute deleted"
 
   @ok @javascript @NonPublished
   Scenario: Go to a non published dataset found in production-like database, delete a keyword attribute and save, then delete a camera parameters and save, then check the last page of dataset log
     Given I sign in as an admin
     And I go to "/adminFile/view/id/95354"
     And I should see field "File Attribute Id" with value "5441 5442"
-    And I go to "/adminFile/update/id/95354"
+    When I go to "/adminFile/update/id/95354"
     And I should see a file attribute table
     | Attribute Name    | Value         | Unit |
     | keyword           | test Bauhinia |      |
     | camera parameters | test photo    |      |
     And I press "Delete"
-    And I should see a file attribute table
-      | Attribute Name    | Value         | Unit |
-      | camera parameters | test photo    |      |
     And I press "Save"
     And I go to "/adminFile/view/id/95354"
     And I should see field "File Attribute Id" with value "5442"
-    When I go to "/adminFile/update/id/95354"
+    Then I go to "/adminFile/update/id/95354"
+    And I should see a file attribute table
+    | Attribute Name    | Value         | Unit |
+    | camera parameters | test photo    |      |
     And I press "Delete"
     And I should not see "test photo"
     And I press "Save"
-    Then I go to "/adminFile/view/id/95354"
+    And I go to "/adminFile/view/id/95354"
     And I should see field "File Attribute Id" without value "5442"
 #    #Go to the last page of dataset log
     And I go to "datasetLog/admin/DatasetLog_page/74"
