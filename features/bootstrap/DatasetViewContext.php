@@ -293,9 +293,11 @@ class DatasetViewContext implements Context
      */
     public function iShouldSeeFieldWithValue($arg1, $arg2)
     {
-        PHPUnit_Framework_Assert::assertNotNull(
-            $row = $this->minkContext->getSession()->getPage()->find('css', sprintf('table tr:contains("%s""$s")', $arg1, $arg2))
-        );
+        $row = $this->minkContext->getSession()->getPage()->find('css', sprintf('table tr:contains("%s")', $arg1));
+        preg_match('/<td>[\d*\s]*<\/td>/', $row->getHtml(), $matches);
+        $search = array("<td>", "</td>");
+        $actual_attribute_id = str_replace($search,"", $matches[0]);
+        PHPUnit_Framework_Assert::assertEquals($arg2, $actual_attribute_id);
     }
 
     /**
@@ -303,9 +305,11 @@ class DatasetViewContext implements Context
      */
     public function iShouldSeeFieldWithoutValue($arg1, $arg2)
     {
-        $row = $this->minkContext->getSession()->getPage()->find('css', sprintf('table tr:contains("%s""$s")', $arg1, $arg2));
-        $value = preg_match('/<td>\d*\s<\/td>/', $row->getHtml());
-        PHPUnit_Framework_Assert::assertEquals(0, $value);
+        $row = $this->minkContext->getSession()->getPage()->find('css', sprintf('table tr:contains("%s")', $arg1));
+        preg_match('/<td>[\d*\s]*<\/td>/', $row->getHtml(), $matches);
+        $search = array("<td>", "</td>");
+        $actual_attribute_id = str_replace($search,"", $matches[0]);
+        PHPUnit_Framework_Assert::assertNotEquals($arg2, $actual_attribute_id);
     }
 
     /**
