@@ -44,7 +44,7 @@
   Scenario: Sign in as admin, delete an attribute of a published dataset and save, then check for history tab
     Given I sign in as an admin
     And I go to "/adminFile/view/id/13973"
-    And I should see field "File Attribute Id" with value "1"
+    And I should see field "File Attribute Id" with value "1 "
     When  I go to "/adminFile/update/id/13973"
     And I should see a file attribute table
     | Attribute Name | Value | Unit |
@@ -56,7 +56,7 @@
     And I should not see a button "Delete"
     And I press "Save"
     Then I go to "/adminFile/view/id/13973"
-    And I should see field "File Attribute Id" without value "1"
+    And I should see field "File Attribute Id" without value "1 "
     And I go to "dataset/100056"
     And I should see "Termitomyces sp. J132 fungus genome assembly data."
     And I follow "History"
@@ -66,7 +66,7 @@
   Scenario: Go to a non published dataset found in production-like database, delete a keyword attribute and save, then delete a camera parameters and save, then check the last page of dataset log
     Given I sign in as an admin
     And I go to "/adminFile/view/id/95354"
-    And I should see field "File Attribute Id" with value "5441 5442"
+    And I should see field "File Attribute Id" with value "5441 5442 "
     When I go to "/adminFile/update/id/95354"
     And I should see a file attribute table
     | Attribute Name    | Value         | Unit |
@@ -75,7 +75,7 @@
     And I press "Delete"
     And I press "Save"
     And I go to "/adminFile/view/id/95354"
-    And I should see field "File Attribute Id" with value "5442"
+    And I should see field "File Attribute Id" with value "5442 "
     Then I go to "/adminFile/update/id/95354"
     And I should see a file attribute table
     | Attribute Name    | Value         | Unit |
@@ -84,8 +84,8 @@
     And I should not see "test photo"
     And I press "Save"
     And I go to "/adminFile/view/id/95354"
-    And I should see field "File Attribute Id" without value "5442"
-#    #Go to the last page of dataset log
+    And I should see field "File Attribute Id" without value "5442 "
+    #Go to the last page of dataset log
     And I go to "datasetLog/admin/DatasetLog_page/74"
     And I should not see "100245"
     And I should not see "FCHCGJYBBXX-HKBAUpcgEAACRAAPEI-201_L2_2.fq.gz: file attribute added"
