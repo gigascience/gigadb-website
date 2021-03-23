@@ -73,7 +73,7 @@ class DatasetPageSettingsTest extends CDbTestCase
 
 	public function testGetFileSettingsNoCookies()
 	{
-		$defaultColumns = array('name','size', 'type_id', 'format_id', 'location', 'date_stamp','sample_id','attribute');
+		$defaultColumns = array('name','description','size', 'type_id', 'format_id', 'location', 'date_stamp','sample_id','attribute');
 		$defaultPageSize = 10 ;
 		$sut = new DatasetPageSettings($model);
 		$fileSettings = $sut->getFileSettings(null, DatasetPageSettings::MOCKUP_COLUMNS);
