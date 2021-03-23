@@ -33,11 +33,11 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <p class="dataset-release-date-text">Dataset type:  <?= $mainSection->getHeadline()['types'];?> <br> Data released on <?= $mainSection->getHeadline()['release_date'] ?></p>
                             <div class="color-background color-background-block dataset-color-background-block">
                                 <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="https://doi.org/10.5524/<?php echo $model->identifier;?>">https://doi.org/10.5524/<?php echo $model->identifier;?></a></p>
-                                <div id="wrapper">
-                                    <div id="first-div">
+                                <div id="dataset-block-wrapper">
+                                    <div id="badge-div">
                                         <a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?php echo $model->identifier;?></span></a>
                                     </div>
-                                    <div id="second-div">
+                                    <div id="dropdown-div">
                                         <div>
                                             <a onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></a>
                                             <div id="citationDropdown" class="citation-content">
