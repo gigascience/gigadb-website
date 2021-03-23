@@ -33,16 +33,25 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <p class="dataset-release-date-text">Dataset type:  <?= $mainSection->getHeadline()['types'];?> <br> Data released on <?= $mainSection->getHeadline()['release_date'] ?></p>
                             <div class="color-background color-background-block dataset-color-background-block">
                                 <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="https://doi.org/10.5524/<?php echo $model->identifier;?>">https://doi.org/10.5524/<?php echo $model->identifier;?></a></p>
-                                <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?php echo $model->identifier;?></span></a><button onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></button></p>
-                                <div id="citationDropdown" class="citation-content">
-                                    <?php
-                                    $identifier = $model->identifier;
-                                    $text = file_get_contents('https://data.datacite.org/text/x-bibliography/10.5524/'.$identifier);
-                                    $clean_text = strip_tags(preg_replace("/&#?[a-z0-9]+;/i","", $text));
-                                    ?>
-                                    <a id="Text" onclick="showText()" target="_blank">Text</a>
-                                    <a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier;?>' target="_self">RIS</a>
-                                    <a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier;?>' target="_self">BibTeX</a>
+                                <div id="wrapper">
+                                    <div id="first-div">
+                                        <a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?php echo $model->identifier;?></span></a>
+                                    </div>
+                                    <div id="second-div">
+                                        <div>
+                                            <a onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></a>
+                                            <div id="citationDropdown" class="citation-content">
+                                                <?php
+                                                $identifier = $model->identifier;
+                                                $text = file_get_contents('https://data.datacite.org/text/x-bibliography/10.5524/'.$identifier);
+                                                $clean_text = strip_tags(preg_replace("/&#?[a-z0-9]+;/i","", $text));
+                                                ?>
+                                                <a id="Text" onclick="showText()" target="_blank">Text</a>
+                                                <a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier;?>' target="_self">RIS</a>
+                                                <a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier;?>' target="_self">BibTeX</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
