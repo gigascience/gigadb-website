@@ -43,12 +43,24 @@
                         (2011): Genome data from foxtail millet (&lt;em&gt;Setaria italica&lt;/em&gt;). GigaScience.
                         <a href="http://dx.doi.org/10.5072/100020">http://dx.doi.org/10.5072/100020</a>
                     </p>
-                    <p>
-                        <a class="doi-badge" href="#">
-                            <span class="badge">DOI</span>
-                            <span class="badge">10.5072/100020</span>
-                        </a>
-                    </p>
+                    <div id="dataset-block-wrapper">
+                        <div id="badge-div">
+                            <a class="doi-badge" href="#">
+                                <span class="badge">DOI</span>
+                                <span class="badge">10.5072/100020</span>
+                            </a>
+                        </div>
+                        <div id="dropdown-div">
+                            <div>
+                                <a onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></a>
+                                <div id="citationDropdown" class="citation-content">
+                                    <a id="Text" onclick="" target="_blank">Text</a>
+                                    <a id="citeRis" href='#' target="_self">RIS</a>
+                                    <a id="citeBibTeX" href='#' target="_self">BibTeX</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,3 +97,24 @@
         </span>
     </div>
 </div>
+
+<script>
+    /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+    function showCitation() {
+        document.getElementById("citationDropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.drop-citation-btn')) {
+            var dropdowns = document.getElementsByClassName("citation-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
