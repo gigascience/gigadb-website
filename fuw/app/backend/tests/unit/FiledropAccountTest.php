@@ -33,8 +33,8 @@ class FiledropAccountTest extends \Codeception\Test\Unit
     protected function _before()
     {
         $this->cleanUpDirectories();
-        $this->filedrop = new FiledropAccount();
-
+        $filedropId = $this->tester->haveRecord('backend\models\FiledropAccount', array('id' => '100 ','doi' => '200001'));
+        $this->filedrop = FiledropAccount::findOne($filedropId);
         $this->tester->haveFixtures([
             'uploads' => [
                 'class' => UploadFixture::className(),
@@ -217,13 +217,13 @@ class FiledropAccountTest extends \Codeception\Test\Unit
         $doi = "200001";
         $this->filedrop->setDOI($doi);
         $count = Upload::find()
-            ->where(['status' => Upload::STATUS_ARCHIVED])
+            ->where(['status' => Upload::STATUS_ARCHIVED, 'filedrop_account_id' => $this->filedrop->id])
             ->count();
         $this->assertEquals(0, $count);
         $result = $this->filedrop->removeUploads();
         $this->assertEquals(2,$result);
         $count = Upload::find()
-            ->where(['status' => Upload::STATUS_ARCHIVED])
+            ->where(['status' => Upload::STATUS_ARCHIVED, 'filedrop_account_id' => $this->filedrop->id])
             ->count();
         $this->assertEquals(2, $count);
 

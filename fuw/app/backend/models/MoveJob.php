@@ -16,8 +16,12 @@ use \app\models\UpdateGigaDBJob;
  **/
 class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
 {
+    /** @var $doi identifier this file is associated with */
     public $doi;
+    /** @var $file name of the file to move */
     public $file;
+    /** @var  $filedrop id of filedrop to ensure we don't pick up a file of the same name from a terminated filedrop for same doi */
+    public $filedrop;
 
     /** 
     * @var $_fs Create a local proxy of Yii::$app->fs so we can inject mock in unit test */
