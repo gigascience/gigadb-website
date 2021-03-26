@@ -60,6 +60,7 @@ class MoveJobTest extends \Codeception\Test\Unit
         $job = new MoveJob();
         $job->doi = "200001";
         $job->file = "084.fq";
+        $job->filedrop = 100;
         $job->gigaDBQueue = $mockGigaDBQueue;
         $source = "/var/repo/200001/084.fq";
         $dest = "/var/ftp/public/200001/084.fq";
