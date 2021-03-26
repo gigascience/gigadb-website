@@ -8,10 +8,11 @@
 
 <?php
 $sample_id = FileSample::model()->find('file_id=:file_id', array(':file_id'=>$model->id));
- if(isset($sample_id))
+$attributes = FileAttributes::model()->findAll('file_id=:file_id', array(':file_id'=>$model->id));
+
+if(isset($sample_id))
  {
  $sample_name= Sample::model()->find('id=:id',array(':id'=>$sample_id->sample_id));
- $attributes = FileAttributes::model()->findAll('file_id=:file_id', array(':file_id'=>$sample_id->file_id));
  }
 
  $name="Not Set";
@@ -21,14 +22,16 @@ $sample_id = FileSample::model()->find('file_id=:file_id', array(':file_id'=>$mo
      $name=$sample_name->name;
  }
 
- if(isset($sample_id)&&isset($attributes))
- {
-     $attribute_id = "";
+$attribute_id = "";
 
+ if(!empty($attributes))
+ {
      foreach ($attributes as $attribute)
      {
-         $attribute_id .= $attribute->id." ";
+         $attribute_id .= $attribute->id . " ";
      }
+ }else{
+     $attribute_id = "Not Set";
  }
 
  $this->widget('zii.widgets.CDetailView', array(
