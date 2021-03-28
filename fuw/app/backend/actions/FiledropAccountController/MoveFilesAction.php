@@ -58,6 +58,7 @@ class MoveFilesAction extends \yii\rest\Action
             $jid = Yii::$app->queue->push(new MoveJob([
                 'doi' => $filedrop->doi,
                 'file' => $file->name,
+                'filedrop' => $filedrop->id,
             ]));       
             $jobs[] =  ["file" => $file->name, "jobId" => $jid];   
         }
