@@ -63,7 +63,7 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
      */
     public function execute($queue)
     {
-    	Yii::warning("Move job for {$this->file} ({$this->doi})");
+    	Yii::warning("Move job for {$this->file} (DOI:{$this->doi}, filedrop id: {$this->filedrop})");
     	$source = Yii::getAlias("@uploads/{$this->doi}/{$this->file}");
     	$dest = Yii::getAlias("@publicftp/{$this->doi}/{$this->file}");
     	$timestamp = (new \DateTime())->format('U');
@@ -73,7 +73,7 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
         }
         Yii::warning("source: $source, destination: $dest");
         if ( $this->_fs->copy($source,$dest) ) {
-            $upload = Upload::findOne(["doi" => $this->doi, "name" => $this->file]);
+            $upload = Upload::findOne(["filedrop_account_id" => $this->filedrop, "name" => $this->file]);
             if (!isset($upload)) {
                 Yii::error("Cannot find an Upload record for DOI {$this->doi} and file name {$this->file}");
                 return false;
