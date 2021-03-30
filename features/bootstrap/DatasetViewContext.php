@@ -301,7 +301,7 @@ class DatasetViewContext implements Context
     }
 
     /**
-     * @Then I should see field :arg1 is empty
+     * @Then I should see field :arg1 with empty value
      */
     public function iShouldSeeFieldIsEmpty($arg1)
     {
