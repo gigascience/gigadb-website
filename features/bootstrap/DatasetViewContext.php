@@ -301,15 +301,15 @@ class DatasetViewContext implements Context
     }
 
     /**
-     * @Then I should see field :arg1 without value :arg2
+     * @Then I should see field :arg1 is empty
      */
-    public function iShouldSeeFieldWithoutValue($arg1, $arg2)
+    public function iShouldSeeFieldIsEmpty($arg1)
     {
         $row = $this->minkContext->getSession()->getPage()->find('css', sprintf('table tr:contains("%s")', $arg1));
         preg_match('/<td>[\d*\s]*<\/td>/', $row->getHtml(), $matches);
         $search = array("<td>", "</td>");
         $actual_attribute_id = str_replace($search,"", $matches[0]);
-        PHPUnit_Framework_Assert::assertNotEquals($arg2, $actual_attribute_id);
+        PHPUnit_Framework_Assert::assertEmpty($actual_attribute_id);
     }
 
     /**
