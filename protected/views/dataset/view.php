@@ -39,7 +39,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     </div>
                                     <div id="dropdown-div">
                                         <div>
-                                            <a onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></a>
+                                            <a id="CiteDataset" onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></a>
                                             <div id="citationDropdown" class="citation-content">
                                                 <?php
                                                 $identifier = $model->identifier;
@@ -55,7 +55,6 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </div>
                 <div class="subsection">
                     <p><?php echo $mainSection->getDescription()['description'] ?></p>
