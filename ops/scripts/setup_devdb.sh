@@ -22,7 +22,7 @@ fi
 $DOCKER_COMPOSE run --rm test bash -c "psql -h database -U gigadb -c 'create database gigadb'" || true
 
 # generate migrations
-$DOCKER_COMPOSE run --rm csv-to-migrations bash -c "node /var/www/ops/scripts/csv_yii_migration.js dev"
+$DOCKER_COMPOSE run --rm csv-to-migrations bash -c "npm install /var/www/ops/scripts && node /var/www/ops/scripts/csv_yii_migration.js dev"
 
 # and run them
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate to 300000_000000 --connectionID=db --migrationPath=application.migrations.admin --interactive=0
