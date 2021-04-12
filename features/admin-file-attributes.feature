@@ -15,9 +15,9 @@
     Then I should see "Login"
 
   @ok
-  Scenario: Go to a published dataset found in production-like database
+  Scenario: Go to a published dataset
     Given I am not logged in to Gigadb web site
-    When I go to "dataset/100056"
+    When I go to "/dataset/100056"
     And I should see "Termitomyces sp. J132 fungus genome assembly data."
     And I follow "History"
     Then I should see "History" tab with text "File Termitomyces_assembly_v1.0.fa.gz updated"
@@ -29,7 +29,7 @@
     And I should see "History" tab with text "File Termitomyces_gene_v1.0.pep.fa updated"
 
   @ok @published
-  Scenario: Sign in as admin and visit admin file update page and see New Attribute, Edit, Delete, Save buttons
+  Scenario: See Attribute, Edit, Delete, and Save buttons on admin file update page
     Given I sign in as an admin
     When I am on "/adminFile/update/id/13973"
     Then I should see a button "New Attribute"
@@ -41,13 +41,13 @@
     And I should see a button input "Save"
 
   @ok @javascript @published
-  Scenario:  Go to a published dataset found in production-like database, should see the File Attribute Id of the last modified attribute
+  Scenario:  See the File Attribute Id of the last modified attribute on admin file view page
     Given I sign in as an admin
     When I go to "/adminFile/view/id/13973"
     Then I should see field "File Attribute Id" with value "1 "
 
   @ok @javascript @published
-  Scenario: Go to a published dataset found in production-like database, delete a last modified attribute
+  Scenario: Delete a last modified attribute on admin file update page
     Given I sign in as an admin
     And I am on "/adminFile/update/id/13973"
     When I press "Delete"
@@ -56,7 +56,7 @@
     And I should not see a button "Delete"
 
   @ok @javascript @published
-  Scenario: Go to a published dataset found in production-like database, delete a last modified attribute and save
+  Scenario: File Attribute Id is empty empty after deleting an attribute and saving
     Given I sign in as an admin
     And I am on "/adminFile/update/id/13973"
     When I press "Delete"
@@ -65,7 +65,7 @@
     And I should see field "File Attribute Id" with empty value
 
   @ok @javascript @published
-  Scenario: Go to a published dataset found in production-like database, delete a last modified attribute and check for history tab
+  Scenario: File attribute deletion is recorded in History tab
     Given I sign in as an admin
     And I go to "/adminFile/update/id/13973"
     And I should see a file attribute table
@@ -74,24 +74,28 @@
     And I should see a button input "Delete"
     When I press "Delete"
     And I press "Save"
-    Then I go to "dataset/100056"
+    Then I go to "/dataset/100056"
     And I should see "Termitomyces sp. J132 fungus genome assembly data."
     And I follow "History"
     And I should see "History" tab with text "Termitomyces_assembly_v1.0.fa.gz: file attribute deleted"
 
   @ok @javascript @nonPublished
-  Scenario: Go to a non published dataset found in production-like database, should see a keyword attribute and a camera parameters attribute and their File Attribute Id
+  Scenario: See a keyword attribute and a camera parameters attribute on admin file update page
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
     And I should see a file attribute table
     | Attribute Name    | Value         | Unit |
     | keyword           | test Bauhinia |      |
     | camera parameters | test photo    |      |
+
+  @ok @javascript @nonPublished
+  Scenario: See File Attribute Id on admin file view page
+    Given I sign in as an admin
     When I go to "/adminFile/view/id/95354"
     Then I should see field "File Attribute Id" with value "5441 5442 "
 
   @ok @javascript @nonPublished
-  Scenario: Go to a non published dataset found in production-like database, delete a keyword attribute
+  Scenario: Delete a keyword attribute on admin file update page
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
     When I press "Delete"
@@ -100,7 +104,7 @@
     | camera parameters | test photo    |      |
 
   @ok @javascript @nonPublished
-  Scenario: Go to a non published dataset found in production-like database, delete a keyword attribute and save
+  Scenario: Delete a keyword attribute and save, then check for File Attribute Id on admin file view page
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
     When I press "Delete"
@@ -109,7 +113,7 @@
     And I should see field "File Attribute Id" with value "5442 "
 
   @ok @javascript @nonPublished
-  Scenario: Go to a non published dataset found in production-like database, delete all attributes
+  Scenario: Delete all attributes from a non published dataset
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
     When I press "Delete"
@@ -118,7 +122,7 @@
     And I should not see "test photo"
 
   @ok @javascript @nonPublished
-  Scenario: Go to a non published dataset found in production-like database, delete all attributes and save
+  Scenario: Delete all attributes and save, File Attribute Id on admin file view page should be empty
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
     When I press "Delete"
@@ -128,7 +132,7 @@
     And I should see field "File Attribute Id" with empty value
 
   @ok @javascript @nonPublished
-  Scenario: Go to a non published dataset found in production-like database,  delete a file attribute and check the last page of dataset log
+  Scenario: Delete a file attribute and check the last page of dataset log
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
     When I press "Delete"
