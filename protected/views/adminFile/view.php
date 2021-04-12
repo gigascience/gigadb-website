@@ -22,16 +22,16 @@ if(isset($sample_id))
      $name=$sample_name->name;
  }
 
-$attribute_id = "";
+$attribute_value = "";
 
  if(!empty($attributes))
  {
      foreach ($attributes as $attribute)
      {
-         $attribute_id .= $attribute->id . " ";
+         $attribute_value .= $attribute->value . " ";
      }
  }else{
-     $attribute_id = "Not Set";
+     $attribute_value = "Not Set";
  }
 
  $this->widget('zii.widgets.CDetailView', array(
@@ -53,8 +53,8 @@ $attribute_id = "";
                     
                 ),
           array(
-                  'name'=>'FileAttributeID',
-                  'value'=>$attribute_id,
+                  'name'=>'FileAttributeValue',
+                  'value'=>$attribute_value,
           )
 	),
 )); ?>
