@@ -41,10 +41,11 @@
     And I should see a button input "Save"
 
   @ok @javascript @published
-  Scenario:  See the File Attribute Id of the last modified attribute on admin file view page
+  Scenario:  See the File Attribute Value of the last modified attribute on admin file view page
     Given I sign in as an admin
     When I go to "/adminFile/view/id/13973"
-    Then I should see field "File Attribute Id" with value "1 "
+    Then I should see field "File Attribute Value" with value "2013-7-15 "
+
 
   @ok @javascript @published
   Scenario: Delete a last modified attribute on admin file update page
@@ -56,13 +57,13 @@
     And I should not see a button "Delete"
 
   @ok @javascript @published
-  Scenario: File Attribute Id is empty empty after deleting an attribute and saving
+  Scenario: File Attribute value is empty empty after deleting an attribute and saving
     Given I sign in as an admin
     And I am on "/adminFile/update/id/13973"
     When I press "Delete"
     And I press "Save"
     Then I am on "/adminFile/view/id/13973"
-    And I should see field "File Attribute Id" with empty value
+    And I should see field "File Attribute Value" with value "Not Set"
 
   @ok @javascript @published
   Scenario: File attribute deletion is recorded in History tab
@@ -89,10 +90,10 @@
     | camera parameters | test photo    |      |
 
   @ok @javascript @nonPublished
-  Scenario: See File Attribute Id on admin file view page
+  Scenario: See File Attribute Value on admin file view page
     Given I sign in as an admin
     When I go to "/adminFile/view/id/95354"
-    Then I should see field "File Attribute Id" with value "5441 5442 "
+    Then I should see field "File Attribute Value" with value "test Bauhinia test photo "
 
   @ok @javascript @nonPublished
   Scenario: Delete a keyword attribute on admin file update page
@@ -104,13 +105,13 @@
     | camera parameters | test photo    |      |
 
   @ok @javascript @nonPublished
-  Scenario: Delete a keyword attribute and save, then check for File Attribute Id on admin file view page
+  Scenario: Delete a keyword attribute and save, then check for File Attribute Value on admin file view page
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
     When I press "Delete"
     And I press "Save"
     Then I am on "/adminFile/view/id/95354"
-    And I should see field "File Attribute Id" with value "5442 "
+    And I should see field "File Attribute Value" with value "test photo "
 
   @ok @javascript @nonPublished
   Scenario: Delete all attributes from a non published dataset
@@ -122,14 +123,14 @@
     And I should not see "test photo"
 
   @ok @javascript @nonPublished
-  Scenario: Delete all attributes and save, File Attribute Id on admin file view page should be empty
+  Scenario: Delete all attributes and save, File Attribute Value on admin file view page should be empty
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
     When I press "Delete"
     And I press "Delete"
     And I press "Save"
     Then I am on "/adminFile/view/id/95354"
-    And I should see field "File Attribute Id" with empty value
+    And I should see field "File Attribute Value" with value "Not Set"
 
   @ok @javascript @nonPublished
   Scenario: Delete a file attribute and check the last page of dataset log
