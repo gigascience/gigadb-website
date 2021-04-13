@@ -289,7 +289,7 @@ class DatasetViewContext implements Context
     }
 
     /**
-     * @Then I should see field :arg1 with value :arg2
+     * @Then I should see field :arg1 with :arg2
      */
     public function iShouldSeeFieldWithValue($arg1, $arg2)
     {
@@ -297,7 +297,12 @@ class DatasetViewContext implements Context
         preg_match('/<td>.+<\/td>/', $row->getHtml(), $matches);
         $search = array("<td>", "</td>");
         $actual_attribute_value = str_replace($search,"", $matches[0]);
-        PHPUnit_Framework_Assert::assertEquals($arg2, $actual_attribute_value);
+        if ($arg2 !== "empty") {
+            PHPUnit_Framework_Assert::assertEquals($arg2, $actual_attribute_value);
+        } else {
+            PHPUnit_Framework_Assert::assertEmpty($actual_attribute_value);
+        }
+
     }
 
 
