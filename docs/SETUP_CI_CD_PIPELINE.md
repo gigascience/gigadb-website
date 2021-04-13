@@ -501,4 +501,23 @@ Note: below,  18.136.238.239 is the public ip of the server the code was deploye
 $ docker --tlsverify -H=tcp://18.136.238.239:2376 --tlscacert=ca.pem  --tlscert=cert.pem --tlskey=key.pem ps
 ```
 
+#### Creating smoke data
 
+```
+docker --tlsverify -H=13.228.10.137:2376 exec rija-gigadb-website_application_1 ./protected/yiic smoketest createdata
+```
+
+#### Adding a new user identiy to FUW
+```
+$ docker --tlsverify -H=13.228.10.137:2376 exec rija-gigadb-website_console_1 ./yii identity/add-identity --username rija --email <your admin email> --role admin
+```
+
+### Using Gitlab dashboard
+
+the following operations on docker-compose services can be performed from the pipeline view in Gitlab:
+
+* Stop
+* Start
+* Tear Down
+* top (list all processes running in all containers)
+* smoke tests (check the configuration and wiring)
