@@ -68,3 +68,7 @@ CERT_EMAIL=foo@bar
 COVERALLS_RUN_LOCALLY=1
 GITLAB_UPSTREAM_PROJECT_ID=7041674
 MAIN_BRANCH=develop
+
+
+### CSV to Yii migration script conversion configuration ################################################################
+CSV_DIR=dev

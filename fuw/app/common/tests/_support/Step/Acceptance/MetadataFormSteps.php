@@ -87,6 +87,14 @@ class MetadataFormSteps
      }
 
     /**
+     * @Then I should not see :arg1
+     */
+     public function iShouldNotSee($arg1)
+     {
+        $this->I->dontSee($arg1);
+     }
+
+    /**
      * @Then I should see metadata
      */
      public function iShouldSeeMetadata(TableNode $files)

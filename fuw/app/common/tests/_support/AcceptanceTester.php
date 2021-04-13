@@ -27,11 +27,11 @@ class AcceptanceTester extends \Codeception\Actor
    /**
      * @Given there is :role :firstname :lastname
      */
-   	public function thereIsAUser($role, $firstname, $lastname)
+   	public function thereIsRoleUser($role, $firstname, $lastname)
      {
         if (!$this->grabFromDatabase('gigadb_user', 'id', [ 'username' => strtolower("${firstname}_${lastname}")]) ) {
 
-            $this->haveInDatabase('gigadb_user', [
+            $userId = $this->haveInDatabase('gigadb_user', [
 			    'email' => strtolower("${firstname}_${lastname}@gigadb.org"),
 			    'password' => '5a4f75053077a32e681f81daa8792f95',
 			    'first_name' => "$firstname",
@@ -43,6 +43,8 @@ class AcceptanceTester extends \Codeception\Actor
 			    'previous_newsletter_state' => true,
 			    'username' => strtolower("${firstname}_${lastname}"),
 			]);
+
+            error_log("userId: $userId, username: ".strtolower("${firstname}_${lastname}"));
         }
     }
 
