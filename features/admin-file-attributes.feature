@@ -44,7 +44,7 @@
   Scenario:  See the File Attribute Value of the last modified attribute on admin file view page
     Given I sign in as an admin
     When I go to "/adminFile/view/id/13973"
-    Then I should see field "File Attribute Value" with value "2013-7-15 "
+    Then I should see field "File Attribute Value" with "2013-7-15 "
 
 
   @ok @javascript @published
@@ -63,7 +63,7 @@
     When I press "Delete"
     And I press "Save"
     Then I am on "/adminFile/view/id/13973"
-    And I should see field "File Attribute Value" with value "Not Set"
+    And I should see field "File Attribute Value" with "empty"
 
   @ok @javascript @published
   Scenario: File attribute deletion is recorded in History tab
@@ -93,7 +93,7 @@
   Scenario: See File Attribute Value on admin file view page
     Given I sign in as an admin
     When I go to "/adminFile/view/id/95354"
-    Then I should see field "File Attribute Value" with value "test Bauhinia test photo "
+    Then I should see field "File Attribute Value" with "test Bauhinia test photo "
 
   @ok @javascript @nonPublished
   Scenario: Delete a keyword attribute on admin file update page
@@ -111,7 +111,7 @@
     When I press "Delete"
     And I press "Save"
     Then I am on "/adminFile/view/id/95354"
-    And I should see field "File Attribute Value" with value "test photo "
+    And I should see field "File Attribute Value" with "test photo "
 
   @ok @javascript @nonPublished
   Scenario: Delete all attributes from a non published dataset
@@ -130,7 +130,7 @@
     And I press "Delete"
     And I press "Save"
     Then I am on "/adminFile/view/id/95354"
-    And I should see field "File Attribute Value" with value "Not Set"
+    And I should see field "File Attribute Value" with "empty"
 
   @ok @javascript @nonPublished
   Scenario: Delete a file attribute and check the last page of dataset log
