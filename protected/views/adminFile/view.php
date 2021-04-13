@@ -30,8 +30,6 @@ $attribute_value = "";
      {
          $attribute_value .= $attribute->value . " ";
      }
- }else{
-     $attribute_value = "Not Set";
  }
 
  $this->widget('zii.widgets.CDetailView', array(
