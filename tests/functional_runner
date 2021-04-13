@@ -4,6 +4,7 @@ set -e
 set -u
 
 # before running tests, run migration for main database first (GigaDB)
+./ops/scripts/setup_devdb.sh gigadb_testdata
 docker-compose run --rm application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.schema --interactive=0
 # before running tests, run migration for main database first (FUW)
 docker-compose exec -T console /app/yii migrate --interactive=0

@@ -16,7 +16,10 @@ docker-compose run --rm fuw-config
 docker-compose build web test console
 
 # Launch the services required by GigaDB and FUW, and then start nginx (web server) 
-docker-compose up --build gigadb fuw && docker-compose up -d web
+docker-compose up -d --build gigadb fuw-public fuw-admin console
+
+# start web server
+docker-compose up -d web
 
 # Compile the CSS files
 docker-compose run --rm less
@@ -34,11 +37,19 @@ docker-compose up -d chrome
 # Install dependencies for the Beanstalkd workers
 docker-compose exec console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer update'
 
-# Start Beanstalkd workers
+# Start Beanstalkd workers after running the required migrations
+docker-compose exec console /app/yii migrate/fresh --interactive=0
 docker-compose up -d fuw-worker gigadb-worker
 
-# Setup the main and test databases
-./ops/scripts/setup_devdb.sh
-./ops/scripts/setup_testdb.sh
+# Bootstrap the main database using data from "data/dev"
+./ops/scripts/setup_devdb.sh dev
+
+# Bootstrap the test database for unit tests using data from "data/gigadb_testdata"
+./ops/scripts/setup_testdb.sh gigadb_testdata
+
+# create the database dumps needed by functional tests and acceptance tests
+./ops/scripts/make_pgdmp_gigadb_testdata.sh
+./ops/scripts/make_pgdmp_production_like.sh
+
 
 

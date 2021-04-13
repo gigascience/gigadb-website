@@ -73,16 +73,6 @@ return CMap::mergeArray($pre_config, array(
             'enableParamLogging'=>true,
             'schemaCachingDuration'=>30
         ),
-        'testdb'=>array(
-            'class'=>'system.db.CDbConnection',
-            'connectionString'=>"pgsql:dbname=gigadb_test;host={$dbConfig['host']}",
-            'username'=>$dbConfig['user'],
-            'password'=>$dbConfig['password'],
-            'charset'=>'utf8',
-            'persistent'=>true,
-            'enableParamLogging'=>true,
-            'schemaCachingDuration'=>30
-        ),          
        'image'=>array(
             'class'=>'application.extensions.image.CImageComponent',
             # GD or ImageMagick
