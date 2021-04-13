@@ -55,8 +55,21 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
      */
     public function aDatasetWithDOIOwnedByUserHasStatus($doi, $firstname, $lastname, $status)
     {
-    	$submitter_id = $this->I->grabFromDatabase('gigadb_user', 'id', array('username' => "${firstname}_${lastname}"));
-         $this->I->haveInDatabase('dataset', [
+
+        $image_id = 999;
+        if ( !$this->I->grabFromDatabase('image', 'id', array('id' => $image_id)) ) {
+            $this->I->haveInDatabase('image', [
+                'id' => $image_id,
+                "location" => "no_image.jpg",
+                "license" => "Public domain",
+                "photographer" => "GigaDB",
+                "source" => "GigaDB",
+                "url" => "http://gigadb.org/images/data/cropped/no_image.png",
+            ]);
+        }
+
+    	$submitter_id = $this->I->grabFromDatabase('gigadb_user', 'id', array('username' => strtolower("${firstname}_${lastname}")));
+    	$this->I->haveInDatabase('dataset', [
 			  'submitter_id' => $submitter_id,
 			  'identifier' => "$doi",
 			  'title' => "Dataset Fantastic",
@@ -64,7 +77,10 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
 			  'dataset_size' => 3453534634,
 			  'ftp_site' => 'ftp://data.org',
 			  'upload_status' => "$status",
+              'image_id' => $image_id,
 			]);
+    	error_log("we are in CuratorSteps");
+
     }
 
 

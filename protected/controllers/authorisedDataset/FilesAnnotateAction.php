@@ -60,16 +60,22 @@ class FilesAnnotateAction extends CAction
             list($sheetData, $parseErrors) = $datasetUpload->parseFromSpreadsheet("/var/tmp/$id-".$postedFile->name);
             if (isset($sheetData) && is_array($sheetData) && !empty($sheetData)) {
                 list($newUploads, $attributes, $mergeErrors) = $datasetUpload->mergeMetadata($uploadedFiles, $sheetData);
-                $bulkStatus = $fileUploadSrv->updateUploadMultiple($id,$newUploads);
-                Yii::log("Parsed attributes: ".var_export($attributes, true),'info');
-                $bulkAttrStatus = $fileUploadSrv->addAttributes($id,$attributes);
-                Yii::log("update Upload Multiple: ", $bulkStatus);
+                // Yii::log("sheetData: ".var_export($sheetData,true));
+                // Yii::log("newUploads: ".var_export($newUploads,true));
+                // Yii::log("Errors: ".var_export($mergeErrors,true));
+                if (!empty($newUploads)) {
+                    $bulkStatus = $fileUploadSrv->updateUploadMultiple($id,$newUploads);
+                }
+                if (!empty($attributes)) {
+                    $bulkAttrStatus = $fileUploadSrv->addAttributes($id,$attributes);
+                }
+
             }
             if($bulkStatus) {
                 Yii::app()->user->setFlash('filesAnnotate','Metadata loaded');
             }
             if(count(array_merge($parseErrors, $mergeErrors)) > 0 ) {
-                 Yii::app()->user->setFlash('filesAnnotateErrors',implode("\n",array_merge($parseErrors, $mergeErrors)));
+                 Yii::app()->user->setFlash('filesAnnotateErrors',implode("<br/>\n",array_merge($parseErrors, $mergeErrors)));
             }
 
             $this->getController()->redirect(["authorisedDataset/annotateFiles", "id" => $id]);            
@@ -134,7 +140,12 @@ class FilesAnnotateAction extends CAction
         elseif ( Yii::$app->request->isPost ) {
                 Yii::app()->user->setFlash('error','Error with some files');
         }
-        $this->getController()->render("filesAnnotate", array("identifier" => $id, "uploads" => $uploadedFiles, "attributes" => $attributes));
+        $this->getController()->render("filesAnnotate", array(
+                                    "identifier" => $id, 
+                                    "uploads" => $uploadedFiles, 
+                                    "attributes" => $attributes, 
+                                    "filetypes" => $datasetUpload->getFiletypesJSON()
+        ));
     }
 }
 

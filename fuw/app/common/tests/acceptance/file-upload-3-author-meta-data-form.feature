@@ -42,8 +42,8 @@ Scenario: Making changes to metadata
 	When I press "Next"
 	And I fill in the form with
 	| File name 	| Data type | Description text 	|
-	| TheProof.csv 	| Rich Text | foo bar 			| 
-	| CC0_pixel.jpg | Image 	| hello world 		|
+	| TheProof.csv 	| Script 	| foo bar 			| 
+	| CC0_pixel.jpg | Annotation| hello world 		|
 	Then I should see a "Complete and return to Your Uploaded Datasets page" button
 
 @ok
@@ -61,8 +61,8 @@ Scenario: Saving metadata
 	And I press "Next"
 	And I fill in the form with
 	| File name 	| Data type | Description text 	|
-	| TheProof.csv 	| Rich Text | foo bar 			| 
-	| CC0_pixel.jpg | Image 	| hello world 		|
+	| TheProof.csv 	| Script 	| foo bar 			| 
+	| CC0_pixel.jpg | Annotation| hello world 		|
 	When I press "Complete and return to Your Uploaded Datasets page"
 	Then I should be on "/user/view_profile#submitted"
 	And I should see "File uploading complete"
@@ -83,8 +83,8 @@ Scenario: Removing uploads
 	And I press "Next"
 	And I fill in the form with
 	| File name 	| Data type | Description text 	|
-	| TheProof.csv 	| Rich Text | foo bar 			| 
-	| CC0_pixel.jpg | Image 	| hello world 		|
+	| TheProof.csv 	| Script 	| foo bar 			| 
+	| CC0_pixel.jpg | Annotation| hello world 		|
 	And I press the first delete button
 	When I press "Complete and return to Your Uploaded Datasets page"
 	Then I should be on "/user/view_profile#submitted"
