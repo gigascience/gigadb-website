@@ -48,7 +48,7 @@ variables:
   MAIN_BRANCH: "develop"
   GITLAB_PRIVATE_TOKEN: $CI_BUILD_TOKEN
   GITLAB_UPSTREAM_PROJECT_ID: "7041674"
-  CSV_DIR: "test"
+  CSV_DIR: "prod_like"
   YII_ENV_DEV: "true"
   SERVER_HOSTNAME: "gigadb.gigasciencejournal.com"
 
