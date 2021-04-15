@@ -68,6 +68,7 @@ files/html/help.html
 features.txt
 features.xml
 sql/gigadb_testdata.pgdmp
+sql/production_like.pgdmp
 
 .terraform
 terraform.tfstate*
