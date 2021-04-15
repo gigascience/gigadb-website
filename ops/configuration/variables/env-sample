@@ -7,7 +7,8 @@
 
 COMPOSE_FILE=ops/deployment/docker-compose.yml
 # Keep the line below uncommented to enable profiling of the web application using Tideways XHPROF and XHGUI
-# COMPOSE_FILE=ops/deployment/docker-compose.yml:ops/deployment/docker-compose.prof.yml
+#COMPOSE_FILE=ops/deployment/docker-compose.yml:ops/deployment/docker-compose.prof.yml
+#COMPOSE_FILE=ops/deployment/docker-compose.yml:ops/deployment/docker-compose.prof.yml:ops/deployment/docker-compose.build.yml
 
 ### prefix for local container ##############################################################################
 COMPOSE_PROJECT_NAME=deployment
@@ -27,6 +28,7 @@ COMPOSE_PROJECT_NAME=deployment
 
 REPO_NAME="<Your fork name here>"
 GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
+FORK_VARIABLES_URL="https://gitlab.com/api/v4/groups/3501869/variables"
 PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
 
 ### Deployment Environment  #############################################################################################
@@ -42,6 +44,7 @@ APPLICATION=../..
 YII_PATH=/var/www/vendor/yiisoft/yii
 YII2_PATH=/var/www/vendor/yiisoft/yii2
 DATA_SAVE_PATH=~/.containers-data/gigadb
+YII_DEBUG=true
 
 ### Core services managed in Docker compose ##############################################################################
 NGINX_VERSION=1.15
