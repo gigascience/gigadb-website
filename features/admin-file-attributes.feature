@@ -122,7 +122,7 @@
     Then I should not see "test Bauhinia"
     And I should not see "test photo"
 
-  @wip @javascript @nonPublished
+  @ok @javascript @nonPublished
   Scenario: Delete all attributes and save, File Attribute Value on admin file view page should be empty
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
