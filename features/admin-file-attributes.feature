@@ -63,7 +63,7 @@
     When I press "Delete"
     And I press "Save"
     Then I am on "/adminFile/view/id/13973"
-    And I should see field "File Attribute Value" with "empty"
+    And I should not see "File Attribute Value"
 
   @ok @javascript @published
   Scenario: File attribute deletion is recorded in History tab
@@ -122,7 +122,7 @@
     Then I should not see "test Bauhinia"
     And I should not see "test photo"
 
-  @ok @javascript @nonPublished
+  @wip @javascript @nonPublished
   Scenario: Delete all attributes and save, File Attribute Value on admin file view page should be empty
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
@@ -130,7 +130,7 @@
     And I press "Delete"
     And I press "Save"
     Then I am on "/adminFile/view/id/95354"
-    And I should see field "File Attribute Value" with "empty"
+    And I should not see "File Attribute Value"
 
   @ok @javascript @nonPublished
   Scenario: Delete a file attribute and check the last page of dataset log

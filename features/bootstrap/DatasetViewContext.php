@@ -297,11 +297,7 @@ class DatasetViewContext implements Context
         preg_match('/<td>.+<\/td>/', $row->getHtml(), $matches);
         $search = array("<td>", "</td>");
         $actual_attribute_value = str_replace($search,"", $matches[0]);
-        if ($arg2 !== "empty") {
-            PHPUnit_Framework_Assert::assertEquals($arg2, $actual_attribute_value);
-        } else {
-            PHPUnit_Framework_Assert::assertEmpty($actual_attribute_value);
-        }
+        PHPUnit_Framework_Assert::assertEquals($arg2, $actual_attribute_value);
 
     }
 
