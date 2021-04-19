@@ -22,15 +22,26 @@ if(isset($sample_id))
      $name=$sample_name->name;
  }
 
-$attribute_value = "";
+
+$attribute_array = array();
 
  if(!empty($attributes))
  {
+     $attribute_value = "";
      foreach ($attributes as $attribute)
      {
          $attribute_value .= $attribute->value . " ";
      }
+
+     $attribute_array['name'] = 'File Attribute Value';
+     $attribute_array['value'] = $attribute_value;
+
+ } else {
+     $attribute_array['name'] = '';
+     $attribute_array['value'] = '';
  }
+
+
 
  $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
@@ -48,11 +59,7 @@ $attribute_value = "";
 		  array(
                     'name'=>'Sample',
                     'value'=> $name,
-                    
                 ),
-          array(
-                  'name'=>'FileAttributeValue',
-                  'value'=>$attribute_value,
-          )
+        $attribute_array,
 	),
 )); ?>
