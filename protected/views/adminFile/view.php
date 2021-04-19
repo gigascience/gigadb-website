@@ -33,7 +33,7 @@ $attribute_array = array();
          $attribute_value .= $attribute->value . " ";
      }
 
-     $attribute_array['name'] = 'File Attribute Value';
+     $attribute_array['name'] = 'FileAttributeValue';
      $attribute_array['value'] = $attribute_value;
 
  } else {
