@@ -69,10 +69,6 @@
   Scenario: File attribute deletion is recorded in History tab
     Given I sign in as an admin
     And I go to "/adminFile/update/id/13973"
-    And I should see a file attribute table
-      | Attribute Name | Value     | Unit |
-      | last_modified  | 2013-7-15 |      |
-    And I should see a button input "Delete"
     When I press "Delete"
     And I press "Save"
     Then I go to "/dataset/100056"
@@ -131,17 +127,6 @@
     And I press "Save"
     Then I am on "/adminFile/view/id/95354"
     And I should not see "File Attribute Value"
-
-  @ok @javascript @nonPublished
-  Scenario: Delete a file attribute and check the last page of dataset log
-    Given I sign in as an admin
-    And I am on "/adminFile/update/id/95354"
-    When I press "Delete"
-    And I press "Save"
-    Then I go to "datasetLog/admin/DatasetLog_page/74"
-    And I should not see "100245"
-    And I should not see "FCHCGJYBBXX-HKBAUpcgEAACRAAPEI-201_L2_2.fq.gz: file attribute added"
-    And I should not see "FCHCGJYBBXX-HKBAUpcgEAACRAAPEI-201_L2_2.fq.gz: file attribute deleted"
 
 
 
