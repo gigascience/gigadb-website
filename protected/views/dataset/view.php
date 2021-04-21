@@ -37,21 +37,28 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     <div id="badge-div">
                                         <a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?php echo $model->identifier;?></span></a>
                                     </div>
-                                    <div id="dropdown-div">
-                                        <div>
-                                            <a id="CiteDataset" onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></a>
-                                            <div id="citationDropdown" class="citation-content">
-                                                <?php
-                                                $identifier = $model->identifier;
-                                                $text = file_get_contents('https://data.datacite.org/text/x-bibliography/10.5524/'.$identifier);
-                                                $clean_text = strip_tags(preg_replace("/&#?[a-z0-9]+;/i","", $text));
-                                                ?>
-                                                <a id="Text" onclick="showText()" target="_blank">Text</a>
-                                                <a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier;?>' target="_self">RIS</a>
-                                                <a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier;?>' target="_self">BibTeX</a>
+                                    <?php if ($model->upload_status == 'Published') { ?>
+                                        <div id="dropdown-div">
+                                            <div>
+                                                <a id="CiteDataset" onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></a>
+                                                <div id="citationDropdown" class="citation-content">
+                                                    <?php
+                                                    $text = file_get_contents('https://data.datacite.org/text/x-bibliography/10.5524/' . $model->identifier);
+                                                    $clean_text = strip_tags(preg_replace("/&#?[a-z0-9]+;/i", "", $text));
+                                                    ?>
+                                                    <script>
+                                                        function showText() {
+                                                            var textWindow = window.open();
+                                                            textWindow.document.write(`<?php echo $clean_text; ?>`);
+                                                        }
+                                                    </script>
+                                                    <a id="Text" onclick="showText()" target="_blank">Text</a>
+                                                    <a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier;?>' target="_self">RIS</a>
+                                                    <a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier;?>' target="_self">BibTeX</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
@@ -813,13 +820,5 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
                 }
             }
         }
-    }
-
-    //Write the clean text to a new window
-    function showText() {
-        var text = `<?php echo $clean_text; ?>`
-        console.log(text);
-        var textWindow = window.open();
-        textWindow.document.write(text);
     }
 </script>
