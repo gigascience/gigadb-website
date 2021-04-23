@@ -43,7 +43,7 @@ GIGADB_ENV=dev
 APPLICATION=../..
 YII_PATH=/var/www/vendor/yiisoft/yii
 YII2_PATH=/var/www/vendor/yiisoft/yii2
-DATA_SAVE_PATH=~/.containers-data/gigadb
+DATA_SAVE_PATH=~/.containers-data/default-gigadb
 YII_DEBUG=true
 
 ### Core services managed in Docker compose ##############################################################################
@@ -74,4 +74,4 @@ MAIN_BRANCH=develop
 
 
 ### CSV to Yii migration script conversion configuration ################################################################
-CSV_DIR=dev
+CSV_DIR=production_like
