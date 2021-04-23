@@ -41,10 +41,10 @@
     And I should see a button input "Save"
 
   @ok @javascript @published
-  Scenario:  See the File Attribute Value of the last modified attribute on admin file view page
+  Scenario:  See the File Attribute value of the last modified attribute on admin file view page
     Given I sign in as an admin
     When I go to "/adminFile/view/id/13973"
-    Then I should see field "File Attribute Value" with "2013-7-15 "
+    Then I should see field "File Attribute" with "2013-7-15"
 
 
   @ok @javascript @published
@@ -57,13 +57,13 @@
     And I should not see a button "Delete"
 
   @ok @javascript @published
-  Scenario: File Attribute value is empty empty after deleting an attribute and saving
+  Scenario: File Attribute value is empty after deleting an attribute and saving
     Given I sign in as an admin
     And I am on "/adminFile/update/id/13973"
     When I press "Delete"
     And I press "Save"
     Then I am on "/adminFile/view/id/13973"
-    And I should not see "File Attribute Value"
+    And I should not see "File Attribute"
 
   @ok @javascript @published
   Scenario: File attribute deletion is recorded in History tab
@@ -86,10 +86,10 @@
     | camera parameters | test photo    |      |
 
   @ok @javascript @nonPublished
-  Scenario: See File Attribute Value on admin file view page
+  Scenario: See File Attribute value on admin file view page
     Given I sign in as an admin
     When I go to "/adminFile/view/id/95354"
-    Then I should see field "File Attribute Value" with "test Bauhinia test photo "
+    Then I should see field "File Attribute" with "test Bauhinia, test photo"
 
   @ok @javascript @nonPublished
   Scenario: Delete a keyword attribute on admin file update page
@@ -107,7 +107,7 @@
     When I press "Delete"
     And I press "Save"
     Then I am on "/adminFile/view/id/95354"
-    And I should see field "File Attribute Value" with "test photo "
+    And I should see field "File Attribute" with "test photo"
 
   @ok @javascript @nonPublished
   Scenario: Delete all attributes from a non published dataset
@@ -119,14 +119,14 @@
     And I should not see "test photo"
 
   @ok @javascript @nonPublished
-  Scenario: Delete all attributes and save, File Attribute Value on admin file view page should be empty
+  Scenario: Delete all attributes and save, File Attribute value on admin file view page should be empty
     Given I sign in as an admin
     And I am on "/adminFile/update/id/95354"
     When I press "Delete"
     And I press "Delete"
     And I press "Save"
     Then I am on "/adminFile/view/id/95354"
-    And I should not see "File Attribute Value"
+    And I should not see "File Attribute"
 
 
 
