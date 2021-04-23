@@ -9,20 +9,20 @@ assignees: ''
 
 ## User story
 
->As a user
->I want something implemented
+>As a user  
+>I want something implemented  
 >So that I can benefit
 
 
 ## Acceptance criteria
 
 
->Given conditions
->When event
+>Given conditions  
+>When event  
 >Then outcome
 
->Given conditions
->When event
+>Given conditions  
+>When event  
 >Then outcome
 
 
