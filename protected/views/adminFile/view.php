@@ -30,9 +30,9 @@ $attribute_array = array();
      $attribute_value = "";
      foreach ($attributes as $attribute)
      {
-         $attribute_value .= $attribute->value . " ";
+         $attribute_value .= $attribute->value . ', ';
      }
-
+     $attribute_value = rtrim($attribute_value, ', ');
      $attribute_array['name'] = 'FileAttribute';
      $attribute_array['value'] = $attribute_value;
 
