@@ -12,7 +12,7 @@ source "./.env"
 
 # Accepting parameter and set a default value for it for selecting the kind of canned DB data to populate the database
 # the value should match directory name under the "data" directory at the root of the project
-dbSet=${1:-"test"}
+dbSet=${1:-"gigadb_testdata"}
 
 # docker-compose executable
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then

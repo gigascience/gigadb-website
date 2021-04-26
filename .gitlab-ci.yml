@@ -222,7 +222,7 @@ test_run:
     - sleep 8
     # Setup dev and test db
     - ./ops/scripts/setup_testdb.sh
-    - ./ops/scripts/setup_devdb.sh
+    - ./ops/scripts/setup_devdb.sh dev
     # Start web container
     - docker-compose up -d web
     - docker-compose exec -T web /usr/local/bin/enable_sites gigadb.dev.http fuw-backend.dev.http
