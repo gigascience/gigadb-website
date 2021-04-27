@@ -25,41 +25,83 @@ if(isset($sample_id))
 
 $attribute_array = array();
 
- if(!empty($attributes))
- {
-     $attribute_value = "";
-     foreach ($attributes as $attribute)
-     {
-         $attribute_value .= $attribute->value . ', ';
-     }
-     $attribute_value = rtrim($attribute_value, ', ');
-     $attribute_array['name'] = 'FileAttribute';
-     $attribute_array['value'] = $attribute_value;
+ if(!empty($attributes)) {
+     foreach ($attributes as $attribute) {
 
- } else {
-     $attribute_array['name'] = '';
-     $attribute_array['value'] = '';
+         array_push($attribute_array, $attribute->value);
+     }
  }
 
+ ?>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 10.3px;
+    }
+    th, td {
+        border: 1px transparent;
+        text-align: left;
+        padding: 3px;
+    }
+    tr:nth-child(odd) {
+        background-color: #E5F1F4;
+    }
+    tr:nth-child(even) {
+        background-color: #f8f8f8;
+    }
+</style>
 
-
- $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'dataset_id',
-		'name',
-		'location',
-		'extension',
-		'size',
-		'description',
-		'date_stamp',
-		'format_id',
-		'type_id',
-		  array(
-                    'name'=>'Sample',
-                    'value'=> $name,
-                ),
-        $attribute_array,
-	),
-)); ?>
+<table>
+    <tr>
+        <th><?php echo 'ID'; ?></th>
+        <td><?php echo $model->id; ?></td>
+    </tr>
+    <tr>
+        <th><?php echo 'Dataset'; ?> </th>
+        <td><?php echo $model->dataset_id; ?></td>
+    </tr>
+    <tr>
+        <th><?php echo 'File Name'; ?></th>
+        <td><?php echo $model->name; ?></td>
+    </tr>
+    <tr>
+        <th><?php echo 'Location'; ?></th>
+        <td><?php echo $model->location; ?></td>
+    </tr>
+    <tr>
+        <th><?php echo 'Extension'; ?></th>
+        <td><?php echo $model->extension; ?></td>
+    </tr>
+    <tr>
+        <th><?php echo 'Size'; ?></th>
+        <td><?php echo $model->size; ?></td>
+    </tr>
+    <tr>
+        <th><?php echo 'Description'; ?></th>
+        <td><?php echo $model->description; ?></td>
+    </tr>
+    <tr>
+        <th><?php echo 'Release Date'; ?></th>
+        <td><?php echo $model->date_stamp; ?></td>
+    </tr>
+    <tr>
+        <th><?php echo 'File Format'; ?></th>
+        <td><?php echo $model->format_id; ?></td>
+    </tr>
+    <tr>
+        <th><?php echo 'Data Type'; ?></th>
+        <td><?php echo $model->type_id; ?></td>
+    </tr>
+    <tr>
+        <th><?php echo 'Sample'; ?></th>
+        <td><?php echo $name; ?></td>
+    </tr>
+    <?php for ($i = 0; $i < count($attribute_array); $i++) { ?>
+        <tr>
+            <th><?php echo 'File Attribute'; ?></th>
+            <td><?php echo $attribute_array[$i]; ?></td>
+        </tr>
+    <?php } ?>
+</table>
