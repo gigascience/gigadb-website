@@ -20,10 +20,13 @@ docker-compose run --rm fuw-config
 docker-compose build web test console
 
 # Launch the services required by GigaDB and FUW, and then start nginx (web server) 
-docker-compose up -d --build gigadb fuw-public fuw-admin console
+docker-compose up -d --build application database fuw-public fuw-admin console
 
 # start web server
 docker-compose up -d web
+
+# Install composer dependencies for GigaDB
+docker-compose run gigadb
 
 # Compile the CSS files
 docker-compose run --rm less
