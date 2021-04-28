@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
+# bails on error
 set -e
+
+# print command being run
+set -x
 
 echo "Starting all services..."
 
