@@ -28,6 +28,9 @@ docker-compose up -d web
 # Compile the CSS files
 docker-compose run --rm less
 
+# Install composer dependencies for FUW
+docker-compose run fuw
+
 # Install the NPM dependencies for the Javascript application and the ops scripts
 docker-compose run --rm js bash -c "npm install"
 docker-compose run --rm js bash -c "cd /var/www/ops/scripts/ && npm install"
