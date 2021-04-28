@@ -1,4 +1,4 @@
-@issue-49 @merging-two-authors @javascript @ok-docker
+@issue-49 @merging-two-authors @javascript @ok-docker @timeout-prone
 Feature: Merging duplicate authors
 	In order to reduce data duplication and to increase datasets interlinking
 	As an admin user
