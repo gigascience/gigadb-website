@@ -44,7 +44,8 @@
   Scenario:  See the File Attribute value of the last modified attribute on admin file view page
     Given I sign in as an admin
     When I go to "/adminFile/view/id/13973"
-    Then I should see field "File Attribute" with "2013-7-15"
+    Then I should see a view file table with row name "File Attribute"
+    | File Attribute | 2013-7-15 |
 
 
   @ok @javascript @published
@@ -89,7 +90,9 @@
   Scenario: See File Attribute value on admin file view page
     Given I sign in as an admin
     When I go to "/adminFile/view/id/95354"
-    Then I should see field "File Attribute" with "test Bauhinia, test photo"
+    Then I should see a view file table with row name "File Attribute"
+    | File Attribute | test Bauhinia |
+    | File Attribute | test photo    |
 
   @ok @javascript @nonPublished
   Scenario: Delete a keyword attribute on admin file update page
@@ -107,7 +110,8 @@
     When I press "Delete"
     And I press "Save"
     Then I am on "/adminFile/view/id/95354"
-    And I should see field "File Attribute" with "test photo"
+    And I should see a view file table with row name "File Attribute"
+    | File Attribute | test photo |
 
   @ok @javascript @nonPublished
   Scenario: Delete all attributes from a non published dataset
