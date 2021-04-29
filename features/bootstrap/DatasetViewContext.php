@@ -289,18 +289,16 @@ class DatasetViewContext implements Context
     }
 
     /**
-     * @Then I should see field :arg1 with :arg2
+     * @Then I should see a view file table with row name :arg1
      */
-    public function iShouldSeeFieldWithValue($arg1, $arg2)
+    public function iShouldSeeAViewFileTableWithRowName($arg1, TableNode $table)
     {
-        $row = $this->minkContext->getSession()->getPage()->find('css', sprintf('table tr:contains("%s")', $arg1));
-        preg_match('/<td>.+<\/td>/', $row->getHtml(), $matches);
-        $search = array("<td>", "</td>");
-        $actual_attribute_value = str_replace($search,"", $matches[0]);
-        PHPUnit_Framework_Assert::assertEquals($arg2, $actual_attribute_value);
-
+        foreach ($table as $row) {
+            PHPUnit_Framework_Assert::assertTrue(
+                $this->minkContext->getSession()->getPage()->hasContent($row[$arg1])
+            );
+        }
     }
-
 
     /**
      * @Then I should see :arg1 tab with table
