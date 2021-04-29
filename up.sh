@@ -12,6 +12,16 @@ echo "Starting all services..."
 docker stop socat && docker rm socat
 docker run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock || true
 
+# Check there is .env
+if ! [ -f  ./.env ];then
+  read -p "To create .env, enter your private gitlab token and name of the name of your fork on GitLab: " token
+  read -p "To create .env, enter the name of your fork on GitLab: " reponame
+  cp ops/configuration/variables/env-sample .env
+  sed -i'.bak' "s/#GITLAB_PRIVATE_TOKEN=/GITLAB_PRIVATE_TOKEN=$token/" .env
+  sed -i'.bak' "s/REPO_NAME=\"<Your fork name here>\"/REPO_NAME=\"$reponame\"/" .env
+  rm .env.bak
+fi
+
 # Configure the container services
 docker-compose run --rm config
 docker-compose run --rm fuw-config
