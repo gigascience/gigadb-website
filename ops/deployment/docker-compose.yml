@@ -146,7 +146,7 @@ services:
       - application
       - database
       # - phantomjs
-    command: composer install
+    command: composer update
     networks:
       - web-tier
     cap_drop:
@@ -202,7 +202,7 @@ services:
       - database
 
       # - phantomjs
-    command: composer install
+    command: composer update
     networks:
       - web-tier
     cap_drop:
