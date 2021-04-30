@@ -14,7 +14,7 @@ docker run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0
 
 # Check there is .env
 if ! [ -f  ./.env ];then
-  read -s "To create .env, enter your private gitlab token and name of the name of your fork on GitLab: " token
+  read -sp "To create .env, enter your private gitlab token and name of the name of your fork on GitLab: " token
   read -p "To create .env, enter the name of your fork on GitLab: " reponame
   cp ops/configuration/variables/env-sample .env
   sed -i'.bak' "s/#GITLAB_PRIVATE_TOKEN=/GITLAB_PRIVATE_TOKEN=$token/" .env
