@@ -36,17 +36,13 @@ docker-compose up -d --build application database fuw-public fuw-admin console
 docker-compose up -d web
 
 # Install composer dependencies for GigaDB
-if ! [ -f vendor ];then
-  docker-compose run gigadb
-fi
+docker-compose run gigadb
 
 # Compile the CSS files
 docker-compose run --rm less
 
 # Install composer dependencies for FUW
-if ! [ -f fuw/app/vendor ];then
-  docker-compose run fuw
-fi
+docker-compose run fuw
 
 # Install the NPM dependencies for the Javascript application and the ops scripts
 docker-compose run --rm js bash -c "npm install"
@@ -59,9 +55,7 @@ docker-compose run --rm js
 docker-compose up -d chrome
 
 # Install dependencies for the Beanstalkd workers
-if ! [ -f gigadb/app/worker/file-worker/vendor ];then
-  docker-compose exec console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer install'
-fi
+docker-compose exec console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer update'
 
 # Start Beanstalkd workers after running the required migrations
 docker-compose exec console /app/yii migrate/fresh --interactive=0
