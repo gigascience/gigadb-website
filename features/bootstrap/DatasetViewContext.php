@@ -273,7 +273,7 @@ class DatasetViewContext implements Context
     /**
      * @Then I should see a file attribute table
      */
-    public function iShouldSeeATable(TableNode $table)
+    public function iShouldSeeAFileAttributeTable(TableNode $table)
     {
         foreach ($table as $row) {
             PHPUnit_Framework_Assert::assertTrue(
