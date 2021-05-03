@@ -442,15 +442,4 @@ class DatasetViewContext implements Context
         $element = $this->minkContext->getSession()->getPage()->find('css', "a[id='$arg1']" );
         $element->click();
     }
-
-    /**
-     * @When I check for a button :arg1
-     * To find onclick button
-     */
-    public function iCheckForAButton($arg1)
-    {
-        $arg1 = str_replace(" ", "", $arg1);
-        $element = $this->minkContext->getSession()->getPage()->find('css', "a[id='$arg1']");
-        PHPUnit_Framework_Assert::assertNotNull($element);
-    }
 }

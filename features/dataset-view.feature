@@ -334,7 +334,6 @@ Feature: a user visit the dataset page
 	Scenario: To see the citation box and and the citation source
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
-		And I check for a button "Cite Dataset"
 		When I click "Cite Dataset"
 		Then I should see "Text"
 		And I should see "RIS"
