@@ -100,7 +100,7 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
 									    'headers' => [
 									        'Accept' => 'text/x-bibliography',
 									    ],
-									    'connect_timeout' => 30
+									    'connect_timeout' => 5
 									]);
 			}
 			catch(GuzzleException $e) {
