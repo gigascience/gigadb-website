@@ -1,0 +1,6 @@
+{
+    "UNKNOWN": 6,
+    "FASTA": 8,
+    "FASTQ": 9,
+    "CSV": 12
+}

@@ -1,9 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -e -u
 
-./tests/acceptance
-./tests/unit_functional
-./tests/coverage
-./tests/css_check
-./tests/javascript_check
+set -a
+source .env
+set +a
+
+./tests/unit_runner
+./tests/functional_runner
+docker-compose run --rm test ./tests/css_check
+docker-compose run --rm test ./tests/javascript_check
+./tests/acceptance_runner ci-js
+./tests/coverage_runner
+

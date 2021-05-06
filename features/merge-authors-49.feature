@@ -1,4 +1,4 @@
-@issue-49 @merging-two-authors @javascript @ok-docker
+@issue-49 @merging-two-authors @javascript @ok-docker @timeout-prone
 Feature: Merging duplicate authors
 	In order to reduce data duplication and to increase datasets interlinking
 	As an admin user
@@ -7,8 +7,7 @@ Feature: Merging duplicate authors
 Background:
 	Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 	And default admin user exists
-	When I go to "/dataset/100002"
-	Then I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)"
+	And dataset "100002" exists
 
 @ok
 Scenario: On author edit form, there is a button to start the merging with another author

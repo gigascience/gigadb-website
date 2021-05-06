@@ -29,12 +29,26 @@ class AdminDatasetController extends Controller
     {
         return array(
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                  'actions'=>array('create','admin','update','private', 'mint','checkDOIExist'),
+                  'actions'=>array('create','admin','update','private', 'mint','checkDOIExist', 'assignFTPBox','sendInstructions','saveInstructions','mockup','moveFiles'),
                   'roles'=>array('admin'),
             ),
             array('deny',  // deny all users
                 'users'=>array('*'),
             ),
+        );
+    }
+
+    /**
+     * Yii's method for routing urls to an action. Override to use custom actions
+     */
+    public function actions()
+    {
+        return array(
+            'assignFTPBox'=>'application.controllers.adminDataset.AssignFTPBoxAction',
+            'sendInstructions'=>'application.controllers.adminDataset.SendInstructionsAction',
+            'saveInstructions'=>'application.controllers.adminDataset.SaveInstructionsAction',
+            'mockup'=>'application.controllers.adminDataset.MockupAction',
+            'moveFiles'=>'application.controllers.adminDataset.MoveFilesAction',
         );
     }
 
@@ -47,7 +61,7 @@ class AdminDatasetController extends Controller
         $dataset = new Dataset;
         $dataset->image = new Images;
 
-        Yii::log("actionCreate",'info');
+        $datasetPageSettings = new DatasetPageSettings($dataset);
 
         if (!empty($_POST['Dataset']) && !empty($_POST['Images'])) {
         	Yii::log("Processing submitted data", 'info');
@@ -103,7 +117,7 @@ class AdminDatasetController extends Controller
 
         }
 
-        $this->render('create', array('model'=>$dataset)) ;
+        $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
     }
 
     /**
@@ -111,6 +125,15 @@ class AdminDatasetController extends Controller
      */
     public function actionAdmin()
     {
+
+        $criteria=new CDbCriteria(array(                    
+            'order'=>'identifier asc',
+        ));
+
+        $dataProvider=new CActiveDataProvider('Dataset', array(
+            'criteria'=>$criteria,
+        ));
+
         $model=new Dataset('search');
         $model->unsetAttributes();  // clear any default values
         if (isset($_GET['Dataset'])) {
@@ -119,6 +142,7 @@ class AdminDatasetController extends Controller
 
         $this->render('admin', array(
             'model'=>$model,
+            'dataProvider'=>$dataProvider,
         ));
     }
 
@@ -131,6 +155,30 @@ class AdminDatasetController extends Controller
     {
         $model = $this->loadModel($id);
 
+        // setting DatasetUpload, the busisness object for File uploading
+        $webClient = new \GuzzleHttp\Client();
+        $fileUploadSrv = new FileUploadService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => 3600,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requesterEmail" => Yii::app()->user->email,
+            "identifier"=> $model->identifier,
+            "dataset" => new DatasetDAO(["identifier" => $model->identifier]),
+            "dryRunMode"=>false,
+            ]);
+        $datasetUpload = new DatasetUpload(
+            $fileUploadSrv->dataset, 
+            $fileUploadSrv, 
+            Yii::$app->params['dataset_upload']
+        );
+
+        $datasetPageSettings = new DatasetPageSettings($model);
+
         $dataProvider = new CActiveDataProvider('CurationLog', array(
             'criteria' => array(
                 'condition' => "dataset_id=$id",
@@ -139,7 +187,26 @@ class AdminDatasetController extends Controller
         ));
         if (isset($_POST['Dataset'])) {
             if (isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status) {
-                CurationLog::createlog($_POST['Dataset']['upload_status'], $id);
+                $statusIsSet = false;
+                switch( $_POST['Dataset']['upload_status'] )
+                {
+                    case "Submitted":
+                        $contentToSend = $datasetUpload->renderNotificationEmailBody("Submitted");
+                        $statusIsSet = $datasetUpload->setStatusToSubmitted($contentToSend);
+                        break;
+                    case "DataPending":
+                        $contentToSend = $datasetUpload->renderNotificationEmailBody("DataPending");
+                        $statusIsSet = $datasetUpload->setStatusToDataPending(
+                            $contentToSend, $model->submitter->email
+                        );
+                        break;
+                    default:
+                        $statusIsSet = true;                    
+                }
+                if ($statusIsSet) {
+                    CurationLog::createlog($_POST['Dataset']['upload_status'], $id);
+                }
+
             }
             if ($_POST['Dataset']['curator_id'] != $model->curator_id) {
                 if ($_POST['Dataset']['curator_id'] != "") {
@@ -267,12 +334,18 @@ class AdminDatasetController extends Controller
                 }
 
 
-
-                if ($model->upload_status == 'Published') {
-                    $this->redirect('/dataset/' . $model->identifier);
-                } else {
-                    $this->redirect(array('/dataset/view/id/' . $model->identifier.'/token/'.$model->token));
+                switch($datasetPageSettings->getPageType()) {
+                    case "draft":
+                        $this->redirect('/adminDataset/admin/');
+                        break;                    
+                    case "public":
+                        $this->redirect('/dataset/' . $model->identifier);
+                        break;
+                    case "hidden":
+                        $this->redirect(array('/dataset/view/id/' . $model->identifier.'/token/'.$model->token));
+                        break;
                 }
+
             } else {
                 Yii::log(print_r($model->getErrors(), true), 'error');
             }
@@ -280,6 +353,7 @@ class AdminDatasetController extends Controller
 
         $this->render('update', array(
             'model' => $model,
+            'datasetPageSettings' => $datasetPageSettings,
             'curationlog'=>$dataProvider,
             'dataset_id'=>$id,
         ));
@@ -294,14 +368,14 @@ class AdminDatasetController extends Controller
     {
         $id = $_GET['identifier'];
         $model= Dataset::model()->find("identifier=?", array($id));
-        if (!$model) {
+        $datasetPageSettings = new DatasetPageSettings($model);
+        if ( "invalid" === $datasetPageSettings->getPageType() ) {
             $this->redirect('/site/index');
-        } elseif ($model->upload_status == 'Published') {
+        } elseif ( "public" === $datasetPageSettings->getPageType() ) {
             $this->redirect('/dataset/'.$model->identifier);
         }
 
-        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        $model->token = substr(str_shuffle($chars), 0, 16);
+        $model->token = Yii::$app->security->generateRandomString(16);
         $model->save();
 
         $this->redirect('/dataset/view/id/'.$model->identifier.'/token/'.$model->token);

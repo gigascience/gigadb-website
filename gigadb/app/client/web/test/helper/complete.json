@@ -1,0 +1,22 @@
+{
+    "uploaded": [
+	    {
+	        "id": 1,
+	        "doi": "000000",
+	        "name": "TheProof.csv",
+	        "description": "some sample",
+	        "datatype": "Repeat sequence",
+	        "extension": "TEXT",
+	        "size": 1120000
+	    },
+	    {
+	        "id": 2,
+	        "doi": "000000",
+	        "name": "TheProof2.jpg",
+	        "description": "some visualisation",
+	        "datatype": "Annotation",
+	        "extension": "JPEG",
+	        "size": 1170000
+	    }
+	]
+}

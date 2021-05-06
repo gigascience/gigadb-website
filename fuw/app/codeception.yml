@@ -1,0 +1,12 @@
+# global codeception file to run tests from all apps
+include:
+    - common
+    - frontend
+    - backend
+    - console
+coverage:
+    show_only_summary: true
+paths:
+    log: console/runtime/logs
+settings:
+    colors: true

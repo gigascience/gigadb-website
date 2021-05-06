@@ -31,7 +31,7 @@ class DatasetViewTest extends FunctionalTesting
     public function testItShouldDisplayCitations() {
         // Go to parrot dataset page which can sometimes return timeout error
         $url = "http://gigadb.dev/dataset/100039";
-        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "Martinez-Cruzado, J.-C. (2012). A locally funded Puerto Rican parrot");
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "(PubMed:23587420)");
     }
 
 }

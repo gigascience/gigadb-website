@@ -9,10 +9,17 @@ namespace GigaDB\Tests\UnitTests;
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class AffilateUserIdentityTest extends \PHPUnit_Framework_TestCase
+class AffilateUserIdentityTest extends \CDbTestCase
 {
 
+	protected $fixtures=array(
+        'gigadb_user'=>'User',
+    );
 
+	public function setUp()
+	{
+		parent::setUp();
+	}
 
 
 	public function testAuthenticateNonExistingUser()

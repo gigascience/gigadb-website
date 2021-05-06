@@ -57,7 +57,7 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 		// Yii::log("Saving to cache the data from:". $this->getCacheKeyForLocalData( $dataset_id ),'info');
 		$invalidationQuery = preg_replace("/@id/", $dataset_id,Yii::app()->params['cacheConfig']['DatasetComponents']['invalidationQuery']);
 		$ttl = preg_replace("/@id/", $dataset_id,Yii::app()->params['cacheConfig']['DatasetComponents']['timeToLive']);
-		$this->_cacheDependency->sql = $invalidationQuery;
+		$this->_cacheDependency->sql = defined('YII_DEBUG') ? "select current_time;" : $invalidationQuery;
 		return $this->_cache->set( $this->getCacheKeyForLocalData( $dataset_id ),
 									$content,
 									$ttl,

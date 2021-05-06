@@ -9,9 +9,18 @@ namespace GigaDB\Tests\UnitTests;
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class UserIdentityTest extends \PHPUnit_Framework_TestCase
+class UserIdentityTest extends \CDbTestCase
 {
 
+	protected $fixtures=array(
+        'gigadb_user'=>'User',
+        'dataset'=>'Dataset',
+    );
+
+	public function setUp()
+	{
+		parent::setUp();
+	}
 
 	public function testAuthenticateStrongHashedValidPasswordAndActiveUser()
 	{

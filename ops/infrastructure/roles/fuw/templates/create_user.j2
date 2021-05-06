@@ -1,0 +1,8 @@
+
+DO $$
+BEGIN
+  CREATE USER {{ fuw_db_user }} WITH PASSWORD '{{ fuw_db_password }}';
+  EXCEPTION WHEN OTHERS THEN
+  RAISE NOTICE 'not creating user {{ fuw_db_user }} -- it already exists';
+END;
+$$;

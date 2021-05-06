@@ -1,0 +1,23 @@
+FROM node:13.5-buster
+
+# Set Environment Variables
+ENV DEBIAN_FRONTEND noninteractive
+ENV FFOX_DOWNLOAD_URL=https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-GB
+
+RUN apt-get update && \
+	# Get the basics for safe building of packaged debian libraries
+	apt-get install -y --no-install-recommends \
+	    apt-transport-https \
+	    build-essential && \
+	# Install Firefox
+	apt-get install -y --no-install-recommends \
+		libdbus-glib-1-dev \
+		libx11-xcb1 \
+		packagekit-gtk3-module && \
+	wget -q -O - "${FFOX_DOWNLOAD_URL}" | tar xjv -C /opt && \
+	ln -s /opt/firefox/firefox /usr/local/bin/firefox && \
+	# Remove all temporary files to reduce bloat on that layer
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+WORKDIR /var/www/gigadb/app/client/web

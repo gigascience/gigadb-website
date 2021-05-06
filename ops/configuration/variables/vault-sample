@@ -1,0 +1,11 @@
+
+vault_staging_pg_user: 
+vault_staging_pg_password: 
+vault_staging_pg_database: 
+vault_staging_fuw_db_user: 
+vault_staging_fuw_db_password: 
+vault_staging_fuw_db_database: 
+
+vault_private_gitlab_token: <gitlab private token>
+vault_gitlab_url: https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F<your gitlab project>
+vault_staging_private_key_file_location: <private keys to the server>
