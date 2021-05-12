@@ -1,9 +1,9 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a report of a defect on the live service, so we can investigate.
 title: ''
 labels: bug
-assignees: ''
+assignees: pli888, rija, kencho51
 
 ---
 
