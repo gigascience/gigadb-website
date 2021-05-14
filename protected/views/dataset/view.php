@@ -39,9 +39,9 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     </div>
                                     <?php if ($model->upload_status == 'Published') { ?>
                                         <div id="dropdown-div">
-                                            <div>
-                                                <a id="CiteDataset" onclick="showCitation()" class="drop-citation-btn" >Cite Dataset<span class="caret"></span></a>
-                                                <div id="citationDropdown" class="citation-content">
+                                            <div class="dropdown">
+                                                <button id="CiteDataset" class="drop-citation-btn dropdown-toggle" type="button" data-toggle="dropdown">Cite Dataset<span class="caret"></span></button>
+<!--                                                <div id="citationDropdown" class="citation-content">-->
                                                     <?php
                                                     $text = file_get_contents('https://data.datacite.org/text/x-bibliography/10.5524/' . $model->identifier);
                                                     $clean_text = strip_tags(preg_replace("/&#?[a-z0-9]+;/i", "", $text));
@@ -52,12 +52,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                                             textWindow.document.write(`<?php echo $clean_text; ?>`);
                                                         }
                                                     </script>
-                                                    <ul>
+                                                    <ul class="dropdown-menu" aria-labelledby="CiteDataset">
                                                         <li><a id="Text" onclick="showText()" target="_blank">Text</a></li>
                                                         <li><a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier;?>' target="_self">RIS</a></li>
                                                         <li><a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier;?>' target="_self">BibTeX</a></li>
                                                     </ul>
-                                                </div>
+<!--                                                </div>-->
                                             </div>
                                         </div>
                                     <?php } ?>

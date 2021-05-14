@@ -438,7 +438,6 @@ class DatasetViewContext implements Context
      */
     public function iClick($arg1)
     {
-        $arg1 = str_replace(" ", "", $arg1);
         $element = $this->minkContext->getSession()->getPage()->find('css', "a[id='$arg1']" );
         $element->click();
     }

@@ -334,7 +334,7 @@ Feature: a user visit the dataset page
 	Scenario: To see the citation box and and the citation source
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
-		When I click "Cite Dataset"
+		When I press "Cite Dataset"
 		Then I should see "Text"
 		And I should see "RIS"
 		And I should see "BibTeX"
@@ -343,7 +343,7 @@ Feature: a user visit the dataset page
 	Scenario: To show the citation text from CrossCite after clicking the Formatted Text button in the citation box
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
-		And I click "Cite Dataset"
+		And I press "Cite Dataset"
 		When I click "Text"
 		Then I go to new tab and should see "Huang, Y., Li, Y., Burt, D. W., Chen, H., Zhang, Y., Qian, W., Kim, H., Gan, S., Zhao, Y., Li, J., Yi, K., Feng, H., Zhu, P., Li, B., Liu, Q., Fairley, S., Magor, K. E., Du, Z., Hu, X., … Li, N. (2013). Genome sequence of the duck (Anas platyrhynchos) [Data set]. GigaScience Database. https://doi.org/10.5524/101001"
 
@@ -351,7 +351,7 @@ Feature: a user visit the dataset page
 	Scenario: To get RIS file after clicking the RIS in the citation box
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
-		And I click "Cite Dataset"
+		And I press "Cite Dataset"
 		When I click on the "RIS" button
 		Then the response should contain "101001"
 		# 200: the request completed successfully
@@ -361,7 +361,7 @@ Feature: a user visit the dataset page
 	Scenario: To get BibTeX file after clicking the BibTeX in the citation box
 		Given I am not logged in to Gigadb web site
 		And I am on "/dataset/101001"
-		And I click "Cite Dataset"
+		And I press "Cite Dataset"
 		When I click on the "BibTeX" button
 		Then the response should contain "101001"
 		# 200: the request completed successfully
