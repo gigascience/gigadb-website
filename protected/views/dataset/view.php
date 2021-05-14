@@ -52,9 +52,11 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                                             textWindow.document.write(`<?php echo $clean_text; ?>`);
                                                         }
                                                     </script>
-                                                    <a id="Text" onclick="showText()" target="_blank">Text</a>
-                                                    <a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier;?>' target="_self">RIS</a>
-                                                    <a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier;?>' target="_self">BibTeX</a>
+                                                    <ul>
+                                                        <li><a id="Text" onclick="showText()" target="_blank">Text</a></li>
+                                                        <li><a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier;?>' target="_self">RIS</a></li>
+                                                        <li><a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier;?>' target="_self">BibTeX</a></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
