@@ -1,5 +1,7 @@
 # GigaDB
 
+[![Join the chat at https://gitter.im/gigascience/GigaScience-Sprint0-Daily-Scrum-3456](https://badges.gitter.im/gigascience/GigaScience-Sprint0-Daily-Scrum-3456.svg)](https://gitter.im/gigascience/GigaScience-Sprint0-Daily-Scrum-3456?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## What is it?
 
 [GigaDB](http://gigadb.org) is a database which provides information
