@@ -93,9 +93,8 @@ p.dataset-release-date-text {
   margin : 0;
   float : left ;
 }
-#dropdown-div ul {
-  padding: 0;
-  list-style: none;
+.dropdown-box {
+  position: absolute;
 }
 .drop-citation-btn {
   width: 110px;
@@ -118,23 +117,14 @@ p.dataset-release-date-text {
 .drop-citation-btn:focus {
   outline: none;
 }
-.citation-content {
-  display: none;
-  width: 110px;
+#dropdown-div ul {
+  list-style: none;
+  position: relative;
+  float: none;
   margin-top: 5px;
-  font-size: 13px;
-  position: absolute;
-  background-color: white;
-  border: 1px solid darkseagreen;
+  min-width: 100px;
+  border: 1px solid #099242;
   border-radius: 4px 4px 4px 4px;
-  z-index: 1;
-  cursor: pointer;
+  font-size: 13px;
 }
-.citation-content a {
-  color: black;
-  padding: 8px 14px;
-  text-decoration: none;
-  display: block;
-  font-size: 12px;
-}
-.citation-content a:hover {background-color: #F3FAF6;}
+#dropdown-div li a:hover {background-color: #F3FAF6;}
