@@ -37,60 +37,7 @@ $ cd gigadb-website
 $ ./up.sh
 ```
 
-### Detailed instructions to set up and start the applications
-
->**Note 0**: You can also read, pick and choose the steps in ``up.sh``
-
-
-**(1)** To setup the web application locally, do the following:
-
-```
-$ cd gigadb-website                         # your cloned git repository for Gigadb website
-$ git checkout develop                      # the branch with the latest code base
-$ cp ops/configuration/variables/env-sample .env    # ensure GITLAB_PRIVATE_TOKEN is set, as well as <Your fork name here>
-$ docker-compose run --rm config            # generate the configuration using variables in .env, GitLab, then exit
-
-```
-
->**Note 1**: A `.secrets` file will be created automatically and populated using 
-secrets variables stored in GitLab.
-
->**Note 2**: If you are not a member of the Gigascience's Forks GitLab group, 
-you will have to provide your own values for the necessary variables using 
-`ops/configuration/variables/secrets-sample` as a starting point:
->```
->$ cp ops/configuration/variables/secrets-sample .secrets
->$ vi .secrets
->```
-
-
-**(2)** To install PHP Composer dependencies and start the PHP webapp, run the following commands:
-
-```
-$ docker-compose up -d --build gigadb            # start php-fpm and postgresql containers, install php dependencies
-$ docker-compose run --rm less              # generate site.css from less/site.less
-```
-
-
-The **gigadb** container will run composer update using the `composer.json` 
-generated in the previous step, and will launch two containers named
-**application** and **database**, then it will exit. It's ok to run the command 
-repeatedly.
-
-**(3)** Start the web server
-
-Starting the web container will first enable site configuration connecting nginx to gigadb PHP application server before starting the web server as a deamon.
-
-```
-$ docker-compose up -d web                  # Start the web server
-```
-
-Upon success, three services should now be started in detached mode.
-You can then navigate to the website at: [http://gigadb.gigasciencejournal.com:9170/](http://gigadb.gigasciencejournal.com:9170/)
-
-
->**Note**: The first time (or when using ``--build``, as explained below), it will take longer to start the services as the 
-**application** and **web** containers need to be built first.
+>**Note**: You can also read, pick and choose the steps in ``up.sh`` for a more manual and adhoc setup or just to understand how it works
 
 #### About the ``--build`` argument
 
@@ -120,9 +67,29 @@ $ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=
 
 The project can be configured using *deployment variables* managed in `.env`, 
 *application variables* managed in the [docker-compose.yml](ops/deployment/docker-compose.yml) 
-file and its overrides (`docker-compose.*.yml`). Finally, passwords, api keys 
-and tokens are managed as *secret variables* in `.secrets`.
+file and its overrides (`docker-compose.*.yml`). There is a second type of variables called secrets for passwords, api keys 
+and tokens and they are stored as *secret variables* in `.secrets` for the application access.
 
+When using the ``up.sh`` script to setup the project, both `.env` and `.secrets` will be automatically generated.
+The generation of the former will require two inputs from the user, the GitLab private tokens and the name of the user's fork of GigaDB in
+GitLab's ``gigascience/Forks`` group.
+
+the content .env is meant to be manually tweaked by the developer to suit is particular development environment or the nature of the work is engaged with.
+The secret variables' values are sourced from a password vault in GitLab. The variables in the password vault are organised in a hierarchy of groups:
+```
+GitLab
+└── gigascience
+    ├── Forks
+    │   ├── alice-gigadb-website
+    │   └── bob-gigadb-website
+    └── Upstream
+        └── gigadb-website
+```
+
+A variable can be defined at any level, but the closer to the leaf, the more prevailing an assignment is.
+The higher level are for variables that have the same value for most setups (e.g: the develpoment url is likely to be the same for Alice, Bob and other developers).
+If there is a need to customise the value of a variable, we just need to define it at a lower level and that assigment will take precedence (e.g: Bob needs to use a different port for development url as the default port is used already on his computer).
+Variables that are specific to each developer should be defined only at the leaf level (a developer's fork)
 
 ## Testing GigaDB 
 
