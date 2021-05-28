@@ -48,6 +48,7 @@ if ! [ -f  ./.secrets ];then
     echo "Retrieving variables from ${PROJECT_VARIABLES_URL}"
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | select(.key != "TLSAUTH_CERT") | select(.key != "TLSAUTH_KEY") | select(.key != "TLSAUTH_CA") | select(.key != "staging_tlsauth_ca") | select(.key != "staging_tlsauth_key") | select(.key != "staging_tlsauth_cert") | select(.key != "live_tlsauth_ca_ca") | select(.key != "live_tlsauth_ca_cert") | select(.key != "live_tlsauth_ca_key") |.key + "=" + .value' > .project_var
     cat .group_var .fork_var .project_var > .secrets && rm .group_var && rm .fork_var && rm .project_var
+    echo "# Some help about this file in ops/configuration/variables/secrets-sample" >> .secrets
 fi
 echo "Sourcing secrets"
 source "./.secrets"
