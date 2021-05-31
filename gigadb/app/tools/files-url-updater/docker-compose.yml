@@ -1,9 +1,15 @@
 version: '2'
 services:
-  php:
-    image: yiisoftware/yii2-php:7.4-apache
+  pg9_3:
+    image: postgres:9.3
     volumes:
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      - ./:/app:delegated
+      - ./sql/bootstrap_gigadb.sql:/docker-entrypoint-initdb.d/gigadb.sql
+      - ./sql:/var/sql
     ports:
-      - '8000:80'
+      - '5432:5432'
+
+  updater:
+    image: files-url-updater
+    volumes:
+      - ./sql:/var/sql
+      - .:/app
