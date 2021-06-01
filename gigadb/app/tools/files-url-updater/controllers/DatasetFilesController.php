@@ -30,13 +30,21 @@ class DatasetFilesController extends Controller
 
     /**
      * This command will download and load in database production backup for the given date
-     *
+     * 
+     * @throws \Throwable
      * @return int Exit code
      */
     public function actionDownloadRestoreBackup()
     {
-        $this->stdout("Downloading and restoring the backup for {$this->date}\n", Console::BOLD);
-        system("echo true");
+        $this->stdout("\nDownloading and restoring the backup for {$this->date}\n", Console::BOLD);
+        try {
+            system("true");
+        }
+        catch (Throwable $e) {
+            $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
+            Yii::error($e->getMessage());
+            return ExitCode::OSERR;
+        }
         return ExitCode::OK;
     }
 
@@ -55,11 +63,20 @@ class DatasetFilesController extends Controller
      * This command will update file table to replace ftp urls for the supplied list of dataset ids
      *
      * TODO: to implement
-     * @param array $dataset_ids the message to be echoed.
+     * @throws \Throwable
      * @return int Exit code
      */
     public function actionUpdateFtpUrl()
     {
+        $this->stdout("\nTransforming ftp urls...\n", Console::BOLD);
+        try {
+            system("true");
+        }
+        catch (Throwable $e) {
+            $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
+            Yii::error($e->getMessage());
+            return ExitCode::OSERR;
+        }
         return ExitCode::OK;
     }
 
