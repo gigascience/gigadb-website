@@ -11,5 +11,4 @@ services:
   updater:
     image: files-url-updater
     volumes:
-      - ./sql:/var/sql
       - .:/app
