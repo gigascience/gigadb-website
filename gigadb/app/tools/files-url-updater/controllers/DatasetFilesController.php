@@ -17,10 +17,15 @@ class DatasetFilesController extends Controller
      */
     public $date;
 
+    /**
+     * @var array $ids list of dataset ids to process
+     */
+    public $ids;
+
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','date'];
+        return ['color', 'interactive', 'help','date','ids'];
     }
 
     /**
@@ -53,7 +58,7 @@ class DatasetFilesController extends Controller
      * @param array $dataset_ids the message to be echoed.
      * @return int Exit code
      */
-    public function actionUpdateFtpUrl(array $dataset_ids)
+    public function actionUpdateFtpUrl()
     {
         return ExitCode::OK;
     }

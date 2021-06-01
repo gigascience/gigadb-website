@@ -26,7 +26,8 @@ $ docker-compose run --rm updater ./vendor/bin/codecept run tests/acceptance -v
 ## Run commands
 
 ```
-$ docker-compose run --rm updater ./yii dataset-files/download-restore-backup 20210530
+$ docker-compose run --rm updater ./yii dataset-files/download-restore-backup --date 20210530
+$ docker-compose run --rm updater ./yii dataset-files/update-ftp-url --ids 12,34,67
 ```
 
 ## Get help
