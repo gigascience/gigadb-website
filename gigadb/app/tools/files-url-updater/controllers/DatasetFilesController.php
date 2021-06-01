@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use \yii\helpers\Console;
-use yii\console\Controller;
-use yii\console\ExitCode;
+use \yii\console\Controller;
+use \yii\console\ExitCode;
 
 /**
  * The tool for updating production database's file table to replace ftp urls
