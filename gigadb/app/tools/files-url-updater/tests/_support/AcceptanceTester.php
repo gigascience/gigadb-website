@@ -29,26 +29,25 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function theToolIsConfigured()
     {
-//        throw new \PHPUnit\Framework\IncompleteTestError("Step `the tool is configured` is not defined");
+        //TODO check config are valid
         true;
     }
 
     /**
-     * @When I run the command :arg1 with options :arg2
+     * @When I run the command :command with options :options
      */
-    public function iRunTheCommandWithOptions($arg1, $arg2)
+    public function iRunTheCommandWithOptions($command, $options)
     {
-//        throw new \PHPUnit\Framework\IncompleteTestError("Step `I run the command :arg1 with options :arg2` is not defined");
-        true;
+        $this->runShellCommand("$command $options");
+
     }
 
     /**
-     * @Then I should see :arg1
+     * @Then I should see :output
      */
-    public function iShouldSee($arg1)
+    public function iShouldSee($output)
     {
-//        throw new \PHPUnit\Framework\IncompleteTestError("Step `I should see :arg1` is not defined");
-        true;
+        $this->seeInShellOutput($output);
     }
 
 
