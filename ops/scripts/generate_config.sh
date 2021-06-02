@@ -53,6 +53,9 @@ fi
 echo "Sourcing secrets"
 source "./.secrets"
 
+## Deal with PHP memory limits
+export PHP_MEM=-1
+
 # If we are on staging environment override variable name with STAGING_* or REMOTE_* counterpart
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     GIGADB_HOST=$REMOTE_GIGADB_HOST
@@ -63,6 +66,7 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     PUBLIC_HTTP_PORT=$REMOTE_PUBLIC_HTTP_PORT
     PUBLIC_HTTPS_PORT=$REMOTE_PUBLIC_HTTPS_PORT
     SERVER_HOSTNAME=$REMOTE_HOSTNAME
+    PHP_MEM=128M
 fi
 
 
@@ -127,7 +131,7 @@ envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/yiic.php.dist
 TARGET=${APP_SOURCE}/protected/yiic.php
-VARS='$YII_PATH'
+VARS='$YII_PATH:$PHP_MEM'
 envsubst $VARS < $SOURCE > $TARGET
 
 # environment specific configuration files
