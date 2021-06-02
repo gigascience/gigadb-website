@@ -146,7 +146,7 @@ pipelines page.
 Prior to this, a host machine has to be instantiated with a 
 secure Docker daemon on which the GigaDB application will be deployed. This 
 machine can be used for a specific environment, most likely staging or 
-production. Two tools are used to deploy a Docker server on the AWS cloud: 
+production. Two tools are used to set a Docker server on the AWS cloud: 
 Terraform and Ansible.
 
 ### Terraform
@@ -169,6 +169,7 @@ $ export TF_VAR_deployment_target=staging
 $ export TF_VAR_aws_vpc_id=<AWS VPC id>
 $ export TF_VAR_aws_access_key=<AWS Access key>
 $ export TF_VAR_aws_secret_key=<AWS Secret key>
+$ export TF_STATE=.
 ```
 
 >You could also add the above lines into your `~/.bash_profile` file to save 
@@ -193,9 +194,16 @@ generate a `no matching Elastic IP found` error message.
 > Using your domain name service, map the EIP to the domain name you will use 
 for your staging or production server.
 
+In order to avoid accidental deletion of provisioned infrastructure, it is highly recommended to maintain distinct Terraform state for each target environment. This also make it easier using different and segregated cloud accounts for each environment. 
+
+Thus the main Terraform configugration, state and variables will be kept in environment-specific directory.
+
+Furthermore, that approach reduce code duplication as the common Terraform code can be kept in modules in a separate directory (``ops/infrastructure/modules``). From now on in the doc, we will take the example of the **staging** environment. When creating a new environment, one can just duplicate the ``ops/infrastructure/envs/staging`` directory and adjust values.
+
 Use Terraform to instantiate the t2.micro instance on AWS cloud with the 
 following commands:
 ```
+$ cd ops/infrastructure/envs/staging
 $ terraform init
 $ terraform plan
 $ terraform apply
@@ -213,9 +221,9 @@ address:
 $ terraform refresh
 ```
 
-If this is not done then Ansible will try to use the initial IP address of 
+If this is not done then Ansible will try to use the original IP address of 
 your EC2 instance and you will get a server not found error since the server
-will not be associated with your elastic IP address.
+will have your elastic IP address.
 
 ### Ansible
 
@@ -278,6 +286,13 @@ Our `hosts` file does not list any machines. Instead, a tool called
 [`terraform-inventory`](https://github.com/adammck/terraform-inventory)  
 generates a dynamic Ansible inventory from a Terraform state file. Nonetheless, 
 the `hosts` file is still used to reference variables for hosts.
+
+The terraform-inventory binary must be present on your dev machine. On mac, you can use Homebrew to install it
+
+```
+$ brew install terraform-inventory
+```
+Also the terraform environment variable TF_STATE needs to be set as a relative path to the .tfstate file for terraform-inventory to function without error.
 
 * One particular variable to note is `gitlab_private_token`. The value of `gitlab_private_token`
 is the contents of a file located at `~/.gitlab_private_token`.  Create this 
