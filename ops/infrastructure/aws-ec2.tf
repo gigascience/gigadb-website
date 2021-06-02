@@ -1,13 +1,13 @@
 provider "aws" {
-	access_key = "${var.aws_access_key}"
- 	secret_key = "${var.aws_secret_key}"
-	region     = "ap-southeast-1"
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
+  region     = "ap-southeast-1"
 }
 
 resource "aws_security_group" "docker_host_sg" {
   name        = "docker_host_sg"
   description = "Allow connection to docker host"
-  vpc_id      = "${var.aws_vpc_id}"
+  vpc_id      = var.aws_vpc_id
 
   ingress {
     from_port   = 80
@@ -38,10 +38,10 @@ resource "aws_security_group" "docker_host_sg" {
   }
 
   egress {
-	from_port   = 0
-	to_port     = 0
-	protocol    = "-1"
-	cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -55,7 +55,7 @@ resource "aws_instance" "staging_dockerhost" {
     Name = "ec2-as1-staging-gigadb"
   }
 
-  root_block_device = {
+  root_block_device {
     delete_on_termination = "true"
   }
 }
@@ -68,6 +68,6 @@ data "aws_eip" "staging_eip" {
 }
 
 resource "aws_eip_association" "staging_eip" {
-  instance_id   = "${aws_instance.staging_dockerhost.id}"
-  allocation_id = "${data.aws_eip.staging_eip.id}"
+  instance_id   = aws_instance.staging_dockerhost.id
+  allocation_id = data.aws_eip.staging_eip.id
 }
