@@ -36,8 +36,20 @@ project locally under `gigadb-website`
 $ cd gigadb-website
 $ ./up.sh
 ```
+This will start up all necessary services, perform the database migrations, generate the configuration and reference data feeds.
+It will also select the "dev" set of test data for the local development environment.
 
->**Note**: You can also read, pick and choose the steps in ``up.sh`` for a more manual and adhoc setup or just to understand how it works
+To select a different set of data for the local development database, you can specify the set you want to use:
+
+```
+$ ./up.sh dev
+$ ./up.sh gigadb_testdata
+$ ./up.sh production_like
+```
+
+>**Note 1**: You can run the script anytime you want to reset the entire state of the codebase, not just the first time.
+ 
+>**Note 2**: You can also read, pick and choose the steps in ``up.sh`` for a more manual and adhoc setup or just to understand how it works
 
 #### About the ``--build`` argument
 
