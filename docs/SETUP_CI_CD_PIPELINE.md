@@ -170,6 +170,9 @@ $ export TF_VAR_aws_vpc_id=<AWS VPC id>
 $ export TF_VAR_aws_access_key=<AWS Access key>
 $ export TF_VAR_aws_secret_key=<AWS Secret key>
 $ export TF_STATE=.
+$ export TF_VAR_tencent_secret_id=<TENCENT Secret ID>
+$ export TF_VAR_tencent_secret_key=<TENCENT Secret key>
+$ export TF_VAR_tencent_appid=<TENCENT App ID>
 ```
 
 >You could also add the above lines into your `~/.bash_profile` file to save 
