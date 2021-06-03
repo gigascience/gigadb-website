@@ -6,6 +6,9 @@ set -e
 # print command being run
 set -x
 
+dbSet=${1:-"dev"}
+
+
 echo "Starting all services..."
 
 # Make the Docker API available on TCP port 2375 on mac (unnecessary on windows or linux)
@@ -61,8 +64,8 @@ docker-compose exec console bash -c 'cd /gigadb-apps/worker/file-worker/ && comp
 docker-compose exec console /app/yii migrate/fresh --interactive=0
 docker-compose up -d fuw-worker gigadb-worker
 
-# Bootstrap the main database using data from "data/dev"
-./ops/scripts/setup_devdb.sh dev
+# Bootstrap the main database using data from "data/dev" by default or using the one passed as parameter
+./ops/scripts/setup_devdb.sh $dbSet
 
 # Bootstrap the test database for unit tests using data from "data/gigadb_testdata"
 ./ops/scripts/setup_testdb.sh gigadb_testdata
@@ -71,5 +74,7 @@ docker-compose up -d fuw-worker gigadb-worker
 ./ops/scripts/make_pgdmp_gigadb_testdata.sh
 ./ops/scripts/make_pgdmp_production_like.sh
 
-
+# generate reference data feed for file formats and file types
+docker-compose run --rm test ./protected/yiic generatefiletypes
+docker-compose run --rm test ./protected/yiic generatefileformats
 
