@@ -223,6 +223,9 @@ test_run:
     # Setup dev and test db
     - ./ops/scripts/setup_testdb.sh
     - ./ops/scripts/setup_devdb.sh dev
+    # set up reference data feeds
+    - docker-compose run --rm test ./protected/yiic generatefileformats
+    - docker-compose run --rm test ./protected/yiic generatefiletypes
     # Start web container
     - docker-compose up -d web
     - docker-compose exec -T web /usr/local/bin/enable_sites gigadb.dev.http fuw-backend.dev.http
