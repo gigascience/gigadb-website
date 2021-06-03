@@ -4,6 +4,7 @@ id,name,description,edam_ontology_id
 5,Protein sequence,"One or more protein sequences, possibly with associated annotation. Usually translations of coding region predictions.",data_2976
 6,Annotation,"This Is a broad concept and covers all files containing annotation of something, this could be sequence features, or image features or many other things. If possible a more specific type should be used.",none
 7,Other,to be used when no appropriate file type is available,none
+25,Text,free text,data_3671
 41,Image,"Biological or biomedical data has been rendered into an image, typically for display on screen.",data_2968
 73,Repeat sequence,This includes long terminal repeats (LTRs); sequences (typically retroviral) directly repeated at both ends of a defined sequence and other types of repeating unit. Repetitive elements within a nucleic acid sequence.,topic_3126
 113,Script,"includes text files of command lines used to run software applications, as well as more complex scripts such as R, perl and python scripts.",

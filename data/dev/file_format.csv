@@ -4,5 +4,9 @@ id,name,description,edam_ontology_id
 3,PDF, (.pdf) - portable document format,format_3508
 5,GFF,"(.gff) - The General Feature Format (GFF) is used for describing genes and other features of DNA, RNA and protein sequences",format_2305
 6,UNKNOWN,any other file format not defined here,
+7,FASTQ,"(.fq, .fastq) - the FASTQ format stores sequences (usually nucleotide sequence) and Phred qualities in a single file.",format_1930
+10,PNG,(.png) - portable network graphics,format_3603
 16,AGP,(.agp) - the Accessioned Golden Path (AGP) file describes the assembly of a larger sequence object from smaller objects. See AGP Specification v2.0 (https://www.ncbi.nlm.nih.gov/assembly/agp/AGP_Specification/),
 17,TAR, (.tar) - an archive containing other files,
+37,CSV,Comma Separated Variables table,
+55,DOCX,microsoft word format,format_3506
