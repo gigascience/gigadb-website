@@ -1,5 +1,9 @@
 # Tools for GigaDB: files-url-updater
 
+Move to the tool directory before entering any of the commands in this document
+```
+$ cd gigadb/app/tools/files-url-updater
+```
 
 ## Start the local test database
 
