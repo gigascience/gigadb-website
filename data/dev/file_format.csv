@@ -9,4 +9,5 @@ id,name,description,edam_ontology_id
 16,AGP,(.agp) - the Accessioned Golden Path (AGP) file describes the assembly of a larger sequence object from smaller objects. See AGP Specification v2.0 (https://www.ncbi.nlm.nih.gov/assembly/agp/AGP_Specification/),
 17,TAR, (.tar) - an archive containing other files,
 37,CSV,Comma Separated Variables table,
+44,JPG,Joint Picture Group file format for lossy graphics file. Sequence of segments with markers. Begins with byte of 0xFF and follows by marker type.,format_3579
 55,DOCX,microsoft word format,format_3506
