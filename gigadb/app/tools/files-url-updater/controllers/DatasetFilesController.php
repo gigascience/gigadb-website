@@ -37,9 +37,24 @@ class DatasetFilesController extends Controller
      */
     public function actionDownloadRestoreBackup()
     {
-        $this->stdout("\nDownloading and restoring the backup for {$this->date}\n", Console::BOLD);
+        $dbConfig = \Yii::$app->params['db'];
+        $ftpConfig = \Yii::$app->params['ftp'];
+
+        $this->stdout("\nDownloading production backup for {$this->date}\n", Console::BOLD);
         try {
-            system("true");
+            system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} {$ftpConfig['host']} /app/sql/ /gigadbv3_{$this->date}.backup", $downloadStatus);
+        }
+        catch (Throwable $e) {
+            $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
+            Yii::error($e->getMessage());
+            return ExitCode::OSERR;
+        }
+
+        $this->stdout("\nRestoring the backup for {$this->date}\n", Console::BOLD);
+        try {
+            system("psql -h {$dbConfig['host']} -U postgres -c 'drop database {$dbConfig['database']};' 2> /dev/null", $dropStatus);
+            system("psql -h {$dbConfig['host']} -U postgres -c 'create database {$dbConfig['database']} owner {$dbConfig['username']};' 2> /dev/null", $createStatus);
+            system("pg_restore  --exit-on-error --verbose  -h {$dbConfig['host']} -U postgres --dbname {$dbConfig['database']}  /app/sql/gigadbv3_{$this->date}.backup 2> /dev/null", $restoreStatus);
         }
         catch (Throwable $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);

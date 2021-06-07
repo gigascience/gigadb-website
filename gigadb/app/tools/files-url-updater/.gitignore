@@ -36,3 +36,5 @@ tests/acceptance.suite.yml
 
 # Yii parameters
 config/params.php
+
+sql/gigadbv3*
