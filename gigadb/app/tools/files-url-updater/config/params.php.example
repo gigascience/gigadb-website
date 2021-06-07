@@ -1,0 +1,17 @@
+<?php
+
+return [
+    'db' => [
+        "host" => "",
+        "port" => "",
+        "database" => "",
+        "username" => "",
+        "password" => "",
+    ],
+    'ftp' => [
+        "host" => "",
+        "username" => "",
+        "password" => "",
+    ],
+];
+

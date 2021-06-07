@@ -32,3 +32,6 @@ tests/_support/_generated
 
 #vagrant folder
 /.vagrant
+
+# Yii parameters
+config/params.php
