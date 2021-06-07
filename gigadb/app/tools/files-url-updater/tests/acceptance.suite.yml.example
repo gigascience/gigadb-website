@@ -1,0 +1,23 @@
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - Cli
+        - Db:
+            dsn: 'pgsql:host=;dbname=;port='
+            user: ''
+            password: ''
+        - WebDriver:
+            url: 'host.docker.internal:9021'
+            window_size: 2000x3500
+            host: 'host.docker.internal'
+            port: 4444
+            browser: chrome
+            capabilities:
+              "goog:chromeOptions":
+                  args: ['--headless']
+                  w3c: false
+              "goog:loggingPrefs":
+                  browser: ALL
+              "loggingPrefs":
+                  browser: ALL
+        - Asserts
