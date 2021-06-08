@@ -31,13 +31,13 @@ class DatasetFilesController extends Controller
     /**
      * This command will download and load in database production backup for the given date
      *
-     * TODO: to implement
      * @throws \Throwable
      * @return int Exit code
      */
     public function actionDownloadRestoreBackup()
     {
-        $dbConfig = \Yii::$app->params['db'];
+        $dbConfig = \Yii::$app->db->attributes;
+        $dbUser = \Yii::$app->db->username;
         $ftpConfig = \Yii::$app->params['ftp'];
 
         $this->stdout("\nDownloading production backup for {$this->date}\n", Console::BOLD);
@@ -53,7 +53,7 @@ class DatasetFilesController extends Controller
         $this->stdout("\nRestoring the backup for {$this->date}\n", Console::BOLD);
         try {
             system("psql -h {$dbConfig['host']} -U postgres -c 'drop database {$dbConfig['database']};' 2> /dev/null", $dropStatus);
-            system("psql -h {$dbConfig['host']} -U postgres -c 'create database {$dbConfig['database']} owner {$dbConfig['username']};' 2> /dev/null", $createStatus);
+            system("psql -h {$dbConfig['host']} -U postgres -c 'create database {$dbConfig['database']} owner {$dbUser};' 2> /dev/null", $createStatus);
             system("pg_restore  --exit-on-error --verbose  -h {$dbConfig['host']} -U postgres --dbname {$dbConfig['database']}  /app/sql/gigadbv3_{$this->date}.backup 2> /dev/null", $restoreStatus);
         }
         catch (Throwable $e) {

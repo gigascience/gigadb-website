@@ -5,6 +5,7 @@ return [
         "host" => "",
         "port" => "",
         "database" => "",
+        "test_database" => "",
         "username" => "",
         "password" => "",
     ],
