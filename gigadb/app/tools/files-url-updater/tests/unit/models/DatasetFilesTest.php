@@ -239,9 +239,11 @@ class DatasetFilesTest extends \Codeception\Test\Unit
 
     public function testListPendingDatasets() {
         $this->assertEquals(4, count(DatasetFiles::build()->getAllPendingDatasets()));
-        $this->assertEquals(2, count(DatasetFiles::build()->getNextPendingDatasets(2)) );
-        $this->assertEquals(4, count(DatasetFiles::build()->getNextPendingDatasets(5)) );
-        $this->assertEquals(0, count(DatasetFiles::build()->getNextPendingDatasets(0)) );
-        $this->assertEquals(1, count(DatasetFiles::build()->getNextPendingDatasets(1)) );
+        $this->assertEquals(2, count(DatasetFiles::build()->getNextPendingDatasets(0, 2)) );
+        $this->assertEquals(4, count(DatasetFiles::build()->getNextPendingDatasets(0, 5)) );
+        $this->assertEquals(0, count(DatasetFiles::build()->getNextPendingDatasets(0, 0)) );
+        $this->assertEquals(1, count(DatasetFiles::build()->getNextPendingDatasets(0, 1)) );
+        $this->assertEquals(1, count(DatasetFiles::build()->getNextPendingDatasets(4, 10)) );
+        $this->assertEquals(3, count(DatasetFiles::build()->getNextPendingDatasets(1, 10)) );
     }
 }

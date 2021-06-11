@@ -16,27 +16,31 @@ class DatasetFilesController extends Controller
     /**
      * @var string $date the yyyymmdd for which to retrieve a production backup
      */
-    public $date;
+    public string $date;
 
     /**
      * @var array $ids list of dataset ids to process
      */
-    public $ids;
+    public array $ids;
 
     /**
      * @var bool $all if true get all pending datasets
      */
-    public $all;
+    public bool $all = false;
 
     /**
      * @var int $next get list of next $next pending datasets
      */
-    public $next;
+    public int $next = 999999;
+    /**
+     * @var int $after dataset id only pending datasets after this one are returned
+     */
+    public int $after = 0;
 
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','date','ids','all','next'];
+        return ['color', 'interactive', 'help','date','ids','all','next','after'];
     }
 
     /**
@@ -80,7 +84,7 @@ class DatasetFilesController extends Controller
      * This command will list the dataset with files in need of updating for ftp urls replacement
      *
      * Usage:
-     * ./yii dataset-files/list-pending-datasets --all|--next <batch size>
+     * ./yii dataset-files/list-pending-datasets --all|--next <batch size> --after <dataset id>
      *
      * @return int Exit code
      */
@@ -97,7 +101,7 @@ class DatasetFilesController extends Controller
             return ExitCode::OK;
         }
         elseif ($this->next) {
-            $rows = DatasetFiles::build()->getNextPendingDatasets($this->next);
+            $rows = DatasetFiles::build()->getNextPendingDatasets($this->after, $this->next);
 
             foreach ($rows as $key => $value) {
                 $this->stdout($value["dataset_id"]."\n");

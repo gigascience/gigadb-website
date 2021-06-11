@@ -18,11 +18,13 @@ class DatasetFiles extends \Yii\base\BaseObject {
     }
 
     /**
-     * Get all pending datasets
+     * Make a Yii2 DB query that filter datasets based on whether their urls need replacing
      *
-     * @return array
+     * @param int $after return datasets listed after the one specified here
+     * @return \yii\db\Query
      */
-    public function getAllPendingDatasets() {
+    public function filterByFTPUrls(int $after = 0): \yii\db\Query
+    {
         return ( new \yii\db\Query())
             ->select(['dataset_id'])
             ->from('file')
@@ -31,6 +33,16 @@ class DatasetFiles extends \Yii\base\BaseObject {
             ->orWhere(['like','location','ftp://climb.genomics'])
             ->groupBy('dataset_id')
             ->orderBy('dataset_id')
+            ->having(['>','dataset_id', $after]);
+    }
+
+    /**
+     * Get all pending datasets
+     *
+     * @return array
+     */
+    public function getAllPendingDatasets() {
+        return $this->filterByFTPUrls()
             ->all();
     }
 
@@ -39,19 +51,12 @@ class DatasetFiles extends \Yii\base\BaseObject {
      * Get next batch of pending datasets
      *
      *
-     * TODO: param int $after dataset id after wich to start fetching the list
+     * @param int $after dataset id after which to start fetching the list
      * @param int $next batch size
      * @return array
      */
-    public function getNextPendingDatasets(int $next) {
-        return ( new \yii\db\Query())
-            ->select(['dataset_id'])
-            ->from('file')
-            ->where(['like','location','ftp://parrot.genomics'])
-            ->orWhere(['like','location','ftp://ftp.cngb.org'])
-            ->orWhere(['like','location','ftp://climb.genomics'])
-            ->groupBy('dataset_id')
-            ->orderBy('dataset_id')
+    public function getNextPendingDatasets(int $after = 0, int $next) {
+        return $this->filterByFTPUrls($after)
             ->limit($next)
             ->all();
     }
