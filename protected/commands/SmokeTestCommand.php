@@ -12,6 +12,7 @@ class SmokeTestCommand extends CConsoleCommand {
 	public function getHelp() {
 		$helpText = "Create and remove smoke test data to allow end to end non-destructive testing of FUW workflow on cloud environments".PHP_EOL;
 		$helpText .= "Usage: ./protected/yiic smoketest createdata".PHP_EOL;
+        $helpText .= "Usage: ./protected/yiic smoketest resetdata".PHP_EOL;
 		$helpText .= "Usage: ./protected/yiic smoketest removedata".PHP_EOL;
         return $helpText;
     }
