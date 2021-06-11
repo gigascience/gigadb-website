@@ -5,6 +5,7 @@ namespace app\controllers;
 use \yii\helpers\Console;
 use \yii\console\Controller;
 use \yii\console\ExitCode;
+use app\models\DatasetFiles;
 
 /**
  * The tool for updating production database's file table to replace ftp urls
@@ -22,10 +23,20 @@ class DatasetFilesController extends Controller
      */
     public $ids;
 
+    /**
+     * @var bool $all if true get all pending datasets
+     */
+    public $all;
+
+    /**
+     * @var int $next get list of next $next pending datasets
+     */
+    public $next;
+
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','date','ids'];
+        return ['color', 'interactive', 'help','date','ids','all','next'];
     }
 
     /**
@@ -38,6 +49,7 @@ class DatasetFilesController extends Controller
     {
         $dbConfig = \Yii::$app->db->attributes;
         $dbUser = \Yii::$app->db->username;
+        $dbPassword = \Yii::$app->db->password;
         $ftpConfig = \Yii::$app->params['ftp'];
 
         $this->stdout("\nDownloading production backup for {$this->date}\n", Console::BOLD);
@@ -52,9 +64,9 @@ class DatasetFilesController extends Controller
 
         $this->stdout("\nRestoring the backup for {$this->date}\n", Console::BOLD);
         try {
-            system("psql -h {$dbConfig['host']} -U postgres -c 'drop database {$dbConfig['database']};' 2> /dev/null", $dropStatus);
-            system("psql -h {$dbConfig['host']} -U postgres -c 'create database {$dbConfig['database']} owner {$dbUser};' 2> /dev/null", $createStatus);
-            system("pg_restore  --exit-on-error --verbose  -h {$dbConfig['host']} -U postgres --dbname {$dbConfig['database']}  /app/sql/gigadbv3_{$this->date}.backup 2> /dev/null", $restoreStatus);
+            system("PGPASSWORD=$dbPassword dropdb -U $dbUser -h {$dbConfig['host']} --if-exists {$dbConfig['database']}");
+            system("PGPASSWORD=$dbPassword createdb -U $dbUser -h {$dbConfig['host']} -T template0 {$dbConfig['database']}");
+            system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname {$dbConfig['database']}  sql/gigadbv3_{$this->date}.backup");
         }
         catch (Throwable $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
@@ -67,17 +79,41 @@ class DatasetFilesController extends Controller
     /**
      * This command will list the dataset with files in need of updating for ftp urls replacement
      *
-     * TODO: to implement
+     * Usage:
+     * ./yii dataset-files/list-pending-datasets --all|--next <batch size>
+     *
      * @return int Exit code
      */
     public function actionListPendingDatasets()
     {
-        return ExitCode::OK;
+        $rows = [];
+        if ($this->all) {
+            $rows = DatasetFiles::build()->getAllPendingDatasets();
+
+            foreach ($rows as $key => $value) {
+                $this->stdout($value["dataset_id"]."\n");
+            }
+
+            return ExitCode::OK;
+        }
+        elseif ($this->next) {
+            $rows = DatasetFiles::build()->getNextPendingDatasets($this->next);
+
+            foreach ($rows as $key => $value) {
+                $this->stdout($value["dataset_id"]."\n");
+            }
+            return ExitCode::OK;
+        }
+
+        return ExitCode::NOINPUT;
+
     }
 
     /**
      * This command will update file table to replace ftp urls for the supplied list of dataset ids
      *
+     *  Usage:
+     *      ./yii dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dry-run]
      * TODO: to implement
      * @throws \Throwable
      * @return int Exit code
