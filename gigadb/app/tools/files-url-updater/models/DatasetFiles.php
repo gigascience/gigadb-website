@@ -28,6 +28,7 @@ class DatasetFiles extends \Yii\base\BaseObject {
             ->from('file')
             ->where(['like','location','ftp://parrot.genomics'])
             ->orWhere(['like','location','ftp://ftp.cngb.org'])
+            ->orWhere(['like','location','ftp://climb.genomics'])
             ->groupBy('dataset_id')
             ->orderBy('dataset_id')
             ->all();
@@ -48,6 +49,7 @@ class DatasetFiles extends \Yii\base\BaseObject {
             ->from('file')
             ->where(['like','location','ftp://parrot.genomics'])
             ->orWhere(['like','location','ftp://ftp.cngb.org'])
+            ->orWhere(['like','location','ftp://climb.genomics'])
             ->groupBy('dataset_id')
             ->orderBy('dataset_id')
             ->limit($next)
