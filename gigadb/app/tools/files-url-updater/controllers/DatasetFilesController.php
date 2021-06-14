@@ -31,7 +31,7 @@ class DatasetFilesController extends Controller
     /**
      * @var int $next get list of next $next pending datasets
      */
-    public int $next = 999999;
+    public int $next = 0;
     /**
      * @var int $after dataset id only pending datasets after this one are returned
      */
@@ -42,6 +42,12 @@ class DatasetFilesController extends Controller
         // $actionId might be used in subclasses to provide options specific to action id
         return ['color', 'interactive', 'help','date','ids','all','next','after'];
     }
+
+    public function init()
+    {
+        $this->date ??= date('Ymd') - 1 ;
+    }
+
 
     /**
      * This command will download and load in database production backup for the given date
