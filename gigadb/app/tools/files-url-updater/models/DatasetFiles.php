@@ -64,6 +64,12 @@ class DatasetFiles extends \Yii\base\BaseObject {
             ->all();
     }
 
+    /**
+     * Retrieve from database the value of ftp_site for a given dataset id
+     *
+     * @param int $dataset_id
+     * @return string
+     */
     private function getFTPSite(int $dataset_id): string
     {
         return ( new \yii\db\Query())
@@ -73,9 +79,31 @@ class DatasetFiles extends \Yii\base\BaseObject {
             ->one()['ftp_site'];
     }
 
-    public function replaceDatasetFTPSite(int $dataset_id): bool
+    /**
+     * Replace ftp_site in dataset with one starting with https://ftp.cngb.org for a given dataset id
+     *
+     * Success and no-op return the value saved in database.
+     * Failure return null and an error is logged
+     *
+     * @param int $dataset_id
+     * @return string|null
+     */
+    public function replaceDatasetFTPSite(int $dataset_id): ?string
     {
-        $oldFTPSite=$this->getFTPSite($dataset_id);
+        try{
+            $oldFTPSite=$this->getFTPSite($dataset_id);
+        }
+        catch (\Yii\base\ErrorException $e) {
+            error_log("Problem retrieving ftp_site value for dataset $dataset_id: ". $e->getMessage());
+            return null;
+        }
+
+        $scheme=mb_split("://", $oldFTPSite)[0];
+        if( "https" === ltrim($scheme)) {
+            error_log("dataset $dataset_id has ftp_site starting with https already");
+            return $oldFTPSite; //no need for replacement if url already starts with https
+        }
+
         list($host, $path) = mb_split("/pub", $oldFTPSite);
         $newHost="https://ftp.cngb.org/pub/gigadb";
         $newFTPSite = $newHost."/pub".$path;
@@ -91,10 +119,14 @@ class DatasetFiles extends \Yii\base\BaseObject {
                 ->execute();
         } catch (\Yii\Db\Exception $e) {
             error_log($e->getMessage());
-            return false;
+            return null;
         }
 
-        return $this->getFTPSite($dataset_id) == $newFTPSite;
+        if ($this->getFTPSite($dataset_id) !== $newFTPSite) {
+            error_log("Problem saving the new ftp_site value for dataset $dataset_id");
+            return null;
+        };
+        return $newFTPSite;
     }
     //TODO: function replaceFileLocation(int $file_id): bool
 }

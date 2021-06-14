@@ -105,6 +105,30 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             'publication_date'=>'2018-08-23',
             'publisher_id'=>1,
         ],);
+        $this->tester->haveInDatabase('public.dataset',[
+            'id'=>6,
+            'submitter_id'=>345,
+            'identifier'=>"100899",
+            'title'=>'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
+            'description'=>'The emergence of Zika virus (ZIKV) as a public health emergency in Latin America and the Caribbean (LAC) occurred during a period of severe drought and unusually high temperatures. Speculation in the literature exists that these climate conditions were associated with the 2015/2016 El Niño event and/or climate change but to date no quantitative ',
+            'dataset_size'=>1073741824,
+            'ftp_site'=>'https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100899/',
+            'upload_status'=>'Published',
+            'publication_date'=>'2018-08-23',
+            'publisher_id'=>1,
+        ],);
+        $this->tester->haveInDatabase('public.dataset',[
+            'id'=>7,
+            'submitter_id'=>345,
+            'identifier'=>"100905",
+            'title'=>'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
+            'description'=>'The emergence of Zika virus (ZIKV) as a public health emergency in Latin America and the Caribbean (LAC) occurred during a period of severe drought and unusually high temperatures. Speculation in the literature exists that these climate conditions were associated with the 2015/2016 El Niño event and/or climate change but to date no quantitative ',
+            'dataset_size'=>1073741824,
+            'ftp_site'=>'   https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100905/',
+            'upload_status'=>'Published',
+            'publication_date'=>'2018-08-23',
+            'publisher_id'=>1,
+        ],);
         $this->tester->haveInDatabase('public.file',[
             'dataset_id' => 1,
             'name' => "readme2.txt",
@@ -237,8 +261,27 @@ class DatasetFilesTest extends \Codeception\Test\Unit
         $this->tester->assertEquals(3, count(DatasetFiles::build()->getNextPendingDatasets(1, 10)) );
     }
 
-    public function testReplaceDatasetFTPSite() {
+    public function testReplaceDatasetFTPSiteForParrotHost() {
         $result = DatasetFiles::build()->replaceDatasetFTPSite(1);
-        $this->tester->assertTrue($result);
+        $this->tester->assertEquals("https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100243/",$result);
+    }
+
+    public function testReplaceDatasetFTPSiteForClimbHost() {
+        $result = DatasetFiles::build()->replaceDatasetFTPSite(2);
+        $this->tester->assertEquals("https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100683",$result);
+    }
+
+    public function testReplaceDatasetFTPSiteForCNGBHost() {
+        $result = DatasetFiles::build()->replaceDatasetFTPSite(6);
+        $this->tester->assertEquals("https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100899/",$result);
+    }
+    public function testReplaceDatasetFTPSiteForCNGBHostWithSpace() {
+        $result = DatasetFiles::build()->replaceDatasetFTPSite(7);
+        $this->tester->assertEquals("   https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100905/",$result);
+    }
+
+    public function testReplaceDatasetFTPSiteException() {
+        $result = DatasetFiles::build()->replaceDatasetFTPSite(-1);
+        $this->tester->assertNull($result);
     }
 }
