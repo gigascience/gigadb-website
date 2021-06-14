@@ -106,7 +106,6 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             'publisher_id'=>1,
         ],);
         $this->tester->haveInDatabase('public.file',[
-            'id' => 1,
             'dataset_id' => 1,
             'name' => "readme2.txt",
             'location'=>'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100243/readme.txt',
@@ -119,7 +118,6 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             'download_count'=>0,
         ],);
         $this->tester->haveInDatabase('public.file',[
-            'id' => 2,
             'dataset_id' => 2,
             'name' => "readme_100683.txt",
             'location'=>'ftp://climb.genomics.cn/pub/10.5524/100001_101000/100683/100683/readme_100683.txt',
@@ -132,7 +130,6 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             'download_count'=>0,
         ],);
         $this->tester->haveInDatabase('public.file',[
-            'id' => 3,
             'dataset_id' => 2,
             'name' => "HAMAP-SPARQL-master.zip",
             'location'=>'ftp://climb.genomics.cn/pub/10.5524/100001_101000/100683/100683/HAMAP-SPARQL-master.zip',
@@ -145,7 +142,6 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             'download_count'=>0,
         ],);
         $this->tester->haveInDatabase('public.file',[
-            'id' => 4,
             'dataset_id' => 3,
             'name' => "NA12878_1_fq.tar.gz",
             'location'=>'ftp://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100373/fastq/NA12878_1_fq.tar.gz',
@@ -158,7 +154,6 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             'download_count'=>0,
         ],);
         $this->tester->haveInDatabase('public.file',[
-            'id' => 5,
             'dataset_id' => 3,
             'name' => "bb_snp.vcf.gz",
             'location'=>'ftp://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100373/vcf/bb_snp.vcf.gz',
@@ -171,7 +166,6 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             'download_count'=>0,
         ],);
         $this->tester->haveInDatabase('public.file',[
-            'id' => 6,
             'dataset_id' => 3,
             'name' => "readme.txt",
             'location'=>'ftp://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100373/readme.txt',
@@ -184,7 +178,6 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             'download_count'=>0,
         ],);
         $this->tester->haveInDatabase('public.file',[
-            'id' => 7,
             'dataset_id' => 5,
             'name' => "readme_100883.txt",
             'location'=>'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100883/readme_100883.txt',
@@ -197,7 +190,6 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             'download_count'=>0,
         ],);
         $this->tester->haveInDatabase('public.file',[
-            'id' => 8,
             'dataset_id' => 5,
             'name' => "3_babesia_classification-test-RBCell",
             'location'=>'https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100883/3_babesia_classification/test/RBCell',
@@ -210,7 +202,6 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             'download_count'=>0,
         ],);
         $this->tester->haveInDatabase('public.file',[
-            'id' => 9,
             'dataset_id' => 5,
             'name' => "3_babesia_classification-train-babesia_ours",
             'location'=>'https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100883/3_babesia_classification/train/babesia_ours',
@@ -223,7 +214,6 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             'download_count'=>0,
         ],);
         $this->tester->haveInDatabase('public.file',[
-            'id' => 10,
             'dataset_id' => 5,
             'name' => "Babesia_Parasite_Recognition_file_metadata.csv",
             'location'=>'ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100883/Babesia_Parasite_Recognition_file_metadata.csv',
@@ -238,12 +228,17 @@ class DatasetFilesTest extends \Codeception\Test\Unit
     }
 
     public function testListPendingDatasets() {
-        $this->assertEquals(4, count(DatasetFiles::build()->getAllPendingDatasets()));
-        $this->assertEquals(2, count(DatasetFiles::build()->getNextPendingDatasets(0, 2)) );
-        $this->assertEquals(4, count(DatasetFiles::build()->getNextPendingDatasets(0, 5)) );
-        $this->assertEquals(0, count(DatasetFiles::build()->getNextPendingDatasets(0, 0)) );
-        $this->assertEquals(1, count(DatasetFiles::build()->getNextPendingDatasets(0, 1)) );
-        $this->assertEquals(1, count(DatasetFiles::build()->getNextPendingDatasets(4, 10)) );
-        $this->assertEquals(3, count(DatasetFiles::build()->getNextPendingDatasets(1, 10)) );
+        $this->tester->assertEquals(4, count(DatasetFiles::build()->getAllPendingDatasets()));
+        $this->tester->assertEquals(2, count(DatasetFiles::build()->getNextPendingDatasets(0, 2)) );
+        $this->tester->assertEquals(4, count(DatasetFiles::build()->getNextPendingDatasets(0, 5)) );
+        $this->tester->assertEquals(0, count(DatasetFiles::build()->getNextPendingDatasets(0, 0)) );
+        $this->tester->assertEquals(1, count(DatasetFiles::build()->getNextPendingDatasets(0, 1)) );
+        $this->tester->assertEquals(1, count(DatasetFiles::build()->getNextPendingDatasets(4, 10)) );
+        $this->tester->assertEquals(3, count(DatasetFiles::build()->getNextPendingDatasets(1, 10)) );
+    }
+
+    public function testReplaceDatasetFTPSite() {
+        $result = DatasetFiles::build()->replaceDatasetFTPSite(1);
+        $this->tester->assertTrue($result);
     }
 }

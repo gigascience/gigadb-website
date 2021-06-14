@@ -2,6 +2,9 @@
 
 namespace app\models;
 
+use \Yii;
+use yii\db\Exception;
+
 /**
  * Class DatasetFiles interact with database to retrieve data for dataset and files
  *
@@ -61,6 +64,37 @@ class DatasetFiles extends \Yii\base\BaseObject {
             ->all();
     }
 
-    //TODO: function replaceDatasetFTPSite(int $dataset_id): bool
+    private function getFTPSite(int $dataset_id): string
+    {
+        return ( new \yii\db\Query())
+            ->select('ftp_site')
+            ->from('dataset')
+            ->where(['id' => $dataset_id])
+            ->one()['ftp_site'];
+    }
+
+    public function replaceDatasetFTPSite(int $dataset_id): bool
+    {
+        $oldFTPSite=$this->getFTPSite($dataset_id);
+        list($host, $path) = mb_split("/pub", $oldFTPSite);
+        $newHost="https://ftp.cngb.org/pub/gigadb";
+        $newFTPSite = $newHost."/pub".$path;
+
+        try {
+            $updatedRows = Yii::$app->db
+                ->createCommand()
+                ->update('dataset',
+                    ['ftp_site' => $newFTPSite],
+                    'id = :id',
+                    [':id' => $dataset_id]
+                )
+                ->execute();
+        } catch (\Yii\Db\Exception $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+
+        return $this->getFTPSite($dataset_id) == $newFTPSite;
+    }
     //TODO: function replaceFileLocation(int $file_id): bool
 }
