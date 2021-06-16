@@ -62,4 +62,12 @@ class DatasetFilesCest {
         $I->assertEquals(Exitcode::OK, $outcome);
     }
 
+    public function tryUpdateFtpUrlNextAfter(\FunctionalTester $I) {
+        $command = Yii::$app->createControllerByID('dataset-files');
+        $outcome = $command->run('update-ftp-urls',[
+            "next" => 1000,
+            "after" => 0,
+        ]);
+        $I->assertEquals(Exitcode::OK, $outcome);
+    }
 }

@@ -106,11 +106,12 @@ class DatasetFiles extends \Yii\base\BaseObject {
      * @param int $dataset_id
      * @return \yii\db\Query
      */
-    private function queryFilesForDataset(int $dataset_id): \yii\db\Query
+    public function queryFilesForDataset(int $dataset_id): \yii\db\Query
     {
         return ( new Yii\db\Query())
             ->from('file')
-            ->where(['dataset_id' => $dataset_id]);
+            ->where(['dataset_id' => $dataset_id])
+            ->andWhere(['like','location','ftp://']);
     }
 
     /**
