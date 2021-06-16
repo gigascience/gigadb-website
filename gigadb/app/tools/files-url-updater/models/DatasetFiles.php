@@ -3,6 +3,8 @@
 namespace app\models;
 
 use \Yii;
+use yii\base\ErrorException;
+use yii\base\UserException;
 use yii\db\Exception;
 
 /**
@@ -103,30 +105,30 @@ class DatasetFiles extends \Yii\base\BaseObject {
      * Failure return null and an error is logged
      *
      * @param int $dataset_id
-     * @return string|null
+     * @param array &audit array containing old ftp site and new ftp site (optional)
+     * @return int|null number of row updated (1 is only successful number, 0 means there's a problem), null if no replacement was needed
+     * @throws UserException
      */
-    public function replaceDatasetFTPSite(int $dataset_id): ?string
+    public function replaceDatasetFTPSite(int $dataset_id, array &$audit = []): ?int
     {
-        try{
-            $oldFTPSite=$this->getFTPSite($dataset_id);
-        }
-        catch (\Yii\base\ErrorException $e) {
-            error_log("Problem retrieving ftp_site value for dataset $dataset_id: ". $e->getMessage());
-            return null;
-        }
-
-        $scheme=mb_split("://", $oldFTPSite)[0];
-        if( "https" === ltrim($scheme)) {
+        $oldFTPSite=$this->getFTPSite($dataset_id);
+        $uriParts = parse_url(ltrim($oldFTPSite));
+        $auditRow = ["id" => $dataset_id, "old" => $oldFTPSite, "new" => null, "updated" => false];
+        if( "https" === $uriParts['scheme'] and $oldFTPSite === ltrim($oldFTPSite)) {
             error_log("dataset $dataset_id has ftp_site starting with https already");
-            return $oldFTPSite; //no need for replacement if url already starts with https
+            return null; //no need for replacement if url already starts with https and doesn't need whitespace removal
         }
 
-        list($host, $path) = mb_split("/pub", $oldFTPSite);
-        $newHost="https://ftp.cngb.org/pub/gigadb";
-        $newFTPSite = $newHost."/pub".$path;
-
+        if("ftp.cngb.org" === $uriParts['host']) { //this is for some records that were starting with https but there were whitespace before
+            $newFTPSite = self::NEW_HOST.$uriParts['path'];
+        }
+        else {
+            $path = mb_split("/pub", $uriParts['path'])[1];
+            $newFTPSite = self::NEW_HOST."/pub/gigadb/pub".$path;
+        }
+        $auditRow['new'] = $newFTPSite;
         try {
-            $updatedRows = Yii::$app->db
+            $updatedRows =  Yii::$app->db
                 ->createCommand()
                 ->update('dataset',
                     ['ftp_site' => $newFTPSite],
@@ -134,16 +136,15 @@ class DatasetFiles extends \Yii\base\BaseObject {
                     [':id' => $dataset_id]
                 )
                 ->execute();
+            if (1 === $updatedRows)
+                $auditRow['updated'] = true;
+            $audit = $auditRow;
+            return $updatedRows;
         } catch (\Yii\Db\Exception $e) {
             error_log($e->getMessage());
-            return null;
+            throw new \Yii\base\UserException($e->getMessage());
         }
 
-        if ($this->getFTPSite($dataset_id) !== $newFTPSite) {
-            error_log("Problem saving the new ftp_site value for dataset $dataset_id");
-            return null;
-        };
-        return $newFTPSite;
     }
 
     /**
@@ -160,7 +161,7 @@ class DatasetFiles extends \Yii\base\BaseObject {
         foreach ($this->queryFilesForDataset($dataset_id)->each() as $index => $file) {
 
             $oldLocation = $file['location'];
-            $uriParts = parse_url($oldLocation);
+            $uriParts = parse_url(ltrim($oldLocation));
 
 
             if( "https" === $uriParts['scheme']) {
@@ -168,7 +169,7 @@ class DatasetFiles extends \Yii\base\BaseObject {
                 continue; //no need for replacement if url already starts with https
             }
 
-            if("ftp.cngb.org" === $uriParts['host'] && "ftp" === $uriParts['scheme']) {
+            if("ftp.cngb.org" === $uriParts['host']) {
                 $newLocation = self::NEW_HOST.$uriParts['path'];
             }
             else {

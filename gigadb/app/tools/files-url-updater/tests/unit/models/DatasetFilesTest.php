@@ -263,26 +263,30 @@ class DatasetFilesTest extends \Codeception\Test\Unit
 
     public function testReplaceDatasetFTPSiteForParrotHost() {
         $result = DatasetFiles::build()->replaceDatasetFTPSite(1);
-        $this->tester->assertEquals("https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100243/",$result);
+        $this->tester->assertEquals(1,$result);
     }
 
     public function testReplaceDatasetFTPSiteForClimbHost() {
         $result = DatasetFiles::build()->replaceDatasetFTPSite(2);
-        $this->tester->assertEquals("https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100683",$result);
+        $this->tester->assertEquals(1,$result);
     }
 
-    public function testReplaceDatasetFTPSiteForCNGBHost() {
+    public function testReplaceDatasetFTPSiteForHttpsCNGBHost() {
         $result = DatasetFiles::build()->replaceDatasetFTPSite(6);
-        $this->tester->assertEquals("https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100899/",$result);
+        $this->tester->assertEquals(null,$result);
     }
     public function testReplaceDatasetFTPSiteForCNGBHostWithSpace() {
-        $result = DatasetFiles::build()->replaceDatasetFTPSite(7);
-        $this->tester->assertEquals("   https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100905/",$result);
-    }
-
-    public function testReplaceDatasetFTPSiteException() {
-        $result = DatasetFiles::build()->replaceDatasetFTPSite(-1);
-        $this->tester->assertNull($result);
+        $audit = [];
+        $result = DatasetFiles::build()->replaceDatasetFTPSite(7,$audit); //the method should fix fronting whitespace
+        $this->tester->assertEquals(1,$result);
+        $this->tester->assertEquals(
+            "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100905/",
+            $audit['new']
+        );
+        $this->tester->assertEquals(
+            true,
+            $audit['updated']
+        );
     }
 
     public function testReplaceFileLocation() {
