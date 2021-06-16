@@ -284,4 +284,56 @@ class DatasetFilesTest extends \Codeception\Test\Unit
         $result = DatasetFiles::build()->replaceDatasetFTPSite(-1);
         $this->tester->assertNull($result);
     }
+
+    public function testReplaceFileLocation() {
+
+        $parrotAudit = [];
+        $climbAudit = [];
+        // establishing baseline for number of pending datasets
+        $pending = DatasetFiles::build()->getAllPendingDatasets();
+        $this->tester->assertCount(4,$pending);
+
+        $result = DatasetFiles::build()->replaceFilesLocationForDataset(1,$parrotAudit);//parrot.genomics.cn
+        $this->tester->assertEquals(1, $result);
+        $result = DatasetFiles::build()->replaceFilesLocationForDataset(2, $climbAudit);//climb.genomics.cn
+        $this->tester->assertEquals(2, $result);
+        $result = DatasetFiles::build()->replaceFilesLocationForDataset(4); //doesn't have files
+        $this->tester->assertEquals(0, $result);
+
+        //there should be two less pending
+        $pending = DatasetFiles::build()->getAllPendingDatasets();
+        $this->tester->assertCount(2,$pending);
+
+        // Ensuring the replacement actually worked
+        $this->tester->assertEquals(
+            "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100243/readme.txt",
+            $parrotAudit[0]['new']
+        );
+
+        $this->tester->assertEquals(
+            "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100683/100683/readme_100683.txt",
+            $climbAudit[0]['new']
+        );
+        $this->tester->assertEquals(
+            "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100683/100683/HAMAP-SPARQL-master.zip",
+            $climbAudit[1]['new']
+        );
+
+    }
+    public function testReplaceFileLocationNoOp() {
+        // 2 out of 4 files need replacement
+        $result = DatasetFiles::build()->replaceFilesLocationForDataset(5);
+        $this->tester->assertEquals(2,$result);
+    }
+
+    public function testReplaceFileLocationFtpCNGB() {
+        $audit = [];
+        $result = DatasetFiles::build()->replaceFilesLocationForDataset(3, $audit);
+        $this->tester->assertEquals(3, $result);
+        $this->tester->assertCount(3,$audit);
+        $this->tester->assertEquals(
+            "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100373/readme.txt",
+            $audit[2]['new']
+        );
+    }
 }

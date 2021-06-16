@@ -11,6 +11,8 @@ use yii\db\Exception;
  */
 class DatasetFiles extends \Yii\base\BaseObject {
 
+    public const NEW_HOST = "https://ftp.cngb.org";
+
     /**
      * Factory for this class
      *
@@ -80,6 +82,21 @@ class DatasetFiles extends \Yii\base\BaseObject {
     }
 
     /**
+     * Query the files associated with the given dataset id
+     * It does not retrieve all the result, as we need to the freedom
+     * to count, retrieve all or batch retrieve the result
+     *
+     * @param int $dataset_id
+     * @return \yii\db\Query
+     */
+    private function queryFilesForDataset(int $dataset_id): \yii\db\Query
+    {
+        return ( new Yii\db\Query())
+            ->from('file')
+            ->where(['dataset_id' => $dataset_id]);
+    }
+
+    /**
      * Replace ftp_site in dataset with one starting with https://ftp.cngb.org for a given dataset id
      *
      * Success and no-op return the value saved in database.
@@ -128,5 +145,58 @@ class DatasetFiles extends \Yii\base\BaseObject {
         };
         return $newFTPSite;
     }
-    //TODO: function replaceFileLocation(int $file_id): bool
+
+    /**
+     * Replace location column for all files associated with the given dataset
+     *
+     * @param int $dataset_id id of dataset for which to process files
+     * @param array &audit array containing old location and new locations (optional)
+     * @return int The number of files successfully replaced
+     */
+    function replaceFilesLocationForDataset(int $dataset_id, array &$audit = []): int
+    {
+        $processed = 0;
+
+        foreach ($this->queryFilesForDataset($dataset_id)->each() as $index => $file) {
+
+            $oldLocation = $file['location'];
+            $uriParts = parse_url($oldLocation);
+
+
+            if( "https" === $uriParts['scheme']) {
+                error_log("file record {$file['id']} has location starting with https already");
+                continue; //no need for replacement if url already starts with https
+            }
+
+            if("ftp.cngb.org" === $uriParts['host'] && "ftp" === $uriParts['scheme']) {
+                $newLocation = self::NEW_HOST.$uriParts['path'];
+            }
+            else {
+                $path = mb_split("/pub", $uriParts['path'])[1];
+                $newLocation = self::NEW_HOST."/pub/gigadb/pub".$path;
+            }
+
+            $auditRow = ["id" => $file['id'], "old" => $oldLocation, "new" => $newLocation, "updated" => false];
+            try {
+                $updatedRows = Yii::$app->db
+                    ->createCommand()
+                    ->update('file',
+                        ['location' => $newLocation],
+                        'id = :id',
+                        [':id' => $file['id']]
+                    )
+                    ->execute();
+                if (1 === $updatedRows) {
+                    $auditRow["updated"] = true;
+                }
+                $processed++;
+                $audit []= $auditRow;
+            } catch (\Yii\Db\Exception $e) {
+                error_log($e->getMessage());
+                continue;
+            }
+
+        }
+        return $processed;
+    }
 }
