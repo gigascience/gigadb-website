@@ -340,4 +340,37 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             $audit[2]['new']
         );
     }
+
+    public function testDryRunModeForDatasetFtpSite() {
+        $audit = [];
+        $result = DatasetFiles::build(DatasetFiles::DRYRUN_ON )->replaceDatasetFTPSite(7,$audit); //the method should fix fronting whitespace
+        $this->tester->assertEquals(1,$result);
+        $this->tester->assertEquals(
+            "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100905/",
+            $audit['new']
+        );
+        $this->tester->assertEquals(// in dry run mode, audit still shows that replacement happened
+            true,
+            $audit['updated']
+        );
+        $this->tester->assertEquals(// but the actual update in DB doesn't happen
+            "   https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100905/",
+            (new \yii\db\Query())->select('ftp_site')->from('dataset')->where(['id' => 7])->scalar()
+        );
+    }
+
+    public function testDryRunModeForFileLocation() {
+        $audit = [];
+        $result = DatasetFiles::build(DatasetFiles::DRYRUN_ON )->replaceFilesLocationForDataset(3, $audit);
+        $this->tester->assertEquals(3, $result);
+        $this->tester->assertCount(3,$audit);
+        $this->tester->assertEquals(// in dry run mode, audit still shows that replacement happened
+            "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100373/readme.txt",
+            $audit[2]['new']
+        );
+        $this->tester->assertEquals(// but the actual update in DB doesn't happen
+            "ftp://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100373/readme.txt",
+            (new \yii\db\Query())->select('location')->from('file')->where(['name' => "readme.txt"])->scalar()
+        );
+    }
 }

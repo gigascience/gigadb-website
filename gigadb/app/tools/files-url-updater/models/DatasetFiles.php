@@ -13,15 +13,30 @@ use yii\db\Exception;
  */
 class DatasetFiles extends \Yii\base\BaseObject {
 
+    /**
+     * @const the new url host to use
+     */
     public const NEW_HOST = "https://ftp.cngb.org";
+
+    /**
+     * @const to indicate that we want to run the command in dry run mode
+     */
+    public const DRYRUN_ON = true;
+
+    /**
+     * @var bool $dryRun flag to indicate whether the dry run mode is activated (true) or not (false, the default)
+     */
+    public bool $dryRun = false;
 
     /**
      * Factory for this class
      *
+     * @param bool $dryRun
      * @return DatasetFiles
      */
-    public static function build() {
-        return new DatasetFiles();
+    public static function build(bool $dryRun = false): DatasetFiles
+    {
+        return new DatasetFiles(["dryRun" => $dryRun]);
     }
 
     /**
@@ -80,7 +95,7 @@ class DatasetFiles extends \Yii\base\BaseObject {
             ->select('ftp_site')
             ->from('dataset')
             ->where(['id' => $dataset_id])
-            ->one()['ftp_site'];
+            ->scalar();
     }
 
     /**
@@ -183,7 +198,7 @@ class DatasetFiles extends \Yii\base\BaseObject {
      * @return int
      * @throws Exception
      */
-    public function updateDbDatasetTable(string $newFTPSite, int $dataset_id): int
+    private function updateDbDatasetTable(string $newFTPSite, int $dataset_id): int
     {
         return Yii::$app->db
             ->createCommand()
@@ -201,7 +216,7 @@ class DatasetFiles extends \Yii\base\BaseObject {
      * @return int
      * @throws Exception
      */
-    public function updateDbLocationTable(string $newLocation, int $file_id): int
+    private function updateDbLocationTable(string $newLocation, int $file_id): int
     {
         return Yii::$app->db
             ->createCommand()
@@ -219,19 +234,19 @@ class DatasetFiles extends \Yii\base\BaseObject {
      * @param int $table_id
      * @return int Number of rows updated
      */
-    public function updateDbForTable(string $tableName, string $newString, int $table_id): int
+    private function updateDbForTable(string $tableName, string $newString, int $table_id): int
     {
         switch ($tableName){
             case "dataset":
                 try {
-                    return $this->updateDbDatasetTable($newString, $table_id);
+                    return $this->dryRun ? 1 : $this->updateDbDatasetTable($newString, $table_id);
                 } catch (\Yii\Db\Exception $e) {
                     error_log($e->getMessage());
                     return 0;
                 }
             case "file":
                 try {
-                    return $this->updateDbLocationTable($newString, $table_id);
+                    return $this->dryRun ? 1 : $this->updateDbLocationTable($newString, $table_id);
                 } catch (\Yii\Db\Exception $e) {
                     error_log($e->getMessage());
                     return 0;
