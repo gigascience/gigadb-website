@@ -127,23 +127,11 @@ class DatasetFiles extends \Yii\base\BaseObject {
             $newFTPSite = self::NEW_HOST."/pub/gigadb/pub".$path;
         }
         $auditRow['new'] = $newFTPSite;
-        try {
-            $updatedRows =  Yii::$app->db
-                ->createCommand()
-                ->update('dataset',
-                    ['ftp_site' => $newFTPSite],
-                    'id = :id',
-                    [':id' => $dataset_id]
-                )
-                ->execute();
-            if (1 === $updatedRows)
-                $auditRow['updated'] = true;
-            $audit = $auditRow;
-            return $updatedRows;
-        } catch (\Yii\Db\Exception $e) {
-            error_log($e->getMessage());
-            throw new \Yii\base\UserException($e->getMessage());
-        }
+        $updatedRows = $this->updateDbForTable("dataset",$newFTPSite, $dataset_id);
+        if (1 === $updatedRows)
+            $auditRow['updated'] = true;
+        $audit = $auditRow;
+        return $updatedRows;
 
     }
 
@@ -178,26 +166,80 @@ class DatasetFiles extends \Yii\base\BaseObject {
             }
 
             $auditRow = ["id" => $file['id'], "old" => $oldLocation, "new" => $newLocation, "updated" => false];
-            try {
-                $updatedRows = Yii::$app->db
-                    ->createCommand()
-                    ->update('file',
-                        ['location' => $newLocation],
-                        'id = :id',
-                        [':id' => $file['id']]
-                    )
-                    ->execute();
-                if (1 === $updatedRows) {
-                    $auditRow["updated"] = true;
-                }
+            $updatedRows = $this->updateDbForTable("file",$newLocation, $file['id']);
+            if (1 === $updatedRows) {
+                $auditRow["updated"] = true;
                 $processed++;
-                $audit []= $auditRow;
-            } catch (\Yii\Db\Exception $e) {
-                error_log($e->getMessage());
-                continue;
             }
+            $audit []= $auditRow;
 
         }
         return $processed;
     }
+
+    /**
+     * @param string $newFTPSite
+     * @param int $dataset_id
+     * @return int
+     * @throws Exception
+     */
+    public function updateDbDatasetTable(string $newFTPSite, int $dataset_id): int
+    {
+        return Yii::$app->db
+            ->createCommand()
+            ->update('dataset',
+                ['ftp_site' => $newFTPSite],
+                'id = :id',
+                [':id' => $dataset_id]
+            )
+            ->execute();
+    }
+
+    /**
+     * @param string $newLocation
+     * @param int $file_id
+     * @return int
+     * @throws Exception
+     */
+    public function updateDbLocationTable(string $newLocation, int $file_id): int
+    {
+        return Yii::$app->db
+            ->createCommand()
+            ->update('file',
+                ['location' => $newLocation],
+                'id = :id',
+                [':id' => $file_id]
+            )
+            ->execute();
+    }
+
+    /**
+     * @param string $tableName
+     * @param string $newString
+     * @param int $table_id
+     * @return int Number of rows updated
+     */
+    public function updateDbForTable(string $tableName, string $newString, int $table_id): int
+    {
+        switch ($tableName){
+            case "dataset":
+                try {
+                    return $this->updateDbDatasetTable($newString, $table_id);
+                } catch (\Yii\Db\Exception $e) {
+                    error_log($e->getMessage());
+                    return 0;
+                }
+            case "file":
+                try {
+                    return $this->updateDbLocationTable($newString, $table_id);
+                } catch (\Yii\Db\Exception $e) {
+                    error_log($e->getMessage());
+                    return 0;
+                }
+            default:
+                error_log("The supplied table name $tableName is not valid") ;
+                return 0;
+        }
+    }
+
 }
