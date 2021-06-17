@@ -19,11 +19,6 @@ class DatasetFilesController extends Controller
     public string $date;
 
     /**
-     * @var array $ids list of dataset ids to process
-     */
-    public array $ids;
-
-    /**
      * @var bool $all if true get all pending datasets
      */
     public bool $all = false;
@@ -83,7 +78,9 @@ class DatasetFilesController extends Controller
         }
 
         $this->stdout("\nRestoring the backup for {$this->date}\n", Console::BOLD);
+        $quotedDb = "'{$dbConfig['database']}'";
         try {
+            system("psql -U postgres -h {$dbConfig['host']} -c \"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname={$quotedDb};\"");
             system("PGPASSWORD=$dbPassword dropdb -U $dbUser -h {$dbConfig['host']} --if-exists {$dbConfig['database']}");
             system("PGPASSWORD=$dbPassword createdb -U $dbUser -h {$dbConfig['host']} -T template0 {$dbConfig['database']}");
             system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname {$dbConfig['database']}  sql/gigadbv3_{$this->date}.backup");
