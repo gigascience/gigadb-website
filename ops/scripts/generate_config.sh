@@ -58,6 +58,20 @@ if [ $GIGADB_ENV == "staging" ];then
     PUBLIC_HTTP_PORT=$STAGING_PUBLIC_HTTP_PORT
     PUBLIC_HTTPS_PORT=$STAGING_PUBLIC_HTTPS_PORT
 fi
+
+
+if [[ "$GIGADB_ENV" == "dev" ]];then
+  INVALIDATION_QUERY="'select now();'"
+else
+  INVALIDATION_QUERY="'with
+the_dataset_log as (
+select max(created_at) as latest from dataset_log where dataset_id=@id
+),
+the_curation_log as (
+select max(creation_date) as latest from curation_log where dataset_id=@id
+)
+select d.latest,c.latest from the_dataset_log d, the_curation_log c;'"
+fi
 # restore default settings for variables
 set +a
 
@@ -118,7 +132,7 @@ envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/main.php.dist
 TARGET=${APP_SOURCE}/protected/config/main.php
-VARS='$OPAUTH_SECURITY_SALT:$FACEBOOK_APP_ID:$FACEBOOK_APP_SECRET:$LINKEDIN_API_KEY:$LINKEDIN_SECRET_KEY:$GOOGLE_CLIENT_ID:$GOOGLE_SECRET:$TWITTER_KEY:$TWITTER_SECRET:$ORCID_CLIENT_ID:$ORCID_CLIENT_SECRET:$ORCID_CLIENT_ENVIRONMENT:$FTP_CONNECTION_URL'
+VARS='$OPAUTH_SECURITY_SALT:$FACEBOOK_APP_ID:$FACEBOOK_APP_SECRET:$LINKEDIN_API_KEY:$LINKEDIN_SECRET_KEY:$GOOGLE_CLIENT_ID:$GOOGLE_SECRET:$TWITTER_KEY:$TWITTER_SECRET:$ORCID_CLIENT_ID:$ORCID_CLIENT_SECRET:$ORCID_CLIENT_ENVIRONMENT:$FTP_CONNECTION_URL:$INVALIDATION_QUERY'
 envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/db.json.dist
