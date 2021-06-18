@@ -249,6 +249,18 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             'type_id' => 1,
             'download_count'=>0,
         ],);
+        $this->tester->haveInDatabase('public.file',[
+            'dataset_id' => 7,
+            'name' => "Babesia_Parasite_Recognition_file_metadata.csv",
+            'location'=>'ftp://ftp.ebi.ac.uk/pub/databases/reference_proteomes/previous_releases/qfo_release-2011_04/2011_04_reference_proteomes.tar.gz',
+            'extension'=>'txt',
+            'size'=>'1322123045',
+            'description'=>'just readme',
+            'date_stamp' => '2015-10-12',
+            'format_id' => 1,
+            'type_id' => 1,
+            'download_count'=>0,
+        ],);
     }
 
     public function testListPendingDatasets() {
@@ -372,5 +384,11 @@ class DatasetFilesTest extends \Codeception\Test\Unit
             "ftp://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100373/readme.txt",
             (new \yii\db\Query())->select('location')->from('file')->where(['name' => "readme.txt"])->scalar()
         );
+    }
+
+    public function testThirdPartyFTPLocationAreNotReplaced() {
+        $audit = [];
+        $result = DatasetFiles::build()->replaceFilesLocationForDataset(7, $audit);
+        $this->tester->assertEquals(0, $result);
     }
 }

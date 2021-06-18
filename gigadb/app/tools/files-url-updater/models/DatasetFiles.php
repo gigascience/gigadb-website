@@ -108,10 +108,19 @@ class DatasetFiles extends \Yii\base\BaseObject {
      */
     public function queryFilesForDataset(int $dataset_id): \yii\db\Query
     {
-        return ( new Yii\db\Query())
+
+        $query1 = ( new Yii\db\Query())
             ->from('file')
             ->where(['dataset_id' => $dataset_id])
-            ->andWhere(['like','location','ftp://']);
+            ->andWhere(['like','location','ftp.cngb.org']);
+
+        $query2 = ( new Yii\db\Query())
+            ->from('file')
+            ->where(['dataset_id' => $dataset_id])
+            ->andWhere(['like','location','genomics.cn']);
+
+
+        return $query1->union($query2);
     }
 
     /**
@@ -173,12 +182,18 @@ class DatasetFiles extends \Yii\base\BaseObject {
                 continue; //no need for replacement if url already starts with https
             }
 
-            if("ftp.cngb.org" === $uriParts['host']) {
-                $newLocation = self::NEW_HOST.$uriParts['path'];
-            }
-            else {
-                $path = mb_split("/pub", $uriParts['path'])[1];
-                $newLocation = self::NEW_HOST."/pub/gigadb/pub".$path;
+            switch($uriParts['host']) {
+                case "ftp.cngb.org":
+                    $newLocation = self::NEW_HOST.$uriParts['path'];
+                    break;
+                case "parrot.genomics.cn":
+                case "climb.genomics.cn":
+                    $path = mb_split("/pub", $uriParts['path'])[1];
+                    $newLocation = self::NEW_HOST."/pub/gigadb/pub".$path;
+                    break;
+                default:
+                    error_log("No need to replace location for file {$file['id']}");
+                    continue 2;
             }
 
             $auditRow = ["id" => $file['id'], "old" => $oldLocation, "new" => $newLocation, "updated" => false];
