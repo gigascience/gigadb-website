@@ -83,13 +83,13 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iRunTheUpdateScriptOnDatasets(TableNode $datasets)
     {
-        $datasetIds = [];
-
-        foreach($datasets->getRows() as $row) {
-            $datasetIds[] =  $this->grabFromDatabase("dataset",'id',['identifier' => $row[0]]);
+        foreach($datasets->getRows() as $index => $row) {
+            if ($index === 0)
+                continue;
+            $id = $this->grabFromDatabase('dataset','id',['identifier' => $row[0]]);
+            $after = $id - 1;
+            $this->runShellCommand("./yii dataset-files/update-ftp-urls --next 1 --after {$after} --verbose");
         }
-        $datasetListAsStr = ltrim(implode(",", $datasetIds ),",");
-        $this->runShellCommand("./yii dataset-files/update-ftp-url --ids $datasetListAsStr");
     }
 
     /**
@@ -102,7 +102,6 @@ class AcceptanceTester extends \Codeception\Actor
             if ($index === 0)
                 continue;
             $this->amOnPage("/dataset/{$row[0]}");
-            $this->assertMatchesRegularExpression("/(ftp\.cngb\org|parrot\.genomics.cn)/",$this->grabPageSource());
             Helper\DatasetFilesGrabber::$datasetUrls[$row[0]] = Helper\DatasetFilesGrabber::TARGET_URL."dataset/{$row[0]}";
         }
     }
