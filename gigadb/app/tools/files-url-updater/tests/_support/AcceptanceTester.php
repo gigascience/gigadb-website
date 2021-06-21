@@ -106,6 +106,30 @@ class AcceptanceTester extends \Codeception\Actor
         }
     }
 
+    /**
+     * @When I run the update script twice on datasets:
+     */
+    public function iRunTheUpdateScriptTwiceOnDatasets(TableNode $datasets)
+    {
+        //first time
+        foreach($datasets->getRows() as $index => $row) {
+            if ($index === 0)
+                continue;
+            $id = $this->grabFromDatabase('dataset','id',['identifier' => $row[0]]);
+            $after = $id - 1;
+            $this->runShellCommand("./yii dataset-files/update-ftp-urls --next 1 --after {$after} --verbose");
+        }
+
+        //second time
+        foreach($datasets->getRows() as $index => $row) {
+            if ($index === 0)
+                continue;
+            $id = $this->grabFromDatabase('dataset','id',['identifier' => $row[0]]);
+            $after = $id - 1;
+            $this->runShellCommand("./yii dataset-files/update-ftp-urls --next 1 --after {$after} --verbose");
+        }
+    }
+
 
     /**
      * @When I navigate to the dataset pages:
