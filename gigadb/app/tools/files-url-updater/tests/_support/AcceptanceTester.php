@@ -117,7 +117,6 @@ class AcceptanceTester extends \Codeception\Actor
             if ($index === 0)
                 continue;
             $this->amOnPage("/dataset/{$row[0]}");
-            Helper\DatasetFilesGrabber::$datasetUrls[$row[0]] = Helper\DatasetFilesGrabber::TARGET_URL."dataset/{$row[0]}";
         }
     }
 
