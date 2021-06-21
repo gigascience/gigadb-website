@@ -93,6 +93,21 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @When I run the update script on datasets in dry run mode:
+     */
+    public function iRunTheUpdateScriptOnDatasetsInDryRunMode(TableNode $datasets)
+    {
+        foreach($datasets->getRows() as $index => $row) {
+            if ($index === 0)
+                continue;
+            $id = $this->grabFromDatabase('dataset','id',['identifier' => $row[0]]);
+            $after = $id - 1;
+            $this->runShellCommand("./yii dataset-files/update-ftp-urls --next 1 --after {$after} --verbose --dryrun");
+        }
+    }
+
+
+    /**
      * @When I navigate to the dataset pages:
      */
     public function iNavigateToTheDatasetPages(TableNode $datasets)
