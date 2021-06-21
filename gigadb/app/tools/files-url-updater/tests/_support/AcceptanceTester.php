@@ -161,5 +161,33 @@ class AcceptanceTester extends \Codeception\Actor
         }
     }
 
+    /**
+     * @Given CNGB has setup a web server in front of the ftp server
+     */
+    public function cNGBHasSetupAWebServerInFrontOfTheFtpServer()
+    {
+        $this->amOnUrl("https://ftp.cngb.org/pub/");
+        $this->canSee("FTP public service");
+    }
+
+    /**
+     * @When I download a link :arg1
+     */
+    public function iDownloadALink($arg1)
+    {
+        //Cant do proper solution because of: https://github.com/Codeception/Codeception/issues/5518
+        //So we are going to hack our way to it
+        $this->runShellCommand("curl -sO $arg1");
+
+    }
+
+    /**
+     * @Then the file is downloaded locally
+     */
+    public function theFileIsDownloadedLocally()
+    {
+        $this->canSeeFileFound("readme_100633.txt","/app");
+    }
+
 
 }

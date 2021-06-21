@@ -99,3 +99,9 @@ Feature: Want to download dataset files from the website
       | 100633 | ftp://ftp.ebi.ac.uk/pub/databases/reference_proteomes/previous_releases/qfo_release-2011_04/2011_04_reference_proteomes.tar.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100633/ |
       | 100633 | https://figshare.com/s/19a006d6fea9c2494ab8 | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100633/ |
       | 100633 | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100633/readme_100633.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100633/ |
+
+
+    Scenario: download urls work
+      Given CNGB has setup a web server in front of the ftp server
+      When I download a link "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100633/readme_100633.txt"
+      Then the file is downloaded locally
