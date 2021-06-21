@@ -273,4 +273,16 @@ class DatasetFiles extends \Yii\base\BaseObject {
         }
     }
 
+    /**
+     * @param string $dateStr
+     */
+    public static function reloadDb(string $dateStr): void
+    {
+        $dbConfig = \Yii::$app->db->attributes;
+        $dbUser = \Yii::$app->db->username;
+        $dbPassword = \Yii::$app->db->password;
+        system("PGPASSWORD=$dbPassword psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by {$dbConfig['database']};'");
+        system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname {$dbConfig['database']}  sql/gigadbv3_{$dateStr}.backup");
+    }
+
 }

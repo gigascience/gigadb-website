@@ -38,6 +38,11 @@ class DatasetFilesController extends Controller
     public bool $dryrun = false;
 
     /**
+     * @var bool if true no attempt will be made to download the production database backup
+     */
+    public bool $nodownload = false;
+
+    /**
      * @var bool true to show the full audit of transformation
      */
     public bool $verbose = false;
@@ -45,7 +50,7 @@ class DatasetFilesController extends Controller
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','date','ids','all','next','after','dryrun','verbose'];
+        return ['color', 'interactive', 'help','date','ids','all','next','after','dryrun','verbose','nodownload'];
     }
 
     public function init()
@@ -62,14 +67,12 @@ class DatasetFilesController extends Controller
      */
     public function actionDownloadRestoreBackup()
     {
-        $dbConfig = \Yii::$app->db->attributes;
-        $dbUser = \Yii::$app->db->username;
-        $dbPassword = \Yii::$app->db->password;
-        $ftpConfig = \Yii::$app->params['ftp'];
 
         $this->stdout("\nDownloading production backup for {$this->date}\n", Console::BOLD);
+        $ftpConfig = \Yii::$app->params['ftp'];
         try {
-            system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} {$ftpConfig['host']} /app/sql/ /gigadbv3_{$this->date}.backup", $downloadStatus);
+            if(!$this->nodownload)
+                system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} {$ftpConfig['host']} /app/sql/ /gigadbv3_{$this->date}.backup", $downloadStatus);
         }
         catch (Throwable $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
@@ -78,10 +81,8 @@ class DatasetFilesController extends Controller
         }
 
         $this->stdout("\nRestoring the backup for {$this->date}\n", Console::BOLD);
-        $quotedDb = "'{$dbConfig['database']}'";
         try {
-            system("PGPASSWORD=$dbPassword psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by {$dbConfig['database']};'");
-            system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname {$dbConfig['database']}  sql/gigadbv3_{$this->date}.backup");
+            DatasetFiles::reloadDb($this->date);
         }
         catch (Throwable $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
@@ -217,5 +218,7 @@ class DatasetFilesController extends Controller
 
         return ExitCode::OK;
     }
+
+
 
 }
