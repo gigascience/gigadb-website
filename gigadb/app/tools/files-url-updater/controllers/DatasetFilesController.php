@@ -67,12 +67,12 @@ class DatasetFilesController extends Controller
      */
     public function actionDownloadRestoreBackup()
     {
-
-        $this->stdout("\nDownloading production backup for {$this->date}\n", Console::BOLD);
-        $ftpConfig = \Yii::$app->params['ftp'];
         try {
-            if(!$this->nodownload)
+            if(!$this->nodownload) {
+                $this->stdout("\nDownloading production backup for {$this->date}\n", Console::BOLD);
+                $ftpConfig = \Yii::$app->params['ftp'];
                 system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} {$ftpConfig['host']} /app/sql/ /gigadbv3_{$this->date}.backup", $downloadStatus);
+            }
         }
         catch (Throwable $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);

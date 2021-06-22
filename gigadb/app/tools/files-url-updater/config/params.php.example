@@ -2,9 +2,9 @@
 
 return [
     'db' => [
-        "host" => "",
+        "host" => "pg9_3",
         "port" => "",
-        "database" => "",
+        "database" => "gigadb",
         "test_database" => "",
         "username" => "",
         "password" => "",
