@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -e -u
+terraform -chdir=environments/smoke init -input=false
+terraform -chdir=environments/smoke plan -input=false -var tencent_secret_id=${TENCENTCLOUD_SECRET_ID} -var tencent_secret_key=${TENCENTCLOUD_SECRET_KEY} -var tencent_appid=${TENCENTCLOUD_APP_ID}
+terraform -chdir=environments/smoke apply -input=false -auto-approve -var tencent_secret_id=${TENCENTCLOUD_SECRET_ID} -var tencent_secret_key=${TENCENTCLOUD_SECRET_KEY} -var tencent_appid=${TENCENTCLOUD_APP_ID}

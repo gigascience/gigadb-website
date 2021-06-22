@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+set -e -u
+terraform -chdir=environments/smoke destroy -input=false -auto-approve -var tencent_secret_id=${TENCENTCLOUD_SECRET_ID} -var tencent_secret_key=${TENCENTCLOUD_SECRET_KEY} -var tencent_appid=${TENCENTCLOUD_APP_ID}
