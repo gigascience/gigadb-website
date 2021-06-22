@@ -1,0 +1,21 @@
+version: '2'
+services:
+  pg9_3:
+    image: postgres:9.3
+    volumes:
+      - ./sql/bootstrap_gigadb.sql:/docker-entrypoint-initdb.d/gigadb.sql
+      - ./sql:/var/sql
+    ports:
+      - '5432:5432'
+
+  updater:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+#    image: files-url-updater
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/app
+    command: ../../../../ops/scripts/webapp_setup.sh
