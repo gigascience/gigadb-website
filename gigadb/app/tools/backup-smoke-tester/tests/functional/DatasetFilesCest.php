@@ -5,7 +5,8 @@ use yii\console\ExitCode;
 
 class DatasetFilesCest {
     /**
-     * Uploads 3 files in tests/_data/dataset1 into Tencent bucket
+     * Uploads 3 files in tests/_data/dataset1 into Tencent bucket and check
+     * files are displayed in a bucket directory listing
      */
     public function tryBackupDataset(\FunctionalTester $I) {
         $dateStamp = "20210530";
@@ -43,15 +44,14 @@ class DatasetFilesCest {
             "date" => $dateStamp, "/dataset/test.csv",
         ]);
         $test_csv_pairs = $this->extractKeyValuePairs($test_csv_info);
-        codecept_debug($test_csv_info);
         $test_csv_timestamp = strtotime($test_csv_pairs["Last-Modified"]);
         codecept_debug("test_csv_timestamp = ".$test_csv_timestamp);
+
         // Get timestamp for test.tsv
         $test_tsv_info = Yii::$app->createControllerByID('backup-smoke-test')->run('view-file-info',[
             "date" => $dateStamp, "/dataset/test.tsv",
         ]);
         $test_tsv_pairs = $this->extractKeyValuePairs($test_tsv_info);
-        codecept_debug($test_tsv_info);
         $test_tsv_timestamp = strtotime($test_tsv_pairs["Last-Modified"]);
         codecept_debug("test_tsv_timestamp = ".$test_tsv_timestamp);
         // Compare timestamps
@@ -59,7 +59,7 @@ class DatasetFilesCest {
     }
 
     /**
-     * Uploads dataset3 directory into bucket
+     * Uploads dataset3 directory into bucket and check test.tsv is not listed
      *
      * The dataset3 directory does not contain test.tsv file which is therefore
      * deleted in the Tencent bucket.
