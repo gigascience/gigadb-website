@@ -2,15 +2,14 @@
 
 use Yii;
 use yii\console\ExitCode;
+use \app\models\DatasetFiles;
 
 class DatasetFilesCest {
 
     public function setUp() {
-
         # load database schema in test database
         $dbConfig = \Yii::$app->params['db'];
-        system("docker-compose run --rm updater psql -h {$dbConfig['host']} -U {$dbConfig['username']} {$dbConfig['test_database']} -f /app/sql/gigadb_tables.sql", $restoreStatus);
-
+        DatasetFiles::reloadDb("20210628");
     }
 
     public function tearDown() {
