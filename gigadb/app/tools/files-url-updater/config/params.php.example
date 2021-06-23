@@ -5,8 +5,8 @@ return [
         "host" => "pg9_3",
         "port" => "",
         "database" => "gigadb",
-        "test_database" => "",
-        "username" => "",
+        "test_database" => "gigadb_test",
+        "username" => "gigadb",
         "password" => "",
     ],
     'ftp' => [
