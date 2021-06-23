@@ -13,3 +13,4 @@ modules:
       - Yii2
       - Asserts
       - BucketHelper
+      - Cli

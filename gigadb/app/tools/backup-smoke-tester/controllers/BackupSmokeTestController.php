@@ -13,22 +13,6 @@ use \yii\console\ExitCode;
 class BackupSmokeTestController extends Controller
 {
     /**
-     * @var string $date the yyyymmdd for which to retrieve a production backup
-     */
-    public $date;
-
-    /**
-     * @var array $ids list of dataset ids to process
-     */
-    public $ids;
-
-    public function options($actionID)
-    {
-        // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','date','ids'];
-    }
-
-    /**
      * This command will create a Tencent COS bucket
      *
      * TODO: to implement
@@ -37,7 +21,6 @@ class BackupSmokeTestController extends Controller
      */
     public function actionCreateBucket()
     {
-        $this->stdout("\nCreating Bucket for {$this->date}\n", Console::BOLD);
         try {
             $output = shell_exec("scripts/create_bucket.sh");
         }
@@ -58,7 +41,6 @@ class BackupSmokeTestController extends Controller
      */
     public function actionDeleteBucket()
     {
-        $this->stdout("\nDeleting Bucket for {$this->date}\n", Console::BOLD);
         try {
             $output = shell_exec("scripts/delete_bucket.sh");
         }
@@ -79,8 +61,6 @@ class BackupSmokeTestController extends Controller
      */
     public function actionDeleteDirectory($directory)
     {
-        $this->stdout("\nDeleting directory for {$this->date}\n", Console::BOLD);
-
         try {
             // shell_exec returns complete output as string
             $output = shell_exec("coscmd -c ./scripts/.cos.conf delete -r -f ".$directory." 2>&1");
@@ -102,8 +82,6 @@ class BackupSmokeTestController extends Controller
      */
     public function actionListContents($directory)
     {
-        $this->stdout("\nListing contents for {$this->date}\n", Console::BOLD);
-
         try {
             // shell_exec returns complete output as string
             $output = shell_exec("coscmd -c ./scripts/.cos.conf list ".$directory." 2>&1");
@@ -117,28 +95,6 @@ class BackupSmokeTestController extends Controller
     }
 
     /**
-     * This command will backup a dataset directory to Tencent bucket
-     *
-     * TODO: to implement
-     * @throws \Throwable
-     * @return int Exit code
-     */
-    public function actionBackupDataset()
-    {
-        $this->stdout("\nBacking up dataset for {$this->date}\n", Console::BOLD);
-        try {
-            $output = shell_exec("coscmd --debug --config_path scripts/.cos.conf upload -H '{\"x-cos-storage-class\":\"DEEP_ARCHIVE\"}' -rs tests/_data/dataset1/ dataset/ 2>&1");
-        }
-        catch (Throwable $e) {
-            $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
-            Yii::error($e->getMessage());
-            return ExitCode::OSERR;
-        }
-        //        return ExitCode::OK;
-        return $output;
-    }
-
-    /**
      * This command will backup dataset2 to Tencent bucket
      *
      * TODO: to implement
@@ -147,7 +103,6 @@ class BackupSmokeTestController extends Controller
      */
     public function actionUpdateBackupWithChangedFile()
     {
-        $this->stdout("\nUpdating backup with changed CSV for {$this->date}\n", Console::BOLD);
         try {
             $output = shell_exec("coscmd --debug --config_path scripts/.cos.conf upload -H '{\"x-cos-storage-class\":\"DEEP_ARCHIVE\"}' -rs tests/_data/dataset2/ dataset/ 2>&1");
         }
@@ -168,7 +123,6 @@ class BackupSmokeTestController extends Controller
      */
     public function actionUpdateBackupWithDeletedFile()
     {
-        $this->stdout("\nUpdating backup with deleted TSV file for {$this->date}\n", Console::BOLD);
         try {
             $output = shell_exec("coscmd --debug --config_path scripts/.cos.conf upload -H '{\"x-cos-storage-class\":\"DEEP_ARCHIVE\"}' -rsy --delete tests/_data/dataset3/ dataset/ 2>&1");
         }
@@ -189,7 +143,6 @@ class BackupSmokeTestController extends Controller
      */
     public function actionViewFileInfo($filepath)
     {
-        $this->stdout("\nViewing file information for {$this->date}\n", Console::BOLD);
         try {
             $output = shell_exec("coscmd -c ./scripts/.cos.conf info ".$filepath." 2>&1");
         }
