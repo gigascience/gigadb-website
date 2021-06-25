@@ -10,8 +10,8 @@ modules:
     - Yii2:
         part: [orm, email, fixtures]
     - Db:
-        dsn: 'pgsql:host=;dbname=;port=5432'
-        user: ''
+        dsn: 'pgsql:host=pg9_3;dbname=gigadb_test;port=5432'
+        user: 'gigadb'
         password: ''
         populate: true
         clean: true

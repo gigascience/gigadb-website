@@ -3,8 +3,8 @@ modules:
     enabled:
         - Cli
         - Db:
-            dsn: 'pgsql:host=;dbname=;port='
-            user: ''
+            dsn: 'pgsql:host=pg9_3;dbname=gigadb;port=5432'
+            user: 'gigadb'
             password: ''
         - WebDriver:
             url: 'host.docker.internal:9021'
