@@ -3,7 +3,7 @@
 use Yii;
 use yii\console\ExitCode;
 
-class DatasetFilesCest {
+class BackupSmokeCest {
     /**
      * Uploads 3 files in tests/_data/dataset1 into Tencent bucket and check
      * files are displayed in a bucket directory listing
@@ -12,8 +12,7 @@ class DatasetFilesCest {
         $I->runShellCommand("coscmd --debug --config_path scripts/.cos.conf upload -H '{\"x-cos-storage-class\":\"DEEP_ARCHIVE\"}' -rs tests/_data/dataset1/ dataset/ 2>&1");
         codecept_debug($I->grabShellOutput());
         
-        $I->runShellCommand("coscmd -c ./scripts/.cos.conf list dataset/ 2>&1");
-        $output = $I->grabShellOutput();
+        $output = $this->listBucketDirectory($I,"dataset/");
         $tokens = preg_split('/\s+/', trim($output));
         $I->assertEquals("dataset/readme_dataset.txt", $tokens[0], "readme_dataset.txt file does not appear to have been uploaded");
         $I->assertEquals("dataset/test.csv", $tokens[5], "test.csv file does not appear to have been uploaded");
@@ -25,23 +24,18 @@ class DatasetFilesCest {
      * bucket
      */
     public function tryUpdateBackupWithChangedFile(\FunctionalTester $I) {
-        $upload_response = Yii::$app->createControllerByID('backup-smoke-test')->run('update-backup-with-changed-file',[
-        ]);
-        codecept_debug($upload_response);
+        $I->runShellCommand("coscmd --debug --config_path scripts/.cos.conf upload -H '{\"x-cos-storage-class\":\"DEEP_ARCHIVE\"}' -rs tests/_data/dataset2/ dataset/ 2>&1");
+        codecept_debug($I->grabShellOutput());
 
         // Get timestamp for test.csv
-        $test_csv_info = Yii::$app->createControllerByID('backup-smoke-test')->run('view-file-info',[
-            "/dataset/test.csv",
-        ]);
-        $test_csv_pairs = $this->extractKeyValuePairs($test_csv_info);
+        $output = $this->getBucketFileInfo($I,"/dataset/test.csv");
+        $test_csv_pairs = $this->extractKeyValuePairs($output);
         $test_csv_timestamp = strtotime($test_csv_pairs["Last-Modified"]);
         codecept_debug("test_csv_timestamp = ".$test_csv_timestamp);
 
         // Get timestamp for test.tsv
-        $test_tsv_info = Yii::$app->createControllerByID('backup-smoke-test')->run('view-file-info',[
-            "/dataset/test.tsv",
-        ]);
-        $test_tsv_pairs = $this->extractKeyValuePairs($test_tsv_info);
+        $tsv_output = $this->getBucketFileInfo($I,"/dataset/test.tsv");
+        $test_tsv_pairs = $this->extractKeyValuePairs($tsv_output);
         $test_tsv_timestamp = strtotime($test_tsv_pairs["Last-Modified"]);
         codecept_debug("test_tsv_timestamp = ".$test_tsv_timestamp);
         // Compare timestamps
@@ -55,16 +49,31 @@ class DatasetFilesCest {
      * deleted in the Tencent bucket.
      */
     public function tryUpdateBackupWithDeletedFile(\FunctionalTester $I) {
-        $upload_response = Yii::$app->createControllerByID('backup-smoke-test')->run('update-backup-with-deleted-file', [
-        ]);
-        codecept_debug($upload_response);
+        $I->runShellCommand("coscmd --debug --config_path scripts/.cos.conf upload -H '{\"x-cos-storage-class\":\"DEEP_ARCHIVE\"}' -rsy --delete tests/_data/dataset3/ dataset/ 2>&1");
+        codecept_debug($I->grabShellOutput());
 
-        $list_response = Yii::$app->createControllerByID('backup-smoke-test')->run('list-contents',[
-            "dataset/"
-        ]);
-        $I->assertStringContainsString("dataset/readme_dataset.txt", $list_response, "readme_dataset.txt file is not in the COS directory");
-        $I->assertStringContainsString("dataset/test.csv", $list_response, "test.csv file is not in the COS directory");
-        $I->assertStringNotContainsString("dataset/test.tsv", $list_response, "test.tsv file is in COS directory");
+        $output = $this->listBucketDirectory($I,"dataset/");
+        $I->assertStringContainsString("dataset/readme_dataset.txt", $output, "readme_dataset.txt file is not in the COS directory");
+        $I->assertStringContainsString("dataset/test.csv", $output, "test.csv file is not in the COS directory");
+        $I->assertStringNotContainsString("dataset/test.tsv", $output, "test.tsv file is in COS directory");
+    }
+
+    /**
+     * @param String $tencent_output
+     * @return mixed
+     */
+    private function listBucketDirectory(\FunctionalTester $I, $directory) {
+        $I->runShellCommand("coscmd -c ./scripts/.cos.conf list ".$directory." 2>&1");
+        return $I->grabShellOutput();
+    }
+
+    /**
+     * @param String $tencent_output
+     * @return mixed
+     */
+    private function getBucketFileInfo(\FunctionalTester $I, $filepath) {
+        $I->runShellCommand("coscmd -c ./scripts/.cos.conf info ".$filepath." 2>&1");
+        return $I->grabShellOutput();
     }
 
     /**
@@ -72,8 +81,8 @@ class DatasetFilesCest {
      * pairs for simpler querying
      */
     private function extractKeyValuePairs(String $tencent_output) {
-        $out = preg_replace("/\s+\n\s+/", "&", trim($tencent_output));
-        $out = preg_replace("/\s{2,}/", "=", trim($out));
+        $out = preg_replace("/\n/", "&", $tencent_output);
+        $out = preg_replace("/\s{4,}/", "=", trim($out));
         parse_str($out, $output);
         return $output;
     }
