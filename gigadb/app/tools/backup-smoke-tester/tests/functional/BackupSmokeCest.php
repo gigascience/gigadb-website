@@ -59,7 +59,7 @@ class BackupSmokeCest {
     }
 
     /**
-     * @param String $tencent_output
+     * @param String $directory
      * @return mixed
      */
     private function listBucketDirectory(\FunctionalTester $I, $directory) {
@@ -68,7 +68,7 @@ class BackupSmokeCest {
     }
 
     /**
-     * @param String $tencent_output
+     * @param String $filepath
      * @return mixed
      */
     private function getBucketFileInfo(\FunctionalTester $I, $filepath) {
@@ -83,7 +83,7 @@ class BackupSmokeCest {
     private function extractKeyValuePairs(String $tencent_output) {
         $out = preg_replace("/\n/", "&", $tencent_output);
         $out = preg_replace("/\s{4,}/", "=", trim($out));
-        parse_str($out, $output);
-        return $output;
+        parse_str($out, $pairs);
+        return $pairs;
     }
 }
