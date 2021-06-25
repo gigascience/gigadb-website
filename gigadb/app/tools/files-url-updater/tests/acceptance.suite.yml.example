@@ -21,3 +21,5 @@ modules:
               "loggingPrefs":
                   browser: ALL
         - Asserts
+        - Filesystem
+        - Helper\DatasetfilesGrabber
