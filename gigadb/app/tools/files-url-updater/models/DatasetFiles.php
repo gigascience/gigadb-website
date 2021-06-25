@@ -275,19 +275,27 @@ class DatasetFiles extends \Yii\base\BaseObject {
 
     /**
      * @param string $dateStr
+     * @param bool $useTest
      */
-    public static function reloadDb(string $dateStr): void
+    public static function reloadDb(string $dateStr, bool $useTest = false): void
     {
         $dbConfig = \Yii::$app->db->attributes;
         $dbUser = \Yii::$app->db->username;
         $dbPassword = \Yii::$app->db->password;
+
+        $dbName = $dbConfig['database'];
+        if($useTest) {
+            $dbName = $dbConfig['test_database'];
+            var_dump($dbName);
+        }
+
         if($dbPassword) {
-            system("PGPASSWORD=$dbPassword psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by {$dbConfig['database']};' 2> /dev/null");
-            system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname {$dbConfig['database']}  sql/gigadbv3_{$dateStr}.backup 2> /dev/null");
+            system("PGPASSWORD=$dbPassword psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by $dbUser;'");
+            system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname $dbName  /app/sql/gigadbv3_{$dateStr}.backup 2> /dev/null");
         }
         else {
-            system("psql -U {$dbConfig['database']} -h {$dbConfig['host']} -c 'drop owned by {$dbConfig['database']};' 2> /dev/null");
-            system("pg_restore --exit-on-error --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U {$dbConfig['database']} --dbname {$dbConfig['database']}  sql/gigadbv3_{$dateStr}.backup 2> /dev/null");
+            system("psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by $dbUser;'");
+            system("pg_restore --exit-on-error --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname $dbName  /app/sql/gigadbv3_{$dateStr}.backup 2> /dev/null");
         }
     }
 

@@ -11,6 +11,7 @@ return [
         "host" => $params['db']['host'],
         "port" => $params['db']['port'],
         "database" => $params['db']['database'],
+        "test_database" => $params['db']['test_database'],
         ],
     'charset' => 'utf8',
 
