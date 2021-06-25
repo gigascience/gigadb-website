@@ -11,7 +11,7 @@ modules:
         part: [orm, email, fixtures]
     - Db:
         dsn: 'pgsql:host=pg9_3;dbname=gigadb_test;port=5432'
-        user: 'gigadb'
+        user: 'gigadb_test'
         password: ''
         populate: true
         clean: true

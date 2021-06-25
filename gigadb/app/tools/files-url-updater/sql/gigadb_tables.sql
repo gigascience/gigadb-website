@@ -33,7 +33,7 @@ CREATE TABLE public."AuthAssignment" (
 );
 
 
-ALTER TABLE public."AuthAssignment" OWNER TO gigadb;
+ALTER TABLE public."AuthAssignment" OWNER TO gigadb_test;
 
 --
 -- TOC entry 172 (class 1259 OID 16395)
@@ -49,7 +49,7 @@ CREATE TABLE public."AuthItem" (
 );
 
 
-ALTER TABLE public."AuthItem" OWNER TO gigadb;
+ALTER TABLE public."AuthItem" OWNER TO gigadb_test;
 
 --
 -- TOC entry 173 (class 1259 OID 16401)
@@ -63,7 +63,7 @@ CREATE TABLE public."YiiSession" (
 );
 
 
-ALTER TABLE public."YiiSession" OWNER TO gigadb;
+ALTER TABLE public."YiiSession" OWNER TO gigadb_test;
 
 --
 -- TOC entry 174 (class 1259 OID 16407)
@@ -78,7 +78,7 @@ CREATE TABLE public.alternative_identifiers (
 );
 
 
-ALTER TABLE public.alternative_identifiers OWNER TO gigadb;
+ALTER TABLE public.alternative_identifiers OWNER TO gigadb_test;
 
 --
 -- TOC entry 2526 (class 0 OID 0)
@@ -104,7 +104,7 @@ CREATE SEQUENCE public.alternative_identifiers_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.alternative_identifiers_id_seq OWNER TO gigadb;
+ALTER TABLE public.alternative_identifiers_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2527 (class 0 OID 0)
@@ -134,7 +134,7 @@ CREATE TABLE public.attribute (
 );
 
 
-ALTER TABLE public.attribute OWNER TO gigadb;
+ALTER TABLE public.attribute OWNER TO gigadb_test;
 
 --
 -- TOC entry 177 (class 1259 OID 16418)
@@ -149,7 +149,7 @@ CREATE SEQUENCE public.attribute_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.attribute_id_seq OWNER TO gigadb;
+ALTER TABLE public.attribute_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2528 (class 0 OID 0)
@@ -176,7 +176,7 @@ CREATE TABLE public.author (
 );
 
 
-ALTER TABLE public.author OWNER TO gigadb;
+ALTER TABLE public.author OWNER TO gigadb_test;
 
 --
 -- TOC entry 179 (class 1259 OID 16426)
@@ -191,7 +191,7 @@ CREATE SEQUENCE public.author_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.author_id_seq OWNER TO gigadb;
+ALTER TABLE public.author_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2529 (class 0 OID 0)
@@ -219,7 +219,7 @@ CREATE TABLE public.curation_log (
 );
 
 
-ALTER TABLE public.curation_log OWNER TO gigadb;
+ALTER TABLE public.curation_log OWNER TO gigadb_test;
 
 --
 -- TOC entry 181 (class 1259 OID 16434)
@@ -234,7 +234,7 @@ CREATE SEQUENCE public.curation_log_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.curation_log_id_seq OWNER TO gigadb;
+ALTER TABLE public.curation_log_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2531 (class 0 OID 0)
@@ -273,7 +273,7 @@ CREATE TABLE public.dataset (
 );
 
 
-ALTER TABLE public.dataset OWNER TO gigadb;
+ALTER TABLE public.dataset OWNER TO gigadb_test;
 
 --
 -- TOC entry 183 (class 1259 OID 16445)
@@ -291,7 +291,7 @@ CREATE TABLE public.dataset_attributes (
 );
 
 
-ALTER TABLE public.dataset_attributes OWNER TO gigadb;
+ALTER TABLE public.dataset_attributes OWNER TO gigadb_test;
 
 --
 -- TOC entry 184 (class 1259 OID 16448)
@@ -306,7 +306,7 @@ CREATE SEQUENCE public.dataset_attributes_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.dataset_attributes_id_seq OWNER TO gigadb;
+ALTER TABLE public.dataset_attributes_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2532 (class 0 OID 0)
@@ -331,7 +331,7 @@ CREATE TABLE public.dataset_author (
 );
 
 
-ALTER TABLE public.dataset_author OWNER TO gigadb;
+ALTER TABLE public.dataset_author OWNER TO gigadb_test;
 
 --
 -- TOC entry 186 (class 1259 OID 16454)
@@ -346,7 +346,7 @@ CREATE SEQUENCE public.dataset_author_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.dataset_author_id_seq OWNER TO gigadb;
+ALTER TABLE public.dataset_author_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2533 (class 0 OID 0)
@@ -372,7 +372,7 @@ CREATE TABLE public.dataset_funder (
 );
 
 
-ALTER TABLE public.dataset_funder OWNER TO gigadb;
+ALTER TABLE public.dataset_funder OWNER TO gigadb_test;
 
 --
 -- TOC entry 188 (class 1259 OID 16464)
@@ -387,7 +387,7 @@ CREATE SEQUENCE public.dataset_funder_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.dataset_funder_id_seq OWNER TO gigadb;
+ALTER TABLE public.dataset_funder_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2534 (class 0 OID 0)
@@ -411,7 +411,7 @@ CREATE SEQUENCE public.dataset_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.dataset_id_seq OWNER TO gigadb;
+ALTER TABLE public.dataset_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2535 (class 0 OID 0)
@@ -438,7 +438,7 @@ CREATE TABLE public.dataset_log (
 );
 
 
-ALTER TABLE public.dataset_log OWNER TO gigadb;
+ALTER TABLE public.dataset_log OWNER TO gigadb_test;
 
 --
 -- TOC entry 191 (class 1259 OID 16477)
@@ -453,7 +453,7 @@ CREATE SEQUENCE public.dataset_log_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.dataset_log_id_seq OWNER TO gigadb;
+ALTER TABLE public.dataset_log_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2536 (class 0 OID 0)
@@ -476,7 +476,7 @@ CREATE TABLE public.dataset_project (
 );
 
 
-ALTER TABLE public.dataset_project OWNER TO gigadb;
+ALTER TABLE public.dataset_project OWNER TO gigadb_test;
 
 --
 -- TOC entry 193 (class 1259 OID 16482)
@@ -491,7 +491,7 @@ CREATE SEQUENCE public.dataset_project_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.dataset_project_id_seq OWNER TO gigadb;
+ALTER TABLE public.dataset_project_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2537 (class 0 OID 0)
@@ -514,7 +514,7 @@ CREATE TABLE public.dataset_sample (
 );
 
 
-ALTER TABLE public.dataset_sample OWNER TO gigadb;
+ALTER TABLE public.dataset_sample OWNER TO gigadb_test;
 
 --
 -- TOC entry 195 (class 1259 OID 16487)
@@ -529,7 +529,7 @@ CREATE SEQUENCE public.dataset_sample_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.dataset_sample_id_seq OWNER TO gigadb;
+ALTER TABLE public.dataset_sample_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2538 (class 0 OID 0)
@@ -561,7 +561,7 @@ CREATE TABLE public.dataset_session (
 );
 
 
-ALTER TABLE public.dataset_session OWNER TO gigadb;
+ALTER TABLE public.dataset_session OWNER TO gigadb_test;
 
 --
 -- TOC entry 197 (class 1259 OID 16495)
@@ -576,7 +576,7 @@ CREATE SEQUENCE public.dataset_session_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.dataset_session_id_seq OWNER TO gigadb;
+ALTER TABLE public.dataset_session_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2540 (class 0 OID 0)
@@ -599,7 +599,7 @@ CREATE TABLE public.dataset_type (
 );
 
 
-ALTER TABLE public.dataset_type OWNER TO gigadb;
+ALTER TABLE public.dataset_type OWNER TO gigadb_test;
 
 --
 -- TOC entry 199 (class 1259 OID 16500)
@@ -614,7 +614,7 @@ CREATE SEQUENCE public.dataset_type_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.dataset_type_id_seq OWNER TO gigadb;
+ALTER TABLE public.dataset_type_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2541 (class 0 OID 0)
@@ -639,7 +639,7 @@ CREATE TABLE public.exp_attributes (
 );
 
 
-ALTER TABLE public.exp_attributes OWNER TO gigadb;
+ALTER TABLE public.exp_attributes OWNER TO gigadb_test;
 
 --
 -- TOC entry 201 (class 1259 OID 16508)
@@ -654,7 +654,7 @@ CREATE SEQUENCE public.exp_attributes_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.exp_attributes_id_seq OWNER TO gigadb;
+ALTER TABLE public.exp_attributes_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2542 (class 0 OID 0)
@@ -680,7 +680,7 @@ CREATE TABLE public.experiment (
 );
 
 
-ALTER TABLE public.experiment OWNER TO gigadb;
+ALTER TABLE public.experiment OWNER TO gigadb_test;
 
 --
 -- TOC entry 203 (class 1259 OID 16516)
@@ -695,7 +695,7 @@ CREATE SEQUENCE public.experiment_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.experiment_id_seq OWNER TO gigadb;
+ALTER TABLE public.experiment_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2543 (class 0 OID 0)
@@ -720,7 +720,7 @@ CREATE TABLE public.extdb (
 );
 
 
-ALTER TABLE public.extdb OWNER TO gigadb;
+ALTER TABLE public.extdb OWNER TO gigadb_test;
 
 --
 -- TOC entry 205 (class 1259 OID 16524)
@@ -735,7 +735,7 @@ CREATE SEQUENCE public.extdb_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.extdb_id_seq OWNER TO gigadb;
+ALTER TABLE public.extdb_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2544 (class 0 OID 0)
@@ -759,7 +759,7 @@ CREATE TABLE public.external_link (
 );
 
 
-ALTER TABLE public.external_link OWNER TO gigadb;
+ALTER TABLE public.external_link OWNER TO gigadb_test;
 
 --
 -- TOC entry 207 (class 1259 OID 16529)
@@ -774,7 +774,7 @@ CREATE SEQUENCE public.external_link_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.external_link_id_seq OWNER TO gigadb;
+ALTER TABLE public.external_link_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2545 (class 0 OID 0)
@@ -796,7 +796,7 @@ CREATE TABLE public.external_link_type (
 );
 
 
-ALTER TABLE public.external_link_type OWNER TO gigadb;
+ALTER TABLE public.external_link_type OWNER TO gigadb_test;
 
 --
 -- TOC entry 209 (class 1259 OID 16534)
@@ -811,7 +811,7 @@ CREATE SEQUENCE public.external_link_type_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.external_link_type_id_seq OWNER TO gigadb;
+ALTER TABLE public.external_link_type_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2546 (class 0 OID 0)
@@ -845,7 +845,7 @@ CREATE TABLE public.file (
 );
 
 
-ALTER TABLE public.file OWNER TO gigadb;
+ALTER TABLE public.file OWNER TO gigadb_test;
 
 --
 -- TOC entry 211 (class 1259 OID 16545)
@@ -861,7 +861,7 @@ CREATE TABLE public.file_attributes (
 );
 
 
-ALTER TABLE public.file_attributes OWNER TO gigadb;
+ALTER TABLE public.file_attributes OWNER TO gigadb_test;
 
 --
 -- TOC entry 212 (class 1259 OID 16551)
@@ -876,7 +876,7 @@ CREATE SEQUENCE public.file_attributes_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.file_attributes_id_seq OWNER TO gigadb;
+ALTER TABLE public.file_attributes_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2547 (class 0 OID 0)
@@ -899,7 +899,7 @@ CREATE TABLE public.file_experiment (
 );
 
 
-ALTER TABLE public.file_experiment OWNER TO gigadb;
+ALTER TABLE public.file_experiment OWNER TO gigadb_test;
 
 --
 -- TOC entry 214 (class 1259 OID 16556)
@@ -914,7 +914,7 @@ CREATE SEQUENCE public.file_experiment_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.file_experiment_id_seq OWNER TO gigadb;
+ALTER TABLE public.file_experiment_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2548 (class 0 OID 0)
@@ -938,7 +938,7 @@ CREATE TABLE public.file_format (
 );
 
 
-ALTER TABLE public.file_format OWNER TO gigadb;
+ALTER TABLE public.file_format OWNER TO gigadb_test;
 
 --
 -- TOC entry 216 (class 1259 OID 16565)
@@ -953,7 +953,7 @@ CREATE SEQUENCE public.file_format_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.file_format_id_seq OWNER TO gigadb;
+ALTER TABLE public.file_format_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2549 (class 0 OID 0)
@@ -977,7 +977,7 @@ CREATE SEQUENCE public.file_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.file_id_seq OWNER TO gigadb;
+ALTER TABLE public.file_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2550 (class 0 OID 0)
@@ -998,7 +998,7 @@ CREATE VIEW public.file_number AS
    FROM public.file;
 
 
-ALTER TABLE public.file_number OWNER TO gigadb;
+ALTER TABLE public.file_number OWNER TO gigadb_test;
 
 --
 -- TOC entry 219 (class 1259 OID 16573)
@@ -1013,7 +1013,7 @@ CREATE TABLE public.file_relationship (
 );
 
 
-ALTER TABLE public.file_relationship OWNER TO gigadb;
+ALTER TABLE public.file_relationship OWNER TO gigadb_test;
 
 --
 -- TOC entry 220 (class 1259 OID 16576)
@@ -1028,7 +1028,7 @@ CREATE SEQUENCE public.file_relationship_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.file_relationship_id_seq OWNER TO gigadb;
+ALTER TABLE public.file_relationship_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2552 (class 0 OID 0)
@@ -1051,7 +1051,7 @@ CREATE TABLE public.file_sample (
 );
 
 
-ALTER TABLE public.file_sample OWNER TO gigadb;
+ALTER TABLE public.file_sample OWNER TO gigadb_test;
 
 --
 -- TOC entry 222 (class 1259 OID 16581)
@@ -1066,7 +1066,7 @@ CREATE SEQUENCE public.file_sample_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.file_sample_id_seq OWNER TO gigadb;
+ALTER TABLE public.file_sample_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2553 (class 0 OID 0)
@@ -1090,7 +1090,7 @@ CREATE TABLE public.file_type (
 );
 
 
-ALTER TABLE public.file_type OWNER TO gigadb;
+ALTER TABLE public.file_type OWNER TO gigadb_test;
 
 --
 -- TOC entry 224 (class 1259 OID 16590)
@@ -1105,7 +1105,7 @@ CREATE SEQUENCE public.file_type_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.file_type_id_seq OWNER TO gigadb;
+ALTER TABLE public.file_type_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2554 (class 0 OID 0)
@@ -1129,7 +1129,7 @@ CREATE TABLE public.funder_name (
 );
 
 
-ALTER TABLE public.funder_name OWNER TO gigadb;
+ALTER TABLE public.funder_name OWNER TO gigadb_test;
 
 --
 -- TOC entry 226 (class 1259 OID 16599)
@@ -1144,7 +1144,7 @@ CREATE SEQUENCE public.funder_name_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.funder_name_id_seq OWNER TO gigadb;
+ALTER TABLE public.funder_name_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2555 (class 0 OID 0)
@@ -1181,7 +1181,7 @@ CREATE TABLE public.gigadb_user (
 );
 
 
-ALTER TABLE public.gigadb_user OWNER TO gigadb;
+ALTER TABLE public.gigadb_user OWNER TO gigadb_test;
 
 --
 -- TOC entry 228 (class 1259 OID 16612)
@@ -1196,7 +1196,7 @@ CREATE SEQUENCE public.gigadb_user_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.gigadb_user_id_seq OWNER TO gigadb;
+ALTER TABLE public.gigadb_user_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2556 (class 0 OID 0)
@@ -1219,7 +1219,7 @@ CREATE TABLE public.type (
 );
 
 
-ALTER TABLE public.type OWNER TO gigadb;
+ALTER TABLE public.type OWNER TO gigadb_test;
 
 --
 -- TOC entry 230 (class 1259 OID 16621)
@@ -1236,7 +1236,7 @@ CREATE VIEW public.homepage_dataset_type AS
   GROUP BY type.name;
 
 
-ALTER TABLE public.homepage_dataset_type OWNER TO gigadb;
+ALTER TABLE public.homepage_dataset_type OWNER TO gigadb_test;
 
 --
 -- TOC entry 231 (class 1259 OID 16625)
@@ -1254,7 +1254,7 @@ CREATE TABLE public.image (
 );
 
 
-ALTER TABLE public.image OWNER TO gigadb;
+ALTER TABLE public.image OWNER TO gigadb_test;
 
 --
 -- TOC entry 232 (class 1259 OID 16632)
@@ -1269,7 +1269,7 @@ CREATE SEQUENCE public.image_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.image_id_seq OWNER TO gigadb;
+ALTER TABLE public.image_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2558 (class 0 OID 0)
@@ -1294,7 +1294,7 @@ CREATE TABLE public.link (
 );
 
 
-ALTER TABLE public.link OWNER TO gigadb;
+ALTER TABLE public.link OWNER TO gigadb_test;
 
 --
 -- TOC entry 234 (class 1259 OID 16638)
@@ -1309,7 +1309,7 @@ CREATE SEQUENCE public.link_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.link_id_seq OWNER TO gigadb;
+ALTER TABLE public.link_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2559 (class 0 OID 0)
@@ -1333,7 +1333,7 @@ CREATE SEQUENCE public.link_prefix_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.link_prefix_id_seq OWNER TO gigadb;
+ALTER TABLE public.link_prefix_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 236 (class 1259 OID 16642)
@@ -1348,7 +1348,7 @@ CREATE TABLE public.manuscript (
 );
 
 
-ALTER TABLE public.manuscript OWNER TO gigadb;
+ALTER TABLE public.manuscript OWNER TO gigadb_test;
 
 --
 -- TOC entry 237 (class 1259 OID 16645)
@@ -1363,7 +1363,7 @@ CREATE SEQUENCE public.manuscript_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.manuscript_id_seq OWNER TO gigadb;
+ALTER TABLE public.manuscript_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2560 (class 0 OID 0)
@@ -1388,7 +1388,7 @@ CREATE TABLE public.news (
 );
 
 
-ALTER TABLE public.news OWNER TO gigadb;
+ALTER TABLE public.news OWNER TO gigadb_test;
 
 --
 -- TOC entry 239 (class 1259 OID 16654)
@@ -1403,7 +1403,7 @@ CREATE SEQUENCE public.news_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.news_id_seq OWNER TO gigadb;
+ALTER TABLE public.news_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2561 (class 0 OID 0)
@@ -1428,7 +1428,7 @@ CREATE TABLE public.prefix (
 );
 
 
-ALTER TABLE public.prefix OWNER TO gigadb;
+ALTER TABLE public.prefix OWNER TO gigadb_test;
 
 --
 -- TOC entry 241 (class 1259 OID 16664)
@@ -1443,7 +1443,7 @@ CREATE TABLE public.project (
 );
 
 
-ALTER TABLE public.project OWNER TO gigadb;
+ALTER TABLE public.project OWNER TO gigadb_test;
 
 --
 -- TOC entry 242 (class 1259 OID 16668)
@@ -1458,7 +1458,7 @@ CREATE SEQUENCE public.project_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.project_id_seq OWNER TO gigadb;
+ALTER TABLE public.project_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2563 (class 0 OID 0)
@@ -1481,7 +1481,7 @@ CREATE TABLE public.publisher (
 );
 
 
-ALTER TABLE public.publisher OWNER TO gigadb;
+ALTER TABLE public.publisher OWNER TO gigadb_test;
 
 --
 -- TOC entry 244 (class 1259 OID 16677)
@@ -1496,7 +1496,7 @@ CREATE SEQUENCE public.publisher_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.publisher_id_seq OWNER TO gigadb;
+ALTER TABLE public.publisher_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2564 (class 0 OID 0)
@@ -1520,7 +1520,7 @@ CREATE TABLE public.relation (
 );
 
 
-ALTER TABLE public.relation OWNER TO gigadb;
+ALTER TABLE public.relation OWNER TO gigadb_test;
 
 --
 -- TOC entry 246 (class 1259 OID 16682)
@@ -1535,7 +1535,7 @@ CREATE SEQUENCE public.relation_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.relation_id_seq OWNER TO gigadb;
+ALTER TABLE public.relation_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2565 (class 0 OID 0)
@@ -1557,7 +1557,7 @@ CREATE TABLE public.relationship (
 );
 
 
-ALTER TABLE public.relationship OWNER TO gigadb;
+ALTER TABLE public.relationship OWNER TO gigadb_test;
 
 --
 -- TOC entry 248 (class 1259 OID 16687)
@@ -1572,7 +1572,7 @@ CREATE SEQUENCE public.relationship_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.relationship_id_seq OWNER TO gigadb;
+ALTER TABLE public.relationship_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2566 (class 0 OID 0)
@@ -1595,7 +1595,7 @@ CREATE TABLE public.rss_message (
 );
 
 
-ALTER TABLE public.rss_message OWNER TO gigadb;
+ALTER TABLE public.rss_message OWNER TO gigadb_test;
 
 --
 -- TOC entry 250 (class 1259 OID 16693)
@@ -1610,7 +1610,7 @@ CREATE SEQUENCE public.rss_message_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.rss_message_id_seq OWNER TO gigadb;
+ALTER TABLE public.rss_message_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2567 (class 0 OID 0)
@@ -1639,7 +1639,7 @@ CREATE TABLE public.sample (
 );
 
 
-ALTER TABLE public.sample OWNER TO gigadb;
+ALTER TABLE public.sample OWNER TO gigadb_test;
 
 --
 -- TOC entry 252 (class 1259 OID 16699)
@@ -1655,7 +1655,7 @@ CREATE TABLE public.sample_attribute (
 );
 
 
-ALTER TABLE public.sample_attribute OWNER TO gigadb;
+ALTER TABLE public.sample_attribute OWNER TO gigadb_test;
 
 --
 -- TOC entry 253 (class 1259 OID 16705)
@@ -1670,7 +1670,7 @@ CREATE SEQUENCE public.sample_attribute_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.sample_attribute_id_seq OWNER TO gigadb;
+ALTER TABLE public.sample_attribute_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2568 (class 0 OID 0)
@@ -1693,7 +1693,7 @@ CREATE TABLE public.sample_experiment (
 );
 
 
-ALTER TABLE public.sample_experiment OWNER TO gigadb;
+ALTER TABLE public.sample_experiment OWNER TO gigadb_test;
 
 --
 -- TOC entry 255 (class 1259 OID 16710)
@@ -1708,7 +1708,7 @@ CREATE SEQUENCE public.sample_experiment_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.sample_experiment_id_seq OWNER TO gigadb;
+ALTER TABLE public.sample_experiment_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2569 (class 0 OID 0)
@@ -1732,7 +1732,7 @@ CREATE SEQUENCE public.sample_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.sample_id_seq OWNER TO gigadb;
+ALTER TABLE public.sample_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2570 (class 0 OID 0)
@@ -1753,7 +1753,7 @@ CREATE VIEW public.sample_number AS
    FROM public.sample;
 
 
-ALTER TABLE public.sample_number OWNER TO gigadb;
+ALTER TABLE public.sample_number OWNER TO gigadb_test;
 
 --
 -- TOC entry 258 (class 1259 OID 16718)
@@ -1768,7 +1768,7 @@ CREATE TABLE public.sample_rel (
 );
 
 
-ALTER TABLE public.sample_rel OWNER TO gigadb;
+ALTER TABLE public.sample_rel OWNER TO gigadb_test;
 
 --
 -- TOC entry 259 (class 1259 OID 16721)
@@ -1783,7 +1783,7 @@ CREATE SEQUENCE public.sample_rel_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.sample_rel_id_seq OWNER TO gigadb;
+ALTER TABLE public.sample_rel_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2572 (class 0 OID 0)
@@ -1807,7 +1807,7 @@ CREATE TABLE public.schemup_tables (
 );
 
 
-ALTER TABLE public.schemup_tables OWNER TO gigadb;
+ALTER TABLE public.schemup_tables OWNER TO gigadb_test;
 
 --
 -- TOC entry 261 (class 1259 OID 16730)
@@ -1823,7 +1823,7 @@ CREATE TABLE public.search (
 );
 
 
-ALTER TABLE public.search OWNER TO gigadb;
+ALTER TABLE public.search OWNER TO gigadb_test;
 
 --
 -- TOC entry 262 (class 1259 OID 16736)
@@ -1838,7 +1838,7 @@ CREATE SEQUENCE public.search_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.search_id_seq OWNER TO gigadb;
+ALTER TABLE public.search_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2573 (class 0 OID 0)
@@ -1861,7 +1861,7 @@ CREATE VIEW public.show_accession AS
      JOIN public.link ON ((dataset.id = link.dataset_id)));
 
 
-ALTER TABLE public.show_accession OWNER TO gigadb;
+ALTER TABLE public.show_accession OWNER TO gigadb_test;
 
 --
 -- TOC entry 264 (class 1259 OID 16742)
@@ -1875,7 +1875,7 @@ CREATE VIEW public.show_manuscript AS
      JOIN public.manuscript ON ((dataset.id = manuscript.dataset_id)));
 
 
-ALTER TABLE public.show_manuscript OWNER TO gigadb;
+ALTER TABLE public.show_manuscript OWNER TO gigadb_test;
 
 --
 -- TOC entry 265 (class 1259 OID 16746)
@@ -1890,7 +1890,7 @@ CREATE VIEW public.show_project AS
      JOIN public.project ON ((dataset_project.project_id = project.id)));
 
 
-ALTER TABLE public.show_project OWNER TO gigadb;
+ALTER TABLE public.show_project OWNER TO gigadb_test;
 
 --
 -- TOC entry 266 (class 1259 OID 16751)
@@ -1907,7 +1907,7 @@ CREATE TABLE public.species (
 );
 
 
-ALTER TABLE public.species OWNER TO gigadb;
+ALTER TABLE public.species OWNER TO gigadb_test;
 
 --
 -- TOC entry 267 (class 1259 OID 16754)
@@ -1922,7 +1922,7 @@ CREATE SEQUENCE public.species_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.species_id_seq OWNER TO gigadb;
+ALTER TABLE public.species_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2574 (class 0 OID 0)
@@ -1946,7 +1946,7 @@ CREATE SEQUENCE public.type_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.type_id_seq OWNER TO gigadb;
+ALTER TABLE public.type_id_seq OWNER TO gigadb_test;
 
 --
 -- TOC entry 2575 (class 0 OID 0)
@@ -1969,7 +1969,7 @@ CREATE TABLE public.unit (
 );
 
 
-ALTER TABLE public.unit OWNER TO gigadb;
+ALTER TABLE public.unit OWNER TO gigadb_test;
 
 --
 -- TOC entry 2576 (class 0 OID 0)
@@ -2010,7 +2010,7 @@ CREATE TABLE public.yiisession (
 );
 
 
-ALTER TABLE public.yiisession OWNER TO gigadb;
+ALTER TABLE public.yiisession OWNER TO gigadb_test;
 
 --
 -- TOC entry 2162 (class 2604 OID 16770)
