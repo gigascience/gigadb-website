@@ -25,4 +25,10 @@ class DatasetFilesGrabber extends \Codeception\Module
             unlink($downloaded);
         parent::_after($test);
     }
+
+    public function _afterSuite()
+    {
+        $dateStr = "20210608";
+        system("./yii dataset-files/download-restore-backup --date $dateStr --nodownload");
+    }
 }
