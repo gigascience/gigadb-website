@@ -26,28 +26,6 @@ class DatasetFilesCest {
 
     }
 
-    public function tryListPendingDatasetsNoOptions(\FunctionalTester $I) {
-        $command = Yii::$app->createControllerByID('dataset-files');
-        $outcome = $command->run('list-pending-datasets');
-        $I->assertEquals(Exitcode::NOINPUT, $outcome);
-    }
-
-    public function tryListPendingDatasetsAll(\FunctionalTester $I) {
-        $command = Yii::$app->createControllerByID('dataset-files');
-        $outcome = $command->run('list-pending-datasets',[
-            "all" => true,
-        ]);
-        $I->assertEquals(Exitcode::OK, $outcome);
-    }
-
-    public function tryListPendingDatasetsNext(\FunctionalTester $I) {
-        $command = Yii::$app->createControllerByID('dataset-files');
-        $outcome = $command->run('list-pending-datasets',[
-            "next" => 5,
-        ]);
-        $I->assertEquals(Exitcode::OK, $outcome);
-    }
-
     public function tryUpdateFtpUrlNextAfter(\FunctionalTester $I) {
         $command = Yii::$app->createControllerByID('dataset-files');
         $outcome = $command->run('update-ftp-urls',[

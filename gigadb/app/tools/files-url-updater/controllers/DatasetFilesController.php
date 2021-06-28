@@ -93,38 +93,6 @@ class DatasetFilesController extends Controller
         return ExitCode::OK;
     }
 
-    /**
-     * This command will list the dataset with files in need of updating for ftp urls replacement
-     *
-     * Usage:
-     * ./yii dataset-files/list-pending-datasets --all|--next <batch size> --after <dataset id>
-     *
-     * @return int Exit code
-     */
-    public function actionListPendingDatasets()
-    {
-        $rows = [];
-        if ($this->all) {
-            $rows = DatasetFiles::build()->getAllPendingDatasets();
-
-            foreach ($rows as $key => $value) {
-                $this->stdout($value["dataset_id"]."\n");
-            }
-
-            return ExitCode::OK;
-        }
-        elseif ($this->next) {
-            $rows = DatasetFiles::build()->getNextPendingDatasets($this->after, $this->next);
-
-            foreach ($rows as $key => $value) {
-                $this->stdout($value["dataset_id"]."\n");
-            }
-            return ExitCode::OK;
-        }
-
-        return ExitCode::NOINPUT;
-
-    }
 
     /**
      * This command will update file table to replace ftp urls for the supplied list of dataset ids
