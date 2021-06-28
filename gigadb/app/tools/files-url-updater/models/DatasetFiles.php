@@ -182,7 +182,7 @@ class DatasetFiles extends \Yii\base\BaseObject {
                 continue; //no need for replacement if url already starts with https
             }
 
-            switch($uriParts['host']) {
+            switch($uriParts['host']) { # replace ftp urls with https based ones
                 case "ftp.cngb.org":
                     $newLocation = self::NEW_HOST.$uriParts['path'];
                     break;
@@ -196,8 +196,22 @@ class DatasetFiles extends \Yii\base\BaseObject {
                     continue 2;
             }
 
-            $auditRow = ["id" => $file['id'], "old" => $oldLocation, "new" => $newLocation, "updated" => false];
-            $updatedRows = $this->updateDbForTable("file",$newLocation, $file['id']);
+            # Remove duplicate DOI from location
+            $locationToSave = $newLocation;
+            if ( preg_match("/(\/\d{6}\/)\d{6}\//", $newLocation, $matches)) {
+                $parts = mb_split( #only keep left and right parts of the pattern
+                    $matches[0],
+                    $newLocation
+                );
+                $locationToSave = implode( # put the single /DOI/ in the middle
+                    "",
+                    [$parts[0],$matches[1],$parts[1]]
+                );
+
+            }
+
+            $auditRow = ["id" => $file['id'], "old" => $oldLocation, "new" => $locationToSave, "updated" => false];
+            $updatedRows = $this->updateDbForTable("file",$locationToSave, $file['id']);
             if (1 === $updatedRows) {
                 $auditRow["updated"] = true;
                 $processed++;

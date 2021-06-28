@@ -327,11 +327,11 @@ class DatasetFilesTest extends \Codeception\Test\Unit
         );
 
         $this->tester->assertEquals(
-            "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100683/100683/readme_100683.txt",
+            "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100683/readme_100683.txt",
             $climbAudit[0]['new']
         );
         $this->tester->assertEquals(
-            "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100683/100683/HAMAP-SPARQL-master.zip",
+            "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100683/HAMAP-SPARQL-master.zip",
             $climbAudit[1]['new']
         );
 
