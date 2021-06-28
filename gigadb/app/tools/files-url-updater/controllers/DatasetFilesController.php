@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use \Yii;
 use \yii\helpers\Console;
 use \yii\console\Controller;
 use \yii\console\ExitCode;
@@ -162,30 +163,45 @@ class DatasetFilesController extends Controller
                 $ftpSiteAudit = [];
                 $locationAudit = [];
 
-                $this->stdout("\tTransforming ftp_site... ");
-                $ftpSiteOutcome = $df->replaceDatasetFTPSite($value["dataset_id"],$ftpSiteAudit);
-                $auditLog[$value["dataset_id"]]["ftp_site"] = $ftpSiteAudit ;
-                if ($ftpSiteOutcome)
-                    $this->stdout("DONE", Console::BG_GREEN);
-                else
-                    $this->stdout("ERROR", Console::BG_RED);
+                $db = \Yii::$app->db;
+                $transaction = $db->beginTransaction();
+                try{
+                    $this->stdout("\tTransforming ftp_site... ");
+                    $ftpSiteOutcome = $df->replaceDatasetFTPSite($value["dataset_id"],$ftpSiteAudit);
+                    $auditLog[$value["dataset_id"]]["ftp_site"] = $ftpSiteAudit ;
+                    if ($ftpSiteOutcome)
+                        $this->stdout("DONE", Console::BG_GREEN);
+                    else
+                        $this->stdout("ERROR", Console::BG_RED);
 
 
-                $this->stdout("\n\tTransforming file locations ...", Console::BOLD);
-                $locationOutcome = $df->replaceFilesLocationForDataset($value["dataset_id"], $locationAudit);
-                $auditLog[$value["dataset_id"]]["location"] = $locationAudit ;
-                switch($locationOutcome) {
-                    case 0:
-                        $this->stdout("FAILURE (0/$nbFiles)", Console::BG_RED);
-                        break;
-                    case $nbFiles:
-                        $this->stdout("DONE ($nbFiles/$nbFiles)", Console::BG_GREEN);
-                        break;
-                    default:
-                        $this->stdout("ERROR ($locationOutcome/$nbFiles)", Console::BG_YELLOW);
-                        break;
+                    $this->stdout("\n\tTransforming file locations ...", Console::BOLD);
+                    $locationOutcome = $df->replaceFilesLocationForDataset($value["dataset_id"], $locationAudit);
+                    $auditLog[$value["dataset_id"]]["location"] = $locationAudit ;
+                    switch($locationOutcome) {
+                        case 0:
+                            $this->stdout("FAILURE (0/$nbFiles)", Console::BG_RED);
+                            break;
+                        case $nbFiles:
+                            $this->stdout("DONE ($nbFiles/$nbFiles)", Console::BG_GREEN);
+                            break;
+                        default:
+                            $this->stdout("ERROR ($locationOutcome/$nbFiles)", Console::BG_YELLOW);
+                            break;
+                    }
+                    $this->stdout("\n");
+
+                    $transaction->commit();
                 }
-                $this->stdout("\n");
+                catch(\Throwable $e) {
+                    $this->stdout(" ftp_site ERROR", Console::BG_RED);
+                    $this->stdout(" location FAILURE (0/$nbFiles)", Console::BG_RED);
+                    $this->stdout("\n** Rolling back transaction for dataset of id {$value["dataset_id"]}\n", Console::BG_RED);
+                    $transaction->rollBack();
+                    throw $e; //we stop the whole run
+                }
+
+
             }
 
             if ($optVerbose) {
