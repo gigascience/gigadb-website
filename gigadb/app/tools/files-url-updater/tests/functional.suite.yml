@@ -12,3 +12,4 @@ modules:
       - Filesystem
       - Yii2
       - Asserts
+      - Cli

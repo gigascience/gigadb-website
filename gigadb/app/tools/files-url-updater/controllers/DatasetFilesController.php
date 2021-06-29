@@ -20,11 +20,6 @@ class DatasetFilesController extends Controller
     public string $date;
 
     /**
-     * @var bool $all if true get all pending datasets
-     */
-    public bool $all = false;
-
-    /**
      * @var int $next get list of next $next pending datasets
      */
     public int $next = 0;
@@ -51,7 +46,7 @@ class DatasetFilesController extends Controller
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','date','ids','all','next','after','dryrun','verbose','nodownload'];
+        return ['color', 'interactive', 'help','date','next','after','dryrun','verbose','nodownload'];
     }
 
     public function init()
@@ -98,7 +93,7 @@ class DatasetFilesController extends Controller
      * This command will update file table to replace ftp urls for the supplied list of dataset ids
      *
      *  Usage:
-     *      ./yii dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun]
+     *      ./yii dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun][--verbose]
      * TODO: to implement
      * @throws \Throwable
      * @return int Exit code
@@ -111,6 +106,11 @@ class DatasetFilesController extends Controller
         $optDryRun = $this->dryrun;
         $optVerbose = $this->verbose;
 
+        //Return usage unless mandatory options are passed
+        if(!($optNext)) {
+            $this->stdout("\nUsage:\n\t ./yii dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun][--verbose]\n\n");
+            return ExitCode::USAGE;
+        }
 
         if($optDryRun)
             $this->stdout("\nDRY RUN ENABLED, no changes will be saved\n\n", Console::BOLD );

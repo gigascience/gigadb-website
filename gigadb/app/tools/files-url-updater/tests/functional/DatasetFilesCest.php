@@ -34,4 +34,13 @@ class DatasetFilesCest {
         ]);
         $I->assertEquals(Exitcode::OK, $outcome);
     }
+
+    public function tryUsageWhenNoOptions(\FunctionalTester $I)
+    {
+        $I->runShellCommand("./yii dataset-files/update-ftp-urls", false);
+        $I->canSeeInShellOutput("Usage:");
+        $I->canSeeInShellOutput("./yii dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun][--verbose]");
+        $I->canSeeResultCodeIs(Exitcode::USAGE);
+    }
+
 }
