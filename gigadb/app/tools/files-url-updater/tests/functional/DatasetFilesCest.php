@@ -18,11 +18,10 @@ class DatasetFilesCest {
     public function tryDownloadRestoreBackup(\FunctionalTester $I) {
         $dateStamp = date('Ymd') - 1;
 
-        $outcome = Yii::$app->createControllerByID('dataset-files')->run('download-restore-backup',[
-            "date" => $dateStamp,
-        ]);
-
-        $I->assertEquals(Exitcode::OK, $outcome);
+        $I->runShellCommand("./yii dataset-files/download-restore-backup --date $dateStamp");
+        $I->canSeeInShellOutput("Downloading production backup for $dateStamp");
+        $I->canSeeInShellOutput("Restoring the backup for $dateStamp");
+        $I->seeResultCodeIs(Exitcode::OK);
 
     }
 
