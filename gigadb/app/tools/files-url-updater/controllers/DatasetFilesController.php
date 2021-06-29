@@ -112,9 +112,6 @@ class DatasetFilesController extends Controller
             return ExitCode::USAGE;
         }
 
-        if($optDryRun)
-            $this->stdout("\nDRY RUN ENABLED, no changes will be saved\n\n", Console::BOLD );
-
         // Prepare logging and audit
         $auditLog = [];
 
@@ -123,6 +120,21 @@ class DatasetFilesController extends Controller
 
         try {
             $rows = $df->getNextPendingDatasets($optAfter, $optNext);
+
+            if(!$optDryRun && count($rows) > 0 ) {
+                $this->stdout("\nWarning! ", Console::FG_RED);
+                switch($this->confirm("This command will alter ".count($rows)." datasets in the database, are you sure you want to proceed?\n")) {
+                    case false:
+                        $this->stdout("Aborting.\n", Console::FG_BLUE);
+                        return ExitCode::OK;
+                    default:
+                        $this->stdout("Executing command...\n", Console::FG_BLUE);
+                }
+            }
+            elseif (!$rows || count($rows) ===  0) {
+                $this->stdout("\nThere are no pending datasets with url to replace.\n", Console::FG_BLUE);
+                return ExitCode::OK;
+            }
 
             foreach ($rows as $key => $value) {
                 $this->stdout("[{$value["dataset_id"]}]",Console::BOLD);

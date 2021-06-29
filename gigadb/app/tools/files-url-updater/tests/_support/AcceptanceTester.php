@@ -88,15 +88,19 @@ class AcceptanceTester extends \Codeception\Actor
                 continue;
             $id = $this->grabFromDatabase('dataset','id',['identifier' => $row[0]]);
             $after = $id - 1;
-            $this->runShellCommand("./yii dataset-files/update-ftp-urls --next 1 --after {$after} --verbose");
+            $this->runShellCommand("echo yes | ./yii dataset-files/update-ftp-urls --next 1 --after {$after} --verbose");
         }
     }
 
     /**
+     * unlike the other scenario, this step's scenario need a pritistine database step, so we first need
+     * to load the producation databaase backup
+     *
      * @When I run the update script on datasets in dry run mode:
      */
     public function iRunTheUpdateScriptOnDatasetsInDryRunMode(TableNode $datasets)
     {
+        system("./yii dataset-files/download-restore-backup --date 20210608 --nodownload");
         foreach($datasets->getRows() as $index => $row) {
             if ($index === 0)
                 continue;
@@ -117,7 +121,7 @@ class AcceptanceTester extends \Codeception\Actor
                 continue;
             $id = $this->grabFromDatabase('dataset','id',['identifier' => $row[0]]);
             $after = $id - 1;
-            $this->runShellCommand("./yii dataset-files/update-ftp-urls --next 1 --after {$after} --verbose");
+            $this->runShellCommand("echo yes | ./yii dataset-files/update-ftp-urls --next 1 --after {$after} --verbose");
         }
 
         //second time
@@ -126,7 +130,7 @@ class AcceptanceTester extends \Codeception\Actor
                 continue;
             $id = $this->grabFromDatabase('dataset','id',['identifier' => $row[0]]);
             $after = $id - 1;
-            $this->runShellCommand("./yii dataset-files/update-ftp-urls --next 1 --after {$after} --verbose");
+            $this->runShellCommand("echo yes | ./yii dataset-files/update-ftp-urls --next 1 --after {$after} --verbose");
         }
     }
 

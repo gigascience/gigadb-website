@@ -30,6 +30,7 @@ class DatasetFilesCest {
         $outcome = $command->run('update-ftp-urls',[
             "next" => 5,
             "after" => 10,
+            "dryrun" => true,
         ]);
         $I->assertEquals(Exitcode::OK, $outcome);
     }
@@ -40,6 +41,28 @@ class DatasetFilesCest {
         $I->canSeeInShellOutput("Usage:");
         $I->canSeeInShellOutput("./yii dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun][--verbose]");
         $I->canSeeResultCodeIs(Exitcode::USAGE);
+    }
+
+    public function tryCommandWithPendingDatasetsProceed(\FunctionalTester $I)
+    {
+        $I->runShellCommand("echo yes | ./yii dataset-files/update-ftp-urls --next 5");
+        $I->canSeeInShellOutput("Warning! This command will alter 5 datasets in the database, are you sure you want to proceed?");
+        $I->canSeeInShellOutput("Executing command...");
+
+    }
+
+    public function tryCommandWithPendingDatasetsAbort(\FunctionalTester $I)
+    {
+        $I->runShellCommand("echo no | ./yii dataset-files/update-ftp-urls --next 5");
+        $I->canSeeInShellOutput("Warning! This command will alter 5 datasets in the database, are you sure you want to proceed?");
+        $I->canSeeInShellOutput("Aborting.");
+
+    }
+
+    public function tryCommandNoPendingDatasets(\FunctionalTester $I)
+    {
+        $I->runShellCommand("./yii dataset-files/update-ftp-urls --next 5 --after 99999");
+        $I->canSeeInShellOutput("There are no pending datasets with url to replace.");
     }
 
 }
