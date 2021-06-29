@@ -14,6 +14,13 @@ use app\models\DatasetFiles;
  */
 class DatasetFilesController extends Controller
 {
+
+    /**
+     * @var bool $config if true return the DB and FTP configuration values
+     */
+    public bool $config = false;
+
+
     /**
      * @var string $date the yyyymmdd for which to retrieve a production backup
      */
@@ -46,7 +53,7 @@ class DatasetFilesController extends Controller
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','date','next','after','dryrun','verbose','nodownload'];
+        return ['color', 'interactive', 'help','config','date','next','after','dryrun','verbose','nodownload'];
     }
 
     public function init()
@@ -93,8 +100,10 @@ class DatasetFilesController extends Controller
      * This command will update file table to replace ftp urls for the supplied list of dataset ids
      *
      *  Usage:
+     *      ./yii dataset-files/update-ftp-url
+     *      ./yii dataset-files/update-ftp-url --config
      *      ./yii dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun][--verbose]
-     * TODO: to implement
+     *
      * @throws \Throwable
      * @return int Exit code
      */
@@ -105,12 +114,22 @@ class DatasetFilesController extends Controller
         $optAfter = $this->after;
         $optDryRun = $this->dryrun;
         $optVerbose = $this->verbose;
+        $optConfig = $this->config;
+
+
+        //Return config
+        if($optConfig) {
+            $this->stdout(print_r(yii::$app->params, true)."\n", Console::FG_GREY);
+            return ExitCode::CONFIG;
+        }
 
         //Return usage unless mandatory options are passed
         if(!($optNext)) {
-            $this->stdout("\nUsage:\n\t ./yii dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun][--verbose]\n\n");
+            $this->stdout("\nUsage:\n\t./yii dataset-files/update-ftp-url\n\t./yii dataset-files/update-ftp-url --config\n\t./yii dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun][--verbose]\n\n");
             return ExitCode::USAGE;
         }
+
+
 
         // Prepare logging and audit
         $auditLog = [];

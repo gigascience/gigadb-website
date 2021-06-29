@@ -65,4 +65,12 @@ class DatasetFilesCest {
         $I->canSeeInShellOutput("There are no pending datasets with url to replace.");
     }
 
+    public function tryCommandShowsConfig(\FunctionalTester $I)
+    {
+        $I->runShellCommand("./yii dataset-files/update-ftp-urls --config", false);
+        $I->canSeeInShellOutput("[db] => Array");
+        $I->canSeeInShellOutput("[ftp] => Array");
+        $I->canSeeResultCodeIs(ExitCode::CONFIG);
+    }
+
 }
