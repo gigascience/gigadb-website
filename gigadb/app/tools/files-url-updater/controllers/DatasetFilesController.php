@@ -65,11 +65,6 @@ class DatasetFilesController extends Controller
         return ['color', 'interactive', 'help','config','date','next','after','dryrun','verbose','nodownload','default','latest'];
     }
 
-//    public function init()
-//    {
-//        $this->date ??= date('Ymd') - 1 ;
-//    }
-//
 
     /**
      * This command will download a production backup of a specified date and load it in the configured database
@@ -105,7 +100,7 @@ class DatasetFilesController extends Controller
         }
 
         //Validate the date specified with the options
-        if(! ($optDate && (bool)strtotime($optDate) && date("Ymd", strtotime($optDate)) == $optDate) ) {
+        if(! ($optDate && (bool)strtotime($optDate) && date("Ymd", strtotime($optDate)) === $optDate) ) {
             if($optLatest)
                 $optDate = date('Ymd') - 1 ;
             elseif($optDefault)
