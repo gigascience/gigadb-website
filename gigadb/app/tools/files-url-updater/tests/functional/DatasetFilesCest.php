@@ -15,10 +15,28 @@ class DatasetFilesCest {
 
     }
 
-    public function tryDownloadRestoreBackup(\FunctionalTester $I) {
-        $dateStamp = date('Ymd') - 1;
+    public function tryDownloadRestoreBackupWithDateOption(\FunctionalTester $I) {
+        $dateStamp = date('Ymd') - 2;
 
         $I->runShellCommand("echo yes | ./yii dataset-files/download-restore-backup --date $dateStamp");
+        $I->canSeeInShellOutput("Downloading production backup for $dateStamp");
+        $I->canSeeInShellOutput("Restoring the backup for $dateStamp");
+        $I->seeResultCodeIs(Exitcode::OK);
+
+    }
+
+    public function tryDownloadRestoreBackupWithDefaultNoDownloadOptions(\FunctionalTester $I) {
+        $dateStamp = "20210608";
+
+        $I->runShellCommand("echo yes | ./yii dataset-files/download-restore-backup --default --nodownload");
+        $I->canSeeInShellOutput("Restoring the backup for $dateStamp");
+        $I->seeResultCodeIs(Exitcode::OK);
+    }
+
+    public function tryDownloadRestoreBackupWithLatestOption(\FunctionalTester $I) {
+        $dateStamp = date('Ymd') - 1;
+
+        $I->runShellCommand("echo yes | ./yii dataset-files/download-restore-backup --latest");
         $I->canSeeInShellOutput("Downloading production backup for $dateStamp");
         $I->canSeeInShellOutput("Restoring the backup for $dateStamp");
         $I->seeResultCodeIs(Exitcode::OK);
@@ -35,11 +53,19 @@ class DatasetFilesCest {
         $I->assertEquals(Exitcode::OK, $outcome);
     }
 
-    public function tryUsageWhenNoOptions(\FunctionalTester $I)
+    public function tryReplacementCommandUsageWhenNoOptions(\FunctionalTester $I)
     {
         $I->runShellCommand("./yii dataset-files/update-ftp-urls", false);
         $I->canSeeInShellOutput("Usage:");
         $I->canSeeInShellOutput("./yii dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun][--verbose]");
+        $I->canSeeResultCodeIs(Exitcode::USAGE);
+    }
+
+    public function tryDownloadCommandUsageWhenNoOptions(\FunctionalTester $I)
+    {
+        $I->runShellCommand("./yii dataset-files/download-restore-backup", false);
+        $I->canSeeInShellOutput("Usage:");
+        $I->canSeeInShellOutput("./yii dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload]");
         $I->canSeeResultCodeIs(Exitcode::USAGE);
     }
 
@@ -66,7 +92,7 @@ class DatasetFilesCest {
         $I->canSeeInShellOutput("There are no pending datasets with url to replace.");
     }
 
-    public function tryCommandShowsConfig(\FunctionalTester $I)
+    public function tryReplacementCommandShowsConfig(\FunctionalTester $I)
     {
         $I->runShellCommand("./yii dataset-files/update-ftp-urls --config", false);
         $I->canSeeInShellOutput("[db] => Array");
@@ -74,6 +100,13 @@ class DatasetFilesCest {
         $I->canSeeResultCodeIs(ExitCode::CONFIG);
     }
 
+    public function tryRestoreCommandShowsConfig(\FunctionalTester $I)
+    {
+        $I->runShellCommand("./yii dataset-files/download-restore-backup --config", false);
+        $I->canSeeInShellOutput("[db] => Array");
+        $I->canSeeInShellOutput("[ftp] => Array");
+        $I->canSeeResultCodeIs(ExitCode::CONFIG);
+    }
 
     public function tryRestoreCommandWithPendingDatasetsAbort(\FunctionalTester $I)
     {

@@ -20,11 +20,20 @@ class DatasetFilesController extends Controller
      */
     public bool $config = false;
 
+    /**
+     * @var bool $latest use the day before yesterday which is the latest date of available backup
+     */
+    public bool $latest = false;
+
+    /**
+     * @var bool $default use the day for which we have a default production backup in the repo for tests
+     */
+    public bool $default = false;
 
     /**
      * @var string $date the yyyymmdd for which to retrieve a production backup
      */
-    public string $date;
+    public string $date = "";
 
     /**
      * @var int $next get list of next $next pending datasets
@@ -53,26 +62,64 @@ class DatasetFilesController extends Controller
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','config','date','next','after','dryrun','verbose','nodownload'];
+        return ['color', 'interactive', 'help','config','date','next','after','dryrun','verbose','nodownload','default','latest'];
     }
 
-    public function init()
-    {
-        $this->date ??= date('Ymd') - 1 ;
-    }
-
+//    public function init()
+//    {
+//        $this->date ??= date('Ymd') - 1 ;
+//    }
+//
 
     /**
-     * This command will download and load in database production backup for the given date
+     * This command will download a production backup of a specified date and load it in the configured database
+     *
+     *  Usage:
+     *      ./yii dataset-files/download-restore-backup
+     *      ./yii dataset-files/download-restore-backup --config
+     *      ./yii dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload]
      *
      * @throws \Throwable
      * @return int Exit code
      */
     public function actionDownloadRestoreBackup()
     {
+        $optConfig = $this->config;
+        $optDate = $this->date;
+        $optNoDownload = $this->nodownload;
+        $optLatest = $this->latest;
+        $optDefault = $this->default;
+
+        //Return config
+        if($optConfig) {
+            $this->stdout(print_r(yii::$app->params, true)."\n", Console::FG_GREY);
+            return ExitCode::CONFIG;
+        }
+
+        //Return usage unless mandatory options are passed
+        if(!($optDate || $optLatest || $optDefault)) {
+            $this->stdout(
+                "\nUsage:\n\t./yii dataset-files/download-restore-backup\n\t./yii dataset-files/download-restore-backup --config\n\t./yii dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload]\n"
+            );
+            return ExitCode::USAGE;
+        }
+
+        //Validate the date specified with the options
+        if(! ($optDate && (bool)strtotime($optDate) && date("Ymd", strtotime($optDate)) == $optDate) ) {
+            if($optLatest)
+                $optDate = date('Ymd') - 1 ;
+            elseif($optDefault)
+                $optDate = "20210608";
+            else {
+                Yii::error("Arguments are invalid");
+                return ExitCode::DATAERR;
+            }
+        }
+
+        // Ask for confirmation to proceed
         $dbHost = Yii::$app->params["db"]["host"];
         $this->stdout("\nWarning! ", Console::FG_RED);
-        switch($this->confirm("This command will drop the configured database (hosted on $dbHost) and restore it from the {$this->date} backup, are you sure you want to proceed?\n")) {
+        switch($this->confirm("This command will drop the configured database (hosted on $dbHost) and restore it from the {$optDate} backup, are you sure you want to proceed?\n")) {
             case false:
                 $this->stdout("Aborting.\n", Console::FG_BLUE);
                 return ExitCode::NOPERM;
@@ -80,11 +127,13 @@ class DatasetFilesController extends Controller
                 $this->stdout("Executing command...\n", Console::FG_BLUE);
         }
 
+
+
         try {
-            if(!$this->nodownload) {
-                $this->stdout("\nDownloading production backup for {$this->date}\n", Console::BOLD);
+            if(!$optNoDownload) {
+                $this->stdout("\nDownloading production backup for {$optDate}\n", Console::BOLD);
                 $ftpConfig = \Yii::$app->params['ftp'];
-                system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} {$ftpConfig['host']} /app/sql/ /gigadbv3_{$this->date}.backup", $downloadStatus);
+                system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} {$ftpConfig['host']} /app/sql/ /gigadbv3_{$optDate}.backup", $downloadStatus);
             }
         }
         catch (Throwable $e) {
@@ -94,9 +143,9 @@ class DatasetFilesController extends Controller
         }
 
 
-        $this->stdout("\nRestoring the backup for {$this->date}\n", Console::BOLD);
+        $this->stdout("\nRestoring the backup for {$optDate}\n", Console::BOLD);
         try {
-            DatasetFiles::reloadDb($this->date);
+            DatasetFiles::reloadDb($optDate);
         }
         catch (Throwable $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
