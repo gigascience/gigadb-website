@@ -36,10 +36,17 @@ class DatasetFilesGrabber extends \Codeception\Module
 
     /**
      * in this hook run before the suite
+     * - we verify that we running against the local database, if not we bail out
      * - we load the production database to create the state needed by the scenario
      */
-    public function _beforeSuite()
+    public function _beforeSuite($settings = [] )
     {
+
+        $currentConfig = require("/app/config/params.php");
+        if("pg9_3" !== $currentConfig["db"]["host"]) {
+            exit("Wrong database! Check your config/params.php. Acceptance tests should be run against the local database only");
+        }
+
         $dateStr = "20210608";
         system("echo yes | ./yii dataset-files/download-restore-backup --date $dateStr --nodownload");
     }
