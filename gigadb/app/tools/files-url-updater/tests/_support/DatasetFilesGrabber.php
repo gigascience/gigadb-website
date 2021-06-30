@@ -41,7 +41,7 @@ class DatasetFilesGrabber extends \Codeception\Module
     public function _beforeSuite()
     {
         $dateStr = "20210608";
-        system("./yii dataset-files/download-restore-backup --date $dateStr --nodownload");
+        system("echo yes | ./yii dataset-files/download-restore-backup --date $dateStr --nodownload");
     }
 
     /**
@@ -51,6 +51,6 @@ class DatasetFilesGrabber extends \Codeception\Module
     public function _afterSuite()
     {
         $dateStr = "20210608";
-        system("./yii dataset-files/download-restore-backup --date $dateStr --nodownload");
+        system("echo yes | ./yii dataset-files/download-restore-backup --date $dateStr --nodownload");
     }
 }

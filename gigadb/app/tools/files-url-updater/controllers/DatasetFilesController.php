@@ -70,6 +70,16 @@ class DatasetFilesController extends Controller
      */
     public function actionDownloadRestoreBackup()
     {
+        $dbHost = Yii::$app->params["db"]["host"];
+        $this->stdout("\nWarning! ", Console::FG_RED);
+        switch($this->confirm("This command will drop the configured database (hosted on $dbHost) and restore it from the {$this->date} backup, are you sure you want to proceed?\n")) {
+            case false:
+                $this->stdout("Aborting.\n", Console::FG_BLUE);
+                return ExitCode::NOPERM;
+            default:
+                $this->stdout("Executing command...\n", Console::FG_BLUE);
+        }
+
         try {
             if(!$this->nodownload) {
                 $this->stdout("\nDownloading production backup for {$this->date}\n", Console::BOLD);
@@ -82,6 +92,7 @@ class DatasetFilesController extends Controller
             Yii::error($e->getMessage());
             return ExitCode::OSERR;
         }
+
 
         $this->stdout("\nRestoring the backup for {$this->date}\n", Console::BOLD);
         try {
@@ -145,7 +156,7 @@ class DatasetFilesController extends Controller
                 switch($this->confirm("This command will alter ".count($rows)." datasets in the database, are you sure you want to proceed?\n")) {
                     case false:
                         $this->stdout("Aborting.\n", Console::FG_BLUE);
-                        return ExitCode::OK;
+                        return ExitCode::NOPERM;
                     default:
                         $this->stdout("Executing command...\n", Console::FG_BLUE);
                 }
