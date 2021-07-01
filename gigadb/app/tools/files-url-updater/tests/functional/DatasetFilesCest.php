@@ -9,6 +9,12 @@ class DatasetFilesCest {
     public function setUp() {
         # load database schema in test database
         DatasetFiles::reloadDb("20210608", true);
+
+        #make sure there's no call to the main runner in test files
+        $outcome = system("grep -n './yii\s' /app/tests/functional/*");
+        if($outcome) {
+            exit("There are calls to the main runner in the test classes:\n $outcome\n");
+        }
     }
 
     public function tearDown() {
@@ -78,7 +84,7 @@ class DatasetFilesCest {
     {
         $I->runShellCommand("./yii_test dataset-files/update-ftp-urls", false);
         $I->canSeeInShellOutput("Usage:");
-        $I->canSeeInShellOutput("./yii dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun][--verbose]");
+        $I->canSeeInShellOutput("dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun][--verbose]");
         $I->canSeeResultCodeIs(Exitcode::USAGE);
     }
 
@@ -90,7 +96,7 @@ class DatasetFilesCest {
     {
         $I->runShellCommand("./yii_test dataset-files/download-restore-backup", false);
         $I->canSeeInShellOutput("Usage:");
-        $I->canSeeInShellOutput("./yii dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload]");
+        $I->canSeeInShellOutput("dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload]");
         $I->canSeeResultCodeIs(Exitcode::USAGE);
     }
 

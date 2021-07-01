@@ -103,23 +103,29 @@ $ docker-compose run --rm config
 $ docker-compose run --rm webapp
 ```
 
-### 2. Update the Database configuration file ``protected/config/db.json``
-   to read as below:
+### 2. For acceptance tests, update GigaDB Database configuration
 
-```
-{
-    "database": "gigadb",
-    "host"    : "host.docker.internal",
-    "user"    : "gigadb",
-    "password": "",
-}
+The file is ``protected/config/db.json``
 
-```
+If you've followed the instructions without alterations, replace the values following the table below:
+
+| Key | Value |
+| --- | --- |
+| database | gigadb |
+| host| host.docker.internal|
+| user | gigadb |
+| password | |
+
+
 
 That will connect GigaDB web application to the ``pg9_3`` container service started earlier.
-It works because, to Docker containers, ``host.docker.internal`` represents the host where the docker daemon is running 
+It works because, to Docker containers, ``host.docker.internal`` represents the host where the docker daemon is running
 and the previously started ``pg9_3`` container service was exposing the default PostgreSQL port to the host in its ``docker-compose.yml``
 configuration.
+
+
+>In any case, if you have customised the database connection details in the tools' ``config/params.php``
+make sure they match here too (we are not talking about operational context here, just running the tests, the tests will refuse to execute if configured host is not the tool's default).
 
 ### 3. Make sure GigaDB is reachable 
 
@@ -183,6 +189,22 @@ Nevertheless, it's better to not run any of the suites in an operation context, 
 > deployed GigaDB web application in order to perform actions. Since a ``chrome`` container service is already running for 
 > its acceptance tests and is exposing the default WebDriver hub port (4444) to the host,
 > we don't need to start another instance for this tool's suite and can reuse the already running one.
+
+## About Yii2 runners
+
+You may have noticed that all Yii2 console commands are run by adding the command name as a parameter to the ``yii`` command.
+That script is the main runner and is in charge of summoning all the Yii runtime infrastructure to be at the service of the command.
+Most notably, that include all the component configuration specified in ``config/console.php``.
+
+There are actually two runners in this project, ``yii`` mentioned above, and also ``yii_test``.
+The latter is only used to run commands from within a functional test. eg: 
+```
+ $I->runShellCommand("echo yes | ./yii_test dataset-files/update-ftp-urls --next 5");
+```
+Unlike the main runner, ``yii_test`` is reading its configuration from ``config/test.php``.
+Because mistakenly using the main runner in the functional tests would have destructive consequences, 
+The ``setUp()`` hook of the Functional test class verifies that the functional tests are not making use of it.
+
 
 ## Running the tool to replace ftp urls in ftp_site and location
 
