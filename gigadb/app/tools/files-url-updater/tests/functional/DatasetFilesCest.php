@@ -16,7 +16,7 @@ class DatasetFilesCest {
     }
 
     public function tryDownloadRestoreBackupWithDateOption(\FunctionalTester $I) {
-        $dateStamp = date('Ymd') - 2;
+        $dateStamp = date('Ymd', strtotime(date('Ymd')." - 2 days"));
 
         $I->runShellCommand("echo yes | ./yii dataset-files/download-restore-backup --date $dateStamp");
         $I->canSeeInShellOutput("Downloading production backup for $dateStamp");
@@ -34,7 +34,7 @@ class DatasetFilesCest {
     }
 
     public function tryDownloadRestoreBackupWithLatestOption(\FunctionalTester $I) {
-        $dateStamp = date('Ymd') - 1;
+        $dateStamp = date('Ymd', strtotime(date('Ymd')." - 1 day"));
 
         $I->runShellCommand("echo yes | ./yii dataset-files/download-restore-backup --latest");
         $I->canSeeInShellOutput("Downloading production backup for $dateStamp");

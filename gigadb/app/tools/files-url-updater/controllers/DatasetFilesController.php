@@ -102,7 +102,7 @@ class DatasetFilesController extends Controller
         //Validate the date specified with the options
         if(! ($optDate && (bool)strtotime($optDate) && date("Ymd", strtotime($optDate)) === $optDate) ) {
             if($optLatest)
-                $optDate = date('Ymd') - 1 ;
+                $optDate = date('Ymd', strtotime(date('Ymd')." - 1 day"));
             elseif($optDefault)
                 $optDate = "20210608";
             else {
