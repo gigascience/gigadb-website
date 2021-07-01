@@ -304,12 +304,12 @@ class DatasetFiles extends \Yii\base\BaseObject {
         }
 
         if($dbPassword) {
-            system("PGPASSWORD=$dbPassword psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by $dbUser;'");
-            system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --no-owner --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname $dbName  /app/sql/gigadbv3_{$dateStr}.backup 2> /dev/null");
+            system("PGPASSWORD=$dbPassword psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by $dbUser;' 2>/app/drop_restore.log >&2");
+            system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --no-owner --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname $dbName  /app/sql/gigadbv3_{$dateStr}.backup 2>/app/drop_restore.log >&2");
         }
         else {
-            system("psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by $dbUser;'");
-            system("pg_restore --exit-on-error --no-owner --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname $dbName  /app/sql/gigadbv3_{$dateStr}.backup");
+            system("psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by $dbUser;' 2>/app/drop_restore.log >&2");
+            system("pg_restore --exit-on-error --no-owner --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname $dbName  /app/sql/gigadbv3_{$dateStr}.backup 2>/app/drop_restore.log >&2");
         }
     }
 

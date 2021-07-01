@@ -164,6 +164,8 @@ $ docker-compose run --rm updater ./vendor/bin/codecept run tests/acceptance
 
 ```
 
+>Note that due to the need for dropping/restoring the full production database backup before each tests,
+> the acceptance tests take  a long time to run (about 9 minutes on my machine)
 
 The configuration for unit and functional tests don't need customisation so far.
 But the one for acceptance tests might need adjustments, that's why an example 

@@ -39,3 +39,5 @@ config/params.php
 
 sql/gigadbv3*
 !sql/gigadbv3_20210608.backup
+
+drop_restore.log
