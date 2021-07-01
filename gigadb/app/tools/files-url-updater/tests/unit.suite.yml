@@ -16,4 +16,3 @@ modules:
         populate: true
         clean: true
         populator: '/app/sql/repopulate_testdb.sh'
-
