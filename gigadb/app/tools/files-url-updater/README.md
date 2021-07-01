@@ -38,7 +38,7 @@ the content of a production database backup.
 $ cp config/params.php.example config/params.php
 ```
 
-Doing the above is enough to get started with testing: Specifying the DB password is not necessary for running the command line tool
+Specifying the DB password is not necessary for running the command line tool
 against the local database spun up above.
 It is not necessary for running the tests either.
 
@@ -67,6 +67,10 @@ return [
 
 
 ```
+
+>**Note:**
+> 
+> You need to make sure the ``ftp`` section is filled in in order to run all the functional tests
 
 
 ## Populate the local database with a copy of production database backup
