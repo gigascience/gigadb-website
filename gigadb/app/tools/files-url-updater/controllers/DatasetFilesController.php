@@ -87,7 +87,7 @@ class DatasetFilesController extends Controller
 
         //Return config
         if($optConfig) {
-            $this->stdout(print_r(yii::$app->params, true)."\n", Console::FG_GREY);
+            $this->showConfig();
             return ExitCode::CONFIG;
         }
 
@@ -174,7 +174,7 @@ class DatasetFilesController extends Controller
 
         //Return config
         if($optConfig) {
-            $this->stdout(print_r(yii::$app->params, true)."\n", Console::FG_GREY);
+            $this->showConfig();
             return ExitCode::CONFIG;
         }
 
@@ -289,6 +289,16 @@ class DatasetFilesController extends Controller
         return ExitCode::OK;
     }
 
+    /**
+     * Show the configuration when --config is passed download-restore-backup or update-ftp-urls commands
+     */
+    public function showConfig(): void
+    {
+        $this->stdout("* Configuration Parameters:\n");
+        $this->stdout(print_r(yii::$app->params, true) . "\n", Console::FG_GREY);
+        $this->stdout("* Actual DB connection details used by Yii2:\n");
+        $this->stdout(print_r(yii::$app->db->dsn, true) . "\n\n", Console::FG_GREY);
+    }
 
 
 }
