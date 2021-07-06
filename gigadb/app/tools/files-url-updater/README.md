@@ -151,10 +151,9 @@ $ cd gigadb/app/tools/files-url-updater/
 Configure Codeception:
 
 ```
-$ cp tests/acceptance.suite.yml.example tests/acceptance.suite.yml
 $ docker-compose run --rm updater ./vendor/bin/codecept build
 ```
-This is only needed once or after the Codeception configuration has been updated.
+This is only needed once or whenever the Codeception configuration has been updated.
 
 Then run all tests suite
 
@@ -174,11 +173,6 @@ $ docker-compose run --rm updater ./vendor/bin/codecept run tests/acceptance
 >Note that due to the need for dropping/restoring the full production database backup before each tests,
 > the acceptance tests take  a long time to run (about 9 minutes on my machine)
 
-The configuration for unit and functional tests don't need customisation so far.
-But the one for acceptance tests might need adjustments, that's why an example 
-is provided as a ``tests/acceptance.suite.yml.example`` file to copy from.
-Even so, the default values in the example should work out of the box 
-if you've just been following the instructions with no alteration so far.
 
 >**Warning:**
 > 
@@ -193,7 +187,7 @@ Nevertheless, it's better to not run any of the suites in an operation context, 
 
 >**Note:**
 > 
-> if you look at the ``acceptance.suite.yml`` configuration file for acceptance test, you will notice the peculiar
+> if you look at the ``tests/acceptance.suite.yml`` configuration file for acceptance test, you will notice the peculiar
 > values used to configure ``WebDriver``. That's because the acceptance tests needs to talk to the main locally 
 > deployed GigaDB web application in order to perform actions. Since a ``chrome`` container service is already running for 
 > its acceptance tests and is exposing the default WebDriver hub port (4444) to the host,
