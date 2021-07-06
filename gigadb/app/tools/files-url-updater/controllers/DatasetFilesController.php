@@ -26,11 +26,6 @@ class DatasetFilesController extends Controller
     public bool $latest = false;
 
     /**
-     * @var bool $default use the day for which we have a default production backup in the repo for tests
-     */
-    public bool $default = false;
-
-    /**
      * @var string $date the yyyymmdd for which to retrieve a production backup
      */
     public string $date = "";
@@ -62,7 +57,7 @@ class DatasetFilesController extends Controller
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','config','date','next','after','dryrun','verbose','nodownload','default','latest'];
+        return ['color', 'interactive', 'help','config','date','next','after','dryrun','verbose','nodownload','latest'];
     }
 
 
@@ -72,7 +67,7 @@ class DatasetFilesController extends Controller
      *  Usage:
      *      ./yii dataset-files/download-restore-backup
      *      ./yii dataset-files/download-restore-backup --config
-     *      ./yii dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload]
+     *      ./yii dataset-files/download-restore-backup --date 20210608 | --latest [--nodownload]
      *
      * @throws \Throwable
      * @return int Exit code
@@ -83,7 +78,6 @@ class DatasetFilesController extends Controller
         $optDate = $this->date;
         $optNoDownload = $this->nodownload;
         $optLatest = $this->latest;
-        $optDefault = $this->default;
 
         //Return config
         if($optConfig) {
@@ -92,9 +86,9 @@ class DatasetFilesController extends Controller
         }
 
         //Return usage unless mandatory options are passed
-        if(!($optDate || $optLatest || $optDefault)) {
+        if(!($optDate || $optLatest)) {
             $this->stdout(
-                "\nUsage:\n\t./yii dataset-files/download-restore-backup\n\t./yii dataset-files/download-restore-backup --config\n\t./yii dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload]\n"
+                "\nUsage:\n\t./yii dataset-files/download-restore-backup\n\t./yii dataset-files/download-restore-backup --config\n\t./yii dataset-files/download-restore-backup --date 20210608 | --latest [--nodownload]\n"
             );
             return ExitCode::USAGE;
         }
@@ -103,8 +97,6 @@ class DatasetFilesController extends Controller
         if(! ($optDate && (bool)strtotime($optDate) && date("Ymd", strtotime($optDate)) === $optDate) ) {
             if($optLatest)
                 $optDate = date('Ymd', strtotime(date('Ymd')." - 1 day"));
-            elseif($optDefault)
-                $optDate = "20210608";
             else {
                 Yii::error("Arguments are invalid");
                 return ExitCode::DATAERR;

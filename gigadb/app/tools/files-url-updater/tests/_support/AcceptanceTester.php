@@ -100,7 +100,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iRunTheUpdateScriptOnDatasetsInDryRunMode(TableNode $datasets)
     {
-        system("echo yes | ./yii dataset-files/download-restore-backup --date 20210608 --nodownload");
+        system("echo yes | ./yii dataset-files/download-restore-backup --latest --nodownload");
         foreach($datasets->getRows() as $index => $row) {
             if ($index === 0)
                 continue;

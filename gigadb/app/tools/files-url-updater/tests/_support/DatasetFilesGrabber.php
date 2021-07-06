@@ -47,8 +47,7 @@ class DatasetFilesGrabber extends \Codeception\Module
             exit("Wrong database! Check your config/params.php. Acceptance tests should be run against the local database only");
         }
 
-        $dateStr = "20210608";
-        system("echo yes | ./yii dataset-files/download-restore-backup --date $dateStr --nodownload");
+        system("echo yes | ./yii dataset-files/download-restore-backup --latest --nodownload");
     }
 
     /**
@@ -57,7 +56,6 @@ class DatasetFilesGrabber extends \Codeception\Module
      */
     public function _afterSuite()
     {
-        $dateStr = "20210608";
-        system("echo yes | ./yii dataset-files/download-restore-backup --date $dateStr --nodownload");
+        system("echo yes | ./yii dataset-files/download-restore-backup --latest --nodownload");
     }
 }

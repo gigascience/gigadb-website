@@ -8,7 +8,7 @@ class DatasetFilesCest {
 
     public function setUp() {
         # load database schema in test database
-        DatasetFiles::reloadDb("20210608", true);
+        system("echo yes | ./yii_test dataset-files/download-restore-backup --latest --nodownload");
 
         #make sure there's no call to the main runner in test files
         $outcome = system("grep -n './yii\s' /app/tests/functional/*");
@@ -34,18 +34,6 @@ class DatasetFilesCest {
 
         system("./yii_test dataset-files/download-restore-backup --config");
 
-    }
-
-    /**
-     * @group download-restore
-     * @param FunctionalTester $I
-     */
-    public function tryDownloadRestoreBackupWithDefaultNoDownloadOptions(\FunctionalTester $I) {
-        $dateStamp = "20210608";
-
-        $I->runShellCommand("echo yes | ./yii_test dataset-files/download-restore-backup --default --nodownload");
-        $I->canSeeInShellOutput("Restoring the backup for $dateStamp");
-        $I->seeResultCodeIs(Exitcode::OK);
     }
 
     /**
@@ -96,7 +84,7 @@ class DatasetFilesCest {
     {
         $I->runShellCommand("./yii_test dataset-files/download-restore-backup", false);
         $I->canSeeInShellOutput("Usage:");
-        $I->canSeeInShellOutput("dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload]");
+        $I->canSeeInShellOutput("dataset-files/download-restore-backup --date 20210608 | --latest [--nodownload]");
         $I->canSeeResultCodeIs(Exitcode::USAGE);
     }
 

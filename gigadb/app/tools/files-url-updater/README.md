@@ -70,24 +70,27 @@ return [
 
 >**Note:**
 > 
-> You need to make sure the ``ftp`` section is filled in in order to run all the functional tests
+> You must specify the ``ftp`` section before moving to the next section
 
 
 ## Populate the local database with a copy of production database backup
 
 ```
-$ docker-compose run --rm updater ./yii dataset-files/download-restore-backup --date 20210608 --nodownload
+$ docker-compose run --rm updater ./yii dataset-files/download-restore-backup --latest
 ```
 
-If you need a backup for a specific date you can remove the ``--nodownlaod`` option and 
-specify a date within the last seven days to the ``--date`` option.
-Use the ``--latest`` option instead of ``--date`` to download the latest backup (from the day before).
+This will download and restore the latest production database backup which is from the day before.
+If you need a backup for a specific date you can specify a date within the last seven days to the ``--date`` option instead.
+Subsequently, you can also pass the ``--nodownload`` to bypass the downloading if you have specified a date you've previously used already.
+This is especially useful in automated tests because we don't them slowed down by unnecessary network connections.
+The downloaded database backup files are located in the tool's ``sql/`` directory.
 
-Furthermore ``--default`` and ``--date 20210608`` are equivalent and refer to the database dump stored in the project for testing purpose. 
-
-Beware, before the tool can download a backup of production database, you need to ensure
-the ``host``, ``username``, and ``password`` keys of the ``ftp`` section of ``config/params.php``
-are appropriately specified. Use the ``--config`` option on its own to show the current value for the DB and FTP settings.
+>**Note:**
+>
+> Functional and acceptance tests assume this step has been performed. If a day arrives 
+> for which you don't have a copy of the latest production backup yet, the tests will
+> fail until you fetch the latest backup again.
+ 
 
 ## Explore the content of the GigadB database using psql
 
