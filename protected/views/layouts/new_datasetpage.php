@@ -4,8 +4,20 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="language" content="en" />
-    <meta name="robots" content="noindex">
-    <meta name="googlebot" content="noindex">
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="<?php echo $metaData['title']; ?>" />
+    <meta name="description" content="<?php echo $metaData['description']; ?>" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="<?php echo $metaData['title']; ?>" />
+    <meta property="og:url" content="https://doi.org/<?php echo $metaData['full_doi']; ?>" />
+    <meta property="og:image" content="<?php echo $metaData['image_url']; ?>" />
+    <meta property="og:description" content="<?php echo $metaData['description']; ?>" />
+    <!-- Twitter -->
+    <meta property="twitter:title" content="<?php echo $metaData['title']; ?>" />
+    <meta property="twitter:url" content="https://doi.org/<?php echo $metaData['full_doi']; ?>" />
+    <meta property="twitter:image" content="<?php echo $metaData['image_url']; ?>" />
+    <meta property="twitter:description" content="<?php echo $metaData['description']; ?>" />
+
     <?php if ($metaData['redirect']) {
             Yii::app()->clientScript->registerMetaTag("5;url={$metaData['redirect']}", null, 'refresh');
         }

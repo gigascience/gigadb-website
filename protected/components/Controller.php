@@ -28,6 +28,8 @@ class Controller extends CController
         public $metaData = array(
             'title' => '',
             'description' => '',
+            'full_doi' => '',
+            'image_url' => '',
             'private' => false,
             'redirect' => false,
         );
