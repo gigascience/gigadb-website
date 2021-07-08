@@ -205,7 +205,7 @@
                                     <div class="home-color-background-block" onclick="window.location='/site/mapbrowse';">
                                         <div class="text-icon text-icon-o text-icon-lg">
                                             <img src="/images/new_interface_image/samples.svg" alt="Number of samples"></div>
-                                        <h4><? echo $count_sample ?></h4>
+                                        <h4><? echo number_format($count_sample) ?></h4>
                                         <p>Samples</p>
                                     </div>
                                 </div>
@@ -213,7 +213,7 @@
                                     <div class="home-color-background-block">
                                         <div class="text-icon text-icon-o text-icon-lg">
                                             <img src="/images/new_interface_image/files.svg" alt="Number of files"></div>
-                                        <h4><? echo $count_file ?></h4>
+                                        <h4><? echo number_format($count_file) ?></h4>
                                         <p>Files</p>
                                     </div>
                                 </div>
@@ -221,7 +221,7 @@
                                     <div class="home-color-background-block">
                                         <div class="text-icon text-icon-o text-icon-lg">
                                             <img src="/images/new_interface_image/volume.svg" alt="Total Volume of Data"></div>
-                                        <h4>31</h4>
+                                        <h4><? echo number_format($count_size) ?></h4>
                                         <p>Data volume(TB)</p>
                                     </div>
                                 </div>
