@@ -1,15 +1,16 @@
-# Tools for GigaDB: backup-creator
+# Tools for GigaDB: dataset-backup-tool
 
 Move to the tool directory before entering any of the commands in this document
 ```
-$ cd gigadb/app/tools/backup-smoke-tester
+$ cd gigadb/app/tools/dataset-backup-tool
 ```
 
-## Start the local test database
+## Run controller
 
 ```
-$ docker-compose up -d pg9_3
+$ docker-compose run --rm backup_tool ./yii dataset-files/upload-files-to-bucket
 ```
+
 ## Run test
 
 ```

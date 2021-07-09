@@ -8,7 +8,7 @@ services:
     ports:
       - '5432:5432'
 
-  updater:
+  backup_tool:
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
