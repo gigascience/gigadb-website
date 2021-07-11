@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use DirectoryIterator;
 use \yii\helpers\Console;
 use \yii\console\Controller;
 use \yii\console\ExitCode;
@@ -25,7 +26,7 @@ class DatasetFilesController extends Controller
     /**
      * @var string the directory path where dataset files are located
      */
-    public string $sourcedir = "tests/_data/dataset1/";
+    public string $sourcedir = "tests/_data/dataset4/";
 
     /**
      * @var string the path to directory where dataset files will be uploaded to
@@ -59,6 +60,25 @@ class DatasetFilesController extends Controller
                 return ExitCode::NOPERM;
             default:
                 $this->stdout("Executing command...\n", Console::FG_BLUE);
+        }
+
+        // Check dataset files are world readable permission
+        // Loop thru dataset directories
+        // Loop thru files in directory and check is_readable
+        // output all files and directories except for '.' and '..'
+        $this->stdout("\nChecking file permissions in dataset directories\n", Console::BOLD);
+        foreach (new DirectoryIterator($optSourcedir) as $fileInfo) {
+            if($fileInfo->isDot()) {
+                continue;
+            }
+            elseif($fileInfo->isDir()) {
+                echo "Directory: " . $fileInfo->getFilename() . "\n";;
+            }
+            else {
+                echo $fileInfo->getFilename() . "\n";
+                $octal_perms = substr(sprintf('%o', $fileInfo->getPerms()), -4);
+                if ((int)$octal_perms < 0644) echo $octal_perms . "\n";
+            }
         }
 
         $this->stdout("\nUploading files to bucket\n", Console::BOLD);
