@@ -1,5 +1,5 @@
-ARG PHP_VERSION=7.0
-FROM php:${PHP_VERSION}-fpm-jessie
+ARG TARGET_PHP_VERSION=7.0
+FROM php:${TARGET_PHP_VERSION}-fpm-jessie
 
 # Problem with Debian repos - adding official LTS repos to use below
 RUN echo "deb http://deb.debian.org/debian/ jessie main contrib non-free" | tee /etc/apt/sources.list && \
