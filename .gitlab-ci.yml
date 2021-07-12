@@ -372,6 +372,9 @@ build:
     - docker-compose run --rm fuw-config
     - docker-compose run --rm console bash -c "cd /app && composer install -a --no-dev"
     - docker-compose run --rm console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer install -a --no-dev'
+    # set up reference data feeds
+    - docker-compose run --rm application ./protected/yiic generatefiletypes
+    - docker-compose run --rm application ./protected/yiic generatefileformats
     - cp files/data/fileformats.json fuw/app/
     - cp files/data/filetypes.json fuw/app/
     - cp files/data/fileformats.json fuw/watcher/
