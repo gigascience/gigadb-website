@@ -4,9 +4,3 @@
     
     state: present
 
-- name: install system packages
-  yum:
-    name: "{{ item }}"
-    state: installed
-  with_items:
-    - "@Development tools"
