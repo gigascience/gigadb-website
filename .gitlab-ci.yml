@@ -372,13 +372,7 @@ build:
     - docker-compose run --rm fuw-config
     - docker-compose run --rm console bash -c "cd /app && composer install -a --no-dev"
     - docker-compose run --rm console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer install -a --no-dev'
-    # set up reference data feeds
-    - docker-compose run --rm application ./protected/yiic generatefiletypes
-    - docker-compose run --rm application ./protected/yiic generatefileformats
-    - cp files/data/fileformats.json fuw/app/
-    - cp files/data/filetypes.json fuw/app/
-    - cp files/data/fileformats.json fuw/watcher/
-    - cp files/data/filetypes.json fuw/watcher/    
+    # Share the model layer across apps
     - cp gigadb/app/worker/file-worker/models/UpdateGigaDBJob.php fuw/app/
     # Generate Yii migration scripts
     - docker-compose up csv-to-migrations     
@@ -502,6 +496,8 @@ deploy:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T console /app/yii migrate --interactive=0
     # post-install script to run
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm less
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm application ./protected/yiic generatefiletypes
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm application ./protected/yiic generatefileformats
     # Generate the web certificate for TLS termination on web container.
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config bash -c "cp /le.staging.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets"
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config ls -alrt /etc/letsencrypt

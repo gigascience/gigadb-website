@@ -47,6 +47,7 @@ services:
     volumes:
       - assets:/var/www/assets
       - tempcaptcha:/var/www/images/tempcaptcha
+      - feeds:/var/www/files/data
     expose:
       - "9000"
     networks:
@@ -275,3 +276,4 @@ volumes:
   le_config:
   le_webrootpath:
   tempcaptcha:
+  feeds:
