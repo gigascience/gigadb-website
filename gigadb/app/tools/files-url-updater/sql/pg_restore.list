@@ -1,0 +1,422 @@
+; pg_restore -l sql/gigadbv3_yyyymmdd.backup | grep -v 'COMMENT - EXTENSION' | grep -v 'plpgsql' > sql/pg_restore.lis
+;
+; Archive created at Tue Jun  8 09:42:01 2021
+;     dbname: gigadb_v3
+;     TOC Entries: 410
+;     Compression: -1
+;     Dump Version: 1.12-0
+;     Format: CUSTOM
+;     Integer: 4 bytes
+;     Offset: 8 bytes
+;     Dumped from database version: 9.1.17
+;     Dumped by pg_dump version: 9.1.17
+;
+;
+; Selected TOC Entries:
+;
+3395; 1262 18436 DATABASE - gigadb_v3 gigadb
+6; 2615 2200 SCHEMA - public postgres
+3396; 0 0 COMMENT - SCHEMA public postgres
+3397; 0 0 ACL - public postgres
+161; 1259 18437 TABLE public AuthAssignment gigadb
+162; 1259 18443 TABLE public AuthItem gigadb
+163; 1259 18449 TABLE public YiiSession gigadb
+164; 1259 18455 TABLE public alternative_identifiers gigadb
+3399; 0 0 COMMENT public COLUMN alternative_identifiers.id gigadb
+165; 1259 18458 SEQUENCE public alternative_identifiers_id_seq gigadb
+3400; 0 0 SEQUENCE OWNED BY public alternative_identifiers_id_seq gigadb
+166; 1259 18460 TABLE public attribute gigadb
+167; 1259 18466 SEQUENCE public attribute_id_seq gigadb
+3401; 0 0 SEQUENCE OWNED BY public attribute_id_seq gigadb
+168; 1259 18468 TABLE public author gigadb
+169; 1259 18474 SEQUENCE public author_id_seq gigadb
+3402; 0 0 SEQUENCE OWNED BY public author_id_seq gigadb
+258; 1259 324131 TABLE public curation_log gigadb
+3403; 0 0 ACL public curation_log gigadb
+257; 1259 324129 SEQUENCE public curation_log_id_seq gigadb
+3404; 0 0 SEQUENCE OWNED BY public curation_log_id_seq gigadb
+170; 1259 18476 TABLE public dataset gigadb
+171; 1259 18485 TABLE public dataset_attributes gigadb
+172; 1259 18488 SEQUENCE public dataset_attributes_id_seq gigadb
+3405; 0 0 SEQUENCE OWNED BY public dataset_attributes_id_seq gigadb
+173; 1259 18490 TABLE public dataset_author gigadb
+174; 1259 18494 SEQUENCE public dataset_author_id_seq gigadb
+3406; 0 0 SEQUENCE OWNED BY public dataset_author_id_seq gigadb
+175; 1259 18496 TABLE public dataset_funder gigadb
+176; 1259 18504 SEQUENCE public dataset_funder_id_seq gigadb
+3407; 0 0 SEQUENCE OWNED BY public dataset_funder_id_seq gigadb
+177; 1259 18506 SEQUENCE public dataset_id_seq gigadb
+3408; 0 0 SEQUENCE OWNED BY public dataset_id_seq gigadb
+178; 1259 18508 TABLE public dataset_log gigadb
+179; 1259 18517 SEQUENCE public dataset_log_id_seq gigadb
+3409; 0 0 SEQUENCE OWNED BY public dataset_log_id_seq gigadb
+180; 1259 18519 TABLE public dataset_project gigadb
+181; 1259 18522 SEQUENCE public dataset_project_id_seq gigadb
+3410; 0 0 SEQUENCE OWNED BY public dataset_project_id_seq gigadb
+182; 1259 18524 TABLE public dataset_sample gigadb
+183; 1259 18527 SEQUENCE public dataset_sample_id_seq gigadb
+3411; 0 0 SEQUENCE OWNED BY public dataset_sample_id_seq gigadb
+184; 1259 18529 TABLE public dataset_session gigadb
+3412; 0 0 ACL public dataset_session gigadb
+185; 1259 18535 SEQUENCE public dataset_session_id_seq gigadb
+3413; 0 0 SEQUENCE OWNED BY public dataset_session_id_seq gigadb
+186; 1259 18537 TABLE public dataset_type gigadb
+187; 1259 18540 SEQUENCE public dataset_type_id_seq gigadb
+3414; 0 0 SEQUENCE OWNED BY public dataset_type_id_seq gigadb
+188; 1259 18542 TABLE public exp_attributes gigadb
+189; 1259 18548 SEQUENCE public exp_attributes_id_seq gigadb
+3415; 0 0 SEQUENCE OWNED BY public exp_attributes_id_seq gigadb
+190; 1259 18550 TABLE public experiment gigadb
+191; 1259 18556 SEQUENCE public experiment_id_seq gigadb
+3416; 0 0 SEQUENCE OWNED BY public experiment_id_seq gigadb
+192; 1259 18558 TABLE public extdb gigadb
+193; 1259 18564 SEQUENCE public extdb_id_seq gigadb
+3417; 0 0 SEQUENCE OWNED BY public extdb_id_seq gigadb
+194; 1259 18566 TABLE public external_link gigadb
+195; 1259 18569 SEQUENCE public external_link_id_seq gigadb
+3418; 0 0 SEQUENCE OWNED BY public external_link_id_seq gigadb
+196; 1259 18571 TABLE public external_link_type gigadb
+197; 1259 18574 SEQUENCE public external_link_type_id_seq gigadb
+3419; 0 0 SEQUENCE OWNED BY public external_link_type_id_seq gigadb
+198; 1259 18576 TABLE public file gigadb
+199; 1259 18585 TABLE public file_attributes gigadb
+200; 1259 18588 SEQUENCE public file_attributes_id_seq gigadb
+3420; 0 0 SEQUENCE OWNED BY public file_attributes_id_seq gigadb
+201; 1259 18590 TABLE public file_experiment gigadb
+202; 1259 18593 SEQUENCE public file_experiment_id_seq gigadb
+3421; 0 0 SEQUENCE OWNED BY public file_experiment_id_seq gigadb
+203; 1259 18595 TABLE public file_format gigadb
+204; 1259 18602 SEQUENCE public file_format_id_seq gigadb
+3422; 0 0 SEQUENCE OWNED BY public file_format_id_seq gigadb
+205; 1259 18604 SEQUENCE public file_id_seq gigadb
+3423; 0 0 SEQUENCE OWNED BY public file_id_seq gigadb
+256; 1259 315594 VIEW public file_number gigadb
+3424; 0 0 ACL public file_number gigadb
+206; 1259 18606 TABLE public file_relationship gigadb
+207; 1259 18609 SEQUENCE public file_relationship_id_seq gigadb
+3425; 0 0 SEQUENCE OWNED BY public file_relationship_id_seq gigadb
+208; 1259 18611 TABLE public file_sample gigadb
+209; 1259 18614 SEQUENCE public file_sample_id_seq gigadb
+3426; 0 0 SEQUENCE OWNED BY public file_sample_id_seq gigadb
+210; 1259 18616 TABLE public file_type gigadb
+211; 1259 18623 SEQUENCE public file_type_id_seq gigadb
+3427; 0 0 SEQUENCE OWNED BY public file_type_id_seq gigadb
+212; 1259 18625 TABLE public funder_name gigadb
+213; 1259 18632 SEQUENCE public funder_name_id_seq gigadb
+3428; 0 0 SEQUENCE OWNED BY public funder_name_id_seq gigadb
+214; 1259 18634 TABLE public gigadb_user gigadb
+215; 1259 18645 SEQUENCE public gigadb_user_id_seq gigadb
+3429; 0 0 SEQUENCE OWNED BY public gigadb_user_id_seq gigadb
+252; 1259 18782 TABLE public type gigadb
+260; 1259 420054 VIEW public homepage_dataset_type gigadb
+3430; 0 0 ACL public homepage_dataset_type gigadb
+216; 1259 18647 TABLE public image gigadb
+217; 1259 18654 SEQUENCE public image_id_seq gigadb
+3431; 0 0 SEQUENCE OWNED BY public image_id_seq gigadb
+218; 1259 18656 TABLE public link gigadb
+219; 1259 18660 SEQUENCE public link_id_seq gigadb
+3432; 0 0 SEQUENCE OWNED BY public link_id_seq gigadb
+220; 1259 18662 SEQUENCE public link_prefix_id_seq gigadb
+221; 1259 18664 TABLE public manuscript gigadb
+222; 1259 18667 SEQUENCE public manuscript_id_seq gigadb
+3433; 0 0 SEQUENCE OWNED BY public manuscript_id_seq gigadb
+223; 1259 18669 TABLE public news gigadb
+224; 1259 18676 SEQUENCE public news_id_seq gigadb
+3434; 0 0 SEQUENCE OWNED BY public news_id_seq gigadb
+225; 1259 18678 TABLE public prefix gigadb
+3435; 0 0 ACL public prefix gigadb
+226; 1259 18686 TABLE public project gigadb
+227; 1259 18690 SEQUENCE public project_id_seq gigadb
+3436; 0 0 SEQUENCE OWNED BY public project_id_seq gigadb
+228; 1259 18692 TABLE public publisher gigadb
+229; 1259 18699 SEQUENCE public publisher_id_seq gigadb
+3437; 0 0 SEQUENCE OWNED BY public publisher_id_seq gigadb
+230; 1259 18701 TABLE public relation gigadb
+231; 1259 18704 SEQUENCE public relation_id_seq gigadb
+3438; 0 0 SEQUENCE OWNED BY public relation_id_seq gigadb
+232; 1259 18706 TABLE public relationship gigadb
+233; 1259 18709 SEQUENCE public relationship_id_seq gigadb
+3439; 0 0 SEQUENCE OWNED BY public relationship_id_seq gigadb
+234; 1259 18711 TABLE public rss_message gigadb
+235; 1259 18715 SEQUENCE public rss_message_id_seq gigadb
+3440; 0 0 SEQUENCE OWNED BY public rss_message_id_seq gigadb
+236; 1259 18717 TABLE public sample gigadb
+237; 1259 18721 TABLE public sample_attribute gigadb
+238; 1259 18727 SEQUENCE public sample_attribute_id_seq gigadb
+3441; 0 0 SEQUENCE OWNED BY public sample_attribute_id_seq gigadb
+239; 1259 18729 TABLE public sample_experiment gigadb
+240; 1259 18732 SEQUENCE public sample_experiment_id_seq gigadb
+3442; 0 0 SEQUENCE OWNED BY public sample_experiment_id_seq gigadb
+241; 1259 18734 SEQUENCE public sample_id_seq gigadb
+3443; 0 0 SEQUENCE OWNED BY public sample_id_seq gigadb
+259; 1259 420050 VIEW public sample_number gigadb
+3444; 0 0 ACL public sample_number gigadb
+242; 1259 18736 TABLE public sample_rel gigadb
+243; 1259 18739 SEQUENCE public sample_rel_id_seq gigadb
+3445; 0 0 SEQUENCE OWNED BY public sample_rel_id_seq gigadb
+244; 1259 18741 TABLE public schemup_tables gigadb
+245; 1259 18748 TABLE public search gigadb
+246; 1259 18754 SEQUENCE public search_id_seq gigadb
+3446; 0 0 SEQUENCE OWNED BY public search_id_seq gigadb
+247; 1259 18756 VIEW public show_accession gigadb
+248; 1259 18768 VIEW public show_manuscript gigadb
+249; 1259 18772 VIEW public show_project gigadb
+250; 1259 18777 TABLE public species gigadb
+251; 1259 18780 SEQUENCE public species_id_seq gigadb
+3447; 0 0 SEQUENCE OWNED BY public species_id_seq gigadb
+253; 1259 18789 SEQUENCE public type_id_seq gigadb
+3448; 0 0 SEQUENCE OWNED BY public type_id_seq gigadb
+254; 1259 18791 TABLE public unit gigadb
+3449; 0 0 COMMENT public COLUMN unit.id gigadb
+3450; 0 0 COMMENT public COLUMN unit.name gigadb
+3451; 0 0 COMMENT public COLUMN unit.definition gigadb
+255; 1259 18797 TABLE public yiisession gigadb
+2948; 2604 18803 DEFAULT public id gigadb
+2949; 2604 18804 DEFAULT public id gigadb
+2950; 2604 18805 DEFAULT public id gigadb
+3021; 2604 324134 DEFAULT public id gigadb
+2954; 2604 18806 DEFAULT public id gigadb
+2955; 2604 18807 DEFAULT public id gigadb
+2957; 2604 18808 DEFAULT public id gigadb
+2960; 2604 18809 DEFAULT public id gigadb
+2964; 2604 18810 DEFAULT public id gigadb
+2965; 2604 18811 DEFAULT public id gigadb
+2966; 2604 18812 DEFAULT public id gigadb
+2967; 2604 18813 DEFAULT public id gigadb
+2968; 2604 18814 DEFAULT public id gigadb
+2969; 2604 18815 DEFAULT public id gigadb
+2970; 2604 18816 DEFAULT public id gigadb
+2971; 2604 18817 DEFAULT public id gigadb
+2972; 2604 18818 DEFAULT public id gigadb
+2973; 2604 18819 DEFAULT public id gigadb
+2977; 2604 18820 DEFAULT public id gigadb
+2978; 2604 18821 DEFAULT public id gigadb
+2979; 2604 18822 DEFAULT public id gigadb
+2981; 2604 18823 DEFAULT public id gigadb
+2982; 2604 18824 DEFAULT public id gigadb
+2983; 2604 18825 DEFAULT public id gigadb
+2985; 2604 18826 DEFAULT public id gigadb
+2987; 2604 18827 DEFAULT public id gigadb
+2993; 2604 18828 DEFAULT public id gigadb
+2995; 2604 18829 DEFAULT public id gigadb
+2997; 2604 18830 DEFAULT public id gigadb
+2998; 2604 18831 DEFAULT public id gigadb
+3000; 2604 18832 DEFAULT public id gigadb
+3004; 2604 18833 DEFAULT public id gigadb
+3006; 2604 18834 DEFAULT public id gigadb
+3007; 2604 18835 DEFAULT public id gigadb
+3008; 2604 18836 DEFAULT public id gigadb
+3010; 2604 18837 DEFAULT public id gigadb
+3012; 2604 18838 DEFAULT public id gigadb
+3013; 2604 18839 DEFAULT public id gigadb
+3014; 2604 18840 DEFAULT public id gigadb
+3015; 2604 18841 DEFAULT public id gigadb
+3017; 2604 18842 DEFAULT public id gigadb
+3018; 2604 18843 DEFAULT public id gigadb
+3020; 2604 18844 DEFAULT public id gigadb
+3297; 0 18437 TABLE DATA public AuthAssignment gigadb
+3298; 0 18443 TABLE DATA public AuthItem gigadb
+3299; 0 18449 TABLE DATA public YiiSession gigadb
+3300; 0 18455 TABLE DATA public alternative_identifiers gigadb
+3452; 0 0 SEQUENCE SET public alternative_identifiers_id_seq gigadb
+3302; 0 18460 TABLE DATA public attribute gigadb
+3453; 0 0 SEQUENCE SET public attribute_id_seq gigadb
+3304; 0 18468 TABLE DATA public author gigadb
+3454; 0 0 SEQUENCE SET public author_id_seq gigadb
+3390; 0 324131 TABLE DATA public curation_log gigadb
+3455; 0 0 SEQUENCE SET public curation_log_id_seq gigadb
+3306; 0 18476 TABLE DATA public dataset gigadb
+3307; 0 18485 TABLE DATA public dataset_attributes gigadb
+3456; 0 0 SEQUENCE SET public dataset_attributes_id_seq gigadb
+3309; 0 18490 TABLE DATA public dataset_author gigadb
+3457; 0 0 SEQUENCE SET public dataset_author_id_seq gigadb
+3311; 0 18496 TABLE DATA public dataset_funder gigadb
+3458; 0 0 SEQUENCE SET public dataset_funder_id_seq gigadb
+3459; 0 0 SEQUENCE SET public dataset_id_seq gigadb
+3314; 0 18508 TABLE DATA public dataset_log gigadb
+3460; 0 0 SEQUENCE SET public dataset_log_id_seq gigadb
+3316; 0 18519 TABLE DATA public dataset_project gigadb
+3461; 0 0 SEQUENCE SET public dataset_project_id_seq gigadb
+3318; 0 18524 TABLE DATA public dataset_sample gigadb
+3462; 0 0 SEQUENCE SET public dataset_sample_id_seq gigadb
+3320; 0 18529 TABLE DATA public dataset_session gigadb
+3463; 0 0 SEQUENCE SET public dataset_session_id_seq gigadb
+3322; 0 18537 TABLE DATA public dataset_type gigadb
+3464; 0 0 SEQUENCE SET public dataset_type_id_seq gigadb
+3324; 0 18542 TABLE DATA public exp_attributes gigadb
+3465; 0 0 SEQUENCE SET public exp_attributes_id_seq gigadb
+3326; 0 18550 TABLE DATA public experiment gigadb
+3466; 0 0 SEQUENCE SET public experiment_id_seq gigadb
+3328; 0 18558 TABLE DATA public extdb gigadb
+3467; 0 0 SEQUENCE SET public extdb_id_seq gigadb
+3330; 0 18566 TABLE DATA public external_link gigadb
+3468; 0 0 SEQUENCE SET public external_link_id_seq gigadb
+3332; 0 18571 TABLE DATA public external_link_type gigadb
+3469; 0 0 SEQUENCE SET public external_link_type_id_seq gigadb
+3334; 0 18576 TABLE DATA public file gigadb
+3335; 0 18585 TABLE DATA public file_attributes gigadb
+3470; 0 0 SEQUENCE SET public file_attributes_id_seq gigadb
+3337; 0 18590 TABLE DATA public file_experiment gigadb
+3471; 0 0 SEQUENCE SET public file_experiment_id_seq gigadb
+3339; 0 18595 TABLE DATA public file_format gigadb
+3472; 0 0 SEQUENCE SET public file_format_id_seq gigadb
+3473; 0 0 SEQUENCE SET public file_id_seq gigadb
+3342; 0 18606 TABLE DATA public file_relationship gigadb
+3474; 0 0 SEQUENCE SET public file_relationship_id_seq gigadb
+3344; 0 18611 TABLE DATA public file_sample gigadb
+3475; 0 0 SEQUENCE SET public file_sample_id_seq gigadb
+3346; 0 18616 TABLE DATA public file_type gigadb
+3476; 0 0 SEQUENCE SET public file_type_id_seq gigadb
+3348; 0 18625 TABLE DATA public funder_name gigadb
+3477; 0 0 SEQUENCE SET public funder_name_id_seq gigadb
+3350; 0 18634 TABLE DATA public gigadb_user gigadb
+3478; 0 0 SEQUENCE SET public gigadb_user_id_seq gigadb
+3352; 0 18647 TABLE DATA public image gigadb
+3479; 0 0 SEQUENCE SET public image_id_seq gigadb
+3354; 0 18656 TABLE DATA public link gigadb
+3480; 0 0 SEQUENCE SET public link_id_seq gigadb
+3481; 0 0 SEQUENCE SET public link_prefix_id_seq gigadb
+3357; 0 18664 TABLE DATA public manuscript gigadb
+3482; 0 0 SEQUENCE SET public manuscript_id_seq gigadb
+3359; 0 18669 TABLE DATA public news gigadb
+3483; 0 0 SEQUENCE SET public news_id_seq gigadb
+3361; 0 18678 TABLE DATA public prefix gigadb
+3362; 0 18686 TABLE DATA public project gigadb
+3484; 0 0 SEQUENCE SET public project_id_seq gigadb
+3364; 0 18692 TABLE DATA public publisher gigadb
+3485; 0 0 SEQUENCE SET public publisher_id_seq gigadb
+3366; 0 18701 TABLE DATA public relation gigadb
+3486; 0 0 SEQUENCE SET public relation_id_seq gigadb
+3368; 0 18706 TABLE DATA public relationship gigadb
+3487; 0 0 SEQUENCE SET public relationship_id_seq gigadb
+3370; 0 18711 TABLE DATA public rss_message gigadb
+3488; 0 0 SEQUENCE SET public rss_message_id_seq gigadb
+3372; 0 18717 TABLE DATA public sample gigadb
+3373; 0 18721 TABLE DATA public sample_attribute gigadb
+3489; 0 0 SEQUENCE SET public sample_attribute_id_seq gigadb
+3375; 0 18729 TABLE DATA public sample_experiment gigadb
+3490; 0 0 SEQUENCE SET public sample_experiment_id_seq gigadb
+3491; 0 0 SEQUENCE SET public sample_id_seq gigadb
+3378; 0 18736 TABLE DATA public sample_rel gigadb
+3492; 0 0 SEQUENCE SET public sample_rel_id_seq gigadb
+3380; 0 18741 TABLE DATA public schemup_tables gigadb
+3381; 0 18748 TABLE DATA public search gigadb
+3493; 0 0 SEQUENCE SET public search_id_seq gigadb
+3383; 0 18777 TABLE DATA public species gigadb
+3494; 0 0 SEQUENCE SET public species_id_seq gigadb
+3385; 0 18782 TABLE DATA public type gigadb
+3495; 0 0 SEQUENCE SET public type_id_seq gigadb
+3387; 0 18791 TABLE DATA public unit gigadb
+3388; 0 18797 TABLE DATA public yiisession gigadb
+3023; 2606 18855 CONSTRAINT public AuthAssignment_pkey gigadb
+3025; 2606 18857 CONSTRAINT public AuthItem_pkey gigadb
+3027; 2606 18859 CONSTRAINT public YiiSession_pkey gigadb
+3029; 2606 18861 CONSTRAINT public alternative_identifiers_pkey gigadb
+3031; 2606 18863 CONSTRAINT public attribute_pkey gigadb
+3033; 2606 18865 CONSTRAINT public author_pkey gigadb
+3135; 2606 324141 CONSTRAINT public curation_log_pkey gigadb
+3038; 2606 18867 CONSTRAINT public dataset_attributes_pkey gigadb
+3040; 2606 18869 CONSTRAINT public dataset_author_pkey gigadb
+3042; 2606 18871 CONSTRAINT public dataset_funder_pkey gigadb
+3044; 2606 18873 CONSTRAINT public dataset_log_pkey gigadb
+3035; 2606 18875 CONSTRAINT public dataset_pkey gigadb
+3046; 2606 18877 CONSTRAINT public dataset_project_pkey gigadb
+3048; 2606 18879 CONSTRAINT public dataset_sample_pkey gigadb
+3050; 2606 18881 CONSTRAINT public dataset_session_pkey gigadb
+3052; 2606 18883 CONSTRAINT public dataset_type_pkey gigadb
+3080; 2606 18885 CONSTRAINT public email_unique gigadb
+3054; 2606 18887 CONSTRAINT public exp_attributes_pkey gigadb
+3056; 2606 18889 CONSTRAINT public experiment_pkey gigadb
+3058; 2606 18891 CONSTRAINT public extdb_pkey gigadb
+3060; 2606 18893 CONSTRAINT public external_link_pkey gigadb
+3062; 2606 18895 CONSTRAINT public external_link_type_pkey gigadb
+3066; 2606 18897 CONSTRAINT public file_attributes_pkey gigadb
+3068; 2606 18899 CONSTRAINT public file_experiment_pkey gigadb
+3070; 2606 18901 CONSTRAINT public file_format_pkey gigadb
+3064; 2606 18903 CONSTRAINT public file_pkey gigadb
+3072; 2606 18905 CONSTRAINT public file_relationship_pkey gigadb
+3074; 2606 18907 CONSTRAINT public file_sample_pkey gigadb
+3076; 2606 18909 CONSTRAINT public file_type_pkey gigadb
+3078; 2606 18911 CONSTRAINT public funder_name_pkey gigadb
+3082; 2606 18913 CONSTRAINT public gigadb_user_facebook_id_key gigadb
+3084; 2606 18915 CONSTRAINT public gigadb_user_google_id_key gigadb
+3086; 2606 18917 CONSTRAINT public gigadb_user_linked_id_key gigadb
+3088; 2606 18919 CONSTRAINT public gigadb_user_orcid_id_key gigadb
+3090; 2606 18921 CONSTRAINT public gigadb_user_pkey gigadb
+3092; 2606 18923 CONSTRAINT public gigadb_user_twitter_id_key gigadb
+3094; 2606 18925 CONSTRAINT public gigadb_user_username_key gigadb
+3096; 2606 18927 CONSTRAINT public image_pkey gigadb
+3098; 2606 18929 CONSTRAINT public link_pkey gigadb
+3104; 2606 18931 CONSTRAINT public link_prefix_pkey gigadb
+3100; 2606 18933 CONSTRAINT public manuscript_pkey gigadb
+3102; 2606 18935 CONSTRAINT public news_pkey gigadb
+3106; 2606 18937 CONSTRAINT public project_pkey gigadb
+3108; 2606 18939 CONSTRAINT public publisher_pkey gigadb
+3110; 2606 18941 CONSTRAINT public relation_pkey gigadb
+3112; 2606 18943 CONSTRAINT public relationship_pkey gigadb
+3114; 2606 18945 CONSTRAINT public rss_message_pkey gigadb
+3119; 2606 18947 CONSTRAINT public sample_attribute_pkey gigadb
+3121; 2606 18949 CONSTRAINT public sample_experiment_pkey gigadb
+3116; 2606 18951 CONSTRAINT public sample_pkey gigadb
+3123; 2606 18953 CONSTRAINT public sample_rel_pkey gigadb
+3125; 2606 18955 CONSTRAINT public search_pkey gigadb
+3127; 2606 18957 CONSTRAINT public species_pkey gigadb
+3129; 2606 18959 CONSTRAINT public type_pkey gigadb
+3131; 2606 18961 CONSTRAINT public unit_pkey gigadb
+3133; 2606 18963 CONSTRAINT public yiisession_pkey1 gigadb
+3117; 1259 18964 INDEX public fki_sample_attribute_fkey gigadb
+3036; 1259 18965 INDEX public identifier_idx gigadb
+3136; 2606 18966 FK CONSTRAINT public AuthAssignment_itemname_fkey gigadb
+3137; 2606 18971 FK CONSTRAINT public alternative_identifiers_extdb_id_fkey gigadb
+3138; 2606 18976 FK CONSTRAINT public alternative_identifiers_sample_id_fkey gigadb
+3189; 2606 324135 FK CONSTRAINT public curation_log_dataset_id_fkey gigadb
+3143; 2606 18981 FK CONSTRAINT public dataset_attributes_attribute_id_fkey gigadb
+3144; 2606 18986 FK CONSTRAINT public dataset_attributes_dataset_id_fkey gigadb
+3145; 2606 18991 FK CONSTRAINT public dataset_attributes_units_id_fkey gigadb
+3146; 2606 18996 FK CONSTRAINT public dataset_author_author_id_fkey gigadb
+3147; 2606 19001 FK CONSTRAINT public dataset_author_dataset_id_fkey gigadb
+3142; 2606 324124 FK CONSTRAINT public dataset_curator_id gigadb
+3148; 2606 19006 FK CONSTRAINT public dataset_funder_dataset_id_fkey gigadb
+3149; 2606 19011 FK CONSTRAINT public dataset_funder_funder_id_fkey gigadb
+3139; 2606 19016 FK CONSTRAINT public dataset_image_id_fkey gigadb
+3150; 2606 19021 FK CONSTRAINT public dataset_log_dataset_id_fkey gigadb
+3151; 2606 19026 FK CONSTRAINT public dataset_project_dataset_id_fkey gigadb
+3152; 2606 19031 FK CONSTRAINT public dataset_project_project_id_fkey gigadb
+3140; 2606 19036 FK CONSTRAINT public dataset_publisher_id_fkey gigadb
+3153; 2606 19041 FK CONSTRAINT public dataset_sample_dataset_id_fkey gigadb
+3154; 2606 19046 FK CONSTRAINT public dataset_sample_sample_id_fkey gigadb
+3141; 2606 19051 FK CONSTRAINT public dataset_submitter_id_fkey gigadb
+3155; 2606 19056 FK CONSTRAINT public dataset_type_dataset_id_fkey gigadb
+3156; 2606 19061 FK CONSTRAINT public dataset_type_type_id_fkey gigadb
+3157; 2606 19066 FK CONSTRAINT public exp_attributes_attribute_id_fkey gigadb
+3158; 2606 19071 FK CONSTRAINT public exp_attributes_exp_id_fkey gigadb
+3159; 2606 19076 FK CONSTRAINT public exp_attributes_units_id_fkey gigadb
+3160; 2606 19081 FK CONSTRAINT public experiment_dataset_id_fkey gigadb
+3161; 2606 19086 FK CONSTRAINT public external_link_dataset_id_fkey gigadb
+3162; 2606 19091 FK CONSTRAINT public external_link_external_link_type_id_fkey gigadb
+3166; 2606 19096 FK CONSTRAINT public file_attributes_attribute_id_fkey gigadb
+3168; 2606 283524 FK CONSTRAINT public file_attributes_file_id_fkey gigadb
+3167; 2606 19106 FK CONSTRAINT public file_attributes_unit_id_fkey gigadb
+3163; 2606 579197 FK CONSTRAINT public file_dataset_id_fkey gigadb
+3169; 2606 19116 FK CONSTRAINT public file_experiment_experiment_id_fkey gigadb
+3170; 2606 19121 FK CONSTRAINT public file_experiment_file_id_fkey gigadb
+3164; 2606 579202 FK CONSTRAINT public file_format_id_fkey gigadb
+3171; 2606 19131 FK CONSTRAINT public file_relationship_file_id_fkey gigadb
+3172; 2606 19136 FK CONSTRAINT public file_relationship_relationship_id_fkey gigadb
+3173; 2606 19141 FK CONSTRAINT public file_sample_file_id_fkey gigadb
+3174; 2606 19146 FK CONSTRAINT public file_sample_sample_id_fkey gigadb
+3165; 2606 579207 FK CONSTRAINT public file_type_id_fkey gigadb
+3175; 2606 19156 FK CONSTRAINT public link_dataset_id_fkey gigadb
+3176; 2606 19161 FK CONSTRAINT public manuscript_dataset_id_fkey gigadb
+3177; 2606 19166 FK CONSTRAINT public relation_dataset_id_fkey gigadb
+3178; 2606 19171 FK CONSTRAINT public relation_relationship_fkey gigadb
+3181; 2606 19176 FK CONSTRAINT public sample_attribute_fkey gigadb
+3183; 2606 365358 FK CONSTRAINT public sample_attribute_sample_id_fkey gigadb
+3182; 2606 19181 FK CONSTRAINT public sample_attribute_unit_id_fkey gigadb
+3184; 2606 19186 FK CONSTRAINT public sample_experiment_experiment_id_fkey gigadb
+3185; 2606 19191 FK CONSTRAINT public sample_experiment_sample_id_fkey gigadb
+3186; 2606 19196 FK CONSTRAINT public sample_rel_relationship_id_fkey gigadb
+3187; 2606 19201 FK CONSTRAINT public sample_rel_sample_id_fkey gigadb
+3179; 2606 19206 FK CONSTRAINT public sample_species_id_fkey gigadb
+3180; 2606 19211 FK CONSTRAINT public sample_submitted_id_fkey gigadb
+3188; 2606 19216 FK CONSTRAINT public search_user_id_fkey gigadb
