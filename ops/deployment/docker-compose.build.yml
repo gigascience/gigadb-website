@@ -20,7 +20,7 @@ services:
       context: ../..
       dockerfile: ops/packaging/Production-Dockerfile
       args:
-        - TARGET_PHP_VERSION=${PHP_VERSION}
+        - TARGET_PHP_VERSION=7.1
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=false

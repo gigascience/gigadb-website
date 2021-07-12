@@ -416,7 +416,29 @@ class DatasetViewContext implements Context
         }
     }
 
+    /**
+     * @Then I go to new tab and should see :arg1
+     */
+    public function iGoToNewTabAndShouldSee($arg1)
+    {
+        $session = $this->minkContext->getSession();
+        $numberOfTab = $session->getWindowNames();
+        if (sizeof($numberOfTab) < 2) {
+            print ("Expected to see at least 2 windows opened.");
+            exit;
+        }
+        $session->switchToWindow($numberOfTab[1]);
 
+        PHPUnit_Framework_Assert::assertTrue($session->getPage()->hasContent($arg1));
+    }
 
-
+    /**
+     * @When I click :arg1
+     * To trigger onclick event
+     */
+    public function iClick($arg1)
+    {
+        $element = $this->minkContext->getSession()->getPage()->find('css', "a[id='$arg1']" );
+        $element->click();
+    }
 }

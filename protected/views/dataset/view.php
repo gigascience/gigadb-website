@@ -7,12 +7,8 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 <?php $this->renderPartial('_sample_setting',array('columns' => $columns, 'pageSize' => $samples->getDataProvider()->getPagination()->getPageSize() )); ?>
 <?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' => $files->getDataProvider()->getPagination()->getPageSize()));?>
 
-
 <div class="content">
     <div class="container">
-
-
-
                 <section></section>
                 <div class="subsection">
                     <div class="media">
@@ -36,11 +32,36 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <h4 class="left-border-title left-border-title-lg"><?= $mainSection->getHeadline()['title']; ?></h4>
                             <p class="dataset-release-date-text">Dataset type:  <?= $mainSection->getHeadline()['types'];?> <br> Data released on <?= $mainSection->getHeadline()['release_date'] ?></p>
                             <div class="color-background color-background-block dataset-color-background-block">
-                                <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?>">http://dx.doi.org/<?= $mainSection->getReleaseDetails()['full_doi']; ?></a></p>
-                                <p><a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge"><?= $mainSection->getReleaseDetails()['full_doi']; ?></span></a></p>
+                                <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="https://doi.org/10.5524/<?php echo $model->identifier;?>">https://doi.org/10.5524/<?php echo $model->identifier;?></a></p>
+                                <div id="dataset-block-wrapper">
+                                    <div id="badge-div">
+                                        <a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?php echo $model->identifier;?></span></a>
+                                    </div>
+                                    <?php if ($model->upload_status == 'Published') { ?>
+                                        <div id="dropdown-div">
+                                            <div class="dropdown-box">
+                                                <button id="CiteDataset" class="drop-citation-btn dropdown-toggle" type="button" data-toggle="dropdown">Cite Dataset<span class="caret"></span></button>
+                                                <?php
+                                                $text = file_get_contents('https://data.datacite.org/text/x-bibliography/10.5524/' . $model->identifier);
+                                                $clean_text = strip_tags(preg_replace("/&#?[a-z0-9]+;/i", "", $text));
+                                                ?>
+                                                <script>
+                                                    function showText() {
+                                                        var textWindow = window.open();
+                                                        textWindow.document.write(`<?php echo $clean_text; ?>`);
+                                                    }
+                                                </script>
+                                                <ul class="dropdown-menu" aria-labelledby="CiteDataset">
+                                                    <li><a id="Text" onclick="showText()" target="_blank">Text</a></li>
+                                                    <li><a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier;?>' target="_self">RIS</a></li>
+                                                    <li><a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier;?>' target="_self">BibTeX</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </div>
                 <div class="subsection">
                     <p><?php echo $mainSection->getDescription()['description'] ?></p>
