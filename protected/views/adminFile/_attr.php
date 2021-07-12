@@ -9,5 +9,7 @@
 	<?php echo CHtml::activeDropDownList($attribute, 'unit_id',CHtml::listData(Unit::model()->findAll(),'id','name'), array('class'=>'attr-form', 'empty'=>'Select unit')); ?>
 </td>
 <td>
+    <div>
 	<input type="submit" class="btn" name="edit_attr" value="Save"/>
+    </div>
 </td>
