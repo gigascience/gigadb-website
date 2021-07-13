@@ -28,7 +28,7 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest"
       args:
-        - TARGET_PHP_VERSION=7.1
+        - TARGET_PHP_VERSION=${PHP_VERSION}
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=false
