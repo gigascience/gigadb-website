@@ -1,5 +1,5 @@
-ARG PHP_VERSION=7.0
-FROM php:${PHP_VERSION}-fpm-stretch
+ARG TARGET_PHP_VERSION=7.0
+FROM php:${TARGET_PHP_VERSION}-fpm-stretch
 
 
 # basic dependencies

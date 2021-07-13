@@ -20,6 +20,8 @@ services:
         - FIX_SITE_CONFIGS=true
 
   production_app:
+    environment:
+      PHP_VERSION: ${PHP_VERSION}
     build:
       context: ../..
       dockerfile: ops/packaging/Production-Dockerfile
