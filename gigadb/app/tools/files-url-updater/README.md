@@ -291,4 +291,13 @@ There are no pending datasets with url to replace.
 
 ```
 
+## Provisioning
 
+The tool run as a Docker container. Configuration is performed in two well commented files:
+ 
+ * ``Dockerfile``
+ * ``docker-compose.yml``
+
+The database container service described in the latter file uses the official Postgres Docker image which has its documentaiton here:
+
+ * https://hub.docker.com/_/postgres
