@@ -3,12 +3,15 @@ services:
   pg9_3:
     image: postgres:9.3
     volumes:
+    # init script that create the necessary DB roles and databases
       - ./sql/bootstrap_gigadb.sql:/docker-entrypoint-initdb.d/gigadb.sql
-      - ./sql:/var/sql
+    # we need to expose the port to the docker host so Gigadb webapp can use it
+    # Make sure there's no other daemons using port 5432 on the docker host
     ports:
       - '5432:5432'
 
   updater:
-    image: files-url-updater
+    build:
+      context: .
     volumes:
       - .:/app
