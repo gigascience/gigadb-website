@@ -139,6 +139,8 @@ services:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
       # volume mount the location of public ftp directory
       - /tmp:/var/ftp/public
+      # we need access to file formats and types reference data to create an upload record for ftp uploaded files
+      - feeds:/var/www/files/data
     depends_on:
       - beanstalkd
     networks:
@@ -159,6 +161,8 @@ services:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
       # volume mount the location of public ftp directory
       - /tmp:/var/ftp/public
+      # we need access to file formats and types reference data to create a record for uploaded files
+      - feeds:/var/www/files/data
     depends_on:
       - beanstalkd
     networks:
@@ -223,6 +227,8 @@ services:
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private:ro    
       # access to the fuw/console so tusd hooks can trigger upload update
       - ../../fuw/app:/app
+      # we need access to file formats and types reference data to create an upload record for ftp uploaded files
+      - feeds:/var/www/files/data
     networks:
       - web-tier
     extra_hosts:

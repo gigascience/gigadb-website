@@ -226,5 +226,4 @@ WORKDIR /app
 
 COPY fuw/app/common/models/Upload.php fuw/app/common/models/Attribute.php /app/common/models/
 COPY gigadb/app/worker/file-worker /gigadb-apps/worker/file-worker/
-COPY files/data/fileformats.json files/data/filetypes.json /var/www/files/data/
 

@@ -224,6 +224,5 @@ RUN if [ ${INSTALL_IPROUTE2} = true ]; then \
 WORKDIR /app
 
 COPY . /app/
-COPY fileformats.json filetypes.json /var/www/files/data/
 COPY UpdateGigaDBJob.php /gigadb-apps/worker/file-worker/models/
 WORKDIR /app
