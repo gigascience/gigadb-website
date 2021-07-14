@@ -108,6 +108,7 @@ It needs to be performed from the root of the gigadb-website project
 ```
 $ docker-compose run --rm config
 $ docker-compose run --rm webapp
+$ ops/scripts/setup_devdb.sh
 ```
 
 ### 2. For acceptance tests, update GigaDB Database configuration
