@@ -81,6 +81,7 @@ class DatasetFilesController extends Controller
      */
     public function actionDownloadRestoreBackup()
     {
+        $returnValue = 0;
         $optConfig = $this->config;
         $optDate = $this->date;
         $optNoDownload = $this->nodownload;
@@ -119,10 +120,13 @@ class DatasetFilesController extends Controller
             if(!$optNoDownload) {
                 $this->stdout("\nDownloading production backup for {$optDate}\n", Console::BOLD);
                 $ftpConfig = \Yii::$app->params['ftp'];
-                system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} {$ftpConfig['host']} /app/sql/ /gigadbv3_{$optDate}.backup", $downloadStatus);
+                $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} {$ftpConfig['host']} /app/sql/ /gigadbv3_{$optDate}.backup", $returnValue);
+                if(0 !== $returnValue) {
+                    throw new Exception("Failed ftp downloading backup file for date $optDate".$lastLine);
+                }
             }
         }
-        catch (Throwable $e) {
+        catch (Exception $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
             Yii::error($e->getMessage());
             return ExitCode::OSERR;
@@ -133,7 +137,7 @@ class DatasetFilesController extends Controller
 
                 // Check the backup file exists first, otherwise throw exception to cause exit
                 if (!file_exists("/app/sql/gigadbv3_$optDate.backup")) {
-                    throw new Exception("\nBackup file not found for date $optDate\n");
+                    throw new Exception("Backup file not found for date $optDate");
                 }
 
                 // Ask for confirmation to proceed

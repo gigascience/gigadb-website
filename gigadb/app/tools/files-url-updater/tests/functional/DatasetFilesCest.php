@@ -82,6 +82,23 @@ class DatasetFilesCest {
      * @group download-restore
      * @param FunctionalTester $I
      */
+    public function tryDownloadRestoreBackupWithDateOptionNoRemoteFile(\FunctionalTester $I) {
+        $dateStamp = date('Ymd', strtotime(date('Ymd')." - 99 years"));
+
+        $I->runShellCommand("echo yes | ./yii_test dataset-files/download-restore-backup --date $dateStamp", false);
+        $I->cantSeeInShellOutput("Warning!");
+        $I->canSeeInShellOutput("Downloading production backup for $dateStamp");
+        $I->cantSeeInShellOutput("Restoring the backup for $dateStamp");
+        $I->canSeeInShellOutput("Command is running for date $dateStamp");
+        $I->canSeeInShellOutput("Failed ftp downloading backup file for date $dateStamp");
+        $I->seeResultCodeIs(Exitcode::OSERR);
+    }
+
+
+    /**
+     * @group download-restore
+     * @param FunctionalTester $I
+     */
     public function tryDownloadRestoreBackupWithLatestOption(\FunctionalTester $I) {
         $dateStamp = date('Ymd', strtotime(date('Ymd')." - 1 day"));
 
