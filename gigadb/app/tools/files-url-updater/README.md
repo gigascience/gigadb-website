@@ -302,3 +302,59 @@ The tool run as a Docker container. Configuration is performed in two well comme
 The database container service described in the latter file uses the official Postgres Docker image which has its documentaiton here:
 
  * https://hub.docker.com/_/postgres
+
+## Troublehshooting
+
+If the functional tests and acceptance tests suites have failing tests
+due to database errors about non existent tables:
+
+<hr>
+1. check that you have downloaded the latest database backup for the day as described earlier in this doc
+<hr>
+2. verify that the backup downloaded from the ftp server is not corrupted:
+
+
+>This can be performed the following way:
+First download the backup for the last few days:
+
+```
+$ docker-compose run --rm updater ./yii dataset-files/download-restore-backup --date 20210710 --norestore
+$ docker-compose run --rm updater ./yii dataset-files/download-restore-backup --date 20210711 --norestore
+$ docker-compose run --rm updater ./yii dataset-files/download-restore-backup --date 20210712 --norestore
+$ docker-compose run --rm updater ./yii dataset-files/download-restore-backup --date 20210713 --norestore
+$ docker-compose run --rm updater ./yii dataset-files/download-restore-backup --date 20210714 --norestore
+```
+
+>And list them:
+
+```
+$ ls -al sql
+total 230120
+drwxr-xr-x@ 11 rijamenage  staff       352 Jul 15 10:12 .
+drwxr-xr-x@ 23 rijamenage  staff       736 Jul 15 10:00 ..
+-rw-r--r--   1 rijamenage  staff       164 Jul 14 09:30 bootstrap_gigadb.sql
+-rw-r--r--   1 rijamenage  staff     88048 Jul 14 09:30 gigadb_tables.sql
+-rw-r--r--   1 rijamenage  staff  29156662 Jul 10 11:42 gigadbv3_20210710.backup
+-rw-r--r--   1 rijamenage  staff  29154471 Jul 11 11:47 gigadbv3_20210711.backup
+-rw-r--r--   1 rijamenage  staff  29156654 Jul 12 11:48 gigadbv3_20210712.backup
+-rw-r--r--   1 rijamenage  staff  29156933 Jul 13 11:48 gigadbv3_20210713.backup
+-rw-r--r--   1 rijamenage  staff    115304 Jul 14 11:52 gigadbv3_20210714.backup
+-rw-r--r--   1 rijamenage  staff     23199 Jul 14 09:30 pg_restore.list
+-rwxr-xr-x   1 rijamenage  staff       537 Jul 14 09:30 repopulate_testdb.sh
+```
+
+>Check whether all backups have file size that seem reasonable.
+Here you can see the backup for 20210714 has abnormal file size, it must be corrupted.
+
+<hr>
+
+3. Notify DB backup team of the problem
+<hr>
+4. Apply workaround which consists of copying a previous working backup into the filename of the corrupted backup:
+
+```
+$  cp sql/gigadbv3_20210712.backup sql/gigadbv3_20210714.backup
+```
+<hr>
+ 5. functional tests and acceptance tests should be all passing
+<hr>

@@ -50,6 +50,11 @@ class DatasetFilesController extends Controller
     public bool $nodownload = false;
 
     /**
+     * @var bool if true no attempt will be made to restore the production database backup
+     */
+    public bool $norestore = false;
+
+    /**
      * @var bool true to show the full audit of transformation
      */
     public bool $verbose = false;
@@ -57,7 +62,7 @@ class DatasetFilesController extends Controller
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','config','date','next','after','dryrun','verbose','nodownload','latest'];
+        return ['color', 'interactive', 'help','config','date','next','after','dryrun','verbose','nodownload','norestore','latest'];
     }
 
 
@@ -67,7 +72,7 @@ class DatasetFilesController extends Controller
      *  Usage:
      *      ./yii dataset-files/download-restore-backup
      *      ./yii dataset-files/download-restore-backup --config
-     *      ./yii dataset-files/download-restore-backup --date 20210608 | --latest [--nodownload]
+     *      ./yii dataset-files/download-restore-backup --date 20210608 | --latest [--nodownload][--norestore]
      *
      * @throws \Throwable
      * @return int Exit code
@@ -77,6 +82,7 @@ class DatasetFilesController extends Controller
         $optConfig = $this->config;
         $optDate = $this->date;
         $optNoDownload = $this->nodownload;
+        $optNoRestore = $this->norestore;
         $optLatest = $this->latest;
 
         //Return config
@@ -88,7 +94,7 @@ class DatasetFilesController extends Controller
         //Return usage unless mandatory options are passed
         if(!($optDate || $optLatest)) {
             $this->stdout(
-                "\nUsage:\n\t./yii dataset-files/download-restore-backup\n\t./yii dataset-files/download-restore-backup --config\n\t./yii dataset-files/download-restore-backup --date 20210608 | --latest [--nodownload]\n"
+                "\nUsage:\n\t./yii dataset-files/download-restore-backup\n\t./yii dataset-files/download-restore-backup --config\n\t./yii dataset-files/download-restore-backup --date 20210608 | --latest [--nodownload][--norestore]\n"
             );
             return ExitCode::USAGE;
         }
@@ -103,17 +109,8 @@ class DatasetFilesController extends Controller
             }
         }
 
-        // Ask for confirmation to proceed
-        $dbHost = Yii::$app->params["db"]["host"];
-        $this->stdout("\nWarning! ", Console::FG_RED);
-        switch($this->confirm("This command will drop the configured database (hosted on $dbHost) and restore it from the {$optDate} backup, are you sure you want to proceed?\n")) {
-            case false:
-                $this->stdout("Aborting.\n", Console::FG_BLUE);
-                return ExitCode::NOPERM;
-            default:
-                $this->stdout("Executing command...\n", Console::FG_BLUE);
-        }
-
+        //Whatever --no* option, --date|--latest is being passed or not, we show which date the command is going to use
+        $this->stdout("\nCommand is running for date $optDate\n");
 
 
         try {
@@ -129,10 +126,22 @@ class DatasetFilesController extends Controller
             return ExitCode::OSERR;
         }
 
-
-        $this->stdout("\nRestoring the backup for {$optDate}\n", Console::BOLD);
         try {
-            DatasetFiles::reloadDb($optDate);
+            if(!$optNoRestore) {
+                // Ask for confirmation to proceed
+                $dbHost = Yii::$app->params["db"]["host"];
+                $this->stdout("\nWarning! ", Console::FG_RED);
+                switch($this->confirm("This command will drop the configured database (hosted on $dbHost) and restore it from the {$optDate} backup, are you sure you want to proceed?\n")) {
+                    case false:
+                        $this->stdout("Aborting.\n", Console::FG_BLUE);
+                        return ExitCode::NOPERM;
+                    default:
+                        $this->stdout("Executing command...\n", Console::FG_BLUE);
+                }
+                // proceed
+                $this->stdout("\nRestoring the backup for {$optDate}\n", Console::BOLD);
+                DatasetFiles::reloadDb($optDate);
+            }
         }
         catch (Throwable $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);

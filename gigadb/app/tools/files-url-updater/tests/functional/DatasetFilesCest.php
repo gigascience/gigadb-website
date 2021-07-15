@@ -31,9 +31,35 @@ class DatasetFilesCest {
         $I->canSeeInShellOutput("Downloading production backup for $dateStamp");
         $I->canSeeInShellOutput("Restoring the backup for $dateStamp");
         $I->seeResultCodeIs(Exitcode::OK);
+    }
 
-        system("./yii_test dataset-files/download-restore-backup --config");
+    /**
+     * @group download-restore
+     * @param FunctionalTester $I
+     */
+    public function tryDownloadNoRestoreBackupWithDateOption(\FunctionalTester $I) {
+        $dateStamp = date('Ymd', strtotime(date('Ymd')." - 2 days"));
 
+        $I->runShellCommand("echo yes | ./yii_test dataset-files/download-restore-backup --date $dateStamp --norestore");
+        $I->cantSeeInShellOutput("Warning!");
+        $I->canSeeInShellOutput("Downloading production backup for $dateStamp");
+        $I->cantSeeInShellOutput("Restoring the backup for $dateStamp");
+        $I->seeResultCodeIs(Exitcode::OK);
+    }
+
+    /**
+     * @group download-restore
+     * @param FunctionalTester $I
+     */
+    public function tryNoDownloadNoRestoreBackupWithDateOption(\FunctionalTester $I) {
+        $dateStamp = date('Ymd', strtotime(date('Ymd')." - 2 days"));
+
+        $I->runShellCommand("echo yes | ./yii_test dataset-files/download-restore-backup --date $dateStamp --nodownload --norestore");
+        $I->cantSeeInShellOutput("Warning!");
+        $I->cantSeeInShellOutput("Downloading production backup for $dateStamp");
+        $I->cantSeeInShellOutput("Restoring the backup for $dateStamp");
+        $I->canSeeInShellOutput("Command is running for date $dateStamp");
+        $I->seeResultCodeIs(Exitcode::OK);
     }
 
     /**
@@ -43,9 +69,8 @@ class DatasetFilesCest {
     public function tryDownloadRestoreBackupWithLatestOption(\FunctionalTester $I) {
         $dateStamp = date('Ymd', strtotime(date('Ymd')." - 1 day"));
 
-        $I->runShellCommand("echo yes | ./yii_test dataset-files/download-restore-backup --latest");
-        $I->canSeeInShellOutput("Downloading production backup for $dateStamp");
-        $I->canSeeInShellOutput("Restoring the backup for $dateStamp");
+        $I->runShellCommand("echo yes | ./yii_test dataset-files/download-restore-backup --latest --nodownload --norestore");
+        $I->canSeeInShellOutput("Command is running for date $dateStamp");
         $I->seeResultCodeIs(Exitcode::OK);
 
     }
