@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use \Yii;
+use yii\base\ErrorException;
+use yii\base\Exception;
 use \yii\helpers\Console;
 use \yii\console\Controller;
 use \yii\console\ExitCode;
@@ -128,6 +130,12 @@ class DatasetFilesController extends Controller
 
         try {
             if(!$optNoRestore) {
+
+                // Check the backup file exists first, otherwise throw exception to cause exit
+                if (!file_exists("/app/sql/gigadbv3_$optDate.backup")) {
+                    throw new Exception("\nBackup file not found for date $optDate\n");
+                }
+
                 // Ask for confirmation to proceed
                 $dbHost = Yii::$app->params["db"]["host"];
                 $this->stdout("\nWarning! ", Console::FG_RED);
@@ -143,10 +151,10 @@ class DatasetFilesController extends Controller
                 DatasetFiles::reloadDb($optDate);
             }
         }
-        catch (Throwable $e) {
+        catch (Exception $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
             Yii::error($e->getMessage());
-            return ExitCode::OSERR;
+            return ExitCode::DATAERR;
         }
         return ExitCode::OK;
     }

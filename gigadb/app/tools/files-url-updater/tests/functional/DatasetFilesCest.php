@@ -66,6 +66,22 @@ class DatasetFilesCest {
      * @group download-restore
      * @param FunctionalTester $I
      */
+    public function tryNoDownloadRestoreBackupWithDateOptionNoLocalFile(\FunctionalTester $I) {
+        $dateStamp = date('Ymd', strtotime(date('Ymd')." - 99 years"));
+
+        $I->runShellCommand("echo yes | ./yii_test dataset-files/download-restore-backup --date $dateStamp --nodownload", false);
+        $I->cantSeeInShellOutput("Warning!");
+        $I->cantSeeInShellOutput("Downloading production backup for $dateStamp");
+        $I->cantSeeInShellOutput("Restoring the backup for $dateStamp");
+        $I->canSeeInShellOutput("Command is running for date $dateStamp");
+        $I->canSeeInShellOutput("Backup file not found for date $dateStamp");
+        $I->seeResultCodeIs(Exitcode::DATAERR);
+    }
+
+    /**
+     * @group download-restore
+     * @param FunctionalTester $I
+     */
     public function tryDownloadRestoreBackupWithLatestOption(\FunctionalTester $I) {
         $dateStamp = date('Ymd', strtotime(date('Ymd')." - 1 day"));
 
@@ -181,8 +197,9 @@ class DatasetFilesCest {
      */
     public function tryRestoreCommandWithPendingDatasetsAbort(\FunctionalTester $I)
     {
-        $I->runShellCommand("echo no | ./yii_test dataset-files/download-restore-backup --date 20210608", false);
-        $I->canSeeInShellOutput("Warning! This command will drop the configured database (hosted on pg9_3) and restore it from the 20210608 backup, are you sure you want to proceed?");
+        $dateStamp = date('Ymd', strtotime(date('Ymd')." - 1 day"));
+        $I->runShellCommand("echo no | ./yii_test dataset-files/download-restore-backup --latest --nodownload", false);
+        $I->canSeeInShellOutput("Warning! This command will drop the configured database (hosted on pg9_3) and restore it from the $dateStamp backup, are you sure you want to proceed?");
         $I->canSeeInShellOutput("Aborting.");
         $I->canSeeResultCodeIs(ExitCode::NOPERM);
     }
