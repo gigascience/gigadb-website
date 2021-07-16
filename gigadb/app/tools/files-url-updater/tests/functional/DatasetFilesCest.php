@@ -25,7 +25,7 @@ class DatasetFilesCest {
      * @param FunctionalTester $I
      */
     public function tryDownloadRestoreBackupWithDateOption(\FunctionalTester $I) {
-        $dateStamp = date('Ymd', strtotime(date('Ymd')." - 2 days"));
+        $dateStamp = date('Ymd', strtotime(date('Ymd')." - 1 days"));
 
         $I->runShellCommand("echo yes | ./yii_test dataset-files/download-restore-backup --date $dateStamp");
         $I->canSeeInShellOutput("Downloading production backup for $dateStamp");
