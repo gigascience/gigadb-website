@@ -1,0 +1,10 @@
+[common]
+secret_id = ${TENCENTCLOUD_SECRET_ID}
+secret_key = ${TENCENTCLOUD_SECRET_KEY}
+bucket = bucket1-${TENCENTCLOUD_APP_ID}
+region = ap-guangzhou
+max_thread = 50
+part_size = 10
+schema = https
+verify = md5
+anonymous = False
