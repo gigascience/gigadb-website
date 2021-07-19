@@ -7,15 +7,23 @@ account which is provided by these variables: `TENCENTCLOUD_SECRET_ID`,
 `TENCENTCLOUD_SECRET_KEY`, `TENCENTCLOUD_APP_ID`. These variables need to be 
 added as new GitLab secrets. 
 
-Running `docker-compose run --rm config` will then pull the new variables
-into the `.secrets` file and create a configuration file `.cos.conf` and shell 
-scripts, `create_bucket.sh` and `delete_bucket.sh` in the 
-`dataset-backup-tool/scripts` directory. The smoke tests uses these shell 
-scripts for creating and deleting a Tencent bucket at the start and end of the
-tests. The `.cos.conf` file provides configuration for running `coscmd` commands
-in `BackupSmokeCest` functional test class.
+These new variables need to be pulled into the `.secrets` file and a 
+configuration file, `.cos.conf` and shell scripts, `create_bucket.sh` and `
+delete_bucket.sh` created in the `dataset-backup-tool/scripts` directory:
+```
+$ docker-compose run --rm config
+```
+The smoke tests uses these shell scripts for creating and deleting a Tencent 
+bucket at the start and end of the tests. The `.cos.conf` file provides 
+configuration for running `coscmd` commands in `BackupSmokeCest` functional test 
+class.
 
 ## Run Tencent backup smoke tests
+
+Change directory to the `dataset-backup-tool`:
+```
+$ cd gigadb/app/tools/dataset-backup-tool
+```
 
 There are 3 smoke tests in `tests/functional/BackupSmokeCest` which backup data
 files to a `dataset` directory in a Tencent bucket:
@@ -34,9 +42,6 @@ files to a `dataset` directory in a Tencent bucket:
 
 To run these smoke tests:
 ```
-# Change directory to dataset-backup-tool directory
-$ cd gigadb/app/tools/dataset-backup-tool
-# Run tests
 $ docker-compose run --rm backup_tool ./vendor/bin/codecept run tests/functional/BackupSmokeCest.php
 ```
 
