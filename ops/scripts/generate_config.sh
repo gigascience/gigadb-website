@@ -161,7 +161,12 @@ SOURCE=${APP_SOURCE}/ops/configuration/dataset-backup-tool/delete_bucket.sh.dist
 TARGET=${APP_SOURCE}/gigadb/app/tools/dataset-backup-tool/scripts/delete_bucket.sh
 VARS='$TENCENTCLOUD_SECRET_ID:$TENCENTCLOUD_SECRET_KEY:$TENCENTCLOUD_APP_ID'
 envsubst $VARS < $SOURCE > $TARGET
-chmod 755 ${APP_SOURCE}/gigadb/app/tools/backup-smoke-tester/scripts/delete_bucket.sh
+chmod 755 ${APP_SOURCE}/gigadb/app/tools/dataset-backup-tool/scripts/delete_bucket.sh
+
+SOURCE=${APP_SOURCE}/ops/configuration/dataset-backup-tool/cos.conf.dist
+TARGET=${APP_SOURCE}/gigadb/app/tools/dataset-backup-tool/scripts/.cos.conf
+VARS='$TENCENTCLOUD_SECRET_ID:$TENCENTCLOUD_SECRET_KEY:$TENCENTCLOUD_APP_ID'
+envsubst $VARS < $SOURCE > $TARGET
 
 if [ $GIGADB_ENV != "CI" ];then
     cp ops/configuration/nginx-conf/le.${GIGADB_ENV}.ini /etc/letsencrypt/cli.ini
