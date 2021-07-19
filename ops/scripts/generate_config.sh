@@ -151,14 +151,14 @@ TARGET=${APP_SOURCE}/protected/config/yii2/test.php
 VARS='$SERVER_EMAIL_SMTP_HOST:$SERVER_EMAIL_SMTP_PORT:$SERVER_EMAIL:$SERVER_EMAIL_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/ops/configuration/backup-smoke-tester/create_bucket.sh.dist
-TARGET=${APP_SOURCE}/gigadb/app/tools/backup-smoke-tester/scripts/create_bucket.sh
+SOURCE=${APP_SOURCE}/ops/configuration/dataset-backup-tool/create_bucket.sh.dist
+TARGET=${APP_SOURCE}/gigadb/app/tools/dataset-backup-tool/scripts/create_bucket.sh
 VARS='$TENCENTCLOUD_SECRET_ID:$TENCENTCLOUD_SECRET_KEY:$TENCENTCLOUD_APP_ID'
 envsubst $VARS < $SOURCE > $TARGET
-chmod 755 ${APP_SOURCE}/gigadb/app/tools/backup-smoke-tester/scripts/create_bucket.sh
+chmod 755 ${APP_SOURCE}/gigadb/app/tools/dataset-backup-tool/scripts/create_bucket.sh
 
-SOURCE=${APP_SOURCE}/ops/configuration/backup-smoke-tester/delete_bucket.sh.dist
-TARGET=${APP_SOURCE}/gigadb/app/tools/backup-smoke-tester/scripts/delete_bucket.sh
+SOURCE=${APP_SOURCE}/ops/configuration/dataset-backup-tool/delete_bucket.sh.dist
+TARGET=${APP_SOURCE}/gigadb/app/tools/dataset-backup-tool/scripts/delete_bucket.sh
 VARS='$TENCENTCLOUD_SECRET_ID:$TENCENTCLOUD_SECRET_KEY:$TENCENTCLOUD_APP_ID'
 envsubst $VARS < $SOURCE > $TARGET
 chmod 755 ${APP_SOURCE}/gigadb/app/tools/backup-smoke-tester/scripts/delete_bucket.sh
