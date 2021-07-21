@@ -18,4 +18,5 @@ services:
       dockerfile: ./Dockerfile
     volumes:
       - .:/app
+      - ./config/rclone.conf:/root/.config/rclone/rclone.conf
     command: ../../../../ops/scripts/webapp_setup.sh

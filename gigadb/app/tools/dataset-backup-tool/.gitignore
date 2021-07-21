@@ -36,3 +36,4 @@ tests/_support/_generated
 */.cos.conf
 */create_bucket.sh
 */delete_bucket.sh
+*/rclone.conf

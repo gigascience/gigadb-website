@@ -70,6 +70,11 @@ RUN apt-get update -yq \
 
 RUN pip3 install coscmd
 
+# Install rclone
+RUN apt-get update -yq \
+    && apt-get install rclone \
+    && apt-get clean \
+
 # we will be bind mounting the Yii2 basic app
 VOLUME ["/app"]
 WORKDIR /app
