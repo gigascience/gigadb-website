@@ -19,4 +19,5 @@ services:
     volumes:
       - .:/app
       - ./config/rclone.conf:/root/.config/rclone/rclone.conf
+      - ./tests/_data/10.1234:/data/gigadb/pub/10.5524/
     command: ../../../../ops/scripts/webapp_setup.sh

@@ -1,0 +1,1 @@
+0 0 * * * /app/scripts/fix-permissions.sh >> /tmp/permission_cron.log 2>&1
