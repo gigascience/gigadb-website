@@ -1,0 +1,3 @@
+BACKUP_LOCAL_ROOT=/app/tests/_data/dataset1
+BACKUP_REMOTE_ROOT=/cngbdb/giga/gigadb
+BACKUP_BUCKET_FULLNAME=rijatest2-1306096270

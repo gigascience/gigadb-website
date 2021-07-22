@@ -64,6 +64,67 @@ For the benefit of the tests, the configuration file is bind-mounted to the ``ba
 container service in ``gigadb/app/tools/dataset-backup-tool/docker-compose.yml`` and rclone itself is deployed to the 
 base image in ``gigadb/app/tools/dataset-backup-tool/Dockerfile``.
 
+### Scripts
+
+In order to reduce human error by:
+ * making dry-run mode the default mode
+ * forcing use of --verbose (because rclone shows no logging at all otherwise)  
+ * asking confirmation before deleting something
+ * reducing opportunities for operator to make typo or use wrong values
+
+we need to:
+
+ * wrap the ``rclone`` commands within thin wrapper scripts:
+    * ``gigadb/app/tools/dataset-backup-tool/scripts/sync_files.sh`` for the incremental backup
+    * ``gigadb/app/tools/dataset-backup-tool/scripts/delete_files.sh`` for deleting a file
+ * centralize variables definition to be used by scripts in one place:
+    * ``gigadb/app/tools/dataset-backup-tool/config/variables``
+  
+The latter file is git-ignored and is created from example ``gigadb/app/tools/dataset-backup-tool/config/variables.example`` by copying it:
+```
+$ cd gigadb/app/tools/dataset-backup-tool
+$ cp config/variables.example config/variable
+```
+The default values from the example should work for testing purpose.
+
+#### Testing the variables setup
+
+There is additional smoke test, part of the ``rclone-setup`` group, to check a ``config/variable`` file exists and is not setup 
+with production bucket.
+
+```
+$ cd gigadb/app/tools/dataset-backup-tool
+$ docker-compose run --rm backup_tool ./vendor/bin/codecept run -g rclone-setup tests/functional
+```
+
+#### Using the scripts
+
+by default, --dry-run mode is active.
+
+On a developer environment, we will use docker-compose. 
+On a production environment (CNGB backup server), we will use the script directly for now.
+In the examples below we use ``/app/scripts/sync_files.sh``, but it works exactly the same way for the other script
+``/app/scripts/delete_files.sh``
+
+```
+$ cd gigadb/app/tools/dataset-backup-tool
+$ docker-compose run --rm backup_tool /app/scripts/sync_files.sh
+```
+
+When confident the output shows what you want to happen, you can enable the verbose mode to proceed for real:
+```
+$ cd gigadb/app/tools/dataset-backup-tool
+$ docker-compose run --rm backup_tool /app/scripts/sync_files.sh --verbose
+```
+
+>**Note 1:** using ``-v`` instead of ``--verbose`` is possible.
+
+>**Note 2:** the deletion script is more interactive as it prompts the user for the file to delete and then ask for confirmation.
+
+
+
+
+
 
 
 

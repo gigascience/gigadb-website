@@ -43,4 +43,16 @@ class RCloneCest {
 
     }
 
+    /**
+     * @param FunctionalTester $I
+     * @group rclone-setup
+     */
+    public function tryLoadVariables(\FunctionalTester $I) {
+       $I->canSeeFileFound("/app/config/variables");
+       $I->seeThisFileMatches("/BACKUP_LOCAL_ROOT=.+/");
+       $I->seeThisFileMatches("/BACKUP_REMOTE_ROOT=.+/");
+       $I->seeThisFileMatches("/BACKUP_BUCKET_FULLNAME=.+/");
+       $I->cantSeeInThisFile("BACKUP_BUCKET_FULLNAME=cngbdb-share-backup-2-1255501786"); # don't use production bucket on dev/CI environment
+    }
+
 }

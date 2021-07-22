@@ -37,3 +37,4 @@ tests/_support/_generated
 */create_bucket.sh
 */delete_bucket.sh
 */rclone.conf
+config/variables
