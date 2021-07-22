@@ -222,6 +222,16 @@ for the target remote database.
 >
 >If the target is the current production database, the tool needs to be run within BGI network.
 
+To verify that the tool can communicate with the target dataase server, you can use ``pg_isready``.
+For example to do this with the pg9_3 database container:
+
+```
+$ docker-compose run --rm updater pg_isready -h pg9_3 -U gigadb -d gigadb
+Creating files-url-updater_updater_run ... done
+pg9_3:5432 - accepting connections
+```
+
+
 ### 1. Run the command with no option to get the usage
 
 ```
