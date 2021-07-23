@@ -1,23 +1,16 @@
 ARG PHP_VERSION=7.0
-FROM php:${PHP_VERSION}-fpm-jessie
+FROM php:${PHP_VERSION}-fpm-buster
 
-# Problem with Debian repos - adding official LTS repos to use below
-RUN echo "deb http://deb.debian.org/debian/ jessie main contrib non-free" | tee /etc/apt/sources.list && \
-    echo "deb-src http://deb.debian.org/debian/ jessie main contrib non-free" | tee -a /etc/apt/sources.list && \
-    echo "deb http://security.debian.org/ jessie/updates main contrib non-free" | tee -a /etc/apt/sources.list && \
-    echo "deb-src http://security.debian.org/ jessie/updates main contrib non-free" | tee -a /etc/apt/sources.list && \
-# the two repo below are the problematic ones, so commenting them out until debian fix them
-#    echo "deb http://deb.debian.org/debian/ jessie-updates main contrib non-free" | tee -a /etc/apt/sources.list && \
-#    echo "deb-src http://deb.debian.org/debian/ jessie-updates main contrib non-free" | tee -a /etc/apt/sources.list && \
 # basic dependencies
-    apt-get update -yq && \
+RUN apt-get update -yq && \
     apt-get install -y --no-install-recommends \
         curl \
+        gnupg \
         libmemcached-dev \
         libz-dev \
         libpq-dev \
         libjpeg-dev \
-        libpng12-dev \
+        libpng-dev \
         libfreetype6-dev \
         libssl-dev \
         libmcrypt-dev \
@@ -80,12 +73,11 @@ ARG INSTALL_PG_CLIENT=false
 ARG PG_CLIENT_VERSION=10.5
 
 RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
-    # Create folders if not exists (https://github.com/tianon/docker-brew-debian/issues/65)
-    mkdir -p /usr/share/man/man1 && \
-    mkdir -p /usr/share/man/man7 && \
-    # Install the pgsql client
-    apt-get update -yq && \
-    apt-get install -y postgresql-client-${PG_CLIENT_VERSION} \
+    echo "deb http://apt.postgresql.org/pub/repos/apt buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+        curl -sL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
+        apt-get update && \
+        apt-get -y install postgresql-${PG_CLIENT_VERSION} && \
+        apt-get clean \
 ;fi
 
 
@@ -110,7 +102,7 @@ RUN if [ ${INSTALL_NETCAT_JQ} = true ]; then \
     mkdir -p /usr/share/man/man7 && \
     # Install netcat-openbsd and jq
     apt-get update -yq && \
-    apt-get install -y netcat-openbsd jq \
+    apt-get install -y netcat-openbsd inetutils-ping jq \
 ;fi
 
 ARG INSTALL_GRAPHVIZ=false
