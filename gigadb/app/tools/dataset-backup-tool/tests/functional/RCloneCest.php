@@ -60,21 +60,21 @@ class RCloneCest {
      * @group rclone-backup
      */
     public function tryBackupDataset(\FunctionalTester $I) {
-        // Get variables
+        // Get variables from file
         $ini_array = parse_ini_file("/app/config/variables");
-        print_r($ini_array); # prints the entire parsed .ini file
         $sourcedir = $ini_array['BACKUP_LOCAL_ROOT'];
         $destdir = $ini_array['BACKUP_REMOTE_ROOT'];
         $bucketname = $ini_array['BACKUP_BUCKET_FULLNAME'];
 
-        $I->runShellCommand("rclone sync $sourcedir gigadb-backup:$bucketname$destdir 2>&1");
+        $I->runShellCommand("rclone --verbose sync $sourcedir gigadb-backup:$bucketname$destdir 2>&1");
         codecept_debug($I->grabShellOutput());
 
-//        $output = $this->listBucketDirectory($I,"dataset/");
-//        $tokens = preg_split('/\s+/', trim($output));
-//        $I->assertEquals("dataset/readme_dataset.txt", $tokens[0], "readme_dataset.txt file does not appear to have been uploaded");
-//        $I->assertEquals("dataset/test.csv", $tokens[5], "test.csv file does not appear to have been uploaded");
-//        $I->assertEquals("dataset/test.tsv", $tokens[10], "test.tsv file does not appear to have been uploaded");
+        // List contents for bucket
+        $I->runShellCommand("rclone lsjson gigadb-backup:$bucketname/$destdir");
+        $listJ = $I->grabShellOutput();
+        $I->assertStringContainsString("readme_dataset.txt", $listJ, "readme_dataset.txt file does not appear to have been uploaded");
+        $I->assertStringContainsString("test.csv", $listJ, "test.csv file does not appear to have been uploaded");
+        $I->assertStringContainsString("test.tsv", $listJ, "test.tsv file does not appear to have been uploaded");
     }
 
 }
