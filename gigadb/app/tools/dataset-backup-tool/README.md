@@ -8,14 +8,14 @@ account which is provided by these variables: `TENCENTCLOUD_SECRET_ID`,
 added as new GitLab secrets. 
 
 These new variables need to be pulled into the `.secrets` file and a 
-configuration file, `.cos.conf` and shell scripts, `create_bucket.sh` and `
-delete_bucket.sh` created in the `dataset-backup-tool/scripts` directory:
+configuration file, `cos.conf` and shell scripts, `create_bucket.sh` and `
+delete_bucket.sh` created in the `dataset-backup-tool/config` and `dataset-backup-tool/scripts` directories respectively:
 ```
 $ docker-compose run --rm config
 ```
 The smoke tests uses these shell scripts for creating and deleting a Tencent 
-bucket at the start and end of the tests. The `.cos.conf` file provides 
-configuration for running `coscmd` commands in `BackupSmokeCest` functional test 
+bucket at the start and end of the tests. The `cos.conf` file which is bind mounted in the tool's container sevice
+ as `/root/.cos.conf` provides configuration for running `coscmd` commands in `BackupSmokeCest` functional test 
 class.
 
 ## Run Tencent coscmd based backup smoke tests

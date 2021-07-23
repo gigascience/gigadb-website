@@ -9,10 +9,6 @@ services:
       - '5432:5432'
 
   backup_tool:
-    environment:
-      YII_PATH: ${YII_PATH}
-      YII2_PATH: ${YII2_PATH}
-#    image: files-url-updater
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -20,4 +16,6 @@ services:
       - .:/app
       - ./config/rclone.conf:/root/.config/rclone/rclone.conf
       - ./tests/_data/10.1234:/data/gigadb/pub/10.5524/
+      # make sure coscmd finds its config at the default location so we don't have to pass its path to the command
+      - ./config/cos.conf:/root/.cos.conf
     command: ../../../../ops/scripts/webapp_setup.sh

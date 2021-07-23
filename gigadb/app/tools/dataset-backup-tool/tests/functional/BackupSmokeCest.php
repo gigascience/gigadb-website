@@ -1,15 +1,12 @@
 <?php
 
-use Yii;
-use yii\console\ExitCode;
-
 class BackupSmokeCest {
     /**
      * Uploads 3 files in tests/_data/dataset1 into Tencent bucket and check
      * files are displayed in a bucket directory listing
      */
     public function tryBackupDataset(\FunctionalTester $I) {
-        $I->runShellCommand("coscmd --debug --config_path scripts/.cos.conf upload -H '{\"x-cos-storage-class\":\"DEEP_ARCHIVE\"}' -rs tests/_data/dataset1/ dataset/ 2>&1");
+        $I->runShellCommand("coscmd --debug upload -H '{\"x-cos-storage-class\":\"DEEP_ARCHIVE\"}' -rs tests/_data/dataset1/ dataset/ 2>&1");
         codecept_debug($I->grabShellOutput());
         
         $output = $this->listBucketDirectory($I,"dataset/");
@@ -24,7 +21,7 @@ class BackupSmokeCest {
      * bucket
      */
     public function tryUpdateBackupWithChangedFile(\FunctionalTester $I) {
-        $I->runShellCommand("coscmd --debug --config_path scripts/.cos.conf upload -H '{\"x-cos-storage-class\":\"DEEP_ARCHIVE\"}' -rs tests/_data/dataset2/ dataset/ 2>&1");
+        $I->runShellCommand("coscmd --debug upload -H '{\"x-cos-storage-class\":\"DEEP_ARCHIVE\"}' -rs tests/_data/dataset2/ dataset/ 2>&1");
         codecept_debug($I->grabShellOutput());
 
         // Get timestamp for test.csv
@@ -49,7 +46,7 @@ class BackupSmokeCest {
      * deleted in the Tencent bucket.
      */
     public function tryUpdateBackupWithDeletedFile(\FunctionalTester $I) {
-        $I->runShellCommand("coscmd --debug --config_path scripts/.cos.conf upload -H '{\"x-cos-storage-class\":\"DEEP_ARCHIVE\"}' -rsy --delete tests/_data/dataset3/ dataset/ 2>&1");
+        $I->runShellCommand("coscmd --debug upload -H '{\"x-cos-storage-class\":\"DEEP_ARCHIVE\"}' -rsy --delete tests/_data/dataset3/ dataset/ 2>&1");
         codecept_debug($I->grabShellOutput());
 
         $output = $this->listBucketDirectory($I,"dataset/");
@@ -63,7 +60,7 @@ class BackupSmokeCest {
      * @return mixed
      */
     private function listBucketDirectory(\FunctionalTester $I, $directory) {
-        $I->runShellCommand("coscmd -c ./scripts/.cos.conf list ".$directory." 2>&1");
+        $I->runShellCommand("coscmd list ".$directory." 2>&1");
         return $I->grabShellOutput();
     }
 
@@ -72,7 +69,7 @@ class BackupSmokeCest {
      * @return mixed
      */
     private function getBucketFileInfo(\FunctionalTester $I, $filepath) {
-        $I->runShellCommand("coscmd -c ./scripts/.cos.conf info ".$filepath." 2>&1");
+        $I->runShellCommand("coscmd info ".$filepath." 2>&1");
         return $I->grabShellOutput();
     }
 
