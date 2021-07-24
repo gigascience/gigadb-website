@@ -32,6 +32,7 @@ class BucketHelper extends \Codeception\Module
         $this->debug("********** AFTER *********");
         try {
             $output = shell_exec("coscmd delete -r -f dataset/ 2>&1");
+            $output = shell_exec("coscmd delete -r -f cngbdb/ 2>&1");
             $output = shell_exec("scripts/delete_bucket.sh");
         }
         catch (Throwable $e) {

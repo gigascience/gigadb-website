@@ -64,6 +64,12 @@ For the benefit of the tests, the configuration file is bind-mounted to the ``ba
 container service in ``gigadb/app/tools/dataset-backup-tool/docker-compose.yml`` and rclone itself is deployed to the 
 base image in ``gigadb/app/tools/dataset-backup-tool/Dockerfile``.
 
+There are smoke tests which check file upload into a Tencent bucket using 
+rclone. These functional smoke tests can be run as follows:
+```
+$ docker-compose run --rm backup_tool ./vendor/bin/codecept run -g rclone-backup
+```
+
 ### Scripts
 
 In order to reduce human error by:

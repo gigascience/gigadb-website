@@ -1,4 +1,6 @@
 BACKUP_LOCAL_ROOT=tests/_data/dataset1
+BACKUP_LOCAL_ROOT_DATASET2=tests/_data/dataset2
+BACKUP_LOCAL_ROOT_DATASET3=tests/_data/dataset3
 BACKUP_REMOTE_ROOT=/cngbdb/giga/gigadb
 BACKUP_BUCKET_FULLNAME=bucket1-${TENCENTCLOUD_APP_ID}
 COSCMD_CONF=config/cos.conf
