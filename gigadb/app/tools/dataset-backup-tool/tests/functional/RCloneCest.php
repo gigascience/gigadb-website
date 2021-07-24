@@ -94,7 +94,7 @@ class RCloneCest {
         $bucketname = $ini_array['BACKUP_BUCKET_FULLNAME'];
         
         // Use checksum to compare differences between corresponding files
-        $I->runShellCommand("rclone --verbose sync --checksum --no-update-modtime --use-server-modtime $dataset2dir gigadb-backup:$bucketname$destdir 2>&1");
+        $I->runShellCommand("rclone --verbose sync --checksum $dataset2dir gigadb-backup:$bucketname$destdir 2>&1");
         $sync_output = $I->grabShellOutput();
         codecept_debug($sync_output);
         
