@@ -7,3 +7,13 @@ secret_access_key = ${TENCENTCLOUD_SECRET_KEY}
 region = ap-guangzhou
 storage_class = DEEP_ARCHIVE
 endpoint = cos.ap-guangzhou.myqcloud.com
+
+[gigadb-standard]
+type = s3
+provider = TencentCOS
+env_auth = false
+access_key_id = ${TENCENTCLOUD_SECRET_ID}
+secret_access_key = ${TENCENTCLOUD_SECRET_KEY}
+region = ap-guangzhou
+storage_class = STANDARD
+endpoint = cos.ap-guangzhou.myqcloud.com

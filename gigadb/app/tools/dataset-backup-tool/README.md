@@ -80,12 +80,10 @@ we need to:
  * centralize variables definition to be used by scripts in one place:
     * ``gigadb/app/tools/dataset-backup-tool/config/variables``
   
-The latter file is git-ignored and is created from example ``gigadb/app/tools/dataset-backup-tool/config/variables.example`` by copying it:
-```
-$ cd gigadb/app/tools/dataset-backup-tool
-$ cp config/variables.example config/variables
-```
-The default values from the example should work for testing purpose.
+The latter file is git-ignored and is created (with ``docker-compose run --rm config``) 
+from the template ``gigadb/app/tools/dataset-backup-tool/config/variables.dist``
+
+The default values from the template are tailored for testing purpose.
 
 #### Testing the variables setup
 

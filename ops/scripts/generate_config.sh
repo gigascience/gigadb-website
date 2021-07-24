@@ -173,6 +173,12 @@ TARGET=${APP_SOURCE}/gigadb/app/tools/dataset-backup-tool/config/rclone.conf
 VARS='$TENCENTCLOUD_SECRET_ID:$TENCENTCLOUD_SECRET_KEY:$TENCENTCLOUD_APP_ID'
 envsubst $VARS < $SOURCE > $TARGET
 
+
+SOURCE=${APP_SOURCE}/gigadb/app/tools/dataset-backup-tool/config/variables.dist
+TARGET=${APP_SOURCE}/gigadb/app/tools/dataset-backup-tool/config/variables
+VARS='$TENCENTCLOUD_APP_ID'
+envsubst $VARS < $SOURCE > $TARGET
+
 if [ $GIGADB_ENV != "CI" ];then
     cp ops/configuration/nginx-conf/le.${GIGADB_ENV}.ini /etc/letsencrypt/cli.ini
 fi

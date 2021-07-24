@@ -34,7 +34,7 @@ tests/_support/_generated
 /.vagrant
 
 config/cos.conf
-config/create_bucket.sh
-config/delete_bucket.sh
+scripts/create_bucket.sh
+scripts/delete_bucket.sh
 config/rclone.conf
 config/variables
