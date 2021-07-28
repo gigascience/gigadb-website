@@ -55,7 +55,6 @@ phpcs.xml
 # Composer
 bin
 vendor
-composer.lock
 composer.json
 
 # deployment
