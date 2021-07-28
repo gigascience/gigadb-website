@@ -13,6 +13,8 @@
  *
  * The followings are the available model relations:
  * @property Dataset $dataset
+ * @property FileAttributes $attributes
+ * @property File $file
  */
 class DatasetLog extends CActiveRecord
 {
@@ -80,6 +82,44 @@ class DatasetLog extends CActiveRecord
             'doi' => 'DOI',
         );
     }
+
+    /**
+     * Factory method to call for common attributes
+     * @param int $id
+     * @param string $fileName
+     * @param string $fileModel
+     * @param int $modelId
+     * @param int $fileId
+     * @return DatasetLog
+     */
+    public static function makeNewInstanceForDatasetLogBy (int $id, string $fileName, string $fileModel, int $modelId, int $fileId): DatasetLog
+    {
+        $datasetlog = new DatasetLog();
+        $datasetlog->created_at = date("Y-m-d H:i:s");
+        $datasetlog->dataset_id = $id;
+        $datasetlog->message = $fileName;
+        $datasetlog->model = $fileModel;
+        $datasetlog->model_id = $modelId;
+        $datasetlog->url = Yii::app()->createUrl('/adminFile/update', array('id'=>$fileId));
+        return $datasetlog;
+    }
+
+    /**
+     * Retrieves attributes and store them in dataset_log table when triggered.
+     * @param int $id
+     * @param string $fileName
+     * @param string $fileModel
+     * @param int $modelId
+     * @param int $fileId
+     * @return bool
+     */
+    public static function createDatasetLogEntry(int $id, string $fileName, string $fileModel, int $modelId, int $fileId): bool
+    {
+        $datasetlog = self::makeNewInstanceForDatasetLogBy($id, $fileName, $fileModel, $modelId, $fileId);
+        $datasetlog->message = $fileName. ": file attribute deleted";
+        return $datasetlog->save();
+    }
+
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.

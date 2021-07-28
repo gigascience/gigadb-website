@@ -96,6 +96,7 @@
                         <th>Value</th>
                         <th>Unit</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,6 +112,7 @@
                             <?= $fa->unit ? $fa->unit->name : '' ?>
                         </td>
                         <td><a role="button" class="btn btn-edit js-edit" data="<?= $fa->id ?>">Edit</a></td>
+                        <td><a role="button" class="btn js-delete" name="delete_file_attr" data="<?= $fa->id ?>">Delete</a></td>
                     </tr>
                     <?php } ?>
                 </tbody>
@@ -145,5 +147,19 @@ $('.js-edit').click(function(e) {
             }
         }, 'json');
     }
+})
+
+$('.js-delete').click(function (e) {
+    e.preventDefault();
+    id = $(this).attr('data');
+    row = $('.row-edit-' + id);
+    if (id) {
+        $.post('/adminFile/deleteFileAttribute', { 'id': id }, function(result) {
+            if (result) {
+                // console.log(result);
+            }
+        }, 'json');
+    }
+    window.location.reload();
 })
 </script>

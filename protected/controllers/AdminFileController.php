@@ -27,7 +27,7 @@ class AdminFileController extends Controller
     {
         return array(
             array('allow', // admin only
-                    'actions'=>array('linkFolder','admin','delete','index','view','create','update','update1', 'editAttr', 'uploadAttr'),
+                    'actions'=>array('linkFolder','admin','delete','index','view','create','update','update1', 'editAttr', 'uploadAttr', 'deleteFileAttribute'),
                     'roles'=>array('admin'),
             ),
                             array('allow',
@@ -419,7 +419,7 @@ class AdminFileController extends Controller
                     } else {
                         $fs = $fs[0];
                     }
-                    $sample = Sample::model()->findbyAttributes(array('name'=>$_POST['File']['sample_name']));
+                    $sample = Sample::model()->findByPk(array('name'=>$_POST['File']['sample_name']));
                     $fs->sample_id = $sample->id;
                     $fs->file_id = $model->id;
                     if( $fs->sample_id !='None'&& $fs->sample_id !="" )
@@ -465,40 +465,50 @@ class AdminFileController extends Controller
     }
 
     /**
+     * Yii's method for routing urls to an action. Override to use custom actions
+     */
+    public function actions()
+    {
+        return array(
+            'deleteFileAttribute'=>'application.controllers.adminFile.DeleteFileAttributeAction',
+        );
+    }
+
+    /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
    public function actionDelete($id)
     {
-        
+
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
-           $file = File::model()->findByPk($id);
-           
-          // $file->fileSamples->delete();
+            $file = File::model()->findByPk($id);
+            // $file->fileSamples->delete();
           foreach ($file->fileAttributes as $fileattributes) {
               print_r($fileattributes);
               $fileattributes->delete();
-              
+
           }
          foreach ($file->fileSamples as $filesample) {
               print_r($filesample);
               $filesample->delete();
-              
+
           }
-      
-           $file->delete();
-           
-            
+
+         $file->delete();
+
+        }
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-           
-            if (!isset($_GET['ajax']))
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        } else
+
+        if (!isset($_GET['ajax'])) {
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        } else {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-      
+        }
+
     }
 
 

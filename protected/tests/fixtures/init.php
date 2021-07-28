@@ -22,6 +22,7 @@
 	$this->loadFixture("file_format");
 	$this->loadFixture("file_type");
 
+	$this->loadFixture("dataset_log");
 	// $this->loadFixture("species");
 	// $this->loadFixture("file");
 	// $this->loadFixture("sample");

@@ -1,27 +1,30 @@
 <?php
 
 /**
- * This is the model class for table "dataset_log".
+ * This is the model class for table "curation_log".
  *
- * The followings are the available columns in table 'dataset_log':
+ * The followings are the available columns in table 'curation_log':
  * @property integer $id
  * @property integer $dataset_id
- * @property string $message
- * @property string $created_at
- * @property string $model
- * @property string $model_id
+ * @property string $comments
+ * @property string $action
+ * @property string $creation_date
+ * @property string $created_by
+ * @property string $last_modified_date
+ * @property string $last_modified_by
  *
  * The followings are the available model relations:
- * @property Dataset $dataset
+ * @property CurationLog $curationlog
  */
 class CurationLog extends CActiveRecord
 {
     public $doi;
 
     /**
+     *
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return DatasetLog the static model class
+     * @return CurationLog the static model class
      */
     public static function model($className=__CLASS__)
     {
@@ -81,29 +84,49 @@ class CurationLog extends CActiveRecord
             'last_modified_by' => 'Last Modified By',
         );
     }
-    
-    public static function createlog($status,$id) {
-       
-        $curationlog = new CurationLog;
-        $curationlog->creation_date = date("Y-m-d");
-        $curationlog->last_modified_date = null;
-        $curationlog->dataset_id = $id;
-        $curationlog->created_by = "System";
-        $curationlog->action = "Status changed to ".$status;
-        if (!$curationlog->save())
-            return false;
-    }
-    
-    public static function createlog_assign_curator($id,$creator,$username) {
 
-        $curationlog = new CurationLog;
+    /**
+     * Factory method to make a new instance and factor out the common code
+     *
+     * @param int $id
+     * @param string $creator
+     * @return CurationLog
+     */
+    public static function makeNewInstanceForCurationLogBy(int $id, string $creator): CurationLog
+    {
+        $curationlog = new CurationLog();
         $curationlog->creation_date = date("Y-m-d");
         $curationlog->last_modified_date = null;
         $curationlog->dataset_id = $id;
         $curationlog->created_by = $creator;
+        return $curationlog;
+    }
+
+    public static function createlog($status,$id) {
+
+        $curationlog = self::makeNewInstanceForCurationLogBy($id, "System");
+        $curationlog->action = "Status changed to ".$status;
+        return $curationlog->save();
+    }
+
+    public static function createlog_assign_curator($id,$creator,$username) {
+
+        $curationlog = self::makeNewInstanceForCurationLogBy($id, $creator);
         $curationlog->action = "Curator Assigned"." $username";
-        if (!$curationlog->save())
-            return false;
+        return $curationlog->save();
+    }
+
+    /**
+     * Retrieves attributes and store them in curation_log table when triggered
+     * @param $id
+     * @param string $fileName
+     * @return bool
+     */
+    public static function createCurationLogEntry(int $id, string $fileName): bool
+    {
+        $curationlog = self::makeNewInstanceForCurationLogBy($id, "System");
+        $curationlog->action = $fileName.": file attribute deleted";
+        return $curationlog->save();
     }
 
     /**
