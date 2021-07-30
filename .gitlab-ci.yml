@@ -161,7 +161,7 @@ test_build:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/js:latest
     - docker-compose run --rm config
     - docker-compose run --rm fuw-config
-    - docker-compose run --rm test composer update
+    - docker-compose run --rm test composer install
     - docker-compose run --rm console bash -c "cd /app && composer update"
     - docker-compose run --rm console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer update'
     - docker-compose run --rm js npm install
