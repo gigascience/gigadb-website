@@ -372,6 +372,23 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
         $this->I->amConnectedToDatabase(\Codeception\Module\Db::DEFAULT_DATABASE);
      }
 
+    /**
+     * @Then there is a public download link for each file associated with DOI :arg1
+     */
+    public function thereIsAPublicDownloadLinkForEachFileAssociatedWithDOI($doi,TableNode $files)
+    {
+        $filesPublicUrl = Yii::$app->params['dataset_filedrop']["files_public_url"];
+
+        foreach ($files->getRows() as $index => $row) {
+            $nbColumns = count($row);
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            $this->I->canSeeElement("a[href='$filesPublicUrl/000007/$row[0]']");
+        }
+    }
+
 
 
 }

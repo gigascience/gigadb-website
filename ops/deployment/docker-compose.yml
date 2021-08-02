@@ -34,6 +34,8 @@ services:
       - le_webrootpath:/var/www/.le
       # filedrop files for reviewers to download
       - ${DATA_SAVE_PATH}/fuw/repo:/var/www/filedrop
+      # public download path
+      - /tmp:/var/www/datasetfiles
     networks:
       web-tier:
         ipv4_address: 172.16.238.10

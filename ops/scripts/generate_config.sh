@@ -169,7 +169,7 @@ envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/params-local.php.dist
 TARGET=${APP_SOURCE}/protected/config/yii2/params-local.php
-VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$SERVER_HOSTNAME:$HOME_URL'
+VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$SERVER_HOSTNAME:$HOME_URL:$FILES_PUBLIC_URL'
 envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/gigadb/file-worker/db.php.dist

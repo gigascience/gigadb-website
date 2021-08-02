@@ -68,6 +68,8 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
     	$dest = Yii::getAlias("@publicftp/{$this->doi}/{$this->file}");
     	$timestamp = (new \DateTime())->format('U');
 
+        $filesPublicUrl = Yii::$app->params['dataset_filedrop']["files_public_url"] ?? "http://localhost";
+
         if ( $this->_fs->has($dest) ) {
             $this->_fs->rename($dest, $dest.".todelete.$timestamp");
         }
@@ -79,7 +81,7 @@ class MoveJob extends \yii\base\Component implements \yii\queue\JobInterface
                 return false;
             }
             $upload->status = Upload::STATUS_SYNCHRONIZED;
-            $upload->location = "ftp://climb.genomics.cn/pub/10.5524/{$this->doi}/{$this->file}";
+            $upload->location = "$filesPublicUrl/{$this->doi}/{$this->file}";
 
             $isSaved = $upload->save();
             if(!$isSaved) {

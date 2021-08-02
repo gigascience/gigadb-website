@@ -65,6 +65,7 @@ class MoveJobTest extends \Codeception\Test\Unit
         $source = "/var/repo/200001/084.fq";
         $dest = "/var/ftp/public/200001/084.fq";
 
+        $filesPublicUrl = Yii::$app->params['dataset_filedrop']["files_public_url"];
 
         $mockNativeFilesystem->expects($this->once())
                 ->method('has')
@@ -96,7 +97,7 @@ class MoveJobTest extends \Codeception\Test\Unit
             'doi' => $job->doi, 
             'name' => $job->file, 
             'status' => Upload::STATUS_SYNCHRONIZED,
-            'location' => "ftp://climb.genomics.cn/pub/10.5524/{$job->doi}/{$job->file}"
+            'location' => "$filesPublicUrl/{$job->doi}/{$job->file}"
         ]);
 
     }

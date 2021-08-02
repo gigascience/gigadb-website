@@ -57,11 +57,11 @@ YII2_VERSION=2.0.15.1
 ### Application Access variables ########################################################################################
 # Point to your code
 
-HOME_URL=gigadb.gigasciencejournal.com
+HOME_URL=http://gigadb.gigasciencejournal.com:9170
 PUBLIC_HTTP_PORT=9170
 PUBLIC_HTTPS_PORT=8043
 SERVER_HOSTNAME=gigadb.gigasciencejournal.com
-
+FILES_PUBLIC_URL=http://gigadb.gigasciencejournal.com:9170/datasetfiles
 
 ### Certificates for TLS termination configuration ######################################################################
 CERT_EMAIL=foo@bar
