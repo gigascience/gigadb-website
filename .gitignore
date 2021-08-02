@@ -24,6 +24,7 @@ protected/scripts/set_env.sh
 protected/scripts/update_links.sh
 themes/classic/views/
 files/certs
+files/data/filetypes.json
 images/tempcaptcha/
 images/vue
 
