@@ -1,0 +1,17 @@
+.dataTable > thead > tr > th[class*="sort"]:after{
+    content: "" !important;
+}
+
+table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > td.sorting_asc, table.dataTable thead > tr > td.sorting_desc, table.dataTable thead > tr > td.sorting {
+    padding-right: inherit;
+}
+
+#files, #sample {
+	width:100%;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.tab-content {
+	overflow: hidden;
+}
