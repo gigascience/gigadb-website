@@ -12,7 +12,7 @@ test_files_url_updater:
     expire_in: 1 week
   script:
     - cd gigadb/app/tools/files-url-updater
-    - composer install
+    - docker-compose run --rm updater composer install
     - docker-compose up -d pg9_3
     - docker-compose run --rm updater ./yii dataset-files/download-restore-backup --default
     - docker-compose run --rm updater ./vendor/bin/codecept build
