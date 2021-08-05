@@ -181,6 +181,13 @@ if [ $GIGADB_ENV != "CI" ];then
     cp ops/configuration/nginx-conf/le.${GIGADB_ENV}.ini /etc/letsencrypt/cli.ini
 fi
 
+## Configuring other tools and apps
+
+SOURCE=${APP_SOURCE}/gigadb/app/tools/files-url-updater/config/params.php.dist
+TARGET=${APP_SOURCE}/gigadb/app/tools/files-url-updater/config/params.php
+VARS='$DB_BACKUP_HOST:$DB_BACKUP_USERNAME:$DB_BACKUP_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET
+
 # Download example dataset files
 # mkdir -p ${APP_SOURCE}/vsftpd/files
 # if ! [ -f ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz ]; then

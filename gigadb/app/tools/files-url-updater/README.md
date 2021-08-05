@@ -11,6 +11,17 @@ The first one was implemented primarily to help testing the main tool ``dataset-
 However, it could also be used as an operational tool to restore from a backup the production database server
 whose data has been corrupted or lost.
 
+## Initial setup of the tool
+
+In the root of the repository, run project configuration script:
+
+```
+$ docker-compose run --rm config
+
+```
+this will create the configuration file for the files-url-updater tool at ``gigadb/app/tools/files-url-updater/config/params.php``
+
+
 ## Working directory for this tool
 
 ```
@@ -34,11 +45,9 @@ the content of a production database backup.
 
 ## Configuring access to the database
 
-```
-$ cp config/params.php.example config/params.php
-```
+Configuration is in ``gigadb/app/tools/files-url-updater/config/params.php``.
 
-Specifying the DB password is not necessary for running the command line tool
+Customizing the DB connection details is not necessary for running the command line tool
 against the local database spun up above.
 It is not necessary for running the tests either.
 
@@ -101,13 +110,12 @@ $  docker-compose run --rm updater psql -h pg9_3 -U gigadb -d gigadb
 
 ## Configure the main GigaDB app to talk to the legacy database
 
-This is needed for running the acceptance tests.
-It needs to be performed from the root of the gigadb-website project
+This is needed only for running the acceptance tests.
+It needs to be performed from the root of the gigadb-website project repository
 
 ### 1. After copying over an .env file, make sure Gigadb webapp is running
    
 ```
-$ docker-compose run --rm config
 $ docker-compose run --rm webapp
 $ ops/scripts/setup_devdb.sh
 ```

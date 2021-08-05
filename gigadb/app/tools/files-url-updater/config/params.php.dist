@@ -10,9 +10,9 @@ return [
         "password" => "",
     ],
     'ftp' => [
-        "host" => "",
-        "username" => "",
-        "password" => "",
+        "host" => "$DB_BACKUP_HOST",
+        "username" => "$DB_BACKUP_USERNAME",
+        "password" => "$DB_BACKUP_PASSWORD",
     ],
 ];
 
