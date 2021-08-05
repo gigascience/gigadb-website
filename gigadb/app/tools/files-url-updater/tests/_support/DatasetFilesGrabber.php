@@ -17,7 +17,7 @@ class DatasetFilesGrabber extends \Codeception\Module
     /**
      * @const used as default target url in scenario steps
      */
-    const TARGET_URL = "http://gigadb.dev/";
+    const TARGET_URL = "http://gigadb.test/";
 
 
     /**
@@ -47,7 +47,9 @@ class DatasetFilesGrabber extends \Codeception\Module
             exit("Wrong database! Check your config/params.php. Acceptance tests should be run against the local database only");
         }
 
-        system("echo yes | ./yii dataset-files/download-restore-backup --latest --nodownload");
+        $dateStamp = date('Ymd', strtotime(date('Ymd')." - 1 day"));
+        system("echo yes | ./yii dataset-files/download-restore-backup --default --nodownload");
+        system("cp sql/gigadbv3_default.backup sql/gigadbv3_$dateStamp.backup");
     }
 
     /**

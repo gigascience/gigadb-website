@@ -83,12 +83,13 @@ This will download and restore the latest production database backup which is fr
 If you need a backup for a specific date you can specify a date within the last seven days to the ``--date`` option instead.
 Subsequently, you can also pass the ``--nodownload`` to bypass the downloading if you have specified a date you've previously used already.
 This is especially useful in automated tests because we don't them slowed down by unnecessary network connections.
-The downloaded database backup files are located in the tool's ``sql/`` directory.
+The downloaded database backup files are located in the tool's ``sql/`` directory and have file name like ``gigadbv3_########.backup``
+where ``########`` represent a date string in the format ``yyyymmdd``.
 
 >**Note:**
 >
-> Functional and acceptance tests assume this step has been performed. If a day arrives 
-> for which you don't have a copy of the latest production backup yet, the tests will
+> Functional and acceptance tests assume the default binary dump for test data is download instead. This is done by replacing ``--latest`` with ``--default``. 
+> If a day arrives for which you don't have a copy of the latest production backup yet, the tests will
 > fail until you fetch the latest backup again.
  
 
@@ -147,6 +148,18 @@ Also make sure the ``chrome`` container service is running as it should (see fur
 Return to the tool's directory
 ```
 $ cd gigadb/app/tools/files-url-updater/ 
+```
+
+First, ensure you have downloaded and loaded the default backup for the production database specifically made
+for testing the tool:
+It contains the same volume as production and has the urls for dataset files that need replacing.
+However, any personally identifiable information (PII) have been redacted, and the backup file 
+is stored off-site rather than on the ftp server for production backup.
+
+```
+$ docker-compose run --rm updater ./yii dataset-files/download-restore-backup --default
+$ ls -alrt sql/gigadbv3_default.backup
+-rw-r--r--  1 user  staff  29138712 Aug  4 16:33 sql/gigadbv3_default.backup
 ```
 
 Configure Codeception:

@@ -19,6 +19,11 @@ class DatasetFiles extends \Yii\base\BaseObject {
     public const NEW_HOST = "https://ftp.cngb.org";
 
     /**
+     * @const the url where to download test data
+     */
+    public const TESTDATA_HOST = "https://gigascience-testdata.rija.dev";
+
+    /**
      * @const to indicate that we want to run the command in dry run mode
      */
     public const DRYRUN_ON = true;
@@ -303,13 +308,21 @@ class DatasetFiles extends \Yii\base\BaseObject {
             var_dump($dbName);
         }
 
+        system("head -2 /app/sql/gigadbv3_$dateStr.backup | tail -1 | cat -e | grep 9.3",$retval); # test whether we have test data or real production backup
+        if(0 === $retval) {
+            $restoreList = "sql/default_restore.list";
+        }
+        else {
+            $restoreList = "sql/production8_1_restore.list";
+        }
+
         if($dbPassword) {
             system("PGPASSWORD=$dbPassword psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by $dbUser;' 2>/app/drop_restore.log >&2");
-            system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --no-owner --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname $dbName  /app/sql/gigadbv3_{$dateStr}.backup 2>/app/drop_restore.log >&2");
+            system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --no-owner --verbose --use-list $restoreList -h {$dbConfig['host']} -U $dbUser --dbname $dbName  /app/sql/gigadbv3_{$dateStr}.backup 2>/app/drop_restore.log >&2");
         }
         else {
             system("psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by $dbUser;' 2>/app/drop_restore.log >&2");
-            system("pg_restore --exit-on-error --no-owner --verbose --use-list sql/pg_restore.list -h {$dbConfig['host']} -U $dbUser --dbname $dbName  /app/sql/gigadbv3_{$dateStr}.backup 2>/app/drop_restore.log >&2");
+            system("pg_restore --exit-on-error --no-owner --verbose --use-list $restoreList -h {$dbConfig['host']} -U $dbUser --dbname $dbName  /app/sql/gigadbv3_$dateStr.backup 2>/app/drop_restore.log >&2");
         }
     }
 

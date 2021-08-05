@@ -6,9 +6,9 @@ use \app\models\DatasetFiles;
 
 class DatasetFilesCest {
 
-    public function setUp() {
+    public function _before() {
         # load database schema in test database
-        system("echo yes | ./yii_test dataset-files/download-restore-backup --latest --nodownload");
+        system("echo yes | ./yii_test dataset-files/download-restore-backup --default --nodownload 2>/app/drop_restore.log >&2");
 
         #make sure there's no call to the main runner in test files
         $outcome = system("grep -n './yii\s' /app/tests/functional/*");
@@ -17,7 +17,7 @@ class DatasetFilesCest {
         }
     }
 
-    public function tearDown() {
+    public function _after() {
     }
 
     /**
@@ -58,7 +58,6 @@ class DatasetFilesCest {
         $I->cantSeeInShellOutput("Warning!");
         $I->cantSeeInShellOutput("Downloading production backup for $dateStamp");
         $I->cantSeeInShellOutput("Restoring the backup for $dateStamp");
-        $I->canSeeInShellOutput("Command is running for date $dateStamp");
         $I->seeResultCodeIs(Exitcode::OK);
     }
 
@@ -90,7 +89,7 @@ class DatasetFilesCest {
         $I->canSeeInShellOutput("Downloading production backup for $dateStamp");
         $I->cantSeeInShellOutput("Restoring the backup for $dateStamp");
         $I->canSeeInShellOutput("Command is running for date $dateStamp");
-        $I->canSeeInShellOutput("Failed ftp downloading backup file for date $dateStamp");
+        $I->canSeeInShellOutput("Failed downloading backup file for date $dateStamp");
         $I->seeResultCodeIs(Exitcode::OSERR);
     }
 
@@ -142,7 +141,7 @@ class DatasetFilesCest {
     {
         $I->runShellCommand("./yii_test dataset-files/download-restore-backup", false);
         $I->canSeeInShellOutput("Usage:");
-        $I->canSeeInShellOutput("dataset-files/download-restore-backup --date 20210608 | --latest [--nodownload]");
+        $I->canSeeInShellOutput("dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload]");
         $I->canSeeResultCodeIs(Exitcode::USAGE);
     }
 
@@ -221,4 +220,17 @@ class DatasetFilesCest {
         $I->canSeeResultCodeIs(ExitCode::NOPERM);
     }
 
+    /**
+     * @group download-restore
+     * @param FunctionalTester $I
+     */
+    public function tryDownloadRestoreDefaultBackup(\FunctionalTester $I)
+    {
+        $dateStamp = "default";
+        $I->runShellCommand("echo yes | ./yii_test dataset-files/download-restore-backup --default", false);
+        $I->canSeeInShellOutput("Downloading production backup for $dateStamp");
+        $I->canSeeInShellOutput("Warning! This command will drop the configured database (hosted on pg9_3) and restore it from the $dateStamp backup, are you sure you want to proceed?");
+        $I->canSeeInShellOutput("Restoring the backup for $dateStamp");
+        $I->seeResultCodeIs(Exitcode::OK);
+    }
 }

@@ -28,6 +28,11 @@ class DatasetFilesController extends Controller
     public bool $latest = false;
 
     /**
+     * @var bool default use the default backup
+     */
+    public bool $default = false;
+
+    /**
      * @var string $date the yyyymmdd for which to retrieve a production backup
      */
     public string $date = "";
@@ -64,7 +69,7 @@ class DatasetFilesController extends Controller
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','config','date','next','after','dryrun','verbose','nodownload','norestore','latest'];
+        return ['color', 'interactive', 'help','config','date','next','after','dryrun','verbose','nodownload','norestore','latest','default'];
     }
 
 
@@ -74,7 +79,7 @@ class DatasetFilesController extends Controller
      *  Usage:
      *      ./yii dataset-files/download-restore-backup
      *      ./yii dataset-files/download-restore-backup --config
-     *      ./yii dataset-files/download-restore-backup --date 20210608 | --latest [--nodownload][--norestore]
+     *      ./yii dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload][--norestore]
      *
      * @throws \Throwable
      * @return int Exit code
@@ -87,6 +92,7 @@ class DatasetFilesController extends Controller
         $optNoDownload = $this->nodownload;
         $optNoRestore = $this->norestore;
         $optLatest = $this->latest;
+        $optDefault = $this->default;
 
         //Return config
         if($optConfig) {
@@ -95,22 +101,27 @@ class DatasetFilesController extends Controller
         }
 
         //Return usage unless mandatory options are passed
-        if(!($optDate || $optLatest)) {
+        if(!($optDate || $optLatest || $optDefault)) {
             $this->stdout(
-                "\nUsage:\n\t./yii dataset-files/download-restore-backup\n\t./yii dataset-files/download-restore-backup --config\n\t./yii dataset-files/download-restore-backup --date 20210608 | --latest [--nodownload][--norestore]\n"
+                "\nUsage:\n\t./yii dataset-files/download-restore-backup\n\t./yii dataset-files/download-restore-backup --config\n\t./yii dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload][--norestore]\n"
             );
             return ExitCode::USAGE;
         }
 
         //Validate the date specified with the options
         if(! ($optDate && (bool)strtotime($optDate) && date("Ymd", strtotime($optDate)) === $optDate) ) {
-            if($optLatest)
+            if($optLatest) {
                 $optDate = date('Ymd', strtotime(date('Ymd')." - 1 day"));
+            }
+            elseif($optDefault) {
+                $optDate = "default";
+            }
             else {
                 Yii::error("Arguments are invalid");
                 return ExitCode::DATAERR;
             }
         }
+
 
         //Whatever --no* option, --date|--latest is being passed or not, we show which date the command is going to use
         $this->stdout("\nCommand is running for date $optDate\n");
@@ -120,9 +131,17 @@ class DatasetFilesController extends Controller
             if(!$optNoDownload) {
                 $this->stdout("\nDownloading production backup for {$optDate}\n", Console::BOLD);
                 $ftpConfig = \Yii::$app->params['ftp'];
-                $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} {$ftpConfig['host']} /app/sql/ /gigadbv3_{$optDate}.backup", $returnValue);
+
+                if ($optDefault) {
+                    $downloadHost = DatasetFiles::TESTDATA_HOST;
+                    $lastLine = system("curl -o sql/gigadbv3_default.backup --user {$ftpConfig['username']}:{$ftpConfig['password']} $downloadHost/gigadbv3_default.backup", $returnValue);
+                }
+                else {
+                    $downloadHost = $ftpConfig['host'];
+                    $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} $downloadHost /app/sql/ /gigadbv3_{$optDate}.backup", $returnValue);
+                }
                 if(0 !== $returnValue) {
-                    throw new Exception("Failed ftp downloading backup file for date $optDate".$lastLine);
+                    throw new Exception("Failed downloading backup file for date $optDate".$lastLine);
                 }
             }
         }
