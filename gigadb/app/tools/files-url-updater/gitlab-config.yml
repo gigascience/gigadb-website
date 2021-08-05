@@ -1,0 +1,20 @@
+test_files_url_updater:
+  stage: test
+  artifacts:
+    paths:
+      - gigadb/app/tools/files-url-updater/runtime/logs/app.log
+      - gigadb/app/tools/files-url-updater/tests/_output
+      - gigadb/app/tools/files-url-updater/drop_restore.log
+      - gigadb/app/tools/files-url-updater/config/params.php
+      - gigadb/app/tools/files-url-updater/composer.json
+      - gigadb/app/tools/files-url-updater/composer.lock
+    when: always
+    expire_in: 1 week
+  script:
+    - cd gigadb/app/tools/files-url-updater
+    - composer install
+    - docker-compose up -d pg9_3
+    - echo $FILES_URL_UPDATER_CONFIG > config/params.php
+    - docker-compose run --rm updater ./yii dataset-files/download-restore-backup --default
+    - docker-compose run --rm updater ./vendor/bin/codecept build
+    - docker-compose run --rm updater ./vendor/bin/codecept run

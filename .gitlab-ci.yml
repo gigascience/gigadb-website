@@ -259,6 +259,9 @@ test_run:
     # - docker-compose exec -T console /app/vendor/bin/codecept -vvv -c /app/common run -g metadata acceptance --fail-fast
     # - echo $?
 
+include:
+  - local: 'gigadb/app/tools/files-url-updater/gitlab-config.yml'
+
 check_coverage:
   stage: conformance
   cache:
