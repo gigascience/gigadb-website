@@ -55,6 +55,7 @@ t_urls_updater:
     - ./up.sh
     - cd gigadb/app/tools/files-url-updater
     - echo yes | $LOCAL_COMPOSE run --rm updater ./yii dataset-files/download-restore-backup --default
+    - cp ci.acceptance.suite.yml acceptance.suite.yml
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept build
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run
   dependencies:

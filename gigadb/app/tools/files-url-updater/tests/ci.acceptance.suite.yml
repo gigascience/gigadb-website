@@ -1,0 +1,25 @@
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - Cli
+        - Db:
+            dsn: 'pgsql:host=pg9_3;dbname=gigadb;port=5432'
+            user: 'gigadb'
+            password: ''
+        - WebDriver:
+            url: '172.17.0.1:9170'
+            window_size: 2000x3500
+            host: '172.17.0.1'
+            port: 4444
+            browser: chrome
+            capabilities:
+              "goog:chromeOptions":
+                  args: ['--headless']
+                  w3c: false
+              "goog:loggingPrefs":
+                  browser: ALL
+              "loggingPrefs":
+                  browser: ALL
+        - Asserts
+        - Filesystem
+        - Helper\DatasetFilesGrabber
