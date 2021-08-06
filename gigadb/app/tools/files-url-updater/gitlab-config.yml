@@ -1,4 +1,7 @@
 test_files_url_updater:
+  variables:
+    COMPOSE_FILE: "docker-compose.yml"
+
   stage: test
   artifacts:
     paths:
