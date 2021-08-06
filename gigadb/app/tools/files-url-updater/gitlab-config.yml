@@ -1,6 +1,16 @@
-test_files_url_updater:
+
+b_urls_updater:
+  stage: build for test
+  script:
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/updater:latest || true
+    - cd gigadb/app/tools/files-url-updater
+    - docker-compose build updater
+    - docker tag ${CI_PROJECT_NAME}_updater:latest registry.gitlab.com/$CI_PROJECT_PATH/updater:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/updater:latest
+
+t_urls_updater:
   variables:
-    LOCAL_COMPOSE: "docker-compose -f ./docker-compose.yml"
+    LOCAL_COMPOSE: "docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml"
     GIGADB_HOST: "172.17.0.1"
     GIGADB_PASSWORD: ""
 
@@ -29,4 +39,4 @@ test_files_url_updater:
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept build
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run
   dependencies:
-    - test_build
+    - b_urls_updater

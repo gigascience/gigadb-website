@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+
+  updater:
+    build:
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/updater:latest"
+    volumes:
+      - .:/app
