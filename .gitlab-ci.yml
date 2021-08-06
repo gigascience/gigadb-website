@@ -167,7 +167,7 @@ test_build:
     - docker-compose run --rm js npm install
   artifacts:
     untracked: true
-    when: on_failure
+    when: always
     expire_in: 1 week
 
 test_run:

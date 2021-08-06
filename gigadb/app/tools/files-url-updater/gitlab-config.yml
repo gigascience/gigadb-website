@@ -21,4 +21,4 @@ test_files_url_updater:
     - docker-compose run --rm updater ./vendor/bin/codecept build
     - docker-compose run --rm updater ./vendor/bin/codecept run
   dependencies:
-    - test_run
+    - test_build
