@@ -22,4 +22,4 @@ modules:
                   browser: ALL
         - Asserts
         - Filesystem
-        - Helper\DatasetfilesGrabber
+        - Helper\DatasetFilesGrabber
