@@ -60,10 +60,10 @@ docker-compose run --rm js
 docker-compose up -d chrome
 
 # Install dependencies for the Beanstalkd workers
-docker-compose exec console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer update'
+docker-compose exec -T console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer update'
 
 # Start Beanstalkd workers after running the required migrations
-docker-compose exec console /app/yii migrate/fresh --interactive=0
+docker-compose exec -T console /app/yii migrate/fresh --interactive=0
 docker-compose up -d fuw-worker gigadb-worker
 
 # Bootstrap the main database using data from "data/dev" by default or using the one passed as parameter
