@@ -36,10 +36,10 @@ t_urls_updater:
     - cd gigadb/app/tools/files-url-updater
     - $LOCAL_COMPOSE run --rm updater composer install
     - $LOCAL_COMPOSE up -d pg9_3
-    - echo yes | $LOCAL_COMPOSE run --rm updater ./yii dataset-files/download-restore-backup --default
     - cd $APPLICATION
     - ./up.sh
     - cd gigadb/app/tools/files-url-updater
+    - echo yes | $LOCAL_COMPOSE run --rm updater ./yii dataset-files/download-restore-backup --default
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept build
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run
   dependencies:
