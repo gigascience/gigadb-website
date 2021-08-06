@@ -13,6 +13,9 @@ test_files_url_updater:
       - gigadb/app/tools/files-url-updater/config/params.php
       - gigadb/app/tools/files-url-updater/composer.json
       - gigadb/app/tools/files-url-updater/composer.lock
+      - .env
+      - .secrets
+      - protected/config/db.json
     when: always
     expire_in: 1 week
   script:
