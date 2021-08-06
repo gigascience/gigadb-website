@@ -186,6 +186,7 @@ test_run:
       - fuw/app/console/runtime/
       - fuw/app/common/tests/_output
       - fuw/app/common/config/params-local.php
+      - gigadb/app/tools/files-url-updater/config/params.php
       - .env
       - composer.lock
       - containers-data

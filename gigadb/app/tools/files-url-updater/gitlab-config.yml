@@ -20,3 +20,5 @@ test_files_url_updater:
     - docker-compose run --rm updater ./yii dataset-files/download-restore-backup --default
     - docker-compose run --rm updater ./vendor/bin/codecept build
     - docker-compose run --rm updater ./vendor/bin/codecept run
+  dependencies:
+    - test_run
