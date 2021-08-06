@@ -1,10 +1,13 @@
 
 b_urls_updater:
+  variables:
+    LOCAL_COMPOSE: "docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml"
+
   stage: build for test
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/updater:latest || true
     - cd gigadb/app/tools/files-url-updater
-    - docker-compose build updater
+    - $LOCAL_COMPOSE build updater
     - docker tag ${CI_PROJECT_NAME}_updater:latest registry.gitlab.com/$CI_PROJECT_PATH/updater:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/updater:latest
 
