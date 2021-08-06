@@ -12,8 +12,10 @@ dbSet=${1:-"dev"}
 echo "Starting all services..."
 
 # Make the Docker API available on TCP port 2375 on mac (unnecessary on windows or linux)
-docker stop socat && docker rm socat
-docker run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock || true
+if [ "$(uname)" == "Darwin" ];then
+  docker stop socat && docker rm socat
+  docker run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock || true
+fi;
 
 # Check there is .env
 if ! [ -f  ./.env ];then
