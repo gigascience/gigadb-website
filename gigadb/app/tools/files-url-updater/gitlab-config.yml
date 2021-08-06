@@ -26,6 +26,8 @@ t_urls_updater:
       - gigadb/app/tools/files-url-updater/config/params.php
       - gigadb/app/tools/files-url-updater/composer.json
       - gigadb/app/tools/files-url-updater/composer.lock
+      - gigadb/app/tools/files-url-updater/tests/acceptance.suite.yml
+      - gigadb/app/tools/files-url-updater/tests/ci.acceptance.suite.yml
       - .env
       - .secrets
       - protected/config/db.json
@@ -56,6 +58,7 @@ t_urls_updater:
     - cd gigadb/app/tools/files-url-updater
     - echo yes | $LOCAL_COMPOSE run --rm updater ./yii dataset-files/download-restore-backup --default
     - cp tests/ci.acceptance.suite.yml tests/acceptance.suite.yml
+    - ls -lart tests/
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept build
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run
   dependencies:
