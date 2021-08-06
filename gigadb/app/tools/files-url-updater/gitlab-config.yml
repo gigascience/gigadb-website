@@ -33,6 +33,21 @@ t_urls_updater:
     expire_in: 1 week
   script:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/updater:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/beanstalkd:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/js:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-worker:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest || true
     - cd gigadb/app/tools/files-url-updater
     - $LOCAL_COMPOSE run --rm updater composer install
     - $LOCAL_COMPOSE up -d pg9_3
