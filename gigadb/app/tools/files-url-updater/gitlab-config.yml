@@ -60,6 +60,7 @@ t_urls_updater:
     - cp tests.acceptance.suite.yml.ci.example tests/acceptance.suite.yml
     - ls -lart tests/
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept build
-    - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run
+    - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/unit
+    - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/functional
   dependencies:
     - b_urls_updater

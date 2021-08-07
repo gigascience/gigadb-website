@@ -7,7 +7,7 @@ modules:
             user: 'gigadb'
             password: ''
         - WebDriver:
-            url: 'host.docker.internal:9170'
+            url: 'gigadb.test'
             window_size: 2000x3500
             host: 'host.docker.internal'
             port: 4444
