@@ -7,9 +7,9 @@ modules:
             user: 'gigadb'
             password: ''
         - WebDriver:
-            url: '172.17.0.1:9170'
+            url: 'docker:9170'
             window_size: 2000x3500
-            host: '172.17.0.1'
+            host: 'docker'
             port: 4444
             browser: chrome
             capabilities:
