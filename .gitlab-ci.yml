@@ -350,7 +350,7 @@ check_DAST:
   allow_failure: true
   when: manual
 
-build:
+.build:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -515,8 +515,8 @@ deploy:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T console ./yii identity/add-identity --username localadmin --email local-gigadb-admin@rijam.ml1.net --role admin
     # start the port 2375 for docker
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p $remote_private_ip:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
-  dependencies:
-    - build
+#  dependencies:
+#    - build
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
