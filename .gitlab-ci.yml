@@ -446,7 +446,7 @@ check_DAST:
     when: always
     expire_in: 1 week
 
-deploy:
+.deploy:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -529,6 +529,14 @@ deploy:
       - fuw/app/console/config/
     when: always
     expire_in: 1 week
+
+deploy_to_staging:
+  variables:
+    GIGADB_ENV: "staging"
+  extends: .deploy
+  environment:
+    name: "staging"
+    url: "https://fuw.rija.dev"
 
 teardown:
   variables:
