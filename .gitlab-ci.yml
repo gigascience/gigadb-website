@@ -191,9 +191,7 @@ test_run:
     # generate config for File upload wizard webapp
     - docker-compose run --rm fuw-config
     # Generate Yii migration scripts
-    - docker-compose up csv-to-migrations      
-    # build the nginx container
-    # - docker-compose build web
+    - docker-compose up csv-to-migrations
     # starting two webapps: gigadb website and File Upload Wizard Admin, then the web server
     - docker-compose up -d gigadb fuw
     - sleep 8
@@ -206,8 +204,6 @@ test_run:
     # Start web container
     - docker-compose up -d web
     - docker-compose exec -T web /usr/local/bin/enable_sites gigadb.dev.http fuw-backend.dev.http
-    # - docker-compose exec -T application ./protected/yiic generatefiletypes
-    # - docker-compose exec -T application ./protected/yiic generatefileformats
     # build the javascript app
     - docker-compose run --rm js
     # starting the Yii2 workers service and its dependent beanstalkd service after running required migrations
@@ -215,26 +211,15 @@ test_run:
     - docker-compose up -d fuw-worker gigadb-worker
     # starting the headless browser for acceptance testing
     - docker-compose up -d chrome
-    # - docker-compose top
-    # - docker network inspect rija-gigadb-website_web-tier
-    # - docker network inspect rija-gigadb-website_db-tier
-    # - docker-compose logs database
-    # - docker images
     - docker-compose ps
     - docker-compose run --rm test ping -c 5 database
     - docker-compose run --rm test ping -c 5 gigadb.dev
     - docker-compose exec -T console uname -a
-    # - docker-compose run test
     - chmod -R 777 $DATA_SAVE_PATH/fuw/incoming
     - chmod -R 777 $DATA_SAVE_PATH/fuw/repo
     - chmod -R 777 $DATA_SAVE_PATH/fuw/credentials
     - cd $APPLICATION
 #    - ./tests/all_and_coverage
-    # - docker-compose run --rm application ./protected/yiic migrate --interactive=0
-    # - docker-compose exec -T console /app/yii_test migrate --interactive=0
-    # - docker-compose exec -T console /app/yii migrate --interactive=0
-    # - docker-compose exec -T console /app/vendor/bin/codecept -vvv -c /app/common run -g metadata acceptance --fail-fast
-    # - echo $?
 
 include:
   - local: "ops/deployment/gitlab-deployment.yml"
