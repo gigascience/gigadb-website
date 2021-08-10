@@ -63,7 +63,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'upload_status',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->dropDownList($model,'upload_status',Dataset::$statusList,
+                            <?php echo $form->dropDownList($model,'upload_status',Dataset::$availableStatusList,
                                 array('class'=>'js-pub', 'disabled'=>$model->upload_status == 'Published')); ?>
                             <?php echo $form->error($model,'upload_status'); ?>
                         </div>
