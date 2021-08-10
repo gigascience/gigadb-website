@@ -219,7 +219,7 @@ test_run:
     - chmod -R 777 $DATA_SAVE_PATH/fuw/repo
     - chmod -R 777 $DATA_SAVE_PATH/fuw/credentials
     - cd $APPLICATION
-#    - ./tests/all_and_coverage
+    - ./tests/all_and_coverage
 
 include:
   - local: "ops/deployment/gitlab-deployment.yml"
@@ -236,7 +236,7 @@ check_coverage:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker-compose run --rm config
     - docker-compose run --rm gigadb
-#    - docker-compose run --rm test ./tests/coverage_check
+    - docker-compose run --rm test ./tests/coverage_check
   dependencies:
     - test_run
 
