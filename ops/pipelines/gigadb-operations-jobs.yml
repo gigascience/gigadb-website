@@ -20,9 +20,6 @@ teardown:
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml down -v
-  environment:
-    name: $DEPLOYMENT_ENV
-    url: $REMOTE_HOME_URL
   when: manual
   artifacts:
     untracked: true
