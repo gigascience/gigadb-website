@@ -111,7 +111,7 @@ top:
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
-  stage: operations
+  stage: staging
   script:
     # appending staging variables at the end of the .env and .secrets
     - env | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
@@ -125,11 +125,11 @@ top:
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem || true"
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
-    # FUW specific steps
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml top
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
+    action: prepare
   when: manual
 
 logs:
