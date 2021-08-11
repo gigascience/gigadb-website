@@ -1,10 +1,10 @@
 stages:
   - build for test
   - test
-  - conformance & security
+  - conformance and security
   - production build
-  - staging
-  - live
+  - staging deploy
+  - live deploy
   - operations
 image: docker:stable
 variables:
@@ -83,24 +83,24 @@ before_script:
   - pip install docker-compose~=1.23.0
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
 
-s_deploy:
+sd_gigadb:
   variables:
     GIGADB_ENV: "staging"
   extends: .deploy
-  stage: staging
+  stage: staging deploy
   environment:
     name: "staging"
     url: "https://fuw.rija.dev"
-    on_stop: s_teardown
+    on_stop: sd_teardown
 
-l_deploy:
+ld_gigadb:
   variables:
     GIGADB_ENV: "live"
   extends: .deploy
-  stage: live
+  stage: live deploy
   environment:
     name: "live"
     deployment_tier: production
     url: "https://gigadb.rija.dev"
   dependencies:
-    - s_deploy
+    - sd_gigadb

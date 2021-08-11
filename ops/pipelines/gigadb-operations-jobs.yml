@@ -19,11 +19,11 @@
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
 
-s_top:
+sd_top:
   variables:
     GIGADB_ENV: staging
   extends: .remote_compose
-  stage: staging
+  stage: staging deploy
   script:
     - *configure-docker-compose
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml top
@@ -32,11 +32,11 @@ s_top:
     action: prepare
   when: manual
 
-l_top:
+ld_top:
   variables:
     GIGADB_ENV: live
   extends: .remote_compose
-  stage: live
+  stage: live deploy
   script:
     - *configure-docker-compose
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml top
@@ -58,7 +58,7 @@ l_top:
     when: always
     expire_in: 1 week
 
-s_teardown:
+sd_teardown:
   variables:
     GIGADB_ENV: "staging"
   extends: .teardown
