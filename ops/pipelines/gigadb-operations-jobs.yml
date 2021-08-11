@@ -32,6 +32,7 @@ teardown_staging:
   extends: .teardown
   environment:
     name: staging
+    action: stop
 
 stop:
   variables:
