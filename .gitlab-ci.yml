@@ -91,7 +91,7 @@ s_deploy:
   environment:
     name: "staging"
     url: "https://fuw.rija.dev"
-    on_stop: teardown_staging
+    on_stop: s_teardown
 
 l_deploy:
   variables:
@@ -103,4 +103,4 @@ l_deploy:
     deployment_tier: production
     url: "https://gigadb.rija.dev"
   dependencies:
-    - deploy_to_staging
+    - s_deploy

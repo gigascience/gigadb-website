@@ -19,7 +19,7 @@
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
 
-staging_top:
+s_top:
   variables:
     GIGADB_ENV: staging
   extends: .remote_compose
@@ -32,7 +32,7 @@ staging_top:
     action: prepare
   when: manual
 
-live_top:
+l_top:
   variables:
     GIGADB_ENV: live
   extends: .remote_compose
@@ -58,7 +58,7 @@ live_top:
     when: always
     expire_in: 1 week
 
-teardown_staging:
+s_teardown:
   variables:
     GIGADB_ENV: "staging"
   extends: .teardown
