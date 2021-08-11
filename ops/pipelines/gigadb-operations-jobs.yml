@@ -62,7 +62,7 @@ sd_teardown:
   variables:
     GIGADB_ENV: "staging"
   extends: .teardown
-  stage: staging
+  stage: staging deploy
   environment:
     name: staging
     action: stop
