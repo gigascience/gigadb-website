@@ -105,7 +105,7 @@ start:
     when: always
     expire_in: 1 week
 
-top:
+.top:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -126,13 +126,28 @@ top:
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml top
+
+staging_processes:
+  variables:
+    GIGADB_ENV: staging
+  stage: staging
+  extends: .top
   environment:
-    name: $DEPLOYMENT_ENV
-    url: $REMOTE_HOME_URL
+    name: staging
     action: prepare
   when: manual
 
-logs:
+live_processes:
+  variables:
+    GIGADB_ENV: live
+  stage: live
+  extends: .top
+  environment:
+    name: live
+    action: prepare
+  when: manual
+
+.logs: # not the right way to get logs
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -212,7 +227,7 @@ logs:
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T console ./yii smoke-test/check-tusd-endpoint
   when: manual
 
-check_assets:
+.check_assets:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
