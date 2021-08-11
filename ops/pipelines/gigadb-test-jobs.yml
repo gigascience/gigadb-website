@@ -1,0 +1,75 @@
+test_run:
+  stage: test
+  artifacts:
+    paths:
+      - tmp/
+      - protected/runtime/coverage/
+      - protected/runtime/application.log
+      - protected/runtime/phpunit-coverage.txt
+      - protected/runtime/clover.xml
+      - protected/config/main.php
+      - protected/config/test.php
+      - fuw/app/backend/runtime/
+      - fuw/app/frontend/runtime/
+      - fuw/app/console/runtime/
+      - fuw/app/common/tests/_output
+      - fuw/app/common/config/params-local.php
+      - gigadb/app/tools/files-url-updater/config/params.php
+      - .env
+      - composer.lock
+      - containers-data
+    when: always
+    expire_in: 1 week
+  script:
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/beanstalkd:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/js:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-worker:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest || true
+    - env
+    # generate config and css for gigadb webapp
+    - docker-compose run --rm config
+    - docker-compose run --rm less
+    # generate config for File upload wizard webapp
+    - docker-compose run --rm fuw-config
+    # Generate Yii migration scripts
+    - docker-compose up csv-to-migrations
+    # starting two webapps: gigadb website and File Upload Wizard Admin, then the web server
+    - docker-compose up -d gigadb fuw
+    - sleep 8
+    # Setup dev and test db
+    - ./ops/scripts/setup_testdb.sh
+    - ./ops/scripts/setup_devdb.sh dev
+    # set up reference data feeds
+    - docker-compose run --rm test ./protected/yiic generatefileformats
+    - docker-compose run --rm test ./protected/yiic generatefiletypes
+    # Start web container
+    - docker-compose up -d web
+    - docker-compose exec -T web /usr/local/bin/enable_sites gigadb.dev.http fuw-backend.dev.http
+    # build the javascript app
+    - docker-compose run --rm js
+    # starting the Yii2 workers service and its dependent beanstalkd service after running required migrations
+    - docker-compose exec -T console /app/yii migrate --interactive=0
+    - docker-compose up -d fuw-worker gigadb-worker
+    # starting the headless browser for acceptance testing
+    - docker-compose up -d chrome
+    - docker-compose ps
+    - docker-compose run --rm test ping -c 5 database
+    - docker-compose run --rm test ping -c 5 gigadb.dev
+    - docker-compose exec -T console uname -a
+    - chmod -R 777 $DATA_SAVE_PATH/fuw/incoming
+    - chmod -R 777 $DATA_SAVE_PATH/fuw/repo
+    - chmod -R 777 $DATA_SAVE_PATH/fuw/credentials
+    - cd $APPLICATION
+    - ./tests/all_and_coverage
+

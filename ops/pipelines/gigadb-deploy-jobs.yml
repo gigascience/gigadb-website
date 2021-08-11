@@ -69,8 +69,6 @@
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
   when: manual
-  # only:
-  #   - develop
   artifacts:
     untracked: true
     paths:

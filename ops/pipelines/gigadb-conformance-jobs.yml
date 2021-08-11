@@ -1,0 +1,54 @@
+
+
+check_PSR2:
+  stage: conformance
+  artifacts:
+    paths:
+      - protected/runtime/phpcs-psr2-source.txt
+      - protected/runtime/phpcs-psr2-summary.txt
+      - protected/runtime/phpcs-psr2-full.txt
+    when: always
+    expire_in: 3 months
+  script:
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker-compose run --rm config
+    - docker-compose run --rm gigadb
+    - docker-compose run --rm test ops/scripts/check_codestyle.sh
+  allow_failure: true
+  when: manual
+
+check_PHPDoc:
+  stage: conformance
+  artifacts:
+    paths:
+      - protected/runtime/phpcs-phpdoc-source.txt
+      - protected/runtime/phpcs-phpdoc-summary.txt
+      - protected/runtime/phpcs-phpdoc-full.txt
+    when: always
+    expire_in: 3 months
+  script:
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker-compose run --rm config
+    - docker-compose run --rm gigadb
+    - docker-compose run --rm test ops/scripts/check_phpdoc.sh
+  allow_failure: true
+  when: manual
+
+
+check_coverage:
+  stage: conformance
+  cache:
+    key: coverage-cache
+    paths:
+      - previous_coverage_level.txt
+  script:
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker-compose run --rm config
+    - docker-compose run --rm gigadb
+    - docker-compose run --rm test ./tests/coverage_check
+  dependencies:
+    - test_run
+
