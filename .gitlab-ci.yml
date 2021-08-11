@@ -52,10 +52,10 @@ variables:
 
 
 include:
-  - local: "ops/pipelines/gigadb-build-jobs.yml"
-  - local: "ops/pipelines/gigadb-test-jobs.yml"
+#  - local: "ops/pipelines/gigadb-build-jobs.yml"
+#  - local: "ops/pipelines/gigadb-test-jobs.yml"
   - local: "ops/pipelines/gigadb-security-jobs.yml"
-  - local: "ops/pipelines/gigadb-conformance-jobs.yml"
+#  - local: "ops/pipelines/gigadb-conformance-jobs.yml"
   - local: "ops/pipelines/gigadb-deploy-jobs.yml"
   - local: "ops/pipelines/gigadb-operations-jobs.yml"
   - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
