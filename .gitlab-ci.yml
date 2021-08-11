@@ -93,6 +93,7 @@ deploy_to_staging:
   environment:
     name: "staging"
     url: "https://fuw.rija.dev"
+    on_stop: teardown
 
 deploy_to_live:
   variables:
