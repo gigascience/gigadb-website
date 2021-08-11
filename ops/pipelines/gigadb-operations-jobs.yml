@@ -1,5 +1,5 @@
 
-teardown:
+.teardown:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -25,6 +25,13 @@ teardown:
     untracked: true
     when: always
     expire_in: 1 week
+
+teardown_staging:
+  variables:
+    GIGADB_ENV: "staging"
+  extends: .teardown
+  environment:
+    name: staging
 
 stop:
   variables:
