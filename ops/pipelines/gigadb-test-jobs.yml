@@ -1,4 +1,4 @@
-test_run:
+t_gigadb:
   stage: test
   artifacts:
     paths:

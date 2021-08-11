@@ -1,7 +1,41 @@
+check_SAST:
+  stage: conformance & security
+  script:
+    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
+    - docker run
+      --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}"
+      --volume "$PWD:/code"
+      --volume /var/run/docker.sock:/var/run/docker.sock
+      "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
+  artifacts:
+    paths: [gl-sast-report.json]
+  allow_failure: true
+  when: manual
+
+# job (manual, with failure allowed) for running Dymamic Application Security Testing
+# See: https://docs.gitlab.com/ee/ci/examples/dast.html
+check_DAST:
+  stage: conformance & security
+  image: registry.gitlab.com/gitlab-org/security-products/zaproxy
+  variables:
+    website: "https://gigadb-staging.pommetab.com/"
+  before_script:
+    - echo "About to run DAST"
+  script:
+    - mkdir /zap/wrk/
+    - /zap/zap-baseline.py -J gl-dast-report.json -t $website || true
+    - cp /zap/wrk/gl-dast-report.json .
+  after_script:
+    - echo "Finished running DAST"
+  artifacts:
+    reports:
+      dast: gl-dast-report.json
+  allow_failure: true
+  when: manual
 
 
 check_PSR2:
-  stage: conformance
+  stage: conformance & security
   artifacts:
     paths:
       - protected/runtime/phpcs-psr2-source.txt
@@ -19,7 +53,7 @@ check_PSR2:
   when: manual
 
 check_PHPDoc:
-  stage: conformance
+  stage: conformance & security
   artifacts:
     paths:
       - protected/runtime/phpcs-phpdoc-source.txt
@@ -38,7 +72,7 @@ check_PHPDoc:
 
 
 check_coverage:
-  stage: conformance
+  stage: conformance & security
   cache:
     key: coverage-cache
     paths:
@@ -49,6 +83,5 @@ check_coverage:
     - docker-compose run --rm config
     - docker-compose run --rm gigadb
     - docker-compose run --rm test ./tests/coverage_check
-  dependencies:
-    - test_run
+
 

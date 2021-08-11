@@ -1,9 +1,8 @@
 stages:
   - build for test
   - test
-  - security
-  - conformance
-  - build for production
+  - conformance & security
+  - production build
   - staging
   - live
   - operations
@@ -52,10 +51,9 @@ variables:
 
 
 include:
-#  - local: "ops/pipelines/gigadb-build-jobs.yml"
-#  - local: "ops/pipelines/gigadb-test-jobs.yml"
-  - local: "ops/pipelines/gigadb-security-jobs.yml"
-#  - local: "ops/pipelines/gigadb-conformance-jobs.yml"
+  - local: "ops/pipelines/gigadb-build-jobs.yml"
+  - local: "ops/pipelines/gigadb-test-jobs.yml"
+  - local: "ops/pipelines/gigadb-conformance-security-jobs.yml"
   - local: "ops/pipelines/gigadb-deploy-jobs.yml"
   - local: "ops/pipelines/gigadb-operations-jobs.yml"
   - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
@@ -85,7 +83,7 @@ before_script:
   - pip install docker-compose~=1.23.0
   - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
 
-deploy_to_staging:
+s_deploy:
   variables:
     GIGADB_ENV: "staging"
   extends: .deploy
@@ -95,7 +93,7 @@ deploy_to_staging:
     url: "https://fuw.rija.dev"
     on_stop: teardown_staging
 
-deploy_to_live:
+l_deploy:
   variables:
     GIGADB_ENV: "live"
   extends: .deploy

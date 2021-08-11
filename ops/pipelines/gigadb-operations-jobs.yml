@@ -62,6 +62,7 @@ teardown_staging:
   variables:
     GIGADB_ENV: "staging"
   extends: .teardown
+  stage: staging
   environment:
     name: staging
     action: stop

@@ -1,4 +1,4 @@
-test_build:
+t_build:
   stage: build for test
   script:
     - echo "Building app"
@@ -66,14 +66,14 @@ test_build:
     expire_in: 1 week
 
 
-build:
+p_build:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
     CSV_DIR: "prod_like"
-  stage: build for production
+  stage: production build
   allow_failure: false
   script:
     # appending remote variables at the end of the .env and .secrets
@@ -155,8 +155,6 @@ build:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:latest
 
   when: manual
-  # only:
-  #   - develop
   artifacts:
     untracked: true
     when: always
