@@ -18,6 +18,7 @@ services:
     volumes:
       # nginx config
       - "${APPLICATION}/ops/configuration/nginx-conf/sites/${GIGADB_ENV}:/etc/nginx/sites-available"
+      - "${APPLICATION}/ops/configuration/nginx-conf/locations/:/etc/nginx/locations"
       # Gigadb webapp
       - ${APPLICATION}/assets:/var/www/assets
       - ${APPLICATION}/images:/var/www/images
