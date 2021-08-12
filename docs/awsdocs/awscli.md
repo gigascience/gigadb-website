@@ -51,6 +51,6 @@ secret_key     ****************EVDq shared-credentials-file
 If an error message is displayed on your AWS management console, it can be 
 decoded as follows:
 ```
-$ aws sts decode-authorization-message --encoded-message (encoded error message) --query DecodedMessage --output text | jq '.'
+$ aws sts --profile Username decode-authorization-message --encoded-message (encoded error message) --query DecodedMessage --output text | jq '.'
 
 ```
