@@ -1,7 +1,8 @@
 # AWS permissions policy for ec2
 
 Launch instances but users can only start, stop and terminate instances they 
-own.
+own. Also, users are restricted to using EC2 in Hong Kong region and can only
+launch t3.nano and t3.micro instance types.
 
 ```
 {
@@ -22,13 +23,28 @@ own.
                 "ec2:CreateSecurityGroup",
                 "ec2:AuthorizeSecurityGroupIngress",
                 "ec2:CreateKeyPair",
-                "ec2:DescribeInstanceStatus",
-                "ec2:RunInstances"
+                "ec2:DescribeInstanceStatus"
             ],
-            "Resource": "*"
+            "Resource": "*",
         },
         {
             "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": "ec2:RunInstances",
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:Region": "ap-east-1"
+                },
+                "ForAllValues:StringLike": {
+                    "ec2:InstanceType": [
+                        "t3.micro"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "VisualEditor2",
             "Effect": "Allow",
             "Action": [
                 "ec2:StartInstances",
