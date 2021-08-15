@@ -4,11 +4,11 @@ Launch instances but users can only start, stop and terminate instances they
 own. Users are restricted to using EC2 in Hong Kong region and can only
 launch t3.nano and t3.micro instance types. Instances must have an Owner tag 
 with a value that is your AWS username. Also, a Name tag is required. This
-value could have a syntax such `ec2-ap-east-1-staging-gigadb` where:
-* ec2 is the AWS resource
-* ap-east-1 is the region that the EC2 instance is deployed in
-* staging is the environment
-* gigadb is the name of the deployed application
+value could have a syntax such `ec2-ape1-staging-gigadb` where:
+* ec2     => AWS resource
+* ape1    => Hong Kong ap-east-1 region of the EC2 instance
+* staging => environment
+* gigadb  => deployed application name
 
 ```
 {
