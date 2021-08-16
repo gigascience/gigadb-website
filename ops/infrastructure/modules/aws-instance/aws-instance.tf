@@ -56,7 +56,6 @@ resource "aws_security_group" "docker_host_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
    tags = {
-     Owner = "Rija",
      Environment = var.deployment_target
    }
 }
@@ -71,7 +70,6 @@ resource "aws_instance" "docker_host" {
   tags = {
     Name = "gigadb_${var.deployment_target}",
     Hosting = "ec2-ape1-t2m-centos",
-    Owner = "Rija",
     Environment = var.deployment_target
   }
 

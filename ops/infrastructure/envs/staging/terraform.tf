@@ -11,6 +11,11 @@ terraform {
 
 provider "aws" {
   region     = "ap-east-1"
+  default_tags {
+      tags = {
+        Owner = "Rija"
+      }
+    }
 }
 
 
