@@ -1,7 +1,11 @@
+data "aws_vpc" "default" {
+  default = true
+}
+
 resource "aws_security_group" "docker_host_sg" {
   name        = "docker_host_sg"
   description = "Allow connection to docker host for ${var.deployment_target}"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.default.id
 
   ingress {
     from_port   = 80
@@ -46,23 +50,29 @@ resource "aws_security_group" "docker_host_sg" {
   }
 
   egress {
-  from_port   = 0
-  to_port     = 0
-  protocol    = "-1"
-  cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
+   tags = {
+     Owner = "Rija",
+     Environment = var.deployment_target
+   }
 }
 
 
 resource "aws_instance" "docker_host" {
-  ami = "ami-8e0205f2"
-  instance_type = "t2.micro"
+  ami = "ami-68e59c19"
+  instance_type = "t3.micro"
   vpc_security_group_ids = [aws_security_group.docker_host_sg.id]
-  key_name = "aws-centos7-keys"
+  key_name = "aws-hk-centos7-keys"
 
   tags = {
     Name = "gigadb_${var.deployment_target}",
-    Hosting = "ec2-as1-t2m-centos"
+    Hosting = "ec2-ape1-t2m-centos",
+    Owner = "Rija",
+    Environment = var.deployment_target
   }
 
   root_block_device {
