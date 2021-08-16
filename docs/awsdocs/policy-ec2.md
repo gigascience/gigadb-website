@@ -1,7 +1,9 @@
 # AWS permissions policy for ec2
 
-Launch instances but users can only start, stop and terminate instances they 
-own. Users are restricted to using EC2 in Hong Kong region and can only
+Allows instances to be launched but users can only start, stop and terminate
+instances they own.
+
+Users are restricted to using EC2 instances in Hong Kong region and can only
 launch t3.nano and t3.micro instance types. Instances must have an Owner tag 
 with a value that is your AWS username. Also, a Name tag is required. This
 value could have a syntax such `ec2-ape1-staging-gigadb` where:
@@ -10,18 +12,35 @@ value could have a syntax such `ec2-ape1-staging-gigadb` where:
 * staging => environment
 * gigadb  => deployed application name
 
+A single Security Token Service permission is included to allow decoding of 
+encoded messages which are displayed when users encounter permission errors 
+when using the AWS management console.
+
+## Policy Name: `GigadbEC2Access`
 ```
 {
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "VisualEditor0",
+            "Sid": "NonResourceBasedPermissions",
             "Effect": "Allow",
             "Action": [
                 "ec2:Describe*",
-                "ec2:AuthorizeSecurityGroupIngress",
+                "ec2:AssociateAddress",
+                "ec2:DisassociateAddress",
+                "ec2:ImportKeyPair",
                 "ec2:CreateKeyPair",
-                "ec2:CreateSecurityGroup"
+                "ec2:CreateSecurityGroup",
+                "sts:DecodeAuthorizationMessage"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "SecurityGroupActions",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:AuthorizeSecurityGroupIngress",
+                "ec2:DeleteSecurityGroup"
             ],
             "Resource": "*"
         },
