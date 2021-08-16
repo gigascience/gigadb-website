@@ -57,7 +57,7 @@ resource "aws_security_group" "docker_host_sg" {
 resource "aws_instance" "docker_host" {
   ami = "ami-8e0205f2"
   instance_type = "t2.micro"
-  vpc_security_group_ids = ["${aws_security_group.docker_host_sg.id}"]
+  vpc_security_group_ids = [aws_security_group.docker_host_sg.id]
   key_name = "aws-centos7-keys"
 
   tags = {
@@ -73,7 +73,7 @@ resource "aws_instance" "docker_host" {
 data "aws_eip" "docker_host_eip" {
   filter {
     name   = "tag:Name"
-    values = ["${var.eip_tag_name}"]
+    values = [var.eip_tag_name]
   }
 }
 

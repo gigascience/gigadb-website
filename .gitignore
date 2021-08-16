@@ -75,6 +75,8 @@ terraform.tfstate*
 output
 *.retry
 vault
+staging_vault
+live_vault
 js/fuw-*
 
 # docs
