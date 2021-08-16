@@ -63,7 +63,7 @@
 
 - name: Copy the CA pem to GITLAB CI environment variable (first time)
   uri:
-    url: "{{ gitlab_url }}/variables?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables"
     method: POST
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -71,6 +71,7 @@
     body:
       key: "{{ gigadb_environment }}_tlsauth_ca"
       value: "{{ ca_pem['content'] | b64decode }}"
+      environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
       - 400
@@ -91,7 +92,7 @@
 
 - name: Copy the cert pem to GITLAB CI environment variable
   uri:
-    url: "{{ gitlab_url }}/variables?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables"
     method: POST
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -100,6 +101,7 @@
     body:
       key: "{{ gigadb_environment }}_tlsauth_cert"
       value: "{{ cert_pem['content'] | b64decode }}"
+      environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
       - 400
@@ -120,7 +122,7 @@
 
 - name: Copy the key pem to GITLAB CI environment variable
   uri:
-    url: "{{ gitlab_url }}/variables?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables"
     method: POST
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -129,6 +131,7 @@
     body:
       key: "{{ gigadb_environment }}_tlsauth_key"
       value: "{{ key_pem['content'] | b64decode }}"
+      environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
       - 400
@@ -149,7 +152,7 @@
 
 - name: copy the private ip address to GITLAB CI environment variable (first time)
   uri:
-    url: "{{ gitlab_url }}/variables?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables"
     method: POST
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -158,6 +161,7 @@
     body:
       key: "remote_private_ip"
       value: "{{ ansible_eth0.ipv4.address }}"
+      environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
       - 400
@@ -178,7 +182,7 @@
 
 - name: copy the public ip address to GITLAB CI environment variable (first time)
   uri:
-    url: "{{ gitlab_url }}/variables?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables"
     method: POST
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -187,6 +191,7 @@
     body:
       key: "remote_public_ip"
       value: "{{ inventory_hostname }}"
+      environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
       - 400
