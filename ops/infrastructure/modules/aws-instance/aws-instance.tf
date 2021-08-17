@@ -93,3 +93,7 @@ resource "aws_eip_association" "docker_host_eip_assoc" {
   instance_id   = aws_instance.docker_host.id
   allocation_id = data.aws_eip.docker_host_eip.id
 }
+
+output "instance_ip_addr" {
+  value = aws_instance.docker_host.private_ip
+}

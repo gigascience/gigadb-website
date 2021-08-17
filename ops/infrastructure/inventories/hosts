@@ -1,63 +1,28 @@
-[name_gigadb_testing]
-
-# add IP address here for production server
-
-[name_gigadb_testing:vars]
-
-ansible_ssh_private_key_file = "{{ vault_testing_private_key_file_location }}"
-ansible_user = "centos"
-ansible_become = "true"
-database_bootstrap = "../../../../sql/production_like.pgdmp"
-pg_user = "{{ vault_testing_pg_user }}"
-pg_password = "{{ vault_testing_pg_password }}"
-pg_database = "{{ vault_testing_pg_database }}"
-gitlab_private_token = "{{ lookup('file','~/.gitlab_private_token') }}"
-gigadb_environment = testing
-
-fuw_db_user = "{{ vault_testing_fuw_db_user }}"
-fuw_db_password = "{{ vault_testing_fuw_db_password }}"
-fuw_db_database = "{{ vault_testing_fuw_db_database }}"
-
-[name_gigadb_staging]
+[name_gigadb_server_testing]
 
 # do not add any IP address here as it is dynamically managed using terraform-inventory
 
-[name_gigadb_staging:vars]
+[name_gigadb_server_staging]
 
-ansible_ssh_private_key_file = "{{ vault_staging_private_key_file_location }}"
-ansible_user = "centos"
-ansible_become = "true"
-database_bootstrap = "../../../../sql/production_like.pgdmp"
-pg_user = "{{ vault_staging_pg_user }}"
-pg_password = "{{ vault_staging_pg_password }}"
-pg_database = "{{ vault_staging_pg_database }}"
-gitlab_private_token = "{{ lookup('file','~/.gitlab_private_token') }}"
-gigadb_environment = staging
+# do not add any IP address here as it is dynamically managed using terraform-inventory
 
-fuw_db_user = "{{ vault_staging_fuw_db_user }}"
-fuw_db_password = "{{ vault_staging_fuw_db_password }}"
-fuw_db_database = "{{ vault_staging_fuw_db_database }}"
+[name_gigadb_server_production]
 
-[name_gigadb_production]
-
-# add IP address here for production server
-
-[name_gigadb_production:vars]
-
-ansible_ssh_private_key_file = "{{ vault_staging_private_key_file_location }}"
-ansible_user = "centos"
-ansible_become = "true"
-database_bootstrap = "../../../../sql/production_like.pgdmp"
-pg_user = "{{ vault_staging_pg_user }}"
-pg_password = "{{ vault_staging_pg_password }}"
-pg_database = "{{ vault_staging_pg_database }}"
-gitlab_private_token = "{{ lookup('file','~/.gitlab_private_token') }}"
-gigadb_environment = staging
-
-fuw_db_user = "{{ vault_staging_fuw_db_user }}"
-fuw_db_password = "{{ vault_staging_fuw_db_password }}"
-fuw_db_database = "{{ vault_staging_fuw_db_database }}"
+# do not add any IP address here as it is dynamically managed using terraform-inventory
 
 [all:vars]
 
 gitlab_url = {{ vault_gitlab_url }}
+ansible_ssh_private_key_file = "{{ vault_private_key_file_location }}"
+ansible_user = "centos"
+ansible_become = "true"
+database_bootstrap = "../../../../sql/production_like.pgdmp"
+pg_user = "{{ vault_pg_user }}"
+pg_password = "{{ vault_pg_password }}"
+pg_database = "{{ vault_pg_database }}"
+gitlab_private_token = "{{ lookup('file','~/.gitlab_private_token') }}"
+gigadb_environment = staging
+
+fuw_db_user = "{{ vault_fuw_db_user }}"
+fuw_db_password = "{{ vault_fuw_db_password }}"
+fuw_db_database = "{{ vault_fuw_db_database }}"

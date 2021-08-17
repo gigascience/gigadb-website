@@ -2,7 +2,7 @@
 # build a Centos server running a secure Docker CE install
 
 - name: Setup Fail2ban
-  hosts: "name_gigadb_staging"
+  hosts: "name_gigadb_server_staging"
 
   tasks:
     - debug:
@@ -11,12 +11,16 @@
     - debug:
         msg: "path to ssh keys : {{ ansible_ssh_private_key_file }}"
 
+  tasks:
+    - debug:
+        msg: "remote private ip : {{ ec2_private_ip }}"
+
   roles:
     - role: ../../roles/fail2ban
     - role: ../../roles/jail-ssh
 
 - name: Setup Docker CE
-  hosts: name_gigadb_staging
+  hosts: name_gigadb_server_staging
 
   tasks:
     - debug:

@@ -37,3 +37,7 @@ module "ec2" {
   deployment_target = var.deployment_target
   eip_tag_name = "eip-ape1-${var.deployment_target}-gigadb"
 }
+
+output "ec2_private_ip" {
+  value = module.ec2.instance_ip_addr
+}

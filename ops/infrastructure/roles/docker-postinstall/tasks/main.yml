@@ -160,7 +160,7 @@
     body_format: json
     body:
       key: "remote_private_ip"
-      value: "{{ ansible_eth0.ipv4.address }}"
+      value: "{{ ec2_private_ip }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
@@ -175,7 +175,7 @@
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
     body_format: json
     body:
-      value: "{{ ansible_eth0.ipv4.address }}"
+      value: "{{ ec2_private_ip }}"
     status_code: 200
   register: private_ip_put_outcome
   when: private_ip_post_outcome.status == 400
