@@ -8,15 +8,15 @@ set -u
 source "./.env"
 
 # Path to the certs
-FULLCHAIN_PEM=/etc/letsencrypt/live/$REMOTE_HOSTNAME/fullchain.pem
-PRIVATE_PEM=/etc/letsencrypt/live/$REMOTE_HOSTNAME/privkey.pem
-CHAIN_PEM=/etc/letsencrypt/live/$REMOTE_HOSTNAME/chain.pem
+FULLCHAIN_PEM=/etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/fullchain.pem
+PRIVATE_PEM=/etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/privkey.pem
+CHAIN_PEM=/etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/chain.pem
 
 # Backup the fullchain cert to GITLAB CI environment variable and get the http code
 http_code_fullchain=$(curl --include --show-error --silent --output /dev/null --write-out "%{http_code}" \
     --request POST --url "$PROJECT_VARIABLES_URL" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
-    --form "environment_scope=${GIGADB_ENV}" \
+    --form "environment_scope=$GIGADB_ENV" \
     --form "key=${GIGADB_ENV}_tlsauth_fullchain" \
     --form "value=$(cat $FULLCHAIN_PEM)"
     )
@@ -26,7 +26,7 @@ if [[ $http_code_fullchain -eq 400 ]];then
   curl --include --include --show-error --silent --output /dev/null  \
     --request PUT --url "$PROJECT_VARIABLES_URL/${GIGADB_ENV}_tlsauth_fullchain" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
-    --form "environment_scope=${GIGADB_ENV}" \
+    --form "environment_scope=$GIGADB_ENV" \
     --form "value=$(cat $FULLCHAIN_PEM)"
 fi
 
@@ -34,7 +34,7 @@ fi
 http_code_private=$(curl --include --show-error --silent --output /dev/null --write-out "%{http_code}" \
     --request POST --url "$PROJECT_VARIABLES_URL" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
-    --form "environment_scope=${GIGADB_ENV}" \
+    --form "environment_scope=$GIGADB_ENV" \
     --form "key=${GIGADB_ENV}_tlsauth_private" \
     --form "value=$(cat $PRIVATE_PEM)"
     )
@@ -44,7 +44,7 @@ if [[ $http_code_private -eq 400 ]];then
   curl --include --show-error --silent --output /dev/null  \
     --request PUT --url "$PROJECT_VARIABLES_URL/${GIGADB_ENV}_tlsauth_private" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
-    --form "environment_scope=${GIGADB_ENV}" \
+    --form "environment_scope=$GIGADB_ENV" \
     --form "value=$(cat $PRIVATE_PEM)"
 fi
 
@@ -52,7 +52,7 @@ fi
 http_code_chain=$(curl --include --show-error --silent --output /dev/null --write-out "%{http_code}" \
     --request POST --url "$PROJECT_VARIABLES_URL" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
-    --form "environment_scope=${GIGADB_ENV}" \
+    --form "environment_scope=$GIGADB_ENV" \
     --form "key=${GIGADB_ENV}_tlsauth_chain" \
     --form "value=$(cat $CHAIN_PEM)"
     )
@@ -62,7 +62,7 @@ if [[ $http_code_chain -eq 400 ]];then
   curl --include --show-error --silent --output /dev/null  \
     --request PUT --url "$PROJECT_VARIABLES_URL/${GIGADB_ENV}_tlsauth_chain" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
-    --form "environment_scope=${GIGADB_ENV}" \
+    --form "environment_scope=$GIGADB_ENV" \
     --form "value=$(cat $CHAIN_PEM)"
 fi
 
@@ -74,7 +74,7 @@ else
 fi
 
 echo "Checking whether the certificate exists"
-$DOCKER_COMPOSE exec -T web test -f /etc/letsencrypt/live/$REMOTE_HOSTNAME/fullchain.pem
+$DOCKER_COMPOSE exec -T web test -f /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/fullchain.pem
 
 if [[ $? -eq 0 ]];then
 	echo "Renewing the certificate for $REMOTE_HOSTNAME"
