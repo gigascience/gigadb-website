@@ -77,7 +77,7 @@ resource "aws_instance" "docker_host" {
   }
 
   volume_tags = {
-    Owner = "Rija"
+    Owner = var.owner
     Name = "gigadb_server_root_device"
   }
 }

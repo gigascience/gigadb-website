@@ -33,6 +33,7 @@ provider "aws" {
 module "ec2" {
   source = "../../modules/aws-instance"
 
+  owner = data.external.callerUserName.result.userName
   deployment_target = var.deployment_target
   eip_tag_name = "eip-ape1-${var.deployment_target}-gigadb"
 }
