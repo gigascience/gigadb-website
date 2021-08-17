@@ -56,7 +56,7 @@ resource "aws_security_group" "docker_host_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
    tags = {
-     Environment = var.deployment_target
+     Name = var.deployment_target
    }
 }
 
@@ -68,13 +68,17 @@ resource "aws_instance" "docker_host" {
   key_name = "aws-hk-centos7-keys"
 
   tags = {
-    Name = "gigadb_${var.deployment_target}",
-    Hosting = "ec2-ape1-t2m-centos",
-    Environment = var.deployment_target
+    Name = "gigadb_server_${var.deployment_target}",
+    System = "t3_micro-centos7",
   }
 
   root_block_device {
     delete_on_termination = "true"
+  }
+
+  volume_tags = {
+    Owner = "Rija"
+    Name = "gigadb_server_root_device"
   }
 }
 

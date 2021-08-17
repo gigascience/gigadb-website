@@ -4,18 +4,29 @@ variable "deployment_target" {
   default = "staging"
 }
 
+
+
 terraform {
     backend "http" {
     }
+}
+
+
+
+data "external" "callerUserName" {
+  program = ["${path.module}/getIAMUserNameToJSON.sh"]
 }
 
 provider "aws" {
   region     = "ap-east-1"
   default_tags {
       tags = {
-        Owner = "Rija"
+        Environment = var.deployment_target,
+        Owner = data.external.callerUserName.result.userName
       }
     }
+
+
 }
 
 
