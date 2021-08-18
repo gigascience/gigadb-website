@@ -3,7 +3,7 @@ data "aws_vpc" "default" {
 }
 
 resource "aws_security_group" "docker_host_sg" {
-  name        = "docker_host_sg"
+  name        = "docker_host_sg_${var.deployment_target}"
   description = "Allow connection to docker host for ${var.deployment_target}"
   vpc_id      = data.aws_vpc.default.id
 
@@ -78,7 +78,8 @@ resource "aws_instance" "docker_host" {
 
   volume_tags = {
     Owner = var.owner
-    Name = "gigadb_server_root_device"
+    Name = "gigadb_server_volume_${var.deployment_target}"
+    Environment = var.deployment_target
   }
 }
 
