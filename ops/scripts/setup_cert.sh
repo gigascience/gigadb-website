@@ -20,7 +20,9 @@ else
 fi
 
 echo "Checking whether the certificate exists"
-$DOCKER_COMPOSE exec -T web test -f /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/fullchain.pem
+$DOCKER_COMPOSE exec -T web test -f /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/fullchain.pem && \
+$DOCKER_COMPOSE exec -T web test -f /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/privkey.pem && \
+$DOCKER_COMPOSE exec -T web test -f /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/chain.pem
 
 if [[ $? -eq 0 ]];then
 	echo "Renewing the certificate for $REMOTE_HOSTNAME"
