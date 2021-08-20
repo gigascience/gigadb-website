@@ -66,7 +66,7 @@ b_gigadb:
     expire_in: 1 week
 
 
-.pb_gigadb:
+pb_gigadb:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -80,6 +80,7 @@ b_gigadb:
     - env > full_env.txt
     - env | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
     - env | grep -iE "^(staging_|remote_)" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
+    - env | grep -iE "gitlab_private_token">> $APPLICATION/.secrets
     # pulling the CI build of the application from registry and configure it for staging for the purpose of building production containers
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
