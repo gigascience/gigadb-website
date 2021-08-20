@@ -4,11 +4,20 @@ set -e
 
 source ../../../../.env
 
+if [ -f .init_env_vars ];then
+  source .init_env_vars
+fi
+
 while [[ $# -gt 0 ]]; do
     case "$1" in
     --project)
         has_project=true
         gitlab_project=$2
+        shift
+        ;;
+    --ssh-key)
+        has_ssh_key=true
+        aws_ssh_key=$2
         shift
         ;;
     --env)
@@ -26,7 +35,11 @@ done
 
 # Ensure variables are not empty
 if [ -z $gitlab_project ];then
-  read -p "You need to specify a fully qualified Gitlab project (e.g: gigascience%2Fupstream%2Fgigadb-website): " gitlab_project
+  read -p "You need to specify a fully qualified Gitlab project (e.g: gigascience/upstream/gigadb-website): " gitlab_project
+fi
+
+if [ -z $aws_ssh_key ];then
+  read -p "You need to specify the path to the ssh private key to use to connect to the EC2 instance: " aws_ssh_key
 fi
 
 if [ -z $target_environment ];then
@@ -41,6 +54,9 @@ if [ -z $GITLAB_PRIVATE_TOKEN ];then
   read -p "You need to specify your GitLab username: " GITLAB_PRIVATE_TOKEN
 fi
 
+# url encode gitlab project
+encoded_gitlab_project=$(echo $gitlab_project | sed -e 's/\//%2F/g')
+
 
 # Ensure we are in the environment-specific directory
 if [ "envs/$target_environment" != `pwd | rev | cut -d"/" -f 1,2 | rev` ];then
@@ -52,17 +68,24 @@ fi
 
 cp ../../terraform.tf .
 cp ../../getIAMUserNameToJSON.sh .
-cp ../../playbook.yml .
 
-# create the environment variable file (must be named terraform.tfvars for terraform to recognise it automatically)
+# create the terraform variable file (must be named terraform.tfvars for terraform to recognise it automatically)
 echo "deployment_target = \"$target_environment\"" > terraform.tfvars
+
+# create an environment variable file for this script and for ansible_init.sh
+echo "gitlab_project=$gitlab_project" > .init_env_vars
+echo "GITLAB_USERNAME=$GITLAB_USERNAME" >> .init_env_vars
+echo "GITLAB_PRIVATE_TOKEN=$GITLAB_PRIVATE_TOKEN" >> .init_env_vars
+echo "aws_ssh_key=$aws_ssh_key" >> .init_env_vars
+echo "deployment_target=$target_environment" >> .init_env_vars
+
 
 # Initialise a remote terraform state on GitLab
 
 terraform init \
-          -backend-config="address=https://gitlab.com/api/v4/projects/$gitlab_project/terraform/state/${target_environment}_infra" \
-          -backend-config="lock_address=https://gitlab.com/api/v4/projects/$gitlab_project/terraform/state/${target_environment}_infra/lock" \
-          -backend-config="unlock_address=https://gitlab.com/api/v4/projects/$gitlab_project/terraform/state/${target_environment}_infra/lock" \
+          -backend-config="address=https://gitlab.com/api/v4/projects/$encoded_gitlab_project/terraform/state/${target_environment}_infra" \
+          -backend-config="lock_address=https://gitlab.com/api/v4/projects/$encoded_gitlab_project/terraform/state/${target_environment}_infra/lock" \
+          -backend-config="unlock_address=https://gitlab.com/api/v4/projects/$encoded_gitlab_project/terraform/state/${target_environment}_infra/lock" \
           -backend-config="username=$GITLAB_USERNAME" \
           -backend-config="password=$GITLAB_PRIVATE_TOKEN" \
           -backend-config="lock_method=POST" \

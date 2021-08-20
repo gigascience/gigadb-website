@@ -6,13 +6,6 @@
 
   tasks:
     - debug:
-        msg: "target host: {{ inventory_hostname }}"
-  tasks:
-    - debug:
-        msg: "path to ssh keys : {{ ansible_ssh_private_key_file }}"
-
-  tasks:
-    - debug:
         msg: "remote private ip : {{ ec2_private_ip }}"
 
   roles:

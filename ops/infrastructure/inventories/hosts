@@ -8,17 +8,17 @@
 
 [all:vars]
 
-gitlab_url = {{ vault_gitlab_url }}
-ansible_ssh_private_key_file = "{{ vault_private_key_file_location }}"
+gitlab_url = "https://gitlab.com/api/v4/projects/{{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') | urlencode | regex_replace('/','%2F') }}"
+ansible_ssh_private_key_file = "{{ lookup('ini', 'ssh_private_key_file type=properties file=ansible.properties') }}"
 ansible_user = "centos"
 ansible_become = "true"
 database_bootstrap = "../../../../sql/production_like.pgdmp"
-pg_user = "{{ vault_pg_user }}"
-pg_password = "{{ vault_pg_password }}"
-pg_database = "{{ vault_pg_database }}"
-gitlab_private_token = "{{ lookup('file','~/.gitlab_private_token') }}"
-gigadb_environment = staging
+gitlab_private_token = "{{ lookup('ini', 'gitlab_private_token type=properties file=ansible.properties') }}"
+gigadb_environment = "{{ lookup('ini', 'deployment_target type=properties file=ansible.properties') }}"
 
-fuw_db_user = "{{ vault_fuw_db_user }}"
-fuw_db_password = "{{ vault_fuw_db_password }}"
-fuw_db_database = "{{ vault_fuw_db_database }}"
+pg_user = "{{ lookup('ini', 'gigadb_db_user type=properties file=ansible.properties') }}"
+pg_password = "{{ lookup('ini', 'gigadb_db_password type=properties file=ansible.properties') }}"
+pg_database = "{{ lookup('ini', 'gigadb_db_database type=properties file=ansible.properties') }}"
+fuw_db_user = "{{ lookup('ini', 'fuw_db_user type=properties file=ansible.properties') }}"
+fuw_db_password = "{{ lookup('ini', 'fuw_db_password type=properties file=ansible.properties') }}"
+fuw_db_database = "{{ lookup('ini', 'fuw_db_database type=properties file=ansible.properties') }}"
