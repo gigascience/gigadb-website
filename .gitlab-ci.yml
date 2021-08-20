@@ -56,7 +56,7 @@ include:
   - local: "ops/pipelines/gigadb-conformance-security-jobs.yml"
   - local: "ops/pipelines/gigadb-deploy-jobs.yml"
   - local: "ops/pipelines/gigadb-operations-jobs.yml"
-  - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
+#  - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
 
 services:
   - docker:19.03.5-dind

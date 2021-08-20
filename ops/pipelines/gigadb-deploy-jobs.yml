@@ -40,6 +40,7 @@
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST rm socat || true
     # verify config renders correctly after variables interpolation
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml config
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T application cat /var/www/protected/config/db.json
     # Redeploy all containers but the web container
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml up -d application #fuw-admin fuw-public
     # deploy the web container once the application servers are up
