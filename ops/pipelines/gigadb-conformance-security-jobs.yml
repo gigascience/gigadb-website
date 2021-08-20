@@ -71,7 +71,7 @@ check_PHPDoc:
   when: manual
 
 
-check_coverage:
+.check_coverage:
   stage: conformance and security
   cache:
     key: coverage-cache
