@@ -29,21 +29,21 @@ if [[ $? -eq 0 ]];then
 	$DOCKER_COMPOSE run --rm certbot renew
 	echo "Backup the fullchain cert to gitlab variable"
   	curl --show-error --silent --output /dev/null  \
-      --request PUT --url "$PROJECT_VARIABLES_URL/${GIGADB_ENV}_tlsauth_fullchain?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+      --request PUT --url "$PROJECT_VARIABLES_URL/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
       --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
       --form "environment_scope=$GIGADB_ENV" \
       --form "value=$(cat $FULLCHAIN_PEM)"
 
   echo "Backup the private cert to gitlab variable"
     curl --show-error --silent --output /dev/null  \
-      --request PUT --url "$PROJECT_VARIABLES_URL/${GIGADB_ENV}_tlsauth_private?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+      --request PUT --url "$PROJECT_VARIABLES_URL/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
       --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
       --form "environment_scope=$GIGADB_ENV" \
       --form "value=$(cat $PRIVATE_PEM)"
 
   echo "Backup the chain cert to gitlab variable"
     curl --show-error --silent --output /dev/null  \
-      --request PUT --url "$PROJECT_VARIABLES_URL/${GIGADB_ENV}_tlsauth_chain?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+      --request PUT --url "$PROJECT_VARIABLES_URL/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
       --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
       --form "environment_scope=$GIGADB_ENV" \
       --form "value=$(cat $CHAIN_PEM)"
@@ -51,15 +51,15 @@ else
   echo "Certs do not exist in the filesystem"
   echo "To see if could be found in gitlab"
   http_code_get_fullchain=$(curl --show-error --silent --output /dev/null --write-out "%{http_code}" \
-    --request GET --url "$PROJECT_VARIABLES_URL/${GIGADB_ENV}_tlsauth_fullchain?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+    --request GET --url "$PROJECT_VARIABLES_URL/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
   )
   http_code_get_private=$(curl --show-error --silent --output /dev/null --write-out "%{http_code}" \
-    --request GET --url "$PROJECT_VARIABLES_URL/${GIGADB_ENV}_tlsauth_private?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+    --request GET --url "$PROJECT_VARIABLES_URL/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
   )
   http_code_get_chain=$(curl --show-error --silent --output /dev/null --write-out "%{http_code}" \
-    --request GET --url "$PROJECT_VARIABLES_URL/${GIGADB_ENV}_tlsauth_chain?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+    --request GET --url "$PROJECT_VARIABLES_URL/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
   )
 
@@ -67,17 +67,17 @@ else
     echo "Certs fullchain, privkey and chain could be found in gitlab"
     echo "Get fullchain cert from gitlab"
     curl --show-error --silent \
-      --request GET --url "$PROJECT_VARIABLES_URL/${GIGADB_ENV}_tlsauth_fullchain?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+      --request GET --url "$PROJECT_VARIABLES_URL/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
       --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | jq -r ".value" > /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/fullchain.pem
 
     echo "Get private cert from gitlab"
     curl --show-error --silent \
-      --request GET --url "$PROJECT_VARIABLES_URL/${GIGADB_ENV}_tlsauth_private?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+      --request GET --url "$PROJECT_VARIABLES_URL/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
       --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | jq -r ".value" > /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/privkey.pem
 
     echo "Get chain cert from gitlab"
     curl --show-error --silent \
-      --request GET --url "$PROJECT_VARIABLES_URL/${GIGADB_ENV}_tlsauth_chain?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+      --request GET --url "$PROJECT_VARIABLES_URL/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
       --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | jq -r ".value" > /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/chain.pem
   fi
 
@@ -89,7 +89,7 @@ else
       --request POST --url "$PROJECT_VARIABLES_URL" \
       --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
       --form "environment_scope=$GIGADB_ENV" \
-      --form "key=${GIGADB_ENV}_tlsauth_fullchain" \
+      --form "key=tls_fullchain_pem" \
       --form "value=$(cat $FULLCHAIN_PEM)"
 
     echo "Private cert created and put it into gitlab"
@@ -97,7 +97,7 @@ else
       --request POST --url "$PROJECT_VARIABLES_URL" \
       --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
       --form "environment_scope=$GIGADB_ENV" \
-      --form "key=${GIGADB_ENV}_tlsauth_private" \
+      --form "key=tls_privkey_pem" \
       --form "value=$(cat $PRIVATE_PEM)"
 
     echo "Chain cert created and put it into gitlab"
@@ -105,7 +105,7 @@ else
       --request POST --url "$PROJECT_VARIABLES_URL" \
       --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
       --form "environment_scope=$GIGADB_ENV" \
-      --form "key=${GIGADB_ENV}_tlsauth_chain" \
+      --form "key=tls_chain_pem" \
       --form "value=$(cat $CHAIN_PEM)"
   fi
 fi
