@@ -157,7 +157,9 @@ pb_gigadb:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:latest
-
+  environment:
+    name: $DEPLOYMENT_ENV
+    url: $REMOTE_HOME_URL
   when: manual
   artifacts:
     untracked: true
