@@ -58,14 +58,14 @@ export PHP_MEM=-1
 
 # If we are on staging environment override variable name with their remote environment counterpart
 echo "Fetching variables from: $CI_PROJECT_URL/variables"
-gigadb_db_host_json=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/variables/gigadb_db_host?filter%5benvironment_scope%5d=$GIGADB_ENV")
+gigadb_db_host_json=$(curl -Ls --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/variables/gigadb_db_host?filter%5benvironment_scope%5d=$GIGADB_ENV")
 echo "gigadb_db_json: $gigadb_db_host_json"
 
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
-    GIGADB_HOST=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/variables/gigadb_db_host?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
-    GIGADB_USER=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/variables/gigadb_db_user?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
-    GIGADB_PASSWORD=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/variables/gigadb_db_password?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
-    GIGADB_DB=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/variables/gigadb_db_database?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
+    GIGADB_HOST=$(curl -Ls --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/variables/gigadb_db_host?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
+    GIGADB_USER=$(curl -Ls --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/variables/gigadb_db_user?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
+    GIGADB_PASSWORD=$(curl -Ls --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/variables/gigadb_db_password?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
+    GIGADB_DB=$(curl -Ls --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/variables/gigadb_db_database?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
     HOME_URL=$REMOTE_HOME_URL
     PUBLIC_HTTP_PORT=$REMOTE_PUBLIC_HTTP_PORT
     PUBLIC_HTTPS_PORT=$REMOTE_PUBLIC_HTTPS_PORT
