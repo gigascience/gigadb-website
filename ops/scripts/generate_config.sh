@@ -58,10 +58,10 @@ export PHP_MEM=-1
 
 # If we are on staging environment override variable name with their remote environment counterpart
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
-    GIGADB_HOST=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_host?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
-    GIGADB_USER=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_user?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
-    GIGADB_PASSWORD=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_password?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
-    GIGADB_DB=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_database?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
+    GIGADB_HOST=$gigadb_db_host
+    GIGADB_USER=$gigadb_db_user
+    GIGADB_PASSWORD=$gigadb_db_password
+    GIGADB_DB=$gigadb_db_database
     HOME_URL=$REMOTE_HOME_URL
     PUBLIC_HTTP_PORT=$REMOTE_PUBLIC_HTTP_PORT
     PUBLIC_HTTPS_PORT=$REMOTE_PUBLIC_HTTPS_PORT
