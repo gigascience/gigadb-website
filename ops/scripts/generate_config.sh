@@ -7,7 +7,7 @@ set -e
 set -u
 
 # display the lines of this script as they are executed for debugging
-set -x
+#set -x
 
 # export all variables that need to be substitued in templates
 set -a
@@ -57,6 +57,8 @@ source "./.secrets"
 export PHP_MEM=-1
 
 # If we are on staging environment override variable name with their remote environment counterpart
+echo "Fetching variables from: $CI_PROJECT_URL/variables"
+
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     GIGADB_HOST=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/variables/gigadb_db_host?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
     GIGADB_USER=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_PROJECT_URL/variables/gigadb_db_user?filter%5benvironment_scope%5d=$GIGADB_ENV" | jq .value)
