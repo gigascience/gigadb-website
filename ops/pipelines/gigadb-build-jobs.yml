@@ -121,41 +121,41 @@ b_gigadb:
     # build and push production containers for PHP-FPM with application code and vendor code baked in and publish to registry
     - docker-compose build production_app
     - docker-compose build production_config
-    - docker tag ${CI_PROJECT_NAME}_production_web:latest registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    - docker tag ${CI_PROJECT_NAME}_production_app:latest registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    - docker tag ${CI_PROJECT_NAME}_production_config:latest registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
+    - docker tag ${CI_PROJECT_NAME}_production_web:latest registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
+    - docker tag ${CI_PROJECT_NAME}_production_app:latest registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
+    - docker tag ${CI_PROJECT_NAME}_production_config:latest registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV
     # build and push sidecar apps (ftpd, watcher, tusd, beanstalkd) for FUW
     - docker-compose build production_ftpd
     - docker-compose build production_watcher
     - docker-compose build production_tusd
     - docker-compose build production_beanstalkd
-    - docker tag ${CI_PROJECT_NAME}_production_ftpd:latest registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
-    - docker tag ${CI_PROJECT_NAME}_production_watcher:latest registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest
-    - docker tag ${CI_PROJECT_NAME}_production_tusd:latest registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest
-    - docker tag ${CI_PROJECT_NAME}_production_beanstalkd:latest registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:latest
+    - docker tag ${CI_PROJECT_NAME}_production_ftpd:latest registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
+    - docker tag ${CI_PROJECT_NAME}_production_watcher:latest registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:$GIGADB_ENV
+    - docker tag ${CI_PROJECT_NAME}_production_tusd:latest registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:$GIGADB_ENV
+    - docker tag ${CI_PROJECT_NAME}_production_beanstalkd:latest registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:$GIGADB_ENV
     # build and push production container images for File Upload Wizard apps
     - docker-compose build production_fuw-console
     - docker-compose build production_fuw-admin
     - docker-compose build production_fuw-public
     - docker-compose build production_fuw-worker
     - docker-compose build production_gigadb-worker
-    - docker tag ${CI_PROJECT_NAME}_production_fuw-console:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
-    - docker tag ${CI_PROJECT_NAME}_production_fuw-admin:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest
-    - docker tag ${CI_PROJECT_NAME}_production_fuw-public:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:latest
-    - docker tag ${CI_PROJECT_NAME}_production_fuw-worker:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:latest
-    - docker tag ${CI_PROJECT_NAME}_production_gigadb-worker:latest registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:latest
+    - docker tag ${CI_PROJECT_NAME}_production_fuw-console:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:$GIGADB_ENV
+    - docker tag ${CI_PROJECT_NAME}_production_fuw-admin:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:$GIGADB_ENV
+    - docker tag ${CI_PROJECT_NAME}_production_fuw-public:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:$GIGADB_ENV
+    - docker tag ${CI_PROJECT_NAME}_production_fuw-worker:latest registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:$GIGADB_ENV
+    - docker tag ${CI_PROJECT_NAME}_production_gigadb-worker:latest registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:$GIGADB_ENV
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
