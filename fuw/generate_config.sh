@@ -45,7 +45,7 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     FUW_DB_HOST=$fuw_db_host
     FUW_DB_USER=$fuw_db_user
     FUW_DB_PASSWORD=$fuw_db_password
-    FUW_DB_NAME=$fuw_db_datbase
+    FUW_DB_NAME=$fuw_db_database
     DEBUG=false
     HOME_URL=$REMOTE_HOME_URL
     FILES_PUBLIC_URL=$REMOTE_FILES_PUBLIC_URL
