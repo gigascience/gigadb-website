@@ -31,6 +31,7 @@ when using the AWS management console.
                 "ec2:ImportKeyPair",
                 "ec2:CreateKeyPair",
                 "ec2:CreateSecurityGroup",
+                "ec2:CreateTags",
                 "sts:DecodeAuthorizationMessage"
             ],
             "Resource": "*"
@@ -40,7 +41,9 @@ when using the AWS management console.
             "Effect": "Allow",
             "Action": [
                 "ec2:AuthorizeSecurityGroupIngress",
-                "ec2:DeleteSecurityGroup"
+                "ec2:DeleteSecurityGroup",
+                "ec2:RevokeSecurityGroupEgress",
+                "ec2:AuthorizeSecurityGroupEgress"
             ],
             "Resource": "*"
         },
