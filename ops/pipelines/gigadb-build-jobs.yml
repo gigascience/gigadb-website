@@ -82,7 +82,7 @@ b_gigadb:
     - env | grep -iE "^(staging_|remote_)" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
     - env | grep -iE "gitlab_private_token">> $APPLICATION/.secrets
     - env | grep -iE "CI_PROJECT_URL">> $APPLICATION/.secrets
-    - env | grep -iE "^(gigadb_|fuw_)">> $APPLICATION/.secrets
+    - env | grep -iE "^(gigadb_|fuw_)" | tee -a $APPLICATION/.secrets
     # pulling the CI build of the application from registry and configure it for staging for the purpose of building production containers
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
@@ -170,9 +170,16 @@ build_staging:
     GIGADB_ENV: "staging"
   extends: .pb_gigadb
   stage: production build
+  environment:
+    name: "staging"
+    url: $REMOTE_HOME_URL
 
 build_live:
   variables:
     GIGADB_ENV: "live"
   extends: .pb_gigadb
   stage: production build
+  environment:
+    name: "live"
+    deployment_tier: production
+    url: $REMOTE_HOME_URL

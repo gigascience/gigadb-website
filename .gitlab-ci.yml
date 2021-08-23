@@ -90,7 +90,7 @@ sd_gigadb:
   stage: staging deploy
   environment:
     name: "staging"
-    url: "https://fuw.rija.dev"
+    url: $REMOTE_HOME_URL
     on_stop: sd_teardown
 
 ld_gigadb:
@@ -101,6 +101,6 @@ ld_gigadb:
   environment:
     name: "live"
     deployment_tier: production
-    url: "https://gigadb.rija.dev"
+    url: $REMOTE_HOME_URL
   dependencies:
     - sd_gigadb
