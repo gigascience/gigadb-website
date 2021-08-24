@@ -16,14 +16,26 @@ pipeline every time there is a code commit or push. GitLab.com allows you to use
 Shared Runners provided by GitLab Inc which are virtual machines running on 
 GitLab's infrastructure to build any project.
 
-The GigaDB `gitlab-ci.yml` file tells the GitLab Runner to run a pipeline job 
+The GigaDB `gitlab-ci.yml` configuration file tells the GitLab Runner to run a pipeline job 
 with these stages:
-* build
-* test
-* security
-* conformance
-* staging
-* live
+- build for test
+- test
+- conformance and security
+- production build
+- staging deploy
+- live deploy
+
+That file is the entry point for configuring the GitLab pipelines. The configuration is organised in a modular way.
+Thus, ``gitlab-ci.yml`` includes other configuration files to maintain a clear organisation:
+
+```
+ops/pipelines/
+├── gigadb-build-jobs.yml #build jobs for CI and production go here
+├── gigadb-conformance-security-jobs.yml #jobs that check for vulnerabilites and conformance to coding guidelines
+├── gigadb-deploy-jobs.yml #jobs for deploying to production environments (staging and live)
+├── gigadb-operations-jobs.yml #jobs for utilities and convenience for operating/debugging the pipelines
+└── gigadb-test-jobs.yml #jobs for running tests as part of continuous integration
+```
 
 The above steps support testing and deployment of GigaDB, but assumes that the 
 set up of the Docker server is already done separately.
@@ -74,18 +86,9 @@ the *General pipelines* section, ensure that the *Public pipelines* checkbox is
  
 * The variables below need to be created for your project in the `Environment variables` 
 section in the CI/CD Settings page. Any values below listed as `somevalue` 
-should be replaced with proper values - please contact the GigaScience tech 
+should be replaced by proper values - please contact the GigaScience tech 
 support team for help with setting these.
-
-* The value of the STAGING_HOME_URL variable should be the domain name of the
-machine you will use as the GigaDB staging server.
-
-* The STAGING_IP_ADDRESS variable should be given the IP address of your staging 
-server as its value. 
-
-* Variables whose names begin with `staging_*` and have `0` values will be 
-automatically updated with their proper values during Ansible provisioning of 
-your staging server. 
+  
 
 These environment variables together with those in the Forks group are exported 
 to the `.secrets` file and are listed 
@@ -103,23 +106,7 @@ FORK | somevalue
 MAILCHIMP_API_KEY | somevalue
 MAILCHIMP_LIST_ID | somevalue
 MAILCHIMP_TEST_EMAIL | somevalue
-STAGING_GIGADB_DB | gigadb
-STAGING_GIGADB_HOST | dockerhost
-STAGING_GIGADB_PASSWORD | vagrant
-STAGING_GIGADB_USER | gigadb
-STAGING_HOME_URL | somevalue
-STAGING_IP_ADDRESS | somevalue
-STAGING_PUBLIC_HTTPS_PORT | 433
-STAGING_PUBLIC_HTTP_PORT | 80
-staging_private_ip | 0
-staging_public_ip | 0
-staging_tlsauth_ca | 0
-staging_tlsauth_cert | 0
-staging_tlsauth_key | 0
 
-> The value of the `STAGING_HOME_URL` variable is the domain name you will use for
-the server on which you will deploy a staging or production GigaDB application.
-The domain name can be created using your domain registration service.
 
 ### Executing a Continuous Integration run
  
@@ -133,99 +120,236 @@ Then click on the *Create pipeline* button.
 
 * Refresh the pipelines page, you should see the CI/CD pipeline running. If the 
 set up of your pipeline is successful, you will see it run the build, test, 
-security and conformance stages defined in the `gitlab-ci.yml` file.
+security and conformance stages defined in the `.gitlab-ci.yml` file.
  
 ## Continuous Deployment in the CI/CD pipeline
 
-The deployment of `gigadb-website` code onto a staging or production server to 
+The deployment of `gigadb-website` code onto a staging or live servers to 
 provide a running GigaDB application is not automatically performed by the 
-CI/CD pipeline since it is set to run manually in the `gitlab-ci.yml` file. 
+CI/CD pipeline since it is set to run manually in the `.gitlab-ci.yml` file. 
 This part of the CI/CD process has to be explicitly executed from the GitLab 
 pipelines page.
 
 Prior to this, a host machine has to be instantiated with a 
 secure Docker daemon on which the GigaDB application will be deployed. This 
 machine can be used for a specific environment, most likely staging or 
-production. Two tools are used to set a Docker server on the AWS cloud: 
-Terraform and Ansible.
+live. 
 
-### Terraform
+There are two pre-requisites to fulfill before. First, GitLab needs be configured for build and deployment to production (staging and live).
+Second, several tools are needed to set up a Docker-enabled server on the AWS cloud: 
+AWS-CLI, Terraform, and Ansible.
+
+### Preparing GitLab for provisioning, build and deployment
+
+environmments are the foundation. There are two types of environments: developement and production.
+
+| Environment name | Type | Purpose |
+| --- | --- | --- |
+| dev | development | a developer's local development machine where they create applications |
+| CI | development | an environment created and hosted on GitLab to run automated tests continuously upon every commits (Continuous Integration) |
+| staging | production | an environmment hosted on AWS cloud for final acceptance of a version of the web site product that's like the real live in every aspect |
+| live | production | the real live web site product hosted on AWS cloud |
+
+Since the local environment is on the developer's machine, it is not our concern in this section.
+The CI environment is implictely created by the CI part of GitLab and is concerned with our present topic
+only as a pre-requisite: deployment to staging and live can only happen if the tests pass in CI.
+
+``staging`` and ``live`` are what  matter in this section. If they are not already, these environments need to  created
+in GitLab under the ``Deployments > Environments`` section.
+They have two very important use:
+
+ * the variables we need to configure the services and applications we deploy with need to be specific to each environment. GitLab allows
+us to store variables and specify for which environment this variable is bound to (for organisation and security).
+ * Gitlab stages and jobs must be tied to a specific environment, so that pipelines don't leak variables.
+
+#### GitLab Variables
+
+Ensure the following variables are set for their respective environments in the appropriate GitLab project (the variables should have the Protected checkbox unchecked if it's your personal project space in the Forks group)
+
+| Name | Masked? |
+| --- | --- |
+| DEPLOYMENT_ENV | no |
+| REMOTE_HOME_URL | no |
+| REMOTE_HOSTNAME | no |
+| REMOTE_PUBLIC_HTTP_PORT | no |
+| REMOTE_PUBLIC_HTTPS_PORT | no |
+| REMOTE_SMTP_HOST | no |
+| REMOTE_SMTP_PASSWORD | yes |
+| REMOTE_SMTP_PORT | no |
+| REMOTE_SMTP_USERNAME | no |
+| gigadb_db_host | no |
+| gigadb_db_user | no |
+| gigadb_db_password | yes |
+| gigadb_db_database | no |
+| fuw_db_host | no |
+| fuw_db_user | no |
+| fuw_db_password | yes |
+| fuw_db_database | no |
+
+so, there should be two versions of each variable, one for each environment.
+
+##### Good examples:
+
+| Key | Value | Masked | Environments |
+| --- | --- | --- | --- |
+| DEPLOYMENT_ENV | staging | x | staging|
+| DEPLOYMENT_ENV | live | x | live|
+| gigadb_db_password| 1234 | v | staging |
+| gigadb_db_password| 5678 | v | live |
+
+
+##### Bad examples:
+
+| Key | Value | Masked | Environments |
+| --- | --- | --- | --- |
+| DEPLOYMENT_ENV | live | x | All (default) |
+| gigadb_db_host | dockerhost | x | staging |
+
+
+#### Jobs and stages in GitLab configuration files
+
+Every job defined in the configuration need to have their stage and environment specified.
+The former enables the execution order of the pipeline, and the latter ensures the variables for the selected 
+environment only is made available to the pipeline's jobs.
+
+> The name of valid stages to be used in GitLab configuration are listed at the top of the file ``.gitlab-ci.yml``  
+
+> Ensure the value of ``environment:name:`` in GitLab configuration matches the environment that you have created in Gitlab dashboard under ``Deployments > Environments``
+
+
+##### Examples:
+
+ * from the ``ops/pipelines/gigadb-build-jobs.yml`` file:
+```
+build_live:
+  variables:
+    GIGADB_ENV: "live"
+  extends: .pb_gigadb
+  stage: production build
+  environment:
+    name: "live"
+    deployment_tier: production
+    url: $REMOTE_HOME_URL
+```
+ 
+ * from the ``.gitlab-ci.yml`` file:
+```
+sd_gigadb:
+  variables:
+    GIGADB_ENV: "staging"
+  extends: .deploy
+  stage: staging deploy
+  environment:
+    name: "staging"
+    url: $REMOTE_HOME_URL
+    on_stop: sd_teardown
+```
+
+
+### Tools
+
+#### AWS-CLI
+
+TODO: link up to @pli888's aws docs
+
+#### Terraform
 
 [Terraform](https://www.terraform.io) is a tool which allows you to describe and
 instantiate infrastructure as code.
 
-Install Terraform-0.11 by downloading the installer from the 
+Install Terraform-0.14 by downloading the installer from the 
 [Terraform](https://www.terraform.io) web site or it can be installed using a 
-package manager for your operating system. For example, MacOSX users can use 
-[Macports](https://www.macports.org):
+package manager for your operating system. For example, macOS users can use 
+[Macports](https://www.macports.org) or [HomeBrew](https://brew.sh/):
 ```
-$ sudo port install terraform-0.11
+$ sudo port install terraform-0.14
 ```
-
-Create the following environment variables with the required values which 
-Terraform will use to access AWS:
+or
 ```
-$ export TF_VAR_deployment_target=staging
-$ export TF_VAR_aws_vpc_id=<AWS VPC id>
-$ export TF_VAR_aws_access_key=<AWS Access key>
-$ export TF_VAR_aws_secret_key=<AWS Secret key>
-$ export TF_STATE=.
+$ brew install terraform
 ```
 
->You could also add the above lines into your `~/.bash_profile` file to save 
-having to repeatedly execute the `export` commands.
 
-Terraform describes infrastructure as code in text files ending in *.tf*. There 
-is such a file in`ops/infrastructure/aws-ec2.tf` and this is used to create a 
-t2.micro instance on AWS with the security privileges that allow communication 
-with a Docker daemon. An AWS resource is specified which you will log in with a 
-key pair named `aws-centos7-keys`. Create this key pair using your AWS console
-web page.
+Terraform describes infrastructure as code in text files ending in *.tf*.
+When the infrastructure code is organised in a modular way, it makes use of Terraform modules 
+to keep distinct infrastructure components together in a clear and maintainable way.
+An entry point to the set of modules is required and is called a **root-module**. 
+In our project this file is `ops/infrastructure/terraform.tf` and the modules are located in 
+``ops/infrastructure/modules/``
 
-Download the private key file from AWS and place it in your `~/.ssh` directory 
-so that its path will be `~/.ssh/aws-centos7-keys.pem`.
+>Ensure you download version 0.14+ of Terraform as the code make use of syntax not available to versions before that.
 
-Create an elastic IP (EIP) address for your staging server hosting GigaDB
-with the name `eip-staging-gigadb`. The `aws-ec2.tf` file will instruct 
-Terraform to look for this EIP and automatically associate it with the EC2 
-instance. If there is no EIP called `eip-staging-gigadb` then Terraform will 
-generate a `no matching Elastic IP found` error message.
+##### List of modules:
 
-> Using your domain name service, map the EIP to the domain name you will use 
-for your staging or production server.
+| Path | Purpose | Pre-requisites |
+| --- | --- | --- |
+| ops/infrastructure/modules/aws-instance | deploy an EC2 instance and associated root volume, security group and Elastic IP linking | Ask your admin to create an Elastic IP for your deployment |
+| ops/infrastructure/modules/rds | deploy a PostgreSQL RDS service and associated security group | DB credentials defined in GitLab variables | 
 
-In order to avoid accidental deletion of provisioned infrastructure, it is highly recommended to maintain distinct Terraform state for each target environment. This also make it easier using different and segregated cloud accounts for each environment. 
+##### Terraform state
 
-Thus the main Terraform configugration, state and variables will be kept in environment-specific directory.
+Terraform keep track of the state of the provisioned infrastructure.
+That state represents the up-to-date snapshot of provisioned AWS resources and Terraform can also synchronise
+that state with reality for when changes to the infrastructure happen outside of Terraform, using the ``terraform refresh`` command.
+You can view the state in a meaningful visualiation using the ``terraform show`` command.
+When provisioning with Terraform, your requests are translated into action onto the state file before Terraform replay them against the real infrastructure.
+You have a chance to preview what those changes would be by executing the ``terraform plan`` command.
+Actual changes to the infrastructure are performed with the command ``terraform apply``.
 
-Furthermore, that approach reduce code duplication as the common Terraform code can be kept in modules in a separate directory (``ops/infrastructure/modules``). From now on in the doc, we will take the example of the **staging** environment. When creating a new environment, one can just duplicate the ``ops/infrastructure/envs/staging`` directory and adjust values.
+The state file Terraform works with can be a local file (ending with suffix .tfstate), but it is recommended 
+to use a remote state backend wich has the following benefits:
 
-Use Terraform to instantiate the t2.micro instance on AWS cloud with the 
-following commands:
+ * every team members who need to perform provisioning can start their work with a state that accurately represent reality 
+ * a locking mechanism is available to prevent the same piece of infrastructure to be changed by several people at the same time
+ * If a developer lose their development machine, they are not losing the map of what's provisioned
+
+We use GitLab as our remote backend. When we want to operate Terraform, we initialise our remote state using the 
+script ``ops/scripts/tf_init.sh``.
+
+To avoid impactful mistakes, It's important to maintain a different state for each environment.
+However there's no logical link between GitLab environment and Terraform state hosted in GitLab, so we need to make sure the 
+name we choose for the Terraform state reflects the environment it is for.
+``ops/scripts/tf_init.sh`` does that by accepting as parameter the target environment and prefix the state it initialise with 
+that value.
+
+Like GitLab pipelines and variables, Terraform state are specific to a GitLab project, so that's another input
+that is passed as a parameter to the shell script.
+
+Because the script needs to interact with GitLab API, the script needs to know the value for your ``GITLAB_USERNAME``
+and your ``GITLAB_PRIVATE_TOKEN`` variable.
+By default, it assumes they are defined in the ``.env`` file. If it cannot find them there,
+it will prompt the user for value.
+It also needs to know the path to the private ssh key that will allow Ansible to configure the target server, so the user 
+will be prompted for that information.
+
+``ops/scripts/tf_init.sh`` need to be used from an environment specific directory, either ``ops/infrastructure/envs/staging``
+or ``ops/infrastructure/envs/live``
+
+This is how the script is run:
+
 ```
-$ cd ops/infrastructure/envs/staging
-$ terraform init
-$ terraform plan
-$ terraform apply
+$ cd ops/infrastructure/envs/environment
+$ ../../../scripts/tf_init.sh --project gigascience/forks/rija-gigadb-website --env environment
 ```
 
-*N.B.* Use `terraform destroy` to terminate the EC2 instance.
+where we replace ``gigascience/forks/rija-gigadb-website`` with the appropriate GitLab project.
+and ``environment`` with ``staging`` or ``live``
 
-Check that your new EC2 instance exists on your AWS Web console. It will have 
-the name `ec2-as1-staging-gigadb`.
+The script also copies the ``ops/infrastructure/terraform.tf`` root module in the environment-specific directory so 
+that terraform commands can be run from that directory.
 
-Reconcile the Terraform state file with the actual AWS infrastructure to update 
-public IP address of the staging_dockerhost instance with the elastic IP 
-address:
-```
-$ terraform refresh
-```
+##### Environment specific directories
 
-If this is not done then Ansible will try to use the original IP address of 
-your EC2 instance and you will get a server not found error since the server
-will have your elastic IP address.
+* For staging: ``cd ops/infractructure/envs/staging``
+* For live: ``cd ops/infractructure/envs/live``
 
-### Ansible
+Those directories start empty, but the ``ops/scripts/tf_init.sh`` aforementioned and ``ops/scripts/ansible_init.sh`` below will populate them with necessary files
+so we can run ``terraform`` and ``ansible-playbook`` commands from those directories for a safe provisioning of the desired environment.
+
+In particular, the ``ops/scripts/tf_init.sh`` script will write in a ``.init_vars`` file the answer to the prompted value, so that they are not asked
+again in subsequent runs. ``ops/scripts/ansible_init.sh`` will also source that file.
+
+#### Ansible
 
 [Ansible](https://www.ansible.com) is used to install the EC2 instance 
 
@@ -235,11 +359,11 @@ abouts its datasets. Note that this setup for a staging instance of GigaDB is
 different to a local GigaDB application whose PostgreSQL database is provided by
 a custom Docker container.
 
+You can install Ansible on macOS using [HomeBrew](https://brew.sh) with the command ``brew install ansible``
 
+##### Ansible setup and configuration
 
-#### Ansible setup and configuration
-
-Like Terraform, we keep the Ansible configuration files in environment-specific directories, and we execute Ansible in these directories. The reasons are exactly the same as for Terraform (Safety, DRY, Cloud account flexibility).
+Like Terraform, we run operate Ansible from the environment specific directories. The reasons are exactly the same as for Terraform (Safety, DRY, Cloud account flexibility).
 
 The main concepts used in Ansible are Hosts, Roles, Tasks and Playbook.
 
@@ -251,57 +375,85 @@ The Playbook is the file describing the sequence of Roles (and/or Tasks) to be p
 
 Hosts can be defined statically, dynamically or a combination of both and from one or more sources.
 
+Roles are used in Ansible to perform tasks on machines such as installing a  
+software package. An Ansible role consists of a group of variables, tasks, files
+and handlers stored in a standardised file structure. There are a number of
+roles in `ops/infrastructure/roles` for installing Docker, PostgreSQL and
+security tools on hosts. Other roles are required which are available from
+public repositories.
+
+Download these roles:
+```
+$ cd ops/infrastructure/envs/environment 
+$ ansible-galaxy install -r ../../../infrastructure/requirements.yml
+```
+Where ``environment`` is replaced by ``staging`` or ``live``
+
 Best practices is to use Ansible in agent-less way, so it needs connection parameters in order to control the remote provisioned machine.
 
 The host name and IP address on which to run ansible are an output of running terraform, so we are going to feed ansible the host name and ip adress dynamically.
 
-However the connection parameters (like SSH keys) are variables we need to supply statically and they are different for each environment.
+However, the connection parameters (like SSH keys) are variables we need to supply statically and they are different for each environment.
 
-In this paragraph and the next, from now on we will assume we are dealing with the **staging** environment.
-
-The machines controlled by Ansible are usually defined in a [`hosts`](https://github.com/gigascience/gigadb-website/blob/develop/ops/infrastructure/inventories/hosts)
-file which lists the host machines connection details. Our file is located at `ops/infrastructure/inventories/hosts` and contains
-the following content:
+The machines controlled by Ansible are defined in a [`hosts`](https://github.com/gigascience/gigadb-website/blob/develop/ops/infrastructure/inventories/hosts)
+file which lists the host machines connection details. Our file is located at `ops/infrastructure/inventories/hosts` and here is the current content annotated:
 ```
-[name_gigadb_staging]
+[name_gigadb_server_staging] # host name for staging deployment, the name is a concatenation of AWS tag key and value attached to the EC2 instance
 
 # do not add any IP address here as it is dynamically managed using terraform-inventory
 
-[name_gigadb_staging:vars]
+[name_gigadb_server_live] # host name for live deployment, the name is a concatenation of AWS tags attached to the EC2 instance
 
-ansible_ssh_private_key_file = "{{ vault_staging_private_key_file_location }}"
+# do not add any IP address here as it is dynamically managed using terraform-inventory
+
+[all:vars] # host variables needed by Ansible to configure software and services. Most have their value pulled from ansible.properties created with the ansible_init.sh script
+
+gitlab_url = "https://gitlab.com/api/v4/projects/{{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') | urlencode | regex_replace('/','%2F') }}"
+ansible_ssh_private_key_file = "{{ lookup('ini', 'ssh_private_key_file type=properties file=ansible.properties') }}"
 ansible_user = "centos"
 ansible_become = "true"
 database_bootstrap = "../../../../sql/production_like.pgdmp"
-pg_user = "{{ vault_staging_pg_user }}"
-pg_password = "{{ vault_staging_pg_password }}"
-pg_database = "{{ vault_staging_pg_database }}"
-gitlab_private_token = "{{ lookup('file','~/.gitlab_private_token') }}"
-gigadb_environment = staging
+gitlab_private_token = "{{ lookup('ini', 'gitlab_private_token type=properties file=ansible.properties') }}"
+gigadb_environment = "{{ lookup('ini', 'deployment_target type=properties file=ansible.properties') }}"
 
-fuw_db_user = "{{ vault_staging_fuw_db_user }}"
-fuw_db_password = "{{ vault_staging_fuw_db_password }}"
-fuw_db_database = "{{ vault_staging_fuw_db_database }}"
-
-...
+pg_user = "{{ lookup('ini', 'gigadb_db_user type=properties file=ansible.properties') }}"
+pg_password = "{{ lookup('ini', 'gigadb_db_password type=properties file=ansible.properties') }}"
+pg_database = "{{ lookup('ini', 'gigadb_db_database type=properties file=ansible.properties') }}"
+fuw_db_user = "{{ lookup('ini', 'fuw_db_user type=properties file=ansible.properties') }}"
+fuw_db_password = "{{ lookup('ini', 'fuw_db_password type=properties file=ansible.properties') }}"
+fuw_db_database = "{{ lookup('ini', 'fuw_db_database type=properties file=ansible.properties') }}"
 
 ```
 
-Note that the header **[name_gigadb_staging]** must match the "Name" tag associated to the AWS EC2 resource defined in ``ops/infrastructure/modules/aws-instance/aws-instance.tf`` for the environment of interest (here ``staging``):
+>Note that the header **[name_gigadb_staging]** must match the "Name" tag associated to the AWS EC2 resource defined in ``ops/infrastructure/modules/aws-instance/aws-instance.tf`` for the environment of interest (here ``staging``):
 
 ```
 tags = {
-    Name = "gigadb_${var.deployment_target}",
+    Name = "gigadb_server_${var.deployment_target}",
     Hosting = "ec2-as1-t2m-centos"
+    Environment = "staging"
+    Owner = "Rija"
  }
 ```
 
-Knowning that, one can add any other necessary environments as long as the environment variable TF_VAR_deployment_target is set with that value and that the ``hosts`` file has a block fronted with an appropriately named header after that same value.
+>**Note:** host names in Ansible must be made of alphanumerical and underscore characters only. Although Terraform and AWS don't have that limitation, the Name tag needs to follow it so the connection between Terraform and Ansible can be made.
 
-The hosts can be defined in as many file as desired, not just ``hosts``, as long as they reside inside ``ops/infrastructure/inventories/``.
-It's actually highly recommended to have the production host definition in its own file to avoid accidental changes to production when modifying an other environment.
+An ``ansible.properties`` file needs to exist in the environment-specific directory for a given environment.
+This file is queried by the host variables shown above, and is created using the ``ops/scripts/ansible_init.sh``:
 
-**Note:** host names in Ansible must be made of alphanumerical and underscore characters only. Although Terraform and AWS don't have that limitation, the Name tag needs to follow it so the connection between Terraform and Ansible can be made.
+```
+$ cd ops/infrastructure/envs/environment
+$ ../../../scripts/ansible_init.sh --env environment
+```
+Where environment must be replaced by ``staging`` or ``live``.
+
+That script needs to be executed after ``ops/scripts/tf_init.sh`` has been run, as our script is dependent
+on the existence of an ``.init_env_vars`` file created by the latter.
+
+That script also makes a copy of the ``ops/infrastructure/playbook.yml`` into the environment-specific directory
+so the playbook can be performed from environment specific directory.
+
+###### Linking Terraform and Ansible.
 
 Our `hosts` file does not list any machines. Instead, a tool called 
 [`terraform-inventory`](https://github.com/adammck/terraform-inventory)  
@@ -313,97 +465,21 @@ The terraform-inventory binary must be present on your dev machine. On mac, you 
 ```
 $ brew install terraform-inventory
 ```
-Also the terraform environment variable TF_STATE needs to be set as a relative path to the .tfstate file for terraform-inventory to function without error.
 
-* One particular variable to note is `gitlab_private_token`. The value of `gitlab_private_token`
-is the contents of a file located at `~/.gitlab_private_token`.  Create this 
-file using the [GitLab personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
-that you will use to access the GitLab API. N.B. The `read_user` and 
-`read_registry` scopes are not required when creating the private token.
-
-The values of some of the variables in the `hosts` file are sensitive and for 
-this reason, the actual values are encrypted within an Ansible vault file which 
-needs to be located at `ops/infrastructure/envs/staging/group_vars/all/vault`. This vault 
-file should NOT be version controlled as defined in the `.gitignore` file.
-
-Create the `vault` file in the ops/infrastructure/envs/staging/group_vars/all directory:
+Here is how to check the output of Terraform that are used as input to the Ansible workflow:
 ```
-$ pwd
-~/gigadb-website
-# Make a directory for all
-$ mkdir -p ops/infrastructure/envs/staging/group_vars/all
-# Create vault file
-$ ansible-vault create ops/infrastructure/envs/staging/group_vars/all/vault
+$ cd ops/infrastructure/envs/environment
+$ ../../inventories/terraform-inventory.sh --list | jq -r
 ```
+where ``environment`` is replaced by ``staging`` or ``live``, the environment for which Terraform has been previously run.
 
-You will be prompted to enter a password, which you will need to share with 
-others needing access to the vault. The variables below with appropriate values 
-need to be placed in the `vault` file:
-```
-vault_staging_pg_user: somevalue
-vault_staging_pg_password: somevalue
-vault_staging_pg_database: somevalue
-# Path to AWS pem file
-vault_staging_private_key_file_location: somevalue
 
-vault_production_pg_user: somevalue
-vault_production_pg_password: somevalue
-vault_production_pg_database: somevalue
-vault_production_private_key_file_location: somevalue
-
-vault_private_gitlab_token: somevalue
-# Base URL of GitLab project
-vault_gitlab_url: somevalue
-```
-
-An example of what the `vault_gitlab_url` should look like is:
-```
-vault_gitlab_url: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2Fjbloggs-gigadb-website"
-```
-
-Save the `vault` file when you are done. Since the `vault` file is encrypted, 
-you will see something like this if you try to edit the file in a text editor:
-```
-$ANSIBLE_VAULT;1.2;AES256;dev
-37636561366636643464376336303466613062633537323632306566653533383833366462366662
-6565353063303065303831323539656138653863353230620a653638643639333133306331336365
-62373737623337616130386137373461306535383538373162316263386165376131623631323434
-3866363862363335620a376466656164383032633338306162326639643635663936623939666238
-3161
-```
-
-To open the encrypted `vault` file for editing, use the command below and input
-the password when prompted.
-```
-$ ansible-vault edit ops/infrastructure/envs/stagings/group_vars/all/vault
-```
-
-**Note:**
-> You can find a sample vault file at ops/configuration/variables/vault-sample
-  
-Provide Ansible with the password to access the vault file during the 
-execution of playbooks by storing the password to the vault file in a 
-`~/.vault_pass.txt` file. 
-
-Roles are used in Ansible to perform tasks on machines such as installing a  
-software package. An Ansible role consists of a group of variables, tasks, files 
-and handlers stored in a standardised file structure. There are a number of 
-roles in `ops/infrastructure/roles` for installing Docker, PostgreSQL and 
-security tools on hosts. Other roles are required which are available from 
-public repositories.
-
-Download these roles:
-```
-$ cd ops/infrastructure/envs/staging 
-$ ansible-galaxy install -r ../../../infrastructure/requirements.yml
-```
-
-#### Ansible playbook execution
+##### Ansible playbook execution
 
 Provision the EC2 instance using Ansible:
 ```
 $ cd ops/infrastructure/envs/staging
-$ ansible-playbook -vvv -i ../../inventories -i name_gigadb_staging  playbook.yml --vault-password-file ~/.vault_pass.txt
+$ ansible-playbook -i ../../inventories -i name_gigadb_staging  playbook.yml
 ```
 
 > Since an elastic IP address is being used, you might need to delete the entry
@@ -448,21 +524,14 @@ the domain name (*e.g.* [http://gigadb-staging.gigatools.net]) using your domain
 name registry service. This domain name is provided with an SSL certificate by 
 Let's Encrypt.
 
-Deployment of GigaDB on the EC2 staging server in the CI/CD process is 
-described in the [gitlab-ci.yml](https://github.com/gigascience/gigadb-website/blob/develop/.gitlab-ci.yml) 
-file. The CI/CD process has a stage called `with_new_cert_deploy` which includes
-a step to generate a web certificate for TLS termination on the web container 
-for GigaDB. As mentioned above, the value of the $STAGING_HOME_URL CI/CD
-environment variable in this file will be your domain name which ensures that 
-the certificate is created for your domain name. $STAGING_HOME_URL is a GitLab 
-CI/CD environment variable so its value must be provided on the GitLab.com web 
-site.
+The deployment of the certificate is handled by the ``ops/scripts/setup_cert.sh`` script which 
+is summoned during a deployment job (``sd_gigadb`` or ``ld_gigadb``).
 
 #### NGINX configuration
 
 In addition, NGINX conf files need to be configured with the domain name of the 
 staging server. Edit the following two NGINX conf files so that any mention of 
-`gigadb-staging.gigatools.net` is replaced with the domain name you are using to 
+`gigadb-staging.gigatools.net` is replaced by the domain name you are using to 
 stage GigaDB.
 
 * `ops/configuration/nginx-conf/sites/gigadb.staging.http.conf`
@@ -473,51 +542,73 @@ CI/CD pipeline process start and end with a successful build.
 
 ### Executing the CD pipeline for deployment
 
-Actual deployment of GigaDB to the staging server is manually performed by 
-clicking a button on the GitLab pipelines page for your GitLab GigaDB project. 
-If it is the first time doing this on the server, select the 
-*with_new_cert_deploy* process, otherwise, use *deploy_app*. 
+#### 1. Choose the environment for which to deploy
 
-Also, note that the HTTPS certificates last 3 months, so you need to do at least 
-one deploy every 3 month (a NO-OP deploy will work).
+* For staging: ``cd ops/infractructure/envs/staging``
+* For live: ``cd ops/infractructure/envs/live``
 
-### Remote debugging of CD deployment
+Those directories start empty, but the ``tf_init.sh`` and ``ansible_init.sh`` scripts below will populate them with necessary files
+so we can run ``terraform`` and ``ansible-playbook`` commands from those directories for a safe provisioning of the desired environment.
 
-1. Download the "Job artifacts" from the "Run all tests" steps reports (click "Download" under "Job artifacts" section). The zip archive contains the staging ``.env`` file. In a new bash shell, cd into gigadb-website git repo and source that ``.env`` file.
+#### 2. Initialise Terraform
 
 ```
-export STAGING_PUBLIC_HTTP_PORT=80
-export STAGING_PUBLIC_HTTPS_PORT=443
-export CI_PROJECT_PATH="gigascience/forks/rija-gigadb-website"
+$ ../../../scripts/tf_init.sh --project gigascience/forks/rija-gigadb-website --env environment
 ```
 
-1. Download the body of certificate files from the Gitlab Variables list (staging_tlsauth_ca, staging_tlsauth_cert, staging_tlsauth_key) into PEM files (e.g: ca.pem, cert.pm, key.pem).
+where you replace ``gigascience/forks/rija-gigadb-website`` with the appropriate GitLab project.
+and ``environment`` with ``staging`` or ``live``
 
-1. You can then control staging containers as below:
-
-Note: below,  18.136.238.239 is the public ip of the server the code was deployed to.
-
-```
-$ docker --tlsverify -H=tcp://18.136.238.239:2376 --tlscacert=ca.pem  --tlscert=cert.pem --tlskey=key.pem ps
-```
-
-#### Creating smoke data
+#### 3. Initialise Ansible
 
 ```
-docker --tlsverify -H=13.228.10.137:2376 exec rija-gigadb-website_application_1 ./protected/yiic smoketest createdata
+$ ../../../scripts/ansible_init.sh --env environment
 ```
 
-#### Adding a new user identiy to FUW
+where you replace ``environment`` with ``staging`` or ``live``
+
+#### 4. Provision with  Terraform and perform Ansible playbook
+
+Ensure you are still in ``ops/infractructure/envs/staging`` or ``ops/infractructure/envs/live``
+
 ```
-$ docker --tlsverify -H=13.228.10.137:2376 exec rija-gigadb-website_console_1 ./yii identity/add-identity --username rija --email <your admin email> --role admin
+$ pwd
+$ terraform plan
+$ terraform apply
+$ terraform refresh
+$ ansible-playbook -i ../../inventories -i name_gigadb_server_environment playbook.yml
 ```
+where you replace ``environment`` with ``staging`` or ``live``
 
-### Using Gitlab dashboard
+when performing the plays, It's important to pay particular attention  to the selected host group after the ``-i`` parameter.
 
-the following operations on docker-compose services can be performed from the pipeline view in Gitlab:
+The two valid values are listed in ``ops/infrastructure/inventories/hosts`` as section heads ``[...]``
 
-* Stop
-* Start
-* Tear Down
-* top (list all processes running in all containers)
-* smoke tests (check the configuration and wiring)
+That latter file also shows how the files created in the environment-specific directory by ``tf_init.sh`` and ``ansible_init.sh`` are used to set the Ansible host variables.
+There's no need to use ``ansible-vault`` anymore.
+
+> Since an elastic IP address is being used, you might need to delete the entry
+in the `~/.ssh/known_hosts` file associated with the elastic IP address if this
+is not the first time you have performedthe plays in the playbook.
+
+#### 5. Build and deploy
+
+Use the Gitlab Pipelines dashboard to build the application (by triggering manual job ``build_staging`` or ``build_live``).
+Once the production containers are build (in the Gitlab Containers Registry they are listed as production_<service>:<environment),
+We can proceed with deployment to the target environment by triggering manual job ``sd_gigadb`` (staging) or ``ld_gigadb`` (live).
+
+The application should be available at the url defined in $REMOTE_HOME_URL for a given environment.
+
+
+### Troubleshooting
+
+If you meet the error:
+ ```
+ Error: Error launching source instance: MissingInput: No subnets found for the default VPC 'vpc-a717e2ce'. Please specify a subnet.
+ ```
+
+Then running the following command to create a default subnet will fix it:
+
+ ```
+ aws ec2 --profile UserNameOfAdminUser create-default-subnet --region ap-east-1 --availability-zone ap-east-1a
+ ```
