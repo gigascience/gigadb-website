@@ -1,4 +1,4 @@
-b_gigadb:
+.b_gigadb:
   stage: build for test
   script:
     - echo "Building app"
