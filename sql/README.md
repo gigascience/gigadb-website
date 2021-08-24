@@ -51,3 +51,33 @@ sudo -u postgres /usr/bin/psql -c 'drop database gigadb'
 sudo -u postgres /usr/bin/psql -c 'create database gigadb owner gigadb'
 sudo -u postgres /usr/bin/psql -f gigadbv3_20170815_plant.backup> gigadb 
 ```
+
+## Convert production database backup to modern version of PostgreSQL [#731](https://github.com/gigascience/gigadb-website/issues/731)
+The `PostgreSQL` version for production database is `9.1.17`, while that for latest development work is `9.6.22`,
+So, there is a need to upgrade production database to `9.6+`.
+
+Running this command would convert the production database version to `9.6+`.
+```bash
+cd /gigadb-website
+sql/convert_production_db_to_latest_ver.sh
+```
+
+### How does the script work
+First, download the production database using `files-url-updater` tool. You could specify the which database backup you want to download
+by including `--date` parameter. By default, this command will download the latest production database. 
+```bash
+cd gigadb/app/tools/files-url-updater/
+docker-compose run --rm updater ./yii dataset-files/download-restore-backup --latest --norestore
+```
+For a detailed usage information, please
+go to [here](https://github.com/rija/gigadb-website/tree/files-url-updater-%23629/gigadb/app/tools/files-url-updater)
+
+Then load production backup to the `PostgreSQL` using `pg_restore`, for example:
+```bash
+pg_restore -v -U gigadb -h database -p 5432 -d gigadbv3_production /gigadb/app/tools/files-url-updater/sql/gigadbv3_$date.backup
+```
+
+Finally, convert the database using the latest `pg_dump`, for example:
+```bash
+pg_dump -v -U gigadb -h database -p 5432 -Fc -d gigadbv3_production -f /sql/psql-v96/gigadbv3_$date_$version.pgdmp
+```
