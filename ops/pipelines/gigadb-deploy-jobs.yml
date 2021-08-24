@@ -7,9 +7,10 @@
   stage: deployment
   allow_failure: false
   script:
-    # appending staging variables at the end of the .env and .secrets
-    - env | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
+    # appending production variables at the end of the .env and .secrets
+    - env | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" >> $APPLICATION/.env
     - env | grep -iE "^(staging_|remote_)" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
+    - env | grep CI_PROJECT_URL >> $APPLICATION/.env
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
@@ -44,7 +45,6 @@
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml up -d application #fuw-admin fuw-public
     # deploy the web container once the application servers are up
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml up -d web
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T application cat /var/www/protected/config/db.json
     # Run database migrations if any
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
     # post-install script to run
