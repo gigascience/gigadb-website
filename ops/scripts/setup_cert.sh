@@ -25,13 +25,13 @@ echo "Checking whether the certificate exists locally"
 cert_files_local_exists=$($DOCKER_COMPOSE run --rm config /bin/bash -c "test -f $FULLCHAIN_PEM && test -f $PRIVATE_PEM && test -f $CHAIN_PEM && echo 'true' || echo 'false'")
 echo "cert_files_local_exists: $cert_files_local_exists"
 echo "To see if they could be found in gitlab"
-fullchain_remote_exists=$($DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error --silent --HEAD --url "$CI_PROJECT_URL/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+fullchain_remote_exists=$($DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error -Ls --HEAD --url "$CI_PROJECT_URL/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | head -1 | cut -d" " -f 2 \
 )
-privkey_remote_exists=$($DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error --silent --HEAD --url "$CI_PROJECT_URL/variables/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+privkey_remote_exists=$($DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error -Ls --HEAD --url "$CI_PROJECT_URL/variables/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | head -1 | cut -d" " -f 2 \
 )
-chain_remote_exists=$($DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error --silent --HEAD --url "$CI_PROJECT_URL/variables/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+chain_remote_exists=$($DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error -Ls --HEAD --url "$CI_PROJECT_URL/variables/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | head -1 | cut -d" " -f 2 \
 )
 
