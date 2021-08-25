@@ -25,14 +25,14 @@ echo "Checking whether the certificate exists locally"
 cert_files_local_exists=$($DOCKER_COMPOSE run --rm config /bin/bash -c "test -f $FULLCHAIN_PEM && test -f $PRIVATE_PEM && test -f $CHAIN_PEM && echo 'true' || echo 'false'")
 echo "cert_files_local_exists: $cert_files_local_exists"
 echo "To see if they could be found in gitlab"
-fullchain_remote_exists=$($DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error -Ls --HEAD --url "$CI_PROJECT_URL/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
-    --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | head -1 | cut -d" " -f 2 \
+fullchain_remote_exists=$($DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error --silent --HEAD --url "$CI_PROJECT_URL/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+    --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" | head -1 | cut -d" " -f 2 \
 )
-privkey_remote_exists=$($DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error -Ls --HEAD --url "$CI_PROJECT_URL/variables/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
-    --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | head -1 | cut -d" " -f 2 \
+privkey_remote_exists=$($DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error --silent --HEAD --url "$CI_PROJECT_URL/variables/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+    --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" | head -1 | cut -d" " -f 2 \
 )
-chain_remote_exists=$($DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error -Ls --HEAD --url "$CI_PROJECT_URL/variables/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
-    --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | head -1 | cut -d" " -f 2 \
+chain_remote_exists=$($DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error --silent --HEAD --url "$CI_PROJECT_URL/variables/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
+    --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" | head -1 | cut -d" " -f 2 \
 )
 
 echo "fullchain_remote_exists: $fullchain_remote_exists"
@@ -44,13 +44,13 @@ if [[ $cert_files_local_exists == 'true' ]];then
 	echo "Renewing the certificate for $REMOTE_HOSTNAME"
 	$DOCKER_COMPOSE run --rm certbot renew
 	echo "Backup the fullchain cert to gitlab variable"
-  $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent --request PUT --url '$CI_PROJECT_URL/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form value=@$FULLCHAIN_PEM"
+  $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent --request PUT --url '$CI_PROJECT_URL/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $CI_JOB_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form value=@$FULLCHAIN_PEM"
 
   echo "Backup the private cert to gitlab variable"
-  $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent --request PUT --url '$CI_PROJECT_URL/variables/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form value=@$PRIVATE_PEM"
+  $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent --request PUT --url '$CI_PROJECT_URL/variables/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $CI_JOB_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form value=@$PRIVATE_PEM"
 
   echo "Backup the chain cert to gitlab variable"
-  $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent --request PUT --url '$CI_PROJECT_URL/variables/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form value=@$CHAIN_PEM"
+  $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent --request PUT --url '$CI_PROJECT_URL/variables/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $CI_JOB_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form value=@$CHAIN_PEM"
 
 else
   echo "Certs do not exist in the filesystem"
@@ -60,17 +60,17 @@ else
     echo "Get fullchain cert from gitlab"
     $DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error --silent \
       --request GET --url "$CI_PROJECT_URL/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
-      --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | jq -r ".value" > $FULLCHAIN_PEM
+      --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" | jq -r ".value" > $FULLCHAIN_PEM
 
     echo "Get private cert from gitlab"
     $DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error --silent \
       --request GET --url "$CI_PROJECT_URL/variables/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
-      --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | jq -r ".value" > $PRIVATE_PEM
+      --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" | jq -r ".value" > $PRIVATE_PEM
 
     echo "Get chain cert from gitlab"
     $DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error --silent \
       --request GET --url "$CI_PROJECT_URL/variables/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
-      --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | jq -r ".value" > $CHAIN_PEM
+      --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" | jq -r ".value" > $CHAIN_PEM
   fi
 
   if [[ $fullchain_remote_exists -eq 404 || $privkey_remote_exists -eq 404 || $chain_remote_exists -eq 404 ]];then
@@ -79,7 +79,7 @@ else
 	  echo "Fullchain cert created and put it into gitlab"
     $DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error --silent --output /dev/null \
       --request POST --url "$CI_PROJECT_URL/variables" \
-      --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
+      --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" \
       --form "environment_scope=$GIGADB_ENV" \
       --form "key=tls_fullchain_pem" \
       --form "value=$(cat $FULLCHAIN_PEM)"
@@ -87,7 +87,7 @@ else
     echo "Private cert created and put it into gitlab"
     $DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error --silent --output /dev/null \
       --request POST --url "$CI_PROJECT_URL/variables" \
-      --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
+      --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" \
       --form "environment_scope=$GIGADB_ENV" \
       --form "key=tls_privkey_pem" \
       --form "value=$(cat $PRIVATE_PEM)"
@@ -95,7 +95,7 @@ else
     echo "Chain cert created and put it into gitlab"
     $DOCKER_COMPOSE run --rm config /usr/bin/curl --show-error --silent --output /dev/null \
       --request POST --url "$CI_PROJECT_URL/variables" \
-      --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
+      --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" \
       --form "environment_scope=$GIGADB_ENV" \
       --form "key=tls_chain_pem" \
       --form "value=$(cat $CHAIN_PEM)"
