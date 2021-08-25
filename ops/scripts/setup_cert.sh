@@ -26,21 +26,21 @@ cert_files_local_exists=$($DOCKER_COMPOSE run --rm config /bin/bash -c "test -f 
 echo "cert_files_local_exists: $cert_files_local_exists"
 echo "To see if they could be found in gitlab"
 if ! [ -z "$tls_fullchain_pem" ];then
-  $fullchain_pem_remote_exists="true"
+  fullchain_pem_remote_exists="true"
 else
-  $fullchain_pem_remote_exists="false"
+  fullchain_pem_remote_exists="false"
 fi
 
 if ! [ -z "$tls_privkey_pem" ];then
-  $privkey_pem_remote_exists="true"
+  privkey_pem_remote_exists="true"
 else
-  $privkey_pem_remote_exists="false"
+  privkey_pem_remote_exists="false"
 fi
 
 if ! [ -z "$tls_chain_pem" ];then
-  $chain_pem_remote_exists="true"
+  chain_pem_remote_exists="true"
 else
-  $chain_pem_remote_exists="false"
+  chain_pem_remote_exists="false"
 fi
 
 set -x
