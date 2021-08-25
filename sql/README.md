@@ -72,12 +72,17 @@ docker-compose run --rm updater ./yii dataset-files/download-restore-backup --la
 For a detailed usage information, please
 go to [here](https://github.com/rija/gigadb-website/tree/files-url-updater-%23629/gigadb/app/tools/files-url-updater)
 
-Then load production backup to the `PostgreSQL` using `pg_restore`, for example:
+Then go into docker environment and do the conversion using `pg_restore` and `pg_dump`, for example:
 ```bash
-pg_restore -v -U gigadb -h database -p 5432 -d gigadbv3_production /gigadb/app/tools/files-url-updater/sql/gigadbv3_$date.backup
-```
+cd /gigadb-website
+docker-compose run --rm test bash
 
-Finally, convert the database using the latest `pg_dump`, for example:
-```bash
+# Create database for the restore
+psql -h database -U gigadb -c 'create database gigadbv3_production'
+
+# Load production backup
+pg_restore -v -U gigadb -h database -p 5432 -d gigadbv3_production /gigadb/app/tools/files-url-updater/sql/gigadbv3_$date.backup
+
+# Convert the database
 pg_dump -v -U gigadb -h database -p 5432 -Fc -d gigadbv3_production -f /sql/psql-v96/gigadbv3_$date_$version.pgdmp
 ```
