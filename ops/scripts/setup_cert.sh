@@ -22,11 +22,13 @@ else
 fi
 
 echo "Checking whether the certificate exists"
+$DOCKER_COMPOSE run --rm  config ls -alrt /etc/letsencrypt/live/$REMOTE_HOSTNAME/
 cert_files_local_exist=$($DOCKER_COMPOSE run --rm  console test -f $FULLCHAIN_PEM && \
                                   test -f $PRIVATE_PEM && \
                                   test -f $CHAIN_PEM && \
-                                  echo "true"
+                                  echo "true" \
 )
+echo "cert_files_local_exist: $cert_files_local_exist"
 
 if [[ $cert_files_local_exists == 'true' ]];then
 	echo "Renewing the certificate for $REMOTE_HOSTNAME"
