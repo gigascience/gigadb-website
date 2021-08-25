@@ -10,9 +10,9 @@ set -e
 source "./.env"
 
 # Path to the certs
-FULLCHAIN_PEM=/etc/letsencrypt/live/$REMOTE_HOSTNAME/fullchain.pem
-PRIVATE_PEM=/etc/letsencrypt/live/$REMOTE_HOSTNAME/privkey.pem
-CHAIN_PEM=/etc/letsencrypt/live/$REMOTE_HOSTNAME/chain.pem
+FULLCHAIN_PEM=/etc/letsencrypt/archive/$REMOTE_HOSTNAME/fullchain1.pem
+PRIVATE_PEM=/etc/letsencrypt/archive/$REMOTE_HOSTNAME/privkey1.pem
+CHAIN_PEM=/etc/letsencrypt/archive/$REMOTE_HOSTNAME/chain1.pem
 
 # docker-compose executable
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
@@ -23,7 +23,7 @@ fi
 
 echo "Checking whether the certificate exists"
 $DOCKER_COMPOSE run --rm  config ls -alrt /etc/letsencrypt/live/$REMOTE_HOSTNAME/
-cert_files_local_exist=$($DOCKER_COMPOSE run --rm  console test -f $FULLCHAIN_PEM && \
+cert_files_local_exist=$($DOCKER_COMPOSE run --rm console test -f $FULLCHAIN_PEM && \
                                   test -f $PRIVATE_PEM && \
                                   test -f $CHAIN_PEM && \
                                   echo "true" \
