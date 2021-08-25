@@ -10,9 +10,9 @@ set -e
 source "./.env"
 
 # Path to the certs
-FULLCHAIN_PEM=/etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/fullchain.pem
-PRIVATE_PEM=/etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/privkey.pem
-CHAIN_PEM=/etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/chain.pem
+FULLCHAIN_PEM=/etc/letsencrypt/live/$REMOTE_HOSTNAME/fullchain.pem
+PRIVATE_PEM=/etc/letsencrypt/live/$REMOTE_HOSTNAME/privkey.pem
+CHAIN_PEM=/etc/letsencrypt/live/$REMOTE_HOSTNAME/chain.pem
 
 # docker-compose executable
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
@@ -22,10 +22,10 @@ else
 fi
 
 echo "Checking whether the certificate exists"
-$DOCKER_COMPOSE run --rm  console ls -alrt /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/
-cert_files_local_exist=$($DOCKER_COMPOSE run --rm  console test -f /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/fullchain.pem && \
-                                  test -f /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/privkey.pem && \
-                                  test -f /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/chain.pem && \
+$DOCKER_COMPOSE run --rm  console ls -alrt /etc/letsencrypt/live/$REMOTE_HOSTNAME/
+cert_files_local_exist=$($DOCKER_COMPOSE run --rm  console test -f $FULLCHAIN_PEM && \
+                                  test -f $PRIVATE_PEM && \
+                                  test -f $CHAIN_PEM && \
                                   echo "true"
 )
 
@@ -74,17 +74,17 @@ else
     echo "Get fullchain cert from gitlab"
     $DOCKER_COMPOSE run --rm  console /usr/bin/curl --show-error --silent \
       --request GET --url "$CI_PROJECT_URL/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
-      --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | jq -r ".value" > /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/fullchain.pem
+      --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | jq -r ".value" > $FULLCHAIN_PEM
 
     echo "Get private cert from gitlab"
     $DOCKER_COMPOSE run --rm  console /usr/bin/curl --show-error --silent \
       --request GET --url "$CI_PROJECT_URL/variables/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
-      --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | jq -r ".value" > /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/privkey.pem
+      --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | jq -r ".value" > $PRIVATE_PEM
 
     echo "Get chain cert from gitlab"
     $DOCKER_COMPOSE run --rm  console /usr/bin/curl --show-error --silent \
       --request GET --url "$CI_PROJECT_URL/variables/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV" \
-      --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | jq -r ".value" > /etc/letsencrypt/$GIGADB_ENV/$REMOTE_HOSTNAME/chain.pem
+      --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" | jq -r ".value" > $CHAIN_PEM
   fi
 
   if [[ $fullchain_remote_exists -eq 404 || $privkey_remote_exists -eq 404 || $chain_remote_exists -eq 404 ]];then
