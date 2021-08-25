@@ -23,8 +23,8 @@ fi
 
 echo "Checking whether the certificate exists"
 
-cert_files_local_exist=$($DOCKER_COMPOSE run --rm config /bin/bash -c "test -f $FULLCHAIN_PEM && echo 'true' || echo 'false'")
-echo "cert_files_local_exist: $cert_files_local_exist"
+cert_files_local_exists=$($DOCKER_COMPOSE run --rm config /bin/bash -c "test -f $FULLCHAIN_PEM && test -f $PRIVATE_PEM && test -f $CHAIN_PEM && echo 'true' || echo 'false'")
+echo "cert_files_local_exists: $cert_files_local_exists"
 
 if [[ $cert_files_local_exists == 'true' ]];then
 	echo "Renewing the certificate for $REMOTE_HOSTNAME"
