@@ -4,7 +4,10 @@ variable "deployment_target" {
   default = "staging"
 }
 
-
+variable "key_name" {
+  type = string
+  description = "Name of ssh key pair created for EC2 access"
+}
 
 terraform {
     backend "http" {
@@ -35,7 +38,8 @@ module "ec2" {
 
   owner = data.external.callerUserName.result.userName
   deployment_target = var.deployment_target
-  eip_tag_name = "eip-ape1-${var.deployment_target}-gigadb"
+  key_name = var.key_name
+  eip_tag_name = "eip-ape1-${var.deployment_target}-${data.external.callerUserName.result.userName}-gigadb"
 }
 
 output "ec2_private_ip" {

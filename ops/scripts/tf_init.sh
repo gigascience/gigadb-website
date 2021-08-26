@@ -69,9 +69,12 @@ fi
 cp ../../terraform.tf .
 cp ../../getIAMUserNameToJSON.sh .
 
-# create the terraform variable file (must be named terraform.tfvars for terraform to recognise it automatically)
-echo "deployment_target = \"$target_environment\"" > terraform.tfvars
+# Infer the name the EC2 key pair from the file name without extension from teh $aws_ssh_key variable
+key_name=$(echo $aws_ssh_key | rev | cut -d"/" -f 1 | rev | cut -d"." -f 1)
 
+# create the terraform variables file (must be named terraform.tfvars for terraform to recognise it automatically)
+echo "deployment_target = \"$target_environment\"" > terraform.tfvars
+echo "key_name = \"$key_name\"" >> terraform.tfvars
 # create an environment variable file for this script and for ansible_init.sh
 echo "gitlab_project=$gitlab_project" > .init_env_vars
 echo "GITLAB_USERNAME=$GITLAB_USERNAME" >> .init_env_vars

@@ -3,7 +3,7 @@ data "aws_vpc" "default" {
 }
 
 resource "aws_security_group" "docker_host_sg" {
-  name        = "docker_host_sg_${var.deployment_target}"
+  name        = "docker_host_sg_${var.deployment_target}_${var.owner}"
   description = "Allow connection to docker host for ${var.deployment_target}"
   vpc_id      = data.aws_vpc.default.id
 
@@ -65,10 +65,10 @@ resource "aws_instance" "docker_host" {
   ami = "ami-68e59c19"
   instance_type = "t3.micro"
   vpc_security_group_ids = [aws_security_group.docker_host_sg.id]
-  key_name = "aws-hk-centos7-keys"
+  key_name = var.key_name
 
   tags = {
-    Name = "gigadb_server_${var.deployment_target}",
+    Name = "gigadb_server_${var.deployment_target}_${var.owner}",
     System = "t3_micro-centos7",
   }
 
