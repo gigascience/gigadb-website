@@ -2,8 +2,9 @@ stages:
   - build for test
   - test
   - conformance and security
-  - production build
+  - staging build
   - staging deploy
+  - live build
   - live deploy
   - operations
 image: docker:stable

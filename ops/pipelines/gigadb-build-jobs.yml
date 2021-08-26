@@ -169,7 +169,7 @@ build_staging:
   variables:
     GIGADB_ENV: "staging"
   extends: .pb_gigadb
-  stage: production build
+  stage: staging build
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
@@ -178,7 +178,7 @@ build_live:
   variables:
     GIGADB_ENV: "live"
   extends: .pb_gigadb
-  stage: production build
+  stage: live build
   environment:
     name: "live"
     deployment_tier: production
