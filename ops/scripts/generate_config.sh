@@ -181,6 +181,19 @@ if [ $GIGADB_ENV != "CI" ];then
     cp ops/configuration/nginx-conf/le.${GIGADB_ENV}.ini /etc/letsencrypt/cli.ini
 fi
 
+## Configuring Nginx config for production environments
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+  SOURCE=${APP_SOURCE}/ops/configuration/nginx-conf/sites/nginx.target_deployment.http.conf.dist
+  TARGET=${APP_SOURCE}/ops/configuration/nginx-conf/sites/${GIGADB_ENV}/gigadb.${GIGADB_ENV}.http.conf
+  VARS='$SERVER_HOSTNAME'
+  envsubst $VARS < $SOURCE > $TARGET
+
+  SOURCE=${APP_SOURCE}/ops/configuration/nginx-conf/sites/nginx.target_deployment.https.conf.dist
+  TARGET=${APP_SOURCE}/ops/configuration/nginx-conf/sites/${GIGADB_ENV}/gigadb.${GIGADB_ENV}.https.conf
+  VARS='$SERVER_HOSTNAME'
+  envsubst $VARS < $SOURCE > $TARGET
+fi
+
 ## Configuring other tools and apps
 
 SOURCE=${APP_SOURCE}/gigadb/app/tools/files-url-updater/config/params.php.dist

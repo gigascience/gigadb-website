@@ -3,7 +3,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name gigadb-staging.gigatools.net gigadb.rija.dev fuw.rija.dev rija-staging.rija.dev web gigadb.dev;
+    server_name $SERVER_HOSTNAME web gigadb.dev gigadb.test;
     root /var/www;
     index index.php index.html index.htm;
 
@@ -48,10 +48,6 @@ location /search {
         root /var/www/.le/;
         log_not_found off;
     }
-
-    # additional optional instructions to include (e.g: redirect http traffic to https when https is setup)
-    include /etc/nginx/sites-availables/http-includes.*.conf;
-
 
 }
 
