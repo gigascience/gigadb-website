@@ -17,7 +17,7 @@ ARG FIX_SITE_CONFIGS=false
 RUN if [ ${FIX_SITE_CONFIGS} = true ]; then \
 	# bake in the nginx site configs
 	mkdir -vp /etc/nginx/sites-available/ && \
-	mv /tmp/sites-available/* /etc/nginx/sites-available/ && \
+	mv /tmp/sites-available/*.conf /etc/nginx/sites-available/ && \
 	# bake in the static assets
 	mv /tmp/nginx-static/* /var/www/ && \
 	# bake in proto files
