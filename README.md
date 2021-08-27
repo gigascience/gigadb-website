@@ -172,6 +172,22 @@ $ docker-compose run --rm test bin/behat --profile local --stop-on-failure featu
 
 ## Troubleshooting
 
+### using Portainer
+
+When working on your local dev environment, navigate to ``http://localhost:9009``.
+Portainer will give you quick access to all the details about all running container
+as well as controls to **start/stop/kill/restart/pause/resume** them.
+More importantly, you can easily acces the logs or drop into console mode by
+clicking the relevant icon next to the container.f
+
+The only pre-requisite is that a PORTAINER_BCRYPT variable is defined in the ``.env`` file.
+Look at the ``env-sample`` file for inline instructions on how to generate a correct value for 
+your chosen password.
+
+On production environment, the variable will be exposed from GitLab Group variable.
+
+### using CLI
+
 To access the services logs, use the command below:
 
 ```

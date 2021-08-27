@@ -17,7 +17,13 @@ COMPOSE_PROJECT_NAME=deployment
 # This token allows access to the secret variables stored on GitLab.com for logins, passwords, api keys and secrets
 # required by the project. If you don't have one, generate from your user account setting on Gitlab.com.
 
-#GITLAB_PRIVATE_TOKEN=
+GITLAB_PRIVATE_TOKEN=
+
+### Portainer credentials
+# you obtain the bcrypt password by running:
+# docker run --rm httpd:2.4-alpine htpasswd -nbB admin "your-password" | cut -d ":" -f 2 | sed -e 's/\$/\\\$/g'
+
+PORTAINER_BCRYPT=
 
 ### GitLab API URLs  ####################################################################################################
 # the urls be different for each environment and forks.

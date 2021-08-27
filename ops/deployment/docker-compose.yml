@@ -643,6 +643,16 @@ services:
     expose:
       - "11300"
 
+  portainer:
+    image: portainer/portainer-ce
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - 9009:9000
+      - 8000:8000
+    command: -H unix:///var/run/docker.sock --admin-password $PORTAINER_BCRYPT
+
   local-cert:
     build:
       context: ..
@@ -663,3 +673,4 @@ networks:
 volumes:
   le_config:
   le_webrootpath:
+  portainer_data:

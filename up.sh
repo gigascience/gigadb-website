@@ -80,3 +80,6 @@ docker-compose up -d fuw-worker gigadb-worker
 docker-compose run --rm test ./protected/yiic generatefiletypes
 docker-compose run --rm test ./protected/yiic generatefileformats
 
+
+# start the container admin UI
+docker-compose up -d portainer
