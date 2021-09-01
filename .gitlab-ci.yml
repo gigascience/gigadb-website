@@ -77,8 +77,8 @@ cache:
 
 before_script:
   - env | grep "^CI_" > $APPLICATION/.ci_env
-  - env | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" > $APPLICATION/.env
-  - env | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -v "ANALYTICS_PRIVATE_KEY" | grep -viE "tlsauth" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.secrets
+  - env | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" > $APPLICATION/.env
+  - env | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -v "ANALYTICS_PRIVATE_KEY" | grep -viE "tls" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.secrets
   - apk add --no-cache py-pip bash
   # Pin docker-compose version to stop installation error
   - pip install docker-compose~=1.23.0

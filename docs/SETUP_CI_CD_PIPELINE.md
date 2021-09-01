@@ -177,6 +177,7 @@ Ensure the following variables are set for their respective environments in the 
 | REMOTE_SMTP_PASSWORD | yes |
 | REMOTE_SMTP_PORT | no |
 | REMOTE_SMTP_USERNAME | no |
+| GITLAB_PRIVATE_TOKEN | yes |
 | gigadb_db_host | no |
 | gigadb_db_user | no |
 | gigadb_db_password | yes |
@@ -530,15 +531,47 @@ is summoned during a deployment job (``sd_gigadb`` or ``ld_gigadb``).
 #### NGINX configuration
 
 In addition, NGINX conf files need to be configured with the domain name of the 
-staging server. Edit the following two NGINX conf files so that any mention of 
-`gigadb-staging.gigatools.net` is replaced by the domain name you are using to 
-stage GigaDB.
+target server (staging or live).
+The GitLab variable that needs to be set for this is ``$REMOTE_HOSTNAME``.
 
-* `ops/configuration/nginx-conf/sites/gigadb.staging.http.conf`
-* `ops/configuration/nginx-conf/sites/gigadb.staging.https.conf`
+As part of executing ``ops/scripts/generate_config.sh`` by running ``docker-compose run --rm config``, the templates: 
 
-Commit these two NGINX conf files into your repository. You should see a new 
-CI/CD pipeline process start and end with a successful build. 
+* ops/configuration/nginx-conf/sites/nginx.target_deployment.http.conf.dist
+* ops/configuration/nginx-conf/sites/nginx.target_deployment.https.conf.dist
+
+will be used to create the final Nginx site configs file with the value of ``$REMOTE_HOSTNAME``
+
+at the in-container location ``/etc/nginx/sites-available/``
+
+The script ``ops/configuration/nginx-conf/enable_sites`` will enable the sites whose configuration are passed as parameter.
+
+Example from ``ops/pipelines/gigadb-deploy-jobs.yml``
+```
+- docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T web /usr/local/bin/enable_sites gigadb.$GIGADB_ENV.https
+```
+
+When the container service ``web`` is started, it will also execute that ascript to enable the default http configuration for Gigadb.org,
+so that a TLS certificates created with Let's Encrypt can pass verification.
+
+The TLS certificate for the domain $REMOTE_HOSTNAME are managed by the script ``ops/scripts/setup_cert.sh``
+
+It will create new certificates with Let's encrypt if none exists on the target deployment or remotely as GitLab variables.
+if existing on the target deployment, the script will request renewal which Let's Encrypt will only perform if close to expiration.
+
+Upon creation of new certificate or renewal, the certificates are backed up to GitLab as the following variables:
+
+| name | environment | description |
+| --- | --- | --- |
+| tls_fullchain_pem | staging | all certificates, including server certificate (aka leaf certificate or end-entity certificate). The server certificate is the first one in this file, followed by any intermediates. |
+| tls_privkey_pem | staging | private key for the certificate in PEM format |
+| tls_chain_pem | staging | contains the additional intermediate certificate or certificates that web browsers will need in order to validate the server certificate |
+| tls_fullchain_pem | live | all certificates, including server certificate (aka leaf certificate or end-entity certificate). The server certificate is the first one in this file, followed by any intermediates. |
+| tls_privkey_pem | live | private key for the certificate in PEM format |
+| tls_chain_pem | live | contains the additional intermediate certificate or certificates that web browsers will need in order to validate the server certificate |
+
+When provisioning a new staging or live environment, ``ops/scripts/setup_cert.sh`` will attempt to pull these variables if they exist.
+This way, we won't unnecessarily creat certificate everytime we need to re-create a staging and deployment, 
+thus reducing the risk of hitting weekly rate-limit for certificate creation imposed by Let's Encrypt.
 
 ### Executing the CD pipeline for deployment
 
