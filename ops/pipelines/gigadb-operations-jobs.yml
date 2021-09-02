@@ -98,7 +98,6 @@ sd_application_stop:
   stage: staging deploy
   environment:
     name: staging
-    action: stop
 
 sd_application_start:
   variables:
@@ -107,7 +106,6 @@ sd_application_start:
   stage: staging deploy
   environment:
     name: staging
-    action: stop
 
 ld_application_stop:
   variables:
@@ -116,7 +114,6 @@ ld_application_stop:
   stage: live deploy
   environment:
     name: live
-    action: stop
 
 ld_application_start:
   variables:
@@ -125,7 +122,6 @@ ld_application_start:
   stage: live deploy
   environment:
     name: live
-    action: stop
 
 ld_teardown:
   variables:
