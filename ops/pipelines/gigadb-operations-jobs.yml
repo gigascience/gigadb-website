@@ -91,7 +91,7 @@ sd_teardown:
     name: staging
     action: stop
 
-sd_application_stop:
+sd_stop_app:
   variables:
     GIGADB_ENV: "staging"
   extends: .application_stop
@@ -99,7 +99,7 @@ sd_application_stop:
   environment:
     name: staging
 
-sd_application_start:
+sd_start_app:
   variables:
     GIGADB_ENV: "staging"
   extends: .application_start
@@ -107,7 +107,7 @@ sd_application_start:
   environment:
     name: staging
 
-ld_application_stop:
+ld_stop_app:
   variables:
     GIGADB_ENV: "live"
   extends: .application_stop
@@ -115,7 +115,7 @@ ld_application_stop:
   environment:
     name: live
 
-ld_application_start:
+ld_start_app:
   variables:
     GIGADB_ENV: "live"
   extends: .application_start
