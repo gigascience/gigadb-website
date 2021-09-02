@@ -27,7 +27,9 @@ assignees: ''
 
 
 ## Additional Info
+### Value
 
+### Known dependencies 
 
 ## Product Backlog Item Ready Checklist
 
