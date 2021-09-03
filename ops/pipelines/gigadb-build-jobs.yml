@@ -165,7 +165,7 @@
     when: always
     expire_in: 1 week
 
-.build_staging:
+build_staging:
   variables:
     GIGADB_ENV: "staging"
   extends: .pb_gigadb
@@ -174,7 +174,7 @@
     name: "staging"
     url: $REMOTE_HOME_URL
 
-.build_live:
+build_live:
   variables:
     GIGADB_ENV: "live"
   extends: .pb_gigadb
