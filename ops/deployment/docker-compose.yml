@@ -650,7 +650,7 @@ services:
       - portainer_data:/data
     ports:
       - 9009:9000
-      - 8000:8000
+      - 8008:8000
     command: -H unix:///var/run/docker.sock --admin-password $PORTAINER_BCRYPT
 
   local-cert:
