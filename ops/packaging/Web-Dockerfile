@@ -9,6 +9,7 @@ COPY configuration/nginx-conf/enable_sites /usr/local/bin/enable_sites
 
 COPY configuration/gigadb-public/favicon.ico /var/www/favicon.ico
 COPY configuration/gigadb-public/index.php /var/www/index.php
+COPY configuration/gigadb-public/robots.txt /var/www/robots.txt
 
 COPY configuration/nginx-conf/sites/${GIGADB_ENV} /tmp/sites-available/
 COPY configuration/nginx-static /tmp/nginx-static/

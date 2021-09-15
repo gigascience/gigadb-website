@@ -9,6 +9,7 @@ COPY ops/configuration/nginx-conf/enable_sites /usr/local/bin/enable_sites
 COPY css /var/www/css
 COPY docs /var/www/docs
 COPY favicon.ico /var/www/favicon.ico
+COPY robots.txt /var/www/robots.txt
 COPY fonts /var/www/fonts
 COPY images /var/www/images
 COPY index.php /var/www/index.php
