@@ -54,35 +54,46 @@ sudo -u postgres /usr/bin/psql -f gigadbv3_20170815_plant.backup> gigadb
 
 ## Convert production database backup to modern version of PostgreSQL [#731](https://github.com/gigascience/gigadb-website/issues/731)
 The `PostgreSQL` version for production database is `9.1.17`, while that for latest development work is `9.6.22`,
-So, there is a need to upgrade production database to `9.6+`.
+So, there is a need to upgrade production database to `higher version`.
 
-Running this command would convert the production database version to `9.6+`.
+Running this command would convert the production database version to `9.3+`.
 ```bash
 cd /gigadb-website
-sql/convert_production_db_to_latest_ver.sh
+
+# Spin up all gigaDB containers
+./up.sh
+
+# Go to files-url-updater dir
+cd gigadb/app/tools/files-url-updater/ 
+
+# Spin up pg9_3 container
+docker-compose up -d pg9_3
+
+# Configure files-url-updater
+cp config/params.php.example config/params.php
+# Then update the ftp credentials in params.php
+'ftp' => [ # connection details to the ftp server where to download production backup from
+        "host" => "", # host for the ftp server
+        "username" => "", # ftp username to use to login to ftp server
+        "password" => "", # ftp password to use to login to ftp server
+    ],
+
+# Run the script
+cd /gigadb-website
+./ops/scripts/convert_production_db_to_latest_ver.sh
 ```
 
 ### How does the script work
-First, download the production database using `files-url-updater` tool. You could specify the which database backup you want to download
-by including `--date` parameter. By default, this command will download the latest production database. 
+Download the production database and load it into postgreSQL server using `files-url-updater` tool. You could specify the date which database backup you want to use
+by including `--date` parameter. By default, this command will download and restore the latest production database.
 ```bash
 cd gigadb/app/tools/files-url-updater/
-docker-compose run --rm updater ./yii dataset-files/download-restore-backup --latest --norestore
+
+# Downlaod and restore the latest production database 
+docker-compose run --rm updater ./yii dataset-files/download-restore-backup --latest
+
+# Export production data as text
+docker-compose run --rm updater pg_dump -h pg9_3 -U gigadb  --clean --create --schema=public --no-privileges --no-tablespaces gigadb -f sql/gigadbv3_"$latest"_v"$version".backup
 ```
 For a detailed usage information, please
 go to [here](https://github.com/rija/gigadb-website/tree/files-url-updater-%23629/gigadb/app/tools/files-url-updater)
-
-Then go into docker environment and do the conversion using `pg_restore` and `pg_dump`, for example:
-```bash
-cd /gigadb-website
-docker-compose run --rm test bash
-
-# Create database for the restore
-psql -h database -U gigadb -c 'create database gigadbv3_production'
-
-# Load production backup
-pg_restore -v -U gigadb -h database -p 5432 -d gigadbv3_production /gigadb/app/tools/files-url-updater/sql/gigadbv3_$date.backup
-
-# Convert the database
-pg_dump -v -U gigadb -h database -p 5432 -Fc -d gigadbv3_production -f /sql/psql-v96/gigadbv3_$date_$version.pgdmp
-```
