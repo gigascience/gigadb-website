@@ -4,13 +4,13 @@ class m200529_030927_create_sample_rel_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE sample_rel (
+        $this->execute("CREATE TABLE IF NOT EXISTS sample_rel (
             id integer NOT NULL,
             sample_id integer NOT NULL,
             related_sample_id integer NOT NULL,
             relationship_id integer);");
 
-        $this->execute("CREATE SEQUENCE sample_rel_id_seq
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS sample_rel_id_seq
             START WITH 1
             INCREMENT BY 1
             NO MINVALUE

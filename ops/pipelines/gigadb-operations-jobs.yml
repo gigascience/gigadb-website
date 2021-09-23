@@ -45,6 +45,32 @@ ld_top:
     action: prepare
   when: manual
 
+sd_reset_migration:
+  variables:
+    GIGADB_ENV: staging
+  extends: .remote_compose
+  stage: staging deploy
+  script:
+    - *configure-docker-compose
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
+  environment:
+    name: staging
+    action: prepare
+  when: manual
+
+ld_reset_migration:
+  variables:
+    GIGADB_ENV: live
+  extends: .remote_compose
+  stage: live deploy
+  script:
+    - *configure-docker-compose
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
+  environment:
+    name: live
+    action: prepare
+  when: manual
+
 
 .teardown:
   extends: .remote_compose

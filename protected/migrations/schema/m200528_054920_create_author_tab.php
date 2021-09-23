@@ -4,7 +4,7 @@ class m200528_054920_create_author_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE author (
+        $this->execute("CREATE TABLE IF NOT EXISTS author (
             id integer NOT NULL,
             surname character varying(255) NOT NULL,
             middle_name character varying(255),
@@ -13,7 +13,7 @@ class m200528_054920_create_author_tab extends CDbMigration
             gigadb_user_id integer,
             custom_name character varying(100));");
 
-        $this->execute("CREATE SEQUENCE author_id_seq
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS author_id_seq
             START WITH 3500
             INCREMENT BY 1
             NO MINVALUE

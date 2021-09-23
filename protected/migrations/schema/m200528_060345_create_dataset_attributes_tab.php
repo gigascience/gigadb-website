@@ -4,7 +4,7 @@ class m200528_060345_create_dataset_attributes_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE dataset_attributes (
+        $this->execute("CREATE TABLE IF NOT EXISTS dataset_attributes (
             id integer NOT NULL,
             dataset_id integer,
             attribute_id integer,
@@ -13,7 +13,7 @@ class m200528_060345_create_dataset_attributes_tab extends CDbMigration
             image_id integer,
             until_date date);");
 
-        $this->execute("CREATE SEQUENCE dataset_attributes_id_seq
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS dataset_attributes_id_seq
             START WITH 2500
             INCREMENT BY 1
             NO MINVALUE

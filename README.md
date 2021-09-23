@@ -75,6 +75,19 @@ $ docker-compose up csv-to-migrations
 $ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.dev --interactive=0
 ```
 
+>Note 1: When creating database migrations for changes to the database schema, ensure any creation of entity only happens if it doesn't exist already, i.e use: 
+> * ``CREATE TABLE IF NOT EXISTS``
+> * ``CREATE SEQUENCE IF NOT EXISTS``
+> * ``CREATE OR REPLACE VIEW``
+
+>Note 2: Occasionally, you may need to import database dumps and run the database migrations afterwards.
+> This will fail unless you run the following commands before the migrations in order to first drop existing constraints and indexes:
+> ```
+> $ docker-compose run --rm application ./protected/yiic custommigrations dropconstraints 
+> $ docker-compose run --rm application ./protected/yiic custommigrations dropindexes 
+>```
+
+
 ### Configuration variables
 
 The project can be configured using *deployment variables* managed in `.env`, 

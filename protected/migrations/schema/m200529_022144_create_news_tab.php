@@ -4,14 +4,14 @@ class m200529_022144_create_news_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE news (
+        $this->execute("CREATE TABLE IF NOT EXISTS news (
             id integer NOT NULL,
             title character varying(200) NOT NULL,
             body text DEFAULT ''::text NOT NULL,
             start_date date NOT NULL,
             end_date date NOT NULL);");
 
-        $this->execute("CREATE SEQUENCE news_id_seq
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS news_id_seq
             START WITH 1
             INCREMENT BY 1
             NO MINVALUE

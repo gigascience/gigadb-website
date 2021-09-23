@@ -4,7 +4,7 @@ class m200528_050725_create_authitem_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE AuthItem (
+        $this->execute("CREATE TABLE IF NOT EXISTS AuthItem (
             name character varying(64) NOT NULL,
             type integer NOT NULL,
             description text,

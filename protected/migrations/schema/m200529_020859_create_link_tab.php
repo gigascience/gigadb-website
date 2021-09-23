@@ -4,14 +4,14 @@ class m200529_020859_create_link_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE link (
+        $this->execute("CREATE TABLE IF NOT EXISTS link (
             id integer NOT NULL,
             dataset_id integer NOT NULL,
             is_primary boolean DEFAULT false NOT NULL,
             link character varying(100) NOT NULL,
             description character varying(200));");
 
-        $this->execute("CREATE SEQUENCE link_id_seq
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS link_id_seq
             START WITH 80
             INCREMENT BY 1
             NO MINVALUE
@@ -21,7 +21,7 @@ class m200529_020859_create_link_tab extends CDbMigration
         $this->execute("ALTER SEQUENCE link_id_seq 
             OWNED BY link.id;");
 
-        $this->execute("CREATE SEQUENCE link_prefix_id_seq
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS link_prefix_id_seq
             START WITH 1
             INCREMENT BY 1
             NO MINVALUE

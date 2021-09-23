@@ -4,7 +4,7 @@ class m200528_061933_create_dataset_log_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE dataset_log (
+        $this->execute("CREATE TABLE IF NOT EXISTS dataset_log (
             id integer NOT NULL,
             dataset_id integer NOT NULL,
             message text DEFAULT ''::text,
@@ -13,7 +13,7 @@ class m200528_061933_create_dataset_log_tab extends CDbMigration
             model_id integer,
             url text DEFAULT ''::text);");
 
-        $this->execute("CREATE SEQUENCE dataset_log_id_seq
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS dataset_log_id_seq
             START WITH 1200
             INCREMENT BY 1
             NO MINVALUE
