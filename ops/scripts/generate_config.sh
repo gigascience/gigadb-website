@@ -44,7 +44,7 @@ if ! [ -f  ./.secrets ];then
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${FORK_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") |.key + "=" + .value' > .fork_var
 
     echo "Retrieving variables from ${PROJECT_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | select(.key != "TLSAUTH_CERT") | select(.key != "TLSAUTH_KEY") | select(.key != "TLSAUTH_CA") | select(.key != "staging_tlsauth_ca") | select(.key != "staging_tlsauth_key") | select(.key != "staging_tlsauth_cert") | select(.key != "live_tlsauth_ca") | select(.key != "live_tlsauth_cert") | select(.key != "live_tlsauth_key") | select(.key != "tls_fullchain_pem") | select(.key != "tls_privkey_pem") | select(.key != "tls_chain_pem") |.key + "=" + .value' > .project_var
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | select(.key != "TLSAUTH_CERT") | select(.key != "TLSAUTH_KEY") | select(.key != "TLSAUTH_CA") | select(.key != "docker_tlsauth_ca") | select(.key != "docker_tlsauth_key") | select(.key != "docker_tlsauth_cert") | select(.key != "tls_fullchain_pem") | select(.key != "tls_privkey_pem") | select(.key != "tls_chain_pem") |.key + "=" + .value' > .project_var
     cat .group_var .fork_var .project_var > .secrets && rm .group_var && rm .fork_var && rm .project_var
     echo "# Some help about this file in ops/configuration/variables/secrets-sample" >> .secrets
 fi

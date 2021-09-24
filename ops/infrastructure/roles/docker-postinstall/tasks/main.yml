@@ -69,7 +69,7 @@
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
     body_format: json
     body:
-      key: "{{ gigadb_environment }}_tlsauth_ca"
+      key: "docker_tlsauth_ca"
       value: "{{ ca_pem['content'] | b64decode }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
@@ -79,7 +79,7 @@
 
 - name: Copy the CA pem to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_tlsauth_ca?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables/docker_tlsauth_ca?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -99,7 +99,7 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "{{ gigadb_environment }}_tlsauth_cert"
+      key: "docker_tlsauth_cert"
       value: "{{ cert_pem['content'] | b64decode }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
@@ -109,7 +109,7 @@
 
 - name: Copy the cert pem to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_tlsauth_cert?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables/docker_tlsauth_cert?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -129,7 +129,7 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "{{ gigadb_environment }}_tlsauth_key"
+      key: "docker_tlsauth_key"
       value: "{{ key_pem['content'] | b64decode }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
@@ -139,7 +139,7 @@
 
 - name: Copy the key pem to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_tlsauth_key?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables/docker_tlsauth_key?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"

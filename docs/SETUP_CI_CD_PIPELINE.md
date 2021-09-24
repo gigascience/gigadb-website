@@ -253,6 +253,22 @@ sd_gigadb:
 
 TODO: link up to @pli888's aws docs
 
+#### AWS dashboard
+
+There are two activities to perform on the AWS dashboard's EC2 console prior to using the GitLab Pipeline for deployment:
+
+1. Creation of Elastic IPs (under ``Network & Security > Elastic IPs``) to be used for the deployments to ``staging`` and ``live`` environments
+1. Creation of a SSH Key Pair (under ``Network & Security > Key Pairs``) that will allow Ansible and operators to ssh into the deployed EC2 instances
+
+Those resources needs to be globally unique in the same AWS acccount, so you need to follow the naming convention below:
+
+1. For Elastic IPS: ``eip-ape1-<environment>-<IAM Role Username>-gigadb``
+1. For SSH Key pair: any name of your choosing that's unique and contains your IAM Role Username
+
+The private part of the SSH Key pair needs to be dowloaded to your developer machine in the ``~/.ssh`` directory and with 
+permission set to ``600``.
+
+
 #### Terraform
 
 [Terraform](https://www.terraform.io) is a tool which allows you to describe and
@@ -491,21 +507,33 @@ Ansible will update values for the project environment variables below in
 GitLab. Check them on the project environment variables page after the Ansible
 provisioning has completed. This is done by the `docker-postinstall` role.
 
-| Environment variable | Description |
-|----------------------|-------------|
-| staging_tlsauth_ca | Certificate authority for staging server - this is provided by the staging server during Ansible provisioning |
-| staging_tlsauth_cert | Public certificate for staging server - this is provided by staging server during Ansible provisioning |
-| staging_tlsauth_key  | the server key for the above CA - this is provided by staging server during Ansible provisioning |
-| staging_public_ip    | Public IP address of staging server |
-| staging_private_ip   | Private IP address of staging server |
-
+| Variable's Key | Environnments | Description |
+|---|---|---|
+| docker_tlsauth_ca | staging | Certificate authority for staging server - this is provided by the staging server during Ansible provisioning |
+| docker_tlsauth_cert | staging | Public certificate for staging server - this is provided by staging server during Ansible provisioning |
+| docker_tlsauth_key  | staging | the server key for the above CA - this is provided by staging server during Ansible provisioning |
+| docker_tlsauth_ca | live | Certificate authority for staging server - this is provided by the live server during Ansible provisioning |
+| docker_tlsauth_cert | live | Public certificate for staging server - this is provided by live server during Ansible provisioning |
+| docker_tlsauth_key  | live | the server key for the above CA - this is provided by live server during Ansible provisioning |
+| remote_public_ip    | staging | Public IP address of staging server |
+| remote_private_ip   | staging | Private IP address of staging server |
+| remote_public_ip    | live | Public IP address of live server |
+| remote_private_ip   | live | Private IP address of live server |
  
-This is for running a secure Docker engine on the production CNGB virtual server
+This is for running a secure Docker engine on the production instance
 so that the Docker API is secured over TCP and we know we are communicating 
 with the correct server and not a malicious impersonation. We also need to 
 authenticate the client with TLS so only clients using the client certificates 
 can use the Docker engine. This is the 2-way certificate-based authentication.
 
+>When Ansible generates the client/server certificate, it writes them on the EC2 instance at location ``/home/centos/.docker/``
+
+>If an operator needs to perform a docker action on the EC2 instance from this development machine, 
+they will need to dowloand the three files from GitLab variables into his development machine at location ``~/.docker/``
+Then they can run docker commands like this:
+```
+docker --tlsverify -H=<remote_public_ip>:2376 ps
+```
 ### Further configuration steps
 
 The new gigadb-website code contains functionality for running GigaDB over 

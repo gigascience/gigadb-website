@@ -16,12 +16,9 @@
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_ca' >  ~/.docker/ca.pem || true"
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_cert' > ~/.docker/cert.pem || true"
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_key' > ~/.docker/key.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
+    - bash -c "echo '$docker_tlsauth_ca' >  ~/.docker/ca.pem || true"
+    - bash -c "echo '$docker_tlsauth_cert' > ~/.docker/cert.pem || true"
+    - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
     # Pull production container from our private registry
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST info
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com

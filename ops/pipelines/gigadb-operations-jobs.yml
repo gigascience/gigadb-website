@@ -12,12 +12,9 @@
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_ca' >  ~/.docker/ca.pem || true"
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_cert' > ~/.docker/cert.pem || true"
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_key' > ~/.docker/key.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
+    - bash -c "echo '$docker_tlsauth_ca' >  ~/.docker/ca.pem || true"
+    - bash -c "echo '$docker_tlsauth_cert' > ~/.docker/cert.pem || true"
+    - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
 
 sd_top:
   variables:
@@ -172,12 +169,9 @@ ld_teardown:
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_ca' >  ~/.docker/ca.pem || true"
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_cert' > ~/.docker/cert.pem || true"
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_key' > ~/.docker/key.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
+    - bash -c "echo '$docker_tlsauth_ca' >  ~/.docker/ca.pem || true"
+    - bash -c "echo '$docker_tlsauth_cert' > ~/.docker/cert.pem || true"
+    - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
     # start the port 2375 for docker after ensured it's stopped (SIGKILL (137)) and removed
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST rm -f socat || true
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p $remote_private_ip:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
@@ -200,12 +194,9 @@ ld_teardown:
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_ca' >  ~/.docker/ca.pem || true"
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_cert' > ~/.docker/cert.pem || true"
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_key' > ~/.docker/key.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
+    - bash -c "echo '$docker_tlsauth_ca' >  ~/.docker/ca.pem || true"
+    - bash -c "echo '$docker_tlsauth_cert' > ~/.docker/cert.pem || true"
+    - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
     # FUW smoke tests
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T console ./yii smoke-test/check-docker-php
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T console ./yii smoke-test/check-tusd-endpoint
@@ -225,12 +216,9 @@ ld_teardown:
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_ca' >  ~/.docker/ca.pem || true"
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_cert' > ~/.docker/cert.pem || true"
-    - bash -c "[[ $GIGADB_ENV = staging ]] && echo '$staging_tlsauth_key' > ~/.docker/key.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_ca' >  ~/.docker/ca.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_cert' > ~/.docker/cert.pem || true"
-    - bash -c "[[ $GIGADB_ENV = live ]] && echo '$live_tlsauth_key' > ~/.docker/key.pem || true"
+    - bash -c "echo '$docker_tlsauth_ca' >  ~/.docker/ca.pem || true"
+    - bash -c "echo '$docker_tlsauth_cert' > ~/.docker/cert.pem || true"
+    - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
     # list content of assets directory
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T web ls -alrt /var/www/assets
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T application ls -alrt /var/www/assets
