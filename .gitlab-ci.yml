@@ -23,6 +23,8 @@ variables:
   # When using dind, it's wise to use the overlayfs driver for
   # improved performance.
   DOCKER_DRIVER: overlay2
+  # See https://github.com/docker-library/docker/pull/166
+  DOCKER_TLS_CERTDIR: ""
   # the configuration script needs to know that we are not in DEV environment anymore
   # so it doesn't try to access
   GIGADB_ENV: CI
