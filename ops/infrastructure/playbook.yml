@@ -26,18 +26,8 @@
     - role: ../../roles/docker-postinstall
     - role: ../../roles/postgres-preinstall
     - role: ansible-role-postgresql
-      postgresql_enablerepo: "pgdg96"
-      postgresql_version: 9.6
-      postgresql_data_dir: /var/lib/pgsql/9.6/data
-      postgresql_bin_path: /usr/pgsql-9.6/bin
-      postgresql_config_path: /var/lib/pgsql/9.6/data
-      postgresql_daemon: postgresql-9.6.service
-      postgresql_packages:
-        - postgresql96
-        - postgresql96-server
-        - postgresql96-libs
-        - postgresql96-contrib
-        - postgresql96-devel
+      become: yes
+      postgresql_version: 11
       postgresql_users:
       - name: "{{ pg_user }}"
         password: "{{ pg_password}}"

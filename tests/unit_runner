@@ -12,7 +12,7 @@ docker-compose run --rm application ./protected/yiic migrate --connectionID=test
 # running javascript tests for GigaDB
 docker-compose run --rm js npm test
 # running unit tests for GigaDB, make sure to reference the appropriate bootstrap as unit and functional tests have different ones
-docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
+docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
 gigadb_test_status=$?
 set +e
 docker-compose ps | grep console

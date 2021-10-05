@@ -1,5 +1,5 @@
 ARG NGINX_VERSION=1.15
-FROM nginx:${NGINX_VERSION}-alpine
+FROM nginx:1.21.3-alpine
 
 ARG GIGADB_ENV=dev
 
@@ -18,8 +18,14 @@ COPY less /var/www/less
 COPY style-guide /var/www/style-guide
 COPY files/examples /var/www/files/examples
 
-COPY fuw/app /app
+RUN apk --no-cache add openssl && \
+    mkdir -vp /etc/ssl/nginx && chmod 700 /etc/ssl/nginx && \
+    mkdir -vp /etc/ssl/nginx/certs && chmod 700 /etc/ssl/nginx/certs && \
+    mkdir -vp /var/www/.le && \
+    openssl dhparam -out /etc/ssl/nginx/dhparam.pem 2048 && \
+    mkdir -vp /etc/nginx/sites-enabled
 
+COPY fuw/app /app
 COPY ops/configuration/nginx-conf/sites/${GIGADB_ENV} /tmp/sites-available/
 ARG FIX_SITE_CONFIGS=false
 RUN if [ ${FIX_SITE_CONFIGS} = true ]; then \
@@ -27,10 +33,3 @@ RUN if [ ${FIX_SITE_CONFIGS} = true ]; then \
 	mkdir -vp /etc/nginx/sites-available/ && \
 	mv /tmp/sites-available/*.conf /etc/nginx/sites-available/  \
 ;fi
-
-RUN apk --no-cache add openssl && \
-    mkdir -vp /etc/ssl/nginx && chmod 700 /etc/ssl/nginx && \
-    mkdir -vp /etc/ssl/nginx/certs && chmod 700 /etc/ssl/nginx/certs && \
-    mkdir -vp /var/www/.le && \
-    openssl dhparam -out /etc/ssl/nginx/dhparam.pem 2048 && \
-    mkdir -vp /etc/nginx/sites-enabled

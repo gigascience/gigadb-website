@@ -143,7 +143,7 @@ $ ./tests/coverage_runner     # run test coverage, print report and submit to co
 You can specify the specific test file you want to run:
 
 ```
-$ docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage protected/tests/unit/DatasetDAOTest.php
+$ docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage protected/tests/unit/DatasetDAOTest.php
 ```
 
 #### For functional tests
@@ -151,7 +151,7 @@ $ docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protec
 You can specify the specific test file you want to run:
 
 ```
-$ docker-compose run --rm test ./bin/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage protected/tests/functional/SiteTest.php
+$ docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage protected/tests/functional/SiteTest.php
 ```
 
 #### For Acceptance tests

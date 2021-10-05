@@ -27,27 +27,33 @@ if ! [ -f  ./.env ];then
   rm .env.bak
 fi
 
+# start the container admin UI (not in CI)
+if [ "$(uname)" == "Darwin" ];then
+  docker-compose up -d portainer
+fi;
+
+
 # Configure the container services
 docker-compose run --rm config
 docker-compose run --rm fuw-config
 
 # Build console and web containers (needed when switching between branches often)
-docker-compose build web test console
+docker-compose build web test
 
-# Launch the services required by GigaDB and FUW, and then start nginx (web server) 
+# Launch the services required by GigaDB and FUW, and then start nginx (web server)
 docker-compose up -d --build application database fuw-public fuw-admin console
 
 # start web server
 docker-compose up -d web
 
 # Install composer dependencies for GigaDB
-docker-compose run gigadb
+docker-compose exec -T application composer install
 
 # Compile the CSS files
 docker-compose run --rm less
 
 # Install composer dependencies for FUW
-docker-compose run fuw
+docker-compose exec -T fuw-admin composer install
 
 # Install the NPM dependencies for the Javascript application and the ops scripts
 docker-compose run --rm js bash -c "npm install"
@@ -80,6 +86,5 @@ docker-compose up -d fuw-worker gigadb-worker
 docker-compose run --rm test ./protected/yiic generatefiletypes
 docker-compose run --rm test ./protected/yiic generatefileformats
 
-
-# start the container admin UI
-docker-compose up -d portainer
+#show status of all containers
+docker ps

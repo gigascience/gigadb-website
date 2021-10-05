@@ -83,6 +83,7 @@ services:
       - ${APPLICATION}/style-guide:/var/www/style-guide      
       - ${APPLICATION}/index.php:/var/www/index.php
       - ${APPLICATION}/composer.json:/var/www/composer.json
+      - ${APPLICATION}/composer.lock:/var/www/composer.lock
       - ${APPLICATION}/ops/configuration/php-conf/php-${PHP_VERSION}-${GIGADB_ENV}.ini:/usr/local/etc/php/php.ini
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
@@ -259,7 +260,7 @@ services:
     command: bash -c "./tests/all_and_coverage"
 
   csv-to-migrations:
-    image: node:14.9.0-buster
+    image: node:14.18.0-buster
     working_dir: /var/www/ops/scripts
     volumes:
       - ${APPLICATION}/:/var/www
@@ -336,7 +337,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm
+        - PHP_BASE_IMAGE_VERSION=7.2.34-fpm-buster
         - APP_PORT=9002
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -378,7 +379,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
+        - PHP_BASE_IMAGE_VERSION=7.2.34-fpm-buster
         - APP_PORT=9001
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -421,7 +422,7 @@ services:
       context: ../../fuw/app/console
       dockerfile: Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2-cli
+        - PHP_BASE_IMAGE_VERSION=7.2.34-cli-buster
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
@@ -463,7 +464,7 @@ services:
       context: ..
       dockerfile: packaging/Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2-cli
+        - PHP_BASE_IMAGE_VERSION=7.2.34-cli-buster
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
@@ -509,7 +510,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2-fpm-stretch
+        - PHP_BASE_IMAGE_VERSION=7.2.34-fpm-buster
         - APP_PORT=9001
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true

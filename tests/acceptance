@@ -8,7 +8,7 @@ set +a
 
 echo "Running acceptance tests..."
 if [[ "$GIGADB_ENV" == "dev" ]];then
-	bin/behat --profile local -v --stop-on-failure
+	./vendor/behat/behat/bin/behat --profile local -v --stop-on-failure
 else
-	bin/behat --profile ci -v --stop-on-failure
+	./vendor/behat/behat/bin/behat --profile ci -v --stop-on-failure
 fi

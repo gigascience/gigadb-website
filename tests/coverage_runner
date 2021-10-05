@@ -3,9 +3,9 @@
 set -e
 set -u
 
-docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --coverage-php protected/runtime/unit.cov  --configuration protected/tests/phpunit.xml
-docker-compose run --rm test ./bin/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php  --coverage-php protected/runtime/functional.cov  --configuration protected/tests/phpunit.xml
-docker-compose run --rm test ./bin/phpcov merge protected/runtime --html protected/runtime/coverage --clover protected/runtime/clover.xml --text  protected/runtime/phpunit-coverage.txt | head -16 > protected/runtime/phpunit-coverage.txt
+docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --coverage-php protected/runtime/unit.cov  --configuration protected/tests/phpunit.xml
+docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php  --coverage-php protected/runtime/functional.cov  --configuration protected/tests/phpunit.xml
+docker-compose run --rm test ./vendor/phpunit/phpcov/phpcov merge protected/runtime --html protected/runtime/coverage --clover protected/runtime/clover.xml --text  protected/runtime/phpunit-coverage.txt | head -16 > protected/runtime/phpunit-coverage.txt
 
 gigadb_test_status=$?
 set +e
@@ -22,6 +22,6 @@ else
 fi
 
 
-docker-compose run --rm -e $(cat .env | grep COVERALLS) -e $(cat .secrets | grep COVERALLS) test ./bin/php-coveralls --verbose --coverage_clover /var/www/protected/runtime/clover.xml --json_path /var/www/protected/runtime/coveralls-upload.json
+docker-compose run --rm -e $(cat .env | grep COVERALLS) -e $(cat .secrets | grep COVERALLS) test ./vendor/php-coveralls/php-coveralls/bin/php-coveralls --verbose --coverage_clover /var/www/protected/runtime/clover.xml --json_path /var/www/protected/runtime/coveralls-upload.json
 
 cat protected/runtime/phpunit-coverage.txt

@@ -1,5 +1,5 @@
 ARG NGINX_VERSION=1.15
-FROM nginx:${NGINX_VERSION}-alpine
+FROM nginx:1.21.3-alpine
 
 ARG GIGADB_ENV=dev
 

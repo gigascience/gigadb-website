@@ -85,7 +85,7 @@ RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
     mkdir -p /usr/share/man/man7 && \
     # Install the pgsql client
     apt-get update -yq && \
-    apt-get install -y postgresql-client-${PG_CLIENT_VERSION} && \
+    apt-get install -y postgresql-client-11 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 ;fi

@@ -18,7 +18,7 @@ class DatasetLogTest extends CDbTestCase
         $this->assertEquals($fileName, $datasetlog->message);
         $this->assertEquals($fileModel, $datasetlog->model);
         $this->assertEquals($modelId, $datasetlog->model_id);
-        $this->assertEquals("./bin/adminFile/update/id/$fileId", $datasetlog->url);
+        $this->assertEquals("./vendor/phpunit/phpunit/adminFile/update/id/$fileId", $datasetlog->url);
         $this->assertTrue($datasetlog->isNewRecord);
     }
 

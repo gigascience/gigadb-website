@@ -6,4 +6,4 @@ set -u
 profile=${1:-"local"}
 
 docker-compose run --rm application ./protected/yiic migrate --interactive=0
-docker-compose run --rm test bin/behat --profile $profile -v --stop-on-failure
+docker-compose run --rm test ./vendor/behat/behat/bin/behat --profile $profile -v --stop-on-failure

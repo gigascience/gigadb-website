@@ -201,13 +201,13 @@ $ docker-compose run --rm  application ./protected/yiic migrate --interactive=0
 
 To run the unit tests:
 ```
-$ docker-compose run --rm test ./bin/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
+$ docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
 ```
 
 To run the functional tests:
 
 ```
-$ docker-compose run --rm test ./bin/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
+$ docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
 ```
 
 There is a bash shortcut available to run both unit tests and functional tests for GigaDB:
@@ -230,7 +230,7 @@ the `./tmp` directory.
 To run test coverage:
 
 ```
-$ docker-compose run --rm test ./bin/phpunit /var/www/protected/tests --testsuite all --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml
+$ docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit /var/www/protected/tests --testsuite all --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml
 ```
 
 ## Troubleshooting

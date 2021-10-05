@@ -1,4 +1,6 @@
 .remote_compose:
+  cache: []
+  dependencies: []
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
@@ -90,7 +92,7 @@ ld_reset_migration:
   when: manual
   artifacts:
     untracked: true
-    when: always
+    when: on_failure
     expire_in: 1 week
 
 .application_start:
@@ -102,7 +104,7 @@ ld_reset_migration:
   when: manual
   artifacts:
     untracked: true
-    when: always
+    when: on_failure
     expire_in: 1 week
 
 sd_teardown:

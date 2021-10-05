@@ -7,6 +7,16 @@
   stage: deployment
   allow_failure: false
   script:
+    # Load Base image
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+    - docker load -i php-7_1-fpm-buster.tar
+    - docker load -i php-7_2-fpm-buster.tar
+    - docker load -i php-7_2-cli-buster.tar
+    - docker load -i alpine-3_14.tar
+    - docker load -i nginx-1_21-alpine.tar
+    - docker load -i node-14-buster.tar
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending production variables at the end of the .env and .secrets
     - env | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" >> $APPLICATION/.env
     - env | grep -iE "^(staging_|remote_)" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
@@ -25,15 +35,15 @@
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:$GIGADB_ENV
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:$GIGADB_ENV
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:$GIGADB_ENV
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:$GIGADB_ENV
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:$GIGADB_ENV
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:$GIGADB_ENV
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:$GIGADB_ENV
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:$GIGADB_ENV
     # shutdown currently running container
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml down
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST stop socat || true
@@ -74,5 +84,5 @@
     untracked: true
     paths:
       - fuw/app/console/config/
-    when: always
+    when: on_failure
     expire_in: 1 week

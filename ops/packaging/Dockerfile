@@ -1,5 +1,5 @@
 ARG PHP_VERSION=7.1
-FROM php:${PHP_VERSION}-fpm-stretch
+FROM php:7.1.33-fpm-buster
 
 
 # basic dependencies
@@ -80,7 +80,7 @@ RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
     mkdir -p /usr/share/man/man7 && \
     # Install the pgsql client
     apt-get update -yq && \
-    apt-get install -y postgresql-client-${PG_CLIENT_VERSION} \
+    apt-get install -y postgresql-client-11 \
 ;fi
 
 
@@ -185,12 +185,10 @@ RUN if [ ${INSTALL_MAILPARSE} = true ]; then \
 
 ARG INSTALL_CSSLINT_JSHINT=false
 RUN if [ ${INSTALL_CSSLINT_JSHINT} = true ]; then \
-    # To fix public key not found error when running nodesource_setup.sh
-    curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
-    curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh && \
-    bash nodesource_setup.sh && \
-    apt-get install -y nodejs && \
-    rm nodesource_setup.sh && \
+    wget https://deb.nodesource.com/setup_12.x | bash - && \
+    apt-get install -y nodejs npm && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  && \
     npm install -g csslint jshint \
 ;fi
 

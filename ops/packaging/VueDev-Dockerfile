@@ -1,4 +1,4 @@
-FROM node:13.5-buster
+FROM node:14.18.0-buster
 
 # Set Environment Variables
 ENV DEBIAN_FRONTEND noninteractive
