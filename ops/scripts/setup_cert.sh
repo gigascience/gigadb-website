@@ -116,7 +116,7 @@ else
 
   else
     echo "No certs on GitLab, certbot to create one"
-    $DOCKER_COMPOSE run --rm certbot certonly -d $REMOTE_HOSTNAME
+    $DOCKER_COMPOSE run --rm certbot certonly -d $REMOTE_HOSTNAME -d portainer.$REMOTE_HOSTNAME
     echo "Read content of files"
     $DOCKER_COMPOSE run --rm config mkdir -vp /etc/letsencrypt/archive/$REMOTE_HOSTNAME
     $DOCKER_COMPOSE run --rm config mkdir -vp /etc/letsencrypt/live/$REMOTE_HOSTNAME

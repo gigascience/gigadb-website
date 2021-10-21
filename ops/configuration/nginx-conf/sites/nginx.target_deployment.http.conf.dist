@@ -51,5 +51,35 @@ location /search {
 
 }
 
+server {
 
+    listen 80;
+    listen [::]:80;
+
+    server_name portainer.$SERVER_HOSTNAME;
+    root /var/www;
+    index index.php index.html index.htm;
+
+    location ~* (common\.css|datatables\.css|pager\.css)$ {
+        expires -1;
+    }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+        expires 365d;
+    }
+
+    location / {
+         try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/.le/;
+        log_not_found off;
+    }
+
+}
 

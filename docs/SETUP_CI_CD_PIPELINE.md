@@ -186,9 +186,10 @@ Ensure the following variables are set for their respective environments in the 
 | fuw_db_user | no |
 | fuw_db_password | yes |
 | fuw_db_database | no |
+| PORTAINER_PASSWORD | yes |
 
 
-so, there should be two versions of each variable, one for each environment.
+so, there should be 2 or 3 versions of each variable, one for each environment.
 
 ##### Good examples:
 
@@ -198,7 +199,9 @@ so, there should be two versions of each variable, one for each environment.
 | DEPLOYMENT_ENV | live | x | live|
 | gigadb_db_password| 1234 | v | staging |
 | gigadb_db_password| 5678 | v | live |
-
+| PORTAINER_PASSWORD | "password for dev" | v | dev |
+| PORTAINER_PASSWORD | "password for staging" | v | staging |
+| PORTAINER_PASSWORD | "password for live" | v | live |
 
 ##### Bad examples:
 
@@ -215,6 +218,14 @@ The following two variables need to be set for Environment "All (default)"
 | --- | --- |
 | DOCKER_HUB_USERNAME | no |
 | DOCKER_HUB_PASSWORD | yes |
+
+##### Create DNS record for accessing portainer on staging and on live servers
+Create an `A` record in DNS dashboard as following:
+
+| Record name | Type | IP |  
+| --- | --- | --- |
+| portainer.$REMOTE_HOSTNAME(staging) | A | staging server IP |
+| portainer.$REMOTE_HOSTNAME(live) | A | live server IP |
 
 #### Jobs and stages in GitLab configuration files
 

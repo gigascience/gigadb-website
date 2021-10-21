@@ -27,15 +27,14 @@ if ! [ -f  ./.env ];then
   rm .env.bak
 fi
 
-# start the container admin UI (not in CI)
-if [ "$(uname)" == "Darwin" ];then
-  docker-compose up -d portainer
-fi;
-
-
 # Configure the container services
 docker-compose run --rm config
 docker-compose run --rm fuw-config
+
+# start the container admin UI (not in CI)
+if [ "$(uname)" == "Darwin" ];then
+  ./ops/scripts/start_portainer.sh
+fi;
 
 # Build console and web containers (needed when switching between branches often)
 docker-compose build web test

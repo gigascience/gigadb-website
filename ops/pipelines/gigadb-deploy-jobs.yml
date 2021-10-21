@@ -44,8 +44,8 @@
 #    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:$GIGADB_ENV
 #    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
 #    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:$GIGADB_ENV
-    # shutdown currently running container
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml down
+    # shutdown currently running container and its volumes
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml down -v
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST stop socat || true
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST rm socat || true
     # verify config renders correctly after variables interpolation
@@ -62,9 +62,15 @@
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm less
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefiletypes
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefileformats
+    # Spin up portainer container
+    - ./ops/scripts/start_portainer.sh
     # Generate the web certificate for TLS termination on web container.
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm config bash -c "cp /le.staging.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets"
     - ./ops/scripts/setup_cert.sh
+    # Debug steps
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml ps
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml top
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml logs web
     # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T web /usr/local/bin/enable_sites gigadb.$GIGADB_ENV.https
     # FUW specific steps
@@ -84,5 +90,5 @@
     untracked: true
     paths:
       - fuw/app/console/config/
-    when: on_failure
+    when: always
     expire_in: 1 week

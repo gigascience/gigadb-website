@@ -19,12 +19,6 @@ COMPOSE_PROJECT_NAME=deployment
 
 GITLAB_PRIVATE_TOKEN=
 
-### Portainer credentials
-# you obtain the bcrypt password by running:
-# docker run --rm httpd:2.4-alpine htpasswd -nbB admin "your-password" | cut -d ":" -f 2 | sed -e 's/\$/\\\$/g'
-
-PORTAINER_BCRYPT=
-
 ### GitLab API URLs  ####################################################################################################
 # the urls be different for each environment and forks.
 # group variables are supplied by Gigadb and set at group level (gigascience, forks and upstream) in GitLab.
@@ -81,3 +75,7 @@ MAIN_BRANCH=develop
 
 ### CSV to Yii migration script conversion configuration ################################################################
 CSV_DIR=production_like
+
+### Portainer credentials
+# you obtain the bcrypt password by running:
+# docker run --rm httpd:2.4-alpine htpasswd -nbB admin "your-password" | cut -d ":" -f 2 | sed -e 's/\$/\\\$/g'

@@ -270,6 +270,18 @@ services:
       - SYS_ADMIN
     restart: unless-stopped
 
+  portainer:
+    image: portainer/portainer-ce:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - 9009:9000
+      - 8000:8000
+    networks:
+      - web-tier
+    command: -H unix:///var/run/docker.sock --admin-password $PORTAINER_BCRYPT
+
 networks:
   web-tier:
     driver: bridge
@@ -285,3 +297,4 @@ volumes:
   le_webrootpath:
   tempcaptcha:
   feeds:
+  portainer_data:
