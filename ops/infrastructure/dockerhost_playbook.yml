@@ -1,0 +1,27 @@
+---
+# build a Centos server running a secure Docker CE install
+
+- name: Setup Fail2ban
+  hosts: name_gigadb_server_staging*:name_gigadb_server_live*
+
+  tasks:
+    - debug:
+        msg: "remote private ip : {{ ec2_private_ip }}"
+
+  roles:
+    - role: ../../roles/fail2ban
+    - role: ../../roles/jail-ssh
+
+- name: Setup Docker CE
+  hosts: name_gigadb_server_staging*:name_gigadb_server_live*
+
+
+  roles:
+    - role: ../../roles/docker-install
+    - role: role-secure-docker-daemon
+      dds_host: "{{ inventory_hostname }}"
+      dds_server_cert_path: /etc/docker
+      dds_restart_docker: no
+      dds_client_cert_path: /home/centos/.docker
+    - role: ../../roles/docker-postinstall
+    - role: ../../roles/fuw

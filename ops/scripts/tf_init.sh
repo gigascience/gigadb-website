@@ -25,6 +25,11 @@ while [[ $# -gt 0 ]]; do
         target_environment=$2
         shift
         ;;
+    --backup-file)
+        has_env=true
+        backup_file=$2
+        shift
+        ;;
     *)
         echo "Invalid option: $1"
         exit 1  ## Could be optional.
@@ -51,7 +56,11 @@ if [ -z $GITLAB_USERNAME ];then
 fi
 
 if [ -z $GITLAB_PRIVATE_TOKEN ];then
-  read -p "You need to specify your GitLab username: " GITLAB_PRIVATE_TOKEN
+  read -p "You need to specify your GitLab private token: " GITLAB_PRIVATE_TOKEN
+fi
+
+if [ -z $backup_file ];then
+  read -p "You need to specify a backup file created by the files-url-updater tool: " backup_file
 fi
 
 # url encode gitlab project
@@ -81,7 +90,15 @@ echo "GITLAB_USERNAME=$GITLAB_USERNAME" >> .init_env_vars
 echo "GITLAB_PRIVATE_TOKEN=$GITLAB_PRIVATE_TOKEN" >> .init_env_vars
 echo "aws_ssh_key=$aws_ssh_key" >> .init_env_vars
 echo "deployment_target=$target_environment" >> .init_env_vars
+echo "backup_file=../../../../gigadb/app/tools/files-url-updater/sql/$backup_file" >> .init_env_vars
 
+# Update terraform.tfvars file with values from GitLab so Terraform can configure RDS instance
+gigadb_db_database=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_database?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
+echo "gigadb_db_database=\"$gigadb_db_database\"" >> terraform.tfvars
+gigadb_db_user=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_user?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
+echo "gigadb_db_user=\"$gigadb_db_user\"" >> terraform.tfvars
+gigadb_db_password=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_password?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
+echo "gigadb_db_password=\"$gigadb_db_password\"" >> terraform.tfvars
 
 # Initialise a remote terraform state on GitLab
 

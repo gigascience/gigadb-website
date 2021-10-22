@@ -1,11 +1,7 @@
-data "aws_vpc" "default" {
-  default = true
-}
-
 resource "aws_security_group" "docker_host_sg" {
   name        = "docker_host_sg_${var.deployment_target}_${var.owner}"
   description = "Allow connection to docker host for ${var.deployment_target}"
-  vpc_id      = data.aws_vpc.default.id
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 80
@@ -56,7 +52,7 @@ resource "aws_security_group" "docker_host_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
    tags = {
-     Name = var.deployment_target
+     Name = "docker_host_sg_${var.deployment_target}_${var.owner}"
    }
 }
 
@@ -66,6 +62,7 @@ resource "aws_instance" "docker_host" {
   instance_type = "t3.micro"
   vpc_security_group_ids = [aws_security_group.docker_host_sg.id]
   key_name = var.key_name
+  subnet_id = var.public_subnet_id
 
   tags = {
     Name = "gigadb_server_${var.deployment_target}_${var.owner}",
@@ -97,4 +94,8 @@ resource "aws_eip_association" "docker_host_eip_assoc" {
 
 output "instance_ip_addr" {
   value = aws_instance.docker_host.private_ip
+}
+
+output "instance_public_ip_addr" {
+  value = aws_instance.docker_host.public_ip
 }

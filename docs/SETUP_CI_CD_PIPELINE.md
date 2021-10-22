@@ -130,10 +130,10 @@ CI/CD pipeline since it is set to run manually in the `.gitlab-ci.yml` file.
 This part of the CI/CD process has to be explicitly executed from the GitLab 
 pipelines page.
 
-Prior to this, a host machine has to be instantiated with a 
-secure Docker daemon on which the GigaDB application will be deployed. This 
-machine can be used for a specific environment, most likely staging or 
-live. 
+Prior to this, a host machine has to be instantiated with a secure Docker daemon
+on which the GigaDB application will be deployed. In addition, an RDS machine 
+is created to provide a PostgreSQL database for GigaDB. Both these machines can
+be used for a specific environment, most likely staging or live.
 
 There are two pre-requisites to fulfill before. First, GitLab needs be configured for build and deployment to production (staging and live).
 Second, several tools are needed to set up a Docker-enabled server on the AWS cloud: 
@@ -326,6 +326,7 @@ In our project this file is `ops/infrastructure/terraform.tf` and the modules ar
 | --- | --- | --- |
 | ops/infrastructure/modules/aws-instance | deploy an EC2 instance and associated root volume, security group and Elastic IP linking | Ask your admin to create an Elastic IP for your deployment |
 | ops/infrastructure/modules/rds | deploy a PostgreSQL RDS service and associated security group | DB credentials defined in GitLab variables | 
+| ops/infrastructure/modules/bastion-aws-instance | deploy an EC2 instance to act as a bastion server for accessing RDS service |  |
 
 ##### Terraform state
 
@@ -393,12 +394,8 @@ again in subsequent runs. ``ops/scripts/ansible_init.sh`` will also source that 
 #### Ansible
 
 [Ansible](https://www.ansible.com) is used to install the EC2 instance 
-
-with a Docker daemon. In addition, a PostgreSQL server is installed on the EC2
-instance which will host the database that GigaDB uses to manage information
-abouts its datasets. Note that this setup for a staging instance of GigaDB is
-different to a local GigaDB application whose PostgreSQL database is provided by
-a custom Docker container.
+with a Docker daemon. In addition, a PostgreSQL database is created on the RDS
+instance using `sql/production_like.pgdmp`.
 
 You can install Ansible on macOS using [HomeBrew](https://brew.sh) with the command ``brew install ansible``
 
@@ -447,6 +444,14 @@ file which lists the host machines connection details. Our file is located at `o
 
 # do not add any IP address here as it is dynamically managed using terraform-inventory
 
+[name_bastion_server_staging] # host name for staging deployment, the name is a concatenation of AWS tag key and value attached to the EC2 instance
+
+# do not add any IP address here as it is dynamically managed using terraform-inventory
+
+[name_bastion_server_live] # host name for live deployment, the name is a concatenation of AWS tags attached to the EC2 instance
+
+# do not add any IP address here as it is dynamically managed using terraform-inventory
+
 [all:vars] # host variables needed by Ansible to configure software and services. Most have their value pulled from ansible.properties created with the ansible_init.sh script
 
 gitlab_url = "https://gitlab.com/api/v4/projects/{{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') | urlencode | regex_replace('/','%2F') }}"
@@ -464,9 +469,10 @@ fuw_db_user = "{{ lookup('ini', 'fuw_db_user type=properties file=ansible.proper
 fuw_db_password = "{{ lookup('ini', 'fuw_db_password type=properties file=ansible.properties') }}"
 fuw_db_database = "{{ lookup('ini', 'fuw_db_database type=properties file=ansible.properties') }}"
 
+backup_file = "{{ lookup('ini', 'backup_file type=properties file=ansible.properties') }}"
 ```
 
->Note that the header **[name_gigadb_staging]** must match the "Name" tag associated to the AWS EC2 resource defined in ``ops/infrastructure/modules/aws-instance/aws-instance.tf`` for the environment of interest (here ``staging``):
+>Note that the header **[name_gigadb_server_staging]** must match the "Name" tag associated to the AWS EC2 resource defined in ``ops/infrastructure/modules/aws-instance/aws-instance.tf`` for the environment of interest (here ``staging``):
 
 ```
 tags = {
@@ -479,8 +485,11 @@ tags = {
 
 >**Note:** host names in Ansible must be made of alphanumerical and underscore characters only. Although Terraform and AWS don't have that limitation, the Name tag needs to follow it so the connection between Terraform and Ansible can be made.
 
-An ``ansible.properties`` file needs to exist in the environment-specific directory for a given environment.
-This file is queried by the host variables shown above, and is created using the ``ops/scripts/ansible_init.sh``:
+An ``ansible.properties`` file needs to exist in the environment-specific 
+directory for a given environment. This file is queried by the host variables 
+shown above, and is initially created with a `backup_file` variable when 
+`$ ../../../scripts/tf_init.sh` was executed above. More variables are added 
+into `ansible.properties` when `ops/scripts/ansible_init.sh` is executed:
 
 ```
 $ cd ops/infrastructure/envs/environment
@@ -491,8 +500,11 @@ Where environment must be replaced by ``staging`` or ``live``.
 That script needs to be executed after ``ops/scripts/tf_init.sh`` has been run, as our script is dependent
 on the existence of an ``.init_env_vars`` file created by the latter.
 
-That script also makes a copy of the ``ops/infrastructure/playbook.yml`` into the environment-specific directory
-so the playbook can be performed from environment specific directory.
+The `ansible_init.sh` script also makes a copy of `ops/infrastructure/dockerhost_playbook.yml`
+and `ops/infrastructure/bastion_playbook.yml` into the environment-specific 
+directory so the playbooks can be performed from environment specific directory. 
+This ansible script also updates the `gigadb_db_host` Gitlab variable with the 
+domain name of the RDS service in preparation for its provisioning.
 
 ###### Linking Terraform and Ansible.
 
@@ -520,7 +532,7 @@ where ``environment`` is replaced by ``staging`` or ``live``, the environment fo
 Provision the EC2 instance using Ansible:
 ```
 $ cd ops/infrastructure/envs/staging
-$ ansible-playbook -i ../../inventories -i name_gigadb_staging  playbook.yml
+$ ansible-playbook -i ../../inventories dockerhost_playbook.yml
 ```
 
 > Since an elastic IP address is being used, you might need to delete the entry
@@ -543,8 +555,8 @@ provisioning has completed. This is done by the `docker-postinstall` role.
 | remote_private_ip   | staging | Private IP address of staging server |
 | remote_public_ip    | live | Public IP address of live server |
 | remote_private_ip   | live | Private IP address of live server |
- 
-This is for running a secure Docker engine on the production instance
+
+This is for running a secure Docker engine on the AWS EC2 server
 so that the Docker API is secured over TCP and we know we are communicating 
 with the correct server and not a malicious impersonation. We also need to 
 authenticate the client with TLS so only clients using the client certificates 
@@ -558,6 +570,18 @@ Then they can run docker commands like this:
 ```
 docker --tlsverify -H=<remote_public_ip>:2376 ps
 ```
+
+The RDS instance is provisioned with a database via the bastion server by a
+separate ansible playbook:
+```
+$ cd ops/infrastructure/envs/staging
+$ ansible-playbook -i ../../inventories bastion_playbook.yml
+```
+
+The bastion playbook will create a `gigadb` database containing data from
+`sql/production_like.pgdmp`. This file is created by running `./up.sh` when
+spinning up a local GigaDB on your development platform.
+
 ### Further configuration steps
 
 The new gigadb-website code contains functionality for running GigaDB over 
@@ -661,7 +685,9 @@ $ pwd
 $ terraform plan
 $ terraform apply
 $ terraform refresh
-$ ansible-playbook -i ../../inventories -i name_gigadb_server_environment playbook.yml
+$ ../../../scripts/ansible_init.sh --env environment
+$ ansible-playbook -i ../../inventories dockerhost_playbook.yml
+$ ansible-playbook -i ../../inventories bastion_playbook.yml
 ```
 where you replace ``environment`` with ``staging`` or ``live``
 
@@ -674,7 +700,7 @@ There's no need to use ``ansible-vault`` anymore.
 
 > Since an elastic IP address is being used, you might need to delete the entry
 in the `~/.ssh/known_hosts` file associated with the elastic IP address if this
-is not the first time you have performedthe plays in the playbook.
+is not the first time you have performed the plays in the playbook.
 
 #### 5. Build and deploy
 
