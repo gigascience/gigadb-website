@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -eux
+
+docker-compose run --rm test curl -Is gigadb.dev/break-it-hard
+docker-compose logs web | grep 404 | tail -n 1 | grep "break-it-hard"
+docker-compose run --rm test curl -Is gigadb.dev/site/about
+docker-compose logs application | tail -n 10 | grep "URL SHA_1 UUIDv5: eb06ac98-a1af-5a84-abc8-99f4fa0834c8"

@@ -136,7 +136,7 @@ return CMap::mergeArray(array(
             'routes' => array(
                 array(
                     'class' => '\neam\yii_streamlog\LogRoute',
-                    'levels' => 'error, warning',
+                    'levels' => 'info, error, warning',
                 ),
             ),
         ),

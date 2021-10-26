@@ -11,5 +11,6 @@ set +a
 ./tests/acceptance_runner ci-js
 ./tests/javascript_check
 #./tests/css_check
+./tests/logging_check
 ./tests/coverage_runner
 

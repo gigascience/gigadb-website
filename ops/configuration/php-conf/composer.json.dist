@@ -58,7 +58,7 @@
     },
     "autoload": {
         "psr-0": {
-            "": ["features/bootstrap"]
+            "": ["features/bootstrap","protected/models","protected/components"]
         },
         "classmap":
         [

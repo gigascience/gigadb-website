@@ -1,8 +1,18 @@
 version: '3.7'
 
+x-logging: &logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "200k"
+      max-file: "10"
+      mode: "non-blocking"
+      max-buffer-size: "1m"
+
 services:
 
   web:
+    <<: *logging
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
@@ -45,12 +55,14 @@ services:
     command: ["/usr/local/bin/enable_sites", "gigadb.dev.http", "fuw-backend.dev.http", "fuw-frontend.dev.http"]
 
   certbot:
+    <<: *logging
     image: certbot/certbot
     volumes:
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le
 
   application:
+    <<: *logging
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
@@ -100,6 +112,7 @@ services:
       - db-tier
 
   database:
+    <<: *logging
     image: postgres:${POSTGRES_VERSION}-alpine
     environment:
       POSTGRES_DB: gigadb
@@ -137,23 +150,6 @@ services:
       - ${APPLICATION}/:/var/www
     command: /var/www/fuw/generate_config.sh
 
-  gigadb:
-    environment:
-      YII_PATH: ${YII_PATH}
-      YII2_PATH: ${YII2_PATH}
-    image: ${COMPOSE_PROJECT_NAME}_application:latest
-    volumes:
-      - ${APPLICATION}/:/var/www
-    depends_on:
-      - application
-      - database
-      # - phantomjs
-    command: composer install
-    networks:
-      - web-tier
-    cap_drop:
-      - NET_ADMIN
-      - SYS_ADMIN
 
   less:
     environment:
@@ -190,26 +186,7 @@ services:
       - web-tier
       - db-tier
 
-  fuw:
-    environment:
-      YII_PATH: ${YII_PATH}
-      YII2_PATH: ${YII2_PATH}
-    image: ${COMPOSE_PROJECT_NAME}_fuw-admin:latest
-    volumes:
-      - ${APPLICATION}/fuw/app:/app
-      - ${APPLICATION}/.env:/app/.env
-    depends_on:
-      - fuw-admin
-      - fuw-public
-      - database
 
-      # - phantomjs
-    command: composer install
-    networks:
-      - web-tier
-    cap_drop:
-      - NET_ADMIN
-      - SYS_ADMIN
 
   test:
     build:
@@ -257,7 +234,7 @@ services:
       - "gigadb.test:172.16.238.10"
       - "fuw-admin-api:172.16.238.10"
       - "fuw-public-api:172.16.238.10"
-    command: bash -c "./tests/all_and_coverage"
+    command: bash -c "pwd"
 
   csv-to-migrations:
     image: node:14.18.0-buster
@@ -293,6 +270,7 @@ services:
       - "3000"
 
   phantomjs:
+    <<: *logging
     image: wernight/phantomjs:2.1.1
     command: phantomjs --webdriver=8910
     expose:
@@ -305,6 +283,7 @@ services:
 # the firefox test browser currently doesn't work
 # see: https://stackoverflow.com/questions/46913377/php-codeception-not-so-quick-start-phpunit-framework-exception-undefined-inde
   firefox:
+    <<: *logging
     image: selenium/standalone-firefox-debug
     shm_size: '1gb' # to avoid a known issue
     ports:
@@ -316,6 +295,7 @@ services:
       - "gigadb.test:172.16.238.10"
 
   chrome:
+    <<: *logging
     image: selenium/standalone-chrome:3.141.59-oxygen # latest version with Chrome 74
     shm_size: '1gb' # to avoid a known issue
     ports:
@@ -330,6 +310,7 @@ services:
       START_XVFB: "false"
 
   fuw-admin:
+    <<: *logging
     environment:
       GIGADB_ENV: $GIGADB_ENV
       DOCKER_HOST: "tcp://host.docker.internal:2375"    
@@ -375,6 +356,7 @@ services:
       - db-tier
 
   fuw-public:
+    <<: *logging
     build:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
@@ -418,6 +400,7 @@ services:
       - db-tier
 
   fuw-worker:
+    <<: *logging
     build:
       context: ../../fuw/app/console
       dockerfile: Worker-Dockerfile
@@ -460,6 +443,7 @@ services:
     command: "/usr/local/bin/php /app/yii queue/listen --verbose"
 
   gigadb-worker:
+    <<: *logging
     build:
       context: ..
       dockerfile: packaging/Worker-Dockerfile
@@ -503,6 +487,7 @@ services:
 
 
   console:
+    <<: *logging
     environment:
       GIGADB_ENV: $GIGADB_ENV
       DOCKER_HOST: "tcp://host.docker.internal:2375"
@@ -533,6 +518,9 @@ services:
       # Mount source-code for development
       - ../../fuw/app:/app
       - ../../gigadb/app:/gigadb-apps      
+      - ../../vendor:/gigadb-website/vendor
+      - ../../sql:/gigadb-website/sql
+      - ../../protected:/gigadb-website
       # php config
       - ../../fuw/app/php-conf/fuw.ini:/usr/local/etc/php/conf.d/fuw.ini
       - ../../fuw/app/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
@@ -560,6 +548,7 @@ services:
       - "fuw-admin-api:172.16.238.10"
 
   ftpd:
+    <<: *logging
     build:
       context: ../../fuw/docker-pure-ftpd
     volumes:
@@ -587,6 +576,7 @@ services:
       - SYS_ADMIN
 
   watcher:
+    <<: *logging
     build:
       context: ../../fuw/watcher
     volumes:
@@ -610,6 +600,7 @@ services:
       - SYS_ADMIN
 
   tusd:
+    <<: *logging
     build:
       context: ../../fuw/tusd
     # image: tusproject/tusd:0.13.1
@@ -634,6 +625,7 @@ services:
       - SYS_ADMIN
 
   beanstalkd:
+    <<: *logging
     build:
       context: .
       dockerfile: ../packaging/Beanstalkd-Dockerfile
@@ -645,6 +637,7 @@ services:
       - "11300"
 
   portainer:
+    <<: *logging
     image: portainer/portainer-ce:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

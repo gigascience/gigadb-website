@@ -1,8 +1,18 @@
 version: '3.7'
 
+x-logging: &logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "50k"
+      max-file: "10"
+      mode: "non-blocking"
+      max-buffer-size: "2m"
+
 services:
 
   web:
+    <<: *logging
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
     environment:
       YII_PATH: ${YII_PATH}
@@ -42,6 +52,7 @@ services:
       - le_webrootpath:/var/www/.le
 
   application:
+    <<: *logging
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
     environment:
       YII_PATH: ${YII_PATH}
@@ -74,6 +85,7 @@ services:
     command: bash -c "./protected/yiic lesscompiler"
 
   fuw-admin:
+    <<: *logging
     environment:
       DOCKER_HOST: "tcp://${remote_private_ip}:2375"    
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:$GIGADB_ENV
@@ -103,6 +115,7 @@ services:
     restart: unless-stopped
 
   fuw-public:
+    <<: *logging
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:$GIGADB_ENV
     expose:
       - "9001"
@@ -130,6 +143,7 @@ services:
 
 
   fuw-worker:
+    <<: *logging
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:$GIGADB_ENV
     volumes:
       # directories used for filedrop files
@@ -152,6 +166,7 @@ services:
       - "dockerhost:${remote_private_ip}"    
 
   gigadb-worker:
+    <<: *logging
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:$GIGADB_ENV
     volumes:
       # directories used for filedrop files
@@ -174,6 +189,7 @@ services:
       - "dockerhost:${remote_private_ip}"    
 
   console:
+    <<: *logging
     environment:
       DOCKER_HOST: "tcp://${remote_private_ip}:2375"    
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:$GIGADB_ENV
@@ -199,6 +215,7 @@ services:
     restart: unless-stopped
 
   ftpd:
+    <<: *logging
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
     volumes:
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/home/uploader
@@ -220,6 +237,7 @@ services:
     restart: unless-stopped
 
   watcher:
+    <<: *logging
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:$GIGADB_ENV
     volumes:
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/inbox
@@ -241,6 +259,7 @@ services:
     restart: unless-stopped
 
   tusd:
+    <<: *logging
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:$GIGADB_ENV
     volumes:
       - ${DATA_SAVE_PATH}/fuw/incoming/tusd:/var/inbox/
@@ -260,6 +279,7 @@ services:
     restart: unless-stopped
 
   beanstalkd:
+    <<: *logging
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:$GIGADB_ENV
     expose:
       - "11300"
