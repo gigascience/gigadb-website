@@ -56,9 +56,24 @@ resource "aws_security_group" "docker_host_sg" {
    }
 }
 
+data "aws_ami" "centos" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["CentOS 8.4.2105 x86_64"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["125523088429"]
+}
 
 resource "aws_instance" "docker_host" {
-  ami = "ami-0b197b1f02309cb3c"
+  ami = data.aws_ami.centos.id
   instance_type = "t3.micro"
   vpc_security_group_ids = [aws_security_group.docker_host_sg.id]
   key_name = var.key_name

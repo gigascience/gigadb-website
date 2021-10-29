@@ -54,7 +54,12 @@ when using the AWS management console.
             "Resource": "*",
             "Condition": {
                 "StringEquals": {
-                    "ec2:Region": "ap-east-1"
+                    "ec2:Region": [
+                        "ap-east-1",
+                        "ap-northeast-1",
+                        "ap-southeast-1",
+                        "eu-west-3"
+                    ]
                 },
                 "ForAllValues:StringLike": {
                     "ec2:InstanceType": [

@@ -1,9 +1,3 @@
-[name_gigadb_server_staging]
-
-# do not add any IP address here as it is dynamically managed using terraform-inventory
-
-[name_gigadb_server_live]
-
 # do not add any IP address here as it is dynamically managed using terraform-inventory
 
 [name_bastion_server_staging]

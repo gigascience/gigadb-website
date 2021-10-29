@@ -25,8 +25,24 @@ resource "aws_security_group" "bastion_sg" {
    }
 }
 
+data "aws_ami" "centos" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["CentOS 8.4.2105 x86_64"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["125523088429"]
+}
+
 resource "aws_instance" "bastion" {
-  ami = "ami-0b197b1f02309cb3c"  # Centos 8
+  ami = data.aws_ami.centos.id
   associate_public_ip_address = true
   instance_type = "t3.micro"
   vpc_security_group_ids = [aws_security_group.bastion_sg.id]

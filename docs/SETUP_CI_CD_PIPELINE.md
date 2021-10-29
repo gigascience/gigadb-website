@@ -275,7 +275,7 @@ sd_gigadb:
 
 #### AWS-CLI
 
-TODO: link up to @pli888's aws docs
+See [awsdocs/awscli.md](awsdocs/awscli.md)
 
 #### AWS dashboard
 
@@ -286,9 +286,8 @@ There are two activities to perform on the AWS dashboard's EC2 console prior to 
 
 Those resources needs to be globally unique in the same AWS acccount, so you need to follow the naming convention below:
 
-1. For Elastic IPS: ``eip-ape1-<environment>-<IAM Role Username>-gigadb``
-1. For SSH Key pair: any name of your choosing that's unique and contains your IAM Role Username
-
+1. For Elastic IPS: ``eip-<application>-<environment>-<IAM Role Username>``, e.g: ``eip-gigadb-staging-Rija``
+1. For SSH Key pair: ``aws-<application>-<AWS region>-<IAM Role Username>.pem``, e.g: ``aws-gigadb-eu-west-3-Rija.pem``
 The private part of the SSH Key pair needs to be dowloaded to your developer machine in the ``~/.ssh`` directory and with 
 permission set to ``600``.
 
@@ -391,6 +390,17 @@ so we can run ``terraform`` and ``ansible-playbook`` commands from those directo
 In particular, the ``ops/scripts/tf_init.sh`` script will write in a ``.init_vars`` file the answer to the prompted value, so that they are not asked
 again in subsequent runs. ``ops/scripts/ansible_init.sh`` will also source that file.
 
+###### The list of files that will be created or placed in those directories during deployment:
+
+| name | description | used by |
+| --- | --- | --- |
+| ansible.properties | created by ``provisioner_init.sh``, holds variables assignment used by Ansible to configure deployed application| ansible-playbook | 
+| getIAMUserNameToJSON.sh | copied by ``provisioner_init.sh`` | terraform |
+| output/ | created by ``ansible-playbook`` to store a copy of Docker certs | docker |
+| playbook.yml | copied by ``provisioner_init.sh`` | ansible-playbook | 
+| terraform.tf | copied by ``provisioner_init.sh`` | terraform |
+| terraform.tfvars | created by ``provisioner_init.sh`` to hold Terraform variables assigments | terraform | 
+
 #### Ansible
 
 [Ansible](https://www.ansible.com) is used to install the EC2 instance 
@@ -436,22 +446,6 @@ However, the connection parameters (like SSH keys) are variables we need to supp
 The machines controlled by Ansible are defined in a [`hosts`](https://github.com/gigascience/gigadb-website/blob/develop/ops/infrastructure/inventories/hosts)
 file which lists the host machines connection details. Our file is located at `ops/infrastructure/inventories/hosts` and here is the current content annotated:
 ```
-[name_gigadb_server_staging] # host name for staging deployment, the name is a concatenation of AWS tag key and value attached to the EC2 instance
-
-# do not add any IP address here as it is dynamically managed using terraform-inventory
-
-[name_gigadb_server_live] # host name for live deployment, the name is a concatenation of AWS tags attached to the EC2 instance
-
-# do not add any IP address here as it is dynamically managed using terraform-inventory
-
-[name_bastion_server_staging] # host name for staging deployment, the name is a concatenation of AWS tag key and value attached to the EC2 instance
-
-# do not add any IP address here as it is dynamically managed using terraform-inventory
-
-[name_bastion_server_live] # host name for live deployment, the name is a concatenation of AWS tags attached to the EC2 instance
-
-# do not add any IP address here as it is dynamically managed using terraform-inventory
-
 [all:vars] # host variables needed by Ansible to configure software and services. Most have their value pulled from ansible.properties created with the ansible_init.sh script
 
 gitlab_url = "https://gitlab.com/api/v4/projects/{{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') | urlencode | regex_replace('/','%2F') }}"
@@ -470,17 +464,6 @@ fuw_db_password = "{{ lookup('ini', 'fuw_db_password type=properties file=ansibl
 fuw_db_database = "{{ lookup('ini', 'fuw_db_database type=properties file=ansible.properties') }}"
 
 backup_file = "{{ lookup('ini', 'backup_file type=properties file=ansible.properties') }}"
-```
-
->Note that the header **[name_gigadb_server_staging]** must match the "Name" tag associated to the AWS EC2 resource defined in ``ops/infrastructure/modules/aws-instance/aws-instance.tf`` for the environment of interest (here ``staging``):
-
-```
-tags = {
-    Name = "gigadb_server_${var.deployment_target}",
-    Hosting = "ec2-as1-t2m-centos"
-    Environment = "staging"
-    Owner = "Rija"
- }
 ```
 
 >**Note:** host names in Ansible must be made of alphanumerical and underscore characters only. Although Terraform and AWS don't have that limitation, the Name tag needs to follow it so the connection between Terraform and Ansible can be made.
@@ -534,6 +517,18 @@ Provision the EC2 instance using Ansible:
 $ cd ops/infrastructure/envs/staging
 $ ansible-playbook -i ../../inventories dockerhost_playbook.yml
 ```
+
+>Note that that **name_gigadb_server_staging_<IAMUser>** must match the "Name" tag associated to the AWS EC2 resource defined in ``ops/infrastructure/modules/aws-instance/aws-instance.tf`` for the environment of interest (here ``staging``):
+
+```
+  tags = {
+    Name = "gigadb_server_${var.deployment_target}_${var.owner}",
+    System = "t3_micro-centos8",
+  }
+```
+
+>**Note:** host names in Ansible must be made of alphanumerical and underscore characters only. Although Terraform and AWS don't have that limitation, the Name tag needs to follow it so the connection between Terraform and Ansible can be made.
+
 
 > Since an elastic IP address is being used, you might need to delete the entry
 in the `~/.ssh/known_hosts` file associated with the elastic IP address if this

@@ -63,6 +63,10 @@ if [ -z $backup_file ];then
   read -p "You need to specify a backup file created by the files-url-updater tool: " backup_file
 fi
 
+if [ -z $AWS_REGION ];then
+  read -p "You need to specify an AWS region: " AWS_REGION
+fi
+
 # url encode gitlab project
 encoded_gitlab_project=$(echo $gitlab_project | sed -e 's/\//%2F/g')
 
@@ -84,6 +88,7 @@ key_name=$(echo $aws_ssh_key | rev | cut -d"/" -f 1 | rev | cut -d"." -f 1)
 # create the terraform variables file (must be named terraform.tfvars for terraform to recognise it automatically)
 echo "deployment_target = \"$target_environment\"" > terraform.tfvars
 echo "key_name = \"$key_name\"" >> terraform.tfvars
+echo "aws_region = \"$AWS_REGION\"" >> terraform.tfvars
 # create an environment variable file for this script and for ansible_init.sh
 echo "gitlab_project=$gitlab_project" > .init_env_vars
 echo "GITLAB_USERNAME=$GITLAB_USERNAME" >> .init_env_vars
