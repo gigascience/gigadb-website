@@ -1,39 +1,3 @@
-check_SAST:
-  stage: conformance and security
-  script:
-    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
-    - docker run
-      --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}"
-      --volume "$PWD:/code"
-      --volume /var/run/docker.sock:/var/run/docker.sock
-      "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
-  artifacts:
-    paths: [gl-sast-report.json]
-  allow_failure: true
-  when: manual
-
-# job (manual, with failure allowed) for running Dymamic Application Security Testing
-# See: https://docs.gitlab.com/ee/ci/examples/dast.html
-check_DAST:
-  stage: conformance and security
-  image: registry.gitlab.com/gitlab-org/security-products/zaproxy
-  variables:
-    website: "https://gigadb-staging.pommetab.com/"
-  before_script:
-    - echo "About to run DAST"
-  script:
-    - mkdir /zap/wrk/
-    - /zap/zap-baseline.py -J gl-dast-report.json -t $website || true
-    - cp /zap/wrk/gl-dast-report.json .
-  after_script:
-    - echo "Finished running DAST"
-  artifacts:
-    reports:
-      dast: gl-dast-report.json
-  allow_failure: true
-  when: manual
-
-
 check_PSR2:
   stage: conformance and security
   artifacts:
@@ -105,3 +69,30 @@ check_PHPDoc:
     - docker-compose run --rm test ./tests/coverage_check
 
 
+bandit-sast:
+  stage: conformance and security
+  variables:
+    SAST_DISABLED: "true"
+
+eslint-sast:
+  stage: conformance and security
+  variables:
+    SAST_DISABLED: "true"
+
+nodejs-scan-sast:
+  stage: conformance and security
+  variables:
+    SAST_DISABLED: "true"
+
+phpcs-security-audit-sast:
+  stage: conformance and security
+
+semgrep-sast:
+  stage: conformance and security
+  variables:
+    SAST_DISABLED: "true"
+
+spotbugs-sast:
+  stage: conformance and security
+  variables:
+    SAST_DISABLED: "true"
