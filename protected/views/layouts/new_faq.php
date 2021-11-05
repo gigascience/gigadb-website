@@ -138,6 +138,7 @@
                                 <li><a href="/site/help">Help</a></li>
                                 <li><a href="/site/faq">FAQ</a></li>
                                 <li><a href="/site/guide">Guidelines</a></li>
+                                <li><a href="https://stats.uptimerobot.com/LGVQXSkN1y">Systems Status</a></li>
                             </ul>
                         </li>
                         <li><a href="/site/term">Terms of use</a></li>
