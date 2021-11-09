@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -eu
+
+source .env
+source .secrets
+
+# Checking the staging hostname
+staging_hostname=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/REMOTE_HOSTNAME?filter%5benvironment_scope%5d=staging" | jq -r .value)
+echo $staging_hostname
+
+if [[ ! -z $staging_hostname ]];then
+  docker-compose run --rm test ./ops/scripts/cert_age.sh $staging_hostname
+fi
+
+# checking the live hostname
+live_hostname=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/REMOTE_HOSTNAME?filter%5benvironment_scope%5d=live" | jq -r .value)
+echo $live_hostname
+
+if [[ ! -z $live_hostname ]];then
+  docker-compose run --rm test ./ops/scripts/cert_age.sh $live_hostname
+fi
