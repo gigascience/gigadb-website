@@ -71,7 +71,7 @@ when using the AWS management console.
         },
         {
             "Sid": "RunInstancesWithOwnerTagRestriction",
-            "Effect": "Deny",
+            "Effect": "Allow",
             "Action": [
                 "ec2:CreateVolume",
                 "ec2:RunInstances"
@@ -81,8 +81,8 @@ when using the AWS management console.
                 "arn:aws:ec2:*:*:instance/*"
             ],
             "Condition": {
-                "StringNotLike": {
-                    "aws:RequestTag/Owner": "${aws.username}"
+                "StringEqualsIgnoreCase": {
+                    "aws:ResourceTag/Owner": "${aws:username}"
                 }
             }
         },
@@ -124,7 +124,7 @@ when using the AWS management console.
             ],
             "Resource": "*",
             "Condition": {
-                "StringEquals": {
+                "StringEqualsIgnoreCase": {
                     "ec2:ResourceTag/Owner": "${aws:username}"
                 }
             }

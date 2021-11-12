@@ -15,7 +15,9 @@
 $ cd <path to>/gigadb-website/ops/infrastructure/envs/staging
 # Copy terraform files to staging environment
 $ ../../../scripts/tf_init.sh --project gigascience/forks/pli888-gigadb-website --env staging
-
+You need to specify the path to the ssh private key to use to connect to the EC2 instance: ~/.ssh/id-rsa-aws.pem
+You need to specify your GitLab username: pli888
+You need to specify a backup file created by the files-url-updater tool: ../../../../gigadb/app/tools/files-url-updater/sql/gigadbv3_20210929_v9.3.25.backup
 # Provision with Terraform
 $ terraform plan  
 $ terraform apply

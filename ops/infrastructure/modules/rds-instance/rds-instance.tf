@@ -1,3 +1,7 @@
+locals {
+  tstamp = formatdate("YYYYMMDDhhmmss", timestamp())
+}
+
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "~> 4"
@@ -19,20 +23,10 @@ module "security_group" {
 
 module "db" {
   source = "terraform-aws-modules/rds/aws"
-
-  # Only lowercase alphanumeric characters and hyphens allowed in "identifier"
   identifier = "rds-server-${var.deployment_target}-${var.owner}"
 
-  create_db_option_group    = false
-  create_db_parameter_group = false
-
-  engine               = "postgres"
-  engine_version       = "9.6"
-  family               = "postgres9" # DB parameter group
-  major_engine_version = "9"         # DB option group
-  instance_class       = "db.t3.micro"
-
-  allocated_storage = 20
+  snapshot_identifier = var.snapshot_identifier
+  restore_to_point_in_time = var.restore_to_point_in_time
 
   name                   = var.gigadb_db_database
   username               = var.gigadb_db_user
@@ -42,16 +36,23 @@ module "db" {
   subnet_ids             = var.rds_subnet_ids
   vpc_security_group_ids = [module.security_group.security_group_id]
 
-  maintenance_window = "Mon:00:00-Mon:03:00"
-  backup_window      = "03:00-06:00"
-
-  backup_retention_period = 0
-  skip_final_snapshot     = true
-  deletion_protection     = false
-
-  tags = {
-//    Name = "rds_server_${var.deployment_target}"
-  }
+  create_db_option_group    = false
+  create_db_parameter_group = false
+  engine                    = "postgres"
+  engine_version            = "11.13"
+  family                    = "postgres11"  # DB parameter group
+  major_engine_version      = "11"          # DB option group
+  instance_class            = "db.t3.micro"
+  allocated_storage         = 8
+  deletion_protection       = false
+  maintenance_window        = "Mon:00:00-Mon:03:00"
+  backup_window             = "03:00-06:00"  # UTC time
+  backup_retention_period   = 5  # days
+  skip_final_snapshot       = false  # Create final snapshot
+  final_snapshot_identifier = "snapshot-final-${var.deployment_target}-${var.owner}-${local.tstamp}"
+  copy_tags_to_snapshot     = true
+  delete_automated_backups  = false  # Do not delete backups on RDS instance termination
+  apply_immediately         = true
 }
 
 output "rds_instance_address" {

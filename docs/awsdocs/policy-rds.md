@@ -17,7 +17,10 @@ Policy Name: GigadbRDSAccess
         {
             "Sid": "AllowEC2Describe",
             "Effect": "Allow",
-            "Action": "ec2:Describe*",
+            "Action": [
+                "ec2:Describe*",
+                "ec2:DescribeSubnets"
+            ],
             "Resource": "*"
         },
         {
@@ -29,6 +32,32 @@ Policy Name: GigadbRDSAccess
                 "iam:ListInstanceProfilesForRole"
             ],
             "Resource": "*"
+        },
+        {
+            "Sid": "WorkWithElasticIPAddresses",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeAddresses",
+                "ec2:AllocateAddress",
+                "ec2:DescribeInstances",
+                "ec2:AssociateAddress",
+                "ec2:DescribeNetworkInterfaces"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "ModifyElasticIPAddresses",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DisassociateAddress",
+                "ec2:ReleaseAddress"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEqualsIgnoreCase": {
+                    "ec2:ResourceTag/Owner": "${aws:username}"
+                }
+            }
         },
         {
             "Sid": "CreateRDSInstance",
@@ -53,7 +82,8 @@ Policy Name: GigadbRDSAccess
                 "ec2:AssociateSubnetCidrBlock",
                 "rds:CreateDBSubnetGroup",
                 "rds:AddTagsToResource",
-                "ec2:GetManagedPrefixListAssociations"
+                "ec2:GetManagedPrefixListAssociations",
+                "ec2:CreateNatGateway"
             ],
             "Resource": "*"
         },
@@ -76,10 +106,19 @@ Policy Name: GigadbRDSAccess
             "Action": "rds:CreateDBInstance",
             "Resource": "*",
             "Condition": {
-                "StringEquals": {
-                    "aws:RequestTag/Owner": "${aws.username}"
+                "StringEqualsIgnoreCase": {
+                    "aws:RequestTag/Owner": "${aws:username}"
                 }
             }
+        },
+        {
+            "Sid": "RestoreDBInstanceToPointInTime",
+            "Effect": "Allow",
+            "Action": [
+                "rds:RestoreDBInstanceToPointInTime",
+                "rds:DeleteDBInstanceAutomatedBackup"
+            ],
+            "Resource": "*"
         },
         {
             "Sid": "DeleteEC2ResourcesWithOwnerTagRestriction",
@@ -100,11 +139,12 @@ Policy Name: GigadbRDSAccess
                 "ec2:RevokeSecurityGroupIngress",
                 "ec2:DeleteVpc",
                 "ec2:DeleteRoute",
-                "ec2:DisassociateRouteTable"
+                "ec2:DisassociateRouteTable",
+                "ec2:DeleteNatGateway"
             ],
             "Resource": "*",
             "Condition": {
-                "StringEquals": {
+                "StringEqualsIgnoreCase": {
                     "ec2:ResourceTag/Owner": "${aws:username}"
                 }
             }
@@ -129,7 +169,8 @@ Policy Name: GigadbRDSAccess
             "Action": [
                 "rds:DeleteDBInstance",
                 "rds:RebootDBInstance",
-                "rds:ModifyDBInstance"
+                "rds:ModifyDBInstance",
+                "rds:CreateDBSnapshot"
             ],
             "Effect": "Allow",
             "Resource": "*",

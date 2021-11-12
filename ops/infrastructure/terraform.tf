@@ -38,6 +38,33 @@ variable "gigadb_db_password" {
   description = "Password for PostgreSQL database"
 }
 
+variable "snapshot_identifier" {
+  type = string
+  description = "Snapshot identifier for restoring RDS service"
+  default = null
+}
+
+variable "restore_to_point_in_time" {
+  type = map
+  description = "A map to restoring RDS service from an automated backup"
+  default = null
+}
+
+variable "source_dbi_resource_id" {
+  type = string
+  default = null
+}
+
+variable "use_latest_restorable_time" {
+  type = bool
+  default = null
+}
+
+variable "utc_restore_time" {
+  type = string
+  default = null
+}
+
 data "external" "callerUserName" {
   program = ["${path.module}/getIAMUserNameToJSON.sh"]
 }
@@ -134,7 +161,7 @@ module "ec2_dockerhost" {
   key_name = var.key_name
   eip_tag_name = "eip-gigadb-${var.deployment_target}-${data.external.callerUserName.result.userName}"
   vpc_id = module.vpc.vpc_id
-  # Locate Dockerhost EC2 instance in public subnet so users can access website
+  # Locate Dockerhost EC2 instance in public subnet so users can access website 
   # container app
   public_subnet_id = module.vpc.public_subnets[0]
 }
@@ -175,6 +202,12 @@ module "rds" {
 
   owner = data.external.callerUserName.result.userName
   deployment_target = var.deployment_target
+
+  # Needs to be overridden to restore an RDS snapshot
+  snapshot_identifier = var.snapshot_identifier
+
+  # Requires overrride.tf to restore RDS from an automated backup
+  restore_to_point_in_time = var.restore_to_point_in_time
 
   vpc_id = module.vpc.vpc_id
   rds_subnet_ids = module.vpc.database_subnets
