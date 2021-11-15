@@ -26,6 +26,9 @@ t_gigadb:
     when: always
     expire_in: 1 week
   script:
+    # appending production variables at the end of the .env and .secrets
+    - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" >> $APPLICATION/.env
+    - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
@@ -45,4 +48,5 @@ t_gigadb:
     - ./up.sh
     - cd $APPLICATION
     - ./tests/all_and_coverage
-
+  environment:
+    name: dev
