@@ -1,6 +1,6 @@
 t_gigadb:
-    variables:
-      HOME_URL: http://gigadb.gigasciencejournal.com:9170
+  variables:
+    HOME_URL: http://gigadb.gigasciencejournal.com:9170
   stage: test
   cache:
     paths:
