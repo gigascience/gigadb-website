@@ -72,14 +72,19 @@ That tool can be configured using a choice of three profiles
 | Intermediate | "General-purpose servers with a variety of clients, recommended for almost all systems" | high |
 | Old | "Compatible with a number of very old clients, and should be used only as a last resort" | low |
 
-We chose the intermediate configuration as it provides good security and doesn't have too strong requirements on website visitor's up-to-date-ness of their browser.
-I think the Modern profile would prevent the visitors not using the most recent version of web browsers to visit our website.
+We chose the intermediate configuration for now as it provides good security while allowing most of web audience to access our site.
+I think (we will need to confirm this by analysing our web analytics) the modern profile would prevent some of our visitors not using the most recent version of web browsers/OS combo to visit our website.
 
 We have also used Qualys' SSL Labs [5] to audit our TLS termination setup from a security perspective.
 Their automated audit checks if our setup is vulnerable to the common TLS attacks and exploits.
 
 After three attempts and making the corresponding corrections to our configuration, we got the highest grade A+. The report also lists
 the common vulnerabilities and whether we are vulnerable to them or not [6].
+
+### OpenSSL
+
+Docker, certbot, Nginx and most tools on Linux rely on the open source library OpenSSL to work with TLS certificates.
+We've upgraded it to a recent version (1.1.1) to ensure vulnerabilities associated with older versions are not problem.
 
 
 
