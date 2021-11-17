@@ -1,4 +1,4 @@
-.t_gigadb:
+t_gigadb:
   stage: test
   cache:
     paths:
@@ -26,6 +26,9 @@
     when: always
     expire_in: 1 week
   script:
+    # appending dev variables at the end of the .env and .secrets
+    - env | grep "^HOME_URL" >> $APPLICATION/.env
+    - env | grep "^GIGADB_" >> $APPLICATION/.secrets
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
@@ -45,4 +48,5 @@
     - ./up.sh
     - cd $APPLICATION
     - ./tests/all_and_coverage
-
+  environment:
+    name: dev
