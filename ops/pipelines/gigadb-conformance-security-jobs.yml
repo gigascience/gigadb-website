@@ -103,3 +103,4 @@ container_scanning:
     GIT_STRATEGY: fetch
     DOCKER_USER: gitlab-ci-token
     DOCKER_PASSWORD: $CI_JOB_TOKEN
+    SECURE_LOG_LEVEL: debug
