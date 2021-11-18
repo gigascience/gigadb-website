@@ -55,6 +55,7 @@ variables:
 
 include:
   - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Container-Scanning.gitlab-ci.yml
   - local: "ops/pipelines/gigadb-build-jobs.yml"
   - local: "ops/pipelines/gigadb-test-jobs.yml"
   - local: "ops/pipelines/gigadb-conformance-security-jobs.yml"
