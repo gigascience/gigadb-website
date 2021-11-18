@@ -96,3 +96,10 @@ spotbugs-sast:
   stage: conformance and security
   variables:
     SAST_DISABLED: "true"
+
+container_scanning:
+  stage: conformance and security
+  variables:
+    GIT_STRATEGY: fetch
+    DOCKER_USER: gitlab-ci-token
+    DOCKER_PASSWORD: $CI_JOB_TOKEN
