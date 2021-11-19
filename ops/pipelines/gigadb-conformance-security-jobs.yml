@@ -100,9 +100,6 @@ spotbugs-sast:
 container_scanning:
   stage: conformance and security
   variables:
-    GIT_STRATEGY: fetch
-    DOCKER_USER: gitlab-ci-token
-    DOCKER_PASSWORD: $CI_JOB_TOKEN
+    DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging
     SECURE_LOG_LEVEL: debug
     CS_SEVERITY_THRESHOLD: critical
-    DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV && registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
