@@ -103,3 +103,18 @@ container_scanning:
     DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging
     SECURE_LOG_LEVEL: debug
     CS_SEVERITY_THRESHOLD: critical
+
+container_scanning_2:
+  extends: container_scanning
+  variables:
+    DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging
+
+container_scanning_3:
+  extends: container_scanning
+  variables:
+    DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_web:live
+
+container_scanning_4:
+  extends: container_scanning
+  variables:
+    DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_app:live
