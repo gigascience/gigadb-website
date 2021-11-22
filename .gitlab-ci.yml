@@ -80,12 +80,12 @@ cache:
       - gigadb/app/client/web/node_modules
 
 before_script:
-  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning ]] && env | grep "^CI_" > $APPLICATION/.ci_env'
-  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning ]] && env | grep -v "SAST" | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" > $APPLICATION/.env'
-  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning ]] && env | grep -v "SAST" | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -v "ANALYTICS_PRIVATE_KEY" | grep -viE "tls" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.secrets'
-  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning ]] && apk add --no-cache py-pip bash'
+  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && env | grep "^CI_" > $APPLICATION/.ci_env'
+  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && env | grep -v "SAST" | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" > $APPLICATION/.env'
+  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && env | grep -v "SAST" | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -v "ANALYTICS_PRIVATE_KEY" | grep -viE "tls" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.secrets'
+  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && apk add --no-cache py-pip bash'
   # Pin docker-compose version to stop installation error
-  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning ]] && pip install docker-compose~=1.23.0'
+  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && pip install docker-compose~=1.23.0'
 
 sd_gigadb:
   variables:
