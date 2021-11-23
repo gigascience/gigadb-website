@@ -19,7 +19,7 @@
   roles:
     - role: ../../roles/docker-install
     - role: role-secure-docker-daemon
-      dds_host: "{{ inventory_hostname }}"
+      dds_host: "{{ ec2_public_ip }}"
       dds_server_cert_path: /etc/docker
       dds_restart_docker: no
       dds_client_cert_path: /home/centos/.docker

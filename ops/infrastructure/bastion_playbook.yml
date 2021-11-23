@@ -1,6 +1,17 @@
 ---
 # Use bastion server to restore PostgreSQL database on RDS instance
 
+- name: Setup Fail2ban
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+
+  tasks:
+    - debug:
+        msg: "remote private ip : {{ ec2_bastion_private_ip }}"
+
+  roles:
+    - role: ../../roles/fail2ban
+    - role: ../../roles/jail-ssh
+
 - name: Restore PostgreSQL database on RDS instance using pg_restore
   hosts: name_bastion_server_staging*:name_bastion_server_live*
 

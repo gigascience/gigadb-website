@@ -187,9 +187,9 @@ module "ec2_bastion" {
   public_subnet_id = module.vpc.public_subnets[0]
 }
 
-//output "bastion_private_ip" {
-//  value = module.ec2_bastion.bastion_private_ip
-//}
+output "ec2_bastion_private_ip" {
+  value = module.ec2_bastion.bastion_private_ip
+}
 
 output "ec2_bastion_public_ip" {
   description = "Public IP address of the EC2 bastion instance"

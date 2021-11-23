@@ -450,6 +450,7 @@ file which lists the host machines connection details. Our file is located at `o
 
 gitlab_url = "https://gitlab.com/api/v4/projects/{{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') | urlencode | regex_replace('/','%2F') }}"
 ansible_ssh_private_key_file = "{{ lookup('ini', 'ssh_private_key_file type=properties file=ansible.properties') }}"
+ansible_ssh_common_args="-o ProxyCommand='ssh -W %h:%p -q {{ lookup('ini', 'ec2_bastion_login_account type=properties file=ansible.properties') }} -i {{ lookup('ini', 'ssh_private_key_file type=properties file=ansible.properties') }}'"
 ansible_user = "centos"
 ansible_become = "true"
 database_bootstrap = "../../../../sql/production_like.pgdmp"
@@ -489,6 +490,36 @@ directory so the playbooks can be performed from environment specific directory.
 This ansible script also updates the `gigadb_db_host` Gitlab variable with the 
 domain name of the RDS service in preparation for its provisioning.
 
+###### To enable provisioning dockerhost servers through a bastion server
+Bastion server provides perimeter access control, it acts as an entry point into a network containing private network instances. 
+Once dockerhost servers have been provisioned using terraform with ssh port restricted, which could then only be accessed the through bastion server. 
+
+Adding `ansible_ssh_common_args` in `/inventories/hosts` will make ansible to do the provisioning on dockerhost servers through bastion host.
+
+And prefixing the ansible commands with `TF_KEY_NAME=private_ip` to dockerhost_playbook.yml is essential as it would force dockerhost server to only accept a private ip entry,
+otherwise, `UNREACHEABLE !` would be occurred.
+
+##### How to manually ssh to dockerhost through the bastion for debugging purpose
+Sometimes, it would be useful to log into dockerhost server manually for debugging. There are two important points to keep in mind:
+1. Get the public DNS or private ip address of dockerhost server from `terraform output` or EC2 dashboard. 
+2. Both dockerhost server and bastion server share the same ssh private key.  
+
+Here are the steps:
+```
+# To check whether bastion server is accessible by loggin in
+user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem centos@<bastion_public_ip>
+[centos@<bastion_private_ip> ~]$ ls
+database_bootstrap.backup
+# Log in to dockerhost server through bastion by adding ProxyCommand to ssh command using public DNS
+user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/<CustomPrivateKey>.pem  centos@<bastion_public_ip>" centos@ec2-<docker_public_ip>.<region>.compute.amazonaws.com
+[centos@<dockerhost_private_ip> ~]$ ls
+app_data
+# Log in to dockerhost server through bastion by adding ProxyCommand to ssh command using dockerhot private ip
+user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/<CustomPrivateKey>.pem  centos@<bastion_public_ip>" centos@<docker_private_ip>
+[centos@<dockerhost_private_ip> ~]$ ls
+app_data
+```
+
 ###### Linking Terraform and Ansible.
 
 Our `hosts` file does not list any machines. Instead, a tool called 
@@ -515,7 +546,7 @@ where ``environment`` is replaced by ``staging`` or ``live``, the environment fo
 Provision the EC2 instance using Ansible:
 ```
 $ cd ops/infrastructure/envs/staging
-$ ansible-playbook -i ../../inventories dockerhost_playbook.yml
+$ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories dockerhost_playbook.yml
 ```
 
 >Note that that **name_gigadb_server_staging_<IAMUser>** must match the "Name" tag associated to the AWS EC2 resource defined in ``ops/infrastructure/modules/aws-instance/aws-instance.tf`` for the environment of interest (here ``staging``):
@@ -570,7 +601,7 @@ The RDS instance is provisioned with a database via the bastion server by a
 separate ansible playbook:
 ```
 $ cd ops/infrastructure/envs/staging
-$ ansible-playbook -i ../../inventories bastion_playbook.yml
+$ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bastion_playbook.yml
 ```
 
 The bastion playbook will create a `gigadb` database containing data from
@@ -683,7 +714,7 @@ where you replace ``environment`` with ``staging`` or ``live``
 Ensure you are still in ``ops/infractructure/envs/staging`` or ``ops/infractructure/envs/live``
 
 ```
-$ ansible-playbook -i ../../inventories dockerhost_playbook.yml
+$ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories dockerhost_playbook.yml
 $ ansible-playbook -i ../../inventories bastion_playbook.yml
 ```
 where you replace ``environment`` with ``staging`` or ``live``

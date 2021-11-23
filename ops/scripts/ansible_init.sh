@@ -66,4 +66,5 @@ echo "deployment_target = $deployment_target" >> ansible.properties
 echo "gitlab_project = $gitlab_project" >> ansible.properties
 echo "ssh_private_key_file = $aws_ssh_key" >> ansible.properties
 echo "gitlab_private_token= $GITLAB_PRIVATE_TOKEN" >> ansible.properties
+echo "ec2_bastion_login_account= centos@$(terraform output ec2_bastion_public_ip | sed 's/"//g')" >> ansible.properties
 

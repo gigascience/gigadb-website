@@ -31,19 +31,19 @@
 - name: Backup the CA
   fetch:
     src: /home/centos/.docker/ca.pem
-    dest: output/certs-{{ inventory_hostname }}/
+    dest: output/certs-{{ ec2_public_ip }}/
     flat: yes
 
 - name: Backup the cert
   fetch:
     src: /home/centos/.docker/cert.pem
-    dest: output/certs-{{ inventory_hostname }}/
+    dest: output/certs-{{ ec2_public_ip }}/
     flat: yes
 
 - name: Backup the key
   fetch:
     src: /home/centos/.docker/key.pem
-    dest: output/certs-{{ inventory_hostname }}/
+    dest: output/certs-{{ ec2_public_ip }}/
     flat: yes
 
 - name: copy the content of the CA pem
@@ -190,7 +190,7 @@
     body_format: json
     body:
       key: "remote_public_ip"
-      value: "{{ inventory_hostname }}"
+      value: "{{ ec2_public_ip }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
@@ -205,7 +205,7 @@
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
     body_format: json
     body:
-      value: "{{ inventory_hostname }}"
+      value: "{{ ec2_public_ip }}"
     status_code: 200
   register: public_ip_put_outcome
   when: public_ip_post_outcome.status == 400
