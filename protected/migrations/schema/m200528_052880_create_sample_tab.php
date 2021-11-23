@@ -4,7 +4,7 @@ class m200528_052880_create_sample_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE sample (
+        $this->execute("CREATE TABLE IF NOT EXISTS sample (
             id integer NOT NULL,
             species_id integer NOT NULL,
             name character varying(100) DEFAULT 'SAMPLE:SRS188811'::character varying NOT NULL,
@@ -15,7 +15,7 @@ class m200528_052880_create_sample_tab extends CDbMigration
             contact_author_email character varying(100),
             sampling_protocol character varying(100));");
 
-        $this->execute("CREATE SEQUENCE sample_id_seq
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS sample_id_seq
             START WITH 500
             INCREMENT BY 1
             NO MINVALUE
@@ -25,7 +25,7 @@ class m200528_052880_create_sample_tab extends CDbMigration
         $this->execute("ALTER SEQUENCE sample_id_seq 
             OWNED BY sample.id;");
 
-        $this->execute("CREATE VIEW sample_number AS
+        $this->execute("CREATE OR REPLACE VIEW sample_number AS
             SELECT count(sample.id) AS count FROM sample;");
 
         $this->execute("ALTER TABLE ONLY sample 

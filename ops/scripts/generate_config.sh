@@ -3,11 +3,9 @@
 # bail out upon error
 set -e
 
-# bail out if an unset variable is used
-set -u
 
 # display the lines of this script as they are executed for debugging
-# set -x
+#set -x
 
 # export all variables that need to be substitued in templates
 set -a
@@ -41,22 +39,32 @@ echo "Running ${THIS_SCRIPT_DIR}/generate_config.sh for environment: $GIGADB_ENV
 if ! [ -f  ./.secrets ];then
     echo "Retrieving variables from ${GROUP_VARIABLES_URL}"
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${GROUP_VARIABLES_URL}" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > .group_var
+
+    echo "Retrieving variables from ${FORK_VARIABLES_URL}"
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${FORK_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") |.key + "=" + .value' > .fork_var
+
     echo "Retrieving variables from ${PROJECT_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | select(.key != "TLSAUTH_CERT") | select(.key != "TLSAUTH_KEY") | select(.key != "TLSAUTH_CA") | select(.key != "staging_tlsauth_ca") | select(.key != "staging_tlsauth_key") | select(.key != "staging_tlsauth_cert") | select(.key != "production_tlsauth_ca") | select(.key != "production_tlsauth_cert") | select(.key != "production_tlsauth_key") |.key + "=" + .value' > .project_var
-    cat .group_var .project_var > .secrets && rm .group_var && rm .project_var
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key != "ANALYTICS_PRIVATE_KEY") | select(.key != "TLSAUTH_CERT") | select(.key != "TLSAUTH_KEY") | select(.key != "TLSAUTH_CA") | select(.key != "docker_tlsauth_ca") | select(.key != "docker_tlsauth_key") | select(.key != "docker_tlsauth_cert") | select(.key != "tls_fullchain_pem") | select(.key != "tls_privkey_pem") | select(.key != "tls_chain_pem") |.key + "=" + .value' > .project_var
+    cat .group_var .fork_var .project_var > .secrets && rm .group_var && rm .fork_var && rm .project_var
+    echo "# Some help about this file in ops/configuration/variables/secrets-sample" >> .secrets
 fi
 echo "Sourcing secrets"
 source "./.secrets"
 
-# If we are on staging environment override variable name with STAGING_* counterpart
-if [ $GIGADB_ENV == "staging" ];then
-    GIGADB_HOST=$STAGING_GIGADB_HOST
-    GIGADB_USER=$STAGING_GIGADB_USER
-    GIGADB_PASSWORD=$STAGING_GIGADB_PASSWORD
-    GIGADB_DB=$STAGING_GIGADB_DB
-    HOME_URL=$STAGING_HOME_URL
-    PUBLIC_HTTP_PORT=$STAGING_PUBLIC_HTTP_PORT
-    PUBLIC_HTTPS_PORT=$STAGING_PUBLIC_HTTPS_PORT
+## Deal with PHP memory limits
+export PHP_MEM=-1
+
+# If we are on staging environment override variable name with their remote environment counterpart
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+    GIGADB_HOST=$gigadb_db_host
+    GIGADB_USER=$gigadb_db_user
+    GIGADB_PASSWORD=$gigadb_db_password
+    GIGADB_DB=$gigadb_db_database
+    HOME_URL=$REMOTE_HOME_URL
+    PUBLIC_HTTP_PORT=$REMOTE_PUBLIC_HTTP_PORT
+    PUBLIC_HTTPS_PORT=$REMOTE_PUBLIC_HTTPS_PORT
+    SERVER_HOSTNAME=$REMOTE_HOSTNAME
+    PHP_MEM=128M
 fi
 
 
@@ -84,11 +92,17 @@ mkdir -p ${APP_SOURCE}/images/tempcaptcha && chmod 777 ${APP_SOURCE}/images/temp
 
 # Generate google api client credentials
 
-if [[ "$GIGADB_ENV" == "dev" ]];then
+if [ "$GIGADB_ENV" == "dev" ] && [ "$REPO_NAME" != "<Your fork name here>" ] ;then
 	echo "Retrieving private_key variable for Google API from ${PROJECT_VARIABLES_URL}"
 	curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN"  "${PROJECT_VARIABLES_URL}/ANALYTICS_PRIVATE_KEY" | jq -r ' .value' > protected/config/keyfile.json
 else
-	echo $ANALYTICS_PRIVATE_KEY > protected/config/keyfile.json
+    echo "Either not a dev environment or REPO_NAME set to <Your fork name here>"
+    echo "Will try ANALYTICS_PRIVATE_KEY"
+    if ! [[ -z ${ANALYTICS_PRIVATE_KEY+x} ]] ;then
+    	echo $ANALYTICS_PRIVATE_KEY > protected/config/keyfile.json
+    else
+        echo "either set REPO_NAME correctly or supply a value for ANALYTICS_PRIVATE_KEY"
+    fi
 fi
 
 echo "* ---------------------------------------------- *"
@@ -115,7 +129,7 @@ envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/yiic.php.dist
 TARGET=${APP_SOURCE}/protected/yiic.php
-VARS='$YII_PATH'
+VARS='$YII_PATH:$PHP_MEM'
 envsubst $VARS < $SOURCE > $TARGET
 
 # environment specific configuration files
@@ -151,9 +165,39 @@ TARGET=${APP_SOURCE}/protected/config/yii2/test.php
 VARS='$SERVER_EMAIL_SMTP_HOST:$SERVER_EMAIL_SMTP_PORT:$SERVER_EMAIL:$SERVER_EMAIL_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/common/params-local.php.dist
+TARGET=${APP_SOURCE}/protected/config/yii2/params-local.php
+VARS='$FUW_JWT_KEY:$REMOTE_DOCKER_HOSTNAME:$SERVER_HOSTNAME:$HOME_URL:$FILES_PUBLIC_URL'
+envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/ops/configuration/yii2-conf/gigadb/file-worker/db.php.dist
+TARGET=${APP_SOURCE}/gigadb/app/worker/file-worker/config/db.php
+VARS='$GIGADB_DB:$GIGADB_HOST:$GIGADB_USER:$GIGADB_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET
+
 if [ $GIGADB_ENV != "CI" ];then
     cp ops/configuration/nginx-conf/le.${GIGADB_ENV}.ini /etc/letsencrypt/cli.ini
 fi
+
+## Configuring Nginx config for production environments
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+  SOURCE=${APP_SOURCE}/ops/configuration/nginx-conf/sites/nginx.target_deployment.http.conf.dist
+  TARGET=${APP_SOURCE}/ops/configuration/nginx-conf/sites/${GIGADB_ENV}/gigadb.${GIGADB_ENV}.http.conf
+  VARS='$SERVER_HOSTNAME'
+  envsubst $VARS < $SOURCE > $TARGET
+
+  SOURCE=${APP_SOURCE}/ops/configuration/nginx-conf/sites/nginx.target_deployment.https.conf.dist
+  TARGET=${APP_SOURCE}/ops/configuration/nginx-conf/sites/${GIGADB_ENV}/gigadb.${GIGADB_ENV}.https.conf
+  VARS='$SERVER_HOSTNAME'
+  envsubst $VARS < $SOURCE > $TARGET
+fi
+
+## Configuring other tools and apps
+
+SOURCE=${APP_SOURCE}/gigadb/app/tools/files-url-updater/config/params.php.dist
+TARGET=${APP_SOURCE}/gigadb/app/tools/files-url-updater/config/params.php
+VARS='$DB_BACKUP_HOST:$DB_BACKUP_USERNAME:$DB_BACKUP_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET
 
 # Download example dataset files
 # mkdir -p ${APP_SOURCE}/vsftpd/files

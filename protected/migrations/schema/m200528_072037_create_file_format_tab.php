@@ -4,13 +4,13 @@ class m200528_072037_create_file_format_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE file_format (
+        $this->execute("CREATE TABLE IF NOT EXISTS file_format (
             id integer NOT NULL,
             name character varying(20) NOT NULL,
             description text DEFAULT ''::text NOT NULL,
             edam_ontology_id character varying(100));");
 
-        $this->execute("CREATE SEQUENCE file_format_id_seq
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS file_format_id_seq
             START WITH 100
             INCREMENT BY 1
             NO MINVALUE

@@ -1,21 +1,26 @@
 - name: Allow centos user to use docker (add centos to group)
   command: usermod -aG docker centos
 
-- name: Enable systemd service
-  command: systemctl enable docker
 
 - name: Creates directory
   file:
     path: /etc/systemd/system/docker.service.d/
     state: directory
 
+
 - name: Create an override for docker systemd service
-  copy:
-    src: override.conf
+  template:
+    src: override.j2
     dest: /etc/systemd/system/docker.service.d/override.conf
     owner: root
     group: root
     mode: 0644
+
+- name: Enable systemd socket for unix socket access
+  command: systemctl enable docker.socket
+
+- name: Enable systemd service
+  command: systemctl enable docker
 
 - name: Reload systemd docker service
   command: systemctl daemon-reload
@@ -26,19 +31,19 @@
 - name: Backup the CA
   fetch:
     src: /home/centos/.docker/ca.pem
-    dest: output/certs-{{ inventory_hostname }}/
+    dest: output/certs-{{ ec2_public_ip }}/
     flat: yes
 
 - name: Backup the cert
   fetch:
     src: /home/centos/.docker/cert.pem
-    dest: output/certs-{{ inventory_hostname }}/
+    dest: output/certs-{{ ec2_public_ip }}/
     flat: yes
 
 - name: Backup the key
   fetch:
     src: /home/centos/.docker/key.pem
-    dest: output/certs-{{ inventory_hostname }}/
+    dest: output/certs-{{ ec2_public_ip }}/
     flat: yes
 
 - name: copy the content of the CA pem
@@ -64,8 +69,9 @@
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
     body_format: json
     body:
-      key: "{{ gigadb_environment }}_tlsauth_ca"
+      key: "docker_tlsauth_ca"
       value: "{{ ca_pem['content'] | b64decode }}"
+      environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
       - 400
@@ -73,7 +79,7 @@
 
 - name: Copy the CA pem to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_tlsauth_ca"
+    url: "{{ gitlab_url }}/variables/docker_tlsauth_ca?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -81,7 +87,7 @@
     body:
       value: "{{ ca_pem['content'] | b64decode }}"
     status_code: 200
-    register: ca_put_outcome
+  register: ca_put_outcome
   when: ca_post_outcome.status == 400
 
 - name: Copy the cert pem to GITLAB CI environment variable
@@ -93,8 +99,9 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "{{ gigadb_environment }}_tlsauth_cert"
+      key: "docker_tlsauth_cert"
       value: "{{ cert_pem['content'] | b64decode }}"
+      environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
       - 400
@@ -102,7 +109,7 @@
 
 - name: Copy the cert pem to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_tlsauth_cert"
+    url: "{{ gitlab_url }}/variables/docker_tlsauth_cert?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -110,7 +117,7 @@
     body:
       value: "{{ cert_pem['content'] | b64decode }}"
     status_code: 200
-    register: cert_put_outcome
+  register: cert_put_outcome
   when: cert_post_outcome.status == 400
 
 - name: Copy the key pem to GITLAB CI environment variable
@@ -122,8 +129,9 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "{{ gigadb_environment }}_tlsauth_key"
+      key: "docker_tlsauth_key"
       value: "{{ key_pem['content'] | b64decode }}"
+      environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
       - 400
@@ -131,7 +139,7 @@
 
 - name: Copy the key pem to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_tlsauth_key"
+    url: "{{ gitlab_url }}/variables/docker_tlsauth_key?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -139,7 +147,7 @@
     body:
       value: "{{ key_pem['content'] | b64decode }}"
     status_code: 200
-    register: key_put_outcome
+  register: key_put_outcome
   when: key_post_outcome.status == 400
 
 - name: copy the private ip address to GITLAB CI environment variable (first time)
@@ -151,8 +159,9 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "{{ gigadb_environment }}_private_ip"
-      value: "{{ ansible_eth0.ipv4.address }}"
+      key: "remote_private_ip"
+      value: "{{ ec2_private_ip }}"
+      environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
       - 400
@@ -160,15 +169,15 @@
 
 - name: copy the private ip address to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_private_ip"
+    url: "{{ gitlab_url }}/variables/remote_private_ip?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
     body_format: json
     body:
-      value: "{{ ansible_eth0.ipv4.address }}"
+      value: "{{ ec2_private_ip }}"
     status_code: 200
-    register: private_ip_put_outcome
+  register: private_ip_put_outcome
   when: private_ip_post_outcome.status == 400
 
 - name: copy the public ip address to GITLAB CI environment variable (first time)
@@ -180,8 +189,9 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "{{ gigadb_environment }}_public_ip"
-      value: "{{ inventory_hostname }}"
+      key: "remote_public_ip"
+      value: "{{ ec2_public_ip }}"
+      environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
       - 400
@@ -189,13 +199,13 @@
 
 - name: copy the public ip address to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/{{ gigadb_environment }}_public_ip"
+    url: "{{ gitlab_url }}/variables/remote_public_ip?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
     body_format: json
     body:
-      value: "{{ inventory_hostname }}"
+      value: "{{ ec2_public_ip }}"
     status_code: 200
-    register: public_ip_put_outcome
+  register: public_ip_put_outcome
   when: public_ip_post_outcome.status == 400

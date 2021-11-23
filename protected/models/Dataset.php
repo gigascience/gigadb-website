@@ -37,6 +37,21 @@ class Dataset extends CActiveRecord
                          'Published' =>'Published',
                          );
 
+    public static $availableStatusList = array('ImportFromEM'=>'ImportFromEM',
+        'UserStartedIncomplete'=>'UserStartedIncomplete',
+        'Rejected'=>'Rejected',
+        'Not required'=>'Not required',
+//        'AssigningFTPbox'=>'AssigningFTPbox',
+//        'UserUploadingData'=>'UserUploadingData',
+//        'DataAvailableForReview'=>'DataAvailableForReview',
+        'Submitted'=>'Submitted',
+//        'DataPending'=>'DataPending',
+        'Curation'=>'Curation',
+        'AuthorReview'=>'AuthorReview',
+        'Private'=>'Private',
+        'Published' =>'Published',
+    );
+
     /*
      * List of Many To Many RelationShip
      */

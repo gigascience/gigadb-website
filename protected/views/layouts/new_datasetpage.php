@@ -4,8 +4,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="language" content="en" />
-    <meta name="robots" content="noindex">
-    <meta name="googlebot" content="noindex">
+    <?php if ( true || $metaData['private']) {//TODO: remove true|| when going to prod. or get env ?>
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="googlebot" content="noindex, nofollow">
+    <?php } ?>
     <?php if ($metaData['redirect']) {
             Yii::app()->clientScript->registerMetaTag("5;url={$metaData['redirect']}", null, 'refresh');
         }
@@ -150,6 +152,7 @@
                                 <li><a href="/site/help">Help</a></li>
                                 <li><a href="/site/faq">FAQ</a></li>
                                 <li><a href="/site/guide">Guidelines</a></li>
+                                <li><a href="https://stats.uptimerobot.com/LGVQXSkN1y">Systems Status</a></li>
                             </ul>
                         </li>
                         <li><a href="/site/term">Terms of use</a></li>
@@ -196,7 +199,7 @@
     <!-- Le javascript
      ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <!-- <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script> -->
+    <!-- <script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script> -->
     <!-- <script src="/js/jquery.js"></script>-->
     <!-- <script src="/js/google-code-prettify/prettify.js"></script>-->
     <!-- <script src="/js/bootstrap-transition.js"></script>

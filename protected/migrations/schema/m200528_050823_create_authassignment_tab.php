@@ -4,7 +4,7 @@ class m200528_050823_create_authassignment_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE AuthAssignment (
+        $this->execute("CREATE TABLE IF NOT EXISTS AuthAssignment (
             itemname character varying(64) NOT NULL,
             userid character varying(64) NOT NULL,
             bizrule text,

@@ -1,5 +1,6 @@
 <?php
 
+use Ramsey\Uuid\Uuid;
 class SiteController extends Controller {
     /**
  	 * Declares class-based actions.
@@ -337,7 +338,13 @@ class SiteController extends Controller {
 
 
 	public function actionAbout() {
-                $this->layout='new_main';
+
+	    // Dont' remove this block, it is used for automated testing application logging and debug settings
+        if(defined('YII_DEBUG') && YII_DEBUG === true) {
+            $uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, Yii::app()->getRequest()->getUrl());
+            Yii::log("******* URL SHA_1 UUIDv5: {$uuid->toString()} *******","warning");
+        }
+	    $this->layout='new_main';
 		$this->render('about');
 	}
 
@@ -527,14 +534,7 @@ class SiteController extends Controller {
     		imagefilledrectangle($im, 0, 0, 600, 100, $white);
     		// The text to draw
 
-    		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    		$charactersLength = strlen($characters);
-    		$randomString = '';
-    		for ($i = 0; $i < $length; $i++) {
-    			$randomString .= $characters[rand(0, $charactersLength - 1)];
-    		}
-
-    		$text = $randomString;
+    		$text = Yii::$app->security->generateRandomString($length);
     		$font = '/fonts/times_new_yorker.ttf';
     		imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
 

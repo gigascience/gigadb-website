@@ -1,0 +1,68 @@
+# acceptance.suite.yml
+namespace: common\tests
+suite_namespace: common\tests\acceptance
+bootstrap: false
+actor: AcceptanceTester
+modules:
+    enabled:
+        - common\tests\Helper\DbExtendedWithHooks:
+            dsn: 'pgsql:host=database;dbname=gigadb'
+            user: 'gigadb'
+            password: 'vagrant'
+            # dump: tests/_data/gigadb_bootstrap.sql
+            cleanup: false # don't reload dump between tests
+            populate: false # don't load dump before all tests
+            databases:
+                fuwdb:
+                    dsn: 'pgsql:host=database;dbname=fuwdb'
+                    user: 'fuwdb'
+                    password: 'yii2advanced'
+                    cleanup: false # don't reload dump between tests
+                    populate: false # don't load dump before all tests
+                    reconnect: true
+                    waitlock: 10
+        - WebDriver:
+             url: 'http://gigadb.test'
+             window_size: 2000x3500
+             # host: 'phantomjs'
+             # port: 8910
+             # browser: phantomjs
+             # host: 'firefox'
+             # port: 4444
+             # browser: firefox'
+             host: 'chrome'
+             port: 4444
+             browser: chrome
+             capabilities:
+                "goog:chromeOptions":
+                    args: ['--headless']
+                    w3c: false
+                "goog:loggingPrefs":
+                    browser: ALL
+                "loggingPrefs":
+                    browser: ALL                   
+        - common\tests\Helper\FilesystemCleanupHook
+        - Yii2:
+            part: init
+        - Asserts
+gherkin:
+    contexts:
+        default:
+            - common\tests\AcceptanceTester
+        role:
+            curator:
+                - common\tests\Step\Acceptance\AuthorSteps
+                - common\tests\Step\Acceptance\MetadataFormSteps
+                - common\tests\Step\Acceptance\CuratorSteps
+                - common\tests\Step\Acceptance\ReviewerSteps
+            author:
+                - common\tests\Step\Acceptance\AuthorSteps
+                - common\tests\Step\Acceptance\MetadataFormSteps
+            reviewer:
+                - common\tests\Step\Acceptance\AuthorSteps
+                - common\tests\Step\Acceptance\MetadataFormSteps                
+                - common\tests\Step\Acceptance\ReviewerSteps                
+
+extensions:
+    enabled:
+        - Codeception\Extension\Recorder

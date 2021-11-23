@@ -4,8 +4,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="language" content="en" />
-    <meta name="robots" content="noindex">
-    <meta name="googlebot" content="noindex">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
@@ -138,6 +138,7 @@
                                 <li><a href="/site/help">Help</a></li>
                                 <li><a href="/site/faq">FAQ</a></li>
                                 <li><a href="/site/guide">Guidelines</a></li>
+                                <li><a href="https://stats.uptimerobot.com/LGVQXSkN1y">Systems Status</a></li>
                             </ul>
                         </li>
                         <li><a href="/site/term">Terms of use</a></li>
@@ -184,7 +185,7 @@
     <!-- Le javascript
          ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    <script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>
     <!-- <script src="/js/jquery.js"></script>-->
     <!-- <script src="/js/google-code-prettify/prettify.js"></script>-->
     <!-- <script src="/js/bootstrap-transition.js"></script>

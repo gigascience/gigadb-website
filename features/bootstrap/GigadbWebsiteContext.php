@@ -3,6 +3,8 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
+use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
+use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 
 /**
  * Contains steps definitions and utility functions to be used in all Context classes
@@ -53,10 +55,19 @@ class GigadbWebsiteContext implements Context
      */
     private $affiliateLoginContext;
 
+    /**
+     * @var Array $dbConf configuration data for database
+     */
+    public $dbConf;
+
     public function __construct()
     {
         $this->admin_login = getenv("GIGADB_admin_tester_email");
         $this->admin_password = getenv("GIGADB_admin_tester_password") ;
+        $this->dbConf['host'] = getenv('GIGADB_HOST');
+        $this->dbConf['db'] = getenv('GIGADB_DB');
+        $this->dbConf['user'] = getenv('GIGADB_USER');
+        $this->dbConf['password'] = getenv('GIGADB_PASSWORD');
     }
 
 
@@ -209,7 +220,7 @@ class GigadbWebsiteContext implements Context
         $this->terminateDbBackend("gigadb");
         $this->dropCreateDb("gigadb");
         if ( preg_match("/\.pgdmp$/", $arg1) ) {
-            exec("pg_restore -i -h database -p 5432 -U gigadb -d gigadb -v /var/www/sql/${arg1} 2>&1",$output);
+            exec("pg_restore -h database -p 5432 -U gigadb -d gigadb -v /var/www/sql/${arg1} 2>&1",$output);
             $this->restartPhp();
         }
         else {
@@ -217,6 +228,22 @@ class GigadbWebsiteContext implements Context
         }
 
 
+    }
+
+
+    /**
+     * @Given dataset :arg1 exists
+     */
+    public function datasetExists($arg1)
+    {
+        $sql = 'select identifier from dataset where identifier = $1';
+        $dbconn = pg_connect("host={$this->dbConf['host']} dbname={$this->dbConf['db']} user={$this->dbConf['user']} password={$this->dbConf['password']} port=5432") or die('Could not connect: ' . pg_last_error());
+        $resultRes = pg_query_params($dbconn, $sql, [$arg1]);
+        $result = pg_fetch_array($resultRes, NULL, PGSQL_ASSOC);
+        PHPUnit_Framework_Assert::assertNotNull($result);
+        PHPUnit_Framework_Assert::assertEquals($arg1, $result['identifier']);
+        pg_free_result($resultRes);
+        pg_close($dbconn);
     }
 
     /**
@@ -263,13 +290,17 @@ class GigadbWebsiteContext implements Context
      * @param string $dbname name of database to operate on
      *
     */
-    public function terminateDbBackend($dbname) {
-        print_r("Terminating DB Backend... ");
+    public static function call_pg_terminate_backend($dbname) {
+        print_r("Terminating DB Backend...".PHP_EOL);
         $sql = "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='${dbname}' and pid <> pg_backend_pid()";
         $dbconn = pg_connect("host=database dbname=postgres user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
 
+    }
+
+    public function terminateDbBackend($dbname) {
+        GigadbWebsiteContext::call_pg_terminate_backend($dbname);
     }
 
     /**
@@ -280,7 +311,8 @@ class GigadbWebsiteContext implements Context
      * @param string $dbname name of database to operate on
      *
     */
-    public function dropCreateDb($dbname) {
+    public static function recreateDB($dbname) {
+        echo "Recreating database ${dbname}...".PHP_EOL;
         $sql_to_fence ="ALTER DATABASE $dbname WITH CONNECTION LIMIT 0;"; //avoid new connection during this process
         $sql_to_drop = "DROP DATABASE ${dbname}";
         $sql_to_create = "CREATE DATABASE ${dbname} OWNER gigadb";
@@ -290,6 +322,10 @@ class GigadbWebsiteContext implements Context
         pg_query($dbconn, $sql_to_create);
         pg_close($dbconn);
 
+    }
+
+    public function dropCreateDb($dbname) {
+        GigadbWebsiteContext::recreateDB($dbname);
     }
 
     /**
@@ -303,7 +339,7 @@ class GigadbWebsiteContext implements Context
     */
     public function truncateTable($dbname,$tablename) {
         $sql = "TRUNCATE TABLE ${tablename} CASCADE";
-        $dbconn = pg_connect("host=database dbname=${dbname} user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host={$this->dbConf['host']} dbname={$this->dbConf['db']} user={$this->dbConf['user']} password={$this->dbConf['password']} port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
         print_r("Truncated ${tablename} on ${dbname}");
@@ -321,12 +357,17 @@ class GigadbWebsiteContext implements Context
      *
      *
     */
-    public function restartPhp()
+    public static function containerRestart()
     {
         $compose_name=getenv("COMPOSE_PROJECT_NAME");
         print_r("Restarting php container for ${compose_name} project...".PHP_EOL);
         exec("/var/www/ops/scripts/restart_php.sh",$output);
         sleep(2);
+    }
+
+    public function restartPhp()
+    {
+        GigadbWebsiteContext::containerRestart();
     }
 
     /**
@@ -339,7 +380,7 @@ class GigadbWebsiteContext implements Context
     */
     public function loadUserData($user) {
         $sql = file_get_contents("sql/${user}.sql");
-        $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host={$this->dbConf['host']} dbname={$this->dbConf['db']} user={$this->dbConf['user']} password={$this->dbConf['password']} port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
         print_r("Loaded ${user}.sql on gigadb");
@@ -355,7 +396,7 @@ class GigadbWebsiteContext implements Context
     public function removeCreatedUsers() {
         print_r("Removing Created Users... ");
         $sql = "delete from gigadb_user where id not in (344,345)";
-        $dbconn = pg_connect("host=database dbname=gigadb user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
+        $dbconn = pg_connect("host={$this->dbConf['host']} dbname={$this->dbConf['db']} user={$this->dbConf['user']} password={$this->dbConf['password']} port=5432") or die('Could not connect: ' . pg_last_error());
         pg_query($dbconn, $sql);
         pg_close($dbconn);
     }
@@ -377,6 +418,33 @@ class GigadbWebsiteContext implements Context
         $time = $time_end - $this->time_start;
 
         print_r("Timer stopped after $time seconds\n");
+    }
+
+    /** @BeforeSuite */
+    public static function backupCurrentDB(BeforeSuiteScope $scope)
+    {
+        print_r("Loading environment variables... ".PHP_EOL);
+        $dotenv = Dotenv\Dotenv::create('/var/www', '.env');
+        $dotenv->load();
+        $dotsecrets = Dotenv\Dotenv::create('/var/www', '.secrets');
+        $dotsecrets->load();
+        print_r("Backing up current database... ".PHP_EOL);
+        exec("pg_dump ".getenv("GIGADB_DB")." -U ".getenv("GIGADB_USER")." -h ".getenv("GIGADB_HOST")." -F custom  -f /var/www/sql/before-run.pgdmp 2>&1",$output);
+    }
+
+    /** @AfterSuite */
+    public static function restoreCurrentDB(AfterSuiteScope $scope)
+    {
+        print_r("Loading environment variables... ".PHP_EOL);
+        $dotenv = Dotenv\Dotenv::create('/var/www', '.env');
+        $dotenv->load();
+        $dotsecrets = Dotenv\Dotenv::create('/var/www', '.secrets');
+        $dotsecrets->load();        
+        print_r("Restoring current database... ".PHP_EOL);
+        GigadbWebsiteContext::call_pg_terminate_backend("gigadb");
+        GigadbWebsiteContext::recreateDB("gigadb");
+        exec("pg_restore -h ".getenv("GIGADB_HOST")."  -U ".getenv("GIGADB_USER")." -d ".getenv("GIGADB_DB")." --clean --no-owner -v /var/www/sql/before-run.pgdmp 2>&1",$output);
+        GigadbWebsiteContext::containerRestart();
     }
 
 

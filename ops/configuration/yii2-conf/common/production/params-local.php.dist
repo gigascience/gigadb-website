@@ -1,0 +1,30 @@
+<?php
+return [
+	"jwt_key" => "$FUW_JWT_KEY",
+	"remote_docker_hostname" => "$REMOTE_DOCKER_HOSTNAME",
+	"dataset_filedrop" => [
+		"ftpd_endpoint" => "$REMOTE_HOSTNAME",
+		"ftpd_port" => "9021",
+		"template_path" => "/var/www/files/templates",
+		"tusd_path" => "/fileserver/",
+		"tusd_host" => "$REMOTE_HOSTNAME",
+		"download_base_url" => "$HOME_URL",
+		"files_public_url" => "$FILES_PUBLIC_URL",
+	],
+	"dataset_upload" => [
+		"sender" => "admin@gigadb.org",
+		"recipient" => "gigadb-editorial@rijam.sent.as",
+		"curators_email" => "gigadb-database@rijam.sent.as",
+		"template_path" => "/var/www/files/templates",
+		"spreadsheet_supported_format" => ["text/csv", "text/tab-separated-values"],
+	],	
+	// "docker_ssl" => [
+	// 	"cafile" => "$cafile",
+	// 	"local_cert" => "$local_cert",
+	// 	"local_pk" => "$local_pk",
+	// 	"peer_name" => "$peer_name",
+	// 	"verify_peer" => false,
+ //      	"verify_peer_name" => false,
+ //      	"allow_self_signed" => false
+	// ]
+];

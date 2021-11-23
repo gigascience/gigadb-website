@@ -4,7 +4,7 @@ class m200528_055005_create_image_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE image (
+        $this->execute("CREATE TABLE IF NOT EXISTS image (
             id integer NOT NULL,
             location character varying(200) DEFAULT ''::character varying NOT NULL,
             tag character varying(300),
@@ -13,7 +13,7 @@ class m200528_055005_create_image_tab extends CDbMigration
             photographer character varying(128) NOT NULL,
             source character varying(256) NOT NULL);");
 
-        $this->execute("CREATE SEQUENCE image_id_seq 
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS image_id_seq 
             START WITH 40 
             INCREMENT BY 1 
             NO MINVALUE 

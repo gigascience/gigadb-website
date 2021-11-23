@@ -30,7 +30,8 @@ class AttributeService extends CApplicationComponent
 		}
 		else {
 			$da_factory = new DatasetAttributesFactory();
-			$this->dataset_dao = new DatasetDAO($da_factory);
+			$this->dataset_dao = new DatasetDAO();
+			$this->dataset_dao->DatasetAttrFactory = $da_factory ;
 		}
 	}
 	/**

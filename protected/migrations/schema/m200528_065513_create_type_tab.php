@@ -4,12 +4,12 @@ class m200528_065513_create_type_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE type (
+        $this->execute("CREATE TABLE IF NOT EXISTS type (
             id integer NOT NULL,
             name character varying(32) NOT NULL,
             description text DEFAULT ''::text NOT NULL);");
 
-        $this->execute("CREATE SEQUENCE type_id_seq 
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS type_id_seq 
             START WITH 30 
             INCREMENT BY 1 
             NO MINVALUE 

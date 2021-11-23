@@ -1,0 +1,98 @@
+check_PSR2:
+  stage: conformance and security
+  artifacts:
+    paths:
+      - protected/runtime/phpcs-psr2-source.txt
+      - protected/runtime/phpcs-psr2-summary.txt
+      - protected/runtime/phpcs-psr2-full.txt
+    when: always
+    expire_in: 3 months
+  script:
+    # Load Base image
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+    - docker load -i php-7_1-fpm-buster.tar
+    - docker load -i php-7_2-fpm-buster.tar
+    - docker load -i php-7_2-cli-buster.tar
+    - docker load -i alpine-3_14.tar
+    - docker load -i nginx-1_21-alpine.tar
+    - docker load -i node-14-buster.tar
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker-compose run --rm config
+    - docker-compose run --rm gigadb
+    - docker-compose run --rm test ops/scripts/check_codestyle.sh
+  allow_failure: true
+  when: manual
+
+check_PHPDoc:
+  stage: conformance and security
+  artifacts:
+    paths:
+      - protected/runtime/phpcs-phpdoc-source.txt
+      - protected/runtime/phpcs-phpdoc-summary.txt
+      - protected/runtime/phpcs-phpdoc-full.txt
+    when: always
+    expire_in: 3 months
+  script:
+    # Load Base image
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+    - docker load -i php-7_1-fpm-buster.tar
+    - docker load -i php-7_2-fpm-buster.tar
+    - docker load -i php-7_2-cli-buster.tar
+    - docker load -i alpine-3_14.tar
+    - docker load -i nginx-1_21-alpine.tar
+    - docker load -i node-14-buster.tar
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker-compose run --rm config
+    - docker-compose run --rm gigadb
+    - docker-compose run --rm test ops/scripts/check_phpdoc.sh
+  allow_failure: true
+  when: manual
+
+
+.check_coverage:
+  stage: conformance and security
+  cache:
+    key: coverage-cache
+    paths:
+      - previous_coverage_level.txt
+  script:
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker-compose run --rm config
+    - docker-compose run --rm gigadb
+    - docker-compose run --rm test ./tests/coverage_check
+
+
+bandit-sast:
+  stage: conformance and security
+  variables:
+    SAST_DISABLED: "true"
+
+eslint-sast:
+  stage: conformance and security
+  variables:
+    SAST_DISABLED: "true"
+
+nodejs-scan-sast:
+  stage: conformance and security
+  variables:
+    SAST_DISABLED: "true"
+
+phpcs-security-audit-sast:
+  stage: conformance and security
+
+semgrep-sast:
+  stage: conformance and security
+  variables:
+    SAST_DISABLED: "true"
+
+spotbugs-sast:
+  stage: conformance and security
+  variables:
+    SAST_DISABLED: "true"

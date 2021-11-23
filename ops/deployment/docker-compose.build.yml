@@ -2,6 +2,9 @@ version: '3.7'
 
 services:
 
+  less:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/application:latest
+
   production_web:
     environment:
       YII_PATH: ${YII_PATH}
@@ -9,28 +12,126 @@ services:
     build:
       context: ../..
       dockerfile: ops/packaging/Production-Web-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_web:${GIGADB_ENV}"
       args:
         - NGINX_VERSION=${NGINX_VERSION}
         - GIGADB_ENV=${GIGADB_ENV}
-    volumes:
-      - ../../assets:/var/www/assets
+        - FIX_SITE_CONFIGS=true
 
   production_app:
+    environment:
+      PHP_VERSION: ${PHP_VERSION}
     build:
       context: ../..
       dockerfile: ops/packaging/Production-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_app:${GIGADB_ENV}"
       args:
-        - TARGET_PHP_VERSION=7.1
+        - TARGET_PHP_VERSION=${PHP_VERSION}
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=false
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=true
         - INSTALL_APCU=true
-    volumes:
-      - ../../assets:/var/www/assets
+
+  production_gigadb-worker:
+    build:
+      context: ../..
+      dockerfile: ops/packaging/Production-Worker-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:${GIGADB_ENV}"
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2.34-cli-buster
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_IPROUTE2=true
+
+  production_fuw-console:
+    build:
+      context: ../..
+      dockerfile: fuw/app/common/Production-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:${GIGADB_ENV}"
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2.34-fpm-buster
+        - APP_PORT=9001
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_IPROUTE2=true
+        - INSTALL_PG_CLIENT=true
+        - PG_CLIENT_VERSION=9.6
+
+  production_fuw-admin:
+    build:
+      context: ../..
+      dockerfile: fuw/app/common/Production-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:${GIGADB_ENV}"
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2.34-fpm-buster
+        - APP_PORT=9002
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_IPROUTE2=true
+    expose:
+      - "9002"
+
+  production_fuw-worker:
+    build:
+      context: ../../fuw/app
+      dockerfile: console/Production-Worker-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:${GIGADB_ENV}"
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2.34-cli-buster
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_IPROUTE2=true
+
+  production_fuw-public:
+    build:
+      context: ../..
+      dockerfile: fuw/app/common/Production-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:${GIGADB_ENV}"
+      args:
+        - PHP_BASE_IMAGE_VERSION=7.2.34-fpm-buster
+        - APP_PORT=9001
+        - INSTALL_NETCAT_JQ=true
+        - INSTALL_IPROUTE2=true
+    expose:
+      - "9001"
+
+  production_beanstalkd:
+    build:
+      context: .
+      dockerfile: ../packaging/Beanstalkd-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:${GIGADB_ENV}"
+    expose:
+      - "11300"
+
+  production_ftpd:
+    build:
+      context: ../../fuw/docker-pure-ftpd
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:${GIGADB_ENV}"
+
+  production_watcher:
+    build:
+      context: ../../fuw
+      dockerfile: watcher/Production-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:${GIGADB_ENV}"
+
+  production_tusd:
+    build:
+      context: ../..
+      dockerfile: ./fuw/tusd/Production-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:${GIGADB_ENV}"
 
   production_config:
     build:
       context: ../..
       dockerfile: ops/packaging/Config-Dockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_config:${GIGADB_ENV}"

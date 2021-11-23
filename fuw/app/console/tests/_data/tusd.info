@@ -1,0 +1,19 @@
+{
+    "ID": "8cd11d9b349dbf7d4539d25a2af03fe2",
+    "Size": 117,
+    "SizeIsDeferred": false,
+    "Offset": 0,
+    "MetaData":
+    {
+        "checksum": "58e51b8d263ca3e89712c65c4485a8c9",
+        "dataset": "300001",
+        "filename": "seq1.fa",
+        "filetype": "text/plain",
+        "name": "seq1.fa",
+        "relativePath": "null",
+        "type": "text/plain"
+    },
+    "IsPartial": false,
+    "IsFinal": false,
+    "PartialUploads": null
+}

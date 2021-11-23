@@ -1,4 +1,5 @@
 <section>
+    <div class="table-responsive">
     <table class="table table-bordered submitted-table" id="list">
         <thead>
             <tr>
@@ -78,11 +79,18 @@
                                 </td>
                                 <td>
                                     <? if ($data[$i]->upload_status !='Published' && $data[$i]->upload_status!='AuthorReview' && $data[$i]->upload_status!='Private'){ ?>
-                                        <a class="update" title="Update" href=<? echo "/datasetSubmission/datasetManagement/id/" . $data[$i]->id ?> ><img src="/images/update.png" alt="Update" /></a>
-                                        <a class="js-delete-dataset" did="<?=$data[$i]->id?>" title="Delete"><img alt="Delete" src="/images/delete.png"></a>
-                                        <? } ?>
-                </tr>
+                                        <div>
+                                            <a class="update btn" title="Update" href=<? echo "/datasetSubmission/datasetManagement/id/" . $data[$i]->id ?> >Update</a>
+                                            <a class="js-delete-dataset btn" did="<?=$data[$i]->id?>" title="Delete">
+                                       Delete</a>
+                                            <?php if ($data[$i]->upload_status === "UserUploadingData" || $data[$i]->upload_status === "DataPending") { 
+                                            echo CHtml::link('Upload Files', array('/authorisedDataset/uploadFiles', 'id'=>$data[$i]->identifier), array('class' => 'upload btn'));
+                                            } ?>
+                                        </div>
+                                    <? } ?>
+                                </td></tr>
                 <? } ?>
         </tbody>
     </table>
+    </div>
 </section>

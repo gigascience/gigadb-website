@@ -121,7 +121,7 @@ Resolving deltas: 100% (516/516), done.
 Checking connectivity... done.
 ```
 
-## Getting started in 3 steps
+## Getting started with GigaDB website in 3 steps
 
 **(1)** To setup the web application locally, do the following:
 ```
@@ -130,6 +130,7 @@ $ git checkout develop                              # Currently the only branch 
 $ cp ops/configuration/variables/env-sample .env    # Make sure GITLAB_PRIVATE_TOKEN is set to your personal access token and GIGADB_ENV=dev
 # Check .env file to see if the correct GROUP_VARIABLES_URL and PROJECT_VARIABLES_URL are used!!!
 $ docker-compose run --rm config                    # Generate the configuration using variables in .env, GitLab, then exit
+$ docker-compose run --rm less				# generate site.css
 ```
 
 >**Note 1**:
@@ -146,19 +147,24 @@ to provide your own values for the necessary variables using
 >$ vi .secrets
 >```
 
-**(2)** To start the web application, run the following command:
+**(2)** To start the web application, run the following commands:
+
 ```
-$ docker-compose run --rm webapp                    # Run composer update, then spin up the web application's services, then exit
+$ docker-compose run --rm gigadb                    # Run composer update, then spin up the web application's services, then exit
+$ docker-compose up -d web 							# Start the web server
 ```
 
-The **webapp** container will run composer update using the `composer.json` 
-generated in the previous step, and will launch three containers named **web**, 
+The **gigadb** container will run composer update using the `composer.json` 
+generated in the previous step, and will launch two containers named
 **application** and **database**, then it will exit. It's ok to run the command 
 repeatedly.
+
+Starting the web container will first enable site configuration connecting nginx to gigadb PHP application server before starting the web server as a deamon.
 
 **(3)** Upon success, three services will be started in detached mode.
 
 You can then navigate to the website at:
+
 * [http://gigadb.gigasciencejournal.com:9170](http://gigadb.gigasciencejournal.com:9170/)
 
 >**Note**:
@@ -191,21 +197,40 @@ database schema, you will need to run Yii migration as below:
 ```
 $ docker-compose run --rm  application ./protected/yiic migrate --interactive=0
 ```
-## Testing
+## Testing GigaDB webapp
 
-To run the tests:
+To run the unit tests:
 ```
-$ docker-compose run --rm test
+$ docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
 ```
 
-This will run all the tests and generate a test coverage report. An headless 
+To run the functional tests:
+
+```
+$ docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
+```
+
+There is a bash shortcut available to run both unit tests and functional tests for GigaDB:
+```
+$ ./tests/unit_functional
+```
+
+To run the acceptance tests:
+
+```
+$ docker-compose up -d phantomjs
+$ docker-compose run --rm test bin/behat --profile local -v --stop-on-failure
+```
+
+
 Selenium web browser (currently PhantomJS) will be automatically spun-off into 
 its own container. If an acceptance test fails, it will leave a screenshot under 
 the `./tmp` directory.
 
-To only run unit tests, use the command:
+To run test coverage:
+
 ```
-$ docker-compose run --rm test ./tests/unit_functional
+$ docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit /var/www/protected/tests --testsuite all --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml
 ```
 
 ## Troubleshooting

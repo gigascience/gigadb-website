@@ -1,11 +1,12 @@
-ARG PHP_VERSION=7.0
-FROM php:${PHP_VERSION}-fpm-buster
+ARG PHP_VERSION=7.1
+FROM php:7.1.33-fpm-buster
+
 
 # basic dependencies
 RUN apt-get update -yq && \
     apt-get install -y --no-install-recommends \
+        procps \
         curl \
-        gnupg \
         libmemcached-dev \
         libz-dev \
         libpq-dev \
@@ -14,22 +15,23 @@ RUN apt-get update -yq && \
         libfreetype6-dev \
         libssl-dev \
         libmcrypt-dev \
-        bc
+        bc \
+        gnupg \
+        --no-install-recommends && \
+        apt-get clean && \
+        rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN docker-php-ext-install mcrypt
 
-# Install the PHP pdo_pgsql extention
-RUN docker-php-ext-install pdo_pgsql
-
-# Install the PHP bcmath extention
-RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install mcrypt && \
+    docker-php-ext-install pdo_pgsql && \
+    docker-php-ext-install bcmath && \
+    docker-php-ext-install pcntl
 
 # Install the PHP gd library
 RUN docker-php-ext-install gd && \
     docker-php-ext-configure gd \
-        --enable-gd-native-ttf \
         --with-jpeg-dir=/usr/lib \
-        --with-freetype-dir=/usr/include/freetype2 && \
+        --with-freetype-dir && \
     docker-php-ext-install gd
 
 # Set Environment Variables
@@ -73,11 +75,12 @@ ARG INSTALL_PG_CLIENT=false
 ARG PG_CLIENT_VERSION=10.5
 
 RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
-    echo "deb http://apt.postgresql.org/pub/repos/apt buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-        curl -sL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
-        apt-get update && \
-        apt-get -y install postgresql-${PG_CLIENT_VERSION} && \
-        apt-get clean \
+    # Create folders if not exists (https://github.com/tianon/docker-brew-debian/issues/65)
+    mkdir -p /usr/share/man/man1 && \
+    mkdir -p /usr/share/man/man7 && \
+    # Install the pgsql client
+    apt-get update -yq && \
+    apt-get install -y postgresql-client-11 \
 ;fi
 
 
@@ -152,13 +155,8 @@ RUN if [ ${INSTALL_TIDEWAYS_XHPROF} = true ]; then \
 ARG INSTALL_LIBSODIUM=false
 
 RUN if [ ${INSTALL_LIBSODIUM} = true ]; then \
-    # Problem with using http://ftp.debian.org/debian for installing libsodium
-    # Might be related to https://lists.debian.org/debian-devel-announce/2019/03/msg00006.html
-    # Using archive repo instead
-    echo 'Acquire::Check-Valid-Until "0";' | tee -a /etc/apt/apt.conf.d/apt.conf && \
-    echo "deb http://archive.debian.org/debian jessie-backports main" | tee -a /etc/apt/sources.list && \
-    apt-get update && \
-    apt-get install -y -t jessie-backports libsodium-dev && \
+    apt-get update -yq && \
+    apt-get install -y libsodium-dev && \
     pecl install libsodium && \
     echo "extension=sodium.so" >  /usr/local/etc/php/conf.d/libsodium.ini \
 ;fi
@@ -187,12 +185,10 @@ RUN if [ ${INSTALL_MAILPARSE} = true ]; then \
 
 ARG INSTALL_CSSLINT_JSHINT=false
 RUN if [ ${INSTALL_CSSLINT_JSHINT} = true ]; then \
-    # To fix public key not found error when running nodesource_setup.sh
-    curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
-    curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh && \
-    bash nodesource_setup.sh && \
-    apt-get install -y nodejs && \
-    rm nodesource_setup.sh && \
+    wget https://deb.nodesource.com/setup_12.x | bash - && \
+    apt-get install -y nodejs npm && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  && \
     npm install -g csslint jshint \
 ;fi
 

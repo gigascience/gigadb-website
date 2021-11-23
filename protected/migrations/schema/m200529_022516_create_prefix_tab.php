@@ -4,7 +4,7 @@ class m200529_022516_create_prefix_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE prefix (
+        $this->execute("CREATE TABLE IF NOT EXISTS prefix (
             id integer DEFAULT nextval('link_prefix_id_seq'::regclass) NOT NULL,
             prefix character(20) NOT NULL,
             url text NOT NULL,

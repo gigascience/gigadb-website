@@ -1,9 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -e -u
 
-./tests/acceptance
-./tests/unit_functional
-./tests/coverage
-./tests/css_check
+set -a
+source .env
+set +a
+
+./tests/unit_runner
+./tests/functional_runner
+./tests/acceptance_runner ci-js
 ./tests/javascript_check
+#./tests/css_check
+./tests/logging_check
+./tests/coverage_runner
+

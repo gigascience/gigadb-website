@@ -8,13 +8,21 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
             </div>
         </font>
         <? } ?>
-            <? if (Yii::app()->user->hasFlash('error')) { ?>
-                <font color="red">
-                    <div>
-                        <?= Yii::app()->user->getFlash('error'); ?>
-                    </div>
-                </font>
-                <? } ?>
+    <? if (Yii::app()->user->hasFlash('error')) { ?>
+            <div class="alert alert-danger" role="alert">
+                <?= Yii::app()->user->getFlash('error'); ?>
+            </div>
+        <? } ?>
+    <? if (Yii::app()->user->hasFlash('fileUpload')) { ?>
+             <div class="alert alert-success" role="alert">
+                <?= Yii::app()->user->getFlash('fileUpload'); ?>
+            </div>
+        <? } ?>
+    <? if (Yii::app()->user->hasFlash('uploadDeleted')) { ?>
+             <div class="alert alert-success" role="alert">
+                <?= Yii::app()->user->getFlash('uploadDeleted'); ?>
+            </div>
+        <? } ?>
                     <div class="content">
                         <div class="container">
                             <section class="page-title-section">
@@ -193,6 +201,14 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                 error: function() {}
                             });
                         });
+var url = document.location.toString();
+if (url.match('#')) {
+    $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+} 
 
+// Change hash for page-reload
+$('.nav-tabs a').on('shown.bs.tab', function (e) {
+    window.location.hash = e.target.hash;
+})
                     });
                     </script>

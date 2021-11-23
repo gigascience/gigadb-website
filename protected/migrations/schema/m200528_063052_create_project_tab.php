@@ -4,13 +4,13 @@ class m200528_063052_create_project_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE project (
+        $this->execute("CREATE TABLE IF NOT EXISTS project (
             id integer NOT NULL,
             url character varying(128) NOT NULL,
             name character varying(255) DEFAULT ''::character varying NOT NULL,
             image_location character varying(100));");
 
-        $this->execute("CREATE SEQUENCE project_id_seq
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS project_id_seq
             START WITH 10
             INCREMENT BY 1
             NO MINVALUE

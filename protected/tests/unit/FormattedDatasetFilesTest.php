@@ -141,13 +141,15 @@ class FormattedDatasetFilesTest extends CTestCase
                          ->disableOriginalConstructor()
                          ->getMock();
         //then we set our expectation
-        $cachedDatasetFiles->expects($this->exactly(1))
+        $cachedDatasetFiles->expects($this->exactly(2))
                  ->method('getDatasetFiles')
                  ->willReturn( $source );
 
 
         $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
         $this->assertEquals($expected, $daoUnderTest->getDatasetFiles()) ;
+        $this->assertEquals(count($expected), $daoUnderTest->countDatasetFiles()) ;//_nbfiles not set
+        $this->assertEquals(count($expected), $daoUnderTest->countDatasetFiles()) ;//_nbfiles set
     }
 
     /**

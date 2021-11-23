@@ -1,0 +1,64 @@
+---
+# Use bastion server to restore PostgreSQL database on RDS instance
+
+- name: Setup Fail2ban
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+
+  tasks:
+    - debug:
+        msg: "remote private ip : {{ ec2_bastion_private_ip }}"
+
+  roles:
+    - role: ../../roles/fail2ban
+    - role: ../../roles/jail-ssh
+
+- name: Restore PostgreSQL database on RDS instance using pg_restore
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+
+  tasks:
+    - name: Disable postgresql module in AppStream
+      command: dnf -qy module disable postgresql
+      become: yes
+
+    - rpm_key:
+        state: present
+        key: https://download.postgresql.org/pub/repos/yum/RPM-GPG-KEY-PGDG
+
+    - name: Install PostgreSQL repo
+      become: yes
+      dnf:
+        name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+        state: present
+
+    - name: Install PostgreSQL 11 client packages
+      become: yes
+      dnf:
+        name: postgresql11
+        state: present
+
+    - name: Test pg_isready can connect to RDS instance
+      ansible.builtin.command: "/usr/pgsql-11/bin/pg_isready -h {{ pg_host }}"
+      register: pg_isready
+    - debug: msg="{{ pg_isready.stdout }}"
+
+    - name: Copy specified backup file from files-url-updater tool to bastion server
+      ansible.builtin.copy:
+        src: '{{ backup_file }}'
+        dest: "/home/centos/database_bootstrap.backup"
+        owner: centos
+        group: centos
+
+    - name: Drop gigadb database
+      shell: "export PGPASSWORD='{{ pg_password }}'; psql -U {{ pg_user }} -d postgres -h {{ pg_host }} -p 5432 -c 'drop database if exists {{ pg_database}}'"
+      register: psql_drop
+    - debug: msg="{{ psql_drop.stdout }}"
+
+    - name: Create gigadb database
+      shell: "export PGPASSWORD='{{ pg_password }}'; psql -U {{ pg_user }} -d postgres -h {{ pg_host }} -p 5432 -c 'create database {{ pg_database}} owner {{ pg_user }}'"
+      register: psql_create
+    - debug: msg="{{ psql_create.stdout }}"
+
+    - name: Restore gigadb database with backup file
+      shell: "export PGPASSWORD='{{ pg_password }}'; psql -U {{ pg_user }} -h {{ pg_host }} -p 5432 < /home/centos/database_bootstrap.backup"
+      register: psql_restore
+    - debug: msg="{{ psql_restore.stdout }}"

@@ -20,11 +20,3 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=true
     volumes:
       - ${APPLICATION}/ops/configuration/php-conf/xhgui-config.php:/usr/local/src/xhgui-0.8.1/config/config.php
-
-  webapp:
-    depends_on:
-      - application
-      - web
-      - database
-      - xhgui
-      - chrome

@@ -1767,24 +1767,6 @@ CREATE TABLE sample_rel (
 ALTER TABLE sample_rel OWNER TO gigadb;
 
 --
--- Name: curation_log; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
---
-
-CREATE TABLE curation_log (
-    id integer NOT NULL,
-    dataset_id integer NOT NULL,
-    CREATION_DATE date,
-    CREATED_BY varchar(20),
-    LAST_MODIFIED_DATE date,
-    LAST_MODIFIED_BY varchar(20),
-    ACTION varchar(100),
-    COMMENTS varchar(200)
-);
-
-
-ALTER TABLE public.curation_log OWNER TO gigadb;
-
---
 -- TOC entry 253 (class 1259 OID 18406)
 -- Name: sample_rel_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
 --
@@ -1806,6 +1788,25 @@ ALTER TABLE sample_rel_id_seq OWNER TO gigadb;
 --
 
 ALTER SEQUENCE sample_rel_id_seq OWNED BY sample_rel.id;
+
+--
+-- Name: curation_log; Type: TABLE; Schema: public; Owner: gigadb; Tablespace:
+--
+
+CREATE TABLE curation_log (
+    id integer NOT NULL,
+    dataset_id integer NOT NULL,
+    CREATION_DATE date,
+    CREATED_BY varchar(20),
+    LAST_MODIFIED_DATE date,
+    LAST_MODIFIED_BY varchar(20),
+    ACTION varchar(100),
+    COMMENTS varchar(200)
+);
+
+
+ALTER TABLE public.curation_log OWNER TO gigadb;
+
 
 --
 -- Name: curation_log_id_seq; Type: SEQUENCE; Schema: public; Owner: gigadb
@@ -2425,6 +2426,13 @@ ALTER TABLE ONLY sample_experiment ALTER COLUMN id SET DEFAULT nextval('sample_e
 
 ALTER TABLE ONLY sample_rel ALTER COLUMN id SET DEFAULT nextval('sample_rel_id_seq'::regclass);
 
+
+--
+-- TOC entry 2479 (class 2604 OID 18508)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: gigadb
+--
+
+ALTER TABLE ONLY curation_log ALTER COLUMN id SET DEFAULT nextval('curation_log_id_seq'::regclass);
 
 --
 -- TOC entry 2481 (class 2604 OID 18509)

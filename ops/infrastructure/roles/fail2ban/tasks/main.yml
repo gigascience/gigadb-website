@@ -1,10 +1,18 @@
 - name: Install epel-release
-  yum:
+  become: yes
+  dnf:
     name: epel-release
     state: present
 
 - name: Install the package "fail2ban"
-  yum:
+  become: yes
+  dnf:
     name: fail2ban
     state: present
     enablerepo: epel
+
+- name: Enable fail2ban to start upon reboot
+  file:
+    src: /usr/lib/systemd/system/fail2ban.service
+    dest: /etc/systemd/system/multi-user.target.wants/fail2ban.service
+    state: link

@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-set -e
+set -ex
+
+docker-compose run --rm test which csslint
 
 echo "Checking for CSS errors..."
-csslint_output=$(csslint css/current.css)
+csslint_output=$(docker-compose run --rm test /usr/local/bin/csslint css/current.css)
 
 if [[ $(echo "$csslint_output" | grep -c "error" || true) -eq "0" ]]; then
   echo "No CSS errors detected by CSSLint"
@@ -10,6 +12,6 @@ if [[ $(echo "$csslint_output" | grep -c "error" || true) -eq "0" ]]; then
 else
   echo "CSSLint detected CSS errors - check tmp/css_errors.txt"
   # Output file with errors
-  echo "$csslint_output" > "tmp/css_errors.txt"
+  echo "$csslint_output" > "/var/www/tmp/css_errors.txt"
   exit 1
 fi

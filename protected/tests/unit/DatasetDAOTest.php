@@ -17,7 +17,7 @@ class DatasetDAOTest extends CDbTestCase {
     	$dataset_id = 1;
     	$keyword_attribute_id = 1;
 
-    	$dataset_dao = new DatasetDAO(null);
+    	$dataset_dao = new DatasetDAO();
 
     	$dataset_dao->removeKeywordsFromDatabaseForDatasetId($dataset_id);
 
@@ -49,7 +49,8 @@ class DatasetDAOTest extends CDbTestCase {
 
 
         // Instantiate a new DatasetDAO, the system under test.
-        $dataset_dao = new DatasetDAO($da_factory);
+        $dataset_dao = new DatasetDAO();
+        $dataset_dao->setDatasetAttrFactory($da_factory);
 
         // Below, we expect a new DatasetAttribute object created, set and saved for each keyword.
         // Expected number of calls to be exactly zero times, two times and two times respectively
@@ -81,6 +82,113 @@ class DatasetDAOTest extends CDbTestCase {
     	$dataset_dao->addKeywordsToDatabaseForDatasetIdAndString($dataset_id, $post_keywords);
 
 
+    }
+
+    /**
+     * test function to transition Dataset from one status to another
+     */
+    public function testTransitionStatus()
+    {
+        $datasetDAO = new DatasetDAO();
+
+        $datasetDAO->setIdentifier("100243");
+        $success = $datasetDAO->transitionStatus("Published","AssigningFTPBox","foobar");
+
+        $datasetDAO->setIdentifier("100249");
+        $failure = $datasetDAO->transitionStatus("Pending","AssigningFTPBox","foobar");
+
+        $this->assertTrue($success);
+        $this->assertFalse($failure);
+        $changedDataset = Dataset::model()->findByAttributes(["identifier" => "100243"]);
+        $this->assertEquals("AssigningFTPBox", $changedDataset->upload_status);
+
+    }
+
+    /**
+     * test passing properties to constructor
+    */
+    public function testConstructor()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
+        $this->assertEquals("100249", $datasetDAO->getIdentifier());
+    }
+
+    /**
+     * test retrieve title and status
+     */
+    public function testGetTitleAndStatus()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
+        $this->assertEquals('Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',$datasetDAO->getTitleAndStatus()['title']);
+
+        $this->assertEquals('Published',$datasetDAO->getTitleAndStatus()['status']);
+    }
+
+    /**
+     * test retrieve submitter
+     */
+    public function testGetSubmitter()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
+        $this->assertEquals($datasetDAO->getSubmitter()->id,345);
+    }
+
+    public function testGetId()
+    {
+         $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
+         $this->assertEquals(2, $datasetDAO->getId());
+    }
+
+
+    public function testGetNextdatasetWithResult()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
+        $dataset = $datasetDAO->getNextDataset() ;
+        $this->assertEquals(4, $dataset->id);
+        $this->assertNotNull($dataset->title);
+        $this->assertEquals("101000", $dataset->identifier);
+    }
+
+    public function testGetNextdatasetNoResult()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "101001"]);
+        $dataset = $datasetDAO->getNextDataset() ;
+        if (null === $dataset) {
+            $dataset = $datasetDAO->getFirstDataset();
+        }
+        $this->assertEquals(5, $dataset->id);
+        $this->assertNotNull($dataset->title);
+        $this->assertEquals("100038", $dataset->identifier);
+    }
+
+    public function testGetFirstDataset()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100243"]);
+        $dataset = $datasetDAO->getFirstDataset() ;
+        $this->assertEquals(5, $dataset->id);
+        $this->assertNotNull($dataset->title);
+        $this->assertEquals("100038", $dataset->identifier);
+    }
+
+    public function testGetPreviousDatasetWithResult()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
+        $dataset = $datasetDAO->getPreviousDataset() ;
+        $this->assertEquals(7, $dataset->id);
+        $this->assertNotNull($dataset->title);
+        $this->assertEquals("100148", $dataset->identifier);
+    }
+
+    public function testGetPreviousDatasetNoResult()
+    {
+        $datasetDAO = new DatasetDAO(["identifier" => "100038"]);
+        $dataset = $datasetDAO->getPreviousDataset() ;
+        if (null === $dataset) {
+            $dataset = $datasetDAO->getFirstDataset();
+        }
+        $this->assertEquals(5, $dataset->id);
+        $this->assertNotNull($dataset->title);
+        $this->assertEquals("100038", $dataset->identifier);
     }
 
 

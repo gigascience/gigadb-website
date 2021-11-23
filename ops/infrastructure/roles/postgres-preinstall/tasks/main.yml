@@ -1,11 +1,10 @@
-- name: install PostgreSQL 9.6 repository
+- name:
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://download.postgresql.org/pub/repos/yum/RPM-GPG-KEY-PGDG
+
+- name: install PostgreSQL 11 repository
   yum:
-    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-6-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
     state: present
 
-- name: install system packages
-  yum:
-    name: "{{ item }}"
-    state: installed
-  with_items:
-    - "@Development tools"

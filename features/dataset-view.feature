@@ -1,4 +1,4 @@
-@issue-125 @dataset-view
+@issue-125 @dataset-view @timeout-prone
 Feature: a user visit the dataset page
 	As a gigadb user
 	I want to see all the information pertaining to a dataset
@@ -7,7 +7,7 @@ Feature: a user visit the dataset page
 	Background:
 		Given Gigadb web site is loaded with production-like data
 
-	@ok @keywords
+	@ok @keywords @timeout-prone
 	Scenario: Core information
 		Given I have added the following keywords to dataset "101001"
 		| Keywords |

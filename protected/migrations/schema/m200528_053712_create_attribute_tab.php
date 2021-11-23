@@ -4,7 +4,7 @@ class m200528_053712_create_attribute_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE attribute (
+        $this->execute("CREATE TABLE IF NOT EXISTS attribute (
             id integer NOT NULL,
             attribute_name character varying(100),
             definition character varying(1000),
@@ -16,7 +16,7 @@ class m200528_053712_create_attribute_tab extends CDbMigration
             ontology_link character varying(1000),
             note character varying(100));");
 
-        $this->execute("CREATE SEQUENCE attribute_id_seq
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS attribute_id_seq
             START WITH 700
             INCREMENT BY 1
             NO MINVALUE

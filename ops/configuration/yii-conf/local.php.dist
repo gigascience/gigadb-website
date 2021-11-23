@@ -19,7 +19,7 @@ return array(
         ),
     ),
     'params'=>array(
-        'home_url' => 'http://${HOME_URL}', // Where top level link goes to
+        'home_url' => '${HOME_URL}', // Where top level link goes to
 
         // Used in the contact page
         'adminEmail'=> '${SERVER_EMAIL}',

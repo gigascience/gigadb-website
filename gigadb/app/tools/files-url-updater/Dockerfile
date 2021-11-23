@@ -10,6 +10,8 @@ RUN apt-get update -yq && \
         gnupg \
         libmemcached-dev \
         libz-dev \
+        libzip-dev \
+        zip \
         libpq-dev \
         libjpeg-dev \
         libpng-dev \
@@ -24,6 +26,19 @@ RUN docker-php-ext-install pgsql
 
 # Install the PHP bcmath extention
 RUN docker-php-ext-install bcmath
+
+## Install composer
+RUN docker-php-ext-configure zip \
+    && docker-php-ext-install zip \
+    && apt-get update -yq \
+    && apt-get install -y unzip wget \
+    && EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" \
+    && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && ACTUAL_SIGNATURE="$(php -r "echo hash_file('SHA384', 'composer-setup.php');")" \
+    && test $EXPECTED_SIGNATURE = $ACTUAL_SIGNATURE  \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer --quiet \
+    && rm composer-setup.php \
+    && composer config --global repo.packagist composer https://packagist.org
 
 # always run apt update when start and after add new source list, then clean up at end.
 RUN apt-get update -yqq && \

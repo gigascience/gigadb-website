@@ -1,14 +1,13 @@
 stages:
-  - build
+  - build for test
   - test
-  - security
-  - conformance
-  - staging
-  - live
-
+  - conformance and security
+  - staging build
+  - staging deploy
+  - live build
+  - live deploy
+  - operations
 image: docker:stable
-
-
 variables:
   # When using dind service we need to instruct docker, to talk with the
   # daemon started inside of the service. The daemon is available with
@@ -24,6 +23,8 @@ variables:
   # When using dind, it's wise to use the overlayfs driver for
   # improved performance.
   DOCKER_DRIVER: overlay2
+  # See https://github.com/docker-library/docker/pull/166
+  DOCKER_TLS_CERTDIR: ""
   # the configuration script needs to know that we are not in DEV environment anymore
   # so it doesn't try to access
   GIGADB_ENV: CI
@@ -31,304 +32,76 @@ variables:
   APPLICATION: "/builds/$CI_PROJECT_PATH"
   YII_PATH: "/var/www/vendor/yiisoft/yii"
   YII2_PATH: "/var/www/vendor/yiisoft/yii2"
-  DATA_SAVE_PATH: "/builds/.containers-data/gigadb"
+  DATA_SAVE_PATH: "/builds/$CI_PROJECT_PATH/containers-data"
   NGINX_VERSION: "1.15.2"
   PHP_VERSION: "7.1"
   YII_VERSION: "1.1.20"
   YII2_VERSION: "2.0.15.1"
-  POSTGRES_VERSION: "9.4"
+  POSTGRES_VERSION: "11.13"
   HOME_URL: "gigadb.gigasciencejournal.com"
+  FILES_PUBLIC_URL: "http://gigadb.gigasciencejournal.com:9170"
   PUBLIC_HTTP_PORT: "9170"
   PUBLIC_HTTPS_PORT: "8043"
   COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml"
   COMPOSE_PROJECT_NAME: ${CI_PROJECT_NAME}
   COVERALLS_RUN_LOCALLY: "1"
-  MAIN_BRANCH: "nolegacy-dep-ux-php7"
+  MAIN_BRANCH: "develop"
   GITLAB_PRIVATE_TOKEN: $CI_BUILD_TOKEN
   GITLAB_UPSTREAM_PROJECT_ID: "7041674"
+  CSV_DIR: "production_like"
+  YII_ENV_DEV: "true"
+  SERVER_HOSTNAME: "gigadb.gigasciencejournal.com"
+
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - local: "ops/pipelines/gigadb-build-jobs.yml"
+  - local: "ops/pipelines/gigadb-test-jobs.yml"
+  - local: "ops/pipelines/gigadb-conformance-security-jobs.yml"
+  - local: "ops/pipelines/gigadb-deploy-jobs.yml"
+  - local: "ops/pipelines/gigadb-operations-jobs.yml"
+#  - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
 
 services:
-  - docker:dind
+  - docker:19.03.12-dind
 
-before_script:
-  - env | grep "^CI_" > $APPLICATION/.ci_env
-  - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" > $APPLICATION/.env
-  - env | grep -v "^DOCKER" | grep -v "^CI"  | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -v "ANALYTICS_PRIVATE_KEY" | grep -viE "tlsauth" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.secrets
-  - apk add --no-cache py-pip bash
-  # Pin docker-compose version to stop installation error
-  - pip install docker-compose~=1.23.0
-  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-
-after_script:
-  - docker-compose logs web
-  - docker-compose logs application
-
-build_webapp:
-  stage: build
-  script:
-    - echo "Building app"
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
-    - docker-compose build application
-    - docker-compose build test
-    - docker tag ${CI_PROJECT_NAME}_application:latest registry.gitlab.com/$CI_PROJECT_PATH/application:latest
-    - docker tag ${CI_PROJECT_NAME}_test:latest registry.gitlab.com/$CI_PROJECT_PATH/test:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/application:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/test:latest
-  artifacts:
-    untracked: true
-    when: on_failure
-    expire_in: 1 week
-
-run_all_tests:
-  stage: test
-  cache:
-    paths:
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
       - vendor/
       - bin/
       - composer.lock
-  artifacts:
-    paths:
-      - tmp/
-      - protected/runtime/coverage/
-      - protected/runtime/application.log
-      - protected/runtime/phpunit-coverage.txt
-      - protected/runtime/clover.xml
-      - protected/config/main.php
-      - protected/config/test.php
-      - .env
-      - composer.lock
-    when: always
-  script:
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
-    # - env
-    - docker-compose run --rm config
-    - docker-compose run --rm webapp
-    - docker-compose up -d chrome
-    # build the javascript app
-    - docker-compose run --rm csv-to-migrations npm install
-    # - docker-compose top
-    # - docker network inspect rija-gigadb-website_web-tier
-    # - docker network inspect rija-gigadb-website_db-tier
-    # - docker-compose logs database
-    # - docker images
-    - docker-compose run --rm test ping -c 5 database
-    - docker-compose run --rm test ping -c 5 gigadb.dev
-    # Setup test db
-    - ./ops/scripts/make_pgdmp_gigadb_testdata.sh
-    - ./ops/scripts/make_pgdmp_production_like.sh
-    - docker-compose run test
-    - echo $?
+      - fuw/app/vendor/
+      - fuw/app/bin/
+      - fuw/app/composer.lock
+      - gigadb/app/worker/file-worker/vendor
+      - gigadb/app/worker/file-worker/composer.lock
+      - gigadb/app/client/web/node_modules
 
-check_coverage:
-  stage: conformance
-  cache:
-    paths:
-      - previous_coverage_level.txt
-  script:
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
-    - docker-compose run --rm config
-    - docker-compose run --rm webapp
-    - docker-compose run --rm test ./tests/coverage_check
-  dependencies:
-    - run_all_tests
+before_script:
+  - '[[ $CI_JOB_NAME != *sast* ]] && env | grep "^CI_" > $APPLICATION/.ci_env'
+  - '[[ $CI_JOB_NAME != *sast* ]] && env | grep -v "SAST" | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" > $APPLICATION/.env'
+  - '[[ $CI_JOB_NAME != *sast* ]] && env | grep -v "SAST" | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -v "ANALYTICS_PRIVATE_KEY" | grep -viE "tls" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.secrets'
+  - '[[ $CI_JOB_NAME != *sast* ]] && apk add --no-cache py-pip bash'
+  # Pin docker-compose version to stop installation error
+  - '[[ $CI_JOB_NAME != *sast* ]] && pip install docker-compose~=1.23.0'
 
-
-check_PSR2:
-  stage: conformance
-  allow_failure: true
-  artifacts:
-    paths:
-      - protected/runtime/phpcs-psr2-source.txt
-      - protected/runtime/phpcs-psr2-summary.txt
-      - protected/runtime/phpcs-psr2-full.txt
-    when: always
-    expire_in: 3 months
-  script:
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
-    - docker-compose run --rm config
-    - docker-compose run --rm webapp
-    - docker-compose run --rm test ops/scripts/check_codestyle.sh
-
-check_PHPDoc:
-  stage: conformance
-  allow_failure: true
-  artifacts:
-    paths:
-      - protected/runtime/phpcs-phpdoc-source.txt
-      - protected/runtime/phpcs-phpdoc-summary.txt
-      - protected/runtime/phpcs-phpdoc-full.txt
-    when: always
-    expire_in: 3 months
-  script:
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
-    - docker-compose run --rm config
-    - docker-compose run --rm webapp
-    - docker-compose run --rm test ops/scripts/check_phpdoc.sh
-
-
-check_SAST:
-  stage: security
-  allow_failure: true
-  script:
-    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
-    - docker run
-        --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}"
-        --volume "$PWD:/code"
-        --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
-  artifacts:
-    paths: [gl-sast-report.json]
-
-
-# job (manual, with failure allowed) for running Dymamic Application Security Testing
-# See: https://docs.gitlab.com/ee/ci/examples/dast.html
-check_DAST:
-  image: registry.gitlab.com/gitlab-org/security-products/zaproxy
+sd_gigadb:
   variables:
-    website: "https://gigadb-staging.pommetab.com/"
-  before_script:
-    - echo "About to run DAST"
-  script:
-    - mkdir /zap/wrk/
-    - /zap/zap-baseline.py -J gl-dast-report.json -t $website || true
-    - cp /zap/wrk/gl-dast-report.json .
-  after_script:
-    - echo "Finished running DAST"
-  artifacts:
-    reports:
-      dast: gl-dast-report.json
-  allow_failure: true
-  when: manual
+    GIGADB_ENV: "staging"
+  extends: .deploy
+  stage: staging deploy
+  environment:
+    name: "staging"
+    url: $REMOTE_HOME_URL
+    on_stop: sd_teardown
 
-with_new_cert_deploy:
+ld_gigadb:
   variables:
-    GIGADB_ENV: staging
-    COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
-  stage: staging
-  script:
-    # appending staging variables at the end of the .env and .secrets
-    - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
-    - env | grep -iE "^staging_" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
-    # pulling the CI build of the application and configure it for staging for the purpose of building production containers
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
-    - docker-compose run --rm config
-    - docker-compose run --rm webapp composer install -a
-    # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
-    - docker-compose build production_web
-    - docker-compose build production_app
-    - docker-compose build production_config
-    - docker tag ${CI_PROJECT_NAME}_production_web:latest registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    - docker tag ${CI_PROJECT_NAME}_production_app:latest registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    - docker tag ${CI_PROJECT_NAME}_production_config:latest registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
-    # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
-    # Create client certificate files for authenticating with remote docker daemon
-    - mkdir -pv ~/.docker
-    - echo "$staging_tlsauth_ca" >  ~/.docker/ca.pem
-    - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
-    - echo "$staging_tlsauth_key" > ~/.docker/key.pem
-     # Pull production container from our private registry
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
-    # Run config script to populate the docker volumes
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
-    # Redeploy all containers (run --rm webapp alone won't redeploy the containers)
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d
-    # Generate the web certificate for TLS termination on web container.
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot certonly -d $STAGING_HOME_URL
-    # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web ln -s /etc/nginx/sites-available/gigadb.staging.https.conf /etc/nginx/sites-enabled/https.server.conf
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml kill -s HUP web
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml logs
+    GIGADB_ENV: "live"
+  extends: .deploy
+  stage: live deploy
   environment:
-    name: staging
-    url: http://ec2-13-250-112-56.ap-southeast-1.compute.amazonaws.com
-  when: manual
-  # only:
-  #   - develop
-  artifacts:
-    untracked: true
-    when: on_failure
-    expire_in: 1 week
-
-deploy_app:
-  variables:
-    GIGADB_ENV: staging
-    COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$staging_public_ip:2376"
-  stage: staging
-  script:
-    # appending staging variables at the end of the .env and .secrets
-    - env | grep -iE "^staging_" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
-    - env | grep -iE "^staging_" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth" >> $APPLICATION/.secrets
-    # pulling the CI build of the application and configure it for staging for the purpose of building production containers
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
-    - docker-compose run --rm config
-    # Install dependencies, but make sure the --no-dev parameter is passed so that development-only deps are not installed in vendor/
-    - docker-compose run --rm webapp
-    # build production containers for Nginx and PHP-FPM with application code and vendor code baked in and publish to registry
-    - docker-compose build production_web
-    - docker-compose build production_app
-    - docker-compose build production_config
-    - docker tag ${CI_PROJECT_NAME}_production_web:latest registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    - docker tag ${CI_PROJECT_NAME}_production_app:latest registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    - docker tag ${CI_PROJECT_NAME}_production_config:latest registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
-    # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
-    # Create client certificate files for authenticating with remote docker daemon
-    - mkdir -pv ~/.docker
-    - echo "$staging_tlsauth_ca" >  ~/.docker/ca.pem
-    - echo "$staging_tlsauth_cert" > ~/.docker/cert.pem
-    - echo "$staging_tlsauth_key" > ~/.docker/key.pem
-    # Pull production container from our private registry
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:latest
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:latest
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:latest
-    # Run config script to populate the docker volumes
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm config
-    # Redeploy all containers (run --rm webapp alone won't redeploy the containers)
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml up -d
-    # Attempt to renew the web certificate for TLS termination on web container. NOOP if not close to expiration date
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml run --rm certbot renew
-    # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml exec -T web ln -s /etc/nginx/sites-available/gigadb.staging.https.conf /etc/nginx/sites-enabled/https.server.conf
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml kill -s HUP web
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.staging.yml logs
-  environment:
-    name: staging
-    url: http://ec2-13-250-112-56.ap-southeast-1.compute.amazonaws.com
-  when: manual
-  # only:
-  #   - develop
-  artifacts:
-    untracked: true
-    when: on_failure
-    expire_in: 1 week
-
-release_app:
-  stage: live
-  script:
-    - echo "The plan is, once this config is on develop branch:"
-    - echo "to commit a new container with the source code using 'docker commit'"
-    - echo "then push to registry as 'registry.gitlab.com/$CI_PROJECT_PATH/application:new_release' "
-    - echo "then we use Terraform to remote deploy to CNGB/AWS/Alyiun"
-    - echo "accessible at url like http://gigadb-staging.gigasciencejournal.com"
-  environment:
-    name: production
-    url: http://gigadb.org
-  # only:
-  #   - develop
-  when: manual
+    name: "live"
+    deployment_tier: production
+    url: $REMOTE_HOME_URL

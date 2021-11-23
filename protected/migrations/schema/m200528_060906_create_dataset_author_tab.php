@@ -4,14 +4,14 @@ class m200528_060906_create_dataset_author_tab extends CDbMigration
 {
     public function safeUp()
     {
-        $this->execute("CREATE TABLE dataset_author (
+        $this->execute("CREATE TABLE IF NOT EXISTS dataset_author (
             id integer NOT NULL,
             dataset_id integer NOT NULL,
             author_id integer NOT NULL,
             rank integer DEFAULT 0,
             role character varying(30));");
 
-        $this->execute("CREATE SEQUENCE dataset_author_id_seq
+        $this->execute("CREATE SEQUENCE IF NOT EXISTS dataset_author_id_seq
             START WITH 200
             INCREMENT BY 1
             NO MINVALUE

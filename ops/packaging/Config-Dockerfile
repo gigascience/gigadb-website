@@ -3,4 +3,5 @@ FROM rija/docker-alpine-shell-tools:$TOOLS_VERSION
 
 
 COPY ops/configuration/nginx-conf/le.staging.ini /le.staging.ini
+COPY ops/configuration/nginx-conf/le.live.ini /le.live.ini
 

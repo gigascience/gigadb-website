@@ -1,0 +1,18 @@
+<?php
+
+return [
+    'db' => [
+        "host" => "pg9_3",
+        "port" => "5432",
+        "database" => "gigadb",
+        "test_database" => "gigadb_test",
+        "username" => "gigadb",
+        "password" => "",
+    ],
+    'ftp' => [
+        "host" => "$DB_BACKUP_HOST",
+        "username" => "$DB_BACKUP_USERNAME",
+        "password" => "$DB_BACKUP_PASSWORD",
+    ],
+];
+

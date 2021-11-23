@@ -1,0 +1,17 @@
+<?php
+return [
+    'components' => [
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@common/mail',
+            'useFileTransport' => true,
+        ],
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'pgsql:host=$FUW_TESTDB_HOST;dbname=$FUW_TESTDB_NAME',
+            'username' => '$FUW_TESTDB_USER',
+            'password' => '$FUW_TESTDB_PASSWORD',
+            'charset' => 'utf8',
+        ],
+    ],
+];

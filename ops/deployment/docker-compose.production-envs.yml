@@ -1,0 +1,320 @@
+version: '3.7'
+
+x-logging: &logging
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "50k"
+      max-file: "10"
+      mode: "non-blocking"
+      max-buffer-size: "2m"
+
+services:
+
+  web:
+    <<: *logging
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    volumes:
+      - assets:/var/www/assets
+      - le_config:/etc/letsencrypt
+      - le_webrootpath:/var/www/.le
+      - tempcaptcha:/var/www/images/tempcaptcha
+      # filedrop files for reviewers to download
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/www/filedrop
+      # public download path (TODO: temporary, to revisit in storage work stream)
+      - /tmp:/var/www/datasetfiles
+    ports:
+      - "${REMOTE_PUBLIC_HTTP_PORT}:80"
+      - "${REMOTE_PUBLIC_HTTPS_PORT}:443"
+    command: ["/usr/local/bin/enable_sites", "gigadb.${GIGADB_ENV}.http"]
+    networks:
+      web-tier:
+        ipv4_address: 172.16.238.10
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  config:
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV
+    volumes:
+      - le_config:/etc/letsencrypt
+      - assets:/var/www/assets
+    command: cp /le.$GIGADB_ENV.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - le_config:/etc/letsencrypt
+      - le_webrootpath:/var/www/.le
+
+  application:
+    <<: *logging
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    volumes:
+      - assets:/var/www/assets
+      - tempcaptcha:/var/www/images/tempcaptcha
+      - feeds:/var/www/files/data
+    expose:
+      - "9000"
+    networks:
+      - web-tier
+    extra_hosts:
+      - "dockerhost:${remote_private_ip}"
+      - "fuw-admin-api:${remote_private_ip}"
+      - "fuw-public-api:${remote_private_ip}"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  less:
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
+    volumes:
+      - assets:/var/www/assets
+      - tempcaptcha:/var/www/images/tempcaptcha
+    command: bash -c "./protected/yiic lesscompiler"
+
+  fuw-admin:
+    <<: *logging
+    environment:
+      DOCKER_HOST: "tcp://${remote_private_ip}:2375"    
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:$GIGADB_ENV
+    expose:
+      - "9002"
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # mount client certificates for connecting to docker daemon
+      - /home/centos/.docker:/etc/certs:ro
+    depends_on:
+      - console
+      - ftpd
+      - tusd
+      - watcher
+    networks:
+      - web-tier
+      - back-office      
+    extra_hosts:
+      - "dockerhost:${remote_private_ip}"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  fuw-public:
+    <<: *logging
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:$GIGADB_ENV
+    expose:
+      - "9001"
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # mount client certificates for connecting to docker daemon
+      - /home/centos/.docker:/etc/certs:ro
+    depends_on:
+      - console
+      - ftpd
+      - tusd
+      - watcher
+    networks:
+      - web-tier
+    extra_hosts:
+      - "dockerhost:${remote_private_ip}"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+
+  fuw-worker:
+    <<: *logging
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:$GIGADB_ENV
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # to support systemd running in a container
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      # volume mount the location of public ftp directory
+      - /tmp:/var/ftp/public
+      # we need access to file formats and types reference data to create an upload record for ftp uploaded files
+      - feeds:/var/www/files/data
+    depends_on:
+      - beanstalkd
+    networks:
+      - back-office
+    command: "/usr/local/bin/php /app/yii queue/listen --verbose"
+    extra_hosts:
+      - "dockerhost:${remote_private_ip}"    
+
+  gigadb-worker:
+    <<: *logging
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:$GIGADB_ENV
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # to support systemd running in a container
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      # volume mount the location of public ftp directory
+      - /tmp:/var/ftp/public
+      # we need access to file formats and types reference data to create a record for uploaded files
+      - feeds:/var/www/files/data
+    depends_on:
+      - beanstalkd
+    networks:
+      - back-office
+    command: "/usr/local/bin/php /gigadb-apps/worker/file-worker/yii queue/listen --verbose"
+    extra_hosts:
+      - "dockerhost:${remote_private_ip}"    
+
+  console:
+    <<: *logging
+    environment:
+      DOCKER_HOST: "tcp://${remote_private_ip}:2375"    
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:$GIGADB_ENV
+    expose:
+      - "9001"
+    volumes:
+      # directories used for filedrop files
+      - ${DATA_SAVE_PATH}/fuw/incoming:/var/incoming
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      # mount client certificates for connecting to docker daemon
+      - /home/centos/.docker:/etc/certs:ro
+    networks:
+      - web-tier
+    extra_hosts:
+      - "dockerhost:${remote_private_ip}"
+      - "fuw-admin-api:${remote_private_ip}"
+      - "fuw-public-api:${remote_private_ip}"      
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  ftpd:
+    <<: *logging
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
+    volumes:
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/home/uploader
+      - ${DATA_SAVE_PATH}/fuw/repo:/home/downloader/:ro
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      - ${DATA_SAVE_PATH}/pure-ftpd:/etc/pure-ftpd
+      - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+    environment:
+      PUBLICHOST: "$REMOTE_HOSTNAME"
+    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $REMOTE_HOSTNAME
+    ports:
+      - target: 21
+        published: 9021
+        protocol: tcp
+        mode: host
+      - "30000-30009:30000-30009"
+    networks:
+      - web-tier
+    restart: unless-stopped
+
+  watcher:
+    <<: *logging
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:$GIGADB_ENV
+    volumes:
+      - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/inbox
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo/
+      - ${DATA_SAVE_PATH}/fuw/flags:/var/tmp/processing_flag
+      # access to the ftp tokens so the upload's location attribute can be populated
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private:ro    
+      # access to the fuw/console so tusd hooks can trigger upload update
+      - ../../fuw/app:/app
+      # we need access to file formats and types reference data to create an upload record for ftp uploaded files
+      - feeds:/var/www/files/data
+    networks:
+      - web-tier
+    extra_hosts:
+      - "dockerhost:${remote_private_ip}"
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  tusd:
+    <<: *logging
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:$GIGADB_ENV
+    volumes:
+      - ${DATA_SAVE_PATH}/fuw/incoming/tusd:/var/inbox/
+      - ${DATA_SAVE_PATH}/fuw/repo:/var/repo/
+      # access to the ftp tokens so the upload's location attribute can be populated
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private          
+    command: -dir /var/inbox -base-path /fileserver/ -hooks-dir /var/hooks
+    expose:
+      - "1080"
+    networks:
+      - web-tier
+    extra_hosts:
+      - "dockerhost:${remote_private_ip}"      
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  beanstalkd:
+    <<: *logging
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:$GIGADB_ENV
+    expose:
+      - "11300"
+    networks:
+      - back-office
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
+    restart: unless-stopped
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - 9009:9000
+      - 8000:8000
+    networks:
+      - web-tier
+    command: -H unix:///var/run/docker.sock --admin-password $PORTAINER_BCRYPT
+
+networks:
+  web-tier:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+  back-office:
+
+volumes:
+  assets:
+  le_config:
+  le_webrootpath:
+  tempcaptcha:
+  feeds:
+  portainer_data:
