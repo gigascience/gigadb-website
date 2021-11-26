@@ -9,7 +9,7 @@ server {
     add_header                X-Frame-Options DENY;
     add_header                X-XSS-Protection "1; mode=block";
     #add_header                Content-Security-Policy "default-src 'self'; script-src https://ssl.google-analytics.com https://hypothes.is https://platform.twitter.com https://cdnjs.cloudflare.com https://*.matomo.cloud https://*.sentry.io https://sentry.io https://nominatim.openstreetmap.org 'self' 'unsafe-inline' 'unsafe-eval'; style-src https://fonts.googleapis.com 'self' 'unsafe-inline'; font-src https://fonts.gstatic.com https://fonts.googleapis.com 'self' data:; connect-src https://*.matomo.cloud 'self' ws://* wss://* https://*.sentry.io https://sentry.io https://*.googleapis.com; object-src 'self'; img-src https://*.google.com https://api.mapbox.com 'self' blob: data:; frame-src 'self' http://penguin.genomics.cn;";
-    add_header                Content-Security-Policy "frame-src 'self' http://penguin.genomics.cn;";
+    add_header                Content-Security-Policy "frame-src 'self' http://penguin.genomics.cn https://www.rosaceae.org https://www.protocols.io https://sketchfab.com https://codeocean.com https://hypothes.is;";
 
     # Cors headers
     add_header                Access-Control-Allow-Origin '*';
