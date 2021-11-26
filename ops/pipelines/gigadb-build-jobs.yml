@@ -24,7 +24,7 @@ base_images:
       - nginx-1_21-alpine.tar
       - node-14-buster.tar
 
-b_gigadb:
+.b_gigadb:
   stage: build for test
   script:
     # Load Base image
