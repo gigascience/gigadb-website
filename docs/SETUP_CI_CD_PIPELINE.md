@@ -591,8 +591,8 @@ can use the Docker engine. This is the 2-way certificate-based authentication.
 >When Ansible generates the client/server certificate, it writes them on the EC2 instance at location ``/home/centos/.docker/``
 
 >If an operator needs to perform a docker action on the EC2 instance from this development machine, 
-they will need to dowloand the three files from GitLab variables into his development machine at location ``~/.docker/``
-Then they can run docker commands like this:
+three certificates `ca.pem`, `cert.pem` and `key.pem` in `ops/infrastructure/envs/<DEPLOY_ENV>/output/` or from gitlab variables need to be copied to ``~/.docker/`` in development machine.
+Then the containers in dockerhost server can be accessed like this:
 ```
 docker --tlsverify -H=<remote_public_ip>:2376 ps
 ```
