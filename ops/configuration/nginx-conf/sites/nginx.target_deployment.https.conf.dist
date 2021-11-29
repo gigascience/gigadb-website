@@ -89,7 +89,6 @@ server {
     ## verify chain of trust of OCSP response using Root CA and Intermediate certs
     ssl_trusted_certificate /etc/letsencrypt/live/$SERVER_HOSTNAME/chain.pem;
 
-    add_header Content-Security-Policy "frame-src 'self' http://penguin.genomics.cn;";
 }
 
 server {
