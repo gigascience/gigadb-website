@@ -601,7 +601,7 @@ The RDS instance is provisioned with a database via the bastion server by a
 separate ansible playbook:
 ```
 $ cd ops/infrastructure/envs/staging
-$ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bastion_playbook.yml
+$ ansible-playbook -i ../../inventories bastion_playbook.yml
 ```
 
 The bastion playbook will create a `gigadb` database containing data from
