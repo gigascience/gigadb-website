@@ -701,6 +701,15 @@ $ terraform refresh
 where you replace ``gigascience/forks/rija-gigadb-website`` with the appropriate GitLab project.
 and ``environment`` with ``staging`` or ``live``
 
+>To provision infrastructure for *.gigadb.org, we need to use the `Gigadb` AWS
+> IAM user account which needs to be correctly configured in ~/.aws.credentials
+> and ~/.aws/config. This IAM profile can then be used as follows:
+```
+$ AWS_PROFILE=Gigadb terraform plan
+$ AWS_PROFILE=Gigadb terraform apply
+$ AWS_PROFILE=Gigadb terraform refresh
+```
+
 #### 3. Initialise Ansible
 
 ```
