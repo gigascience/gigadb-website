@@ -55,6 +55,18 @@ module "db" {
   apply_immediately         = true
 }
 
+resource "aws_db_parameter_group" "log-statement" {
+  count = var.deployment_target == "staging" ? 1 : 0
+  name = "log-statement"
+  family = "postgres11"
+
+  parameter {
+    apply_method = "immediate"
+    name = "log_statement"
+    value = "all"
+  }
+}
+
 output "rds_instance_address" {
   value = module.db.db_instance_address
 }
