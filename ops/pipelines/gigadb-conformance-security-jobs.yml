@@ -86,8 +86,6 @@ nodejs-scan-sast:
 
 phpcs-security-audit-sast:
   stage: conformance and security
-  variables:
-    SAST_DISABLED: "true"
 
 semgrep-sast:
   stage: conformance and security
