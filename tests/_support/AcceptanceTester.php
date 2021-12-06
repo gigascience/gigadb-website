@@ -106,6 +106,13 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see an image located in :arg1
+     */
+    public function iShouldSeeAnImageLocatedIn($arg1)
+    {
+        $this->seeElement("//img[contains(@src, '$arg1')]");
+    }
+    /**
      * @Then I should see a submit button :arg1
      */
     public function iShouldSeeASubmitButton($arg1)

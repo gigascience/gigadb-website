@@ -23,5 +23,6 @@ Feature: NewUser
     And I should see a check-box field "User_terms"
     And I should see a link "Terms of use" to "/site/term#policies"
     And I should see a link "Privacy Policy" to "/site/term#privacy"
+    And I should see an image located in "/images/tempcaptcha"
     And I should see a text field "User_verifyCode"
     And I should see a submit button "Register"
