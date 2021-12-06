@@ -1,7 +1,7 @@
 stages:
+  - conformance and security
   - build for test
   - test
-  - conformance and security
   - staging build
   - staging deploy
   - live build
