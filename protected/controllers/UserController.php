@@ -66,7 +66,7 @@ class UserController extends Controller {
         $this->performAjaxValidation($user);
         if (isset($_POST['User'])) {
             //$user->attributes = $_POST['User'];
-
+            $user->setScenario('insert');
             $attrs = $_POST['User'];
             $user->attributes=$attrs;
             $user->email = strtolower(trim($attrs['email']));
