@@ -90,20 +90,35 @@ Policy Name: GigadbRDSAccess
         {
             "Sid": "CreateRDSInstancesWithRegionAndInstanceTypeRestriction",
             "Effect": "Allow",
-            "Action": "rds:CreateDBInstance",
+            "Action": [
+                "rds:CreateDBInstance",
+                "rds:CreateDBParameterGroup",
+                "rds:DeleteDBParameterGroup",
+                "rds:DownloadCompleteDBLogFile"
+            ],
             "Resource": "*",
             "Condition": {
                 "StringEquals": {
                     "rds:DatabaseEngine": "postgres",
                     "rds:DatabaseClass": "db.t3.micro",
-                    "aws:RequestedRegion": "ap-east-1"
+                    "aws:RequestedRegion": [
+                        "ap-east-1",
+                        "ap-northeast-1"
+                    ]
                 }
             }
         },
         {
             "Sid": "CreateRDSInstancesWithOwnerTagRestriction",
             "Effect": "Allow",
-            "Action": "rds:CreateDBInstance",
+            "Action": [
+                "rds:CreateDBInstance",
+                "rds:CreateDBParameterGroup",
+                "rds:ModifyDBParameterGroup",
+                "rds:ResetDBParameterGroup",
+                "rds:DeleteDBParameterGroup",
+                "rds:DownloadCompleteDBLogFile"
+            ],
             "Resource": "*",
             "Condition": {
                 "StringEqualsIgnoreCase": {
@@ -170,7 +185,9 @@ Policy Name: GigadbRDSAccess
                 "rds:DeleteDBInstance",
                 "rds:RebootDBInstance",
                 "rds:ModifyDBInstance",
-                "rds:CreateDBSnapshot"
+                "rds:CreateDBSnapshot",
+                "rds:DownloadDBLogFilePortion",
+                "rds:DownloadCompleteDBLogFile"
             ],
             "Effect": "Allow",
             "Resource": "*",
@@ -197,14 +214,20 @@ Policy Name: GigadbRDSAccess
         {
             "Sid": "ManageDBParameterGroupWithOwnerTagRestriction",
             "Action": [
+                "rds:CreateDBParameterGroup",
                 "rds:ModifyDBParameterGroup",
-                "rds:ResetDBParameterGroup"
+                "rds:ResetDBParameterGroup",
+                "rds:DeleteDBParameterGroup"
             ],
             "Effect": "Allow",
             "Resource": "*",
             "Condition": {
                 "StringEqualsIgnoreCase": {
-                    "rds:pg-tag/Owner": "${aws:username}"
+                    "rds:pg-tag/Owner": "${aws:username}",
+                    "aws:RequestedRegion": [
+                        "ap-east-1",
+                        "ap-northeast-1"
+                    ]
                 }
             }
         },
@@ -230,12 +253,7 @@ Policy Name: GigadbRDSAccess
                 "rds:RestoreDBInstanceFromDBSnapshot"
             ],
             "Effect": "Allow",
-            "Resource": "*",
-            "Condition": {
-                "StringEqualsIgnoreCase": {
-                    "rds:snapshot-tag/Owner": "${aws:username}"
-                }
-            }
+            "Resource": "*"
         },
         {
             "Sid": "ManageEventSubscriptionsWithOwnerTagRestriction",
