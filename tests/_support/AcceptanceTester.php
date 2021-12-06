@@ -48,5 +48,12 @@ class AcceptanceTester extends \Codeception\Actor
         $this->see($arg1);
     }
 
+    /**
+     * @Then I should not see :arg1
+     */
+    public function iShouldNotSee($arg1)
+    {
+        $this->dontSee($arg1);
+    }
 
 }

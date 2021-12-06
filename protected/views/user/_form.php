@@ -7,12 +7,13 @@
 ?>
 <?php
       $user_command = UserCommand::model()->findByAttributes(array("requester_id" => $model->id, "status" => "pending")) ;
-      $linked_author = Author::findAttachedAuthorByUserId($model->id) ;
+      $linked_author = $model->id ? Author::findAttachedAuthorByUserId($model->id) : null;
 
 ?>
 
 <div class="clear"></div>
 <?php
+    if (!$model->isNewRecord) {
       if ( null != $user_command ) {
       	$claimed_author = Author::model()->findByPk($user_command->actionable_id);
       	$message = "This user has a pending claim on author ". $claimed_author->getDisplayName() ;
@@ -53,6 +54,7 @@
         </div>
 <?php
       }
+    }
 ?>
  	
         <div class="container">
