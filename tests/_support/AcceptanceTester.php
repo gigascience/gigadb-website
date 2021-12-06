@@ -1,7 +1,7 @@
 <?php
-
-
 /**
+ * Code for implementing generic steps of feature files (non-generic should be in their support class)
+ *
  * Inherited Methods
  * @method void wantToTest($text)
  * @method void wantTo($text)
@@ -25,60 +25,60 @@ class AcceptanceTester extends \Codeception\Actor
     */
 
     /**
-     * @Given I am on :arg1
+     * @Given I am on :page
      */
-    public function iAmOn($arg1)
+    public function iAmOn($page)
     {
-        $this->amOnPage("$arg1");
+        $this->amOnPage("$page");
     }
 
     /**
-     * @When I follow :arg1
+     * @When I follow :link
      */
-    public function iFollow($arg1)
+    public function iFollow($link)
     {
-        $this->click($arg1);
+        $this->click($link);
     }
 
     /**
-     * @Then I should see :arg1
+     * @Then I should see :text
      */
-    public function iShouldSee($arg1)
+    public function iShouldSee($text)
     {
-        $this->see($arg1);
+        $this->see($text);
     }
 
     /**
-     * @Then I should not see :arg1
+     * @Then I should not see :text
      */
-    public function iShouldNotSee($arg1)
+    public function iShouldNotSee($text)
     {
-        $this->dontSee($arg1);
+        $this->dontSee($text);
     }
 
     /**
-     * @Then I should see a text field :arg1
+     * @Then I should see a text field :id
      */
-    public function iShouldSeeATextField($arg1)
+    public function iShouldSeeATextField($id)
     {
-        $this->seeElement('input',['id' => $arg1, 'type' => "text"]);
+        $this->seeElement('input',['id' => $id, 'type' => "text"]);
     }
 
     /**
-     * @Then I should see a password field :arg1
+     * @Then I should see a password field :id
      */
-    public function iShouldSeeAPasswordField($arg1)
+    public function iShouldSeeAPasswordField($id)
     {
-        $this->seeElement('input',['id' => $arg1, 'type' => "password"]);
+        $this->seeElement('input',['id' => $id, 'type' => "password"]);
     }
 
 
     /**
-     * @Then I should see a drop-down field :arg1 with values
+     * @Then I should see a drop-down field :id with values
      */
-    public function iShouldSeeADropdownFieldWithValues($arg1, \Behat\Gherkin\Node\TableNode $preferredLinks)
+    public function iShouldSeeADropdownFieldWithValues($id, \Behat\Gherkin\Node\TableNode $preferredLinks)
     {
-        $this->seeElement('select',['id' => $arg1]);
+        $this->seeElement('select',['id' => $id]);
 
         foreach ($preferredLinks->getRows() as $index => $row) {
             if ($index === 0) { // first row to define fields
@@ -90,34 +90,34 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then I should see a check-box field :arg1
+     * @Then I should see a check-box field :id
      */
-    public function iShouldSeeACheckboxField($arg1)
+    public function iShouldSeeACheckboxField($id)
     {
-        $this->seeElement('input',['id' => $arg1, 'type' => "checkbox"]);
+        $this->seeElement('input',['id' => $id, 'type' => "checkbox"]);
     }
 
     /**
-     * @Then I should see a link :arg1 to :arg2
+     * @Then I should see a link :title to :url
      */
-    public function iShouldSeeALinkTo($arg1, $arg2)
+    public function iShouldSeeALinkTo($title, $url)
     {
-        $this->seeLink($arg1,$arg2);
+        $this->seeLink($title,$url);
     }
 
     /**
-     * @Then I should see an image located in :arg1
+     * @Then I should see an image located in :partialPath
      */
-    public function iShouldSeeAnImageLocatedIn($arg1)
+    public function iShouldSeeAnImageLocatedIn($partialPath)
     {
-        $this->seeElement("//img[contains(@src, '$arg1')]");
+        $this->seeElement("//img[contains(@src, '$partialPath')]");
     }
     /**
-     * @Then I should see a submit button :arg1
+     * @Then I should see a submit button :value
      */
-    public function iShouldSeeASubmitButton($arg1)
+    public function iShouldSeeASubmitButton($value)
     {
-        $this->seeElement('input',['value' => $arg1, 'type' => "submit"]);
+        $this->seeElement('input',['value' => $value, 'type' => "submit"]);
     }
 
 
