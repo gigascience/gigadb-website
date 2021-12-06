@@ -427,7 +427,12 @@ class UserController extends Controller {
         $subject = $email_prefix . "Welcome to " . Yii::app()->name;
         $url = $this->createAbsoluteUrl('user/confirm', array('key' => $user->id));
         $body = $this->renderPartial('emailWelcome',array('url'=>$url),true);
-        $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
+        try {
+            $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
+        }
+        catch(\Throwable $e) {
+            Yii::log($e->getMessage());
+        }
         //mail($recipient, $subject, $body, $headers);
         Yii::log("Sent email to $recipient, $subject");
     }
