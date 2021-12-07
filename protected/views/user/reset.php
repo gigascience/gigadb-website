@@ -1,14 +1,14 @@
  <div class="content">
-        <div class="container">
-              <section class="page-title-section">
-                <div class="page-title">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li class="active">Reset</li>
-                    </ol>
-                    <h4>Reset Password</h4>
-                </div>
-            </section>
+     <div class="container">
+         <section class="page-title-section">
+            <div class="page-title">
+                <ol class="breadcrumb pull-right">
+                    <li><a href="/">Home</a></li>
+                    <li class="active">Reset</li>
+                </ol>
+                <h4>Reset Password</h4>
+            </div>
+         </section>
         <div class="subsection" style="margin-bottom: 130px;">
 		<p>Fields with <span class="symbol">*</span> are required.</p>
             <div class="reset-message-div">
@@ -31,7 +31,6 @@
                         <?= CHtml::submitButton(Yii::t('app' , 'Reset') , array('class'=>'btn background-btn')) ?>
                     </div>
                 </div>
-
                 <? $this->endWidget() ?>
             </div>
 	    </div>
