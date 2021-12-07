@@ -10,60 +10,31 @@
                 </div>
             </section>
         <div class="subsection" style="margin-bottom: 130px;">
-	
-		<div class="clear"></div>
-		
 		<p>Fields with <span class="symbol">*</span> are required.</p>
-		<div class="create-div">
-			<? $form=$this->beginWidget('CActiveForm', array(
-				'id'=>'user-form',
-				'enableAjaxValidation'=>false,
-				'htmlOptions'=>array('class'=>'form-horizontal')
-			)) ?>
-				 <div class="form-group">
-					<?= $form->labelEx($model,'email', array('class'=>'col-xs-3 control-label')) ?>
-					<div class="col-xs-9">
-						<?= $form->textField($model,'email',array('class'=>'form-control')) ?>
-						<font color="red"><?= $form->error($model,'email') ?></font>
-					</div>
-				</div>
-
-                                <div class="form-group">
-                                    <label class="col-xs-3 control-label"><?=Yii::t('app' , 'Mailing list')?></label>
-                                   
-				    <div class="col-xs-9">				    	
-                                         <?php echo $form->checkbox($model,'newsletter'); ?>
-				    </div>
-                                    <div class="col-xs-9">
-                                        <p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>   
-                                    </div>
-                                 </div>
-                                <div class="form-group">
-                                    <?= $form->labelEx($model,'terms', array('class'=>'col-xs-3 control-label')) ?>              
-				    <div class="col-xs-9">				    	
-                                         <?php echo $form->checkbox($model,'terms'); ?>
-                                         <font color="red"><?= $form->error($model,'terms') ?></font>
-				    </div>
-                                    <div class="col-xs-9">
-                                     <p>Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
-                                    </div>
-                                 </div>
-                                
-
-
-			
-                        <hr>
-                            <div class="button-div">
-                                <?= CHtml::submitButton(Yii::t('app' , 'Reset') , array('class'=>'btn background-btn')) ?>
-                            </div>
-                        <? $this->endWidget() ?>
-		</div><!--well-->
-		
-
-
-	
-	</div><!--span8-->
-    </div><!-- user-form -->
+            <div class="reset-message-div">
+                <p>
+                    If you have lost your password, enter your email and we will send a new password to the email address associated with your account.
+                </p>
+            </div>
+            <div class="create-div">
+                <? $form=$this->beginWidget('CActiveForm', array(
+                    'id'=>'user-form',
+                    'enableAjaxValidation'=>false,
+                    'htmlOptions'=>array('class'=>'form-horizontal')
+                )) ?>
+                     <div class="form-group">
+                        <?= $form->labelEx($model,'email', array('class'=>'col-xs-3 control-label')) ?>
+                        <div class="col-xs-9">
+                            <?= $form->textField($model,'email',array('class'=>'form-control')) ?>
+                        </div>
+                    </div>
+                    <div class="button-div">
+                        <?= CHtml::submitButton(Yii::t('app' , 'Reset') , array('class'=>'btn background-btn')) ?>
+                    </div>
+                <? $this->endWidget() ?>
+            </div>
+	    </div>
+    </div>
 </div>
 
 <script type="text/javascript">
