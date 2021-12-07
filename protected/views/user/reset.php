@@ -22,15 +22,16 @@
                     'enableAjaxValidation'=>false,
                     'htmlOptions'=>array('class'=>'form-horizontal')
                 )) ?>
-                     <div class="form-group">
-                        <?= $form->labelEx($model,'email', array('class'=>'col-xs-3 control-label')) ?>
-                        <div class="col-xs-9">
-                            <?= $form->textField($model,'email',array('class'=>'form-control')) ?>
-                        </div>
+                <div class="form-group">
+                    <?= $form->labelEx($model,'email', array('class'=>'col-xs-2 control-label')) ?>
+                    <div class="col-xs-8">
+                        <?= $form->textField($model,'email',array('class'=>'form-control')) ?>
                     </div>
-                    <div class="button-div">
+                    <div class="col-xs-2">
                         <?= CHtml::submitButton(Yii::t('app' , 'Reset') , array('class'=>'btn background-btn')) ?>
                     </div>
+                </div>
+
                 <? $this->endWidget() ?>
             </div>
 	    </div>
