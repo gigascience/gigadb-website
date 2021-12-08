@@ -11,7 +11,7 @@ return [
     'components' => [
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            'useFileTransport' => true,
+            'useFileTransport' => false,
             'fileTransportPath'=>'/var/www/protected/runtime/mail',
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
