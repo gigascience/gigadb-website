@@ -89,13 +89,13 @@ $sampleDataProvider = $samples->getDataProvider() ;
                      <div class="pull-right">
                         <p>
                             <span class="citation-popup" data-content="View citations on Google Scholar">
-                                <a href='https://scholar.google.com/scholar?q=10.5524/<?php echo $model->identifier;?>' target="_blank"><img class="dataset-des-images" src="/images/google_scholar.png"/></a>
+                                <a href="https://scholar.google.com/scholar?q=10.5524/<?php echo $model->identifier;?>" target="_blank"><img class="dataset-des-images" src="/images/google_scholar.png"/></a>
                             </span>
                             <span class="citation-popup" data-content="View citations on Europe PubMed Central">
-                                <a href='http://europepmc.org/search?scope=fulltext&query=(REF:%2710.5524/<?php echo $model->identifier;?>%27)' target="_blank"><img class="dataset-des-images" src="/images/ePMC.jpg"/></a>
+                                <a href="http://europepmc.org/search?scope=fulltext&query=(REF:%2710.5524/<?php echo $model->identifier;?>%27)" target="_blank"><img class="dataset-des-images" src="/images/ePMC.jpg"/></a>
                             </span>
                             <span class="citation-popup" data-content="View citations on Dimensions">
-                                <a href="https://app.dimensions.ai/discover/publication?search_text=10.5524%2F<?= $model->identifier ?>" target="_blank"><img class="dataset-des-images" src="/images/dimensions.jpg"/></a>
+                                <a href="https://app.dimensions.ai/discover/publication?search_text=10.5524%2F<?php echo $model->identifier;?>" target="_blank"><img class="dataset-des-images" src="/images/dimensions.jpg"/></a>
                             </span>
                         </p>
                     </div>
