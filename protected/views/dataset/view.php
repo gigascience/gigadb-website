@@ -22,20 +22,18 @@ $sampleDataProvider = $samples->getDataProvider() ;
                 <div class="subsection">
                     <div class="media">
                         <div class="media-left">
-                                        <?php if($model->image) {
-                $url = $model->getImageUrl() ? $model->getImageUrl(): $model->image->image('image_upload');
-
-                ?>
-            <a href="<?= $url ?>" >
-                <?= CHtml::image($url, $model->image->tag ,
-                    array(
-                        'class'=>'media-object',
-                        'title'=>$model->image->tag.' License: '.$model->image->license.' Source: '.$model->image->source.' Photographer: '.$model->image->photographer
-                    )
-                ); ?>
-            </a>
-            <?php } ?>
-
+                            <?php if($model->image) {
+                                $url = $model->getImageUrl() ? $model->getImageUrl(): $model->image->image('image_upload');
+                            ?>
+                            <a href="<?= $url ?>" >
+                                <?= CHtml::image($url, $model->image->tag ,
+                                    array(
+                                        'class'=>'media-object',
+                                        'title'=>$model->image->tag.' License: '.$model->image->license.' Source: '.$model->image->source.' Photographer: '.$model->image->photographer
+                                    )
+                                ); ?>
+                            </a>
+                            <?php } ?>
                         </div>
                         <div class="media-body">
                             <h4 class="left-border-title left-border-title-lg"><?= $mainSection->getHeadline()['title']; ?></h4>
