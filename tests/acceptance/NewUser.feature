@@ -3,6 +3,7 @@ Feature: NewUser
   I want a form to enter user details
   So that I can add a new user to GigaDB database
 
+  @ok
   Scenario: form for creating new user
     Given I am on "/site/login"
     When I follow "Create account"
@@ -26,3 +27,19 @@ Feature: NewUser
     And I should see an image located in "/images/tempcaptcha"
     And I should see a text field "User_verifyCode"
     And I should see a submit button "Register"
+
+  @ok
+  Scenario: Filling in the form to create new user
+    Given I am on "/user/create"
+    And there is no user with email "martianmanhunter@mailinator.com"
+    When I fill in the field "User_email" with "martianmanhunter@mailinator.com"
+    And I fill in the field "User_first_name" with "J'onn"
+    And I fill in the field "User_last_name" with "J'onzz"
+    And I fill in the field "User_password" with "123456787"
+    And I fill in the field "User_password_repeat" with "123456787"
+    And I fill in the field "User_affiliation" with "GigaScience"
+    And I select "NCBI" from the field "User_preferred_link"
+    And I check the field "User_terms"
+    And I fill in the field "User_verifyCode" with "shazam"
+    And I press the button "Register"
+    Then I should see "Welcome!"

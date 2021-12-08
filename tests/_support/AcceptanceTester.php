@@ -120,5 +120,36 @@ class AcceptanceTester extends \Codeception\Actor
         $this->seeElement('input',['value' => $value, 'type' => "submit"]);
     }
 
+    /**
+     * @When I fill in the field :fieldName with :value
+     */
+    public function iFillInTheFieldWith($fieldName, $value)
+    {
+        $this->fillField(["id" => $fieldName],$value);
+    }
+
+    /**
+     * @When I select :option from the field :fieldName
+     */
+    public function iSelectFromTheField($option, $fieldName)
+    {
+        $this->selectOption(["id" => $fieldName],$option);
+    }
+
+    /**
+     * @When I check the field :fieldName
+     */
+    public function iCheckTheField($fieldName)
+    {
+        $this->checkOption(["id" => $fieldName]);
+    }
+
+    /**
+     * @When I press the button :buttonName
+     */
+    public function iPressTheButton($buttonName)
+    {
+        $this->click($buttonName);
+    }
 
 }

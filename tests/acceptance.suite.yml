@@ -28,4 +28,12 @@ modules:
                       browser: ALL
                   "loggingPrefs":
                       browser: ALL
-    step_decorators: ~        
+    step_decorators: ~
+
+gherkin:
+  contexts:
+    default:
+      - AcceptanceTester
+    role:
+      curator:
+        - CuratorSteps
