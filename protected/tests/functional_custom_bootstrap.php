@@ -13,7 +13,7 @@ $yii=dirname(__FILE__).'/../components/Yii.php';
 require_once($yii);
 
 # load Yii 2 (but don't run the web application)
-$yii2Config = require(__DIR__ . '/../config/yii2/web.php');
+$yii2Config = require(__DIR__ . '/../config/yii2/test.php');
 new yii\web\Application($yii2Config);
 
 
