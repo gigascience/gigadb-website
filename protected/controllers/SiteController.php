@@ -1,6 +1,10 @@
 <?php
 
 use Ramsey\Uuid\Uuid;
+
+use yii\swiftmailer\mailer;
+use yii\swiftmailer\Message;
+
 class SiteController extends Controller {
     /**
  	 * Declares class-based actions.
@@ -273,24 +277,23 @@ class SiteController extends Controller {
         $this->render('guidesoftware');
     }
 
-	/**
-	 * Displays the contact page
-	 */
-	public function actionContact() {
-
-            $this->layout='new_main';
-		$model = new ContactForm;
-		if (isset($_POST['ContactForm'])) {
-			$model->attributes=$_POST['ContactForm'];
-			if ($model->validate()) {
-				$headers = "From: {$model->name}<{$model->email}>\r\nReply-To: {$model->email}";
-				mail(Yii::app()->params['adminEmail'],$model->subject,$model->body,$headers);
-        Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
-				$this->refresh();
-			}
-		}
-		$this->render('contact',array('model'=>$model));
-	}
+    /**
+     * Display /site/contact page
+     */
+    public function actionContact()
+    {
+        $this->layout = 'new_main';
+        $model = new ContactForm;
+        if (isset($_POST['ContactForm'])) {
+            $model->attributes = $_POST['ContactForm'];
+            if ($model->validate()) {
+                Yii::app()->mailService->sendEmail(Yii::app()->params['adminEmail'], Yii::app()->params['adminEmail'], Yii::app()->params['email_prefix'] . $model->subject, "Message from: " . $model->name . " <" . $model->email . ">\n\n" . $model->body);
+                Yii::app()->user->setFlash('contact', 'Thank you for contacting us. We will respond to you as soon as possible.');
+                $this->refresh();
+            }
+        }
+        $this->render('contact', array('model' => $model));
+    }
 	/**
 	*This method returns all dataset locations
 	*/
