@@ -10,4 +10,7 @@ modules:
     enabled:
         # add a framework module here
         - \Helper\Functional
+        - Asserts
+        - PhpBrowser:
+              url: 'http://gigadb.test'
     step_decorators: ~        

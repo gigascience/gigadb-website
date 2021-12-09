@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Class CuratorSteps
+ * steps specific to user story for curators
+ *
+ * stubs copied from (after gherkin scenario steps are created):
+ * docker-compose run --rm test ./vendor/codeception/codeception/codecept g:snippets acceptance
+ */
 class CuratorSteps extends \Codeception\Actor
 {
 

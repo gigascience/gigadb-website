@@ -14,3 +14,5 @@ docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite functi
 docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run functional
 docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run functional
 docker-compose exec -T console /app/vendor/bin/codecept -c /app/console run functional
+# Running new Codeception functional tests suite for main codebase
+docker-compose run --rm test ./vendor/codeception/codeception/codecept run functional

@@ -602,7 +602,7 @@ EO_MAIL;
             $font = '/fonts/times_new_yorker.ttf';
             imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
 
-            imagejpeg($im, 'images/tempcaptcha/'.$text.".png");
+            imagepng($im, 'images/tempcaptcha/'.$text.".png");
             imagedestroy($im);
             $_SESSION["captcha"] = $text;
             return $text;

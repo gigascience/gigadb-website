@@ -2,6 +2,9 @@
 /**
  * Code for implementing generic steps of feature files (non-generic should be in their support class)
  *
+ * stubs copied from (after gherkin scenario steps are created):
+ * docker-compose run --rm test ./vendor/codeception/codeception/codecept g:snippets acceptance
+ *
  * Inherited Methods
  * @method void wantToTest($text)
  * @method void wantTo($text)
