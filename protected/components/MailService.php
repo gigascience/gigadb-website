@@ -61,5 +61,29 @@ class MailService extends CApplicationComponent
             ->setSubject($subject)
             ->send();
     }
+
+    /**
+     * Send HTML email message with attachment
+     *
+     * @param string $from sender email
+     * @param string $to recipient email
+     * @param string $subject email's subject
+     * @param string $content content to send
+     * @param string $filepath path to file attachment
+     * @return bool whether sending the email is successful or not
+     */
+    public function sendHTMLEmailWithAttachment(string $from, string $to, string $subject, string $content, string $filepath)
+    {
+        return $this->mailer->compose('template',
+            ['top_img' => '/var/www/images/email/top.png',
+                'bottom_img' => '/var/www/images/email/bottom.png',
+                'logo_img' => '/var/www/images/email/logo.png',
+                'content' => $content])
+            ->setFrom($from)
+            ->setTo($to)
+            ->setSubject($subject)
+            ->attach($filepath)
+            ->send();
+    }
 }
 ?>

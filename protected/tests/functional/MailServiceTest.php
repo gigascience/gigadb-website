@@ -119,6 +119,41 @@ class MailServiceTest extends FunctionalTesting
     }
 
     /**
+     * Test functions in MailService Component can send HTML email with
+     * attachment
+     */
+    public function testItShouldSendHTMLEmailWithAttachmentUsingMailService() {
+        try {
+            $from = "foo@xyzzy.com";
+            $to = "xyzzy@world.com";
+            $subject = "Test HTML message";
+            $body = "<h1>Hello World</h1>";
+            $filepath = "/var/www/images/new_interface_image/frog.jpg";
+            $result = Yii::app()->mailService->sendHTMLEmailWithAttachment($from, $to, $subject, $body, $filepath);
+            $this->assertTrue($result, "Problem sending email using MailService sendHTMLEmail function");
+            $msg = $this->getLastMessage();
+
+            $parser = new PhpMimeMailParser\Parser();
+            $parser->setPath($msg);
+            $this->assertTrue($parser->getHeader('to') === $to, "HTML email doesn't contain recipient email address");
+            $this->assertTrue($parser->getHeader('from') === $from, "HTML email doesn't contain sender email address");
+            $this->assertTrue($parser->getHeader('subject') === $subject, "HTML email doesn't contain correct subject");
+
+            $attachments = $parser->getAttachments();
+            $this->assertTrue(count($attachments) === 4, "Email doesn't contain 4 attachment images");
+            $this->assertTrue($attachments[0]->getFilename() === "top.png", "First attachment is not top.png");
+            $this->assertTrue($attachments[0]->getContentType() === "image/png", "Content-Type is not image/png");
+            $this->assertTrue($attachments[1]->getFilename() === "bottom.png", "Second attachment is not bottom.png");
+            $this->assertTrue($attachments[2]->getFilename() === "logo.png", "Second attachment is not logo.png");
+            $this->assertTrue($attachments[3]->getFilename() === "frog.jpg", "There is no frog.jpg attachment");
+
+        }
+        catch(Error $e) {
+            $this->fail("Exception thrown: ".$e->getMessage());
+        }
+    }
+
+    /**
      * Fetch filenames of eml messages in protected/runtime/mail directory
      */
     private function getMessages()
