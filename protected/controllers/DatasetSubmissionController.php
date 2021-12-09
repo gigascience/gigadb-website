@@ -59,19 +59,11 @@ class DatasetSubmissionController extends Controller
     {
         if (isset($_POST['userId'])) {
             $user = User::model()->findByPk(Yii::app()->user->id);
-
-
             $excelFile = CUploadedFile::getInstanceByName('xls');
-            // print_r($excelFile);die;
             $excelTempFileName = $excelFile->tempName;
-
-            // email fields: to, from, subject, and so on
-            $from = Yii::app()->params['app_email_name']." <".Yii::app()->params['app_email'].">";
-            $to = Yii::app()->params['adminEmail'];
             $subject = "New dataset uploaded by user ".$user->id." - ".$user->first_name.' '.$user->last_name;
             $receiveNewsletter = $user->newsletter ? 'Yes' : 'No';
             $message = <<<EO_MAIL
-
 New dataset is uploaded by:
 <br/>
 <br/>
@@ -89,37 +81,12 @@ Receiving Newsletter:  <b>{$receiveNewsletter}</b>
 <br/><br/>
 EO_MAIL;
 
-            $headers = "From: $from";
-
-            /* prepare attachments */
-
-            // boundary
-            $semi_rand = md5(time());
-            $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
-
-            // headers for attachment
-            $headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$mime_boundary}\"";
-            // multipart boundary
-            $message = "--{$mime_boundary}\n" . "Content-Type: text/html; charset=\"utf-8\"\n" ."Content-Transfer-Encoding: 7bit\n\n" . $message . "\n\n";
-            $message .= "--{$mime_boundary}\n";
-            $fp =    @fopen($excelTempFileName, "rb");
-            $data =    @fread($fp, filesize($excelTempFileName));
-            @fclose($fp);
-            $data = chunk_split(base64_encode($data));
-            // $newFileName = 'dataset_upload_'.$user->id.'.xls';
-            $newFileName = $excelFile->name;
-            $message .= "Content-Type: application/octet-stream; name=\"".$newFileName."\"\n" .
-            "Content-Description: ".$newFileName."\n" ."Content-Disposition: attachment;\n" . " filename=\"".$newFileName."\"; size=".filesize($excelTempFileName).";\n" ."Content-Transfer-Encoding: base64\n\n" . $data . "\n\n";
-
-            $message .= "--{$mime_boundary}--";
-            $returnpath = "-f" . Yii::app()->params['adminEmail'];
-
-            $ok = @mail($to, $subject, $message, $headers, $returnpath);
-
-            if ($ok) {
+            $email_status = Yii::app()->mailService->sendHTMLEmailWithAttachment(Yii::app()->params['app_email'], Yii::app()->params['adminEmail'], Yii::app()->params['email_prefix'] . $subject, $message, $excelTempFileName);
+            if ($email_status) {
                 $this->redirect('/datasetSubmission/upload/status/successful');
                 return;
             } else {
+                Yii::log("Problem sending new upload notification email", 'error');
                 $this->redirect('/datasetSubmission/upload/status/failed');
                 return;
             }
