@@ -30,6 +30,8 @@ Feature:
       And I click on the "Lost Password" button
       Then I should be on "/user/reset/username//style/float%3Aright"
       And I should not see "Mailing list"
+      And I should not see a checkbox for the "User_newsletter"
       And I should not see "Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB"
       And I should not see "Terms and Conditions *"
+      And I should not see a checkbox for the "User_terms"
       And I should not see "Please tick here to confirm you have read and understood our Terms of use and Privacy Policy"
