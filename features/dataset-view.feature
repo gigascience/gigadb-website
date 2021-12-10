@@ -96,7 +96,7 @@ Feature: a user visit the dataset page
 		| Go to Genome 10K website |
 		| Go to The Avian Phylogenomic Project website |
 
-	@ok
+	@ok @issue-877
 	Scenario: Semantic Links
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
@@ -104,6 +104,14 @@ Feature: a user visit the dataset page
 		And I should see image "/images/google_scholar.png" linking to "http://scholar.google.com/scholar?q=10.5072/101001"
 		And I should see image "/images/ePMC.jpg" linking to "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/101001')"
 
+	@ok @issue-877
+	Scenario: Project image with links
+		Given I am not logged in to Gigadb web site
+		When I go to "/dataset/101001"
+		Then I should see links to "Projects"
+		| Projects |
+		| Go to Genome 10K website |
+		| Go to The Avian Phylogenomic Project website |
 	@ok
 	Scenario: IsPreviousVersionOf relation should show an alert warning of old version with link to new version
 		Given I am not logged in to Gigadb web site
