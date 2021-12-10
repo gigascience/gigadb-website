@@ -1,8 +1,8 @@
 @issue-876
 Feature:
-  As a gigadb user
-  I want to click lost password link
-  So that there is no mail list or terms and condition tick boxes
+  As a website user
+  I want to reset my password
+  So that I can sign in to GigaDB website again
 
   Background:
     Given Gigadb web site is loaded with production-like data
