@@ -238,9 +238,10 @@ $sampleDataProvider = $samples->getDataProvider() ;
                     <h5><strong><?=Yii::t('app' , 'Projects:')?></strong></h5>
                     <p>
                         <? foreach ($projects as $project){
-                            $image_location = preg_replace("/^http:\/\/gigadb.org/m", "", $project['image_location']);
                             $image_url = $project['url'];
-                            echo "<a href='$image_url' target='_blank'><img src='$image_location' /></a>";
+                            $image_name = $project['name'];
+                            $image_location = preg_replace("/^http:\/\/gigadb.org/m", "", $project['image_location']);
+                            echo "<a href='$image_url' target='_blank'><img alt='Go to $image_name website' src='$image_location'/></a>";
                             echo "<br/>";
                             }
                         ?>
