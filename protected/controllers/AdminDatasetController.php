@@ -142,7 +142,7 @@ class AdminDatasetController extends Controller
 
         $this->render('admin', array(
             'model'=>$model,
-            'dataProvider'=>$dataProvider,
+            'dataProvider'=>$model->search(),
         ));
     }
 
