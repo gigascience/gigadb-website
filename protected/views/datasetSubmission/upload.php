@@ -89,11 +89,10 @@ if (isset($_GET['status'])) {
                             <a href="/files/GigaDBUploadForm-example2.xls" class="btn pull-right">Download Example File 2</a>
                             <div class="clear"></div>
 
-
-                            <input id="agree-checkbox" type="checkbox" style="margin-right:5px"/><a target="_blank" href="/site/term">I have read GigaDB's Terms and Conditions</a>
+                            <?php echo CHtml::form(Yii::app()->createUrl('datasetSubmission/upload'), 'post', array('enctype' => 'multipart/form-data')); ?>
+                            <input id="agree-checkbox" name="agree-checkbox" type="checkbox" style="margin-right:5px"/><a target="_blank" href="/site/term">I have read GigaDB's Terms and Conditions</a>
                             <br/>
                             <div class="clear"></div>
-                            <?php echo CHtml::form(Yii::app()->createUrl('datasetSubmission/upload'), 'post', array('enctype' => 'multipart/form-data')); ?>
                             <div class="pull-right">
                                 <?php echo CHtml::submitButton('Upload New Dataset', array('class' => 'btn-green upload-control', 'disabled' => 'disabled', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
                             </div>
