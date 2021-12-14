@@ -47,7 +47,9 @@
         "phpmd/phpmd": "2.6.0",
         "php-coveralls/php-coveralls": "v2.1.0",
         "php-mime-mail-parser/php-mime-mail-parser": "5.0.5",
-        "vlucas/phpdotenv": "v3.4.0"
+        "vlucas/phpdotenv": "v3.4.0",
+        "codeception/codeception": "v3.1.3",
+        "facebook/webdriver": "^1.0.1"
     },
     "minimum-stability": "stable",
     "config": {

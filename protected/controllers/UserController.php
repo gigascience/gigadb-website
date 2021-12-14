@@ -66,7 +66,7 @@ class UserController extends Controller {
         $this->performAjaxValidation($user);
         if (isset($_POST['User'])) {
             //$user->attributes = $_POST['User'];
-
+            $user->setScenario('insert');
             $attrs = $_POST['User'];
             $user->attributes=$attrs;
             $user->email = strtolower(trim($attrs['email']));
@@ -85,6 +85,11 @@ class UserController extends Controller {
             }
             $user->newsletter=$attrs['newsletter'];
             $user->previous_newsletter_state = !$user->newsletter;
+
+            if (in_array($_SERVER['GIGADB_ENV'], ["dev","CI"])) {
+                Yii::log("Because we are on {$_SERVER['GIGADB_ENV']}, captcha value is overridden", 'warning');
+                $_SESSION["captcha"] = $attrs['verifyCode'];
+            }
 
             if ($user->validate('insert')) {
                 $user->encryptPassword();
@@ -427,7 +432,12 @@ class UserController extends Controller {
         $subject = $email_prefix . "Welcome to " . Yii::app()->name;
         $url = $this->createAbsoluteUrl('user/confirm', array('key' => $user->id));
         $body = $this->renderPartial('emailWelcome',array('url'=>$url),true);
-        $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
+        try {
+            $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
+        }
+        catch(\Throwable $e) {
+            Yii::log($e->getMessage());
+        }
         //mail($recipient, $subject, $body, $headers);
         Yii::log("Sent email to $recipient, $subject");
     }
@@ -592,7 +602,7 @@ EO_MAIL;
             $font = '/fonts/times_new_yorker.ttf';
             imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
 
-            imagejpeg($im, 'images/tempcaptcha/'.$text.".png");
+            imagepng($im, 'images/tempcaptcha/'.$text.".png");
             imagedestroy($im);
             $_SESSION["captcha"] = $text;
             return $text;
