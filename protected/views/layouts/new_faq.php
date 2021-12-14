@@ -21,7 +21,8 @@
                 <link rel="stylesheet" type="text/css" href="/fonts/pt_sans/v8/pt_sans.css">
                 <link rel="stylesheet" type="text/css" href="/fonts/lato/v11/lato.css">
                 <link rel="stylesheet" type="text/css" href="/css/common.css" />
-                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<!--                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>-->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
                 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
                 <? } ?>
                     <? Yii::app()->clientScript->scriptMap['jquery.js'] = false;
