@@ -340,8 +340,11 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
             </div>
         </div>
 <script type="text/javascript">
-
-
+$(document).ready(function () {
+    if(location.hash != '' && location.hash != null){
+        $("a[href='"+location.hash+"']").click();
+    }
+});
 
 function DatasetFunction(){
   $('ul li').removeClass('active');  
