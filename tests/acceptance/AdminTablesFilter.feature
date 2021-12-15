@@ -6,6 +6,7 @@ Feature: filter tables on admin page
   Background:
     Given I have signed in as admin
 
+  @ok
   Scenario: Dataset table
     Given I am on "/adminDataset/admin"
     When I fill in the field of "name" "Dataset[identifier]" with "100005"
