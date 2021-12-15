@@ -71,16 +71,6 @@ class DatasetAdminContext implements Context
     }
 
     /**
-     * @Then I should not see a button input :arg1
-     */
-    public function iShouldNotSeeAButtonInput($arg1)
-    {
-        PHPUnit_Framework_Assert::assertFalse(
-            $this->minkContext->getSession()->getPage()->hasButton($arg1)
-        );
-    }
-
-    /**
      * @Then I should see element :arg1's content changing from :arg2 to :arg3
      */
     public function iShouldSeeElementSContentChangingFromTo($arg1, $arg2, $arg3)
