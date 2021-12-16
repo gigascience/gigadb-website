@@ -59,7 +59,7 @@
                             </td>
                             <td>
                                 <div class="thumbnail">
-                                    <img src="../images/team/image-coming-soon.jpg">
+                                    <img src="../images/team/qi.jpg">
                                     <div class="caption">
                                         <h3>Qi Chen<br><small>Senior secretary</small></h3>
                                         <p></p>
