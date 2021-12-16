@@ -1,5 +1,6 @@
-Feature: Dataset upload
-  As a gigadb user,
+@author-dataset-spreadsheet-upload
+Feature: Dataset spreadsheet upload
+  As an author
   I want to upload dataset metadata from a spreadsheet
   So that I can provide information about my dataset to GigaDB
 

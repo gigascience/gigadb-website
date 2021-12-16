@@ -7,7 +7,7 @@
  * stubs copied from (after gherkin scenario steps are created):
  * docker-compose run --rm test ./vendor/codeception/codeception/codecept g:snippets acceptance
  */
-class UserSteps #extends \Codeception\Actor
+class AuthorSteps #extends \Codeception\Actor
 {
     protected $I;
 

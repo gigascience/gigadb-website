@@ -34,7 +34,8 @@ gherkin:
   contexts:
     default:
       - AcceptanceTester
-      - UserSteps
     role:
       curator:
         - CuratorSteps
+      author:
+        - AuthorSteps
