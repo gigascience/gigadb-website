@@ -207,4 +207,14 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->seeElement(['id'=>$id], ['class'=>$class]);
     }
+
+    /**
+     * Files need to be made available for tests in _data directory
+     *
+     * @When I attach the file :file to the file input element :file_input_element_name
+     */
+    public function iAttachTheFileToTheFileInputElement($file, $file_input_element_name)
+    {
+        $this->attachFile("input[name=$file_input_element_name]", $file);
+    }
 }

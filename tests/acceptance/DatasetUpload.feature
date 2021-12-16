@@ -12,14 +12,12 @@ Scenario: Allow users to upload dataset spreadsheet
   And I should see "Excel File"
   And I should see a submit button "Upload New Dataset"
 
-#@wip
-#Scenario: Upload dataset metadata with an Excel spreadsheet
-#  Given I sign in as a user
-#  When I go to "/datasetSubmission/upload"
-#  And I check "agree-checkbox"
-#  And I attach the file "spreadsheet.xls" to "xls"
-#  And I press "Upload New Dataset"
-#  And I wait "5" seconds
-#  Then I should see "Your GigaDB submission has been received and is currently under review."
-#  And I should see a button input "Back to upload new dataset"
-##    Then send email to database@gigasciencejournal.com with file as attachment NB- subject and body of email are already defined, check should be in place to ensure they are not empty.
+@ok
+Scenario: Upload dataset metadata with an Excel spreadsheet
+  Given I sign in as a user
+  When I am on "/datasetSubmission/upload"
+  And I check the field "agree-checkbox"
+  And I attach the file "spreadsheet.xls" to the file input element "xls"
+  And I press the button "Upload New Dataset"
+  Then I should see "Your GigaDB submission has been received and is currently under review."
+  And I should see a link "Back to upload new dataset" to "/datasetSubmission/upload"
