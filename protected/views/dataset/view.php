@@ -291,7 +291,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                              <?php if(count($model->samples) > 0) {
                             ?>
 
-                      <div role="tabpanel" class="tab-pane active" id="sample">
+                      <div role="tabpanel" class="tab-pane active table-scrollbar" id="sample">
                         <a id="samples_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#samples_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                         <table id="samples_table" class="table table-striped table-bordered" style="width:100%">
                             <thead>
@@ -335,9 +335,9 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 
                         if(count($model->samples) > 0) {
                             ?>
-                        <div role="tabpanel" class="tab-pane" id="files">
+                        <div role="tabpanel" class="tab-pane table-scrollbar" id="files">
                          <?php }  else {?>
-                        <div role="tabpanel" class="tab-pane active" id="files">
+                        <div role="tabpanel" class="tab-pane active table-scrollbar" id="files">
                          <?php   } ?>
                             <span class="glyphicon glyphicon-adjust"></span> <?= CHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank', 'class'=>'button', 'title' =>'FTP site'))?>
 
@@ -399,7 +399,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                     if(count($funding) > 0) {
                             ?>
 
-                        <div role="tabpanel" class="tab-pane" id="funding">
+                        <div role="tabpanel" class="tab-pane table-scrollbar" id="funding">
 
 
                     <table class="table table-bordered text-center">
@@ -461,7 +461,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                         }
                     ?>
 
-                        <div role="tabpanel" class="tab-pane" id="history">
+                        <div role="tabpanel" class="tab-pane table-scrollbar" id="history">
 
                           <table class="table table-bordered text-center">
                         <thead>
