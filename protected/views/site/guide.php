@@ -74,7 +74,7 @@ th, td {
                             <p>For all datasets the following information will be required. Most of the details will be imported directly from the <i>GigaScience</i> manuscript submission, other details will be requested by the curators.</p>
                             <br>
                             <div class="table-scrollbar">
-                                <table border="1" style="text-align: center;">
+                                <table id="table_submission" border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 20%">
                                             Item
