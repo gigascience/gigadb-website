@@ -1,6 +1,4 @@
 <?php
-use Facebook\WebDriver\WebDriverKeys;
-
 /**
  * Code for implementing generic steps of feature files (non-generic should be in their support class)
  *
