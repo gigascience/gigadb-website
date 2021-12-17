@@ -1,6 +1,6 @@
 Feature: A user visit gigadb website
-  As a gigadb user
-  I want to see all front end views display properly
+  As a website user
+  I want to see useful and consistent navigational controls in the website's static pages area
   So that I can experience a good performance of gigadb website
 
   Background:
