@@ -92,7 +92,7 @@ Feature: a user visit the dataset page
 		| PRJNA194464 |
 		| GSE22967 |
 
-	@ok @issue-877
+	@ok
 	Scenario: Semantic Links
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
@@ -101,14 +101,6 @@ Feature: a user visit the dataset page
 		And I should see image "/images/ePMC.jpg" linking to "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5524/101001')"
 		And I should see image "/images/dimensions.jpg" linking to "https://app.dimensions.ai/discover/publication?search_text=10.5524%2F101001"
 
-	@ok @issue-877
-	Scenario: Project image with links
-		Given I am not logged in to Gigadb web site
-		When I go to "/dataset/101001"
-		Then I should see links to "Projects"
-		| Projects |
-		| Go to Genome 10K website |
-		| Go to The Avian Phylogenomic Project website |
 	@ok
 	Scenario: IsPreviousVersionOf relation should show an alert warning of old version with link to new version
 		Given I am not logged in to Gigadb web site
