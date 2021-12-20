@@ -68,7 +68,7 @@
                             </td>
                             <td>
                                 <div class="thumbnail">
-                                    <img src="../images/team/image-coming-soon.jpg">
+                                    <img src="../images/team/hans.jpg">
                                     <div class="caption">
                                         <h3>Hans Zauner<br><small>Assistant Editor</small></h3>
                                         <p>Hans is Assistant Editor at GigaScience and also writes for Laborjournal. Many years ago, Hans did research in evolutionary and developmental biology. He clipped fish fins and handled a laser beam to shoot at reproductive organs of worms. Now in safe distance from any lab bench, he works on various science communication projects.</p>
