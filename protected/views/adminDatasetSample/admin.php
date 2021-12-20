@@ -12,7 +12,7 @@
 		array('name'=> 'doi_search', 'value'=>'$data->dataset->identifier'),
 		'sample_id',
 		array('name'=> 'sample_name', 'value'=>'$data->sample->name'),
-		array('header'=> 'Sample Attributes','type'=>'raw' ,'value'=>'$data->sample->displayAttr'),
+		array('header'=> 'Sample Attributes','type'=>'raw' ,'value'=>''),//TODO: fix $data->sample->displayAttr
 		array(
 			'class'=>'CButtonColumn',
 		),
