@@ -115,7 +115,7 @@
                             </td>
                             <td>
                                 <div class="thumbnail">
-                                    <img src="../images/team/hongfang.jpeg">
+                                    <img src="../images/team/hongfang.jpg">
                                     <div class="caption">
                                         <h3>HongFang Zhang<br><small>Junior Editor</small></h3>
                                         <p>Junior editor for GigaScience and GigaByte journals.</p>
