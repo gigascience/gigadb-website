@@ -92,7 +92,7 @@ Feature: a user visit the dataset page
 		| PRJNA194464 |
 		| GSE22967 |
 
-	@ok
+	@ok @issue-877
 	Scenario: Semantic Links
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/101001"
