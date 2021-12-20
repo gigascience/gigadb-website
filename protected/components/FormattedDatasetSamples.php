@@ -50,7 +50,7 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
 		$samples =   array_filter($this->_cachedDatasetSamples->getDatasetSamples());
 		foreach ($samples as &$sample) {
 			$sample['taxonomy_link'] = "<a href=\"http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&amp;id=".$sample['tax_id']."\">".$sample['tax_id']."</a>";
-			$sample['displayAttr'] = $this->getDisplayAttr($sample['sample_id'], $sample['sample_attributes']);
+			$sample['displayAttr'] = self::getDisplayAttr($sample['sample_id'], $sample['sample_attributes']);
 		}
 		return $samples;
 	}
@@ -82,7 +82,7 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
 		return $dataProvider;
 	}
 
-	private function shortAttrDesc(array $sample_attributes) {
+	public static function shortAttrDesc(array $sample_attributes) {
 		$desc = "";
         foreach($sample_attributes as $idx => $nameValue){
             $attr = ucfirst(implode(array_keys($nameValue))). ":".implode(array_values($nameValue));
@@ -94,7 +94,7 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
         return $desc."...";
 	}
 
-	private function fullAttrDesc(array $sample_attributes) {
+	public static function fullAttrDesc(array $sample_attributes) {
 		$desc = "";
         foreach($sample_attributes as $nameValue){
             $name = implode(array_keys($nameValue));
@@ -104,15 +104,15 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
         return $desc;
 	}
 
-	private function getDisplayAttr(int $sample_id, array $sample_attributes) {
+	public static function getDisplayAttr(int $sample_id, array $sample_attributes) {
 		$num = count($sample_attributes);
-		$shortDesc = $this->shortAttrDesc($sample_attributes) ;
-		$fullDesc = $this->fullAttrDesc($sample_attributes) ;
+		$shortDesc = self::shortAttrDesc($sample_attributes) ;
+		$fullDesc = self::fullAttrDesc($sample_attributes) ;
 		$display = "";
 		if($num > 3) {
 			$display ="<span class=\"js-short-$sample_id\">$shortDesc</span>
         		<span class=\"js-long-$sample_id\" style=\"display: none;\">$fullDesc</span>";
-		    if($this->shortAttrDesc($sample_attributes))
+		    if($shortDesc)
 		            $display .= "<a href='#' class='js-desc' data='$sample_id'>+</a>";
   		}
   		elseif ( $num <= 3 && $num > 0) {

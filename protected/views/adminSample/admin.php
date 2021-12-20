@@ -11,7 +11,7 @@
 		array('name'=>'name', 'value'=>'$data->name'),
 		array('name'=> 'species_search', 'value'=>'$data->species->common_name'),
 		array('name'=> 'dois_search', 'value'=>'$data->listOfDataset'),
-		array('name'=> 'attr_search','type'=>'raw' ,'value'=>''),//TODO: fix $data->fullAttrDesc
+		array('name'=> 'attr_search','type'=>'raw' ,'value'=>'FormattedDatasetSamples::fullAttrDesc($data->getSampleAttributeArrayMap())'),
 		array(
 			'class'=>'CButtonColumn',
 		),
