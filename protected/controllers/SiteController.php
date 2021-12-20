@@ -287,7 +287,11 @@ class SiteController extends Controller {
         if (isset($_POST['ContactForm'])) {
             $model->attributes = $_POST['ContactForm'];
             if ($model->validate()) {
-                Yii::app()->mailService->sendEmail(Yii::app()->params['adminEmail'], Yii::app()->params['adminEmail'], Yii::app()->params['email_prefix'] . $model->subject, "Message from: " . $model->name . " <" . $model->email . ">\n\n" . $model->body);
+                try {
+                    Yii::app()->mailService->sendEmail(Yii::app()->params['adminEmail'], Yii::app()->params['adminEmail'], Yii::app()->params['email_prefix'] . $model->subject, "Message from: " . $model->name . " <" . $model->email . ">\n\n" . $model->body);
+                } catch (Swift_TransportException $ste) {
+                    Yii::log("Problem sending email from contact page - " . $ste->getMessage(), "error");
+                }
                 Yii::app()->user->setFlash('contact', 'Thank you for contacting us. We will respond to you as soon as possible.');
                 $this->refresh();
             }
