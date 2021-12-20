@@ -91,10 +91,6 @@ Feature: a user visit the dataset page
 		| Accessions (data not in GigaDB) |
 		| PRJNA194464 |
 		| GSE22967 |
-		And I should see links to "Projects"
-		| Projects |
-		| Go to Genome 10K website |
-		| Go to The Avian Phylogenomic Project website |
 
 	@ok
 	Scenario: Semantic Links
