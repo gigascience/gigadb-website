@@ -160,7 +160,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldNotSeeLoginOption($provider)
     {
-        $this->dontSeeElement('span', ['href' => "/opauth/'$provider'", 'src' => "/images/new_interface_image/'$provider.png"]);
+        $this->dontSeeElement('span', ['href' => "/opauth/'$provider'", 'src' => "/images/new_interface_image/'$provider'.png"]);
     }
     /**
      * @Then I make a screenshot called :arg1
