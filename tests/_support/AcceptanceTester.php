@@ -156,6 +156,13 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should not see an affiliate login option for :provider
+     */
+    public function iShouldNotSeeLoginOption($provider)
+    {
+        $this->dontSeeElement('span', ['href' => "/opauth/'$provider'", 'src' => "/images/new_interface_image/'$provider.png"]);
+    }
+    /**
      * @Then I make a screenshot called :arg1
      */
     public function iMakeAScreenshot($arg1)
