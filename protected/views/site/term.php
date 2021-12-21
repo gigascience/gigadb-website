@@ -16,7 +16,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
 <section style="margin-bottom: 15px;">
     <div>
         <ul class="nav nav-tabs nav-border-tabs" role="tablist">
-            <li id="lipolicies" role="presentation" class="active"><a href="#policies" aria-controls="policies" role="tab" data-toggle="tab"><em>GigaDB</em> User Policies</a></li>
+            <li id="lipolicies" role="presentation" class="active"><a href="#policies" aria-controls="policies" role="tab" data-toggle="tab">GigaDB User Policies</a></li>
             <li id="lihosting" role="presentation"><a href="#hosting" aria-controls="hosting" role="tab" data-toggle="tab">Hosting Statement</a></li>
             <li id="liprivacy" role="presentation" id="privacytab"><a href="#privacy" aria-controls="privacy" role="tab" data-toggle="tab">Privacy</a></li>
             <li id="liinformation" role="presentation"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Collection of Web-traffic Information</a></li>
@@ -172,7 +172,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
             </div>
             <h4 style="color: #099242; margin-bottom: 10px;">Metadata</h4>
             <div class="subsection">
-                <p>ll metadata collected by GigaDB is stored in a bespoke pSQL database. Only individual user information is kept private to comply with local and international data privacy laws. All GigaDB dataset metadata is openly available and as such has likely been duplicated in various archives and search engines (e.g. Google, utilising schema.org metadata) around the world. This offers greater discoverability for our datasets.</p>
+                <p>All metadata collected by GigaDB is stored in a bespoke pSQL database. Only individual user information is kept private to comply with local and international data privacy laws. All GigaDB dataset metadata is openly available and as such has likely been duplicated in various archives and search engines (e.g. Google, utilising schema.org metadata) around the world. This offers greater discoverability for our datasets.</p>
                 <p>The pSQL database is hosted on the BGI-Hong Kong Co. Ltd servers in Hong Kong, with automatic nightly back-ups taken.</p>
                 <p>A complete dump of all dataset metadata is available from our API in XML format. We publish all datasets through the DataCite DOI register which also ensures the continued availability of basic dataset level metadata submitted as part of the registration.</p>
                 <p>GigaDB utilises CLOCKSS as an additional method to ensure persistence of all metadata beyond any unforeseen business continuity issues. The CLOCKS subscription means a copy of the dataset metadata in the form of an XML dump from API is stored indefinitely, and this ensures that the curated metadata, external links and documentation are all preserved in the long term. This is a guarantee to ensure future availability of all metadata in the event of GigaDB services being terminated for any reason.</p>
