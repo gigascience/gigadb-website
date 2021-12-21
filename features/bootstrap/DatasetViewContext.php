@@ -480,4 +480,14 @@ class DatasetViewContext implements Context
         $metaNode = $this->minkContext->getSession()->getPage()->find('xpath', "//meta[@name='$arg1' and @content='$arg2']");
         PHPUnit_Framework_Assert::assertNotNull($metaNode);
     }
+
+    /**
+     * @Then I should not see a checkbox for the :arg1
+     * To assert the existence of a checkbox
+     */
+    public function iShouldNotSeeACheckbox($arg1)
+    {
+        $element = $this->minkContext->getSession()->getPage()->find('xpath', "//input[@id='$arg1' and @type='checkbox']");
+        PHPUnit_Framework_Assert::assertNull($element);
+    }
 }
