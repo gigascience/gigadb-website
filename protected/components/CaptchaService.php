@@ -22,7 +22,7 @@ class CaptchaService extends CApplicationComponent
     }
 
     /**
-     * Generate text can save it to current session
+     * Generate text and save it to current session
      */
     public function generate(): void
     {
