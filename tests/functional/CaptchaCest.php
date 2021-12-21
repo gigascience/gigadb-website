@@ -27,19 +27,14 @@ class CaptchaCest
         $I->amOnPage($targetUrl);
         # find captcha image
         $I->seeElement("//div/img[@style='width:200px;']");
-        # Get the source url of the image
+        # Get the source of the image
         $imgSrc1 = $I->grabAttributeFrom("//div/img[@style='width:200px;']",'src');
-        # download content of captcha url
-        $I->amOnPage($imgSrc1);
-        $img1 = $I->checksumOfResponse();
         # load the target url again
         $I->amOnPage($targetUrl);
-        # download content of captcha url
+        # Get the source of the image
         $imgSrc2 = $I->grabAttributeFrom("//div/img[@style='width:200px;']",'src');
-        $I->amOnPage($imgSrc2);
-        $img2 = $I->checksumOfResponse();
         # make sure both content are different
-        $I->assertNotEquals($img1, $img2);
+        $I->assertNotEquals($imgSrc1, $imgSrc2);
     }
 
     /**
