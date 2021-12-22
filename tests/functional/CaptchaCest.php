@@ -29,10 +29,14 @@ class CaptchaCest
         $I->seeElement("//div/img[@style='width:200px;']");
         # Get the source of the image
         $imgSrc1 = $I->grabAttributeFrom("//div/img[@style='width:200px;']",'src');
+        # ensure it's not null and it's an image
+        $I->assertContains("image/jpeg;base64",$imgSrc1);
         # load the target url again
         $I->amOnPage($targetUrl);
         # Get the source of the image
         $imgSrc2 = $I->grabAttributeFrom("//div/img[@style='width:200px;']",'src');
+        # ensure it's not null and it's an image
+        $I->assertContains("image/jpeg;base64",$imgSrc2);
         # make sure both content are different
         $I->assertNotEquals($imgSrc1, $imgSrc2);
     }
@@ -51,10 +55,14 @@ class CaptchaCest
         $I->seeElement("//div/img[@style='width:200px;']");
         # Get the source of the image
         $imgSrc1 = $I->grabAttributeFrom("//div/img[@style='width:200px;']",'src');
+        # ensure it's not null and it's an image
+        $I->assertContains("image/jpeg;base64",$imgSrc1);
         # load the target url again
         $I->amOnPage($targetUrl);
         # Get the source of the image
         $imgSrc2 = $I->grabAttributeFrom("//div/img[@style='width:200px;']",'src');
+        # ensure it's not null and it's an image
+        $I->assertContains("image/jpeg;base64",$imgSrc2);
         # make sure both content are different
         $I->assertNotEquals($imgSrc1, $imgSrc2);
     }

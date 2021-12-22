@@ -86,8 +86,9 @@ class UserController extends Controller {
             $user->newsletter=$attrs['newsletter'];
             $user->previous_newsletter_state = !$user->newsletter;
 
-            if (in_array($_SERVER['GIGADB_ENV'], ["dev","CI"])) {
-                Yii::log("Because we are on {$_SERVER['GIGADB_ENV']}, captcha value is overridden", 'warning');
+            if (in_array($_SERVER['GIGADB_ENV'], ["dev","CI"]) && "testCaptcha" !== $attrs['verifyCode']) {
+                Yii::log("Because we are on {$_SERVER['GIGADB_ENV']}, captcha value is overridden for automated acceptance test", 'warning');
+                Yii::log("To exercise captcha validation, use 'testCaptcha' in the form", 'warning');
                 $_SESSION["captcha"] = $attrs['verifyCode'];
             }
 
