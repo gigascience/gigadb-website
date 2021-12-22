@@ -52,7 +52,7 @@ th, td {
                         <div class="subsection">
                             <p>All sequence, assembly, variation, and RNA-seq data must be deposited in a public database at <a target="_blank" href="http://www.ncbi.nlm.nih.gov/">NCBI</a>, <a target="_blank" href="http://www.ebi.ac.uk/">EBI</a>, or <a target="_blank" href="http://www.ddbj.nig.ac.jp/">DDBJ</a> before you submit to <i>GigaScience</i> or GigaDB. In the cases where you would like GigaDB to host files associated with genomic data not fully consented for public release, you must first submit the non-public data to <a target="_blank" href="http://www.ncbi.nlm.nih.gov/gap/">dbGaP</a> or <a target="_blank" href="http://ega-archive.org/">EGA</a>.</p>
                             <p>For Genomic datasets we would expect to see many of the files listed in the table below, please note this list is not comprehensive and curators/reviewers may ask for additional/different files depending on the specific content of the manuscript.</p>
-                            <div class="table-scrollbar">
+                            <div id="table_genomic_format" class="table-scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 70%">
@@ -193,7 +193,7 @@ th, td {
                             <p>In addition these might be included for Transcriptomic datasets;</p>
                             <br>
                             <br>
-                            <div class="table-scrollbar">
+                            <div id='table_transcriptomic' class="table-scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 70%">
@@ -248,7 +248,7 @@ th, td {
                             <p>The complete list of pre-defined sample attributes are available <a href="/">here</a>, and it is possible to include bespoke attributes by communication with us.</p>
                             <br>
                             <br>
-                            <div class="table-scrollbar">
+                            <div id='table_genomic_meta' class="table-scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 30%">

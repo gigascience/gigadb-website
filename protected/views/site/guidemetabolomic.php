@@ -56,7 +56,7 @@ th, td {
                             <p>For datasets with metabolomics data we would expect all relevant data to be made available in Metabolights, and therefore GigaDB would only host other data files that are created/used in the analysis/project (if any). Where there are no additional files or data to be hosted in GigaDB it is possible we will not generate a dataset in those cases.</p>
                             <p>The basic outline of data that is to be included in a Metabolomics dataset are summarised below</p>
                             <p>(Information taken from https://www.metabolomicsworkbench.org/data/datasharing.php 18-Dec-2018):</p>
-                            <div class="table-scrollbar">
+                            <div id='table_metabolomic_data' class="table-scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 30%">
@@ -110,7 +110,7 @@ th, td {
                             <p>Where we do host a dataset for metabolomics data, we may include the sample metadata in GigaDB to further assist discovery and reuse of these data. Metabolomic sample metadata is expected to be at least as comprehensive as that of transcriptomic datasets, below are some of the more common sample metadata attributes that we would expect to be made available for most metabolomics samples. The complete list of pre-defined sample attributes are available <a href="/">here</a>, and it is possible to include bespoke attributes by prior communication with us.</p>
                             <br>
                             <br>
-                            <div class="table-scrollbar">
+                            <div id='table_metabolomic_meta' class="table-scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 30%">
