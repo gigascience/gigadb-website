@@ -21,7 +21,6 @@ services:
       - assets:/var/www/assets
       - le_config:/etc/letsencrypt
       - le_webrootpath:/var/www/.le
-      - tempcaptcha:/var/www/images/tempcaptcha
       # filedrop files for reviewers to download
       - ${DATA_SAVE_PATH}/fuw/repo:/var/www/filedrop
       # public download path (TODO: temporary, to revisit in storage work stream)
@@ -59,7 +58,6 @@ services:
       YII2_PATH: ${YII2_PATH}
     volumes:
       - assets:/var/www/assets
-      - tempcaptcha:/var/www/images/tempcaptcha
       - feeds:/var/www/files/data
     expose:
       - "9000"
@@ -81,7 +79,6 @@ services:
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
     volumes:
       - assets:/var/www/assets
-      - tempcaptcha:/var/www/images/tempcaptcha
     command: bash -c "./protected/yiic lesscompiler"
 
   fuw-admin:
@@ -315,6 +312,5 @@ volumes:
   assets:
   le_config:
   le_webrootpath:
-  tempcaptcha:
   feeds:
   portainer_data:
