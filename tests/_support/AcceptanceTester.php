@@ -155,4 +155,21 @@ class AcceptanceTester extends \Codeception\Actor
         $this->click($buttonName);
     }
 
+    /**
+     * @Then I make a screenshot called :arg1
+     */
+    public function iMakeAScreenshot($arg1)
+    {
+        $this->makeScreenshot($arg1);
+    }
+
+    /**
+     * @Then I go to a page tab :arg1
+     */
+    public function iGoToAPageTab($arg1)
+    {
+        $this->amOnPage($arg1);
+        $this->reloadPage();
+        $this->canSeeCurrentUrlEquals($arg1);
+    }
 }

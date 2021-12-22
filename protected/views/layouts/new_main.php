@@ -25,8 +25,8 @@
                 <!-- <link rel="stylesheet" type="text/css" href="/css/common.css" /> -->
                 <!-- Using current.css for developing fix for CSS problems in current green layout -->
                 <link rel="stylesheet" type="text/css" href="/css/current.css" />
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" defer></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" defer></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
                 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
                 <? } ?>
                     <title>
