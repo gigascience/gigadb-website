@@ -102,27 +102,11 @@ $this->pageTitle='GigaDB - Help';
                         </div>
                         <div role="tabpanel" class="tab-pane" id="vocabulary">
                             <h4 id="datasettypes" style="color: #099242; margin-bottom: 10px;">Dataset types</h4>
-                            <p><strong>Genomic</strong> - Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation. Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</p>
-                            <p><strong>Transcriptomic</strong> - Includes all data relating to mRNA. Minimal requirements: RNA sequence data eg next-gen raw reads (fastq files) OR transcript statistics eg RNA coverage/depth.</p>
-                            <p><strong>Epigenomic</strong> - Includes methylation and histone modification data. Minimal requirements: Details on methylation sites/status eg qmap files OR details on histone modification sites/status.</p>
-                            <p><strong>Metagenomic</strong> - Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation from environmental samples. Minimal requirements: Environmental DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</p>
-                            <p><strong>Metatranscriptomic</strong> - RNA sequences analysis data from environmental samples, e.g. assemblies, expression profiles, variations, annotations etc.</p>
-                            <p><strong>Genome mapping</strong> - Datasets containing sequence analysis of genes/conserved sequences mapped to genome(s), and/or optical maps of entire genomes.</p>
-                            <p><strong>Imaging</strong> - Includes all imaging data, e.g. light microscopy, 3D imaging, high-resolution images, camera-trap images etc...</p>
-                            <p><strong>Software</strong> - Includes datasets that package code together into a useful bioinformatics tool. Note, datasets that contain short scripts are not labelled as software.</p>
-                            <p><strong>Virtual-Machine</strong> - Includes software that has been packaged into a virtual machine environment.</p>
-                            <p><strong>Workflow</strong> - Datasets that include tools that have been pieced together into a workflow using CWL or other workflow languages.</p>
-                            <p><strong>Metabolomic</strong> - Includes analysis of specific metabolights across multiple samples and/or multiple metabolights in fewer samples, usually LC-MS data.</p>
-                            <p><strong>Proteomic</strong> - Includes all mass spec data. Minimal requirements: Peptide/protein data eg mass spec.</p>
-                            <p><strong>Lipidomic</strong> - Includes datasets with focus on lipid analysis, usually using mass spectrometry.</p>
-                            <p><strong>Metabarcoding</strong> - Datasets using barcode sequences for environmental analysis and/or monitoring studies e.g. biodiversity assessment.</p>
-                            <p><strong>Metadata</strong> - Denotes datasets where there is a focus on collection of metadata e.g. ontologies or metadata standards.</p>
-                            <p><strong>Network-Analysis</strong> - Datasets containing analysis of biological networks, either species interactions or at the molecular level.</p>
-                            <p><strong>Neuroscience</strong> - Includes all datasets that hold data about brains/neurons, can be imaging, molecular and/or software/tools.</p>
-                            <p><strong>Electro-encephalography (EEG)</strong> - Datasets containing or using EEG data.</p>
-                            <p><strong>Phenotyping</strong> - Includes datasets with extensive phenotypic information about the samples/specimens.</p>
-                            <p><strong>Ecology</strong> - Data used/collected for ecological studies.</p>
-                            <p><strong>Climate</strong> - Data used/collected for climate studies.</p>
+                            <p><strong>Genomic</strong> - includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation. Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files)</p>
+                            <p><strong>Epigenomic</strong> - includes methylation and histone modification data. Minimal requirements: Details on methylation sites/status eg qmap files OR details on histone modification sites/status.</p>
+                            <p><strong>Metagenomic</strong> - includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation from environmental samples. Minimal requirements: Environmental DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</p>
+                            <p><strong>Proteomic</strong> - includes all mass spec data. Minimal requirements: Peptide/protein data eg mass spec.</p>
+                            <p><strong>Transcriptomic</strong> - includes all data relating to mRNA. Minimal requirements: RNA sequence data eg next-gen raw reads (fastq files) OR transcript statistics eg RNA coverage/depth.</p>
                             <p>Additional dataset types can be added, upon review, as new submissions are received.</p>
                             <h4 id="filetypes" style="color: #099242; margin-bottom: 10px;">File types</h4>
                             <p>File types and examples of associated file extensions:</p>
@@ -340,11 +324,8 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
             </div>
         </div>
 <script type="text/javascript">
-$(document).ready(function () {
-    if(location.hash != '' && location.hash != null){
-        $("a[href='"+location.hash+"']").click();
-    }
-});
+
+
 
 function DatasetFunction(){
   $('ul li').removeClass('active');  
