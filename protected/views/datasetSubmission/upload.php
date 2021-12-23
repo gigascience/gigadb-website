@@ -78,15 +78,15 @@ if (isset($_GET['status'])) {
                             <br/>
                             Click 'Download Template File' to get a copy:
                             <br/><br/>
-                            <a href="/files/GigaDBUploadForm.xls" class="btn pull-right">Download Template File</a>
+                            <a href="/files/templates/GigaDBUploadForm-forWebsite-v22Dec2021.xlsx" class="btn pull-right">Download Template File</a>
                             <div class="clear"></div>
 
                             When filling out your dataset file, you may refer to the files below as examples.
                             <br/><br/>
-                            <a href="/files/GigaDBUploadForm-example1.xls" class="btn pull-right">Download Example File 1</a>
+                            <a href="/files/templates/GigaDBUpload-Example1-forWebsite-v22Dec2021.xlsx" class="btn pull-right">Download Example File 1</a>
                             <br/><br/>
                             <div class="clear"></div>
-                            <a href="/files/GigaDBUploadForm-example2.xls" class="btn pull-right">Download Example File 2</a>
+                            <a href="/files/templates/GigaDBUpload-Example2-forWebsite-v22Dec2021.xlsx" class="btn pull-right">Download Example File 2</a>
                             <div class="clear"></div>
 
                             <?php echo CHtml::form(Yii::app()->createUrl('datasetSubmission/upload'), 'post', array('enctype' => 'multipart/form-data')); ?>
