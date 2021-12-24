@@ -30,6 +30,9 @@ modules:
                       browser: ALL
                   "loggingPrefs":
                       browser: ALL
+        - REST:
+            depends: PhpBrowser
+            url: 'http://gigadb.test'
     step_decorators: ~
 
 gherkin:
