@@ -53,7 +53,7 @@ th, td {
                             <p>It should be noted that this section refers to Whole Genome Shotgun (WGS) metagenomics, as amplicon based microbiome studies are rarely accepted as <i>GigaScience</i> scale data. All raw sequence data must be deposited in a public database at <a target="_blank" href="http://www.ncbi.nlm.nih.gov/">NCBI</a>, <a target="_blank" href="http://www.ebi.ac.uk/">EBI</a>, or <a target="_blank" href="http://www.ddbj.nig.ac.jp/">DDBJ</a> before you submit to <i>GigaScience</i> or GigaDB. </p>
                             <p>Please note that where data is generated from Human environments e.g. faecal material, the authors are required to filter the sequence data for human sequence contamination before submission to the public archives, or if the human sequences are part of the study you must submit the data to <a target="_blank" href="http://www.ncbi.nlm.nih.gov/gap/">dbGaP</a> or <a target="_blank" href="http://ega-archive.org/">EGA</a>. Additionally, where identifiable metadata is used (e.g. age, sex, race, location etc) that is not specifically consented for public release the authors should submit that metadata to <a target="_blank" href="http://ega-archive.org/">EGA</a>.</p>
                             <p>For metagenomic datasets we would expect to see many of the files listed in the table below, please note this list is not comprehensive and curators/reviewers may ask for additional/different files depending on the specific content of the manuscript.</p>
-                            <div id='table_metagenomic_format' class="table-scrollbar">
+                            <div id='table_metagenomic_format' class="scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 70%">
@@ -195,7 +195,7 @@ th, td {
                             <p>In addition these might be included for MetaTranscriptomic datasets;</p>
                             <br>
                             <br>
-                            <div id='table_metatranscriptomic' class="table-scrollbar">
+                            <div id='table_metatranscriptomic' class="scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 70%">
@@ -237,7 +237,7 @@ th, td {
                             <p>For metagenomic datasets we would expect to see sample metadata that complies with the <a href="http://gensc.org/">Genomic Standards Consortium</a> MIxS checklists, the most common features of which are summarised below. The complete list of pre-defined sample attributes are available <a href="/">here</a>, and it is possible to include bespoke attributes by communication with us.</p>
                             <br>
                             <br>
-                            <div id='table_metagenomic_meta' class="table-scrollbar">
+                            <div id='table_metagenomic_meta' class="scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 30%">

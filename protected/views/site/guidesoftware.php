@@ -54,7 +54,7 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
                             <p>In addition we encourage submission of your code to <a href="https://codeocean.com/">Code Ocean</a>, a cloud-based computational reproducibility platform. Once your code is published in Code Ocean, they will issue a DOI for it, which should be included in your GigaDB dataset.</p>
                             <p>GigaScience journal expects all new software tools to be registered at <a href="https://scicrunch.org/">SciCrunch.org</a> - a database to register new software applications. You will be assigned an <a href="https://scicrunch.org/resources">RRID</a> which provides a persistent and unique identifier for referencing your research resource, which in turn will facilitate tracking, reproducibility and re-use of your tool, and should be included in the manuscript and dataset.</p>
                             <p>Where authors have demonstrated the utility of software/tools with example data, we would expect those data to be fully open and accessible in a stable international database with permanent IDs (PIDs). If the authors have generated the data themselves/own the data we can host it in GigaDB if required, otherwise links to the PIDs should be included in the dataset. The metadata to accompany example data would be expected to comply with the regular checklists for that particular data type (see other dataset type checklists).</p>
-                            <div id='table_software_format' class="table-scrollbar">
+                            <div id='table_software_format' class="scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 60%">
@@ -131,7 +131,7 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
                     <h5 style="padding-left: 1px">Example Software dataset</h5>
                     <div class="subsection">
                         <p>Below is an example software dataset, you can see the final dataset of this example <a href="http://dx.doi.org/10.5524/100753">here</a>.</p>
-                        <div id='table_software_dataset' class="table-scrollbar">
+                        <div id='table_software_dataset' class="scrollbar">
                             <table border="1" style="text-align: center;">
                                 <tr>
                                     <th style="text-align: center; width: 12.5%">

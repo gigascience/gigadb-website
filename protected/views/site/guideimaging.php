@@ -53,7 +53,7 @@ th, td {
                             <p>All clinical imaging data must be fully anonymised including removal of any identifiable <a target="_blank" href="https://www.dicomlibrary.com/dicom/">DICOM</a> metadata from the image library files (there are several free tools designed to do this).
                             </p>
                             <p>For imaging datasets we would expect to see many of the files listed in the table below, please note this list is not comprehensive and curators/reviewers may ask for additional/different files depending on the specific content of the manuscript.</p>                           
-                            <div id='table_imaging_format' class="table-scrollbar">
+                            <div id='table_imaging_format' class="scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 70%">
@@ -173,7 +173,7 @@ th, td {
                             <p>In addition these File Attributes may also be included for Imaging datasets:</p>
                             <br>
                             <br>
-                            <div id='table_imaging_attribute' class="table-scrollbar">
+                            <div id='table_imaging_attribute' class="scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 70%">
@@ -227,7 +227,7 @@ th, td {
                             <p>The complete list of pre-defined sample attributes are available <a href="/">here</a>, and it is possible to include bespoke attributes by communication with us.</p>
                             <br>
                             <br>
-                            <div id='table_imaging_meta' class="table-scrollbar">
+                            <div id='table_imaging_meta' class="scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 30%">

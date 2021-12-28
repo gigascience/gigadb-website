@@ -51,7 +51,7 @@ th, td {
                         <h4 style="color: #099242; margin-bottom: 10px;">Epigenomic Dataset Checklist </h4>
                         <div class="subsection">
                             <p>For Epigenomic datasets we would expect to see many of the files listed in the table below, please note this list is not comprehensive and curators/reviewers may ask for additional/different files depending on the specific content of the manuscript.</p>        
-                            <div id='table_epigenomic_format' class="table-scrollbar">
+                            <div id='table_epigenomic_format' class="scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 70%">
@@ -269,7 +269,7 @@ th, td {
                             <p>For Epigenomic datasets we would expect to see sample metadata that complies with the <a target="_blank" href="http://gensc.org/">Genomic Standards Consortium</a> MIxS checklists, the most common features of which are summarised below. The complete list of pre-defined sample attributes are available here, and it is possible to include bespoke attributes by communication with us.</p>
                             <br>
                             <br>
-                            <div id='table_epigenomic_meta' class="table-scrollbar">
+                            <div id='table_epigenomic_meta' class="scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
                                         <th style="text-align: center; width: 30%">
