@@ -8,11 +8,11 @@ Feature: A user visit gigadb website
     When I am on "/site/term"
     Then I should see "GigaDB User Policies"
     And I should not see "<em>GigaDB</em> User Policies"
-  
+
     @ok @issue-870
     Scenario: Update dataset types in controlled vocabulary tab
       When I am on "/site/help#vocabulary"
-      Then I should see "Dataset types" 
+      Then I should see "Dataset types"
       And I should see "Genomic"
       And I should see "Transcriptomic"
       And I should see "Epigenomic"
