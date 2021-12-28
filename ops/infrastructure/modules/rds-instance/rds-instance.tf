@@ -38,6 +38,8 @@ module "db" {
 
   create_db_option_group    = false
   create_db_parameter_group = false
+
+  parameter_group_name      = (var.deployment_target == "staging" ? "gigadb-db-param-group" : null)
   engine                    = "postgres"
   engine_version            = "11.13"
   family                    = "postgres11"  # DB parameter group
@@ -53,6 +55,24 @@ module "db" {
   copy_tags_to_snapshot     = true
   delete_automated_backups  = false  # Do not delete backups on RDS instance termination
   apply_immediately         = true
+}
+
+resource "aws_db_parameter_group" "gigadb-db-param-group" {
+  count = var.deployment_target == "staging" ? 1 : 0
+  name = "gigadb-db-param-group"
+  family = "postgres11"
+
+  parameter {
+    apply_method = "immediate"
+    name = "log_statement"
+    value = "all"
+  }
+
+  parameter {
+    apply_method = "immediate"
+    name = "log_min_duration_statement"
+    value = "0"  # Log all SQL statements
+  }
 }
 
 output "rds_instance_address" {

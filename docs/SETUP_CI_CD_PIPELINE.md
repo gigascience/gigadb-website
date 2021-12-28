@@ -796,3 +796,7 @@ Then running the following command to create a default subnet will fix it:
  ```
  aws ec2 --profile UserNameOfAdminUser create-default-subnet --region ap-east-1 --availability-zone ap-east-1a
  ```
+
+All SQL statements executed on the PostgreSQL RDS instance are logged in staging
+deployments of GigaDB. These `postgres.log` files are available from the AWS
+console for the RDS service in the `Log & events` tab.
