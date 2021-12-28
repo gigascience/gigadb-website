@@ -303,3 +303,16 @@
   color: @color-true-white;
   background-color: @color-gigadb-green;
 }
+.scrollbar {
+  position: relative;
+  overflow: auto;
+}
+.scrollbar::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+  height: 8px;
+  background-color: @color-light-gray;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background: @color-dark-gray;
+}
