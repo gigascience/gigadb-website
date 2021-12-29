@@ -40,15 +40,16 @@ Feature: a user visit the dataset page
     When I am on "/dataset/100094"
     Then I should see an image "/images/dimensions.jpg" is linked to "https://app.dimensions.ai/discover/publication?search_text=10.5072/100094"
 
-  @wip
+
+  @ok
   Scenario: Private dataset not visible
     Given I have not signed in
     When I am on "/dataset/200070"
     And I should not see "well now, how to describe nothing in particular?"
     Then I should see "The DOI 200070 cannot be displayed."
 
-
-  Scenario: Private dataset accessible through mockup
+  @ok
+  Scenario: Private dataset accessible through mockup url
     Given I have not signed in
     When I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
     Then I should see "well now, how to describe nothing in particular?"
