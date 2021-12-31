@@ -154,11 +154,19 @@ TARGET=${APP_SOURCE}/protected/config/db.json
 VARS='$GIGADB_DB:$GIGADB_HOST:$GIGADB_USER:$GIGADB_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
-SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/web.php.dist
-TARGET=${APP_SOURCE}/protected/config/yii2/web.php
-VARS='$SERVER_EMAIL_SMTP_HOST:$SERVER_EMAIL_SMTP_PORT:$SERVER_EMAIL:$SERVER_EMAIL_PASSWORD'
-envsubst $VARS < $SOURCE > $TARGET
-
+# Email configuration in web.php differs in dev, CI compared to staging, live 
+if [ $GIGADB_ENV = "dev" ] || [ $GIGADB_ENV = "CI" ];
+then
+  SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/web.dev.CI.php.dist
+  TARGET=${APP_SOURCE}/protected/config/yii2/web.php
+  VARS='$SERVER_EMAIL_SMTP_HOST:$SERVER_EMAIL_SMTP_PORT:$SERVER_EMAIL:$SERVER_EMAIL_PASSWORD'
+  envsubst $VARS < $SOURCE > $TARGET
+else
+  SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/web.staging.live.php.dist
+  TARGET=${APP_SOURCE}/protected/config/yii2/web.php
+  VARS='$SERVER_EMAIL_SMTP_HOST:$SERVER_EMAIL_SMTP_PORT:$SERVER_EMAIL:$SERVER_EMAIL_PASSWORD'
+  envsubst $VARS < $SOURCE > $TARGET
+fi
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/test.php.dist
 TARGET=${APP_SOURCE}/protected/config/yii2/test.php
