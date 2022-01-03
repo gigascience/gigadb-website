@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Feature: A user visit gigadb website
   As a website user
   I want to see useful and consistent navigational controls in the website's static pages area
@@ -9,12 +8,6 @@ Feature: A user visit gigadb website
     When I am on "/site/term"
     Then I should see "GigaDB User Policies"
     And I should not see "<em>GigaDB</em> User Policies"
-||||||| parent of 8cffb87ce (Change the file name to StaticContentNavigation.feature)
-=======
-Feature: A user visit gigadb website
-  As a website user
-  I want to see useful and consistent navigational controls in the website's static pages area
-  So that I can easily navigate in gigadb website
   
     @ok @issue-870
     Scenario: Update dataset types in controlled vocabulary tab
@@ -81,4 +74,3 @@ Feature: A user visit gigadb website
       And I should see "Terminology"
       And I should see "Examples"
       And I should see "Command line usage"
->>>>>>> 8cffb87ce (Change the file name to StaticContentNavigation.feature)
