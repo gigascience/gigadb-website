@@ -18,5 +18,6 @@ Feature: An author can download file template
     When I am on "/datasetSubmission/upload"
 #    And I should see a link "Download Template File" to "/files/templates/GigaDBUploadForm-forWebsite-v22Dec2021.xlsx"
 #    When I click the button "/files/templates/GigaDBUploadForm-forWebsite-v22Dec2021.xlsx"
-    And I press the button "Download Template File"
-    Then The response should contain "200"
+    Then I press "Download Template File" and the response should contain "200"
+    And I press "Download Example File 1" and the response should contain "200"
+    And I press "Download Example File 2" and the response should contain "200"
