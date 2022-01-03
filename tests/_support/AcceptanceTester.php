@@ -1,4 +1,6 @@
 <?php
+use Facebook\WebDriver\WebDriverKeys;
+
 /**
  * Code for implementing generic steps of feature files (non-generic should be in their support class)
  *
@@ -124,11 +126,11 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @When I fill in the field :fieldName with :value
+     * @When I fill in the field of :attribute :fieldName with :value
      */
-    public function iFillInTheFieldWith($fieldName, $value)
+    public function iFillInTheFieldOfWith($attribute, $fieldName, $value)
     {
-        $this->fillField(["id" => $fieldName],$value);
+        $this->fillField([$attribute => $fieldName],$value);
     }
 
     /**
@@ -172,4 +174,23 @@ class AcceptanceTester extends \Codeception\Actor
         $this->reloadPage();
         $this->canSeeCurrentUrlEquals($arg1);
     }
+
+    /**
+     * @When I press return on the element :elementXPath
+     */
+    public function iPressReturnOnTheElement($elementXPath)
+    {
+        $this->pressKey($elementXPath, WebDriverKeys::RETURN_KEY);
+
+    }
+
+    /**
+     * @When I wait :numberOf seconds
+     */
+    public function iWaitSeconds($numberOf)
+    {
+        $this->wait($numberOf);
+    }
+
+
 }

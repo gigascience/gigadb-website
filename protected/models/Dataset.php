@@ -101,7 +101,7 @@ class Dataset extends CActiveRecord
             array('description, publication_date, modification_date, image_id, fairnuse, types', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, submitter_id, image_id, identifier, title, description, publisher, dataset_size, ftp_site, upload_status, excelfile, excelfile_md5, publication_date, modification_date', 'safe', 'on'=>'search'),
+            array('id, manuscript_id, submitter_id, image_id, identifier, title, description, publisher, dataset_size, ftp_site, upload_status, excelfile, excelfile_md5, publication_date, modification_date', 'safe', 'on'=>'search'),
 #            array('projectIDs , sampleIDs , authorIDs , datasetTypeIDs' , 'safe'),
         );
     }
