@@ -303,7 +303,23 @@ class File extends CActiveRecord
 
     /**
      * Before save file
+     *
+     * ensure the release date can be unset
+     *
+     * @see https://www.yiiframework.com/doc/api/1.1/CActiveRecord#beforeSave-detail
+     * @return boolean
      */
+    public function beforeSave()
+    {
+        if (parent::beforeSave()) {
+            $this->date_stamp = ('' === $this->attributes['date_stamp']) ? null :  $this->attributes['date_stamp'] ;
+            return true;
+        }
+        else
+            return false;
+
+    }
+
     public function setSizeValue()
     {
         // Save the size from file if not set by user
