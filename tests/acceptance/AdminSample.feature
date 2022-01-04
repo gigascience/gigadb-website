@@ -6,6 +6,7 @@ Feature: admin page for samples
   Background:
     Given I have signed in as admin
 
+  @ok
   Scenario: sample attributes full description
     When I am on "/adminSample/admin"
     Then I should see "Source material identifiers:David Lambert & BGI"

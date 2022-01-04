@@ -6,6 +6,7 @@ Feature: admin page for samples
   Background:
     Given I have signed in as admin
 
+  @ok
   Scenario: sample attributes short description an call to action for more
     When I am on "/adminDatasetSample/admin"
     Then I should see "Source material identifiers:David Lambert & BG..."
@@ -13,7 +14,7 @@ Feature: admin page for samples
     And I should not see "Alternative names:PYGAD"
     And I should see "... +"
 
-
+  @ok
   Scenario: sample attributes show long description when clicking +
     Given I am on "/adminDatasetSample/admin"
     When I follow "+"
