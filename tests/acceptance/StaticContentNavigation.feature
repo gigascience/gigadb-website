@@ -74,3 +74,50 @@ Feature: A user visit gigadb website
       And I should see "Terminology"
       And I should see "Examples"
       And I should see "Command line usage"
+
+    @ok @issue-872
+    Scenario: Scroll bar is found in tables in guide page
+      When I am on "/site/guide"
+      Then I should see an element has id "table_guide_submission" with class "scrollbar"
+      And I should see an element has id "table_guide_attribute" with class "scrollbar"
+      And I should see an element has id "table_guide_details" with class "scrollbar"
+
+    @ok @issue-872
+    Scenario: Scroll bar is found in tables in genomic page
+      When I am on "/site/guidegenomic"
+      Then I should see an element has id "table_genomic_format" with class "scrollbar"
+      And I should see an element has id "table_transcriptomic" with class "scrollbar"
+      And I should see an element has id "table_genomic_meta" with class "scrollbar"
+
+    @ok @issue-872
+    Scenario: Scroll bar is found in tables in imaging page
+      When I am on "/site/guideimaging"
+      Then I should see an element has id "table_imaging_format" with class "scrollbar"
+      And I should see an element has id "table_imaging_attribute" with class "scrollbar"
+      And I should see an element has id "table_imaging_meta" with class "scrollbar"
+
+    @ok @issue-872
+    Scenario: Scroll bar is found in tables in metabolomic page
+      When I am on "/site/guidemetabolomic"
+      Then I should see an element has id "table_metabolomic_data" with class "scrollbar"
+      And I should see an element has id "table_metabolomic_meta" with class "scrollbar"
+
+
+    @ok @issue-872
+    Scenario: Scroll bar is found in tables in epigenomic page
+      When I am on "/site/guideepigenomic"
+      Then I should see an element has id "table_epigenomic_format" with class "scrollbar"
+      And I should see an element has id "table_epigenomic_meta" with class "scrollbar"
+
+    @ok @issue-872
+    Scenario: Scroll bar is found in tables in metagenomic page
+      When I am on "/site/guidemetagenomic"
+      Then I should see an element has id "table_metagenomic_format" with class "scrollbar"
+      And I should see an element has id "table_metatranscriptomic" with class "scrollbar"
+      And I should see an element has id "table_metagenomic_meta" with class "scrollbar"
+
+    @ok @issue-872
+    Scenario: Scroll bar is found in tables in software page
+      When I am on "/site/guidesoftware"
+      Then I should see an element has id "table_software_format" with class "scrollbar"
+      And I should see an element has id "table_software_dataset" with class "scrollbar"
