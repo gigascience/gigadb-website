@@ -1,4 +1,6 @@
 <?php
+use Facebook\WebDriver\WebDriverKeys;
+
 /**
  * Code for implementing generic steps of feature files (non-generic should be in their support class)
  *
@@ -190,5 +192,11 @@ class AcceptanceTester extends \Codeception\Actor
         $this->wait($numberOf);
     }
 
-
+    /**
+     * @Then I should see an element has id :id with class :class
+     */
+    public function iShouldSeeAnElementWith($id, $class)
+    {
+        $this->seeElement(['id'=>$id], ['class'=>$class]);
+    }
 }
