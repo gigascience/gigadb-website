@@ -187,6 +187,7 @@ COPY ./files /var/www/files/
 COPY ./fonts /var/www/fonts/
 COPY ./js /var/www/js/
 COPY ./less /var/www/less/
+COPY ./mail /var/www/mail/
 COPY ./css /var/www/css/
 COPY ./sql /var/www/sql/
 COPY ./index.php /var/www/index.php

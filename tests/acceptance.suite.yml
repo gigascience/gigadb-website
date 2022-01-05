@@ -37,3 +37,5 @@ gherkin:
     role:
       curator:
         - CuratorSteps
+      author:
+        - AuthorSteps
