@@ -54,71 +54,73 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
                             <p>In addition we encourage submission of your code to <a href="https://codeocean.com/">Code Ocean</a>, a cloud-based computational reproducibility platform. Once your code is published in Code Ocean, they will issue a DOI for it, which should be included in your GigaDB dataset.</p>
                             <p>GigaScience journal expects all new software tools to be registered at <a href="https://scicrunch.org/">SciCrunch.org</a> - a database to register new software applications. You will be assigned an <a href="https://scicrunch.org/resources">RRID</a> which provides a persistent and unique identifier for referencing your research resource, which in turn will facilitate tracking, reproducibility and re-use of your tool, and should be included in the manuscript and dataset.</p>
                             <p>Where authors have demonstrated the utility of software/tools with example data, we would expect those data to be fully open and accessible in a stable international database with permanent IDs (PIDs). If the authors have generated the data themselves/own the data we can host it in GigaDB if required, otherwise links to the PIDs should be included in the dataset. The metadata to accompany example data would be expected to comply with the regular checklists for that particular data type (see other dataset type checklists).</p>
-                        </div>
-                        <table border="1" style="text-align: center;">
-                            <tr>
-                            <th style="text-align: center; width: 60%">
-                             Item
-                            </th>
-                            <th style="text-align: center; width: 30%">
-                            File format
-                            </th>
-                            <th style="text-align: center; width: 20%">
-                            Check
-                            </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Archive of software code (with OSI license)
-                                </td>
-                                <td>
-                                    zip, gz, tar (archive)
-                                </td>
-                                <td>
+                            <div id='table_software_format' class="scrollbar">
+                                <table border="1" style="text-align: center;">
+                                    <tr>
+                                        <th style="text-align: center; width: 60%">
+                                            Item
+                                        </th>
+                                        <th style="text-align: center; width: 30%">
+                                            File format
+                                        </th>
+                                        <th style="text-align: center; width: 20%">
+                                            Check
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Archive of software code (with OSI license)
+                                        </td>
+                                        <td>
+                                            zip, gz, tar (archive)
+                                        </td>
+                                        <td>
 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Input files / raw data
-                                </td>
-                                <td>
-                                    Any open format as appropriate
-                                </td>
-                                <td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Input files / raw data
+                                        </td>
+                                        <td>
+                                            Any open format as appropriate
+                                        </td>
+                                        <td>
 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Output files / results
-                                </td>
-                                <td>
-                                    Any open format as appropriate
-                                </td>
-                                <td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Output files / results
+                                        </td>
+                                        <td>
+                                            Any open format as appropriate
+                                        </td>
+                                        <td>
 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Intermediary files or data that would be costly or impossible  to reproduce.
-                                </td>
-                                <td>
-                                    Any open format as appropriate
-                                </td>
-                                <td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Intermediary files or data that would be costly or impossible  to reproduce.
+                                        </td>
+                                        <td>
+                                            Any open format as appropriate
+                                        </td>
+                                        <td>
 
-                                </td>
-                            </tr>
-                        </table>
-                        <br>
-                        <div>
-                            <p>An example of a software dataset is appended below.</p>
-                            <p>There are a wide number of resources (some of which are listed below), which may also be used to host software-related code and data. GigaDB encourages authors to make use of these specialist resources and to provide us with a link or DOI, which can be included in your GigaDB record.</p>
-                            <p><a href="https://codeocean.com/">Code Ocean</a> - is a cloud-based computational reproducibility platform that provides researchers and developers an easy way to share, discover and run code published in academic journals and conferences.</p>
-                            <p><a href="https://www.docker.com/">Docker</a> - a tool designed to make it easier to create, deploy, and run applications by using containers. Containers allow a developer to package up an application with all of the parts it needs, such as libraries and other dependencies, and ship it all out as one package. Please send the link to your Docker repository.</p>
-                            <p><a href="https://galaxyproject.org/">Galaxy</a> - makes data-intensive research more accessible, transparent and reproducible by providing a Web-based environment in which users can perform computational analyses and have all of the details automatically tracked for later inspection, publication, or reuse. Please provide a link to your Galaxy resource.</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <br>
+                            <div>
+                                <p>An example of a software dataset is appended below.</p>
+                                <p>There are a wide number of resources (some of which are listed below), which may also be used to host software-related code and data. GigaDB encourages authors to make use of these specialist resources and to provide us with a link or DOI, which can be included in your GigaDB record.</p>
+                                <p><a href="https://codeocean.com/">Code Ocean</a> - is a cloud-based computational reproducibility platform that provides researchers and developers an easy way to share, discover and run code published in academic journals and conferences.</p>
+                                <p><a href="https://www.docker.com/">Docker</a> - a tool designed to make it easier to create, deploy, and run applications by using containers. Containers allow a developer to package up an application with all of the parts it needs, such as libraries and other dependencies, and ship it all out as one package. Please send the link to your Docker repository.</p>
+                                <p><a href="https://galaxyproject.org/">Galaxy</a> - makes data-intensive research more accessible, transparent and reproducible by providing a Web-based environment in which users can perform computational analyses and have all of the details automatically tracked for later inspection, publication, or reuse. Please provide a link to your Galaxy resource.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -129,128 +131,130 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
                     <h5 style="padding-left: 1px">Example Software dataset</h5>
                     <div class="subsection">
                         <p>Below is an example software dataset, you can see the final dataset of this example <a href="http://dx.doi.org/10.5524/100753">here</a>.</p>
+                        <div id='table_software_dataset' class="scrollbar">
+                            <table border="1" style="text-align: center;">
+                                <tr>
+                                    <th style="text-align: center; width: 12.5%">
+                                        Item
+                                    </th>
+                                    <th style="text-align: center; width: 12.5%">
+                                        File Name
+                                    </th>
+                                    <th style="text-align: center; width: 50%">
+                                        Description
+                                    </th>
+                                    <th style="text-align: center; width: 12.5%">
+                                        Data Type
+                                    </th>
+                                    <th style="text-align: center; width: 12.5%">
+                                        File Format
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Software Code Archive
+                                    </td>
+                                    <td>
+                                        CandiMeth-master.zip
+                                    </td>
+                                    <td>
+                                        Archival copy of the GitHub repository https://github.com/sjthursby/CandiMeth, downloaded 01-May-2020. CandiMeth allows rapid, quantitative analysis of methylation at user-specified features without the need for coding. Licensed under the GNU-SPL license. Please refer to the GitHub repo for most recent updates.
+                                    </td>
+                                    <td>
+                                        GitHub archive
+                                    </td>
+                                    <td>
+                                        zip
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Input file
+                                    </td>
+                                    <td>
+                                        Supp.Table2.csv
+                                    </td>
+                                    <td>
+                                        List of microRNA (MIR) genes (not analysed in the original paper) used as input here to produce results in Supp.Table 3
+                                    </td>
+                                    <td>
+                                        Tabular Data
+                                    </td>
+                                    <td>
+                                        CSV
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Output file
+                                    </td>
+                                    <td>
+                                        Supp.Table3__mean_beta_D8_Track.csv
+                                    </td>
+                                    <td>
+                                        Full tabular output for the set of miRs in D8 cell line (partial results shown in Fig.2B of associated manuscript)
+                                    </td>
+                                    <td>
+                                        Tabular Data
+                                    </td>
+                                    <td>
+                                        CSV
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Output file
+                                    </td>
+                                    <td>
+                                        Supp.Table3__mean_beta_WT_of_D8.csv
+                                    </td>
+                                    <td>
+                                        Full tabular output for the set of miRs in WT cell line (partial results shown in Fig.2B of associated manuscript)
+                                    </td>
+                                    <td>
+                                        Tabular Data
+                                    </td>
+                                    <td>
+                                        CSV
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Output file
+                                    </td>
+                                    <td>
+                                        Supp.Table5.csv
+                                    </td>
+                                    <td>
+                                        An example ChAMP output from the CandiMeth History.
+                                    </td>
+                                    <td>
+                                        Tabular Data
+                                    </td>
+                                    <td>
+                                        CSV
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Other
+                                    </td>
+                                    <td>
+                                        Supp.Table1.csv
+                                    </td>
+                                    <td>
+                                        Tabular results of NCBI Gene Expression Omnibus (GEO) GSE90012, used as example data for Figures in manuscript.
+                                    </td>
+                                    <td>
+                                        Tabular Data
+                                    </td>
+                                    <td>
+                                        CSV
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    <table border="1" style="text-align: center;">
-                        <tr>
-                            <th style="text-align: center; width: 12.5%">
-                                Item
-                            </th>
-                            <th style="text-align: center; width: 12.5%">
-                                File Name
-                            </th>
-                            <th style="text-align: center; width: 50%">
-                                Description
-                            </th>
-                            <th style="text-align: center; width: 12.5%">
-                                Data Type
-                            </th>
-                            <th style="text-align: center; width: 12.5%">
-                                File Format
-                            </th>
-                        </tr>
-                        <tr>
-                            <td>
-                                Software Code Archive
-                            </td>
-                            <td>
-                                CandiMeth-master.zip
-                            </td>
-                            <td>
-                                Archival copy of the GitHub repository https://github.com/sjthursby/CandiMeth, downloaded 01-May-2020. CandiMeth allows rapid, quantitative analysis of methylation at user-specified features without the need for coding. Licensed under the GNU-SPL license. Please refer to the GitHub repo for most recent updates.
-                            </td>
-                            <td>
-                                GitHub archive
-                            </td>
-                            <td>
-                                zip
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Input file
-                            </td>
-                            <td>
-                                Supp.Table2.csv
-                            </td>
-                            <td>
-                                List of microRNA (MIR) genes (not analysed in the original paper) used as input here to produce results in Supp.Table 3
-                            </td>
-                            <td>
-                                Tabular Data
-                            </td>
-                            <td>
-                                CSV
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Output file
-                            </td>
-                            <td>
-                                Supp.Table3__mean_beta_D8_Track.csv
-                            </td>
-                            <td>
-                                Full tabular output for the set of miRs in D8 cell line (partial results shown in Fig.2B of associated manuscript)
-                            </td>
-                            <td>
-                                Tabular Data
-                            </td>
-                            <td>
-                                CSV
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Output file
-                            </td>
-                            <td>
-                                Supp.Table3__mean_beta_WT_of_D8.csv
-                            </td>
-                            <td>
-                                Full tabular output for the set of miRs in WT cell line (partial results shown in Fig.2B of associated manuscript)
-                            </td>
-                            <td>
-                                Tabular Data
-                            </td>
-                            <td>
-                                CSV
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Output file
-                            </td>
-                            <td>
-                                Supp.Table5.csv
-                            </td>
-                            <td>
-                                An example ChAMP output from the CandiMeth History.
-                            </td>
-                            <td>
-                                Tabular Data
-                            </td>
-                            <td>
-                                CSV
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Other
-                            </td>
-                            <td>
-                                Supp.Table1.csv
-                            </td>
-                            <td>
-                                Tabular results of NCBI Gene Expression Omnibus (GEO) GSE90012, used as example data for Figures in manuscript.
-                            </td>
-                            <td>
-                                Tabular Data
-                            </td>
-                            <td>
-                                CSV
-                            </td>
-                        </tr>
-                    </table>
                 </div>
             </div>
         </section>

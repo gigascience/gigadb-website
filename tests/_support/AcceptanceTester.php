@@ -192,5 +192,11 @@ class AcceptanceTester extends \Codeception\Actor
         $this->wait($numberOf);
     }
 
-
+    /**
+     * @Then I should see an element has id :id with class :class
+     */
+    public function iShouldSeeAnElementWith($id, $class)
+    {
+        $this->seeElement(['id'=>$id], ['class'=>$class]);
+    }
 }
