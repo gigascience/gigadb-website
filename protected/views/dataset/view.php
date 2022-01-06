@@ -2,6 +2,9 @@
 $title= strlen($model->title)>100?strip_tags(substr($model->title, 0,100))." ...":strip_tags($model->title);
 $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title;
 
+$fileDataProvider = $files->getDataProvider();
+$sampleDataProvider = $samples->getDataProvider() ;
+
 ?>
 
 <?php if( Yii::app()->user->hasFlash('mockupMode') ) { ?>
@@ -10,8 +13,8 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
 </div>
 <?php } ?>
 
-<?php $this->renderPartial('_sample_setting',array('columns' => $columns, 'pageSize' => $samples->getDataProvider()->getPagination()->getPageSize() )); ?>
-<?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' => $files->getDataProvider()->getPagination()->getPageSize()));?>
+<?php $this->renderPartial('_sample_setting',array('columns' => $columns, 'pageSize' =>$sampleDataProvider->getPagination()->getPageSize() )); ?>
+<?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' =>$fileDataProvider->getPagination()->getPageSize()));?>
 
 <div class="content">
     <div class="container">
@@ -249,7 +252,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                         $jb = array();
                         $dmodel = array();
                         $codeocean = array();
-                        Yii::log("Nb of files: ".$files->countDatasetFiles(),"error");
+                        Yii::log("Nb of files: ".$fileDataProvider->getTotalItemCount(),"error");
                 ?>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
                         <?php if(count($model->samples) > 0) {
@@ -257,7 +260,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                            <li role="presentation" id="p-sample"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
                         <?php }
                         ?>
-                        <?php if( $files->countDatasetFiles() > 0 ) {
+                        <?php if( $fileDataProvider->getTotalItemCount() > 0 ) {
 
                               if(count($model->samples) < 1)
                               {
@@ -305,7 +308,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                 </tr>
                             </thead>
                             <tbody>
-                               <?php $sample_models = $samples->getDataProvider()->getData();
+                               <?php $sample_models =$sampleDataProvider->getData();
 
                                 foreach($sample_models as $sample)
                                 { ?>
@@ -324,14 +327,14 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                         <?php
                             $this->widget('SiteLinkPager', array(
                                 'id' => 'samples-pager',
-                                'pages'=>$samples->getDataProvider()->getPagination(),
+                                'pages'=>$sampleDataProvider->getPagination(),
                             ));
                         ?>
                       </div>
                             <?php }
                         ?>
                     <?php
-                    if( $files->countDatasetFiles() > 0 ) {
+                    if( $fileDataProvider->getTotalItemCount() > 0 ) {
 
                         if(count($model->samples) > 0) {
                             ?>
@@ -359,7 +362,7 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   <?php $file_models = $files->getDataProvider()->getData();
+                                   <?php $file_models =$fileDataProvider->getData();
                                     foreach($file_models as $file)
                                     {
                                    ?>
@@ -367,10 +370,11 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                                         <td><?= $file['nameHtml'] ?></td>
                                         <td><?= $file['description'] ?></td>
                                         <td><?php
-                                        $file_samples = $files->formatDatasetFilesSamples(3, $file['id']) ;
-                                        echo $file_samples[0]['visible'];
-                                        echo $file_samples[0]['hidden'];
-                                        echo $file_samples[0]['more_link'];
+//TODO: huge performance issue with large numbers of fileDatasetKeywordsTest.php:49, manifesting when disabling cache
+//                                        $file_samples = $files->formatDatasetFilesSamples(3, $file['id']) ;
+//                                        echo $file_samples[0]['visible'];
+//                                        echo $file_samples[0]['hidden'];
+//                                        echo $file_samples[0]['more_link'];
                                         ?></td>
                                         <td><?= $file['type'] ?></td>
                                         <td><?= $file['format'] ?></td>
@@ -385,12 +389,12 @@ $this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title
                             <?php
                                 $this->widget('SiteLinkPager', array(
                                     'id' => 'files-pager',
-                                    'pages'=>$files->getDataProvider()->getPagination(),
+                                    'pages'=>$fileDataProvider->getPagination(),
                                     ));
                             ?>
                             <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
                             <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()">
-                            <a class="color-background"><strong> of <?php echo $files->getDataProvider()->getPagination()->getPageCount()?></strong></a>
+                            <a class="color-background"><strong> of <?php echo$fileDataProvider->getPagination()->getPageCount()?></strong></a>
                         </div>
                     <?php } ?>
 
@@ -602,7 +606,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
             "info":     false,
             "searching": false,
             "lengthChange": false,
-            "pageLength": <?= $samples->getDataProvider()->getPagination()->getPageSize() ?>,
+            "pageLength": <?=$sampleDataProvider->getPagination()->getPageSize() ?>,
             "pagingType": "simple_numbers",
             "columns": [
                 { "visible": <?= in_array('name', $columns)? 'true' : 'false' ?> },
@@ -621,7 +625,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
             "info":     false,
             "searching": false,
             "lengthChange": false,
-            "pageLength": <?= $files->getDataProvider()->getPagination()->getPageSize() ?>,
+            "pageLength": <?=$fileDataProvider->getPagination()->getPageSize() ?>,
             "pagingType": "simple_numbers",
             "columns": [
                 { "visible": <?= in_array('name', $setting)? 'true' : 'false' ?> },
@@ -782,7 +786,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
         var pageID = <?php echo $model->identifier?>;
         //To validate page number
         var userInput = parseInt(targetPageNumber);
-        var max = <?php echo $files->getDataProvider()->getPagination()->getPageCount() ?>;
+        var max = <?php echo$fileDataProvider->getPagination()->getPageCount() ?>;
         //To output total pages
         // console.log(max);
         var min = 1;
