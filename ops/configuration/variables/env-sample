@@ -48,10 +48,10 @@ YII_DEBUG=true
 
 ### Core services managed in Docker compose ##############################################################################
 NGINX_VERSION=1.15
-PHP_VERSION=7.1
+PHP_VERSION=7.2
 POSTGRES_VERSION=11.13
-YII_VERSION=1.1.20
-YII2_VERSION=2.0.15.1
+YII_VERSION=1.1.25
+YII2_VERSION=2.0.44
 
 
 ### Application Access variables ########################################################################################

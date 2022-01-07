@@ -1,5 +1,5 @@
 ARG PHP_VERSION=7.1
-FROM php:7.1.33-fpm-buster
+FROM php:7.2-fpm-buster
 
 
 # basic dependencies
@@ -22,8 +22,7 @@ RUN apt-get update -yq && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
-RUN docker-php-ext-install mcrypt && \
-    docker-php-ext-install pdo_pgsql && \
+RUN docker-php-ext-install pdo_pgsql && \
     docker-php-ext-install bcmath && \
     docker-php-ext-install pcntl
 
