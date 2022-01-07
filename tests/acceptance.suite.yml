@@ -39,3 +39,5 @@ gherkin:
         - CuratorSteps
       author:
         - AuthorSteps
+      "website user":
+        - WebsiteUserSteps

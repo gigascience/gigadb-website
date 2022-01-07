@@ -252,7 +252,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                         $jb = array();
                         $dmodel = array();
                         $codeocean = array();
-                        Yii::log("Nb of files: ".$fileDataProvider->getTotalItemCount(),"error");
+                        Yii::log("Nb of files: ".$fileDataProvider->getTotalItemCount(),"debug");
                 ?>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
                         <?php if(count($model->samples) > 0) {
@@ -395,6 +395,9 @@ $sampleDataProvider = $samples->getDataProvider() ;
                             <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
                             <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()">
                             <a class="color-background"><strong> of <?php echo$fileDataProvider->getPagination()->getPageCount()?></strong></a>
+                            <div class="pull-right">
+                                <div class="summary">Displaying <?php echo $fileDataProvider->getItemCount() ?> files of <?php echo $fileDataProvider->getTotalItemCount() ?></div>
+                            </div>
                         </div>
                     <?php } ?>
 
