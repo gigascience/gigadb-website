@@ -458,12 +458,12 @@ class UserController extends Controller {
 //        $this->renderPartial('emailReset');
 //    }
 
-    public function actionSendActivationEmail() {
-        $user = $this->loadUser();
-        Yii::log(__FUNCTION__."> Sending activation email to user ". $user->email, 'debug');
-        $this->sendActivationEmail($user);
-        $this->render('activationNeeded', array('user'=>$user));
-    }
+//    public function actionSendActivationEmail() {
+//        $user = $this->loadUser();
+//        Yii::log(__FUNCTION__."> Sending activation email to user ". $user->email, 'debug');
+//        $this->sendActivationEmail($user);
+//        $this->render('activationNeeded', array('user'=>$user));
+//    }
 
     # Send notification email to admins about new user
     private function sendNotificationEmail($user) {
