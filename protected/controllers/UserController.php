@@ -422,54 +422,41 @@ class UserController extends Controller {
 
     # Send account activation email
     private function sendActivationEmail($user) {
-        $app_email_name = Yii::app()->params['app_email_name'];
-        $app_email = Yii::app()->params['app_email'];
-        $email_prefix = Yii::app()->params['email_prefix'];
-        $headers = "From: $app_email_name <$app_email>\r\n"; //optional header fields
-        $headers .= "Content-type: text/html\r\n";
-        ini_set('sendmail_from', $app_email);
-
         $recipient = $user->email;
-        $subject = $email_prefix . "Welcome to " . Yii::app()->name;
+        $subject = Yii::app()->params['email_prefix'] . "Welcome to " . Yii::app()->name;
         $url = $this->createAbsoluteUrl('user/confirm', array('key' => $user->id));
         $body = $this->renderPartial('emailWelcome',array('url'=>$url),true);
         try {
-            $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
+            Yii::app()->mailService->sendHTMLEmail(Yii::app()->params['adminEmail'], $recipient, $subject, $body);
+        } catch (Swift_TransportException $ste) {
+            Yii::log("Problem sending account activation email - " . $ste->getMessage(), "error");
         }
-        catch(\Throwable $e) {
-            Yii::log($e->getMessage());
-        }
-        //mail($recipient, $subject, $body, $headers);
-        Yii::log("Sent email to $recipient, $subject");
+        Yii::log("Sent account activation email to $recipient, $subject");
     }
 
     // Send password email
     private function sendPasswordEmail($user) {
-        Yii::log(__FUNCTION__."> First step send email");
-        $app_email_name = Yii::app()->params['app_email_name'];
-        $app_email = Yii::app()->params['app_email'];
-        $email_prefix = Yii::app()->params['email_prefix'];
-        $headers = "From: $app_email_name <$app_email>\r\n"; //optional header fields
-        $headers .= "Content-type: text/html\r\n";
-        ini_set('sendmail_from', $app_email);
-
         $recipient = $user->email;
-        $subject = $email_prefix . "Password reset";
+        $subject =Yii::app()->params['email_prefix'] . "Password reset";
         $password_unhashed = $user->passwordUnHashed;
         $url = $this->createAbsoluteUrl('site/login');
         $url= $url."?username=".$user->email."&password=".$password_unhashed."&redirect=yes";
         $body = $this->renderPartial('emailReset',array('url'=>$url,'password_unhashed'=>$password_unhashed,'user'=>$user->id),true);
-        $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
-        Yii::log(__FUNCTION__."> Sent email to $recipient, $subject");
+        try {
+            Yii::app()->mailService->sendHTMLEmail(Yii::app()->params['adminEmail'], $recipient, $subject, $body);
+        } catch (Swift_TransportException $ste) {
+            Yii::log("Problem sending password reset email - " . $ste->getMessage(), "error");
+        }
+        Yii::log(__FUNCTION__."> Sent password reset email to $recipient, $subject");
     }
 
-    public function actionEmailWelcome() {
-        $this->renderPartial('emailWelcome');
-    }
-
-    public function actionEmailReset() {
-        $this->renderPartial('emailReset');
-    }
+//    public function actionEmailWelcome() {
+//        $this->renderPartial('emailWelcome');
+//    }
+//
+//    public function actionEmailReset() {
+//        $this->renderPartial('emailReset');
+//    }
 
     public function actionSendActivationEmail() {
         $user = $this->loadUser();
@@ -480,14 +467,8 @@ class UserController extends Controller {
 
     # Send notification email to admins about new user
     private function sendNotificationEmail($user) {
-        // $app_email_name = Yii::app()->params['app_email_name'];
-        $app_email = Yii::app()->params['app_email'];
-        $email_prefix = Yii::app()->params['email_prefix'];
-        // $headers = "From: $app_email_name <$app_email>\r\n"; //optional header fields
-        ini_set('sendmail_from', $app_email);
-
         $recipient = Yii::app()->params['notify_email'];
-        $subject = $email_prefix . "New user registration";
+        $subject = Yii::app()->params['email_prefix'] . "New user registration";
         $url = $this->createAbsoluteUrl('user/show', array('id'=>$user->id));
         $body = <<<EO_MAIL
 New user registration
@@ -495,10 +476,13 @@ Email: {$user->email}
 Name:  {$user->first_name} {$user->last_name}
 
 $url
-
 EO_MAIL;
-        $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
-        //mail($recipient, $subject, $body, $headers);
+
+        try {
+            Yii::app()->mailService->sendHTMLEmail(Yii::app()->params['adminEmail'], $recipient, $subject, $body);
+        } catch (Swift_TransportException $ste) {
+            Yii::log("Problem sending password email - " . $ste->getMessage(), "error");
+        }
         Yii::log(__FUNCTION__."> Sent email to $recipient, $subject");
     }
 
@@ -530,40 +514,6 @@ EO_MAIL;
             // reload the current page to avoid duplicated delete actions
             $this->refresh();
         }
-    }
-
-    public function mailsend($to,$from,$subject,$message){
-        ob_start();
-        Yii::log( __FUNCTION__."mail send function");
-        $mail = new PHPMailer();
-        Yii::log( __FUNCTION__."mail send function.......1");
-        //$mail->SMTPDebug = 2;
-        $mail->IsSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = 'tls';
-
-        $mail->Port = '587';
-        Yii::log( __FUNCTION__."mail send function2");
-
-        $mail->Username = Yii::app()->params['app_email'];
-        $mail->Password = Yii::app()->params['email_password'];;
-        $mail->SetFrom($from,'GigaDB');
-        $mail->Subject = $subject;
-        $mail->MsgHTML($message);
-        $mail->addAddress($to, "");
-        $mail->isHTML(true);
-        $mail->addEmbeddedImage('images/email/top.gif', 'top');
-        $mail->addEmbeddedImage('images/email/logo.gif', 'logo');
-        $mail->addEmbeddedImage('images/email/bottom.gif', 'bottom');
-
-
-        Yii::log( __FUNCTION__."mail send function3");
-        if(!$mail->Send()) {
-            Yii::log( __FUNCTION__."Mailer Error: " . $mail->ErrorInfo);
-        }
-        $mail->ClearAddresses(); //clear addresses for next email sendin
-        ob_end_flush();
     }
 
     /**
