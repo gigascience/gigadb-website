@@ -217,4 +217,15 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->attachFile("input[name=$file_input_element_name]", $file);
     }
+
+    /**
+     * @Then I should see an image :image is linked to :expectedUrl
+     */
+    public function iShouldSeeAnImageIsLinkedTo($image, $expectedUrl)
+    {
+        $this->seeElement("//img[@src='$image']");
+        $actualUrl = $this->grabAttributeFrom("//img[@src='$image']/parent::*", "href");
+        $actualUrl = preg_replace("/%27/", "'", $actualUrl);
+        $this->assertEquals($expectedUrl, $actualUrl);
+    }
 }
