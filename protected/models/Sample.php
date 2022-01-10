@@ -332,6 +332,20 @@ EO_SQL;
 		return implode(', ', CHtml::listData($this->datasetsByOrder,'id','identifier'));
 	}
 
+    /**
+    * Retrieve an array of attribute name, value pairs as associative array
+    * That format is the prefered for display methods in the presentation layers
+    *
+    * @return array
+    */
+	public function getSampleAttributeArrayMap():array {
+        $toNameValueHash = function ($sample_attribute) {
+            return array( $sample_attribute->attribute->attribute_name => $sample_attribute->value);
+        };
+
+        return array_map($toNameValueHash, $this->sampleAttributes);
+    }
+
 	public function behaviors() {
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',

@@ -64,7 +64,7 @@ include:
 #  - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
 
 services:
-  - docker:19.03.12-dind
+  - docker:20.10.12-dind
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}

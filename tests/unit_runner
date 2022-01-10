@@ -11,6 +11,8 @@ set +a
 docker-compose run --rm application ./protected/yiic migrate --connectionID=testdb --migrationPath=application.migrations.schema --interactive=0
 # running javascript tests for GigaDB
 docker-compose run --rm js npm test
+# running the new Codeception unit tests
+docker-compose run --rm test ./vendor/codeception/codeception/codecept run unit
 # running unit tests for GigaDB, make sure to reference the appropriate bootstrap as unit and functional tests have different ones
 docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
 gigadb_test_status=$?
