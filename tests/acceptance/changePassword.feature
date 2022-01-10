@@ -19,8 +19,8 @@ Feature: Change password
   Scenario: Filling in form to provide new password
     Given I sign in as a user
     When I am on "/user/changePassword"
-    And I fill in the field "ChangePasswordForm_password" with "123456787"
-    And I fill in the field "ChangePasswordForm_confirmPassword" with "123456787"
+    And I fill in the field of "id" "ChangePasswordForm_password" with "123456787"
+    And I fill in the field of "id" "ChangePasswordForm_confirmPassword" with "123456787"
     And I check the field "ChangePasswordForm_terms"
     And I press the button "Save"
     Then I am on "user/view_profile"
