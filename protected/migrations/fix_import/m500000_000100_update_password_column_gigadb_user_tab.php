@@ -1,6 +1,6 @@
 <?php
 
-class m300000_000100_update_password_column_gigadb_user_tab extends CDbMigration
+class m500000_000100_update_password_column_gigadb_user_tab extends CDbMigration
 {
     public function safeUp()
     {
