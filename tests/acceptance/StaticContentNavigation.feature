@@ -121,10 +121,3 @@ Feature: A user visit gigadb website
       When I am on "/site/guidesoftware"
       Then I should see an element has id "table_software_format" with class "scrollbar"
       And I should see an element has id "table_software_dataset" with class "scrollbar"
-
-    @ok @issue-877
-    Scenario: Semantic links are working
-      When I am on "/dataset/100094"
-      Then I should see an image "/images/google_scholar.png" is linked to "https://scholar.google.com/scholar?q=10.5072/100094"
-      And I should see an image "/images/ePMC.jpg" is linked to "https://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/100094')"
-      And I should see an image "/images/dimensions.jpg" is linked to "https://app.dimensions.ai/discover/publication?search_text=10.5072/100094"
