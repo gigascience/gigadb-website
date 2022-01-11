@@ -48,7 +48,7 @@ class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterf
 	public function getDatasetFiles(): array
 	{
 
-
+        Yii::log("-> Starting StoredDatasetFiles::getDatasetFiles() <-","warning");
 		$objectToHash =  function ($file) {
 
 			$toNameValueHash = function ($file_attribute) {
