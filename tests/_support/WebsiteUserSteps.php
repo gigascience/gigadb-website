@@ -23,4 +23,19 @@ class WebsiteUserSteps extends \Codeception\Actor
     {
         $this->I->amOnPage('site/logout');
     }
+
+    /**
+     * @Given I have set the page size setting to :pageSize
+     */
+    public function iHaveSetThePageSizeSettingTo($pageSize)
+    {
+        $this->I->amOnPage("/dataset/100006");
+        $this->I->click("Files");
+        $this->I->click("#files_table_settings");
+        $this->I->wait(1);
+        $this->I->selectOption("form[name=myFilesSettingform] select[name=pageSize]",$pageSize);
+        $this->I->click('#save-files-settings');
+        $this->I->wait(1);
+    }
+
 }

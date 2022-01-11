@@ -336,6 +336,9 @@ $sampleDataProvider = $samples->getDataProvider() ;
                     <?php
                     if( $fileDataProvider->getTotalItemCount() > 0 ) {
 
+                        $filesPerPage = $fileDataProvider->getItemCount();
+                        $totalNbFiles = $fileDataProvider->getTotalItemCount();
+
                         if(count($model->samples) > 0) {
                             ?>
                         <div role="tabpanel" class="tab-pane" id="files">
@@ -387,16 +390,19 @@ $sampleDataProvider = $samples->getDataProvider() ;
                                 </tbody>
                             </table>
                             <?php
-                                $this->widget('SiteLinkPager', array(
-                                    'id' => 'files-pager',
-                                    'pages'=>$fileDataProvider->getPagination(),
+
+                                if ($filesPerPage <> $totalNbFiles ) {
+                                    $this->widget('SiteLinkPager', array(
+                                        'id' => 'files-pager',
+                                        'pages'=>$fileDataProvider->getPagination(),
                                     ));
                             ?>
-                            <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
-                            <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()">
-                            <a class="color-background"><strong> of <?php echo$fileDataProvider->getPagination()->getPageCount()?></strong></a>
+                                    <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
+                                    <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()">
+                                    <a class="color-background"><strong> of <?php echo$fileDataProvider->getPagination()->getPageCount()?></strong></a>
+                                <?php } ?>
                             <div class="pull-right">
-                                <div class="summary">Displaying <?php echo $fileDataProvider->getItemCount() ?> files of <?php echo $fileDataProvider->getTotalItemCount() ?></div>
+                                <div class="summary">Displaying <?php echo $filesPerPage ?> files of <?php echo $totalNbFiles ?></div>
                             </div>
                         </div>
                     <?php } ?>
