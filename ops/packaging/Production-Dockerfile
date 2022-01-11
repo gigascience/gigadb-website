@@ -166,7 +166,7 @@ RUN if [ ${INSTALL_GIT} = true ]; then \
 ;fi
 
 ARG INSTALL_APCU=false
-ARG APCU_VERSION=5.1.8
+ARG APCU_VERSION=5.1.21
 
 RUN if [ ${INSTALL_APCU} = true ]; then \
     pecl install apcu-${APCU_VERSION} && \
