@@ -38,6 +38,10 @@ class CreateNewUserCest
         $I->fillField(['id' => 'User_verifyCode'], 'shazam');
         $I->click('Register');
         $I->see('Welcome!', 'h2');
+
+//        print_r("components: ".\Yii::app()->components);
+//        print_r("eml dir: ".\Yii::$app->id);
+        print_r("eml dir: ".\Yii::$app->mailer->fileTransportPath);
     }
 
     /**

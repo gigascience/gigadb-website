@@ -10,7 +10,10 @@ modules:
     enabled:
         # add a framework module here
         - \Helper\Functional
+        - \Helper\Mail
+        - Yii2:
+              part: [email]
         - Asserts
         - PhpBrowser:
               url: 'http://gigadb.test'
-    step_decorators: ~        
+    step_decorators: ~
