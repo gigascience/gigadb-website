@@ -1,8 +1,6 @@
 <?php
 namespace Helper;
 
-use Yii;
-
 // here you can define custom actions
 // all public methods declared in helper class will be available in $I
 
@@ -12,21 +10,14 @@ class Mail extends \Codeception\Module
     public static $eml_dir;
 
     // HOOK: used after configuration is loaded
-//    public function _initialize(): void
-//    public function _before(\Codeception\TestInterface $test)
-//    {
-//        print_r("In _initialize()...\n");
-//        print_r("Params: ".Yii::app()->params['adminEmail']);
-//        print_r("eml dir: ".\Yii::$app->mailer->fileTransportPath);
-//        print_r("components: ".\Yii::$app->components);
-//        print_r("components: ".\Yii::app()->components);
-//        print_r("eml dir: ".\Yii::$app->id);
+    public function _initialize(): void
+    {
+        print_r("In _initialize()...\n");
 
-
-//        self::$eml_dir = \Yii::app()->mailer->fileTransportPath;
-//        self::$eml_dir = \Yii::$app->mailer->fileTransportPath;
-//        print_r("eml dir: ".\Yii::$app->mailer->fileTransportPath);
-//    }
+        $currentConfig = require("protected/config/yii2/test.php");
+        self::$eml_dir = $currentConfig["components"]["mailer"]["fileTransportPath"];
+        print_r("eml_dir: ".self::$eml_dir);
+    }
 
     /**
      * Clear all emails from eml directory. You probably want to do this before
