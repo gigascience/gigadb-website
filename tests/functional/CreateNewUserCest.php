@@ -13,6 +13,7 @@ class CreateNewUserCest
 {
     public function _before(FunctionalTester $I)
     {
+//        $I->resetEmails();
     }
 
     /**
@@ -40,6 +41,9 @@ class CreateNewUserCest
         $I->fillField(['id' => 'User_verifyCode'], 'shazam');
         $I->click('Register');
         $I->see('Welcome!', 'h2');
+        $message = $I->getLastMessage();
+        $content = $I->getMessageContent($message);
+        print_r($content);
     }
 
     /**
