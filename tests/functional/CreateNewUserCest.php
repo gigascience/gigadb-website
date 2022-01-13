@@ -13,41 +13,41 @@ class CreateNewUserCest
 {
     public function _before(FunctionalTester $I)
     {
-//        $I->resetEmails();
+        $I->resetEmails();
     }
 
     /**
-     * Activation email should be sent to new user after user creation
+     * Email containing activation link should be sent to new user after user
+     * creation
      * 
      * @param FunctionalTester $I
      * @throws \Codeception\Exception\ModuleException
      */
-    public function trySendActivationEmailUponCreateUser(FunctionalTester $I)
+    public function trySendActivationEmail(FunctionalTester $I)
     {
-        // print_r("eml dir: ".\Yii::$app->mailer->fileTransportPath);
-        
+
         $targetUrl = "/user/create";
 
+        // Fill in web form and submit
         $I->amOnPage($targetUrl);
-        $I->fillField(['id' => 'User_email'], 'new@mailinator.com');
+        $I->fillField(['id' => 'User_email'], 'swordmaster@mailinator.com');
         $I->fillField(['id' => 'User_first_name'], 'Duuncan');
         $I->fillField(['id' => 'User_last_name'], 'Idaaho');
-        $I->fillField(['id' => 'User_password'], '123456787');
-        $I->fillField(['id' => 'User_password_repeat'], '123456787');
-        $I->fillField(['id' => 'User_affiliation'], 'GigaScience');
+        $I->fillField(['id' => 'User_password'], 'foo');
+        $I->fillField(['id' => 'User_password_repeat'], 'bar');
+        $I->fillField(['id' => 'User_affiliation'], 'Atriedes');
         $I->selectOption('form select[id=User_preferred_link]', 'NCBI');
         $I->checkOption('#User_newsletter');
         $I->checkOption('#User_terms');
-        $I->fillField(['id' => 'User_verifyCode'], 'shazam');
+        $I->fillField(['id' => 'User_verifyCode'], 'ouch');
         $I->click('Register');
+        // Check /user/welcome page
         $I->see('Welcome!', 'h2');
-//        $message = $I->getLastMessage();
-//        $content = $I->getMessageContent($message);
-        $arr = $I->grabUrlsFromLastEmail();
-        print_r($arr);
-        $m_array = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key\/\d+?/', $arr);
-        print_r($m_array);
-        $I->assertCount(1, $m_array);
+        // Extract URLs from email
+        $urls = $I->grabUrlsFromLastEmail();
+        // These URLs should contain one user activation link
+        $m_array = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key\/\d+?/', $urls);
+        $I->assertCount(1, $m_array, "User activation link in email was not found");
     }
 
     /**
@@ -56,33 +56,35 @@ class CreateNewUserCest
      * @param FunctionalTester $I
      * @throws \Codeception\Exception\ModuleException
      */
-    public function trySendNotificationEmailUponCreateUser(FunctionalTester $I)
+    public function trySendNotificationEmail(FunctionalTester $I)
     {
-        // print_r("eml dir: ".\Yii::$app->mailer->fileTransportPath);
-
         $targetUrl = "/user/create";
 
+        // Fill in web form and submit
         $I->amOnPage($targetUrl);
-        $I->fillField(['id' => 'User_email'], 'new@mailinator.com');
-        $I->fillField(['id' => 'User_first_name'], 'Duuncan');
-        $I->fillField(['id' => 'User_last_name'], 'Idaaho');
-        $I->fillField(['id' => 'User_password'], '123456787');
-        $I->fillField(['id' => 'User_password_repeat'], '123456787');
-        $I->fillField(['id' => 'User_affiliation'], 'GigaScience');
+        $I->fillField(['id' => 'User_email'], 'warmaster@mailinator.com');
+        $I->fillField(['id' => 'User_first_name'], 'Gurney');
+        $I->fillField(['id' => 'User_last_name'], 'Halleck');
+        $I->fillField(['id' => 'User_password'], 'foo');
+        $I->fillField(['id' => 'User_password_repeat'], 'bar');
+        $I->fillField(['id' => 'User_affiliation'], 'Atriedes');
         $I->selectOption('form select[id=User_preferred_link]', 'NCBI');
         $I->checkOption('#User_newsletter');
         $I->checkOption('#User_terms');
-        $I->fillField(['id' => 'User_verifyCode'], 'shazam');
+        $I->fillField(['id' => 'User_verifyCode'], 'boom');
         $I->click('Register');
+        // Check /user/welcome page
         $I->see('Welcome!', 'h2');
-//        $message = $I->getLastMessage();
-//        $content = $I->getMessageContent($message);
+        // Extract user activation link
         $arr = $I->grabUrlsFromLastEmail();
-        print_r($arr);
         $m_array = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key\/\d+?/', $arr);
-//        print_r($m_array);
-//        $I->assertCount(1, $m_array);
-        echo($m_array[0]);
+        // Go to activation link
+        $I->amOnPage(array_values($m_array)[0]);
+        // Get Curator notification email
+        $message = $I->getLastMessage();
+        $content = $I->getMessageContent($message);
+        // Check curator notification email contains expected message
+        $I->assertStringContainsString("New user registration", $content, "Notification email does not contain expected message");
     }
 
     /**
