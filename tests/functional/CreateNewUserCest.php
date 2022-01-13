@@ -33,8 +33,8 @@ class CreateNewUserCest
         $I->fillField(['id' => 'User_email'], 'swordmaster@mailinator.com');
         $I->fillField(['id' => 'User_first_name'], 'Duuncan');
         $I->fillField(['id' => 'User_last_name'], 'Idaaho');
-        $I->fillField(['id' => 'User_password'], 'foo');
-        $I->fillField(['id' => 'User_password_repeat'], 'bar');
+        $I->fillField(['id' => 'User_password'], 'foobar');
+        $I->fillField(['id' => 'User_password_repeat'], 'foobar');
         $I->fillField(['id' => 'User_affiliation'], 'Atriedes');
         $I->selectOption('form select[id=User_preferred_link]', 'NCBI');
         $I->checkOption('#User_newsletter');
@@ -65,8 +65,8 @@ class CreateNewUserCest
         $I->fillField(['id' => 'User_email'], 'warmaster@mailinator.com');
         $I->fillField(['id' => 'User_first_name'], 'Gurney');
         $I->fillField(['id' => 'User_last_name'], 'Halleck');
-        $I->fillField(['id' => 'User_password'], 'foo');
-        $I->fillField(['id' => 'User_password_repeat'], 'bar');
+        $I->fillField(['id' => 'User_password'], 'foobar');
+        $I->fillField(['id' => 'User_password_repeat'], 'foobar');
         $I->fillField(['id' => 'User_affiliation'], 'Atriedes');
         $I->selectOption('form select[id=User_preferred_link]', 'NCBI');
         $I->checkOption('#User_newsletter');
