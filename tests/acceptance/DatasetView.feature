@@ -24,3 +24,18 @@ Feature: a user visit the dataset page
     And I follow "Files"
     Then I should see "Next >"
     Then I should see "Go to page"
+
+  @ok @issue-877
+  Scenario: The google scholar link is working
+    When I am on "/dataset/100094"
+    Then I should see an image "/images/google_scholar.png" is linked to "https://scholar.google.com/scholar?q=10.5072/100094"
+
+  @ok @issue-877
+  Scenario: The Euro PubMed Central link is working
+    When I am on "/dataset/100094"
+    Then I should see an image "/images/ePMC.jpg" is linked to "https://europepmc.org/search?scope=fulltext&query=(REF:%2710.5072/100094%27)"
+
+  @ok @issue-877
+  Scenario: The dimensions link is working
+    When I am on "/dataset/100094"
+    Then I should see an image "/images/dimensions.jpg" is linked to "https://app.dimensions.ai/discover/publication?search_text=10.5072/100094"
