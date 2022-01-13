@@ -1,4 +1,3 @@
-bootstrap: _bootstrap.php
 paths:
     tests: tests
     output: tests/_output
@@ -9,7 +8,3 @@ actor_suffix: Tester
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
-modules:
-    config:
-        Yii2:
-            configFile: 'protected/config/yii2/test.php'
