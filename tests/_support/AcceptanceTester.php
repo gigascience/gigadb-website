@@ -225,7 +225,6 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->seeElement("//img[@src='$image']");
         $actualUrl = $this->grabAttributeFrom("//img[@src='$image']/parent::*", "href");
-        $actualUrl = preg_replace("/%27/", "'", $actualUrl);
         $this->assertEquals($expectedUrl, $actualUrl);
     }
 }
