@@ -1,5 +1,5 @@
 ARG TARGET_PHP_VERSION=7.0
-FROM php:7.1.33-fpm-buster
+FROM php:7.2-fpm-buster
 
 
 # basic dependencies
@@ -20,9 +20,6 @@ RUN apt-get update -yq && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-
-RUN docker-php-ext-install mcrypt
-
 # Install the PHP pdo_pgsql extention
 RUN docker-php-ext-install pdo_pgsql
 
@@ -32,7 +29,6 @@ RUN docker-php-ext-install bcmath
 # Install the PHP gd library
 RUN docker-php-ext-install gd && \
     docker-php-ext-configure gd \
-        --enable-gd-native-ttf \
         --with-jpeg-dir=/usr/lib \
         --with-freetype-dir && \
     docker-php-ext-install gd
@@ -170,7 +166,7 @@ RUN if [ ${INSTALL_GIT} = true ]; then \
 ;fi
 
 ARG INSTALL_APCU=false
-ARG APCU_VERSION=5.1.8
+ARG APCU_VERSION=5.1.21
 
 RUN if [ ${INSTALL_APCU} = true ]; then \
     pecl install apcu-${APCU_VERSION} && \

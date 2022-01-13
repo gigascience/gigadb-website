@@ -75,7 +75,7 @@ services:
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
         - INSTALL_TIDEWAYS_XHPROF=false
-        - INSTALL_LIBSODIUM=true
+        - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
         - INSTALL_MAILPARSE=true
         - INSTALL_GIT=true
@@ -203,7 +203,7 @@ services:
         - INSTALL_NETCAT_JQ=true
         - INSTALL_GRAPHVIZ=true
         - INSTALL_COMPOSER=true
-        - INSTALL_LIBSODIUM=true
+        - INSTALL_LIBSODIUM=false
         - INSTALL_GIT=true
         - INSTALL_APCU=true
         - INSTALL_MAILPARSE=true

@@ -20,6 +20,7 @@ modules:
               host: 'chrome'
               port: 4444
               browser: chrome
+              wait: 5
               capabilities:
                   "goog:chromeOptions":
                       args: ['--headless']
@@ -39,3 +40,5 @@ gherkin:
         - CuratorSteps
       author:
         - AuthorSteps
+      "website user":
+        - WebsiteUserSteps

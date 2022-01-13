@@ -33,7 +33,7 @@ services:
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=false
         - INSTALL_TIDEWAYS_XHPROF=false
-        - INSTALL_LIBSODIUM=true
+        - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
 
   production_gigadb-worker:
