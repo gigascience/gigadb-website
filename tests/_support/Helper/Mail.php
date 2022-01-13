@@ -20,8 +20,8 @@ class Mail extends \Codeception\Module
     }
 
     /**
-     * Clear all emails from eml directory. You probably want to do this before
-     * you do the thing that will send emails
+     * Clear all emails from eml directory. Probably want to do this before
+     * sending emails
      */
     public function resetEmails(): void
     {
@@ -64,6 +64,19 @@ class Mail extends \Codeception\Module
     public function getMessageContent($eml_file)
     {
         return $content = file_get_contents($eml_file);
+    }
+
+    /**
+     * Grab urls from email
+     * @return mixed[]
+     */
+    public function grabUrlsFromLastEmail(): array
+    {
+        $regex = '#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#';
+        $email = $this->getLastMessage();
+        $content = $this->getMessageContent($email);
+        preg_match_all($regex, $content, $matches);
+        return $matches[0];
     }
 
 ################################################################################
@@ -272,29 +285,29 @@ class Mail extends \Codeception\Module
         return $matches[0];
     }
 
-    /**
-     * Grab Urls From Email
-     *
-     * Return the urls the email contains
-     *
-     * @author Marcelo Briones <ing@marcelobriones.com.ar>
-     * @return mixed[]
-     */
-    public function grabUrlsFromLastEmail(): array
-    {
-        $regex = '#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#';
-        $email = $this->lastMessage();
-
-        $message = Message::from($email->getSource());
-
-        $text = $message->getTextContent();
-        preg_match_all($regex, $text, $text_matches);
-
-        $html = $message->getHtmlContent();
-        preg_match_all($regex, $html, $html_matches);
-
-        return array_merge($text_matches[0], $html_matches[0]);
-    }
+//    /**
+//     * Grab Urls From Email
+//     *
+//     * Return the urls the email contains
+//     *
+//     * @author Marcelo Briones <ing@marcelobriones.com.ar>
+//     * @return mixed[]
+//     */
+//    public function grabUrlsFromLastEmail(): array
+//    {
+//        $regex = '#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#';
+//        $email = $this->lastMessage();
+//
+//        $message = Message::from($email->getSource());
+//
+//        $text = $message->getTextContent();
+//        preg_match_all($regex, $text, $text_matches);
+//
+//        $html = $message->getHtmlContent();
+//        preg_match_all($regex, $html, $html_matches);
+//
+//        return array_merge($text_matches[0], $html_matches[0]);
+//    }
 
     /**
      * Grab Attachments From Email
