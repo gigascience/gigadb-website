@@ -1,5 +1,5 @@
-ARG PHP_VERSION=7.1
-FROM php:7.2-fpm-buster
+ARG PHP_VERSION=7.2.34
+FROM php:${PHP_VERSION}-fpm-buster
 
 
 # basic dependencies

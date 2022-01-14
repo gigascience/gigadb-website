@@ -56,7 +56,7 @@
     "config": {
         "bin-dir": "bin",
         "platform": {
-            "php": "7.1.30"
+            "php": "${PHP_VERSION}"
         }
     },
     "autoload": {
