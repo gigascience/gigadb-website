@@ -143,8 +143,8 @@ class StoredDatasetMainSectionTest extends CDbTestCase
                 'dimension_query' => "View citations on Dimensions",
                 ),
             'urls' => array(
-                'scholar_query' => 'http://scholar.google.com/scholar?q=10.5072/100243',
-                'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/100243')",
+                'scholar_query' => 'https://scholar.google.com/scholar?q=10.5072/100243',
+                'ePMC_query' => "https://europepmc.org/search?scope=fulltext&query=(REF:%2710.5072/100243%27)",
                 'dimension_query' => "https://app.dimensions.ai/discover/publication?search_text=10.5072/100243",
                 ),
             'images' => array(
