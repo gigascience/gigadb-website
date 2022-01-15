@@ -92,5 +92,7 @@
     untracked: true
     paths:
       - fuw/app/console/config/
+    exclude:
+      - "*.tar"
     when: always
     expire_in: 1 week
