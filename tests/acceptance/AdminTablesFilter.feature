@@ -208,7 +208,7 @@ Feature: filter tables on admin page
   @ok
   Scenario: Users
     Given I am on "/user/admin"
-    When I fill in the field of "name" "User[email]" with "admin"
+    When I fill in the field of "name" "User[email]" with "admin@"
     And I press return on the element "(//input)[2]"
     And I wait "1" seconds
     Then I should see "admin@gigadb.org"
