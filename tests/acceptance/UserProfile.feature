@@ -3,7 +3,7 @@ Feature: User profile page
   I want a form to edit my user details
   So that I can update my contact details on the GigaDB web site
   
-@ok @wip
+@ok
 Scenario: View user profile
   Given I sign in as a user
   When I am on "/user/view_profile"
@@ -15,7 +15,8 @@ Scenario: View user profile
   And I should see "Smith"
   And I should see a check-box field "EditProfileForm_newsletter"
   And I should see "Add me to GigaDB's mailing list"
-  And I should see an element has id "edit-btn" with class "btn background-btn"
+#  And I should see an element has id "edit-btn" with class "btn background-btn"
+#  And I should see a button "Edit"
 
 #  @ok
 #  Scenario: Filling in the form to create new user
