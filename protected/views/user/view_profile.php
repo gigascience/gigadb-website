@@ -109,7 +109,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="text-center">
-                                                                <?php echo $form->checkbox($model, 'newsletter', array('disabled' => 'disabled;', 'class' => 'checkbox','style' =>'position: relative; display: inline-block')); ?>
+                                                                <?php echo $form->checkbox($model, 'newsletter', array('onclick' => 'return false', 'class' => 'profile-checkbox', 'style' =>'position: relative; display: inline-block')); ?>
                                                                 <label disabled="disabled">
                                                                     <?= Yii::t('app', 'Add me to GigaDB\'s mailing list') ?>
                                                                 </label>
@@ -162,7 +162,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                             $('#edit-btn').css('display', 'none');
                             $('.profile-label').css('display', 'none');
                             $('.profile-textbox').css('display', '');
-                            $('.profile-checkbox').attr('disabled', false);
+                            $('.profile-checkbox').prop('onclick', null)
                         });
                         $('#cancel-btn').on('click', function (e) {
                             e.preventDefault();
@@ -171,7 +171,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                             $('#edit-btn').css('display', '');
                             $('.profile-label').css('display', '');
                             $('.profile-textbox').css('display', 'none');
-                            $('.profile-checkbox').attr('disabled', true);
+                            $('.profile-checkbox').prop('onclick', 'return false')
                         });
 
                     });
