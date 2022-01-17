@@ -8,6 +8,7 @@ actor: AcceptanceTester
 modules:
     enabled:
         - \Helper\Acceptance
+        - \Codeception\Module\Asserts
         - WebDriver:
               url: 'http://gigadb.test'
               window_size: 2000x3500

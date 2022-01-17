@@ -721,7 +721,10 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
     });
 
     $(".content-popup").popover({'placement':'right'});
-    $(".citation-popup").popover({'placement':'top'});
+    $(".citation-popup").popover({
+        placement: 'top',
+        trigger: 'hover'
+    });
 });
 </script>
 <script src="https://hypothes.is/embed.js" async></script>
