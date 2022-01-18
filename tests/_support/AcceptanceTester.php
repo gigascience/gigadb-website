@@ -1,5 +1,6 @@
 <?php
 use Facebook\WebDriver\WebDriverKeys;
+use Codeception\Util\Locator;
 
 /**
  * Code for implementing generic steps of feature files (non-generic should be in their support class)
@@ -77,7 +78,17 @@ class AcceptanceTester extends \Codeception\Actor
         $this->seeElement('input',['id' => $id, 'type' => "password"]);
     }
 
-
+    /**
+     * Looks for a button with a name that is the content in between
+     * it's button tags.
+     * 
+     * @Then I should see a :buttonName button
+     */
+    public function iShouldSeeAButton($buttonName)
+    {
+        $this->seeElement(Locator::contains('button', $buttonName));
+    }
+    
     /**
      * @Then I should see a drop-down field :id with values
      */
