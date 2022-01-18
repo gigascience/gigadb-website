@@ -1,6 +1,5 @@
 <?php
 use Facebook\WebDriver\WebDriverKeys;
-use Codeception\Util\Locator;
 
 /**
  * Code for implementing generic steps of feature files (non-generic should be in their support class)
@@ -247,4 +246,35 @@ class AcceptanceTester extends \Codeception\Actor
         $this->seeCurrentUrlEquals($path);
     }
 
+    /**
+     * @Then I should see :checkbox checkbox is not checked
+     */
+    public function iShouldSeeCheckboxIsNotChecked($checkbox)
+    {
+        $this->dontSeeCheckboxIsChecked($checkbox);
+    }
+
+    /**
+     * @Then I should see :checkbox checkbox is checked
+     */
+    public function iShouldSeeCheckboxIsChecked($checkbox)
+    {
+        $this->seeCheckboxIsChecked($checkbox);
+    }
+
+    /**
+     * @Then I check :checkbox checkbox
+     */
+    public function iCheckCheckbox($checkbox)
+    {
+        $this->checkOption($checkbox);
+    }
+
+    /**
+     * @Then I uncheck :checkbox checkbox
+     */
+    public function iUncheckCheckbox($checkbox)
+    {
+        $this->uncheckOption($checkbox);
+    }
 }
