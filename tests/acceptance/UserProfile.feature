@@ -16,6 +16,17 @@ Scenario: View user profile
   And I should see a check-box field "EditProfileForm_newsletter"
   And I should see "Add me to GigaDB's mailing list"
   And I should see a "Edit" button
+  
+@ok
+Scenario: Ensure mailing list checkbox is not checkable on /user/view_profile
+  Given I sign in as a user
+  And I am on "/user/view_profile"
+  And I should see "Your profile page"
+  And I should see a check-box field "EditProfileForm_newsletter"
+  And I should see "EditProfileForm[newsletter]" checkbox is not checked
+  When I check "EditProfileForm[newsletter]" checkbox
+  Then I should see "EditProfileForm[newsletter]" checkbox is not checked
+  
 
 #  @ok
 #  Scenario: Filling in the form to create new user
