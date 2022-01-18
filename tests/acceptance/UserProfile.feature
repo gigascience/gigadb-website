@@ -18,7 +18,7 @@ Scenario: View user profile
   And I should see a "Edit" button
   
 @ok
-Scenario: Ensure mailing list checkbox is not checkable on /user/view_profile
+Scenario: Ensure mailing list checkbox is not checkable
   Given I sign in as a user
   And I am on "/user/view_profile"
   And I should see "Your profile page"
@@ -26,7 +26,14 @@ Scenario: Ensure mailing list checkbox is not checkable on /user/view_profile
   And I should see "EditProfileForm[newsletter]" checkbox is not checked
   When I check "EditProfileForm[newsletter]" checkbox
   Then I should see "EditProfileForm[newsletter]" checkbox is not checked
-  
+
+@ok
+Scenario: Ensure mailing list checkbox is checkable after clicking Edit button
+  Given I sign in as a user
+  And I am on "/user/view_profile"
+  When I press the button "Edit"
+  And I check "EditProfileForm[newsletter]" checkbox
+  Then I should see "EditProfileForm[newsletter]" checkbox is checked
 
 #  @ok
 #  Scenario: Filling in the form to create new user
