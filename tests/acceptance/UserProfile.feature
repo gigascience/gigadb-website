@@ -35,19 +35,11 @@ Scenario: Ensure mailing list checkbox is checkable after clicking Edit button
   And I check "EditProfileForm[newsletter]" checkbox
   Then I should see "EditProfileForm[newsletter]" checkbox is checked
 
-#  @ok
-#  Scenario: Filling in the form to create new user
-#    Given I am on "/user/create"
-#    And there is no user with email "martianmanhunter@mailinator.com"
-#    When I fill in the field of "id" "User_email" with "martianmanhunter@mailinator.com"
-#    And I fill in the field of "id" "User_first_name" with "J'onn"
-#    And I fill in the field of "id" "User_last_name" with "J'onzz"
-#    And I fill in the field of "id" "User_password" with "123456787"
-#    And I fill in the field of "id" "User_password_repeat" with "123456787"
-#    And I fill in the field of "id" "User_affiliation" with "GigaScience"
-#    And I select "NCBI" from the field "User_preferred_link"
-#    And I check the field "User_terms"
-#    And I fill in the field of "id" "User_verifyCode" with "shazam"
-#    And I press the button "Register"
-#    Then I should see "Welcome!"
-    
+@ok
+Scenario: Ensure mailing list checkbox remains checked when pressing Save button
+  Given I sign in as a user
+  When I am on "/user/view_profile"
+  And I press the button "Edit"
+  And I check "EditProfileForm[newsletter]" checkbox
+  And I press the button "Save"
+  Then I should see "EditProfileForm[newsletter]" checkbox is checked
