@@ -22,7 +22,7 @@ class DatasetComponentsTest extends \Codeception\Test\Unit
 
     /**
      * Test that current time is used as invalidation query when cached is set to disabled
-     * Test that DISABLE_CACHE contant is acted upon
+     * Test that DISABLE_CACHE constant is acted upon
      *
      * @throws Exception
      */
@@ -33,7 +33,7 @@ class DatasetComponentsTest extends \Codeception\Test\Unit
         $mockDatasetFiles = $this->makeEmpty('DatasetFilesInterface');
 
         //DatasetComponents is the class we want to test but it's an abstract class,
-        //so instead we test a concrete subclass. We only need to test one.
+        //so instead we test one of its concrete subclasses. We only need to test one.
         $component = new CachedDatasetFiles($mockCache, $mockCacheDep,$mockDatasetFiles);
 
         define('DISABLE_CACHE',true);
