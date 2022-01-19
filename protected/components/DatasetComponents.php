@@ -78,10 +78,15 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 		return $row['identifier'];
 	}
 
-
+    /**
+     * Check whether the cache is to be disabled
+     *
+     * @use DISABLE_CACHE
+     * @return bool
+     */
 	public function isCachedDisabled()
     {
-        return defined('DISABLE_CACHE');
+        return defined('DISABLE_CACHE') && DISABLE_CACHE === true;
     }
 }
 ?>

@@ -19,15 +19,16 @@ class DatasetComponentsTest extends \Codeception\Test\Unit
     }
 
     // tests
-
     /**
-     * Test that current time is used as invalidation query when cached is set to disabled
+     * Test that current time is not used as invalidation query if cache is not disabled
      * Test that DISABLE_CACHE constant is acted upon
+     * Test that the ``isCacheDisabled()`` method is correct
      *
      * @throws Exception
      */
-    public function testSaveToCacheWhenDisabled()
+    public function testSaveToCacheWhenEnabled()
     {
+        define('DISABLE_CACHE',false);
         $mockCache = $this->makeEmpty('CCache', [ 'set' => true]);
         $mockCacheDep = $this->makeEmpty('CDbCacheDependency');
         $mockDatasetFiles = $this->makeEmpty('DatasetFilesInterface');
@@ -36,19 +37,18 @@ class DatasetComponentsTest extends \Codeception\Test\Unit
         //so instead we test one of its concrete subclasses. We only need to test one.
         $component = new CachedDatasetFiles($mockCache, $mockCacheDep,$mockDatasetFiles);
 
-        define('DISABLE_CACHE',true);
         $result = $component->saveLocaldataInCache("100001","hello world");
-        $this->assertEquals('select current_time;',$mockCacheDep->sql);
+        $this->assertNotEquals('select current_time;',$mockCacheDep->sql);
     }
 
     /**
-     * Test that current time is not used as invalidation query if cache is not disabled
+     * Test that current time is used as invalidation query when cached is set to disabled
      * Test that the method ``isCachedDisabled`` is called by partially mocking the system under test
-     * (also acts as test proxy for the constant DISABLE_CACHE as constants can only be defined once in a file)
+     * (also acts as test proxy for the constant DISABLE_CACHE as constants can only be defined once in this test file)
      *
      * @throws Exception
      */
-    public function testSaveToCacheWhenEnabled()
+    public function testSaveToCacheWhenDisabled()
     {
         $mockCache = $this->makeEmpty('CCache', [ 'set' => true]);
         $mockCacheDep = $this->makeEmpty('CDbCacheDependency');
@@ -61,10 +61,12 @@ class DatasetComponentsTest extends \Codeception\Test\Unit
             '_cacheDependency' =>  $mockCacheDep,
             '_storedDatasetFiles' => $mockDatasetFiles,
         ],[
-            'isCachedDisabled' => function () { return false;},
+            'isCachedDisabled' => function () { return true;},
         ]);
 
         $result = $component->saveLocaldataInCache("100001","hello world");
-        $this->assertNotEquals('select current_time;',$mockCacheDep->sql);
+        $this->assertEquals('select current_time;',$mockCacheDep->sql);
     }
+
+
 }
