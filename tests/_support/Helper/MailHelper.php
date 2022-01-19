@@ -15,7 +15,7 @@ class MailHelper extends \Codeception\Module
      */
     public function _initialize(): void
     {
-        $currentConfig = require("protected/config/yii2/test.php");
+        $currentConfig = require("/var/www/protected/config/yii2/test.php");
         self::$eml_dir = $currentConfig["components"]["mailer"]["fileTransportPath"];
     }
 
