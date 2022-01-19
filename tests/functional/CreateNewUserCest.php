@@ -41,17 +41,19 @@ class CreateNewUserCest
         $I->checkOption('#User_terms');
         $I->fillField(['id' => 'User_verifyCode'], 'ouch');
         $I->click('Register');
-        // Check /user/welcome page
+        // Pressing Register button results in GigaDB website
+        // going to /user/welcome page
         $I->see('Welcome!', 'h2');
-        // Extract URLs from email
+        // Extract URLs from activation email sent to new user
         $urls = $I->grabUrlsFromLastEmail();
         // These URLs should contain one user activation link
-        $m_array = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key\/\d+?/', $urls);
-        $I->assertCount(1, $m_array, "User activation link in email was not found");
+        $url_matches = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key\/\d+?/', $urls);
+        $I->assertCount(1, $url_matches, "User activation link in email was not found");
     }
 
     /**
-     * Notification email should be sent to curators after user creation
+     * Notification email should be sent to curators after activation by new 
+     * user
      *
      * @param FunctionalTester $I
      * @throws \Codeception\Exception\ModuleException
@@ -76,10 +78,10 @@ class CreateNewUserCest
         // Check /user/welcome page
         $I->see('Welcome!', 'h2');
         // Extract user activation link
-        $arr = $I->grabUrlsFromLastEmail();
-        $m_array = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key\/\d+?/', $arr);
+        $urls = $I->grabUrlsFromLastEmail();
+        $url_matches = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key\/\d+?/', $urls);
         // Go to activation link
-        $I->amOnPage(array_values($m_array)[0]);
+        $I->amOnPage(array_values($url_matches)[0]);
         // Get Curator notification email
         $message = $I->getLastMessage();
         $content = $I->getMessageContent($message);
