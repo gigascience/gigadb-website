@@ -226,6 +226,9 @@ to depart from the default.
 > The default values for the live environment offer the maximum performance. 
 > While the default values for Dev/CI provide the most debugging information.
 
+>Note: those three variables set the values for PHP constants of the same names that are
+> defined in the Yii web application's ``index.php`` file (generated from templates  ``ops/configuration/yii-conf/index.$GIGADB_ENV.php.dist``)
+
 ##### Exceptions
 
 The following two variables need to be set for Environment "All (default)"
