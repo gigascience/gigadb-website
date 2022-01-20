@@ -36,7 +36,7 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 	public function getCachedLocalData(string $dataset_id)
 	{
 		 $result = $this->_cache->get( $this->getCacheKeyForLocalData( $dataset_id ) );
-		 if (defined('YII_DEBUG'))
+		 if (defined('YII_DEBUG') && true === YII_DEBUG)
 		    Yii::log("cache for ". $this->getCacheKeyForLocalData( $dataset_id ).": ".(false === $result ? "MISS" : "HIT") ,'info');
 		 return $result;
 	}
