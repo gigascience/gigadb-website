@@ -4,7 +4,7 @@ Feature: An author can download file template
   So that I can upload information about my dataset using the form
 
   Background: Sign in as a user
-    Given I sign in gigadb website as "user"
+    Given I sign in as a user
     Then I should see "John's GigaDB Page"
 
   @ok
