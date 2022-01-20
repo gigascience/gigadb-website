@@ -1,9 +1,9 @@
 Feature: An author can download file template
   As an author
-  I want to download upload form template after login
-  So that I can upload data using the form
+  I want to download the dataset metadata upload form template after login
+  So that I can upload information about my dataset using the form
 
-  Background: Sign is as a user
+  Background: Sign in as a user
     Given I sign in gigadb website as "user"
     Then I should see "John's GigaDB Page"
 
