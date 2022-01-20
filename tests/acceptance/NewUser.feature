@@ -24,7 +24,6 @@ Feature: NewUser
     And I should see a check-box field "User_terms"
     And I should see a link "Terms of use" to "/site/term#policies"
     And I should see a link "Privacy Policy" to "/site/term#privacy"
-    And I should see an image located in "/images/tempcaptcha"
     And I should see a text field "User_verifyCode"
     And I should see a submit button "Register"
 
@@ -43,4 +42,20 @@ Feature: NewUser
     And I fill in the field of "id" "User_verifyCode" with "shazam"
     And I press the button "Register"
     Then I should see "Welcome!"
-    
+
+  @ok
+  Scenario: Providing erroneous captcha prevents submission and show error message
+    Given I am on "/user/create"
+    And there is no user with email "martianmanhunter@mailinator.com"
+    When I fill in the field of "id" "User_email" with "martianmanhunter@mailinator.com"
+    And I fill in the field of "id" "User_first_name" with "J'onn"
+    And I fill in the field of "id" "User_last_name" with "J'onzz"
+    And I fill in the field of "id" "User_password" with "123456787"
+    And I fill in the field of "id" "User_password_repeat" with "123456787"
+    And I fill in the field of "id" "User_affiliation" with "GigaScience"
+    And I select "NCBI" from the field "User_preferred_link"
+    And I check the field "User_terms"
+    And I fill in the field of "id" "User_verifyCode" with "testCaptcha"
+    And I press the button "Register"
+    Then I should see "Captcha is incorrect!"
+    And I should see a text field "User_email"

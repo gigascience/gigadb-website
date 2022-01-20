@@ -8,8 +8,8 @@
 <div class="flash-success alert alert-success">
 	<?= Yii::app()->user->getFlash('contact'); ?>
 </div>
-<? } else { 
-        $text = $this->captchaGenerator();
+<? } else {
+    Yii::app()->captcha->generate();
 ?>
  <div class="content">
             <div class="container">
@@ -82,7 +82,7 @@
 					<?php echo $form->labelEx($model,'verifyCode'); ?>		
                                          				
 						<div style="width:100%">	
-							<img style="width:200px;" src="/images/tempcaptcha/<?php echo $text; ?>.png">	
+							<img style="width:200px;" src="<?php echo Yii::app()->captcha->output(); ?>">
 						</div>
                                                 <br>
                                                 <br>

@@ -94,31 +94,7 @@ class User extends CActiveRecord {
     * Validate captcha
     */
     public function validateCaptcha($attribute, $params){
-        $file = "images/tempcaptcha/".$_SESSION["captcha"].".png";
-
-        if (empty($this->$attribute)){
-            //Check if file exist
-            if(file_exists($file)){
-                //Delete file
-                 unlink($file);
-                 $this->addError($attribute, 'Captcha is required');
-            }
-        }
-        else if (!empty($this->$attribute)){
-          if($this->$attribute == $_SESSION["captcha"]){
-            //Delete file
-            unlink($file);
-          }else{
-            //Delete file
-            unlink($file);
-            $this->addError($attribute, 'Captcha is incorrect!');
-          }
-        }
-        else{
-            //  Delete file
-            unlink($file);
-          $this->addError($attribute, 'Captcha is required');
-        }
+        Yii::app()->captcha->validate($this, $attribute);
     }
 
     /**

@@ -86,8 +86,9 @@ class UserController extends Controller {
             $user->newsletter=$attrs['newsletter'];
             $user->previous_newsletter_state = !$user->newsletter;
 
-            if (in_array($_SERVER['GIGADB_ENV'], ["dev","CI"])) {
-                Yii::log("Because we are on {$_SERVER['GIGADB_ENV']}, captcha value is overridden", 'warning');
+            if (in_array($_SERVER['GIGADB_ENV'], ["dev","CI"]) && "testCaptcha" !== $attrs['verifyCode']) {
+                Yii::log("Because we are on {$_SERVER['GIGADB_ENV']}, captcha value is overridden for automated acceptance test", 'warning');
+                Yii::log("To exercise captcha validation, use 'testCaptcha' in the form", 'warning');
                 $_SESSION["captcha"] = $attrs['verifyCode'];
             }
 
@@ -584,32 +585,6 @@ EO_MAIL;
         return $model;
     }
 
-    /**
-    * This method generate captcha image
-    */
-    public function captchaGenerator($length = 7){
-        try{
-            $im = imagecreatetruecolor(420, 100);
-            // Create some colors
-            $white = imagecolorallocate($im, 255, 255, 255);
-            // $grey = imagecolorallocate($im, 128, 128, 128);
-
-            $black = imagecolorallocate($im, 66, 164, 244);
-            imagefilledrectangle($im, 0, 0, 420, 100, $white);
-            // The text to draw
-
-            $text = Yii::$app->security->generateRandomString($length);
-            $font = '/fonts/times_new_yorker.ttf';
-            imagettftext($im, 70, 0, 20, 80, $black, $font, $text);
-
-            imagepng($im, 'images/tempcaptcha/'.$text.".png");
-            imagedestroy($im);
-            $_SESSION["captcha"] = $text;
-            return $text;
-    }catch (Exception $e) {
-        echo 'Caught exception: ',  $e->getMessage(), "\n";
-    }
-}
 }
 
 

@@ -74,7 +74,7 @@
 		<p><?=Yii::t('app' , 'GigaScience appreciates your interest in the GigaDB project. With a GigaDB account, you can submit new datasets to the database. Also, GigaDB can automatically notify you of new content which matches your interests. Please fill out the following information and register to enjoy the benefits of GigaDB membership!')?></p>
 <?}
 		?>
-		<?php $text = $this->captchaGenerator(); ?>
+		<?php Yii::app()->captcha->generate(); ?>
 		<p>Fields with <span class="symbol">*</span> are required.</p>
 		<div class="create-div">
 			<? $form=$this->beginWidget('CActiveForm', array(
@@ -172,7 +172,7 @@
 					<?php echo $form->labelEx($model,'verifyCode', array('class'=>'col-xs-3 control-label')); ?>		
 			        <div class="col-xs-9">				
 						<div style="width:100%">	
-							<img style="width:200px;" src="/images/tempcaptcha/<?php echo $text; ?>.png">	
+							<img style="width:200px;" src="<?php echo Yii::app()->captcha->output(); ?>">
 						</div>
                                     <br>
                                     <br>
