@@ -46,6 +46,7 @@ class CreateNewUserCest
         $I->see('Welcome!', 'h2');
         // Extract URLs from activation email sent to new user
         $urls = $I->grabUrlsFromLastEmail();
+        codecept_debug($urls);
         // These URLs should contain one user activation link
         $url_matches = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key\/\d+?/', $urls);
         $I->assertCount(1, $url_matches, "User activation link in email was not found");

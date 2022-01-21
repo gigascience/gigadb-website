@@ -15,7 +15,7 @@ class MailHelper extends \Codeception\Module
      */
     public function _initialize(): void
     {
-        $currentConfig = require("/var/www/protected/config/yii2/test.php");
+        $currentConfig = require("/var/www/protected/config/yii2/web.php");
         self::$eml_dir = $currentConfig["components"]["mailer"]["fileTransportPath"];
     }
 
@@ -50,7 +50,7 @@ class MailHelper extends \Codeception\Module
         $messages = $this->getMessages();
         if (empty($messages))
         {
-            $this->fail('No messages found in eml directory');
+            $this->fail('No messages found in eml directory: '.self::$eml_dir);
         }
         $last_msg = end($messages);
         return self::$eml_dir."/".$last_msg;
@@ -71,7 +71,7 @@ class MailHelper extends \Codeception\Module
      */
     public function grabUrlsFromLastEmail(): array
     {
-        $regex = '#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#';
+        $regex = '#https?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#';
         $email = $this->getLastMessage();
         $content = $this->getMessageContent($email);
         preg_match_all($regex, $content, $matches);
