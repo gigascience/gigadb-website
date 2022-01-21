@@ -269,7 +269,10 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iSeeCheckboxIsChecked($checkbox)
     {
-        $this->dontSeeCheckboxIsChecked("//input[@id='$checkbox']");
+        $this->uncheckOption('#'.$checkbox);
+        $this->checkOption('#'.$checkbox);
+        $this->seeCheckboxIsChecked("//input[@id='$checkbox']");
+
     }
 
 
