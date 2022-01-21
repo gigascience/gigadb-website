@@ -18,5 +18,20 @@ Feature: An author can download file template
   Scenario: Download template file as a user
     When I am on "/datasetSubmission/upload"
     Then I press "Download Template File" and the response should contain "200"
-    And I press "Download Example File 1" and the response should contain "200"
-    And I press "Download Example File 2" and the response should contain "200"
+
+  @ok
+  Scenario: Download example file 1 as a user
+    When I am on "/datasetSubmission/upload"
+    Then I press "Download Example File 1" and the response should contain "200"
+
+  @ok
+  Scenario: Download example file 2  as a user
+    When I am on "/datasetSubmission/upload"
+    Then I press "Download Example File 1" and the response should contain "200"
+
+  @ok
+  Scenario: Download template file from help page
+    Given I am on "/site/logout"
+    When I am on "/site/help#guidelines"
+    Then I should see "Excel template file"
+    And I press "Excel template file" and the response should contain "200"
