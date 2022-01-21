@@ -55,6 +55,14 @@ Feature: a user visit the dataset page
     Then I should see "well now, how to describe nothing in particular?"
     And I should not see "The DOI 200070 cannot be displayed."
 
+  @test @issue-917
+  Scenario: Checkbox is cheakable
+    When I am on "/dataset/100094"
+    And I follow "Files"
+    And I should see "Table Settings"
+    And I click the table settings for "files_table_settings"
+    Then I should see a check-box field "description"
+    And I see checkbox "description" is checked
   @ok
   Scenario: Dataset with image associated will show dataset image
     Given I have not signed in
