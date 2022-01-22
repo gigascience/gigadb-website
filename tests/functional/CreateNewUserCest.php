@@ -17,15 +17,14 @@ class CreateNewUserCest
     }
 
     /**
-     * Email containing activation link should be sent to new user after user
-     * creation
+     * Integration test to check email containing activation link is sent to new 
+     * user after user creation
      * 
      * @param FunctionalTester $I
      * @throws \Codeception\Exception\ModuleException
      */
     public function trySendActivationEmail(FunctionalTester $I)
     {
-
         $targetUrl = "/user/create";
 
         // Fill in web form and submit
@@ -43,8 +42,9 @@ class CreateNewUserCest
         $I->click('Register');
         // Pressing Register button results in GigaDB website
         // going to /user/welcome page
+        $I->seeInCurrentUrl("/user/welcome");
         $I->see('Welcome!', 'h2');
-        // Extract URLs from activation email sent to new user
+        // Now extract URLs from activation email sent to new user
         $urls = $I->grabUrlsFromLastEmail();
         codecept_debug($urls);
         // These URLs should contain one user activation link
@@ -53,8 +53,8 @@ class CreateNewUserCest
     }
 
     /**
-     * Notification email should be sent to curators after activation by new 
-     * user
+     * Integration test to check notification email is sent to curators after 
+     * new user account activationtmail
      *
      * @param FunctionalTester $I
      * @throws \Codeception\Exception\ModuleException
@@ -77,6 +77,7 @@ class CreateNewUserCest
         $I->fillField(['id' => 'User_verifyCode'], 'boom');
         $I->click('Register');
         // Check /user/welcome page
+        $I->seeInCurrentUrl("/user/welcome");
         $I->see('Welcome!', 'h2');
         // Extract user activation link
         $urls = $I->grabUrlsFromLastEmail();
