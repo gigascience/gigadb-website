@@ -7,7 +7,6 @@ t_gigadb:
   artifacts:
     paths:
       - tmp/
-      - protected/runtime/mail/
       - protected/runtime/coverage/
       - protected/runtime/application.log
       - protected/runtime/phpunit-coverage.txt
