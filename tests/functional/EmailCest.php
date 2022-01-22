@@ -1,15 +1,15 @@
 <?php
 
 /**
- * Class CreateNewUserCest
+ * Class EmailCest
  *
  * generated with:
- * docker-compose run --rm test ./vendor/codeception/codeception/codecept generate:cest functional CreateNewUserCest.php
+ * docker-compose run --rm test ./vendor/codeception/codeception/codecept generate:cest functional EmailCest.php
  *
  * run with:
- * docker-compose run --rm test ./vendor/codeception/codeception/codecept run functional CreateNewUserCest
+ * docker-compose run --rm test ./vendor/codeception/codeception/codecept run functional EmailCest
  */
-class CreateNewUserCest
+class EmailCest
 {
     public function _before(FunctionalTester $I)
     {
