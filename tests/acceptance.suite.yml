@@ -26,6 +26,9 @@ modules:
                   "goog:chromeOptions":
                       args: ['--headless']
                       w3c: false
+                      prefs:
+                        download.default_directory: '/Users/kencho/Downloads'
+                        download.prompt_for_download: false
                   "goog:loggingPrefs":
                       browser: ALL
                   "loggingPrefs":
