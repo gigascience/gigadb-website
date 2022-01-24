@@ -22,3 +22,18 @@ Feature: admin page for samples
     And I should see "Geographic location (country and/or sea,region):Antarctica, Inexpressible Island, Ross Sea"
     And I should see "Alternative names:PYGAD"
     And I should not see "... +"
+
+   @ok
+  Scenario: Sorting on DOI column in ascending order
+     Given I am on "/adminDatasetSample/admin"
+     When I follow "DOI"
+     Then I should be on "/adminDatasetSample/admin/sort/doi_search"
+     And I should see "100006"
+
+  @ok
+  Scenario: Sorting on DOI column in descending order
+    Given I am on "/adminDatasetSample/admin"
+    When I follow "DOI"
+    And I follow "DOI"
+    Then I should be on "/adminDatasetSample/admin/sort/doi_search.desc"
+    And I should see "100006"

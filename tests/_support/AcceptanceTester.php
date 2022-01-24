@@ -227,4 +227,13 @@ class AcceptanceTester extends \Codeception\Actor
         $actualUrl = $this->grabAttributeFrom("//img[@src='$image']/parent::*", "href");
         $this->assertEquals($expectedUrl, $actualUrl);
     }
+
+    /**
+     * @Then I should be on :path
+     */
+    public function iShouldBeOn($path)
+    {
+        $this->seeCurrentUrlEquals($path);
+    }
+
 }

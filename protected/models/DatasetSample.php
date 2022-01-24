@@ -112,8 +112,8 @@ class DatasetSample extends CActiveRecord
 		$sort = new CSort();
 		$sort->attributes = array(
 			'doi_search' => array(
-				'asc' => '(SELECT identifier from dataset d WHERE dataset.id = t.dataset_id) ASC',
-				'desc' => '(SELECT identifier from dataset d WHERE dataset.id = t.dataset_id) DESC',
+				'asc' => 'identifier ASC',
+				'desc' => 'identifier DESC',
 			),
 		);
 
