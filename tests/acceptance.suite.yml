@@ -27,7 +27,7 @@ modules:
                       args: ['--headless']
                       w3c: false
                       prefs:
-                        download.default_directory: '/Users/kencho/Downloads'
+                        download.default_directory: '/tests/_data'
                         download.prompt_for_download: false
                   "goog:loggingPrefs":
                       browser: ALL
