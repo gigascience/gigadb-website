@@ -39,7 +39,7 @@ Feature: An author can download file template
   @test
   Scenario: Check if file is download
     When I am on "/datasetSubmission/upload"
-#    And I press the button "Download Example File 1"
+    And I press the button "Download Example File 1"
     Then I press "Download Example File 1" and the response should contain "200"
-    And I make a screenshot called "download-button"
-    And The file "GigaDBUpload-Example1-forWebsite-v22Dec2021.xlsx" is downloaded
+#    And I make a screenshot called "download-button"
+    And The file "test.xlsx" is downloaded
