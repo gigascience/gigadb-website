@@ -88,7 +88,6 @@ set +a
 mkdir -p ${APP_SOURCE}/protected/runtime && chmod 777 ${APP_SOURCE}/protected/runtime
 mkdir -p ${APP_SOURCE}/protected/runtime/mail && chmod 777 ${APP_SOURCE}/protected/runtime/mail
 mkdir -p ${APP_SOURCE}/assets && chmod 777 ${APP_SOURCE}/assets
-mkdir -p ${APP_SOURCE}/images/tempcaptcha && chmod 777 ${APP_SOURCE}/images/tempcaptcha
 
 
 # Generate google api client credentials
