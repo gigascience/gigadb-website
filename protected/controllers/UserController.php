@@ -422,25 +422,16 @@ class UserController extends Controller {
 
     # Send account activation email
     private function sendActivationEmail($user) {
-        $app_email_name = Yii::app()->params['app_email_name'];
-        $app_email = Yii::app()->params['app_email'];
-        $email_prefix = Yii::app()->params['email_prefix'];
-        $headers = "From: $app_email_name <$app_email>\r\n"; //optional header fields
-        $headers .= "Content-type: text/html\r\n";
-        ini_set('sendmail_from', $app_email);
-
         $recipient = $user->email;
-        $subject = $email_prefix . "Welcome to " . Yii::app()->name;
+        $subject = Yii::app()->params['email_prefix'] . "Welcome to " . Yii::app()->name;
         $url = $this->createAbsoluteUrl('user/confirm', array('key' => $user->id));
         $body = $this->renderPartial('emailWelcome',array('url'=>$url),true);
         try {
-            $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
+            Yii::app()->mailService->sendHTMLEmail(Yii::app()->params['adminEmail'], $recipient, $subject, $body);
+        } catch (Swift_TransportException $ste) {
+            Yii::log("Problem sending account activation email - " . $ste->getMessage(), "error");
         }
-        catch(\Throwable $e) {
-            Yii::log($e->getMessage());
-        }
-        //mail($recipient, $subject, $body, $headers);
-        Yii::log("Sent email to $recipient, $subject");
+        Yii::log("Sent account activation email to $recipient, $subject");
     }
 
     // Send password email
@@ -471,23 +462,11 @@ class UserController extends Controller {
         $this->renderPartial('emailReset');
     }
 
-    public function actionSendActivationEmail() {
-        $user = $this->loadUser();
-        Yii::log(__FUNCTION__."> Sending activation email to user ". $user->email, 'debug');
-        $this->sendActivationEmail($user);
-        $this->render('activationNeeded', array('user'=>$user));
-    }
 
     # Send notification email to admins about new user
     private function sendNotificationEmail($user) {
-        // $app_email_name = Yii::app()->params['app_email_name'];
-        $app_email = Yii::app()->params['app_email'];
-        $email_prefix = Yii::app()->params['email_prefix'];
-        // $headers = "From: $app_email_name <$app_email>\r\n"; //optional header fields
-        ini_set('sendmail_from', $app_email);
-
         $recipient = Yii::app()->params['notify_email'];
-        $subject = $email_prefix . "New user registration";
+        $subject = Yii::app()->params['email_prefix'] . "New user registration";
         $url = $this->createAbsoluteUrl('user/show', array('id'=>$user->id));
         $body = <<<EO_MAIL
 New user registration
@@ -495,10 +474,13 @@ Email: {$user->email}
 Name:  {$user->first_name} {$user->last_name}
 
 $url
-
 EO_MAIL;
-        $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
-        //mail($recipient, $subject, $body, $headers);
+
+        try {
+            Yii::app()->mailService->sendHTMLEmail(Yii::app()->params['adminEmail'], $recipient, $subject, $body);
+        } catch (Swift_TransportException $ste) {
+            Yii::log("Problem sending password email - " . $ste->getMessage(), "error");
+        }
         Yii::log(__FUNCTION__."> Sent email to $recipient, $subject");
     }
 
