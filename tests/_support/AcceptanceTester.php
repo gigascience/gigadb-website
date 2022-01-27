@@ -81,11 +81,11 @@ class AcceptanceTester extends \Codeception\Actor
      * Looks for a button with a name that is the content in between
      * it's button tags.
      * 
-     * @Then I should see a :buttonName button
+     * @Then I should see a :button button
      */
-    public function iShouldSeeAButton($buttonName)
+    public function iShouldSeeAButton($button)
     {
-        $this->seeElement(Locator::contains('button', $buttonName));
+        $this->seeElement(Locator::contains('button', $button));
     }
     
     /**
