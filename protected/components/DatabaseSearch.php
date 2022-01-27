@@ -3,74 +3,44 @@ class DatabaseSearch extends CApplicationComponent {
 
 	public function findFile($keyword,$filetypes = array(),$formats = array(), $size = array()) {
 		$command = Yii::app()->db->createCommand();
-		$command->select = "f.id, f.dataset_id, fs.sample_id";
-		$command->from = "file f";
-		$command->join = "
-			left join file_sample fs on f.id = fs.file_id 
-			left join dataset d on d.id = f.dataset_id
-			left join file_attributes fa on f.id = fa.file_id 
-			left join attribute a on a.id = fa.attribute_id 
-		";
-
-		$command->where(array('like', 'lower(f.name)', '%'.$keyword.'%'));
-		$command->orWhere(array('like', 'lower(f.description)', '%'.$keyword.'%'));
-		$command->orWhere(array('like', 'lower(a.attribute_name)', '%'.$keyword.'%'));
-		$command->orWhere(array('like', 'lower(fa.value)', '%'.$keyword.'%'));
+		$command->select = "f.id, f.dataset_id, f.sample_id";
+		$command->from = "file_finder f";
+        $command->where("to_tsvector('english',f.document) @@ to_tsquery('$keyword')");
 
 		if($filetypes)
-			$command->andWhere(array('in', 'type_id', $filetypes));
+			$command->andWhere(array('in', 'f.type_id', $filetypes));
 		if($formats)
-			$command->andWhere(array('in', 'format_id', $formats));
+			$command->andWhere(array('in', 'f.format_id', $formats));
 		
 		if($size['min'] != 0 && $size['max']!=0) {
-			$command->andWhere("size >= :s and size <= :m", array(':s'=>$size['min'], ':m'=>$size['max']));
+			$command->andWhere("f.size >= :s and f.size <= :m", array(':s'=>$size['min'], ':m'=>$size['max']));
 		}
 		elseif($size['min'] != 0)
-			$command->andWhere("size >= :s", array(':s'=>$size['min']));
+			$command->andWhere("f.size >= :s", array(':s'=>$size['min']));
 		elseif($size['max'] != 0)
-			$command->andWhere("size <= :s", array(':s'=>$size['max']));
+			$command->andWhere("f.size <= :s", array(':s'=>$size['max']));
 
-		$command->andWhere("d.upload_status = 'Published'", array());
+		$command->andWhere("f.upload_status = 'Published'", array());
 		return $command->queryAll();
 	}
 
 	public function findSample($keyword, $ids = array(), $names = array()) {
 		
 	    $command = Yii::app()->db->createCommand();
-	    $command->selectDistinct("s.id, ds.dataset_id");
-	    $command->from = "sample s";
-	    $command->join = "
-	    	left join dataset_sample ds on ds.sample_id = s.id 
-	    	left join species sp on sp.id = s.species_id  
-	    	left join dataset d on d.id = ds.dataset_id
-	    	left join sample_attribute sa on sa.sample_id = s.id 
-	    	left join attribute a on sa.attribute_id = a.id 
-	    ";
+	    $command->selectDistinct("s.id, s.dataset_id");
+	    $command->from = "sample_finder s";
 
-	    $command->where(array('like', 'lower(s.name)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(s.consent_document)', '%'.$keyword.'%'));
-	    //$command->orWhere(array('like', 'lower(s.contact_author_name)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(s.contact_author_name) = :keyword', array(':keyword'=>$keyword)); 
-	    //$command->orWhere(array('like', 's.contact_author_email', '%'.$keyword.'%'));
-	    //$command->orWhere(array('like', 's.sampling_protocol', '%'.$keyword.'%'));
-	    //$command->orWhere(array('like', 'sattrs.definition', '%'.$keyword.'%'));
-	    //$command->orWhere(array('like', 'lower(sp.common_name)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(sp.common_name) = :keyword', array(':keyword'=>$keyword)); 
-	    //$command->orWhere(array('like', 'lower(sp.genbank_name)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(sp.genbank_name) = :keyword', array(':keyword'=>$keyword)); 
-	    //$command->orWhere(array('like', 'lower(sp.scientific_name)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(sp.scientific_name) = :keyword', array(':keyword'=>$keyword)); 
-	    //$command->orWhere(array('like', 'lower(sp.scientific_name)', '%'.$keyword.'%'));
-	    //$command->orWhere(array('like', 'lower(a.attribute_name)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(a.attribute_name) = :keyword', array(':keyword'=>$keyword)); 
-	    $command->orWhere(array('like', 'lower(sa.value)', '%'.$keyword.'%'));
-           
+        $searchQuery = "$keyword";
+        if( $names) {
+            $namesStr = implode(" ",  $names);
+            $searchQuery .= " &  $namesStr";
+        }
+        $command->where("to_tsvector('english',s.document) @@ to_tsquery('$searchQuery')");
 
-	    if($ids)
-	    	$command->orWhere(array('in', 's.id', $ids));
-	    if($names)
-	    	$command->andWhere(array('in', 'sp.scientific_name', $names));
-	    $command->andWhere("d.upload_status = 'Published'", array());
+        $command->andWhere("s.upload_status = 'Published'", array());
+
+        if($ids)
+            $command->orWhere(array('in', 's.id', $ids));
 
 	    return $command->queryAll();
 
@@ -81,55 +51,28 @@ class DatabaseSearch extends CApplicationComponent {
 		
 		$command = Yii::app()->db->createCommand();
 		$command->selectDistinct("d.id");
-		$command->from = "dataset d";
-		$command->join = "
-	            left join (select dataset_id, string_agg(p.name, ',') as names from dataset_project dp, project p where dp.project_id = p.id group by dataset_id) dprojects on d.id = dprojects.dataset_id 
-		    left join (select dataset_id, string_agg(a.surname||', '||substring(a.first_name,1,1)||', '||substring(a.middle_name,1,1), ';') as author_names from dataset_author da, author a where da.author_id = a.id group by dataset_id) dauthors on d.id = dauthors.dataset_id 
-   		    left join (select dataset_id, string_agg(a.surname || ' '||a.first_name||' ' || a.middle_name, ';') as author_names from dataset_author da, author a where da.author_id = a.id group by dataset_id) dnames on d.id = dnames.dataset_id 
-		    left join manuscript m on d.id = m.dataset_id 
-		    left join (select elt.name as name, el.dataset_id as dataset_id from external_link_type elt, external_link el where elt.id=el.external_link_type_id) el on el.dataset_id = d.id 
-		    left join dataset_project dp on dp.dataset_id = d.id 
-		    left join dataset_author da on da.dataset_id = d.id 
-		    left join dataset_type dt on dt.dataset_id = d.id 
-		    left join dataset_funder df on df.dataset_id = d.id 
-		    left join funder_name fn on fn.id = df.funder_id 
-                    left join (select dataset_id, value from dataset_attributes where attribute_id=455) dat on dat.dataset_id = d.id
-                    left join (select t.name as name, dt.dataset_id from type t, dataset_type dt where dt.type_id=t.id) dtnames on d.id=dtnames.dataset_id
+		$command->from = "dataset_finder d";
 
-		";
+        $searchQuery = "$keyword";
+        if($types) {
+            $typesStr = implode(" ", $types);
+            $searchQuery .= " & $typesStr";
+        }
+        if($projects) {
+            $projectsStr = implode(" ", $projects);
+            $searchQuery .= " & $projectsStr";
+        }
+        if($links) {
+            $linksStr = implode(" ", $links);
+            $searchQuery .= " & $linksStr";
+        }
+        $command->where("to_tsvector('english',d.document) @@ to_tsquery('$searchQuery')");
 
-	    $command->where(array('like', 'd.identifier', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(d.title)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(dauthors.author_names)', '%'.$keyword.'%'));
-            //$command->orWhere('LOWER(dauthors.author_names) = :keyword', array(':keyword'=>$keyword)); 
-	    //$command->orWhere(array('like', 'lower(dnames.author_names)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(dnames.author_names) = :keyword', array(':keyword'=>$keyword)); 
-	    $command->orWhere(array('like', 'lower(d.description)', '%'.$keyword.'%'));
-            //$command->orWhere(array('like', 'lower(dtnames.name)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(dtnames.name) = :keyword', array(':keyword'=>$keyword)); 
-            //$command->orWhere(array('like', 'lower(dat.value)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(dat.value) = :keyword', array(':keyword'=>$keyword)); 
-           
-	    //$command->orWhere(array('like', 'd.ftp_site', '%'.$keyword.'%'));
 
-	    $command->orWhere(array('like', 'lower(dprojects.names)', '%'.$keyword.'%'));	    
-	    //$command->orWhere(array('like', 'm.identifier', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(m.identifier) = :keyword', array(':keyword'=>$keyword)); 
-	    $command->orWhere(array('like', 'cast(m.pmid as varchar)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(df.grant_award)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(df.comments)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(fn.primary_name_display)', '%'.$keyword.'%'));
+        if($ids)
+            $command->orWhere(array('in', 'd.id', $ids));
 
-	    if($ids)
-	    	$command->orWhere(array('in', 'd.id', $ids));
-	    if($types)
-	    	$command->andWhere(array('in', 'dt.type_id', $types));
-	    if($projects)
-	    	$command->andWhere(array('in','dp.project_id', $projects));
-	    if($links)
-	    	$command->andWhere(array('in', 'el.name', $links));
-
-	    if($pubs['start'] && $pubs['end']) {
+        if($pubs['start'] && $pubs['end']) {
 	    	$command->andWhere("d.publication_date >= :d and d.publication_date <= :e", array(':d'=>$pubs['start'], ':e'=>$pubs['end']));
 	    }
 	    elseif($pubs['start'])
@@ -139,11 +82,10 @@ class DatabaseSearch extends CApplicationComponent {
 
 	    if($author_id)
 	    	$command->andWhere("da.author_id = :aid", array(':aid'=>$author_id));
-            
-            
-            
+
 	    $command->andWhere("d.upload_status = 'Published'");
-            $command->order(array('d.id desc'));
+	    $command->order(array('d.id desc'));
+
 	    return $command->queryAll();
 	}
 
