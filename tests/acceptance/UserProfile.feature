@@ -3,7 +3,7 @@ Feature: User profile page
   I want a form to edit my user details
   So that I can update my contact details on the GigaDB web site
   
-@ok @wip
+@ok
 Scenario: View user profile
   Given I sign in as a user
   When I am on "/user/view_profile"
@@ -17,7 +17,7 @@ Scenario: View user profile
   And I should see "EditProfileForm[newsletter]" checkbox is not checked
   And I should see a "Edit" button
 
-@ok @wip
+@ok
 Scenario: Ensure mailing list checkbox is checkable after clicking Edit button
   Given I sign in as a user
   And I am on "/user/view_profile"
@@ -25,7 +25,7 @@ Scenario: Ensure mailing list checkbox is checkable after clicking Edit button
   And I check "EditProfileForm[newsletter]" checkbox
   Then I should see "EditProfileForm[newsletter]" checkbox is checked
 
-@ok @wip
+@ok
 Scenario: Ensure mailing list checkbox remains checked when pressing Save button
   Given I sign in as a user
   When I am on "/user/view_profile"
