@@ -14,22 +14,22 @@ Scenario: View user profile
   And I should see "Last Name"
   And I should see "Smith"
   And I should see "Mailing list subscriber"
-  And I should see "EditProfileForm[newsletter]" checkbox is not checked
+  And I should see "No"
   And I should see a "Edit" button
 
 @ok
 Scenario: Ensure mailing list checkbox is checkable after clicking Edit button
   Given I sign in as a user
   And I am on "/user/view_profile"
-  When I press the button "Edit"
-  And I check "EditProfileForm[newsletter]" checkbox
+  And I press the button "Edit"
+  When I check "EditProfileForm[newsletter]" checkbox
   Then I should see "EditProfileForm[newsletter]" checkbox is checked
 
 @ok
-Scenario: Ensure mailing list checkbox remains checked when pressing Save button
+Scenario: Ensure mailing list subscriber displays Yes after pressing Save button
   Given I sign in as a user
   When I am on "/user/view_profile"
   And I press the button "Edit"
   And I check "EditProfileForm[newsletter]" checkbox
   And I press the button "Save"
-  Then I should see "EditProfileForm[newsletter]" checkbox is checked
+  Then I should see "Yes"
