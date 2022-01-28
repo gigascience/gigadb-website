@@ -108,12 +108,14 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                                 </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <div class="text-center">
-                                                                <?php echo $form->checkbox($model, 'newsletter', array('onclick' => 'return false', 'class' => 'profile-checkbox', 'style' =>'position: relative; display: inline-block')); ?>
-                                                                <label disabled="disabled">
-                                                                    <?= Yii::t('app', 'Add me to GigaDB\'s mailing list') ?>
-                                                                </label>
-                                                            </div>
+                                                            <?= $form->label($model,'newsletter', array('class'=>'col-xs-5 control-label')) ?>
+                                                                <div class="col-xs-5">
+                                                                    <label class="profile-label" style="padding-right: 0px;">
+                                                                        <?php echo ($model->newsletter)? "Yes":"No"; ?>
+                                                                    </label>
+                                                                    <?= $form->checkbox($model, 'newsletter', array('class' => 'profile-checkbox', 'style' => 'display:none')) ?>
+                                                                    <?= $form->error($model, 'newsletter') ?>
+                                                                </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="text-center">
@@ -162,7 +164,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                             $('#edit-btn').css('display', 'none');
                             $('.profile-label').css('display', 'none');
                             $('.profile-textbox').css('display', '');
-                            $('.profile-checkbox').prop('onclick', null)
+                            $('.profile-checkbox').css('display', '');
                         });
                         $('#cancel-btn').on('click', function (e) {
                             e.preventDefault();
@@ -171,7 +173,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                             $('#edit-btn').css('display', '');
                             $('.profile-label').css('display', '');
                             $('.profile-textbox').css('display', 'none');
-                            $('.profile-checkbox').prop('onclick', 'return false')
+                            $('.profile-checkbox').css('display', 'none');
                         });
 
                     });

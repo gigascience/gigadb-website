@@ -35,6 +35,7 @@ class EditProfileForm extends CFormModel
 		            'last_name' => Yii::t('app' , 'Last Name'),
 		            'affiliation' => Yii::t('app' , 'Affiliation'),
 		            'preferred_link' => Yii::t('app', 'Link out preference'),
+		            'newsletter' => Yii::t('app', 'Mailing list subscriber'),
 		);
 	}
 
