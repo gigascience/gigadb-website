@@ -1,5 +1,5 @@
 create materialized view if not exists file_finder as
-SELECT f.*, fs.sample_id as sample_id, d.upload_status as upload_status, coalesce(f.name,'') || coalesce(f.description,'') || coalesce(a.attribute_name,'') || coalesce(fa.value,'')  as document
+SELECT f.*, fs.sample_id as sample_id, d.upload_status as upload_status, coalesce(replace(f.name,'.',' '),'') || coalesce(f.description,'') || coalesce(a.attribute_name,'') || coalesce(fa.value,'')  as document
 FROM file f
          left join file_sample fs on f.id = fs.file_id
          left join dataset d on d.id = f.dataset_id

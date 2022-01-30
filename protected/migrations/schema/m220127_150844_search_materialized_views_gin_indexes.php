@@ -16,7 +16,7 @@ class m220127_150844_search_materialized_views_gin_indexes extends CDbMigration
 	    //First query
         Yii::app()->db->createCommand("drop materialized view if exists file_finder")->execute();
 	    Yii::app()->db->createCommand("create materialized view file_finder as
-SELECT f.*, fs.sample_id as sample_id, d.upload_status as upload_status, coalesce(f.name,'') || coalesce(f.description,'') || coalesce(a.attribute_name,'') || coalesce(fa.value,'')  as document
+SELECT f.*, fs.sample_id as sample_id, d.upload_status as upload_status, coalesce(replace(f.name,'.',' '),'') || coalesce(f.description,'') || coalesce(a.attribute_name,'') || coalesce(fa.value,'')  as document
 	FROM file f
 	left join file_sample fs on f.id = fs.file_id
 	left join dataset d on d.id = f.dataset_id
