@@ -47,8 +47,8 @@ DATA_SAVE_PATH=~/.containers-data/default-gigadb
 YII_DEBUG=true
 
 ### Core services managed in Docker compose ##############################################################################
-NGINX_VERSION=1.15
-PHP_VERSION=7.2
+NGINX_VERSION=1.21.3
+PHP_VERSION=7.2.34
 POSTGRES_VERSION=11.13
 YII_VERSION=1.1.25
 YII2_VERSION=2.0.44
