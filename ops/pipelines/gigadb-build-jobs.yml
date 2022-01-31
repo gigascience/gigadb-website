@@ -3,25 +3,22 @@ base_images:
   script:
     # login and pull from docker hub the base image for php-fpm so it's done only once
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - docker pull php:7.1.33-fpm-buster
-    - docker save -o php-7_1-fpm-buster.tar php:7.1.33-fpm-buster
-    - docker pull php:7.2.34-fpm-buster
-    - docker save -o php-7_2-fpm-buster.tar php:7.2.34-fpm-buster
-    - docker pull php:7.2.34-cli-buster
-    - docker save -o php-7_2-cli-buster.tar php:7.2.34-cli-buster
+    - docker pull php:$PHP_VERSION-fpm-buster
+    - docker save -o php-$PHP_VERSION-fpm-buster.tar php:$PHP_VERSION-fpm-buster
+    - docker pull php:$PHP_VERSION-cli-buster
+    - docker save -o php-$PHP_VERSION-cli-buster.tar php:$PHP_VERSION-cli-buster
     - docker pull alpine:3.14.2
     - docker save -o alpine-3_14.tar alpine:3.14.2
-    - docker pull nginx:1.21.3-alpine
-    - docker save -o nginx-1_21-alpine.tar nginx:1.21.3-alpine
+    - docker pull nginx:$NGINX_VERSION-alpine
+    - docker save -o nginx-$NGINX_VERSION-alpine.tar nginx:$NGINX_VERSION-alpine
     - docker pull node:14.18.0-buster
     - docker save -o node-14-buster.tar node:14.18.0-buster
   artifacts:
     paths:
-      - php-7_1-fpm-buster.tar
-      - php-7_2-fpm-buster.tar
-      - php-7_2-cli-buster.tar
+      - php-$PHP_VERSION-fpm-buster.tar
+      - php-$PHP_VERSION-cli-buster.tar
       - alpine-3_14.tar
-      - nginx-1_21-alpine.tar
+      - nginx-$NGINX_VERSION-alpine.tar
       - node-14-buster.tar
 
 b_gigadb:
@@ -29,11 +26,10 @@ b_gigadb:
   script:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - docker load -i php-7_1-fpm-buster.tar
-    - docker load -i php-7_2-fpm-buster.tar
-    - docker load -i php-7_2-cli-buster.tar
+    - docker load -i php-$PHP_VERSION-fpm-buster.tar
+    - docker load -i php-$PHP_VERSION-cli-buster.tar
     - docker load -i alpine-3_14.tar
-    - docker load -i nginx-1_21-alpine.tar
+    - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - docker load -i node-14-buster.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
@@ -115,11 +111,10 @@ b_gigadb:
   script:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - docker load -i php-7_1-fpm-buster.tar
-    - docker load -i php-7_2-fpm-buster.tar
-    - docker load -i php-7_2-cli-buster.tar
+    - docker load -i php-$PHP_VERSION-fpm-buster.tar
+    - docker load -i php-$PHP_VERSION-cli-buster.tar
     - docker load -i alpine-3_14.tar
-    - docker load -i nginx-1_21-alpine.tar
+    - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - docker load -i node-14-buster.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com

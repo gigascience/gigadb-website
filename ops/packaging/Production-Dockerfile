@@ -1,5 +1,5 @@
-ARG TARGET_PHP_VERSION=7.0
-FROM php:7.2-fpm-buster
+ARG TARGET_PHP_VERSION
+FROM php:${TARGET_PHP_VERSION}-fpm-buster
 
 
 # basic dependencies
@@ -191,7 +191,7 @@ COPY fuw/app/common/models/Upload.php /app/common/models/
 COPY fuw/app/backend/models/FiledropAccount.php /app/backend/models/
 
 ARG TARGET_PHP_VERSION=7.0
-COPY ops/configuration/php-conf/php-${TARGET_PHP_VERSION}-production.ini /usr/local/etc/php/php.ini
+COPY ops/configuration/php-conf/php-production.ini /usr/local/etc/php/php.ini
 COPY ops/configuration/php-conf/gigadb.pool.conf /usr/local/etc/php-fpm.d/gigadb.pool.conf
 COPY ops/configuration/php-conf/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 COPY ops/configuration/php-conf/gigadb.ini /usr/local/etc/php/conf.d/gigadb.ini
