@@ -53,13 +53,33 @@
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml up -d application #fuw-admin fuw-public
     # deploy the web container once the application servers are up
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml up -d web
+    # Need console container for psql commands
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml up -d console
+    - echo "Checking tbl_migration table before migrations..."
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm console bash -c "PGPASSWORD=$gigadb_db_password psql -P pager=off -h $gigadb_db_host -U gigadb -c 'select * from \"tbl_migration\";'"
+    - echo "Displaying column info for gigadb_user table before migrations..."
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm console bash -c "PGPASSWORD=$gigadb_db_password psql -P pager=off -h $gigadb_db_host -U gigadb -c '\d gigadb_user'"
     # Run database migrations if any
     - 'MIGRATION_STATUS="$(docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application bash -c "./protected/yiic migrate new --migrationPath=application.migrations.schema --interactive=0 | tail -1")"'
     - echo "$MIGRATION_STATUS"
     - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic custommigrations dropconstraints'
     - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic custommigrations dropindexes'
+    - echo "Running migration scripts in schema directory"
     - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0'
+    - echo "Listing tables in database..."
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm console bash -c "PGPASSWORD=$gigadb_db_password psql -P pager=off -h $gigadb_db_host -U gigadb -c '\dt'"
+    - echo "Checking tbl_migration table..."
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm console bash -c "PGPASSWORD=$gigadb_db_password psql -P pager=off -h $gigadb_db_host -U gigadb -c 'select * from \"tbl_migration\";'"
+    - echo "Displaying column info for gigadb_user table..."
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm console bash -c "PGPASSWORD=$gigadb_db_password psql -P pager=off -h $gigadb_db_host -U gigadb -c '\d gigadb_user'"
+    - echo "Running migration scripts in fix_import directory"
     - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.fix_import --interactive=0'
+    - echo "Listing tables in database..."
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm console bash -c "PGPASSWORD=$gigadb_db_password psql -P pager=off -h $gigadb_db_host -U gigadb -c '\dt'"
+    - echo "Checking tbl_migration table..."
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm console bash -c "PGPASSWORD=$gigadb_db_password psql -P pager=off -h $gigadb_db_host -U gigadb -c 'select * from \"tbl_migration\";'"
+    - echo "Displaying column info for gigadb_user table..."
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm console bash -c "PGPASSWORD=$gigadb_db_password psql -P pager=off -h $gigadb_db_host -U gigadb -c '\d gigadb_user'"
     # post-install script to run
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm less
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefiletypes
