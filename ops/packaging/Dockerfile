@@ -1,4 +1,4 @@
-ARG PHP_VERSION=7.2.34
+ARG PHP_VERSION
 FROM php:${PHP_VERSION}-fpm-buster
 
 
