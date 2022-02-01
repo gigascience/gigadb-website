@@ -1,6 +1,11 @@
 ---
 # Use bastion server to restore PostgreSQL database on RDS instance
 
+- name: Fix Centos EOL issues
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  roles:
+    - role: ../../roles/centos-eol-fix
+
 - name: Setup Fail2ban
   hosts: name_bastion_server_staging*:name_bastion_server_live*
 

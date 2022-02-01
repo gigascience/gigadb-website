@@ -1,9 +1,3 @@
-- name: Install epel-release
-  become: yes
-  dnf:
-    name: epel-release
-    state: present
-
 - name: Install the package "fail2ban"
   become: yes
   dnf:
