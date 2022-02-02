@@ -3,7 +3,7 @@ class DatabaseSearch extends CApplicationComponent {
 
 	public function findFile($keyword,$filetypes = array(),$formats = array(), $size = array()) {
 		$command = Yii::app()->db->createCommand();
-		$command->select = "f.id, f.dataset_id, f.sample_id";
+		$command->select = "f.id, f.name, f.location, f.size, f.dataset_id, f.sample_id, f.file_type, f.file_format";
 		$command->from = "file_finder f";
         $command->where("to_tsvector('english',f.document) @@ to_tsquery('$keyword')");
 
@@ -27,7 +27,7 @@ class DatabaseSearch extends CApplicationComponent {
 	public function findSample($keyword, $ids = array(), $names = array()) {
 		
 	    $command = Yii::app()->db->createCommand();
-	    $command->selectDistinct("s.id, s.dataset_id");
+	    $command->selectDistinct("s.id, s.dataset_id, s.name,s.species_common_name, s.species_tax_id");
 	    $command->from = "sample_finder s";
 
         $searchQuery = "$keyword";
@@ -50,7 +50,7 @@ class DatabaseSearch extends CApplicationComponent {
 	{
 		
 		$command = Yii::app()->db->createCommand();
-		$command->selectDistinct("d.id");
+		$command->selectDistinct("d.id, d.shorturl, d.identifier, d.authornames, d.title, d.description");
 		$command->from = "dataset_finder d";
 
         $searchQuery = "$keyword";
@@ -119,14 +119,16 @@ class DatabaseSearch extends CApplicationComponent {
     }
 
 
-	public function search($criteria) {
+	public function search($criteria, $resultType = "ids") {
 		$files = $this->findFile($criteria['keyword'], $criteria['filetypes'], $criteria['formats'], $criteria['size']);
+        Yii::log(print_r($files, true),"warning");
 		$file_ids = $this->getListByKey($files);
 
 		$extra_samples = $this->getListByKey($files, 'sample_id');
 		$file_datasets = $this->getListByKey($files, 'dataset_id');
 
 		$samples = $this->findSample($criteria['keyword'], $extra_samples, $criteria['names']);
+        Yii::log(print_r($samples, true),"warning");
 		$sample_ids = $this->getListByKey($samples);
 		$sample_datasets = $this->getListByKey($samples, 'dataset_id');
 
@@ -134,7 +136,8 @@ class DatabaseSearch extends CApplicationComponent {
 		
 		$extra_datasets = array_unique(array_merge($file_datasets, $sample_datasets));
 		$datasets = $this->findDataset($criteria['keyword'], $criteria['author_id'], $extra_datasets, $criteria['types'], $criteria['projects'], $criteria['links'], $criteria['pubs']);
-		$dataset_ids = $this->getListByKey($datasets);		
+        Yii::log(print_r($datasets, true),"warning");
+		$dataset_ids = $this->getListByKey($datasets);
 		
 		if(!in_array('dataset', $display)) {
 			
@@ -144,15 +147,20 @@ class DatabaseSearch extends CApplicationComponent {
 			if(!in_array('sample', $display) && in_array('sample', $display))
 				$dataset_ids = $extra_datasets;
 		}
-
-		return array('files'=>$file_ids,
-					'samples'=>$sample_ids,
-					'datasets'=>$dataset_ids
-				);
+        if ("full" === $resultType) {
+            return array(
+                'ids' =>  ["files" => $file_ids,"samples" => $sample_ids, "datasets" => $dataset_ids],
+                'results' => ["files" => $files,"samples" => $samples, "datasets" => $datasets]
+            );
+        }
+        return array('files'=>$file_ids,
+            'samples'=>$sample_ids,
+            'datasets'=>$dataset_ids
+        );
 
 	}
 
-	public function searchByKey($keyword) {
+	public function searchByKey($keyword, $searchType = "api") {
 
         $limit = 10;
         $model = new SearchForm;
@@ -200,7 +208,13 @@ class DatabaseSearch extends CApplicationComponent {
 
         $model->criteria = CJSON::encode($model->attributes, true);
 
-        $result = $this->search($criteria);
+        $resultset = nil;
+        if ("search" === $searchType) {
+            $resultset = $this->search($criteria,"full");
+        }
+        else {
+            $result = $this->search($criteria);
+        }
         $model->query_result = CJSON::encode($result);
 
         //Yii::log(print_r($result, true), 'debug');
@@ -215,23 +229,42 @@ class DatabaseSearch extends CApplicationComponent {
         $list_filetypes = File::getTypeList($result['files']);
 
 
-
-        return  array(
-                    'datasets' => array('data'=>$result['datasets'], 'total'=>count($result['datasets'])),
-                    'samples'=> array('data'=> $result['samples'], 'total' => count($result['samples'])),
-                    'files'=> array('data'=> $result['files'], 'total' => count($result['files'])),
-                    'model'=>$model,
-                    'list_dataset_types'=>$list_dataset_types,
-                    'list_projects'=>$list_projects,
-                    'list_ext_types'=>$list_ext_types,
-                    'list_common_names'=>$list_common_names,
-                    'list_formats'=>$list_formats,
-                    'list_filetypes'=>$list_filetypes,
-                    'display' => $display,
-                    'total_page'=>$total_page,
-                    'page'=>1,
-                    'limit'=> 10,
-                    );
+        if ("search" === $searchType) {
+            return  array(
+                'datasets' => array('data'=>$resultset['results']['datasets'], 'total'=>count($resultset['ids']['datasets'])),
+                'samples'=> array('data'=>$resultset['results']['samples'], 'total' => count($resultset['ids']['samples'])),
+                'files'=> array('data'=> $resultset['results']['files'], 'total' => count($resultset['ids']['files'])),
+                'model'=>$model,
+                'list_dataset_types'=>$list_dataset_types,
+                'list_projects'=>$list_projects,
+                'list_ext_types'=>$list_ext_types,
+                'list_common_names'=>$list_common_names,
+                'list_formats'=>$list_formats,
+                'list_filetypes'=>$list_filetypes,
+                'display' => $display,
+                'total_page'=>$total_page,
+                'page'=>1,
+                'limit'=> 10,
+            );
+        }
+        else  {
+            return  array(
+                'datasets' => array('data'=>$result['datasets'], 'total'=>count($result['datasets'])),
+                'samples'=> array('data'=> $result['samples'], 'total' => count($result['samples'])),
+                'files'=> array('data'=> $result['files'], 'total' => count($result['files'])),
+                'model'=>$model,
+                'list_dataset_types'=>$list_dataset_types,
+                'list_projects'=>$list_projects,
+                'list_ext_types'=>$list_ext_types,
+                'list_common_names'=>$list_common_names,
+                'list_formats'=>$list_formats,
+                'list_filetypes'=>$list_filetypes,
+                'display' => $display,
+                'total_page'=>$total_page,
+                'page'=>1,
+                'limit'=> 10,
+            );
+        }
 	}
 }
 

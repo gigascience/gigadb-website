@@ -102,7 +102,7 @@ class SearchController extends Controller
         $offset = 0;
         $limit = 10;
         $page = 1;
-        $data = $ds->searchByKey($keyword);
+        $data = $ds->searchByKey($keyword,"search");
 
         if(!Yii::app()->request->isPostRequest) {
             $datasets = $data['datasets'];
@@ -125,6 +125,9 @@ class SearchController extends Controller
             $datasets['data'] = array_slice($datasets['data'], $offset, $limit);
             $data['datasets'] = $datasets;
             $data['page'] = $page;
+
+
+            Yii::log(print_r($data['samples'], true),"warning");
 
             $result = $this->renderPartial('_new_result', array(
                 'model' => $data['model'],

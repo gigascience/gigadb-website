@@ -1,13 +1,20 @@
 create materialized view if not exists dataset_finder as
 	with dataset_author_fullnames as (
-		select dataset_id, string_agg(a.surname || ' '||a.first_name||' ' || a.middle_name, ';') as names
+		select dataset_id, string_agg(coalesce(a.surname,'') || ' '||coalesce(a.first_name,'')||' ' || coalesce(a.middle_name,''), ';') as names
 		from dataset_author da, author a
 		where da.author_id = a.id
 		group by dataset_id
 	)
 
 	, dataset_author_initialednames as (
-		select dataset_id, string_agg(a.surname||', '||substring(a.first_name,1,1)||', '||substring(a.middle_name,1,1), ';') as names
+		select dataset_id, string_agg(coalesce(a.surname,'') ||' '||substring(coalesce(a.first_name,''),1,1) || substring(coalesce(a.middle_name,''),1,1), '; ') as names
+		from dataset_author da, author a
+		where da.author_id = a.id
+		group by dataset_id
+	)
+
+	, dataset_author_linkednames as (
+		select dataset_id, string_agg('<a class=result-sub-links href=/search/new?keyword=' || coalesce(a.surname,'') ||','||substring(coalesce(a.first_name,''),1,1) || substring(coalesce(a.middle_name,''),1,1) || '&author_id=' || a.id || '>'|| coalesce(a.surname,'') ||' '|| substring(coalesce(a.first_name,''),1,1) || substring(coalesce(a.middle_name,''),1,1) || '</a>' , '; ') as authorlinks
 		from dataset_author da, author a
 		where da.author_id = a.id
 		group by dataset_id
@@ -42,8 +49,13 @@ create materialized view if not exists dataset_finder as
 	)
 
 select d.id as id,
+       d.identifier as identifier,
        d.upload_status as upload_status,
        d.publication_date as publication_date,
+       '/dataset/' || d.identifier as shorturl,
+       dal.authorlinks as authornames,
+       d.title as title,
+       d.description as description,
        coalesce(d.identifier,'') || coalesce(d.title,'') || coalesce(daf.names,'') || coalesce(dai.names,'') || coalesce(d.description,'') || coalesce(dt.types,'') || coalesce(dk.keywords,'') || coalesce(dp.names,'') || coalesce(m.identifier,'') || coalesce(m.pmid::varchar,'') || coalesce(df.grant_award, '') || coalesce(df.comments,'') || coalesce(fn.primary_name_display,'') || coalesce(el.external_links,'') as document
 from dataset d
          left join manuscript m on d.id = m.dataset_id
@@ -51,6 +63,7 @@ from dataset d
          left join funder_name fn on fn.id = df.funder_id
          left join dataset_author_fullnames daf on daf.dataset_id = d.id
          left join dataset_author_initialednames dai on dai.dataset_id = d.id
+         left join dataset_author_linkednames dal on dal.dataset_id = d.id
          left join dataset_keywords dk on dk.dataset_id = d.id
          left join dataset_projects dp on dp.dataset_id = d.id
          left join dataset_types dt on dt.dataset_id = d.id

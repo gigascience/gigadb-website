@@ -16,12 +16,14 @@ class m220127_150844_search_materialized_views_gin_indexes extends CDbMigration
 	    //First query
         Yii::app()->db->createCommand("drop materialized view if exists file_finder")->execute();
 	    Yii::app()->db->createCommand("create materialized view file_finder as
-SELECT f.*, fs.sample_id as sample_id, d.upload_status as upload_status, coalesce(replace(f.name,'.',' '),'') || coalesce(f.description,'') || coalesce(a.attribute_name,'') || coalesce(fa.value,'')  as document
+SELECT f.*, fs.sample_id as sample_id, ff.name as file_format, ft.name as file_type, d.upload_status as upload_status, coalesce(f.name,'') || coalesce(f.description,'') || coalesce(a.attribute_name,'') || coalesce(fa.value,'')  as document
 	FROM file f
 	left join file_sample fs on f.id = fs.file_id
 	left join dataset d on d.id = f.dataset_id
 	left join file_attributes fa on f.id = fa.file_id
-	left join attribute a on a.id = fa.attribute_id")->execute();
+	left join attribute a on a.id = fa.attribute_id
+	left join file_type ft on f.type_id = ft.id
+	left join file_format ff on f.format_id = ff.id")->execute();
 
         Yii::app()->db->createCommand("drop index if exists file_finder_search_idx")->execute();
 	    Yii::app()->db->createCommand("create index file_finder_search_idx on file_finder using GIN (to_tsvector('english',document))")->execute();
@@ -29,7 +31,7 @@ SELECT f.*, fs.sample_id as sample_id, d.upload_status as upload_status, coalesc
 	    //Second query
         Yii::app()->db->createCommand("drop materialized view if exists sample_finder")->execute();
         Yii::app()->db->createCommand("create materialized view sample_finder as
-	select s.id as id, ds.dataset_id as dataset_id, sp.scientific_name as scientific_name, d.upload_status as upload_status, coalesce(s.name,'') || coalesce(s.consent_document, '') || coalesce(s.contact_author_name, '') || coalesce(sp.common_name, '') || coalesce(sp.genbank_name,'') || coalesce(sp.scientific_name, '') || coalesce(a.attribute_name,'') || coalesce(sa.value,'') as document 
+	select s.id as id, s.name as name, sp.common_name as species_common_name, sp.tax_id as species_tax_id , ds.dataset_id as dataset_id, d.identifier as dataset_identifer, sp.scientific_name as species_scientific_name, d.upload_status as upload_status, coalesce(s.name,'') || coalesce(s.consent_document, '') || coalesce(s.contact_author_name, '') || coalesce(sp.common_name, '') || coalesce(sp.genbank_name,'') || coalesce(sp.scientific_name, '') || coalesce(a.attribute_name,'') || coalesce(sa.value,'') as document 
 	from sample s
 		left join dataset_sample ds on ds.sample_id = s.id
 		left join species sp on sp.id = s.species_id
@@ -44,19 +46,26 @@ SELECT f.*, fs.sample_id as sample_id, d.upload_status as upload_status, coalesc
         Yii::app()->db->createCommand("drop materialized view if exists dataset_finder")->execute();
         Yii::app()->db->createCommand("create materialized view dataset_finder as
 	with dataset_author_fullnames as (
-		select dataset_id, string_agg(a.surname || ' '||a.first_name||' ' || a.middle_name, ';') as names 
+		select dataset_id, string_agg(coalesce(a.surname,'') || ' '||coalesce(a.first_name,'')||' ' || coalesce(a.middle_name,''), ';') as names 
 		from dataset_author da, author a 
 		where da.author_id = a.id 
 		group by dataset_id
 	)
 
 	, dataset_author_initialednames as (
-		select dataset_id, string_agg(a.surname||', '||substring(a.first_name,1,1)||', '||substring(a.middle_name,1,1), ';') as names 
+		select dataset_id, string_agg(coalesce(a.surname,'') ||' '||substring(coalesce(a.first_name,''),1,1) || substring(coalesce(a.middle_name,''),1,1), '; ') as names 
 		from dataset_author da, author a 
 		where da.author_id = a.id 
 		group by dataset_id
 	)
 
+	, dataset_author_linkednames as (
+		select dataset_id, string_agg('<a class=result-sub-links href=/search/new?keyword=' || coalesce(a.surname,'') ||','||substring(coalesce(a.first_name,''),1,1) || substring(coalesce(a.middle_name,''),1,1) || '&author_id=' || a.id || '>'|| coalesce(a.surname,'') ||' '|| substring(coalesce(a.first_name,''),1,1) || substring(coalesce(a.middle_name,''),1,1) || '</a>' , '; ') as authorlinks 
+		from dataset_author da, author a 
+		where da.author_id = a.id 
+		group by dataset_id
+	)
+	
 	, dataset_keywords as (
 		select dataset_id, string_agg(value, ';') as keywords
 		from dataset_attributes 
@@ -86,8 +95,13 @@ SELECT f.*, fs.sample_id as sample_id, d.upload_status as upload_status, coalesc
 	)
 		
 	select d.id as id, 
+		d.identifier as identifier,
 		d.upload_status as upload_status, 
 		d.publication_date as publication_date, 
+		'/dataset/' || d.identifier as shorturl,
+		dal.authorlinks as authornames,
+		d.title as title,
+		d.description as description,
 		coalesce(d.identifier,'') || coalesce(d.title,'') || coalesce(daf.names,'') || coalesce(dai.names,'') || coalesce(d.description,'') || coalesce(dt.types,'') || coalesce(dk.keywords,'') || coalesce(dp.names,'') || coalesce(m.identifier,'') || coalesce(m.pmid::varchar,'') || coalesce(df.grant_award, '') || coalesce(df.comments,'') || coalesce(fn.primary_name_display,'') || coalesce(el.external_links,'') as document
 	from dataset d
 	left join manuscript m on d.id = m.dataset_id
@@ -95,6 +109,7 @@ SELECT f.*, fs.sample_id as sample_id, d.upload_status as upload_status, coalesc
 	left join funder_name fn on fn.id = df.funder_id
 	left join dataset_author_fullnames daf on daf.dataset_id = d.id
 	left join dataset_author_initialednames dai on dai.dataset_id = d.id
+	left join dataset_author_linkednames dal on dal.dataset_id = d.id
 	left join dataset_keywords dk on dk.dataset_id = d.id
 	left join dataset_projects dp on dp.dataset_id = d.id
 	left join dataset_types dt on dt.dataset_id = d.id
