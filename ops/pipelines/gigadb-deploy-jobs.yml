@@ -55,8 +55,8 @@
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml up -d web
     # Need console container for psql commands
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml up -d console
-    - echo "Checking tbl_migration table before migrations..."
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm console bash -c "PGPASSWORD=$gigadb_db_password psql -P pager=off -h $gigadb_db_host -U gigadb -c 'select * from \"tbl_migration\";'"
+    # - echo "Checking tbl_migration table before migrations..."
+    # - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm console bash -c "PGPASSWORD=$gigadb_db_password psql -P pager=off -h $gigadb_db_host -U gigadb -c 'select * from \"tbl_migration\";'"
     - echo "Displaying column info for gigadb_user table before migrations..."
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm console bash -c "PGPASSWORD=$gigadb_db_password psql -P pager=off -h $gigadb_db_host -U gigadb -c '\d gigadb_user'"
     # Run database migrations if any
