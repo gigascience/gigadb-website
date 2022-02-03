@@ -1,11 +1,11 @@
 <div class="tab-content">
     <?php foreach($datasets['data'] as $dt) { ?>
     <?php
-        $keepRelated = function ($var) use ($dt) {
+        $filterOnDatasetId = function ($var) use ($dt) {
             return $var['dataset_id'] === $dt['id'];
         };
-        $dsamples = array_filter($samples['data'], $keepRelated);
-        $dfiles = array_filter($files['data'], $keepRelated) ;
+        $dsamples = array_filter($samples['data'], $filterOnDatasetId);
+        $dfiles = array_filter($files['data'], $filterOnDatasetId) ;
     ?>
     <div class="search-result-container">
         <!--Dataset section-->

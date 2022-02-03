@@ -39,10 +39,16 @@ class DatabaseSearch extends CApplicationComponent {
 
         $command->andWhere("s.upload_status = 'Published'", array());
 
-        if($ids)
-            $command->orWhere(array('in', 's.id', $ids));
+        $sampleResults = $command->queryAll();
 
-	    return $command->queryAll();
+        $extraResults = [];
+        if($ids) {
+            $command->selectDistinct("s.id, s.dataset_id, s.name,s.species_common_name, s.species_tax_id from sample_finder");
+            $command->where(array('in', 's.id', $ids));
+            $extraResults = $command->queryAll();
+        }
+
+	    return array_merge($sampleResults,$extraResults);
 
 	}
 
@@ -66,11 +72,15 @@ class DatabaseSearch extends CApplicationComponent {
             $linksStr = implode(" ", $links);
             $searchQuery .= " & $linksStr";
         }
+
+        if($author_id) {
+            $authorName = Author::model()->findByPk($author_id)->getDisplayName();
+            $searchQuery .= " & $authorName";
+
+        }
         $command->where("to_tsvector('english',d.document) @@ to_tsquery('$searchQuery')");
 
 
-        if($ids)
-            $command->orWhere(array('in', 'd.id', $ids));
 
         if($pubs['start'] && $pubs['end']) {
 	    	$command->andWhere("d.publication_date >= :d and d.publication_date <= :e", array(':d'=>$pubs['start'], ':e'=>$pubs['end']));
@@ -80,13 +90,19 @@ class DatabaseSearch extends CApplicationComponent {
 	    elseif($pubs['end'])
 	    	$command->andWhere("d.publication_date <= :d", array(':d'=>$pubs['end']));
 
-	    if($author_id)
-	    	$command->andWhere("da.author_id = :aid", array(':aid'=>$author_id));
-
 	    $command->andWhere("d.upload_status = 'Published'");
 	    $command->order(array('d.id desc'));
 
-	    return $command->queryAll();
+        $datasetResults = $command->queryAll();
+
+        $extraResults = [];
+        if($ids) {
+            $command->selectDistinct("d.id, d.shorturl, d.identifier, d.authornames, d.title, d.description from dataset_finder");
+            $command->where(array('in', 'd.id', $ids));
+            $extraResults = $command->queryAll();
+        }
+
+        return array_merge($datasetResults,$extraResults);
 	}
 
 	public function getListByKey($values, $key = 'id') {
@@ -144,7 +160,7 @@ class DatabaseSearch extends CApplicationComponent {
 			if(in_array('file', $display) && !in_array('sample', $display))
 				$dataset_ids = $file_datasets;
 
-			if(!in_array('sample', $display) && in_array('sample', $display))
+			if(!in_array('file', $display) && in_array('sample', $display))
 				$dataset_ids = $extra_datasets;
 		}
         if ("full" === $resultType) {
