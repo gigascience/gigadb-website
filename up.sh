@@ -55,11 +55,11 @@ docker-compose run --rm less
 docker-compose exec -T fuw-admin composer install
 
 # Install the NPM dependencies for the Javascript application and the ops scripts
-docker-compose run --rm js bash -c "npm install"
+#docker-compose run --rm js bash -c "npm install"
 docker-compose run --rm js bash -c "cd /var/www/ops/scripts/ && npm install"
 
 # Build and deploy the Javascript application
-docker-compose run --rm js
+#docker-compose run --rm js
 
 # Start Chome web driver container services for acceptance testing
 docker-compose up -d chrome
