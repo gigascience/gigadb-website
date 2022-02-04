@@ -1,5 +1,6 @@
 <?php
 use Facebook\WebDriver\WebDriverKeys;
+use Codeception\Util\Locator;
 
 /**
  * Code for implementing generic steps of feature files (non-generic should be in their support class)
@@ -77,7 +78,17 @@ class AcceptanceTester extends \Codeception\Actor
         $this->seeElement('input',['id' => $id, 'type' => "password"]);
     }
 
-
+    /**
+     * Looks for a button with a name that is the content in between
+     * it's button tags.
+     * 
+     * @Then I should see a :button button
+     */
+    public function iShouldSeeAButton($button)
+    {
+        $this->seeElement(Locator::contains('button', $button));
+    }
+    
     /**
      * @Then I should see a drop-down field :id with values
      */
@@ -236,4 +247,35 @@ class AcceptanceTester extends \Codeception\Actor
         $this->seeCurrentUrlEquals($path);
     }
 
+    /**
+     * @Then I should see :checkbox checkbox is not checked
+     */
+    public function iShouldSeeCheckboxIsNotChecked($checkbox)
+    {
+        $this->dontSeeCheckboxIsChecked($checkbox);
+    }
+
+    /**
+     * @Then I should see :checkbox checkbox is checked
+     */
+    public function iShouldSeeCheckboxIsChecked($checkbox)
+    {
+        $this->seeCheckboxIsChecked($checkbox);
+    }
+
+    /**
+     * @Then I check :checkbox checkbox
+     */
+    public function iCheckCheckbox($checkbox)
+    {
+        $this->checkOption($checkbox);
+    }
+
+    /**
+     * @Then I uncheck :checkbox checkbox
+     */
+    public function iUncheckCheckbox($checkbox)
+    {
+        $this->uncheckOption($checkbox);
+    }
 }
