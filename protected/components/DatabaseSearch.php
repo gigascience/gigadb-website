@@ -185,8 +185,9 @@ class DatabaseSearch extends CApplicationComponent {
         $model = new SearchForm;
 
         $criteria = array();
-        $criteria['keyword'] = strtolower($keyword);
-        $model->keyword = $keyword;
+        $criteria['keyword'] = preg_replace("/\s+/"," & ",$keyword);
+        $model->keyword = $criteria['keyword'];
+        Yii::log("Search query: ".$criteria['keyword'],"warning");
 
         $params = array('type','dataset_type' , 'author_id','project' , 'file_type' ,
                 'file_format' , 'pubdate_from' , 'pubdate_to', 'common_name'
