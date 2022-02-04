@@ -40,12 +40,15 @@ class DatabaseSearch extends CApplicationComponent {
         $command->andWhere("s.upload_status = 'Published'", array());
 
         $sampleResults = $command->queryAll();
+        $resultsIds = $this->getListByKey($sampleResults);
 
         $extraResults = [];
         if($ids) {
-            $command->selectDistinct("s.id, s.dataset_id, s.name,s.species_common_name, s.species_tax_id from sample_finder");
-            $command->where(array('in', 's.id', $ids));
-            $extraResults = $command->queryAll();
+            $newIdsToAdd = array_diff($ids,$resultsIds);
+            $extraResults = Yii::app()->db->createCommand()->selectDistinct("s.id, s.dataset_id, s.name,s.species_common_name, s.species_tax_id")
+            ->from("sample_finder s")
+            ->where(array('in', 's.id', $newIdsToAdd))
+            ->queryAll();
         }
 
 	    return array_merge($sampleResults,$extraResults);
@@ -94,12 +97,15 @@ class DatabaseSearch extends CApplicationComponent {
 	    $command->order(array('d.id desc'));
 
         $datasetResults = $command->queryAll();
+        $resultsIds = $this->getListByKey($datasetResults);
 
         $extraResults = [];
         if($ids) {
-            $command->selectDistinct("d.id, d.shorturl, d.identifier, d.authornames, d.title, d.description from dataset_finder");
-            $command->where(array('in', 'd.id', $ids));
-            $extraResults = $command->queryAll();
+            $newIdsToAdd = array_diff($ids,$resultsIds);
+            $extraResults = Yii::app()->db->createCommand()->selectDistinct("d.id, d.shorturl, d.identifier, d.authornames, d.title, d.description")
+                ->from("dataset_finder d")
+                ->where(array('in', 'd.id', $newIdsToAdd))
+                ->queryAll();
         }
 
         return array_merge($datasetResults,$extraResults);
@@ -137,24 +143,20 @@ class DatabaseSearch extends CApplicationComponent {
 
 	public function search($criteria, $resultType = "ids") {
 		$files = $this->findFile($criteria['keyword'], $criteria['filetypes'], $criteria['formats'], $criteria['size']);
-        Yii::log(print_r($files, true),"warning");
 		$file_ids = $this->getListByKey($files);
 
 		$extra_samples = $this->getListByKey($files, 'sample_id');
 		$file_datasets = $this->getListByKey($files, 'dataset_id');
 
 		$samples = $this->findSample($criteria['keyword'], $extra_samples, $criteria['names']);
-        Yii::log(print_r($samples, true),"warning");
-		$sample_ids = $this->getListByKey($samples);
-		$sample_datasets = $this->getListByKey($samples, 'dataset_id');
+        $sample_datasets = $this->getListByKey($samples, 'dataset_id');
 
-		$display = $criteria['display'];				
+        $display = $criteria['display'];
 		
 		$extra_datasets = array_unique(array_merge($file_datasets, $sample_datasets));
 		$datasets = $this->findDataset($criteria['keyword'], $criteria['author_id'], $extra_datasets, $criteria['types'], $criteria['projects'], $criteria['links'], $criteria['pubs']);
-        Yii::log(print_r($datasets, true),"warning");
 		$dataset_ids = $this->getListByKey($datasets);
-		
+
 		if(!in_array('dataset', $display)) {
 			
 			if(in_array('file', $display) && !in_array('sample', $display))
@@ -163,6 +165,7 @@ class DatabaseSearch extends CApplicationComponent {
 			if(!in_array('file', $display) && in_array('sample', $display))
 				$dataset_ids = $extra_datasets;
 		}
+
         if ("full" === $resultType) {
             return array(
                 'ids' =>  ["files" => $file_ids,"samples" => $sample_ids, "datasets" => $dataset_ids],
