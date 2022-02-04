@@ -23,7 +23,7 @@ Feature: Reset password
     And I should not see "Please tick here to confirm you have read and understood our Terms of use and Privacy Policy"
     And I should not see "User_terms" checkbox
 
-  @ok @wip
+  @ok
   Scenario: Check reset password functionality
     When I am on "/user/reset/username//style/float%3Aright"
     And I fill in the field of "name" "User[email]" with "user@mailinator.com"
