@@ -264,40 +264,35 @@ class UserController extends Controller {
         $this->render('activationNeeded', array('user'=>$this->loadUser())) ;
     }
 
-    # Look up user and reset password
+    /**
+     * Resets a password for a user.
+     * If reset is successful, the browser will be redirected to the
+     * /user/resetThanks page
+     */
     public function actionReset() {
         $this->layout='new_main';
-        $user = new User;
-        $user->newsletter=false;
-    	$user->email='';
-        $user->terms=false;
-        //$this->render('reset',array('user'=>$this->loadUser())) ;
-        if (isset($_POST['User'])) {
-        
-            $attrs = $_POST['User'];
-            $user = User::model()->findByAttributes(array('email' => trim($attrs['email'])));
-            if ($user !== null) {
-                Yii::log(__FUNCTION__."> reset found user $user->email", 'debug');
-                $user->password = $user->generatePassword(8);
-                $user->is_activated=true;
-                $user->terms= $attrs['terms'];
-                $user->newsletter= $attrs['newsletter'];
-                $user->encryptPassword();
 
+        if (isset($_POST['LostUserPassword'])) {
+            $email = $_POST['LostUserPassword']['email'];
+            $user = User::model()->findByAttributes(array('email' => $email));
+            if ($user !== null) {
+                Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Found user account for ".$email, 'info');
+                $user->password = $user->generatePassword(8);
+                $user->encryptPassword();
                 if ($user->save(false)) {
-                    Yii::log("Update password and prepare to send email");
-                    $this->sendPasswordEmail($user);
+                    Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": New temporary password saved for ".$email, 'info');
+//                    $this->sendPasswordEmail($user);
                 }
                 else {
-                    Yii::log(__FUNCTION__."> Error: could not save new user password", 'error');
+                    Yii::log("[ERROR] [".__CLASS__.".php] ".__FUNCTION__.": Could not save new user password for ".$email, 'error');
                 }
             }
             else {
-                Yii::log(__FUNCTION__."> User account not found for user ", 'error');
+                Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User account not found for ".$email, 'info');
             }
             $this->redirect(array('user/resetThanks'));
         }
-        $this->render('reset', array('model'=>$user));
+        $this->render('reset');
     }
 
     public function actionResetThanks() {
