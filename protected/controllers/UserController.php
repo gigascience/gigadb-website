@@ -429,7 +429,14 @@ class UserController extends Controller {
         Yii::log("Sent account activation email to $recipient, $subject");
     }
 
-    // Send password email
+    /**
+     * Sends an email to a user who has filled in the reset password form page 
+     * at /user/reset/username//style/float%3Aright. The email contains a link
+     * to the page that allows the user to reset their password.
+     * Used by actionReset() function.
+     * 
+     * @param $user
+     */
     private function sendPasswordEmail($user) {
         Yii::log(__FUNCTION__."> First step send email");
         $app_email_name = Yii::app()->params['app_email_name'];
