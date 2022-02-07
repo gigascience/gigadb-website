@@ -23,4 +23,12 @@ class FunctionalTester extends \Codeception\Actor
    /**
     * Define custom actions here
     */
+   public function signInAsAUser()
+   {
+       $this->amOnPage("/site/login");
+       $this->fillField(["id" => "LoginForm_username"], "user@gigadb.org");
+       $this->fillField(["id" => "LoginForm_password"], "gigadb");
+       $this->click("Login");
+       $this->see("John's GigaDB Page");
+   }
 }
