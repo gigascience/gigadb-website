@@ -12,20 +12,6 @@ modules:
         - \Helper\Functional
         - \Helper\MailHelper
         - Asserts
-        - WebDriver:
+        - PhpBrowser:
               url: 'http://gigadb.test'
-              window_size: 2000x3500
-              host: 'chrome'
-              port: 4444
-              browser: chrome
-              wait: 5
-              capabilities:
-                  "goog:chromeOptions":
-                      args: [ '--headless' ]
-                      w3c: false
-        - REST:
-            depends: PhpBrowser
-            url: 'http://gigadb.test'
-#        - PhpBrowser:
-#              url: 'http://gigadb.test'
     step_decorators: ~
