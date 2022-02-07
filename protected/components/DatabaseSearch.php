@@ -181,13 +181,12 @@ class DatabaseSearch extends CApplicationComponent {
 
 	public function searchByKey($keyword, $searchType = "api") {
 
-        $limit = 10;
+        $limit = Yii::app()->params['search_result_limit'];
         $model = new SearchForm;
 
         $criteria = array();
         $criteria['keyword'] = preg_replace("/\s+/"," & ",$keyword);
         $model->keyword = $criteria['keyword'];
-        Yii::log("Search query: ".$criteria['keyword'],"warning");
 
         $params = array('type','dataset_type' , 'author_id','project' , 'file_type' ,
                 'file_format' , 'pubdate_from' , 'pubdate_to', 'common_name'
@@ -231,14 +230,14 @@ class DatabaseSearch extends CApplicationComponent {
         $resultset = nil;
         if ("search" === $searchType) {
             $resultset = $this->search($criteria,"full");
+            $total_page = ceil(count($resultset['ids']['datasets'])/$limit);
         }
         else {
             $result = $this->search($criteria);
+            $total_page = ceil(count($result['datasets'])/$limit);
         }
         $model->query_result = CJSON::encode($result);
 
-        //Yii::log(print_r($result, true), 'debug');
-        $total_page = ceil(count($result['datasets'])/$limit);
 
         $list_dataset_types = Dataset::getTypeList($result['datasets']);
         $list_projects = Dataset::getProjectList($result['datasets']);
@@ -264,7 +263,7 @@ class DatabaseSearch extends CApplicationComponent {
                 'display' => $display,
                 'total_page'=>$total_page,
                 'page'=>1,
-                'limit'=> 10,
+                'limit'=> $limit,
             );
         }
         else  {
@@ -282,7 +281,7 @@ class DatabaseSearch extends CApplicationComponent {
                 'display' => $display,
                 'total_page'=>$total_page,
                 'page'=>1,
-                'limit'=> 10,
+                'limit'=> $limit,
             );
         }
 	}

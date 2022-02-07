@@ -6,3 +6,4 @@ shell_exec("./protected/yiic migrate --connectionID=db --migrationPath=applicati
 shell_exec("./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.data.dev --interactive=0");
 shell_exec("./protected/yiic sequencefixer fixAll");
 shell_exec("./protected/yiic custommigrations refreshmaterializedviews");
+shell_exec("./protected/yiic configchange searchresult --limit=2");

@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
 <script>
 document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
   $("#search-pg").twbsPagination({
-        totalPages: <?= $total_page ?>,
+        totalPages: <?php echo $total_page ?>,
         visiblePages: 5,
         onPageClick: function (event, page) {
             url = document.URL;

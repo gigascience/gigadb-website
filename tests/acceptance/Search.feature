@@ -8,6 +8,7 @@ Feature: main search function
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "penguin"
     And I press the button "Search"
+    And I wait "1" seconds
     Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
     And I should see a link "Pygoscelis_adeliae" to "/dataset/100006"
     And I should see the files:
@@ -19,3 +20,26 @@ Feature: main search function
     | Pygoscelis_adeliae.c... | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.cds.gz              | Coding sequence | 6.43 MiB |
     | Pygoscelis_adeliae.p... | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.pep.gz              | Protein sequence | 4.17 MiB|
     | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
+
+  @ok
+  Scenario: pagination show correct number of pages
+    Given I am on "/"
+    When I fill in the field of "id" "keyword" with "genome"
+    And I press the button "Search"
+    And I wait "1" seconds
+    Then I should see "Showing 1 - 2 of 3 datasets"
+    And I should see a link "Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies." to "/dataset/100094"
+    And I should see a link "Genome data from foxtail millet (<em>Setaria italica</em>)." to "/dataset/100020"
+    And I should not see "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)."
+    And I should see a link "1" to ""
+    And I should see a link "2" to ""
+
+  @ok
+  Scenario: Can navigate to the next page
+    Given I am on "/"
+    And I fill in the field of "id" "keyword" with "genome"
+    And I press the button "Search"
+    And I wait "1" seconds
+    When I follow "2"
+    Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    And I should not see "Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies."

@@ -50,5 +50,8 @@ return array(
         'mds_username' => '${MDS_USERNAME}',
         'mds_password' => '${MDS_PASSWORD}',
         'mds_prefix' => '${MDS_PREFIX}',
+
+        // search parameters
+        'search_result_limit' => '${SEARCH_RESULT_LIMIT}',
     ),
 );
