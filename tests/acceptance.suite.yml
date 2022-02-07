@@ -26,16 +26,10 @@ modules:
                   "goog:chromeOptions":
                       args: ['--headless']
                       w3c: false
-                      prefs:
-                        download.default_directory: '/tests/_data'
-                        download.prompt_for_download: false
                   "goog:loggingPrefs":
                       browser: ALL
                   "loggingPrefs":
                       browser: ALL
-        - REST:
-            depends: PhpBrowser
-            url: 'http://gigadb.test'
     step_decorators: ~
 
 gherkin:
