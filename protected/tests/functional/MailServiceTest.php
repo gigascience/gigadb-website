@@ -129,8 +129,9 @@ class MailServiceTest extends FunctionalTesting
             $subject = "Test HTML message";
             $body = "<h1>Hello World</h1>";
             $filepath = "/var/www/images/new_interface_image/frog.jpg";
-            $result = Yii::app()->mailService->sendHTMLEmailWithAttachment($from, $to, $subject, $body, $filepath);
-            $this->assertTrue($result, "Problem sending email using MailService sendHTMLEmail function");
+            $filename = "frog.jpg";
+            $result = Yii::app()->mailService->sendHTMLEmailWithAttachment($from, $to, $subject, $body, $filepath, $filename);
+            $this->assertTrue($result, "Problem sending email using MailService sendHTMLEmailWithAttachment function");
             $msg = $this->getLastMessage();
 
             $parser = new PhpMimeMailParser\Parser();
