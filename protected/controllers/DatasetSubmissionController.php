@@ -60,7 +60,8 @@ class DatasetSubmissionController extends Controller
         if (isset($_POST['userId'])) {
             $user = User::model()->findByPk(Yii::app()->user->id);
             $excelFile = CUploadedFile::getInstanceByName('xls');
-            $excelTempFileName = $excelFile->tempName;
+            $uploadedFilePath = $excelFile->tempName;
+            $filename = $excelFile->name;
             $subject = "New dataset uploaded by user ".$user->id." - ".$user->first_name.' '.$user->last_name;
             $receiveNewsletter = $user->newsletter ? 'Yes' : 'No';
             $message = <<<EO_MAIL
@@ -81,7 +82,7 @@ Receiving Newsletter:  <b>{$receiveNewsletter}</b>
 <br/><br/>
 EO_MAIL;
 
-            $email_status = Yii::app()->mailService->sendHTMLEmailWithAttachment(Yii::app()->params['app_email'], Yii::app()->params['adminEmail'], Yii::app()->params['email_prefix'] . $subject, $message, $excelTempFileName);
+            $email_status = Yii::app()->mailService->sendHTMLEmailWithAttachment(Yii::app()->params['app_email'], Yii::app()->params['adminEmail'], Yii::app()->params['email_prefix'] . $subject, $message, $uploadedFilePath, $filename);
             if ($email_status) {
                 $this->redirect('/datasetSubmission/upload/status/successful');
                 return;
