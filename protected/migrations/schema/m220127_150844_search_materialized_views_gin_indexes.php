@@ -16,7 +16,7 @@ class m220127_150844_search_materialized_views_gin_indexes extends CDbMigration
 	    //First query
         Yii::app()->db->createCommand("drop materialized view if exists file_finder")->execute();
 	    Yii::app()->db->createCommand("create materialized view file_finder as
-SELECT f.*, fs.sample_id as sample_id, ff.name as file_format, ft.name as file_type, d.upload_status as upload_status, coalesce(replace(f.name,'.',' '),'') || coalesce(f.description,'') || coalesce(a.attribute_name,'') || coalesce(fa.value,'')  as document
+SELECT f.*, fs.sample_id as sample_id, ff.name as file_format, ft.name as file_type, d.upload_status as upload_status, coalesce(replace(f.name,'.',' '),'') || coalesce(f.description,'') || coalesce(a.attribute_name,'') || coalesce(fa.value,'') || coalesce(d.title,'') as document
 	FROM file f
 	left join file_sample fs on f.id = fs.file_id
 	left join dataset d on d.id = f.dataset_id
@@ -31,7 +31,7 @@ SELECT f.*, fs.sample_id as sample_id, ff.name as file_format, ft.name as file_t
 	    //Second query
         Yii::app()->db->createCommand("drop materialized view if exists sample_finder")->execute();
         Yii::app()->db->createCommand("create materialized view sample_finder as
-	select s.id as id, s.name as name, sp.common_name as species_common_name, sp.tax_id as species_tax_id , ds.dataset_id as dataset_id, d.identifier as dataset_identifer, sp.scientific_name as species_scientific_name, d.upload_status as upload_status, coalesce(s.name,'') || coalesce(s.consent_document, '') || coalesce(s.contact_author_name, '') || coalesce(sp.common_name, '') || coalesce(sp.genbank_name,'') || coalesce(sp.scientific_name, '') || coalesce(a.attribute_name,'') || coalesce(sa.value,'') as document 
+	select s.id as id, s.name as name, sp.common_name as species_common_name, sp.tax_id as species_tax_id , ds.dataset_id as dataset_id, d.identifier as dataset_identifer, sp.scientific_name as species_scientific_name, d.upload_status as upload_status, coalesce(s.name,'') || coalesce(s.consent_document, '') || coalesce(s.contact_author_name, '') || coalesce(sp.common_name, '') || coalesce(sp.genbank_name,'') || coalesce(sp.scientific_name, '') || coalesce(a.attribute_name,'') || coalesce(sa.value,'') || coalesce(d.title,'') as document 
 	from sample s
 		left join dataset_sample ds on ds.sample_id = s.id
 		left join species sp on sp.id = s.species_id
