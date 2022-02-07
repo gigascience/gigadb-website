@@ -296,8 +296,7 @@ services:
 
   chrome:
     <<: *logging
-#    image: selenium/standalone-chrome:3.141.59-oxygen # latest version with Chrome 74
-    image: selenium/standalone-chrome:97.0
+    image: selenium/standalone-chrome:3.141.59-oxygen # latest version with Chrome 74
     shm_size: '1gb' # to avoid a known issue
     ports:
       # - "5900:5900" #for VNC access
