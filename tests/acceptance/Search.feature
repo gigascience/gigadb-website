@@ -83,3 +83,33 @@ Feature: main search function
       | download link title | download link url| file type | size |
       | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
     And I should not see "Pygoscelis_adeliae."
+
+  @ok
+  Scenario: can limit search to specific year
+    Given I am on "/"
+    When I fill in the field of "id" "keyword" with "genome & 2011"
+    And I press the button "Search"
+    And I wait "1" seconds
+    Then I should see "Showing 1 - 2 of 2 datasets"
+    And I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    And I should see a link "Genome data from foxtail millet (<em>Setaria italica</em>)." to "/dataset/100020"
+
+  @ok
+  Scenario: can limit search to specific month
+    Given I am on "/"
+    When I fill in the field of "id" "keyword" with "genome & 2011-11"
+    And I press the button "Search"
+    And I wait "1" seconds
+    Then I should see "Showing 1 - 1 of 1 datasets"
+    And I should see a link "Genome data from foxtail millet (<em>Setaria italica</em>)." to "/dataset/100020"
+    And I should not see "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)."
+
+  @ok
+  Scenario: can limit search to specific day
+    Given I am on "/"
+    When I fill in the field of "id" "keyword" with "genome & 2011-07-06"
+    And I press the button "Search"
+    And I wait "1" seconds
+    Then I should see "Showing 1 - 1 of 1 datasets"
+    And I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    And I should not see "Genome data from foxtail millet (<em>Setaria italica</em>)."

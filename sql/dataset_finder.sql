@@ -52,11 +52,14 @@ select d.id as id,
        d.identifier as identifier,
        d.upload_status as upload_status,
        d.publication_date as publication_date,
+       'published:' || to_char(d.publication_date,'YYYY-MM-DD') as dayofpublication,
+       'published:' || to_char(d.publication_date,'YYYY-MM') as monthofpublication,
+       'published:' || to_char(d.publication_date,'YYYY') as yearofpublication,
        '/dataset/' || d.identifier as shorturl,
        dal.authorlinks as authornames,
        d.title as title,
        d.description as description,
-       coalesce(d.identifier,'') || coalesce(d.title,'') || coalesce(daf.names,'') || coalesce(dai.names,'') || coalesce(d.description,'') || coalesce(dt.types,'') || coalesce(dk.keywords,'') || coalesce(dp.names,'') || coalesce(m.identifier,'') || coalesce(m.pmid::varchar,'') || coalesce(df.grant_award, '') || coalesce(df.comments,'') || coalesce(fn.primary_name_display,'') || coalesce(el.external_links,'') as document
+       coalesce(d.identifier,'') || coalesce(d.title,'') || coalesce(daf.names,'') || coalesce(dai.names,'') || coalesce(d.description,'') || coalesce(dt.types,'') || coalesce(dk.keywords,'') || coalesce(dp.names,'') || coalesce(m.identifier,'') || coalesce(m.pmid::varchar,'') || coalesce(df.grant_award, '') || coalesce(df.comments,'') || coalesce(fn.primary_name_display,'') || coalesce(el.external_links,'') || 'published:' || to_char(d.publication_date,'YYYY-MM-DD') || ',' || to_char(d.publication_date,'YYYY-MM') || ',' || to_char(d.publication_date,'YYYY')as document
 from dataset d
          left join manuscript m on d.id = m.dataset_id
          left join dataset_funder df on df.dataset_id = d.id
