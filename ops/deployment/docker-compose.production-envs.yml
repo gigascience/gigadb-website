@@ -25,7 +25,6 @@ services:
       - ${DATA_SAVE_PATH}/fuw/repo:/var/www/filedrop
       # public download path (TODO: temporary, to revisit in storage work stream)
       - /tmp:/var/www/datasetfiles
-      - templates:/var/www/files/templates
     ports:
       - "${REMOTE_PUBLIC_HTTP_PORT}:80"
       - "${REMOTE_PUBLIC_HTTPS_PORT}:443"
@@ -60,7 +59,6 @@ services:
     volumes:
       - assets:/var/www/assets
       - feeds:/var/www/files/data
-      - templates:/var/www/files/templates
     expose:
       - "9000"
     networks:
@@ -316,4 +314,3 @@ volumes:
   le_webrootpath:
   feeds:
   portainer_data:
-  templates:
