@@ -94,11 +94,11 @@ if (isset($_GET['status'])) {
                             <br/>
                             <div class="clear"></div>
                             <div class="pull-right">
-                                <?php echo CHtml::submitButton('Upload New Dataset', array('class' => 'btn-green upload-control', 'disabled' => 'disabled', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
+                                <?php echo CHtml::submitButton('Upload New Dataset', array('class' => 'btn-green submit-button-control', 'disabled' => 'disabled', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
                             </div>
                             <?php echo CHtml::hiddenField('userId', Yii::app()->user->id); ?>
                             <?php echo CHtml::label('Excel File', 'xls'); ?>
-                            <?php echo CHtml::fileField('xls', null, array('disabled' => 'disabled', 'class' => 'upload-control', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
+                            <?php echo CHtml::fileField('xls', null, array('disabled' => 'disabled', 'class' => 'file-upload-control', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
                             <?php echo CHtml::endForm(); ?>
 
                         </div>
@@ -137,7 +137,7 @@ if (isset($_GET['status'])) {
                         <div class="clear"></div>
                         <?php echo CHtml::form(Yii::app()->createUrl('datasetSubmission/create1'), 'post', array('enctype' => 'multipart/form-data')); ?>
                         <div class="pull-right">
-                            <?php echo CHtml::submitButton('Submission wizard', array('id' => 'online', 'class' => 'btn-green', 'disabled' => 'disabled', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
+                            <?php echo CHtml::submitButton('Submission wizard', array('id' => 'online', 'class' => 'btn-green', 'disabled' => 'disabled', 'title' => 'You must agree to the terms and conditions before continuing.', 'onclick' => 'GFG_Fun()')); ?>
                         </div>
                         <br/>
                     </div>
@@ -152,10 +152,13 @@ if (isset($_GET['status'])) {
         $(function() {
             $('#agree-checkbox').click(function() {
                 if ($(this).is(':checked')) {
-                    $('.upload-control').attr('disabled', false);
+                    $('.file-upload-control').attr('disabled', false);
                 } else {
-                    $('.upload-control').attr('disabled', true);
+                    $('.file-upload-control').attr('disabled', true);
                 }
+            });
+            $('#xls').change(function (){
+                $('.submit-button-control').attr('disabled', false);
             });
             $('#agree-checkbox1').click(function() {
                 if ($(this).is(':checked')) {
@@ -165,5 +168,16 @@ if (isset($_GET['status'])) {
                 }
             });
         });
+    </script>
+    
+    <script>
+        function GFG_Fun() {
+            if ($('#xls')[0].files.length === 0) ) {
+                $('.submit-button-control').attr('disabled', true);
+            }
+            else {
+                $('.submit-button-control').attr('disabled', false);
+            }
+        }
     </script>
 <? } ?>
