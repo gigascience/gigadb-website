@@ -25,17 +25,17 @@
                                     'limit'=>$limit
                               ));?> </p>
                           
-                           <div>
-                                <? $this->renderPartial("_filter", array(
-                                          'model' => $model,
-                                          'list_dataset_types' => $list_dataset_types,
-                                          'list_projects' => $list_projects,
-                                          'list_ext_types' => $list_ext_types,
-                                          'list_filetypes' => $list_filetypes,
-                                          'list_formats' => $list_formats,
-                                          'list_common_names' => $list_common_names
-                                             )) ?>
-                            </div>
+<!--                           <div>-->
+<!--                                --><?// $this->renderPartial("_filter", array(
+//                                          'model' => $model,
+//                                          'list_dataset_types' => $list_dataset_types,
+//                                          'list_projects' => $list_projects,
+//                                          'list_ext_types' => $list_ext_types,
+//                                          'list_filetypes' => $list_filetypes,
+//                                          'list_formats' => $list_formats,
+//                                          'list_common_names' => $list_common_names
+//                                             )) ?>
+<!--                            </div>-->
                              </div>
                         
                     <div class="col-xs-8">
