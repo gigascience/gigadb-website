@@ -7,9 +7,9 @@ set -u
 
 mkdir "tests/_data/upload"
 
-curl --url "http://gigadb.gigasciencejournal.com:9170/files/templates/GigaDBUploadForm-forWebsite-v22Dec2021.xlsx" --output "tests/_data/upload/GigaDBUploadForm-forWebsite-v22Dec2021.xlsx"
-curl --url "http://gigadb.gigasciencejournal.com:9170/files/templates/GigaDBUpload-Example1-forWebsite-v22Dec2021.xlsx" --output "tests/_data/upload/GigaDBUpload-Example1-forWebsite-v22Dec2021.xlsx"
-curl --url "http://gigadb.gigasciencejournal.com:9170/files/templates/GigaDBUpload-Example2-forWebsite-v22Dec2021.xlsx" --output "tests/_data/upload/GigaDBUpload-Example2-forWebsite-v22Dec2021.xlsx"
+curl --url "http://gigadb.dev/files/templates/GigaDBUploadForm-forWebsite-v22Dec2021.xlsx" --output "tests/_data/upload/GigaDBUploadForm-forWebsite-v22Dec2021.xlsx"
+curl --url "http://gigadb.dev/files/templates/GigaDBUpload-Example1-forWebsite-v22Dec2021.xlsx" --output "tests/_data/upload/GigaDBUpload-Example1-forWebsite-v22Dec2021.xlsx"
+curl --url "http://gigadb.dev/files/templates/GigaDBUpload-Example2-forWebsite-v22Dec2021.xlsx" --output "tests/_data/upload/GigaDBUpload-Example2-forWebsite-v22Dec2021.xlsx"
 
 # Check the existence of the files
 # Expected files and their path
