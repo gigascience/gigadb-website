@@ -155,6 +155,7 @@ if (isset($_GET['status'])) {
                     $('.file-upload-control').attr('disabled', false);
                 } else {
                     $('.file-upload-control').attr('disabled', true);
+                    $('.submit-button-control').attr('disabled', true);
                 }
             });
             $('#xls').change(function (){
