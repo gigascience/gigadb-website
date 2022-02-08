@@ -137,7 +137,7 @@ if (isset($_GET['status'])) {
                         <div class="clear"></div>
                         <?php echo CHtml::form(Yii::app()->createUrl('datasetSubmission/create1'), 'post', array('enctype' => 'multipart/form-data')); ?>
                         <div class="pull-right">
-                            <?php echo CHtml::submitButton('Submission wizard', array('id' => 'online', 'class' => 'btn-green', 'disabled' => 'disabled', 'title' => 'You must agree to the terms and conditions before continuing.', 'onclick' => 'GFG_Fun()')); ?>
+                            <?php echo CHtml::submitButton('Submission wizard', array('id' => 'online', 'class' => 'btn-green', 'disabled' => 'disabled', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
                         </div>
                         <br/>
                     </div>
@@ -169,16 +169,5 @@ if (isset($_GET['status'])) {
                 }
             });
         });
-    </script>
-    
-    <script>
-        function GFG_Fun() {
-            if ($('#xls')[0].files.length === 0) ) {
-                $('.submit-button-control').attr('disabled', true);
-            }
-            else {
-                $('.submit-button-control').attr('disabled', false);
-            }
-        }
     </script>
 <? } ?>
