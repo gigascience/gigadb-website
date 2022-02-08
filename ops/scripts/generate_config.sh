@@ -64,7 +64,7 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     PUBLIC_HTTP_PORT=$REMOTE_PUBLIC_HTTP_PORT
     PUBLIC_HTTPS_PORT=$REMOTE_PUBLIC_HTTPS_PORT
     SERVER_HOSTNAME=$REMOTE_HOSTNAME
-    PHP_MEM=128M
+    PHP_MEM=512M
 fi
 
 # restore default settings for variables
