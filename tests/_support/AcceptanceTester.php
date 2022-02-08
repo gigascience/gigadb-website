@@ -137,6 +137,14 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see a disabled submit button :value
+     */
+    public function iShouldSeeADisabledSubmitButton($value)
+    {
+        $this->seeElement(Locator::find('input', ['type' => 'submit', 'value' => $value, 'disabled' =>'disabled']));
+    }
+
+    /**
      * @When I fill in the field of :attribute :fieldName with :value
      */
     public function iFillInTheFieldOfWith($attribute, $fieldName, $value)

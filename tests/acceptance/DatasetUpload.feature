@@ -22,3 +22,10 @@ Scenario: Upload dataset metadata with an Excel spreadsheet
   And I press the button "Upload New Dataset"
   Then I should see "Your GigaDB submission has been received and is currently under review."
   And I should see a link "Back to upload new dataset" to "/datasetSubmission/upload"
+
+@ok
+Scenario: Ensure submit button is disabled after checking terms checkbox
+  Given I sign in as a user
+  And I am on "/datasetSubmission/upload"
+  When I check "agree-checkbox" checkbox
+  Then I should see a disabled submit button "Upload New Dataset"
