@@ -3,7 +3,7 @@ Feature: main search function
   I want to be able to search GigaDB
   So that I can find the information I need
 
-  @wip
+  @ok
   Scenario: basic search
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "penguin"
@@ -43,3 +43,43 @@ Feature: main search function
     When I follow "2"
     Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
     And I should not see "Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies."
+
+  @ok
+  Scenario: Can search compound term without operator
+    Given I am on "/"
+    When I fill in the field of "id" "keyword" with "penguin readme"
+    And I press the button "Search"
+    And I wait "1" seconds
+    Then I should see "Showing 1 - 1 of 1 datasets"
+    And I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    And I should see the files:
+      | download link title | download link url| file type | size |
+      | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
+    And I should not see "Pygoscelis_adeliae."
+
+
+  @ok
+  Scenario: Can search compound term with operator
+    Given I am on "/"
+    When I fill in the field of "id" "keyword" with "penguin & readme"
+    And I press the button "Search"
+    And I wait "1" seconds
+    Then I should see "Showing 1 - 1 of 1 datasets"
+    And I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    And I should see the files:
+      | download link title | download link url| file type | size |
+      | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
+    And I should not see "Pygoscelis_adeliae."
+
+  @ok
+  Scenario: Can search compound term with double quotes
+    Given I am on "/"
+    When I fill in the field of "id" "keyword" with "\"penguin readme\""
+    And I press the button "Search"
+    And I wait "1" seconds
+    Then I should see "Showing 1 - 1 of 1 datasets"
+    And I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    And I should see the files:
+      | download link title | download link url| file type | size |
+      | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
+    And I should not see "Pygoscelis_adeliae."

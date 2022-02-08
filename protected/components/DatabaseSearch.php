@@ -1,4 +1,7 @@
 <?php
+
+use CompatibilityHelper;
+
 class DatabaseSearch extends CApplicationComponent {
 
 	public function findFile($keyword,$filetypes = array(),$formats = array(), $size = array()) {
@@ -185,7 +188,14 @@ class DatabaseSearch extends CApplicationComponent {
         $model = new SearchForm;
 
         $criteria = array();
-        $criteria['keyword'] = preg_replace("/\s+/"," & ",$keyword);
+
+        if (true === CompatibilityHelper::str_contains($keyword,"&")) {
+           $criteria['keyword'] = $keyword;
+        }
+        else {
+           $criteria['keyword'] = preg_replace("/\s+/"," & ",$keyword);
+        }
+
         $model->keyword = $criteria['keyword'];
 
         $params = array('type','dataset_type' , 'author_id','project' , 'file_type' ,
