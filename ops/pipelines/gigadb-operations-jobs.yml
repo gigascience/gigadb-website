@@ -107,6 +107,18 @@ ld_reset_migration:
     when: on_failure
     expire_in: 1 week
 
+.refresh_search:
+  extends: .remote_compose
+  stage: operations
+  script:
+    - *configure-docker-compose
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations refreshmaterializedviews
+  when: manual
+  artifacts:
+    untracked: true
+    when: on_failure
+    expire_in: 1 week
+
 sd_teardown:
   variables:
     GIGADB_ENV: "staging"
@@ -131,6 +143,22 @@ sd_start_app:
   stage: staging deploy
   environment:
     name: staging
+
+sd_refresh_search:
+  variables:
+    GIGADB_ENV: "staging"
+  extends: .refresh_search
+  stage: staging deploy
+  environment:
+    name: staging
+
+ld_refresh_search:
+  variables:
+    GIGADB_ENV: "live"
+  extends: .refresh_search
+  stage: live deploy
+  environment:
+    name: live
 
 ld_stop_app:
   variables:

@@ -64,6 +64,7 @@
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm less
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefiletypes
     - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefileformats
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations refreshmaterializedviews
     # Spin up portainer container
     - ./ops/scripts/start_portainer.sh
     # Generate the web certificate for TLS termination on web container.
