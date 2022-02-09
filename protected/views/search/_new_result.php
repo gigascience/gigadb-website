@@ -60,7 +60,6 @@
                 <div class="span3 file-name"><a href="<?php echo $file['location'] ?>"><?php echo strlen($file['name']) > 20 ? substr($file['name'], 0, 20). '...' : $file['name'] ?></a></div>
                 <div class="span2 file-type"><?php echo $file['file_type'] ?></div>
                 <div class="span2 file-size"><?php echo CHtml::encode(File::specifySizeUnits($file['size'],null, 2))?></div>
-                <div class="span1 file-checkbox"><input type="checkbox" ></div>
             </div>
             <?php }} ?>
 	</div>
