@@ -113,3 +113,42 @@ Feature: main search function
     Then I should see "Showing 1 - 1 of 1 datasets"
     And I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
     And I should not see "Genome data from foxtail millet (<em>Setaria italica</em>)."
+
+  @ok
+  Scenario: Limit results to datasets
+    Given I am on "/"
+    When I fill in the field of "id" "keyword" with "penguin"
+    And I press the button "Search"
+    And I wait "1" seconds
+    And I check the field "type_0"
+    And I press the button "Apply Filter"
+    And I wait "1" seconds
+    Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    And I should not see "Pygoscelis_adeliae"
+
+  @ok
+  Scenario: Limit results to samples
+    Given I am on "/"
+    When I fill in the field of "id" "keyword" with "penguin"
+    And I press the button "Search"
+    And I wait "1" seconds
+    And I check the field "type_1"
+    And I press the button "Apply Filter"
+    And I wait "1" seconds
+    Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    Then I should see a link "Pygoscelis_adeliae" to "/dataset/100006"
+    And I should not see "Pygoscelis_adeliae."
+
+
+  @ok
+  Scenario: Limit results to files
+    Given I am on "/"
+    When I fill in the field of "id" "keyword" with "penguin"
+    And I press the button "Search"
+    And I wait "1" seconds
+    And I check the field "type_2"
+    And I press the button "Apply Filter"
+    And I wait "1" seconds
+    Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    Then I should see a link "Pygoscelis_adeliae.s..." to "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz"
+    And I should not see "Adelie penguin NCBI taxonomy"

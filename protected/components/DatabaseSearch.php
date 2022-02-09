@@ -250,12 +250,6 @@ class DatabaseSearch extends CApplicationComponent {
 
 
         $list_dataset_types = Dataset::getTypeList($result['datasets']);
-        $list_projects = Dataset::getProjectList($result['datasets']);
-        $list_ext_types = Dataset::getExtLinkList($result['datasets']);
-
-        $list_common_names = Sample::getCommonList($result['samples']);
-        $list_formats = File::getFormatList($result['files']);
-        $list_filetypes = File::getTypeList($result['files']);
 
 
         if ("search" === $searchType) {
@@ -265,11 +259,6 @@ class DatabaseSearch extends CApplicationComponent {
                 'files'=> array('data'=> $resultset['results']['files'], 'total' => count($resultset['ids']['files'])),
                 'model'=>$model,
                 'list_dataset_types'=>$list_dataset_types,
-                'list_projects'=>$list_projects,
-                'list_ext_types'=>$list_ext_types,
-                'list_common_names'=>$list_common_names,
-                'list_formats'=>$list_formats,
-                'list_filetypes'=>$list_filetypes,
                 'display' => $display,
                 'total_page'=>$total_page,
                 'page'=>1,
@@ -277,6 +266,12 @@ class DatabaseSearch extends CApplicationComponent {
             );
         }
         else  {
+            $list_projects = Dataset::getProjectList($result['datasets']);
+            $list_ext_types = Dataset::getExtLinkList($result['datasets']);
+
+            $list_common_names = Sample::getCommonList($result['samples']);
+            $list_formats = File::getFormatList($result['files']);
+            $list_filetypes = File::getTypeList($result['files']);
             return  array(
                 'datasets' => array('data'=>$result['datasets'], 'total'=>count($result['datasets'])),
                 'samples'=> array('data'=> $result['samples'], 'total' => count($result['samples'])),
@@ -294,7 +289,7 @@ class DatabaseSearch extends CApplicationComponent {
                 'limit'=> $limit,
             );
         }
-	}
+    }
 }
 
 ?>
