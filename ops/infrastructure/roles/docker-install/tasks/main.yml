@@ -7,8 +7,6 @@
     - device-mapper-persistent-data
     - lvm2
 
-- name: enable Docker-CE stable repo
-  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
 - name: Disable Centos firewall for now (still have AWS SG safety net)
   systemd:

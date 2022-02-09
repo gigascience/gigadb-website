@@ -67,19 +67,6 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     PHP_MEM=128M
 fi
 
-
-if [[ "$GIGADB_ENV" == "dev" ]];then
-  INVALIDATION_QUERY="'select now();'"
-else
-  INVALIDATION_QUERY="'with
-the_dataset_log as (
-select max(created_at) as latest from dataset_log where dataset_id=@id
-),
-the_curation_log as (
-select max(creation_date) as latest from curation_log where dataset_id=@id
-)
-select d.latest,c.latest from the_dataset_log d, the_curation_log c;'"
-fi
 # restore default settings for variables
 set +a
 
@@ -122,9 +109,19 @@ TARGET=${APP_SOURCE}/protected/config/console.php
 VARS='$NONE'
 envsubst $VARS < $SOURCE > $TARGET
 
+
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+  export YII_TRACE_LEVEL=${YII_TRACE_LEVEL:-"0"}
+  export YII_DEBUG=${YII_DEBUG:-"false"}
+  export DISABLE_CACHE=${DISABLE_CACHE:-"false"}
+else
+  export YII_TRACE_LEVEL=${YII_TRACE_LEVEL:-"3"}
+  export YII_DEBUG=${YII_DEBUG:-"true"}
+  export DISABLE_CACHE=${DISABLE_CACHE:-"true"}
+fi;
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/index.${GIGADB_ENV}.php.dist
 TARGET=${APP_SOURCE}/index.php
-VARS='$YII_PATH:$APP_SOURCE'
+VARS='$YII_DEBUG:$YII_TRACE_LEVEL:$DISABLE_CACHE'
 envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/yiic.php.dist
@@ -146,7 +143,7 @@ envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/main.php.dist
 TARGET=${APP_SOURCE}/protected/config/main.php
-VARS='$OPAUTH_SECURITY_SALT:$FACEBOOK_APP_ID:$FACEBOOK_APP_SECRET:$LINKEDIN_API_KEY:$LINKEDIN_SECRET_KEY:$GOOGLE_CLIENT_ID:$GOOGLE_SECRET:$TWITTER_KEY:$TWITTER_SECRET:$ORCID_CLIENT_ID:$ORCID_CLIENT_SECRET:$ORCID_CLIENT_ENVIRONMENT:$FTP_CONNECTION_URL:$INVALIDATION_QUERY'
+VARS='$OPAUTH_SECURITY_SALT:$FACEBOOK_APP_ID:$FACEBOOK_APP_SECRET:$LINKEDIN_API_KEY:$LINKEDIN_SECRET_KEY:$GOOGLE_CLIENT_ID:$GOOGLE_SECRET:$TWITTER_KEY:$TWITTER_SECRET:$ORCID_CLIENT_ID:$ORCID_CLIENT_SECRET:$ORCID_CLIENT_ENVIRONMENT:$FTP_CONNECTION_URL'
 envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/db.json.dist

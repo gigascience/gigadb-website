@@ -210,6 +210,7 @@ b_gigadb:
 build_staging:
   variables:
     GIGADB_ENV: "staging"
+    YII_DEBUG: "true"
   extends: .pb_gigadb
   stage: staging build
   environment:

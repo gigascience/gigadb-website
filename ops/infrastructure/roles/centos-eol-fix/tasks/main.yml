@@ -1,0 +1,34 @@
+- name: Replace release version from Centos 8 to 8-Stream
+  copy:
+    content: "8-stream"
+    dest: /etc/yum/vars/releasever
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install epel-release
+  dnf:
+    name: epel-release
+    state: present
+
+- name: Replace releasever in EPEL repos with 8
+  shell: sed -i 's/$releasever/8/g' /etc/yum.repos.d/epel*.repo
+  
+- name:
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://download.postgresql.org/pub/repos/yum/RPM-GPG-KEY-PGDG
+
+- name: install PostgreSQL 11 repository
+  yum:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: present
+
+- name: Replace releasever in EPEL and pgdg repos with 8
+  shell: sed -i 's/$releasever/8/g' /etc/yum.repos.d/{epel,pgdg-redhat-all}*.repo
+
+- name: enable Docker-CE stable repo
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Replace releasever in EPEL, pgdg and docker-ce repos with 8
+  shell: sed -i 's/$releasever/8/g' /etc/yum.repos.d/{epel,docker-ce,pgdg-redhat-all}*.repo

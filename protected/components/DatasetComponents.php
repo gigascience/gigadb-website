@@ -36,12 +36,8 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 	public function getCachedLocalData(string $dataset_id)
 	{
 		 $result = $this->_cache->get( $this->getCacheKeyForLocalData( $dataset_id ) );
-		 // if (false == $result) {
-		 // 	Yii::log("cache MISS for ". $this->getCacheKeyForLocalData( $dataset_id ),'info');
-		 // }
-		 // else {
-		 // 	Yii::log("cache HIT for ". $this->getCacheKeyForLocalData( $dataset_id ),'info');
-		 // }
+		 if (defined('YII_DEBUG') && true === YII_DEBUG)
+		    Yii::log("cache for ". $this->getCacheKeyForLocalData( $dataset_id ).": ".(false === $result ? "MISS" : "HIT") ,'info');
 		 return $result;
 	}
 
@@ -57,7 +53,7 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 		// Yii::log("Saving to cache the data from:". $this->getCacheKeyForLocalData( $dataset_id ),'info');
 		$invalidationQuery = preg_replace("/@id/", $dataset_id,Yii::app()->params['cacheConfig']['DatasetComponents']['invalidationQuery']);
 		$ttl = preg_replace("/@id/", $dataset_id,Yii::app()->params['cacheConfig']['DatasetComponents']['timeToLive']);
-		$this->_cacheDependency->sql = defined('YII_DEBUG') ? "select current_time;" : $invalidationQuery;
+		$this->_cacheDependency->sql = $this->isCachedDisabled() ? "select current_time;" : $invalidationQuery;
 		return $this->_cache->set( $this->getCacheKeyForLocalData( $dataset_id ),
 									$content,
 									$ttl,
@@ -81,5 +77,16 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 		$row = $command->queryRow();
 		return $row['identifier'];
 	}
+
+    /**
+     * Check whether the cache is to be disabled
+     *
+     * @use DISABLE_CACHE
+     * @return bool
+     */
+	public function isCachedDisabled()
+    {
+        return defined('DISABLE_CACHE') && DISABLE_CACHE === true;
+    }
 }
 ?>

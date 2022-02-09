@@ -210,10 +210,29 @@ so, there should be 2 or 3 versions of each variable, one for each environment.
 | DEPLOYMENT_ENV | live | x | All (default) |
 | gigadb_db_host | dockerhost | x | staging |
 
+##### Optional
+
+The following variables can be configured as Gitlab Variables (or in .env) like above
+but as they already have default values, one needs to change their values only if want
+to depart from the default.
+
+| Key | Role | Default on Dev/CI | Default on Staging | Default on Live |
+| ---  | --- | --- | --- | --- | 
+| YII_DEBUG | enable debug mode for extra logging | true | true | false
+| YII_TRACE_LEVEL | how many lines of context for log entries | 3 | 0 | 0 | 
+| DISABLE_CACHE | whether to disable caching of DB queries | true | false | false |
+
+>Note: the value of each of these three variables has impact on website performances. 
+> The default values for the live environment offer the maximum performance. 
+> While the default values for Dev/CI provide the most debugging information.
+
+>Note: those three variables set the values for PHP constants of the same names that are
+> defined in the Yii web application's ``index.php`` file (generated from templates  ``ops/configuration/yii-conf/index.$GIGADB_ENV.php.dist``)
 
 ##### Exceptions
 
 The following two variables need to be set for Environment "All (default)"
+
 | Name | Masked? |
 | --- | --- |
 | DOCKER_HUB_USERNAME | no |

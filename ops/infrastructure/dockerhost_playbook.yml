@@ -1,6 +1,11 @@
 ---
 # build a Centos server running a secure Docker CE install
 
+- name: Fix Centos EOL issues
+  hosts: name_gigadb_server_staging*:name_gigadb_server_live*
+  roles:
+    - role: ../../roles/centos-eol-fix
+
 - name: Setup Fail2ban
   hosts: name_gigadb_server_staging*:name_gigadb_server_live*
 
