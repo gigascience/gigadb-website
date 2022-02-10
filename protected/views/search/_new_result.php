@@ -1,4 +1,7 @@
 <div class="tab-content">
+    <?php if (0 === count($datasets['data'])) {
+        echo "No results found for '".$model->keyword."'";
+    } ?>
     <?php foreach($datasets['data'] as $dt) { ?>
     <?php
         $filterOnDatasetId = function ($var) use ($dt) {

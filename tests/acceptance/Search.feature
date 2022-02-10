@@ -152,3 +152,11 @@ Feature: main search function
     Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
     Then I should see a link "Pygoscelis_adeliae.s..." to "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz"
     And I should not see "Adelie penguin NCBI taxonomy"
+
+  @ok
+  Scenario: Show a message when nothing is found
+    Given I am on "/"
+    When I fill in the field of "id" "keyword" with "teletubbies"
+    And I press the button "Search"
+    And I wait "1" seconds
+    Then I should see "No results found for 'teletubbies'"
