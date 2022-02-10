@@ -38,4 +38,20 @@ class WebsiteUserSteps extends \Codeception\Actor
         $this->I->wait(1);
     }
 
+    /**
+     * @Then I should see the files:
+     *
+     */
+    public function iShouldSeeTheFiles(\Behat\Gherkin\Node\TableNode $files)
+    {
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            $this->I->seeLink($row[0],$row[1]);
+        }
+    }
+
+
 }

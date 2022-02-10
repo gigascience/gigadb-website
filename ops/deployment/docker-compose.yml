@@ -127,7 +127,7 @@ services:
       - ${DATA_SAVE_PATH}/postgres/${POSTGRES_VERSION}/data:/var/lib/postgresql/data
       - ${APPLICATION}/fuw/app/common/config/bootstrap.sql:/docker-entrypoint-initdb.d/3-fuw.sql
       - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
-    command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf' -c 'log_statement=all'
+    command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf' -c 'stats_temp_directory=/tmp' -c 'log_statement=none' -c 'log_min_duration_statement=1000ms'
     networks:
       - db-tier
 

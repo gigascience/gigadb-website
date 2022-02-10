@@ -221,8 +221,9 @@ to depart from the default.
 | YII_DEBUG | enable debug mode for extra logging | true | true | false
 | YII_TRACE_LEVEL | how many lines of context for log entries | 3 | 0 | 0 | 
 | DISABLE_CACHE | whether to disable caching of DB queries | true | false | false |
+| SEARCH_RESULT_LIMIT | Nb. of results per page | 10 | 10 | 10 |
 
->Note: the value of each of these three variables has impact on website performances. 
+>Note: the value of each of the first three variables has impact on website performances. 
 > The default values for the live environment offer the maximum performance. 
 > While the default values for Dev/CI provide the most debugging information.
 

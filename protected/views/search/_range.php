@@ -3,8 +3,7 @@
 	$to = $page*$limit; 
 ?>
 <p>
-    Showing 
     <?php if($from <= $total_dataset) { ?>
-    <strong><?= $from?> - <?= $to > $total_dataset ? $total_dataset: $to ?> of <?= $total_dataset ?></strong> datasets 
+    Showing <strong><?= $from?> - <?= $to > $total_dataset ? $total_dataset: $to ?> of <?= $total_dataset ?></strong> datasets
     <?php } ?>
 </p>

@@ -26,15 +26,10 @@
                               ));?> </p>
                           
                            <div>
-                                <? $this->renderPartial("_filter", array(
+                                <?php $this->renderPartial("_filter", array(
                                           'model' => $model,
                                           'list_dataset_types' => $list_dataset_types,
-                                          'list_projects' => $list_projects,
-                                          'list_ext_types' => $list_ext_types,
-                                          'list_filetypes' => $list_filetypes,
-                                          'list_formats' => $list_formats,
-                                          'list_common_names' => $list_common_names
-                                             )) ?>
+                                )) ?>
                             </div>
                              </div>
                         
@@ -98,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
 <script>
 document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
   $("#search-pg").twbsPagination({
-        totalPages: <?= $total_page ?>,
+        totalPages: <?php echo $total_page ?>,
         visiblePages: 5,
         onPageClick: function (event, page) {
             url = document.URL;

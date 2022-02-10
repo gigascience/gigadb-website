@@ -100,9 +100,9 @@ class SearchController extends Controller
         }
         $ds = new DatabaseSearch();
         $offset = 0;
-        $limit = 10;
+        $limit = Yii::app()->params['search_result_limit'];
         $page = 1;
-        $data = $ds->searchByKey($keyword);
+        $data = $ds->searchByKey($keyword,"search");
 
         if(!Yii::app()->request->isPostRequest) {
             $datasets = $data['datasets'];
@@ -125,6 +125,8 @@ class SearchController extends Controller
             $datasets['data'] = array_slice($datasets['data'], $offset, $limit);
             $data['datasets'] = $datasets;
             $data['page'] = $page;
+
+
 
             $result = $this->renderPartial('_new_result', array(
                 'model' => $data['model'],

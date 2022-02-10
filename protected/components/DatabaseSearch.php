@@ -1,78 +1,60 @@
 <?php
+
+use CompatibilityHelper;
+
 class DatabaseSearch extends CApplicationComponent {
 
 	public function findFile($keyword,$filetypes = array(),$formats = array(), $size = array()) {
 		$command = Yii::app()->db->createCommand();
-		$command->select = "f.id, f.dataset_id, fs.sample_id";
-		$command->from = "file f";
-		$command->join = "
-			left join file_sample fs on f.id = fs.file_id 
-			left join dataset d on d.id = f.dataset_id
-			left join file_attributes fa on f.id = fa.file_id 
-			left join attribute a on a.id = fa.attribute_id 
-		";
-
-		$command->where(array('like', 'lower(f.name)', '%'.$keyword.'%'));
-		$command->orWhere(array('like', 'lower(f.description)', '%'.$keyword.'%'));
-		$command->orWhere(array('like', 'lower(a.attribute_name)', '%'.$keyword.'%'));
-		$command->orWhere(array('like', 'lower(fa.value)', '%'.$keyword.'%'));
+		$command->select = "f.id, f.name, f.location, f.size, f.dataset_id, f.sample_id, f.file_type, f.file_format";
+		$command->from = "file_finder f";
+        $command->where("to_tsvector('english',f.document) @@ to_tsquery('$keyword')");
 
 		if($filetypes)
-			$command->andWhere(array('in', 'type_id', $filetypes));
+			$command->andWhere(array('in', 'f.type_id', $filetypes));
 		if($formats)
-			$command->andWhere(array('in', 'format_id', $formats));
+			$command->andWhere(array('in', 'f.format_id', $formats));
 		
 		if($size['min'] != 0 && $size['max']!=0) {
-			$command->andWhere("size >= :s and size <= :m", array(':s'=>$size['min'], ':m'=>$size['max']));
+			$command->andWhere("f.size >= :s and f.size <= :m", array(':s'=>$size['min'], ':m'=>$size['max']));
 		}
 		elseif($size['min'] != 0)
-			$command->andWhere("size >= :s", array(':s'=>$size['min']));
+			$command->andWhere("f.size >= :s", array(':s'=>$size['min']));
 		elseif($size['max'] != 0)
-			$command->andWhere("size <= :s", array(':s'=>$size['max']));
+			$command->andWhere("f.size <= :s", array(':s'=>$size['max']));
 
-		$command->andWhere("d.upload_status = 'Published'", array());
+		$command->andWhere("f.upload_status = 'Published'", array());
 		return $command->queryAll();
 	}
 
 	public function findSample($keyword, $ids = array(), $names = array()) {
 		
 	    $command = Yii::app()->db->createCommand();
-	    $command->selectDistinct("s.id, ds.dataset_id");
-	    $command->from = "sample s";
-	    $command->join = "
-	    	left join dataset_sample ds on ds.sample_id = s.id 
-	    	left join species sp on sp.id = s.species_id  
-	    	left join dataset d on d.id = ds.dataset_id
-	    	left join sample_attribute sa on sa.sample_id = s.id 
-	    	left join attribute a on sa.attribute_id = a.id 
-	    ";
+	    $command->selectDistinct("s.id, s.dataset_id, s.name,s.species_common_name, s.species_tax_id");
+	    $command->from = "sample_finder s";
 
-	    $command->where(array('like', 'lower(s.name)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(s.consent_document)', '%'.$keyword.'%'));
-	    //$command->orWhere(array('like', 'lower(s.contact_author_name)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(s.contact_author_name) = :keyword', array(':keyword'=>$keyword)); 
-	    //$command->orWhere(array('like', 's.contact_author_email', '%'.$keyword.'%'));
-	    //$command->orWhere(array('like', 's.sampling_protocol', '%'.$keyword.'%'));
-	    //$command->orWhere(array('like', 'sattrs.definition', '%'.$keyword.'%'));
-	    //$command->orWhere(array('like', 'lower(sp.common_name)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(sp.common_name) = :keyword', array(':keyword'=>$keyword)); 
-	    //$command->orWhere(array('like', 'lower(sp.genbank_name)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(sp.genbank_name) = :keyword', array(':keyword'=>$keyword)); 
-	    //$command->orWhere(array('like', 'lower(sp.scientific_name)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(sp.scientific_name) = :keyword', array(':keyword'=>$keyword)); 
-	    //$command->orWhere(array('like', 'lower(sp.scientific_name)', '%'.$keyword.'%'));
-	    //$command->orWhere(array('like', 'lower(a.attribute_name)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(a.attribute_name) = :keyword', array(':keyword'=>$keyword)); 
-	    $command->orWhere(array('like', 'lower(sa.value)', '%'.$keyword.'%'));
-           
+        $searchQuery = "$keyword";
+        if( $names) {
+            $namesStr = implode(" ",  $names);
+            $searchQuery .= " &  $namesStr";
+        }
+        $command->where("to_tsvector('english',s.document) @@ to_tsquery('$searchQuery')");
 
-	    if($ids)
-	    	$command->orWhere(array('in', 's.id', $ids));
-	    if($names)
-	    	$command->andWhere(array('in', 'sp.scientific_name', $names));
-	    $command->andWhere("d.upload_status = 'Published'", array());
+        $command->andWhere("s.upload_status = 'Published'", array());
 
-	    return $command->queryAll();
+        $sampleResults = $command->queryAll();
+        $resultsIds = $this->getListByKey($sampleResults);
+
+        $extraResults = [];
+        if($ids) {
+            $newIdsToAdd = array_diff($ids,$resultsIds);
+            $extraResults = Yii::app()->db->createCommand()->selectDistinct("s.id, s.dataset_id, s.name,s.species_common_name, s.species_tax_id")
+            ->from("sample_finder s")
+            ->where(array('in', 's.id', $newIdsToAdd))
+            ->queryAll();
+        }
+
+	    return array_merge($sampleResults,$extraResults);
 
 	}
 
@@ -80,56 +62,33 @@ class DatabaseSearch extends CApplicationComponent {
 	{
 		
 		$command = Yii::app()->db->createCommand();
-		$command->selectDistinct("d.id");
-		$command->from = "dataset d";
-		$command->join = "
-	            left join (select dataset_id, string_agg(p.name, ',') as names from dataset_project dp, project p where dp.project_id = p.id group by dataset_id) dprojects on d.id = dprojects.dataset_id 
-		    left join (select dataset_id, string_agg(a.surname||', '||substring(a.first_name,1,1)||', '||substring(a.middle_name,1,1), ';') as author_names from dataset_author da, author a where da.author_id = a.id group by dataset_id) dauthors on d.id = dauthors.dataset_id 
-   		    left join (select dataset_id, string_agg(a.surname || ' '||a.first_name||' ' || a.middle_name, ';') as author_names from dataset_author da, author a where da.author_id = a.id group by dataset_id) dnames on d.id = dnames.dataset_id 
-		    left join manuscript m on d.id = m.dataset_id 
-		    left join (select elt.name as name, el.dataset_id as dataset_id from external_link_type elt, external_link el where elt.id=el.external_link_type_id) el on el.dataset_id = d.id 
-		    left join dataset_project dp on dp.dataset_id = d.id 
-		    left join dataset_author da on da.dataset_id = d.id 
-		    left join dataset_type dt on dt.dataset_id = d.id 
-		    left join dataset_funder df on df.dataset_id = d.id 
-		    left join funder_name fn on fn.id = df.funder_id 
-                    left join (select dataset_id, value from dataset_attributes where attribute_id=455) dat on dat.dataset_id = d.id
-                    left join (select t.name as name, dt.dataset_id from type t, dataset_type dt where dt.type_id=t.id) dtnames on d.id=dtnames.dataset_id
+		$command->selectDistinct("d.id, d.shorturl, d.identifier, d.authornames, d.title, d.description");
+		$command->from = "dataset_finder d";
 
-		";
+        $searchQuery = "$keyword";
+        if($types) {
+            $typesStr = implode(" ", $types);
+            $searchQuery .= " & $typesStr";
+        }
+        if($projects) {
+            $projectsStr = implode(" ", $projects);
+            $searchQuery .= " & $projectsStr";
+        }
+        if($links) {
+            $linksStr = implode(" ", $links);
+            $searchQuery .= " & $linksStr";
+        }
 
-	    $command->where(array('like', 'd.identifier', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(d.title)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(dauthors.author_names)', '%'.$keyword.'%'));
-            //$command->orWhere('LOWER(dauthors.author_names) = :keyword', array(':keyword'=>$keyword)); 
-	    //$command->orWhere(array('like', 'lower(dnames.author_names)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(dnames.author_names) = :keyword', array(':keyword'=>$keyword)); 
-	    $command->orWhere(array('like', 'lower(d.description)', '%'.$keyword.'%'));
-            //$command->orWhere(array('like', 'lower(dtnames.name)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(dtnames.name) = :keyword', array(':keyword'=>$keyword)); 
-            //$command->orWhere(array('like', 'lower(dat.value)', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(dat.value) = :keyword', array(':keyword'=>$keyword)); 
-           
-	    //$command->orWhere(array('like', 'd.ftp_site', '%'.$keyword.'%'));
+        if($author_id) {
+            $authorName = Author::model()->findByPk($author_id)->getDisplayName();
+            $searchQuery .= " & $authorName";
 
-	    $command->orWhere(array('like', 'lower(dprojects.names)', '%'.$keyword.'%'));	    
-	    //$command->orWhere(array('like', 'm.identifier', '%'.$keyword.'%'));
-            $command->orWhere('LOWER(m.identifier) = :keyword', array(':keyword'=>$keyword)); 
-	    $command->orWhere(array('like', 'cast(m.pmid as varchar)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(df.grant_award)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(df.comments)', '%'.$keyword.'%'));
-	    $command->orWhere(array('like', 'lower(fn.primary_name_display)', '%'.$keyword.'%'));
+        }
+        $command->where("to_tsvector('english',d.document) @@ to_tsquery('$searchQuery')");
 
-	    if($ids)
-	    	$command->orWhere(array('in', 'd.id', $ids));
-	    if($types)
-	    	$command->andWhere(array('in', 'dt.type_id', $types));
-	    if($projects)
-	    	$command->andWhere(array('in','dp.project_id', $projects));
-	    if($links)
-	    	$command->andWhere(array('in', 'el.name', $links));
 
-	    if($pubs['start'] && $pubs['end']) {
+
+        if($pubs['start'] && $pubs['end']) {
 	    	$command->andWhere("d.publication_date >= :d and d.publication_date <= :e", array(':d'=>$pubs['start'], ':e'=>$pubs['end']));
 	    }
 	    elseif($pubs['start'])
@@ -137,14 +96,22 @@ class DatabaseSearch extends CApplicationComponent {
 	    elseif($pubs['end'])
 	    	$command->andWhere("d.publication_date <= :d", array(':d'=>$pubs['end']));
 
-	    if($author_id)
-	    	$command->andWhere("da.author_id = :aid", array(':aid'=>$author_id));
-            
-            
-            
 	    $command->andWhere("d.upload_status = 'Published'");
-            $command->order(array('d.id desc'));
-	    return $command->queryAll();
+	    $command->order(array('d.id desc'));
+
+        $datasetResults = $command->queryAll();
+        $resultsIds = $this->getListByKey($datasetResults);
+
+        $extraResults = [];
+        if($ids) {
+            $newIdsToAdd = array_diff($ids,$resultsIds);
+            $extraResults = Yii::app()->db->createCommand()->selectDistinct("d.id, d.shorturl, d.identifier, d.authornames, d.title, d.description")
+                ->from("dataset_finder d")
+                ->where(array('in', 'd.id', $newIdsToAdd))
+                ->queryAll();
+        }
+
+        return array_merge($datasetResults,$extraResults);
 	}
 
 	public function getListByKey($values, $key = 'id') {
@@ -177,7 +144,7 @@ class DatabaseSearch extends CApplicationComponent {
     }
 
 
-	public function search($criteria) {
+	public function search($criteria, $resultType = "ids") {
 		$files = $this->findFile($criteria['keyword'], $criteria['filetypes'], $criteria['formats'], $criteria['size']);
 		$file_ids = $this->getListByKey($files);
 
@@ -185,39 +152,51 @@ class DatabaseSearch extends CApplicationComponent {
 		$file_datasets = $this->getListByKey($files, 'dataset_id');
 
 		$samples = $this->findSample($criteria['keyword'], $extra_samples, $criteria['names']);
-		$sample_ids = $this->getListByKey($samples);
-		$sample_datasets = $this->getListByKey($samples, 'dataset_id');
+        $sample_datasets = $this->getListByKey($samples, 'dataset_id');
 
-		$display = $criteria['display'];				
+        $display = $criteria['display'];
 		
 		$extra_datasets = array_unique(array_merge($file_datasets, $sample_datasets));
 		$datasets = $this->findDataset($criteria['keyword'], $criteria['author_id'], $extra_datasets, $criteria['types'], $criteria['projects'], $criteria['links'], $criteria['pubs']);
-		$dataset_ids = $this->getListByKey($datasets);		
-		
+		$dataset_ids = $this->getListByKey($datasets);
+
 		if(!in_array('dataset', $display)) {
 			
 			if(in_array('file', $display) && !in_array('sample', $display))
 				$dataset_ids = $file_datasets;
 
-			if(!in_array('sample', $display) && in_array('sample', $display))
+			if(!in_array('file', $display) && in_array('sample', $display))
 				$dataset_ids = $extra_datasets;
 		}
 
-		return array('files'=>$file_ids,
-					'samples'=>$sample_ids,
-					'datasets'=>$dataset_ids
-				);
+        if ("full" === $resultType) {
+            return array(
+                'ids' =>  ["files" => $file_ids,"samples" => $sample_ids, "datasets" => $dataset_ids],
+                'results' => ["files" => $files,"samples" => $samples, "datasets" => $datasets]
+            );
+        }
+        return array('files'=>$file_ids,
+            'samples'=>$sample_ids,
+            'datasets'=>$dataset_ids
+        );
 
 	}
 
-	public function searchByKey($keyword) {
+	public function searchByKey($keyword, $searchType = "api") {
 
-        $limit = 10;
+        $limit = Yii::app()->params['search_result_limit'];
         $model = new SearchForm;
 
         $criteria = array();
-        $criteria['keyword'] = strtolower($keyword);
-        $model->keyword = $keyword;
+
+        if (true === CompatibilityHelper::str_contains($keyword,"&")) {
+           $criteria['keyword'] = $keyword;
+        }
+        else {
+           $criteria['keyword'] = preg_replace("/\s+/"," & ",$keyword);
+        }
+
+        $model->keyword = $criteria['keyword'];
 
         $params = array('type','dataset_type' , 'author_id','project' , 'file_type' ,
                 'file_format' , 'pubdate_from' , 'pubdate_to', 'common_name'
@@ -258,39 +237,59 @@ class DatabaseSearch extends CApplicationComponent {
 
         $model->criteria = CJSON::encode($model->attributes, true);
 
-        $result = $this->search($criteria);
+        $resultset = nil;
+        if ("search" === $searchType) {
+            $resultset = $this->search($criteria,"full");
+            $total_page = ceil(count($resultset['ids']['datasets'])/$limit);
+        }
+        else {
+            $result = $this->search($criteria);
+            $total_page = ceil(count($result['datasets'])/$limit);
+        }
         $model->query_result = CJSON::encode($result);
 
-        //Yii::log(print_r($result, true), 'debug');
-        $total_page = ceil(count($result['datasets'])/$limit);
 
         $list_dataset_types = Dataset::getTypeList($result['datasets']);
-        $list_projects = Dataset::getProjectList($result['datasets']);
-        $list_ext_types = Dataset::getExtLinkList($result['datasets']);
-
-        $list_common_names = Sample::getCommonList($result['samples']);
-        $list_formats = File::getFormatList($result['files']);
-        $list_filetypes = File::getTypeList($result['files']);
 
 
+        if ("search" === $searchType) {
+            return  array(
+                'datasets' => array('data'=>$resultset['results']['datasets'], 'total'=>count($resultset['ids']['datasets'])),
+                'samples'=> array('data'=>$resultset['results']['samples'], 'total' => count($resultset['ids']['samples'])),
+                'files'=> array('data'=> $resultset['results']['files'], 'total' => count($resultset['ids']['files'])),
+                'model'=>$model,
+                'list_dataset_types'=>$list_dataset_types,
+                'display' => $display,
+                'total_page'=>$total_page,
+                'page'=>1,
+                'limit'=> $limit,
+            );
+        }
+        else  {
+            $list_projects = Dataset::getProjectList($result['datasets']);
+            $list_ext_types = Dataset::getExtLinkList($result['datasets']);
 
-        return  array(
-                    'datasets' => array('data'=>$result['datasets'], 'total'=>count($result['datasets'])),
-                    'samples'=> array('data'=> $result['samples'], 'total' => count($result['samples'])),
-                    'files'=> array('data'=> $result['files'], 'total' => count($result['files'])),
-                    'model'=>$model,
-                    'list_dataset_types'=>$list_dataset_types,
-                    'list_projects'=>$list_projects,
-                    'list_ext_types'=>$list_ext_types,
-                    'list_common_names'=>$list_common_names,
-                    'list_formats'=>$list_formats,
-                    'list_filetypes'=>$list_filetypes,
-                    'display' => $display,
-                    'total_page'=>$total_page,
-                    'page'=>1,
-                    'limit'=> 10,
-                    );
-	}
+            $list_common_names = Sample::getCommonList($result['samples']);
+            $list_formats = File::getFormatList($result['files']);
+            $list_filetypes = File::getTypeList($result['files']);
+            return  array(
+                'datasets' => array('data'=>$result['datasets'], 'total'=>count($result['datasets'])),
+                'samples'=> array('data'=> $result['samples'], 'total' => count($result['samples'])),
+                'files'=> array('data'=> $result['files'], 'total' => count($result['files'])),
+                'model'=>$model,
+                'list_dataset_types'=>$list_dataset_types,
+                'list_projects'=>$list_projects,
+                'list_ext_types'=>$list_ext_types,
+                'list_common_names'=>$list_common_names,
+                'list_formats'=>$list_formats,
+                'list_filetypes'=>$list_filetypes,
+                'display' => $display,
+                'total_page'=>$total_page,
+                'page'=>1,
+                'limit'=> $limit,
+            );
+        }
+    }
 }
 
 ?>

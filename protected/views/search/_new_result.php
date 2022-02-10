@@ -1,9 +1,14 @@
 <div class="tab-content">
+    <?php if (0 === count($datasets['data'])) {
+        echo "No results found for '".$model->keyword."'";
+    } ?>
     <?php foreach($datasets['data'] as $dt) { ?>
-    <?php 
-        $dataset = Dataset::model()->findByPk($dt); 
-        $dsamples = $dataset->getSamplesInIds($samples['data']);
-        $dfiles = $dataset->getFilesInIds($files['data']); 
+    <?php
+        $filterOnDatasetId = function ($var) use ($dt) {
+            return $var['dataset_id'] === $dt['id'];
+        };
+        $dsamples = array_filter($samples['data'], $filterOnDatasetId);
+        $dfiles = array_filter($files['data'], $filterOnDatasetId) ;
     ?>
     <div class="search-result-container">
         <!--Dataset section-->
@@ -14,13 +19,13 @@
             </div></div>
             <div class="span8 main-content" style="float:right">
                 <ul class="nav nav-tabs nav-stacked result-cell">
-                  <li><a data-content="<?php echo CHtml::encode($dataset->description) ?>" class="result-main-link left content-popup" href="<?= $dataset->shortUrl ?>"><?= $dataset->title ?></a></li>
+                  <li><a data-content="<?php echo CHtml::encode($dt['description']) ?>" class="result-main-link left content-popup" href="<?php echo $dt['shorturl'] ?>"><?php echo $dt['title'] ?></a></li>
                   <li>
                     <strong>
-                        <?php echo $dataset->authorNames ?>
+                        <?php echo $dt['authornames'] ?>
                     </strong>
                   </li>
-                  <li class="searchID"><?= Yii::t('app', 'DOI') ?>:<?php echo "10.5524/" . $dataset->identifier ?></li>
+                  <li class="searchID"><?= Yii::t('app', 'DOI') ?>:<?php echo "10.5524/" . $dt['identifier'] ?></li>
                 </ul>
             </div>
         </div>
@@ -34,17 +39,17 @@
             </div></div>
                 <div class="span8 main-content" style="float:right">
                     <ul class="nav nav-tabs nav-stacked result-cell">
-                      <li><a class="result-main-link" href="<?= $sample->dataset->shortUrl ?>"><?php echo $sample->name ?></a></li>
+                      <li><a class="result-main-link" href="<?= $dt['shorturl'] ?>"><?php echo $sample['name'] ?></a></li>
                       <li>
                         <strong>
-                            <?= $sample->species->common_name ?> 
+                            <?= $sample['species_common_name'] ?>
                             NCBI taxonomy : 
-                            <a class="result-sub-links" target="_blank" href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=<?php echo $sample->species->tax_id ?>">
-                                <?= $sample->species->tax_id ?>
+                            <a class="result-sub-links" target="_blank" href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=<?php echo $sample['species_tax_id'] ?>">
+                                <?= $sample['species_tax_id'] ?>
                             </a>
                         </strong>
                       </li>
-                      <li class="searchID"><a class="result-sub-links" href="<?= $sample->dataset->shortUrl ?>">DOI:10.5524/<?= $sample->dataset->identifier ?></a></li>
+                      <li class="searchID"><a class="result-sub-links" href="<?php echo $dt['shorturl'] ?>">DOI:10.5524/<?= $dt['identifier'] ?></a></li>
                     </ul>
                 </div>
             </div>
@@ -55,10 +60,9 @@
             <div class="row1 file-container">
                  <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-yellow" style="margin-right: 0px;">F
             </div></div>
-                <div class="span3 file-name"><a href="<?php echo $file->location ?>"><?php echo strlen($file->name) > 20 ? substr($file->name, 0, 20). '...' : $file->name ?></a></div>
-                <div class="span2 file-type"><?php echo $file->type->name ?></div>
-                <div class="span2 file-size"><?php echo CHtml::encode($file->getSizeWithFormat())?></div>
-                <div class="span1 file-checkbox"><input type="checkbox" ></div>
+                <div class="span3 file-name"><a href="<?php echo $file['location'] ?>"><?php echo strlen($file['name']) > 20 ? substr($file['name'], 0, 20). '...' : $file['name'] ?></a></div>
+                <div class="span2 file-type"><?php echo $file['file_type'] ?></div>
+                <div class="span2 file-size"><?php echo CHtml::encode(File::specifySizeUnits($file['size'],null, 2))?></div>
             </div>
             <?php }} ?>
 	</div>

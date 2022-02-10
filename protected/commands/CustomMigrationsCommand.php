@@ -13,6 +13,7 @@ class CustomMigrationsCommand extends CConsoleCommand
         $helpText = "drop constraints and indexes in the database" . PHP_EOL;
         $helpText .= "Usage: ./protected/yiic custommigration dropconstraints" . PHP_EOL;
         $helpText .= "Usage: ./protected/yiic custommigration dropindexes" . PHP_EOL;
+        $helpText .= "Usage: ./protected/yiic custommigration refreshmaterializedviews" . PHP_EOL;
         return $helpText;
     }
 
@@ -81,5 +82,11 @@ END;
 
     }
 
+    public function actionRefreshMaterializedViews()
+    {
+        Yii::app()->db->createCommand("refresh materialized view file_finder")->execute();
+        Yii::app()->db->createCommand("refresh materialized view sample_finder")->execute();
+        Yii::app()->db->createCommand("refresh materialized view dataset_finder")->execute();
+    }
 
 }
