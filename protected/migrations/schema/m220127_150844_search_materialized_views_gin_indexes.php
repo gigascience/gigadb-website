@@ -118,6 +118,7 @@ SELECT f.*, fs.sample_id as sample_id, ff.name as file_format, ft.name as file_t
 	left join dataset_types dt on dt.dataset_id = d.id
 	left join external_links el on el.dataset_id = d.id")->execute();
 
+        Yii::app()->db->createCommand("alter role gigadb in database gigadb SET default_text_search_config TO 'pg_catalog.english'")->execute();
         Yii::app()->db->createCommand("drop index if exists dataset_finder_search_idx")->execute();
         Yii::app()->db->createCommand("create index dataset_finder_search_idx on dataset_finder using GIN (to_tsvector('english',document))")->execute();
 
