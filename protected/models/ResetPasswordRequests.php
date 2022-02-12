@@ -67,7 +67,7 @@ class ResetPasswordRequests extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'Id',
-            'request_at' => 'Request Date',
+            'requested_at' => 'Request Date',
             'expired_at' => 'Expired Date',
             'gigadb_user_id' => 'GigaDB User Id',
         );
