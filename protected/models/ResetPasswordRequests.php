@@ -66,10 +66,10 @@ class ResetPasswordRequests extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => 'ID',
+            'id' => 'Id',
             'request_at' => 'Request Date',
             'expired_at' => 'Expired Date',
-            'gigadb_user_id' => 'GigaDB User ID',
+            'gigadb_user_id' => 'GigaDB User Id',
         );
     }
 
@@ -110,7 +110,7 @@ class ResetPasswordRequests extends CActiveRecord {
     }
 
     /**
-     * Returns hashed token
+     * Returns selector
      * @return string
      */
     public function getSelector()
