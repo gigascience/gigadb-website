@@ -12,14 +12,11 @@ class m201200_000010_create_reset_password_requests extends CDbMigration
     public function safeUp()
     {
         $this->execute("CREATE TABLE IF NOT EXISTS reset_password_requests (
-            selector varchar(128),
-            hashed_token varchar(128),
+            selector character varying(128) NOT NULL PRIMARY KEY,
+            hashed_token character varying(128),
             requested_at timestamp without time zone,
             expires_at timestamp without time zone,
-            gigadb_user_id integer NOT NULL;");
-
-        $this->execute("ALTER TABLE ONLY reset_password_requests
-            ADD CONSTRAINT reset_password_requests_pkey PRIMARY KEY (selector);");
+            gigadb_user_id integer NOT NULL);");
 
         $this->execute("ALTER TABLE ONLY reset_password_requests
             ADD CONSTRAINT reset_password_requests_gigadb_user_id_fkey FOREIGN KEY (gigadb_user_id) REFERENCES gigadb_user(id) ON DELETE CASCADE;");
