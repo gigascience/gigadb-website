@@ -12,7 +12,7 @@
  * The followings are the available model relations:
  * @property User[] $users
  */
-class ResetPasswordRequests extends CActiveRecord {
+class ResetPasswordRequest extends CActiveRecord {
 
     /**
      * @var $selector string
@@ -37,7 +37,7 @@ class ResetPasswordRequests extends CActiveRecord {
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return ResetPasswordRequests the static model class
+     * @return ResetPasswordRequest the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
