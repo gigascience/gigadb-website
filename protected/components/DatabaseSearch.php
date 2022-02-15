@@ -65,6 +65,13 @@ class DatabaseSearch extends CApplicationComponent {
 		$command->selectDistinct("d.id, d.shorturl, d.identifier, d.authornames, d.title, d.description");
 		$command->from = "dataset_finder d";
 
+		if (count($types)>0) {
+		    return $command->join("dataset_type dt","d.id = dt.dataset_id")
+                ->join("type t", "dt.type_id=t.id")
+                ->where(array('in', 't.name', $types))
+                ->queryAll();
+        }
+
         $searchQuery = "$keyword";
         if($types) {
             $typesStr = implode(" ", $types);

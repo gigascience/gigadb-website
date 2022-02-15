@@ -26,73 +26,73 @@
                         </div>
                         <ul class="list-inline home-text-icon-list">
                             <li>
-                                <a href="/search/new?keyword=Genomic&type%5B%5D=dataset&dataset_type%5B%5D=2">
+                                <a href="/search/new?keyword=Genomic&type%5B%5D=dataset&dataset_type%5B%5D=Genomic">
                                     <div class="text-icon text-icon-green">
                                         <img src="/images/new_interface_image/Genomic.svg" alt="Link to Genomic datasets">
                                     </div>Genomic (<span><? echo $number_genomic ?></span>)</a>
                             </li>
                             <li>
-                                <a href="/search/new?keyword=Software&type%5B%5D=dataset&dataset_type%5B%5D=6">
+                                <a href="/search/new?keyword=Software&type%5B%5D=dataset&dataset_type%5B%5D=Software">
                                     <div class="text-icon text-icon-blue">
                                         <img src="/images/new_interface_image/Software.svg" alt="Link to Software datasets">
                                     </div>Software (<span><? echo $number_software ?></span>)</a>
                             </li>
                             <li>
-                                <a href="/search/new?keyword=Transcriptomic&type%5B%5D=dataset&dataset_type%5B%5D=4">
+                                <a href="/search/new?keyword=Transcriptomic&type%5B%5D=dataset&dataset_type%5B%5D=Transcriptomic">
                                     <div class="text-icon text-icon-blue">
                                         <img src="/images/new_interface_image/Transcriptomic.svg" alt="Link to Transcriptomic datasets">
                                     </div>Transcriptomic (<span><? echo $number_ts ?></span>)</a>
                             </li>
                             <li>
-                                <a href="/search/new?keyword=Imaging&type%5B%5D=dataset&dataset_type%5B%5D=7">
+                                <a href="/search/new?keyword=Imaging&type%5B%5D=dataset&dataset_type%5B%5D=Imaging">
                                     <div class="text-icon text-icon-blue">
                                         <img src="/images/new_interface_image/Imaging.svg" alt="Link to Imaging datasets">
                                     </div>Imaging (<span><? echo $number_imaging ?></span>)</a>
                             </li>
                             <li>
-                                <a href="/search/new?keyword=Neuroscience&type%5B%5D=dataset&dataset_type%5B%5D=11">
+                                <a href="/search/new?keyword=Neuroscience&type%5B%5D=dataset&dataset_type%5B%5D=Neuroscience">
                                     <div class="text-icon text-icon-yellow">
                                         <img src="/images/new_interface_image/Neuroscience.svg" alt="Link to Neuroscience datasets">
                                     </div>Neuroscience (<span><? echo $number_ns ?></span>)</a>
                             </li>
                             <li>
-                                <a href="/search/new?keyword=Epigenomic&type%5B%5D=dataset&dataset_type%5B%5D=1">
+                                <a href="/search/new?keyword=Epigenomic&type%5B%5D=dataset&dataset_type%5B%5D=Epigenomic">
                                     <div class="text-icon text-icon-red">
                                         <img src="/images/new_interface_image/Epigenomic.svg" alt="Link to Epigenomic datasets">
                                     </div>Epigenomic (<span><? echo $number_epi ?></span>)</a>
                             </li>
                             <li>
-                                <a href="/search/new?keyword=Metagenomic&type%5B%5D=dataset&dataset_type%5B%5D=3">
+                                <a href="/search/new?keyword=Metagenomic&type%5B%5D=dataset&dataset_type%5B%5D=Metagenomic">
                                     <div class="text-icon text-icon-green">
                                         <img src="/images/new_interface_image/Metagenomic.svg" alt="Link to Metagenomic datasets">
                                     </div>Metagenomic (<span><? echo $number_metagenomic ?></span>)</a>
                             </li>
                             <li>
-                                <a href="/search/new?keyword=Genome-Mapping&type%5B%5D=dataset&dataset_type%5B%5D=13">
+                                <a href="/search/new?keyword=Genome-Mapping&type%5B%5D=dataset&dataset_type%5B%5D=Genome-Mapping">
                                     <div class="text-icon text-icon-yellow">
                                         <img src="/images/new_interface_image/Genome-Mapping.svg" alt="Link to Genome mapping datasets">
                                     </div>Genome mapping (<span><? echo $number_genome_mapping ?></span>)</a>
                             </li>
                             <li>
-                                <a href="/search/new?keyword=Workflow&type%5B%5D=dataset&dataset_type%5B%5D=5">
+                                <a href="/search/new?keyword=Workflow&type%5B%5D=dataset&dataset_type%5B%5D=Workflow">
                                     <div class="text-icon text-icon-red">
                                         <img src="/images/new_interface_image/Workflow.svg" alt="Link to Workflow datasets">
                                     </div>Workflow (<span><? echo $number_wf ?></span>)</a>
                             </li>
                             <li>
-                                <a href="/search/new?keyword=Proteomic&type%5B%5D=dataset&dataset_type%5B%5D=10">
+                                <a href="/search/new?keyword=Proteomic&type%5B%5D=dataset&dataset_type%5B%5D=Proteomic">
                                     <div class="text-icon text-icon-yellow">
                                         <img src="/images/new_interface_image/Proteomic.svg" alt="Link to Proteomic datasets">
                                     </div>Proteomic (<span><? echo $number_proteomic ?></span>)</a>
                             </li>
                             <li>
-                                <a href="/search/new?keyword=Metabarcoding&type%5B%5D=dataset&dataset_type%5B%5D=17">
+                                <a href="/search/new?keyword=Metabarcoding&type%5B%5D=dataset&dataset_type%5B%5D=Metabarcoding">
                                     <div class="text-icon text-icon-yellow">
                                         <img src="/images/new_interface_image/Metabarcoding.svg" alt="Link to Metabarcoding datasets">
                                     </div>Metabarcoding (<span><? echo $number_metabarcoding ?></span>)</a>
                             </li>
                             <li>
-                                <a href="/search/new?keyword=Metadata&type%5B%5D=dataset&dataset_type%5B%5D=16">
+                                <a href="/search/new?keyword=Metadata&type%5B%5D=dataset&dataset_type%5B%5D=Metadata">
                                     <div class="text-icon text-icon-red">
                                         <img src="/images/new_interface_image/Metadata.svg" alt="Link to Metadata datasets">
                                     </div>Metadata (<span><? echo $number_metadata ?></span>)</a>
@@ -100,7 +100,7 @@
                         </ul>
                         <ul class="list-inline home-text-icon-list" style="display: none;">
                             <li>
-                                <a href="/search/new?keyword=climate&type%5B%5D=dataset&dataset_type%5B%5D=18">
+                                <a href="/search/new?keyword=climate&type%5B%5D=dataset&dataset_type%5B%5D=climate">
                                     <div class="text-icon text-icon-green">
                                         <img src="/images/new_interface_image/Climate.svg"  alt="Link to Climate datasets">
                                     </div>Climate (<span><? echo $number_climate ?></span>)</a>
