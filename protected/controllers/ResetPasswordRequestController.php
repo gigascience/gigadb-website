@@ -12,31 +12,31 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class ResetPasswordRequestController
+class ResetPasswordRequestController extends Controller
 {
-    public function actionReset()
-    {
-        $this->layout='new_main';
+    /**
+     * Displays the login page
+     */
+    public function actionForgot() {
 
+        $this->layout = "new_main";
+        $resetPasswordRequestForm = new ResetPasswordRequestForm;
         if (isset($_POST['LostUserPassword'])) {
-            $email = $_POST['LostUserPassword']['email'];
-            $user = User::model()->findByAttributes(array('email' => $email));
+            $resetPasswordRequestForm->email = $_POST['LostUserPassword']['email'];
+            if ($resetPasswordRequestForm->validate()) {
+                $user = User::model()->findByAttributes(array('email' => $resetPasswordRequestForm->email));
+            }
             if ($user !== null) {
-                Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Found user account for ".$email, 'info');
-                $this->generateResetToken();
-                
-//                $user->password = $user->generatePassword(8);
-//                $user->encryptPassword();
-//                if ($user->save(false)) {
-//                    Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": New temporary password saved for ".$email, 'info');
-////                    $this->sendPasswordEmail($user);
-//                }
-//                else {
-//                    Yii::log("[ERROR] [".__CLASS__.".php] ".__FUNCTION__.": Could not save new user password for ".$email, 'error');
-//                }
+                Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Found user account for ".$resetPasswordRequestForm->email, 'info');
+                if($this->generateResetToken($user)) {
+                    Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Generated token", 'info');
+                }
+                else {
+                    Yii::log("[ERROR] [".__CLASS__.".php] ".__FUNCTION__.": Could not generate token ", 'error');
+                }
             }
             else {
-                Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User account not found for ".$email, 'info');
+                Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User account not found for ".$user, 'info');
             }
             $this->redirect(array('user/resetThanks'));
         }
@@ -47,6 +47,7 @@ class ResetPasswordRequestController
      * Some of the cryptographic strategies were taken from
      * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
      *
+     * @return bool
      * @throws TooManyPasswordRequestsException
      */
     public function generateResetToken($user)
@@ -61,51 +62,44 @@ class ResetPasswordRequestController
 
 //        $expiresAt = new \DateTimeImmutable(sprintf('+%d seconds', $this->resetRequestLifetime));
 
-        $generatedAt = date("Y-m-d H:i:s");
-        $expiresAt = date($generatedAt, strtotime("+1 hour"));
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User account not found for ".$email, 'info');
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User account not found for ".$email, 'info');
+        $now = new Datetime();
+        $generatedAt = $now->format(DateTime::ISO8601) ;
+//        $expiresAt = date($generatedAt, strtotime("+1 hour"));
+        $expiresAt = $generatedAt;
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": generatedAt ".$generatedAt, 'info');
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": expiresAt: ".$expiresAt, 'info');
 
-        $verifier = $this->getRandomAlphaNumStr();
-        $selector = $this->getRandomAlphaNumStr();
+        $verifier = ResetPasswordHelper::getRandomAlphaNumStr();
+        $selector = ResetPasswordHelper::getRandomAlphaNumStr();
         $encodedData = json_encode([$verifier, $user->id, $expiresAt]);
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User account not found for ".$email, 'info');
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User account not found for ".$email, 'info');
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User account not found for ".$email, 'info');
 
-//        $passwordResetRequest = $this->repository->createResetPasswordRequest(
-//            $user,
-//            $expiresAt,
-//            $selector,
-//            $tokenComponents->getHashedToken()
-//        );
-//
-//        $this->repository->persistResetPasswordRequest($passwordResetRequest);
-//
-//        // final "public" token is the selector + non-hashed verifier token
-//        return new ResetPasswordToken(
-//            $tokenComponents->getPublicToken(),
-//            $expiresAt,
-//            $generatedAt
-//        );
-    }
-
-    /**
-     * Original credit to Laravel's Str::random() method.
-     *
-     * String length is 20 characters
-     */
-    public function getRandomAlphaNumStr()
-    {
-        $string = '';
-        while (($len = \strlen($string)) < 20) {
-            /** @var int<1, max> $size */
-            $size = 20 - $len;
-            $bytes = random_bytes($size);
-            $string .= substr(
-                str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
+        $resetPasswordRequest = new ResetPasswordRequest;
+        $resetPasswordRequest->requested_at = $generatedAt;
+        $resetPasswordRequest->expires_at = $expiresAt;
+        $resetPasswordRequest->selector = $selector;
+        $resetPasswordRequest->gigadb_user_id = $user->id;
+//        $signingKey = Yii::app()->params['signing_key'];
+        $signingKey = "Fear_is_the_mind_killer";
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": verifier ".$verifier, 'info');
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": selector ".$selector, 'info');
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": encodedData ".$encodedData, 'info');
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": signing_key ".$signingKey, 'info');
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": user_id ".$user->id, 'info');
+        $out = ResetPasswordHelper::getHashedToken($signingKey, $verifier);
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": out ".$out, 'info');
+        $resetPasswordRequest->hashed_token = "foobar";
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": hashed_token ".$resetPasswordRequest->hashed_token, 'info');
+        
+        if($resetPasswordRequest->validate()) {
+            if($resetPasswordRequest->save(false)) {
+                // Send email containing URL for resetting password to user
+                return true;
+            }
         }
-        return $string;
+        else {
+            Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": resetPasswordRequest object not valid", 'info');
+            return false;
+        }
     }
 }
 

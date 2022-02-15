@@ -1,38 +1,27 @@
 <?php
 
 /**
- * This is the model class for table "reset_password_requests".
+ * This is the model class for table "reset_password_request".
  *
- * The followings are the available columns in table 'reset_password_requests':
+ * The followings are the available columns in table 'reset_password_request':
  * @property string $selector
+ * @property string $verifier
  * @property string $hashed_token
  * @property string $requested_at
  * @property string $expires_at
+ * @property string $gigadb_user_id
  *
  * The followings are the available model relations:
- * @property User[] $users
+// * @property User[] $users
  */
 class ResetPasswordRequest extends CActiveRecord {
 
-    /**
-     * @var $selector string
-     */
-    private $selector;
-
-    /**
-     * @var $hashed_token string
-     */
-    private $hashed_token;
-
-    /**
-     * @var $requested_at string
-     */
-    private $requested_at;
-
-    /**
-     * @var $expires_at string
-     */
-    private $expires_at;
+    public function rules()
+    {
+        return array(
+            array('selector', 'required'),
+        );
+    }
     
     /**
      * Returns the static model of the specified AR class.
@@ -47,7 +36,7 @@ class ResetPasswordRequest extends CActiveRecord {
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'reset_password_requests';
+        return 'reset_password_request';
     }
 
     /**
@@ -56,9 +45,9 @@ class ResetPasswordRequest extends CActiveRecord {
     public function relations() {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-            'users' => array(self::BELONGS_TO, 'User', 'id')
-        );
+//        return array(
+//            'users' => array(self::BELONGS_TO, 'User', 'id')
+//        );
     }
 
     /**
@@ -66,7 +55,7 @@ class ResetPasswordRequest extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => 'Id',
+            '$selector' => 'Selector',
             'requested_at' => 'Request Date',
             'expired_at' => 'Expired Date',
             'gigadb_user_id' => 'GigaDB User Id',
@@ -116,6 +105,15 @@ class ResetPasswordRequest extends CActiveRecord {
     public function getSelector()
     {
         return $this->selector;
+    }
+
+    /**
+     * Returns verifier
+     * @return string
+     */
+    public function getVerifier()
+    {
+        return $this->verifier;
     }
 
     /**
