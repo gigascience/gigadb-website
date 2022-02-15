@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      dir="ltr" 
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:dc="http://purl.org/dc/terms/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:og="http://ogp.me/ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:sioc="http://rdfs.org/sioc/ns#"
+  xmlns:sioct="http://rdfs.org/sioc/types#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema#" class="no-js">
+
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="shortcut icon" href="https://bioinfotraining.bio.cam.ac.uk/profiles/cambridge/themes/cambridge_theme/favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="apple-touch-icon" href="https://bioinfotraining.bio.cam.ac.uk/profiles/cambridge/themes/cambridge_theme/apple-touch-icon.png" type="image/png" />
+<meta name="generator" content="Drupal 7 (https://www.drupal.org)" />
+<link rel="canonical" href="https://bioinfotraining.bio.cam.ac.uk/images/galaxy_logo.png" />
+<link rel="shortlink" href="https://bioinfotraining.bio.cam.ac.uk/file/60" />
+<meta name="dcterms.title" content="galaxy_logo.png" />
+<meta name="dcterms.type" content="Text" />
+<meta name="dcterms.format" content="text/html" />
+<meta name="dcterms.identifier" content="https://bioinfotraining.bio.cam.ac.uk/images/galaxy_logo.png" />
+
+  <title>galaxy_logo.png | Bioinformatics Training</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <link type="text/css" rel="stylesheet" href="https://bioinfotraining.bio.cam.ac.uk/sites/bioinfotraining.bio.cam.ac.uk/files/css/css_xE-rWrJf-fncB6ztZfd2huxqgxu4WO-qwma6Xer30m4.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://bioinfotraining.bio.cam.ac.uk/sites/bioinfotraining.bio.cam.ac.uk/files/css/css_OJCotGPtn8Cscx9a6ksQRZAYGnhbf7r1jIYuPRWpxdc.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://bioinfotraining.bio.cam.ac.uk/sites/bioinfotraining.bio.cam.ac.uk/files/css/css_8U3At9xeFQrF9W8jNz-TV_MVE5tzl4n1eSK57wXBRkA.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://bioinfotraining.bio.cam.ac.uk/sites/bioinfotraining.bio.cam.ac.uk/files/css/css_xvoG4obilQJWu2HNDD7LLNI2V4udWTSwJY-UQVBgTZA.css" media="all" />
+<link type="text/css" rel="stylesheet" href="https://bioinfotraining.bio.cam.ac.uk/sites/bioinfotraining.bio.cam.ac.uk/files/css/css_ye3vNg5sKyEYBCGDarx1eAvj2lcCNWYshIaHthzxEQY.css" media="all" />
+
+  <script type="text/javascript" src="//use.typekit.com/hyb5bko.js"></script>
+  <script type="text/javascript">try {
+      Typekit.load();
+    } catch (e) {
+    }</script>
+  <script type="text/javascript">document.documentElement.className += " js";</script>
+
+</head>
+
+<body class="html not-front not-logged-in no-sidebars page-file page-file- page-file-60 campl-theme-2" >
+
+<!--[if lt IE 7]>
+<div class="lt-ie9 lt-ie8 lt-ie7">
+<![endif]-->
+<!--[if IE 7]>
+<div class="lt-ie9 lt-ie8">
+<![endif]-->
+<!--[if IE 8]>
+<div class="lt-ie9">
+<![endif]-->
+
+<a href="#page-content" class="campl-skipTo">skip to content</a>
+
+
+
+<div class="campl-row campl-global-header">
+  <div class="campl-wrap clearfix">
+    <div class="campl-header-container campl-column8" id="global-header-controls">
+      <a href="http://www.cam.ac.uk" class="campl-main-logo">
+        <img alt="University of Cambridge" src="/profiles/cambridge/themes/cambridge_theme/images/interface/main-logo-small.png"/>
+      </a>
+
+      <ul class="campl-unstyled-list campl-horizontal-navigation campl-global-navigation clearfix">
+        <li>
+          <a href="#study-with-us">Study at Cambridge</a>
+        </li>
+        <li>
+          <a href="#about-the-university">About the University</a>
+        </li>
+        <li>
+          <a href="http://www.cam.ac.uk/research" class="campl-no-drawer">Research at Cambridge</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="campl-column2">
+      <div class="campl-quicklinks">
+      </div>
+    </div>
+
+    <div class="campl-column2">
+
+      <div class="campl-site-search" id="site-search-btn">
+
+        <label for="header-search" class="hidden">Search site</label>
+
+        <div class="campl-search-input">
+          <form action="https://search.cam.ac.uk/web" method="get">
+            <input id="header-search" type="text" title="Search" name="query" value="" placeholder="Search"/>
+
+            
+            <input type="image" alt="Search" class="campl-search-submit"
+                   src="/profiles/cambridge/themes/cambridge_theme/images/interface/btn-search-header.png"/>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="campl-row campl-global-header campl-search-drawer">
+  <div class="campl-wrap clearfix">
+    <form class="campl-site-search-form" id="site-search-container" action="https://search.cam.ac.uk/web" method="get">
+      <div class="campl-search-form-wrapper clearfix">
+        <input type="text" class="text" title="Search" name="query" value="" placeholder="Search"/>
+
+        
+        <input type="image" alt="Search" class="campl-search-submit"
+               src="/profiles/cambridge/themes/cambridge_theme/images/interface/btn-search.png"/>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="campl-row campl-global-navigation-drawer">
+
+  <div class="campl-wrap clearfix">
+    <div class="campl-column12 campl-home-link-container">
+      <a href="">Home</a>
+    </div>
+  </div>
+  <div class="campl-wrap clearfix">
+    <div class="campl-column12 campl-global-navigation-mobile-list campl-global-navigation-list">
+      <div class="campl-global-navigation-outer clearfix" id="study-with-us">
+        <ul class="campl-unstyled-list campl-global-navigation-header-container ">
+          <li><a href="http://www.cam.ac.uk/study-at-cambridge">Study at Cambridge</a></li>
+        </ul>
+        <div class="campl-column4">
+          <ul
+            class="campl-global-navigation-container campl-unstyled-list campl-global-navigation-secondary-with-children">
+            <li>
+              <a href="http://www.study.cam.ac.uk/undergraduate/">Undergraduate</a>
+              <ul class="campl-global-navigation-tertiary campl-unstyled-list">
+                <li>
+                  <a href="http://www.study.cam.ac.uk/undergraduate/courses/">Courses</a>
+                </li>
+                <li>
+                  <a href="http://www.study.cam.ac.uk/undergraduate/apply/">Applying</a>
+                </li>
+                <li>
+                  <a href="http://www.study.cam.ac.uk/undergraduate/events/">Events and open days</a>
+                </li>
+                <li>
+                  <a href="http://www.study.cam.ac.uk/undergraduate/finance/">Fees and finance</a>
+                </li>
+                <li>
+                  <a href="http://www.becambridge.com/">Student blogs and videos</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="campl-column4">
+          <ul
+            class="campl-global-navigation-container campl-unstyled-list campl-global-navigation-secondary-with-children">
+            <li>
+              <a href="https://www.postgraduate.study.cam.ac.uk">Postgraduate</a>
+              <ul class="campl-global-navigation-tertiary campl-unstyled-list">
+                <li>
+                  <a href="https://www.postgraduate.study.cam.ac.uk/why-cambridge">Why Cambridge</a>
+                </li>
+                <li>
+                  <a href="https://www.postgraduate.study.cam.ac.uk/courses">Course directory</a>
+                </li>
+                <li>
+                  <a href="https://www.postgraduate.study.cam.ac.uk/application-process/how-do-i-apply">How to apply</a></li>
+                <li><a href="https://www.postgraduate.study.cam.ac.uk/finance/fees">Fees</a></li>
+                <li><a href="https://www.postgraduate.study.cam.ac.uk/funding">Funding</a></li>
+                <li><a href="https://www.postgraduate.study.cam.ac.uk/find-out-more/applicant-frequently-asked-questions">Frequently asked
+                    questions</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="campl-column4">
+          <ul class="campl-global-navigation-container campl-unstyled-list last">
+            <li>
+              <a href="http://www.cam.ac.uk/about-the-university/international-cambridge/studying-at-cambridge">International
+                students</a>
+            </li>
+            <li>
+              <a href="http://www.ice.cam.ac.uk">Continuing education</a>
+            </li>
+            <li>
+              <a href="http://www.admin.cam.ac.uk/offices/education/epe/">Executive and professional education</a>
+            </li>
+            <li>
+              <a href="http://www.educ.cam.ac.uk">Courses in education</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="campl-global-navigation-outer clearfix" id="about-the-university">
+        <ul class="campl-global-navigation-header-container campl-unstyled-list">
+          <li><a href="http://www.cam.ac.uk/about-the-university">About the University</a></li>
+        </ul>
+        <div class="campl-column4">
+          <ul class="campl-global-navigation-container campl-unstyled-list">
+            <li>
+              <a href="http://www.cam.ac.uk/about-the-university/how-the-university-and-colleges-work">How the
+                University and Colleges work</a>
+            </li>
+            <li>
+              <a href="http://www.cam.ac.uk/about-the-university/history">History</a>
+            </li>
+            <li>
+              <a href="http://www.cam.ac.uk/about-the-university/visiting-the-university">Visiting the University</a>
+            </li>
+            <li>
+              <a href="http://www.cam.ac.uk/about-the-university/term-dates-and-calendars">Term dates and calendars</a>
+            </li>
+            <li class="last">
+              <a href="http://map.cam.ac.uk">Map</a>
+            </li>
+          </ul>
+        </div>
+        <div class="campl-column4">
+          <ul class="campl-global-navigation-container campl-unstyled-list">
+            <li>
+              <a href="http://www.cam.ac.uk/for-media">For media</a>
+            </li>
+            <li>
+              <a href="http://www.cam.ac.uk/video-and-audio">Video and audio</a>
+            </li>
+            <li>
+              <a href="http://webservices.admin.cam.ac.uk/faesearch/map.cgi">Find an expert</a>
+            </li>
+            <li>
+              <a href="http://www.cam.ac.uk/about-the-university/publications">Publications</a>
+            </li>
+            <li class="last">
+              <a href="http://www.cam.ac.uk/about-the-university/international-cambridge">International Cambridge</a>
+            </li>
+          </ul>
+        </div>
+        <div class="campl-column4">
+          <ul class="campl-global-navigation-container campl-unstyled-list">
+            <li>
+              <a href="http://www.cam.ac.uk/news">News</a>
+            </li>
+            <li>
+              <a href="http://www.admin.cam.ac.uk/whatson">Events</a>
+            </li>
+            <li>
+              <a href="http://www.cam.ac.uk/public-engagement">Public engagement</a>
+            </li>
+            <li>
+              <a href="http://www.jobs.cam.ac.uk">Jobs</a>
+            </li>
+            <li class="last">
+              <a href="http://www.philanthropy.cam.ac.uk">Giving to Cambridge</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="campl-global-navigation-outer clearfix" id="our-research">
+        <ul class="campl-global-navigation-header-container campl-unstyled-list">
+          <li><a href="">Research at Cambridge</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="campl-unstyled-list campl-quicklinks-list campl-global-navigation-container ">
+      <li>
+        <a href="http://www.cam.ac.uk/for-staff">For staff</a>
+      </li>
+      <li>
+        <a href="http://www.admin.cam.ac.uk/students/gateway">For current students</a>
+      </li>
+      <li>
+        <a href="http://www.alumni.cam.ac.uk">For alumni</a>
+      </li>
+      <li>
+        <a href="http://www.cam.ac.uk/for-business">For business</a>
+      </li>
+      <li>
+        <a href="http://www.cam.ac.uk/colleges-and-departments">Colleges &amp; departments</a>
+      </li>
+      <li>
+        <a href="http://www.cam.ac.uk/libraries-and-facilities">Libraries &amp; facilities</a>
+      </li>
+      <li>
+        <a href="http://www.cam.ac.uk/museums-and-collections">Museums &amp; collections</a>
+      </li>
+      <li class="last">
+        <a href="http://www.cam.ac.uk/email-and-phone-search">Email &amp; phone search</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="campl-row campl-page-header campl-section-page">
+  <div class="campl-wrap clearfix">
+    <div class="campl-column12">
+      <div class="campl-content-container ">
+
+        
+                          
+        
+                  <p class="campl-page-title">
+                  Bioinformatics Training                            </p>
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="campl-row campl-page-header">
+    <div class="campl-wrap">
+        <div class="region region-horizontal-navigation">
+    <div id="block-menu-block-1" class="block block-menu-block">
+
+  
+  
+  
+  <div>
+    <div class="menu-block-wrapper menu-block-1 menu-name-main-menu parent-mlid-0 menu-level-1">
+  <div class="campl-wrap clearfix campl-local-navigation"><div class="campl-local-navigation-container"><ul class="campl-unstyled-list"><li class="first leaf menu-mlid-289"><a href="/">Home</a></li>
+<li class="expanded menu-mlid-5305"><a href="/postgraduate">Postgraduate Training</a><ul class="campl-unstyled-list local-dropdown-menu"><li class="first collapsed menu-mlid-5305"><a href="/postgraduate">Postgraduate Training overview</a></li>
+<li class="expanded menu-mlid-5306"><a href="/postgraduate/programming">Basic Skills and Programming</a><ul class="campl-unstyled-list local-dropdown-menu"><li class="first collapsed menu-mlid-5306"><a href="/postgraduate/programming">Basic Skills and Programming overview</a></li>
+<li class="leaf menu-mlid-5331"><a href="/postgraduate/programming/bioinfo-introRbio">Introduction to R for Biologists</a></li>
+<li class="leaf menu-mlid-5336"><a href="/postgraduate/programming/bioinfo-python">An introduction to solving biological problems with Python</a></li>
+<li class="leaf menu-mlid-5340"><a href="/postgraduate/programming/bioinfo-unix2">Introduction to working with UNIX and bash</a></li>
+<li class="leaf menu-mlid-5332"><a href="/postgraduate/programming/bioinfo-introhpc">High Performance Computing: An Introduction</a></li>
+<li class="leaf menu-mlid-5334"><a href="/postgraduate/programming/bioinfo-matlabintro">An introduction to MATLAB for biologists</a></li>
+<li class="leaf menu-mlid-5337"><a href="/postgraduate/programming/bioinfo-reproR">Reproducible Research with R</a></li>
+<li class="leaf menu-mlid-5329"><a href="/postgraduate/programming/bioinfo-dspyt">Data Science in Python</a></li>
+<li class="leaf menu-mlid-5333"><a href="/postgraduate/programming/bioinfo-introstats">Introduction to Statistical Analysis</a></li>
+<li class="leaf menu-mlid-5324"><a href="/postgraduate/programming/bioinfo-add">Managing your Research Data</a></li>
+<li class="last leaf menu-mlid-5388"><a href="/postgraduate/specialized/bioinfo-ml">Introduction to Machine Learning</a></li>
+</ul></li>
+<li class="expanded menu-mlid-5307"><a href="/postgraduate/services">Databases and Services</a><ul class="campl-unstyled-list local-dropdown-menu"><li class="first collapsed menu-mlid-5307"><a href="/postgraduate/services">Databases and Services overview</a></li>
+<li class="leaf menu-mlid-5354"><a href="/postgraduate/services/bioinfo-ensbrow">Using the Ensembl Genome browser</a></li>
+<li class="leaf menu-mlid-5349"><a href="/postgraduate/services/bioinfo-ebinetworks">EMBL-EBI: Network analysis with Cytoscape</a></li>
+<li class="leaf menu-mlid-5355"><a href="/postgraduate/services/bioinfo-intermine">Biological data analysis using InterMine (User Interface and API)</a></li>
+<li class="leaf menu-mlid-5345"><a href="/postgraduate/services/bioinfo-ebiENA">EMBL-EBI: Introduction to the European Nucleotide Sequence Archive</a></li>
+<li class="leaf menu-mlid-5352"><a href="/postgraduate/services/bioinfo-ebitrans">EMBL-EBI: Transcriptomics Data and Tools</a></li>
+<li class="last leaf menu-mlid-5357"><a href="/postgraduate/services/bioinfo-opent">Open Targets: Integrating genetics and genomics for disease biology and translational medicine</a></li>
+</ul></li>
+<li class="expanded menu-mlid-5308"><a href="/postgraduate/specialized">Specialized Training</a><ul class="campl-unstyled-list local-dropdown-menu"><li class="first collapsed menu-mlid-5308"><a href="/postgraduate/specialized">Specialized Training overview</a></li>
+<li class="leaf menu-mlid-5366"><a href="/postgraduate/specialized/bioinfo-RNAseq3">Analysis of bulk RNA-seq data</a></li>
+<li class="leaf menu-mlid-5403"><a href="/postgraduate/specialized/methylation">Analysis of DNA methylation using sequencing</a></li>
+<li class="leaf menu-mlid-5404"><a href="/postgraduate/specialized/scRNAseq">Analysis of single-cell RNA-seq data</a></li>
+<li class="leaf menu-mlid-5368"><a href="/postgraduate/specialized/bioinfo-bionetwork">Biological Network Series</a></li>
+<li class="leaf menu-mlid-5370"><a href="/postgraduate/specialized/bioinfo-ensdev">Ensembl REST API workshop</a></li>
+<li class="leaf menu-mlid-5372"><a href="/postgraduate/specialized/bioinfo-expdes">Experimental Design</a></li>
+<li class="leaf menu-mlid-5397"><a href="/postgraduate/specialized/bioinfo-proteoR">Exploring, visualising and analysing proteomics data in R</a></li>
+<li class="leaf menu-mlid-5377"><a href="/postgraduate/specialized/bioinfo-genlist">Extracting biological information from gene lists</a></li>
+<li class="leaf menu-mlid-5380"><a href="/postgraduate/specialized/bioinfo-image">Image analysis for biologists (3-day)</a></li>
+<li class="leaf menu-mlid-5387"><a href="/postgraduate/specialized/bioinfo-metaintro">Introduction to metabolomics and its application in life-sciences</a></li>
+<li class="leaf menu-mlid-5386"><a href="/postgraduate/specialized/bioinfo-metagen">Introduction to metagenomics</a></li>
+<li class="leaf menu-mlid-5373"><a href="/postgraduate/specialized/bioinfo-figdes">Introduction to scientific figure design</a></li>
+<li class="leaf menu-mlid-5384"><a href="/postgraduate/specialized/bioinfo-knime">KNIME: Practical introduction to KNIME Analytics platform and its application in bioinformatics</a></li>
+<li class="leaf menu-mlid-5395"><a href="/postgraduate/specialized/bioinfo-phylng">Molecular phylogenetics</a></li>
+<li class="leaf menu-mlid-5396"><a href="/postgraduate/specialized/bioinfo-prostruct2">Protein Structure Analysis</a></li>
+<li class="leaf menu-mlid-5398"><a href="/postgraduate/specialized/bioinfo-radv">R object-oriented programming and package development</a></li>
+<li class="leaf menu-mlid-5401"><a href="/postgraduate/specialized/bioinfo-snake">Snakemake workshop</a></li>
+<li class="leaf menu-mlid-5361"><a href="/postgraduate/specialized/bioinfo-CellPro">Using CellProfiler and CellProfiler Analyst to analyse biological images</a></li>
+<li class="leaf menu-mlid-5376"><a href="/postgraduate/specialized/bioinfo-gatk4">Variant Discovery with GATK4</a></li>
+<li class="leaf menu-mlid-5382"><a href="/postgraduate/specialized/bioinfo-imagePy">Bioimage analysis with Python</a></li>
+<li class="leaf menu-mlid-5379"><a href="/postgraduate/specialized/bioinfo-ice">Bioinformatics for Biologists: An introduction to Data Exploration, Statistics, and Reproducibility</a></li>
+<li class="leaf menu-mlid-5363"><a href="/postgraduate/specialized/bioinfo-PIs">Bioinformatics for Principal Investigators</a></li>
+<li class="leaf menu-mlid-5369"><a href="/postgraduate/specialized/bioinfo-dsml">Data Science: Machine learning applications for life sciences</a></li>
+<li class="last leaf menu-mlid-5367"><a href="/postgraduate/specialized/bioinfo-TAnm">Transcriptome Analysis for Non-Model Organisms</a></li>
+</ul></li>
+<li class="last leaf menu-mlid-5318"><a href="/postgraduate/eligibility">Eligibility Criteria and Charging Policy</a></li>
+</ul></li>
+<li class="expanded menu-mlid-5309"><a href="/undergraduate">Undergraduate Training</a><ul class="campl-unstyled-list local-dropdown-menu"><li class="first last collapsed menu-mlid-5309"><a href="/undergraduate">Undergraduate Training overview</a></li>
+</ul></li>
+<li class="last expanded menu-mlid-5298"><a href="/about">About the facility</a><ul class="campl-unstyled-list local-dropdown-menu"><li class="first collapsed menu-mlid-5298"><a href="/about">About the facility overview</a></li>
+<li class="leaf menu-mlid-5314"><a href="/about/findus">How to find us</a></li>
+<li class="leaf menu-mlid-5313"><a href="/about/contactus">Contact Us</a></li>
+<li class="leaf menu-mlid-5315"><a href="/about/visitors">Visiting Cambridge</a></li>
+<li class="last leaf menu-mlid-8061"><a href="/about/our-impact" title="Training Quality and Impact assessment">Our Impact</a></li>
+</ul></li>
+</ul></div></div></div>
+  </div>
+
+</div>
+  </div>
+    </div>
+  </div>
+
+
+  <div class="campl-row campl-page-header">
+    <div class="campl-wrap clearfix campl-page-sub-title campl-recessed-sub-title">
+              <div class="campl-column3 campl-spacing-column">
+          &nbsp;
+        </div>
+      
+      <div class="campl-column9">
+        <div class="campl-content-container clearfix contextual-links-region">
+                    <h1 class="campl-sub-title">galaxy_logo.png </h1>
+                  </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="campl-row campl-content
+    campl-recessed-content">
+    <div class="campl-wrap clearfix">
+              <div class="campl-column3">
+          <div class="campl-tertiary-navigation">
+              <div class="region region-left-navigation">
+    <div id="block-menu-block-2" class="block block-menu-block">
+
+  
+  
+  
+  <div>
+    <div class="menu-block-wrapper menu-block-2 menu-name-main-menu parent-mlid-0 menu-level-1">
+  <div class="campl-tertiary-navigation-structure"><ul class="campl-unstyled-list campl-vertical-breadcrumb"><li class="first leaf menu-mlid-289"><a href="/">Bioinformatics Training<span class="campl-vertical-breadcrumb-indicator"></span></a></li></ul><ul class="campl-unstyled-list campl-vertical-breadcrumb-navigation"><li class="expanded menu-mlid-5305"><a href="/postgraduate">Postgraduate Training</a></li>
+<li class="collapsed menu-mlid-5309"><a href="/undergraduate">Undergraduate Training</a></li>
+<li class="last expanded menu-mlid-5298"><a href="/about">About the facility</a></li>
+</ul></div></div>
+  </div>
+
+</div>
+  </div>
+          </div>
+        </div>
+                            <div class="campl-column9 campl-main-content" id="page-content">
+
+          <div class="">
+
+            
+                                      
+              <div class="region region-content">
+    <div id="block-system-main" class="block block-system">
+
+  
+  
+  
+  <div>
+    <div id="file-60" class="file file-image file-image-png">
+
+      
+  
+  <div class="content">
+    <img typeof="foaf:Image" class="campl-scale-with-grid" src="https://bioinfotraining.bio.cam.ac.uk/sites/bioinfotraining.bio.cam.ac.uk/files/media/galaxy_logo.png" width="458" height="127" alt="" />  </div>
+
+  
+</div>
+  </div>
+
+</div>
+  </div>
+
+          </div>
+
+        </div>
+      
+      
+      
+      
+    </div>
+
+  </div>
+
+  <div class="campl-row campl-local-footer">
+    <div class="campl-wrap clearfix">
+      <div class="campl-column3 campl-footer-navigation">
+                    <div class="region region-footer-1">
+    <div id="block-block-5" class="block block-block campl-content-container campl-navigation-list">
+
+  
+      <h3>Contact us</h3>
+  
+  
+  <div class="content">
+    <p>Bioinformatics Training Department of Genetics University of Cambridge Downing Street Cambridge CB2 3EH United Kingdom</p>
+<h3>Contact: <a href="mailto:bioinfotraining@bio.cam.ac.uk">bioinfotraining@bio.cam.ac.uk</a></h3>
+<h3><a href="https://bioinfotraining.bio.cam.ac.uk/privacy-and-cookie-policies" target="_self">Site Privacy &amp; Cookie Policies</a></h3>
+  </div>
+
+</div>
+  </div>
+              </div>
+      <div class="campl-column3 campl-footer-navigation">
+                    <div class="region region-footer-2">
+    <div id="block-block-9" class="block block-block campl-content-container campl-navigation-list">
+
+  
+      <h3> Bioinformatics Training</h3>
+  
+  
+  <div class="content">
+    <p><a href="https://bioinfotraining.bio.cam.ac.uk/undergraduate">Undergraduate training</a></p>
+<p><a href="https://bioinfotraining.bio.cam.ac.uk/postgraduate">Postgraduate training</a></p>
+  </div>
+
+</div>
+  </div>
+              </div>
+      <div class="campl-column3 campl-footer-navigation">
+                    <div class="region region-footer-3">
+    <div id="block-block-8" class="block block-block campl-content-container campl-navigation-list">
+
+  
+      <h3>Postgraduate Courses by Theme</h3>
+  
+  
+  <div class="content">
+    <p><a href="https://bioinfotraining.bio.cam.ac.uk/postgraduate/programming">Basic Skills and Programming</a></p>
+<p><a href="https://bioinfotraining.bio.cam.ac.uk/postgraduate/services">Databases and Services</a></p>
+<p><a href="https://bioinfotraining.bio.cam.ac.uk/postgraduate/specialized">Specialized Topics</a></p>
+  </div>
+
+</div>
+  </div>
+              </div>
+      <div class="campl-column3 campl-footer-navigation last">
+                    <div class="region region-footer-4">
+    <div id="block-block-7" class="block block-block campl-content-container campl-navigation-list">
+
+  
+      <h3>About Bioinformatics Training</h3>
+  
+  
+  <div class="content">
+    <p><a href="https://bioinfotraining.bio.cam.ac.uk/about">About the Facility</a></p>
+<p><a href="https://bioinfotraining.bio.cam.ac.uk/about/findus">How to find us</a></p>
+<p><a href="https://bioinfotraining.bio.cam.ac.uk/about/visitors">Visiting Cambridge</a></p>
+<p><a href="https://bioinfotraining.bio.cam.ac.uk/privacy-and-cookie-policies">Privacy and Cookies policy</a></p>
+  </div>
+
+</div>
+  </div>
+              </div>
+    </div>
+  </div>
+
+<div class="campl-row campl-global-footer">
+  <div class="campl-wrap clearfix">
+    <div class="campl-column3 campl-footer-navigation">
+      <div class="campl-content-container campl-footer-logo">
+        <img alt="University of Cambridge" src="/profiles/cambridge/themes/cambridge_theme/images/interface/main-logo-small.png"
+             class="campl-scale-with-grid"/>
+
+        <p>&#169; 2022 University of Cambridge</p>
+        <ul class="campl-unstyled-list campl-global-footer-links">
+          <li>
+            <a href="http://www.cam.ac.uk/university-a-z">University A-Z</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/contact-the-university">Contact the University</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/about-this-site/accessibility">Accessibility</a>
+          </li>
+          <li>
+            <a href="http://www.admin.cam.ac.uk/univ/information/foi/">Freedom of information</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/about-this-site/terms-and-conditions">Terms and conditions</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="campl-column3 campl-footer-navigation">
+      <div class="campl-content-container campl-navigation-list">
+
+        <div class="link-list">
+          <h3><a href="http://www.cam.ac.uk/study-at-cambridge">Study at Cambridge</a></h3>
+          <ul class="campl-unstyled-list">
+            <li>
+              <a href="http://www.study.cam.ac.uk/undergraduate/">Undergraduate</a>
+            </li>
+            <li>
+              <a href="https://www.postgraduate.study.cam.ac.uk">Postgraduate</a>
+            </li>
+            <li>
+              <a href="http://www.cam.ac.uk/about-the-university/international-cambridge/studying-at-cambridge">International
+                students</a>
+            </li>
+            <li>
+              <a href="http://www.ice.cam.ac.uk">Continuing education</a>
+            </li>
+            <li>
+              <a href="http://www.admin.cam.ac.uk/offices/education/epe/">Executive and professional education</a>
+            </li>
+            <li>
+              <a href="http://www.educ.cam.ac.uk">Courses in education</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="campl-column3 campl-footer-navigation">
+      <div class="campl-content-container campl-navigation-list">
+        <h3><a href="http://www.cam.ac.uk/about-the-university">About the University</a></h3>
+        <ul class="campl-unstyled-list campl-page-children">
+          <li>
+            <a href="http://www.cam.ac.uk/about-the-university/how-the-university-and-colleges-work">How the University
+              and Colleges work</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/about-the-university/visiting-the-university">Visiting the University</a>
+          </li>
+          <li>
+            <a href="http://map.cam.ac.uk">Map</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/news">News</a>
+          </li>
+          <li>
+            <a href="http://www.admin.cam.ac.uk/whatson">Events</a>
+          </li>
+          <li>
+            <a href="http://www.jobs.cam.ac.uk">Jobs</a>
+          </li>
+          <li>
+            <a href="http://www.philanthropy.cam.ac.uk">Giving to Cambridge</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="campl-column3 campl-footer-navigation last">
+      <div class="campl-content-container campl-navigation-list">
+        <h3><a href="http://www.cam.ac.uk/research">Research at Cambridge</a></h3>
+        <ul class="campl-unstyled-list">
+          <li>
+            <a href="http://www.cam.ac.uk/research/news">News</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/research/features">Features</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/research/discussion">Discussion</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/research/spotlight-on">Spotlight on...</a>
+          </li>
+          <li>
+            <a href="http://www.cam.ac.uk/research/research-at-cambridge">About research at Cambridge</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="https://bioinfotraining.bio.cam.ac.uk/sites/bioinfotraining.bio.cam.ac.uk/files/js/js_s5koNMBdK4BqfHyHNPWCXIL2zD0jFcPyejDZsryApj0.js"></script>
+<script type="text/javascript" src="https://bioinfotraining.bio.cam.ac.uk/sites/bioinfotraining.bio.cam.ac.uk/files/js/js_otIGU3p2tmUTVRsTJhZYG_EzOT3aYBC_7sXF343boSc.js"></script>
+<script type="text/javascript" src="https://bioinfotraining.bio.cam.ac.uk/sites/bioinfotraining.bio.cam.ac.uk/files/js/js_0jzZrM_Bf65tlePIOcTyDrVEO4dOvipQblWxMfrHjl8.js"></script>
+<script type="text/javascript" src="https://bioinfotraining.bio.cam.ac.uk/sites/bioinfotraining.bio.cam.ac.uk/files/js/js_FBc_l9o-Q7KwTjfyfw2NwPN-RiaAqmEf-YE0NJGFUnc.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","setHasJsCookie":0,"ajaxPageState":{"theme":"cambridge_theme","theme_token":"sGi14d0iKsXBXNZ93YG0LxwiwNS0dW0vS-J-_DevZsw","js":{"profiles\/cambridge\/modules\/contrib\/jquery_update\/replace\/jquery\/1.10\/jquery.min.js":1,"misc\/jquery-extend-3.4.0.js":1,"misc\/jquery-html-prefilter-3.5.0-backport.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"profiles\/cambridge\/modules\/features\/cambridge_teasers\/js\/teasers.js":1,"profiles\/cambridge\/modules\/features\/cambridge_teasers\/js\/jquery.matchHeight-min.js":1,"profiles\/cambridge\/modules\/contrib\/fancybox\/fancybox.js":1,"profiles\/cambridge\/libraries\/fancybox\/source\/jquery.fancybox.pack.js":1,"profiles\/cambridge\/libraries\/fancybox\/lib\/jquery.mousewheel-3.0.6.pack.js":1,"profiles\/cambridge\/themes\/cambridge_theme\/js\/custom.js":1,"profiles\/cambridge\/themes\/cambridge_theme\/js\/libs\/ios-orientationchange-fix.js":1,"profiles\/cambridge\/themes\/cambridge_theme\/js\/libs\/modernizr.js":1,"profiles\/cambridge\/themes\/cambridge_theme\/js\/drupal.js":1},"css":{"modules\/system\/system.base.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"modules\/aggregator\/aggregator.css":1,"profiles\/cambridge\/modules\/contrib\/calendar\/css\/calendar_multiday.css":1,"profiles\/cambridge\/modules\/features\/cambridge_events\/css\/events.css":1,"profiles\/cambridge\/modules\/features\/cambridge_teasers\/css\/teasers.css":1,"profiles\/cambridge\/modules\/contrib\/date\/date_repeat_field\/date_repeat_field.css":1,"modules\/field\/theme\/field.css":1,"modules\/node\/node.css":1,"profiles\/cambridge\/modules\/contrib\/toc_node\/css\/toc_node.css":1,"modules\/user\/user.css":1,"profiles\/cambridge\/modules\/contrib\/views\/css\/views.css":1,"profiles\/cambridge\/modules\/contrib\/ckeditor\/css\/ckeditor.css":1,"profiles\/cambridge\/modules\/contrib\/ctools\/css\/ctools.css":1,"profiles\/cambridge\/libraries\/fancybox\/source\/jquery.fancybox.css":1,"profiles\/cambridge\/themes\/cambridge_theme\/css\/full-stylesheet.css":1,"profiles\/cambridge\/themes\/cambridge_theme\/css\/drupal.css":1,"profiles\/cambridge\/themes\/cambridge_theme\/css\/falcon.css":1,"public:\/\/css_injector\/css_injector_1.css":1,"public:\/\/css_injector\/css_injector_2.css":1,"public:\/\/css_injector\/css_injector_3.css":1,"public:\/\/css_injector\/css_injector_4.css":1,"public:\/\/css_injector\/css_injector_5.css":1,"public:\/\/css_injector\/css_injector_6.css":1,"public:\/\/css_injector\/css_injector_7.css":1,"public:\/\/css_injector\/css_injector_8.css":1,"public:\/\/css_injector\/css_injector_9.css":1,"public:\/\/css_injector\/css_injector_11.css":1,"public:\/\/css_injector\/css_injector_12.css":1,"public:\/\/css_injector\/css_injector_13.css":1,"public:\/\/css_injector\/css_injector_14.css":1,"public:\/\/css_injector\/css_injector_15.css":1,"public:\/\/css_injector\/css_injector_16.css":1,"public:\/\/css_injector\/css_injector_17.css":1}},"fancybox":[]});
+//--><!]]>
+</script>
+
+
+<!--[if lte IE 8]>
+</div>
+<![endif]-->
+
+</body>
+
+</html>
