@@ -15,6 +15,8 @@
 // * @property User[] $users
  */
 class ResetPasswordRequest extends CActiveRecord {
+    
+    public $verifier;
 
     public function rules()
     {
@@ -114,6 +116,15 @@ class ResetPasswordRequest extends CActiveRecord {
     public function getVerifier()
     {
         return $this->verifier;
+    }
+
+    /**
+     * Returns verifier
+     * @return string
+     */
+    public function setVerifier($verifier)
+    {
+        $this->verifier = $verifier;
     }
 
     /**
