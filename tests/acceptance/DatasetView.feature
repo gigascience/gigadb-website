@@ -59,6 +59,6 @@ Feature: a user visit the dataset page
   Scenario: Project image with links
     Given I have not signed in
     When I am on "/dataset/100006"
-    Then I should see an image "/images/project/G10Klogo.jpg" is linked to "http://www.genome10k.org/"
-    And I should see an image "/images/project/phylogenomiclogo.png" is linked to "http://avian.genomics.cn/en/index.html"
+    Then I should see an image "/images/projects/genome_10k/G10Klogo.jpg" is linked to "http://www.genome10k.org/"
+    And I should see an image "/images/projects/the_avian_phylogenomic_project/phylogenomiclogo.png" is linked to "http://avian.genomics.cn/en/index.html"
     
