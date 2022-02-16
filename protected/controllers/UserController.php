@@ -29,10 +29,11 @@ class UserController extends Controller {
      */
     public function accessRules() {
         return array(
-            array('allow',  // all users
-                'actions'=>array('create', 'confirm', 'welcome',
-                				'reset', 'resetThanks',
-                                'sendActivationEmail','emailWelcome','emailReset'),
+            array('allow',  # all users
+                'actions'=>array(
+                    'create', 'confirm', 'welcome', 'reset', 'resetThanks',
+                    'sendActivationEmail', 'emailWelcome', 'emailReset', 
+                    'forgotPassword'),
                 'users'=>array('*'),
             ),
             array('allow', # logged in users
@@ -47,6 +48,19 @@ class UserController extends Controller {
                 'users'=>array('*'),
             ),
         );
+    }
+
+    /**
+     * Yii's method for routing urls to an action. Override to use custom 
+     * actions
+     */
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['forgotPassword'] = [
+            'class' => 'application.controllers.user.ForgotPasswordAction'
+        ];
+        return $actions;
     }
 
     /**
