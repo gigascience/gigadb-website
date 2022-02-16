@@ -89,10 +89,8 @@ class ResetPasswordRequestController extends Controller
 
         $now = new Datetime();
         $generatedAt = $now->format(DateTime::ISO8601) ;
-//        $expiresAt = date($generatedAt, strtotime("+1 hour"));
-        $expiresAt = $generatedAt;
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": generatedAt ".$generatedAt, 'info');
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": expiresAt: ".$expiresAt, 'info');
+        $expiresAt = $now->modify('+ 1 hour');
+        $expiresAt = $expiresAt->format(DateTime::ISO8601) ;
 
         $verifier = ResetPasswordHelper::getRandomAlphaNumStr();
         $selector = ResetPasswordHelper::getRandomAlphaNumStr();
