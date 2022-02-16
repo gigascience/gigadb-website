@@ -54,6 +54,7 @@ return array(
         // search parameters
         'search_result_limit' => '${SEARCH_RESULT_LIMIT}',
         
+        // For creating hash for password reset functionality
         'signing_key' => '${HASH_SECRET_KEY}',
     ),
 );
