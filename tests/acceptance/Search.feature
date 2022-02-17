@@ -160,3 +160,25 @@ Feature: main search function
     And I press the button "Search"
     And I wait "1" seconds
     Then I should see "No results found for 'teletubbies'"
+
+  @ok
+  Scenario: Query for specific dataset type
+    Given I am on "/"
+    When I follow "Software"
+    And I wait "1" seconds
+    Then I should see a link "Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies." to "/dataset/100094"
+
+  @ok
+  Scenario: Search for a term that is only in dataset types
+    Given I am on "/"
+    And I fill in the field of "id" "keyword" with "epigenomic"
+    And I press the button "Search"
+    And I wait "1" seconds
+    Then I should see a link "Genome data from foxtail millet (<em>Setaria italica</em>)." to "/dataset/100020"
+
+  @ok
+  Scenario: Query for specific author id
+    Given I am on "/dataset/100006"
+    When I follow "Lambert DM"
+    And I wait "1" seconds
+    Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"

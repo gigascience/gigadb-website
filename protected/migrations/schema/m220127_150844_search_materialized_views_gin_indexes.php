@@ -13,6 +13,9 @@ class m220127_150844_search_materialized_views_gin_indexes extends CDbMigration
 	// Use safeUp/safeDown to do migration with transaction
 	public function safeUp()
 	{
+        //Ensure full-text search uses english dictionary on all environments
+	    Yii::app()->db->createCommand("alter role gigadb in database gigadb SET default_text_search_config TO 'pg_catalog.english'")->execute();
+
 	    //First query
         Yii::app()->db->createCommand("drop materialized view if exists file_finder")->execute();
 	    Yii::app()->db->createCommand("create materialized view file_finder as
@@ -105,7 +108,7 @@ SELECT f.*, fs.sample_id as sample_id, ff.name as file_format, ft.name as file_t
 		dal.authorlinks as authornames,
 		d.title as title,
 		d.description as description,
-		coalesce(d.identifier,'') || coalesce(d.title,'') || coalesce(daf.names,'') || coalesce(dai.names,'') || coalesce(d.description,'') || coalesce(dt.types,'') || coalesce(dk.keywords,'') || coalesce(dp.names,'') || coalesce(m.identifier,'') || coalesce(m.pmid::varchar,'') || coalesce(df.grant_award, '') || coalesce(df.comments,'') || coalesce(fn.primary_name_display,'') || coalesce(el.external_links,'') || 'published:' || to_char(d.publication_date,'YYYY-MM-DD') || ',' || to_char(d.publication_date,'YYYY-MM') || ',' || to_char(d.publication_date,'YYYY')as document
+		coalesce(d.identifier,'') || ' ' || coalesce(d.title,'') || ' ' || coalesce(dt.types,'') || ' ' || coalesce(daf.names,'') || ' ' || coalesce(dai.names,'') || ' ' || coalesce(d.description,'') || ' ' || coalesce(dt.types,'') || ' ' || coalesce(dk.keywords,'') || ' ' || coalesce(dp.names,'') || ' ' || coalesce(m.identifier,'') || ' '  || coalesce(m.pmid::varchar,'') || ' ' || coalesce(df.grant_award, '') || ' ' || coalesce(df.comments,'') || ' ' || coalesce(fn.primary_name_display,'') || ' ' || coalesce(el.external_links,'') || ' ' || 'published:' || to_char(d.publication_date,'YYYY-MM-DD') || ',' || to_char(d.publication_date,'YYYY-MM') || ',' || to_char(d.publication_date,'YYYY') as document
 	from dataset d
 	left join manuscript m on d.id = m.dataset_id
 	left join dataset_funder df on df.dataset_id = d.id
@@ -117,6 +120,7 @@ SELECT f.*, fs.sample_id as sample_id, ff.name as file_format, ft.name as file_t
 	left join dataset_projects dp on dp.dataset_id = d.id
 	left join dataset_types dt on dt.dataset_id = d.id
 	left join external_links el on el.dataset_id = d.id")->execute();
+
 
         Yii::app()->db->createCommand("drop index if exists dataset_finder_search_idx")->execute();
         Yii::app()->db->createCommand("create index dataset_finder_search_idx on dataset_finder using GIN (to_tsvector('english',document))")->execute();
