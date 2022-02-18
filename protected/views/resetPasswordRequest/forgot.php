@@ -6,7 +6,7 @@
                     <li><a href="/">Home</a></li>
                     <li class="active">Reset</li>
                 </ol>
-                <h4>Reset Password</h4>
+                <h4>Forgotten Password</h4>
             </div>
         </section>
     <div class="subsection" style="margin-bottom: 130px;">
@@ -18,7 +18,7 @@
             </div>
             <div class="create-div">
                 <? $form=$this->beginWidget('CActiveForm', array(
-                    'id'=>'reset-password-form',
+                    'id'=>'request-reset-password-form',
                     'enableAjaxValidation'=>false,
                     'htmlOptions'=>array('class'=>'form-horizontal')
                 )) ?>
