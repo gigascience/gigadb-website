@@ -4,9 +4,10 @@
  *
  * @see https://www.yiiframework.com/doc/guide/1.1/en/topics.auth
  */
-class PasswordResetTokenUserIdentity extends CUserIdentity {
+class PasswordResetTokenUserIdentity extends UserIdentity {
 
     public $_id;
+    public $type;
     const ERROR_SELECTOR_NOT_ASSOCIATED_WITH_A_USER = 4;
     const ERROR_RECALCULATED_HASH_OF_VERIFIER_DOES_NOT_MATCH_HASH_IN_DATABASE = 5;
 
@@ -23,16 +24,19 @@ class PasswordResetTokenUserIdentity extends CUserIdentity {
     public function __construct($urlToken)
     {
         $this->urlToken = $urlToken;
+        $this->type = "passwordResetUser";
     }
 
     /**
-     * Authenticates a user using a password reset token that consists of two
-     * parts: a selector and verifier.
+     * Provides the authentication process for a user with a password reset
+     * token that consists of two parts: a selector and verifier.
      *
      * @return boolean whether authentication succeeds. True if successful, False otherwise
      */
     public function authenticate() 
     {
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": In PasswordResetTokenUserIdentity::authenticate()", 'info');
+
         // Find user associated with selector part in URL
         $selectorFromURL = substr($this->urlToken, 0, 20);
         $resetPasswordRequest = ResetPasswordRequest::findResetPasswordRequestBySelector($selectorFromURL);
@@ -52,11 +56,11 @@ class PasswordResetTokenUserIdentity extends CUserIdentity {
             if($hashedTokenFromURLVerifier == $resetPasswordRequest->hashed_token)
             {
                 $this->_id = $user->id;
+                $this->setState('userType', $this->type);
                 $this->errorCode = self::ERROR_NONE;
             }
             else
             {
-                // TODO: Delete token and show login page
                 $this->errorCode = self::ERROR_RECALCULATED_HASH_OF_VERIFIER_DOES_NOT_MATCH_HASH_IN_DATABASE;
             }
         }
