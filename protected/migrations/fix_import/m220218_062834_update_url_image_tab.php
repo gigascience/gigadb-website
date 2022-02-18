@@ -1,0 +1,14 @@
+<?php
+
+class m220218_062834_update_url_image_tab extends CDbMigration
+{
+	public function safeUp()
+	{
+	    Yii::app()->db->createCommand("update image set url = replace(url,'http://gigadb.org/','https://assets.gigadb-cdn.net/images/datasets/');")->execute();
+//	    Yii::app()->db->createCommand("update image set url = 'https://assets.gigadb-cdn.net/images/datasets/no_image.png' where location  like 'no_image%';")->execute();
+	}
+
+	public function safeDown()
+	{
+	}
+}
