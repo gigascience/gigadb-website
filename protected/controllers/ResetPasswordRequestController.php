@@ -14,13 +14,17 @@ class ResetPasswordRequestController extends Controller
     {
         return array(
             array('allow',
-                'actions' => array('forgot'),
+                'actions' => array('forgot', 'verify'),
                 'users' => array('?'),  // Can be executed by anonymous users
             ),
-            array('deny',
-                'actions' => array('verify'),
-                'users' => array('?'),  // Cannot be executed by anonymous users
-            ),
+//            array('allow',
+//                'actions' => array('changePassword'),
+//                'users' => array('@'),  // Can be executed by authenticated users
+//            ),
+//            array('deny',
+//                'actions' => array('changePassword'),
+//                'users' => array('?'),  // Cannot be executed by anonymous users
+//            ),
         );
     }
     
@@ -51,38 +55,51 @@ class ResetPasswordRequestController extends Controller
     }
     
     /**
-     * Validates token for user to access password reset page
+     * Displays password reset page if token is verified for user to access 
+     * password reset page
      * 
      * Token is validated with a database lookup of selector, and
      * re-calculating hash of verifier in URL and compare with
      * hash in database
      * 
-     * Looks for /resetpasswordrequest/verify?token={token}
+     * Looks for /resetpasswordrequest/changePassword?token={token}
      */
-    public function actionVerify() 
+    public function actionChangePassword()
     {
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": In ResetPasswordRequestController::actionReset()", 'info');
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": In ResetPasswordRequestController::actionChangePassword()", 'info');
 
-        $signingKey = Yii::app()->params['signing_key'];
-        $this->layout = "new_main";
         if (isset($_GET['token'])) {
             $token = $_GET['token'];
             $userIdentity = new PasswordResetTokenUserIdentity($token);
-
-            # Complete authentication of user wanting to reset password
-            if($userIdentity->authenticate()){
-                Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User is authenticated!", 'info');
-                $duration= 1800*1*1 ; // 30 mins
-                // Yii::app()->user is the current user application component
-                // We save PasswordResetTokenUserIdentity into it and then 
-                // controllers can use saved user identity to determine
-                // authorisation
-                Yii::app()->user->login($userIdentity, $duration);
-                $this->redirect('/user/changePassword');
+            if ($userIdentity->authenticate()) {
+                Yii::log("[INFO] [" . __CLASS__ . ".php] " . __FUNCTION__ . ": User is authenticated!", 'info');
+                $this->layout = "new_main";
+                $model = new ChangePasswordForm();
+                $model->user_id = 22;  // TODO: remove hardcoded user id
+                $user = User::model()->findByattributes(array('id' => 22));
+                $model->newsletter = $user->newsletter;
+                if (isset($_POST['ChangePasswordForm'])) {
+                    // TODO: Update user with new password
+                    // TODO: Delete token from reset_password_request table
+                    // TODO: Go to login page
+                }
+                else {
+                    // TODO: Display reset password page 
+                    $model->password = $model->confirmPassword = '';
+                    $this->render('changePassword', array('model' => $model));
+                }
             } else {
-                // TODO: Delete token and show login page
-                Yii::log("FAILED VALIDATION: " . $userIdentity->errorCode , "error");
+                Yii::log("Token not valid" , "error");
+                // TODO: display flash message re: problem
+                // Display request reset password page 
+                $this->redirect('forgot');
             }
+        }
+        else {
+            Yii::log("No token provided" , "error");
+            // TODO: display flash message re: problem
+            // Display request reset password page 
+            $this->redirect('forgot');
         }
     }
     
