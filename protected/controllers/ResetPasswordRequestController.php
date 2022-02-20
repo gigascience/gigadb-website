@@ -79,9 +79,13 @@ class ResetPasswordRequestController extends Controller
                 $user = User::model()->findByattributes(array('id' => 22));
                 $model->newsletter = $user->newsletter;
                 if (isset($_POST['ChangePasswordForm'])) {
-                    // TODO: Update user with new password
-                    // TODO: Delete token from reset_password_request table
-                    // TODO: Go to login page
+                    $model->attributes=$_POST['ChangePasswordForm'];
+                    $model->newsletter=$_POST['ChangePasswordForm']['newsletter'];
+                    if($model->validate() && $model->changePass()) {
+                        // TODO: Delete token from reset_password_request table
+                        // TODO: go to login page after updating password
+                        $this->redirect('/site/login');
+                    }
                 }
                 else {
                     // TODO: Display reset password page 
