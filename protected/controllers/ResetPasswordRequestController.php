@@ -6,25 +6,20 @@
 class ResetPasswordRequestController extends Controller
 {
     /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
+     * Specifies access control rules.
+     * 
+     * The changePassword function can be used by anonymous users but it will 
+     * only work if a token is provided.
+     * 
      * @return array access control rules
      */
     public function accessRules()
     {
         return array(
             array('allow',
-                'actions' => array('forgot', 'verify'),
+                'actions' => array('forgot', 'verify', 'changePassword'),
                 'users' => array('?'),  // Can be executed by anonymous users
             ),
-//            array('allow',
-//                'actions' => array('changePassword'),
-//                'users' => array('@'),  // Can be executed by authenticated users
-//            ),
-//            array('deny',
-//                'actions' => array('changePassword'),
-//                'users' => array('?'),  // Cannot be executed by anonymous users
-//            ),
         );
     }
     
@@ -83,7 +78,7 @@ class ResetPasswordRequestController extends Controller
                 if (isset($_POST['ChangePasswordForm'])) {
                     $model->attributes=$_POST['ChangePasswordForm'];
                     if($model->validate() && $model->changePass()) {
-                        // Delete token from reset_password_request table
+                        // Delete token so it cannot be used again
                         $resetPasswordRequest->delete();
                         // Go to login page after updating password
                         $this->redirect('/site/login');
@@ -116,17 +111,10 @@ class ResetPasswordRequestController extends Controller
      * @return bool
      * @throws TooManyPasswordRequestsException
      */
-    public function generateResetToken($user)
+    private function generateResetToken($user)
     {
-        // Remove existing password requests by $user
-//        $this->resetPasswordCleaner->handleGarbageCollection();
-
-        // No need to implement at this moment
-//        if ($availableAt = $this->hasUserHitThrottling($user)) {
-//            throw new TooManyPasswordRequestsException($availableAt);
-//        }
-
-//        $expiresAt = new \DateTimeImmutable(sprintf('+%d seconds', $this->resetRequestLifetime));
+        // Remove all existing password requests belonging to user
+        ResetPasswordRequest::deletePasswordRequestsByGigadbUserId($user->id);
 
         $now = new Datetime();
         $generatedAt = $now->format(DateTime::ISO8601) ;
@@ -151,7 +139,7 @@ class ResetPasswordRequestController extends Controller
         Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": out ".$hashedTokenOfVerifier, 'info');
         $resetPasswordRequest->hashed_token = $hashedTokenOfVerifier;
         Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": hashed_token ".$resetPasswordRequest->hashed_token, 'info');
-        
+
         if($resetPasswordRequest->validate()) {
             if($resetPasswordRequest->save(false)) {
                 // Send email containing URL for resetting password to user
@@ -171,7 +159,7 @@ class ResetPasswordRequestController extends Controller
      * to the page that allows the user to reset their password.
      * Used by actionReset() function.
      *
-     * @param $user
+     * @param $resetPasswordRequest
      */
     private function sendPasswordEmail($resetPasswordRequest) 
     {
@@ -191,4 +179,3 @@ class ResetPasswordRequestController extends Controller
         }
     }
 }
-
