@@ -13,7 +13,7 @@ and fill in the value as instructed.
 You must use the Gitlab user login (GITLAB_USER_LOGIN).
 
 ```
-$ docker compose run --rm --env RUNNER_TAG_LIST="<Gitlab user login here>" register
+$ docker-compose run --rm -e RUNNER_TAG_LIST="<Gitlab user login here>" register
 ```
 
 ## Start runners
@@ -24,7 +24,7 @@ variables matches the number of ``[[runners]]`` subsections multiplied by the va
 then: 
 
 ```
-$ docker compose up -d runner
+$ docker-compose up -d runner
 ```
 
 ## Shutdown a runner in standalone Docker engine
