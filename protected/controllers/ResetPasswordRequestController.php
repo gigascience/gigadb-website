@@ -79,16 +79,18 @@ class ResetPasswordRequestController extends Controller
                 $selectorFromURL = substr($token, 0, 20);
                 $resetPasswordRequest = ResetPasswordRequest::findResetPasswordRequestBySelector($selectorFromURL);
                 $model->user_id = $resetPasswordRequest->gigadb_user_id;
+                // Update password with user's submitted change password form
                 if (isset($_POST['ChangePasswordForm'])) {
                     $model->attributes=$_POST['ChangePasswordForm'];
                     if($model->validate() && $model->changePass()) {
-                        // TODO: Delete token from reset_password_request table
-                        // TODO: go to login page after updating password
+                        // Delete token from reset_password_request table
+                        $resetPasswordRequest->delete();
+                        // Go to login page after updating password
                         $this->redirect('/site/login');
                     }
                 }
                 else {
-                    // TODO: Display reset password page 
+                    // Display reset password page 
                     $model->password = $model->confirmPassword = '';
                     $this->render('changePassword', array('model' => $model));
                 }
