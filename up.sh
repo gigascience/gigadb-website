@@ -8,6 +8,11 @@ set -x
 
 dbSet=${1:-"dev"}
 
+# Setting up Docker swarm
+
+docker -c default swarm leave --force || true
+docker -c default swarm init
+docker context use default
 
 echo "Starting all services..."
 
