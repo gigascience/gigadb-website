@@ -23,6 +23,8 @@ base_images:
 
 b_gigadb:
   stage: build for test
+  tags:
+    - $GITLAB_USER_LOGIN
   script:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
@@ -213,6 +215,8 @@ build_staging:
     YII_DEBUG: "true"
   extends: .pb_gigadb
   stage: staging build
+  tags:
+    - $GITLAB_USER_LOGIN
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
@@ -222,6 +226,8 @@ build_live:
     GIGADB_ENV: "live"
   extends: .pb_gigadb
   stage: live build
+  tags:
+    - $GITLAB_USER_LOGIN
   environment:
     name: "live"
     deployment_tier: production

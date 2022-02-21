@@ -92,6 +92,8 @@ sd_gigadb:
     GIGADB_ENV: "staging"
   extends: .deploy
   stage: staging deploy
+  tags:
+    - $GITLAB_USER_LOGIN
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
@@ -102,6 +104,8 @@ ld_gigadb:
     GIGADB_ENV: "live"
   extends: .deploy
   stage: live deploy
+  tags:
+    - $GITLAB_USER_LOGIN
   environment:
     name: "live"
     deployment_tier: production

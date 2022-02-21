@@ -1,5 +1,7 @@
 t_gigadb:
   stage: test
+  tags:
+    - $GITLAB_USER_LOGIN
   cache:
     paths:
       - vendor/
