@@ -5,8 +5,6 @@ class ChangePasswordForm extends CFormModel
 	public $password;
 	public $confirmPassword;
 	public $user_id;
-        public $terms;
-        public $newsletter;
 
 	/**
 	 * Declares the validation rules.
@@ -17,9 +15,8 @@ class ChangePasswordForm extends CFormModel
 	{
 		return array(
 			// username and password are required
-			array('password, confirmPassword, user_id, terms', 'required'),
+			array('password, confirmPassword', 'required'),
                         array('password', 'compare', 'compareAttribute'=>'confirmPassword'),
-                        array('terms','compare', 'compareValue' => TRUE,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
                     
 		);
 	}
@@ -40,7 +37,6 @@ class ChangePasswordForm extends CFormModel
         if(isset($user)){
             $user->password = $this->password;
             $user->password_repeat = $this->confirmPassword;
-            $user->newsletter = $this->newsletter;
             $user->encryptPassword();
 
             if($user->save(false)) {

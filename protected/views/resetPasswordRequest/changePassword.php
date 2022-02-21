@@ -47,30 +47,6 @@
                         </div>
                     </div>
 
-
-                    <div class="form-group">
-                        <label class="col-xs-5 control-label"><?= Yii::t('app', 'Mailing list') ?></label>
-
-                        <div class="col-xs-5">				    	
-<?php echo $form->checkbox($model, 'newsletter'); ?>
-                        </div>
-                        <div class="col-xs-5">
-                            <p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>   
-                        </div>
-                    </div>
-                    <div class="form-group">
-                            <?= $form->labelEx($model, 'terms', array('class' => 'col-xs-5 control-label')) ?>              
-                        <div class="col-xs-5">				    	
-<?php echo $form->checkbox($model, 'terms'); ?>
-                            <br>
-                            <font color="red"><?= $form->error($model, 'terms') ?></font>
-                            <p>Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
-                        </div>
-                    
-                        
-                    </div>                     
-
-
                     <div class="text-center">
                         <a href="/user/view_profile" class="btn background-btn"><?= Yii::t('app', 'Cancel') ?></a>
                     <?php echo CHtml::submitButton(Yii::t('app', 'Save'), array('class' => 'btn background-btn')); ?>

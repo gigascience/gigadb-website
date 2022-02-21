@@ -75,12 +75,12 @@ class ResetPasswordRequestController extends Controller
                 Yii::log("[INFO] [" . __CLASS__ . ".php] " . __FUNCTION__ . ": User is authenticated!", 'info');
                 $this->layout = "new_main";
                 $model = new ChangePasswordForm();
-                $model->user_id = 22;  // TODO: remove hardcoded user id
-                $user = User::model()->findByattributes(array('id' => 22));
-                $model->newsletter = $user->newsletter;
+                // Find user id associated with selector part in URL
+                $selectorFromURL = substr($token, 0, 20);
+                $resetPasswordRequest = ResetPasswordRequest::findResetPasswordRequestBySelector($selectorFromURL);
+                $model->user_id = $resetPasswordRequest->gigadb_user_id;
                 if (isset($_POST['ChangePasswordForm'])) {
                     $model->attributes=$_POST['ChangePasswordForm'];
-                    $model->newsletter=$_POST['ChangePasswordForm']['newsletter'];
                     if($model->validate() && $model->changePass()) {
                         // TODO: Delete token from reset_password_request table
                         // TODO: go to login page after updating password
