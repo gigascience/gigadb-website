@@ -27,3 +27,10 @@ Fist, de-register it in Gitlab dashboard, then
 ```
 $ docker compose down -v
 ```
+
+
+## Resources 
+
+* https://docs.gitlab.com/runner/configuration/advanced-configuration.html
+* https://docs.gitlab.com/ee/ci/runners/configure_runners.html
+* https://docs.gitlab.com/runner/register/
