@@ -1,0 +1,40 @@
+---
+version: "3.9"
+
+services:
+  runner:
+    image: gitlab/gitlab-runner:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config:/etc/gitlab-runner
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role==manager"
+
+  register:
+    environment:
+      REGISTRATION_TOKEN: $REGISTRATION_TOKEN
+      CI_SERVER_URL: https://gitlab.com
+      DOCKER_IMAGE: php:7.4-cli-buster
+      RUNNER_EXECUTOR: docker
+      RUNNER_NAME: cicd-bot
+    image: gitlab/gitlab-runner:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config:/etc/gitlab-runner
+    deploy:
+      mode: replicated
+      replicas: 0
+      placement:
+        constraints:
+          - "node.role==manager"
+    command:
+      - register
+      - --non-interactive
+      - --docker-privileged
+      - --tag-list="pipelinebot"
+      - --run-untagged=true
+      - --locked=false
