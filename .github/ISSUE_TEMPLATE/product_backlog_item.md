@@ -45,8 +45,8 @@ assignees: ''
 * [ ] Item(s) in increment pass all Acceptance Criteria
 * [ ] Code is refactored to best practices and coding standards
 * [ ] Documentation is updated as needed
-* [ ] Data security has not be compromised (with particular reference to the personal information we hold in GigaDB)
+* [ ] Data security has not been compromised (with particular reference to the personal information we hold in GigaDB)
 * [ ] No deviation from the team technology stack and software architecture has been introduced
-* [ ] The product is in a releasable state (I.e. the increment has not broken anything)
+* [ ] The product is in a releasable state (i.e. the increment has not broken anything)
 
 
