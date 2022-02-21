@@ -18,7 +18,7 @@ class ResetPasswordRequestController extends Controller
         return array(
             array('allow',
                 'actions' => array('forgot', 'verify', 'changePassword'),
-                'users' => array('?'),  // Can be executed by anonymous users
+                'users' => array('?'),
             ),
         );
     }
@@ -128,17 +128,11 @@ class ResetPasswordRequestController extends Controller
         $resetPasswordRequest->requested_at = $generatedAt;
         $resetPasswordRequest->expires_at = $expiresAt;
         $resetPasswordRequest->selector = $selector;
-        $resetPasswordRequest->setVerifier($verifier);
+        $resetPasswordRequest->setVerifier(ResetPasswordHelper::getRandomAlphaNumStr());
         $resetPasswordRequest->gigadb_user_id = $user->id;
         $signingKey = Yii::app()->params['signing_key'];
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": verifier ".$verifier, 'info');
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": selector ".$selector, 'info');
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": signing_key ".$signingKey, 'info');
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": user_id ".$user->id, 'info');
         $hashedTokenOfVerifier = ResetPasswordHelper::getHashedToken($signingKey, $verifier);
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": out ".$hashedTokenOfVerifier, 'info');
         $resetPasswordRequest->hashed_token = $hashedTokenOfVerifier;
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": hashed_token ".$resetPasswordRequest->hashed_token, 'info');
 
         if($resetPasswordRequest->validate()) {
             if($resetPasswordRequest->save(false)) {
