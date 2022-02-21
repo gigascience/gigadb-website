@@ -75,7 +75,7 @@ Feature: a user visit the dataset page
     And I should see an image "https://assets.gigadb-cdn.net/images/projects/the_avian_phylogenomic_project/phylogenomiclogo.png" is linked to "http://avian.genomics.cn/en/index.html"
 
 @ok
-  Scenario: Github links are displayed
+  Scenario: Github links are displayed on dataset page
     Given I have not signed in
     When I am on "/dataset/100935"
     Then I should see "Github links"
