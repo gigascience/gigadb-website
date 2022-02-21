@@ -8,13 +8,20 @@ $ cp env-sample .env
 
 and fill in the value as instructed.
 
-## Register a runner
+## Register a runner for a team member
+
+You must use the Gitlab user login (GITLAB_USER_LOGIN).
 
 ```
-$ docker compose run --rm register
+$ docker compose run --rm --env RUNNER_TAG_LIST="<Gitlab user login here>" register
 ```
 
-## Start a runner in standalone Docker Engine
+## Start runners
+
+Update ``config/config.toml`` to ensure the value of the ``concurrent``
+variables matches the number of ``[[runners]]`` subsections multiplied by the value of the  ``limit`` variable.
+
+then: 
 
 ```
 $ docker compose up -d runner

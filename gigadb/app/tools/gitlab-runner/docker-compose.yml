@@ -21,7 +21,7 @@ services:
       DOCKER_IMAGE: php:7.4-cli-buster
       RUNNER_EXECUTOR: docker
       RUNNER_NAME: cicd-bot
-      RUNNER_LIMIT: 3
+      RUNNER_LIMIT: 2
     image: gitlab/gitlab-runner:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -36,6 +36,4 @@ services:
       - register
       - --non-interactive
       - --docker-privileged
-      - --tag-list="pipelinebot"
-      - --run-untagged=true
       - --locked=false
