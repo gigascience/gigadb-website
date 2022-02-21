@@ -173,26 +173,20 @@ class ResetPasswordRequestController extends Controller
      */
     private function sendPasswordEmail($resetPasswordRequest) 
     {
-        // Get public token consisting of selector and verifier
-        Yii::log("User id: " . $resetPasswordRequest->gigadb_user_id, "info");
-        Yii::log("Verifier: " . $resetPasswordRequest->getVerifier(), "info");
-        Yii::log("Public token: " . $resetPasswordRequest->getToken(), "info");
         // Create URL for user to verify password reset token
-        $url = $this->createAbsoluteUrl('resetpasswordrequest/verify');
+        $url = $this->createAbsoluteUrl('resetpasswordrequest/changePassword');
         $url = $url."?token=".$resetPasswordRequest->getToken();
         Yii::log("URL for email: " . $url, "info");
         
-//        $recipient = $user->email;
-//        $subject = Yii::app()->params['email_prefix'] . "Password reset";
-//        $password_unhashed = $user->passwordUnHashed;
-//        $url = $this->createAbsoluteUrl('site/login');
-//        $url= $url."?username=".$user->email."&password=".$password_unhashed."&redirect=yes";
-//        $body = $this->renderPartial('emailReset',array('url'=>$url,'password_unhashed'=>$password_unhashed,'user'=>$user->id),true);
-//        try {
-//            Yii::app()->mailService->sendHTMLEmail(Yii::app()->params['adminEmail'], $recipient, $subject, $body);
-//        } catch (Swift_TransportException $ste) {
-//            Yii::log("Problem sending password reset email to user - " . $ste->getMessage(), "error");
-//        }
+        $user = User::model()->findByattributes(array('id' => $resetPasswordRequest->gigadb_user_id));
+        $recipient = $user->email;
+        $subject = Yii::app()->params['email_prefix'] . "Password reset";
+        $body = $this->renderPartial('emailReset', array('url' => $url), true);
+        try {
+            Yii::app()->mailService->sendHTMLEmail(Yii::app()->params['adminEmail'], $recipient, $subject, $body);
+        } catch (Swift_TransportException $ste) {
+            Yii::log("Problem sending password reset email to user - " . $ste->getMessage(), "error");
+        }
     }
 }
 
