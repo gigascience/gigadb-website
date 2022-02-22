@@ -17,9 +17,7 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
     public $urlToken;
 
     /**
-     * Constructor is needed as we don't need ($username, $password), because
-     * Oauth is the authentication instead we need to feed in the provider and
-     * uid returned form Oauth process
+     * Constructor
      */
     public function __construct($urlToken)
     {
@@ -27,8 +25,8 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
     }
 
     /**
-     * Provides the authentication process for a user with a password reset
-     * token that consists of two parts: a selector and verifier.
+     * Provides the authentication process for an anonymous user with a password 
+     * reset token that consists of two parts: a selector and verifier.
      *
      * @return boolean whether authentication succeeds. True if successful, False otherwise
      */
@@ -51,7 +49,7 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
             // hash stored in reset_password_request database table
             $signingKey = Yii::app()->params['signing_key'];
             $verifierFromURL = substr($this->urlToken, 20, 20);
-            $hashedTokenFromURLVerifier = ResetPasswordHelper::getHashedToken($signingKey, $verifierFromURL);
+            $hashedTokenFromURLVerifier = Yii::app()->CryptoService->getHashedToken($signingKey, $verifierFromURL);
             if($hashedTokenFromURLVerifier == $resetPasswordRequest->hashed_token)
             {
                 $this->_id = $user->id;
