@@ -1,6 +1,6 @@
 <?php
 
-class m220126_062259_update_image_column_location_project_tab extends CDbMigration
+class m220126_062259_update_image_location_column_project_tab extends CDbMigration
 {
 	public function safeUp()
 	{
