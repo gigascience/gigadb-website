@@ -13,8 +13,9 @@ class m220126_062259_update_image_column_location_project_tab extends CDbMigrati
         Yii::app()->db->createCommand("update project set image_location = replace(image_location,'http://gigadb.org/images/project','');")->execute();
         Yii::app()->db->createCommand("update project set image_location = replace(image_location,'http://hpc-bioinformatics.cineca.it/fusion/imgs','');")->execute();
         Yii::app()->db->createCommand("update project set image_location = replace(image_location,'https://bioinfotraining.bio.cam.ac.uk/images','');")->execute();
+        Yii::app()->db->createCommand("update project set image_location = replace(image_location,'http://gigadb.org/images/data/cropped','');")->execute();
         Yii::app()->db->createCommand("ALTER TABLE project ALTER COLUMN image_location TYPE text;")->execute();
-        Yii::app()->db->createCommand("update project set image_location = concat('https://assets.gigadb-cdn.net/images/projects/', name, image_location);")->execute();
+        Yii::app()->db->createCommand("update project set image_location = concat('https://assets.gigadb-cdn.net/images/projects/', name, image_location)  where image_location is not null or image_location != '';")->execute();
 	}
 
 	public function safeDown()
