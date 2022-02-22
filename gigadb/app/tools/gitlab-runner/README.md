@@ -41,3 +41,4 @@ $ docker compose down -v
 * https://docs.gitlab.com/runner/configuration/advanced-configuration.html
 * https://docs.gitlab.com/ee/ci/runners/configure_runners.html
 * https://docs.gitlab.com/runner/register/
+* https://docs.gitlab.com/runner/configuration/runner_autoscale_aws/
