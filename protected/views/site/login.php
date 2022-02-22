@@ -17,6 +17,13 @@ $this->breadcrumbs=array(
        </div>
    </section>
 	<div class="subsection row" style="margin-bottom: 130px;">
+        <div class="col-xs-12">
+            <?php if(Yii::app()->user->hasFlash('success-reset-password')): ?>
+                <div class="alert alert-success">
+                    <?php echo Yii::app()->user->getFlash('success-reset-password'); ?>
+                </div>
+            <?php endif; ?>
+        </div>
             <div class="col-xs-6">
                 <div class="subsection-login">
                     <p><?=Yii::t('app' , 'Please fill out the following form with your login credentials:')?></p>

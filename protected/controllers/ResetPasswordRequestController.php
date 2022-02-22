@@ -81,6 +81,7 @@ class ResetPasswordRequestController extends Controller
                         // Delete token so it cannot be used again
                         $resetPasswordRequest->delete();
                         // Go to login page after updating password
+                        Yii::app()->user->setFlash('success-reset-password','Your password has been successfully reset. Please login again.');
                         $this->redirect('/site/login');
                     }
                 }
