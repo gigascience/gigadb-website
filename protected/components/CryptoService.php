@@ -1,15 +1,23 @@
 <?php
+
 /**
- * Class ResetPasswordHelper
- * 
- * Helper functions for verifying token from URL, creating tokens and random
- * strings
+ * Service to provide tokens for password reset functionality
  */
-class ResetPasswordHelper
+class CryptoService extends yii\base\Component
 {
     /**
+     * Initializes application component.
+     * This method overrides the parent implementation by setting default cache
+     * key prefix.
+     */
+    public function init()
+    {
+        parent::init();
+    }
+
+    /**
      * Returns the hash of a token. Used to generate a hash for the verifier.
-     * 
+     *
      * @param string $signingKey Unique, random, cryptographically secure string
      * @param string $data Token to be hashed
      * @return string
@@ -38,3 +46,4 @@ class ResetPasswordHelper
         return $string;
     }
 }
+?>

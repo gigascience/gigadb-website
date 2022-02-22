@@ -2,6 +2,9 @@
 
 return array(
     'components' => array(
+        'CryptoService' => array(
+            'class'     => 'application.components.CryptoService',
+            ),
         'mailService' => array(
             'class'     => 'application.components.MailService',
         ),
