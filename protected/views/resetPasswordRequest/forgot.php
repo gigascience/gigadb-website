@@ -30,7 +30,7 @@
                     'htmlOptions'=>array('class'=>'form-horizontal')
                 )) ?>
                 <div class="form-group">
-                    <label class="col-xs-2 control-label required" for="User_email">Email here <span class="required">*</span></label>
+                    <label class="col-xs-2 control-label required" for="User_email">Email<span class="required">*</span></label>
                     <div class="col-xs-8">
                         <input class="form-control" name="LostUserPassword[email]" id="User_email" type="text" maxlength="128" value="">
                     </div>
