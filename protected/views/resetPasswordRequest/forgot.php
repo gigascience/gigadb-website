@@ -1,3 +1,6 @@
+<?php
+$this->pageTitle=Yii::app()->name . ' - Request Password Reset';
+?>
 <div class="content">
     <div class="container">
         <section class="page-title-section">
@@ -6,10 +9,10 @@
                     <li><a href="/">Home</a></li>
                     <li class="active">Reset</li>
                 </ol>
-                <h4>Forgotten Password</h4>
+                <h4>Request password reset</h4>
             </div>
         </section>
-    <div class="subsection" style="margin-bottom: 130px;">
+    <div class="subsection row" style="margin-bottom: 130px;">
         <div class="col-xs-12">
             <?php if(Yii::app()->user->hasFlash('fail-reset-password')): ?>
                 <div class="alert alert-warning">
@@ -17,10 +20,9 @@
                 </div>
             <?php endif; ?>
         </div>
-        <p>Fields with <span class="symbol">*</span> are required.</p>
             <div class="reset-message-div">
                 <p>
-                    If you have lost your password, enter your email and we will send a new password to the email address associated with your account.
+                    Please enter your email. A link to reset your password will be sent to you.
                 </p>
             </div>
             <div class="create-div">
@@ -30,7 +32,7 @@
                     'htmlOptions'=>array('class'=>'form-horizontal')
                 )) ?>
                 <div class="form-group">
-                    <label class="col-xs-2 control-label required" for="User_email">Email<span class="required">*</span></label>
+                    <label class="col-xs-2 control-label required" for="User_email">Email</label>
                     <div class="col-xs-8">
                         <input class="form-control" name="LostUserPassword[email]" id="User_email" type="text" maxlength="128" value="">
                     </div>
