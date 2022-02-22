@@ -24,7 +24,6 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
     public function __construct($urlToken)
     {
         $this->urlToken = $urlToken;
-        $this->type = "passwordResetUser";
     }
 
     /**
@@ -56,7 +55,6 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
             if($hashedTokenFromURLVerifier == $resetPasswordRequest->hashed_token)
             {
                 $this->_id = $user->id;
-                $this->setState('userType', $this->type);
                 $this->errorCode = self::ERROR_NONE;
             }
             else
