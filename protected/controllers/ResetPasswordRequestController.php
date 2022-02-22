@@ -91,15 +91,14 @@ class ResetPasswordRequestController extends Controller
                     $this->render('changePassword', array('model' => $model));
                 }
             } else {
-                Yii::log("Token not valid" , "error");
-                // TODO: display flash message re: problem
+                Yii::log("Token not valid" , "info");
+                Yii::app()->user->setFlash('fail-reset-password','Your password reset token is invalid. Please request another.');
                 // Display request reset password page 
                 $this->redirect('forgot');
             }
         }
         else {
-            Yii::log("No token provided" , "error");
-            // TODO: display flash message re: problem
+            Yii::log("No token provided" , "info");
             // Display request reset password page 
             $this->redirect('forgot');
         }

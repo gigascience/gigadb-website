@@ -10,6 +10,13 @@
             </div>
         </section>
     <div class="subsection" style="margin-bottom: 130px;">
+        <div class="col-xs-12">
+            <?php if(Yii::app()->user->hasFlash('fail-reset-password')): ?>
+                <div class="alert alert-warning">
+                    <?php echo Yii::app()->user->getFlash('fail-reset-password'); ?>
+                </div>
+            <?php endif; ?>
+        </div>
         <p>Fields with <span class="symbol">*</span> are required.</p>
             <div class="reset-message-div">
                 <p>
