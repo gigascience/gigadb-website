@@ -120,18 +120,4 @@ class ResetPasswordRequest extends CActiveRecord
     {
         return ResetPasswordRequest::model()->findByAttributes(array('selector' => $selector));
     }
-
-    /**
-     * For deleting all previous password reset requests belonging to a user
-     * 
-     * @param $gigadb_user_id
-     * @return void
-     */
-    public static function deletePasswordRequestsByGigadbUserId($gigadb_user_id)
-    {
-        $resetPasswordRequests = ResetPasswordRequest::model()->findByAttributes(array('gigadb_user_id' => $gigadb_user_id));
-        foreach ($resetPasswordRequests as &$resetPasswordRequest) {
-            $resetPasswordRequest->delete();
-        }
-    }
 }
