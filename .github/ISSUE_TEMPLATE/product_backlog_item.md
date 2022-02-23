@@ -42,14 +42,11 @@ assignees: ''
 
 ## Product Backlog Item Done Checklist
 
-* [ ] Code is complete
-* [ ] Automated tests related to the changes are implemented and passing
-* [ ] All automated test suites are passing locally
+* [ ] Item(s) in increment pass all Acceptance Criteria
 * [ ] Code is refactored to best practices and coding standards
 * [ ] Documentation is updated as needed
-* [ ] A Pull Request has been created and review requested
-* [ ] Pull Request is reviewed and approved
-* [ ] The item has been merged to the develop branch
-* [ ] All automated test suites are passing on continuous Integration pipeline and item is ready to release
+* [ ] Data security has not been compromised (with particular reference to the personal information we hold in GigaDB)
+* [ ] No deviation from the team technology stack and software architecture has been introduced
+* [ ] The product is in a releasable state (i.e. the increment has not broken anything)
 
 
