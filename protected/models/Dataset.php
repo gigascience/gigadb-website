@@ -327,13 +327,6 @@ class Dataset extends CActiveRecord
     public function getImageUrl($default='') {
         if ($this->image) {
             $url = $this->image->url;
-            if ($url) {
-                if (!strstr($url , 'https://')) {
-                    $url = '//' . $url;
-                }
-            } else {
-                $url = $this->image->image('image_upload');
-            }
             return $url;
         }
         return $default;
