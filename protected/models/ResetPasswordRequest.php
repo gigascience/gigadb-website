@@ -14,8 +14,8 @@
  * The followings are the available model relations:
 // * @property User[] $users
  */
-class ResetPasswordRequest extends CActiveRecord {
-    
+class ResetPasswordRequest extends CActiveRecord 
+{
     public $verifier;
 
     public function rules()
@@ -64,13 +64,17 @@ class ResetPasswordRequest extends CActiveRecord {
         );
     }
 
-    /**
-     * Retrieves time when reset password was requested
-     * @return string
-     */
-    public function getRequestedAt()
+    public function beforeSave()
     {
-        return $this->requested_at;
+        $now = new Datetime();
+        if(!$this->requested_at)
+            $this->requested_at = $now->format(DateTime::ISO8601);
+        
+        if(!$this->expires_at)
+            $this->expires_at = $now->modify('+ 1 hour')->format(DateTime::ISO8601);
+        
+        parent::beforeSave();
+        return true;
     }
 
     /**
@@ -80,33 +84,6 @@ class ResetPasswordRequest extends CActiveRecord {
     public function isExpired()
     {
         return $this->expires_at <= time();
-    }
-
-    /**
-     * Retrieves time when reset password request expires
-     * @return string
-     */
-    public function getExpiresAt()
-    {
-        return $this->expires_at;
-    }
-
-    /**
-     * Returns hashed token
-     * @return string
-     */
-    public function getHashedToken()
-    {
-        return $this->hashed_token;
-    }
-
-    /**
-     * Returns selector
-     * @return string
-     */
-    public function getSelector()
-    {
-        return $this->selector;
     }
 
     /**

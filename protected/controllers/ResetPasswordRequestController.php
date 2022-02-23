@@ -117,23 +117,15 @@ class ResetPasswordRequestController extends Controller
         // Remove all existing password requests belonging to user
         # ResetPasswordRequest::deletePasswordRequestsByGigadbUserId($user->id);
 
-        $now = new Datetime();
-        $generatedAt = $now->format(DateTime::ISO8601) ;
-        $expiresAt = $now->modify('+ 1 hour');
-        $expiresAt = $expiresAt->format(DateTime::ISO8601) ;
-
         $verifier = Yii::app()->CryptoService->getRandomAlphaNumStr();
-        $selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
-
-        $resetPasswordRequest = new ResetPasswordRequest;
-        $resetPasswordRequest->requested_at = $generatedAt;
-        $resetPasswordRequest->expires_at = $expiresAt;
-        $resetPasswordRequest->selector = $selector;
-        $resetPasswordRequest->setVerifier($verifier);
-        $resetPasswordRequest->gigadb_user_id = $user->id;
         $signingKey = Yii::app()->params['signing_key'];
         $hashedTokenOfVerifier = Yii::app()->CryptoService->getHashedToken($signingKey, $verifier);
+
+        $resetPasswordRequest = new ResetPasswordRequest;
+        $resetPasswordRequest->gigadb_user_id = $user->id;
+        $resetPasswordRequest->selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
         $resetPasswordRequest->hashed_token = $hashedTokenOfVerifier;
+        $resetPasswordRequest->setVerifier($verifier);
 
         if($resetPasswordRequest->validate()) {
             if($resetPasswordRequest->save(false)) {
