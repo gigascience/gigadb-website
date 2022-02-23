@@ -4,6 +4,7 @@ stages:
   - test
   - staging build
   - staging deploy
+  - acceptance
   - live build
   - live deploy
   - operations
