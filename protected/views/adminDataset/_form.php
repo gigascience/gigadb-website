@@ -106,14 +106,14 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                 </div>
                 <div class="span5">
                     <?
-                        $img_url = $model->image->image('image_upload');
-                        $fn = '' ;
+                        $img_url = $model->image->url;
+                        $no_img_url = 'https://assets.gigadb-cdn.net/images/datasets/no_image.png';
                         if($img_url){
-                            $fn = explode('/' , $img_url);
-                            $fn = end($fn);
+                            echo CHtml::image($img_url, $img_url, array('style'=>'width:100px; margin-left:160px;margin-bottom:10px;'));
+                        } else {
+                            echo CHtml::image($no_img_url, $no_img_url, array('style'=>'width:100px; margin-left:160px;margin-bottom:10px;'));
                         }
                     ?>
-                    <? echo ($img_url && $fn !='Images_.png') ? CHtml::image($img_url, $img_url, array('style'=>'width:100px; margin-left:160px;margin-bottom:10px;')) : ''; ?>
                     <div class="control-group">
                         <label for="image_upload_image" class="control-label">Image Upload</label>
                         <div class="controls">
