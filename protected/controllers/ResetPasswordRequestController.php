@@ -36,7 +36,13 @@ class ResetPasswordRequestController extends Controller
                 $user = User::model()->findByAttributes(array('email' => $resetPasswordRequestForm->email));
                 if ($user !== null) {
                     Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Found user account for ".$resetPasswordRequestForm->email, 'info');
-                    $this->generateResetToken($user);
+                    try {
+                        $this->generateResetToken($user);
+                    }
+                    catch (Exception $e)
+                    {
+                        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Too many password requests made by: ".$user, 'info');
+                    }
                 }
                 else {
                     Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User account not found for ".$user, 'info');
@@ -102,18 +108,25 @@ class ResetPasswordRequestController extends Controller
             $this->redirect('forgot');
         }
     }
-    
+
     /**
      * Some of the cryptographic strategies were taken from
      * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
      *
      * @return bool
      * @throws TooManyPasswordRequestsException
+     * @throws Exception
      */
     private function generateResetToken($user)
     {
+        // Check if user has any valid reset password requests
+        if($this->unexpiredResetPasswordRequestExists($user->id))
+        {
+            throw new Exception("Too many password requests - need to wait till current request expires");
+        }
+        
         // Remove all existing password requests belonging to user
-        $this->deletePasswordRequests($user->id);
+        $this->removeResetPasswordRequests($user->id);
 
         $verifier = Yii::app()->CryptoService->getRandomAlphaNumStr();
         $signingKey = Yii::app()->params['signing_key'];
@@ -139,13 +152,50 @@ class ResetPasswordRequestController extends Controller
     }
 
     /**
+     * Checks for any valid or invalid reset password requests belonging to a 
+     * user
+     * 
+     * @param $userId
+     * @return bool
+     */
+    private function resetPasswordRequestExists($userId)
+    {
+        $resetPasswordRequests = ResetPasswordRequest::model()->findAll(array("condition" => "gigadb_user_id = $userId"));
+        if($resetPasswordRequests)
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * Checks for any valid reset password requests belonging to a user
+     * 
+     * @param $userId
+     * @return bool|void
+     */
+    private function unexpiredResetPasswordRequestExists($userId)
+    {
+        if($this->resetPasswordRequestExists($userId))
+        {
+            $resetPasswordRequests = ResetPasswordRequest::model()->findAll(array("condition" => "gigadb_user_id = $user->id"));
+            $resetPasswordRequest = $resetPasswordRequests[0];
+            if(!$resetPasswordRequest->isExpired())
+            {
+                return true;
+            }
+        }
+        else
+            return false;
+    } 
+
+    /**
      * Deletes all ResetPasswordRequests belonging to a user
      * 
      * @param $userId
      * @return void
      * @throws CDbException
      */
-    private function deletePasswordRequests($userId)
+    private function removeResetPasswordRequests($userId)
     {
         $resetPasswordRequests = ResetPasswordRequest::model()->findAll(array("condition" => "gigadb_user_id = $userId"));
         foreach ($resetPasswordRequests as $resetPasswordRequest)
@@ -153,10 +203,10 @@ class ResetPasswordRequestController extends Controller
     }
 
     /**
-     * Sends an email to a user who has filled in the reset password form page
-     * at /user/reset/username//style/float%3Aright. The email contains a link
-     * to the page that allows the user to reset their password.
-     * Used by actionReset() function.
+     * Sends an email to a user who has filled in the reset password form page. 
+     * 
+     * The email contains a link to the page that allows the user to reset their 
+     * password. Used by generateResetToken() function.
      *
      * @param $resetPasswordRequest
      */
