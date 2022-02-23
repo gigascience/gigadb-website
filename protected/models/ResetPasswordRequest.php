@@ -83,7 +83,10 @@ class ResetPasswordRequest extends CActiveRecord
      */
     public function isExpired()
     {
-        return $this->expires_at <= time();
+        $now = new Datetime();
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": datetime now: ".$now->format('Y-m-d H:i'), 'info');
+        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": datetime expires_at: ".$this->expires_at, 'info');
+        return $this->expires_at <= $now->format('Y-m-d H:i');
     }
 
     /**

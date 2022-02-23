@@ -10,6 +10,7 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
     public $type;
     const ERROR_SELECTOR_NOT_ASSOCIATED_WITH_A_USER = 4;
     const ERROR_RECALCULATED_HASH_OF_VERIFIER_DOES_NOT_MATCH_HASH_IN_DATABASE = 5;
+    const ERROR_TOKEN_HAS_EXPIRED = 6;
 
     /**
      * @var string Token from URL sent by email
@@ -45,15 +46,21 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
         } 
         else  // User found
         {
-            // Re-calculate hash from verifier and check if it matches with
-            // hash stored in reset_password_request database table
+            // Check re-calculated hash from verifier matches hash in reset_password_request database table
             $signingKey = Yii::app()->params['signing_key'];
             $verifierFromURL = substr($this->urlToken, 20, 20);
             $hashedTokenFromURLVerifier = Yii::app()->CryptoService->getHashedToken($signingKey, $verifierFromURL);
             if($hashedTokenFromURLVerifier == $resetPasswordRequest->hashed_token)
             {
-                $this->_id = $user->id;
-                $this->errorCode = self::ERROR_NONE;
+                // Check if token has expired
+                if($resetPasswordRequest->isExpired()) {
+                    Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Token has expired: ", 'info');
+                    $this->errorCode = self::ERROR_TOKEN_HAS_EXPIRED;
+                }
+                else {
+                    $this->_id = $user->id;
+                    $this->errorCode = self::ERROR_NONE;
+                }
             }
             else
             {
