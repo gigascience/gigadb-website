@@ -61,14 +61,13 @@ class ResetPasswordRequestController extends Controller
      */
     public function actionChangePassword()
     {
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": In ResetPasswordRequestController::actionChangePassword()", 'info');
-
+        $this->layout = "new_main";
+        
         if (isset($_GET['token'])) {
             $token = $_GET['token'];
             $userIdentity = new PasswordResetTokenUserIdentity($token);
             if ($userIdentity->authenticate()) {
                 Yii::log("[INFO] [" . __CLASS__ . ".php] " . __FUNCTION__ . ": User is authenticated!", 'info');
-                $this->layout = "new_main";
                 $model = new ChangePasswordForm();
                 // Find user id associated with selector part in URL
                 $selectorFromURL = substr($token, 0, 20);
@@ -113,9 +112,8 @@ class ResetPasswordRequestController extends Controller
      */
     private function generateResetToken($user)
     {
-        // TODO: Might need to move this to PasswordResetHelper or PasswordResetTokenService
         // Remove all existing password requests belonging to user
-        # ResetPasswordRequest::deletePasswordRequestsByGigadbUserId($user->id);
+        $this->deletePasswordRequests($user->id);
 
         $verifier = Yii::app()->CryptoService->getRandomAlphaNumStr();
         $signingKey = Yii::app()->params['signing_key'];
@@ -138,6 +136,20 @@ class ResetPasswordRequestController extends Controller
             Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": resetPasswordRequest object not valid", 'info');
             return false;
         }
+    }
+
+    /**
+     * Deletes all ResetPasswordRequests belonging to a user
+     * 
+     * @param $userId
+     * @return void
+     * @throws CDbException
+     */
+    private function deletePasswordRequests($userId)
+    {
+        $resetPasswordRequests = ResetPasswordRequest::model()->findAll(array("condition" => "gigadb_user_id = $userId"));
+        foreach ($resetPasswordRequests as $resetPasswordRequest)
+            $resetPasswordRequest->delete();
     }
 
     /**
