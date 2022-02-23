@@ -29,6 +29,7 @@ $DOCKER_COMPOSE run --rm test bash -c "psql -h database -U gigadb -c 'create dat
 $DOCKER_COMPOSE run --rm js bash -c "node /var/www/ops/scripts/csv_yii_migration.js $dbSet"
 
 # and run them
+$DOCKER_COMPOSE run --rm test ./protected/yiic custommigrations droptriggers
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate to 300000_000000 --connectionID=db --migrationPath=application.migrations.admin --interactive=0
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate mark 000000_000000 --connectionID=db --interactive=0
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.schema --interactive=0

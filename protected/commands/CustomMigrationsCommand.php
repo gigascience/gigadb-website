@@ -13,10 +13,15 @@ class CustomMigrationsCommand extends CConsoleCommand
         $helpText = "drop constraints and indexes in the database" . PHP_EOL;
         $helpText .= "Usage: ./protected/yiic custommigration dropconstraints" . PHP_EOL;
         $helpText .= "Usage: ./protected/yiic custommigration dropindexes" . PHP_EOL;
+        $helpText .= "Usage: ./protected/yiic custommigration droptriggers" . PHP_EOL;
         $helpText .= "Usage: ./protected/yiic custommigration refreshmaterializedviews" . PHP_EOL;
         return $helpText;
     }
 
+    /**
+     * @return int
+     * @throws CException
+     */
     public function actionDropConstraints() {
         $sql =<<<END
 SELECT nspname,relname, conname
@@ -50,6 +55,10 @@ END;
 
     }
 
+    /**
+     * @return int
+     * @throws CException
+     */
     public function actionDropIndexes() {
         $sql =<<<END
 SELECT nspname, relname 
@@ -63,6 +72,41 @@ END;
             $rows = Yii::app()->db->createCommand($sql)->queryAll();
             foreach ($rows as $row) {
                 $dropCommands[]= "DROP INDEX  \"{$row['nspname']}\".\"{$row['relname']}\" RESTRICT;";
+            }
+        } catch (CDbException $e) {
+            Yii::log($e->getMessage(),"error");
+            return 1;
+        }
+
+        try {
+            foreach ($dropCommands as $instruction) {
+                echo "About to execute: $instruction".PHP_EOL;
+                Yii::app()->db->createCommand($instruction)->execute();
+            }
+        }
+        catch(CDbException $e) {
+            Yii::log($e->getMessage(),"error");
+            return 1;
+        }
+
+    }
+
+    /**
+     * @return int
+     * @throws CException
+     */
+    public function actionDropTriggers() {
+        $sql =<<<END
+SELECT distinct trigger_name, event_object_table
+FROM information_schema.triggers
+WHERE trigger_schema = 'public';
+END;
+
+        $dropCommands = [];
+        try {
+            $rows = Yii::app()->db->createCommand($sql)->queryAll();
+            foreach ($rows as $row) {
+                $dropCommands[]= "DROP TRIGGER  {$row['trigger_name']} ON {$row['event_object_table']} RESTRICT;";
             }
         } catch (CDbException $e) {
             Yii::log($e->getMessage(),"error");
