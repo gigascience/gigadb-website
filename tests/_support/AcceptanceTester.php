@@ -248,15 +248,6 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then I should see a dataset image is rendered from :path
-     */
-    public function iShouldSeeADatasetImageIsRenderedFrom($path)
-    {
-        $imageSource = $this->grabAttributeFrom("//img[@class='media-object']", "src");
-        $this->assertEquals($path, $imageSource);
-    }
-
-    /**
      * @Then I should be on :path
      */
     public function iShouldBeOn($path)

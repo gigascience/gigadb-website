@@ -55,11 +55,11 @@ Feature: a user visit the dataset page
     Then I should see "well now, how to describe nothing in particular?"
     And I should not see "The DOI 200070 cannot be displayed."
 
-  @ok
+  @wip
   Scenario: Dataset image with links
     Given I have not signed in
     When I am on "dataset/100006"
-    Then I should see a dataset image is rendered from "https://assets.gigadb-cdn.net/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
+    Then I should see an image located in "https://assets.gigadb-cdn.net/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
 
   @ok @issue-895
   Scenario: Project image with links
