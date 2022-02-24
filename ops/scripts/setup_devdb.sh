@@ -28,12 +28,26 @@ $DOCKER_COMPOSE run --rm test bash -c "psql -h database -U gigadb -c 'create dat
 # docker run -v `pwd`:/var/www node:14.9.0-buster bash -c "node /var/www/ops/scripts/csv_yii_migration.js test"
 $DOCKER_COMPOSE run --rm js bash -c "node /var/www/ops/scripts/csv_yii_migration.js $dbSet"
 
-# and run them
-$DOCKER_COMPOSE run --rm test ./protected/yiic custommigrations droptriggers
+# create sql script to drop and recreate constraints, indexes and triggers
+docker-compose run --rm test ./protected/yiic custommigrations preparedropcreateconstraints
+
+# and run schema migration
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate to 300000_000000 --connectionID=db --migrationPath=application.migrations.admin --interactive=0
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate mark 000000_000000 --connectionID=db --interactive=0
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.schema --interactive=0
+
+# Drop constraints, indexes and triggers to allow data migrations
+docker-compose run --rm test psql -h database -U gigadb < protected/runtime/dropConstraintsQuery.sql
+docker-compose run --rm test psql -h database -U gigadb < protected/runtime/dropIndexQuery.sql
+docker-compose run --rm test psql -h database -U gigadb < protected/runtime/dropTriggerQuery.sql
+
+# Perform data migrations
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.data.$dbSet --interactive=0
+
+# Restore constraints, indexes and triggers
+docker-compose run --rm test psql -h database -U gigadb < protected/runtime/addConstraintsQuery.sql
+docker-compose run --rm test psql -h database -U gigadb < protected/runtime/addIndexQuery.sql
+docker-compose run --rm test psql -h database -U gigadb < protected/runtime/addTriggerQuery.sql
 
 # run migration for FUW database
 $DOCKER_COMPOSE exec -T console /app/yii migrate/fresh --interactive=0
