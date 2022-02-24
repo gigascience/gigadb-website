@@ -55,7 +55,7 @@ Feature: a user visit the dataset page
     Then I should see "well now, how to describe nothing in particular?"
     And I should not see "The DOI 200070 cannot be displayed."
 
-  @wip
+  @ok
   Scenario: Dataset image with links
     Given I have not signed in
     When I am on "dataset/100006"
