@@ -109,9 +109,9 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         $img_url = $model->image->url;
                         $no_img_url = 'https://assets.gigadb-cdn.net/images/datasets/no_image.png';
                         if($img_url){
-                            echo CHtml::image($img_url, $img_url, array('style'=>'width:100px; margin-left:160px;margin-bottom:10px;'));
+                            echo CHtml::image($img_url, $img_url, array('style'=>'width:100px; display:block; margin-left:auto;'));
                         } else {
-                            echo CHtml::image($no_img_url, $no_img_url, array('style'=>'width:100px; margin-left:160px;margin-bottom:10px;'));
+                            echo CHtml::image($no_img_url, $no_img_url, array('style'=>'width:100px; display:block; margin-left:auto;'));
                         }
                     ?>
                     <div class="control-group">
