@@ -92,8 +92,6 @@
   when: manual
   artifacts:
     untracked: true
-    paths:
-      - fuw/app/console/config/
     exclude:
       - "*.tar"
     when: always
