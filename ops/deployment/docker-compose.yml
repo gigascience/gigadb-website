@@ -248,6 +248,8 @@ services:
     build:
       context: .
       dockerfile: ../packaging/VueDev-Dockerfile
+      args:
+        - NODE_VERSION=$NODE_VERSION
     volumes:
       - ${APPLICATION}/:/var/www
     shm_size: '1gb' # to avoid a known issue
