@@ -6,12 +6,12 @@ Feature: form to update dataset details
   Background:
     Given I have signed in as admin
 
-  @test
+  @ok
   Scenario: Can display generic image for no image dataset
     When I am on "/adminDataset/update/id/144"
     Then I should see an image located in "https://assets.gigadb-cdn.net/images/datasets/no_image.png"
 
-  @test
+  @ok
   Scenario: Can display dataset image
     When I am on "/adminDataset/update/id/8"
     Then I should see an image located in "http://gigadb.org/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
