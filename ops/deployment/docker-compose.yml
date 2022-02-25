@@ -237,7 +237,7 @@ services:
     command: bash -c "pwd"
 
   csv-to-migrations:
-    image: node:14.18.0-buster
+    image: node:$NODE_VERSION-buster
     working_dir: /var/www/ops/scripts
     volumes:
       - ${APPLICATION}/:/var/www

@@ -36,6 +36,7 @@ variables:
   DATA_SAVE_PATH: "/builds/$CI_PROJECT_PATH/containers-data"
   NGINX_VERSION: "1.21.3"
   PHP_VERSION: "7.2.34"
+  NODE_VERSION: "17.6.0"
   YII_VERSION: "1.1.25"
   YII2_VERSION: "2.0.44"
   POSTGRES_VERSION: "11.13"

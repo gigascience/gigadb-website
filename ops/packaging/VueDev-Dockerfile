@@ -1,4 +1,5 @@
-FROM node:14.18.0-buster
+ARG NODE_VERSION
+FROM node:$NODE_VERSION-buster
 
 # Set Environment Variables
 ENV DEBIAN_FRONTEND noninteractive
