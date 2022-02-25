@@ -1,5 +1,7 @@
 base_images:
   stage: .pre
+  tags:
+    - $GITLAB_USER_LOGIN
   script:
     # login and pull from docker hub the base image for php-fpm so it's done only once
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
