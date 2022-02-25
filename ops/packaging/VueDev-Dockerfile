@@ -1,5 +1,5 @@
 ARG NODE_VERSION
-FROM node:$NODE_VERSION-buster
+FROM node:$NODE_VERSION-buster-slim
 
 # Set Environment Variables
 ENV DEBIAN_FRONTEND noninteractive

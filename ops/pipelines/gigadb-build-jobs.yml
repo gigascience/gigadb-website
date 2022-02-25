@@ -11,15 +11,15 @@ base_images:
     - docker save -o alpine-3_14.tar alpine:3.14.2
     - docker pull nginx:$NGINX_VERSION-alpine
     - docker save -o nginx-$NGINX_VERSION-alpine.tar nginx:$NGINX_VERSION-alpine
-    - docker pull node:$NODE_VERSION-buster
-    - docker save -o node-$NODE_VERSION-buster.tar node:$NODE_VERSION-buster
+    - docker pull node:$NODE_VERSION-buster-slim
+    - docker save -o node-$NODE_VERSION-buster-slim.tar node:$NODE_VERSION-buster-slim
   artifacts:
     paths:
       - php-$PHP_VERSION-fpm-buster.tar
       - php-$PHP_VERSION-cli-buster.tar
       - alpine-3_14.tar
       - nginx-$NGINX_VERSION-alpine.tar
-      - node-$NODE_VERSION-buster.tar
+      - node-$NODE_VERSION-buster-slim.tar
 
 b_gigadb:
   stage: build for test
@@ -32,7 +32,7 @@ b_gigadb:
     - docker load -i php-$PHP_VERSION-cli-buster.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
-    - docker load -i node-$NODE_VERSION-buster.tar
+    - docker load -i node-$NODE_VERSION-buster-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # build for test
@@ -117,7 +117,7 @@ b_gigadb:
     - time docker load -i php-$PHP_VERSION-cli-buster.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
-    - time docker load -i node-$NODE_VERSION-buster.tar
+    - time docker load -i node-$NODE_VERSION-buster-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending remote variables at the end of the .env and .secrets
@@ -208,7 +208,7 @@ b_gigadb:
       - php-$PHP_VERSION-cli-buster.tar
       - alpine-3_14.tar
       - nginx-$NGINX_VERSION-alpine.tar
-      - node-$NODE_VERSION-buster.tar
+      - node-$NODE_VERSION-buster-slim.tar
     when: on_failure
     expire_in: 1 week
 
