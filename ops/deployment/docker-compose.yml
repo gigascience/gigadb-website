@@ -318,7 +318,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2.34-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
         - APP_PORT=9002
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -361,7 +361,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2.34-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
         - APP_PORT=9001
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -405,7 +405,7 @@ services:
       context: ../../fuw/app/console
       dockerfile: Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2.34-cli-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-buster
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
@@ -448,7 +448,7 @@ services:
       context: ..
       dockerfile: packaging/Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2.34-cli-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-buster
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
@@ -495,7 +495,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2.34-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
         - APP_PORT=9001
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
