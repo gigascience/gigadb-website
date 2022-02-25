@@ -24,6 +24,9 @@ base_images:
       - node-$NODE_VERSION-buster-slim.tar
 
 b_gigadb:
+  variables:
+    PORTAINER_BCRYPT: ""
+    REMOTE_DOCKER_HOSTNAME: ""
   stage: build for test
   tags:
     - $GITLAB_USER_LOGIN
@@ -110,6 +113,9 @@ b_gigadb:
     REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
     CSV_DIR: "prod_like"
+    PORTAINER_BCRYPT: ""
+    REMOTE_DOCKER_HOSTNAME: ""
+
   stage: production build
   allow_failure: false
   script:
