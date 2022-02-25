@@ -117,12 +117,15 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <label for="image_upload_image" class="control-label">Image Status</label>
                         <div class="controls">
+                            <?php echo $model->image->imageChooserField('image_upload'); ?><br>
+                        </div>
+                        <div class="controls">
                             <?php
                             if($img_url){
-                                echo CHtml::htmlButton('Replace image', ['class' => 'btn btn-primary']);
-                                echo CHtml::htmlButton('Remove image!!!', ['class' => 'btn btn-primary']);
+                                echo CHtml::htmlButton('Replace image', ['class' => 'btn btn-green', 'style'=>'width:30%; margin:auto;']);
+                                echo CHtml::htmlButton('Remove image!!!', ['class' => 'btn btn-primary', 'style'=>'width:40%; margin:auto;']);
                             } else {
-                                echo CHtml::htmlButton('Upload new image', ['class' => 'btn btn-primary']);
+                                echo CHtml::htmlButton('Upload new image', ['class' => 'btn btn-green', 'style'=>'width:40%; margin:auto;']);
                             }
                             ?>
                         </div>
