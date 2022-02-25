@@ -119,7 +119,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         <div class="controls">
                             <?php
                             if($img_url){
-                                echo CHtml::htmlButton('Update image', ['class' => 'btn btn-primary']);
+                                echo CHtml::htmlButton('Replace image', ['class' => 'btn btn-primary']);
                                 echo CHtml::htmlButton('Remove image!!!', ['class' => 'btn btn-primary']);
                             } else {
                                 echo CHtml::htmlButton('Upload new image', ['class' => 'btn btn-primary']);
