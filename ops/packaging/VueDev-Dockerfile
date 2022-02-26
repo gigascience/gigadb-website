@@ -10,6 +10,7 @@ RUN apt-get update && \
 	apt-get install -y --no-install-recommends \
 	    apt-transport-https \
 	    build-essential \
+	     apt-utils \
 	    wget && \
 	# Install Firefox
 	apt-get install -y --no-install-recommends \
