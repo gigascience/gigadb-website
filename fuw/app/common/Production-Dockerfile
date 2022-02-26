@@ -130,9 +130,9 @@ ARG INSTALL_COMPOSER=false
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /tmp
 RUN if [ ${INSTALL_COMPOSER} = true ]; then \
-    docker-php-ext-install zip \
-    && apt-get update -yq \
-    && apt-get install -y unzip wget \
+    apt-get update -yq \
+    && apt-get install -y libzip-dev unzip wget \
+    && docker-php-ext-install zip \
     && EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" \
     && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && ACTUAL_SIGNATURE="$(php -r "echo hash_file('SHA384', 'composer-setup.php');")" \

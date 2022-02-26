@@ -35,6 +35,7 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
+        - APCU_VERSION=$APCU_VERSION
 
   production_gigadb-worker:
     build:
