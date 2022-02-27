@@ -21,10 +21,10 @@ services:
     environment:
       REGISTRATION_TOKEN: $REGISTRATION_TOKEN
       CI_SERVER_URL: https://gitlab.com
-      DOCKER_IMAGE: php:7.4-cli-buster
+      DOCKER_IMAGE: alpine:latest
       RUNNER_EXECUTOR: docker
       RUNNER_NAME: cicd-bot
-      RUNNER_LIMIT: 2
+      RUNNER_LIMIT: 1
     image: gitlab/gitlab-runner:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
