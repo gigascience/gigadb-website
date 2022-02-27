@@ -34,6 +34,7 @@ variables:
   YII_PATH: "/var/www/vendor/yiisoft/yii"
   YII2_PATH: "/var/www/vendor/yiisoft/yii2"
   DATA_SAVE_PATH: "/builds/$CI_PROJECT_PATH/containers-data"
+  DOCKER_VERSION: "20.10.12"
   NGINX_VERSION: "1.21.3"
   PHP_VERSION: "7.3.33"
   APCU_VERSION: "5.1.21"
@@ -55,7 +56,7 @@ variables:
   YII_ENV_DEV: "true"
   SERVER_HOSTNAME: "gigadb.gigasciencejournal.com"
 
-image: docker:20.10.12
+image: docker:$DOCKER_VERSION
 
 include:
   - template: Security/SAST.gitlab-ci.yml
@@ -68,7 +69,7 @@ include:
 #  - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
 
 services:
-  - docker:20.10.12-dind
+  - docker:${DOCKER_VERSION}-dind
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
