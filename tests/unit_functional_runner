@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# running the new Codeception unit tests
+docker-compose run --rm test ./vendor/codeception/codeception/codecept run unit
+# Running new Codeception functional tests suite for main codebase
+docker-compose run --rm test ./vendor/codeception/codeception/codecept run functional
