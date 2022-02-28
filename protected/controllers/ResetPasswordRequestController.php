@@ -177,7 +177,7 @@ class ResetPasswordRequestController extends Controller
     {
         if($this->resetPasswordRequestExists($userId))
         {
-            $resetPasswordRequests = ResetPasswordRequest::model()->findAll(array("condition" => "gigadb_user_id = $user->id"));
+            $resetPasswordRequests = ResetPasswordRequest::model()->findAll(array("condition" => "gigadb_user_id = $userId"));
             $resetPasswordRequest = $resetPasswordRequests[0];
             if(!$resetPasswordRequest->isExpired())
             {
