@@ -29,13 +29,13 @@ class ResetPasswordRequestController extends Controller
     public function actionForgot()
     {
         $this->layout = "new_main";
-        $resetPasswordRequestForm = new ResetPasswordRequestForm;
-        if (isset($_POST['LostUserPassword'])) {
-            $resetPasswordRequestForm->email = $_POST['LostUserPassword']['email'];
-            if ($resetPasswordRequestForm->validate()) {
-                $user = User::model()->findByAttributes(array('email' => $resetPasswordRequestForm->email));
+        $forgotPasswordForm = new ForgotPasswordForm;
+        if (isset($_POST['ForgotPassword'])) {
+            $forgotPasswordForm->email = $_POST['ForgotPassword']['email'];
+            if ($forgotPasswordForm->validate()) {
+                $user = User::model()->findByAttributes(array('email' => $forgotPasswordForm->email));
                 if ($user !== null) {
-                    Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Found user account for ".$resetPasswordRequestForm->email, 'info');
+                    Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Found user account for ".$forgotPasswordForm->email, 'info');
                     try {
                         $this->generateResetToken($user);
                     }

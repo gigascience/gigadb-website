@@ -1,5 +1,5 @@
 <?php
-$this->pageTitle=Yii::app()->name . ' - Request Password Reset';
+$this->pageTitle='Forgotten password';
 ?>
 <div class="content">
     <div class="container">
@@ -9,7 +9,7 @@ $this->pageTitle=Yii::app()->name . ' - Request Password Reset';
                     <li><a href="/">Home</a></li>
                     <li class="active">Reset</li>
                 </ol>
-                <h4>Request password reset</h4>
+                <h4>Forgotten password</h4>
             </div>
         </section>
     <div class="subsection row" style="margin-bottom: 130px;">
@@ -27,14 +27,14 @@ $this->pageTitle=Yii::app()->name . ' - Request Password Reset';
             </div>
             <div class="create-div">
                 <? $form=$this->beginWidget('CActiveForm', array(
-                    'id'=>'request-reset-password-form',
+                    'id'=>'forgot-password-form',
                     'enableAjaxValidation'=>false,
                     'htmlOptions'=>array('class'=>'form-horizontal')
                 )) ?>
                 <div class="form-group">
                     <label class="col-xs-2 control-label required" for="User_email">Email</label>
                     <div class="col-xs-8">
-                        <input class="form-control" name="LostUserPassword[email]" id="User_email" type="text" maxlength="128" value="">
+                        <input class="form-control" name="ForgotPassword[email]" id="User_email" type="text" maxlength="128" value="">
                     </div>
                     <div class="col-xs-2">
                         <?= CHtml::submitButton(Yii::t('app' , 'Reset'), array('class'=>'btn background-btn')) ?>

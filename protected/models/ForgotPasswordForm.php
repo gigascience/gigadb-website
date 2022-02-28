@@ -1,11 +1,10 @@
 <?php
 
 /**
- * LoginForm class.
- * LoginForm is the data structure for keeping
- * user login form data. It is used by the 'login' action of 'SiteController'.
+ * ForgotPasswordForm is the data structure for keeping forgot password form 
+ * data. Used by 'Forgot' action of 'ResetPasswordRequestController'.
  */
-class ResetPasswordRequestForm extends CFormModel
+class ForgotPasswordForm extends CFormModel
 {
     public $email;
 
