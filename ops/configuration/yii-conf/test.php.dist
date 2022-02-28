@@ -29,7 +29,19 @@ return [
         'fs' => [
             'class' => 'creocoder\flysystem\LocalFilesystem',
             'path' => '@webroot/files',
-        ],         
+        ],
+        'cloudStore' => [
+                    'class' => 'creocoder\flysystem\AwsS3Filesystem',
+                    'key' => '${AWS_ACCESS_KEY_ID}',
+                    'secret' => '${AWS_SECRET_ACCESS_KEY}',
+                    'bucket' => 'assets.gigadb-cdn.net',
+                    'region' => 'ap-east-1',
+                    // 'version' => 'latest',
+                    // 'baseUrl' => 'your-base-url',
+                    // 'prefix' => 'your-prefix',
+                    // 'options' => [],
+                    // 'endpoint' => 'http://my-custom-url'
+                ],
     ],
     'params' => $params,
 ];
