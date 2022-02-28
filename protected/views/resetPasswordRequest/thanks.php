@@ -1,3 +1,6 @@
+<?php
+$this->pageTitle='Thanks';
+?>
 <div class="content">
     <div class="container">
         <section class="page-title-section">
@@ -6,7 +9,7 @@
                     <li><a href="/">Home</a></li>
                     <li class="active">Thanks</li>
                 </ol>
-                <h4>Password Reset</h4>
+                <h4>Reset Password Request Submitted</h4>
             </div>
         </section>
         <div class="subsection" style="margin-bottom: 130px;">

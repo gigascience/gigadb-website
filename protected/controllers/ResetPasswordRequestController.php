@@ -63,9 +63,9 @@ class ResetPasswordRequestController extends Controller
      * re-calculating hash of verifier in URL and compare with
      * hash in database
      * 
-     * Looks for /resetpasswordrequest/changePassword?token={token}
+     * Looks for /resetpasswordrequest/reset?token={token}
      */
-    public function actionChangePassword()
+    public function actionReset()
     {
         $this->layout = "new_main";
         
@@ -74,17 +74,17 @@ class ResetPasswordRequestController extends Controller
             $userIdentity = new PasswordResetTokenUserIdentity($token);
             if ($userIdentity->authenticate()) {
                 Yii::log("[INFO] [" . __CLASS__ . ".php] " . __FUNCTION__ . ": User is authenticated!", 'info');
-                $model = new ChangePasswordForm();
+                $model = new ResetPasswordForm();
                 // Find user id associated with selector part in URL
                 $selectorFromURL = substr($token, 0, 20);
                 $resetPasswordRequest = ResetPasswordRequest::findResetPasswordRequestBySelector($selectorFromURL);
                 $model->user_id = $resetPasswordRequest->gigadb_user_id;
                 // Update password with user's submitted change password form
-                if (isset($_POST['ChangePasswordForm'])) {
-                    $model->attributes=$_POST['ChangePasswordForm'];
+                if (isset($_POST['ResetPasswordForm'])) {
+                    $model->attributes=$_POST['ResetPasswordForm'];
                     if($model->validate() && $model->changePass()) {
                         // Delete token so it cannot be used again
-                        $resetPasswordRequest->delete();
+                        #$resetPasswordRequest->delete();
                         // Go to login page after updating password
                         Yii::app()->user->setFlash('success-reset-password','Your password has been successfully reset. Please login again.');
                         $this->redirect('/site/login');
@@ -93,7 +93,7 @@ class ResetPasswordRequestController extends Controller
                 else {
                     // Display reset password page 
                     $model->password = $model->confirmPassword = '';
-                    $this->render('changePassword', array('model' => $model));
+                    $this->render('reset', array('model' => $model));
                 }
             } else {
                 Yii::log("Token not valid" , "info");
@@ -120,13 +120,13 @@ class ResetPasswordRequestController extends Controller
     private function generateResetToken($user)
     {
         // Check if user has any valid reset password requests
-        if($this->unexpiredResetPasswordRequestExists($user->id))
-        {
-            throw new Exception("Too many password requests - need to wait till current request expires");
-        }
+//        if($this->unexpiredResetPasswordRequestExists($user->id))
+//        {
+//            throw new Exception("Too many password requests - need to wait till current request expires");
+//        }
         
         // Remove all existing password requests belonging to user
-        $this->removeResetPasswordRequests($user->id);
+//        $this->removeResetPasswordRequests($user->id);
 
         $verifier = Yii::app()->CryptoService->getRandomAlphaNumStr();
         $signingKey = Yii::app()->params['signing_key'];
@@ -213,7 +213,7 @@ class ResetPasswordRequestController extends Controller
     private function sendPasswordEmail($resetPasswordRequest) 
     {
         // Create URL for user to verify password reset token
-        $url = $this->createAbsoluteUrl('resetpasswordrequest/changePassword');
+        $url = $this->createAbsoluteUrl('resetpasswordrequest/reset');
         $url = $url."?token=".$resetPasswordRequest->getToken();
         Yii::log("URL for email: " . $url, "info");
         
