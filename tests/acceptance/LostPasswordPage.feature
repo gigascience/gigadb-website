@@ -17,9 +17,11 @@ Feature: Reset password
     And I should see "Email"
     And I should see a submit button "Reset"
 
-  @ok @wip
+  @ok
   Scenario: Check reset password functionality
     When I am on "/resetpasswordrequest/forgot"
     And I fill in the field of "name" "ForgotPassword[email]" with "user@mailinator.com"
-    Then I should see "Reset Password Request Submitted"
+    And I press the button "Reset"
+    Then I am on "/resetpasswordrequest/thanks" 
+    And I should see "Reset Password Request Submitted"
     And I should see "If it is valid, we will send an email containing a link to where you can reset your password."
