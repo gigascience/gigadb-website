@@ -22,6 +22,9 @@ class SiteController extends Controller {
 			'page'=>array(
 				'class'=>'CViewAction',
 			),
+            'status' =>array(
+                'class' => 'application.controllers.Site.StatusAction'
+            ),
 		);
 	}
 
@@ -34,7 +37,7 @@ class SiteController extends Controller {
 	public function accessRules() {
         return array(
             array('allow',  // allow all users
-                'actions'=>array('index','error','contact','mapbrowse','team','about','advisory','faq','term','help','privacy', 'login', 'loginAffiliate', 'logout', 'revoke', 'feed', 'Guide', 'Guidegenomic', 'Guideimaging', 'Guidemetabolomic', 'Guideepigenomic', 'Guidemetagenomic', 'Guidesoftware'),
+                'actions'=>array('status','index','error','contact','mapbrowse','team','about','advisory','faq','term','help','privacy', 'login', 'loginAffiliate', 'logout', 'revoke', 'feed', 'Guide', 'Guidegenomic', 'Guideimaging', 'Guidemetabolomic', 'Guideepigenomic', 'Guidemetagenomic', 'Guidesoftware'),
                 'users'=>array('*'),
             ),
             array('allow', # admins

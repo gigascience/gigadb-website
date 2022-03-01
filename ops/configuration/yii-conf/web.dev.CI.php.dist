@@ -30,6 +30,10 @@ return [
             'class' => 'creocoder\flysystem\LocalFilesystem',
             'path' => '@webroot/files',
         ],
+        'localStore' => [
+            'class' => 'creocoder\flysystem\LocalFilesystem',
+            'path' => '@webroot/images',
+        ],
         'cloudStore' => [
                     'class' => 'creocoder\flysystem\AwsS3Filesystem',
                     'key' => '${AWS_ACCESS_KEY_ID}',

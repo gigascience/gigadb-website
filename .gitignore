@@ -91,7 +91,7 @@ docs/cache
 
 !style-guide/vendor
 !style-guide/index.php
-site/
+/site/
 
 ftp-transfer-logs
 incoming
@@ -102,7 +102,6 @@ flags/*
 !flags/README.md
 php-conf/appconfig.ini
 
-site/
 
 # config
 params-local.php
