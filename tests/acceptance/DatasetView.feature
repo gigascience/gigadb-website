@@ -61,7 +61,7 @@ Feature: a user visit the dataset page
     When I am on "dataset/100006"
     Then I should see an image located in "https://assets.gigadb-cdn.net/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
 
-  @wip
+  @ok
   Scenario: Dataset with no image associated will show generic image
     Given I have not signed in
     When I am on "dataset/300070"
