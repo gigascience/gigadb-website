@@ -17,10 +17,22 @@ class ResetPasswordRequestController extends Controller
     {
         return array(
             array('allow',
-                'actions' => array('forgot', 'verify', 'changePassword'),
+                'actions' => array('forgot', 'verify', 'changePassword', 'thanks'),
                 'users' => array('?'),
             ),
         );
+    }
+
+    /**
+     * Display thanks page
+     * 
+     * This page lets the user know their request to reset their password has 
+     * been successfully submitted.
+     */
+    public function actionThanks()
+    {
+        $this->layout = "new_main";
+        $this->render('thanks');
     }
     
     /**
@@ -48,7 +60,7 @@ class ResetPasswordRequestController extends Controller
                     Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User account not found for ".$user, 'info');
                 }
             }
-            $this->render('thanks');
+            $this->redirect('thanks');
         }
         else {
             $this->render('forgot');
