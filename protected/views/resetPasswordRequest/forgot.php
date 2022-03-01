@@ -7,7 +7,7 @@ $this->pageTitle='Forgotten password';
             <div class="page-title">
                 <ol class="breadcrumb pull-right">
                     <li><a href="/">Home</a></li>
-                    <li class="active">Reset</li>
+                    <li class="active">Forgot</li>
                 </ol>
                 <h4>Forgotten password</h4>
             </div>
