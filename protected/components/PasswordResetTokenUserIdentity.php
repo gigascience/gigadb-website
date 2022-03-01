@@ -53,14 +53,14 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
             if($hashedTokenFromURLVerifier == $resetPasswordRequest->hashed_token)
             {
                 // Check if token has expired
-                if($resetPasswordRequest->isExpired()) {
-                    Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Token has expired: ", 'info');
-                    $this->errorCode = self::ERROR_TOKEN_HAS_EXPIRED;
-                }
-                else {
+//                if($resetPasswordRequest->isExpired()) {
+//                    Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Token has expired: ", 'info');
+//                    $this->errorCode = self::ERROR_TOKEN_HAS_EXPIRED;
+//                }
+//                else {
                     $this->_id = $user->id;
                     $this->errorCode = self::ERROR_NONE;
-                }
+//                }
             }
             else
             {
