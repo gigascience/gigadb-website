@@ -56,10 +56,16 @@ Feature: a user visit the dataset page
     And I should not see "The DOI 200070 cannot be displayed."
 
   @ok
-  Scenario: Dataset image with links
+  Scenario: Dataset with image associated will show dataset image
     Given I have not signed in
     When I am on "dataset/100006"
     Then I should see an image located in "https://assets.gigadb-cdn.net/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
+
+  @wip
+  Scenario: Dataset with no image associated will show generic image
+    Given I have not signed in
+    When I am on "dataset/300070"
+    Then I should see an image located in "https://assets.gigadb-cdn.net/images/datasets/no_image.png"
 
   @ok @issue-895
   Scenario: Project image with links
