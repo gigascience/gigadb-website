@@ -18,10 +18,25 @@ Feature: Reset password
     And I should see a submit button "Reset"
 
   @ok
-  Scenario: Check reset password functionality
+  Scenario: Check request reset password functionality
     When I am on "/resetpasswordrequest/forgot"
     And I fill in the field of "name" "ForgotPassword[email]" with "user@mailinator.com"
     And I press the button "Reset"
     Then I am on "/resetpasswordrequest/thanks" 
     And I should see "Reset Password Request Submitted"
     And I should see "If it is valid, we will send an email containing a link to where you can reset your password."
+    
+  @ok
+  Scenario: Check reset password functionality with valid token
+    When I am on "/resetpasswordrequest/reset?token=LcRiT6D70CBa1J9umjRMbgjhfE31Y3Bmd62qSvdm"
+    And I fill in the field of "name" "ResetPasswordForm[password]" with "Freed_From_Desire_GALA"
+    And I fill in the field of "name" "ResetPasswordForm[confirmPassword]" with "Freed_From_Desire_GALA"
+    And I press the button "Save"
+    Then I am on "/site/login"
+    And I should see "Login"
+
+  @ok
+  Scenario: Check invalid reset password token takes you back to request reset password page
+    When I am on "/resetpasswordrequest/reset?token=123456789"
+    Then I am on "/resetpasswordrequest/forgot"
+    And I should see "Forgotten password"
