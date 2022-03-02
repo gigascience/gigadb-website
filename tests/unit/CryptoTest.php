@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class DatasetComponentsTest
+ * Tests CryptoService component
  */
 class CryptoTest extends \Codeception\Test\Unit
 {
