@@ -118,6 +118,8 @@ const getMigrationFileName = tableName => {
             return "m200529_050470_insert_data_YiiSession_tab";
         case "user_command":
             return "m200529_050480_insert_data_user_command_tab";
+        case "reset_password_request":
+            return "m200529_050490_insert_data_reset_password_request_tab";
         default:
             throw new Error("No match for table name!");
     }
