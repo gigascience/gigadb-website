@@ -12,14 +12,18 @@ class StatusAction extends CAction
 {
     public function run()
     {
-        Yii::log("Status Action ...","warning");
-        $remotePath = "/images/datasets/new_no_image.png";
+        Yii::log("Testing Flysystem configuration","warning");
+        $remotePath = "/live/images/datasets/new_no_image.png";
         $localImage = Yii::$app->localStore->read("no_image.png");
+        assert($localImage !== null && $localImage !== false);
         Yii::$app->cloudStore->put($remotePath, $localImage, [
             'visibility' => AdapterInterface::VISIBILITY_PUBLIC
         ]);
         $remoteImage = Yii::$app->cloudStore->read($remotePath);
-        $this->getController()->renderFile($remoteImage);
+
+        header("Content-type: image/png");
+        echo $remoteImage;
+        ob_flush();
     }
 }
 
