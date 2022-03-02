@@ -8,8 +8,6 @@ class CryptoTest extends \Codeception\Test\Unit
     /**
      * Test that random alphanumeric string contains 20 characters
      * Test that random string is alphanumeric
-     *
-     * @throws Exception
      */
     public function testGetRandomAlphaNumStr()
     {
@@ -20,8 +18,6 @@ class CryptoTest extends \Codeception\Test\Unit
 
     /**
      * Verifies hashing algorithm produces expected results
-     *
-     * @throws Exception
      */
     public function testGetHashedToken()
     {
@@ -29,7 +25,6 @@ class CryptoTest extends \Codeception\Test\Unit
         $data = "hobbit";
         $key = "1234567890";
         $result = CryptoService::getHashedToken($key, $data);
-        // Verify hashing function
         $this->assertEquals($hashValue, $result, "Unexpected hashing result");
     }
 }
