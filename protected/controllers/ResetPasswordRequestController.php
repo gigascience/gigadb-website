@@ -8,7 +8,7 @@ class ResetPasswordRequestController extends Controller
     /**
      * Specifies access control rules.
      * 
-     * The changePassword function can be used by anonymous users but it will 
+     * The reset function can be used by anonymous users but it will 
      * only work if a token is provided.
      * 
      * @return array access control rules
@@ -16,9 +16,12 @@ class ResetPasswordRequestController extends Controller
     public function accessRules()
     {
         return array(
-            array('allow',
-                'actions' => array('forgot', 'verify', 'changePassword', 'thanks'),
+            array('allow',  // anonymous users
+                'actions' => array('forgot', 'reset', 'thanks'),
                 'users' => array('?'),
+            ),
+            array('deny',  // deny all users
+                'users'=>array('*'),
             ),
         );
     }
