@@ -32,5 +32,9 @@ $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate to 300000_000000 
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate mark 000000_000000 --connectionID=testdb --interactive=0
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=testdb --migrationPath=application.migrations.schema --interactive=0
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=testdb --migrationPath=application.migrations.data.$dbSet --interactive=0
+
+# update the url for project images and dataset images
+$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.fix_import --interactive=0
+
 # export a binary dump
 $DOCKER_COMPOSE run --rm test bash -c "pg_dump --no-owner -U gigadb -h database -p 5432 -F custom -d $dbSet -f /var/www/sql/$dbSet.pgdmp"

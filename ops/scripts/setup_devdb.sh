@@ -44,6 +44,9 @@ docker-compose run --rm test psql -h database -U gigadb < protected/runtime/drop
 # Perform data migrations
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.data.$dbSet --interactive=0
 
+# update the url for project images and dataset images
+$DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.fix_import --interactive=0
+
 # Restore constraints, indexes and triggers
 docker-compose run --rm test psql -h database -U gigadb < protected/runtime/addConstraintsQuery.sql
 docker-compose run --rm test psql -h database -U gigadb < protected/runtime/addIndexQuery.sql
