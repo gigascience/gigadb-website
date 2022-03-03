@@ -32,9 +32,9 @@ $this->pageTitle='Forgotten password';
                     'htmlOptions'=>array('class'=>'form-horizontal')
                 )) ?>
                 <div class="form-group">
-                    <label class="col-xs-2 control-label required" for="User_email">Email</label>
+                    <?php echo $form->label($model, 'email', array('class' => 'col-xs-2 control-label')); ?>
                     <div class="col-xs-8">
-                        <input class="form-control" name="ForgotPassword[email]" id="User_email" type="text" maxlength="128" value="">
+                        <?php echo $form->textField($model, 'email', array('class' => 'form-control')); ?>
                     </div>
                     <div class="col-xs-2">
                         <?= CHtml::submitButton(Yii::t('app' , 'Reset'), array('class'=>'btn background-btn')) ?>

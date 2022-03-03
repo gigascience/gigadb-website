@@ -45,8 +45,8 @@ class ResetPasswordRequestController extends Controller
     {
         $this->layout = "new_main";
         $forgotPasswordForm = new ForgotPasswordForm;
-        if (isset($_POST['ForgotPassword'])) {
-            $forgotPasswordForm->email = $_POST['ForgotPassword']['email'];
+        if (isset($_POST['ForgotPasswordForm'])) {
+            $forgotPasswordForm->email = $_POST['ForgotPasswordForm']['email'];
             if ($forgotPasswordForm->validate()) {
                 $user = User::model()->findByAttributes(array('email' => $forgotPasswordForm->email));
                 if ($user !== null) {
@@ -66,7 +66,7 @@ class ResetPasswordRequestController extends Controller
             $this->redirect('thanks');
         }
         else {
-            $this->render('forgot');
+            $this->render('forgot', array('model' => $forgotPasswordForm));
         }
     }
     

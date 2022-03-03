@@ -27,7 +27,7 @@ class ForgotPasswordForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'email' => Yii::t('app', 'Email Address'),
+            'email' => Yii::t('app', 'Email'),
         );
     }
 }
