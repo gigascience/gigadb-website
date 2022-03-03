@@ -5,6 +5,13 @@
  */
 class ResetPasswordRequestController extends Controller
 {
+    public function filters()
+    {
+        return array(
+            'accessControl',
+        );
+    }
+    
     /**
      * Specifies access control rules.
      * 
