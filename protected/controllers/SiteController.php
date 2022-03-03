@@ -37,15 +37,25 @@ class SiteController extends Controller {
 	public function accessRules() {
         return array(
             array('allow',  // allow all users
-                'actions'=>array('status','index','error','contact','mapbrowse','team','about','advisory','faq','term','help','privacy', 'login', 'loginAffiliate', 'logout', 'revoke', 'feed', 'Guide', 'Guidegenomic', 'Guideimaging', 'Guidemetabolomic', 'Guideepigenomic', 'Guidemetagenomic', 'Guidesoftware'),
+                'actions'=>array('index','error','contact','mapbrowse','team','about','advisory','faq','term','help','privacy', 'login', 'loginAffiliate', 'logout', 'revoke', 'feed', 'Guide', 'Guidegenomic', 'Guideimaging', 'Guidemetabolomic', 'Guideepigenomic', 'Guidemetagenomic', 'Guidesoftware'),
                 'users'=>array('*'),
+                'ips'=>array('*'),
+            ),
+            array('allow',
+                'actions' => array('status'),
+                'users'=>array('*'),
+                'ips' => array("172.16.238.*"),
             ),
             array('allow', # admins
                 'actions'=>array('admin', 'su'),
                 'roles'=>array('admin'),
+                'ips'=>array('*'),
             ),
             array('deny',  // deny all users
                 'users'=>array('*'),
+            ),
+            array('deny',  // deny all ips
+                'ips'=>array('*'),
             ),
         );
     }
