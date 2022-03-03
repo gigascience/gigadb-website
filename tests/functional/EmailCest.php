@@ -23,26 +23,26 @@ class EmailCest
      * @param FunctionalTester $I
      * @throws \Codeception\Exception\ModuleException
      */
-    public function trySendPasswordEmail(FunctionalTester $I)
-    {
-        $targetUrl = "/resetpasswordrequest/forgot";
-
-        // Fill in web form and submit
-        $I->amOnPage($targetUrl);
-        $I->fillField(['name' => 'ForgotPasswordForm[email]'], 'user@gigadb.org');
-        $I->click('Reset');
-        // Pressing Register button results in GigaDB website
-        // going to /resetpasswordrequest/thanks page
-        $I->seeInCurrentUrl("/resetpasswordrequest/thanks");
-        $I->see('Reset Password Request Submitted', 'h4');
-        // Now extract URLs from email sent to user
-        $urls = $I->grabUrlsFromLastEmail();
-        codecept_debug($urls);
-        // These URLs should contain one user activation link
-        $url_matches = preg_grep('/^http:\/\/gigadb.test\/resetpasswordrequest\/reset/', $urls);
-        codecept_debug($url_matches);
-        $I->assertCount(1, $url_matches, "User reset password link in email was not found");
-    }
+//    public function trySendPasswordEmail(FunctionalTester $I)
+//    {
+//        $targetUrl = "/resetpasswordrequest/forgot";
+//
+//        // Fill in web form and submit
+//        $I->amOnPage($targetUrl);
+//        $I->fillField(['name' => 'ForgotPasswordForm[email]'], 'user@gigadb.org');
+//        $I->click('Reset');
+//        // Pressing Register button results in GigaDB website
+//        // going to /resetpasswordrequest/thanks page
+//        $I->seeInCurrentUrl("/resetpasswordrequest/thanks");
+//        $I->see('Reset Password Request Submitted', 'h4');
+//        // Now extract URLs from email sent to user
+//        $urls = $I->grabUrlsFromLastEmail();
+//        codecept_debug($urls);
+//        // These URLs should contain one user activation link
+//        $url_matches = preg_grep('/^http:\/\/gigadb.test\/resetpasswordrequest\/reset/', $urls);
+//        codecept_debug($url_matches);
+//        $I->assertCount(1, $url_matches, "User reset password link in email was not found");
+//    }
 
     /**
      * Integration test to check email containing activation link is sent to new 
