@@ -42,3 +42,6 @@ $ docker compose down -v
 * https://docs.gitlab.com/ee/ci/runners/configure_runners.html
 * https://docs.gitlab.com/runner/register/
 * https://docs.gitlab.com/runner/configuration/runner_autoscale_aws/
+* https://gitlab.com/gitlab-org/gitlab-runner/blob/main/docs/executors/docker.md#the-builds-and-cache-storage
+* https://gitlab.com/gitlab-org/gitlab-runner/-/issues/2980
+* https://docs.gitlab.com/runner/configuration/speed_up_job_execution.html
