@@ -2,14 +2,14 @@
 version: "3.9"
 
 services:
-  logging:
-    driver: "json-file"
-    options:
-      max-size: "200k"
-      max-file: "10"
-      mode: "non-blocking"
-      max-buffer-size: "1m"
   runner:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: "non-blocking"
+        max-buffer-size: "1m"
     image: gitlab/gitlab-runner:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
