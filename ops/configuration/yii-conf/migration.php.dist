@@ -8,7 +8,7 @@ class {{ class_name }} extends CDbMigration
     {{#each safeup_data}}
         $this->insert('{{ ../table_name }}', array(
         {{#each this}}
-        {{#if this}}
+        {{#if (isdefined @key this) }}
             '{{@key}}' => '{{this}}',
         {{/if}}
         {{/each}}
