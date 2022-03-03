@@ -117,7 +117,8 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     <div class="control-group">
                         <label for="image_upload_image" class="control-label">Image Status</label>
                         <div class="controls">
-                            <?php echo $model->image->chooseImageFileToUpload('image_upload'); ?><br>
+<!--                            --><?php //echo $model->image->chooseImageFileToUpload('image_upload'); ?><!--<br>-->
+                            <?php echo CHtml::fileField('datasetImage', null, array('class' => 'file-upload-control', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
                         </div>
                         <div class="controls">
                             <?php

@@ -17,10 +17,6 @@
  */
 class Image extends CActiveRecord
 {
-
-    public $image_upload;
-    public $is_no_image;
-    public static $fup_img = '/images/fair.png';
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -85,45 +81,4 @@ class Image extends CActiveRecord
             'image_upload' => 'Upload Image',
         );
     }
-
-    public function save($runValidation = true, $attributes = NULL){
-        if (!parent::save()) return false;
-        $this->updateImage('image_upload');
-        return true;
-   }
-
-    public function chooseImageFileToUpload($type) {
-        $image = new Image();
-        if (!$image) {
-            ?>
-            <table>
-                <tr>
-                    <td width="30"><?=CHtml::radioButton("use_$type", true, array('value'=>'current'))?></td>
-                    <td>Keep <a href="<?= $image ?>">current</a></td>
-                </tr>
-                <tr>
-                    <td width="30"><?=CHtml::radioButton("use_$type", false, array('value'=>''))?></td>
-                    <td><?=CHtml::fileField("{$type}_image")?></td>
-                </tr>
-            </table>
-            <?php
-        } else {
-            echo CHtml::fileField("{$type}_image");
-        }
-    }
-
-    public function getImageTypeName() {
-        return "image_upload";
-    }
-
-#    // Or this, for that matter
-#    public function updateImage($type) {
-#        if (!isset($_POST["use_$type"]) or $_POST["use_$type"]!= 'current') {
-#    	    $image = CUploadedFile::getInstanceByName("{$type}_image");
-#	        if ($image !== null) {
-#                  $this->setImage($type, $image);
-#                  $this->location = $this->image($type);
-#            }
-#        }
-#    }
 }

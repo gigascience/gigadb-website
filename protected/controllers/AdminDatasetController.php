@@ -274,6 +274,12 @@ class AdminDatasetController extends Controller
                 $model->fairnuse = null;
             }
 
+            $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
+            Yii::log($datasetImage->getTempName(), "warning");
+            $imageDir = Yii::$app->params["environment"]."/images/datasets/";
+            Yii::$app->fs->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()));
+
+            $model->image->url = "/files/$imageDir".$datasetImage->name;
 
             if ($model->save() && $image->save()) {
                 if (isset($_POST['datasettypes'])) {
