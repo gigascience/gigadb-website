@@ -5,8 +5,6 @@ class m220218_062834_update_url_image_tab extends CDbMigration
 	public function safeUp()
 	{
 	    Yii::app()->db->createCommand("update image set url = replace(url, 'http://gigadb.org/','https://assets.gigadb-cdn.net/live/images/datasets/') where url like 'http://gigadb.org/%';")->execute();
-        // The empty value would be converted to null after set up the test database from csv files, so the following step is needed to convert it back to empty again.
-	    Yii::app()->db->createCommand("update image set url = '' where url is null;")->execute();
 	    Yii::app()->db->createCommand("update image set url = 'https://assets.gigadb-cdn.net/live/images/datasets/no_image.png' where url like '' and location like 'no_image%';")->execute();
 	}
 
