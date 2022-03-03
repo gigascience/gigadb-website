@@ -116,9 +116,21 @@ b_gigadb:
     - time docker-compose run --rm js npm install
   artifacts:
     untracked: true
-    when: always
+    when: on_failure
     expire_in: 1 week
-
+  cache:
+    key: deps-$CI_COMMIT_REF_SLUG
+    paths:
+      - vendor/
+      - composer.lock
+      - fuw/app/vendor/
+      - fuw/app/composer.lock
+      - gigadb/app/worker/file-worker/vendor
+      - gigadb/app/worker/file-worker/composer.lock
+      - ops/scripts/node_modules
+      - ops/scripts/package-lock.json
+      - gigadb/app/client/web/node_modules
+      - gigadb/app/client/web/package-lock.json
 
 .pb_gigadb:
   variables:
