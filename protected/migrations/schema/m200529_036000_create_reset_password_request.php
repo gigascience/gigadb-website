@@ -19,7 +19,7 @@ class m200529_036000_create_reset_password_request extends CDbMigration
             gigadb_user_id integer NOT NULL);");
 
         $this->execute("ALTER TABLE ONLY reset_password_request
-            ADD CONSTRAINT reset_password_requests_gigadb_user_id_fkey FOREIGN KEY (gigadb_user_id) REFERENCES gigadb_user(id) ON DELETE CASCADE;");
+            ADD CONSTRAINT reset_password_request_gigadb_user_id_fkey FOREIGN KEY (gigadb_user_id) REFERENCES gigadb_user(id) ON DELETE CASCADE;");
     }
 
     public function safeDown()
