@@ -65,7 +65,7 @@ Feature: a user visit the dataset page
   Scenario: Dataset with no image associated will show generic image
     Given I have not signed in
     When I am on "dataset/300070"
-    Then I should see an image located in "https://assets.gigadb-cdn.net/images/datasets/no_image.png"
+    Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/no_image.png"
 
   @ok @issue-895
   Scenario: Project image with links
