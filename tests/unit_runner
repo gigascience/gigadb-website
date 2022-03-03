@@ -11,26 +11,24 @@ set +a
 docker-compose run --rm application ./protected/yiic migrate --connectionID=testdb --migrationPath=application.migrations.schema --interactive=0
 # running javascript tests for GigaDB
 #TODO: investigate why this fail on CI docker-compose run --rm js npm test
-# running the new Codeception unit tests
-docker-compose run --rm test ./vendor/codeception/codeception/codecept run unit
 # running unit tests for GigaDB, make sure to reference the appropriate bootstrap as unit and functional tests have different ones
 docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
-gigadb_test_status=$?
-set +e
-docker-compose ps | grep console
-console_running=$?
-set -e
-if [ "$console_running" -eq "0" ];then
-	# before running tests, run migration for test database first (FUW)
-	docker-compose exec -T console /app/yii_test migrate --interactive=0
-	# running unit tests for File Upload Wizard's backend and frontend apps, as well as for common models
-	docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run unit
-	docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run unit
-	docker-compose exec -T console /app/vendor/bin/codecept -c /app/common run unit
-	docker-compose exec -T console /app/vendor/bin/codecept -c /app/console run unit
-	# run unit tests for Gigadb Workers
-	docker-compose exec -T console /gigadb-apps/worker/file-worker/vendor/bin/codecept -c /gigadb-apps/worker/file-worker run unit
-else
-	echo "No 'console' container running so not running File Upload Wizard unit tests"
-	exit $gigadb_test_status
-fi
+#gigadb_test_status=$?
+#set +e
+#docker-compose ps | grep console
+#console_running=$?
+#set -e
+#if [ "$console_running" -eq "0" ];then
+#	# before running tests, run migration for test database first (FUW)
+#	docker-compose exec -T console /app/yii_test migrate --interactive=0
+#	# running unit tests for File Upload Wizard's backend and frontend apps, as well as for common models
+#	docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run unit
+#	docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run unit
+#	docker-compose exec -T console /app/vendor/bin/codecept -c /app/common run unit
+#	docker-compose exec -T console /app/vendor/bin/codecept -c /app/console run unit
+#	# run unit tests for Gigadb Workers
+#	docker-compose exec -T console /gigadb-apps/worker/file-worker/vendor/bin/codecept -c /gigadb-apps/worker/file-worker run unit
+#else
+#	echo "No 'console' container running so not running File Upload Wizard unit tests"
+#	exit $gigadb_test_status
+#fi

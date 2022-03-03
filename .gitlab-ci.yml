@@ -4,10 +4,11 @@ stages:
   - test
   - staging build
   - staging deploy
+  - acceptance
   - live build
   - live deploy
   - operations
-image: docker:stable
+
 variables:
   # When using dind service we need to instruct docker, to talk with the
   # daemon started inside of the service. The daemon is available with
@@ -33,8 +34,11 @@ variables:
   YII_PATH: "/var/www/vendor/yiisoft/yii"
   YII2_PATH: "/var/www/vendor/yiisoft/yii2"
   DATA_SAVE_PATH: "/builds/$CI_PROJECT_PATH/containers-data"
+  DOCKER_VERSION: "20.10.12"
   NGINX_VERSION: "1.21.3"
-  PHP_VERSION: "7.2.34"
+  PHP_VERSION: "7.3.33"
+  APCU_VERSION: "5.1.21"
+  NODE_VERSION: "17.6.0"
   YII_VERSION: "1.1.25"
   YII2_VERSION: "2.0.44"
   POSTGRES_VERSION: "11.13"
@@ -52,6 +56,7 @@ variables:
   YII_ENV_DEV: "true"
   SERVER_HOSTNAME: "gigadb.gigasciencejournal.com"
 
+image: docker:$DOCKER_VERSION
 
 include:
   - template: Security/SAST.gitlab-ci.yml
@@ -64,7 +69,7 @@ include:
 #  - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
 
 services:
-  - docker:20.10.12-dind
+  - docker:${DOCKER_VERSION}-dind
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -83,15 +88,17 @@ before_script:
   - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && env | grep "^CI_" > $APPLICATION/.ci_env'
   - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && env | grep -v "SAST" | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" > $APPLICATION/.env'
   - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && env | grep -v "SAST" | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -v "ANALYTICS_PRIVATE_KEY" | grep -viE "tls" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.secrets'
-  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && apk add --no-cache py-pip bash curl jq'
+  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && time apk add --no-cache py-pip bash curl jq'
   # Pin docker-compose version to stop installation error
-  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && pip install docker-compose~=1.23.0'
+  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && time pip install docker-compose~=1.23.0'
 
 sd_gigadb:
   variables:
     GIGADB_ENV: "staging"
   extends: .deploy
   stage: staging deploy
+  tags:
+    - $GITLAB_USER_LOGIN
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
@@ -102,6 +109,8 @@ ld_gigadb:
     GIGADB_ENV: "live"
   extends: .deploy
   stage: live deploy
+  tags:
+    - $GITLAB_USER_LOGIN
   environment:
     name: "live"
     deployment_tier: production

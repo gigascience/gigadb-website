@@ -13,7 +13,7 @@
     - docker load -i php-$PHP_VERSION-cli-buster.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
-    - docker load -i node-14-buster.tar
+    - docker load -i node-$NODE_VERSION-buster-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending production variables at the end of the .env and .secrets
@@ -92,8 +92,6 @@
   when: manual
   artifacts:
     untracked: true
-    paths:
-      - fuw/app/console/config/
     exclude:
       - "*.tar"
     when: always

@@ -1,0 +1,42 @@
+---
+version: "3.9"
+
+services:
+  runner:
+    image: gitlab/gitlab-runner:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config:/etc/gitlab-runner
+    restart: always
+    deploy:
+      restart_policy:
+        condition: any
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role==manager"
+
+  register:
+    environment:
+      REGISTRATION_TOKEN: $REGISTRATION_TOKEN
+      CI_SERVER_URL: https://gitlab.com
+      DOCKER_IMAGE: alpine:latest
+      RUNNER_EXECUTOR: docker
+      RUNNER_NAME: cicd-bot
+      RUNNER_LIMIT: 1
+    image: gitlab/gitlab-runner:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config:/etc/gitlab-runner
+    deploy:
+      mode: replicated
+      replicas: 0
+      placement:
+        constraints:
+          - "node.role==manager"
+    command:
+      - register
+      - --non-interactive
+      - --docker-privileged
+      - --locked=false

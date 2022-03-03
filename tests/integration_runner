@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+set -a
+source .env
+set +a
+
+./tests/javascript_check
+#./tests/css_check
+./tests/logging_check
+./tests/cert_check

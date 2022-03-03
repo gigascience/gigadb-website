@@ -15,7 +15,7 @@ check_PSR2:
     - docker load -i php-7_2-cli-buster.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-1_21-alpine.tar
-    - docker load -i node-14-buster.tar
+    - docker load -i node-$NODE_VERSION-buster-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
@@ -43,7 +43,7 @@ check_PHPDoc:
     - docker load -i php-7_2-cli-buster.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-1_21-alpine.tar
-    - docker load -i node-14-buster.tar
+    - docker load -i node-$NODE_VERSION-buster-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true

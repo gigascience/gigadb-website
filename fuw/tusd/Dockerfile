@@ -14,8 +14,7 @@ RUN apk --update --no-cache add wget \
 		     php7-mbstring \
 		     php7-pdo_pgsql \
 		     php7-pgsql \
-		     php7-phar && \
-
-	curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer 
+		     php7-phar \
+	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 
 COPY ./hooks /var/hooks/

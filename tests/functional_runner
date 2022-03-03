@@ -5,14 +5,12 @@ set -u
 
 # before running tests, run migration for main database first (GigaDB)
 ./ops/scripts/setup_devdb.sh gigadb_testdata
-docker-compose run --rm application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.schema --interactive=0
 # before running tests, run migration for main database first (FUW)
-docker-compose exec -T console /app/yii migrate --interactive=0
+#docker-compose exec -T console /app/yii migrate --interactive=0
 # running functional tests for GigaDB, make sure to reference the appropriate bootstrap, so database can be loaded and restored properly
 docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php --verbose --configuration protected/tests/phpunit.xml --no-coverage
 # running functional tests for File Upload Wizard's backend and frontend apps
-docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run functional
-docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run functional
-docker-compose exec -T console /app/vendor/bin/codecept -c /app/console run functional
-# Running new Codeception functional tests suite for main codebase
-docker-compose run --rm test ./vendor/codeception/codeception/codecept run functional
+#docker-compose exec -T console /app/vendor/bin/codecept -c /app/backend run functional
+#docker-compose exec -T console /app/vendor/bin/codecept -c /app/frontend run functional
+#docker-compose exec -T console /app/vendor/bin/codecept -c /app/console run functional
+

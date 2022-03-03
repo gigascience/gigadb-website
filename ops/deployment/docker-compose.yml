@@ -77,6 +77,7 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
+        - APCU_VERSION=$APCU_VERSION
         - INSTALL_MAILPARSE=true
         - INSTALL_GIT=true
     volumes:
@@ -206,6 +207,7 @@ services:
         - INSTALL_LIBSODIUM=false
         - INSTALL_GIT=true
         - INSTALL_APCU=true
+        - APCU_VERSION=$APCU_VERSION
         - INSTALL_MAILPARSE=true
         - INSTALL_CSSLINT_JSHINT=true
     environment:
@@ -237,7 +239,7 @@ services:
     command: bash -c "pwd"
 
   csv-to-migrations:
-    image: node:14.18.0-buster
+    image: node:$NODE_VERSION-buster-slim
     working_dir: /var/www/ops/scripts
     volumes:
       - ${APPLICATION}/:/var/www
@@ -248,6 +250,8 @@ services:
     build:
       context: .
       dockerfile: ../packaging/VueDev-Dockerfile
+      args:
+        - NODE_VERSION=$NODE_VERSION
     volumes:
       - ${APPLICATION}/:/var/www
     shm_size: '1gb' # to avoid a known issue
@@ -318,7 +322,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2.34-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
         - APP_PORT=9002
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -326,6 +330,7 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
+        - APCU_VERSION=$APCU_VERSION
         - INSTALL_GIT=true
         - INSTALL_DOCKER_API_ACCESS=true
     expose:
@@ -361,7 +366,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2.34-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
         - APP_PORT=9001
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -369,6 +374,7 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
+        - APCU_VERSION=$APCU_VERSION
         - INSTALL_GIT=true
         - INSTALL_DOCKER_API_ACCESS=true
     expose:
@@ -405,13 +411,14 @@ services:
       context: ../../fuw/app/console
       dockerfile: Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2.34-cli-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-buster
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
+        - APCU_VERSION=$APCU_VERSION
         - INSTALL_DOCKER_API_ACCESS=true
     volumes:
       # Re-use local composer cache via host-volume
@@ -448,13 +455,14 @@ services:
       context: ..
       dockerfile: packaging/Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2.34-cli-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-buster
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
+        - APCU_VERSION=$APCU_VERSION
         - INSTALL_DOCKER_API_ACCESS=true
     volumes:
       # Re-use local composer cache via host-volume
@@ -495,7 +503,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=7.2.34-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
         - APP_PORT=9001
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -503,6 +511,7 @@ services:
         - INSTALL_TIDEWAYS_XHPROF=false
         - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
+        - APCU_VERSION=$APCU_VERSION
         - INSTALL_DOCKER_API_ACCESS=true
         - INSTALL_NETCAT_JQ=true
         - INSTALL_GIT=true

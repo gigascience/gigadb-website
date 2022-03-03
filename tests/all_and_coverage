@@ -8,10 +8,5 @@ set +a
 
 ./tests/unit_runner
 ./tests/functional_runner
-./tests/acceptance_runner ci-js
-./tests/javascript_check
-#./tests/css_check
-./tests/logging_check
-./tests/cert_check
 ./tests/coverage_runner
 

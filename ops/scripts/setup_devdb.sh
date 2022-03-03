@@ -25,7 +25,7 @@ fi
 $DOCKER_COMPOSE run --rm test bash -c "psql -h database -U gigadb -c 'create database gigadb'" || true
 
 # generate migrations (by default "test" data is loaded in the dev db)
-# docker run -v `pwd`:/var/www node:14.9.0-buster bash -c "node /var/www/ops/scripts/csv_yii_migration.js test"
+# docker run -v `pwd`:/var/www node:14.9.0-buster-slim bash -c "node /var/www/ops/scripts/csv_yii_migration.js test"
 $DOCKER_COMPOSE run --rm js bash -c "node /var/www/ops/scripts/csv_yii_migration.js $dbSet"
 
 # create sql script to drop and recreate constraints, indexes and triggers

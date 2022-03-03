@@ -1,5 +1,7 @@
 base_images:
   stage: .pre
+  tags:
+    - $GITLAB_USER_LOGIN
   script:
     # login and pull from docker hub the base image for php-fpm so it's done only once
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
@@ -11,18 +13,23 @@ base_images:
     - docker save -o alpine-3_14.tar alpine:3.14.2
     - docker pull nginx:$NGINX_VERSION-alpine
     - docker save -o nginx-$NGINX_VERSION-alpine.tar nginx:$NGINX_VERSION-alpine
-    - docker pull node:14.18.0-buster
-    - docker save -o node-14-buster.tar node:14.18.0-buster
+    - docker pull node:$NODE_VERSION-buster-slim
+    - docker save -o node-$NODE_VERSION-buster-slim.tar node:$NODE_VERSION-buster-slim
   artifacts:
     paths:
       - php-$PHP_VERSION-fpm-buster.tar
       - php-$PHP_VERSION-cli-buster.tar
       - alpine-3_14.tar
       - nginx-$NGINX_VERSION-alpine.tar
-      - node-14-buster.tar
+      - node-$NODE_VERSION-buster-slim.tar
 
 b_gigadb:
+  variables:
+    PORTAINER_BCRYPT: ""
+    REMOTE_DOCKER_HOSTNAME: ""
   stage: build for test
+  tags:
+    - $GITLAB_USER_LOGIN
   script:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
@@ -30,7 +37,7 @@ b_gigadb:
     - docker load -i php-$PHP_VERSION-cli-buster.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
-    - docker load -i node-14-buster.tar
+    - docker load -i node-$NODE_VERSION-buster-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # build for test
@@ -48,19 +55,19 @@ b_gigadb:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/beanstalkd:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/js:latest || true
-    - docker-compose build application
-    - docker-compose build test
-    - docker-compose build fuw-admin
-    - docker-compose build fuw-worker
-    - docker-compose build gigadb-worker
-    - docker-compose build fuw-public
-    - docker-compose build console
-    - docker-compose build ftpd
-    - docker-compose build watcher
-    - docker-compose build tusd
-    - docker-compose build beanstalkd
-    - docker-compose build web
-    - docker-compose build js
+    - time docker-compose build application
+    - time docker-compose build test
+    - time docker-compose build fuw-admin
+    - time docker-compose build fuw-worker
+    - time docker-compose build gigadb-worker
+    - time docker-compose build fuw-public
+    - time docker-compose build console
+    - time docker-compose build ftpd
+    - time docker-compose build watcher
+    - time docker-compose build tusd
+    - time docker-compose build beanstalkd
+    - time docker-compose build web
+    - time docker-compose build js
     - docker tag ${CI_PROJECT_NAME}_application:latest registry.gitlab.com/$CI_PROJECT_PATH/application:latest
     - docker tag ${CI_PROJECT_NAME}_test:latest registry.gitlab.com/$CI_PROJECT_PATH/test:latest
     - docker tag ${CI_PROJECT_NAME}_fuw-admin:latest registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest
@@ -87,12 +94,12 @@ b_gigadb:
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/beanstalkd:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/web:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/js:latest
-    - docker-compose run --rm config
-    - docker-compose run --rm fuw-config
-    - docker-compose run --rm test composer install
-    - docker-compose run --rm console bash -c "cd /app && composer update"
-    - docker-compose run --rm console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer update'
-    - docker-compose run --rm js npm install
+    - time docker-compose run --rm config
+    - time docker-compose run --rm fuw-config
+    - time docker-compose run --rm test composer install
+    - time docker-compose run --rm console bash -c "cd /app && composer update"
+    - time docker-compose run --rm console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer update'
+    - time docker-compose run --rm js npm install
   artifacts:
     untracked: true
     when: always
@@ -106,16 +113,19 @@ b_gigadb:
     REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
     CSV_DIR: "prod_like"
+    PORTAINER_BCRYPT: ""
+    REMOTE_DOCKER_HOSTNAME: ""
+
   stage: production build
   allow_failure: false
   script:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - docker load -i php-$PHP_VERSION-fpm-buster.tar
-    - docker load -i php-$PHP_VERSION-cli-buster.tar
+    - time docker load -i php-$PHP_VERSION-fpm-buster.tar
+    - time docker load -i php-$PHP_VERSION-cli-buster.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
-    - docker load -i node-14-buster.tar
+    - time docker load -i node-$NODE_VERSION-buster-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending remote variables at the end of the .env and .secrets
@@ -126,25 +136,23 @@ b_gigadb:
     - env | grep -v "SAST" | grep -iE "CI_PROJECT_URL">> $APPLICATION/.secrets
     - env | grep -v "SAST" | grep -iE "^(gigadb_|fuw_).+=.+$" | tee -a $APPLICATION/.secrets
     # pulling the CI build of the application from registry and configure it for staging for the purpose of building production containers
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - time docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest || true
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-worker:latest || true
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
     # Generate configuration files and vendors libraries before baking an immutable image
-    - docker-compose run --rm config
-    - docker-compose run --rm application composer install -a --no-dev
+    - time docker-compose run --rm config
+    - time docker-compose run --rm application composer install -a --no-dev
     - docker-compose run --rm less
 #    - docker-compose run --rm fuw-config
 #    - docker-compose run --rm console bash -c "cd /app && composer install -a --no-dev"
 #    - docker-compose run --rm console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer install -a --no-dev'
     # Share the model layer across apps
 #    - cp gigadb/app/worker/file-worker/models/UpdateGigaDBJob.php fuw/app/
-    # Generate Yii migration scripts
-    - docker-compose up csv-to-migrations
     # pulling production build of images from registry to use as cache
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV || true
+    - time docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV || true
+    - time docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV || true
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:latest || true
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:latest || true
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:latest || true
@@ -154,21 +162,21 @@ b_gigadb:
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:latest || true
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:latest || true
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:latest || true
-    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV || true
+    - time docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV || true
     # build the javascript app, so that the Vue.js app can be baked in production_app
 #    - docker-compose run --rm js
     # build Nginx web container, making sure static assets are baked in
 #    - cp -R fuw/app/backend ops/configuration/fuw-conf/
-    - docker-compose build production_web
+    - time docker-compose build production_web
     # build and push production containers for PHP-FPM with application code and vendor code baked in and publish to registry
-    - docker-compose build production_app
-    - docker-compose build production_config
-    - docker tag ${CI_PROJECT_NAME}_production_web:latest registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
-    - docker tag ${CI_PROJECT_NAME}_production_app:latest registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
-    - docker tag ${CI_PROJECT_NAME}_production_config:latest registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV
+    - time docker-compose build production_app
+    - time docker-compose build production_config
+    - time docker tag ${CI_PROJECT_NAME}_production_web:latest registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
+    - time docker tag ${CI_PROJECT_NAME}_production_app:latest registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
+    - time docker tag ${CI_PROJECT_NAME}_production_config:latest registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV
+    - time docker push registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
+    - time docker push registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
+    - time docker push registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV
     # build and push sidecar apps (ftpd, watcher, tusd, beanstalkd) for FUW
 #    - docker-compose build production_ftpd
 #    - docker-compose build production_watcher
@@ -203,7 +211,12 @@ b_gigadb:
     url: $REMOTE_HOME_URL
   when: manual
   artifacts:
-    untracked: true
+    paths:
+      - php-$PHP_VERSION-fpm-buster.tar
+      - php-$PHP_VERSION-cli-buster.tar
+      - alpine-3_14.tar
+      - nginx-$NGINX_VERSION-alpine.tar
+      - node-$NODE_VERSION-buster-slim.tar
     when: on_failure
     expire_in: 1 week
 
@@ -213,6 +226,8 @@ build_staging:
     YII_DEBUG: "true"
   extends: .pb_gigadb
   stage: staging build
+  tags:
+    - $GITLAB_USER_LOGIN
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
@@ -222,6 +237,8 @@ build_live:
     GIGADB_ENV: "live"
   extends: .pb_gigadb
   stage: live build
+  tags:
+    - $GITLAB_USER_LOGIN
   environment:
     name: "live"
     deployment_tier: production
