@@ -9,7 +9,7 @@ use Yii;
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class StatusAction extends CAction
+class FlysystemAction extends CAction
 {
     public function run()
     {

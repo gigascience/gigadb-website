@@ -22,8 +22,8 @@ class SiteController extends Controller {
 			'page'=>array(
 				'class'=>'CViewAction',
 			),
-            'status' =>array(
-                'class' => 'application.controllers.Site.StatusAction'
+            'flysystem-status' =>array(
+                'class' => 'application.controllers.Site.FlysystemAction'
             ),
 		);
 	}
@@ -42,7 +42,7 @@ class SiteController extends Controller {
                 'ips'=>array('*'),
             ),
             array('allow',
-                'actions' => array('status'),
+                'actions' => array('flysystem-status'),
                 'users'=>array('*'),
                 'ips' => array("172.16.238.*"),
             ),
