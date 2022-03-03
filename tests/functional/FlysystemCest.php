@@ -16,6 +16,6 @@ class FlysystemCest
     public function tryFlysystemEndToEnd(FunctionalTester $I)
     {
         shell_exec("curl -sS -o /tmp/my.png http://gigadb.test/site/status");
-        $I->assertFileExists("/tmp/my.png");
+        $I->assertEquals("image/png", mime_content_type("/tmp/my.png") );
     }
 }
