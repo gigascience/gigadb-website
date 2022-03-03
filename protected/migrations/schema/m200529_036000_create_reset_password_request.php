@@ -1,6 +1,6 @@
 <?php
 
-class m201200_000010_create_reset_password_requests extends CDbMigration
+class m200529_036000_create_reset_password_request extends CDbMigration
 {
     /**
      * Create table schema based on https://paragonie.com/blog/2016/09/untangling-forget-me-knot-secure-account-recovery-made-simple
@@ -11,19 +11,19 @@ class m201200_000010_create_reset_password_requests extends CDbMigration
      */
     public function safeUp()
     {
-        $this->execute("CREATE TABLE IF NOT EXISTS reset_password_requests (
+        $this->execute("CREATE TABLE IF NOT EXISTS reset_password_request (
             selector character varying(128) NOT NULL PRIMARY KEY,
             hashed_token character varying(128),
             requested_at timestamp without time zone,
             expires_at timestamp without time zone,
             gigadb_user_id integer NOT NULL);");
 
-        $this->execute("ALTER TABLE ONLY reset_password_requests
+        $this->execute("ALTER TABLE ONLY reset_password_request
             ADD CONSTRAINT reset_password_requests_gigadb_user_id_fkey FOREIGN KEY (gigadb_user_id) REFERENCES gigadb_user(id) ON DELETE CASCADE;");
     }
 
     public function safeDown()
     {
-        $this->dropTable('reset_password_requests');
+        $this->dropTable('reset_password_request');
     }
 }
