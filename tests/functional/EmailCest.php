@@ -39,7 +39,7 @@ class EmailCest
         $urls = $I->grabUrlsFromLastEmail();
         codecept_debug($urls);
         // These URLs should contain one user activation link
-        $url_matches = preg_grep('/^http:\/\/gigadb.test\/resetpasswordrequest\/reset/', $urls);
+        $url_matches = preg_grep('/^http:\/\/gigadb.test\/resetPasswordRequest\/reset/', $urls);
         codecept_debug($url_matches);
         $I->assertCount(1, $url_matches, "User reset password link in email was not found");
     }

@@ -235,7 +235,7 @@ class ResetPasswordRequestController extends Controller
     private function sendPasswordEmail($resetPasswordRequest) 
     {
         // Create URL for user to verify password reset token
-        $url = $this->createAbsoluteUrl('resetpasswordrequest/reset');
+        $url = $this->createAbsoluteUrl('resetPasswordRequest/reset');
         $url = $url."?token=".$resetPasswordRequest->getToken();
         Yii::log("URL for email: " . $url, "info");
         
