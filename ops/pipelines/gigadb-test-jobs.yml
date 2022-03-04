@@ -61,6 +61,8 @@ legacy_tests:
     - ./tests/all_and_coverage
   environment:
     name: dev
+  tags:
+    - $GITLAB_USER_LOGIN
 
 unit_func_tests:
   stage: test
