@@ -17,6 +17,12 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 <? } ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js"></script>
+<? if (Yii::app()->params['less_dev_mode']) { ?>
+    <link rel="stylesheet/less" type="text/css" href="/less/current.less?time=<?= time() ?>">
+    <? Yii::app()->clientScript->registerScriptFile('/js/less-1.3.0.min.js'); ?>
+<? } else { ?>
+    <link rel="stylesheet" type="text/css" href="/css/current.css"/>
+<? } ?>
 
 <?php $form=$this->beginWidget('CActiveForm', array(
     'id'=>'dataset-form',
@@ -116,20 +122,24 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     ?>
                     <div class="control-group">
                         <label for="image_upload_image" class="control-label">Image Status</label>
+                        <?php if($img_url){ ?>
                         <div class="controls">
-<!--                            --><?php //echo $model->image->chooseImageFileToUpload('image_upload'); ?><!--<br>-->
-                            <?php echo CHtml::fileField('datasetImage', null, array('class' => 'file-upload-control', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
+                            <?php echo CHtml::fileField('datasetImage'); ?>
                         </div>
                         <div class="controls">
                             <?php
-                            if($img_url){
-                                echo CHtml::htmlButton('Replace image', ['class' => 'btn btn-green', 'style'=>'width:30%; margin:auto;']);
-                                echo CHtml::htmlButton('Remove image!!!', ['class' => 'btn btn-primary', 'style'=>'width:40%; margin:auto;']);
-                            } else {
-                                echo CHtml::htmlButton('Upload new image', ['class' => 'btn btn-green', 'style'=>'width:40%; margin:auto;']);
-                            }
+                            echo CHtml::htmlButton('Replace image', ['class' => 'btn btn-green', 'style'=>'width:30%; margin:auto;']);
+                            echo CHtml::htmlButton('Remove image!!!', ['class' => 'btn btn-primary', 'style'=>'width:40%; margin:auto;']);
                             ?>
                         </div>
+                        <?php } else { ?>
+                            <div class="controls">
+                                <?php
+                                echo CHtml::fileField('datasetImage');
+                                echo CHtml::htmlButton('Upload new image', ['class' => 'btn btn-green', 'style'=>'width:40%; margin-top:-40px; margin-bottom:auto']);
+                                ?>
+                            </div>
+                        <?php } ?>
                     </div>
                     <div class="control-group">
                         <?php echo $form->labelEx($model->image,'url',array('class'=>'control-label')); ?>
