@@ -44,7 +44,7 @@ class SiteController extends Controller {
             array('allow',
                 'actions' => array('flysystem-status'),
                 'users'=>array('*'),
-                'ips' => array("*"),
+                'ips' => array("172.16.238.*"),
             ),
             array('allow', # admins
                 'actions'=>array('admin', 'su'),
