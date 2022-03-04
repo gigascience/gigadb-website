@@ -25,7 +25,7 @@ class EmailCest
      */
     public function trySendPasswordEmail(FunctionalTester $I)
     {
-        $targetUrl = "/resetpasswordrequest/forgot";
+        $targetUrl = "/resetPasswordRequest/forgot";
 
         // Fill in web form and submit
         $I->amOnPage($targetUrl);
