@@ -12,18 +12,16 @@ $this->pageTitle='Forgotten password';
                 <h4>Forgotten password</h4>
             </div>
         </section>
-    <div class="subsection row" style="margin-bottom: 130px;">
-        <div class="col-xs-12">
+        <div class="subsection row" style="margin-bottom: 130px;">
             <?php if(Yii::app()->user->hasFlash('fail-reset-password')): ?>
+            <div class="col-xs-12">
                 <div class="alert alert-warning">
                     <?php echo Yii::app()->user->getFlash('fail-reset-password'); ?>
                 </div>
+            </div>
             <?php endif; ?>
-        </div>
             <div class="reset-message-div">
-                <p>
-                    Please enter your email. A link to reset your password will be sent to you.
-                </p>
+                <p>Please enter your email. A link to reset your password will be sent to you.</p>
             </div>
             <div class="create-div">
                 <? $form=$this->beginWidget('CActiveForm', array(
