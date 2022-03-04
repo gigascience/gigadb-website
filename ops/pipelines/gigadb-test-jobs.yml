@@ -1,9 +1,19 @@
 legacy_tests:
   stage: test
   cache:
+    key:
+      files:
+        - composer.lock
+        - fuw/app/composer.lock
+        - gigadb/app/worker/file-worker/composer.lock
+        - ops/scripts/package-lock.json
+        - gigadb/app/client/web/package-lock.json
     paths:
       - vendor/
-      - composer.lock
+      - fuw/app/vendor/
+      - gigadb/app/worker/file-worker/vendor
+      - ops/scripts/node_modules
+      - gigadb/app/client/web/node_modules
   artifacts:
     paths:
       - tmp/
@@ -55,9 +65,19 @@ legacy_tests:
 unit_func_tests:
   stage: test
   cache:
+    key:
+      files:
+        - composer.lock
+        - fuw/app/composer.lock
+        - gigadb/app/worker/file-worker/composer.lock
+        - ops/scripts/package-lock.json
+        - gigadb/app/client/web/package-lock.json
     paths:
       - vendor/
-      - composer.lock
+      - fuw/app/vendor/
+      - gigadb/app/worker/file-worker/vendor
+      - ops/scripts/node_modules
+      - gigadb/app/client/web/node_modules
   dependencies: []
   script:
     # appending dev variables at the end of the .env and .secrets
@@ -88,9 +108,19 @@ unit_func_tests:
 integration_tests:
   stage: test
   cache:
+    key:
+      files:
+        - composer.lock
+        - fuw/app/composer.lock
+        - gigadb/app/worker/file-worker/composer.lock
+        - ops/scripts/package-lock.json
+        - gigadb/app/client/web/package-lock.json
     paths:
       - vendor/
-      - composer.lock
+      - fuw/app/vendor/
+      - gigadb/app/worker/file-worker/vendor
+      - ops/scripts/node_modules
+      - gigadb/app/client/web/node_modules
   dependencies: []
   script:
     # appending dev variables at the end of the .env and .secrets
@@ -121,9 +151,19 @@ integration_tests:
 a_gigadb:
   stage: acceptance
   cache:
+    key:
+      files:
+        - composer.lock
+        - fuw/app/composer.lock
+        - gigadb/app/worker/file-worker/composer.lock
+        - ops/scripts/package-lock.json
+        - gigadb/app/client/web/package-lock.json
     paths:
       - vendor/
-      - composer.lock
+      - fuw/app/vendor/
+      - gigadb/app/worker/file-worker/vendor
+      - ops/scripts/node_modules
+      - gigadb/app/client/web/node_modules
   artifacts:
     paths:
       - tmp/
