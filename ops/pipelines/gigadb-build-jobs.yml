@@ -26,11 +26,11 @@ base_images:
     key:
       files:
         - composer.lock
-        - fuw/app/composer.lock
-        - gigadb/app/worker/file-worker/composer.lock
         - ops/scripts/package-lock.json
-        - gigadb/app/client/web/package-lock.json
     paths:
+      - gigadb/app/client/web/package-lock.json
+      - fuw/app/composer.lock
+      - gigadb/app/worker/file-worker/composer.lock
       - vendor/
       - fuw/app/vendor/
       - gigadb/app/worker/file-worker/vendor

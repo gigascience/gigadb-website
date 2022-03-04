@@ -4,11 +4,11 @@ legacy_tests:
     key:
       files:
         - composer.lock
-        - fuw/app/composer.lock
-        - gigadb/app/worker/file-worker/composer.lock
         - ops/scripts/package-lock.json
-        - gigadb/app/client/web/package-lock.json
     paths:
+      - gigadb/app/client/web/package-lock.json
+      - fuw/app/composer.lock
+      - gigadb/app/worker/file-worker/composer.lock
       - vendor/
       - fuw/app/vendor/
       - gigadb/app/worker/file-worker/vendor
@@ -68,11 +68,11 @@ unit_func_tests:
     key:
       files:
         - composer.lock
-        - fuw/app/composer.lock
-        - gigadb/app/worker/file-worker/composer.lock
         - ops/scripts/package-lock.json
-        - gigadb/app/client/web/package-lock.json
     paths:
+      - gigadb/app/client/web/package-lock.json
+      - fuw/app/composer.lock
+      - gigadb/app/worker/file-worker/composer.lock
       - vendor/
       - fuw/app/vendor/
       - gigadb/app/worker/file-worker/vendor
@@ -111,11 +111,11 @@ integration_tests:
     key:
       files:
         - composer.lock
-        - fuw/app/composer.lock
-        - gigadb/app/worker/file-worker/composer.lock
         - ops/scripts/package-lock.json
-        - gigadb/app/client/web/package-lock.json
     paths:
+      - gigadb/app/client/web/package-lock.json
+      - fuw/app/composer.lock
+      - gigadb/app/worker/file-worker/composer.lock
       - vendor/
       - fuw/app/vendor/
       - gigadb/app/worker/file-worker/vendor
@@ -154,11 +154,11 @@ a_gigadb:
     key:
       files:
         - composer.lock
-        - fuw/app/composer.lock
-        - gigadb/app/worker/file-worker/composer.lock
         - ops/scripts/package-lock.json
-        - gigadb/app/client/web/package-lock.json
     paths:
+      - gigadb/app/client/web/package-lock.json
+      - fuw/app/composer.lock
+      - gigadb/app/worker/file-worker/composer.lock
       - vendor/
       - fuw/app/vendor/
       - gigadb/app/worker/file-worker/vendor
