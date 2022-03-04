@@ -29,7 +29,7 @@ class EmailCest
 
         // Fill in web form and submit
         $I->amOnPage($targetUrl);
-        $I->fillField(['name' => 'ForgotPasswordForm[email]'], 'user@gigadb.org');
+        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'user@gigadb.org');
 //        $I->click('Reset');
 //        // Pressing Register button results in GigaDB website
 //        // going to /resetpasswordrequest/thanks page
