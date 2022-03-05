@@ -53,7 +53,7 @@ $this->breadcrumbs=array(
                     <div class="checkbox" style="padding-top: 0;">
                         <?= $form->checkBox($model,'rememberMe') ?>
                         <?= $form->label($model,'rememberMe', array('disabled'=>"disabled")) ?>
-                        <?= CHtml::link(Yii::t('app' , "Lost Password"), array('resetpasswordrequest/forgot')) ?>
+                        <?= CHtml::link(Yii::t('app' , "Lost Password"), array('site/forgot')) ?>
                          <a href="/user/create" style="float:right;">Create account</a>
                     </div>
                 </div>

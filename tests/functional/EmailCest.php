@@ -25,21 +25,21 @@ class EmailCest
      */
     public function trySendPasswordEmail(FunctionalTester $I)
     {
-        $targetUrl = "/resetPasswordRequest/forgot";
+        $targetUrl = "/site/forgot";
 
         // Fill in web form and submit
         $I->amOnPage($targetUrl);
         $I->fillField(['id' => 'ForgotPasswordForm_email'], 'user@gigadb.org');
         $I->click('Reset');
         // Pressing Register button results in GigaDB website
-        // going to /resetPasswordrequest/thanks page
-        $I->seeInCurrentUrl("/resetPasswordRequest/thanks");
+        // going to /site/thanks page
+        $I->seeInCurrentUrl("/site/thanks");
         $I->see('Reset Password Request Submitted', 'h4');
         // Now extract URLs from email sent to user
         $urls = $I->grabUrlsFromLastEmail();
         codecept_debug($urls);
         // These URLs should contain one user activation link
-        $url_matches = preg_grep('/^http:\/\/gigadb.test\/resetPasswordRequest\/reset/', $urls);
+        $url_matches = preg_grep('/^http:\/\/gigadb.test\/site\/reset/', $urls);
         codecept_debug($url_matches);
         $I->assertCount(1, $url_matches, "User reset password link in email was not found");
     }
