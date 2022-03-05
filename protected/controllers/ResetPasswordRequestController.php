@@ -59,15 +59,17 @@ class ResetPasswordRequestController extends Controller
                 if ($user !== null) {
                     Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Found user account for ".$forgotPasswordForm->email, 'info');
                     try {
-                        $this->generateResetToken($user);
+                        $resetPasswordRequest = new ResetPasswordRequest();
+                        $resetPasswordRequest->generateResetToken($user);
+                        $resetPasswordRequest->save();
                     }
                     catch (Exception $e)
                     {
-                        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Too many password requests made by: ".$user, 'info');
+                        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Too many password requests made by: ".$user->email, 'info');
                     }
                 }
                 else {
-                    Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User account not found for ".$user, 'info');
+                    Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": User account not found for ".$forgotPasswordForm->email, 'info');
                 }
             }
             $this->redirect('thanks');
@@ -128,48 +130,6 @@ class ResetPasswordRequestController extends Controller
             Yii::log("No token provided" , "info");
             // Display request reset password page 
             $this->redirect('forgot');
-        }
-    }
-
-    /**
-     * Some of the cryptographic strategies were taken from
-     * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
-     *
-     * @return bool
-     * @throws TooManyPasswordRequestsException
-     * @throws Exception
-     */
-    private function generateResetToken($user)
-    {
-        // Check if user has any valid reset password requests
-//        if($this->unexpiredResetPasswordRequestExists($user->id))
-//        {
-//            throw new Exception("Too many password requests - need to wait till current request expires");
-//        }
-        
-        // Remove all existing password requests belonging to user
-//        $this->removeResetPasswordRequests($user->id);
-
-        $verifier = Yii::app()->CryptoService->getRandomAlphaNumStr();
-        $signingKey = Yii::app()->params['signing_key'];
-        $hashedTokenOfVerifier = Yii::app()->CryptoService->getHashedToken($signingKey, $verifier);
-
-        $resetPasswordRequest = new ResetPasswordRequest;
-        $resetPasswordRequest->gigadb_user_id = $user->id;
-        $resetPasswordRequest->selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
-        $resetPasswordRequest->hashed_token = $hashedTokenOfVerifier;
-        $resetPasswordRequest->setVerifier($verifier);
-
-        if($resetPasswordRequest->validate()) {
-            if($resetPasswordRequest->save(false)) {
-                // Send email containing URL for resetting password to user
-                $this->sendPasswordEmail($resetPasswordRequest);
-                return true;
-            }
-        }
-        else {
-            Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": resetPasswordRequest object not valid", 'info');
-            return false;
         }
     }
 

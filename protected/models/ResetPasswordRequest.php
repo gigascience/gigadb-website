@@ -17,6 +17,9 @@
 class ResetPasswordRequest extends CActiveRecord 
 {
     public $verifier;
+    public $selector;
+    public $hashed_token;
+    public $gigadb_user_id;
 
     public function rules()
     {
@@ -75,6 +78,40 @@ class ResetPasswordRequest extends CActiveRecord
         
         parent::beforeSave();
         return true;
+    }
+
+    /**
+     * Creates a reset token consisting of selector concatenated with a 
+     * verifier
+     * 
+     * All of the attributes (selector, verifier, gigadb_user_id) of a 
+     * ResetPasswordRequest model are created as a side effect of this function.
+     * Some of the cryptographic strategies were taken from
+     * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
+     *
+     * @throws TooManyPasswordRequestsException
+     * @throws Exception
+     * @return string
+     */
+    public function generateResetToken($user)
+    {
+        // Check if user has any valid reset password requests
+//        if($this->unexpiredResetPasswordRequestExists($user->id))
+//        {
+//            throw new Exception("Too many password requests - need to wait till current request expires");
+//        }
+        
+        // Remove all existing password requests belonging to user
+//        $this->removeResetPasswordRequests($user->id);
+
+        $this->selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
+        $signingKey = Yii::app()->params['signing_key'];
+        $this->verifier = Yii::app()->CryptoService->getRandomAlphaNumStr();
+        $hashedTokenOfVerifier = Yii::app()->CryptoService->getHashedToken($signingKey, $this->verifier);
+        $this->hashed_token = $hashedTokenOfVerifier;
+        $this->selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
+        $this->gigadb_user_id = $user->id;
+        return $this->selector.$this->verifier;;
     }
 
     /**
