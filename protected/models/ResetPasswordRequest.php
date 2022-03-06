@@ -96,22 +96,25 @@ class ResetPasswordRequest extends CActiveRecord
     public function generateResetToken($user)
     {
         // Check if user has any valid reset password requests
-//        if($this->unexpiredResetPasswordRequestExists($user->id))
-//        {
-//            throw new Exception("Too many password requests - need to wait till current request expires");
-//        }
-        
-        // Remove all existing password requests belonging to user
+        $request = ResetPasswordRequest::model()->findByAttributes(array('gigadb_user_id' => $user->id));
+        if($request == null || $request->isExpired())  // User has no reset password requests or request has expired
+        {
+            // Remove all existing password requests belonging to user
 //        $this->removeResetPasswordRequests($user->id);
-
-        $this->selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
-        $signingKey = Yii::app()->params['signing_key'];
-        $this->verifier = Yii::app()->CryptoService->getRandomAlphaNumStr();
-        $hashedTokenOfVerifier = Yii::app()->CryptoService->getHashedToken($signingKey, $this->verifier);
-        $this->hashed_token = $hashedTokenOfVerifier;
-        $this->selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
-        $this->gigadb_user_id = $user->id;
-        return $this->selector.$this->verifier;;
+            
+            $this->selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
+            $signingKey = Yii::app()->params['signing_key'];
+            $this->verifier = Yii::app()->CryptoService->getRandomAlphaNumStr();
+            $hashedTokenOfVerifier = Yii::app()->CryptoService->getHashedToken($signingKey, $this->verifier);
+            $this->hashed_token = $hashedTokenOfVerifier;
+            $this->selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
+            $this->gigadb_user_id = $user->id;
+            return $this->selector.$this->verifier;;
+        }
+        else  // Found unexpired reset request
+        {
+            throw new CException("Too many password requests - please wait till current request expires");
+        }
     }
 
     /**
@@ -153,7 +156,7 @@ class ResetPasswordRequest extends CActiveRecord
         return $this->selector.$this->verifier;
     }
 
-    public static function findResetPasswordRequestBySelector($selector)
+    public function findResetPasswordRequest($selector)
     {
         return ResetPasswordRequest::model()->findByAttributes(array('selector' => $selector));
     }

@@ -62,10 +62,14 @@ class ResetPasswordRequestController extends Controller
                         $resetPasswordRequest = new ResetPasswordRequest();
                         $resetPasswordRequest->generateResetToken($user);
                         $resetPasswordRequest->save();
+                        $this->sendPasswordEmail($resetPasswordRequest);
                     }
-                    catch (Exception $e)
+                    catch (CException $ce)
                     {
-                        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Too many password requests made by: ".$user->email, 'info');
+                        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": ".$ce->getMessage().": ".$user->email, 'info');
+                        Yii::app()->user->setFlash('fail-reset-password',$ce->getMessage());
+                        // Display request reset password page 
+                        $this->redirect('forgot');
                     }
                 }
                 else {
@@ -101,7 +105,7 @@ class ResetPasswordRequestController extends Controller
                 $model = new ResetPasswordForm();
                 // Find user id associated with selector part in URL
                 $selectorFromURL = substr($token, 0, 20);
-                $resetPasswordRequest = ResetPasswordRequest::findResetPasswordRequestBySelector($selectorFromURL);
+                $resetPasswordRequest = ResetPasswordRequest::findResetPasswordRequest($selectorFromURL);
                 $model->user_id = $resetPasswordRequest->gigadb_user_id;
                 // Update password with user's submitted change password form
                 if (isset($_POST['ResetPasswordForm'])) {
@@ -132,43 +136,6 @@ class ResetPasswordRequestController extends Controller
             $this->redirect('forgot');
         }
     }
-
-    /**
-     * Checks for any valid or invalid reset password requests belonging to a 
-     * user
-     * 
-     * @param $userId
-     * @return bool
-     */
-    private function resetPasswordRequestExists($userId)
-    {
-        $resetPasswordRequests = ResetPasswordRequest::model()->findAll(array("condition" => "gigadb_user_id = $userId"));
-        if($resetPasswordRequests)
-            return true;
-        else
-            return false;
-    }
-
-    /**
-     * Checks for any valid reset password requests belonging to a user
-     * 
-     * @param $userId
-     * @return bool|void
-     */
-    private function unexpiredResetPasswordRequestExists($userId)
-    {
-        if($this->resetPasswordRequestExists($userId))
-        {
-            $resetPasswordRequests = ResetPasswordRequest::model()->findAll(array("condition" => "gigadb_user_id = $userId"));
-            $resetPasswordRequest = $resetPasswordRequests[0];
-            if(!$resetPasswordRequest->isExpired())
-            {
-                return true;
-            }
-        }
-        else
-            return false;
-    } 
 
     /**
      * Deletes all ResetPasswordRequests belonging to a user
