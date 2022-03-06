@@ -111,14 +111,14 @@ class ResetPasswordRequestController extends Controller
                 $model = new ResetPasswordForm();
                 // Find user id associated with selector part in URL
                 $selectorFromURL = substr($token, 0, 20);
-                $resetPasswordRequest = ResetPasswordRequest::findResetPasswordRequest($selectorFromURL);
+                $resetPasswordRequest = ResetPasswordRequest::model()->findByAttributes(array('selector' => $selectorFromURL));
                 $model->user_id = $resetPasswordRequest->gigadb_user_id;
                 // Update password with user's submitted change password form
                 if (isset($_POST['ResetPasswordForm'])) {
                     $model->attributes=$_POST['ResetPasswordForm'];
                     if($model->validate() && $model->changePass()) {
                         // Delete token so it cannot be used again
-                        #$resetPasswordRequest->delete();
+                        $resetPasswordRequest->delete();
                         // Go to login page after updating password
                         Yii::app()->user->setFlash('success-reset-password','Your password has been successfully reset. Please login again.');
                         $this->redirect('/site/login');

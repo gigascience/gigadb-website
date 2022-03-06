@@ -148,9 +148,4 @@ class ResetPasswordRequest extends CActiveRecord
     {
         return $this->selector.$this->verifier;
     }
-
-    public function findResetPasswordRequest($selector)
-    {
-        return ResetPasswordRequest::model()->findByAttributes(array('selector' => $selector));
-    }
 }
