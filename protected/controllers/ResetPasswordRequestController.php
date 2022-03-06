@@ -58,17 +58,23 @@ class ResetPasswordRequestController extends Controller
                 $user = User::model()->findByAttributes(array('email' => $forgotPasswordForm->email));
                 if ($user !== null) {
                     Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": Found user account for ".$forgotPasswordForm->email, 'info');
-                    try {
+                    // Check if user has any valid reset password requests
+                    $request = ResetPasswordRequest::model()->findByAttributes(array('gigadb_user_id' => $user->id));
+                    if($request == null || $request->isExpired())  // User has no reset password requests or request has expired
+                    {
+                        // Remove any expired password requests belonging to user
+                        if($request != null)
+                            $request->delete();
+
                         $resetPasswordRequest = new ResetPasswordRequest();
                         $resetPasswordRequest->generateResetToken($user);
                         $resetPasswordRequest->save();
                         $this->sendPasswordEmail($resetPasswordRequest);
                     }
-                    catch (CException $ce)
+                    else  // User has unexpired reset token
                     {
-                        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": ".$ce->getMessage().": ".$user->email, 'info');
-                        Yii::app()->user->setFlash('fail-reset-password',$ce->getMessage());
-                        // Display request reset password page 
+                        Yii::app()->user->setFlash('fail-reset-password', "Too many password requests - please wait till current request expires");
+                        // Display request reset password page with flash message
                         $this->redirect('forgot');
                     }
                 }

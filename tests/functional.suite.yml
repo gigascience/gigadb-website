@@ -8,6 +8,10 @@
 actor: FunctionalTester
 modules:
     enabled:
+        - Db:
+            dsn: 'pgsql:host=database;dbname=gigadb;port=5432'
+            user: 'gigadb'
+            password: ''
         # add a framework module here
         - \Helper\Functional
         - \Helper\MailHelper

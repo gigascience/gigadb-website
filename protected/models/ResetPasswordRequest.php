@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This is the model class for table "reset_password_request".
+ * Model class for table "reset_password_request"
  *
  * The followings are the available columns in table 'reset_password_request':
  * @property string $selector
@@ -12,7 +12,7 @@
  * @property string $gigadb_user_id
  *
  * The followings are the available model relations:
-// * @property User[] $users
+ * @property User[] $users
  */
 class ResetPasswordRequest extends CActiveRecord 
 {
@@ -27,7 +27,7 @@ class ResetPasswordRequest extends CActiveRecord
             array('selector', 'required'),
         );
     }
-    
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -67,6 +67,12 @@ class ResetPasswordRequest extends CActiveRecord
         );
     }
 
+    /**
+     * The requested_at and expires_at timestamps are created if they have been
+     * provided before saving a record into the reset_password_request table.
+     * 
+     * @return bool
+     */
     public function beforeSave()
     {
         $now = new Datetime();
@@ -89,32 +95,19 @@ class ResetPasswordRequest extends CActiveRecord
      * Some of the cryptographic strategies were taken from
      * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
      *
-     * @throws TooManyPasswordRequestsException
-     * @throws Exception
+     * @throws CException
      * @return string
      */
     public function generateResetToken($user)
     {
-        // Check if user has any valid reset password requests
-        $request = ResetPasswordRequest::model()->findByAttributes(array('gigadb_user_id' => $user->id));
-        if($request == null || $request->isExpired())  // User has no reset password requests or request has expired
-        {
-            // Remove all existing password requests belonging to user
-//        $this->removeResetPasswordRequests($user->id);
-            
-            $this->selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
-            $signingKey = Yii::app()->params['signing_key'];
-            $this->verifier = Yii::app()->CryptoService->getRandomAlphaNumStr();
-            $hashedTokenOfVerifier = Yii::app()->CryptoService->getHashedToken($signingKey, $this->verifier);
-            $this->hashed_token = $hashedTokenOfVerifier;
-            $this->selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
-            $this->gigadb_user_id = $user->id;
-            return $this->selector.$this->verifier;;
-        }
-        else  // Found unexpired reset request
-        {
-            throw new CException("Too many password requests - please wait till current request expires");
-        }
+        $this->selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
+        $signingKey = Yii::app()->params['signing_key'];
+        $this->verifier = Yii::app()->CryptoService->getRandomAlphaNumStr();
+        $hashedTokenOfVerifier = Yii::app()->CryptoService->getHashedToken($signingKey, $this->verifier);
+        $this->hashed_token = $hashedTokenOfVerifier;
+        $this->selector = Yii::app()->CryptoService->getRandomAlphaNumStr();
+        $this->gigadb_user_id = $user->id;
+        return $this->selector.$this->verifier;
     }
 
     /**
@@ -139,7 +132,7 @@ class ResetPasswordRequest extends CActiveRecord
     }
 
     /**
-     * Returns verifier
+     * Sets verifier
      * @return string
      */
     public function setVerifier($verifier)
