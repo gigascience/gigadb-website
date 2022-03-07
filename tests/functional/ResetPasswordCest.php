@@ -16,7 +16,7 @@ class ResetPasswordCest
     }
 
     /**
-     * Functional test to check if user with expired token can create reset 
+     * Functional test to check user with expired token is able to create reset 
      * password request
      *
      * @param FunctionalTester $I
@@ -47,6 +47,27 @@ class ResetPasswordCest
      * @throws \Codeception\Exception\ModuleException
      */
     public function tryTooManyPasswordResetRequests(FunctionalTester $I)
+    {
+        $targetUrl = "/site/forgot";
+
+        // Fill in web form and submit
+        $I->amOnPage($targetUrl);
+        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'too_many_requests@mailinator.com');
+        $I->click('Reset');
+        // Pressing Register button results in GigaDB website
+        // going to /site/forgot page
+        $I->seeInCurrentUrl("/site/forgot");
+        $I->see('Forgotten password', 'h4');
+        $I->see('Too many password requests - please wait till current request expires');
+    }
+
+    /**
+     * Token is deleted after successful password reset
+     * 
+     * @param FunctionalTester $I
+     * @return void
+     */
+    public function tryResetPasswordWithValidToken(FunctionalTester $I)
     {
         $targetUrl = "/site/forgot";
 
