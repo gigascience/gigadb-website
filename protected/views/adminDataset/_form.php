@@ -82,14 +82,14 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                     $datasetTypes = CHtml::listData(Type::model()->findAll(),'id','name');
                                     $checkedTypes = CHtml::listData($model->datasetTypes,'id','id');
                                     foreach ($datasetTypes as $id => $datasetType) {
-                                        // echo '<div class="control-group">';
+//                                        echo '<div class="control-group">';
                                         echo $form->labelEx($model,"$datasetType",array('class'=>'checkbox-label'));
                                         $checkedHtml = in_array($id,$checkedTypes,true) ? 'checked="checked"' : '';
                                         $checkboxId="Dataset_$datasetType";
                                         echo '<div class="controls">';
                                         echo '<input id="'.$checkboxId.'" type="checkbox" name="datasettypes['.$id.']" value="1"'.$checkedHtml.'/>';
                                         echo '</div>';
-                                        // echo '</div>';
+//                                        echo '</div>';
 
                                     }
                                 ?>
@@ -136,7 +136,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                             <div class="controls">
                                 <?php
                                 echo CHtml::fileField('datasetImage');
-                                echo CHtml::htmlButton('Upload new image', ['class' => 'btn btn-green', 'style'=>'width:40%; margin-top:-40px; margin-bottom:auto']);
+                                echo CHtml::htmlButton('Upload new image', ['class' => 'btn btn-green', 'style'=>'width:40%; margin-top:-30px;']);
                                 ?>
                             </div>
                         <?php } ?>
@@ -234,6 +234,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                         ),array('class'=>'btn btn-green',
                                                 'id' =>'mint_doi_button',
                                                 'disabled'=>in_array($model->upload_status, $status_array),
+                                                'style'=>'width:40%; margin-top:-30px;',
                                                 
                                         ));
 
@@ -343,7 +344,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 
 <div class="span12" style="text-align:center">
     <a href="<?=Yii::app()->createUrl('/adminDataset/admin')?>" class="btn"/>Cancel</a>
-    <?= CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn-green')); ?>
+    <?= CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn-green', 'style'=>'margin-top:auto;')); ?>
         <?php if( "hidden" === $datasetPageSettings->getPageType() ) { ?>
     <a href="<?=Yii::app()->createUrl('/adminDataset/private/identifier/'.$model->identifier)?>" class="btn-green"/>Create/Reset Private URL</a>
             <?php if($model->token){?>
