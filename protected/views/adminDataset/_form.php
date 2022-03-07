@@ -115,7 +115,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         $img_url = $model->image->url;
                         $no_img_url = 'https://assets.gigadb-cdn.net/images/datasets/no_image.png';
                         if($img_url){
-                            echo CHtml::image($img_url, $img_url, array('style'=>'width:100px; display:block; margin-left:auto;'));
+                            echo CHtml::image($img_url, $img_url, array('style'=>'width:100px; display:flex; margin-left:auto;'));
                         } else {
                             echo CHtml::image($no_img_url, $no_img_url, array('style'=>'width:100px; display:block; margin-left:auto;'));
                         }
@@ -124,19 +124,13 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         <label for="image_upload_image" class="control-label">Image Status</label>
                         <?php if($img_url){ ?>
                         <div class="controls">
+                            <?php echo CHtml::htmlButton('Remove image!!!', ['class' => 'btn btn-primary', 'style'=>'width:40%; margin-right:-320px; margin-top:15px']); ?>
                             <?php echo CHtml::fileField('datasetImage'); ?>
-                        </div>
-                        <div class="controls">
-                            <?php
-                            echo CHtml::htmlButton('Replace image', ['class' => 'btn btn-green', 'style'=>'width:30%; margin:auto;']);
-                            echo CHtml::htmlButton('Remove image!!!', ['class' => 'btn btn-primary', 'style'=>'width:40%; margin:auto;']);
-                            ?>
                         </div>
                         <?php } else { ?>
                             <div class="controls">
                                 <?php
                                 echo CHtml::fileField('datasetImage');
-                                echo CHtml::htmlButton('Upload new image', ['class' => 'btn btn-green', 'style'=>'width:40%; margin-top:-30px;']);
                                 ?>
                             </div>
                         <?php } ?>
