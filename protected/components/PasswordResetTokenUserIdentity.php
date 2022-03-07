@@ -37,7 +37,7 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
 
         // Find user associated with selector part in URL
         $selectorFromURL = substr($this->urlToken, 0, 20);
-        $resetPasswordRequest = ResetPasswordRequest::findResetPasswordRequest($selectorFromURL);
+        $resetPasswordRequest = ResetPasswordRequest::model()->findByAttributes(array('selector' => $selectorFromURL));
         $user = User::model()->findByAttributes(array('id' => $resetPasswordRequest->gigadb_user_id));
 
         if ($user === null)  // User not found
