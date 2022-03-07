@@ -59,11 +59,11 @@ class AdminDatasetController extends Controller
 	public function actionCreate()
     {
         $dataset = new Dataset;
-        $dataset->image = new Images;
+        $dataset->image = new Image;
 
         $datasetPageSettings = new DatasetPageSettings($dataset);
 
-        if (!empty($_POST['Dataset']) && !empty($_POST['Images'])) {
+        if (!empty($_POST['Dataset']) && !empty($_POST['Image'])) {
         	Yii::log("Processing submitted data", 'info');
         	$dataset_post_data = $_POST['Dataset'];
         	if (isset($dataset_post_data['publication_date']) && $dataset_post_data['publication_date'] == "" ) {
@@ -79,11 +79,18 @@ class AdminDatasetController extends Controller
             // $dataset->attributes=$dataset_post_data;
             $dataset->setAttributes($dataset_post_data, true);
             Yii::log("dataset title: ".$dataset->title,'debug');
-            $dataset->image->attributes = $_POST['Images'];
+            $dataset->image->attributes = $_POST['Image'];
 
             if( !$dataset->validate() ) {
             	Yii::log("Dataset instance is not valid", 'info');
             }
+
+            $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
+            Yii::log($datasetImage->getTempName(), "warning");
+            $imageDir = Yii::$app->params["environment"]."/images/datasets/";
+            Yii::$app->fs->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()));
+
+            $dataset->image->url = "/files/$imageDir".$datasetImage->name;
 
            	if ( !$dataset->hasErrors() && $dataset->image->validate('update') ) {
             	Yii::log("Image data associated to new dataset is valid and saved", 'info');
@@ -261,7 +268,7 @@ class AdminDatasetController extends Controller
 
             // Image information
             $image = $model->image;
-            $image->attributes = $_POST['Images'];
+            $image->attributes = $_POST['Image'];
             $image->scenario = 'update';
 
             if ($model->publication_date == "") {
