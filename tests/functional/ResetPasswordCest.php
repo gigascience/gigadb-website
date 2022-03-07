@@ -69,16 +69,21 @@ class ResetPasswordCest
      */
     public function tryResetPasswordWithValidToken(FunctionalTester $I)
     {
-        $targetUrl = "/site/forgot";
+        $targetUrl = "/site/reset?token=MBakd7kAwQXim10Ka1Hwf5EEpZ4WpNdv9mkEjKWW";
 
         // Fill in web form and submit
         $I->amOnPage($targetUrl);
-        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'too_many_requests@mailinator.com');
-        $I->click('Reset');
+        $I->fillField(['id' => 'ResetPasswordForm_password'], 'gigadb');
+        $I->fillField(['id' => 'ResetPasswordForm_confirmPassword'], 'gigadb');
+        $I->click('Save');
         // Pressing Register button results in GigaDB website
-        // going to /site/forgot page
-        $I->seeInCurrentUrl("/site/forgot");
-        $I->see('Forgotten password', 'h4');
-        $I->see('Too many password requests - please wait till current request expires');
+        // going to /site/login page
+        $I->seeInCurrentUrl("/site/login");
+        $I->see('Login', 'h4');
+        $I->see('Your password has been successfully reset. Please login again.');
+        // The selector below will be deleted so it cannot be used again
+        // because its token has been successfully used
+        $I->dontSeeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '24']);
+
     }
 }

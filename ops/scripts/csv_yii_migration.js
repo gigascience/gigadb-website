@@ -14,6 +14,8 @@ let PROJECT_DIR = "/var/www";
 let INPUT_CSV_DIR = PROJECT_DIR + "/data/" + CMD_ARGS[0];
 let OUTPUT_MIGRATION_SCRIPT_DIR = PROJECT_DIR + "/protected/migrations/data/" + CMD_ARGS[0];
 let HANDLEBARS_TEMPLATE_FILE = PROJECT_DIR + "/ops/configuration/yii-conf/migration.php.dist";
+let TRIPLE_STASH_HANDLEBARS_TEMPLATE_FILE = PROJECT_DIR + "/ops/configuration/yii-conf/triple-stash.migration.php.dist";
+
 
 /*
  * Returns file name for Yii migration script based on table name.
@@ -168,7 +170,12 @@ for(let a = 0; a < files.length; a ++) {
         return !handlebars.Utils.isEmpty(value);
     });
     // Read handlebars template as string
-    let template = fs.readFileSync(HANDLEBARS_TEMPLATE_FILE, "utf8");
+    let template = "";
+    if (tokens[0] == "reset_password_request") {
+        template = fs.readFileSync(TRIPLE_STASH_HANDLEBARS_TEMPLATE_FILE, "utf8");
+    } else {
+        template = fs.readFileSync(HANDLEBARS_TEMPLATE_FILE, "utf8");
+    }
     const templateScript = handlebars.compile(template);
     // Output Yii migration script
     fsPath.writeFile(outputMigrationFile, templateScript(context), function (err) {
