@@ -43,7 +43,6 @@ class Image extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('image_upload', 'file', 'types'=>'jpg, gif, png', 'allowEmpty'=>true, 'on'=>'update'),
             array('license, photographer, source', 'required'),
             array('tag', 'length', 'max'=>120),
             array('url, source', 'length', 'max'=>256),
