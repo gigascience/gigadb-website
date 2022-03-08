@@ -32,12 +32,12 @@ class ResetPasswordCest
             'expires_at' => '1998-03-01 02:53:23.000000',
             'gigadb_user_id' => '23'
         ]);
-        
+    
         $targetUrl = "/site/forgot";
 
         // Fill in web form and submit
         $I->amOnPage($targetUrl);
-        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'expired_token@mailinator.com');
+        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'test@mailinator.com');
         $I->click('Reset');
         // Pressing Reset button takes user to /site/thanks page
         $I->seeInCurrentUrl("/site/thanks");
@@ -61,13 +61,13 @@ class ResetPasswordCest
 
         // Fill in web form and submit
         $I->amOnPage($targetUrl);
-        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'user@gigadb.org');
+        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'admin@gigadb.org');
         $I->click('Reset');
         // Reset button takes user to /site/thanks page
         $I->seeInCurrentUrl("/site/thanks");
         // Same user requests another password reset 
         $I->amOnPage($targetUrl);
-        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'user@gigadb.org');
+        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'admin@gigadb.org');
         $I->click('Reset');
         // Reset button now goes to /site/forgot page with flash message
         $I->seeInCurrentUrl("/site/forgot");
@@ -89,17 +89,17 @@ class ResetPasswordCest
             'hashed_token' => '19P4d2SgN1t1ZqxgGKik5jFjZsUz0f/+HtlfiPIS5UM=',
             'requested_at' => '2022-03-01 01:53:23.000000',
             'expires_at' => '9999-03-01 02:53:23.000000',
-            'gigadb_user_id' => '22'
+            'gigadb_user_id' => '24'
         ]);
 
         // Check database contains the selector of the token we want to use
-        $I->seeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '22']);
+        $I->seeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '24']);
 
         // Fill in web form and submit
         $targetUrl = "/site/reset?token=MBakd7kAwQXim10Ka1Hwf5EEpZ4WpNdv9mkEjKWW";
         $I->amOnPage($targetUrl);
-        $I->fillField(['id' => 'ResetPasswordForm_password'], 'gigadb');
-        $I->fillField(['id' => 'ResetPasswordForm_confirmPassword'], 'gigadb');
+        $I->fillField(['id' => 'ResetPasswordForm_password'], 'bar');
+        $I->fillField(['id' => 'ResetPasswordForm_confirmPassword'], 'bar');
         $I->click('Save');
         // Register button will send user to /site/login page
         $I->seeInCurrentUrl("/site/login");
@@ -107,6 +107,6 @@ class ResetPasswordCest
         // Check flash message
         $I->see('Your password has been successfully reset. Please login again.');
         // Check website has deleted selector so it cannot be used again
-        $I->dontSeeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '22']);
+        $I->dontSeeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '24']);
     }
 }
