@@ -59,9 +59,15 @@ class AdminDatasetController extends Controller
 	public function actionCreate()
     {
         $dataset = new Dataset;
-        $dataset->image = new Image;
+//        $dataset->image = new Image;
 
         $datasetPageSettings = new DatasetPageSettings($dataset);
+
+        if(!empty($_POST['Image'])) { //User has uploaded an image
+            $dataset->image = new Image;
+        } else {
+            $dataset->image = Image::model()->findByAttributes(array('location' => 'no_image.png'));
+        }
 
         if (!empty($_POST['Dataset']) && !empty($_POST['Image'])) {
         	Yii::log("Processing submitted data", 'info');
