@@ -25,11 +25,27 @@ class EmailCest
      */
     public function trySendPasswordEmail(FunctionalTester $I)
     {
+        // Create database record for user
+        $id = $I->haveInDatabase('gigadb_user', [
+            'email' => 'xyzzy@mailinator.com',
+            'password' => '5a4f75053077a32e681f81daa8792f95',
+            'first_name' => 'IAM',
+            'last_name' => 'Xyzzy',
+            'affiliation' => 'BGI',
+            'role' => 'user',
+            'is_activated' => 'true',
+            'newsletter' => 'false',
+            'previous_newsletter_state' => 'true',
+            'username' => 'xyzzy@mailinator.com',
+            'preferred_link' => 'EBI',
+        ]);
+        codecept_debug("gigadb user: ".$id);
+        
         $targetUrl = "/site/forgot";
 
         // Fill in web form and submit
         $I->amOnPage($targetUrl);
-        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'user@gigadb.org');
+        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'xyzzy@mailinator.com');
         $I->click('Reset');
         // Pressing Register button results in GigaDB website
         // going to /site/thanks page

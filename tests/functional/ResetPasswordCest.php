@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class EmailCest
+ * Class ResetPasswordCest
  *
  * generated with:
  * docker-compose run --rm test ./vendor/codeception/codeception/codecept generate:cest functional EmailCest.php
@@ -24,15 +24,32 @@ class ResetPasswordCest
      */
     public function tryCreatePasswordResetRequestByUserWithExpiredToken(FunctionalTester $I)
     {
-        // Create database record with expired token for test
+        // Create database record for a user
+        $id = $I->haveInDatabase('gigadb_user', [
+            'email' => 'test@mailinator.com',
+            'password' => '5a4f75053077a32e681f81daa8792f95',
+            'first_name' => 'IAM',
+            'last_name' => 'Test',
+            'affiliation' => 'BGI',
+            'role' => 'user',
+            'is_activated' => 'true',
+            'newsletter' => 'false',
+            'previous_newsletter_state' => 'true',
+            'username' => 'test@mailinator.com',
+            'preferred_link' => 'EBI',
+        ]);
+        codecept_debug("gigadb user: ".$id);
+        
+        // Create expired token for above user
         $I->haveInDatabase('reset_password_request', [
             'selector' => 'gO2qhU0gcxgdBTY3QAeu',
             'hashed_token' => 'AFbtmT/CPC4fbo9L7ze8DlSqvHHK3mQUFSwojSPGFy8=',
             'requested_at' => '1998-03-01 01:53:23.000000',
             'expires_at' => '1998-03-01 02:53:23.000000',
-            'gigadb_user_id' => '23'
+            'gigadb_user_id' => $id
         ]);
-    
+        $I->seeInDatabase('reset_password_request', ['selector' => 'gO2qhU0gcxgdBTY3QAeu', 'gigadb_user_id' => $id]);
+
         $targetUrl = "/site/forgot";
 
         // Fill in web form and submit
@@ -45,7 +62,7 @@ class ResetPasswordCest
         $I->see('For security reasons, we cannot tell you if the email you entered is valid or not.');
         // The selector below will be deleted because its token has
         // expired and will be replaced with a new selector token
-        $I->dontSeeInDatabase('reset_password_request', ['selector' => 'gO2qhU0gcxgdBTY3QAeu', 'gigadb_user_id' => '23']);
+        $I->dontSeeInDatabase('reset_password_request', ['selector' => 'gO2qhU0gcxgdBTY3QAeu', 'gigadb_user_id' => $id]);
     }
 
     /**
@@ -57,17 +74,33 @@ class ResetPasswordCest
      */
     public function tryTooManyPasswordResetRequests(FunctionalTester $I)
     {
+        // Create database record for a user
+        $id = $I->haveInDatabase('gigadb_user', [
+            'email' => 'foo@mailinator.com',
+            'password' => '5a4f75053077a32e681f81daa8792f95',
+            'first_name' => 'IAM',
+            'last_name' => 'Foo',
+            'affiliation' => 'BGI',
+            'role' => 'user',
+            'is_activated' => 'true',
+            'newsletter' => 'false',
+            'previous_newsletter_state' => 'true',
+            'username' => 'foo@mailinator.com',
+            'preferred_link' => 'EBI',
+        ]);
+        codecept_debug("gigadb user: ".$id);
+        
         $targetUrl = "/site/forgot";
 
         // Fill in web form and submit
         $I->amOnPage($targetUrl);
-        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'admin@gigadb.org');
+        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'foo@mailinator.com');
         $I->click('Reset');
         // Reset button takes user to /site/thanks page
         $I->seeInCurrentUrl("/site/thanks");
         // Same user requests another password reset 
         $I->amOnPage($targetUrl);
-        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'admin@gigadb.org');
+        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'foo@mailinator.com');
         $I->click('Reset');
         // Reset button now goes to /site/forgot page with flash message
         $I->seeInCurrentUrl("/site/forgot");
@@ -83,17 +116,33 @@ class ResetPasswordCest
      */
     public function tryResetPasswordWithValidToken(FunctionalTester $I)
     {
+        // Create database record for a user
+        $id = $I->haveInDatabase('gigadb_user', [
+            'email' => 'bar@mailinator.com',
+            'password' => '5a4f75053077a32e681f81daa8792f95',
+            'first_name' => 'IAM',
+            'last_name' => 'Bar',
+            'affiliation' => 'BGI',
+            'role' => 'user',
+            'is_activated' => 'true',
+            'newsletter' => 'false',
+            'previous_newsletter_state' => 'true',
+            'username' => 'bar@mailinator.com',
+            'preferred_link' => 'EBI',
+        ]);
+        codecept_debug("gigadb user: ".$id);
+        
         // Create database record with valid token for test
         $I->haveInDatabase('reset_password_request', [
             'selector' => 'MBakd7kAwQXim10Ka1Hw',
             'hashed_token' => '19P4d2SgN1t1ZqxgGKik5jFjZsUz0f/+HtlfiPIS5UM=',
             'requested_at' => '2022-03-01 01:53:23.000000',
             'expires_at' => '9999-03-01 02:53:23.000000',
-            'gigadb_user_id' => '24'
+            'gigadb_user_id' => $id
         ]);
 
         // Check database contains the selector of the token we want to use
-        $I->seeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '24']);
+        $I->seeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => $id]);
 
         // Fill in web form and submit
         $targetUrl = "/site/reset?token=MBakd7kAwQXim10Ka1Hwf5EEpZ4WpNdv9mkEjKWW";
@@ -107,6 +156,6 @@ class ResetPasswordCest
         // Check flash message
         $I->see('Your password has been successfully reset. Please login again.');
         // Check website has deleted selector so it cannot be used again
-        $I->dontSeeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '24']);
+        $I->dontSeeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => $id]);
     }
 }
