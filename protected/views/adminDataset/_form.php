@@ -136,14 +136,14 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         <?php } ?>
                     </div>
                     <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'url',array('class'=>'control-label')); ?>
+                        <?php echo $form->labelEx($model->image,'url',array('id'=>'image-meta-data','class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'url',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'url',array('id'=>'image-meta-data','class'=>'span4','size'=>60,'maxlength'=>200)); ?>
                             <?php echo $form->error($model->image,'url'); ?>
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <div id="image-meta-data" class="control-group">
                         <?php echo $form->labelEx($model->image,'source',array('class'=>'control-label')); ?>
                         <div class="controls">
                             <?php echo $form->textField($model->image,'source',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
@@ -151,7 +151,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <div id="image-meta-data" class="control-group">
                         <?php echo $form->labelEx($model->image,'tag',array('class'=>'control-label')); ?>
                         <div class="controls">
                             <?php echo $form->textField($model->image,'tag',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
@@ -159,7 +159,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <div id="image-meta-data" class="control-group">
                         <?php echo $form->labelEx($model->image,'license',array('class'=>'control-label')); ?>
                         <div class="controls">
                             <?php echo $form->textField($model->image,'license',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
@@ -167,7 +167,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         </div>
                     </div>
 
-                    <div class="control-group">
+                    <div id="image-meta-data" class="control-group">
                         <?php echo $form->labelEx($model->image,'photographer',array('class'=>'control-label')); ?>
                         <div class="controls">
                             <?php echo $form->textField($model->image,'photographer',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
@@ -443,6 +443,13 @@ $(function(){
     });
 });
 
+$(function controlMetaDataField() {
+   if (document.getElementById("datasetImage").value !="") {
+       $('#image-meta-data').css('display', '');
+   } else {
+       $('#image-meta-data').css('display', 'none');
+   }
+});
 </script>
 
 
