@@ -129,9 +129,9 @@ return CMap::mergeArray(array(
                 '/dataset/<id:\d+>'=>'dataset/view/id/<id>',
                 '/dataset/<id:\d+>/<slug:.+>'=>'dataset/view/id/<id>',
                 '.*'=>'site/index',
-                'site/forgot' => 'resetpasswordrequest/forgot',
-                'site/thanks' => 'resetpasswordrequest/thanks',
-                'site/reset' => 'resetpasswordrequest/reset',
+                'site/forgot' => 'resetPasswordRequest/forgot',
+                'site/thanks' => 'resetPasswordRequest/thanks',
+                'site/reset' => 'resetPasswordRequest/reset',
             ),
         ),
         'log' => array(
