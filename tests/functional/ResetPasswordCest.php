@@ -24,13 +24,22 @@ class ResetPasswordCest
      */
     public function tryCreatePasswordResetRequestByUserWithExpiredToken(FunctionalTester $I)
     {
+        // Create database record with expired token for test
+        $I->haveInDatabase('reset_password_request', [
+            'selector' => 'gO2qhU0gcxgdBTY3QAeu',
+            'hashed_token' => 'AFbtmT/CPC4fbo9L7ze8DlSqvHHK3mQUFSwojSPGFy8=',
+            'requested_at' => '1998-03-01 01:53:23.000000',
+            'expires_at' => '1998-03-01 02:53:23.000000',
+            'gigadb_user_id' => '23'
+        ]);
+        
         $targetUrl = "/site/forgot";
 
         // Fill in web form and submit
         $I->amOnPage($targetUrl);
         $I->fillField(['id' => 'ForgotPasswordForm_email'], 'expired_token@mailinator.com');
         $I->click('Reset');
-        // Pressing Register button results in GigaDB website going to /site/thanks page
+        // Pressing Reset button takes user to /site/thanks page
         $I->seeInCurrentUrl("/site/thanks");
         $I->see('Reset Password Request Submitted', 'h4');
         $I->see('For security reasons, we cannot tell you if the email you entered is valid or not.');
@@ -52,10 +61,15 @@ class ResetPasswordCest
 
         // Fill in web form and submit
         $I->amOnPage($targetUrl);
-        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'too_many_requests@mailinator.com');
+        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'user@gigadb.org');
         $I->click('Reset');
-        // Pressing Register button results in GigaDB website
-        // going to /site/forgot page
+        // Reset button takes user to /site/thanks page
+        $I->seeInCurrentUrl("/site/thanks");
+        // Same user requests another password reset 
+        $I->amOnPage($targetUrl);
+        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'user@gigadb.org');
+        $I->click('Reset');
+        // Reset button now goes to /site/forgot page with flash message
         $I->seeInCurrentUrl("/site/forgot");
         $I->see('Forgotten password', 'h4');
         $I->see('Too many password requests - please wait till current request expires');
@@ -69,12 +83,20 @@ class ResetPasswordCest
      */
     public function tryResetPasswordWithValidToken(FunctionalTester $I)
     {
-        $targetUrl = "/site/reset?token=MBakd7kAwQXim10Ka1Hwf5EEpZ4WpNdv9mkEjKWW";
+        // Create database record with valid token for test
+        $I->haveInDatabase('reset_password_request', [
+            'selector' => 'MBakd7kAwQXim10Ka1Hw',
+            'hashed_token' => '19P4d2SgN1t1ZqxgGKik5jFjZsUz0f/+HtlfiPIS5UM=',
+            'requested_at' => '2022-03-01 01:53:23.000000',
+            'expires_at' => '9999-03-01 02:53:23.000000',
+            'gigadb_user_id' => '22'
+        ]);
 
         // Check database contains the selector of the token we want to use
-        $I->seeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '24']);
+        $I->seeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '22']);
 
         // Fill in web form and submit
+        $targetUrl = "/site/reset?token=MBakd7kAwQXim10Ka1Hwf5EEpZ4WpNdv9mkEjKWW";
         $I->amOnPage($targetUrl);
         $I->fillField(['id' => 'ResetPasswordForm_password'], 'gigadb');
         $I->fillField(['id' => 'ResetPasswordForm_confirmPassword'], 'gigadb');
@@ -85,6 +107,6 @@ class ResetPasswordCest
         // Check flash message
         $I->see('Your password has been successfully reset. Please login again.');
         // Check website has deleted selector so it cannot be used again
-        $I->dontSeeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '24']);
+        $I->dontSeeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '22']);
     }
 }
