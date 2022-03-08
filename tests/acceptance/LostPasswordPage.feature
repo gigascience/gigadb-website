@@ -18,9 +18,24 @@ Feature: Reset password
     And I should see a submit button "Reset"
 
   @ok
+  Scenario: Unknown email address will display thanks page
+    When I am on "/site/forgot"
+    And I fill in the field of "name" "ForgotPasswordForm[email]" with "user123@modnar.com"
+    And I press the button "Reset"
+    Then I am on "/site/thanks"
+    And I should see "Reset Password Request Submitted"
+    And I should see "For security reasons, we cannot tell you if the email you entered is valid or not."
+
+  @ok
+  Scenario: Check invalid reset password token takes you back to request reset password page
+    When I am on "/site/reset?token=123456789"
+    Then I am on "/site/forgot"
+    And I should see "Forgotten password"
+
+  @ok
   Scenario: Check request reset password functionality
     When I am on "/site/forgot"
-    And I fill in the field of "name" "ForgotPasswordForm[email]" with "user@mailinator.com"
+    And I fill in the field of "name" "ForgotPasswordForm[email]" with "user@gigadb.org"
     And I press the button "Reset"
     Then I am on "/site/thanks" 
     And I should see "Reset Password Request Submitted"
@@ -32,20 +47,9 @@ Feature: Reset password
     And I fill in the field of "name" "ResetPasswordForm[password]" with "Freed_From_Desire_GALA"
     And I fill in the field of "name" "ResetPasswordForm[confirmPassword]" with "Freed_From_Desire_GALA"
     And I press the button "Save"
-    Then I am on "/site/login"
+    And I am on "/site/login"
     And I should see "Login"
-
-  @ok
-  Scenario: Check invalid reset password token takes you back to request reset password page
-    When I am on "/site/reset?token=123456789"
-    Then I am on "/site/forgot"
-    And I should see "Forgotten password"
-
-  @ok
-  Scenario: Unknown email address will display thanks page
-    When I am on "/site/forgot"
-    And I fill in the field of "name" "ForgotPasswordForm[email]" with "user123@modnar.com"
-    And I press the button "Reset"
-    Then I am on "/site/thanks"
-    And I should see "Reset Password Request Submitted"
-    And I should see "For security reasons, we cannot tell you if the email you entered is valid or not."
+    And I fill in the field of "name" "LoginForm[username]" with "user@mailinator.com"
+    And I fill in the field of "name" "LoginForm[password]" with "Freed_From_Desire_GALA"
+    When I press the button "Login"
+    Then I should see "John's GigaDB Page"
