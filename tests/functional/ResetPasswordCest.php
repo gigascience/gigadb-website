@@ -62,7 +62,7 @@ class ResetPasswordCest
     }
 
     /**
-     * Token is deleted after successful password reset
+     * Test to check valid token is deleted after successful password reset
      * 
      * @param FunctionalTester $I
      * @return void
@@ -71,19 +71,20 @@ class ResetPasswordCest
     {
         $targetUrl = "/site/reset?token=MBakd7kAwQXim10Ka1Hwf5EEpZ4WpNdv9mkEjKWW";
 
+        // Check database contains the selector of the token we want to use
+        $I->seeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '24']);
+
         // Fill in web form and submit
         $I->amOnPage($targetUrl);
         $I->fillField(['id' => 'ResetPasswordForm_password'], 'gigadb');
         $I->fillField(['id' => 'ResetPasswordForm_confirmPassword'], 'gigadb');
         $I->click('Save');
-        // Pressing Register button results in GigaDB website
-        // going to /site/login page
+        // Register button will send user to /site/login page
         $I->seeInCurrentUrl("/site/login");
         $I->see('Login', 'h4');
+        // Check flash message
         $I->see('Your password has been successfully reset. Please login again.');
-        // The selector below will be deleted so it cannot be used again
-        // because its token has been successfully used
+        // Check website has deleted selector so it cannot be used again
         $I->dontSeeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => '24']);
-
     }
 }
