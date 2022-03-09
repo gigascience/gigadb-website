@@ -158,6 +158,13 @@ for(let a = 0; a < files.length; a ++) {
         safeup_data: parsed.data,
         safedown_data: filtered_ids
     };
+    // Register sub expression to decide whether a value is defined based on its key
+    handlebars.registerHelper('isdefined', function (key, value) {
+        if (key == 'url') {
+            return value !== undefined;
+        }
+        return !handlebars.Utils.isEmpty(value);
+    });
     // Read handlebars template as string
     let template = fs.readFileSync(HANDLEBARS_TEMPLATE_FILE, "utf8");
     const templateScript = handlebars.compile(template);

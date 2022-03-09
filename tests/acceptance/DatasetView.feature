@@ -55,10 +55,21 @@ Feature: a user visit the dataset page
     Then I should see "well now, how to describe nothing in particular?"
     And I should not see "The DOI 200070 cannot be displayed."
 
+  @ok
+  Scenario: Dataset with image associated will show dataset image
+    Given I have not signed in
+    When I am on "dataset/100006"
+    Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
+
+  @ok
+  Scenario: Dataset with no image associated will show generic image
+    Given I have not signed in
+    When I am on "dataset/300070"
+    Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/no_image.png"
+
   @ok @issue-895
   Scenario: Project image with links
     Given I have not signed in
     When I am on "/dataset/100006"
-    Then I should see an image "https://assets.gigadb-cdn.net/images/projects/genome_10k/G10Klogo.jpg" is linked to "http://www.genome10k.org/"
-    And I should see an image "https://assets.gigadb-cdn.net/images/projects/the_avian_phylogenomic_project/phylogenomiclogo.png" is linked to "http://avian.genomics.cn/en/index.html"
-    
+    Then I should see an image "https://assets.gigadb-cdn.net/live/images/projects/genome_10k/G10Klogo.jpg" is linked to "http://www.genome10k.org/"
+    And I should see an image "https://assets.gigadb-cdn.net/live/images/projects/the_avian_phylogenomic_project/phylogenomiclogo.png" is linked to "http://avian.genomics.cn/en/index.html"
