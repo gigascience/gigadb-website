@@ -30,7 +30,7 @@ variables:
   # so it doesn't try to access
   GIGADB_ENV: CI
   # .env is only for dev, elsewhere we just list the variables here
-  APPLICATION: "/builds/$CI_PROJECT_PATH"
+  APPLICATION: "$CI_PROJECT_DIR"
   YII_PATH: "/var/www/vendor/yiisoft/yii"
   YII2_PATH: "/var/www/vendor/yiisoft/yii2"
   DATA_SAVE_PATH: "/builds/$CI_PROJECT_PATH/containers-data"

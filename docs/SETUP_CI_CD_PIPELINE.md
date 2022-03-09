@@ -232,12 +232,14 @@ to depart from the default.
 
 ##### Exceptions
 
-The following two variables need to be set for Environment "All (default)"
+The following variables need to be set for Environment "All (default)"
 
 | Name | Masked? |
 | --- | --- |
 | DOCKER_HUB_USERNAME | no |
 | DOCKER_HUB_PASSWORD | yes |
+| AWS_ACCESS_KEY_ID | yes |
+| AWS_SECRET_ACCESS_KEY | yes |
 
 ##### Create DNS record for accessing portainer on staging and on live servers
 Create an `A` record in DNS dashboard as following:

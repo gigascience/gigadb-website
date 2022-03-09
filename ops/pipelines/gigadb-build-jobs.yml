@@ -22,6 +22,20 @@ base_images:
       - alpine-3_14.tar
       - nginx-$NGINX_VERSION-alpine.tar
       - node-$NODE_VERSION-buster-slim.tar
+  cache:
+    key:
+      files:
+        - composer.lock
+        - ops/scripts/package-lock.json
+    paths:
+      - gigadb/app/client/web/package-lock.json
+      - fuw/app/composer.lock
+      - gigadb/app/worker/file-worker/composer.lock
+      - vendor/
+      - fuw/app/vendor/
+      - gigadb/app/worker/file-worker/vendor
+      - ops/scripts/node_modules
+      - gigadb/app/client/web/node_modules
 
 b_gigadb:
   variables:
