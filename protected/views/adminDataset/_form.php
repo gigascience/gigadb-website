@@ -136,41 +136,41 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                         <?php } ?>
                     </div>
                     <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'url',array('id'=>'image-meta-data','class'=>'control-label')); ?>
+                        <?php echo $form->labelEx($model->image,'url',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'url',array('id'=>'image-meta-data','class'=>'span4','size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'url',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
                             <?php echo $form->error($model->image,'url'); ?>
                         </div>
                     </div>
 
-                    <div id="image-meta-data" class="control-group">
-                        <?php echo $form->labelEx($model->image,'source',array('class'=>'control-label')); ?>
+                    <div class="control-group">
+                        <?php echo $form->labelEx($model->image,'source',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'source',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'source',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
                             <?php echo $form->error($model->image,'source'); ?>
                         </div>
                     </div>
 
-                    <div id="image-meta-data" class="control-group">
-                        <?php echo $form->labelEx($model->image,'tag',array('class'=>'control-label')); ?>
+                    <div class="control-group">
+                        <?php echo $form->labelEx($model->image,'tag',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'tag',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'tag',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
                             <?php echo $form->error($model->image,'tag'); ?>
                         </div>
                     </div>
 
-                    <div id="image-meta-data" class="control-group">
-                        <?php echo $form->labelEx($model->image,'license',array('class'=>'control-label')); ?>
+                    <div class="control-group">
+                        <?php echo $form->labelEx($model->image,'license',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'license',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'license',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
                             <?php echo $form->error($model->image,'license'); ?>
                         </div>
                     </div>
 
-                    <div id="image-meta-data" class="control-group">
-                        <?php echo $form->labelEx($model->image,'photographer',array('class'=>'control-label')); ?>
+                    <div class="control-group">
+                        <?php echo $form->labelEx($model->image,'photographer',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'photographer',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'photographer',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
                             <?php echo $form->error($model->image,'photographer'); ?>
                         </div>
                     </div>
@@ -443,12 +443,13 @@ $(function(){
     });
 });
 
-$(function controlMetaDataField() {
-   if (document.getElementById("datasetImage").value !="") {
-       $('#image-meta-data').css('display', '');
-   } else {
-       $('#image-meta-data').css('display', 'none');
-   }
+
+document.getElementById("datasetImage").addEventListener('change', (event) => {
+    if (event.target.files.length != 0) {
+        $('.meta-fields').css('display', '');
+    } else {
+        $('.meta-fields').css('display', 'none');
+    }
 });
 </script>
 
