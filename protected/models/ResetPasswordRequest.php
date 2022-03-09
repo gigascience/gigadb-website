@@ -123,24 +123,6 @@ class ResetPasswordRequest extends CActiveRecord
     }
 
     /**
-     * Returns verifier
-     * @return string
-     */
-    public function getVerifier()
-    {
-        return $this->verifier;
-    }
-
-    /**
-     * Sets verifier
-     * @return string
-     */
-    public function setVerifier($verifier)
-    {
-        $this->verifier = $verifier;
-    }
-
-    /**
      * Returns public token
      * @return string
      */

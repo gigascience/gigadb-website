@@ -7,7 +7,6 @@
 class PasswordResetTokenUserIdentity extends UserIdentity {
 
     public $_id;
-    public $type;
     const ERROR_SELECTOR_NOT_ASSOCIATED_WITH_A_USER = 4;
     const ERROR_RECALCULATED_HASH_OF_VERIFIER_DOES_NOT_MATCH_HASH_IN_DATABASE = 5;
     const ERROR_TOKEN_HAS_EXPIRED = 6;
