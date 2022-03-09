@@ -113,8 +113,9 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                 <div class="span5">
                     <?
                         $img_url = $model->image->url;
+                        $img_location = $model->image->location;
                         $no_img_url = 'https://assets.gigadb-cdn.net/images/datasets/no_image.png';
-                        if($img_url){
+                        if($img_url && $img_location){
                             echo CHtml::image($img_url, $img_url, array('style'=>'width:100px; display:flex; margin-left:auto;'));
                         } else {
                             echo CHtml::image($no_img_url, $no_img_url, array('style'=>'width:100px; display:block; margin-left:auto;'));
@@ -122,7 +123,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                     ?>
                     <div class="control-group">
                         <label for="image_upload_image" class="control-label">Image Status</label>
-                        <?php if($img_url){ ?>
+                        <?php if($img_url && $img_location){ ?>
                         <div class="controls">
                             <?php echo CHtml::htmlButton('Remove image!!!', ['class' => 'btn btn-primary', 'style'=>'width:40%; margin-right:-320px; margin-top:15px']); ?>
                             <?php echo CHtml::fileField('datasetImage'); ?>
