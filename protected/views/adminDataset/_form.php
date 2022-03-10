@@ -30,7 +30,11 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
     'htmlOptions'=>array(
         'class'=>'form-horizontal',
         'enctype'=>'multipart/form-data'),
-)); ?>
+));
+
+echo $form->hiddenField($model, "image_id");
+
+?>
 <div class="span12 form well">
     <div class="form-horizontal">
         <p class="note">Fields with <span class="required">*</span> are required.</p>
