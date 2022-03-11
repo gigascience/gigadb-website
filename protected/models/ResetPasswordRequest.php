@@ -75,14 +75,14 @@ class ResetPasswordRequest extends CActiveRecord
      */
     public function beforeSave()
     {
-        $now = new Datetime();
-        if(!$this->requested_at)
-            $this->requested_at = $now->format(DateTime::ISO8601);
-        
-        if(!$this->expires_at)
-            $this->expires_at = $now->modify('+ 1 hour')->format(DateTime::ISO8601);
-        
-        parent::beforeSave();
+        if (parent::beforeSave()) {
+            $now = new Datetime();
+            if (!$this->requested_at)
+                $this->requested_at = $now->format(DateTime::ISO8601);
+
+            if (!$this->expires_at)
+                $this->expires_at = $now->modify('+ 1 hour')->format(DateTime::ISO8601);
+        }
         return true;
     }
 
