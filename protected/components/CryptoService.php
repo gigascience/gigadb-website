@@ -5,6 +5,8 @@
  */
 class CryptoService extends yii\base\Component
 {
+    const RANDOM_ALPHA_NUMERIC_STRING_LENGTH = 20;
+
     /**
      * Initializes application component.
      * This method overrides the parent implementation by setting default cache
@@ -29,21 +31,13 @@ class CryptoService extends yii\base\Component
     }
 
     /**
-     * Original credit to Laravel's Str::random() method.
+     * Uses method in Yii2 to generate random string
      *
      * String length is 20 characters
      */
     public static function getRandomAlphaNumStr()
     {
-        $string = '';
-        while (($len = \strlen($string)) < 20) {
-            /** @var int<1, max> $size */
-            $size = 20 - $len;
-            $bytes = random_bytes($size);
-            $string .= substr(
-                str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
-        }
-        return $string;
+        return Yii::$app->security->generateRandomString(self::RANDOM_ALPHA_NUMERIC_STRING_LENGTH);
     }
 }
 ?>

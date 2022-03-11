@@ -7,6 +7,7 @@
 class PasswordResetTokenUserIdentity extends UserIdentity {
 
     public $_id;
+    private $random_string_length;
     const ERROR_SELECTOR_NOT_ASSOCIATED_WITH_A_USER = 4;
     const ERROR_RECALCULATED_HASH_OF_VERIFIER_DOES_NOT_MATCH_HASH_IN_DATABASE = 5;
     const ERROR_TOKEN_HAS_EXPIRED = 6;
@@ -22,6 +23,7 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
     public function __construct($urlToken)
     {
         $this->urlToken = $urlToken;
+        $this->random_string_length = Yii::app()->CryptoService::RANDOM_ALPHA_NUMERIC_STRING_LENGTH;
     }
 
     /**
@@ -35,7 +37,7 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
         Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": In PasswordResetTokenUserIdentity::authenticate()", 'info');
 
         // Find user associated with selector part in URL
-        $selectorFromURL = substr($this->urlToken, 0, 20);
+        $selectorFromURL = substr($this->urlToken, 0, $this->random_string_length);
         $resetPasswordRequest = ResetPasswordRequest::model()->findByAttributes(array('selector' => $selectorFromURL));
         $user = User::model()->findByAttributes(array('id' => $resetPasswordRequest->gigadb_user_id));
 
@@ -47,7 +49,7 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
         {
             // Check re-calculated hash from verifier matches hash in reset_password_request database table
             $signingKey = Yii::app()->params['signing_key'];
-            $verifierFromURL = substr($this->urlToken, 20, 20);
+            $verifierFromURL = substr($this->urlToken, $this->random_string_length, $this->random_string_length);
             $hashedTokenFromURLVerifier = Yii::app()->CryptoService->getHashedToken($signingKey, $verifierFromURL);
             if($hashedTokenFromURLVerifier == $resetPasswordRequest->hashed_token)
             {
