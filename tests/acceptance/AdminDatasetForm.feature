@@ -14,4 +14,11 @@ Feature: form to update dataset details
   @ok
   Scenario: Can display dataset image
     When I am on "/adminDataset/update/id/8"
-    Then I should see an image located in "http://gigadb.org/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
+    Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
+
+  @ok
+  Scenario: Can display generic image in create page
+    When I am on "/adminDataset/admin"
+    And I press the button "Create Dataset"
+    Then I should see "Fields with * are required"
+    And I should see an image located in "https://assets.gigadb-cdn.net/images/datasets/no_image.png"
