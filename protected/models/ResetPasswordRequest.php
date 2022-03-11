@@ -33,21 +33,24 @@ class ResetPasswordRequest extends CActiveRecord
      * @param string $className active record class name.
      * @return ResetPasswordRequest the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'reset_password_request';
     }
 
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
 //        return array(
@@ -58,9 +61,10 @@ class ResetPasswordRequest extends CActiveRecord
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
-            '$selector' => 'Selector',
+            'selector' => 'Selector',
             'requested_at' => 'Request Date',
             'expired_at' => 'Expired Date',
             'gigadb_user_id' => 'GigaDB User Id',
