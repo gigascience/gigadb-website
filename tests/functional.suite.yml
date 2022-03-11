@@ -19,3 +19,5 @@ modules:
         - PhpBrowser:
               url: 'http://gigadb.test'
     step_decorators: ~
+bootstrap:
+    initdb.php
