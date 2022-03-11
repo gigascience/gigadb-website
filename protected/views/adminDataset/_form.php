@@ -120,9 +120,12 @@ echo $form->hiddenField($model, "image_id");
                         $img_location = $model->image->location;
                         $no_img_url = 'https://assets.gigadb-cdn.net/images/datasets/no_image.png';
                         if($img_url){
-                            echo CHtml::image($img_url, $img_url, array('id'=>'showImage','style'=>'width:100px; display:flex; margin-left:auto;'));
+                            echo CHtml::image($img_url, $img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto;'));
+                            echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto;'));
                         } else {
                             echo CHtml::image($no_img_url, $no_img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto;'));
+                            echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto;'));
+
                         }
                     ?>
                     <div class="control-group">
@@ -134,9 +137,7 @@ echo $form->hiddenField($model, "image_id");
                         </div>
                         <?php } else { ?>
                             <div class="controls">
-                                <?php
-                                echo CHtml::fileField('datasetImage');
-                                ?>
+                                <?php echo CHtml::fileField('datasetImage', array('accept'=>'image/*', 'onchange'=>'showPreview(event)')); ?>
                             </div>
                         <?php } ?>
                     </div>
@@ -448,14 +449,30 @@ $(function(){
     });
 });
 
-if(document.getElementById("showImage").src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
-    $('.meta-fields').css('display', '');
-}
 document.getElementById("datasetImage").addEventListener('change', (event) => {
-    if (event.target.files.length != 0) {
-        $('.meta-fields').css('display', '');
+    var image = document.getElementById("showImage");
+    if (image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
+        if (event.target.files.length != 0) {
+            var src = URL.createObjectURL(event.target.files[0]);
+            var preview = document.getElementById("imagePreview");
+            preview.src = src;
+            preview.style.display = "block";
+            $('.meta-fields').css('display', '');
+            $('#showImage').css('display', 'none');
+            window.alert("Please update the image meta data fields before you save!!!");
+        } else {
+            $('.meta-fields').css('display', '');
+            $('#showImage').css('display', 'block');
+            $('#imagePreview').css('display', 'none');
+        }
     } else {
-        $('.meta-fields').css('display', 'none');
+        var src = URL.createObjectURL(event.target.files[0]);
+        var preview = document.getElementById("imagePreview");
+        preview.src = src;
+        preview.style.display = "block";
+        $('.meta-fields').css('display', '');
+        $('#showImage').css('display', 'none');
+        window.alert("Please update the image meta data fields before you save!!!");
     }
 });
 </script>
