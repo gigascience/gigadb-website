@@ -132,7 +132,7 @@ echo $form->hiddenField($model, "image_id");
                         <label for="image_upload_image" class="control-label">Image Status</label>
                         <?php if($img_url && $img_location !== "no_image.png" ){ ?>
                         <div class="controls">
-                            <?php echo CHtml::htmlButton('Remove image!!!', ['class' => 'btn btn-primary', 'style'=>'width:40%; margin-right:-320px; margin-top:15px']); ?>
+                            <?php echo CHtml::htmlButton('Remove image!!!', ['id' => 'removeButton', 'class' => 'btn btn-primary', 'style'=>'width:40%; margin-right:-320px; margin-top:15px']); ?>
                             <?php echo CHtml::fileField('datasetImage'); ?>
                         </div>
                         <?php } else { ?>
@@ -462,10 +462,11 @@ if(image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
             preview.style.display = "block";
             $('.meta-fields').css('display', '');
             $('#showImage').css('display', 'none');
-            window.alert("Please update the image meta data fields before you save!!!");
+            $('#removeButton').css('display', 'none');
         } else {
             $('.meta-fields').css('display', '');
             $('#showImage').css('display', 'block');
+            $('#removeButton').css('display', '');
             $('#imagePreview').css('display', 'none');
         }
     })
@@ -481,7 +482,6 @@ if(image.src == 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
             preview.style.display = "block";
             $('.meta-fields').css('display', '');
             $('#showImage').css('display', 'none');
-            window.alert("Please update the image meta data fields before you save!!!");
         } else {
             $('.meta-fields').css('display', 'none');
             $('#showImage').css('display', 'block');
