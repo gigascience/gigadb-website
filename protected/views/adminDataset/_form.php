@@ -132,8 +132,10 @@ echo $form->hiddenField($model, "image_id");
                         <label for="image_upload_image" class="control-label">Image Status</label>
                         <?php if($img_url && $img_location !== "no_image.png" ){ ?>
                         <div class="controls">
-                            <?php echo CHtml::htmlButton('Remove image!!!', ['id' => 'removeButton', 'class' => 'btn btn-primary', 'style'=>'width:40%; margin-right:-320px; margin-top:15px']); ?>
-                            <?php echo CHtml::fileField('datasetImage'); ?>
+                            <ul>
+                                <li style="list-style: none;"><?php echo CHtml::fileField('datasetImage'); ?></li>
+                                <li style="list-style: none;"><?php echo CHtml::htmlButton('Remove image', ['id' => 'removeButton', 'class' => 'btn btn-sm']); ?></li>
+                            </ul>
                         </div>
                         <?php } else { ?>
                             <div class="controls">

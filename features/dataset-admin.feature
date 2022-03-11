@@ -20,7 +20,7 @@ Scenario: form loading with all necessary fields
 	And I should see a form element labelled "Genomic"
 	And I should see a form element labelled "Metadata"
 	And I should see a form element labelled "Dataset Size *"
-	And I should see a form element labelled "Image Upload"
+	And I should see a form element labelled "datasetImage"
 	And I should see a form element labelled "Image URL"
 	And I should see a form element labelled "Image Source *"
 	And I should see a form element labelled "Image Tag"
@@ -80,7 +80,7 @@ Scenario: redirect
 	# And I take a screenshot named "redirect notice page (after)"
 	And I should not see "Redirect notice"
 
-@ok
+@ok @wip
 Scenario: new dataset with mandatory fields filled in
 	Given I sign in as an admin
 	And I am on "/adminDataset/admin"

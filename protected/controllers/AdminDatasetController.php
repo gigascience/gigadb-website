@@ -92,11 +92,13 @@ class AdminDatasetController extends Controller
             }
 
             $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
-            Yii::log($datasetImage->getTempName(), "warning");
-            $imageDir = Yii::$app->params["environment"]."/images/datasets/";
-            Yii::$app->fs->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()));
+            if($datasetImage) {
+                Yii::log($datasetImage->getTempName(), "warning");
+                $imageDir = Yii::$app->params["environment"]."/images/datasets/";
+                Yii::$app->fs->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()));
 
-            $dataset->image->url = "/files/$imageDir".$datasetImage->name;
+                $dataset->image->url = "/files/$imageDir".$datasetImage->name;
+            }
 
            	if ( !$dataset->hasErrors() && $dataset->image->validate('update') ) {
             	Yii::log("Image data associated to new dataset is valid and saved", 'info');

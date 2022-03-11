@@ -10,7 +10,7 @@ Feature: form to update dataset details
   Scenario: Can display generic image, but no image meta data fields for no image dataset in update page
     When I am on "/adminDataset/update/id/144"
     Then I should see an image located in "https://assets.gigadb-cdn.net/images/datasets/no_image.png"
-    And I should not see "Remove image!!!"
+    And I should not see "Remove image"
     And I should not see "Image URL"
     And I should not see "Image Source*"
     And I should not see "Image Tag"
@@ -40,7 +40,7 @@ Feature: form to update dataset details
   Scenario: Can display dataset image, meta data and remove image button in update page
     When I am on "/adminDataset/update/id/8"
     Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
-    And I should see a "Remove image!!!" button
+    And I should see a "Remove image" button
     And I should see "Image URL"
     And I should see "Image Source"
     And I should see "Image Tag"
@@ -52,7 +52,7 @@ Feature: form to update dataset details
     When I am on "/adminDataset/update/id/8"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     Then I should see an image located in "blob:http://gigadb.test/"
-    And I should not see "Remove image!!!"
+    And I should not see "Remove image"
     And I should see "Image URL"
     And I should see "Image Source"
     And I should see "Image Tag"
