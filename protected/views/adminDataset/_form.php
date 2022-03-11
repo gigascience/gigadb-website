@@ -137,7 +137,7 @@ echo $form->hiddenField($model, "image_id");
                         </div>
                         <?php } else { ?>
                             <div class="controls">
-                                <?php echo CHtml::fileField('datasetImage', array('accept'=>'image/*', 'onchange'=>'showPreview(event)')); ?>
+                                <?php echo CHtml::fileField('datasetImage'); ?>
                             </div>
                         <?php } ?>
                     </div>
@@ -449,10 +449,13 @@ $(function(){
     });
 });
 
-document.getElementById("datasetImage").addEventListener('change', (event) => {
-    var image = document.getElementById("showImage");
-    if (image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
-        if (event.target.files.length != 0) {
+var image = document.getElementById("showImage");
+
+//Show image meta data, preview uploaded image in update page
+if(image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
+    $('.meta-fields').css('display', '');
+    document.getElementById("datasetImage").addEventListener('change', (event) => {
+        if(event.target.files.length != 0) {
             var src = URL.createObjectURL(event.target.files[0]);
             var preview = document.getElementById("imagePreview");
             preview.src = src;
@@ -465,16 +468,27 @@ document.getElementById("datasetImage").addEventListener('change', (event) => {
             $('#showImage').css('display', 'block');
             $('#imagePreview').css('display', 'none');
         }
-    } else {
-        var src = URL.createObjectURL(event.target.files[0]);
-        var preview = document.getElementById("imagePreview");
-        preview.src = src;
-        preview.style.display = "block";
-        $('.meta-fields').css('display', '');
-        $('#showImage').css('display', 'none');
-        window.alert("Please update the image meta data fields before you save!!!");
-    }
-});
+    })
+};
+
+//Show image meta data, preview uploaded image in create page
+if(image.src == 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
+    document.getElementById("datasetImage").addEventListener('change', (event) => {
+        if(event.target.files.length != 0) {
+            var src = URL.createObjectURL(event.target.files[0]);
+            var preview = document.getElementById("imagePreview");
+            preview.src = src;
+            preview.style.display = "block";
+            $('.meta-fields').css('display', '');
+            $('#showImage').css('display', 'none');
+            window.alert("Please update the image meta data fields before you save!!!");
+        } else {
+            $('.meta-fields').css('display', 'none');
+            $('#showImage').css('display', 'block');
+            $('#imagePreview').css('display', 'none');
+        }
+    });
+};
 </script>
 
 
