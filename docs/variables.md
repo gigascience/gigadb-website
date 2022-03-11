@@ -162,8 +162,8 @@ the following variables which all projects belonging to developers in the Forks
 sub-group can use:
 
 | Variable | Example value | Used in | Comments |
-|----------|---------------|---------|----------|
-| ANALYTICS_CLIENT_EMAIL | | local.php.dist for Google analytics  | Set at Forks level with test Google Analytics account for development work |
+|----------|--------------|--------|----------|
+| ANALYTICS_CLIENT_EMAIL | | local.php.dist for Google analytics | Set at Forks level with test Google Analytics account for development work |
 | ANALYTICS_CLIENT_ID | | local.php.dist | As above |
 | ANALYTICS_KEYFILE_PATH | | Cannot find where it is used | As above |
 | ANALYTICS_PRIVATE_KEY | | docker-compose.ci.yml | As above |
@@ -187,6 +187,7 @@ sub-group can use:
 | Google_tester_last_name | | Affiliate login tests | As above |
 | Google_tester_password | | Affiliate login tests | As above |
 | group | Forks | Cannot find where it is used | Kept as a Forks sub-group variable|
+| HASH_SECRET_KEY | | local.php.dist | Used as a signing key for creating the hash value of the password reset token verifier |
 | LINKEDIN_API_KEY | | main.php.dist, Affiliate login tests | Set at Forks sub-group level so all developers use same test LinkedIn account for development work |
 | LINKEDIN_SECRET_KEY | | main.php.dist, Affiliate login tests | As above |
 | LinkedIn_tester_email | | Affiliate login tests | As above |
