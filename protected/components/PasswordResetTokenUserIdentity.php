@@ -51,7 +51,7 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
             $signingKey = Yii::app()->params['signing_key'];
             $verifierFromURL = substr($this->urlToken, $this->random_string_length, $this->random_string_length);
             $hashedTokenFromURLVerifier = Yii::app()->cryptoService->getHashedToken($signingKey, $verifierFromURL);
-            if($hashedTokenFromURLVerifier == $resetPasswordRequest->hashed_token)
+            if($hashedTokenFromURLVerifier === $resetPasswordRequest->hashed_token)
             {
                 // Check if token has expired
                 if($resetPasswordRequest->isExpired()) {
