@@ -34,7 +34,7 @@ Feature: form to update dataset details
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     And I press the button "Save"
     Then I am on "/dataset/100094"
-    And I should see an image located in "/files/dev/images/datasets/bgi_logo_new.png"
+    And I should see an image located in "/images/datasets/bgi_logo_new.png"
 
   @ok
   Scenario: Can display dataset image, meta data and remove image button in update page
@@ -88,7 +88,6 @@ Feature: form to update dataset details
     And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
     And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
-    And I fill in the field of "name" "Image[url]" with "/files/dev/images/datasets/bgi_logo_new.png"
     And I fill in the field of "name" "Image[source]" with "test source"
     And I fill in the field of "name" "Image[license]" with "test license"
     And I fill in the field of "name" "Image[photographer]" with "test Joe"
@@ -97,7 +96,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
     Then I am on "dataset/view/id/400789"
-    And I should see an image located in "/files/dev/images/datasets/bgi_logo_new.png"
+    And I should see an image located in "/images/datasets/bgi_logo_new.png"
 
 
     
