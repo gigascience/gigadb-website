@@ -80,7 +80,7 @@ Scenario: redirect
 	# And I take a screenshot named "redirect notice page (after)"
 	And I should not see "Redirect notice"
 
-@ok @wip
+@ok
 Scenario: new dataset with mandatory fields filled in
 	Given I sign in as an admin
 	And I am on "/adminDataset/admin"
