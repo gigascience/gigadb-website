@@ -1,4 +1,7 @@
 <?php
+
+use League\Flysystem\AdapterInterface;
+
 /**
  * Routing, aggregating and composing logic for administrative actions (CRUD) to a Dataset object
  *
@@ -92,11 +95,15 @@ class AdminDatasetController extends Controller
             }
 
             $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
-            Yii::log($datasetImage->getTempName(), "warning");
-            $imageDir = Yii::$app->params["environment"]."/images/datasets/";
-            Yii::$app->fs->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()));
+            if($datasetImage) {
+                Yii::log($datasetImage->getTempName(), "warning");
+                $imageDir = Yii::$app->params["environment"]."/images/datasets/";
+                Yii::$app->cloudStore->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()), [
+                    'visibility' => AdapterInterface::VISIBILITY_PUBLIC
+                ]);
 
-            $dataset->image->url = "/files/$imageDir".$datasetImage->name;
+                $dataset->image->url = "https://assets.gigadb-cdn.net/$imageDir".$datasetImage->name;
+            }
 
            	if ( !$dataset->hasErrors() && $dataset->image->validate('update') ) {
             	Yii::log("Image data associated to new dataset is valid and saved", 'info');
@@ -291,8 +298,10 @@ class AdminDatasetController extends Controller
             if($datasetImage) {
                 Yii::log($datasetImage->getTempName(), "warning");
                 $imageDir = Yii::$app->params["environment"]."/images/datasets/";
-                Yii::$app->fs->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()));
-                $model->image->url = "/files/$imageDir".$datasetImage->name;
+                Yii::$app->cloudStore->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()), [
+                    'visibility' => AdapterInterface::VISIBILITY_PUBLIC
+                ]);
+                $model->image->url = "https://assets.gigadb-cdn.net/$imageDir".$datasetImage->name;
             }
 
             if ($model->save() && $image->save()) {

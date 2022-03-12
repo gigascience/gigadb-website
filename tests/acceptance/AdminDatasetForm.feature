@@ -10,7 +10,7 @@ Feature: form to update dataset details
   Scenario: Can display generic image, but no image meta data fields for no image dataset in update page
     When I am on "/adminDataset/update/id/144"
     Then I should see an image located in "https://assets.gigadb-cdn.net/images/datasets/no_image.png"
-    And I should not see "Remove image!!!"
+    And I should not see "Remove image"
     And I should not see "Image URL"
     And I should not see "Image Source*"
     And I should not see "Image Tag"
@@ -34,13 +34,13 @@ Feature: form to update dataset details
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     And I press the button "Save"
     Then I am on "/dataset/100094"
-    And I should see an image located in "/files/dev/images/datasets/bgi_logo_new.png"
+    And I should see an image located in "/images/datasets/bgi_logo_new.png"
 
   @ok
   Scenario: Can display dataset image, meta data and remove image button in update page
     When I am on "/adminDataset/update/id/8"
     Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
-    And I should see a "Remove image!!!" button
+    And I should see a "Remove image" button
     And I should see "Image URL"
     And I should see "Image Source"
     And I should see "Image Tag"
@@ -52,7 +52,7 @@ Feature: form to update dataset details
     When I am on "/adminDataset/update/id/8"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     Then I should see an image located in "blob:http://gigadb.test/"
-    And I should not see "Remove image!!!"
+    And I should not see "Remove image"
     And I should see "Image URL"
     And I should see "Image Source"
     And I should see "Image Tag"
@@ -88,7 +88,6 @@ Feature: form to update dataset details
     And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
     And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
-    And I fill in the field of "name" "Image[url]" with "/files/dev/images/datasets/bgi_logo_new.png"
     And I fill in the field of "name" "Image[source]" with "test source"
     And I fill in the field of "name" "Image[license]" with "test license"
     And I fill in the field of "name" "Image[photographer]" with "test Joe"
@@ -97,7 +96,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
     Then I am on "dataset/view/id/400789"
-    And I should see an image located in "/files/dev/images/datasets/bgi_logo_new.png"
+    And I should see an image located in "/images/datasets/bgi_logo_new.png"
 
 
     
