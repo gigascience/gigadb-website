@@ -20,7 +20,7 @@ Scenario: form loading with all necessary fields
 	And I should see a form element labelled "Genomic"
 	And I should see a form element labelled "Metadata"
 	And I should see a form element labelled "Dataset Size *"
-	And I should see a form element labelled "Image Upload"
+	And I should see a form element labelled "datasetImage"
 	And I should see a form element labelled "Image URL"
 	And I should see a form element labelled "Image Source *"
 	And I should see a form element labelled "Image Tag"

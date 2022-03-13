@@ -17,6 +17,12 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 <? } ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js"></script>
+<? if (Yii::app()->params['less_dev_mode']) { ?>
+    <link rel="stylesheet/less" type="text/css" href="/less/current.less?time=<?= time() ?>">
+    <? Yii::app()->clientScript->registerScriptFile('/js/less-1.3.0.min.js'); ?>
+<? } else { ?>
+    <link rel="stylesheet" type="text/css" href="/css/current.css"/>
+<? } ?>
 
 <?php $form=$this->beginWidget('CActiveForm', array(
     'id'=>'dataset-form',
@@ -24,7 +30,11 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
     'htmlOptions'=>array(
         'class'=>'form-horizontal',
         'enctype'=>'multipart/form-data'),
-)); ?>
+));
+
+echo $form->hiddenField($model, "image_id");
+
+?>
 <div class="span12 form well">
     <div class="form-horizontal">
         <p class="note">Fields with <span class="required">*</span> are required.</p>
@@ -76,14 +86,14 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                     $datasetTypes = CHtml::listData(Type::model()->findAll(),'id','name');
                                     $checkedTypes = CHtml::listData($model->datasetTypes,'id','id');
                                     foreach ($datasetTypes as $id => $datasetType) {
-                                        // echo '<div class="control-group">';
+//                                        echo '<div class="control-group">';
                                         echo $form->labelEx($model,"$datasetType",array('class'=>'checkbox-label'));
                                         $checkedHtml = in_array($id,$checkedTypes,true) ? 'checked="checked"' : '';
                                         $checkboxId="Dataset_$datasetType";
                                         echo '<div class="controls">';
                                         echo '<input id="'.$checkboxId.'" type="checkbox" name="datasettypes['.$id.']" value="1"'.$checkedHtml.'/>';
                                         echo '</div>';
-                                        // echo '</div>';
+//                                        echo '</div>';
 
                                     }
                                 ?>
@@ -106,57 +116,69 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                 </div>
                 <div class="span5">
                     <?
-                        $img_url = $model->image->image('image_upload');
-                        $fn = '' ;
+                        $img_url = $model->image->url;
+                        $img_location = $model->image->location;
+                        $no_img_url = 'https://assets.gigadb-cdn.net/images/datasets/no_image.png';
                         if($img_url){
-                            $fn = explode('/' , $img_url);
-                            $fn = end($fn);
+                            echo CHtml::image($img_url, $img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto;'));
+                            echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto;'));
+                        } else {
+                            echo CHtml::image($no_img_url, $no_img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto;'));
+                            echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto;'));
+
                         }
                     ?>
-                    <? echo ($img_url && $fn !='Images_.png') ? CHtml::image($img_url, $img_url, array('style'=>'width:100px; margin-left:160px;margin-bottom:10px;')) : ''; ?>
                     <div class="control-group">
-                        <label for="image_upload_image" class="control-label">Image Upload</label>
+                        <label for="image_upload_image" class="control-label">Image Status</label>
+                        <?php if($img_url && $img_location !== "no_image.png" ){ ?>
                         <div class="controls">
-                            <?php echo $model->image->imageChooserField('image_upload'); ?>
-                            <?php echo $form->error($model->image,'image_upload'); ?>
+                            <ul>
+                                <li style="list-style: none;"><?php echo CHtml::fileField('datasetImage'); ?></li>
+                                <li style="list-style: none;"><?php echo CHtml::htmlButton('Remove image', ['id' => 'removeButton', 'class' => 'btn btn-sm']); ?></li>
+                            </ul>
                         </div>
+                        <?php } else { ?>
+                            <div class="controls">
+                                <?php echo CHtml::fileField('datasetImage'); ?>
+                            </div>
+                        <?php } ?>
                     </div>
                     <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'url',array('class'=>'control-label')); ?>
+                        <?php echo $form->labelEx($model->image,'url',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'url',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'url',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
                             <?php echo $form->error($model->image,'url'); ?>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'source',array('class'=>'control-label')); ?>
+                        <?php echo $form->labelEx($model->image,'source',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'source',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'source',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
                             <?php echo $form->error($model->image,'source'); ?>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'tag',array('class'=>'control-label')); ?>
+                        <?php echo $form->labelEx($model->image,'tag',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'tag',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'tag',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
                             <?php echo $form->error($model->image,'tag'); ?>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'license',array('class'=>'control-label')); ?>
+                        <?php echo $form->labelEx($model->image,'license',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'license',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'license',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
                             <?php echo $form->error($model->image,'license'); ?>
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'photographer',array('class'=>'control-label')); ?>
+                        <?php echo $form->labelEx($model->image,'photographer',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'photographer',array('class'=>'span4','size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model->image,'photographer',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
                             <?php echo $form->error($model->image,'photographer'); ?>
                         </div>
                     </div>
@@ -214,6 +236,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                                         ),array('class'=>'btn btn-green',
                                                 'id' =>'mint_doi_button',
                                                 'disabled'=>in_array($model->upload_status, $status_array),
+                                                'style'=>'width:40%; margin-top:-30px;',
                                                 
                                         ));
 
@@ -323,7 +346,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 
 <div class="span12" style="text-align:center">
     <a href="<?=Yii::app()->createUrl('/adminDataset/admin')?>" class="btn"/>Cancel</a>
-    <?= CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn-green')); ?>
+    <?= CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn-green', 'style'=>'margin-top:auto;')); ?>
         <?php if( "hidden" === $datasetPageSettings->getPageType() ) { ?>
     <a href="<?=Yii::app()->createUrl('/adminDataset/private/identifier/'.$model->identifier)?>" class="btn-green"/>Create/Reset Private URL</a>
             <?php if($model->token){?>
@@ -428,6 +451,46 @@ $(function(){
     });
 });
 
+var image = document.getElementById("showImage");
+
+//Show image meta data, preview uploaded image in update page
+if(image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
+    $('.meta-fields').css('display', '');
+    document.getElementById("datasetImage").addEventListener('change', (event) => {
+        if(event.target.files.length != 0) {
+            var src = URL.createObjectURL(event.target.files[0]);
+            var preview = document.getElementById("imagePreview");
+            preview.src = src;
+            preview.style.display = "block";
+            $('.meta-fields').css('display', '');
+            $('#showImage').css('display', 'none');
+            $('#removeButton').css('display', 'none');
+        } else {
+            $('.meta-fields').css('display', '');
+            $('#showImage').css('display', 'block');
+            $('#removeButton').css('display', '');
+            $('#imagePreview').css('display', 'none');
+        }
+    })
+};
+
+//Show image meta data, preview uploaded image in create page
+if(image.src == 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
+    document.getElementById("datasetImage").addEventListener('change', (event) => {
+        if(event.target.files.length != 0) {
+            var src = URL.createObjectURL(event.target.files[0]);
+            var preview = document.getElementById("imagePreview");
+            preview.src = src;
+            preview.style.display = "block";
+            $('.meta-fields').css('display', '');
+            $('#showImage').css('display', 'none');
+        } else {
+            $('.meta-fields').css('display', 'none');
+            $('#showImage').css('display', 'block');
+            $('#imagePreview').css('display', 'none');
+        }
+    });
+};
 </script>
 
 

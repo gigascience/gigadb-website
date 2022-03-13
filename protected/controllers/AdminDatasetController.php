@@ -1,4 +1,7 @@
 <?php
+
+use League\Flysystem\AdapterInterface;
+
 /**
  * Routing, aggregating and composing logic for administrative actions (CRUD) to a Dataset object
  *
@@ -59,11 +62,17 @@ class AdminDatasetController extends Controller
 	public function actionCreate()
     {
         $dataset = new Dataset;
-        $dataset->image = new Images;
+//        $dataset->image = new Image;
 
         $datasetPageSettings = new DatasetPageSettings($dataset);
 
-        if (!empty($_POST['Dataset']) && !empty($_POST['Images'])) {
+        if(!empty($_POST['Image'])) { //User has uploaded an image
+            $dataset->image = new Image;
+        } else {
+            $dataset->image = Image::model()->findByAttributes(array('location' => 'no_image.png'));
+        }
+
+        if (!empty($_POST['Dataset']) && !empty($_POST['Image'])) {
         	Yii::log("Processing submitted data", 'info');
         	$dataset_post_data = $_POST['Dataset'];
         	if (isset($dataset_post_data['publication_date']) && $dataset_post_data['publication_date'] == "" ) {
@@ -79,10 +88,21 @@ class AdminDatasetController extends Controller
             // $dataset->attributes=$dataset_post_data;
             $dataset->setAttributes($dataset_post_data, true);
             Yii::log("dataset title: ".$dataset->title,'debug');
-            $dataset->image->attributes = $_POST['Images'];
+            $dataset->image->attributes = $_POST['Image'];
 
             if( !$dataset->validate() ) {
             	Yii::log("Dataset instance is not valid", 'info');
+            }
+
+            $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
+            if($datasetImage) {
+                Yii::log($datasetImage->getTempName(), "warning");
+                $imageDir = Yii::$app->params["environment"]."/images/datasets/";
+                Yii::$app->cloudStore->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()), [
+                    'visibility' => AdapterInterface::VISIBILITY_PUBLIC
+                ]);
+
+                $dataset->image->url = "https://assets.gigadb-cdn.net/$imageDir".$datasetImage->name;
             }
 
            	if ( !$dataset->hasErrors() && $dataset->image->validate('update') ) {
@@ -261,7 +281,7 @@ class AdminDatasetController extends Controller
 
             // Image information
             $image = $model->image;
-            $image->attributes = $_POST['Images'];
+            $image->attributes = $_POST['Image'];
             $image->scenario = 'update';
 
             if ($model->publication_date == "") {
@@ -274,6 +294,15 @@ class AdminDatasetController extends Controller
                 $model->fairnuse = null;
             }
 
+            $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
+            if($datasetImage) {
+                Yii::log($datasetImage->getTempName(), "warning");
+                $imageDir = Yii::$app->params["environment"]."/images/datasets/";
+                Yii::$app->cloudStore->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()), [
+                    'visibility' => AdapterInterface::VISIBILITY_PUBLIC
+                ]);
+                $model->image->url = "https://assets.gigadb-cdn.net/$imageDir".$datasetImage->name;
+            }
 
             if ($model->save() && $image->save()) {
                 if (isset($_POST['datasettypes'])) {

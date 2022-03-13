@@ -23,7 +23,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                     <div class="media">
                         <div class="media-left">
                                         <?php if($model->image) {
-                $url = $model->getImageUrl() ? $model->getImageUrl(): $model->image->image('image_upload');
+                $url = $model->getImageUrl();
 
                 ?>
             <a href="<?= $url ?>" >

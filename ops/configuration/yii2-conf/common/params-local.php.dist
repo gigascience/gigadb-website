@@ -1,6 +1,7 @@
 <?php
 return [
 	"jwt_key" => "$FUW_JWT_KEY",
+	"environment" => "$GIGADB_ENV",
 	"remote_docker_hostname" => "$REMOTE_DOCKER_HOSTNAME",
 	"dataset_filedrop" => [
 		"ftpd_endpoint" => "$SERVER_HOSTNAME",

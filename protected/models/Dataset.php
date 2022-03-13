@@ -117,7 +117,7 @@ class Dataset extends CActiveRecord
             'authors' => array(self::MANY_MANY, 'Author', 'dataset_author(dataset_id,author_id)', 'order'=>'authors.first_name ASC', ),
             'projects' => array(self::MANY_MANY, 'Project', 'dataset_project(dataset_id,project_id)'),
             'submitter' => array(self::BELONGS_TO, 'User', 'submitter_id'),
-            'image' => array(self::BELONGS_TO, 'Images', 'image_id'),
+            'image' => array(self::BELONGS_TO, 'Image', 'image_id'),
             'samples' => array(self::MANY_MANY, 'Sample', 'dataset_sample(dataset_id,sample_id)'),
             'externalLinks' => array(self::HAS_MANY, 'ExternalLink', 'dataset_id'),
             'datasetTypes' => array(self::MANY_MANY, 'Type', 'dataset_type(dataset_id,type_id)'),
