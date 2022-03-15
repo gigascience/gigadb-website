@@ -71,7 +71,7 @@ Feature: form to update dataset details
   Scenario: Can display dataset image, meta data and remove image button in update page
     When I am on "/adminDataset/update/id/8"
     Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
-    And I should see a "Remove image" button
+    And I should see "Remove image"
     And I should see "Image URL"
     And I should see "Image Source"
     And I should see "Image Tag"
