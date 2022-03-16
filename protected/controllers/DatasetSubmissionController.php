@@ -1019,7 +1019,10 @@ EO_MAIL;
                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Dataset does not exist.")));
             }
 
-            if ($dataset->delete()) {
+            if ($dataset) {
+                // Dataset is updated to belong to the deleted datasets user account
+                $dataset->submitter_id=28;
+                $dataset->save();
                 Util::returnJSON(array("success"=>true));
             }
         }
