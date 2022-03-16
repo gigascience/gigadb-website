@@ -214,7 +214,31 @@ Feature: form to update dataset details
     Then I should see current url contains "/dataset/123789/token/"
     And I should see "https://doi.org/10.5524/123789"
 
+  @ok
+  Scenario:  Can remove custom image
+    When I am on "/adminDataset/update/id/8"
+    And I follow "Remove image"
+    And I wait "1" seconds
+    Then I should not see "Image URL"
+    And I should not see "Image Source"
+    And I should not see "Image Tag"
+    And I should not see "Image License"
+    And I should not see "Image Photographer"
+    And I should see an image located in "/images/datasets/no_image.png"
 
+  @ok
+  Scenario: Can remove custom image and immediately upload a new image
+    When I am on "/adminDataset/update/id/22"
+    And I follow "Remove image"
+    And I wait "1" seconds
+    And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
+    Then I should see an image located in "blob:http://gigadb.test/"
+    And I should not see "Remove image"
+    And I should see "Image URL"
+    And I should see "Image Source"
+    And I should see "Image Tag"
+    And I should see "Image License"
+    And I should see "Image Photographer"
 
 
 
