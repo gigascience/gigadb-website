@@ -1020,8 +1020,11 @@ EO_MAIL;
             }
 
             if ($dataset) {
-                // Dataset is updated to belong to the deleted datasets user account
-                $dataset->submitter_id=28;
+                // find the row with postID=10
+                $deleted_datasets_user = User::model()->find('email=:email', array(':email' => "test@gigasciencejournal.com"));
+                // Dataset is updated to belong to the deleted datasets
+                // user account thereby removing from belonging to current user
+                $dataset->submitter_id = $deleted_datasets_user->id;
                 $dataset->save();
                 Util::returnJSON(array("success"=>true));
             }
