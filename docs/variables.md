@@ -167,6 +167,7 @@ sub-group can use:
 | ANALYTICS_CLIENT_ID | | local.php.dist | As above |
 | ANALYTICS_KEYFILE_PATH | | Cannot find where it is used | As above |
 | ANALYTICS_PRIVATE_KEY | | docker-compose.ci.yml | As above |
+| DELETED_DATASETS_USER_EMAIL | | local.php.dist | Deleted datasets are associated with the user account of this email address |
 | Facebook_access_token | | Affiliate login |Use test Facebook account for development work |
 | FACEBOOK_APP_ID | | Affiliate login | As above |
 | FACEBOOK_APP_SECRET | | Affiliate login | As above |

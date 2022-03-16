@@ -1020,10 +1020,9 @@ EO_MAIL;
             }
 
             if ($dataset) {
-                // find the row with postID=10
-                $deleted_datasets_user = User::model()->find('email=:email', array(':email' => "test@gigasciencejournal.com"));
                 // Dataset is updated to belong to the deleted datasets
-                // user account thereby removing from belonging to current user
+                // user account thereby deleting it from current user
+                $deleted_datasets_user = User::model()->find('email=:email', array(':email' => Yii::app()->params['deleted_datasets_user_email']));
                 $dataset->submitter_id = $deleted_datasets_user->id;
                 $dataset->save();
                 Util::returnJSON(array("success"=>true));
