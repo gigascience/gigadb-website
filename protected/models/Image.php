@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -17,6 +18,9 @@
  */
 class Image extends CActiveRecord
 {
+    /** @const int  database id of the generic image (no_image.png) */
+    const GENERIC_IMAGE_ID = 0 ;
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
