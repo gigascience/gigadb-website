@@ -21,4 +21,14 @@ Feature: User profile submitted page
     And I accept popup
     And I wait "3" seconds
     Then I should not see "Lorem ipsum"
-    
+
+  @ok
+  Scenario: Check deleted datasets user has deleted dataset on their view profile page
+    Given I am on "/site/login"
+    And I fill in the field of "id" "LoginForm_username" with "test@gigasciencejournal.com"
+    And I fill in the field of "id" "LoginForm_password" with "gigadb"
+    And I press the button "Login"
+    When I am on "/user/view_profile#submitted"
+    And I should see "Your Uploaded Datasets" tab with table on user view profile
+      | DOI     | Title       | Subject | Dataset Type | Status  | Publication Date | Modification Date | File Count | Operation     |
+      | unknown | Lorem ipsum |         |              | Request |                  |                   | 0          | Update Delete |
