@@ -216,7 +216,7 @@ Feature: form to update dataset details
 
   @ok
   Scenario:  Can remove custom image
-    When I am on "/adminDataset/update/id/8"
+    When I am on "/adminDataset/update/id/200"
     And I follow "Remove image"
     And I wait "1" seconds
     Then I should not see "Image URL"
