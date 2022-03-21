@@ -7,13 +7,16 @@ class CryptoTest extends \Codeception\Test\Unit
 {
     /**
      * Test that random alphanumeric string contains 20 characters
-     * Test that random string is alphanumeric
+     * Test that random string minus any underscore and dash characters is 
+     * alphanumeric
      */
     public function testGetRandomAlphaNumStr()
     {
         $randomStr = CryptoService::getRandomAlphaNumStr();
+        $valid_chars = array('-', '_');
+        codecept_debug("Random string is: ".$randomStr);
         $this->assertTrue(strlen($randomStr) == 20, "Random string does not contain 20 characters");
-        $this->assertTrue(ctype_alnum($randomStr), "Random string is not alphanumeric");
+        $this->assertTrue(ctype_alnum(str_replace($valid_chars, "", $randomStr)), "Random string is not alphanumeric");
     }
 
     /**
