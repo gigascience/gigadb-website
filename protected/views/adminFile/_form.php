@@ -1,3 +1,10 @@
+<? if (Yii::app()->params['less_dev_mode']) { ?>
+    <link rel="stylesheet/less" type="text/css" href="/less/current.less?time=<?= time() ?>">
+    <? Yii::app()->clientScript->registerScriptFile('/js/less-1.3.0.min.js'); ?>
+<? } else { ?>
+    <link rel="stylesheet" type="text/css" href="/css/current.css"/>
+<? } ?>
+
 <div class="row">
     <div class="span10 offset1 form well">
         <?php $form=$this->beginWidget('CActiveForm', array(
