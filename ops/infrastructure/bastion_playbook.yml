@@ -53,17 +53,97 @@
         owner: centos
         group: centos
 
-    - name: Drop gigadb database
-      shell: "export PGPASSWORD='{{ pg_password }}'; psql -U {{ pg_user }} -d postgres -h {{ pg_host }} -p 5432 -c 'drop database if exists {{ pg_database}}'"
-      register: psql_drop
-    - debug: msg="{{ psql_drop.stdout }}"
 
-    - name: Create gigadb database
-      shell: "export PGPASSWORD='{{ pg_password }}'; psql -U {{ pg_user }} -d postgres -h {{ pg_host }} -p 5432 -c 'create database {{ pg_database}} owner {{ pg_user }}'"
-      register: psql_create
-    - debug: msg="{{ psql_create.stdout }}"
+#    - name: Drop gigadb database
+#      shell: "export PGPASSWORD='{{ pg_password }}'; psql -U {{ pg_user }} -d postgres -h {{ pg_host }} -p 5432 -c 'drop database if exists {{ pg_database}}'"
+#      register: psql_drop
+#    - debug: msg="{{ psql_drop.stdout }}"
+#
+#    - name: Create gigadb database
+#      shell: "export PGPASSWORD='{{ pg_password }}'; psql -U {{ pg_user }} -d postgres -h {{ pg_host }} -p 5432 -c 'create database {{ pg_database}} owner {{ pg_user }}'"
+#      register: psql_create
+#    - debug: msg="{{ psql_create.stdout }}"
+#
+#    - name: Restore gigadb database with backup file
+#      shell: "export PGPASSWORD='{{ pg_password }}'; psql -U {{ pg_user }} -h {{ pg_host }} -p 5432 < /home/centos/database_bootstrap.backup"
+#      register: psql_restore
+#    - debug: msg="{{ psql_restore.stdout }}"
 
-    - name: Restore gigadb database with backup file
-      shell: "export PGPASSWORD='{{ pg_password }}'; psql -U {{ pg_user }} -h {{ pg_host }} -p 5432 < /home/centos/database_bootstrap.backup"
-      register: psql_restore
-    - debug: msg="{{ psql_restore.stdout }}"
+- name: Load latest DB backup every day
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+
+  tasks:
+    - name: Install dependencies needed by Yii, composer and file-url-updater
+      dnf:
+        name: php, php-json, php-mbstring, git, zip, unzip, php-zip, ncftp
+        state: latest
+
+    - name: Install codebase for files-url-updater
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /home/centos/files-url-updater/
+        owner: centos
+        group: centos
+      loop:
+        - "../../../../gigadb/app/tools/files-url-updater/controllers"
+        - "../../../../gigadb/app/tools/files-url-updater/models"
+        - "../../../../gigadb/app/tools/files-url-updater/config"
+
+
+    - name: Install executable scripts for file url updater
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /home/centos/files-url-updater/
+        owner: centos
+        group: centos
+        mode: a+x
+      loop:
+        - "../../../../gigadb/app/tools/files-url-updater/yii"
+        - "../../../../gigadb/app/tools/files-url-updater/setup_composer.sh"
+
+    - name: Copy minimalist composer.json
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/files-url-updater/minimal-composer.json.sample"
+        dest: /home/centos/files-url-updater/composer.json
+        owner: centos
+        group: centos
+
+
+    - name: Create a sql directory if it does not exist
+      ansible.builtin.file:
+        path: /home/centos/files-url-updater/sql
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+
+    - name: Create a bin directory (for composer) if it does not exist
+      ansible.builtin.file:
+        path: /home/centos/bin
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+
+    - name: Setup composer
+      ansible.builtin.command: "/home/centos/files-url-updater/setup_composer.sh"
+      register: composer_setup_output
+
+    - debug:
+        msg: "composer setup output : {{ composer_setup_output }}"
+
+    - name: Install composer dependencies
+      ansible.builtin.command: "/home/centos/bin/composer install --no-dev --no-interaction --no-plugins --no-scripts"
+      args:
+        chdir: /home/centos/files-url-updater
+      register: composer_install_output
+
+    - debug:
+        msg: "composer install output : {{ composer_install_output }}"
+
+    - name: Setup cronjob to reset database daily after a new backup is available on the ftp server
+      ansible.builtin.cron:
+        name: "Reset database every night after a new backup is available on the ftp server"
+        minute: "30"
+        hour: "10"
+        job: "/home/centos/reset_database.sh > /dev/null"
