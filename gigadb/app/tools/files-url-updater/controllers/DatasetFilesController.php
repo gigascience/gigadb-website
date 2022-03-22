@@ -20,51 +20,51 @@ class DatasetFilesController extends Controller
     /**
      * @var bool $config if true return the DB and FTP configuration values
      */
-    public bool $config = false;
+    public $config = false;
 
     /**
      * @var bool $latest use the day before yesterday which is the latest date of available backup
      */
-    public bool $latest = false;
+    public $latest = false;
 
     /**
      * @var bool default use the default backup
      */
-    public bool $default = false;
+    public $default = false;
 
     /**
      * @var string $date the yyyymmdd for which to retrieve a production backup
      */
-    public string $date = "";
+    public $date = "";
 
     /**
      * @var int $next get list of next $next pending datasets
      */
-    public int $next = 0;
+    public $next = 0;
     /**
      * @var int $after dataset id only pending datasets after this one are returned
      */
-    public int $after = 0;
+    public $after = 0;
 
     /**
      * @var bool true if dry run mode is activated, false otherwise (default)
      */
-    public bool $dryrun = false;
+    public $dryrun = false;
 
     /**
      * @var bool if true no attempt will be made to download the production database backup
      */
-    public bool $nodownload = false;
+    public $nodownload = false;
 
     /**
      * @var bool if true no attempt will be made to restore the production database backup
      */
-    public bool $norestore = false;
+    public $norestore = false;
 
     /**
      * @var bool true to show the full audit of transformation
      */
-    public bool $verbose = false;
+    public $verbose = false;
 
     public function options($actionID)
     {
@@ -138,7 +138,7 @@ class DatasetFilesController extends Controller
                 }
                 else {
                     $downloadHost = $ftpConfig['host'];
-                    $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} $downloadHost /app/sql/ /gigadbv3_{$optDate}.backup", $returnValue);
+                    $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} $downloadHost sql/ /gigadbv3_{$optDate}.backup", $returnValue);
                 }
                 if(0 !== $returnValue) {
                     throw new Exception("Failed downloading backup file for date $optDate".$lastLine);
