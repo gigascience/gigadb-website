@@ -12,7 +12,7 @@
 
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'dataset_id', array('class'=>'control-label')); ?>
-		<div class="controls">
+		<div class="controls" style="flex-direction: column;">
 			<?php echo CHtml::activeDropDownList($model,'dataset_id', $datasets); ?>
 			<?php echo $form->error($model,'dataset_id'); ?>
 		</div>
@@ -20,7 +20,7 @@
 
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'funder_id', array('class'=>'control-label')); ?>
-		<div class="controls">
+		<div class="controls" style="flex-direction: column;">
 			<?php echo CHtml::activeDropDownList($model,'funder_id', $funders); ?>
 			<?php echo $form->error($model,'funder_id'); ?>
 		</div>
@@ -28,7 +28,7 @@
 
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'grant_award', array('class'=>'control-label')); ?>
-		<div class="controls">
+		<div class="controls" style="flex-direction: column;">
 			<?php echo $form->textArea($model,'grant_award',array('rows'=>6, 'cols'=>50)); ?>
 			<?php echo $form->error($model,'grant_award'); ?>
 		</div>
@@ -36,7 +36,7 @@
         
         <div class="control-group">
 		<?php echo $form->labelEx($model,'awardee', array('class'=>'control-label')); ?>
-		<div class="controls">
+		<div class="controls" style="flex-direction: column;">
 			<?php echo $form->textArea($model,'awardee',array('rows'=>6, 'cols'=>50)); ?>
 			<?php echo $form->error($model,'awardee'); ?>
 		</div>
@@ -44,7 +44,7 @@
 
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'comments', array('class'=>'control-label')); ?>
-		<div class="control">
+		<div class="controls" style="flex-direction: column;">
 			<?php echo $form->textArea($model,'comments',array('rows'=>6, 'cols'=>50)); ?>
 			<?php echo $form->error($model,'comments'); ?>
 		</div>
