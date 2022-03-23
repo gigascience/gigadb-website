@@ -43,7 +43,7 @@ Feature: Reset password
 
   @ok
   Scenario: Check reset password functionality with valid token
-    When I am on "/site/reset?token=LcRiT6D70CBa1J9umjRMbgjhfE31Y3Bmd62qSvdm"
+    When I am on "/site/reset?token=6_WVbmz1e-nm6YPm2sTZc9SAkT7IlRgMtfgNFHj3"
     And I fill in the field of "name" "ResetPasswordForm[password]" with "Freed_From_Desire_GALA"
     And I fill in the field of "name" "ResetPasswordForm[confirmPassword]" with "Freed_From_Desire_GALA"
     And I press the button "Save"
