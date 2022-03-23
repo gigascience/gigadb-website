@@ -134,18 +134,19 @@ class ResetPasswordCest
         
         // Create database record with valid token for test
         $I->haveInDatabase('reset_password_request', [
-            'selector' => 'MBakd7kAwQXim10Ka1Hw',
-            'hashed_token' => '19P4d2SgN1t1ZqxgGKik5jFjZsUz0f/+HtlfiPIS5UM=',
+            'selector' => 'arzlAM3Xlum-i51oaOTZ',
+            // hashed_token below created from verifier string containing underscore and dash
+            'hashed_token' => 'jojP66DnaYR5yR1yN4KVLIZkaqgg2SD/IsoT2tOf0pU=',
             'requested_at' => '2022-03-01 01:53:23.000000',
             'expires_at' => '9999-03-01 02:53:23.000000',
             'gigadb_user_id' => $id
         ]);
 
         // Check database contains the selector of the token we want to use
-        $I->seeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => $id]);
+        $I->seeInDatabase('reset_password_request', ['selector' => 'arzlAM3Xlum-i51oaOTZ', 'gigadb_user_id' => $id]);
 
         // Fill in web form and submit
-        $targetUrl = "/site/reset?token=MBakd7kAwQXim10Ka1Hwf5EEpZ4WpNdv9mkEjKWW";
+        $targetUrl = "/site/reset?token=arzlAM3Xlum-i51oaOTZC_t-4S2kt4eT4OmU4NTX";
         $I->amOnPage($targetUrl);
         $I->fillField(['id' => 'ResetPasswordForm_password'], 'bar');
         $I->fillField(['id' => 'ResetPasswordForm_confirmPassword'], 'bar');
@@ -156,6 +157,6 @@ class ResetPasswordCest
         // Check flash message
         $I->see('Your password has been successfully reset. Please login again.');
         // Check website has deleted selector so it cannot be used again
-        $I->dontSeeInDatabase('reset_password_request', ['selector' => 'MBakd7kAwQXim10Ka1Hw', 'gigadb_user_id' => $id]);
+        $I->dontSeeInDatabase('reset_password_request', ['selector' => 'arzlAM3Xlum-i51oaOTZ', 'gigadb_user_id' => $id]);
     }
 }
