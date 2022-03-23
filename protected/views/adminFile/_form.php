@@ -89,10 +89,10 @@
             <a href="#" role="button" class="btn btn-attr">New Attribute </a>
             <br/>
             <div class="js-new-attr" style="display:none;">
-                <?php echo CHtml::activeDropDownList($attribute, 'attribute_id',CHtml::listData(Attribute::model()->findAll(),'id','attribute_name'), array('class'=>'attr-form','style'=>'margin-top: 10px;','empty'=>'Select name')); ?>
-                <?php echo $form->textField($attribute, 'value',array('class'=>'attr-form','style'=>'margin-top: 10px;'));?>
-                <?php echo CHtml::activeDropDownList($attribute, 'unit_id',CHtml::listData(Unit::model()->findAll(),'id','name'), array('class'=>'attr-form','style'=>'margin-top: 10px;','empty'=>'Select unit')); ?>
-                <input type="submit" class="btn" style="margin-top: 10px" "submit_attr" value="Add" />
+                <?php echo CHtml::activeDropDownList($attribute, 'attribute_id',CHtml::listData(Attribute::model()->findAll(),'id','attribute_name'), array('class'=>'attr-form', 'empty'=>'Select name')); ?>
+                <?php echo $form->textField($attribute, 'value',array('class'=>'attr-form'));?>
+                <?php echo CHtml::activeDropDownList($attribute, 'unit_id',CHtml::listData(Unit::model()->findAll(),'id','name'), array('class'=>'attr-form', 'empty'=>'Select unit')); ?>
+                <input type="submit" class="btn" name="submit_attr" value="Add" />
             </div>
             <br/>
             <?php if($model->fileAttributes) { ?>
