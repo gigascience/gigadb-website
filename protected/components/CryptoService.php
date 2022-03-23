@@ -5,7 +5,7 @@
  */
 class CryptoService extends yii\base\Component
 {
-    const RANDOM_ALPHA_NUMERIC_STRING_LENGTH = 20;
+    const RANDOM_STRING_LENGTH = 20;
 
     /**
      * Initializes application component.
@@ -35,9 +35,9 @@ class CryptoService extends yii\base\Component
      *
      * String length is 20 characters
      */
-    public static function getRandomAlphaNumStr()
+    public static function getRandomString()
     {
-        return Yii::$app->security->generateRandomString(self::RANDOM_ALPHA_NUMERIC_STRING_LENGTH);
+        return Yii::$app->security->generateRandomString(self::RANDOM_STRING_LENGTH);
     }
 }
 ?>
