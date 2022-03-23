@@ -1,0 +1,6 @@
+version: '3.7'
+services:
+  pg9_3:
+    image: postgres:9.3
+    ports:
+      - '6543:5432'

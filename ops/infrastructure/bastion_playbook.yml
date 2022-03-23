@@ -81,7 +81,13 @@
         - "../../../../gigadb/app/tools/files-url-updater/controllers"
         - "../../../../gigadb/app/tools/files-url-updater/models"
         - "../../../../gigadb/app/tools/files-url-updater/config"
-        - "../../../../gigadb/app/tools/files-url-updater/docker-compose.yml"
+
+    - name: Install docker-compose
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/files-url-updater/docker-compose.bastion.yml"
+        dest: /home/centos/files-url-updater/docker-compose.yml
+        owner: centos
+        group: centos
 
     - name: Install file for boostrapping database
       ansible.builtin.copy:
