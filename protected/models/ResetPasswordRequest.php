@@ -109,7 +109,6 @@ class ResetPasswordRequest extends CActiveRecord
         $this->verifier = Yii::app()->cryptoService->getRandomString();
         $hashedTokenOfVerifier = Yii::app()->cryptoService->getHashedToken($signingKey, $this->verifier);
         $this->hashed_token = $hashedTokenOfVerifier;
-        $this->selector = Yii::app()->cryptoService->getRandomString();
         $this->gigadb_user_id = $user->id;
         return $this->selector.$this->verifier;
     }
