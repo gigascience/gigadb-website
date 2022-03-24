@@ -122,7 +122,7 @@
         <?php } ?>
         <div class="pull-right">
             <a href="/adminFile/admin" class="btn">Cancel</a>
-            <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn', 'style'=>'margin-top: auto;')); ?>
+            <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn')); ?>
         </div>
         <?php $this->endWidget(); ?>
     </div>
