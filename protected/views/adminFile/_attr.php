@@ -10,6 +10,6 @@
 </td>
 <td>
     <div>
-	<input type="submit" class="btn" name="edit_attr" style="margin: auto;" value="Save"/>
+	<input type="submit" class="btn" name="edit_attr" value="Save"/>
     </div>
 </td>
