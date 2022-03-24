@@ -62,5 +62,6 @@ return array(
        
         // Email address of user account for deleted datasets
         'deleted_datasets_user_email' => '${DELETED_DATASETS_USER_EMAIL}',
+        'deleted_datasets_user_password' => '${DELETED_DATASETS_USER_PASSWORD}',
     ),
 );
