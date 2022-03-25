@@ -226,7 +226,9 @@ Policy Name: GigadbRDSAccess
                     "rds:pg-tag/Owner": "${aws:username}",
                     "aws:RequestedRegion": [
                         "ap-east-1",
-                        "ap-northeast-1"
+                        "ap-northeast-1",
+                        "ap-northeast-2",
+                        "eu-west-3"
                     ]
                 }
             }
