@@ -17,12 +17,6 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 <? } ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js"></script>
-<? if (Yii::app()->params['less_dev_mode']) { ?>
-    <link rel="stylesheet/less" type="text/css" href="/less/current.less?time=<?= time() ?>">
-    <? Yii::app()->clientScript->registerScriptFile('/js/less-1.3.0.min.js'); ?>
-<? } else { ?>
-    <link rel="stylesheet" type="text/css" href="/css/current.css"/>
-<? } ?>
 
 <?php $form=$this->beginWidget('CActiveForm', array(
     'id'=>'dataset-form',
@@ -48,7 +42,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'submitter_id',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->dropDownList($model,'submitter_id',CHtml::listData(User::model()->findAll(array('order'=>'email ASC')),'id','email')); ?>
+                            <?php echo $form->dropDownList($model,'submitter_id',CHtml::listData(User::model()->findAll(array('order'=>'email ASC')),'id','email'),array('style'=>'margin-top:-40px')); ?>
                             <?php echo $form->error($model,'submitter_id'); ?>
                         </div>
                     </div>
@@ -59,14 +53,14 @@ echo $form->hiddenField($model, "image_id");
                             $criteria = new CDbCriteria;
                             $criteria->condition='role=\'admin\' and email like \'%gigasciencejournal.com\''; 
                             ?>
-                            <?php echo $form->dropDownList($model,'curator_id',CHtml::listData(User::model()->findAll($criteria),'id','email'),array('prompt'=>'')); ?>
+                            <?php echo $form->dropDownList($model,'curator_id',CHtml::listData(User::model()->findAll($criteria),'id','email'),array('prompt'=>'','style'=>'margin-top:-40px')); ?>
                             <?php echo $form->error($model,'curator_id'); ?>
                         </div>
                     </div>
                      <div class="control-group">
                         <?php echo $form->labelEx($model,'manuscript_id',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model,'manuscript_id',array('size'=>60,'maxlength'=>200)); ?>
+                            <?php echo $form->textField($model,'manuscript_id',array('size'=>60,'maxlength'=>200,'style'=>'margin-top:-40px')); ?>
                             <?php echo $form->error($model,'manuscript_id'); ?>
                         </div>
                     </div>
@@ -74,7 +68,7 @@ echo $form->hiddenField($model, "image_id");
                         <?php echo $form->labelEx($model,'upload_status',array('class'=>'control-label')); ?>
                         <div class="controls">
                             <?php echo $form->dropDownList($model,'upload_status',Dataset::$availableStatusList,
-                                array('class'=>'js-pub', 'disabled'=>$model->upload_status == 'Published')); ?>
+                                array('class'=>'js-pub', 'disabled'=>$model->upload_status == 'Published','style'=>'margin-top:-40px')); ?>
                             <?php echo $form->error($model,'upload_status'); ?>
                         </div>
                     </div>
@@ -91,7 +85,7 @@ echo $form->hiddenField($model, "image_id");
                                         $checkedHtml = in_array($id,$checkedTypes,true) ? 'checked="checked"' : '';
                                         $checkboxId="Dataset_$datasetType";
                                         echo '<div class="controls">';
-                                        echo '<input id="'.$checkboxId.'" type="checkbox" name="datasettypes['.$id.']" value="1"'.$checkedHtml.'/>';
+                                        echo '<input id="'.$checkboxId.'" type="checkbox" name="datasettypes['.$id.']" value="1"'.$checkedHtml.' style="margin-top:-25px"/>';
                                         echo '</div>';
 //                                        echo '</div>';
 
@@ -105,7 +99,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'dataset_size',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model,'dataset_size',array('size'=>60,'maxlength'=>200)); ?> (bytes)
+                            <?php echo $form->textField($model,'dataset_size',array('size'=>60,'maxlength'=>200,'style'=>'margin-top:-40px')); ?> (bytes)
                             <?php echo $form->error($model,'dataset_size'); ?>
                         </div>
                     </div>
@@ -120,11 +114,11 @@ echo $form->hiddenField($model, "image_id");
                         $img_location = $model->image->location;
                         $no_img_url = 'https://assets.gigadb-cdn.net/images/datasets/no_image.png';
                         if($img_url){
-                            echo CHtml::image($img_url, $img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto;'));
-                            echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto;'));
+                            echo CHtml::image($img_url, $img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto; margin-top:-40px'));
+                            echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto; margin-top:-40px'));
                         } else {
-                            echo CHtml::image($no_img_url, $no_img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto;'));
-                            echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto;'));
+                            echo CHtml::image($no_img_url, $no_img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto; margin-top:-40px'));
+                            echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto; margin-top:-40px'));
 
                         }
                     ?>
@@ -133,7 +127,7 @@ echo $form->hiddenField($model, "image_id");
                         <?php if($img_url && $img_location !== "no_image.png" ){ ?>
                         <div class="controls">
                             <ul>
-                                <li style="list-style: none;"><?php echo CHtml::fileField('datasetImage'); ?></li>
+                                <li style="list-style: none;"><?php echo CHtml::fileField('datasetImage',); ?></li>
                                 <li style="list-style: none;"><?php echo CHtml::htmlButton('Remove image', ['id' => 'removeButton', 'class' => 'btn btn-sm']); ?></li>
                             </ul>
                         </div>
@@ -146,7 +140,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model->image,'url',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'url',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
+                            <?php echo $form->textField($model->image,'url',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
                             <?php echo $form->error($model->image,'url'); ?>
                         </div>
                     </div>
@@ -154,7 +148,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model->image,'source',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'source',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
+                            <?php echo $form->textField($model->image,'source',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
                             <?php echo $form->error($model->image,'source'); ?>
                         </div>
                     </div>
@@ -162,7 +156,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model->image,'tag',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'tag',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
+                            <?php echo $form->textField($model->image,'tag',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
                             <?php echo $form->error($model->image,'tag'); ?>
                         </div>
                     </div>
@@ -170,7 +164,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model->image,'license',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'license',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
+                            <?php echo $form->textField($model->image,'license',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
                             <?php echo $form->error($model->image,'license'); ?>
                         </div>
                     </div>
@@ -178,7 +172,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model->image,'photographer',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model->image,'photographer',array('class'=>'span4 meta-fields','style'=>'display:none')); ?>
+                            <?php echo $form->textField($model->image,'photographer',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
                             <?php echo $form->error($model->image,'photographer'); ?>
                         </div>
                     </div>
@@ -196,6 +190,7 @@ echo $form->hiddenField($model, "image_id");
                                                 'maxlength'=>32,
                                                 'disabled'=>$model->upload_status == 'Published',
                                                 'class' => "input-mini",
+                                                'style' => "margin-top:-30px",
                                                 'ajax' => array(
                                                     'type' => 'POST',
                                                     'url' => array('adminDataset/checkDOIExist'),
@@ -210,7 +205,7 @@ echo $form->hiddenField($model, "image_id");
                                                         }
                                                     }',
                                                 ),
-                                            )
+                                            ),
                                         ); ?>
                                         <?php echo $form->error($model,'identifier'); ?>
                                     </div>
@@ -263,7 +258,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'ftp_site',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model,'ftp_site',array('class'=>'span4','size'=>60,'maxlength'=>200, 'disabled'=>$model->upload_status == 'Published')); ?>
+                            <?php echo $form->textField($model,'ftp_site',array('class'=>'span4','size'=>60,'maxlength'=>200, 'disabled'=>$model->upload_status == 'Published', 'style'=>'margin-top:-40px')); ?>
                             <?php echo $form->error($model,'ftp_site'); ?>
                         </div>
                     </div>
@@ -271,7 +266,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'fairnuse',array('class'=>'control-label')); ?>
                         <div class="controls">
-                        <?php echo $form->textField($model,'fairnuse',array('class'=>'span4 date')); ?>
+                        <?php echo $form->textField($model,'fairnuse',array('class'=>'span4 date', 'style'=>'margin-top:-40px')); ?>
                         <?php echo $form->error($model,'fairnuse'); ?>
                         </div>
                     </div>
@@ -279,7 +274,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'publication_date',array('class'=>'control-label')); ?>
                         <div class="controls">
-                        <?php echo $form->textField($model,'publication_date',array('class'=>'span4 date js-date-pub', 'disabled'=>$model->upload_status == 'Published')); ?>
+                        <?php echo $form->textField($model,'publication_date',array('class'=>'span4 date js-date-pub', 'disabled'=>$model->upload_status == 'Published', 'style'=>'margin-top:-40px')); ?>
                         <?php echo $form->error($model,'publication_date'); ?>
                         </div>
                     </div>
@@ -287,7 +282,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'modification_date',array('class'=>'control-label')); ?>
                         <div class="controls">
-                        <?php echo $form->textField($model,'modification_date',array('class'=>'span4 date')); ?>
+                        <?php echo $form->textField($model,'modification_date',array('class'=>'span4 date', 'style'=>'margin-top:-40px')); ?>
                         <?php echo $form->error($model,'modification_date'); ?>
                         </div>
                     </div>
@@ -303,7 +298,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'title',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textField($model,'title',array('class'=>'span10', 'size'=>60,'maxlength'=>300)); ?>
+                            <?php echo $form->textField($model,'title',array('class'=>'span10', 'size'=>60,'maxlength'=>300, 'style'=>'margin-top:-40px')); ?>
                             <?php echo $form->error($model,'title'); ?>
                         </div>
                     </div>
@@ -311,7 +306,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'description',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->textArea($model,'description',array('class'=>'span10','rows'=>8, 'cols'=>50)); ?>
+                            <?php echo $form->textArea($model,'description',array('class'=>'span10','rows'=>8, 'cols'=>50, 'style'=>'margin-top:-40px')); ?>
                             <?php echo $form->error($model,'description'); ?>
                         </div>
                     </div>
@@ -326,7 +321,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo CHtml::label('URL to redirect','urltoredirect', array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class'=>'span10', 'size'=>60,'maxlength'=>300)); ?>
+                            <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class'=>'span10', 'size'=>60,'maxlength'=>300, 'style'=>'margin-top:-40px')); ?>
                         </div>
                     </div>
                 </div>
@@ -346,7 +341,7 @@ echo $form->hiddenField($model, "image_id");
 
 <div class="span12" style="text-align:center">
     <a href="<?=Yii::app()->createUrl('/adminDataset/admin')?>" class="btn"/>Cancel</a>
-    <?= CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn-green', 'style'=>'margin-top:auto;')); ?>
+    <?= CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn-green')); ?>
         <?php if( "hidden" === $datasetPageSettings->getPageType() ) { ?>
     <a href="<?=Yii::app()->createUrl('/adminDataset/private/identifier/'.$model->identifier)?>" class="btn-green"/>Create/Reset Private URL</a>
             <?php if($model->token){?>
