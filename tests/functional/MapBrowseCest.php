@@ -21,7 +21,7 @@ class MapBrowseCest
         $I->amOnPage("/site/mapbrowse");
         $I->seeResponseCodeIs(200);
         $pageSource = $I->grabPageSource();
-        $I->assertContains($expectPenguinCoordinateXY, $pageSource, "Penguin coordinate not found!");
-        $I->assertContains($expectFoxtailMilletCoordinateXY, $pageSource, "Foxtail Millet coordinate not found!");
+        $I->assertContains($expectPenguinCoordinateXY, $pageSource, "Adelie penguin's coordinates not found!");
+        $I->assertContains($expectFoxtailMilletCoordinateXY, $pageSource, "Foxtail Millet's coordinates not found!");
     }
 }
