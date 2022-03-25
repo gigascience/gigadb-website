@@ -67,7 +67,7 @@ $this->pageTitle='GigaDB - Map Browse';
                         },
                         "geometry":{
                           "type":"Point",
-                          "coordinates":[<?php echo trim($val[1]); ?> ,<?php echo trim($val[0]); ?>]
+                          "coordinates":[<?php echo trim($val[1]); ?>,<?php echo trim($val[0]); ?>]
                         }
                       },
 <?php
