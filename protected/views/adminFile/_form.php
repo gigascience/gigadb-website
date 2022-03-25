@@ -10,70 +10,70 @@
         <div class="control-group">
             <?php echo $form->labelEx($model,'dataset_id',array('class'=>'control-label')); ?>
             <div class="controls">
-                <?= CHtml::activeDropDownList($model,'dataset_id',CHtml::listData(Util::getDois(),'id','identifier')); ?>
+                <?= CHtml::activeDropDownList($model,'dataset_id',CHtml::listData(Util::getDois(),'id','identifier'), array('style'=>'margin-top:-40px')); ?>
                     <?php echo $form->error($model,'dataset_id'); ?>
             </div>
         </div>
         <div class="control-group">
             <?php echo $form->labelEx($model,'name',array('class'=>'control-label')); ?>
             <div class="controls">
-                <?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>100)); ?>
+                <?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>100,'style'=>'margin-top:-40px')); ?>
                 <?php echo $form->error($model,'name'); ?>
             </div>
         </div>
         <div class="control-group">
             <?php echo $form->labelEx($model,'location',array('class'=>'control-label')); ?>
             <div class="controls">
-                <?php echo $form->textField($model,'location',array('size'=>60,'maxlength'=>200)); ?>
+                <?php echo $form->textField($model,'location',array('size'=>60,'maxlength'=>200,'style'=>'margin-top:-40px')); ?>
                 <?php echo $form->error($model,'location'); ?>
             </div>
         </div>
         <div class="control-group">
             <?php echo $form->labelEx($model,'extension',array('class'=>'control-label')); ?>
             <div class="controls">
-                <?php echo $form->textField($model,'extension',array('size'=>30,'maxlength'=>30)); ?>
+                <?php echo $form->textField($model,'extension',array('size'=>30,'maxlength'=>30,'style'=>'margin-top:-40px')); ?>
                 <?php echo $form->error($model,'extension'); ?>
             </div>
         </div>
         <div class="control-group">
             <?php echo $form->labelEx($model,'size',array('class'=>'control-label')); ?>
             <div class="controls">
-                <?php echo $form->textField($model,'size'); ?>
+                <?php echo $form->textField($model,'size',array('style'=>'margin-top:-40px')); ?>
                 <?php echo $form->error($model,'size'); ?>
             </div>
         </div>
         <div class="control-group">
             <?php echo $form->labelEx($model,'description',array('class'=>'control-label')); ?>
             <div class="controls">
-                <?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
+                <?php echo $form->textArea($model,'description',array('rows'=>6,'cols'=>50,'style'=>'margin-top:-40px')); ?>
                 <?php echo $form->error($model,'description'); ?>
             </div>
         </div>
         <div class="control-group">
             <?php echo $form->labelEx($model,'date_stamp',array('class'=>'control-label')); ?>
             <div class="controls">
-                <?php echo $form->textField($model,'date_stamp' , array('class' => 'date')); ?>
+                <?php echo $form->textField($model,'date_stamp' ,array('class'=>'date','style'=>'margin-top:-40px')); ?>
                 <?php echo $form->error($model,'date_stamp'); ?>
             </div>
         </div>
         <div class="control-group">
             <?php echo $form->labelEx($model,'format_id',array('class'=>'control-label')); ?>
             <div class="controls">
-                <?= CHtml::activeDropDownList($model,'format_id',CHtml::listData(FileFormat::model()->findAll(),'id','name')); ?>
+                <?= CHtml::activeDropDownList($model,'format_id',CHtml::listData(FileFormat::model()->findAll(),'id','name'),array('style'=>'margin-top:-40px')); ?>
                     <?php echo $form->error($model,'format_id'); ?>
             </div>
         </div>
         <div class="control-group">
             <?php echo $form->labelEx($model,'type_id',array('class'=>'control-label')); ?>
             <div class="controls">
-                <?= CHtml::activeDropDownList($model,'type_id',CHtml::listData(FileType::model()->findAll(),'id','name')); ?>
+                <?= CHtml::activeDropDownList($model,'type_id',CHtml::listData(FileType::model()->findAll(),'id','name'),array('style'=>'margin-top:-40px')); ?>
                     <?php echo $form->error($model,'type_id'); ?>
             </div>
         </div>
         <div class="control-group">
             <?php echo $form->labelEx($model,'sample_name',array('class'=>'control-label')); ?>
             <div class="controls">
-                <?php echo $form->textField($model,'sample_name'); ?>
+                <?php echo $form->textField($model,'sample_name',array('style'=>'margin-top:-40px')); ?>
                 <?php echo $form->error($model,'sample_name'); ?>
             </div>
         </div>
