@@ -81,6 +81,7 @@
         - "../../../../gigadb/app/tools/files-url-updater/controllers"
         - "../../../../gigadb/app/tools/files-url-updater/models"
         - "../../../../gigadb/app/tools/files-url-updater/config"
+        - "../../../../gigadb/app/tools/files-url-updater/Dockerfile"
 
     - name: Install docker-compose
       ansible.builtin.copy:
@@ -92,6 +93,13 @@
     - name: Install file for boostrapping database
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/files-url-updater/sql/bootstrap_gigadb.sql"
+        dest: /home/centos/files-url-updater/sql/
+        owner: centos
+        group: centos
+
+    - name: Install file for database conversion
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/files-url-updater/sql/production8_1_restore.list"
         dest: /home/centos/files-url-updater/sql/
         owner: centos
         group: centos
@@ -219,3 +227,48 @@
         dest: /home/centos/.docker/key.pem
         owner: centos
         group: centos
+
+
+    - name: Create .env with private and public ip of dockerhost
+      template:
+        src: ../../../../gigadb/app/tools/files-url-updater/bastion-env.j2
+        dest: /home/centos/files-url-updater/.env
+        owner: root
+        group: root
+        mode: 0644
+
+
+    - name: Retrieve ftp hostname
+      ansible.builtin.uri:
+        url: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/cngbbackup_ftp_hostname"
+        method: GET
+        headers:
+          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+        status_code: 200
+      register: ftp_hostname
+
+    - name: Retrieve ftp username
+      ansible.builtin.uri:
+        url: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/cngbbackup_ftp_username"
+        method: GET
+        headers:
+          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+        status_code: 200
+      register: ftp_username
+
+    - name: Retrieve ftp password
+      ansible.builtin.uri:
+        url: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/cngbbackup_ftp_password"
+        method: GET
+        headers:
+          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+        status_code: 200
+      register: ftp_password
+
+    - name: Create params.php with credentials for database and ftp
+      template:
+        src: ../../../../gigadb/app/tools/files-url-updater/bastion-params.j2
+        dest: /home/centos/files-url-updater/config/params.php
+        owner: root
+        group: root
+        mode: 0644

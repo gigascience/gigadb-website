@@ -155,7 +155,7 @@ class DatasetFilesController extends Controller
             if(!$optNoRestore) {
 
                 // Check the backup file exists first, otherwise throw exception to cause exit
-                if (!file_exists("/app/sql/gigadbv3_$optDate.backup")) {
+                if (!file_exists("sql/gigadbv3_$optDate.backup")) {
                     throw new Exception("Backup file not found for date $optDate");
                 }
 

@@ -1,24 +1,34 @@
 #!/bin/sh
 
-REMOTE_DOCKER_HOST=13.37.111.73
+set +ex
+
+source ./.env
 
 # instantiate a container for a PostgreSQL 9.3 instance
 
-docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f docker-compose.yml up -d pg9_3
+docker-compose --tlsverify -H=$DOCKERHOST_PUBLIC_IP:2376 -f docker-compose.yml up -d pg9_3
+sleep 5
+docker-compose --tlsverify -H=$DOCKERHOST_PUBLIC_IP:2376 -f docker-compose.yml ps
+docker-compose --tlsverify -H=$DOCKERHOST_PUBLIC_IP:2376 -f docker-compose.yml logs pg9_3
+
+# init the database
+
+psql -h $DOCKERHOST_PRIVATE_IP -p 6543 -U postgres < ./sql/bootstrap_gigadb.sql
 
 # Run files-url-updater
 
-./yii dataset-files/download-restore-backup --latest
+echo yes | ./yii dataset-files/download-restore-backup --latest
 
 # Convert backup
 
-latest=$(date -v-1d +"%Y%m%d")
+latest=$(date --date="1 days ago" +"%Y%m%d")
 thedate=${1:-$latest}
-pg_dump --host=pg9_3 --username=gigadb  --clean --create --schema=public --no-privileges --no-tablespaces --dbname=gigadb --file=sql/gigadbv3_"$thedate"_v"$version".backup
+version=$(psql --version | cut -d' ' -f 3 | tr -d '\n' )
+pg_dump --host=$DOCKERHOST_PRIVATE_IP -p 6543  --username=gigadb  --clean --create --schema=public --no-privileges --no-tablespaces --dbname=gigadb --file=gigadbv3_"$thedate"_v"$version".backup
 
 # shut down the PostgreSQL 9.3 instance
 
-docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f docker-compose.yml down
+docker-compose --tlsverify -H=$DOCKERHOST_PUBLIC_IP:2376 -f docker-compose.yml down -v
 
 
 #TODO:
