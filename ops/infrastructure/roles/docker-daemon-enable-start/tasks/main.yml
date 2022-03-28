@@ -1,0 +1,11 @@
+- name: Allow centos user to use docker (add centos to group)
+  command: usermod -aG docker centos
+
+- name: Enable systemd service
+  command: systemctl enable docker
+
+- name: Reload systemd docker service
+  command: systemctl daemon-reload
+
+- name: Restart systemd docker service
+  command: systemctl restart docker.service
