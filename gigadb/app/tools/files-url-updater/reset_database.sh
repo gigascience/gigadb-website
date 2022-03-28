@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 set +ex
 
@@ -6,30 +6,35 @@ source ./.env
 
 # instantiate a container for a PostgreSQL 9.3 instance
 
-docker-compose --tlsverify -H=$DOCKERHOST_PUBLIC_IP:2376 -f docker-compose.yml up -d pg9_3
+docker-compose up -d pg9_3
 sleep 5
-docker-compose --tlsverify -H=$DOCKERHOST_PUBLIC_IP:2376 -f docker-compose.yml ps
-docker-compose --tlsverify -H=$DOCKERHOST_PUBLIC_IP:2376 -f docker-compose.yml logs pg9_3
+docker-compose ps
+docker-compose logs pg9_3
 
-# init the database
 
-psql -h $DOCKERHOST_PRIVATE_IP -p 6543 -U postgres < ./sql/bootstrap_gigadb.sql
+source ./.env
+
 
 # Run files-url-updater
 
-echo yes | ./yii dataset-files/download-restore-backup --latest
+echo yes | docker-compose run --rm updater ./yii dataset-files/download-restore-backup --latest
 
-# Convert backup
+# Convert backup using legacy postgresql client
 
 latest=$(date --date="1 days ago" +"%Y%m%d")
 thedate=${1:-$latest}
-version=$(psql --version | cut -d' ' -f 3 | tr -d '\n' )
-pg_dump --host=$DOCKERHOST_PRIVATE_IP -p 6543  --username=gigadb  --clean --create --schema=public --no-privileges --no-tablespaces --dbname=gigadb --file=gigadbv3_"$thedate"_v"$version".backup
+version=$(docker-compose run --rm updater psql --version | cut -d' ' -f 3 | tr -d '\n' )
+docker-compose run --rm updater pg_dump --host=pg9_3 -p 5432  --username=gigadb  --clean --create --schema=public --no-privileges --no-tablespaces --dbname=gigadb --file=gigadbv3_${thedate}_v${version}.backup
 
 # shut down the PostgreSQL 9.3 instance
 
-docker-compose --tlsverify -H=$DOCKERHOST_PUBLIC_IP:2376 -f docker-compose.yml down -v
+docker-compose down -v
 
+# Load the dump in RDS using native postgresql client
+
+export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "drop database if exists $DB_PG_DATABASE"
+export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "create database $DB_PG_DATABASE owner $DB_PG_USER"
+export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < gigadbv3_${thedate}_v${version}.backup
 
 #TODO:
 # * [ ] Ensure the files-url-updater config use correct DB credentials
