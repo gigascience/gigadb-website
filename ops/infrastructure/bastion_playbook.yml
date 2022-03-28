@@ -1,6 +1,8 @@
 ---
 # Use bastion server to restore PostgreSQL database on RDS instance
 
+
+
 - name: Fix Centos EOL issues
   hosts: name_bastion_server_staging*:name_bastion_server_live*
   roles:
@@ -82,13 +84,7 @@
         - "../../../../gigadb/app/tools/files-url-updater/models"
         - "../../../../gigadb/app/tools/files-url-updater/config"
         - "../../../../gigadb/app/tools/files-url-updater/Dockerfile"
-
-    - name: Install docker-compose
-      ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/files-url-updater/docker-compose.bastion.yml"
-        dest: /home/centos/files-url-updater/docker-compose.yml
-        owner: centos
-        group: centos
+        - "../../../../gigadb/app/tools/files-url-updater/docker-compose.yml"
 
     - name: Install file for boostrapping database
       ansible.builtin.copy:
@@ -158,78 +154,7 @@
       pip:
         name: docker-compose==1.23
 
-    - name: Ensure .docker directory exists
-      ansible.builtin.file:
-        path: /home/centos/.docker
-        state: directory
-        mode: '0755'
-        owner: centos
-        group: centos
-
-    - name: Download the CA pem to GITLAB CI environment variable
-      ansible.builtin.uri:
-        url: "{{ gitlab_url }}/variables/docker_tlsauth_ca?filter%5benvironment_scope%5d={{ gigadb_environment }}"
-        method: GET
-        headers:
-          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
-        status_code: 200
-      register: docker_ca_pem
-
-
-    - debug:
-        msg: "ca cert : {{ docker_ca_pem }}"
-
-    - name: Save CA pem to .docker directory
-      ansible.builtin.copy:
-        content: "{{docker_ca_pem | json_query('json.value') }}"
-        dest: /home/centos/.docker/ca.pem
-        owner: centos
-        group: centos
-
-
-    - name: Download the cert pem to GITLAB CI environment variable
-      ansible.builtin.uri:
-        url: "{{ gitlab_url }}/variables/docker_tlsauth_cert?filter%5benvironment_scope%5d={{ gigadb_environment }}"
-        method: GET
-        headers:
-          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
-        status_code: 200
-      register: docker_cert_pem
-
-    - debug:
-        msg: "cert : {{ docker_cert_pem }}"
-
-
-    - name: Save cert pem to .docker directory
-      ansible.builtin.copy:
-        content: "{{docker_cert_pem | json_query('json.value') }}"
-        dest: /home/centos/.docker/cert.pem
-        owner: centos
-        group: centos
-
-
-    - name: Download the key pem to GITLAB CI environment variable
-      ansible.builtin.uri:
-        url: "{{ gitlab_url }}/variables/docker_tlsauth_key?filter%5benvironment_scope%5d={{ gigadb_environment }}"
-        method: GET
-        headers:
-          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
-        status_code: 200
-      register: docker_key_pem
-
-    - debug:
-        msg: "cert : {{ docker_key_pem }}"
-
-
-    - name: Save key pem to .docker directory
-      ansible.builtin.copy:
-        content: "{{docker_key_pem | json_query('json.value') }}"
-        dest: /home/centos/.docker/key.pem
-        owner: centos
-        group: centos
-
-
-    - name: Create .env with private and public ip of dockerhost
+    - name: Create .env with RDS DSN
       template:
         src: ../../../../gigadb/app/tools/files-url-updater/bastion-env.j2
         dest: /home/centos/files-url-updater/.env
@@ -237,38 +162,11 @@
         group: root
         mode: 0644
 
-
-    - name: Retrieve ftp hostname
-      ansible.builtin.uri:
-        url: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/cngbbackup_ftp_hostname"
-        method: GET
-        headers:
-          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
-        status_code: 200
-      register: ftp_hostname
-
-    - name: Retrieve ftp username
-      ansible.builtin.uri:
-        url: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/cngbbackup_ftp_username"
-        method: GET
-        headers:
-          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
-        status_code: 200
-      register: ftp_username
-
-    - name: Retrieve ftp password
-      ansible.builtin.uri:
-        url: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/cngbbackup_ftp_password"
-        method: GET
-        headers:
-          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
-        status_code: 200
-      register: ftp_password
-
-    - name: Create params.php with credentials for database and ftp
-      template:
-        src: ../../../../gigadb/app/tools/files-url-updater/bastion-params.j2
-        dest: /home/centos/files-url-updater/config/params.php
-        owner: root
-        group: root
-        mode: 0644
+  roles:
+    - role: ../../roles/docker-install
+    - role: role-secure-docker-daemon
+      dds_host: "{{ ec2_bastion_public_ip }}"
+      dds_server_cert_path: /etc/docker
+      dds_restart_docker: no
+      dds_client_cert_path: /home/centos/.docker
+    - role: ../../roles/docker-daemon-enable-start
