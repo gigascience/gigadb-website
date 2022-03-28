@@ -33,7 +33,7 @@ if [ "envs/$target_environment" != `pwd | rev | cut -d"/" -f 1,2 | rev` ];then
 fi
 
 # copy files into the environment specific directory
-cp ../../dockerhost_playbook.yml .
+cp ../../webapp_playbook.yml .
 cp ../../bastion_playbook.yml .
 
 # Update Gitlab gigadb_db_host variable with RDS instance address from terraform-inventory

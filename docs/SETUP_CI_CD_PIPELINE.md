@@ -506,7 +506,7 @@ Where environment must be replaced by ``staging`` or ``live``.
 That script needs to be executed after ``ops/scripts/tf_init.sh`` has been run, as our script is dependent
 on the existence of an ``.init_env_vars`` file created by the latter.
 
-The `ansible_init.sh` script also makes a copy of `ops/infrastructure/dockerhost_playbook.yml`
+The `ansible_init.sh` script also makes a copy of `ops/infrastructure/webapp_playbook.yml`
 and `ops/infrastructure/bastion_playbook.yml` into the environment-specific 
 directory so the playbooks can be performed from environment specific directory. 
 This ansible script also updates the `gigadb_db_host` Gitlab variable with the 
@@ -518,7 +518,7 @@ Once dockerhost servers have been provisioned using terraform with ssh port rest
 
 Adding `ansible_ssh_common_args` in `/inventories/hosts` will make ansible to do the provisioning on dockerhost servers through bastion host.
 
-And prefixing the ansible commands with `TF_KEY_NAME=private_ip` to dockerhost_playbook.yml is essential as it would force dockerhost server to only accept a private ip entry,
+And prefixing the ansible commands with `TF_KEY_NAME=private_ip` to webapp_playbook.yml is essential as it would force dockerhost server to only accept a private ip entry,
 otherwise, `UNREACHEABLE !` would be occurred.
 
 ##### How to manually ssh to dockerhost through the bastion for debugging purpose
@@ -568,7 +568,7 @@ where ``environment`` is replaced by ``staging`` or ``live``, the environment fo
 Provision the EC2 instance using Ansible:
 ```
 $ cd ops/infrastructure/envs/staging
-$ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories dockerhost_playbook.yml
+$ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories webapp_playbook.yml
 ```
 
 >Note that that **name_gigadb_server_staging_<IAMUser>** must match the "Name" tag associated to the AWS EC2 resource defined in ``ops/infrastructure/modules/aws-instance/aws-instance.tf`` for the environment of interest (here ``staging``):
@@ -745,7 +745,7 @@ where you replace ``environment`` with ``staging`` or ``live``
 Ensure you are still in ``ops/infractructure/envs/staging`` or ``ops/infractructure/envs/live``
 
 ```
-$ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories dockerhost_playbook.yml
+$ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories webapp_playbook.yml
 $ ansible-playbook -i ../../inventories bastion_playbook.yml
 ```
 where you replace ``environment`` with ``staging`` or ``live``

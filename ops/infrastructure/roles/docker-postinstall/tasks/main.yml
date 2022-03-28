@@ -1,12 +1,7 @@
-- name: Allow centos user to use docker (add centos to group)
-  command: usermod -aG docker centos
-
-
 - name: Creates directory
   file:
     path: /etc/systemd/system/docker.service.d/
     state: directory
-
 
 - name: Create an override for docker systemd service
   template:
@@ -18,15 +13,6 @@
 
 - name: Enable systemd socket for unix socket access
   command: systemctl enable docker.socket
-
-- name: Enable systemd service
-  command: systemctl enable docker
-
-- name: Reload systemd docker service
-  command: systemctl daemon-reload
-
-- name: Restart systemd docker service
-  command: systemctl restart docker.service
 
 - name: Backup the CA
   fetch:
