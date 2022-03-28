@@ -74,9 +74,13 @@ Feature: a user visit the dataset page
     Then I should see an image "https://assets.gigadb-cdn.net/live/images/projects/genome_10k/G10Klogo.jpg" is linked to "http://www.genome10k.org/"
     And I should see an image "https://assets.gigadb-cdn.net/live/images/projects/the_avian_phylogenomic_project/phylogenomiclogo.png" is linked to "http://avian.genomics.cn/en/index.html"
 
-  @wip @issue-940
+  @ok @issue-940
   Scenario: Keywords in lower case
     Given I have not signed in
     When I am on "/dataset/100142"
-    Then I should see "sql"
-    And I should see "sequence read archive"
+    Then I should see keyword "sql"
+    And I should see keyword "sequence read archive"
+    And I should see keyword "metadata"
+    And I should see keyword "experimental protocol"
+    And I should not see keyword "SQL"
+    And I should not see keyword "Sequence Read Archive"

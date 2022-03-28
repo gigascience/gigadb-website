@@ -248,6 +248,22 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see keyword :keyword
+     */
+    public function iShouldSeeKeyword($keyword)
+    {
+        $this->see($keyword, "//a[@href='/search/new?keyword=$keyword']");
+    }
+
+    /**
+     * @Then I should not see keyword :keyword
+     */
+    public function iShouldNotSeeKeyword($keyword)
+    {
+        $this->dontSee($keyword, "//a[@href='/search/new?keyword=$keyword']");
+    }
+
+    /**
      * @Then I should be on :path
      */
     public function iShouldBeOn($path)
