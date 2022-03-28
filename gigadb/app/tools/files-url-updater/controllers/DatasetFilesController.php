@@ -20,51 +20,51 @@ class DatasetFilesController extends Controller
     /**
      * @var bool $config if true return the DB and FTP configuration values
      */
-    public $config = false;
+    public bool $config = false;
 
     /**
      * @var bool $latest use the day before yesterday which is the latest date of available backup
      */
-    public $latest = false;
+    public bool $latest = false;
 
     /**
      * @var bool default use the default backup
      */
-    public $default = false;
+    public bool $default = false;
 
     /**
      * @var string $date the yyyymmdd for which to retrieve a production backup
      */
-    public $date = "";
+    public string $date = "";
 
     /**
      * @var int $next get list of next $next pending datasets
      */
-    public $next = 0;
+    public int $next = 0;
     /**
      * @var int $after dataset id only pending datasets after this one are returned
      */
-    public $after = 0;
+    public int $after = 0;
 
     /**
      * @var bool true if dry run mode is activated, false otherwise (default)
      */
-    public $dryrun = false;
+    public bool $dryrun = false;
 
     /**
      * @var bool if true no attempt will be made to download the production database backup
      */
-    public $nodownload = false;
+    public bool $nodownload = false;
 
     /**
      * @var bool if true no attempt will be made to restore the production database backup
      */
-    public $norestore = false;
+    public bool $norestore = false;
 
     /**
      * @var bool true to show the full audit of transformation
      */
-    public $verbose = false;
+    public bool $verbose = false;
 
     public function options($actionID)
     {

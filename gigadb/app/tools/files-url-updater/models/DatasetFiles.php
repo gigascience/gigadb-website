@@ -31,7 +31,7 @@ class DatasetFiles extends \Yii\base\BaseObject {
     /**
      * @var bool $dryRun flag to indicate whether the dry run mode is activated (true) or not (false, the default)
      */
-    public $dryRun = false;
+    public bool $dryRun = false;
 
     /**
      * Factory for this class
