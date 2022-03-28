@@ -81,8 +81,8 @@ $sampleDataProvider = $samples->getDataProvider() ;
                     <p>Keywords:</p>
                     <ul class="list-inline">
                     <? foreach( $mainSection->getKeywords() as $keyword_link ){
-                        $keyword_link = strtolower($keyword_link);
-                        echo "<li>$keyword_link</li>";
+                        $keyword_link_lowercase = strtolower($keyword_link);
+                        echo "<li>$keyword_link_lowercase</li>";
                     }
                     ?>
                     </ul>
