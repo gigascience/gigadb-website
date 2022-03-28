@@ -39,7 +39,7 @@ module "db" {
   create_db_option_group    = false
   create_db_parameter_group = false
 
-  parameter_group_name      = (var.deployment_target == "staging" ? "gigadb-db-param-group" : null)
+  parameter_group_name      = (var.deployment_target == "staging" ? "gigadb-db-param-group-${var.owner}" : null)
   engine                    = "postgres"
   engine_version            = "11.13"
   family                    = "postgres11"  # DB parameter group
@@ -59,7 +59,7 @@ module "db" {
 
 resource "aws_db_parameter_group" "gigadb-db-param-group" {
   count = var.deployment_target == "staging" ? 1 : 0
-  name = "gigadb-db-param-group"
+  name = "gigadb-db-param-group-${var.owner}"
   family = "postgres11"
 
   parameter {
