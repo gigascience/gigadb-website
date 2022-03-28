@@ -93,7 +93,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 2"
 
-  name = "vpc-ape1-${var.deployment_target}-gigadb"
+  name = "vpc-${var.aws_region}-${var.deployment_target}-gigadb"
   # CIDR block is a range of IPv4 addresses in the VPC. This cidr block below 
   # means that the main route table has the following routes: Destination = 
   # 10.99.0.0/18 , Target = local
