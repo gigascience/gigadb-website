@@ -65,13 +65,16 @@
         name: php, php-json, php-mbstring, git, zip, unzip, php-zip, ncftp
         state: latest
 
-    - name: Create a sql directory if it does not exist
+    - name: Create a sql and converted directories if they do not exist
       ansible.builtin.file:
-        path: /home/centos/files-url-updater/sql
+        path: "{{ item }}"
         state: directory
         mode: '0755'
         owner: centos
         group: centos
+      loop:
+        - "/home/centos/files-url-updater/sql"
+        - "/home/centos/files-url-updater/converted"
 
     - name: Install codebase for files-url-updater
       ansible.builtin.copy:
