@@ -98,7 +98,7 @@ module "vpc" {
   # means that the main route table has the following routes: Destination = 
   # 10.99.0.0/18 , Target = local
   cidr = "10.99.0.0/18"
-  
+
   # VPC spans all the availability zones in region
   azs = data.aws_availability_zones.available.names
 
@@ -132,7 +132,7 @@ module "vpc" {
   # You can enable communication from internet to RDS is via an internet gateway
   # to provide public access to RDS instance, but is not recommended for 
   # production! These parameters are all false so no public access to RDS
-  create_database_subnet_group = false
+  create_database_subnet_group = true
   create_database_subnet_route_table = false
   create_database_internet_gateway_route = false
 
@@ -150,51 +150,59 @@ module "vpc" {
   # one_nat_gateway_per_az = false
 }
 
+output "vpc_id" {
+  value = module.vpc.vpc_id
+}
+
+output "vpc_database_subnet_group" {
+  value = module.vpc.database_subnet_group
+}
+
 
 
 # EC2 instance for hosting Docker Host
-module "ec2_dockerhost" {
-  source = "../../modules/aws-instance"
+#module "ec2_dockerhost" {
+#  source = "../../modules/aws-instance"
+#
+#  owner = data.external.callerUserName.result.userName
+#  deployment_target = var.deployment_target
+#  key_name = var.key_name
+#  eip_tag_name = "eip-gigadb-${var.deployment_target}-${data.external.callerUserName.result.userName}"
+#  vpc_id = module.vpc.vpc_id
+#  # Locate Dockerhost EC2 instance in public subnet so users can access website 
+#  # container app
+#  public_subnet_id = module.vpc.public_subnets[0]
+#}
 
-  owner = data.external.callerUserName.result.userName
-  deployment_target = var.deployment_target
-  key_name = var.key_name
-  eip_tag_name = "eip-gigadb-${var.deployment_target}-${data.external.callerUserName.result.userName}"
-  vpc_id = module.vpc.vpc_id
-  # Locate Dockerhost EC2 instance in public subnet so users can access website 
-  # container app
-  public_subnet_id = module.vpc.public_subnets[0]
-}
-
-output "ec2_public_ip" {
-  value = module.ec2_dockerhost.instance_public_ip_addr
-}
-
-output "ec2_private_ip" {
-  value = module.ec2_dockerhost.instance_ip_addr
-}
+#output "ec2_public_ip" {
+#  value = module.ec2_dockerhost.instance_public_ip_addr
+#}
+#
+#output "ec2_private_ip" {
+#  value = module.ec2_dockerhost.instance_ip_addr
+#}
 
 # EC2 instance for bastion server to access RDS for PostgreSQL admin
-module "ec2_bastion" {
-  source = "../../modules/bastion-aws-instance"
+#module "ec2_bastion" {
+#  source = "../../modules/bastion-aws-instance"
+#
+#  owner = data.external.callerUserName.result.userName
+#  deployment_target = var.deployment_target
+#  key_name = var.key_name
+#
+#  # Bastion instance goes into a public subnet for developer access
+#  vpc_id = module.vpc.vpc_id
+#  public_subnet_id = module.vpc.public_subnets[0]
+#}
 
-  owner = data.external.callerUserName.result.userName
-  deployment_target = var.deployment_target
-  key_name = var.key_name
-
-  # Bastion instance goes into a public subnet for developer access
-  vpc_id = module.vpc.vpc_id
-  public_subnet_id = module.vpc.public_subnets[0]
-}
-
-output "ec2_bastion_private_ip" {
-  value = module.ec2_bastion.bastion_private_ip
-}
-
-output "ec2_bastion_public_ip" {
-  description = "Public IP address of the EC2 bastion instance"
-  value = module.ec2_bastion.bastion_public_ip
-}
+#output "ec2_bastion_private_ip" {
+#  value = module.ec2_bastion.bastion_private_ip
+#}
+#
+#output "ec2_bastion_public_ip" {
+#  description = "Public IP address of the EC2 bastion instance"
+#  value = module.ec2_bastion.bastion_public_ip
+#}
 
 # RDS instance for hosting GigaDB's PostgreSQL database
 module "rds" {
@@ -211,6 +219,7 @@ module "rds" {
 
   vpc_id = module.vpc.vpc_id
   rds_subnet_ids = module.vpc.database_subnets
+  vpc_database_subnet_group = module.vpc.database_subnet_group
 
   gigadb_db_database = var.gigadb_db_database
   gigadb_db_user = var.gigadb_db_user

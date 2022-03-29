@@ -21,6 +21,10 @@ module "security_group" {
   ]
 }
 
+output "rds_security_group_vpc_id" {
+  value = var.vpc_id
+}
+
 module "db" {
   source = "terraform-aws-modules/rds/aws"
   identifier = "rds-server-${var.deployment_target}-${var.owner}"
@@ -33,7 +37,8 @@ module "db" {
   password               = var.gigadb_db_password
   port                   = 5432
 
-  subnet_ids             = var.rds_subnet_ids
+  #  subnet_ids             = var.rds_subnet_ids
+  db_subnet_group_name   = var.vpc_database_subnet_group
   vpc_security_group_ids = [module.security_group.security_group_id]
 
   create_db_option_group    = false
