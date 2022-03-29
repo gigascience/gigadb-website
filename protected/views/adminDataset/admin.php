@@ -80,15 +80,15 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		// 'excelfile',
 		// 'excelfile_md5',
 		'publication_date',
-		// array('name'=> 'curator_id', 'value'=>'$data->getCuratorName()'),
+		 array('name'=> 'curator_id', 'value'=>'$data->getCuratorName()'),
                 'modification_date',
-        array(
+         array(
             'class'=>'CDataColumn',
             'header' => "Upload Status",
             'headerHtmlOptions'=>array('style'=>'width: 150px'),
             'value'  => '$data->upload_status'
-        ),
-		array(
+         ),
+		 array(
 			'class'=>'CButtonColumn',
 			'header' => "Actions",
 			'headerHtmlOptions'=>array('style'=>'width: 100px'),
