@@ -23,7 +23,7 @@ class PasswordResetTokenUserIdentity extends UserIdentity {
     public function __construct($urlToken)
     {
         $this->urlToken = $urlToken;
-        $this->random_string_length = Yii::app()->cryptoService::RANDOM_STRING_LENGTH;
+        $this->random_string_length = CryptoService::RANDOM_STRING_LENGTH;
     }
 
     /**
