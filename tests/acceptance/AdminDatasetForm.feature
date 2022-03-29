@@ -97,6 +97,11 @@ Feature: form to update dataset details
     And I press the button "Create"
     Then I am on "dataset/view/id/400789"
     And I should see an image located in "/images/datasets/bgi_logo_new.png"
+    
+  @ok @issue-996
+  Scenario: Can see Curator ID column
+    When I am on "adminDataset/admin"
+    Then I should see "Curator Id"
 
 
     
