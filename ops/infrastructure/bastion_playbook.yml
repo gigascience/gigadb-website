@@ -56,7 +56,7 @@
         group: centos
 
 
-- name: Load latest DB backup every day
+- name: Setup files-url-updater so to load latest DB backup in RDS daily
   hosts: name_bastion_server_staging*:name_bastion_server_live*
 
   tasks:
@@ -170,3 +170,20 @@
       dds_restart_docker: no
       dds_client_cert_path: /home/centos/.docker
     - role: ../../roles/docker-daemon-enable-start
+
+- name: Load latest DB backup
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+
+  tasks:
+  - name: Load latest database into this environment's RDS intance
+    ansible.builtin.shell: "./reset_database.sh"
+    args:
+      chdir: /home/centos/files-url-updater
+      executable: /bin/bash
+    register: reset_database_output
+
+  - debug:
+      msg: "reset database stdout : {{ reset_database_output.stdout }}"
+
+  - debug:
+      msg: "reset database stderr : {{ reset_database_output.stderr }}"
