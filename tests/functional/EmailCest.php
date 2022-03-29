@@ -17,6 +17,50 @@ class EmailCest
     }
 
     /**
+     * Integration test to check email containing password reset link is sent 
+     * to new user after user creation
+     *
+     * @param FunctionalTester $I
+     * @throws \Codeception\Exception\ModuleException
+     */
+    public function trySendPasswordEmail(FunctionalTester $I)
+    {
+        // Create database record for user
+        $id = $I->haveInDatabase('gigadb_user', [
+            'email' => 'xyzzy@mailinator.com',
+            'password' => '5a4f75053077a32e681f81daa8792f95',
+            'first_name' => 'IAM',
+            'last_name' => 'Xyzzy',
+            'affiliation' => 'BGI',
+            'role' => 'user',
+            'is_activated' => 'true',
+            'newsletter' => 'false',
+            'previous_newsletter_state' => 'true',
+            'username' => 'xyzzy@mailinator.com',
+            'preferred_link' => 'EBI',
+        ]);
+        codecept_debug("gigadb user: ".$id);
+        
+        $targetUrl = "/site/forgot";
+
+        // Fill in web form and submit
+        $I->amOnPage($targetUrl);
+        $I->fillField(['id' => 'ForgotPasswordForm_email'], 'xyzzy@mailinator.com');
+        $I->click('Reset');
+        // Pressing Register button results in GigaDB website
+        // going to /site/thanks page
+        $I->seeInCurrentUrl("/site/thanks");
+        $I->see('Reset Password Request Submitted', 'h4');
+        // Now extract URLs from email sent to user
+        $urls = $I->grabUrlsFromLastEmail();
+        codecept_debug($urls);
+        // These URLs should contain one user activation link
+        $url_matches = preg_grep('/^http:\/\/gigadb.test\/site\/reset/', $urls);
+        codecept_debug($url_matches);
+        $I->assertCount(1, $url_matches, "User reset password link in email was not found");
+    }
+
+    /**
      * Integration test to check email containing activation link is sent to new 
      * user after user creation
      * 

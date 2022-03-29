@@ -17,6 +17,13 @@ $this->breadcrumbs=array(
        </div>
    </section>
 	<div class="subsection row" style="margin-bottom: 130px;">
+        <div class="col-xs-12">
+            <?php if(Yii::app()->user->hasFlash('success-reset-password')): ?>
+                <div class="alert alert-success">
+                    <?php echo Yii::app()->user->getFlash('success-reset-password'); ?>
+                </div>
+            <?php endif; ?>
+        </div>
             <div class="col-xs-6">
                 <div class="subsection-login">
                     <p><?=Yii::t('app' , 'Please fill out the following form with your login credentials:')?></p>
@@ -46,7 +53,7 @@ $this->breadcrumbs=array(
                     <div class="checkbox" style="padding-top: 0;">
                         <?= $form->checkBox($model,'rememberMe') ?>
                         <?= $form->label($model,'rememberMe', array('disabled'=>"disabled")) ?>
-                        <?= CHtml::link(Yii::t('app' , "Lost Password"), array('user/reset', 'username'=>$model->username,'style'=>'float:right')) ?>
+                        <?= CHtml::link(Yii::t('app' , "Lost Password"), array('site/forgot')) ?>
                          <a href="/user/create" style="float:right;">Create account</a>
                     </div>
                 </div>

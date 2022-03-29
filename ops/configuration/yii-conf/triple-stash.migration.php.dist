@@ -1,0 +1,26 @@
+{{! A handlebars template to generate Yii migration scripts}}
+<?php
+
+class {{ class_name }} extends CDbMigration
+{
+    public function safeUp()
+    {
+    {{#each safeup_data}}
+        $this->insert('{{ ../table_name }}', array(
+        {{#each this}}
+        {{#if this}}
+            '{{@key}}' => '{{{this}}}',
+        {{/if}}
+        {{/each}}
+        ));
+    {{/each}}
+    }
+
+    public function safeDown()
+    {
+        $ids = array({{#each safedown_data}}'{{this}}',{{/each}});
+        foreach ($ids as $id) {
+            $this->delete('{{table_name}}', 'id=:id', array(':id' => $id));
+        }
+    }
+}

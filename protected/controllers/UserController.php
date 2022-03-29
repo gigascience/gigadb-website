@@ -29,10 +29,10 @@ class UserController extends Controller {
      */
     public function accessRules() {
         return array(
-            array('allow',  // all users
-                'actions'=>array('create', 'confirm', 'welcome',
-                				'reset', 'resetThanks',
-                                'sendActivationEmail','emailWelcome','emailReset'),
+            array('allow',  # all users
+                'actions'=>array(
+                    'create', 'confirm', 'welcome',
+                    'sendActivationEmail', 'emailWelcome'),
                 'users'=>array('*'),
             ),
             array('allow', # logged in users
@@ -264,64 +264,6 @@ class UserController extends Controller {
         $this->render('activationNeeded', array('user'=>$this->loadUser())) ;
     }
 
-    # Look up user and reset password
-    public function actionReset() {
-        $this->layout='new_main';
-        $user = new User;
-        $user->newsletter=false;
-    	$user->email='';
-        $user->terms=false;
-        //$this->render('reset',array('user'=>$this->loadUser())) ;
-        if (isset($_POST['User'])) {
-        
-            $attrs = $_POST['User'];
-            $user = User::model()->findByAttributes(array('email' => trim($attrs['email'])));
-            if ($user !== null) {
-                Yii::log(__FUNCTION__."> reset found user $user->email", 'debug');
-                $user->password = $user->generatePassword(8);
-                $user->is_activated=true;
-                $user->terms= $attrs['terms'];
-                $user->newsletter= $attrs['newsletter'];
-                $user->encryptPassword();
-
-                if ($user->save(false)) {
-                    Yii::log("Update password and prepare to send email");
-                    $this->sendPasswordEmail($user);
-                }
-                else {
-                    Yii::log(__FUNCTION__."> Error: could not save new user password", 'error');
-                }
-            }
-            else {
-                Yii::log(__FUNCTION__."> User account not found for user ", 'error');
-            }
-            $this->redirect(array('user/resetThanks'));
-        }
-        $this->render('reset', array('model'=>$user));
-    }
-
-    public function actionResetThanks() {
-        $this->render('resetThanks');
-    }
-
-    # Reset password and send it to user in email
-    public function actionLostPass() {
-        $user = $this->loadUser();
-        if (isset($_POST['User'])) {
-            $user->attributes = $_POST['User'];
-            $user->password = $user->generatePassword(8);
-            $user->encryptPassword();
-
-            if ($user->save()) {
-                $this->sendPasswordEmail($user);
-            }
-            else {
-                Yii::log("Error saving new user password", 'error');
-            }
-        }
-        $this->render('lostpass', array('user'=>$user)) ;
-    }
-
     public function actionView_Profile() {
         $model = new EditProfileForm();
         $this->layout="new_main";
@@ -434,32 +376,8 @@ class UserController extends Controller {
         Yii::log("Sent account activation email to $recipient, $subject");
     }
 
-    // Send password email
-    private function sendPasswordEmail($user) {
-        Yii::log(__FUNCTION__."> First step send email");
-        $app_email_name = Yii::app()->params['app_email_name'];
-        $app_email = Yii::app()->params['app_email'];
-        $email_prefix = Yii::app()->params['email_prefix'];
-        $headers = "From: $app_email_name <$app_email>\r\n"; //optional header fields
-        $headers .= "Content-type: text/html\r\n";
-        ini_set('sendmail_from', $app_email);
-
-        $recipient = $user->email;
-        $subject = $email_prefix . "Password reset";
-        $password_unhashed = $user->passwordUnHashed;
-        $url = $this->createAbsoluteUrl('site/login');
-        $url= $url."?username=".$user->email."&password=".$password_unhashed."&redirect=yes";
-        $body = $this->renderPartial('emailReset',array('url'=>$url,'password_unhashed'=>$password_unhashed,'user'=>$user->id),true);
-        $this->mailsend($recipient,'database@gigasciencejournal.com',$subject,$body);
-        Yii::log(__FUNCTION__."> Sent email to $recipient, $subject");
-    }
-
     public function actionEmailWelcome() {
         $this->renderPartial('emailWelcome');
-    }
-
-    public function actionEmailReset() {
-        $this->renderPartial('emailReset');
     }
 
 
@@ -513,41 +431,7 @@ EO_MAIL;
             $this->refresh();
         }
     }
-
-    public function mailsend($to,$from,$subject,$message){
-        ob_start();
-        Yii::log( __FUNCTION__."mail send function");
-        $mail = new PHPMailer();
-        Yii::log( __FUNCTION__."mail send function.......1");
-        //$mail->SMTPDebug = 2;
-        $mail->IsSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = 'tls';
-
-        $mail->Port = '587';
-        Yii::log( __FUNCTION__."mail send function2");
-
-        $mail->Username = Yii::app()->params['app_email'];
-        $mail->Password = Yii::app()->params['email_password'];;
-        $mail->SetFrom($from,'GigaDB');
-        $mail->Subject = $subject;
-        $mail->MsgHTML($message);
-        $mail->addAddress($to, "");
-        $mail->isHTML(true);
-        $mail->addEmbeddedImage('images/email/top.gif', 'top');
-        $mail->addEmbeddedImage('images/email/logo.gif', 'logo');
-        $mail->addEmbeddedImage('images/email/bottom.gif', 'bottom');
-
-
-        Yii::log( __FUNCTION__."mail send function3");
-        if(!$mail->Send()) {
-            Yii::log( __FUNCTION__."Mailer Error: " . $mail->ErrorInfo);
-        }
-        $mail->ClearAddresses(); //clear addresses for next email sendin
-        ob_end_flush();
-    }
-
+    
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
