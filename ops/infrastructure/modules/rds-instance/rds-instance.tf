@@ -40,7 +40,7 @@ module "db" {
   create_db_option_group    = false
   create_db_parameter_group = false
 
-  parameter_group_name      = (var.deployment_target == "staging" ? "gigadb-db-param-group-${var.owner}" : null)
+  parameter_group_name      = (var.deployment_target == "staging" ? aws_db_parameter_group.gigadb-db-param-group[0].name : null)
   engine                    = "postgres"
   engine_version            = "11.13"
   family                    = "postgres11"  # DB parameter group
