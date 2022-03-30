@@ -156,6 +156,7 @@
         hour: "10"
         user: "centos"
         job: "cd /home/centos/files-url-updater ; ./reset_database.sh 2> $HOME/logs/errors.log 1> $HOME/logs/output.log"
+        state: "{{ reset_database_cronjob_state }}"
 
     - name: Install docker-compose
       pip:
