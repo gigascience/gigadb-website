@@ -122,13 +122,16 @@
         owner: centos
         group: centos
 
-    - name: Create a bin directory (for composer) if it does not exist
+    - name: Create a bin and log directory (for composer and cronjob logging) if it does not exist
       ansible.builtin.file:
-        path: /home/centos/bin
+        path: "/home/centos/{{ item }}"
         state: directory
         mode: '0755'
         owner: centos
         group: centos
+      loop:
+        - "bin"
+        - "logs"
 
     - name: Setup composer
       ansible.builtin.command: "/home/centos/files-url-updater/setup_composer.sh"
@@ -148,10 +151,11 @@
 
     - name: Setup cronjob to reset database daily after a new backup is available on the ftp server
       ansible.builtin.cron:
-        name: "Reset database every night after a new backup is available on the ftp server"
-        minute: "30"
+        name: "Reset database every day after a new backup is available on the ftp server"
+        minute: "05"
         hour: "10"
-        job: "/home/centos/reset_database.sh > /dev/null"
+        user: "centos"
+        job: "cd /home/centos/files-url-updater ; ./reset_database.sh 2> $HOME/logs/errors.log 1> $HOME/logs/output.log"
 
     - name: Install docker-compose
       pip:
