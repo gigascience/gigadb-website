@@ -229,6 +229,6 @@ module "rds" {
   # of bastion server and ec2_dockerhost instance.
 }
 
-output "rds_instance_address" {
-  value = module.rds.rds_instance_address
-}
+#output "rds_instance_address" {
+#  value = module.rds.rds_instance_address
+#}
