@@ -158,51 +158,49 @@ output "vpc_database_subnet_group" {
   value = module.vpc.database_subnet_group
 }
 
-
-
 # EC2 instance for hosting Docker Host
-#module "ec2_dockerhost" {
-#  source = "../../modules/aws-instance"
-#
-#  owner = data.external.callerUserName.result.userName
-#  deployment_target = var.deployment_target
-#  key_name = var.key_name
-#  eip_tag_name = "eip-gigadb-${var.deployment_target}-${data.external.callerUserName.result.userName}"
-#  vpc_id = module.vpc.vpc_id
-#  # Locate Dockerhost EC2 instance in public subnet so users can access website 
-#  # container app
-#  public_subnet_id = module.vpc.public_subnets[0]
-#}
+module "ec2_dockerhost" {
+  source = "../../modules/aws-instance"
 
-#output "ec2_public_ip" {
-#  value = module.ec2_dockerhost.instance_public_ip_addr
-#}
-#
-#output "ec2_private_ip" {
-#  value = module.ec2_dockerhost.instance_ip_addr
-#}
+  owner = data.external.callerUserName.result.userName
+  deployment_target = var.deployment_target
+  key_name = var.key_name
+  eip_tag_name = "eip-gigadb-${var.deployment_target}-${data.external.callerUserName.result.userName}"
+  vpc_id = module.vpc.vpc_id
+  # Locate Dockerhost EC2 instance in public subnet so users can access website 
+  # container app
+  public_subnet_id = module.vpc.public_subnets[0]
+}
+
+output "ec2_public_ip" {
+  value = module.ec2_dockerhost.instance_public_ip_addr
+}
+
+output "ec2_private_ip" {
+  value = module.ec2_dockerhost.instance_ip_addr
+}
 
 # EC2 instance for bastion server to access RDS for PostgreSQL admin
-#module "ec2_bastion" {
-#  source = "../../modules/bastion-aws-instance"
-#
-#  owner = data.external.callerUserName.result.userName
-#  deployment_target = var.deployment_target
-#  key_name = var.key_name
-#
-#  # Bastion instance goes into a public subnet for developer access
-#  vpc_id = module.vpc.vpc_id
-#  public_subnet_id = module.vpc.public_subnets[0]
-#}
+module "ec2_bastion" {
+  source = "../../modules/bastion-aws-instance"
 
-#output "ec2_bastion_private_ip" {
-#  value = module.ec2_bastion.bastion_private_ip
-#}
-#
-#output "ec2_bastion_public_ip" {
-#  description = "Public IP address of the EC2 bastion instance"
-#  value = module.ec2_bastion.bastion_public_ip
-#}
+  owner = data.external.callerUserName.result.userName
+  deployment_target = var.deployment_target
+  key_name = var.key_name
+
+  # Bastion instance goes into a public subnet for developer access
+  vpc_id = module.vpc.vpc_id
+  public_subnet_id = module.vpc.public_subnets[0]
+}
+
+output "ec2_bastion_private_ip" {
+  value = module.ec2_bastion.bastion_private_ip
+}
+
+output "ec2_bastion_public_ip" {
+  description = "Public IP address of the EC2 bastion instance"
+  value = module.ec2_bastion.bastion_public_ip
+}
 
 # RDS instance for hosting GigaDB's PostgreSQL database
 module "rds" {
@@ -229,6 +227,6 @@ module "rds" {
   # of bastion server and ec2_dockerhost instance.
 }
 
-#output "rds_instance_address" {
-#  value = module.rds.rds_instance_address
-#}
+output "rds_instance_address" {
+  value = module.rds.rds_instance_address
+}
