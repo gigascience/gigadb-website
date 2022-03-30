@@ -28,6 +28,7 @@ output "rds_security_group_vpc_id" {
 resource "aws_db_parameter_group" "gigadb-db-param-group" {
   count = var.deployment_target == "staging" ? 1 : 0
   name = "gigadb-db-param-group-${var.owner}"
+  description = "DB parameter group for staging server"
   family = "postgres11"
 
   parameter {
