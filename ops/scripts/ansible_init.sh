@@ -66,5 +66,18 @@ echo "deployment_target = $deployment_target" >> ansible.properties
 echo "gitlab_project = $gitlab_project" >> ansible.properties
 echo "ssh_private_key_file = $aws_ssh_key" >> ansible.properties
 echo "gitlab_private_token= $GITLAB_PRIVATE_TOKEN" >> ansible.properties
-echo "ec2_bastion_login_account= centos@$(terraform output ec2_bastion_public_ip | sed 's/"//g')" >> ansible.properties
 
+
+# Retrieve ips of provisioned ec2 instances
+bastion_ip=$(terraform output ec2_bastion_public_ip | sed 's/"//g')
+webapp_ip=$(terraform output ec2_private_ip | sed 's/"//g')
+
+echo "ec2_bastion_login_account= centos@$bastion_ip" >> ansible.properties
+
+# Add newly created vms to known host file
+# Remove old key
+ssh-keygen -R $bastion_ip
+ssh-keygen -R $webapp_ip
+# Add the new key
+ssh-keyscan -t ecdsa $bastion_ip >> ~/.ssh/known_hosts
+ssh -i $aws_ssh_key centos@$bastion_ip ssh-keyscan -t ecdsa $webapp_ip >> ~/.ssh/known_hosts
