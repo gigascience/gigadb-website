@@ -30,6 +30,7 @@ module "db" {
 
   db_name                = var.gigadb_db_database
   username               = var.gigadb_db_user
+  create_random_password = false
   password               = var.gigadb_db_password
   port                   = 5432
 
