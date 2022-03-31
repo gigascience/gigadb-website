@@ -19,9 +19,7 @@ class MapBrowseCest
         $expectFoxtailMilletCoordinateXY = implode(',', array_reverse(explode(',',$expectFoxtailMilletCoordinate)));
 
         $I->amOnPage("/site/mapbrowse");
-        $I->seeResponseCodeIs(200);
-        $pageSource = $I->grabPageSource();
-        $I->assertContains($expectPenguinCoordinateXY, $pageSource, "Adelie penguin's coordinates not found!");
-        $I->assertContains($expectFoxtailMilletCoordinateXY, $pageSource, "Foxtail Millet's coordinates not found!");
+        $I->canSeeInSource($expectPenguinCoordinateXY);
+        $I->canSeeInSource($expectFoxtailMilletCoordinateXY);
     }
 }
