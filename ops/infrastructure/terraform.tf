@@ -129,10 +129,11 @@ module "vpc" {
     Name = "subnet-database"
   }
 
-  # You can enable communication from internet to RDS is via an internet gateway
-  # to provide public access to RDS instance, but is not recommended for 
-  # production! These parameters are all false so no public access to RDS
+  # RDS instance will be launched into database subnet
   create_database_subnet_group = true
+  # You can enable communication from internet to RDS via an internet gateway
+  # to provide public access to RDS instance, but is not recommended for 
+  # production! The parameters below are all false so no public access to RDS
   create_database_subnet_route_table = false
   create_database_internet_gateway_route = false
 
