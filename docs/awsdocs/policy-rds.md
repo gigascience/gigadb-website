@@ -18,8 +18,7 @@ Policy Name: GigadbRDSAccess
             "Sid": "AllowEC2Describe",
             "Effect": "Allow",
             "Action": [
-                "ec2:Describe*",
-                "ec2:DescribeSubnets"
+                "ec2:Describe*"
             ],
             "Resource": "*"
         },
@@ -60,7 +59,7 @@ Policy Name: GigadbRDSAccess
             }
         },
         {
-            "Sid": "CreateRDSInstance",
+            "Sid": "CreateResourcesforRDSInstances",
             "Effect": "Allow",
             "Action": [
                 "iam:CreateRole",
@@ -80,10 +79,13 @@ Policy Name: GigadbRDSAccess
                 "ec2:ModifyVpcAttribute",
                 "ec2:GetManagedPrefixListEntries",
                 "ec2:AssociateSubnetCidrBlock",
+                "ec2:GetManagedPrefixListAssociations",
+                "ec2:CreateNatGateway",
+                "rds:CreateDBParameterGroup",
                 "rds:CreateDBSubnetGroup",
                 "rds:AddTagsToResource",
-                "ec2:GetManagedPrefixListAssociations",
-                "ec2:CreateNatGateway"
+                "rds:ModifyDBParameterGroup",
+                "ram:GetResourceShareAssociations"
             ],
             "Resource": "*"
         },
@@ -91,10 +93,7 @@ Policy Name: GigadbRDSAccess
             "Sid": "CreateRDSInstancesWithRegionAndInstanceTypeRestriction",
             "Effect": "Allow",
             "Action": [
-                "rds:CreateDBInstance",
-                "rds:CreateDBParameterGroup",
-                "rds:DeleteDBParameterGroup",
-                "rds:DownloadCompleteDBLogFile"
+                "rds:CreateDBInstance"
             ],
             "Resource": "*",
             "Condition": {
@@ -103,26 +102,10 @@ Policy Name: GigadbRDSAccess
                     "rds:DatabaseClass": "db.t3.micro",
                     "aws:RequestedRegion": [
                         "ap-east-1",
-                        "ap-northeast-1"
+                        "ap-northeast-1",
+                        "ap-northeast-2",
+                        "eu-west-3"
                     ]
-                }
-            }
-        },
-        {
-            "Sid": "CreateRDSInstancesWithOwnerTagRestriction",
-            "Effect": "Allow",
-            "Action": [
-                "rds:CreateDBInstance",
-                "rds:CreateDBParameterGroup",
-                "rds:ModifyDBParameterGroup",
-                "rds:ResetDBParameterGroup",
-                "rds:DeleteDBParameterGroup",
-                "rds:DownloadCompleteDBLogFile"
-            ],
-            "Resource": "*",
-            "Condition": {
-                "StringEqualsIgnoreCase": {
-                    "aws:RequestTag/Owner": "${aws:username}"
                 }
             }
         },
@@ -165,7 +148,7 @@ Policy Name: GigadbRDSAccess
             }
         },
         {
-            "Sid": "DeleteDBSubnetWithOwnerTagRestriction",
+            "Sid": "ManageDBSubnetsWithOwnerTagRestriction",
             "Action": [
                 "rds:ModifyDBSubnetGroup",
                 "rds:DeleteDBSubnetGroup",
@@ -212,10 +195,8 @@ Policy Name: GigadbRDSAccess
             }
         },
         {
-            "Sid": "ManageDBParameterGroupWithOwnerTagRestriction",
+            "Sid": "ManageDBParameterGroupsWithOwnerTagRestriction",
             "Action": [
-                "rds:CreateDBParameterGroup",
-                "rds:ModifyDBParameterGroup",
                 "rds:ResetDBParameterGroup",
                 "rds:DeleteDBParameterGroup"
             ],
@@ -223,11 +204,7 @@ Policy Name: GigadbRDSAccess
             "Resource": "*",
             "Condition": {
                 "StringEqualsIgnoreCase": {
-                    "rds:pg-tag/Owner": "${aws:username}",
-                    "aws:RequestedRegion": [
-                        "ap-east-1",
-                        "ap-northeast-1"
-                    ]
+                    "rds:pg-tag/Owner": "${aws:username}"
                 }
             }
         },

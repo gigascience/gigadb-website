@@ -37,7 +37,7 @@ cp ../../dockerhost_playbook.yml .
 cp ../../bastion_playbook.yml .
 
 # Update Gitlab gigadb_db_host variable with RDS instance address from terraform-inventory
-rds_inst_addr=$(../../inventories/terraform-inventory.sh --list | jq -r '.all.vars.rds_instance_address')
+rds_inst_addr=$(../../inventories/terraform-inventory.sh --list ./ | jq -r '.all.vars.rds_instance_address')
 curl -s --request PUT --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_host?filter%5benvironment_scope%5d=$target_environment" --form "value=$rds_inst_addr"
 
 # Update properties file with values from GitLab so Ansible can configure the services

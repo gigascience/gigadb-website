@@ -93,12 +93,12 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 2"
 
-  name = "vpc-ape1-${var.deployment_target}-gigadb"
+  name = "vpc-${var.aws_region}-${var.deployment_target}-gigadb-${data.external.callerUserName.result.userName}"
   # CIDR block is a range of IPv4 addresses in the VPC. This cidr block below 
   # means that the main route table has the following routes: Destination = 
   # 10.99.0.0/18 , Target = local
   cidr = "10.99.0.0/18"
-  
+
   # VPC spans all the availability zones in region
   azs = data.aws_availability_zones.available.names
 
@@ -129,10 +129,11 @@ module "vpc" {
     Name = "subnet-database"
   }
 
-  # You can enable communication from internet to RDS is via an internet gateway
+  # RDS instance will be launched into database subnet
+  create_database_subnet_group = true
+  # You can enable communication from internet to RDS via an internet gateway
   # to provide public access to RDS instance, but is not recommended for 
-  # production! These parameters are all false so no public access to RDS
-  create_database_subnet_group = false
+  # production! The parameters below are all false so no public access to RDS
   create_database_subnet_route_table = false
   create_database_internet_gateway_route = false
 
@@ -150,7 +151,13 @@ module "vpc" {
   # one_nat_gateway_per_az = false
 }
 
+output "vpc_id" {
+  value = module.vpc.vpc_id
+}
 
+output "vpc_database_subnet_group" {
+  value = module.vpc.database_subnet_group
+}
 
 # EC2 instance for hosting Docker Host
 module "ec2_dockerhost" {
@@ -211,6 +218,7 @@ module "rds" {
 
   vpc_id = module.vpc.vpc_id
   rds_subnet_ids = module.vpc.database_subnets
+  vpc_database_subnet_group = module.vpc.database_subnet_group
 
   gigadb_db_database = var.gigadb_db_database
   gigadb_db_user = var.gigadb_db_user
