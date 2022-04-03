@@ -138,7 +138,7 @@ class DatasetFilesController extends Controller
                 }
                 else {
                     $downloadHost = $ftpConfig['host'];
-                    $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} $downloadHost sql/ /gigadbv3_{$optDate}.backup", $returnValue);
+                    $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} $downloadHost /app/sql/ /gigadbv3_{$optDate}.backup", $returnValue);
                 }
                 if(0 !== $returnValue) {
                     throw new Exception("Failed downloading backup file for date $optDate".$lastLine);
@@ -155,7 +155,7 @@ class DatasetFilesController extends Controller
             if(!$optNoRestore) {
 
                 // Check the backup file exists first, otherwise throw exception to cause exit
-                if (!file_exists("sql/gigadbv3_$optDate.backup")) {
+                if (!file_exists("/app/sql/gigadbv3_$optDate.backup")) {
                     throw new Exception("Backup file not found for date $optDate");
                 }
 
