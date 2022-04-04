@@ -3,7 +3,7 @@ id,sample_id,attribute_id,value,unit_id
 10334,154,376,1.32,
 12414,154,314,BGI,
 13005,154,270,"Antarctica, Inexpressible Island, Ross Sea",
-13192,154,269,not recorded,
+13192,154,269,"-60.345999,-45.295999",
 14787,154,320,LC,
 15808,154,277,diploid,
 16172,154,319,"David Lambert, Griffith University",
@@ -12,3 +12,4 @@ id,sample_id,attribute_id,value,unit_id
 17659,154,282,not available,
 18645,154,315,UBERON:0000178(blood),
 25716,154,316,PYGAD,
+27789,432,269,"38.0360,114.4698",
