@@ -28,8 +28,7 @@ class ImageTest extends \Codeception\Test\Unit
         $imageName = "bgi_logo_new.png";
         $tempName = __DIR__ . "/../_data/" . $imageName;
         $expectedOptions = [ 'visibility' => AdapterInterface::VISIBILITY_PUBLIC ];
-        $expectedTargetLocation = "dev/images/datasets/$imageName";
-        $expectedImageLocation = "https://".Image::BUCKET."/$expectedTargetLocation";
+        $expectedTargetLocationPattern = "/images\/datasets\/$imageName/"; //use regex so test works on dev and CI environments
 
         $sut = new Image(); // System Under Test
 
@@ -46,12 +45,15 @@ class ImageTest extends \Codeception\Test\Unit
             ->getMock();
         $mockStorageTarget->expects( $this->once())
             ->method("put")
-            ->with($expectedTargetLocation, file_get_contents($tempName), $expectedOptions )
+            ->with($this->matchesRegularExpression($expectedTargetLocationPattern), file_get_contents($tempName), $expectedOptions )
             ->willReturn(true);
 
         $this->assertTrue($sut->write($mockStorageTarget, $mockDatasetImage));
         $this->assertEquals($imageName, $sut->location);
-        $this->assertEquals($expectedImageLocation, $sut->url);
+        $urlArray = parse_url($sut->url); // we compare by URL component because root directory varies with environments
+        $this->assertEquals("https", $urlArray["scheme"]);
+        $this->assertEquals(Image::BUCKET, $urlArray["host"]);
+        $this->assertRegExp($expectedTargetLocationPattern, $urlArray["path"]);
 
     }
 
@@ -64,7 +66,7 @@ class ImageTest extends \Codeception\Test\Unit
         $imageName = "bgi_logo_new.png";
         $tempName = __DIR__ . "/../_data/" . $imageName;
         $expectedOptions = [ 'visibility' => AdapterInterface::VISIBILITY_PUBLIC ];
-        $expectedTargetLocation = "dev/images/datasets/$imageName";
+        $expectedTargetLocationPattern = "/images\/datasets\/$imageName/";
 
         $sut = new Image(); // System Under Test
 
@@ -81,7 +83,7 @@ class ImageTest extends \Codeception\Test\Unit
             ->getMock();
         $mockStorageTarget->expects( $this->once())
             ->method("put")
-            ->with($expectedTargetLocation, file_get_contents($tempName), $expectedOptions )
+            ->with($this->matchesRegularExpression($expectedTargetLocationPattern), file_get_contents($tempName), $expectedOptions )
             ->willReturn(false);
 
         $this->assertFalse($sut->write($mockStorageTarget, $mockDatasetImage));
