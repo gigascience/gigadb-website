@@ -1,6 +1,9 @@
 
 <?php
 
+use \creocoder\flysystem\Filesystem;
+use League\Flysystem\AdapterInterface;
+
 /**
  * This is the model class for table "image".
  * Note: I have to change this Model to Images instead of Image because of this name is conflict with Image.php in the Extension
@@ -20,6 +23,9 @@ class Image extends CActiveRecord
 {
     /** @const int  database id of the generic image (no_image.png) */
     const GENERIC_IMAGE_ID = 0 ;
+
+    /** @const string bucket name when storage is in the cloud  */
+    const BUCKET = "assets.gigadb-cdn.net";
 
     /**
      * Returns the static model of the specified AR class.
@@ -83,5 +89,27 @@ class Image extends CActiveRecord
             'source' => 'Image Source',
             'image_upload' => 'Upload Image',
         );
+    }
+
+
+    /**
+     * write an image to the desired (Flysystem managed) storage mechanism and update url property with the location
+     *
+     * @param Filesystem $targetStorage
+     * @param CUploadedFile $uploadedFile
+     * @return bool
+     */
+    public function write(Filesystem $targetStorage, CUploadedFile $uploadedFile): bool
+    {
+        $imagePath = Yii::$app->params["environment"]."/images/datasets/".$uploadedFile->getName();
+        if ( $targetStorage->put($imagePath, file_get_contents($uploadedFile->getTempName()), [
+            'visibility' => AdapterInterface::VISIBILITY_PUBLIC
+        ]) ) {
+            $this->location = $uploadedFile->getName();
+            $this->url = "https://".self::BUCKET."/$imagePath" ;
+            return true;
+        }
+        Yii::log("Error attempting to write image to the storage","error");
+        return false;
     }
 }

@@ -90,11 +90,9 @@ class AdminDatasetController extends Controller
                 Yii::log("action Create: image form data exists and a file has been uploaded, so creating a new image object","warning");
                 $dataset->image->attributes = $_POST['Image'];
                 Yii::log($datasetImage->getTempName(), "warning");
-                $imageDir = Yii::$app->params["environment"]."/images/datasets/";
-                Yii::$app->cloudStore->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()), [
-                    'visibility' => AdapterInterface::VISIBILITY_PUBLIC
-                ]);
-                $dataset->image->url = "https://assets.gigadb-cdn.net/$imageDir".$datasetImage->name;
+                if( ! $dataset->image->write(Yii::$app->cloudStore, $datasetImage) ) {
+                    Yii::log("Error writing file to storage for dataset ".$dataset->identifier, "error");
+                }
             } else { //we use the generic image
                 $dataset->image = Image::model()->findByPk(Image::GENERIC_IMAGE_ID);
                 Yii::log("action Create: Using generic image","warning");
@@ -304,11 +302,9 @@ class AdminDatasetController extends Controller
             $model->image->attributes = $_POST['Image'];
 
             if($datasetImage) {
-                $imageDir = Yii::$app->params["environment"]."/images/datasets/";
-                Yii::$app->cloudStore->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()), [
-                    'visibility' => AdapterInterface::VISIBILITY_PUBLIC
-                ]);
-                $model->image->url = "https://assets.gigadb-cdn.net/$imageDir".$datasetImage->name;
+                if( ! $model->image->write(Yii::$app->cloudStore, $datasetImage) ) {
+                    Yii::log("Error writing file to storage for dataset ".$model->identifier, "error");
+                }
                 // save image
                 if( $model->image->save() ) {
                     $model->image_id = $model->image->id;
