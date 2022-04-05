@@ -65,7 +65,7 @@ Feature: form to update dataset details
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     And I press the button "Save"
     Then I am on "/dataset/100094"
-    And I should see an image located in "/images/datasets/bgi_logo_new.png"
+    And I should see an image located in "/images/datasets/9febbdcf-3f7c-5558-abaa-448e633a109d/bgi_logo_new.png"
 
   @ok
   Scenario: Can display dataset image, meta data and remove image button in update page
@@ -126,9 +126,8 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
-    Then I wait "1" seconds
-    And I should see current url contains "/dataset/400789/token/"
-    And I should see an image located in "/images/datasets/bgi_logo_new.png"
+    Then I am on "dataset/view/id/400789"
+    And I should see an image located in "/images/datasets/e166c2a0-3684-5209-bccd-c4b18ff87be9/bgi_logo_new.png"
 
   @ok @issue-1023
   Scenario: To confirm the upload status of published dataset has changed to incomplete

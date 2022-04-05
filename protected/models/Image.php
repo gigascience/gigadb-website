@@ -3,6 +3,7 @@
 
 use \creocoder\flysystem\Filesystem;
 use League\Flysystem\AdapterInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * This is the model class for table "image".
@@ -96,12 +97,13 @@ class Image extends CActiveRecord
      * write an image to the desired (Flysystem managed) storage mechanism and update url property with the location
      *
      * @param Filesystem $targetStorage
+     * @param string $enclosingDirectory
      * @param CUploadedFile $uploadedFile
      * @return bool
      */
-    public function write(Filesystem $targetStorage, CUploadedFile $uploadedFile): bool
+    public function write(Filesystem $targetStorage, string $enclosingDirectory, CUploadedFile $uploadedFile): bool
     {
-        $imagePath = Yii::$app->params["environment"]."/images/datasets/".$uploadedFile->getName();
+        $imagePath = Yii::$app->params["environment"]."/images/datasets/$enclosingDirectory/".$uploadedFile->getName();
         if ( $targetStorage->put($imagePath, file_get_contents($uploadedFile->getTempName()), [
             'visibility' => AdapterInterface::VISIBILITY_PUBLIC
         ]) ) {

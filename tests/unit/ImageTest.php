@@ -3,6 +3,7 @@
 use CUploadedFile;
 use creocoder\flysystem\AwsS3Filesystem;
 use League\Flysystem\AdapterInterface;
+use Ramsey\Uuid\Uuid;
 
 class ImageTest extends \Codeception\Test\Unit
 {
@@ -25,10 +26,11 @@ class ImageTest extends \Codeception\Test\Unit
      */
     public function testWriteWithSuccess()
     {
+        $datasetUuid = Uuid::uuid4(); //random UUID
         $imageName = "bgi_logo_new.png";
         $tempName = __DIR__ . "/../_data/" . $imageName;
         $expectedOptions = [ 'visibility' => AdapterInterface::VISIBILITY_PUBLIC ];
-        $expectedTargetLocationPattern = "/images\/datasets\/$imageName/"; //use regex so test works on dev and CI environments
+        $expectedTargetLocationPattern = "/images\/datasets\/$datasetUuid\/$imageName/"; //use regex so test works on dev and CI environments
 
         $sut = new Image(); // System Under Test
 
@@ -48,7 +50,8 @@ class ImageTest extends \Codeception\Test\Unit
             ->with($this->matchesRegularExpression($expectedTargetLocationPattern), file_get_contents($tempName), $expectedOptions )
             ->willReturn(true);
 
-        $this->assertTrue($sut->write($mockStorageTarget, $mockDatasetImage));
+        $this->assertTrue($sut->write($mockStorageTarget, $datasetUuid, $mockDatasetImage));
+
         $this->assertEquals($imageName, $sut->location);
         $urlArray = parse_url($sut->url); // we compare by URL component because root directory varies with environments
         $this->assertEquals("https", $urlArray["scheme"]);
@@ -63,10 +66,11 @@ class ImageTest extends \Codeception\Test\Unit
      */
     public function testWriteWithoutSuccess()
     {
+        $datasetUuid = Uuid::uuid4();
         $imageName = "bgi_logo_new.png";
         $tempName = __DIR__ . "/../_data/" . $imageName;
         $expectedOptions = [ 'visibility' => AdapterInterface::VISIBILITY_PUBLIC ];
-        $expectedTargetLocationPattern = "/images\/datasets\/$imageName/";
+        $expectedTargetLocationPattern = "/images\/datasets\/$datasetUuid\/$imageName/"; //use regex so test works on dev and CI environments
 
         $sut = new Image(); // System Under Test
 
@@ -86,7 +90,7 @@ class ImageTest extends \Codeception\Test\Unit
             ->with($this->matchesRegularExpression($expectedTargetLocationPattern), file_get_contents($tempName), $expectedOptions )
             ->willReturn(false);
 
-        $this->assertFalse($sut->write($mockStorageTarget, $mockDatasetImage));
+        $this->assertFalse($sut->write($mockStorageTarget, $datasetUuid, $mockDatasetImage));
 
     }
 

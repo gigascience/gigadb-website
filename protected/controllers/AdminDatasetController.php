@@ -90,7 +90,7 @@ class AdminDatasetController extends Controller
                 Yii::log("action Create: image form data exists and a file has been uploaded, so creating a new image object","warning");
                 $dataset->image->attributes = $_POST['Image'];
                 Yii::log($datasetImage->getTempName(), "warning");
-                if( ! $dataset->image->write(Yii::$app->cloudStore, $datasetImage) ) {
+                if( ! $dataset->image->write(Yii::$app->cloudStore, $dataset->getUuid(), $datasetImage) ) {
                     Yii::log("Error writing file to storage for dataset ".$dataset->identifier, "error");
                 }
             } else { //we use the generic image
@@ -302,7 +302,7 @@ class AdminDatasetController extends Controller
             $model->image->attributes = $_POST['Image'];
 
             if($datasetImage) {
-                if( ! $model->image->write(Yii::$app->cloudStore, $datasetImage) ) {
+                if( ! $model->image->write(Yii::$app->cloudStore, $model->getUuid(), $datasetImage) ) {
                     Yii::log("Error writing file to storage for dataset ".$model->identifier, "error");
                 }
                 // save image
