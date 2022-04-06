@@ -1,0 +1,11 @@
+develop.zip
+bin
+configuration
+lib
+logFiles
+metadataDir
+sqlFiles
+src
+uploadDir
+*.log
+time.txt
