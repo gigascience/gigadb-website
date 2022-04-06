@@ -1,13 +1,48 @@
 # ExceltoGigaDB
 
+## Preparation
+
+Download consultant's tool as a zip file:
 ```
-# Download consultant's tool
-curl -L -O https://github.com/gigascience/ExceltoGigaDB/archive/develop.zip
-# Unpack contents
-bsdtar --strip-components=1 -xvf develop.zip
-# Execute tool
-docker-compose run --rm uploader ./run.sh
+$ curl -L -O https://github.com/gigascience/ExceltoGigaDB/archive/develop.zip
 ```
+
+Unpack contents in zip file:
+```
+# -k stops README.md from being over-written
+$ bsdtar -k --strip-components=1 -xvf develop.zip
+```
+
+Your dev environment GigaDB website needs to be running so execute the command
+below in the root directory of your `gigadb-website` repo:
+```
+$ ./up.sh
+```
+As part of the `./up.sh` process, new data will be added into the `species` and
+`external_link_type` tables from their csv files in `data/dev` directory which 
+are required  for running the Excel upload tool.
+
+## Tool execution
+
+There is an example Excel spreadsheet file `100679newversion.xls` in the 
+`uploadDir` directory. The metadata provides information about an Eucalytpus 
+dataset which can be uploaded into your `dev` GigaDB using the commands below:
+```
+# Go to tool directory
+$ cd gigadb/app/tools/excel-spreadsheet-uploader
+$ docker-compose run --rm uploader ./run.sh
+```
+
+The tool will generated `javac.log` and `java.log` files which provide 
+information about the upload process.
+
+If the tool as successfully executed then you can see the uploaded dataset in 
+the GigaDB website. Log into your local GigaDB website with the 
+`admin@gigadb.org` account and then go to http://gigadb.gigasciencejournal.com:9170/adminDataset/update/id/701. You should see the dataset admin page for
+the new `Dataset 100679`. Also, checkout the `dataset` table in the PostgreSQL
+database.
+
+---
 
 Convert excel spreadsheet to sql file into GigaDB database
 
