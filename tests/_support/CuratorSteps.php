@@ -17,6 +17,18 @@ class CuratorSteps extends \Codeception\Actor
         $this->I = $I;
     }
 
+    public static function uploadDatasetSpreadsheet($spreadsheet_filename)
+    {
+        
+        
+        print_r("Terminating DB Backend...".PHP_EOL);
+        $sql = "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='${dbname}' and pid <> pg_backend_pid()";
+        $dbconn = pg_connect("host=database dbname=postgres user=gigadb password=vagrant port=5432") or die('Could not connect: ' . pg_last_error());
+        pg_query($dbconn, $sql);
+        pg_close($dbconn);
+
+    }
+
     /**
      * @Given there is no user with email :email
      */

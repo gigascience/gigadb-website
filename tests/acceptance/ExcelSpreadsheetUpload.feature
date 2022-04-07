@@ -1,7 +1,7 @@
 Feature: Excel spreadsheet upload
   As a curator
-  I want to use the consultant's tool to upload new metadata about a dataset
-  So that new metadata for the dataset is stored in GigaDB
+  I want to use the consultant's tool to upload metadata for a new dataset
+  So that the dataset metadata is stored in GigaDB
 
   Background:
     Given I have signed in as admin
