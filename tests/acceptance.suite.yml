@@ -36,9 +36,10 @@ modules:
                       args: ['--headless']
                       w3c: false
                   "goog:loggingPrefs":
-                      browser: ALL
+                    browser: ALL
                   "loggingPrefs":
                       browser: ALL
+                  "unexpectedAlertBehaviour": "accept"
     step_decorators: ~
 
 gherkin:
