@@ -114,6 +114,13 @@ echo "gigadb_db_user=\"$gigadb_db_user\"" >> terraform.tfvars
 gigadb_db_password=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_password?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
 echo "gigadb_db_password=\"$gigadb_db_password\"" >> terraform.tfvars
 
+
+# Check that if the gitlab project is in the Forks group, it must match .env's $REPO_NAME to avoid overwriting some else remote TF state
+if [[ $gitlab_project =~ /forks/ && ! $gitlab_project =~ $REPO_NAME ]];then
+  echo "Your project ($gitlab_project) is in Forks group but it doesn't match your repo ($REPO_NAME)"
+  exit 1
+fi
+
 # Initialise a remote terraform state on GitLab
 
 terraform init \
