@@ -114,4 +114,15 @@ class Image extends CActiveRecord
         Yii::log("Error attempting to write image to the storage","error");
         return false;
     }
+
+
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            $parts = parse_url($this->url);
+            return Yii::$app->cloudStore->delete($parts["path"]);
+        }
+        return false;
+
+    }
 }

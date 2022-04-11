@@ -427,8 +427,14 @@ class AdminDatasetController extends Controller
         $result['status'] = false;
         if (isset($_POST['doi'])) {
             $model = Dataset::model()->findByAttributes([ 'identifier' => $_POST['doi'] ]);
+            $oldImageID = $model->image_id;
             $model->image_id = Image::GENERIC_IMAGE_ID;
             if ($model->save()) {
+                try {
+                    Image::model()->findByPk($oldImageID)->delete();
+                } catch (CDbException $e) {
+                    Yii::log($e->getMessage(),"error");
+                }
                 $result['status'] = true;
             }
             else {
