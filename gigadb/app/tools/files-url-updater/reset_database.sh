@@ -57,28 +57,24 @@ if [[ $downloadLatestRestoreStatus -eq 0 && $convertStatus -eq 0 ]];then
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "create database $DB_PG_DATABASE owner $DB_PG_USER"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < converted/gigadbv3_${thedate}_v${version}.backup
   loadStatus=$?
-  exit
 elif [[ -f converted/gigadbv3_${twoDaysAgo}_v${version}.backup ]];then
   echo "Loading gigadbv3_${twoDaysAgo}_v${version}.backup from two days ago"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "drop database if exists $DB_PG_DATABASE"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "create database $DB_PG_DATABASE owner $DB_PG_USER"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < converted/gigadbv3_${twoDaysAgo}_v${version}.backup
   loadStatus=$?
-  exit
 elif [[ -f converted/gigadbv3_${threeDaysAgo}_v${version}.backup ]];then
   echo "Loading gigadbv3_${threeDaysAgo}_v${version}.backup from three days ago"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "drop database if exists $DB_PG_DATABASE"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "create database $DB_PG_DATABASE owner $DB_PG_USER"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < converted/gigadbv3_${threeDaysAgo}_v${version}.backup
   loadStatus=$?
-  exit
 else
   echo "Loading default backup /home/centos/database_bootstrap.backup"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "drop database if exists $DB_PG_DATABASE"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "create database $DB_PG_DATABASE owner $DB_PG_USER"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < "$defaultDB"
   loadStatus=$?
-  exit
 fi
 
 # Load the specific dump in RDS using native postgresql client
@@ -88,27 +84,23 @@ if [[ $downloadSpecificRestoreStatus -eq 0 && $convertStatus -eq 0 ]];then
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "create database $DB_PG_DATABASE owner $DB_PG_USER"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < converted/gigadbv3_${backupDate}_v${version}.backup
   loadStatus=$?
-  exit
 elif [[ -f converted/gigadbv3_${twoDaysAgo}_v${version}.backup ]];then
   echo "Loading gigadbv3_${twoDaysAgo}_v${version}.backup from two days ago"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "drop database if exists $DB_PG_DATABASE"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "create database $DB_PG_DATABASE owner $DB_PG_USER"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < converted/gigadbv3_${twoDaysAgo}_v${version}.backup
   loadStatus=$?
-  exit
 elif [[ -f converted/gigadbv3_${threeDaysAgo}_v${version}.backup ]];then
   echo "Loading gigadbv3_${threeDaysAgo}_v${version}.backup from three days ago"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "drop database if exists $DB_PG_DATABASE"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "create database $DB_PG_DATABASE owner $DB_PG_USER"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < converted/gigadbv3_${threeDaysAgo}_v${version}.backup
   loadStatus=$?
-  exit
 else
   echo "Loading default backup /home/centos/database_bootstrap.backup"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "drop database if exists $DB_PG_DATABASE"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c "create database $DB_PG_DATABASE owner $DB_PG_USER"
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < "$defaultDB"
   loadStatus=$?
-  exit
 fi
 exit $loadStatus
