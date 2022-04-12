@@ -34,12 +34,12 @@ else
 fi
 
 # Convert backup using legacy postgresql client
-if [[ $downloadLatestRestoreStatus -eq 0 ]];then
+if [[ $downloadLatestRestoreStatus -eq 0 && -z $downloadSpecificRestoreStatus ]];then
   docker-compose run --rm updater pg_dump --host=pg9_3 -p 5432  --username=gigadb  --clean --create --schema=public --no-privileges --no-tablespaces --dbname=gigadb --file=converted/gigadbv3_${latest}_v${version}.backup
   convertStatus=$?
 fi
 
-if [[ $downloadSpecificRestoreStatus -eq 0 ]];then
+if [[ $downloadSpecificRestoreStatus -eq 0 && -z $downloadLatestRestoreStatus ]];then
   docker-compose run --rm updater pg_dump --host=pg9_3 -p 5432  --username=gigadb  --clean --create --schema=public --no-privileges --no-tablespaces --dbname=gigadb --file=converted/gigadbv3_${backupDate}_v${version}.backup
   convertStatus=$?
 fi
