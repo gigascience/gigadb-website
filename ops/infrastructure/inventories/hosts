@@ -31,3 +31,4 @@ fuw_db_database = "{{ lookup('ini', 'fuw_db_database type=properties file=ansibl
 backup_file = "{{ lookup('ini', 'backup_file type=properties file=ansible.properties') }}"
 
 reset_database_cronjob_state = "absent"
+backupDate = "latest"

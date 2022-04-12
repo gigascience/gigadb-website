@@ -184,7 +184,7 @@
 
   tasks:
   - name: Load latest database into this environment's RDS intance
-    ansible.builtin.shell: "./reset_database.sh"
+    ansible.builtin.shell: "./reset_database.sh {{ backupDate }}"
     args:
       chdir: /home/centos/files-url-updater
       executable: /bin/bash
