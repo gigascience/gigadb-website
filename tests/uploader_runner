@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+set -u
+
+profile=${1:-"local"}
+
+CUR_DIR=$(pwd)
+
+# Run consultant's spreadsheet upload tool
+cd gigadb/app/tools/excel-spreadsheet-uploader
+#curl -L -O https://github.com/gigascience/ExceltoGigaDB/archive/develop.zip
+#bsdtar -k --strip-components=1 -xvf develop.zip
+#docker-compose run --rm uploader ./run.sh
+
+cd $CUR_DIR
+#docker-compose run --rm application ./protected/yiic migrate --interactive=0
+docker-compose run --rm test ./vendor/codeception/codeception/codecept -v run -g ok-dataset-upload-tool uploader
