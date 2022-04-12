@@ -17,7 +17,6 @@ docker-compose logs pg9_3
 latest=$(date --date="1 days ago" +"%Y%m%d")
 twoDaysAgo=$(date --date="2 days ago" +"%Y%m%d")
 threeDaysAgo=$(date --date="3 days ago" +"%Y%m%d")
-thedate=${1:-$latest}
 backupDate="$1"
 
 # Default converted backup (from Ansible properties) and legacy postgres version
