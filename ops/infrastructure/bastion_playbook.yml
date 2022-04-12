@@ -55,6 +55,68 @@
         owner: centos
         group: centos
 
+- name: Setup gigadb-website so the Yii commands for database migration are available on the bastion
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  tasks:
+    - name: Unarchive a file that needs to be downloaded (added in 2.0)
+      ansible.builtin.unarchive:
+        src: https://github.com/gigascience/gigadb-website/archive/refs/heads/develop.zip
+        dest: /home/centos
+        remote_src: yes
+
+    - name: Copy env file to the bastion install of gigadb
+      ansible.builtin.copy:
+        src: ../../../../ops/configuration/variables/env-sample
+        dest: "/home/centos/gigadb-website-develop/.env"
+        owner: centos
+        group: centos
+
+    - name: Copy composer files to the bastion install of gigadb
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "/home/centos/gigadb-website-develop/"
+        owner: centos
+        group: centos
+      loop:
+        - ../../../../composer.json
+        - ../../../../composer.lock
+
+    - name: Copy config file to the bastion install of gigadb
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "/home/centos/gigadb-website-develop/protected/config/"
+        owner: centos
+        group: centos
+      loop:
+        - ../../../../protected/config/main.php
+        - ../../../../protected/config/console.php
+        - ../../../../protected/config/local.php
+
+    - name: Copy yiic to the bastion install of gigadb
+      ansible.builtin.copy:
+        src: ../../../../protected/yiic.php
+        dest: "/home/centos/gigadb-website-develop/protected/yiic.php"
+        owner: centos
+        group: centos
+
+
+    - name: Create db.json with RDS DSN
+      template:
+        src: ../../../../ops/configuration/yii-conf/db.json.j2
+        dest: /home/centos/gigadb-website-develop/protected/config/db.json
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Create a runtime directory if they do not exist
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+      loop:
+        - "/home/centos/gigadb-website-develop/protected/runtime"
 
 - name: Setup files-url-updater so to load latest DB backup in RDS daily
   hosts: name_bastion_server_staging*:name_bastion_server_live*

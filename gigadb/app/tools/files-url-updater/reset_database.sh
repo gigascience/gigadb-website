@@ -81,4 +81,18 @@ else
   export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < "$defaultDB"
   loadStatus=$?
 fi
-exit $loadStatus
+
+# Update schema
+
+if [[ $loadStatus -eq 0 ]];then
+  pushd .
+  cd ../gigadb-website-develop
+  docker-compose run --rm  application ./protected/yiic custommigrations dropconstraints
+  docker-compose run --rm  application ./protected/yiic custommigrations dropindexes
+  docker-compose run --rm  application ./protected/yiic custommigrations droptriggers
+  docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0
+  docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.fix_import --interactive=0
+  popd
+fi
+
+exit 0
