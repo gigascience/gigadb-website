@@ -58,6 +58,11 @@
 - name: Setup gigadb-website so the Yii commands for database migration are available on the bastion
   hosts: name_bastion_server_staging*:name_bastion_server_live*
   tasks:
+    - name: Install dependencies needed by Yii, composer, ansible and file-url-updater
+        dnf:
+          name: php, php-json, php-mbstring, git, zip, unzip, php-zip, ncftp
+          state: latest
+
     - name: Unarchive a file that needs to be downloaded (added in 2.0)
       ansible.builtin.unarchive:
         src: https://github.com/gigascience/gigadb-website/archive/refs/heads/develop.zip
@@ -122,11 +127,6 @@
   hosts: name_bastion_server_staging*:name_bastion_server_live*
 
   tasks:
-    - name: Install dependencies needed by Yii, composer and file-url-updater
-      dnf:
-        name: php, php-json, php-mbstring, git, zip, unzip, php-zip, ncftp
-        state: latest
-
     - name: Create a sql and converted directories if they do not exist
       ansible.builtin.file:
         path: "{{ item }}"
