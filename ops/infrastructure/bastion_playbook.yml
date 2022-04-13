@@ -59,9 +59,9 @@
   hosts: name_bastion_server_staging*:name_bastion_server_live*
   tasks:
     - name: Install dependencies needed by Yii, composer, ansible and file-url-updater
-        dnf:
-          name: php, php-json, php-mbstring, git, zip, unzip, php-zip, ncftp
-          state: latest
+      dnf:
+        name: php, php-json, php-mbstring, git, zip, unzip, php-zip, ncftp
+        state: latest
 
     - name: Unarchive a file that needs to be downloaded (added in 2.0)
       ansible.builtin.unarchive:
