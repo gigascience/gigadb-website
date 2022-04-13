@@ -245,6 +245,16 @@
   hosts: name_bastion_server_staging*:name_bastion_server_live*
 
   tasks:
+  - name: Install composer dependencies for gigadb-website
+    ansible.builtin.command: "/usr/local/bin/docker-compose run --rm application composer install --no-dev --no-interaction --no-plugins --no-scripts"
+    args:
+      chdir: /home/centos/gigadb-website-develop/
+    register: gigadb_composer_install_output
+
+  - debug:
+      msg: "composer install output : {{ gigadb_composer_install_output }}"
+
+
   - name: Load latest database into this environment's RDS intance
     ansible.builtin.shell: "./reset_database.sh {{ backupDate }}"
     args:
