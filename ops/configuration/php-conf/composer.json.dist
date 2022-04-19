@@ -6,6 +6,7 @@
     "license": "GPL-3.0-or-later",
     "require": {
         "php": "^${PHP_VERSION}",
+        "yidas/yii2-composer-bower-skip": "~2.0.13",
         "yiisoft/yii": "~${YII_VERSION}",
         "yiisoft/yii2": "~${YII2_VERSION}",
         "yiisoft/yii2-swiftmailer": "~2.1.0",
@@ -87,7 +88,7 @@
     "repositories": [
         {
             "type": "composer",
-            "url": "https://asset-packagist.org"
+            "url": "https://repo.packagist.org"
         }
     ]
 }

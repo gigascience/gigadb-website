@@ -24,6 +24,7 @@
         "codemix/yii2-streamlog": "^1.3.0"
     },
     "require-dev": {
+        "yidas/yii2-composer-bower-skip": "~2.0.13",
         "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-gii": "~2.1.0",
         "yiisoft/yii2-faker": "~2.0.0",
@@ -72,7 +73,7 @@
     "repositories": [
         {
             "type": "composer",
-            "url": "https://asset-packagist.org"
+            "url": "https://repo.packagist.org"
         }
     ],
     "autoload": {
