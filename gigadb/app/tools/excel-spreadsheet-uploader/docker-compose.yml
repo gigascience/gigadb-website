@@ -1,0 +1,7 @@
+version: '3.7'
+services:
+  uploader:
+    build:
+      context: .
+    volumes:
+      - .:/tool
