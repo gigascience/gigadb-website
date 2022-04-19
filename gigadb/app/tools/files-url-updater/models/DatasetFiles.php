@@ -308,7 +308,7 @@ class DatasetFiles extends \Yii\base\BaseObject {
             var_dump($dbName);
         }
 
-        system("head -2 /app/sql/gigadbv3_$dateStr.backup | tail -1 | cat -e | grep 9.3",$retval); # test whether we have test data or real production backup
+        system("head -2 sql/gigadbv3_$dateStr.backup | tail -1 | cat -e | grep 9.3",$retval); # test whether we have test data or real production backup
         if(0 === $retval) {
             $restoreList = "sql/default_restore.list";
         }
@@ -317,12 +317,12 @@ class DatasetFiles extends \Yii\base\BaseObject {
         }
 
         if($dbPassword) {
-            system("PGPASSWORD=$dbPassword psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by $dbUser;' 2>/app/drop_restore.log >&2");
-            system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --no-owner --verbose --use-list $restoreList -h {$dbConfig['host']} -U $dbUser --dbname $dbName  /app/sql/gigadbv3_{$dateStr}.backup 2>/app/drop_restore.log >&2");
+            system("PGPASSWORD=$dbPassword psql -U $dbUser -h {$dbConfig['host']} -p {$dbConfig['port']} -c 'drop owned by $dbUser;' 2> drop_restore.log >&2");
+            system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --no-owner --verbose --use-list $restoreList -h {$dbConfig['host']} -p {$dbConfig['port']} -U $dbUser --dbname $dbName  sql/gigadbv3_{$dateStr}.backup 2> drop_restore.log >&2");
         }
         else {
-            system("psql -U $dbUser -h {$dbConfig['host']} -c 'drop owned by $dbUser;' 2>/app/drop_restore.log >&2");
-            system("pg_restore --exit-on-error --no-owner --verbose --use-list $restoreList -h {$dbConfig['host']} -U $dbUser --dbname $dbName  /app/sql/gigadbv3_$dateStr.backup 2>/app/drop_restore.log >&2");
+            system("psql -U $dbUser -h {$dbConfig['host']} -p {$dbConfig['port']}  -c 'drop owned by $dbUser;' 2> drop_restore.log >&2");
+            system("pg_restore --exit-on-error --no-owner --verbose --use-list $restoreList -h {$dbConfig['host']} -U $dbUser -p {$dbConfig['port']} --dbname $dbName  sql/gigadbv3_$dateStr.backup 2> drop_restore.log >&2");
         }
     }
 

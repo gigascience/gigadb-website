@@ -29,3 +29,6 @@ fuw_db_password = "{{ lookup('ini', 'fuw_db_password type=properties file=ansibl
 fuw_db_database = "{{ lookup('ini', 'fuw_db_database type=properties file=ansible.properties') }}"
 
 backup_file = "{{ lookup('ini', 'backup_file type=properties file=ansible.properties') }}"
+
+reset_database_cronjob_state = "absent"
+backupDate = "latest"

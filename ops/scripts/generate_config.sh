@@ -200,6 +200,11 @@ fi
 
 ## Configuring other tools and apps
 
+
+export DB_BACKUP_HOST=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/cngbbackup_ftp_hostname" | jq -r '.value' )
+export DB_BACKUP_USERNAME=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/cngbbackup_ftp_username" | jq -r '.value' )
+export DB_BACKUP_PASSWORD=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/cngbbackup_ftp_password" | jq -r '.value' )
+
 SOURCE=${APP_SOURCE}/gigadb/app/tools/files-url-updater/config/params.php.dist
 TARGET=${APP_SOURCE}/gigadb/app/tools/files-url-updater/config/params.php
 VARS='$DB_BACKUP_HOST:$DB_BACKUP_USERNAME:$DB_BACKUP_PASSWORD'

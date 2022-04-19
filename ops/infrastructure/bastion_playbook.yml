@@ -1,6 +1,8 @@
 ---
 # Use bastion server to restore PostgreSQL database on RDS instance
 
+
+
 - name: Fix Centos EOL issues
   hosts: name_bastion_server_staging*:name_bastion_server_live*
   roles:
@@ -53,17 +55,215 @@
         owner: centos
         group: centos
 
-    - name: Drop gigadb database
-      shell: "export PGPASSWORD='{{ pg_password }}'; psql -U {{ pg_user }} -d postgres -h {{ pg_host }} -p 5432 -c 'drop database if exists {{ pg_database}}'"
-      register: psql_drop
-    - debug: msg="{{ psql_drop.stdout }}"
+- name: Setup gigadb-website so the Yii commands for database migration are available on the bastion
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  tasks:
+    - name: Install dependencies needed by Yii, composer, ansible and file-url-updater
+      dnf:
+        name: php, php-json, php-mbstring, git, zip, unzip, php-zip, ncftp
+        state: latest
 
-    - name: Create gigadb database
-      shell: "export PGPASSWORD='{{ pg_password }}'; psql -U {{ pg_user }} -d postgres -h {{ pg_host }} -p 5432 -c 'create database {{ pg_database}} owner {{ pg_user }}'"
-      register: psql_create
-    - debug: msg="{{ psql_create.stdout }}"
+    - name: Unarchive a file that needs to be downloaded (added in 2.0)
+      ansible.builtin.unarchive:
+        src: https://github.com/gigascience/gigadb-website/archive/refs/heads/develop.zip
+        dest: /home/centos
+        remote_src: yes
 
-    - name: Restore gigadb database with backup file
-      shell: "export PGPASSWORD='{{ pg_password }}'; psql -U {{ pg_user }} -h {{ pg_host }} -p 5432 < /home/centos/database_bootstrap.backup"
-      register: psql_restore
-    - debug: msg="{{ psql_restore.stdout }}"
+    - name: Copy env file to the bastion install of gigadb
+      ansible.builtin.copy:
+        src: ../../../../ops/configuration/variables/env-sample
+        dest: "/home/centos/gigadb-website-develop/.env"
+        owner: centos
+        group: centos
+
+    - name: Copy composer files to the bastion install of gigadb
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "/home/centos/gigadb-website-develop/"
+        owner: centos
+        group: centos
+      loop:
+        - ../../../../composer.json
+        - ../../../../composer.lock
+
+    - name: Copy config file to the bastion install of gigadb
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "/home/centos/gigadb-website-develop/protected/config/"
+        owner: centos
+        group: centos
+      loop:
+        - ../../../../protected/config/main.php
+        - ../../../../protected/config/console.php
+        - ../../../../protected/config/local.php
+
+    - name: Copy yiic to the bastion install of gigadb
+      ansible.builtin.copy:
+        src: ../../../../protected/yiic.php
+        dest: "/home/centos/gigadb-website-develop/protected/yiic.php"
+        owner: centos
+        group: centos
+
+
+    - name: Create db.json with RDS DSN
+      template:
+        src: ../../../../ops/configuration/yii-conf/db.json.j2
+        dest: /home/centos/gigadb-website-develop/protected/config/db.json
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Create a runtime directory if they do not exist
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+      loop:
+        - "/home/centos/gigadb-website-develop/protected/runtime"
+
+- name: Setup files-url-updater so to load latest DB backup in RDS daily
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+
+  tasks:
+    - name: Create a sql and converted directories if they do not exist
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+      loop:
+        - "/home/centos/files-url-updater/sql"
+        - "/home/centos/files-url-updater/converted"
+
+    - name: Install codebase for files-url-updater
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /home/centos/files-url-updater/
+        owner: centos
+        group: centos
+      loop:
+        - "../../../../gigadb/app/tools/files-url-updater/controllers"
+        - "../../../../gigadb/app/tools/files-url-updater/models"
+        - "../../../../gigadb/app/tools/files-url-updater/config"
+        - "../../../../gigadb/app/tools/files-url-updater/Dockerfile"
+        - "../../../../gigadb/app/tools/files-url-updater/docker-compose.yml"
+
+    - name: Install file for boostrapping database
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/files-url-updater/sql/bootstrap_gigadb.sql"
+        dest: /home/centos/files-url-updater/sql/
+        owner: centos
+        group: centos
+
+    - name: Install file for database conversion
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/files-url-updater/sql/production8_1_restore.list"
+        dest: /home/centos/files-url-updater/sql/
+        owner: centos
+        group: centos
+
+    - name: Install executable scripts for file url updater
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /home/centos/files-url-updater/
+        owner: centos
+        group: centos
+        mode: a+x
+      loop:
+        - "../../../../gigadb/app/tools/files-url-updater/yii"
+        - "../../../../gigadb/app/tools/files-url-updater/setup_composer.sh"
+        - "../../../../gigadb/app/tools/files-url-updater/reset_database.sh"
+
+    - name: Copy minimalist composer.json
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/files-url-updater/minimal-composer.json.sample"
+        dest: /home/centos/files-url-updater/composer.json
+        owner: centos
+        group: centos
+
+    - name: Create a bin and log directory (for composer and cronjob logging) if it does not exist
+      ansible.builtin.file:
+        path: "/home/centos/{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+      loop:
+        - "bin"
+        - "logs"
+
+    - name: Setup composer
+      ansible.builtin.command: "/home/centos/files-url-updater/setup_composer.sh"
+      register: composer_setup_output
+
+    - debug:
+        msg: "composer setup output : {{ composer_setup_output }}"
+
+    - name: Install composer dependencies
+      ansible.builtin.command: "/home/centos/bin/composer install --no-dev --no-interaction --no-plugins --no-scripts"
+      args:
+        chdir: /home/centos/files-url-updater
+      register: composer_install_output
+
+    - debug:
+        msg: "composer install output : {{ composer_install_output }}"
+
+    - name: Setup cronjob to reset database daily after a new backup is available on the ftp server
+      ansible.builtin.cron:
+        name: "Reset database every day after a new backup is available on the ftp server"
+        minute: "05"
+        hour: "10"
+        user: "centos"
+        job: "cd /home/centos/files-url-updater ; ./reset_database.sh 2> $HOME/logs/errors.log 1> $HOME/logs/output.log"
+        state: "{{ reset_database_cronjob_state }}"
+
+    - name: Install docker-compose
+      pip:
+        name: docker-compose==1.23
+
+    - name: Create .env with RDS DSN
+      template:
+        src: ../../../../gigadb/app/tools/files-url-updater/bastion-env.j2
+        dest: /home/centos/files-url-updater/.env
+        owner: root
+        group: root
+        mode: 0644
+
+  roles:
+    - role: ../../roles/docker-install
+    - role: role-secure-docker-daemon
+      dds_host: "{{ ec2_bastion_public_ip }}"
+      dds_server_cert_path: /etc/docker
+      dds_restart_docker: no
+      dds_client_cert_path: /home/centos/.docker
+    - role: ../../roles/docker-daemon-enable-start
+
+- name: Load latest DB backup
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+
+  tasks:
+  - name: Install composer dependencies for gigadb-website
+    ansible.builtin.command: "/usr/local/bin/docker-compose run --rm application composer install --no-dev --no-interaction --no-plugins --no-scripts"
+    args:
+      chdir: /home/centos/gigadb-website-develop/
+    register: gigadb_composer_install_output
+
+  - debug:
+      msg: "composer install output : {{ gigadb_composer_install_output }}"
+
+
+  - name: Load latest database into this environment's RDS intance
+    ansible.builtin.shell: "./reset_database.sh {{ backupDate }}"
+    args:
+      chdir: /home/centos/files-url-updater
+      executable: /bin/bash
+    register: reset_database_output
+
+  - debug:
+      msg: "reset database stdout : {{ reset_database_output.stdout }}"
+
+  - debug:
+      msg: "reset database stderr : {{ reset_database_output.stderr }}"

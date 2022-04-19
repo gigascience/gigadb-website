@@ -27,7 +27,7 @@ $ terraform refresh
 $ ../../../scripts/ansible_init.sh --env staging
 
 # Provision with ansible
-$ ansible-playbook -i ../../inventories dockerhost_playbook.yml
+$ ansible-playbook -i ../../inventories webapp_playbook.yml
 $ ansible-playbook -i ../../inventories bastion_playbook.yml
 ```
 
