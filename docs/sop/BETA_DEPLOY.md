@@ -32,3 +32,75 @@ Google Authenticator app.
 for the `beta` Host with a value equal to the `eip-gigadb-live-gigadb` elastic 
 IP address.
 7. If there is no `beta` Host then this DNS A record should be created.
+
+## Set up credentials for accessing AWS resources
+
+> :warning: **Might be worth creating a user account called `Gigadb` on your operating system**
+
+1. Save `id-rsa-aws-hk-gigadb.pem` available from [cnhk-infra CI/CD variables page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd) into your `~/.ssh` directory.
+2. In your `~/.aws/credentials` file, make sure there is the following
+configuration:
+```
+[default]
+aws_access_key_id=<Gigadb user aws_access_key_id>
+aws_secret_access_key=<Gigadb user aws_secret_access_key>
+
+[Gigadb]
+aws_access_key_id=<Gigadb user aws_access_key_id>
+aws_secret_access_key=<Gigadb user aws_secret_access_key>
+```
+3. In your `~/.aws/config` file, make sure there is the following configuration:
+```
+[default]
+region=ap-east-1
+output=json
+ 
+[profile Gigadb]
+region=ap-east-1
+output=json
+```
+
+## Provision AWS infrastructure using Terraform and Ansible
+
+The set of Terraform and Ansible scripts will create the bastion and web 
+application EC2 servers, and a single RDS instance.
+
+In your `PhpstormProjects` folder, create a new directory called 
+`gigascience`:
+```
+# Represents `gigascience` Github user account as opposed to your own Github user account
+$ mkdir gigascience
+```
+Change directory to the `gigascience` folder:
+```
+$ cd gigascience
+```
+Download the gigascience/gigadb-website repo from Github:
+```
+$ git clone https://github.com/gigascience/gigadb-website.git
+```
+Change directory into the repo:
+```
+$ cd gigadb-website
+```
+Change directory to the `envs` folder:
+```
+$ cd ops/infrastructure/envs
+```
+Create the `live` directory:
+```
+$ mkdir live
+```
+Copy terraform files to `live` environment:
+```
+$ ../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env live
+
+You need to specify the path to the ssh private key to use to connect to the EC2 instance: 
+~/.ssh/id-rsa-aws-hk-gigadb.pem
+
+You need to specify your GitLab username:
+pli888 | rija | kencho51
+
+You need to specify a backup file created by the files-url-updater tool:
+../../../../gigadb/app/tools/files-url-updater/sql/gigadbv3_20210929_v9.3.25.backup
+```
