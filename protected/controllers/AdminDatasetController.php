@@ -366,7 +366,7 @@ class AdminDatasetController extends Controller
                 switch($datasetPageSettings->getPageType()) {
                     case "draft":
                         $this->redirect('/adminDataset/admin/');
-                        break;                    
+                        break;
                     case "public":
                         $this->redirect('/dataset/' . $model->identifier);
                         break;
@@ -402,12 +402,11 @@ class AdminDatasetController extends Controller
             $this->redirect('/site/index');
         } elseif ( "public" === $datasetPageSettings->getPageType() ) {
             $this->redirect('/dataset/'.$model->identifier);
+        } elseif ( "hidden" === $datasetPageSettings->getPageType() ) {
+            $model->token = Yii::$app->security->generateRandomString(16);
+            $model->save();
+            $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
         }
-
-        $model->token = Yii::$app->security->generateRandomString(16);
-        $model->save();
-
-        $this->redirect('/dataset/view/id/'.$model->identifier.'/token/'.$model->token);
     }
 
     /**
