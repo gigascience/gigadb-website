@@ -352,7 +352,7 @@ echo $form->hiddenField($model, "image_id");
     <?= CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn-green')); ?>
         <?php if( "hidden" === $datasetPageSettings->getPageType() ) { ?>
     <a href="<?=Yii::app()->createUrl('/adminDataset/private/identifier/'.$model->identifier)?>" class="btn-green"/>Create/Reset Private URL</a>
-            <?php if($model->token || "Incomplete" === $model->upload_status){?>
+            <?php if($model->token){?>
             <a href="<?= Yii::app()->createUrl('/dataset/'.$model->identifier.'/token/'.$model->token) ?>">Open Private URL</a>
             <?php }?>
         <?php } elseif ( "mockup" === $datasetPageSettings->getPageType() ) { 
