@@ -95,6 +95,9 @@ Copy terraform files to `live` environment:
 ```
 $ ../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env live
 
+You need to specify an AWS region:
+ap-east-1
+
 You need to specify the path to the ssh private key to use to connect to the EC2 instance: 
 ~/.ssh/id-rsa-aws-hk-gigadb.pem
 
@@ -104,3 +107,35 @@ pli888 | rija | kencho51
 You need to specify a backup file created by the files-url-updater tool:
 ../../../../gigadb/app/tools/files-url-updater/sql/gigadbv3_20210929_v9.3.25.backup
 ```
+
+Provision with Terraform:
+```
+$ terraform plan
+$ terraform apply
+$ terraform refresh
+```
+
+Use Gigadb AWS IAM user account to provision production staging / live servers:
+```
+$ AWS_PROFILE=Gigadb terraform plan
+$ AWS_PROFILE=Gigadb terraform apply
+$ AWS_PROFILE=Gigadb terraform refresh
+```
+
+Copy ansible files into `live` environment:
+```
+$ ../../../scripts/ansible_init.sh --env live
+```
+
+Provision RDS via bastion server:
+```
+$ ansible-playbook -i ../../inventories bastion_playbook.yml
+```
+
+Provision web application server:
+```
+$ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories webapp_playbook.yml
+```
+
+Go to [Gitlab Upstream pipeline page](https://gitlab.com/gigascience/upstream/gigadb-website/-/pipelines)
+and run pipeline.
