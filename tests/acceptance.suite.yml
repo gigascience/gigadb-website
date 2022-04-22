@@ -43,4 +43,4 @@ gherkin:
         - AuthorSteps
       "website user":
         - WebsiteUserSteps
-#bootstrap: initdb.php
+bootstrap: initdb.php
