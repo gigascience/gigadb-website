@@ -3,20 +3,23 @@
 A deployment of the GigaDB website code in the `Upstream` Gitlab group to the
 `live` environment provides the website that is located at beta.gigadb.org.
 
-## Check AWS IAM policies
+## Prerequisites
 
-The Gigadb user needs the same AWS IAM policy permissions for accessing EC2, RDS
-and S3 services as the developers. This can be checked by viewing the AWS IAM 
-console. For the time being, the `Gigadb` user has been added to the 
-`Developers` IAM group.
+### AWS IAM policies
 
-> :warning: **You'll need your individual AWS admin user account to access the IAM console**
+The `Gigadb` user needs the same AWS IAM policy permissions for accessing EC2, 
+RDS and S3 services as the developers. This can be checked by viewing the AWS 
+[IAM dashboard](https://us-east-1.console.aws.amazon.com/iamv2/home?region=us-east-1#/home).
+The `Gigadb` user has been added to the `Applications` IAM group. This group
+has the same permissions as those used by the developers.
 
-## Check elastic IP addresses for staging and live environments
+> :warning: **You'll need your AWS admin user account to access the IAM console**
+
+### Elastic IP addresses for staging and live environments
 
 Both the staging.gigadb.org and beta.gigadb.org domain names have been allocated
-with AWS elastic IP addresses. You can check the current elastic IP addresses 
-pointing in the AWS EC2 console:
+with AWS elastic IP addresses in the ap-east-1 region. You can check the current 
+elastic IP addresses pointing in the AWS EC2 console:
 
 1. Go to the [cnhk-infra CI/CD variables page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd) 
 to get the password for the `Gigadb` AWS IAM user.
@@ -25,52 +28,84 @@ to get the password for the `Gigadb` AWS IAM user.
 4. Check there is an `eip-gigadb-live-gigadb` and an `eip-gigadb-staging-gigadb` 
 elastic IP address.
 
-## Check domain name resolution to staging.gigadb.org and beta.gigadb.org
+### Domain name resolution to staging.gigadb.org and beta.gigadb.org
 
-Resolution to staging and beta.gigadb.org with the above elastic IP 
-addresses require DNS A records. Check these has been created in Alibaba Cloud
+Resolution to staging and beta.gigadb.org with the above elastic IP addresses 
+require DNS A records. Check these records have been created in Alibaba Cloud 
 console:
 
 1. Go to the [cnhk-infra CI/CD variables page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd)
-to get the `Alibaba_user_email` and `Alibaba_user_password` credentials.
+to get the `Alibaba_user_email` and `Alibaba_user_password`.
 2. Log into the [Alibaba Cloud console](https://account.alibabacloud.com/login/login.htm?oauth_callback=https%3A%2F%2Fhome-intl.console.aliyun.com%2F%3Fspm%3Da3c0i.7911826.6791778070.41.44193870AxVzyk&lang=en) using the above credentials.
-3. You will be asked for a 6 digit number that is provided by the linked
-Google Authenticator app.
-> :warning: **You'll need to contact pli888 for this number**
+3. You will be asked for a 6 digit one time password (OTP) that is provided by 
+the Google Authenticator app.
+> :warning: **You'll need to contact pli888 for the OTP**
 4. Once logged into the console, go to the Domain Names page
 5. You will see an entry for `gigadb.org` domain - click on this
 6. You will now see the `DNS Settings gigadb.org` page. There should be an entry
 for the `beta` Host with a value equal to the `eip-gigadb-live-gigadb` elastic 
 IP address. There will also be an entry for the `staging` Host too.
-7. If there is no `beta` Host then this DNS A record should be created. Repeat
-for `staging` if required.
 
-## Set up credentials for accessing AWS resources
+### Set up credentials for accessing AWS resources
 
 1. Save `id-rsa-aws-hk-gigadb.pem` available from [cnhk-infra CI/CD variables page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd) into your `~/.ssh` directory.
-2. In your `~/.aws/credentials` file, make sure there is the following
-configuration:
+2. Copy your `~/.aws/config` file into a new file:
 ```
+$ cd ~/.aws
+$ cp config config.ap-northeast-1
+# Use this if you are based in France
+$ cp config config.eu-west-3
+```
+3. Create an AWS config file to use for deploying to staging or 
+beta.gigadb.org:
+```
+$ vi config.upstream
+# The contents of config.upstream:
 [default]
-aws_access_key_id=<Your AWS IAM user aws_access_key_id>
-aws_secret_access_key=<Your AWS IAM user aws_secret_access_key>
-
-[Gigadb]
-aws_access_key_id=<Gigadb user aws_access_key_id>
-aws_secret_access_key=<Gigadb user aws_secret_access_key>
-```
-3. In your `~/.aws/config` file, make sure there is the following configuration:
-```
-[default]
-region=ap-northeast-1 | eu-west-3
+region=ap-east-1
 output=json
- 
+
 [profile Gigadb]
 region=ap-east-1
 output=json
 ```
+4. The staging and beta.gigadb.org websites are deployed in the ap-east-1 Hong
+Kong regions. You will need to copy `config.upstream` to a new `config` file to
+do this:
+```
+$ cp config.upstream config
+```
+> :warning: **You will need to overwrite the upstream `config` file with `config.ap-northeast-1` when returning to your development work**
 
-## Set up gigadb-website repo on your local dev environment
+5. Copy your `~/.aws/credentials` file into a new file:
+```
+$ cp credentials credentials.ap-northeast-1
+# Use this if you are based in France
+$ cp credentials credentials.eu-west-3
+```
+
+6. Create an AWS credentials file for deploying to staging or beta.gigadb.org:
+```
+$ vi credentials.upstream
+# The contents of credentials.upstream:
+[default]
+aws_access_key_id=<aws_access_key_id for Gigadb user>
+aws_secret_access_key=<aws_secret_access_key for Gigadb user>
+
+[Gigadb]
+aws_access_key_id=<aws_access_key_id for Gigadb user>
+aws_secret_access_key=<aws_secret_access_key for Gigadb user>
+```
+7. Overwrite your current credentials file with the contents of 
+`credentials.upstream`:
+```
+$ cp credentials.upstream credentials
+```
+> :warning: **You will need to overwrite the upstream `credentials` file with `credentials.ap-northeast-1` when returning to your development work**
+
+## Deployment procedure
+
+### Set up gigadb-website repo on your local dev environment
 
 In your `PhpstormProjects` folder, create a new directory called `gigascience`:
 ```
@@ -110,19 +145,19 @@ Check you have the latest code for the `develop` branch:
 $ git log
 ```
 
-If not, then download the latest code:
+If not, then get the latest code:
 ```
 $ git fetch origin
-$ git rebase origin/gigaadb-website
+$ git rebase origin/develop
 ```
 
 Check you can deploy GigaDB in your `dev` environment:
 ```
 # Create .env file
-$ cp ops/configuration/variables/env-sample ./.env
+$ cp ops/configuration/variables/env-sample .env
 
 # Edit .env file with particular focus on the variables below:
-GITLAB_PRIVATE_TOKEN=<you_gitlab_token>
+GITLAB_PRIVATE_TOKEN=<your_gitlab_private_token>
 
 REPO_NAME="gigadb-website"
 GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
@@ -133,12 +168,20 @@ PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fupstream
 $ ./up.sh
 ```
 
-Test http://gigadb.gigasciencejournal.com:9170 in your browser.
+Check your `dev` GigaDB website is available at http://gigadb.gigasciencejournal.com:9170 
+in your browser.
 
-## Provision AWS infrastructure for `staging` environment using Terraform and Ansible
+### Provision AWS infrastructure for `staging.gigadb.org` using Terraform and Ansible
 
-Before you are able to create a `live` deployment, you must first be able to 
-deploy a `staging` environment.
+Ensure you have a database back up file that Ansible can use to restore a
+PostgreSQL database on the AWS Relational Database Service. For example, copy
+a file from your `dev` gigadb-website repo:
+```
+$ cp <path_to>/pli888/gigadb-website/gigadb/app/tools/files-url-updater/sql/gigadbv3_20210929_v9.3.25.backup <path_to>/gigascience/gigadb-website/gigadb/app/tools/files-url-updater/sql
+```
+
+Before you are able to create a `live` deployment, you must first deploy a 
+`staging` environment.
 
 Change directory to the `envs` folder:
 ```
@@ -150,12 +193,14 @@ Create the `staging` directory:
 $ mkdir staging
 ```
 
+Change directory to the `staging` folder:
+```
+$ cd staging
+```
+
 Copy terraform files to `staging` environment:
 ```
 $ ../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env staging
-
-You need to specify an AWS region:
-ap-east-1
 
 You need to specify the path to the ssh private key to use to connect to the EC2 instance: 
 ~/.ssh/id-rsa-aws-hk-gigadb.pem
@@ -165,13 +210,16 @@ pli888 | rija | kencho51
 
 You need to specify a backup file created by the files-url-updater tool:
 ../../../../gigadb/app/tools/files-url-updater/sql/gigadbv3_20210929_v9.3.25.backup
+
+You need to specify an AWS region:
+ap-east-1
 ```
 
 Use Gigadb AWS IAM user account to provision production staging server:
 ```
-$ AWS_PROFILE=Gigadb terraform plan
-$ AWS_PROFILE=Gigadb terraform apply
-$ AWS_PROFILE=Gigadb terraform refresh
+$ terraform plan
+$ terraform apply
+$ terraform refresh
 ```
 
 Copy ansible files into `staging` environment:
@@ -227,9 +275,9 @@ You need to specify a backup file created by the files-url-updater tool:
 
 Use Gigadb AWS IAM user account to provision production staging server:
 ```
-$ AWS_PROFILE=Gigadb terraform plan
-$ AWS_PROFILE=Gigadb terraform apply
-$ AWS_PROFILE=Gigadb terraform refresh
+$ terraform plan
+$ terraform apply
+$ terraform refresh
 ```
 
 Copy ansible files into `live` environment:
