@@ -47,7 +47,7 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then I should see :text
+     * @Then /^I should see "([^"]*)"$/
      */
     public function iShouldSee($text)
     {
@@ -142,6 +142,15 @@ class AcceptanceTester extends \Codeception\Actor
     public function iShouldSeeADisabledSubmitButton($value)
     {
         $this->seeElement(Locator::find('input', ['type' => 'submit', 'value' => $value, 'disabled' =>'disabled']));
+    }
+
+    /**
+     * @Then I should see a button :button with creation log link
+     */
+    public function iShouldSeeAButtonWithLink($expectButton)
+    {
+        $actualButton = $this->grabTextFrom("//a[contains(@href, '/curationlog/create/id/')]");
+        $this->assertEquals($actualButton, $expectButton);
     }
 
     /**

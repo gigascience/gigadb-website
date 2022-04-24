@@ -6,6 +6,38 @@ Feature: form to update dataset details
   Background:
     Given I have signed in as admin
 
+  @wip
+  Scenario: Form loading with all necessary fields
+    When I am on "/adminDataset/update/id/8"
+    Then I should see "Submitter *"
+    And I should see "Curator Id"
+    And I should see "Manuscript Id"
+    And I should see "Upload Status"
+    And I should see "Epigenomic"
+    And I should see "Software"
+    And I should see "Genomic"
+    And I should see "Metadata"
+    And I should see "Dataset Size!!!"
+    And I should see "Image Status"
+    And I should see "Image URL"
+    And I should see "Image Source *"
+    And I should see "Image Tag"
+    And I should see "Image License *"
+    And I should see "Image Photographer *"
+    And I should see "DOI *"
+    And I should see "Ftp Site *"
+    And I should see "Fair Use Policy"
+    And I should see "Publication Date"
+    And I should see "Modification Date"
+    And I should see "Dataset Size *"
+    And I should see "Title *"
+    And I should see "Description"
+    And I should see "Keywords"
+    And I should see "URL to redirect"
+    And I should see a submit button "Save"
+    And I should see a button "Create New Log" with creation log link
+    And I should not see "Publisher"
+
   @ok
   Scenario: Can display generic image, but no image meta data fields for no image dataset in update page
     When I am on "/adminDataset/update/id/144"
