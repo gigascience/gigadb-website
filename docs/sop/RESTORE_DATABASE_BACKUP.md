@@ -23,7 +23,7 @@ $ cp credentials.upstream credentials
 ```
 > :warning: **You will need to overwrite the upstream `config` and `credentials` files with `config.ap-northeast-1` and `credentials.ap-northeast-1` when returning to your development work**
 
-## Restore PostgreSQL RDBMS to the latest restorable time
+## Use backup to restore PostgreSQL RDBMS
 
 Go to environment directory:
 ```
@@ -35,15 +35,18 @@ Terminate existing RDS service:
 $ terraform destroy --target module.rds
 ```
 
-Copy override.tf to staging environment:
+Copy `override.tf` to staging environment:
 ```
 $ ../../../scripts/tf_init.sh --project gigascience/forks/pli888-gigadb-website --env staging --restore-backup
 ```
 
-Backups can either be restored to its latest restorable time or to a specific
-time. To restore to latest restorable time, we need to override the database 
-name since this will come from the backup:
+The PostgreSQL RDBMS can either be restored to its latest restorable time or to 
+a specific time using RDS backups. To restore to latest restorable time, we need
+to override the database name since this will come from the backup:
 ```
+# Get list of dbis
+$ aws rds describe-db-instance-automated-backups
+
 $ terraform apply -var source_dbi_resource_id="db-6GQU4LWFBZI34AOR5BW2MEQFLU" -var gigadb_db_database="" -var use_latest_restorable_time="true"
 ```
 
