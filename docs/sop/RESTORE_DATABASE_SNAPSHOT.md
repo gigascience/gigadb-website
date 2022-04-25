@@ -6,12 +6,6 @@ database backups, snapshots are saved storage volume of a database instance
 which are created by users. Snapshots also do not expire in contrast to 
 automated database backups.
 
-The RDS creates
-and saves automated backups of the PostgreSQL database instance during a
-backup window configured in `rds-instance.tf`. Currently, backups are created
-03:00-06:00 UTC time with each backup retained for 5 days. The database can be
-recovered to any point during the retention period.
-
 ## Prerequisites
 
 ### Update AWS credentials configuration
