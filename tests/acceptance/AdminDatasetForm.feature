@@ -129,5 +129,36 @@ Feature: form to update dataset details
     Then I am on "dataset/view/id/400789"
     And I should see an image located in "/images/datasets/bgi_logo_new.png"
 
+  @ok @issue-1023
+  Scenario: To confirm the upload status of published dataset has changed to incomplete
+    When I am on "/adminDataset/update/id/22"
+    Then I should see "Incomplete"
+    And I should see "Create/Reset Private URL"
+    And I should not see "Open Private URL"
+
+  @ok @issue-1023
+  Scenario: An incomplete dataset page cannot be visited publicly
+    When I am on "/dataset/100020/"
+    Then I should see "The DOI 100020 cannot be displayed. "
+
+  @ok @issue-1023
+  Scenario: Can create/reset private url
+    When I am on "/adminDataset/update/id/22"
+    And I press the button "Create/Reset Private URL"
+    And I wait "1" seconds
+    Then I should see current url contains "/dataset/100020/token/"
+    And I should see "Genome data from foxtail millet (<em>Setaria italica</em>)."
+
+  @ok @issue-1023
+  Scenario: Open private url is working
+    When I am on "/adminDataset/update/id/22"
+    And I press the button "Create/Reset Private URL"
+    And I wait "1" seconds
+    Then I am on "/adminDataset/update/id/22"
+    And I should see "Open Private URL"
+    And I follow "Open Private URL"
+    And I should see "Genome data from foxtail millet (<em>Setaria italica</em>)."
+
+
 
     

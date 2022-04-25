@@ -295,4 +295,12 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->uncheckOption($checkbox);
     }
+
+    /**
+     * @Then I should see current url contains :value
+     */
+    public function iShouldSeeCurrentUrlContains($value)
+    {
+        $this->seeInCurrentUrl($value);
+    }
 }
