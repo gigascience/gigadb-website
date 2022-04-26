@@ -47,7 +47,7 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then /^I should see "([^"]*)"$/
+     * @Then I should see :text
      */
     public function iShouldSee($text)
     {
