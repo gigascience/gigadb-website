@@ -6,10 +6,16 @@
  * @license GPL-3.0
  */
 
+use \yii\console\ExitCode;
+use \Codeception\Util\HttpCode;
 
 class FilesCommand extends CConsoleCommand
 {
+    const RETURN_ASSOCIATIVE_ARRAY = 1 ;
 
+    /**
+     * @return string
+     */
     public function getHelp()
     {
         $helpText = "checks files url for a specific dataset in the database" . PHP_EOL;
@@ -19,6 +25,11 @@ class FilesCommand extends CConsoleCommand
     }
 
     /**
+     *
+     * Query databse for files url associated to dataset passed as parameter and check that they resolve ok
+     * otherwise output the url
+     *
+     * @param $doi string identifier of the dataset for which to check url
      * @return int
      * @throws CException
      */
@@ -37,17 +48,18 @@ END;
                     echo $row['location'].PHP_EOL;
                     continue;
                 }
-                $headers = get_headers($row['location'], 1, stream_context_create(array('http' => array('method' => 'HEAD'))));
-                if ($headers[0] !== 200)
+                $headers = get_headers($row['location'], self::RETURN_ASSOCIATIVE_ARRAY, stream_context_create(array('http' => array('method' => 'HEAD'))));
+                if ($headers[0] !== HttpCode::OK)
                     echo $row['location'].PHP_EOL;
 
             }
 
         } catch (CDbException $e) {
             Yii::log($e->getMessage(),"error");
-            return 1;
+            return ExitCode::IOERR;
         }
 
+        return ExitCode::OK;
 
     }
 
