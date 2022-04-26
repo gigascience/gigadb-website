@@ -1,4 +1,7 @@
 <div class="row">
+
+    <!--TODO: Adding 'style'=>'margin-top:*' to each div is just a temp styling fix, need further investigation on how to implement CSS styling properly.-->
+
     <div class="span10 offset1 form well">
         <?php $form=$this->beginWidget('CActiveForm', array(
 		'id'=>'file-form',

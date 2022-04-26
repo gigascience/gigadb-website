@@ -35,6 +35,8 @@ echo $form->hiddenField($model, "image_id");
         <div class="clear"></div>
         <?php echo $form->errorSummary($model); ?>
 
+        <!--TODO: Adding 'style'=>'margin-top:*' to each div is just a temp styling fix, need further investigation on how to implement CSS styling properly.-->
+
         <div class="container">
 
             <div class="row">

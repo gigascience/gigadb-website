@@ -10,6 +10,8 @@
 
 	<?php //echo $form->errorSummary($model); ?>
 
+    <!--TODO: Adding style="flex-direction: column;" to each div is just a temp styling fix, need further investigation on how to implement CSS styling properly.-->
+
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'dataset_id', array('class'=>'control-label')); ?>
 		<div class="controls" style="flex-direction: column;">
