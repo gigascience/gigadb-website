@@ -6,7 +6,7 @@ Feature: form to update dataset details
   Background:
     Given I have signed in as admin
 
-  @wip
+  @ok @issue-381 @issue-926
   Scenario: Form loading with all necessary fields
     When I am on "/adminDataset/update/id/8"
     Then I should see "Submitter *"
@@ -17,7 +17,7 @@ Feature: form to update dataset details
     And I should see "Software"
     And I should see "Genomic"
     And I should see "Metadata"
-    And I should see "Dataset Size!!!"
+    And I should see "Dataset Size in Bytes *"
     And I should see "Image Status"
     And I should see "Image URL"
     And I should see "Image Source *"
@@ -29,7 +29,6 @@ Feature: form to update dataset details
     And I should see "Fair Use Policy"
     And I should see "Publication Date"
     And I should see "Modification Date"
-    And I should see "Dataset Size *"
     And I should see "Title *"
     And I should see "Description"
     And I should see "Keywords"
