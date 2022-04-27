@@ -1,55 +1,70 @@
 # SOP: Restoring a database backup for beta.gigadb.org
 
-We use the Amazon RDS to provide us with a PostgreSQL RDBMS for hosting a 
-database that contains GigaDB's metadata about datasets. The RDS automatocally
-creates backups of the PostgreSQL database instance during a backup window 
-configured in `rds-instance.tf`. Currently, backups are created 03:00-06:00 UTC 
-time with each backup retained for 5 days. The database can be recovered to any 
-point during the retention period.
+Amazon's RDS provides a PostgreSQL RDBMS for hosting a database that contains 
+GigaDB's metadata about datasets. The RDS automatically creates backups of the 
+PostgreSQL database instance during a backup window configured in 
+`rds-instance.tf`. Currently, backups are created between 03:00-06:00 UTC time 
+with each backup retained for 5 days. The database can be restored to any 
+point during the 5 day backup retention period.
 
 Automated backups are not deleted when `terraform destroy` is executed. However,
 we get charged for these backups at a price of $0.095 per GB-month.
 
-RDS instances can be identified by their RDS instance identifier, e.g. 
-`rds-server-staging-gigadb`. Their endpoint, e.g. 
-`rds-server-staging-peter.c6rywcayjkwa.ap-northeast-1.rds.amazonaws.com` is a 
-kind of identifier but this does not appear to change. Which means that we can
-swap in new RDS instances without compromising connectivity of the database 
-with the web application.
+> :warning: **We need to be mindful about deleting these backups created as part of development work**
+
+RDS instances are identified by their RDS instance identifier, e.g. 
+`rds-server-staging-peter`. This instance identifier is used in its endpoint, 
+for example, `rds-server-staging-peter.c6rywcayjkwa.ap-northeast-1.rds.amazonaws.com`.
+This endpoint is used in any configuration used to access the database by an 
+application. 
+
+If the identifier for a RDS instance is consistently used then we can assume 
+that an RDS instance endpoint will not change for the PostgreSQL RDBMS for the
+staging.gigadb.org or beta.gigadb.org. This means we can swap in new RDS 
+instances that have been restored from automated backups, snapshots and database
+dump files without compromising connectivity of the database with the web 
+application.
 
 ## Using the AWS RDS dashboard to restore an automated backup on a new RDS instance
 
 ### Prerequisites
 
-If we want to restore a backup onto a new RDS instance with the same DB instance
-identifier then any RDS instance with this identifier needs to be deleted first.
+If we want to restore a database backup onto a new RDS instance with the same DB 
+instance identifier, e.g. `rds-server-staging-gigadb` or `rds-server-live-gigadb`
+then any pre-existing RDS instances with these identifiers need to be deleted 
+first.
 
 ### Procedure
 
-1. Go to https://ap-northeast-1.console.aws.amazon.com/rds/home?region=ap-east-1#automatedbackup-pitr:id=rds-server-staging-gigadb;restore=full-copy
-2. Restore time: Select `Latest restorable time`
-3. Settings: Provide a unique DB instance identifier. These identifiers are
-   named with this format: `rds-server-staging-gigadb` or `rds-server-live-gigadb`.
-   This means that you will need to delete the current RDS instance then re-create
-   it from an automated backup if we want to use the same structure.
-4. Instance configuration - Select burstable classes and select cheapest
-   instance type `db.t3.micro`
-5. Connectivity - select required VPC based on environment, e.g. `vpc-ap-east-1-live-gigadb-peter`
-6. Connectivity - select VPC security group, e.g. `rds_sg_live_gigadb-20220426875429729`
-7. Public access - no
-8. Password authentication
-9. No need to provide initial database name because the automated backup
-   contains the databases
-10. Copy tags to snapshots
-11. Do not enable auto minor version upgrade
-12. No need to enable deletion protection
-13. Each RDS instance has an endpoint domain name that is used to access it, e.g
-    `rds-server-staging-peter.c6rywcayjkwa.ap-northeast-1.rds.amazonaws.com`. This
-    same endpoint domain name is allocated to the newly restored RDS instance:
-    `rds-server-staging-peter.c6rywcayjkwa.ap-northeast-1.rds.amazonaws.com`.
-14. Click `Restore to poiint in time` button
-15. Need to manually add tags as these are missing on the new restored RDS 
-instance. `TODO`: what tags does the new restored DB instance need? 
+1. Go to the AWS [RDS Dashboard](https://ap-east-1.console.aws.amazon.com/rds/home?region=ap-east-1#) 
+for the Hong Kong ap-east-1 region.
+2. Click on the [Automated backups](https://ap-east-1.console.aws.amazon.com/rds/home?region=ap-east-1#automatedbackups:) link located on the left hand side menu in 
+the dashboard. 
+3. In the `Retained` tab, decide which backup you want to restore by clicking on
+its radio button
+4. Click the `Actions` button and select the `Restore to point in time` option
+5. In the *Restore time* box, decide whether you want to the `Latest restorable time`
+or a `Custom data and time`
+6. In the *Settings* box, enter `rds-server-live-gigadb` as the database 
+instance identifier. You will be able to do this because you will have already 
+deleted the RDS instance that had this database instance identifier
+7. In the *Instance configuration~ box, select `burstable classes` then select 
+the cheapest instance type `db.t3.micro`
+8. In the *Connectivity* box, select the required VPC based on `live` 
+environment, i.e. `vpc-ap-east-1-live-gigadb-gigadb`
+9. In the *Connectivity* box, `Public access` should be *No*
+10. In the *Connectivity* box, select VPC security group, e.g. `rds_sg_live_gigadb-20220426875429729`
+11. In the *Connectivity* box, *Password authentication* should be deleted
+12. In the *Additional configuration* box, there is no need to provide an `initial database name`
+because the automated backup contains the names of the databases to be restored
+13. Check the `Copy tags to snapshots` checkbox
+14. Do not check `Enable auto minor version upgrade` checkbox
+15. Do not check `Enable deletion protection` checkbox
+16. Click `Restore to point in time` button
+17. When the RDS instance has been created then you will need to manually add 
+its tags:
+* Environment = live
+* Owner = gigadb
 
 ## Prerequisites
 
