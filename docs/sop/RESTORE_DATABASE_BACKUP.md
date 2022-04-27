@@ -13,8 +13,8 @@ we get charged for these backups at a price of $0.095 per GB-month.
 > :warning: **We need to be mindful about deleting these backups created as part of development work**
 
 RDS instances are identified by their RDS instance identifier, e.g. 
-`rds-server-staging-peter`. This instance identifier is used in its endpoint, 
-for example, `rds-server-staging-peter.c6rywcayjkwa.ap-northeast-1.rds.amazonaws.com`.
+`rds-server-live-gigadb`. This instance identifier is used in its endpoint, 
+for example, `rds-server-live-gigadb.c6rywcayjkwa.ap-east-1.rds.amazonaws.com`.
 This endpoint is used in any configuration used to access the database by an 
 application. 
 
@@ -25,7 +25,7 @@ instances that have been restored from automated backups, snapshots and database
 dump files without compromising connectivity of the database with the web 
 application.
 
-## Using the AWS RDS dashboard to restore an automated backup on a new RDS instance
+## Using the AWS RDS dashboard to restore an automated backup onto a new RDS instance
 
 ### Prerequisites
 
@@ -66,7 +66,20 @@ its tags:
 * Environment = live
 * Owner = gigadb
 
-## Prerequisites
+This is because restored RDS instances do not have any tags. If the above tags
+are not present then you will not be able to destroy the instance because IAM
+policy requires resources to be tagged with Owner in order to do this.
+
+## Using the command-line to restore an automated backup onto a new RDS instance 
+
+### Prerequisites
+
+TODO: check if we need to delete existing RDS instance for live environment.
+
+If we want to restore a database backup onto a new RDS instance with the same DB
+instance identifier, e.g. `rds-server-staging-gigadb` or `rds-server-live-gigadb`
+then any pre-existing RDS instances with these identifiers need to be deleted
+first.
 
 ### Update AWS credentials configuration
 
@@ -94,23 +107,64 @@ Terminate existing RDS service:
 $ terraform destroy --target module.rds
 ```
 
-Copy `override.tf` to staging environment:
+Copy `override.tf` to the staging environment directory:
 ```
-$ ../../../scripts/tf_init.sh --project gigascience/forks/pli888-gigadb-website --env staging --restore-backup
+$ ../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env staging --restore-backup
 ```
 
-The PostgreSQL RDBMS can either be restored to its latest restorable time or to 
-a specific time using RDS backups. To restore to latest restorable time, we need
-to override the database name since this will come from the backup:
+The PostgreSQL RDBMS can either be restored to the latest restorable time or to 
+a specific time using an RDS backup. In both cases, the database name has to be
+overridden since this will come from the backup.
+
+Database backups are identified by their dbi_resource_id which needs to be
+specified in the Terraform restoration command. To get a list of 
+dbi_resource_ids, execute:
 ```
-# Get list of dbis
+# Look for the DbiResourceId property
 $ aws rds describe-db-instance-automated-backups
-
-$ terraform apply -var source_dbi_resource_id="db-6GQU4LWFBZI34AOR5BW2MEQFLU" -var gigadb_db_database="" -var use_latest_restorable_time="true"
+{
+    "DBInstanceAutomatedBackups": [
+        {
+            "DBInstanceArn": "arn:aws:rds:ap-east-1:123456789101:db:rds-server-staging-peter",
+            "DbiResourceId": "db-123456789ABCDEFGHIJKLMNOPQ",
+            "Region": "apne-1",
+            "DBInstanceIdentifier": "rds-server-staging-gigadb",
+            "RestoreWindow": {
+                "EarliestTime": "2022-04-26T08:27:35.984Z",
+                "LatestTime": "2022-04-27T09:34:36Z"
+            },
+            "AllocatedStorage": 8,
+            "Status": "retained",
+            "Port": 5432,
+            "AvailabilityZone": "ap-east-1c",
+            "VpcId": "vpc-09e15bc6ec7eda888",
+            "InstanceCreateTime": "2022-04-26T08:17:06Z",
+            "MasterUsername": "gigadb",
+            "Engine": "postgres",
+            "EngineVersion": "11.13",
+            "LicenseModel": "postgresql-license",
+            "OptionGroupName": "default:postgres-11",
+            "Encrypted": true,
+            "StorageType": "gp2",
+            "KmsKeyId": "arn:aws:kms:ap-east-1:123456789888:key/0ca5a6a0-9216-4acd-9fa1-43a4c7698fe7",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "DBInstanceAutomatedBackupsArn": "arn:aws:rds:ap-northeast-1:123456789101:auto-backup:ab-5cmixz7ezjfj4wnj7mrf4vg4dbybg3adf2anppp"
+        }
+    ]
+}
 ```
 
-To restore to specific time in backup - need to override database name as this 
-will come from the backup:
+Once a dbi_resource_id has been selected you can restore to the latest 
+restorable time using this command:
 ```
-$ terraform apply -var source_dbi_resource_id="db-6GQU4LWFBZI34AOR5BW2MEQFLU" -var gigadb_db_database="" -var utc_restore_time="2021-10-27T06:02:12+00:00"
+$ terraform apply -var source_dbi_resource_id="db-6GQU4LWFBZI34AOR5BW2MEQZON" -var gigadb_db_database="" -var use_latest_restorable_time="true"
 ```
+
+To restore to specific time, you will need to determine the time to
+restore to:
+```
+$ terraform apply -var source_dbi_resource_id="db-6GQU4LWFBZI34AOR5BW2MEQZON" -var gigadb_db_database="" -var utc_restore_time="2021-10-27T06:02:12+00:00"
+```
+
+With both the above terraform commands, check that `Environment` and `Owner` 
+tags exist for the new RDS instance. Create these tags if they are not present.
