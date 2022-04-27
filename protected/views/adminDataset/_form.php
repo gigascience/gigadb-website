@@ -98,13 +98,13 @@ echo $form->hiddenField($model, "image_id");
 
 
 
-                    <div class="control-group">
-                        <?php echo $form->labelEx($model,'dataset_size',array('label'=>'Dataset Size in Bytes','class'=>'control-label')); ?>
-                        <div class="controls">
-                            <?php echo $form->textField($model,'dataset_size',array('size'=>60,'maxlength'=>200,'style'=>'margin-top:-40px')); ?>
-                            <?php echo $form->error($model,'dataset_size'); ?>
-                        </div>
-                    </div>
+<!--                    <div class="control-group">-->
+<!--                        --><?php //echo $form->labelEx($model,'dataset_size',array('label'=>'Dataset Size in Bytes','class'=>'control-label')); ?>
+<!--                        <div class="controls">-->
+<!--                            --><?php //echo $form->textField($model,'dataset_size',array('size'=>60,'maxlength'=>200,'style'=>'margin-top:-40px')); ?>
+<!--                            --><?php //echo $form->error($model,'dataset_size'); ?>
+<!--                        </div>-->
+<!--                    </div>-->
 
                 </div>
                 <div class="span1">
@@ -296,7 +296,13 @@ echo $form->hiddenField($model, "image_id");
             <div class="row">
 
                 <div class="span9">
-
+                    <div class="control-group">
+                        <?php echo $form->labelEx($model,'dataset_size',array('label'=>'Dataset Size in Bytes','class'=>'control-label')); ?>
+                        <div class="controls">
+                            <?php echo $form->textField($model,'dataset_size',array('class'=>'span10', 'size'=>60,'maxlength'=>300,'style'=>'margin-top:-40px')); ?>
+                            <?php echo $form->error($model,'dataset_size'); ?>
+                        </div>
+                    </div>
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'title',array('class'=>'control-label')); ?>
                         <div class="controls">
