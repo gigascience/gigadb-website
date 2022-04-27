@@ -55,7 +55,16 @@ backups. Check both these options and click `Delete`.
 * Environment = live
 * Owner = gigadb
 
-## Prerequisites
+## Using the command-line to restore an automated backup onto a new RDS instance
+
+### Prerequisites
+
+TODO: check if we need to delete existing RDS instance for live environment.
+
+If we want to restore a database snapshot onto a new RDS instance with the same 
+DB instance identifier, e.g. `rds-server-staging-gigadb` or 
+`rds-server-live-gigadb` then any pre-existing RDS instances with these 
+identifiers need to be deleted first.
 
 ### Update AWS credentials configuration
 
@@ -71,7 +80,14 @@ $ cp credentials.upstream credentials
 ```
 > :warning: **You will need to overwrite the upstream `config` and `credentials` files with `config.ap-northeast-1` and `credentials.ap-northeast-1` when returning to your development work**
 
-## Use snapshot to restore PostgreSQL RDBMS
+### Command-line instructions
+
+1. Go to the AWS [RDS Dashboard](https://ap-east-1.console.aws.amazon.com/rds/home?region=ap-east-1#)
+   for the Hong Kong ap-east-1 region.
+2. Click on the [Snapshots](https://ap-east-1.console.aws.amazon.com/rds/home?region=ap-east-1#snapshots-list:) link located on the left hand side menu in
+   the dashboard.
+3. In the `Manual` tab, decide which snapshot you want to restore and make a 
+   note of the snapshot name
 
 Go to environment directory:
 ```
@@ -83,9 +99,15 @@ Terminate existing RDS service:
 $ terraform destroy --target module.rds
 ```
 
-Restore database snapshot:
+Restore database snapshot using the snapshot name from Step 3:
 ```
-$ terraform plan -var snapshot_identifier="snapshot-for-testing"
-$ terraform apply -var snapshot_identifier="snapshot-for-testing"
+$ terraform plan -var snapshot_identifier="rds-server-staging-gigadb-final-snapshot"
+$ terraform apply -var snapshot_identifier="rds-server-staging-gigadb-final-snapshot"
+$ terraform refresh
+
+$ terraform plan -var snapshot_identifier="rds-server-staging-peter-final-snapshot"
+$ terraform apply -var snapshot_identifier="rds-server-staging-peter-final-snapshot"
 $ terraform refresh
 ```
+
+rds_instance_address = "rds-server-staging-peter.c6rywcayjkwa.ap-northeast-1.rds.amazonaws.com"
