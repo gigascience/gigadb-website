@@ -59,8 +59,6 @@ backups. Check both these options and click `Delete`.
 
 ### Prerequisites
 
-TODO: check if we need to delete existing RDS instance for live environment.
-
 If we want to restore a database snapshot onto a new RDS instance with the same 
 DB instance identifier, e.g. `rds-server-staging-gigadb` or 
 `rds-server-live-gigadb` then any pre-existing RDS instances with these 
@@ -69,11 +67,11 @@ identifiers need to be deleted first.
 ### Update AWS credentials configuration
 
 1. Check `id-rsa-aws-hk-gigadb.pem` available from [cnhk-infra CI/CD variables page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd)
-is in  your `~/.ssh` directory.
+   is in  your `~/.ssh` directory.
 
 2. You should have `config.upstream` and `credentials.upstream` in your
-`~/.aws` directory. These files should be used to update the actual `config`
-and `credentials` files in `~/.aws`:
+   `~/.aws` directory. These files should be used to update the actual `config`
+   and `credentials` files in `~/.aws`:
 ```
 $ cp config.upstream config
 $ cp credentials.upstream credentials
@@ -86,28 +84,25 @@ $ cp credentials.upstream credentials
    for the Hong Kong ap-east-1 region.
 2. Click on the [Snapshots](https://ap-east-1.console.aws.amazon.com/rds/home?region=ap-east-1#snapshots-list:) link located on the left hand side menu in
    the dashboard.
-3. In the `Manual` tab, decide which snapshot you want to restore and make a 
-   note of the snapshot name
-
-Go to environment directory:
+3. You now need to decide which snapshot to restore. RDS instances can create 
+   two types of snapshots. `System snapshots` are created automatically and 
+   retained for a limited period based on the backup retention time. `Manual snapshots`
+   are created via the RDS console and AWS CLI, and are retained indefinitely.
+   To restore both snapshot types, get its `DB snapshot name` by clicking on the
+   snapshot to be restored.
+4. Go to environment directory:
 ```
 $ cd <path_to>/PhpstormProjects/gigascience/gigadb-website/ops/infrastructure/envs/staging
 ```
-
-Terminate existing RDS service:
+5. Terminate existing RDS service:
 ```
 $ terraform destroy --target module.rds
 ```
-
-Restore database snapshot using the snapshot name from Step 3:
+6. Restore database snapshot using the DB snapshot name from Step 3:
 ```
-$ terraform plan -var snapshot_identifier="rds-server-staging-gigadb-final-snapshot"
-$ terraform apply -var snapshot_identifier="rds-server-staging-gigadb-final-snapshot"
-$ terraform refresh
-
-$ terraform plan -var snapshot_identifier="rds-server-staging-peter-final-snapshot"
-$ terraform apply -var snapshot_identifier="rds-server-staging-peter-final-snapshot"
+# Use DB snapshot bame as the value for snapshot_identifier
+$ terraform plan -var snapshot_identifier="snapshot-final-staging-gigadb-20220428042656-rds-server-staging-gigadb-7f221735"
+$ terraform apply -var snapshot_identifier="snapshot-final-staging-gigadb-20220428042656-rds-server-staging-gigadb-7f221735"
 $ terraform refresh
 ```
-
-rds_instance_address = "rds-server-staging-peter.c6rywcayjkwa.ap-northeast-1.rds.amazonaws.com"
+7. Browse staging.gigadb.org in web browser to check GigaDB website is running
