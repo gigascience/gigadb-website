@@ -145,6 +145,15 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see a button :button with creation log link
+     */
+    public function iShouldSeeAButtonWithLink($expectButton)
+    {
+        $actualButton = $this->grabTextFrom("//a[contains(@href, '/curationlog/create/id/')]");
+        $this->assertEquals($actualButton, $expectButton);
+    }
+
+    /**
      * @When I fill in the field of :attribute :fieldName with :value
      */
     public function iFillInTheFieldOfWith($attribute, $fieldName, $value)
