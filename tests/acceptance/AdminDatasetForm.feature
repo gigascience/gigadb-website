@@ -157,6 +157,7 @@ Feature: form to update dataset details
     Then I am on "/adminDataset/update/id/22"
     And I should see "Open Private URL"
     And I follow "Open Private URL"
+    And I should see current url contains "/dataset/100020/token/"
     And I should see "Genome data from foxtail millet (<em>Setaria italica</em>)."
 
 
