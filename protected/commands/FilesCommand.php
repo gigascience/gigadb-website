@@ -49,9 +49,8 @@ END;
                     continue;
                 }
                 $headers = get_headers($row['location'], self::RETURN_ASSOCIATIVE_ARRAY, stream_context_create(array('http' => array('method' => 'HEAD'))));
-                if ($headers[0] !== HttpCode::OK)
+                if (!CompatibilityHelper::str_contains($headers[0],HttpCode::OK))
                     echo $row['location'].PHP_EOL;
-
             }
 
         } catch (CDbException $e) {
