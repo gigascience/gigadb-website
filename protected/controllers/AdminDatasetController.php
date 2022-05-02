@@ -431,11 +431,11 @@ class AdminDatasetController extends Controller
             $model->image_id = Image::GENERIC_IMAGE_ID;
             if ($model->save()) {
                 try {
-                    Image::model()->findByPk($oldImageID)->delete();
+                    if ( Image::model()->findByPk($oldImageID)->delete() )
+                        $result['status'] = true;
                 } catch (CDbException $e) {
                     Yii::log($e->getMessage(),"error");
                 }
-                $result['status'] = true;
             }
             else {
                 Yii::log("Failed associating generic image","error");

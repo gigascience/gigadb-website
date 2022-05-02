@@ -10,10 +10,6 @@ class AdminDatasetImageCest
     {
         // remove dataset row created by the first test
         $I->deleteRowByCriteria('dataset',['identifier' =>'346345']);
-
-        // Restore image record for dataset of id 8 altered in last test
-        $I->updateInDatabase('dataset',['image_id' => 8], ['id' => 8]);
-
     }
 
     // tests
@@ -70,6 +66,12 @@ class AdminDatasetImageCest
         $I->canSeeInSource('{"status":true}');
         // Ensure dataset of id 8 is now linked to the generic image
         $I->seeInDatabase("dataset", ["id" => 8, "image_id" => 0]);
+
+        // Ensure image record is deleted and that the url of old image is saved in the images_todelete table
+        $I->dontSeeInDatabase("image", ["id" => 8]);
+        $I->seeInDatabase("images_todelete", [
+            "url" => "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
+        ]);
     }
 
     /**
@@ -79,6 +81,19 @@ class AdminDatasetImageCest
      */
     public function tryToRemoveCustomImageThenUploadNewOne(FunctionalTester $I)
     {
+
+        // Ensure removal performed in previous test is reverted first
+        $I->haveInDatabase("image", [
+            "id" => 8,
+            "location" => "100006_Pygoscelis_adeliae.jpg",
+            "tag" => "Adelie penguin",
+            "url" => "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg",
+            "license" => "Public Domain, US Government",
+            "photographer" => "Michael Van Woert, 1998",
+            "source" => "&lt;a href&#x3D;&quot;http://www.photolib.noaa.gov/htmls/corp2479.htm&quot;&gt;NOAA Photo Library&lt;/a&gt;",
+        ]);
+        $I->updateInDatabase('dataset',['image_id' => 8], ['id' => 8]);
+
         //Login as admin
         $I->amOnPage("/site/login");
         $I->submitForm('form.form-horizontal',[

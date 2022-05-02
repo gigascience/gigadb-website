@@ -119,8 +119,16 @@ class Image extends CActiveRecord
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
-            $parts = parse_url($this->url);
-            return Yii::$app->cloudStore->delete($parts["path"]);
+            try {
+                Yii::app()->db->createCommand()->insert("images_todelete", [
+                    "url" => $this->url
+                ]);
+                return true;
+            }
+            catch (CDbException $e) {
+                Yii::log($e->getMessage(),"error");
+                return false;
+            }
         }
         return false;
 
