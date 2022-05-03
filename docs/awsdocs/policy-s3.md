@@ -16,7 +16,9 @@
             ],
             "Resource": [
                 "arn:aws:s3:::assets.gigadb-cdn.net",
-                "arn:aws:s3:::assets.gigadb-cdn.net/*"
+                "arn:aws:s3:::assets.gigadb-cdn.net/*",
+                "arn:aws:s3:::gigadb-database-backups",
+                "arn:aws:s3:::gigadb-database-backups/*"
             ]
         }
     ]
