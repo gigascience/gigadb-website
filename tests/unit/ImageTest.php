@@ -34,7 +34,7 @@ class ImageTest extends \Codeception\Test\Unit
 
         $sut = new Image(); // System Under Test
 
-        // Codeception's mocking mechanism is enough for this object as mocked functions are simples
+        // Codeception's mocking mechanism is enough for this object as mocked functions are simple
         $mockDatasetImage = $this->make('CUploadedFile',[
             "getName" => function () use ($imageName) { return $imageName;},
             "getTempName" => function () use ($tempName){ return $tempName;}
@@ -53,7 +53,7 @@ class ImageTest extends \Codeception\Test\Unit
         $this->assertTrue($sut->write($mockStorageTarget, $datasetUuid, $mockDatasetImage));
 
         $this->assertEquals($imageName, $sut->location);
-        $urlArray = parse_url($sut->url); // we compare by URL component because root directory varies with environments
+        $urlArray = parse_url($sut->url); // we compare by URL component because root directory varies with the environments
         $this->assertEquals("https", $urlArray["scheme"]);
         $this->assertEquals(Image::BUCKET, $urlArray["host"]);
         $this->assertRegExp($expectedTargetLocationPattern, $urlArray["path"]);
@@ -74,7 +74,7 @@ class ImageTest extends \Codeception\Test\Unit
 
         $sut = new Image(); // System Under Test
 
-        // Codeception's mocking mechanism is enough for this object as mocked functions are simples
+        // Codeception's mocking mechanism is enough for this object as mocked functions are simple
         $mockDatasetImage = $this->make('CUploadedFile',[
             "getName" => function () use ($imageName) { return $imageName;},
             "getTempName" => function () use ($tempName){ return $tempName;}
