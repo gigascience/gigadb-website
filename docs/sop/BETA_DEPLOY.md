@@ -48,8 +48,14 @@ IP address. There will also be an entry for the `staging` Host too.
 
 ### Set up credentials for accessing AWS resources
 
+> :warning: **Mistakes can happen with interchanging between AWS configurations below**
+
 1. Save `id-rsa-aws-hk-gigadb.pem` available from [cnhk-infra CI/CD variables page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd) into your `~/.ssh` directory.
-2. Copy your `~/.aws/config` file into a new file:
+2. Create a `known_hosts` file in `~/.ssh` if it does not already exist
+```
+$ touch ~/.ssh/known_hosts
+```
+3. Copy your `~/.aws/config` file into a new file:
 ```
 $ cd ~/.aws
 $ cp config config.ap-northeast-1
@@ -102,6 +108,11 @@ aws_secret_access_key=<aws_secret_access_key for Gigadb user>
 $ cp credentials.upstream credentials
 ```
 > :warning: **You will need to overwrite the upstream `credentials` file with `credentials.ap-northeast-1` when returning to your development work**
+
+Another option is to create a new `Gigadb` user account in your operating system
+and only setting up the `Gigadb` AWS user configuration in it. This means you
+will use this `Gigadb` operating system user for managing deployments to 
+staging and beta.gigadb.org.
 
 ## Deployment procedure
 
@@ -188,11 +199,6 @@ Change directory to the `envs` folder:
 $ cd ops/infrastructure/envs
 ```
 
-Create the `staging` directory:
-```
-$ mkdir staging
-```
-
 Change directory to the `staging` folder:
 ```
 $ cd staging
@@ -227,6 +233,11 @@ Copy ansible files into `staging` environment:
 $ ../../../scripts/ansible_init.sh --env staging
 ```
 
+Install third party Ansible roles:
+```
+$ ansible-galaxy install -r ../../../infrastructure/requirements.yml
+```
+
 Provision RDS via bastion server:
 ```
 $ ansible-playbook -i ../../inventories bastion_playbook.yml
@@ -238,6 +249,16 @@ $ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories webapp_playbook.y
 ```
 
 ## Deploy to staging.gigadb.org using CI/CD pipeline
+
+### Prerequisites
+
+You need to have permission to push or merge to the protected `develop` branch
+in the `Upstream` group in order to run manual jobs such as `build_staging` in 
+the CI/CD pipeline otherwise you will see a `You are not authorised to run this
+manual job` message. To see who can push/merge, go to repository settings and 
+expand the Protected branches section for the gigadb-website project.
+
+### Procedure
 
 1. Go to [Gitlab Upstream pipeline page](https://gitlab.com/gigascience/upstream/gigadb-website/-/pipelines)
 and run the staging build stage in your pipeline.
@@ -251,9 +272,9 @@ Change directory to the `envs` folder:
 $ cd ops/infrastructure/envs
 ```
 
-Create the `live` directory:
+Change directory to the `live` directory:
 ```
-$ mkdir live
+$ cd live
 ```
 
 Copy terraform files to `live` environment:
@@ -267,7 +288,7 @@ You need to specify the path to the ssh private key to use to connect to the EC2
 ~/.ssh/id-rsa-aws-hk-gigadb.pem
 
 You need to specify your GitLab username:
-pli888 | rija | kencho51
+pli888 | rijam | kencho51
 
 You need to specify a backup file created by the files-url-updater tool:
 ../../../../gigadb/app/tools/files-url-updater/sql/gigadbv3_20210929_v9.3.25.backup
@@ -298,6 +319,13 @@ $ ansible-playbook -i ../../inventories bastion_playbook.yml -e "reset_database_
 To confirm the cron job has been created, log in with ssh on bastion, and run 
 `crontab -l` - there should be a cronjob to reset the database daily at 10:05am 
 UTC (after the CNGB backup of day before is made available).
+```
+# Get public ip of bastion server
+$ terraform output
+
+# ssh into it
+$ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@<bastion public ip>
+```
 
 Provision web application server:
 ```
