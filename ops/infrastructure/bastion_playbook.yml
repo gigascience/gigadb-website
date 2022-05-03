@@ -267,3 +267,13 @@
 
   - debug:
       msg: "reset database stderr : {{ reset_database_output.stderr }}"
+
+- name: Install rclone for copying database dump files to S3
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+
+  tasks:
+  - name: Install rclone
+    become: yes
+    dnf:
+      name: rclone
+      state: present
