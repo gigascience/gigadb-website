@@ -151,7 +151,7 @@
         - "../../../../gigadb/app/tools/files-url-updater/Dockerfile"
         - "../../../../gigadb/app/tools/files-url-updater/docker-compose.yml"
 
-    - name: Install file for boostrapping database
+    - name: Install file for bootstrapping database
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/files-url-updater/sql/bootstrap_gigadb.sql"
         dest: /home/centos/files-url-updater/sql/
@@ -268,7 +268,7 @@
   - debug:
       msg: "reset database stderr : {{ reset_database_output.stderr }}"
 
-- name: Install rclone for copying database dump files to S3
+- name: Create setup for generating and uploading database dump files to S3
   hosts: name_bastion_server_staging*:name_bastion_server_live*
 
   tasks:
@@ -277,3 +277,21 @@
     dnf:
       name: rclone
       state: present
+
+  - name: Create AWS S3 configuration for rclone
+    template:
+      src: ../../../../ops/configuration/rclone-conf/rclone.conf.j2
+      dest: /home/centos/.config/rclone/rclone.conf
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Create a backups directory for storing database dump files if it does not exist
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+      loop:
+        - "/home/centos/backups"
