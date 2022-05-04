@@ -309,3 +309,12 @@
       owner: centos
       group: centos
       mode: a+x
+
+  - name: Setup cronjob to automate copying database backup file to S3
+    ansible.builtin.cron:
+      name: "Create database dump file from RDS and upload to S3 every day"
+      minute: "00"
+      hour: "11"
+      user: "centos"
+      job: "cd /home/centos/files-url-updater ; ./upload_database_backup_to_S3.sh 2> $HOME/logs/upload_dump_s3_errors.log 1> $HOME/logs/upload_dump_s3_output.log"
+      state: "{{ upload_database_backup_to_S3_cronjob_state }}"
