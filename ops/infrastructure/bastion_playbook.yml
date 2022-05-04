@@ -278,6 +278,14 @@
       name: rclone
       state: present
 
+  - name: Create a /home/centos/.config/rclone directory
+    ansible.builtin.file:
+      path: /home/centos/.config/rclone
+      state: directory
+      mode: '0755'
+      owner: centos
+      group: centos
+
   - name: Create AWS S3 configuration for rclone
     template:
       src: ../../../../ops/configuration/rclone-conf/rclone.conf.j2
@@ -286,12 +294,10 @@
       group: root
       mode: 0644
 
-  - name: Create a backups directory for storing database dump files if it does not exist
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: directory
-        mode: '0755'
-        owner: centos
-        group: centos
-      loop:
-        - "/home/centos/backups"
+  - name: Create a backups directory for storing database dump files
+    ansible.builtin.file:
+      path: /home/centos/backups
+      state: directory
+      mode: '0755'
+      owner: centos
+      group: centos

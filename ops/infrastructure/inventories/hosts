@@ -32,3 +32,6 @@ backup_file = "{{ lookup('ini', 'backup_file type=properties file=ansible.proper
 
 reset_database_cronjob_state = "absent"
 backupDate = "latest"
+
+aws_access_key_id = "{{ lookup('ini', 'aws_access_key_id type=properties file=ansible.properties') }}"
+aws_secret_access_key = "{{ lookup('ini', 'aws_secret_access_key type=properties file=ansible.properties') }}"

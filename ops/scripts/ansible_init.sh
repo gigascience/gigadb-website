@@ -68,14 +68,11 @@ echo "ssh_private_key_file = $aws_ssh_key" >> ansible.properties
 echo "gitlab_private_token= $GITLAB_PRIVATE_TOKEN" >> ansible.properties
 
 # Required to upload database dump files to S3
-access_key_id=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/fuw_db_host?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
-secret_access_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/fuw_db_user?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
+aws_access_key_id=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/aws_access_key_id?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
+aws_secret_access_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/aws_secret_access_key?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
 
-AWS_ACCESS_KEY_ID=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/AWS_ACCESS_KEY_ID?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
-AWS_SECRET_ACCESS_KEY=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/AWS_SECRET_ACCESS_KEY?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
-
-echo "access_key_id = $AWS_ACCESS_KEY_ID" >> ansible.properties
-echo "secret_access_key = $AWS_SECRET_ACCESS_KEY" >> ansible.properties
+echo "aws_access_key_id = $aws_access_key_id" >> ansible.properties
+echo "aws_secret_access_key = $aws_secret_access_key" >> ansible.properties
 
 # Retrieve ips of provisioned ec2 instances
 bastion_ip=$(terraform output ec2_bastion_public_ip | sed 's/"//g')
