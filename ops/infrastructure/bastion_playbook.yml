@@ -318,3 +318,11 @@
       user: "centos"
       job: "cd /home/centos/files-url-updater ; ./upload_database_backup_to_S3.sh 2> $HOME/logs/upload_dump_s3_errors.log 1> $HOME/logs/upload_dump_s3_output.log"
       state: "{{ upload_database_backup_to_S3_cronjob_state }}"
+      
+  - name: Create a restore directory for database dump files downloaded from S3 to be restored onto RDS
+    ansible.builtin.file:
+      path: /home/centos/files-url-updater/restore
+      state: directory
+      mode: '0755'
+      owner: centos
+      group: centos
