@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source /home/centos/files-url-updater/.env
+source ./.env
 
 export PATH=/usr/local/bin/:$PATH
 # preflight checks
@@ -15,5 +15,8 @@ export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOS
 # Create pgdmp database dump file
 export PGPASSWORD=$DB_PG_PASSWORD; pg_dump --host=$DB_PG_HOST -p 5432 --username=$DB_PG_USER --clean --create --schema=public --no-privileges --no-tablespaces --dbname=gigadb --file=backups/gigadb_${latest}.backup
 
-# Upload dump file to S3 using rclone
-rclone copy ./backups/gigadb_${latest}.backup s3_remote:gigadb-database-backups
+# Upload dump files in backups folder to S3 using rclone - skips identical files
+rclone copy backups/ s3_remote:gigadb-database-backups
+
+# Delete back up files older than 20 days
+find backups/* -mtime +20 -exec rm {} +

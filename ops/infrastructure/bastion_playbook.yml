@@ -296,8 +296,16 @@
 
   - name: Create a backups directory for storing database dump files
     ansible.builtin.file:
-      path: /home/centos/backups
+      path: /home/centos/files-url-updater/backups
       state: directory
       mode: '0755'
       owner: centos
       group: centos
+      
+  - name: Install create and upload database backup to S3 script for file url updater
+    ansible.builtin.copy:
+      src: ../../../../gigadb/app/tools/files-url-updater/upload_database_backup_to_S3.sh
+      dest: /home/centos/files-url-updater/
+      owner: centos
+      group: centos
+      mode: a+x
