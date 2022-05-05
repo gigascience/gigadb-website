@@ -301,7 +301,7 @@
       mode: '0755'
       owner: centos
       group: centos
-      
+
   - name: Install create and upload database backup to S3 script for file url updater
     ansible.builtin.copy:
       src: ../../../../gigadb/app/tools/files-url-updater/upload_database_backup_to_S3.sh
@@ -318,7 +318,7 @@
       user: "centos"
       job: "cd /home/centos/files-url-updater ; ./upload_database_backup_to_S3.sh 2> $HOME/logs/upload_dump_s3_errors.log 1> $HOME/logs/upload_dump_s3_output.log"
       state: "{{ upload_database_backup_to_S3_cronjob_state }}"
-      
+
   - name: Create a restore directory for database dump files downloaded from S3 to be restored onto RDS
     ansible.builtin.file:
       path: /home/centos/files-url-updater/restore
@@ -326,7 +326,7 @@
       mode: '0755'
       owner: centos
       group: centos
-      
+
   - name: Install restore database backup from S3 script into file url updater directory
     ansible.builtin.copy:
       src: ../../../../gigadb/app/tools/files-url-updater/restore_database_from_S3_backup.sh
