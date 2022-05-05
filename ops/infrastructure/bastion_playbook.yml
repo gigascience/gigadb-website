@@ -326,3 +326,11 @@
       mode: '0755'
       owner: centos
       group: centos
+      
+  - name: Install restore database backup from S3 script into file url updater directory
+    ansible.builtin.copy:
+      src: ../../../../gigadb/app/tools/files-url-updater/restore_database_from_S3_backup.sh
+      dest: /home/centos/files-url-updater/
+      owner: centos
+      group: centos
+      mode: a+x
