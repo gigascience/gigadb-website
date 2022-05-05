@@ -316,7 +316,12 @@ Enable cronjob for periodically resetting the database:
 $ ansible-playbook -i ../../inventories bastion_playbook.yml -e "reset_database_cronjob_state=present"
 ```
 
-To confirm the cron job has been created, log in with ssh on bastion, and run 
+Enable cronjob for periodically creating a database dump and storing it in S3:
+```
+$ ansible-playbook -i ../../inventories bastion_playbook.yml -e "upload_database_backup_to_S3_cronjob_state=present"
+```
+
+To confirm the cron jobs have been created, log in with ssh on bastion, and run 
 `crontab -l` - there should be a cronjob to reset the database daily at 10:05am 
 UTC (after the CNGB backup of day before is made available).
 ```
