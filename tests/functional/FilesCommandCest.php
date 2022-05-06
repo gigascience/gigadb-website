@@ -56,7 +56,7 @@ class FilesCommandCest
         $I->haveInDatabase("file", [
             "dataset_id" => 22,
             "name" => "some_stuff",
-            "location" => "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020",
+            "location" => "https://mirror.in2p3.fr/pub/epel/8/Everything/x86_64/Packages/f",
             "extension" => "txt",
             "size" => "999",
             "format_id" => 1,
@@ -66,27 +66,17 @@ class FilesCommandCest
         $I->haveInDatabase("file", [
             "dataset_id" => 22,
             "name" => "another_stuff",
-            "location" => "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/",
+            "location" => "https://mirror.in2p3.fr/pub/epel/8/Everything/x86_64/Packages/f/",
             "extension" => "txt",
             "size" => "999",
             "format_id" => 1,
             "type_id" => 1,
         ]);
 
-        $I->haveInDatabase("file", [
-            "dataset_id" => 8,
-            "name" => "another_stuff",
-            "location" => "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update",
-            "extension" => "txt",
-            "size" => "999",
-            "format_id" => 1,
-            "type_id" => 1,
-        ]);
 
 
         $output = shell_exec("./protected/yiic files checkUrls --doi=100020");
-        $I->assertContains("https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020", $output);
-        $I->assertContains("https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/", $output);
-        $I->assertContains("https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update", $output);
+        $I->assertContains("https://mirror.in2p3.fr/pub/epel/8/Everything/x86_64/Packages/f", $output);
+        $I->assertContains("https://mirror.in2p3.fr/pub/epel/8/Everything/x86_64/Packages/f/", $output);
     }
 }
