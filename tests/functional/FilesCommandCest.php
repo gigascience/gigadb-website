@@ -68,7 +68,7 @@ class FilesCommandCest
         $I->haveInDatabase("file", [
             "dataset_id" => 700,
             "name" => "some_stuff",
-            "location" => "https://mirror.in2p3.fr/pub/epel/8/Everything/x86_64/Packages/f",
+            "location" => "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020",
             "extension" => "txt",
             "size" => "999",
             "format_id" => 1,
@@ -78,7 +78,7 @@ class FilesCommandCest
         $I->haveInDatabase("file", [
             "dataset_id" => 700,
             "name" => "another_stuff",
-            "location" => "https://mirror.in2p3.fr/pub/epel/8/Everything/x86_64/Packages/f/",
+            "location" => "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/",
             "extension" => "txt",
             "size" => "999",
             "format_id" => 1,
@@ -88,7 +88,7 @@ class FilesCommandCest
 
 
         $output = shell_exec("./protected/yiic files checkUrls --doi=300070");
-        $I->assertContains("https://mirror.in2p3.fr/pub/epel/8/Everything/x86_64/Packages/f", $output);
-        $I->assertContains("https://mirror.in2p3.fr/pub/epel/8/Everything/x86_64/Packages/f/", $output);
+        $I->assertContains("https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020", $output);
+        $I->assertContains("https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/", $output);
     }
 }

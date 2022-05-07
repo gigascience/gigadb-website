@@ -54,7 +54,15 @@ END;
                     echo $row['location'].PHP_EOL;
                     continue;
                 }
-                $headers = get_headers($row['location'], self::RETURN_ASSOCIATIVE_ARRAY, stream_context_create(array('http' => array('method' => 'HEAD'))));
+                $headers = get_headers($row['location'], self::RETURN_ASSOCIATIVE_ARRAY, stream_context_create([
+                    'http' => [
+                        'method' => 'HEAD'
+                    ],
+                    'ssl' => [
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                    ],
+                ]));
                 if(!CompatibilityHelper::str_contains($headers[0],HttpCode::OK))
                     echo $row['location'].PHP_EOL;
             }
