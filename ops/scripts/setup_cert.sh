@@ -93,7 +93,7 @@ echo "chain_pem_remote_exists: $chain_pem_remote_exists"
 encoded_gitlab_project=$(echo $CI_PROJECT_PATH | sed -e 's/\//%2F/g')
 
 if [[ $cert_files_local_exists == 'true' ]];then
-  renew_cert()
+  renew_cert
 else
   echo "Certs do not exist in the filesystem"
   if [[ $fullchain_pem_remote_exists == "true" && $privkey_pem_remote_exists == "true" && $chain_pem_remote_exists == "true" ]];then
@@ -122,7 +122,7 @@ else
     $DOCKER_COMPOSE run --rm config ls -alrt /etc/letsencrypt/live/$REMOTE_HOSTNAME
 
     # now that the cert files are present locally, lets renew them
-    renew_cert()
+    renew_cert
 
   else
     echo "No certs on GitLab, certbot to create one"
