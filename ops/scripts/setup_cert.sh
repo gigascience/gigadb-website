@@ -105,7 +105,7 @@ make_new_cert() {
 }
 
 echo "Checking whether the certificate exists locally"
-cert_files_local_exists=$($DOCKER_COMPOSE exec web sh -c "test -f $FULLCHAIN_PEM && test -f $PRIVATE_PEM && test -f $CHAIN_PEM && echo 'true' || echo 'false'")
+cert_files_local_exists=$($DOCKER_COMPOSE exec -it web sh -c "test -f $FULLCHAIN_PEM && test -f $PRIVATE_PEM && test -f $CHAIN_PEM && echo 'true' || echo 'false'")
 echo "cert_files_local_exists: $cert_files_local_exists"
 echo "To see if they could be found in gitlab"
 if ! [ -z "$tls_fullchain_pem" ];then
