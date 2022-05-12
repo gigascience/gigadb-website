@@ -105,7 +105,7 @@ make_new_cert() {
 }
 
 echo "Checking whether the certificate exists locally"
-cert_files_local_exists=$($DOCKER_COMPOSE exec -T web sh -c "test -f $FULLCHAIN_PEM && test -f $PRIVATE_PEM && test -f $CHAIN_PEM && echo 'true' || echo 'false'")
+cert_files_local_exists=$($DOCKER_COMPOSE run --rm config bash -c "test -f $FULLCHAIN_PEM && test -f $PRIVATE_PEM && test -f $CHAIN_PEM && echo 'true' || echo 'false'")
 echo "cert_files_local_exists: $cert_files_local_exists"
 
 echo "To see if they could be found in gitlab"
@@ -142,12 +142,6 @@ else
     fetch_cert_from_gitlab
     echo "now that the cert files are present locally, lets renew them"
     renew_cert
-
-    $DOCKER_COMPOSE run --rm config ls -al /etc/letsencrypt/
-    $DOCKER_COMPOSE run --rm config ls -al $FULLCHAIN_PEM
-    $DOCKER_COMPOSE run --rm config ls -al $PRIVATE_PEM
-    $DOCKER_COMPOSE run --rm config ls -al $CHAIN_PEM
-
   else
     echo "No certs on GitLab, certbot to create one"
     make_new_cert
