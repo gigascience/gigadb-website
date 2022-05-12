@@ -44,7 +44,7 @@
 #    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
 #    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:$GIGADB_ENV
     # shutdown currently running container and its volumes
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml down -v
+    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml down
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST stop socat || true
     - docker --tlsverify -H=$REMOTE_DOCKER_HOST rm socat || true
     # verify config renders correctly after variables interpolation
