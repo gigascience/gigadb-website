@@ -44,12 +44,26 @@ END;
             $rows = Yii::app()->db->createCommand($sql)->queryAll();
             foreach ($rows as $row) {
                 $parts = parse_url($row['location']);
-                if ( "ftp" === $parts['scheme']) {
+                $pathComponents = pathinfo($parts['path']);
+
+                if( "ftp" === $parts['scheme']) {
                     echo $row['location'].PHP_EOL;
                     continue;
                 }
-                $headers = get_headers($row['location'], self::RETURN_ASSOCIATIVE_ARRAY, stream_context_create(array('http' => array('method' => 'HEAD'))));
-                if (!CompatibilityHelper::str_contains($headers[0],HttpCode::OK))
+                if( !$pathComponents['extension'] ) {
+                    echo $row['location'].PHP_EOL;
+                    continue;
+                }
+                $headers = get_headers($row['location'], self::RETURN_ASSOCIATIVE_ARRAY, stream_context_create([
+                    'http' => [
+                        'method' => 'HEAD'
+                    ],
+                    'ssl' => [
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                    ],
+                ]));
+                if(!CompatibilityHelper::str_contains($headers[0],HttpCode::OK))
                     echo $row['location'].PHP_EOL;
             }
 
