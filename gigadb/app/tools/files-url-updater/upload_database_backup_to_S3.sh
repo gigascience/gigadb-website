@@ -7,7 +7,7 @@ export PATH=/usr/local/bin/:$PATH
 which rclone
 
 # Calculate dates
-latest=$(date --date="1 days ago" +"%Y%m%d")
+latest=$(date +"%Y%m%d")
 
 # Terminate other connections to RDS instance
 export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOST -p 5432 -c  "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='gigadb';"
