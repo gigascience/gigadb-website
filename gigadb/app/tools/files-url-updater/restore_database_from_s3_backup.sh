@@ -8,11 +8,14 @@ export PATH=/usr/local/bin/:$PATH
 latest=$(date --date="1 days ago" +"%Y%m%d")
 backupDate="$1"
 
+gitlab_environment=$GIGADB_ENVIRONMENT
+gitlab_project=$GITLAB_PROJECT_STRING
+
 echo "Downloading database dump from S3"
 if [[ -z $backupDate || $backupDate -eq "latest" ]];then
-  rclone copy s3_remote:gigadb-database-backups/gigadb_${latest}.backup restore/
+  rclone copy s3_remote:gigadb-database-backups/gigadb_${gitlab_project}_${gitlab_environment}_${latest}.backup restore/
 else
-  rclone copy s3_remote:gigadb-database-backups/gigadb_${backupDate}.backup restore/
+  rclone copy s3_remote:gigadb-database-backups/gigadb_${gitlab_project}_${gitlab_environment}_${backupDate}.backup restore/
 fi
 
 echo "Terminating other connections to RDS instance"
@@ -23,8 +26,8 @@ export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -d postgres -h $DB_PG_HOS
 echo "Restoring dump onto RDS"
 if [[ -z $backupDate || $backupDate -eq "latest" ]];then
   echo "Loading gigadb_${latest}.backup"
-  export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < restore/gigadb_${latest}.backup
+  export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < restore/gigadb_${gitlab_project}_${gitlab_environment}_${latest}.backup
 else
   echo "Loading gigadb_${backupDate}.backup"
-  export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < restore/gigadb_${backupDate}.backup
+  export PGPASSWORD=$DB_PG_PASSWORD; psql -U $DB_PG_USER -h $DB_PG_HOST -p 5432 < restore/gigadb_${gitlab_project}_${gitlab_environment}_${backupDate}.backup
 fi
