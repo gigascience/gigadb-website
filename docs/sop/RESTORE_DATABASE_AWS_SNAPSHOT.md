@@ -80,17 +80,18 @@ $ cp credentials.upstream credentials
 
 ### Command-line instructions
 
-1. Go to the AWS [RDS Dashboard](https://ap-east-1.console.aws.amazon.com/rds/home?region=ap-east-1#)
-   for the Hong Kong ap-east-1 region.
-2. Click on the [Snapshots](https://ap-east-1.console.aws.amazon.com/rds/home?region=ap-east-1#snapshots-list:) link located on the left hand side menu in
-   the dashboard.
-3. You now need to decide which snapshot to restore. RDS instances can create 
-   two types of snapshots. `System snapshots` are created automatically and 
-   retained for a limited period based on the backup retention time. `Manual snapshots`
-   are created via the RDS console and AWS CLI, and are retained indefinitely.
-   To restore both snapshot types, get its `DB snapshot name` by clicking on the
-   snapshot to be restored.
-4. Go to environment directory:
+1. We need to decide which snapshot to restore. RDS instances can create 
+two types of snapshots. `System snapshots` are created automatically and 
+retained for a limited period based on the backup retention time. `Manual snapshots`
+are created via the RDS console and AWS CLI, and are retained indefinitely.
+To get a list of snapshots, execute:
+```
+$ aws rds describe-db-snapshots
+```
+The key information is the value of the `DBSnapshotIdentifier` key for the 
+snapshot we want to use. There is also a "TagList" key that show that the 
+important tags are preserved.
+2. Go to environment directory:
 ```
 $ cd <path_to>/PhpstormProjects/gigascience/gigadb-website/ops/infrastructure/envs/staging
 ```
@@ -98,11 +99,11 @@ $ cd <path_to>/PhpstormProjects/gigascience/gigadb-website/ops/infrastructure/en
 ```
 $ terraform destroy --target module.rds
 ```
-6. Restore database snapshot using the DB snapshot name from Step 3:
+6. Restore database snapshot using the DB snapshot name selected from Step 1:
+> :warning: **If you have an `override.tf` file in your environment directory, this needs to be removed**
 ```
 # Use DB snapshot bame as the value for snapshot_identifier
 $ terraform plan -var snapshot_identifier="snapshot-final-staging-gigadb-20220428042656-rds-server-staging-gigadb-7f221735"
 $ terraform apply -var snapshot_identifier="snapshot-final-staging-gigadb-20220428042656-rds-server-staging-gigadb-7f221735"
-$ terraform refresh
 ```
 7. Browse staging.gigadb.org in web browser to check GigaDB website is running
