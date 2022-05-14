@@ -10,17 +10,16 @@ It is assumed there is a running beta.gigadb.org website.
 
 ## Procedure
 
-Go to the [Pipelines](https://gitlab.com/gigascience/upstream/gigadb-website/-/pipelines)
+1. Go to the [Pipelines](https://gitlab.com/gigascience/upstream/gigadb-website/-/pipelines)
 page for the Upstream gigadb-website project.
-
-Identify a previous successfully deployment of the `live` environment for the
+2. Identify a previous successfully deployment of the `live` environment for the
 beta.gigadb.org website. This should contain a pipeline with 9 **passed** 
 stages.
-
-Click on the final stage of the pipeline and select `ld_teardown`. This will 
-stop and remove containers defined in the `docker-compose` file.
-
-Click on the final stage of the pipeline and select `ld_deploy` to re-deploy the
-code that this pipeline is associated with onto the beta-gigadb.org server.
-
-Go to https://beta.gigadb.org in your browser to check the site is running.
+3. We now need to decide if the docker volumes need to be removed as part of
+this roll back procedure. If so, then trigger the `ld_teardown` job in the 
+pipeline. N.B. triggering the `ld_teardown` job will delete all Docker volumes
+including the Let’s Encrypt one, which will mean a new deployment will create a 
+new certificate.
+4. Click on the final stage of the pipeline and select `ld_deploy` to re-deploy 
+the code that this pipeline is associated with onto the beta-gigadb.org server.
+5. Go to https://beta.gigadb.org in your browser to check the site is running.
