@@ -23,6 +23,7 @@ pg_host = "{{ lookup('ini', 'gigadb_db_host type=properties file=ansible.propert
 pg_user = "{{ lookup('ini', 'gigadb_db_user type=properties file=ansible.properties') }}"
 pg_password = "{{ lookup('ini', 'gigadb_db_password type=properties file=ansible.properties') }}"
 pg_database = "{{ lookup('ini', 'gigadb_db_database type=properties file=ansible.properties') }}"
+pg_port = 5432
 
 fuw_db_user = "{{ lookup('ini', 'fuw_db_user type=properties file=ansible.properties') }}"
 fuw_db_password = "{{ lookup('ini', 'fuw_db_password type=properties file=ansible.properties') }}"

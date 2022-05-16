@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Set classpath
 export PROJECT_HOME="/tool"

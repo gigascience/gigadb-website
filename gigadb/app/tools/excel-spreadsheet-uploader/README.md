@@ -22,7 +22,7 @@ $ curl -L -O https://github.com/gigascience/ExceltoGigaDB/archive/develop.zip
 Unpack contents in zip file:
 ```
 # -k stops README.md from being over-written
-$ bsdtar -k --strip-components=1 -xvf develop.zip
+$ docker-compose run --rm uploader bsdtar -k --strip-components=1 -xvf develop.zip
 ```
 
 ## Tool execution
