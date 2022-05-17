@@ -151,7 +151,7 @@
         - "../../../../gigadb/app/tools/files-url-updater/Dockerfile"
         - "../../../../gigadb/app/tools/files-url-updater/docker-compose.yml"
 
-    - name: Install file for boostrapping database
+    - name: Install file for bootstrapping database
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/files-url-updater/sql/bootstrap_gigadb.sql"
         dest: /home/centos/files-url-updater/sql/
@@ -255,7 +255,7 @@
       msg: "composer install output : {{ gigadb_composer_install_output }}"
 
 
-  - name: Load latest database into this environment's RDS intance
+  - name: Load latest database into this environment's RDS instance
     ansible.builtin.shell: "./reset_database.sh {{ backupDate }}"
     args:
       chdir: /home/centos/files-url-updater
@@ -267,3 +267,70 @@
 
   - debug:
       msg: "reset database stderr : {{ reset_database_output.stderr }}"
+
+- name: Create setup for generating and uploading database dump files to S3
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+
+  tasks:
+  - name: Install rclone
+    become: yes
+    dnf:
+      name: rclone
+      state: present
+
+  - name: Create a /home/centos/.config/rclone directory
+    ansible.builtin.file:
+      path: /home/centos/.config/rclone
+      state: directory
+      mode: '0755'
+      owner: centos
+      group: centos
+
+  - name: Create AWS S3 configuration for rclone
+    template:
+      src: ../../../../ops/configuration/rclone-conf/rclone.conf.j2
+      dest: /home/centos/.config/rclone/rclone.conf
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Create a backups directory for storing database dump files
+    ansible.builtin.file:
+      path: /home/centos/files-url-updater/backups
+      state: directory
+      mode: '0755'
+      owner: centos
+      group: centos
+
+  - name: Install create and upload database backup to S3 script for file url updater
+    ansible.builtin.copy:
+      src: ../../../../gigadb/app/tools/files-url-updater/upload_database_backup_to_S3.sh
+      dest: /home/centos/files-url-updater/
+      owner: centos
+      group: centos
+      mode: a+x
+
+  - name: Setup cronjob to automate copying database backup file to S3
+    ansible.builtin.cron:
+      name: "Create database dump file from RDS and upload to S3 every day"
+      minute: "00"
+      hour: "11"
+      user: "centos"
+      job: "cd /home/centos/files-url-updater ; ./upload_database_backup_to_S3.sh 2> $HOME/logs/upload_dump_s3_errors.log 1> $HOME/logs/upload_dump_s3_output.log"
+      state: "{{ upload_database_backup_to_S3_cronjob_state }}"
+
+  - name: Create a restore directory for database dump files downloaded from S3 to be restored onto RDS
+    ansible.builtin.file:
+      path: /home/centos/files-url-updater/restore
+      state: directory
+      mode: '0755'
+      owner: centos
+      group: centos
+
+  - name: Install restore database backup from S3 script into file url updater directory
+    ansible.builtin.copy:
+      src: ../../../../gigadb/app/tools/files-url-updater/restore_database_from_S3_backup.sh
+      dest: /home/centos/files-url-updater/
+      owner: centos
+      group: centos
+      mode: a+x
