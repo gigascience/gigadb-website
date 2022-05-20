@@ -19,7 +19,9 @@ stages.
 this roll back procedure. If so, then trigger the `ld_teardown` job in the 
 pipeline. N.B. triggering the `ld_teardown` job will delete all Docker volumes
 including the Let’s Encrypt one, which will mean a new deployment will create a 
-new certificate.
+new certificate. More often than not, `ld_teardown` is not required but there
+might be situations that it is desirable to execute this step.
 4. Click on the final stage of the pipeline and select `ld_deploy` to re-deploy 
 the code that this pipeline is associated with onto the beta-gigadb.org server.
-5. Go to https://beta.gigadb.org in your browser to check the site is running.
+5. Go to https://beta.gigadb.org in your browser to check the live website is 
+running.
