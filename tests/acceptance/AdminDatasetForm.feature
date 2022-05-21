@@ -149,13 +149,12 @@ Feature: form to update dataset details
     Then I should see current url contains "/dataset/100020/token/"
     And I should see "Genome data from foxtail millet (<em>Setaria italica</em>)."
 
-  @ok @issue-1023
+  @wip @issue-1023
   Scenario: Open private url is working
     When I am on "/adminDataset/update/id/22"
     And I press the button "Create/Reset Private URL"
     And I wait "1" seconds
     Then I am on "/adminDataset/update/id/22"
-    And I should see "Open Private URL"
     And I follow "Open Private URL"
     And I should see current url contains "/dataset/100020/token/"
     And I should see "Genome data from foxtail millet (<em>Setaria italica</em>)."
