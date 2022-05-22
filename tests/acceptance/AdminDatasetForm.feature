@@ -6,7 +6,7 @@ Feature: form to update dataset details
   Background:
     Given I have signed in as admin
 
-  @ @issue-381 @issue-926
+  @ok @issue-381 @issue-926
   Scenario: Form loading with all necessary fields
     When I am on "/adminDataset/update/id/8"
     Then I should see "Submitter *"
@@ -37,7 +37,7 @@ Feature: form to update dataset details
     And I should see a button "Create New Log" with creation log link
     And I should not see "Publisher"
 
-  @
+  @ok
   Scenario: Can display generic image, but no image meta data fields for no image dataset in update page
     When I am on "/adminDataset/update/id/144"
     Then I should see an image located in "https://assets.gigadb-cdn.net/images/datasets/no_image.png"
@@ -48,7 +48,7 @@ Feature: form to update dataset details
     And I should not see "Image License*"
     And I should not see "Image Photographer*"
 
-  @
+  @ok
   Scenario: Can preview uploaded image and display image meta data fields for no image dataset in update page
     When I am on "/adminDataset/update/id/144"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
@@ -59,7 +59,7 @@ Feature: form to update dataset details
     And I should see "Image License"
     And I should see "Image Photographer"
 
-  @
+  @ok
   Scenario: Can save image to no image dataset update page
     When I am on "/adminDataset/update/id/144"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
@@ -67,7 +67,7 @@ Feature: form to update dataset details
     Then I am on "/dataset/100094"
     And I should see an image located in "/images/datasets/bgi_logo_new.png"
 
-  @
+  @ok
   Scenario: Can display dataset image, meta data and remove image button in update page
     When I am on "/adminDataset/update/id/8"
     Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
@@ -78,7 +78,7 @@ Feature: form to update dataset details
     And I should see "Image License"
     And I should see "Image Photographer"
 
-  @
+  @ok
   Scenario: Can preview uploaded image and display image meta data fields update page
     When I am on "/adminDataset/update/id/8"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
@@ -90,7 +90,7 @@ Feature: form to update dataset details
     And I should see "Image License"
     And I should see "Image Photographer"
 
-  @
+  @ok
   Scenario: No meta image data fields when no image is loaded in create page
     When I am on "/adminDataset/admin"
     And I press the button "Create Dataset"
@@ -102,7 +102,7 @@ Feature: form to update dataset details
     And I should not see "Image License"
     And I should not see "Image Photographer"
 
-  @
+  @ok
   Scenario: Can preimage and display image meta data fields when image is loaded in create page
     When I am on "adminDataset/create"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
@@ -113,7 +113,7 @@ Feature: form to update dataset details
     And I should see "Image License"
     And I should see "Image Photographer"
 
-  @
+  @ok
   Scenario: Can create dataset with image
     When I am on "adminDataset/create"
     And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
@@ -129,19 +129,19 @@ Feature: form to update dataset details
     Then I am on "dataset/view/id/400789"
     And I should see an image located in "/images/datasets/bgi_logo_new.png"
 
-  @wip @issue-1023
+  @ok @issue-1023
   Scenario: To confirm the upload status of published dataset has changed to incomplete
     When I am on "/adminDataset/update/id/5"
     Then I should see "Incomplete"
     And I should see "Create/Reset Private URL"
     And I should not see "Open Private URL"
 
-  @wip @issue-1023
+  @ok @issue-1023
   Scenario: An incomplete dataset page cannot be visited publicly
     When I am on "/dataset/100039/"
     Then I should see "The DOI 100039 cannot be displayed. "
 
-  @wip @issue-1023
+  @ok @issue-1023
   Scenario: Can create/reset private url
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
@@ -149,7 +149,7 @@ Feature: form to update dataset details
     Then I should see current url contains "/dataset/100039/ten/"
     And I should see "(2012): Genomic data of the Puerto Rican Parrot (<em>Amazona vittata</em>) from a locally funded project. GigaScience."
 
-  @wip @issue-1023
+  @ok @issue-1023
   Scenario: Open private url is working
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
