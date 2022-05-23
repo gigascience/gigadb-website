@@ -2,32 +2,36 @@
 
 This is a pull request for the following functionalities:
 
-<Insert description of the proposed new functionalities and how they can be tested>
+* Describe functionality 1
+* Describe functionality 2
+* *Etc.*
 
-## Changes to the database schema
+## How to test?
 
-<Insert description of changes to database schema>
+Describe how the new functionalities can be tested by PR reviewers
 
-## Changes to the model classes
+## How have functionalities been implemented?
 
-<Insert description of changes to model classes>
+Describe how the new functionalities have been implemented by the
+changed code at a high level
 
-## Changes to the controller classes
+## Any issues with implementation?
 
-<Insert description of changes to controller classes>
+Describe any problems with your implementation
 
-## Changes to the view template files
+## Any changes to automated tests?
 
-<Insert description of changes to view template files>
+Describe any automated tests that have been developed for the new 
+functionalities
 
-## Changes to the style
+## Any changes to documentation?
 
-<Insert description of changes to the look and feel of any web pages>
+Describe changes to the documentation
 
-## Changes to the tests
+## Any technical debt repayment?
 
-<Insert description of changes to the test code>
+Describe changes to code that repays any technical debt
 
-## Changes to the provisioning
+## Any improvements to CI/CD pipeline?
 
-<Insert description of any changes related to the building of the GigaDB application>
+Describe any improvements to the Gitlab pipeline
