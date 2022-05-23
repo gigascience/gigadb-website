@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
+# Make an environment file
+if [[ -f ./env-bastion ]];then
+  cp ./env-bastion .env
+else
+  cp ./env-default .env
+fi
+
+
 # Download java source files
-curl -L -O https://github.com/gigascience/ExceltoGigaDB/archive/develop.zip
+docker-compose run --rm uploader curl -L -O https://github.com/gigascience/ExceltoGigaDB/archive/develop.zip
 
 # Unpack source files in place
-bsdtar -k --strip-components=1 -xvf develop.zip
+docker-compose run --rm uploader bsdtar -k --strip-components=1 -xvf develop.zip
 
-echo "excel-spreadsheet-uploader is set up"
+

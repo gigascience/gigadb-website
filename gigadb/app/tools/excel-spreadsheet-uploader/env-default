@@ -1,0 +1,5 @@
+pg_database=gigadb
+pg_host=host.docker.internal
+pg_port=54321
+pg_user=gigadb
+pg_password=

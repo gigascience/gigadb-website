@@ -5,3 +5,14 @@ services:
       context: .
     volumes:
       - .:/tool
+
+  pg_client:
+    environment:
+      PGDATABASE: ${pg_database}
+      PGHOST: ${pg_host}
+      PGPORT: ${pg_port}
+      PGUSER: ${pg_user}
+      PGPASSWORD: ${pg_password}
+    build:
+      context: .
+      dockerfile: PgClientDockerfile
