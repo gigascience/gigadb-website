@@ -260,6 +260,8 @@
         - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/docker-compose.yml"
         - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/PgClientDockerfile"
         - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/uploadDir"
+      tags:
+        - spreadsheet
 
     - name: Create env-bastion for database  (for pg_client docker service)
       ansible.builtin.template:
