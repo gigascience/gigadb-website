@@ -53,7 +53,8 @@
         src: '{{ backup_file }}'
         dest: "/home/centos/database_bootstrap.backup"
         owner: centos
-        group: centos
+        group:
+      when: backup_file
 
 - name: Setup gigadb-website so the Yii commands for database migration are available on the bastion
   hosts: name_bastion_server_staging*:name_bastion_server_live*

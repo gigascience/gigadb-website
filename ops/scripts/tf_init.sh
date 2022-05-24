@@ -62,9 +62,6 @@ if [ -z $GITLAB_PRIVATE_TOKEN ];then
   read -p "You need to specify your GitLab private token: " GITLAB_PRIVATE_TOKEN
 fi
 
-if [ -z $backup_file ];then
-  read -p "You need to specify a backup file created by the files-url-updater tool: " backup_file
-fi
 
 if [ -z $AWS_REGION ];then
   read -p "You need to specify an AWS region: " AWS_REGION
