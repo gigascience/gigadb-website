@@ -7,6 +7,8 @@ else
   cp ./env-default .env
 fi
 
+PATH=/usr/local/bin:$PATH
+export PATH
 
 # Download java source files
 docker-compose run --rm uploader curl -L -O https://github.com/gigascience/ExceltoGigaDB/archive/develop.zip

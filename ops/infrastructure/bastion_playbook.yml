@@ -256,10 +256,21 @@
         mode: a+x
       loop:
         - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/setup.sh"
+        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/execute.sh"
+        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/docker-compose.yml"
+        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/PgClientDockerfile"
         - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/uploadDir"
 
+    - name: Create env-bastion for database  (for pg_client docker service)
+      ansible.builtin.template:
+        src: ../../../../gigadb/app/tools/excel-spreadsheet-uploader/env.j2
+        dest: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader/env-bastion
+        owner: centos
+        group: centos
+        mode: 0644
+
     - name: Setup Excel to GigaDB tool
-      ansible.builtin.command: "/usr/local/bin/docker-compose run --rm uploader ./setup.sh"
+      ansible.builtin.command: ./setup.sh
       args:
         chdir: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader
 
@@ -267,14 +278,6 @@
       ansible.builtin.template:
         src: ../../../../gigadb/app/tools/excel-spreadsheet-uploader/configuration_setting_xml.j2
         dest: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader/configuration/setting.xml
-        owner: centos
-        group: centos
-        mode: 0644
-
-    - name: Create env-bastion for database  (for pg_client docker service)
-      ansible.builtin.template:
-        src: ../../../../gigadb/app/tools/excel-spreadsheet-uploader/env.j2
-        dest: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader/env-bastion
         owner: centos
         group: centos
         mode: 0644

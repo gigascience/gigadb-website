@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+PATH=/usr/local/bin:$PATH
+export PATH
+
 docker-compose run --rm pg_client -c 'drop trigger if exists file_finder_trigger on file RESTRICT'
 docker-compose run --rm pg_client -c 'drop trigger if exists sample_finder_trigger on sample RESTRICT'
 docker-compose run --rm pg_client -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
