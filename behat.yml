@@ -40,6 +40,12 @@ local:
       filters:
         tags: "@ok&&~@affiliate-login&&~@timeout-prone"
 
+apple-silicon:
+  suites:
+    default:
+      filters:
+        tags: "@ok&&~@affiliate-login&&~@timeout-prone&&~@javascript"
+
 ci:
   suites:
     default:

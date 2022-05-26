@@ -288,7 +288,7 @@ services:
 # see: https://stackoverflow.com/questions/46913377/php-codeception-not-so-quick-start-phpunit-framework-exception-undefined-inde
   firefox:
     <<: *logging
-    image: selenium/standalone-firefox-debug
+    image: seleniarm/standalone-firefox:latest
     shm_size: '1gb' # to avoid a known issue
     ports:
       - "5900:5900" #for VNC access
@@ -297,10 +297,11 @@ services:
       - web-tier
     extra_hosts:
       - "gigadb.test:172.16.238.10"
+      - "fuw-admin-api:172.16.238.10"
 
   chrome:
     <<: *logging
-    image: selenium/standalone-chrome:3.141.59-oxygen # latest version with Chrome 74
+    image: seleniarm/standalone-chromium:latest
     shm_size: '1gb' # to avoid a known issue
     ports:
       # - "5900:5900" #for VNC access
