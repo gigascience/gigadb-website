@@ -301,7 +301,7 @@ services:
 
   chrome:
     <<: *logging
-    image: seleniarm/standalone-chromium:latest
+    image: selenium/standalone-chrome:3.141.59-oxygen
     shm_size: '1gb' # to avoid a known issue
     ports:
       # - "5900:5900" #for VNC access
@@ -311,6 +311,21 @@ services:
     extra_hosts:
       - "gigadb.test:172.16.238.10"
       - "fuw-admin-api:172.16.238.10"      
+    environment: # to run headless, set false and comment out port 5900 above and make sure to pass --headless arg in acceptance.suite.yml
+      START_XVFB: "false"
+
+  chrome-arm:
+    <<: *logging
+    image: seleniarm/standalone-chromium:latest
+    shm_size: '1gb' # to avoid a known issue
+    ports:
+      # - "5900:5900" #for VNC access
+      - "4444:4444" #for webdriver access
+    networks:
+      - web-tier
+    extra_hosts:
+      - "gigadb.test:172.16.238.10"
+      - "fuw-admin-api:172.16.238.10"
     environment: # to run headless, set false and comment out port 5900 above and make sure to pass --headless arg in acceptance.suite.yml
       START_XVFB: "false"
 
