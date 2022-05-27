@@ -307,7 +307,8 @@ services:
       # - "5900:5900" #for VNC access
       - "4444:4444" #for webdriver access
     networks:
-      - web-tier
+      web-tier:
+        ipv4_address: 172.16.238.11
     extra_hosts:
       - "gigadb.test:172.16.238.10"
       - "fuw-admin-api:172.16.238.10"      
@@ -322,7 +323,8 @@ services:
       # - "5900:5900" #for VNC access
       - "4444:4444" #for webdriver access
     networks:
-      - web-tier
+      web-tier:
+        ipv4_address: 172.16.238.11
     extra_hosts:
       - "gigadb.test:172.16.238.10"
       - "fuw-admin-api:172.16.238.10"
