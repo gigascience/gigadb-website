@@ -53,7 +53,8 @@
         src: '{{ backup_file }}'
         dest: "/home/centos/database_bootstrap.backup"
         owner: centos
-        group: centos
+        group:
+      when: backup_file
 
 - name: Setup gigadb-website so the Yii commands for database migration are available on the bastion
   hosts: name_bastion_server_staging*:name_bastion_server_live*
@@ -68,6 +69,8 @@
         src: https://github.com/gigascience/gigadb-website/archive/refs/heads/develop.zip
         dest: /home/centos
         remote_src: yes
+        owner: centos
+        group: centos
 
     - name: Copy env file to the bastion install of gigadb
       ansible.builtin.copy:
@@ -106,7 +109,7 @@
 
 
     - name: Create db.json with RDS DSN
-      template:
+      ansible.builtin.template:
         src: ../../../../ops/configuration/yii-conf/db.json.j2
         dest: /home/centos/gigadb-website-develop/protected/config/db.json
         owner: root
@@ -240,6 +243,47 @@
       dds_restart_docker: no
       dds_client_cert_path: /home/centos/.docker
     - role: ../../roles/docker-daemon-enable-start
+
+- name: Setup Excel to GigaDB tool
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+
+  tasks:
+    - name: Copy setup file and spreadsheets
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader
+        owner: centos
+        group: centos
+        mode: a+x
+      loop:
+        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/setup.sh"
+        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/execute.sh"
+        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/docker-compose.yml"
+        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/PgClientDockerfile"
+        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/uploadDir"
+      tags:
+        - spreadsheet
+
+    - name: Create env-bastion for database  (for pg_client docker service)
+      ansible.builtin.template:
+        src: ../../../../gigadb/app/tools/excel-spreadsheet-uploader/env.j2
+        dest: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader/env-bastion
+        owner: centos
+        group: centos
+        mode: 0644
+
+    - name: Setup Excel to GigaDB tool
+      ansible.builtin.command: ./setup.sh
+      args:
+        chdir: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader
+
+    - name: Create setting.xml for database configuration (for java tool)
+      ansible.builtin.template:
+        src: ../../../../gigadb/app/tools/excel-spreadsheet-uploader/configuration_setting_xml.j2
+        dest: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader/configuration/setting.xml
+        owner: centos
+        group: centos
+        mode: 0644
 
 - name: Load latest DB backup
   hosts: name_bastion_server_staging*:name_bastion_server_live*

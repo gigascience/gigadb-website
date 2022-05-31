@@ -86,4 +86,5 @@ ssh-keygen -R $bastion_ip
 ssh-keygen -R $webapp_ip
 # Add the new key
 ssh-keyscan -t ecdsa $bastion_ip >> ~/.ssh/known_hosts
-ssh -i $aws_ssh_key centos@$bastion_ip ssh-keyscan -t ecdsa $webapp_ip >> ~/.ssh/known_hosts
+new_host=$(ssh -i $aws_ssh_key centos@$bastion_ip ssh-keyscan -t ecdsa $webapp_ip)
+echo $new_host  >> ~/.ssh/known_hosts
