@@ -210,6 +210,19 @@ TARGET=${APP_SOURCE}/gigadb/app/tools/files-url-updater/config/params.php
 VARS='$DB_BACKUP_HOST:$DB_BACKUP_USERNAME:$DB_BACKUP_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
+
+export REVIEW_DB_HOST=database
+export REVIEW_DB_PORT=5432
+export REVIEW_DB_DATABASE=reviewdb
+export REVIEW_DB_USERNAME=reviewdb
+export REVIEW_DB_PASSWORD=reviewdb
+SOURCE=${APP_SOURCE}/gigadb/app/tools/fetch-reports/config/params.php.dist
+TARGET=${APP_SOURCE}/gigadb/app/tools/fetch-reports/config/params.php
+VARS='$REVIEW_DB_HOST:$REVIEW_DB_PORT:$REVIEW_DB_DATABASE:$REVIEW_DB_USERNAME:$REVIEW_DB_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET
+
+
+
 # Download example dataset files
 # mkdir -p ${APP_SOURCE}/vsftpd/files
 # if ! [ -f ${APP_SOURCE}/vsftpd/files/ftpexamples4.tar.gz ]; then

@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+
+  public:
+    build: frontend
+    ports:
+      - "9010:9000"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ./:/app
+
+  api:
+    build: backend
+    ports:
+      - "9011:9000"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ./:/app
+
+  console:
+    build: console
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ./:/app
+
+  reviewdb:
+    image: postgres:12
+    environment:
+      - POSTGRES_DB=yii2advanced
+      - POSTGRES_USER=yii2advanced
+      - POSTGRES_PASSWORD=secret
+
+
+  config:
+    image: rija/docker-alpine-shell-tools:1.0.1
+    volumes:
+      - ./:/app
+    command: /app/generate_config.sh

@@ -1,0 +1,15 @@
+<?php
+
+return [
+    'db' => [
+        "host" => "$REVIEW_DB_HOST",
+        "port" => "$REVIEW_DB_PORT",
+        "database" => "$REVIEW_DB_DATABASE",
+        "username" => "$REVIEW_DB_USERNAME",
+        "password" => "$REVIEW_DB_PASSWORD",
+    ],
+
+];
+
+
+
