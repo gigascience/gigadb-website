@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-bullseye
+FROM php:8.0-fpm-bullseye
 
 RUN usermod -u 1000 www-data
 

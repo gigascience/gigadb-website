@@ -23,5 +23,12 @@ docker-compose run --rm config
 # Deploy correct Yii2 configuration files
 echo "All" | docker-compose run --rm console ./init --env=Development
 
+
+# Building services
+docker-compose build public api reviewdb console
+
+# running composer update
+docker-compose run --rm console composer update
+
 # Launching service
 docker-compose up -d public api reviewdb
