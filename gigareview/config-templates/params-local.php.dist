@@ -8,7 +8,12 @@ return [
         "username" => "$REVIEW_DB_USERNAME",
         "password" => "$REVIEW_DB_PASSWORD",
     ],
-
+    'sftp' => [
+        "host" => "$sftp_hostname",
+        "username" => "$sftp_username",
+        "password" => "$sftp_password",
+        "baseDirectory" => "$sftp_directory",
+    ],
 ];
 
 

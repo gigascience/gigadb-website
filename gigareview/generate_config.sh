@@ -40,7 +40,12 @@ if ! [ -f  ./.secrets ];then
 
     echo "Retrieving variables from ${PROJECT_VARIABLES_URL}"
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key != "ANALYTICS_PRIVATE_KEY") | select(.key != "TLSAUTH_CERT") | select(.key != "TLSAUTH_KEY") | select(.key != "TLSAUTH_CA") | select(.key != "docker_tlsauth_ca") | select(.key != "docker_tlsauth_key") | select(.key != "docker_tlsauth_cert") | select(.key != "tls_fullchain_pem") | select(.key != "tls_privkey_pem") | select(.key != "tls_chain_pem") |.key + "=" + .value' > .project_var
-    cat .group_var .fork_var .project_var > .secrets && rm .group_var && rm .fork_var && rm .project_var
+
+    echo "Retrieving variables from ${MISC_VARIABLES_URL}"
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${MISC_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key | test("sftp_") ) | .key + "=" + .value' > .misc_var
+
+
+    cat .group_var .fork_var .project_var .misc_var > .secrets && rm .group_var && rm .fork_var && rm .project_var && rm .misc_var
     echo "# Some help about this file in ops/configuration/variables/secrets-sample" >> .secrets
 fi
 echo "Sourcing secrets"
@@ -53,6 +58,6 @@ set +a
 
 SOURCE=${APP_SOURCE}/config-templates/params-local.php.dist
 TARGET=${APP_SOURCE}/environments/$REVIEW_ENV/console/config/params-local.php
-VARS='$REVIEW_DB_HOST:$REVIEW_DB_PORT:$REVIEW_DB_DATABASE:$REVIEW_DB_USERNAME:$REVIEW_DB_PASSWORD'
+VARS='$REVIEW_DB_HOST:$REVIEW_DB_PORT:$REVIEW_DB_DATABASE:$REVIEW_DB_USERNAME:$REVIEW_DB_PASSWORD:$sftp_hostname:$sftp_username:$sftp_password:$sftp_directory'
 envsubst $VARS < $SOURCE > $TARGET
 
