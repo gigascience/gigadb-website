@@ -660,6 +660,8 @@ services:
       - ${APPLICATION}/:/var/www
     networks:
       - db-tier
+    ports:
+      - "11300:11300"
     expose:
       - "11300"
 
