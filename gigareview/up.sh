@@ -31,4 +31,4 @@ docker-compose build public api reviewdb console
 docker-compose run --rm console composer update
 
 # Launching service
-docker-compose up -d public api reviewdb
+docker-compose up -d public api reviewdb sftp_test

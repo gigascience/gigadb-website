@@ -1,5 +1,7 @@
-suite_namespace: backend\tests\functional
+suite_namespace: console\tests\functional
 actor: FunctionalTester
 modules:
     enabled:
-        - Yii2
+        - Filesystem
+        - Asserts
+        - Cli

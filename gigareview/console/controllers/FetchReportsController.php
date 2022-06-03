@@ -74,7 +74,7 @@ class FetchReportsController extends Controller
                         'scope' => "$reportType"
                     ])
                 );
-                $this->stdout("Pushed a new job with ID $jobId for report $reportType".PHP_EOL);
+                $this->stdout("Pushed a new job with ID $jobId for report $reportType to {$queues[$reportType]}".PHP_EOL);
 
             }
             catch (FilesystemException | UnableToReadFile $exception) {

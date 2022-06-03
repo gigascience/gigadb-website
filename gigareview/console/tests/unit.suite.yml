@@ -1,2 +1,2 @@
-suite_namespace: backend\tests\unit
+suite_namespace: console\tests\unit
 actor: UnitTester

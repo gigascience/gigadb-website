@@ -1,4 +1,4 @@
-namespace: backend\tests
+namespace: console\tests
 actor_suffix: Tester
 paths:
     tests: tests
@@ -9,7 +9,4 @@ bootstrap: _bootstrap.php
 settings:
     colors: true
     memory_limit: 1024M
-modules:
-    config:
-        Yii2:
-            configFile: 'config/codeception-local.php'
+

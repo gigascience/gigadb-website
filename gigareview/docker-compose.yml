@@ -37,6 +37,13 @@ services:
       - POSTGRES_USER=yii2advanced
       - POSTGRES_PASSWORD=secret
 
+  sftp_test:
+    image: atmoz/sftp
+    volumes:
+      - ./console/tests/_data:/home/testuser/editorialmanager
+    expose:
+      - "22"
+    command: testuser:testpass:::editorialmanager
 
   config:
     image: rija/docker-alpine-shell-tools:1.0.1
