@@ -295,4 +295,12 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->uncheckOption($checkbox);
     }
+
+    /**
+     * @Then I accept popup
+     */
+    public function iAcceptPopup()
+    {
+        $this->acceptPopup();
+    }
 }

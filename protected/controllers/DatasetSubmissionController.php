@@ -1019,7 +1019,12 @@ EO_MAIL;
                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Dataset does not exist.")));
             }
 
-            if ($dataset->delete()) {
+            if ($dataset) {
+                // Dataset is updated to belong to the deleted datasets
+                // user account thereby deleting it from current user
+                $deleted_datasets_user = User::model()->find('email=:email', array(':email' => Yii::app()->params['deleted_datasets_user_email']));
+                $dataset->submitter_id = $deleted_datasets_user->id;
+                $dataset->save();
                 Util::returnJSON(array("success"=>true));
             }
         }

@@ -27,4 +27,27 @@ class AuthorSteps #extends \Codeception\Actor
         $this->I->iPressTheButton('Login');
     }
 
+
+    /**
+     * @Then I should see :tab tab with table on user view profile
+     */
+    public function iShouldSeeTabWithTableOnUserViewProfile($tab, \Behat\Gherkin\Node\TableNode $table)
+    {
+        if ("Your Uploaded Datasets" == $tab) {
+            $colnames = array("DOI", "Title", "Subject", "Dataset Type", "Status", "Publication Date", "Modification Date", "File Count", "Operation");
+
+            $this->I->iFollow($tab);
+            foreach ($table as $row) {
+                foreach ($colnames as $colname) {
+                    codecept_debug("Doing: " . $colname);
+                    if ($row[$colname] != "" & $colname != "Operation")
+                        $this->I->seeInPageSource($row[$colname]);
+                    elseif ($colname === "Operation") {
+                        $this->I->seeLink("Update");
+                        $this->I->seeLink("Delete");
+                    }
+                }
+            }
+        }
+    }
 }
