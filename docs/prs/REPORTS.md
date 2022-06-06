@@ -59,9 +59,9 @@ Email Address: tech_AT_gigasciencejournal.com
 ## Reports for GigaReview
 
 Several queries for generating reports have been developed to retrieve data for 
-keeping the information in the GigaReview Peer Review System up to date 
-(Fig. 1). All reports are outputted to the SFTP server on a weekly and daily
-basis.
+keeping the information in the GigaReview Peer Review System up to date. For
+screenshots showing how queries have been created - see [slides](https://docs.google.com/a/gigasciencejournal.com/viewer?a=v&pid=sites&srcid=Z2lnYXNjaWVuY2Vqb3VybmFsLmNvbXxnaWdhc2NpZW5jZXxneDoyM2ExM2NmZTk3MTkxMDlh).
+All reports are outputted to the SFTP server on a weekly and daily basis.
 
 ### Manuscripts_Previous_Week_PL / Manuscripts_Yesterday_PL
 
