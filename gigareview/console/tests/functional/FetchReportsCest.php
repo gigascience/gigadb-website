@@ -9,20 +9,22 @@ class FetchReportsCest
     {
     }
 
-    public function tryToProcessAcceptedManuscripts(FunctionalTester $I)
+    /**
+     * @param FunctionalTester $I
+     * @return void
+     *
+     * @example ["manuscripts", "/em-manuscripts-latest.xlsx", "manuscripts_q"]
+     * @example ["authors", "/em-authors-latest.xlsx", "authors_q"]
+     * @example ["reviewers", "/em-reviewers-latest.xlsx", "reviewers_q"]
+     * @example ["reviewersQuestionsResponses", "/em-reviewers-questions-responses-latest.xlsx", "reviewersQuestionsResponses_q"]
+     *
+     */
+    public function tryToFetchAndPublishReports(FunctionalTester $I, \Codeception\Example $example)
     {
-        $I->runShellCommand("./yii_test fetch-reports/fetch ", false);
-        $I->canSeeInShellOutput("Got content for em-manuscripts-latest.xlsx");
-        $I->canSeeShellOutputMatches("/Pushed a new job with ID \d+ for report EM_MANUSCRIPTS to em_manuscripts_q/");
+        $I->runShellCommand("./yii_test fetch-reports/fetch", false);
+        $I->canSeeInShellOutput("Got content for {$example[1]}");
+        $I->canSeeShellOutputMatches("/Pushed a new job with ID \d+ for report {$example[0]} to {$example[2]}/");
         $I->canSeeResultCodeIs(Exitcode::OK);
     }
 
-
-    public function tryToProcessAuthors(FunctionalTester $I)
-    {
-        $I->runShellCommand("./yii_test fetch-reports/fetch ", false);
-        $I->canSeeInShellOutput("Got content for em-authors-latest.xlsx");
-        $I->canSeeShellOutputMatches("/Pushed a new job with ID \d+ for report EM_AUTHORS to em_authors_q/");
-        $I->canSeeResultCodeIs(Exitcode::OK);
-    }
 }
