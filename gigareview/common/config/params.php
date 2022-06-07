@@ -7,10 +7,10 @@ return [
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
     'reportsTypesFilenamePatterns' => [
-        'manuscripts' => 'em-manuscripts-latest',
-        'authors' => 'em-authors-latest',
-        'reviewers' => 'em-reviewers-latest',
-        'reviewersQuestionsResponses' => 'em-reviewers-questions-responses-latest',
-        'reviews' => 'em-reviews-latest',
+        'manuscripts' => 'Report-GIGA-em-manuscripts-latest',
+        'authors' => 'Report-GIGA-em-authors-latest',
+        'reviewers' => 'Report-GIGA-em-reviewers-latest',
+        'reviewersQuestionsResponses' => 'Report-GIGA-em-reviewers-questions-responses-latest',
+        'reviews' => 'Report-GIGA-em-reviews-latest',
     ]
 ];

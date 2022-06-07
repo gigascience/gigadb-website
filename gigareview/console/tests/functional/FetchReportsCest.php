@@ -13,10 +13,10 @@ class FetchReportsCest
      * @param FunctionalTester $I
      * @return void
      *
-     * @example ["manuscripts", "/em-manuscripts-latest.xlsx", "manuscripts_q"]
-     * @example ["authors", "/em-authors-latest.xlsx", "authors_q"]
-     * @example ["reviewers", "/em-reviewers-latest.xlsx", "reviewers_q"]
-     * @example ["reviewersQuestionsResponses", "/em-reviewers-questions-responses-latest.xlsx", "reviewersQuestionsResponses_q"]
+     * @example ["manuscripts", "/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv", "manuscripts_q"]
+     * @example ["authors", "/Report-GIGA-em-authors-latest-214-20220607004243.csv", "authors_q"]
+     * @example ["reviewers", "/Report-GIGA-em-reviews-latest-214-20220607004243.csv", "reviewers_q"]
+     * @example ["reviewersQuestionsResponses", "/Report-GIGA-em-reviewers-questions-responses-latest-214-20220607004243.csv", "reviewersQuestionsResponses_q"]
      *
      */
     public function tryToFetchAndPublishReports(FunctionalTester $I, \Codeception\Example $example)
