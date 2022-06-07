@@ -103,6 +103,29 @@ final class FetchReportsController extends Controller
         return ExitCode::OK;
     }
 
+    /**
+     * Command to remove files remotely that have already been processed successfully
+     *
+     * @TODO: implement this when the database schema is done
+     * @return int
+     */
+    public function actionClearProcessedReports(): int
+    {
+        return ExitCode::OK;
+    }
+
+    /**
+     * Command to show files the system knows that are neither failed or completed
+     *
+     * @TODO: implement this when the database schema is done
+     * @return int
+     */
+    public function actionShowInProgress(): int
+    {
+        return ExitCode::OK;
+    }
+
+
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
