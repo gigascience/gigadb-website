@@ -58,17 +58,12 @@ final class FetchReportsController extends Controller
      * @param string $filePattern
      * @return int
      * @throws FilesystemException
+     *
      */
     public function actionList($filePattern): int
     {
-        $allFiles = $this->fs->listContents('')
-            ->filter(fn (StorageAttributes $attributes) => $attributes->isFile())
-            ->filter(fn (StorageAttributes $attributes) => preg_match("/$filePattern/", $attributes->path()) )
-            ->sortByPath()
-            ->map(fn (StorageAttributes $attributes) => $attributes->path())
-            ->toArray();
-
-        print_r($allFiles);
+        $allFiles = $this->listRemoteFiles($filePattern);
+        array_map(fn($file) => print $file.PHP_EOL, $allFiles);
         return ExitCode::OK;
     }
 
@@ -124,13 +119,24 @@ final class FetchReportsController extends Controller
     private function getLatestOfType(string $type): ?string
     {
         $filePattern = Yii::$app->params['reportsTypesFilenamePatterns'][$type];
+        $matches = $this->listRemoteFiles($filePattern);
+        return end($matches);
+    }
+
+    /**
+     * @param $filePattern
+     * @return array
+     * @throws FilesystemException
+     */
+    public function listRemoteFiles($filePattern): array
+    {
         $matches = $this->fs->listContents('')
-            ->filter(fn (StorageAttributes $attributes) => $attributes->isFile())
-            ->filter(fn (StorageAttributes $attributes) => preg_match("/$filePattern/", $attributes->path()) )
-            ->map(fn (StorageAttributes $attributes) => $attributes->path())
+            ->filter(fn(StorageAttributes $attributes) => $attributes->isFile())
+            ->filter(fn(StorageAttributes $attributes) => preg_match("/$filePattern/", $attributes->path()))
+            ->map(fn(StorageAttributes $attributes) => $attributes->path())
             ->sortByPath()
             ->toArray();
-        return end($matches);
+        return $matches;
     }
 
 }

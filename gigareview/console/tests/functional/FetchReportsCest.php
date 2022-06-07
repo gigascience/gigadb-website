@@ -10,6 +10,9 @@ class FetchReportsCest
     }
 
     /**
+     *
+     * Test fetching command on a set of examples
+     *
      * @param FunctionalTester $I
      * @return void
      *
@@ -24,6 +27,23 @@ class FetchReportsCest
         $I->runShellCommand("./yii_test fetch-reports/fetch", false);
         $I->canSeeInShellOutput("Got content for {$example[1]}");
         $I->canSeeShellOutputMatches("/Pushed a new job with ID \d+ for report {$example[0]} to {$example[2]}/");
+        $I->canSeeResultCodeIs(Exitcode::OK);
+    }
+
+
+    /**
+     * @param FunctionalTester $I
+     * @param \Codeception\Example $example
+     * @return void
+     *
+     * @example ["manuscripts", "Report-GIGA-em-manuscripts-latest", "/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv"]
+     * @example ["authors", "Report-GIGA-em-authors-latest", "/Report-GIGA-em-authors-latest-214-20220607004243.csv"]
+     * 
+     */
+    public function tryToListRemoteFiles(FunctionalTester $I, \Codeception\Example $example)
+    {
+        $I->runShellCommand("./yii_test fetch-reports/list {$example[1]}", false);
+        $I->canSeeInShellOutput("{$example[2]}");
         $I->canSeeResultCodeIs(Exitcode::OK);
     }
 
