@@ -12,7 +12,7 @@ class MapBrowseCest
         // Get the coordinates in latitude and longitude format
         $testFixture = array_map('str_getcsv', file('/var/www/data/dev/sample_attribute.csv'));
         $expectPenguinCoordinate = $testFixture[5][3];
-        $expectFoxtailMilletCoordinate = $testFixture[14][3];
+        $expectFoxtailMilletCoordinate = $testFixture[15][3];
 
         // Change coordinates in XY format by swapping the position
         $expectPenguinCoordinateXY = implode(',', array_reverse(explode(',',$expectPenguinCoordinate)));
