@@ -64,8 +64,8 @@ final class FetchReportsController extends Controller
         $allFiles = $this->fs->listContents('')
             ->filter(fn (StorageAttributes $attributes) => $attributes->isFile())
             ->filter(fn (StorageAttributes $attributes) => preg_match("/$filePattern/", $attributes->path()) )
-            ->map(fn (StorageAttributes $attributes) => $attributes->path())
             ->sortByPath()
+            ->map(fn (StorageAttributes $attributes) => $attributes->path())
             ->toArray();
 
         print_r($allFiles);
