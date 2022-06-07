@@ -57,7 +57,7 @@ set +a
 # generate config for Yii2 config files
 
 SOURCE=${APP_SOURCE}/config-templates/params-local.php.dist
-TARGET=${APP_SOURCE}/environments/$REVIEW_ENV/console/config/params-local.php
+TARGET=${APP_SOURCE}/environments/$REVIEW_ENV/common/config/params-local.php
 VARS='$REVIEW_DB_HOST:$REVIEW_DB_PORT:$REVIEW_DB_DATABASE:$REVIEW_DB_USERNAME:$REVIEW_DB_PASSWORD:$sftp_hostname:$sftp_username:$sftp_password:$sftp_directory'
 envsubst $VARS < $SOURCE > $TARGET
 

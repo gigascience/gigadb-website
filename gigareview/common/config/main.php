@@ -1,4 +1,10 @@
 <?php
+
+$params = array_merge(
+    require __DIR__ . '/params.php',
+    require __DIR__ . '/params-local.php'
+);
+
 return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -10,4 +16,5 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
     ],
+    'params' => $params,
 ];

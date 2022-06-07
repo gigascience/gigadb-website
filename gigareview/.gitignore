@@ -45,3 +45,7 @@ phpunit.phar
 # Unlike in the main app, we want to keep the composer config and lock under repo here for now
 !composer.json
 !composer.lock
+
+!environments/*/backend/config/params-local.php
+!environments/*/frontend/config/params-local.php
+!environments/*/console/config/params-local.php
