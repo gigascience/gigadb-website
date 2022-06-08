@@ -1,4 +1,4 @@
-# Giga Review
+# Giga Review Guide
 
 ## Getting started
 
@@ -13,7 +13,20 @@ Then start the gigareview application
 ```
 $ cd gigareview
 $ ./up.sh
+
 ```
+
+>**Note**: In the rest of this doc, we assume we are in the ``gigareview`` directory
+
+## Run the tests
+
+```
+$ ./tests/unit_runner
+$ ./tests/functional_runner
+
+```
+
+# More detailed information 
 
 ## How was the project bootstrapped (for info only)
 
@@ -34,8 +47,21 @@ $ docker-compose run --rm test composer create-project --prefer-dist yiisoft/yii
 
 7. Update ``.gitignore`` to reflect the configuration strategy
 
-## how were the tables created
+## how were the tables and ActiveRecord classes created (for info only)
+
+Example of Ingest business object for managing EM ingest workflow:
+
+Creating the database migration for the table:
+```
+$ docker-compose run --rm console ./yii migrate/create create_ingest_table --fields="file_name:string,report_type:integer,fetch_status:smallinteger,parse_status:smallinteger,store_status:smallinteger,remote_file_status:smallinteger,created_at:biginteger, updated_at:biginteger"
+```
+
+Creating the corresponding model class
+```
+$ docker-compose run --rm console ./yii gii/model --ns="common\models" --tableName="ingest" --modelClass="Ingest"  
+```
+Create the unit test for that model class
 
 ```
-$ docker-compose run --rm console ./yii migrate/create create_ingest_table --fields="file_name:string,report_type:integer,fetch_status:integer,parse_status:integer,store_status:integer,remote_file_status:integer,created_at:datetime, updated_at:datetime"
+$ docker-compose run --rm console ./vendor/codeception/codeception/codecept -c /app/common/codeception.yml generate:test unit Ingest
 ```

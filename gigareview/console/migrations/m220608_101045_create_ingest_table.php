@@ -16,12 +16,12 @@ class m220608_101045_create_ingest_table extends Migration
             'id' => $this->primaryKey(),
             'file_name' => $this->string(),
             'report_type' => $this->integer(),
-            'fetch_status' => $this->integer(),
-            'parse_status' => $this->integer(),
-            'store_status' => $this->integer(),
-            'remote_file_status' => $this->integer(),
-            'created_at' => $this->datetime(),
-            'updated_at' => $this->datetime(),
+            'fetch_status' => $this->smallInteger(),
+            'parse_status' => $this->smallInteger(),
+            'store_status' => $this->smallInteger(),
+            'remote_file_status' => $this->smallInteger(),
+            'created_at' => $this->bigInteger(),
+            'updated_at' => $this->bigInteger(),
         ]);
     }
 
