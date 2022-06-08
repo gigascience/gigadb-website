@@ -39,6 +39,7 @@ docker-compose run --rm console ./database.sh
 
 # Running database migrations
 docker-compose run --rm console ./yii migrate --interactive=0
+docker-compose run --rm console ./yii_test migrate --interactive=0
 
 # Launching all the remaining services
 docker-compose up -d public api sftp_test
