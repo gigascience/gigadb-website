@@ -13,4 +13,18 @@ RUN apt-get update -yq \
     && rm composer-setup.php \
     && composer config --global repo.packagist composer https://packagist.org
 
+# Install extensions for the postgresql and PHP integration
+# Install Postgre PDO
+RUN apt-get install -y libpq-dev \
+    && apt-get clean \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install pdo pdo_pgsql pgsql
+
+# Insatall postgresql client
+RUN apt-get update -yq \
+    && apt-get install -y postgresql-client-13 \
+    && apt-get clean
+
+
+
 WORKDIR /app

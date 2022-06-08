@@ -31,11 +31,15 @@ services:
       - ./:/app
 
   reviewdb:
-    image: postgres:12
+    image: postgres:${POSTGRES_MAJOR_VERSION}
     environment:
-      - POSTGRES_DB=yii2advanced
-      - POSTGRES_USER=yii2advanced
-      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "54322:5432"
+    volumes:
+      - ${DATA_SAVE_PATH}/postgres/${POSTGRES_MAJOR_VERSION}/data:/var/lib/postgresql/data
 
   sftp_test:
     image: atmoz/sftp

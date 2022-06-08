@@ -30,5 +30,16 @@ docker-compose build public api reviewdb console
 # running composer update
 docker-compose run --rm console composer update
 
-# Launching service
-docker-compose up -d public api reviewdb sftp_test
+# Starting the database
+docker-compose up -d reviewdb
+sleep 3
+
+# (Re)Creating Postgresql database and user for our application
+docker-compose run --rm console ./database.sh
+
+# Running database migrations
+docker-compose run --rm console ./yii migrate --interactive=0
+
+# Launching all the remaining services
+docker-compose up -d public api sftp_test
+

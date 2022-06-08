@@ -21,3 +21,13 @@ PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F
 MISC_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
 
 REVIEW_ENV=dev
+
+# Default Database parameters
+
+POSTGRES_MAJOR_VERSION=12
+DATA_SAVE_PATH=~/Library/Docker
+
+# default local database credentials
+POSTGRES_DB=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=changeme
