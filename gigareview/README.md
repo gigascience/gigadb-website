@@ -25,8 +25,18 @@ $ ./tests/unit_runner
 $ ./tests/functional_runner
 
 ```
+## Review or change configuration of the application
 
-# More detailed information 
+The source of configuration file (examples and templates) ar in ``config-sources``
+The Yii2 advanced template expects to find the source for each environment in ``environments``
+
+``generate_config.sh`` and ``init`` are the scripts to look into to understand how the applciation is configured
+
+## Deployment
+
+The application is instantiated using Docker compose services, as defined in ``docker-compose.yml``
+
+# More detailed information (not necessary to get started)
 
 ## How was the project bootstrapped (for info only)
 
