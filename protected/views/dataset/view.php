@@ -194,7 +194,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                 <?php } ?>
                 <p>
                     <?php
-                        $mainbodyExternalLinks = $links->getDatasetExternalLinksTypesAndCount(["Additional information", "Genome browser"]) ;
+                        $mainbodyExternalLinks = $links->getDatasetExternalLinksTypesAndCount(["Additional information", "Genome browser", "Github links"]) ;
                         foreach( array_keys( $mainbodyExternalLinks ) as $linkType ) {
                             echo "<h5><strong>${linkType}:</strong></h5>";
                             foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {

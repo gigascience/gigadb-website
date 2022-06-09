@@ -3,8 +3,14 @@
 set -e
 set -u
 
+
 profile=${1:-"local"}
 
+if [[ $(uname -m) == 'arm64' ]]; then
+  # Disable legacy @javascript tagged Behat tests on Apple silicon based macs until (TODO) we migrate those tests to Codeception
+  profile="apple-silicon"
+fi
+
+docker-compose run --rm test ./vendor/codeception/codeception/codecept run -vvv -g ok acceptance
 docker-compose run --rm application ./protected/yiic migrate --interactive=0
 docker-compose run --rm test ./vendor/behat/behat/bin/behat --profile $profile -v --stop-on-failure
-docker-compose run --rm test ./vendor/codeception/codeception/codecept run -g ok acceptance
