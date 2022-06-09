@@ -27,12 +27,12 @@ return [
             'port' => 11300,
             'tube' => 'em_reviewers_q',
         ],
-        'reviewersQuestionsResponses_q' => [
+        'questions_q' => [
             'class' => \yii\queue\beanstalk\Queue::class,
             'as log' => \yii\queue\LogBehavior::class,
             'host' => 'host.docker.internal',
             'port' => 11300,
-            'tube' => 'em_rev_questions_q',
+            'tube' => 'em_questions_q',
         ],
         'reviews_q' => [
             'class' => \yii\queue\beanstalk\Queue::class,

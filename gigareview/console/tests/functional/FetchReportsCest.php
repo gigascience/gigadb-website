@@ -18,8 +18,9 @@ class FetchReportsCest
      *
      * @example ["manuscripts", "/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv", "manuscripts_q"]
      * @example ["authors", "/Report-GIGA-em-authors-latest-214-20220607004243.csv", "authors_q"]
-     * @example ["reviewers", "/Report-GIGA-em-reviews-latest-214-20220607004243.csv", "reviewers_q"]
-     * @example ["reviewersQuestionsResponses", "/Report-GIGA-em-reviewers-questions-responses-latest-214-20220607004243.csv", "reviewersQuestionsResponses_q"]
+     * @example ["reviewers", "/Report-GIGA-em-reviewers-latest-214-20220607004243.csv", "reviewers_q"]
+     * @example ["reviews", "/Report-GIGA-em-reviews-latest-214-20220607004243.csv", "reviews_q"]
+     * @example ["questions", "/Report-GIGA-em-questions-latest-214-20220607004243.csv", "questions_q"]
      *
      */
     public function tryToFetchAndPublishReports(FunctionalTester $I, \Codeception\Example $example)
@@ -38,7 +39,10 @@ class FetchReportsCest
      *
      * @example ["manuscripts", "Report-GIGA-em-manuscripts-latest", "/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv"]
      * @example ["authors", "Report-GIGA-em-authors-latest", "/Report-GIGA-em-authors-latest-214-20220607004243.csv"]
-     * 
+     * @example ["reviewers", "Report-GIGA-em-reviewers-latest", "/Report-GIGA-em-reviewers-latest-214-20220607004243.csv"]
+     * @example ["reviews", "Report-GIGA-em-reviews-latest", "/Report-GIGA-em-reviews-latest-214-20220607004243.csv"]
+     * @example ["questions", "Report-GIGA-em-questions-latest", "/Report-GIGA-em-questions-latest-214-20220607004243.csv"]
+     *
      */
     public function tryToListRemoteFiles(FunctionalTester $I, \Codeception\Example $example)
     {

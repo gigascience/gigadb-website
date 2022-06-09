@@ -14,6 +14,13 @@ return [
         "password" => "$sftp_password",
         "baseDirectory" => "$sftp_directory",
     ],
+    'reportsTypesFilenamePatterns' => [
+        'manuscripts' => 'Report-GIGA-em-manuscripts-latest',
+        'authors' => 'Report-GIGA-em-authors-latest',
+        'reviewers' => 'Report-GIGA-em-reviewers-latest',
+        'questions' => 'Report-GIGA-em-questions-latest',
+        'reviews' => 'Report-GIGA-em-reviews-latest',
+    ]
 ];
 
 
