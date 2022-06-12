@@ -402,7 +402,7 @@ class AdminDatasetController extends Controller
             $this->redirect('/site/index');
         } elseif ( "public" === $datasetPageSettings->getPageType() ) {
             $this->redirect('/dataset/'.$model->identifier);
-        } elseif ( "hidden" === $datasetPageSettings->getPageType() ) {
+        } elseif ( "hidden" === $datasetPageSettings->getPageType() || "draft" === $datasetPageSettings->getPageType() ) {
             $model->token = Yii::$app->security->generateRandomString(16);
             $model->save();
             $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
