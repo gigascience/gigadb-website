@@ -64,4 +64,4 @@ Scenario: new dataset with mandatory fields filled in
 	Then the response should contain "My Dataset"
 	And the response should contain "10.5524/100900"
 	And I should see a button "Your dataset?"
-	And the url should match the pattern "/\/dataset\/view\/id\/100900\/token\//"
+	And the url should match the pattern "/\/dataset\/100900\/token\//"
