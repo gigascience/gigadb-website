@@ -2,6 +2,7 @@ FROM php:8.0-cli-bullseye
 
 # Installing composer
 RUN apt-get update -yq \
+    && apt-get install -y apt-utils \
     && apt-get install -y libzip-dev unzip wget \
     && apt-get clean \
     && docker-php-ext-install zip \
