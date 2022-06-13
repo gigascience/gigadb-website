@@ -103,7 +103,7 @@ Feature: form to update dataset details
     And I should not see "Image Photographer"
 
   @ok
-  Scenario: Can preimage and display image meta data fields when image is loaded in create page
+  Scenario: Can preview image and display image meta data fields when image is loaded in create page
     When I am on "adminDataset/create"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     Then I should see an image located in "blob:http://gigadb.test/"
@@ -126,7 +126,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
-    Then I am on "dataset/view/id/400789"
+    Then I wait "1" seconds
     And I should see an image located in "/images/datasets/bgi_logo_new.png"
 
   @ok @issue-1023
