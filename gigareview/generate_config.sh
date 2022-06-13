@@ -61,3 +61,15 @@ TARGET=${APP_SOURCE}/environments/$REVIEW_ENV/common/config/params-local.php
 VARS='$REVIEW_DB_HOST:$REVIEW_DB_PORT:$REVIEW_DB_DATABASE:$REVIEW_DB_USERNAME:$REVIEW_DB_PASSWORD:$sftp_hostname:$sftp_username:$sftp_password:$sftp_directory'
 envsubst $VARS < $SOURCE > $TARGET
 
+
+export TESTDB_HOST=$REVIEW_DB_HOST
+export TESTDB_PORT=$REVIEW_DB_PORT
+export TESTDB_DBNAME=${REVIEW_DB_DATABASE}_test
+export TESTDB_USER=$REVIEW_DB_USERNAME
+export TESTDB_PASSWORD=$REVIEW_DB_PASSWORD
+
+
+SOURCE=${APP_SOURCE}/config-sources/acceptance.suite.yml.template
+TARGET=${APP_SOURCE}/console/tests/acceptance.suite.yml
+VARS='$TESTDB_HOST:$TESTDB_PORT:$TESTDB_DBNAME:$TESTDB_USER:$TESTDB_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET

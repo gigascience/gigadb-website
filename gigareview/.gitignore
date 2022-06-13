@@ -49,3 +49,7 @@ phpunit.phar
 !environments/*/backend/config/params-local.php
 !environments/*/frontend/config/params-local.php
 !environments/*/console/config/params-local.php
+
+
+#ignored because generated from template
+console/tests/acceptance.suite.yml
