@@ -177,7 +177,7 @@ Feature: form to update dataset details
 
   @ok @issue-1023
   Scenario: AuthorReview dataset with private URL buttons
-    When I am on "/adminDataset/update/id/2343"
+    When I am on "/adminDataset/update/id/2344"
     Then I should see "AuthorReview"
     And I should see "123789"
     And I should see "Create/Reset Private URL"
@@ -185,7 +185,7 @@ Feature: form to update dataset details
 
   @ok @issue-1023
   Scenario: Open Private URL from AuthorReview dataset
-    When I am on "/adminDataset/update/id/2343"
+    When I am on "/adminDataset/update/id/2344"
     And  I follow "Open Private URL"
     And I wait "1" seconds
     Then I should see current url contains "/dataset/123789/token/"
