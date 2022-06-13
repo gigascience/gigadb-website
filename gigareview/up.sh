@@ -32,7 +32,7 @@ docker-compose run --rm console composer update
 
 # Starting the database
 docker-compose up -d reviewdb
-sleep 3
+sleep 5
 
 # (Re)Creating Postgresql database and user for our application
 docker-compose run --rm console ./database.sh
