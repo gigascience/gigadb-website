@@ -3,6 +3,7 @@
 namespace console\controllers;
 
 use common\models\EMReportJob;
+use common\models\Ingest;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
 use Yii;
@@ -74,14 +75,21 @@ final class FetchReportsController extends Controller
      */
     public function actionFetch(): int
     {
-        foreach (Yii::$app->params['reportsTypesFilenamePatterns'] as $reportType => $fileName ) {
+        foreach (Yii::$app->params['reportsTypesFilenamePatterns'] as $reportType => $fileNamePattern ) {
+            $ingest = new Ingest(["file_name" => $fileNamePattern, "report_type" => $reportType]);
             $this->stdout("Fetching $reportType report...\n", Console::BOLD);
             try {
                 $reportFile = $this->getLatestOfType($reportType);
+                $ingest->updateAttributes(["file_name" => $reportFile, "report_type" => $reportType,"fetch_status" => Ingest::FETCH_STATUS_FOUND]);
+                $ingest->save();
+
                 $content = $this->fs->read(
                     $reportFile
                 );
                 $this->stdout("Got content for $reportFile".PHP_EOL);
+                $ingest->fetch_status = Ingest::FETCH_STATUS_DOWNLOADED;
+                $ingest->save();
+
                 $jobId = Yii::$app->{$reportType."_q"}->push(
                     new EMReportJob([
                         'content' => $content,
@@ -91,11 +99,14 @@ final class FetchReportsController extends Controller
                     ])
                 );
                 $this->stdout("Pushed a new job with ID $jobId for report $reportType to ${reportType}_q".PHP_EOL);
-
+                $ingest->fetch_status = Ingest::FETCH_STATUS_DISPATCHED;
+                $ingest->save();
             }
             catch (FilesystemException | UnableToReadFile $exception) {
                 Yii::error($exception->getMessage());
                 $this->stderr($exception->getMessage().PHP_EOL);
+                $ingest->fetch_status = Ingest::FETCH_STATUS_ERROR;
+                $ingest->save();
                 continue;
             }
         }

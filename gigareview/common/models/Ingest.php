@@ -20,6 +20,12 @@ use yii\behaviors\TimestampBehavior;
  */
 class Ingest extends \yii\db\ActiveRecord
 {
+
+    const FETCH_STATUS_FOUND = 1;
+    const FETCH_STATUS_DOWNLOADED = 2;
+    const FETCH_STATUS_DISPATCHED = 3;
+    const FETCH_STATUS_ERROR = 0 ;
+
     /**
      * {@inheritdoc}
      */
