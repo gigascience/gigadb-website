@@ -75,3 +75,9 @@ Create the unit test for that model class
 ```
 $ docker-compose run --rm console ./vendor/codeception/codeception/codecept -c /app/common/codeception.yml generate:test unit Ingest
 ```
+
+Create Feature file for BDD (Gherkin) style acceptance tests:
+
+```
+$ docker-compose run --rm console ./vendor/codeception/codeception/codecept -c console/codeception.yml generate:feature acceptance FetchReports
+```

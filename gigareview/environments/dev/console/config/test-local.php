@@ -5,7 +5,7 @@ $params = [
         "host" => "reviewdb",
         "port" => "5432",
         "database" => "reviewdb_test",
-        "username" => "reviewdb_test",
+        "username" => "reviewdb",
         "password" => "testpass",
     ],
     'sftp' => [
