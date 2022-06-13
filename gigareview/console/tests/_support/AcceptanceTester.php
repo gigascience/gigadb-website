@@ -1,6 +1,8 @@
 <?php
 namespace console\tests;
 
+use common\models\Ingest;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -26,10 +28,19 @@ class AcceptanceTester extends \Codeception\Actor
 
     /**
      * @Given a EM report is uploaded daily to a sftp server
+     *
+     * Note: only this step needs to talk to the real SFTP server, all subsequent steps will you test environment for speed and isolation
      */
     public function aEMReportIsUploadedDailyToASftpServer()
     {
-        codecept_debug("**** End of Given a EM report is uploaded daily to a sftp server ****");
+        $testDate= (new \DateTime("yesterday"))->format("Ymd");
+        $reports = shell_exec("./yii fetch-reports/list -$testDate") ;
+        codecept_debug($reports);
+        $this->assertContains("Report-GIGA-em-manuscripts-latest",$reports);
+//        $this->assertContains("Report-GIGA-em-authors-latest",$reports);
+//        $this->assertContains("Report-GIGA-em-questions-latest",$reports);
+//        $this->assertContains("Report-GIGA-em-reviewers-latest",$reports);
+//        $this->assertContains("Report-GIGA-em-reviews-latest",$reports);
     }
 
     /**
@@ -37,14 +48,13 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function theFileIsOnTheSftpServer()
     {
-        $testDate="20220610";
+        $testDate="20220607";
         $reports = shell_exec("./yii_test fetch-reports/list -$testDate") ;
         $this->assertContains("Report-GIGA-em-authors-latest",$reports);
         $this->assertContains("Report-GIGA-em-manuscripts-latest",$reports);
         $this->assertContains("Report-GIGA-em-questions-latest",$reports);
         $this->assertContains("Report-GIGA-em-reviewers-latest",$reports);
         $this->assertContains("Report-GIGA-em-reviews-latest",$reports);
-        codecept_debug("**** End of When the file is on the sftp server ****");
     }
 
     /**
@@ -53,8 +63,9 @@ class AcceptanceTester extends \Codeception\Actor
     public function theFileIngesterHasRun()
     {
         $testDate="20220610";
-        shell_exec("./yii_test fetch-reports/fetch -$testDate") ;
-        codecept_debug("**** End of When the ingester has run ****");
+        $output = shell_exec("./yii_test fetch-reports/fetch -$testDate") ;
+        codecept_debug($output);
+
     }
 
 
@@ -63,7 +74,11 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function theEMReportSpreadsheetIsDownloaded()
     {
-        codecept_debug("**** End of Then the EM report spreadsheet is downloaded ****");
+        $this->seeInDatabase('ingest',[
+            "file_name" =>"Report-GIGA-em-authors-latest-214-20220607004243.csv",
+            "report_type" => Ingest::REPORT_TYPES["authors"],
+            "fetch_status" => Ingest::FETCH_STATUS_DISPATCHED,
+        ]);
     }
 
 }

@@ -21,6 +21,8 @@ use yii\behaviors\TimestampBehavior;
 class Ingest extends \yii\db\ActiveRecord
 {
 
+    const REPORT_TYPES = [ "manuscripts" => 1, "authors" => 2,"reviewers" => 3,"questions" => 4,"reviews" => 5];
+
     const FETCH_STATUS_FOUND = 1;
     const FETCH_STATUS_DOWNLOADED = 2;
     const FETCH_STATUS_DISPATCHED = 3;

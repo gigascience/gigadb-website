@@ -11,7 +11,7 @@ modules:
               # host: 'firefox'
               # port: 4444
               # browser: firefox'
-              host: 'host.docker.internal'
+              host: 'webdriver'
               port: 4444
               browser: chrome
               capabilities:
@@ -23,12 +23,15 @@ modules:
                   "loggingPrefs":
                       browser: ALL
         - Asserts
+        - Filesystem
         - Db:
             dsn: 'pgsql:host=reviewdb;port=5432;dbname=reviewdb_test'
             user: 'reviewdb'
-            password: ''
+            password: '12345678'
             cleanup: false # don't reload dump between tests
             populate: false # don't load dump before all tests
+            initial_queries:
+              - "delete from ingest;"
 
 gherkin:
   contexts:

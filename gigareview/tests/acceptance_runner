@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+docker-compose run --rm console ./vendor/codeception/codeception/codecept -c console/codeception.yml run acceptance

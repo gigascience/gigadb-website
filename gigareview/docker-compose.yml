@@ -54,3 +54,9 @@ services:
     volumes:
       - ./:/app
     command: /app/generate_config.sh
+
+  webdriver:
+    image: seleniarm/standalone-chromium:latest
+    shm_size: '1gb' # to avoid a known issue
+    expose:
+      - "4444"

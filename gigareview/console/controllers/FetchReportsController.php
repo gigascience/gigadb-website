@@ -6,7 +6,9 @@ use common\models\EMReportJob;
 use common\models\Ingest;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\StorageAttributes;
+use League\Flysystem\UnableToReadFile;
 use Yii;
+use yii\db\Exception;
 use \yii\helpers\Console;
 use \yii\console\Controller;
 use yii\console\ExitCode;
@@ -72,15 +74,21 @@ final class FetchReportsController extends Controller
      * Command to download reports from sftp and publish the content to the appropriate message queue
      *
      * @return int
+     * @throws \ErrorException
      */
     public function actionFetch(): int
     {
         foreach (Yii::$app->params['reportsTypesFilenamePatterns'] as $reportType => $fileNamePattern ) {
-            $ingest = new Ingest(["file_name" => $fileNamePattern, "report_type" => $reportType]);
+            $ingest = new Ingest([
+                "file_name" => $fileNamePattern,
+                "report_type" => Ingest::REPORT_TYPES[$reportType]
+            ]);
+            $ingest->save();
             $this->stdout("Fetching $reportType report...\n", Console::BOLD);
             try {
                 $reportFile = $this->getLatestOfType($reportType);
-                $ingest->updateAttributes(["file_name" => $reportFile, "report_type" => $reportType,"fetch_status" => Ingest::FETCH_STATUS_FOUND]);
+                $ingest->file_name = pathinfo($reportFile)['filename'].".".pathinfo($reportFile)['extension'];
+                $ingest->fetch_status = Ingest::FETCH_STATUS_FOUND;
                 $ingest->save();
 
                 $content = $this->fs->read(
@@ -88,7 +96,9 @@ final class FetchReportsController extends Controller
                 );
                 $this->stdout("Got content for $reportFile".PHP_EOL);
                 $ingest->fetch_status = Ingest::FETCH_STATUS_DOWNLOADED;
-                $ingest->save();
+                if(!$ingest->save()) {
+                    throw new \ErrorException("Failed saving status FETCH_STATUS_DOWNLOADED");
+                }
 
                 $jobId = Yii::$app->{$reportType."_q"}->push(
                     new EMReportJob([
@@ -102,7 +112,7 @@ final class FetchReportsController extends Controller
                 $ingest->fetch_status = Ingest::FETCH_STATUS_DISPATCHED;
                 $ingest->save();
             }
-            catch (FilesystemException | UnableToReadFile $exception) {
+            catch (FilesystemException | UnableToReadFile | \ErrorException $exception) {
                 Yii::error($exception->getMessage());
                 $this->stderr($exception->getMessage().PHP_EOL);
                 $ingest->fetch_status = Ingest::FETCH_STATUS_ERROR;
