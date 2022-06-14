@@ -8,7 +8,6 @@ $ cd gigareview
 $ ./up.sh
 
 ```
-
 >**Note**: In the rest of this doc, we assume we are in the ``gigareview`` directory
 
 ## Run the tests
@@ -21,12 +20,12 @@ $ ./tests/acceptance_runner
 ```
 ## Review or change configuration of the application
 
-The source of configuration file (examples and templates) ar in ``config-sources``
-The Yii2 advanced template expects to find the source for each environment in ``environments``.
+The source of configuration file (examples and templates) are in ``config-sources``
+The Yii2 advanced template expects to find the source for each environment in the ``environments`` directory.
 
 ``generate_config.sh`` and ``init`` are the scripts to look into to understand how the application is configured. 
-The former will interpolate variables from Gitlab with placeholder in template file and generate the configuration in the ``environments`` dirctory.
-The latter will copy the files from ``environments`` directory's current environment sub-directory in the configuration directory of each sub-applications 
+The former will interpolate variables from Gitlab with placeholders in template file and generate the configuration in the ``environments`` directory.
+The latter will copy the files in the selected environment subdirectory from ``environments`` directory into the configuration directory of each sub-applications 
 
 ## Local deployment
 
