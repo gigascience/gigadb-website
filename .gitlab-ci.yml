@@ -67,6 +67,7 @@ include:
   - local: "ops/pipelines/gigadb-deploy-jobs.yml"
   - local: "ops/pipelines/gigadb-operations-jobs.yml"
 #  - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
+  - local: "gigareview/gitlab-config.yml"
 
 services:
   - docker:${DOCKER_VERSION}-dind

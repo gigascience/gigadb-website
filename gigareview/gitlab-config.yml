@@ -1,0 +1,6 @@
+GigaReviewTest:
+  stage: test
+  script:
+    - cd gigareview
+    - ./up.sh
+    - "./tests/unit_runner && ./tests/functional_runner && ./tests/acceptance_runner"
