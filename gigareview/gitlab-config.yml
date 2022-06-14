@@ -19,3 +19,5 @@ GigaReviewTest:
   artifacts:
     paths:
       - .env
+      - .secrets
+    when: always
