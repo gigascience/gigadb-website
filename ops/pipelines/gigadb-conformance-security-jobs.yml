@@ -1,4 +1,4 @@
-.check_PSR2:
+check_PSR2:
   stage: conformance and security
   artifacts:
     paths:
@@ -26,7 +26,7 @@
   allow_failure: true
   when: manual
 
-.check_PHPDoc:
+check_PHPDoc:
   stage: conformance and security
   artifacts:
     paths:
@@ -74,51 +74,51 @@ bandit-sast:
   variables:
     SAST_DISABLED: "true"
 
-.eslint-sast:
+eslint-sast:
   stage: conformance and security
   variables:
     SAST_DISABLED: "true"
 
-.nodejs-scan-sast:
+nodejs-scan-sast:
   stage: conformance and security
   variables:
     SAST_DISABLED: "true"
 
-.phpcs-security-audit-sast:
+phpcs-security-audit-sast:
   stage: conformance and security
 
-.semgrep-sast:
-  stage: conformance and security
-  variables:
-    SAST_DISABLED: "true"
-
-.spotbugs-sast:
+semgrep-sast:
   stage: conformance and security
   variables:
     SAST_DISABLED: "true"
 
-.container_scanning:
+spotbugs-sast:
+  stage: conformance and security
+  variables:
+    SAST_DISABLED: "true"
+
+container_scanning:
   stage: conformance and security
   variables:
     DOCKER_IMAGE: registry.gitlab.com/security-products/container-scanning:4
     CS_SEVERITY_THRESHOLD: critical
 
-.container_scanning-web_staging:
+container_scanning-web_staging:
   extends: container_scanning
   variables:
     DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging
 
-.container_scanning-app_staging:
+container_scanning-app_staging:
   extends: container_scanning
   variables:
     DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging
 
-.container_scanning-web_live:
+container_scanning-web_live:
   extends: container_scanning
   variables:
     DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_web:live
 
-.container_scanning-app_live:
+container_scanning-app_live:
   extends: container_scanning
   variables:
     DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_app:live
