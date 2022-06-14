@@ -13,6 +13,6 @@ GigaReviewTest:
   stage: test
   script:
     - cd gigareview
-    - env | tee .env
+    - env | grep -iE "(REPO_NAME|POSTGRES_MAJOR_VERSION|POSTGRES_DB|POSTGRES_USER|POSTGRES_PASSWORD|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL)"| tee .env
     - ./up.sh
     - "./tests/unit_runner && ./tests/functional_runner && ./tests/acceptance_runner"
