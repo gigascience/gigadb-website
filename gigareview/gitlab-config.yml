@@ -13,11 +13,6 @@ GigaReviewTest:
   stage: test
   script:
     - cd gigareview
-    - env > .env
+    - env | tee .env
     - ./up.sh
     - "./tests/unit_runner && ./tests/functional_runner && ./tests/acceptance_runner"
-  artifacts:
-    paths:
-      - .env
-      - .secrets
-    when: always
