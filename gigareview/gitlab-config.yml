@@ -1,6 +1,6 @@
 GigaReviewTest:
   variables:
-    COMPOSE_FILE: gigareview/docker-compose.yml
+    COMPOSE_FILE: docker-compose.yml
   stage: test
   script:
     - cd gigareview
