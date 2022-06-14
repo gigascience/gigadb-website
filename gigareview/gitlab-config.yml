@@ -11,6 +11,7 @@ GigaReviewTest:
     FORK_VARIABLES_URL: "https://gitlab.com/api/v4/groups/3501869/variables"
     PROJECT_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
+    GITLAB_PRIVATE_TOKEN: $CI_JOB_TOKEN
   stage: test
   script:
     - cd gigareview
