@@ -26,6 +26,10 @@ RUN apt-get update -yq \
     && apt-get install -y postgresql-client-13 \
     && apt-get clean
 
+# Install Beanstalkd
+RUN apt-get update -yq \
+    && apt-get install -y beanstalkd \
+    && apt-get clean
 
 
 WORKDIR /app

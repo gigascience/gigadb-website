@@ -60,3 +60,11 @@ services:
     shm_size: '1gb' # to avoid a known issue
     expose:
       - "4444"
+
+  beanstalkd:
+    build: console
+    volumes:
+      - ./:/app
+    command: /usr/bin/beanstalkd
+    expose:
+      - "11300"
