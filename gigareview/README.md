@@ -2,14 +2,7 @@
 
 ## Getting started
 
-Ensure the main app is running (as we need beanstalkd service to be running)
-
-```
-$ ./up.sh
-
-```
-
-Then start the gigareview application
+Go to the gigareview diredctory then start the gigareview application
 ```
 $ cd gigareview
 $ ./up.sh
@@ -23,18 +16,23 @@ $ ./up.sh
 ```
 $ ./tests/unit_runner
 $ ./tests/functional_runner
+$ ./tests/acceptance_runner
 
 ```
 ## Review or change configuration of the application
 
 The source of configuration file (examples and templates) ar in ``config-sources``
-The Yii2 advanced template expects to find the source for each environment in ``environments``
+The Yii2 advanced template expects to find the source for each environment in ``environments``.
 
-``generate_config.sh`` and ``init`` are the scripts to look into to understand how the applciation is configured
+``generate_config.sh`` and ``init`` are the scripts to look into to understand how the application is configured. 
+The former will interpolate variables from Gitlab with placeholder in template file and generate the configuration in the ``environments`` dirctory.
+The latter will copy the files from ``environments`` directory's current environment sub-directory in the configuration directory of each sub-applications 
 
-## Deployment
+## Local deployment
 
-The application is instantiated using Docker compose services, as defined in ``docker-compose.yml``
+The Gigareview system is instantiated using Docker compose services, as defined in ``docker-compose.yml``
+and orchestrated in ``up.sh``
+
 
 # More detailed information (not necessary to get started)
 
