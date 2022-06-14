@@ -1,10 +1,21 @@
 GigaReviewTest:
   variables:
     COMPOSE_FILE: docker-compose.yml
+    REPO_NAME: $CI_PROJECT_NAME
+    POSTGRES_MAJOR_VERSION: 12
+    POSTGRES_DB: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: changeme
+    GROUP_VARIABLES_URL: "https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
+    FORK_VARIABLES_URL: "https://gitlab.com/api/v4/groups/3501869/variables"
+    PROJECT_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
+    MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
   stage: test
   script:
     - cd gigareview
-    - echo "GITLAB_PRIVATE_TOKEN=$GITLAB_PRIVATE_TOKEN" > .env
-    - echo "REPO_NAME=$CI_PROJECT_NAME" >> .env
+    - env > .env
     - ./up.sh
     - "./tests/unit_runner && ./tests/functional_runner && ./tests/acceptance_runner"
+  artifacts:
+    paths:
+      - .env
