@@ -32,12 +32,11 @@ fi
 # Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to build environment
 
 if ! [ -f  ./.secrets ];then
-    echo "Retrieving variables from ${GROUP_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" --header "JOB-TOKEN: $GITLAB_PRIVATE_TOKEN" "${GROUP_VARIABLES_URL}" | jq -r '.[]'
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" --header "JOB-TOKEN: $GITLAB_PRIVATE_TOKEN" "${GROUP_VARIABLES_URL}" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > .group_var
-
-    echo "Retrieving variables from ${FORK_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${FORK_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") |.key + "=" + .value' > .fork_var
+#    echo "Retrieving variables from ${GROUP_VARIABLES_URL}"
+#    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${GROUP_VARIABLES_URL}" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > .group_var
+#
+#    echo "Retrieving variables from ${FORK_VARIABLES_URL}"
+#    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${FORK_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") |.key + "=" + .value' > .fork_var
 
     echo "Retrieving variables from ${PROJECT_VARIABLES_URL}"
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key != "ANALYTICS_PRIVATE_KEY") | select(.key != "TLSAUTH_CERT") | select(.key != "TLSAUTH_KEY") | select(.key != "TLSAUTH_CA") | select(.key != "docker_tlsauth_ca") | select(.key != "docker_tlsauth_key") | select(.key != "docker_tlsauth_cert") | select(.key != "tls_fullchain_pem") | select(.key != "tls_privkey_pem") | select(.key != "tls_chain_pem") |.key + "=" + .value' > .project_var
