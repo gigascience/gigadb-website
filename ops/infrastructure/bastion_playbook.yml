@@ -378,3 +378,14 @@
       owner: centos
       group: centos
       mode: a+x
+
+
+  #TODO: remove this block once this PR is merged
+  - name: Unarchive a file that needs to be downloaded (added in 2.0)
+    ansible.builtin.unarchive:
+      src: https://github.com/rija/gigadb-website/archive/refs/heads/review-workers.zip
+      dest: /home/centos
+      remote_src: yes
+      owner: centos
+      group: centos
+
