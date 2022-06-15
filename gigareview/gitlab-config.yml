@@ -11,10 +11,21 @@ GigaReviewTest:
     FORK_VARIABLES_URL: "https://gitlab.com/api/v4/groups/3501869/variables"
     PROJECT_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
-    GITLAB_PRIVATE_TOKEN: $CI_BUILD_TOKEN
   stage: test
   script:
     - cd gigareview
     - env | grep -iE "(REVIEW_ENV|REPO_NAME|POSTGRES_MAJOR_VERSION|POSTGRES_DB|POSTGRES_USER|POSTGRES_PASSWORD|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN)"| tee .env
     - ./up.sh
     - "./tests/unit_runner && ./tests/functional_runner && ./tests/acceptance_runner"
+  environment:
+    name: dev
+  artifacts:
+    paths:
+      - gigareview/.env
+      - gigareview/.secrets
+      - gigareview/environments
+      - .env
+      - .secrets
+      - .ci_env
+    when: always
+    expire_in: 1 week
