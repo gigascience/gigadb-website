@@ -127,6 +127,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
     Then I wait "1" seconds
+    And I should see current url contains "/dataset/400789/token/"
     And I should see an image located in "/images/datasets/bgi_logo_new.png"
 
   @ok @issue-1023
