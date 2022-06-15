@@ -9,7 +9,7 @@ set -x
 
 # Check there is .env
 if ! [ -f  ./.env ];then
-  read -sp "To create .env, enter your private gitlab token and name of the name of your fork on GitLab: " token
+  read -sp "To create .env, enter your private gitlab token: " token
   read -p "To create .env, enter the name of your fork on GitLab: " reponame
   cp config-sources/env.example .env
   sed -i'.bak' "s/#GITLAB_PRIVATE_TOKEN=/GITLAB_PRIVATE_TOKEN=$token/" .env
