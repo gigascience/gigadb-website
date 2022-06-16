@@ -61,11 +61,11 @@ image: docker:$DOCKER_VERSION
 include:
   - template: Security/SAST.gitlab-ci.yml
   - template: Security/Container-Scanning.gitlab-ci.yml
-#  - local: "ops/pipelines/gigadb-build-jobs.yml"
-#  - local: "ops/pipelines/gigadb-test-jobs.yml"
-#  - local: "ops/pipelines/gigadb-conformance-security-jobs.yml"
-#  - local: "ops/pipelines/gigadb-deploy-jobs.yml"
-#  - local: "ops/pipelines/gigadb-operations-jobs.yml"
+  - local: "ops/pipelines/gigadb-build-jobs.yml"
+  - local: "ops/pipelines/gigadb-test-jobs.yml"
+  - local: "ops/pipelines/gigadb-conformance-security-jobs.yml"
+  - local: "ops/pipelines/gigadb-deploy-jobs.yml"
+  - local: "ops/pipelines/gigadb-operations-jobs.yml"
 #  - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
   - local: "gigareview/gitlab-config.yml"
 
@@ -93,26 +93,26 @@ before_script:
   # Pin docker-compose version to stop installation error
   - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && time pip install docker-compose~=1.23.0'
 
-#sd_gigadb:
-#  variables:
-#    GIGADB_ENV: "staging"
-#  extends: .deploy
-#  stage: staging deploy
-#  tags:
-#    - $GITLAB_USER_LOGIN
-#  environment:
-#    name: "staging"
-#    url: $REMOTE_HOME_URL
-#    on_stop: sd_teardown
-#
-#ld_gigadb:
-#  variables:
-#    GIGADB_ENV: "live"
-#  extends: .deploy
-#  stage: live deploy
-#  tags:
-#    - $GITLAB_USER_LOGIN
-#  environment:
-#    name: "live"
-#    deployment_tier: production
-#    url: $REMOTE_HOME_URL
+sd_gigadb:
+  variables:
+    GIGADB_ENV: "staging"
+  extends: .deploy
+  stage: staging deploy
+  tags:
+    - $GITLAB_USER_LOGIN
+  environment:
+    name: "staging"
+    url: $REMOTE_HOME_URL
+    on_stop: sd_teardown
+
+ld_gigadb:
+  variables:
+    GIGADB_ENV: "live"
+  extends: .deploy
+  stage: live deploy
+  tags:
+    - $GITLAB_USER_LOGIN
+  environment:
+    name: "live"
+    deployment_tier: production
+    url: $REMOTE_HOME_URL
