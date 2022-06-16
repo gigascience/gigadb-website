@@ -31,7 +31,7 @@ fi
 # fetch and set environment variables from GitLab
 # Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to build environment
 
-if ! [ -n ./.secrets ];then
+if ! [ -s ./.secrets ];then
     echo "Retrieving variables from ${GROUP_VARIABLES_URL}"
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${GROUP_VARIABLES_URL}" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > .group_var
 
