@@ -103,7 +103,7 @@ Feature: form to update dataset details
     And I should not see "Image Photographer"
 
   @ok
-  Scenario: Can preimage and display image meta data fields when image is loaded in create page
+  Scenario: Can preview image and display image meta data fields when image is loaded in create page
     When I am on "adminDataset/create"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     Then I should see an image located in "blob:http://gigadb.test/"
@@ -126,8 +126,73 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
-    Then I am on "dataset/view/id/400789"
+    Then I wait "1" seconds
+    And I should see current url contains "/dataset/400789/token/"
     And I should see an image located in "/images/datasets/bgi_logo_new.png"
 
+  @ok @issue-1023
+  Scenario: To confirm the upload status of published dataset has changed to incomplete
+    When I am on "/adminDataset/update/id/5"
+    Then I should see "Incomplete"
+    And I should see "Create/Reset Private URL"
+    And I should not see "Open Private URL"
 
-    
+  @ok @issue-1023
+  Scenario: An incomplete dataset page cannot be visited publicly
+    When I am on "/dataset/100039/"
+    Then I should see "The DOI 100039 cannot be displayed. "
+
+  @ok @issue-1023
+  Scenario: Can create/reset private url
+    When I am on "/adminDataset/update/id/5"
+    And I press the button "Create/Reset Private URL"
+    And I wait "1" seconds
+    Then I should see current url contains "/dataset/100039/token/"
+    And I should see "Genomic data of the Puerto Rican Parrot (<em>Amazona vittata</em>) from a locally funded project."
+
+  @ok @issue-1023
+  Scenario: Open private url is working
+    When I am on "/adminDataset/update/id/5"
+    And I press the button "Create/Reset Private URL"
+    And I wait "1" seconds
+    And I am on "/adminDataset/update/id/5"
+    And I follow "Open Private URL"
+    Then I should see current url contains "/dataset/100039/token/"
+    And I should see "Genomic data of the Puerto Rican Parrot (<em>Amazona vittata</em>) from a locally funded project."
+
+  @ok @issue-1023
+  Scenario: Create AuthorReview dataset with token URL
+    When I am on "/adminDataset/admin/"
+    And I press the button "Create Dataset"
+    And I wait "1" seconds
+    And I should see "AuthorReview"
+    And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
+    And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    And I fill in the field of "name" "Dataset[title]" with "test dataset"
+    And I fill in the field of "name" "Dataset[identifier]" with "123789"
+    And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I should see current url contains "/dataset/123789/token/"
+    And I should see "https://doi.org/10.5524/123789"
+
+  @ok @issue-1023
+  Scenario: AuthorReview dataset with private URL buttons
+    When I am on "/adminDataset/update/id/2344"
+    Then I should see "AuthorReview"
+    And I should see "123789"
+    And I should see "Create/Reset Private URL"
+    And I should see "Open Private URL"
+
+  @ok @issue-1023
+  Scenario: Open Private URL from AuthorReview dataset
+    When I am on "/adminDataset/update/id/2344"
+    And  I follow "Open Private URL"
+    And I wait "1" seconds
+    Then I should see current url contains "/dataset/123789/token/"
+    And I should see "https://doi.org/10.5524/123789"
+
+
+
+
+

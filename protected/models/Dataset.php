@@ -50,6 +50,7 @@ class Dataset extends CActiveRecord
         'AuthorReview'=>'AuthorReview',
         'Private'=>'Private',
         'Published' =>'Published',
+        'Incomplete' =>'Incomplete',
     );
 
     /*

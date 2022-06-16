@@ -3,3 +3,4 @@ id,name,description
 2,Genomic,"The branch of biology that deals with heredity, especially the mechanisms of hereditary transmission and the variation of inherited characteristics among similar or related organisms. Includes Genomics - The study of comprehensive sets of genes via high throughput methods.e.g.  sequence analysis and assemblies; http://purl.obolibrary.org/obo/NCIT_C16624 "
 6,Software,"The application of a systematic, disciplined, quantifiable approach to the development, operation, and maintenance of computer software, e.g. computational tools for analysing and managing biological data; http://purl.obolibrary.org/obo/NCIT_C17147"
 16,Metadata,""
+25,Genomic,genetic and genomic data e.g. sequence and assemblies
