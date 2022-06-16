@@ -10,11 +10,11 @@ GigaReviewTest:
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
   stage: test
   script:
-    - cp .secrets gigareview/.secrets
     - env | grep -iE "(REVIEW_ENV|REPO_NAME|POSTGRES_MAJOR_VERSION|POSTGRES_DB|POSTGRES_USER|POSTGRES_PASSWORD|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN)"| tee gigareview/.env
     - cat .env >> gigareview/.env
     - cd gigareview
     - ./up.sh
+    - cat .secrets >> gigareview/.secrets
     - "./tests/unit_runner && ./tests/functional_runner && ./tests/acceptance_runner"
   environment:
     name: dev
