@@ -28,6 +28,8 @@ if [ -f  ./.env ];then
 fi
 
 
+echo "Generating configuration for environment: $REVIEW_ENV"
+
 # fetch and set environment variables from GitLab
 # Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to build environment
 
