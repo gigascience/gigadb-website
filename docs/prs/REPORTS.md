@@ -56,6 +56,16 @@ Subdirectory: editorialmanager
 Email Address: tech_AT_gigasciencejournal.com
 ```
 
+## Scheduling regular report delivery
+
+Reports can also be sent to the SFTP server at regular intervals by configuring
+its schedule. This can be done by clicking the `calendar` icon which appears
+when you hover over a report on the `Enterprise Analytics Reporting` page. A
+`Report Delivery Schedule` pop-up window will be displayed where you are asked
+to configure several settings including the `Delivery Frequency`, `First Delivery Date`,
+and the `Number of Deliveries`. You will be asked for the above SFTP settings if
+you require the reports to be sent to an SFTP server.
+
 ## Reports for GigaReview
 
 Several queries for generating reports have been developed to retrieve data for 
