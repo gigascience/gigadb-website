@@ -37,7 +37,7 @@ base_images:
       - ops/scripts/node_modules
       - gigadb/app/client/web/node_modules
 
-b_gigadb:
+.b_gigadb:
   variables:
     PORTAINER_BCRYPT: ""
     REMOTE_DOCKER_HOSTNAME: ""
@@ -235,7 +235,7 @@ b_gigadb:
     when: on_failure
     expire_in: 1 week
 
-build_staging:
+.build_staging:
   variables:
     GIGADB_ENV: "staging"
     YII_DEBUG: "true"

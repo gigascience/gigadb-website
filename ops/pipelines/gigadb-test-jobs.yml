@@ -1,4 +1,4 @@
-legacy_tests:
+.legacy_tests:
   stage: test
   cache:
     key:
@@ -64,7 +64,7 @@ legacy_tests:
   tags:
     - $GITLAB_USER_LOGIN
 
-unit_func_tests:
+.unit_func_tests:
   stage: test
   cache:
     key:
@@ -107,7 +107,7 @@ unit_func_tests:
   environment:
     name: dev
 
-integration_tests:
+.integration_tests:
   stage: test
   cache:
     key:
