@@ -17,6 +17,11 @@ if ! [ -f  ./.env ];then
   rm .env.bak
 fi
 
+# Check if there is a .secrets file, if not, touch a zero sized one (needed for docker-compose to not fail)
+if ! [ -f  ./.secrets ];then
+  touch .secrets
+fi
+
 # Generate config files from template
 docker-compose run --rm config
 
