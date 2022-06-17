@@ -48,8 +48,8 @@ return [
             'frontend/config/main-local.php',
         ],
     ],
-    'Production' => [
-        'path' => 'prod',
+    'Staging' => [
+        'path' => 'staging',
         'setWritable' => [
             'backend/runtime',
             'backend/web/assets',
