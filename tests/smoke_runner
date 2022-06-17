@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -eu
+
+set -a
+source .env
+set +a
+
+./tests/cert_check
