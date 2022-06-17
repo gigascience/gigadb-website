@@ -147,6 +147,7 @@ integration_tests:
     - ./up.sh
     - cd $APPLICATION
     - ./tests/integration_runner
+    - ./tests/smoke_runner
   environment:
     name: dev
 
