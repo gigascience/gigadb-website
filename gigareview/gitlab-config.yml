@@ -47,6 +47,7 @@ GigaReviewBuildStaging:
       - gigareview/.secrets
       - gigareview/environments
       - gigareview/console/config
+      - gigareview/common/config
       - .env
       - .secrets
       - .ci_env
