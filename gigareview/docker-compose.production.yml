@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+
+
+  production_console:
+    build:
+      context: .
+      dockerfile: console/Production-Dockerfile
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+
+  config:
+    image: rija/docker-alpine-shell-tools:1.0.1
+    volumes:
+      - ./:/app
+    command: /app/generate_config.sh
+
