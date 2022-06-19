@@ -41,6 +41,7 @@ GigaReviewBuildStaging:
     - echo "All" | docker-compose run --rm console ./init --env=Staging #run Yii2 init script to move configuration files into place
     - docker-compose -f docker-compose.production.yml build production_console # build production container from the production docker file
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com # log in to Gitlab so we can push the container image there
+  dependencies: []
   environment:
     name: staging
   artifacts:
