@@ -33,6 +33,10 @@ GigaReviewBuildStaging:
     COMPOSE_FILE: docker-compose.yml
     REPO_NAME: $CI_PROJECT_NAME
     REVIEW_ENV: staging
+    GROUP_VARIABLES_URL: "https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
+    FORK_VARIABLES_URL: "https://gitlab.com/api/v4/groups/3501869/variables"
+    PROJECT_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
+    MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
   script:
     - env | grep -iE "(REVIEW_ENV|REPO_NAME|POSTGRES_MAJOR_VERSION|POSTGRES_DB|POSTGRES_USER|POSTGRES_PASSWORD|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN)"| tee gigareview/.env
     - cd gigareview
