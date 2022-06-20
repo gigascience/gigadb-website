@@ -249,6 +249,8 @@ ld_smoke_tests:
     - bash -c "echo '$docker_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
     # smoke test for live deployment
+    - ./up.sh
+    - cd $APPLICATION
     - ./tests/smoke_runner
   when: manual
 
