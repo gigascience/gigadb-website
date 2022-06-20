@@ -7,7 +7,7 @@ set -e
 set -x
 
 
-# Check there is .env
+# Check there is .env and source it
 if ! [ -f  ./.env ];then
   read -sp "To create .env, enter your private gitlab token: " token
   read -p "To create .env, enter the name of your fork on GitLab: " reponame
@@ -16,6 +16,9 @@ if ! [ -f  ./.env ];then
   sed -i'.bak' "s/REPO_NAME=\"<Your fork name here>\"/REPO_NAME=\"$reponame\"/" .env
   rm .env.bak
 fi
+
+source .env
+
 
 # Check if there is a .secrets file, if not, touch a zero sized one (needed for docker-compose to not fail)
 if ! [ -f  ./.secrets ];then
