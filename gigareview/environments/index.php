@@ -29,7 +29,7 @@
  * ```
  */
 return [
-    'Development' => [
+    'dev' => [
         'path' => 'dev',
         'setWritable' => [
             'backend/runtime',
@@ -48,7 +48,7 @@ return [
             'frontend/config/main-local.php',
         ],
     ],
-    'Staging' => [
+    'staging' => [
         'path' => 'staging',
         'setWritable' => [
             'backend/runtime',
