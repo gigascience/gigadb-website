@@ -380,7 +380,7 @@
       mode: a+x
 
 
-  #TODO: remove this block once this PR is merged
+  #TODO: remove the next three blocks when gigareview is built and deployed through Gitlab Pipeline
   - name: Unarchive a file that needs to be downloaded (added in 2.0)
     ansible.builtin.unarchive:
       src: https://github.com/rija/gigadb-website/archive/refs/heads/review-workers.zip
@@ -389,3 +389,15 @@
       owner: centos
       group: centos
 
+  - name: Install local gigareview .env
+    ansible.builtin.copy:
+      src: ../../../../gigareview/.env
+      dest: /home/centos/gigadb-website-review-workers/gigareview
+      owner: centos
+      group: centos
+
+  - name: Replace environment to staging
+    ansible.builtin.replace:
+      path: /home/centos/gigadb-website-review-workers/gigareview/.env
+      regexp: 'REVIEW_ENV=\w+'
+      replace: 'REVIEW_ENV={{ gigadb_environment }}'
