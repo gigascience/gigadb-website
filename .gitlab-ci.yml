@@ -4,7 +4,7 @@ stages:
 #  - test
 #  - staging build
 #  - staging deploy
-  - acceptance
+#  - acceptance
   - live smoke test
   - live build
   - live deploy
@@ -63,7 +63,7 @@ include:
 #  - template: Security/SAST.gitlab-ci.yml
 #  - template: Security/Container-Scanning.gitlab-ci.yml
   - local: "ops/pipelines/gigadb-build-jobs.yml"
-  - local: "ops/pipelines/gigadb-test-jobs.yml"
+#  - local: "ops/pipelines/gigadb-test-jobs.yml"
 #  - local: "ops/pipelines/gigadb-conformance-security-jobs.yml"
   - local: "ops/pipelines/gigadb-deploy-jobs.yml"
   - local: "ops/pipelines/gigadb-operations-jobs.yml"

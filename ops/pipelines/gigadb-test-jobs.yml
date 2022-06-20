@@ -151,7 +151,7 @@
   environment:
     name: dev
 
-a_gigadb:
+.a_gigadb:
   stage: acceptance
   cache:
     key:
