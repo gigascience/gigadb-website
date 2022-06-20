@@ -37,10 +37,10 @@ class AcceptanceTester extends \Codeception\Actor
         $reports = shell_exec("./yii fetch-reports/list -$testDate") ;
         codecept_debug($reports);
         $this->assertContains("Report-GIGA-em-manuscripts-latest",$reports);
-//        $this->assertContains("Report-GIGA-em-authors-latest",$reports);
-//        $this->assertContains("Report-GIGA-em-questions-latest",$reports);
-//        $this->assertContains("Report-GIGA-em-reviewers-latest",$reports);
-//        $this->assertContains("Report-GIGA-em-reviews-latest",$reports);
+        $this->assertContains("Report-GIGA-em-authors-latest",$reports);
+        $this->assertContains("Report-GIGA-em-questions-latest",$reports);
+        $this->assertContains("Report-GIGA-em-reviewers-latest",$reports);
+        $this->assertContains("Report-GIGA-em-reviews-latest",$reports);
     }
 
     /**
