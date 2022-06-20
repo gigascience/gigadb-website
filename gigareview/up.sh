@@ -17,7 +17,7 @@ if ! [ -f  ./.env ];then
   rm .env.bak
 fi
 
-source .env
+source "./.env"
 
 
 # Check if there is a .secrets file, if not, touch a zero sized one (needed for docker-compose to not fail)
