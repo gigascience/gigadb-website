@@ -406,3 +406,11 @@
     ansible.builtin.command: ./up.sh
     args:
       chdir: /home/centos/gigadb-website-review-workers/gigareview
+
+  - name: Setup cronjob to automate Editorial Manager report ingest
+    ansible.builtin.cron:
+      name: "Fetch latest EM reports"
+      minute: "00"
+      hour: "13"
+      user: "centos"
+      job: "cd /home/centos/gigadb-website-review-workers/gigareview ; /usr/local/bin/docker-compose run --rm console ./yii fetch-reports/fetch latest 2> $HOME/logs/em_reports_ingest_errors.log 1> $HOME/logs/em_reports_ingest_output.log"
