@@ -22,6 +22,10 @@ if ! [ -f  ./.secrets ];then
   touch .secrets
 fi
 
+# ensure docker-compose is found on bastion
+PATH=/usr/local/bin:$PATH
+export PATH
+
 # Generate config files from template
 docker-compose run --rm config
 

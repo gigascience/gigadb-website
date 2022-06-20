@@ -401,3 +401,8 @@
       path: /home/centos/gigadb-website-review-workers/gigareview/.env
       regexp: 'REVIEW_ENV=\w+'
       replace: 'REVIEW_ENV={{ gigadb_environment }}'
+
+  - name: Start gigareview on bastion host
+    ansible.builtin.command: ./up.sh
+    args:
+      chdir: /home/centos/gigadb-website-review-workers/gigareview
