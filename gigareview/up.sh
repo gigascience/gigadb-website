@@ -40,7 +40,7 @@ echo "All" | docker-compose run --rm console ./init --env=$REVIEW_ENV
 docker-compose build public api reviewdb console beanstalkd
 
 # running composer update
-docker-compose run --rm console composer update
+docker-compose run --rm console composer install
 
 # Starting the infrastructure services: database, beanstalkd, sftp (not needed on cloud deployment, just for dev and CI)
 docker-compose up -d reviewdb
