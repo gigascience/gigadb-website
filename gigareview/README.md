@@ -32,6 +32,35 @@ The latter will copy the files in the selected environment subdirectory from ``e
 The Gigareview system is instantiated using Docker compose services, as defined in ``docker-compose.yml``
 and orchestrated in ``up.sh``
 
+As prerequisite, ensure the following variables are defined in Gitlab at project level
+
+| Key | Value    | Masked | Environments |
+| --- |----------|--------|--------------|
+| REVIEW_DB_DATABASE | reviewdb | no     | dev|
+| REVIEW_DB_HOST | reviewdb | no     | dev|
+| REVIEW_DB_PASSWORD | reviewdb | yes    | dev|
+| REVIEW_DB_PORT | 5432     | no | dev|
+| REVIEW_DB_USERNAME | reviewdb | no | dev|
+
+
+## Remote Deployment
+
+At the moment, the app is deployed using the Ansible playbook ``ops/infrastructure/bastion_playbook.yml``
+
+As prerequisite, ensure the following variables are defined in Gitlab at project level:
+
+| Key | Value            | Masked  | Environments |
+| --- |------------------|---------|--------------|
+| REVIEW_DB_DATABASE | reviewdb         | staging | staging      |
+| REVIEW_DB_HOST | reviewdb         | no      | staging      |
+| REVIEW_DB_PASSWORD | (choose a value) | yes     | staging      |
+| REVIEW_DB_PORT | 5432             | no      | staging      |
+| REVIEW_DB_USERNAME | reviewdb         | no      | staging      |
+| REVIEW_DB_DATABASE | reviewdb         | staging | live         |
+| REVIEW_DB_HOST | reviewdb         | no      | live         |
+| REVIEW_DB_PASSWORD | (choose a value) | yes     | live         |
+| REVIEW_DB_PORT | 5432             | no      | live         |
+| REVIEW_DB_USERNAME | reviewdb         | no      | live         |
 
 # More detailed information (not necessary to get started)
 
