@@ -64,5 +64,7 @@ services:
     volumes:
       - ./:/app
     command: /usr/bin/beanstalkd
+    ports:
+      - "11300:11300"
     expose:
       - "11300"
