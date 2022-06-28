@@ -37,24 +37,38 @@ class FilesCommand extends CConsoleCommand
     public function actionUpdateMD5FileAttribute($doi) {
         echo "Executing FilesCommand::actionUpdateMD5ChecksumFileAttribute with $doi".PHP_EOL;
         
-        # Create URL to download $doi.md5 file, e.g. https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102236/readme_102236.txt
-        $url = "https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/$doi/readme_$doi.txt";
+        # Create URL to download $doi.md5 file, e.g. https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102236/102236.md5
+        $url = "https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/$doi/$doi.md5";
         echo $url.PHP_EOL;
 
-        // Open file
-        $check = @fopen($url, 'r');
         // Check file exists
-        if(!$check){
-            echo 'File does not exist';
-        }else{
-            echo 'File exists';
+        $file_exists = @fopen($url, 'r');
+        if($file_exists){
             # Download $doi.md5
             $contents = file_get_contents($url);
-            echo $contents;
+//            echo $contents;
+            # Parse $doi.md5 file
+            $lines = explode("\n", $contents);
+            $headers = str_getcsv( array_shift( $lines ) );
+            $data = array();
+            foreach ($lines as $line) {
+                echo $line;
+                $row = array();
+                foreach(str_getcsv($line, "  ") as $key => $field) {
+                    var_dump($key);
+                }
+//                    $row[ $headers[ $key ] ] = $field;
+//                $row = array_filter( $row );
+//                $data[] = $row;
+//                print_r($data);
+            }
+            # Update file_attributes table with md5 checksum value
+            
+        } else {
+            echo 'File does not exist';
         }
 
-        # Parse $doi.md5 file using spreadsheet parser
-        # Update file_attributes table with md5 checksum value
+        
     }
 
     private function updateFileAttribute($data) {
