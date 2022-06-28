@@ -36,6 +36,29 @@ class FilesCommand extends CConsoleCommand
      */
     public function actionUpdateMD5FileAttribute($doi) {
         echo "Executing FilesCommand::actionUpdateMD5ChecksumFileAttribute with $doi".PHP_EOL;
+        
+        # Create URL to download $doi.md5 file, e.g. https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102236/readme_102236.txt
+        $url = "https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/$doi/readme_$doi.txt";
+        echo $url.PHP_EOL;
+
+        // Open file
+        $check = @fopen($url, 'r');
+        // Check file exists
+        if(!$check){
+            echo 'File does not exist';
+        }else{
+            echo 'File exists';
+            # Download $doi.md5
+            $contents = file_get_contents($url);
+            echo $contents;
+        }
+
+        # Parse $doi.md5 file using spreadsheet parser
+        # Update file_attributes table with md5 checksum value
+    }
+
+    private function updateFileAttribute($data) {
+        
     }
 
     /**
