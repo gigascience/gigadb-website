@@ -1,12 +1,16 @@
 <?php
 
 /**
- * Functional tests for the file URLs checker command
+ * Functional tests for functions in FilesCommand
  *
  */
 class FilesCommandCest
 {
-
+    public function tryToUpdateMD5FileAttribute(FunctionalTester $I)
+    {
+        $output = shell_exec("./protected/yiic files updateMD5FileAttribute --doi=300070");
+        echo $output;
+    }
 
     public function tryNotToOutputResolvableLinks(FunctionalTester $I)
     {

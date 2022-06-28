@@ -28,6 +28,17 @@ class FilesCommand extends CConsoleCommand
     }
 
     /**
+     * Update MD5 checksum in file_attributes table
+     * 
+     * @param $doi
+     * @return string
+     * @throws CException
+     */
+    public function actionUpdateMD5FileAttribute($doi) {
+        echo "Executing FilesCommand::actionUpdateMD5ChecksumFileAttribute with $doi".PHP_EOL;
+    }
+
+    /**
      *
      * Query databse for files url associated to dataset passed as parameter and check that they resolve ok
      * otherwise output the url
