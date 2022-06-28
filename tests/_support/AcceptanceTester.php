@@ -278,7 +278,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeCheckboxIsNotChecked($checkbox)
     {
-        $this->dontSeeCheckboxIsChecked($checkbox);
+        $this->dontSeeCheckboxIsChecked('#'.$checkbox);
     }
 
     /**
@@ -286,7 +286,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeCheckboxIsChecked($checkbox)
     {
-        $this->seeCheckboxIsChecked($checkbox);
+        $this->seeCheckboxIsChecked('#'.$checkbox);
     }
 
     /**
@@ -294,7 +294,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iCheckCheckbox($checkbox)
     {
-        $this->checkOption($checkbox);
+        $this->checkOption('#'.$checkbox);
     }
 
     /**
@@ -302,7 +302,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iUncheckCheckbox($checkbox)
     {
-        $this->uncheckOption($checkbox);
+        $this->uncheckOption('#'.$checkbox);
     }
 
     /**
