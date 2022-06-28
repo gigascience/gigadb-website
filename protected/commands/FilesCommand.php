@@ -7,11 +7,14 @@
  */
 
 use \yii\console\ExitCode;
-use \Codeception\Util\HttpCode;
 
 class FilesCommand extends CConsoleCommand
 {
+    /** @const int RETURN_ASSOCIATIVE_ARRAY set to 1 it is passed to get_headers() second parameters so output is a list of key/value pairs */
     const RETURN_ASSOCIATIVE_ARRAY = 1 ;
+
+    /** @const int  HTTP_STATUS_OK HTTP status code from HTTP response indicating successful GET */
+    const HTTP_STATUS_OK = 200 ;
 
     /**
      * @return string
@@ -63,7 +66,7 @@ END;
                         'verify_peer_name' => false,
                     ],
                 ]));
-                if(!CompatibilityHelper::str_contains($headers[0],HttpCode::OK))
+                if(!CompatibilityHelper::str_contains($headers[0],self::HTTP_STATUS_OK))
                     echo $row['location'].PHP_EOL;
             }
 
