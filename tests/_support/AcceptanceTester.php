@@ -266,18 +266,6 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then I see checkbox :checkbox is checked
-     */
-    public function iSeeCheckboxIsChecked($checkbox)
-    {
-        $this->uncheckOption('#'.$checkbox);
-        $this->checkOption('#'.$checkbox);
-        $this->seeCheckboxIsChecked("//input[@id='$checkbox']");
-
-    }
-
-
-    /**
      * @Then I should be on :path
      */
     public function iShouldBeOn($path)
