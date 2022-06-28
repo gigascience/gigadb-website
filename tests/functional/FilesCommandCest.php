@@ -8,7 +8,7 @@ class FilesCommandCest
 {
     public function tryToUpdateMD5FileAttribute(FunctionalTester $I)
     {
-        $output = shell_exec("./protected/yiic files updateMD5FileAttribute --doi=300070");
+        $output = shell_exec("./protected/yiic files updateMD5FileAttribute --doi=102236");
         echo $output;
     }
 
