@@ -124,7 +124,7 @@ b_gigadb:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
+    REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
     CSV_DIR: "prod_like"
     PORTAINER_BCRYPT: ""
