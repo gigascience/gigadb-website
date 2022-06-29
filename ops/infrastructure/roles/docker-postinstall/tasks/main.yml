@@ -145,7 +145,7 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "remote{{ target_host }}__private_ip"
+      key: "remote{{ target_host }}_private_ip"
       value: "{{ ec2_private_ip }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
