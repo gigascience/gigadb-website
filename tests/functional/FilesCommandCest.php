@@ -8,8 +8,13 @@ class FilesCommandCest
 {
     public function tryToUpdateMD5FileAttribute(FunctionalTester $I)
     {
-        $output = shell_exec("./protected/yiic files updateMD5FileAttribute --doi=102236");
+        // Update file attributes for dataset 100006 with dummy md5 checksums
+        $I->updateInDatabase('users', array('isAdmin' => true), array('email' => 'miles@davis.com'));
+        // Execute FileCommand function to update md5 values for dataset 100006
+        $output = shell_exec("./protected/yiic files updateMD5FileAttribute --doi=100006");
         echo $output;
+        // Assert expected md5 values in file attributes table
+        $I->seeInDatabase('users', ['name' => 'Davert', 'email' => 'davert@mail.com']);
     }
 
     public function tryNotToOutputResolvableLinks(FunctionalTester $I)

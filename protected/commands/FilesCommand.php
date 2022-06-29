@@ -38,7 +38,9 @@ class FilesCommand extends CConsoleCommand
         echo "Executing FilesCommand::actionUpdateMD5ChecksumFileAttribute with $doi".PHP_EOL;
         
         # Create URL to download $doi.md5 file, e.g. https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102236/102236.md5
+        // https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/100006.md5
         // $url = "https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/$doi/$doi.md5";
+        
         $url = "./tests/_data/$doi.md5";
         echo $url.PHP_EOL;
 
