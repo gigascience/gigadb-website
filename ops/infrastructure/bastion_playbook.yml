@@ -128,6 +128,8 @@
 
 - name: Setup files-url-updater so to load latest DB backup in RDS daily
   hosts: name_bastion_server_staging*:name_bastion_server_live*
+  vars:
+    target_host: _bastion
 
   tasks:
     - name: Create a sql and converted directories if they do not exist
@@ -242,6 +244,7 @@
       dds_server_cert_path: /etc/docker
       dds_restart_docker: no
       dds_client_cert_path: /home/centos/.docker
+    - role: ../../roles/docker-postinstall
     - role: ../../roles/docker-daemon-enable-start
 
 - name: Setup Excel to GigaDB tool
