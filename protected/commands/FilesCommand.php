@@ -38,41 +38,29 @@ class FilesCommand extends CConsoleCommand
         echo "Executing FilesCommand::actionUpdateMD5ChecksumFileAttribute with $doi".PHP_EOL;
         
         # Create URL to download $doi.md5 file, e.g. https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102236/102236.md5
-        $url = "https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/$doi/$doi.md5";
+        // $url = "https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/$doi/$doi.md5";
+        $url = "./tests/_data/$doi.md5";
         echo $url.PHP_EOL;
 
-        // Check file exists
+        // Check $doi.md5 file exists
         $file_exists = @fopen($url, 'r');
-        if($file_exists){
-            # Download $doi.md5
+        if($file_exists) {
+            $file_md5_values = array();
+            # Download and parse
             $contents = file_get_contents($url);
-//            echo $contents;
-            # Parse $doi.md5 file
             $lines = explode("\n", $contents);
-            $headers = str_getcsv( array_shift( $lines ) );
-            $data = array();
             foreach ($lines as $line) {
-                echo $line;
-                $row = array();
-                foreach(str_getcsv($line, "  ") as $key => $field) {
-                    var_dump($key);
-                }
-//                    $row[ $headers[ $key ] ] = $field;
-//                $row = array_filter( $row );
-//                $data[] = $row;
-//                print_r($data);
+                $tokens = explode("  ", $line);
+                $file_md5_values += array($tokens[1] => $tokens[0]);
             }
-            # Update file_attributes table with md5 checksum value
+            print_r($file_md5_values);
+            # Update file_attributes table with md5 checksum value by calling
+            # function in FileAttributeController
             
-        } else {
+        }
+        else {
             echo 'File does not exist';
         }
-
-        
-    }
-
-    private function updateFileAttribute($data) {
-        
     }
 
     /**
