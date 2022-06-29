@@ -45,18 +45,29 @@ class FilesCommand extends CConsoleCommand
         // Check $doi.md5 file exists
         $file_exists = @fopen($url, 'r');
         if($file_exists) {
-            $file_md5_values = array();
             # Download and parse
             $contents = file_get_contents($url);
             $lines = explode("\n", $contents);
+            $file_md5_values = array();
             foreach ($lines as $line) {
                 $tokens = explode("  ", $line);
                 $file_md5_values += array($tokens[1] => $tokens[0]);
             }
             print_r($file_md5_values);
-            # Update file_attributes table with md5 checksum value by calling
-            # function in FileAttributeController
-            
+            # Update file_attributes table with md5 checksum value
+            //$dataset = Dataset::model()-> find('$identifier=:identifier', array(':identifier'=>$doi));
+            $file = File::model()->findByAttributes(array(
+                'dataset_id' => "8",
+                'name' => 'Pygoscelis_adeliae.scaf.fa.gz',
+            ));
+            print_r($file->location.PHP_EOL);
+            print_r($file->id);
+            $fa = FileAttributes::model()->findByAttributes(array(
+                'file_id' => $file->id,
+                'attribute_id' => "605",
+            ));
+            $fa->value = "888" ;
+            $fa->save();
         }
         else {
             echo 'File does not exist';
