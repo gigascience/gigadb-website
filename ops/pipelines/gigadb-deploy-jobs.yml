@@ -2,7 +2,8 @@
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
+    REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
+    REMOTE_BASTION_DOCKER: "$remote_bastion_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: deployment
   allow_failure: false
@@ -29,61 +30,61 @@
     - bash -c "echo '$docker_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
     # Pull production container from our private registry
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST info
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV
-#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:$GIGADB_ENV
-#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:$GIGADB_ENV
-#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:$GIGADB_ENV
-#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:$GIGADB_ENV
-#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:$GIGADB_ENV
-#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:$GIGADB_ENV
-#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:$GIGADB_ENV
-#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
-#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST pull registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:$GIGADB_ENV
+    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER info
+    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
+    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
+    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_watcher:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_tusd:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_beanstalkd:$GIGADB_ENV
     # shutdown currently running container but NOT its volumes
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml down
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST stop socat || true
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST rm socat || true
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml down
+    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER stop socat || true
+    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER rm socat || true
     # verify config renders correctly after variables interpolation
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml config
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml config
     # Redeploy all containers but the web container
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml up -d application #fuw-admin fuw-public
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml up -d application #fuw-admin fuw-public
     # deploy the web container once the application servers are up
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml up -d web
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml up -d web
     # Run database migrations if any
-    - 'MIGRATION_STATUS="$(docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application bash -c "./protected/yiic migrate new --migrationPath=application.migrations.schema --interactive=0 | tail -1")"'
+    - 'MIGRATION_STATUS="$(docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application bash -c "./protected/yiic migrate new --migrationPath=application.migrations.schema --interactive=0 | tail -1")"'
     - echo "$MIGRATION_STATUS"
-    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic custommigrations dropconstraints'
-    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic custommigrations dropindexes'
-    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic custommigrations droptriggers'
-    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0'
-    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.fix_import --interactive=0'
+    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic custommigrations dropconstraints'
+    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic custommigrations dropindexes'
+    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic custommigrations droptriggers'
+    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0'
+    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.fix_import --interactive=0'
     # post-install script to run
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm less
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefiletypes
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefileformats
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations refreshmaterializedviews
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm less
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefiletypes
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefileformats
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations refreshmaterializedviews
     # Spin up portainer container
     - ./ops/scripts/start_portainer.sh
     # Generate the web certificate for TLS termination on web container.
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm config bash -c "cp /le.staging.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets"
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm config bash -c "cp /le.staging.ini /etc/letsencrypt/cli.ini && chmod 777 /var/www/assets"
     - ./ops/scripts/setup_cert.sh
     # Debug steps
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml ps
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml top
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml logs web
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml ps
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml top
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml logs web
     # symlink the https configuration for web container and reload nginx (cannot be done earlier as nginx will crash if it cannot see valid web certificates)
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T web /usr/local/bin/enable_sites gigadb.$GIGADB_ENV.https
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml exec -T web /usr/local/bin/enable_sites gigadb.$GIGADB_ENV.https
     # FUW specific steps
-#    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T console /app/yii migrate --interactive=0
-#    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml up -d fuw-worker gigadb-worker
-#    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T web /usr/local/bin/enable_sites fuw-backend.$GIGADB_ENV.http fuw-frontend.$GIGADB_ENV.http
-#    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T console ./yii identity/add-identity --username localadmin --email local-gigadb-admin@rijam.ml1.net --role admin
+#    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml exec -T console /app/yii migrate --interactive=0
+#    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml up -d fuw-worker gigadb-worker
+#    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml exec -T web /usr/local/bin/enable_sites fuw-backend.$GIGADB_ENV.http fuw-frontend.$GIGADB_ENV.http
+#    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml exec -T console ./yii identity/add-identity --username localadmin --email local-gigadb-admin@rijam.ml1.net --role admin
     # start the port 2375 for docker
-#    - docker --tlsverify -H=$REMOTE_DOCKER_HOST run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p $remote_private_ip:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
+#    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p $remote_private_ip:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
 #  dependencies:
 #    - build
   environment:
