@@ -40,15 +40,15 @@ class FilesCommand extends CConsoleCommand
         # Create URL to download $doi.md5 file, e.g. https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102236/102236.md5
         // https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/100006.md5
         // $url = "https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/$doi/$doi.md5";
-        
         $url = "./tests/_data/$doi.md5";
-        echo $url.PHP_EOL;
 
         // Check $doi.md5 file exists
         $file_exists = @fopen($url, 'r');
         if($file_exists) {
-            # Download and parse
+            # Download and parse file
             $contents = file_get_contents($url);
+            echo "Retrieved file: ".$url.PHP_EOL;
+
             $lines = explode("\n", $contents);
             $file_md5_values = array();
             foreach ($lines as $line) {
@@ -57,19 +57,31 @@ class FilesCommand extends CConsoleCommand
             }
             print_r($file_md5_values);
             # Update file_attributes table with md5 checksum value
-            //$dataset = Dataset::model()-> find('$identifier=:identifier', array(':identifier'=>$doi));
-            $file = File::model()->findByAttributes(array(
-                'dataset_id' => "8",
-                'name' => 'Pygoscelis_adeliae.scaf.fa.gz',
+            $dataset = Dataset::model()-> findByAttributes(array(
+                'identifier' => $doi,
             ));
-            print_r($file->location.PHP_EOL);
-            print_r($file->id);
-            $fa = FileAttributes::model()->findByAttributes(array(
-                'file_id' => $file->id,
-                'attribute_id' => "605",
-            ));
-            $fa->value = "888" ;
-            $fa->save();
+            echo "Working on dataset: $dataset->id".PHP_EOL;
+            
+            // Loop through md5 values for all files
+            foreach ($file_md5_values as $file_md5_value) {
+                print_r("Doing: $file_md5_value".PHP_EOL);
+                print_r("Doing: $file_md5_values[0]".PHP_EOL);
+                print_r("Doing: $file_md5_values[$file_md5_value]".PHP_EOL);
+            }
+            
+            
+//            $file = File::model()->findByAttributes(array(
+//                'dataset_id' => $dataset->id,
+//                'name' => 'Pygoscelis_adeliae.scaf.fa.gz',
+//            ));
+//            print_r($file->location.PHP_EOL);
+//            print_r($file->id);
+//            $fa = FileAttributes::model()->findByAttributes(array(
+//                'file_id' => $file->id,
+//                'attribute_id' => "605",
+//            ));
+//            $fa->value = "888" ;
+//            $fa->save();
         }
         else {
             echo 'File does not exist';

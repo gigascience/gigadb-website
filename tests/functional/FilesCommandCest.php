@@ -34,7 +34,7 @@ class FilesCommandCest
 
         // Execute FileCommand function to update md5 values for penguin dataset 100006
         $output = shell_exec("./protected/yiic files updateMD5FileAttribute --doi=100006");
-        echo $output;
+        codecept_debug($output);
 
         // Assert expected md5 values in file attributes table
         $I->seeInDatabase('file_attributes', ['id' => '10669', 'value' => '826b699c854cc0f06e982d836410a81b']);
