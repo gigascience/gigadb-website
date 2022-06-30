@@ -1,0 +1,70 @@
+version: '3.7'
+
+services:
+
+  public:
+    build: frontend
+    ports:
+      - "9010:9000"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ./:/app
+
+  api:
+    build: backend
+    ports:
+      - "9011:9000"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ./:/app
+
+  console:
+    build: console
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ./:/app
+
+  reviewdb:
+    image: postgres:${POSTGRES_MAJOR_VERSION}
+    env_file:
+      - .secrets
+    ports:
+      - "54322:5432"
+    volumes:
+      - ${DATA_SAVE_PATH}/postgres/${POSTGRES_MAJOR_VERSION}/data:/var/lib/postgresql/data
+
+  sftp_test:
+    image: atmoz/sftp
+    volumes:
+      - ./console/tests/_data:/home/testuser/editorialmanager
+    expose:
+      - "22"
+    command: testuser:testpass:::editorialmanager
+
+  config:
+    image: rija/docker-alpine-shell-tools:1.0.1
+    volumes:
+      - ./:/app
+    command: /app/generate_config.sh
+
+  webdriver:
+    image: seleniarm/standalone-chromium:latest
+    shm_size: '1gb' # to avoid a known issue
+    expose:
+      - "4444"
+
+  beanstalkd:
+    build: console
+    volumes:
+      - ./:/app
+    command: /usr/bin/beanstalkd
+    ports:
+      - "11300:11300"
+    expose:
+      - "11300"

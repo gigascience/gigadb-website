@@ -1,0 +1,43 @@
+suite_namespace: console\tests\acceptance
+actor: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+              url: 'http://gigadb.test'
+              window_size: 2000x3500
+              # host: 'phantomjs'
+              # port: 8910
+              # browser: phantomjs
+              # host: 'firefox'
+              # port: 4444
+              # browser: firefox'
+              host: 'webdriver'
+              port: 4444
+              browser: chrome
+              capabilities:
+                  "goog:chromeOptions":
+                      args: [ '--headless' ]
+                      w3c: false
+                  "goog:loggingPrefs":
+                      browser: ALL
+                  "loggingPrefs":
+                      browser: ALL
+        - Asserts
+        - Filesystem
+        - Db:
+            dsn: 'pgsql:host=$TESTDB_HOST;port=$TESTDB_PORT;dbname=$TESTDB_DBNAME'
+            user: '$TESTDB_USER'
+            password: '$TESTDB_PASSWORD'
+            cleanup: false # don't reload dump between tests
+            populate: false # don't load dump before all tests
+            initial_queries:
+              - "delete from ingest;"
+
+gherkin:
+  contexts:
+    default:
+      - console\tests\AcceptanceTester
+
+extensions:
+  enabled:
+    - Codeception\Extension\Recorder

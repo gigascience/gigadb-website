@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'db' => [
+        "host" => "$REVIEW_DB_HOST",
+        "port" => "$REVIEW_DB_PORT",
+        "database" => "$REVIEW_DB_DATABASE",
+        "username" => "$REVIEW_DB_USERNAME",
+        "password" => "$REVIEW_DB_PASSWORD",
+    ],
+    'sftp' => [
+        "host" => "$sftp_hostname",
+        "username" => "$sftp_username",
+        "password" => "$sftp_password",
+        "baseDirectory" => "$sftp_directory",
+    ],
+    'reportsTypesFilenamePatterns' => [
+        'manuscripts' => 'Report-GIGA-em-manuscripts-latest',
+        'authors' => 'Report-GIGA-em-authors-latest',
+        'reviewers' => 'Report-GIGA-em-reviewers-latest',
+        'questions' => 'Report-GIGA-em-questions-latest',
+        'reviews' => 'Report-GIGA-em-reviews-latest',
+    ]
+];
+
+
+

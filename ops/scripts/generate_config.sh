@@ -36,16 +36,24 @@ echo "Running ${THIS_SCRIPT_DIR}/generate_config.sh for environment: $GIGADB_ENV
 # fetch and set environment variables from GitLab
 # Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to build environment
 
-if ! [ -f  ./.secrets ];then
+if ! [ -s ./.secrets ];then
     echo "Retrieving variables from ${GROUP_VARIABLES_URL}"
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${GROUP_VARIABLES_URL}" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > .group_var
 
     echo "Retrieving variables from ${FORK_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${FORK_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") |.key + "=" + .value' > .fork_var
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${FORK_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > .fork_var
 
     echo "Retrieving variables from ${PROJECT_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key != "ANALYTICS_PRIVATE_KEY") | select(.key != "TLSAUTH_CERT") | select(.key != "TLSAUTH_KEY") | select(.key != "TLSAUTH_CA") | select(.key != "docker_tlsauth_ca") | select(.key != "docker_tlsauth_key") | select(.key != "docker_tlsauth_cert") | select(.key != "tls_fullchain_pem") | select(.key != "tls_privkey_pem") | select(.key != "tls_chain_pem") |.key + "=" + .value' > .project_var
-    cat .group_var .fork_var .project_var > .secrets && rm .group_var && rm .fork_var && rm .project_var
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100&page=1"  > .project_var_raw1
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100&page=2"  > .project_var_raw2
+    jq -s 'add' .project_var_raw1 .project_var_raw2 > .project_vars.json
+    cat .project_vars.json | jq --arg ENVIRONMENT $REVIEW_ENV -r '.[] | select( .environment_scope == "dev" ) | select(.key | test("key|ca|pem|cert";"i") | not ) |.key + "=" + .value' > .project_var
+
+    echo "Retrieving variables from ${MISC_VARIABLES_URL}"
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT $REVIEW_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key | test("sftp_") ) | .key + "=" + .value' > .misc_var
+
+
+    cat .group_var .fork_var .project_var .misc_var > .secrets && rm .group_var && rm .fork_var && rm .project_var && rm .misc_var && rm .project_var_raw1 && rm .project_var_raw2 && rm .project_vars.json
     echo "# Some help about this file in ops/configuration/variables/secrets-sample" >> .secrets
 fi
 echo "Sourcing secrets"
