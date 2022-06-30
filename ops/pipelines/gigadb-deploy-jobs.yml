@@ -91,8 +91,8 @@
     - bash -c "echo '$docker_bastion_tlsauth_ca' >  ~/.docker/ca.pem"
     - bash -c "echo '$docker_bastion_tlsauth_cert' > ~/.docker/cert.pem"
     - bash -c "echo '$docker_bastion_tlsauth_key' > ~/.docker/key.pem"
-    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER info
-    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker --tlsverify -H=$REMOTE_BASTION_DOCKER info
+    - docker --tlsverify -H=$REMOTE_BASTION_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
   environment:
     name: $DEPLOYMENT_ENV
