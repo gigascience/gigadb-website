@@ -146,7 +146,7 @@
     body_format: json
     body:
       key: "remote{{ target_host }}_private_ip"
-      value: "{{ ec2_private_ip }}"
+      value: "{{ (target_host == '_bastion') | ternary(ec2_bastion_private_ip,ec2_private_ip) }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
@@ -161,7 +161,7 @@
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
     body_format: json
     body:
-      value: "{{ ec2_private_ip }}"
+      value: "{{ (target_host == '_bastion') | ternary(ec2_bastion_private_ip,ec2_private_ip) }}"
     status_code: 200
   register: private_ip_put_outcome
   when: private_ip_post_outcome.status == 400
@@ -176,7 +176,7 @@
     body_format: json
     body:
       key: "remote{{ target_host }}_public_ip"
-      value: "{{ ec2_public_ip }}"
+      value: "{{ (target_host == '_bastion') | ternary(ec2_bastion_public_ip,ec2_public_ip) }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
@@ -191,7 +191,7 @@
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
     body_format: json
     body:
-      value: "{{ ec2_public_ip }}"
+      value: "{{ (target_host == '_bastion') | ternary(ec2_bastion_public_ip,ec2_public_ip) }}"
     status_code: 200
   register: public_ip_put_outcome
   when: public_ip_post_outcome.status == 400
