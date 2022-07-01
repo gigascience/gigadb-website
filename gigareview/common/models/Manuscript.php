@@ -11,6 +11,8 @@ use Yii;
  * @property string|null $manuscript_number
  * @property string|null $article_title
  * @property int|null $revision_number
+ * @property int|null $created_at
+ * @property int|null $updated_at
  */
 class Manuscript extends \yii\db\ActiveRecord
 {
@@ -28,8 +30,8 @@ class Manuscript extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['revision_number'], 'default', 'value' => null],
-            [['revision_number'], 'integer'],
+            [['revision_number', 'created_at', 'updated_at'], 'default', 'value' => null],
+            [['revision_number', 'created_at', 'updated_at'], 'integer'],
             [['manuscript_number', 'article_title'], 'string', 'max' => 255],
         ];
     }
@@ -44,6 +46,8 @@ class Manuscript extends \yii\db\ActiveRecord
             'manuscript_number' => 'Manuscript Number',
             'article_title' => 'Article Title',
             'revision_number' => 'Revision Number',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
 }

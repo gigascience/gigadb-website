@@ -17,6 +17,8 @@ class m220629_145450_create_manuscript_table extends Migration
             'manuscript_number' => $this->string(),
             'article_title' => $this->string(),
             'revision_number' => $this->smallinteger(),
+            'created_at' => $this->bigInteger(),
+            'updated_at' => $this->bigInteger(),
         ]);
     }
 
