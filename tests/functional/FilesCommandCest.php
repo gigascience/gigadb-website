@@ -23,21 +23,12 @@ class FilesCommandCest
      */
     public function tryToUpdateMD5FileAttribute(FunctionalTester $I)
     {
-        // Confirm there's no md5 file attribute values for penguin dataset
-        $I->seeInDatabase('file_attributes', ['id' => '10669', 'value' => '']);
-        $I->seeInDatabase('file_attributes', ['id' => '10670', 'value' => '']);
-        $I->seeInDatabase('file_attributes', ['id' => '10671', 'value' => '']);
-        $I->seeInDatabase('file_attributes', ['id' => '10672', 'value' => '']);
-        $I->seeInDatabase('file_attributes', ['id' => '10673', 'value' => '']);
-        $I->seeInDatabase('file_attributes', ['id' => '10674', 'value' => '']);
-        $I->seeInDatabase('file_attributes', ['id' => '10675', 'value' => '']);
-
         // Execute FileCommand function to update md5 values for penguin dataset 100006
         $output = shell_exec("./protected/yiic files updateMD5FileAttribute --doi=100006");
         codecept_debug($output);
 
         // Assert expected md5 values in file attributes table
-        $I->seeInDatabase('file_attributes', ['id' => '10669', 'value' => '826b699c854cc0f06e982d836410a81b']);
+        $I->seeInDatabase('file_attributes', ['id' => '10669', 'value' => '23c3241e6bc362d659a4b589c8d9e01c']);
         $I->seeInDatabase('file_attributes', ['id' => '10670', 'value' => '47b8f47ca31cfd06d5ad62ceceb99860']);
         $I->seeInDatabase('file_attributes', ['id' => '10671', 'value' => '43b35c4e828bed20dbb071d2c5a40f17']);
         $I->seeInDatabase('file_attributes', ['id' => '10672', 'value' => '5afc9d8348bf4b52ee6e9c2bae9fd542']);

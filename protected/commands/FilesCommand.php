@@ -45,46 +45,46 @@ class FilesCommand extends CConsoleCommand
         // Check $doi.md5 file exists
         $file_exists = @fopen($url, 'r');
         if($file_exists) {
-            # Download and parse file
-            $contents = file_get_contents($url);
-            echo "Retrieved file: ".$url.PHP_EOL;
-
-            $lines = explode("\n", $contents);
-            $file_md5_values = array();
-            foreach ($lines as $line) {
-                $tokens = explode("  ", $line);
-                $file_md5_values += array($tokens[1] => $tokens[0]);
-            }
-            print_r($file_md5_values);
-            # Update file_attributes table with md5 checksum value
+            echo "File exists: ".$url.PHP_EOL;
+            // Dataset id is required for querying files
             $dataset = Dataset::model()-> findByAttributes(array(
                 'identifier' => $doi,
             ));
-            echo "Working on dataset: $dataset->id".PHP_EOL;
-            
-            // Loop through md5 values for all files
-            foreach ($file_md5_values as $file_md5_value) {
-                print_r("Doing: $file_md5_value".PHP_EOL);
-                print_r("Doing: $file_md5_values[0]".PHP_EOL);
-                print_r("Doing: $file_md5_values[$file_md5_value]".PHP_EOL);
+            echo "Working on dataset id: $dataset->id".PHP_EOL;
+
+            # Download and parse file
+            $contents = file_get_contents($url);
+            $lines = explode("\n", $contents);
+            foreach ($lines as $line) {
+                $tokens = explode("  ", $line);
+                $filename = basename($tokens[1]);
+                if($filename === "$doi.md5") {
+                    echo "Ignoring $doi.md5 file".PHP_EOL;
+                    continue;
+                }
+                $md5value = $tokens[0];
+                
+                echo "tokens[1]: $filename".PHP_EOL;
+                echo "tokens[0]: $md5value".PHP_EOL;
+
+                # Update file_attributes table with md5 checksum value
+                $file = File::model()->findByAttributes(array(
+                    'dataset_id' => $dataset->id,
+                    'name' => $filename,
+                ));
+                echo $file->location.PHP_EOL;
+                echo "File id is: ".$file->id.PHP_EOL;
+                $fa = FileAttributes::model()->findByAttributes(array(
+                    'file_id' => $file->id,
+                    'attribute_id' => "605",
+                ));
+                echo "File attribute id is: ".$fa->id.PHP_EOL;
+                $fa->value = $md5value;
+                $fa->save();
             }
-            
-            
-//            $file = File::model()->findByAttributes(array(
-//                'dataset_id' => $dataset->id,
-//                'name' => 'Pygoscelis_adeliae.scaf.fa.gz',
-//            ));
-//            print_r($file->location.PHP_EOL);
-//            print_r($file->id);
-//            $fa = FileAttributes::model()->findByAttributes(array(
-//                'file_id' => $file->id,
-//                'attribute_id' => "605",
-//            ));
-//            $fa->value = "888" ;
-//            $fa->save();
         }
         else {
-            echo 'File does not exist';
+            Yii::log("Remote file $doi.md5 does not exist","error");
         }
     }
 
