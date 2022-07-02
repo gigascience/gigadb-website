@@ -1013,4 +1013,26 @@ EO_MAIL;
                 break;
         }
     }
+
+    /**
+     * Updates the MD5 checksum file attribute for a given file
+     * 
+     * @param $file_id
+     * @param $md5_value
+     * @return void
+     */
+    public function updateMd5Checksum($file_id, $md5_value) {
+        $fa = FileAttributes::model()->findByAttributes(array(
+            'file_id' => $file_id,
+            'attribute_id' => "605",
+        ));
+        // In case no MD5 FileAttribute can be found for $file_id
+        if($fa === null) {
+            $fa = new FileAttributes;
+            $fa->attribute_id = "605";
+        }
+        echo "File attribute id is: ".$fa->id.PHP_EOL;
+        $fa->value = $md5_value;
+        $fa->save();
+    }
 }

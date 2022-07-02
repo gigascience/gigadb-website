@@ -34,10 +34,12 @@ class FilesCommand extends CConsoleCommand
      */
     public function actionUpdateMD5FileAttribute($doi) {
         echo "Executing FilesCommand::actionUpdateMD5ChecksumFileAttribute with $doi".PHP_EOL;
+        Yii::import('application.controllers.*');
+        $adminFileController = new AdminFileController('afc');
         
         try {
-            $url = $this->findDatasetMd5FileUrl($doi);
-//             $url = "./tests/_data/$doi.md5";
+            // $url = $this->findDatasetMd5FileUrl($doi);
+            $url = "./tests/_data/$doi.md5";
             echo "Processing $url".PHP_EOL;
 
             // Dataset id is required for querying files
@@ -51,30 +53,17 @@ class FilesCommand extends CConsoleCommand
             $lines = explode("\n", $contents);
             foreach ($lines as $line) {
                 $tokens = explode("  ", $line);
+                $md5 = $tokens[0];
                 $filename = basename($tokens[1]);
-                if ($filename === "$doi.md5") {
-                    echo "Ignoring $doi.md5 file" . PHP_EOL;
+                if ($filename === "$doi.md5")  // Ignore the $doi.md5 file
                     continue;
-                }
-                $md5value = $tokens[0];
-
-                echo "tokens[1]: $filename" . PHP_EOL;
-                echo "tokens[0]: $md5value" . PHP_EOL;
 
                 # Update file_attributes table with md5 checksum value
                 $file = File::model()->findByAttributes(array(
                     'dataset_id' => $dataset->id,
                     'name' => $filename,
                 ));
-                echo $file->location . PHP_EOL;
-                echo "File id is: " . $file->id . PHP_EOL;
-                $fa = FileAttributes::model()->findByAttributes(array(
-                    'file_id' => $file->id,
-                    'attribute_id' => "605",
-                ));
-                echo "File attribute id is: " . $fa->id . PHP_EOL;
-                $fa->value = $md5value;
-                $fa->save();
+                $adminFileController->updateMd5Checksum($file->id, $md5);
             }
         }
         catch (Exception $e) {
