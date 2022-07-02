@@ -31,26 +31,20 @@ class FilesCommand extends CConsoleCommand
      * Update MD5 checksum in file_attributes table
      * 
      * @param $doi
-     * @return string
-     * @throws CException
      */
     public function actionUpdateMD5FileAttribute($doi) {
         echo "Executing FilesCommand::actionUpdateMD5ChecksumFileAttribute with $doi".PHP_EOL;
         
-        # Create URL to download $doi.md5 file, e.g. https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102236/102236.md5
-        // https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/100006.md5
-        // $url = "https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/$doi/$doi.md5";
-        $url = "./tests/_data/$doi.md5";
+        try {
+            $url = $this->findDatasetMd5FileUrl($doi);
+//             $url = "./tests/_data/$doi.md5";
+            echo "Processing $url".PHP_EOL;
 
-        // Check $doi.md5 file exists
-        $file_exists = @fopen($url, 'r');
-        if($file_exists) {
-            echo "File exists: ".$url.PHP_EOL;
             // Dataset id is required for querying files
-            $dataset = Dataset::model()-> findByAttributes(array(
+            $dataset = Dataset::model()->findByAttributes(array(
                 'identifier' => $doi,
             ));
-            echo "Working on dataset id: $dataset->id".PHP_EOL;
+            echo "Working on dataset id: $dataset->id" . PHP_EOL;
 
             # Download and parse file
             $contents = file_get_contents($url);
@@ -58,34 +52,62 @@ class FilesCommand extends CConsoleCommand
             foreach ($lines as $line) {
                 $tokens = explode("  ", $line);
                 $filename = basename($tokens[1]);
-                if($filename === "$doi.md5") {
-                    echo "Ignoring $doi.md5 file".PHP_EOL;
+                if ($filename === "$doi.md5") {
+                    echo "Ignoring $doi.md5 file" . PHP_EOL;
                     continue;
                 }
                 $md5value = $tokens[0];
-                
-                echo "tokens[1]: $filename".PHP_EOL;
-                echo "tokens[0]: $md5value".PHP_EOL;
+
+                echo "tokens[1]: $filename" . PHP_EOL;
+                echo "tokens[0]: $md5value" . PHP_EOL;
 
                 # Update file_attributes table with md5 checksum value
                 $file = File::model()->findByAttributes(array(
                     'dataset_id' => $dataset->id,
                     'name' => $filename,
                 ));
-                echo $file->location.PHP_EOL;
-                echo "File id is: ".$file->id.PHP_EOL;
+                echo $file->location . PHP_EOL;
+                echo "File id is: " . $file->id . PHP_EOL;
                 $fa = FileAttributes::model()->findByAttributes(array(
                     'file_id' => $file->id,
                     'attribute_id' => "605",
                 ));
-                echo "File attribute id is: ".$fa->id.PHP_EOL;
+                echo "File attribute id is: " . $fa->id . PHP_EOL;
                 $fa->value = $md5value;
                 $fa->save();
             }
         }
-        else {
-            Yii::log("Remote file $doi.md5 does not exist","error");
+        catch (Exception $e) {
+            Yii::log($e->getMessage(), "error");
         }
+    }
+
+    /**
+     * Returns the URL for a dataset's md5 file
+     * 
+     * Example URLs from gigadb.org:
+     *
+     * https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/100006.md5
+     * https://ftp.cngb.org/pub/gigadb/pub/10.5524/101001_102000/101001/101001.md5
+     * https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102236/102236.md5
+     *
+     * @param $doi
+     * @return string
+     * @throws ErrorException
+     */
+    private function findDatasetMd5FileUrl($doi): string
+    {
+        // Directory names representing ranges of dataset DOIs
+        $ranges = ['102001_103000', '101001_102000', '100001_101000'];
+
+        foreach ($ranges as $range) {
+            $url = "https://ftp.cngb.org/pub/gigadb/pub/10.5524/$range/$doi/$doi.md5";
+            $file_exists = @fopen($url, 'r');
+            if ($file_exists)
+                return $url;
+        }
+
+        throw new ErrorException("$doi.md5 file not found for dataset DOI $doi");
     }
 
     /**
