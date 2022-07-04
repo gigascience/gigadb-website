@@ -30,34 +30,31 @@ class FilesCommand extends CConsoleCommand
     }
 
     /**
-     * Update MD5 checksum in file_attributes table
+     * Update MD5 checksum attribute for all files in a dataset given its DOI
      * 
      * @param $doi
      */
     public function actionUpdateMD5FileAttributes($doi) {
-        echo "Executing FilesCommand::actionUpdateMD5ChecksumFileAttribute with $doi".PHP_EOL;
         Yii::import('application.controllers.*');
         $adminFileController = new AdminFileController('afc');
         
         try {
-            // $url = $this->findDatasetMd5FileUrl($doi);
-            $url = "./tests/_data/$doi.md5";
+            $url = $this->findDatasetMd5FileUrl($doi);
             echo "Processing $url".PHP_EOL;
 
             // Dataset id is required for querying files
             $dataset = Dataset::model()->findByAttributes(array(
                 'identifier' => $doi,
             ));
-            echo "Working on dataset id: $dataset->id" . PHP_EOL;
 
-            # Download and parse file
+            # Download and parse dataset md5 file
             $contents = file_get_contents($url);
             $lines = explode("\n", $contents);
             foreach ($lines as $line) {
                 $tokens = explode("  ", $line);
                 $md5 = $tokens[0];
                 $filename = basename($tokens[1]);
-                if ($filename === "$doi.md5")  // Ignore the $doi.md5 file
+                if ($filename === "$doi.md5")  // Ignore $doi.md5 file
                     continue;
 
                 # Update file_attributes table with md5 checksum value
@@ -76,8 +73,7 @@ class FilesCommand extends CConsoleCommand
     /**
      * Returns the URL for a dataset's md5 file
      * 
-     * Example URLs from gigadb.org:
-     *
+     * Determines the URL of the md5 file as it could be:
      * https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/100006.md5
      * https://ftp.cngb.org/pub/gigadb/pub/10.5524/101001_102000/101001/101001.md5
      * https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102236/102236.md5
