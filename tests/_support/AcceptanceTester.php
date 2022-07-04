@@ -81,14 +81,14 @@ class AcceptanceTester extends \Codeception\Actor
     /**
      * Looks for a button with a name that is the content in between
      * it's button tags.
-     * 
+     *
      * @Then I should see a :button button
      */
     public function iShouldSeeAButton($button)
     {
         $this->seeElement(Locator::contains('button', $button));
     }
-    
+
     /**
      * @Then I should see a drop-down field :id with values
      */
@@ -257,6 +257,15 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @When I click the table settings for :table
+     */
+    public function iClickTheTableSettings($table)
+    {
+        $this->click("#".$table);
+        $this->wait(1);
+    }
+
+    /**
      * @Then I should be on :path
      */
     public function iShouldBeOn($path)
@@ -269,7 +278,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeCheckboxIsNotChecked($checkbox)
     {
-        $this->dontSeeCheckboxIsChecked($checkbox);
+        $this->dontSeeCheckboxIsChecked("//input[@id='$checkbox']");
     }
 
     /**
@@ -277,7 +286,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeCheckboxIsChecked($checkbox)
     {
-        $this->seeCheckboxIsChecked($checkbox);
+        $this->seeCheckboxIsChecked("//input[@id='$checkbox']");
     }
 
     /**
@@ -285,7 +294,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iCheckCheckbox($checkbox)
     {
-        $this->checkOption($checkbox);
+        $this->checkOption("//input[@id='$checkbox']");
     }
 
     /**
@@ -293,7 +302,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iUncheckCheckbox($checkbox)
     {
-        $this->uncheckOption($checkbox);
+        $this->uncheckOption("//input[@id='$checkbox']");
     }
 
     /**

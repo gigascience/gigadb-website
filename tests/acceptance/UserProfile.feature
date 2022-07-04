@@ -22,8 +22,8 @@ Scenario: Ensure mailing list checkbox is checkable after clicking Edit button
   Given I sign in as a user
   And I am on "/user/view_profile"
   And I press the button "Edit"
-  When I check "EditProfileForm[newsletter]" checkbox
-  Then I should see "EditProfileForm[newsletter]" checkbox is checked
+  When I check "EditProfileForm_newsletter" checkbox
+  Then I should see "EditProfileForm_newsletter" checkbox is checked
 
 @ok
 Scenario: Ensure pressing Cancel button reverts profile page back to original user details
@@ -32,7 +32,7 @@ Scenario: Ensure pressing Cancel button reverts profile page back to original us
   And I should see "Mailing list subscriber"
   And I should see "No"
   And I press the button "Edit"
-  And I check "EditProfileForm[newsletter]" checkbox
+  And I check "EditProfileForm_newsletter" checkbox
   When I press the button "Cancel"
   Then I should see "Mailing list subscriber"
   And I should see "No"
@@ -43,6 +43,6 @@ Scenario: Ensure mailing list subscriber displays Yes after pressing Save button
   Given I sign in as a user
   When I am on "/user/view_profile"
   And I press the button "Edit"
-  And I check "EditProfileForm[newsletter]" checkbox
+  And I check "EditProfileForm_newsletter" checkbox
   And I press the button "Save"
   Then I should see "Yes"

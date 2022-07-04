@@ -55,6 +55,69 @@ Feature: a user visit the dataset page
     Then I should see "well now, how to describe nothing in particular?"
     And I should not see "The DOI 200070 cannot be displayed."
 
+  @ok @issue-917
+  Scenario: Checkbox for files table in table settings exists
+    When I am on "/dataset/100094"
+    And I follow "Files"
+    And I should see "Table Settings"
+    And I click the table settings for "files_table_settings"
+    Then I should see a check-box field "description"
+    And I should see a check-box field "sample_id"
+    And I should see a check-box field "type_id"
+    And I should see a check-box field "format_id"
+    And I should see a check-box field "size"
+    And I should see a check-box field "date_stamp"
+    And I should see a check-box field "location"
+    And I should see a check-box field "attribute"
+
+  @ok @issue-917
+  Scenario:  Checkbox for files table in table settings can be checked
+    When I am on "/dataset/100094"
+    And I follow "Files"
+    And I click the table settings for "files_table_settings"
+    Then I check "description" checkbox
+    And I should see "description" checkbox is checked
+    And I check "sample_id" checkbox
+    And I should see "sample_id" checkbox is checked
+    And I check "type_id" checkbox
+    And I should see "type_id" checkbox is checked
+    And I check "sample_id" checkbox
+    And I should see "sample_id" checkbox is checked
+    And I check "format_id" checkbox
+    And I should see "format_id" checkbox is checked
+    And I check "size" checkbox
+    And I should see "size" checkbox is checked
+    And I check "date_stamp" checkbox
+    And I should see "date_stamp" checkbox is checked
+    And I check "location" checkbox
+    And I should see "location" checkbox is checked
+    And I check "attribute" checkbox
+    And I should see "attribute" checkbox is checked
+
+  @ok @issue-917
+  Scenario:  Checkbox for files table in table settings can be unchecked
+    When I am on "/dataset/100094"
+    And I follow "Files"
+    And I click the table settings for "files_table_settings"
+    Then I uncheck "description" checkbox
+    And I should see "description" checkbox is not checked
+    And I uncheck "sample_id" checkbox
+    And I should see "sample_id" checkbox is not checked
+    And I uncheck "type_id" checkbox
+    And I should see "type_id" checkbox is not checked
+    And I uncheck "sample_id" checkbox
+    And I should see "sample_id" checkbox is not checked
+    And I uncheck "format_id" checkbox
+    And I should see "format_id" checkbox is not checked
+    And I uncheck "size" checkbox
+    And I should see "size" checkbox is not checked
+    And I uncheck "date_stamp" checkbox
+    And I should see "date_stamp" checkbox is not checked
+    And I uncheck "location" checkbox
+    And I should see "location" checkbox is not checked
+    And I uncheck "attribute" checkbox
+    And I should see "attribute" checkbox is not checked
+
   @ok
   Scenario: Dataset with image associated will show dataset image
     Given I have not signed in
