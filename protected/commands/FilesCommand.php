@@ -21,8 +21,10 @@ class FilesCommand extends CConsoleCommand
      */
     public function getHelp()
     {
-        $helpText = "checks files url for a specific dataset in the database" . PHP_EOL;
+        $helpText = "Checks files url for a specific dataset in the database" . PHP_EOL;
         $helpText .= "Usage: ./protected/yiic files checkUrls --doi=<DOI>" . PHP_EOL;
+        $helpText .= "Updates md5 checksum attribute value for all files in a given dataset" . PHP_EOL;
+        $helpText .= "Usage: ./protected/yiic files updateAllMD5FileAttributes --doi=<DOI>" . PHP_EOL;
 
         return $helpText;
     }
@@ -32,7 +34,7 @@ class FilesCommand extends CConsoleCommand
      * 
      * @param $doi
      */
-    public function actionUpdateMD5FileAttribute($doi) {
+    public function actionUpdateMD5FileAttributes($doi) {
         echo "Executing FilesCommand::actionUpdateMD5ChecksumFileAttribute with $doi".PHP_EOL;
         Yii::import('application.controllers.*');
         $adminFileController = new AdminFileController('afc');
