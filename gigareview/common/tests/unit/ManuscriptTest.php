@@ -32,19 +32,4 @@ class ManuscriptTest extends \Codeception\Test\Unit
         $manuscript->save();
         $this->assertGreaterThan($manuscript->created_at, $manuscript->updated_at);
     }
-    public function testCanInsertValuesToTable()
-    {
-        $manuscript = new Manuscript();
-        $this->assertNotNull($manuscript);
-        $this->assertNull($manuscript->manuscript_number);
-        $this->assertNull($manuscript->article_title);
-        $this->assertNull($manuscript->revision_number);
-        $manuscript->manuscript_number = "Test-GIGA-D-22-12345";
-        $manuscript->article_title = "Test-title";
-        $manuscript->revision_number = "1";
-        $manuscript->save();
-        $this->assertNotNull($manuscript->manuscript_number);
-        $this->assertNotNull($manuscript->article_title);
-        $this->assertNotNull($manuscript->revision_number);
-    }
 }
