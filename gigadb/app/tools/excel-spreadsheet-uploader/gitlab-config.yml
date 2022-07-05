@@ -1,0 +1,35 @@
+
+XLSUploaderBuildStaging:
+  stage: staging build
+  variables:
+    COMPOSE_FILE: docker-compose.yml
+    REPO_NAME: $CI_PROJECT_NAME
+    TARGET_ENV: staging
+    GROUP_VARIABLES_URL: "https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
+    FORK_VARIABLES_URL: "https://gitlab.com/api/v4/groups/3501869/variables"
+    PROJECT_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
+    MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
+    gigadb_db_port: 5432
+  script:
+    - env | grep -iE "(REVIEW_ENV|REPO_NAME|POSTGRES_MAJOR_VERSION|POSTGRES_DB|POSTGRES_USER|POSTGRES_PASSWORD|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN)"| tee gigareview/.env
+    - cd gigadb/app/tools/excel-spreadsheet-uploader
+    - env | grep -iE "(gigadb_db_host|gigadb_db_database|gigadb_db_port|gigadb_db_user|gigadb_db_password)" > .env
+    - ls -alrt
+    - ./setup.sh
+    - rm uploadDir/100679newversion.xls
+    - docker-compose -f docker-compose.production.build.yml build production_xls_uploader
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com # log in to Gitlab so we can push the container image there
+    - docker tag ${CI_PROJECT_NAME}_uploader:latest registry.gitlab.com/$CI_PROJECT_PATH/production_xls_uploader:$TARGET_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_xls_uploader:$TARGET_ENV
+  dependencies: []
+  environment:
+    name: staging
+  artifacts:
+    paths:
+      - gigadb/app/tools/excel-spreadsheet-uploader/.env
+      - .env
+      - .secrets
+      - .ci_env
+    when: always
+    expire_in: 3 days
+
