@@ -12,9 +12,9 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $doi
  * @property string|null $manuscript_number
  * @property string|null $article_title
- * @property int|null $publication_date
+ * @property string|null $publication_date
  * @property string|null $editorial_status
- * @property int|null $editorial_status_date
+ * @property string|null $editorial_status_date
  * @property int|null $created_at
  * @property int|null $updated_at
  */
@@ -44,8 +44,9 @@ class Manuscript extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['doi', 'publication_date', 'editorial_status_date', 'created_at', 'updated_at'], 'default', 'value' => null],
-            [['doi', 'publication_date', 'editorial_status_date', 'created_at', 'updated_at'], 'integer'],
+            [['doi', 'created_at', 'updated_at'], 'default', 'value' => null],
+            [['doi', 'created_at', 'updated_at'], 'integer'],
+            [['publication_date', 'editorial_status_date'], 'safe'],
             [['manuscript_number', 'article_title', 'editorial_status'], 'string', 'max' => 255],
         ];
     }
