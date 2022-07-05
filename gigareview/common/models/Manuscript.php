@@ -9,9 +9,12 @@ use yii\behaviors\TimestampBehavior;
  * This is the model class for table "manuscript".
  *
  * @property int $id
+ * @property int|null $doi
  * @property string|null $manuscript_number
  * @property string|null $article_title
- * @property int|null $revision_number
+ * @property int|null $publication_date
+ * @property string|null $editorial_status
+ * @property int|null $editorial_status_date
  * @property int|null $created_at
  * @property int|null $updated_at
  */
@@ -41,9 +44,9 @@ class Manuscript extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['revision_number', 'created_at', 'updated_at'], 'default', 'value' => null],
-            [['revision_number', 'created_at', 'updated_at'], 'integer'],
-            [['manuscript_number', 'article_title'], 'string', 'max' => 255],
+            [['doi', 'publication_date', 'editorial_status_date', 'created_at', 'updated_at'], 'default', 'value' => null],
+            [['doi', 'publication_date', 'editorial_status_date', 'created_at', 'updated_at'], 'integer'],
+            [['manuscript_number', 'article_title', 'editorial_status'], 'string', 'max' => 255],
         ];
     }
 
@@ -54,9 +57,12 @@ class Manuscript extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'doi' => 'Doi',
             'manuscript_number' => 'Manuscript Number',
             'article_title' => 'Article Title',
-            'revision_number' => 'Revision Number',
+            'publication_date' => 'Publication Date',
+            'editorial_status' => 'Editorial Status',
+            'editorial_status_date' => 'Editorial Status Date',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
