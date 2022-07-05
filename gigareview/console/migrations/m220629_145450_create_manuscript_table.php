@@ -14,11 +14,14 @@ class m220629_145450_create_manuscript_table extends Migration
     {
         $this->createTable('{{%manuscript}}', [
             'id' => $this->primaryKey(),
+            'doi' => $this->integer(),
             'manuscript_number' => $this->string(),
             'article_title' => $this->string(),
-            'revision_number' => $this->smallinteger(),
-            'created_at' => $this->bigInteger(),
-            'updated_at' => $this->bigInteger(),
+            'publication_date' => $this->biginteger(),
+            'editorial_status' => $this->string(),
+            'editorial_status_date' => $this->biginteger(),
+            'created_at' => $this->biginteger(),
+            'updated_at' => $this->biginteger(),
         ]);
     }
 
