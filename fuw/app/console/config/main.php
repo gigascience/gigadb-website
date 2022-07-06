@@ -16,7 +16,8 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
         '@gigadb-data' => '/var',
         '@uploads' => 'repo',
-        '@publicftp'   => 'ftp/public',        
+        '@publicftp'   => 'ftp/public',
+        '@zhuravljov' => '@vendor/zhuravljov'
     ],
     'controllerMap' => [
         'fixture' => [
