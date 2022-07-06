@@ -40,6 +40,7 @@ XLSUploaderDeployStaging:
     TARGET_ENV: staging
   script:
     # Deployment to bastion server
+    - mkdir -pv ~/.docker
     - bash -c "echo '$docker_bastion_tlsauth_ca' >  ~/.docker/ca.pem"
     - bash -c "echo '$docker_bastion_tlsauth_cert' > ~/.docker/cert.pem"
     - bash -c "echo '$docker_bastion_tlsauth_key' > ~/.docker/key.pem"
