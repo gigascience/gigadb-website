@@ -93,7 +93,8 @@ class AdminDatasetMoveFilesActionTest extends FunctionalTesting
             "Admin");
         
         $this->session->visit($endpointUrl);
-        $this->assertTrue($this->session->getPage()->hasContent("2 files are being moved to public ftp. It may take a moment"));
+//        $this->assertTrue($this->session->getPage()->hasContent("2 files are being moved to public ftp. It may take a moment"));
+        $this->assertContains("2 files are being moved to public ftp. It may take a moment", $this->session->getPage()->getContent() );
 	}
 
     public function testMoveFilesWhenNoActiveFiles()
