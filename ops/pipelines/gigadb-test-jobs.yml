@@ -58,7 +58,10 @@ legacy_tests:
     - env
     - ./up.sh
     - cd $APPLICATION
-    - ./tests/all_and_coverage
+    - docker-compose exec -T console /app/yii
+    - docker-compose exec -T console cat /app/console/config/main.php
+    - docker-compose exec -T console cat /app/console/config/main-local.php
+#    - ./tests/all_and_coverage
   environment:
     name: dev
   tags:
