@@ -61,6 +61,7 @@ legacy_tests:
     - docker-compose exec -T console /app/yii
     - docker-compose exec -T console cat /app/console/config/main.php
     - docker-compose exec -T console cat /app/console/config/main-local.php
+    - docker-compose exec -T console /app/yii migrate/new --migrationPath=@vendor/zhuravljov
 #    - ./tests/all_and_coverage
   environment:
     name: dev
