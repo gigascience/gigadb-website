@@ -55,7 +55,7 @@
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
     body_format: json
     body:
-      key: "docker_tlsauth_ca"
+      key: "docker{{ target_host }}_tlsauth_ca"
       value: "{{ ca_pem['content'] | b64decode }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
@@ -65,7 +65,7 @@
 
 - name: Copy the CA pem to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/docker_tlsauth_ca?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables/docker{{ target_host }}_tlsauth_ca?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -76,7 +76,7 @@
   register: ca_put_outcome
   when: ca_post_outcome.status == 400
 
-- name: Copy the cert pem to GITLAB CI environment variable
+- name: Copy the cert pem to GITLAB CI environment variable (first time)
   uri:
     url: "{{ gitlab_url }}/variables"
     method: POST
@@ -85,7 +85,7 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "docker_tlsauth_cert"
+      key: "docker{{ target_host }}_tlsauth_cert"
       value: "{{ cert_pem['content'] | b64decode }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
@@ -95,7 +95,7 @@
 
 - name: Copy the cert pem to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/docker_tlsauth_cert?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables/docker{{ target_host }}_tlsauth_cert?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -115,7 +115,7 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "docker_tlsauth_key"
+      key: "docker{{ target_host }}_tlsauth_key"
       value: "{{ key_pem['content'] | b64decode }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
@@ -125,7 +125,7 @@
 
 - name: Copy the key pem to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/docker_tlsauth_key?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables/docker{{ target_host }}_tlsauth_key?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -145,8 +145,8 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "remote_private_ip"
-      value: "{{ ec2_private_ip }}"
+      key: "remote{{ target_host }}_private_ip"
+      value: "{{ (target_host == '_bastion') | ternary(ec2_bastion_private_ip,ec2_private_ip) }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
@@ -155,13 +155,13 @@
 
 - name: copy the private ip address to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/remote_private_ip?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables/remote{{ target_host }}_private_ip?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
     body_format: json
     body:
-      value: "{{ ec2_private_ip }}"
+      value: "{{ (target_host == '_bastion') | ternary(ec2_bastion_private_ip,ec2_private_ip) }}"
     status_code: 200
   register: private_ip_put_outcome
   when: private_ip_post_outcome.status == 400
@@ -175,8 +175,8 @@
       # Content-Type: application/x-www-form-urlencoded
     body_format: json
     body:
-      key: "remote_public_ip"
-      value: "{{ ec2_public_ip }}"
+      key: "remote{{ target_host }}_public_ip"
+      value: "{{ (target_host == '_bastion') | ternary(ec2_bastion_public_ip,ec2_public_ip) }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
@@ -185,13 +185,13 @@
 
 - name: copy the public ip address to GITLAB CI environment variable (subsequently)
   uri:
-    url: "{{ gitlab_url }}/variables/remote_public_ip?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables/remote{{ target_host }}_public_ip?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     method: PUT
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
     body_format: json
     body:
-      value: "{{ ec2_public_ip }}"
+      value: "{{ (target_host == '_bastion') | ternary(ec2_bastion_public_ip,ec2_public_ip) }}"
     status_code: 200
   register: public_ip_put_outcome
   when: public_ip_post_outcome.status == 400

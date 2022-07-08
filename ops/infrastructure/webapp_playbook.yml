@@ -19,6 +19,8 @@
 
 - name: Setup Docker CE
   hosts: name_gigadb_server_staging*:name_gigadb_server_live*
+  vars:
+    target_host: ""
 
 
   roles:

@@ -671,7 +671,7 @@ The script ``ops/configuration/nginx-conf/enable_sites`` will enable the sites w
 
 Example from ``ops/pipelines/gigadb-deploy-jobs.yml``
 ```
-- docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T web /usr/local/bin/enable_sites gigadb.$GIGADB_ENV.https
+- docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml exec -T web /usr/local/bin/enable_sites gigadb.$GIGADB_ENV.https
 ```
 
 When the container service ``web`` is started, it will also execute that ascript to enable the default http configuration for Gigadb.org,

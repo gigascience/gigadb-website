@@ -10,7 +10,7 @@ source "./.secrets"
 
 # docker-compose executable
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
-	DOCKER_COMPOSE="docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml"
+	DOCKER_COMPOSE="docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml"
 else
 	DOCKER_COMPOSE="docker-compose"
 fi

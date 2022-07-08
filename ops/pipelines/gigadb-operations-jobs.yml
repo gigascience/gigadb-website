@@ -4,7 +4,7 @@
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
+    REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: operations
   script: &configure-docker-compose
@@ -25,7 +25,7 @@ sd_top:
   stage: staging deploy
   script:
     - *configure-docker-compose
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml top
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml top
   environment:
     name: staging
     action: prepare
@@ -38,7 +38,7 @@ ld_top:
   stage: live deploy
   script:
     - *configure-docker-compose
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml top
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml top
   environment:
     name: live
     action: prepare
@@ -51,7 +51,7 @@ sd_reset_migration:
   stage: staging deploy
   script:
     - *configure-docker-compose
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
   environment:
     name: staging
     action: prepare
@@ -64,7 +64,7 @@ ld_reset_migration:
   stage: live deploy
   script:
     - *configure-docker-compose
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate mark 000000_000000 --interactive=0
   environment:
     name: live
     action: prepare
@@ -76,7 +76,7 @@ ld_reset_migration:
   stage: operations
   script:
     - *configure-docker-compose
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml down -v
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml down -v
   when: manual
   artifacts:
     untracked: true
@@ -88,7 +88,7 @@ ld_reset_migration:
   stage: operations
   script:
     - *configure-docker-compose
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml stop application
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml stop application
   when: manual
   artifacts:
     untracked: true
@@ -100,7 +100,7 @@ ld_reset_migration:
   stage: operations
   script:
     - *configure-docker-compose
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml start application
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml start application
   when: manual
   artifacts:
     untracked: true
@@ -112,7 +112,7 @@ ld_reset_migration:
   stage: operations
   script:
     - *configure-docker-compose
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations refreshmaterializedviews
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations refreshmaterializedviews
   when: manual
   artifacts:
     untracked: true
@@ -189,7 +189,7 @@ ld_teardown:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
+    REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: operations
   script:
@@ -203,8 +203,8 @@ ld_teardown:
     - bash -c "echo '$docker_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
     # start the port 2375 for docker after ensured it's stopped (SIGKILL (137)) and removed
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST rm -f socat || true
-    - docker --tlsverify -H=$REMOTE_DOCKER_HOST run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p $remote_private_ip:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
+    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER rm -f socat || true
+    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER run --name socat -d -v /var/run/docker.sock:/var/run/docker.sock -p $remote_private_ip:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
@@ -214,7 +214,7 @@ ld_teardown:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
+    REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: operations
   script:
@@ -228,15 +228,15 @@ ld_teardown:
     - bash -c "echo '$docker_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
     # FUW smoke tests
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T console ./yii smoke-test/check-docker-php
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T console ./yii smoke-test/check-tusd-endpoint
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml exec -T console ./yii smoke-test/check-docker-php
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml exec -T console ./yii smoke-test/check-tusd-endpoint
   when: manual
 
 .check_assets:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
-    REMOTE_DOCKER_HOST: "$remote_public_ip:2376"
+    REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
   stage: operations
   script:
@@ -250,8 +250,8 @@ ld_teardown:
     - bash -c "echo '$docker_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
     # list content of assets directory
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T web ls -alrt /var/www/assets
-    - docker-compose --tlsverify -H=$REMOTE_DOCKER_HOST -f ops/deployment/docker-compose.production-envs.yml exec -T application ls -alrt /var/www/assets
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml exec -T web ls -alrt /var/www/assets
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml exec -T application ls -alrt /var/www/assets
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
