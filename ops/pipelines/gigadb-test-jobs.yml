@@ -63,7 +63,7 @@ legacy_tests:
     - docker-compose exec -T console cat /app/console/config/main-local.php
     - docker-compose exec -T console /app/yii migrate/new --migrationPath=@vendor/zhuravljov
     - docker-compose exec -T fuw-admin composer install
-    - ls -alrt vendor
+    - ls -alrt fuw/app/vendor
 #    - ./tests/all_and_coverage
   environment:
     name: dev
