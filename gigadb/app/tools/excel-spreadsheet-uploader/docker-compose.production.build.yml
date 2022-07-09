@@ -4,8 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-Production
-    volumes:
-      - .:/tool
 
   pg_client:
     environment:
