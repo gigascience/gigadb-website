@@ -280,13 +280,6 @@
       args:
         chdir: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader
 
-    - name: Create setting.xml for database configuration (for java tool)
-      ansible.builtin.template:
-        src: ../../../../gigadb/app/tools/excel-spreadsheet-uploader/configuration_setting_xml.j2
-        dest: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader/configuration/setting.xml
-        owner: centos
-        group: centos
-        mode: 0644
 
 - name: Load latest DB backup
   hosts: name_bastion_server_staging*:name_bastion_server_live*

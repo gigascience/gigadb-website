@@ -3,7 +3,7 @@
     <schemaFile>configuration/gigascience.sql</schemaFile>
     <excelDir>dataDir</excelDir>
     <uploadDir>uploadDir</uploadDir>
-    <databaseUrl>jdbc:postgresql://{{ pg_host }}:{{ pg_port }}/{{ pg_database }}</databaseUrl>
-    <databaseUserName>{{ pg_user }}</databaseUserName>
-    <databasePassword>{{ pg_password }}</databasePassword>
+    <databaseUrl>jdbc:postgresql://{{ gigadb_db_host }}:{{ gigadb_db_port }}/{{ gigadb_db_database }}</databaseUrl>
+    <databaseUserName>{{ gigadb_db_user }}</databaseUserName>
+    <databasePassword>{{ gigadb_db_password }}</databasePassword>
 </setting>
