@@ -49,3 +49,12 @@ Feature: A curator can manage file attributes in admin file update page
     Then I should not see "last_modified"
     And I should not see "2013-7-15"
     And I should not see delete file attribute link button
+
+  @ok @javascript @published
+  Scenario: File Attribute value is empty after deleting an attribute and saving
+    Given I have signed in as admin
+    And I am on "/adminFile/update/id/13973"
+    When I press the button "Delete"
+    And I press the button "Save"
+    Then I am on "/adminFile/view/id/13973"
+    And I should not see "File Attribute"
