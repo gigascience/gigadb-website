@@ -28,28 +28,21 @@ class CuratorSteps extends \Codeception\Actor
     /**
      * @Then I should see a file attribute table
      */
-    public function iShouldSeeAFileAttributeTable(TableNode $fileAttributes)
+    public function iShouldSeeAFileAttributeTable(\Behat\Gherkin\Node\TableNode $fileAttributes)
     {
         foreach ($fileAttributes->getRows() as $index => $row) {
             if ($index === 0) { // first row to define fields
                 $keys = $row;
-                codecept_debug($keys);
+                $this->I->assertEquals($keys, ["Attribute Name", "Value", "Unit"], "File attributes table contain unexpected column names");
                 continue;
             }
-//            $this->I->seeLink($row[0],$row[1]);
+            // Check Attribute Name table data cell
+            $this->I->see($row[0], 'td');
+            // Check Value table cell data cell
+            $this->I->see($row[1], 'td');
+            // Check unit table cell data cell
+            $this->I->see($row[2], 'td');
         }
-        
-//        foreach ($table as $row) {
-//            PHPUnit_Framework_Assert::assertTrue(
-//                $this->minkContext->getSession()->getPage()->hasContent($row['Attribute Name'])
-//            );
-//            PHPUnit_Framework_Assert::assertTrue(
-//                $this->minkContext->getSession()->getPage()->hasContent($row['Value'])
-//            );
-//            PHPUnit_Framework_Assert::assertTrue(
-//                $this->minkContext->getSession()->getPage()->hasContent($row['Unit'])
-//            );
-//        }
     }
 
     /**
