@@ -234,26 +234,26 @@ b_gigadb:
     when: on_failure
     expire_in: 1 week
 
-build_staging:
-  variables:
-    GIGADB_ENV: "staging"
-    YII_DEBUG: "true"
-  extends: .pb_gigadb
-  stage: staging build
-  tags:
-    - $GITLAB_USER_LOGIN
-  environment:
-    name: "staging"
-    url: $REMOTE_HOME_URL
-
-build_live:
-  variables:
-    GIGADB_ENV: "live"
-  extends: .pb_gigadb
-  stage: live build
-  tags:
-    - $GITLAB_USER_LOGIN
-  environment:
-    name: "live"
-    deployment_tier: production
-    url: $REMOTE_HOME_URL
+#build_staging:
+#  variables:
+#    GIGADB_ENV: "staging"
+#    YII_DEBUG: "true"
+#  extends: .pb_gigadb
+#  stage: staging build
+#  tags:
+#    - $GITLAB_USER_LOGIN
+#  environment:
+#    name: "staging"
+#    url: $REMOTE_HOME_URL
+#
+#build_live:
+#  variables:
+#    GIGADB_ENV: "live"
+#  extends: .pb_gigadb
+#  stage: live build
+#  tags:
+#    - $GITLAB_USER_LOGIN
+#  environment:
+#    name: "live"
+#    deployment_tier: production
+#    url: $REMOTE_HOME_URL
