@@ -14,9 +14,9 @@ XLSUploaderBuildStaging:
     - env | grep -iE "(REVIEW_ENV|REPO_NAME|POSTGRES_MAJOR_VERSION|POSTGRES_DB|POSTGRES_USER|POSTGRES_PASSWORD|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN)"| tee gigareview/.env
     - cd gigadb/app/tools/excel-spreadsheet-uploader
     - env | grep -iE "(gigadb_db_host|gigadb_db_database|gigadb_db_port|gigadb_db_user|gigadb_db_password)" > .env
+    - ./setup.sh
     - pip install jinja-cli
     - jinja -E gigadb_db_host -E gigadb_db_port -E gigadb_db_database -E gigadb_db_user -E gigadb_db_password configuration_setting_xml.j2 > configuration/setting.xml
-    - ./setup.sh
     - rm uploadDir/100679newversion.xls
     - docker-compose -f docker-compose.production.build.yml build production_xls_uploader
     - docker images
