@@ -53,8 +53,19 @@ class CuratorSteps extends \Codeception\Actor
     }
 
     /**
-     * @Then I should see the files:
+     * @Then I should see create new file attribute button
      *
+     * Used to check button in /adminFile/update/id/$doi pages
+     */
+    public function iShouldSeeCreateNewFileAttributeButton()
+    {
+        $actualButton = $this->I->grabTextFrom("//a[contains(@class, 'btn btn-attr')]");
+        $this->I->assertEquals($actualButton, "New Attribute");
+    }
+
+    /**
+     * @Then I should see the files:
+     *4
      */
     public function iShouldSeeTheFiles(\Behat\Gherkin\Node\TableNode $files)
     {

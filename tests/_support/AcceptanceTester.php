@@ -31,14 +31,6 @@ class AcceptanceTester extends \Codeception\Actor
     */
 
     /**
-     * @Then I should see a button :arg1
-     */
-    public function iShouldSeeAButtonWithLink($arg1)
-    {
-        PHPUnit_Framework_Assert::assertTrue( $this->minkContext->getSession()->getPage()->hasLink($arg1) );
-    }
-
-    /**
      * @Given I am on :page
      */
     public function iAmOn($page)

@@ -26,7 +26,7 @@ Feature: A curator can manage file attributes in admin file update page
   Scenario: See Attribute, Edit, Delete, and Save buttons on admin file update page
     Given I have signed in as admin
     When I am on "/adminFile/update/id/13973"
-    Then I should see a button "New Attribute"
+    Then I should see create new file attribute button
 #    And I should see a file attribute table
 #      | Attribute Name | Value     | Unit |
 #      | last_modified  | 2013-7-15 |      |
