@@ -17,7 +17,7 @@ XLSUploaderBuildStaging:
     - ./setup.sh
     - pip install jinja-cli
     - jinja -E gigadb_db_host -E gigadb_db_port -E gigadb_db_database -E gigadb_db_user -E gigadb_db_password configuration_setting_xml.j2 > configuration/setting.xml
-    - rm uploadDir/100679newversion.xls
+    - rm -rf uploadDir
     - docker-compose -f docker-compose.production.build.yml build production_xls_uploader
     - docker images
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com # log in to Gitlab so we can push the container image there
