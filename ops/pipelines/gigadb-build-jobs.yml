@@ -37,7 +37,7 @@ base_images:
       - ops/scripts/node_modules
       - gigadb/app/client/web/node_modules
 
-b_gigadb:
+.b_gigadb:
   variables:
     PORTAINER_BCRYPT: ""
     REMOTE_DOCKER_HOSTNAME: ""
