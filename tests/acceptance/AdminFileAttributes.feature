@@ -30,6 +30,6 @@ Feature: A curator can manage file attributes in admin file update page
     And I should see a file attribute table
       | Attribute Name | Value     | Unit |
       | last_modified  | 2013-7-15 |      |
-#    And I should see a button input "Edit"
-#    And I should see a button input "Delete"
+    And I should see edit file attribute button
+    And I should see delete file attribute button
 #    And I should see a button input "Save"

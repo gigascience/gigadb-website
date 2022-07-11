@@ -10,6 +10,7 @@
 class CuratorSteps extends \Codeception\Actor
 {
     protected $I;
+    protected $module;
 
 
     public function __construct(AcceptanceTester $I)
@@ -43,6 +44,28 @@ class CuratorSteps extends \Codeception\Actor
             // Check unit table cell data cell
             $this->I->see($row[2], 'td');
         }
+    }
+
+    /**
+     * @Then I should see delete file attribute button
+     *
+     * Used to check button in /adminFile/update/id/$doi pages
+     */
+    public function iShouldSeeDeleteFileAttributeButton()
+    {
+        $actualButton = $this->I->grabTextFrom("//a[contains(@class, 'btn js-delete')]");
+        $this->I->assertEquals($actualButton, "Delete");
+    }
+
+    /**
+     * @Then I should see edit file attribute button
+     *
+     * Used to check button in /adminFile/update/id/$doi pages
+     */
+    public function iShouldSeeEditFileAttributeButton()
+    {
+        $actualButton = $this->I->grabTextFrom("//a[contains(@class, 'btn btn-edit js-edit')]");
+        $this->I->assertEquals($actualButton, "Edit");
     }
 
     /**
