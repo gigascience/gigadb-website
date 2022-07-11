@@ -70,6 +70,16 @@ class CuratorSteps extends \Codeception\Actor
     }
 
     /**
+     * @Then I should not see delete file attribute link button
+     *
+     * Used to check button in /adminFile/update/id/$doi pages
+     */
+    public function iShouldNotSeeDeleteFileAttributeLinkButton()
+    {
+        $this->I->dontSeeLink('Delete');
+    }
+
+    /**
      * @Then I should see edit file attribute link button
      *
      * Used to check button in /adminFile/update/id/$doi pages

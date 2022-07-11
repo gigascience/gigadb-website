@@ -40,3 +40,12 @@ Feature: A curator can manage file attributes in admin file update page
     When I am on "/adminFile/view/id/13973"
     Then I should see a view file table
       | File Attribute | 2013-7-15 |
+
+  @ok @javascript @published
+  Scenario: Delete a last modified attribute on admin file update page
+    Given I have signed in as admin
+    And I am on "/adminFile/update/id/13973"
+    When I press the button "Delete"
+    Then I should not see "last_modified"
+    And I should not see "2013-7-15"
+    And I should not see delete file attribute link button
