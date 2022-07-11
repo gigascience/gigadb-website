@@ -27,6 +27,18 @@ class CuratorSteps extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see a view file table
+     */
+    public function iShouldSeeAViewFileTable(\Behat\Gherkin\Node\TableNode $viewFileTable)
+    {
+        foreach ($viewFileTable->getRows() as $index => $row) {
+            // Check page contains expected View File table values
+            $this->I->see($row[0], 'th');
+            $this->I->see($row[1], 'td');
+        }
+    }
+
+    /**
      * @Then I should see a file attribute table
      */
     public function iShouldSeeAFileAttributeTable(\Behat\Gherkin\Node\TableNode $fileAttributes)

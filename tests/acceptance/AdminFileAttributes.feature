@@ -33,3 +33,10 @@ Feature: A curator can manage file attributes in admin file update page
     And I should see edit file attribute link button
     And I should see delete file attribute link button
     And I should see a submit button "Save"
+
+  @ok @javascript @published
+  Scenario:  See the File Attribute value of the last modified attribute on admin file view page
+    Given I have signed in as admin
+    When I am on "/adminFile/view/id/13973"
+    Then I should see a view file table
+      | File Attribute | 2013-7-15 |
