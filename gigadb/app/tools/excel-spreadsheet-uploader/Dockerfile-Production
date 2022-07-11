@@ -7,4 +7,4 @@ COPY . /tool
 
 VOLUME ["/tool"]
 WORKDIR /tool
-USER centos
+USER 1000
