@@ -18,7 +18,8 @@
         "league/flysystem": "~2.4.5",
         "league/flysystem-sftp": "~3.0.19",
         "yiisoft/yii2-queue": "~2.3.4",
-        "pda/pheanstalk":"~3.2.0"
+        "pda/pheanstalk":"~3.2.0",
+        "phpoffice/phpspreadsheet": "1.24.*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

@@ -3,7 +3,7 @@ FROM php:8.0-cli-bullseye
 # Installing composer
 RUN apt-get update -yq \
     && apt-get install -y apt-utils \
-    && apt-get install -y libzip-dev unzip wget \
+    && apt-get install -y libzip-dev unzip wget libjpeg-dev libpng-dev libfreetype6-dev \
     && apt-get clean \
     && docker-php-ext-install zip \
     && EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" \
@@ -13,6 +13,13 @@ RUN apt-get update -yq \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer --quiet \
     && rm composer-setup.php \
     && composer config --global repo.packagist composer https://packagist.org
+
+# Install the PHP gd library
+RUN docker-php-ext-install gd && \
+  docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg && \
+    docker-php-ext-install gd
 
 # Install extensions for the postgresql and PHP integration
 # Install Postgre PDO
@@ -30,6 +37,5 @@ RUN apt-get update -yq \
 RUN apt-get update -yq \
     && apt-get install -y beanstalkd \
     && apt-get clean
-
 
 WORKDIR /app
