@@ -82,7 +82,7 @@
         </div>
         <?php if(!$model->isNewRecord) { ?>
         <div class="control-group">
-            <a href="#" role="button" class="btn btn-attr">New Attribute </a>
+            <a href="#" role="button" class="btn btn-attr">New Attribute</a>
             <br/>
             <div class="js-new-attr" style="display:none;margin-top: 10px">
                 <?php echo CHtml::activeDropDownList($attribute, 'attribute_id',CHtml::listData(Attribute::model()->findAll(),'id','attribute_name'), array('class'=>'attr-form', 'empty'=>'Select name')); ?>
