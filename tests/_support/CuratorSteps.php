@@ -18,6 +18,56 @@ class CuratorSteps extends \Codeception\Actor
     }
 
     /**
+     * @Given I have not signed in
+     */
+    public function iHaveNotSignedIn()
+    {
+        $this->I->amOnPage('site/logout');
+    }
+
+    /**
+     * @Then I should see a file attribute table
+     */
+    public function iShouldSeeAFileAttributeTable(TableNode $fileAttributes)
+    {
+        foreach ($fileAttributes->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                codecept_debug($keys);
+                continue;
+            }
+//            $this->I->seeLink($row[0],$row[1]);
+        }
+        
+//        foreach ($table as $row) {
+//            PHPUnit_Framework_Assert::assertTrue(
+//                $this->minkContext->getSession()->getPage()->hasContent($row['Attribute Name'])
+//            );
+//            PHPUnit_Framework_Assert::assertTrue(
+//                $this->minkContext->getSession()->getPage()->hasContent($row['Value'])
+//            );
+//            PHPUnit_Framework_Assert::assertTrue(
+//                $this->minkContext->getSession()->getPage()->hasContent($row['Unit'])
+//            );
+//        }
+    }
+
+    /**
+     * @Then I should see the files:
+     *
+     */
+    public function iShouldSeeTheFiles(\Behat\Gherkin\Node\TableNode $files)
+    {
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            $this->I->seeLink($row[0],$row[1]);
+        }
+    }
+
+    /**
      * @Given there is no user with email :email
      */
     public function thereIsNoUserWithEmail($email)
