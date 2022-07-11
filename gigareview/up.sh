@@ -62,3 +62,5 @@ fi
 # Launching all the remaining services
 docker-compose up -d public api
 
+# Launch workers
+docker-compose up -d manuscripts-worker
