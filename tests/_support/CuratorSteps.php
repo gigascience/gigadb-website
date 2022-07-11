@@ -47,33 +47,33 @@ class CuratorSteps extends \Codeception\Actor
     }
 
     /**
-     * @Then I should see delete file attribute button
+     * @Then I should see delete file attribute link button
      *
      * Used to check button in /adminFile/update/id/$doi pages
      */
-    public function iShouldSeeDeleteFileAttributeButton()
+    public function iShouldSeeDeleteFileAttributeLinkButton()
     {
         $actualButton = $this->I->grabTextFrom("//a[contains(@class, 'btn js-delete')]");
         $this->I->assertEquals($actualButton, "Delete");
     }
 
     /**
-     * @Then I should see edit file attribute button
+     * @Then I should see edit file attribute link button
      *
      * Used to check button in /adminFile/update/id/$doi pages
      */
-    public function iShouldSeeEditFileAttributeButton()
+    public function iShouldSeeEditFileAttributeLinkButton()
     {
         $actualButton = $this->I->grabTextFrom("//a[contains(@class, 'btn btn-edit js-edit')]");
         $this->I->assertEquals($actualButton, "Edit");
     }
 
     /**
-     * @Then I should see create new file attribute button
+     * @Then I should see create new file attribute link button
      *
      * Used to check button in /adminFile/update/id/$doi pages
      */
-    public function iShouldSeeCreateNewFileAttributeButton()
+    public function iShouldSeeCreateNewFileAttributeLinkButton()
     {
         $actualButton = $this->I->grabTextFrom("//a[contains(@class, 'btn btn-attr')]");
         $this->I->assertEquals($actualButton, "New Attribute");

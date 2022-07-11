@@ -22,14 +22,14 @@ Feature: A curator can manage file attributes in admin file update page
     And I should see "File Termitomyces_gene_v1.0.pep.fa updated"
     And I should see "File Termitomyces_gene_v1.0.pep.fa updated"
 
-  @ok @published @wip
+  @ok @published
   Scenario: See Attribute, Edit, Delete, and Save buttons on admin file update page
     Given I have signed in as admin
     When I am on "/adminFile/update/id/13973"
-    Then I should see create new file attribute button
+    Then I should see create new file attribute link button
     And I should see a file attribute table
       | Attribute Name | Value     | Unit |
       | last_modified  | 2013-7-15 |      |
-    And I should see edit file attribute button
-    And I should see delete file attribute button
-#    And I should see a button input "Save"
+    And I should see edit file attribute link button
+    And I should see delete file attribute link button
+    And I should see a submit button "Save"
