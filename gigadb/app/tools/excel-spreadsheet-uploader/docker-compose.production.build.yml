@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile-Production
 
-  pg_client:
+  production_pgclient:
     environment:
       PGDATABASE: ${gigadb_db_database}
       PGHOST: ${gigadb_db_host}
