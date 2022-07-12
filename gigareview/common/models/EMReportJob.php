@@ -28,16 +28,19 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     public function parseManuscriptReport(string $manuscriptPath): array
     {
         $manuscriptData = [];
+        $columnHeader = [
+            'Manuscript Number',
+            'Article Title',
+            'Revision Number',
+        ];
         $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Csv");
         $reader->setDelimiter(",");
         $spreadsheet = $reader->load($manuscriptPath);
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 
         foreach ($sheetData as $row) {
-            $manuscriptData[] = array_push($row);
+            $manuscriptData[] = array_combine($columnHeader, $row);
         }
-
-        print_r($manuscriptData, true);
         return ($manuscriptData);
     }
 
