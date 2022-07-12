@@ -39,7 +39,9 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 
         foreach ($sheetData as $row) {
-            $manuscriptData[] = array_combine($columnHeader, $row);
+            if (!in_array("Manuscript Number", $row)) {
+                $manuscriptData[] = array_combine($columnHeader,$row);
+            }
         }
         return ($manuscriptData);
     }
