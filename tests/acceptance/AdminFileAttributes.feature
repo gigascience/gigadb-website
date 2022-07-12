@@ -58,3 +58,14 @@ Feature: A curator can manage file attributes in admin file update page
     And I press the button "Save"
     Then I am on "/adminFile/view/id/13973"
     And I should not see "File Attribute"
+
+  @ok @javascript @published @wip
+  Scenario: File attribute deletion is recorded in History tab
+    Given I have signed in as admin
+    And I am on "/adminFile/update/id/13973"
+    And I press the button "Delete"
+    And I press the button "Save"
+    And I am on "/dataset/100056"
+    And I should see "Termitomyces sp. J132 fungus genome assembly data."
+    When I follow "History"
+    Then I should see "Termitomyces_assembly_v1.0.fa.gz: file attribute deleted"
