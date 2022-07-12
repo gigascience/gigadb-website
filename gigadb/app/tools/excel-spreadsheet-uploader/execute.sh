@@ -3,12 +3,27 @@
 PATH=/usr/local/bin:$PATH
 export PATH
 
-docker-compose run --rm pg_client -c 'drop trigger if exists file_finder_trigger on file RESTRICT'
-docker-compose run --rm pg_client -c 'drop trigger if exists sample_finder_trigger on sample RESTRICT'
-docker-compose run --rm pg_client -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
+if [[ $(uname -n) =~ compute ]];then
+  docker run --rm  --env-file ./db-env registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_pgclient:staging -c 'drop trigger if exists file_finder_trigger on file RESTRICT'
+  docker run --rm  --env-file ./db-env registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_pgclient:staging -c 'drop trigger if exists sample_finder_trigger on sample RESTRICT'
+  docker run --rm  --env-file ./db-env registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_pgclient:staging -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
 
-docker-compose run --rm uploader ./run.sh
+  docker run --rm -v /home/centos/uploadDir:/tools/uploadDir -v /home/centos/uploadLogs:/tools/logs registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_xls_uploader:staging ./run.sh
 
-docker-compose run --rm pg_client -c 'create trigger file_finder_trigger after insert or update or delete or truncate on file for each statement execute procedure refresh_file_finder()'
-docker-compose run --rm pg_client -c 'create trigger sample_finder_trigger after insert or update or delete or truncate on sample for each statement execute procedure refresh_sample_finder()'
-docker-compose run --rm pg_client -c 'create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()'
+  docker run --rm  --env-file ./db-env registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_pgclient:staging -c 'create trigger file_finder_trigger after insert or update or delete or truncate on file for each statement execute procedure refresh_file_finder()'
+  docker run --rm  --env-file ./db-env registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_pgclient:staging -c 'create trigger sample_finder_trigger after insert or update or delete or truncate on sample for each statement execute procedure refresh_sample_finder()'
+  docker run --rm  --env-file ./db-env registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_pgclient:staging -c 'create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()'
+else
+  mkdir -p logs
+  docker-compose run --rm pg_client -c 'drop trigger if exists file_finder_trigger on file RESTRICT'
+  docker-compose run --rm pg_client -c 'drop trigger if exists sample_finder_trigger on sample RESTRICT'
+  docker-compose run --rm pg_client -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
+
+  docker-compose run --rm uploader ./run.sh
+
+  docker-compose run --rm pg_client -c 'create trigger file_finder_trigger after insert or update or delete or truncate on file for each statement execute procedure refresh_file_finder()'
+  docker-compose run --rm pg_client -c 'create trigger sample_finder_trigger after insert or update or delete or truncate on sample for each statement execute procedure refresh_sample_finder()'
+  docker-compose run --rm pg_client -c 'create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()'
+fi
+
+
