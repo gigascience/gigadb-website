@@ -5,6 +5,8 @@ namespace common\models;
 use \Yii;
 use yii\queue\Queue;
 use \PhpOffice\PhpSpreadsheet\Reader;
+use common\models\Ingest;
+use console\controllers\FetchReportsController;
 
 
 class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterface
@@ -14,11 +16,12 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     public string $effectiveDate ;
     public string $fetchDate ;
     public string $scope;
+    public string $jobId;
 
-    public function execute($queue)
+
+    public function execute($manuscripts_q)
     {
-        // TODO: Implement execute() method.
-        echo "Hello World".PHP_EOL;
+        file_put_contents('fetch-manuscript.txt', print_r($this->content, true));
     }
 
     /**
@@ -31,7 +34,6 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
         $columnHeader = [
             'Manuscript Number' => 'manuscript_number',
             'Article Title' => 'article_title',
-            'Publication Date' => 'publication_date',
             'Editorial Status' => 'editorial_status',
             'Editorial Status Date' => 'editorial_status_date',
         ];
