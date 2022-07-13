@@ -29,9 +29,11 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     {
         $manuscriptData = [];
         $columnHeader = [
-            'Manuscript Number',
-            'Article Title',
-            'Revision Number',
+            'Manuscript Number' => 'manuscript_number',
+            'Article Title' => 'article_title',
+            'Publication Date' => 'publication_date',
+            'Editorial Status' => 'editorial_status',
+            'Editorial Status Date' => 'editorial_status_date',
         ];
         $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Csv");
         $reader->setDelimiter(",");
