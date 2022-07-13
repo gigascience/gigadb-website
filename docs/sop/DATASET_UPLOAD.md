@@ -1,5 +1,8 @@
 # Upload dataset spreadsheets (DRAFT)
 
+>Note: The examples below are for the **staging** environment. 
+> When running on live environment, replace every occurrences of **staging** with **live** to get the commands to run.
+
 ## Prerequisite
 
 Ensure the target environment is fully provisioned and that a complete pipeline has been run, built and deployed on the target environment.
@@ -36,7 +39,8 @@ Otherwise, check the spreadsheet for error and engage with the curators who sent
 copy the candidate dataset spreadsheets to bastion server using SCP:
 
 ```
-scp -i <path to SSH key> GigaDB_v15_GIGA_D_22_00026_DeePVP_102240_v3.xls centos@13.38.58.174:/home/centos/uploadDir/
+$ cd gigadb/app/tools/excel-spreadsheet-uploader/
+$ scp -i <path to SSH key> uploadDir/GigaDB_v15_GIGA_D_22_00026_DeePVP_102240_v3.xls centos@13.38.58.174:/home/centos/uploadDir/
 ```
 
 >Note: the remote ``/home/centos/uploadDir/`` directory is created during execution of the bastion playbook
@@ -44,28 +48,26 @@ scp -i <path to SSH key> GigaDB_v15_GIGA_D_22_00026_DeePVP_102240_v3.xls centos@
 
 ### 3. Run the spreadsheet uploader on bastion
 
-SSH to the bastion server
+On your local environment:
 
 ```
-$ terraform output
-...
-ec2_bastion_public_ip = "15.236.110.52"
-...
-$ ssh -i <path to SSH key> centos@15.236.110.52 
-``` 
-
-Run the upload process on bastion
-
-```
-$ cd /home/centos
-$ ./datasetUpload.sh
+$ cd ops/infrastructure/envs/staging
+$ ansible -i ../../inventories name_bastion_server_staging_(lowercase IAM role here) -a "./datasetUpload.sh"
 ```
 
+>Note: Alternatively you can ssh the bastion server and run the script directly from there.
 
 ### 4. Audit the upload process
 
 
 Verify that the ``/home/centos/uploadDir`` is empty and that ``/home/centos/uploadLogs/java.log`` and ``/home/centos/uploadLogs/javac.log`` have no errors.
+
+```
+$ cd ops/infrastructure/envs/staging
+$ ansible -i ../../inventories name_bastion_server_staging_(lowercase IAM role here) -a "ls -al uploadDir"
+$ ansible -i ../../inventories name_bastion_server_staging_(lowercase IAM role here) -a "cat uploadLogs/java.log"
+$ ansible -i ../../inventories name_bastion_server_staging_(lowercase IAM role here) -a "cat uploadLogs/javac.log"
+```
 
 > Note: the uploader logs directory is located in ``/home/centos/uploadLogs``. That directory is created during execution of the bastion playbook
 
@@ -87,11 +89,12 @@ Use it to sanity check related information like authors, samples, files, links, 
 
 
 ```
-$ docker run -e YII_PATH=/var/www/vendor/yiisoft/yii -it registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_app:staging ./protected/yiic files checkUrls --doi=(insert doi here)
-$ echo $?
+$ cd ops/infrastructure/envs/staging
+$ ansible -i ../../inventories name_bastion_server_staging_rija -a "docker run -e YII_PATH=/var/www/vendor/yiisoft/yii -it registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_ap:staging ./protected/yiic files checkUrls --doi=(insert DOI here)"
+
 ```
 
-If the script has any output, and the command's response status is 0, then there's no known type of file urls problems.
+If the script has any output, and the command's response code is 0 (``rc=0``), then there's no known problems.
 
 ### 6. Generate MD5 checksums
 
