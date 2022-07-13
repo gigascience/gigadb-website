@@ -21,7 +21,7 @@ class EMReportJobTest extends \Codeception\Test\Unit
     // tests
     public function testCanParseManuscriptReport()
     {
-        $manuscriptPath = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
+        $manuscriptPath = "console/tests/_data/test-manuscript-report.csv";
         $manuscript = new EMReportJob();
 
         file_put_contents('test_report.txt', print_r($manuscript->parseManuscriptReport($manuscriptPath),true));
