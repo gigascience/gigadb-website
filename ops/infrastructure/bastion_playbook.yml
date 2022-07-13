@@ -278,6 +278,12 @@
         - "/home/centos/uploadLogs"
         - "/home/centos/uploadDir"
 
+    - name: Ensure centos user has GIGADB_ENV set
+      ansible.builtin.lineinfile:
+        path: /home/centos/.bash_profile
+        insertafter: '# User specific environment and startup programs\n'
+        line: "GIGADB_ENV={{ gigadb_environment }}"
+
 - name: Load latest DB backup
   hosts: name_bastion_server_staging*:name_bastion_server_live*
 
