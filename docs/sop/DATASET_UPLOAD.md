@@ -55,7 +55,13 @@ $ cd ops/infrastructure/envs/staging
 $ ansible -i ../../inventories name_bastion_server_staging_(lowercase IAM role here) -a "./datasetUpload.sh"
 ```
 
->Note: Alternatively you can ssh the bastion server and run the script directly from there.
+>Note 1: Alternatively you can ssh the bastion server and run the script directly from there.
+
+>Note 2: the exact host name to use will be listed in the output of the command:
+> ```
+> $ cd ops/infrastructure/envs/staging
+> $ ../../inventories/terraform-inventory.sh --list | jq
+```
 
 ### 4. Audit the upload process
 
@@ -90,7 +96,7 @@ Use it to sanity check related information like authors, samples, files, links, 
 
 ```
 $ cd ops/infrastructure/envs/staging
-$ ansible -i ../../inventories name_bastion_server_staging_rija -a "docker run -e YII_PATH=/var/www/vendor/yiisoft/yii -it registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_ap:staging ./protected/yiic files checkUrls --doi=(insert DOI here)"
+$ ansible -i ../../inventories name_bastion_server_staging_(lowercase IAM role here) -a "docker run -e YII_PATH=/var/www/vendor/yiisoft/yii -it registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_ap:staging ./protected/yiic files checkUrls --doi=(insert DOI here)"
 
 ```
 
