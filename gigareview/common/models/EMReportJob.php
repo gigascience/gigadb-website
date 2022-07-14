@@ -6,6 +6,7 @@ use \Yii;
 use yii\queue\Queue;
 use \PhpOffice\PhpSpreadsheet\Reader;
 use common\models\Ingest;
+use common\models\Manuscript;
 use console\controllers\FetchReportsController;
 
 
@@ -16,12 +17,24 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     public string $effectiveDate ;
     public string $fetchDate ;
     public string $scope;
-    public string $jobId;
 
 
-    public function execute($manuscripts_q)
+    public function execute($queue)
     {
-        file_put_contents('fetch-manuscript.txt', print_r($this->content, true));
+        if ($this->scope === "manuscripts") {
+            $manuscriptReport = "fetch-manuscript-content-3.csv";
+            echo "Get manuscript q job....".PHP_EOL;
+            file_put_contents($manuscriptReport, $this->content);
+            file_put_contents("test-parse-manuscript.txt", print_r($this->parseManuscriptReport($manuscriptReport),true));
+            unlink($manuscriptReport);
+        }
+
+//        file_put_contents('fetch-manuscript.txt', print_r($this->content, true));
+//        echo "Try to parse manuscript with worker id".$manuscripts_q->workerPid.PHP_EOL;
+//        echo "Get content type".getType($this->content);
+//        $testParseResult = $this->parseManuscriptReport($this->content);
+//        file_put_contents('testParseResult.txt', print_r($testParseResult, true));
+
     }
 
     /**
