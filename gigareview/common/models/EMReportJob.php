@@ -22,17 +22,12 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     public function execute($queue)
     {
         if ($this->scope === "manuscripts") {
-            $manuscriptReport = "fetch-manuscript.csv";
-            echo "Get manuscript q job....".PHP_EOL;
-            file_put_contents($manuscriptReport, $this->content);
+            $manuscriptReport = "Report-GIGA-em-manuscripts-latest-214-20220713004136.csv";
+//            echo "Get manuscript q job....".PHP_EOL;
+//            file_put_contents($manuscriptReport, $this->content);
             $this->saveManuscripts($this->parseManuscriptReport($manuscriptReport));
 //            unlink($manuscriptReport);
         }
-
-
-//        echo "Try to parse manuscript with worker id".$queue->workerPid.PHP_EOL;
-//        echo "Get content type".$this->content.PHP_EOL;
-
     }
 
     /**
