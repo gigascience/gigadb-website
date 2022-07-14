@@ -22,18 +22,16 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     public function execute($queue)
     {
         if ($this->scope === "manuscripts") {
-            $manuscriptReport = "fetch-manuscript-content-3.csv";
+            $manuscriptReport = "fetch-manuscript.csv";
             echo "Get manuscript q job....".PHP_EOL;
             file_put_contents($manuscriptReport, $this->content);
-            file_put_contents("test-parse-manuscript.txt", print_r($this->parseManuscriptReport($manuscriptReport),true));
-            unlink($manuscriptReport);
+            $this->saveManuscripts($this->parseManuscriptReport($manuscriptReport));
+//            unlink($manuscriptReport);
         }
 
-//        file_put_contents('fetch-manuscript.txt', print_r($this->content, true));
-//        echo "Try to parse manuscript with worker id".$manuscripts_q->workerPid.PHP_EOL;
-//        echo "Get content type".getType($this->content);
-//        $testParseResult = $this->parseManuscriptReport($this->content);
-//        file_put_contents('testParseResult.txt', print_r($testParseResult, true));
+
+//        echo "Try to parse manuscript with worker id".$queue->workerPid.PHP_EOL;
+//        echo "Get content type".$this->content.PHP_EOL;
 
     }
 
@@ -47,8 +45,8 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
         $columnHeader = [
             'Manuscript Number' => 'manuscript_number',
             'Article Title' => 'article_title',
-            'Editorial Status' => 'editorial_status',
             'Editorial Status Date' => 'editorial_status_date',
+            'Editorial Status' => 'editorial_status',
         ];
         $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Csv");
         $reader->setDelimiter(",");
@@ -61,6 +59,16 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             }
         }
         return ($manuscriptData);
+    }
+
+    public function saveManuscripts($manuscriptContents)
+    {
+        $manuscripts = new Manuscript();
+        $manuscripts->manuscript_number = $manuscriptContents[0]['manuscript_number'];
+        $manuscripts->article_title = $manuscriptContents[0]['article_title'];
+        $manuscripts->editorial_status_date = $manuscriptContents[0]['editorial_status_date'];
+        $manuscripts->editorial_status = $manuscriptContents[0]['editorial_status'];
+        $manuscripts->save();
     }
 
 }
