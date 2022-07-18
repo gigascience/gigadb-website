@@ -21,12 +21,24 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
 
     public function execute($queue)
     {
-        if ($this->scope === "manuscripts") {
-            $manuscriptReport = "Report-GIGA-em-manuscripts-latest-214-20220713004136.csv";
-//            echo "Get manuscript q job....".PHP_EOL;
-//            file_put_contents($manuscriptReport, $this->content);
-            $this->saveManuscripts($this->parseManuscriptReport($manuscriptReport));
-//            unlink($manuscriptReport);
+        if ($this->scope === "manuscripts" && $this->content !== "No Results") {
+            $tempManuscriptCsvFile = tempnam(sys_get_temp_dir(), "test-manuscripts").".csv";
+
+            file_put_contents($tempManuscriptCsvFile, $this->content);
+
+//            $tempManuscriptCsvFile = "Report-GIGA-em-manuscripts-latest-214-20220713004136.csv";
+
+            $this->saveManuscripts($this->parseManuscriptReport($tempManuscriptCsvFile));
+            unlink($tempManuscriptCsvFile);
+
+            $ingest = Ingest::findOne(["report_type" => "1"]);
+            $ingest->parse_status = "1";
+            $ingest->save();
+
+        } elseif ($this->scope === "manuscripts" && $this->content === "No Results") {
+            $ingest = Ingest::findOne(["report_type" => "1"]);
+            $ingest->parse_status = "0";
+            $ingest->save();
         }
     }
 
