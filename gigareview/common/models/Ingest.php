@@ -28,6 +28,9 @@ class Ingest extends \yii\db\ActiveRecord
     const FETCH_STATUS_DISPATCHED = 3;
     const FETCH_STATUS_ERROR = 0 ;
 
+    const PARSE_STATUS_YES = 1;
+    const PARSE_STATUS_NO = 0;
+
     /**
      * {@inheritdoc}
      */
