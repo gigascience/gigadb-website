@@ -43,8 +43,7 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             'Editorial Status Date' => 'editorial_status_date',
             'Editorial Status' => 'editorial_status',
         ];
-        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Csv");
-        $reader->setDelimiter(",");
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
         $spreadsheet = $reader->load($manuscriptPath);
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 
