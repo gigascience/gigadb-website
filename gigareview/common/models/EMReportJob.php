@@ -26,19 +26,17 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
 
             file_put_contents($tempManuscriptCsvFile, $this->content);
 
-//            $tempManuscriptCsvFile = "Report-GIGA-em-manuscripts-latest-214-20220713004136.csv";
-
             $this->saveManuscripts($this->parseManuscriptReport($tempManuscriptCsvFile));
             unlink($tempManuscriptCsvFile);
 
-            $ingest = Ingest::findOne(["report_type" => "1"]);
-            $ingest->parse_status = "1";
-            $ingest->save();
+            $ingest = Ingest::findOne(["report_type" => "1", "parse_status" => null]);
+            $ingest->parse_status = Ingest::PARSE_STATUS_YES;
+            $ingest->update();
 
         } elseif ($this->scope === "manuscripts" && $this->content === "No Results") {
-            $ingest = Ingest::findOne(["report_type" => "1"]);
-            $ingest->parse_status = "0";
-            $ingest->save();
+            $ingest = Ingest::findOne(["report_type" => "1", "parse_status" => null]);
+            $ingest->parse_status = Ingest::PARSE_STATUS_NO;
+            $ingest->update();
         }
     }
 
