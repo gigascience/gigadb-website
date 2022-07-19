@@ -67,6 +67,7 @@ include:
   - local: "ops/pipelines/gigadb-deploy-jobs.yml"
   - local: "ops/pipelines/gigadb-operations-jobs.yml"
 #  - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
+  - local: "gigadb/app/tools/excel-spreadsheet-uploader/gitlab-config.yml"
   - local: "gigareview/gitlab-config.yml"
 
 services:
@@ -104,7 +105,8 @@ sd_gigadb:
     name: "staging"
     url: $REMOTE_HOME_URL
     on_stop: sd_teardown
-
+  when: always
+  
 ld_gigadb:
   variables:
     GIGADB_ENV: "live"

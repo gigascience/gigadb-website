@@ -39,4 +39,5 @@ aws_secret_access_key = "{{ lookup('ini', 'aws_secret_access_key type=properties
 
 upload_database_backup_to_S3_cronjob_state = "absent"
 
+gitlab_project = {{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') }}
 gitlab_project_string = {{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') |  regex_replace('/','-') }}

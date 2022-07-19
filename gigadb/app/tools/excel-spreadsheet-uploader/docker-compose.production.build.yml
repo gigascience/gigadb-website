@@ -1,12 +1,11 @@
 version: '3.7'
 services:
-  uploader:
+  production_xls_uploader:
     build:
       context: .
-    volumes:
-      - .:/tool
+      dockerfile: Dockerfile-Production
 
-  pg_client:
+  production_pgclient:
     environment:
       PGDATABASE: ${gigadb_db_database}
       PGHOST: ${gigadb_db_host}

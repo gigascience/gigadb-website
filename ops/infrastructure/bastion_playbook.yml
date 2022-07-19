@@ -251,42 +251,44 @@
   hosts: name_bastion_server_staging*:name_bastion_server_live*
 
   tasks:
-    - name: Copy setup file and spreadsheets
+    - name: Copy dataset upload tool shell script
       ansible.builtin.copy:
-        src: "{{ item }}"
-        dest: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader
+        src: "../../../../gigadb/app/tools/excel-spreadsheet-uploader/execute.sh"
+        dest: /home/centos/datasetUpload.sh
         owner: centos
         group: centos
         mode: a+x
-      loop:
-        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/setup.sh"
-        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/execute.sh"
-        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/docker-compose.yml"
-        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/PgClientDockerfile"
-        - "../../../../gigadb/app/tools/excel-spreadsheet-uploader/uploadDir"
-      tags:
-        - spreadsheet
 
-    - name: Create env-bastion for database  (for pg_client docker service)
+    - name: Create env file for database  (for pg_client docker service)
       ansible.builtin.template:
         src: ../../../../gigadb/app/tools/excel-spreadsheet-uploader/env.j2
-        dest: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader/env-bastion
+        dest: /home/centos/db-env
         owner: centos
         group: centos
         mode: 0644
 
-    - name: Setup Excel to GigaDB tool
-      ansible.builtin.command: ./setup.sh
-      args:
-        chdir: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader
-
-    - name: Create setting.xml for database configuration (for java tool)
-      ansible.builtin.template:
-        src: ../../../../gigadb/app/tools/excel-spreadsheet-uploader/configuration_setting_xml.j2
-        dest: /home/centos/gigadb-website-develop/gigadb/app/tools/excel-spreadsheet-uploader/configuration/setting.xml
+    - name: Create directories for dataset upload operations
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
         owner: centos
         group: centos
-        mode: 0644
+      loop:
+        - "/home/centos/uploadLogs"
+        - "/home/centos/uploadDir"
+
+    - name: Ensure centos user has GIGADB_ENV set
+      ansible.builtin.lineinfile:
+        path: /home/centos/.bash_profile
+        insertafter: '# User specific environment and startup programs\n'
+        line: "GIGADB_ENV={{ gigadb_environment }}"
+
+    - name: Ensure centos user has GITLAB_PROJECT set
+      ansible.builtin.lineinfile:
+        path: /home/centos/.bash_profile
+        insertafter: '# User specific environment and startup programs\n'
+        line: "GITLAB_PROJECT={{ gitlab_project }}"
 
 - name: Load latest DB backup
   hosts: name_bastion_server_staging*:name_bastion_server_live*

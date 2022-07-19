@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
 # Make an environment file
-if [[ -f ./env-bastion ]];then
-  cp ./env-bastion .env
-else
+if [[ ! -f .env ]];then
   cp ./env-default .env
 fi
 
