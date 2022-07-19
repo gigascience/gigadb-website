@@ -6,8 +6,7 @@ use \Yii;
 use yii\queue\Queue;
 use \PhpOffice\PhpSpreadsheet\Reader;
 use common\models\Ingest;
-use common\models\Manuscript;
-use console\controllers\FetchReportsController;
+use console\models\ManuscriptsWorker;
 
 
 class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterface
@@ -26,7 +25,8 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
 
             file_put_contents($tempManuscriptCsvFile, $this->content);
 
-            $this->saveManuscripts($this->parseManuscriptReport($tempManuscriptCsvFile));
+            $manuscriptsWorker = new ManuscriptsWorker();
+            $manuscriptsWorker->saveManuscripts($manuscriptsWorker->parseManuscriptReport($tempManuscriptCsvFile));
             unlink($tempManuscriptCsvFile);
 
             $ingest = Ingest::findOne(["report_type" => "1", "parse_status" => null]);
@@ -39,44 +39,6 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_NO_RESULTS;
             $ingest->parse_status = Ingest::PARSE_STATUS_NO;
             $ingest->update();
-        }
-    }
-
-    /**
-     * @param string $manuscriptPath
-     * @return array
-     */
-    public function parseManuscriptReport(string $manuscriptPath): array
-    {
-        $manuscriptData = [];
-        $columnHeader = [
-            'Manuscript Number' => 'manuscript_number',
-            'Article Title' => 'article_title',
-            'Editorial Status Date' => 'editorial_status_date',
-            'Editorial Status' => 'editorial_status',
-        ];
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
-        $spreadsheet = $reader->load($manuscriptPath);
-        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-
-        foreach ($sheetData as $row) {
-            if (!in_array("Manuscript Number", $row)) {
-                $manuscriptData[] = array_combine($columnHeader,$row);
-            }
-        }
-        return ($manuscriptData);
-    }
-
-    public function saveManuscripts($manuscriptContents)
-    {
-        $manuscriptContentsSize = count($manuscriptContents) - 1;
-        for ($i = 0; $i <= $manuscriptContentsSize; $i++) {
-            $manuscripts = new Manuscript();
-            $manuscripts->manuscript_number = $manuscriptContents[$i]['manuscript_number'];
-            $manuscripts->article_title = $manuscriptContents[$i]['article_title'];
-            $manuscripts->editorial_status_date = $manuscriptContents[$i]['editorial_status_date'];
-            $manuscripts->editorial_status = $manuscriptContents[$i]['editorial_status'];
-            $manuscripts->save();
         }
     }
 
