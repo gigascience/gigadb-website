@@ -69,12 +69,15 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
 
     public function saveManuscripts($manuscriptContents)
     {
-        $manuscripts = new Manuscript();
-        $manuscripts->manuscript_number = $manuscriptContents[0]['manuscript_number'];
-        $manuscripts->article_title = $manuscriptContents[0]['article_title'];
-        $manuscripts->editorial_status_date = $manuscriptContents[0]['editorial_status_date'];
-        $manuscripts->editorial_status = $manuscriptContents[0]['editorial_status'];
-        $manuscripts->save();
+        $manuscriptContentsSize = count($manuscriptContents) - 1;
+        for ($i = 0; $i <= $manuscriptContentsSize; $i++) {
+            $manuscripts = new Manuscript();
+            $manuscripts->manuscript_number = $manuscriptContents[$i]['manuscript_number'];
+            $manuscripts->article_title = $manuscriptContents[$i]['article_title'];
+            $manuscripts->editorial_status_date = $manuscriptContents[$i]['editorial_status_date'];
+            $manuscripts->editorial_status = $manuscriptContents[$i]['editorial_status'];
+            $manuscripts->save();
+        }
     }
 
 }
