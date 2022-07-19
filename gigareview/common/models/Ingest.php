@@ -31,6 +31,9 @@ class Ingest extends \yii\db\ActiveRecord
     const PARSE_STATUS_YES = 1;
     const PARSE_STATUS_NO = 0;
 
+    const REMOTE_FILES_STATUS_EXISTS = 1;
+    const REMOTE_FILES_STATUS_NO_RESULTS = 0;
+
     /**
      * {@inheritdoc}
      */
