@@ -25,7 +25,6 @@ XLSUploaderBuildStaging:
     - docker tag ${CI_PROJECT_NAME}_production_pgclient:latest registry.gitlab.com/$CI_PROJECT_PATH/production_pgclient:$TARGET_ENV
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_xls_uploader:$TARGET_ENV
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_pgclient:$TARGET_ENV
-  dependencies: []
   environment:
     name: $TARGET_ENV
   artifacts:

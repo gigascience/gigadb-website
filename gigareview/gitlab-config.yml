@@ -14,6 +14,7 @@ GigaReviewTest:
     - cd gigareview
     - ./up.sh
     - "./tests/unit_runner && ./tests/functional_runner && ./tests/acceptance_runner"
+    - false
   environment:
     name: dev
   artifacts:
