@@ -10,12 +10,11 @@ class EMReportJobCest
     }
 
     // tests
-    public function tryToPushManuscriptQueneJobToTable(FunctionalTester $I)
+    public function tryToPushManuscriptQueueJobToTable(FunctionalTester $I)
     {
 //        $I->runShellCommand("./yii_test fetch-reports/fetch", false);
 //        $I->runShellCommand("/usr/local/bin/php /app/yii manuscripts-q/run --verbose", false);
         $I->amConnectedToDatabase('reviewdb_test');
         $I->canSeeResultCodeIs(Exitcode::OK);
-//        $I->amConnectedToDatabase('reviewdb_test');
     }
 }
