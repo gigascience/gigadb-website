@@ -6,6 +6,6 @@ modules:
         - Asserts
         - Cli
         - Db:
-              dsn: 'pgsql:host=reviewdb;dbname=reviewdb_test;port=5432'
-              user: 'reviewdb'
-              password: 'reviewdb'
+            dsn: 'pgsql:host=reviewdb;dbname=reviewdb_test;port=5432'
+            user: 'reviewdb'
+            password: 'reviewdb'
