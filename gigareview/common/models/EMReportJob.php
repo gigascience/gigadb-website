@@ -29,17 +29,20 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             $manuscriptsWorker->saveManuscripts($manuscriptsWorker->parseManuscriptReport($tempManuscriptCsvFile));
             unlink($tempManuscriptCsvFile);
 
-            $ingest = Ingest::findOne(["report_type" => "1", "parse_status" => null]);
-            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_EXISTS;
-            $ingest->parse_status = Ingest::PARSE_STATUS_YES;
-            $ingest->update();
+            //TODO: Will be implemented in ticket no. #1065
+//            $ingest = Ingest::findOne(["report_type" => "1", "parse_status" => null]);
+//            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_EXISTS;
+//            $ingest->parse_status = Ingest::PARSE_STATUS_YES;
+//            $ingest->update();
 
-        } elseif ($this->scope === "manuscripts" && $this->content === "No Results") {
-            $ingest = Ingest::findOne(["report_type" => "1", "parse_status" => null]);
-            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_NO_RESULTS;
-            $ingest->parse_status = Ingest::PARSE_STATUS_NO;
-            $ingest->update();
         }
+            //TODO: Will be implemented in ticket no. #1065
+//        elseif ($this->scope === "manuscripts" && $this->content === "No Results") {
+//            $ingest = Ingest::findOne(["report_type" => "1", "parse_status" => null]);
+//            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_NO_RESULTS;
+//            $ingest->parse_status = Ingest::PARSE_STATUS_NO;
+//            $ingest->update();
+//        }
     }
 
 }
