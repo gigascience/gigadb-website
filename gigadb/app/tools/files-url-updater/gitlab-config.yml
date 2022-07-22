@@ -1,5 +1,5 @@
 
-b_urls_updater:
+FilesUrlsUpdaterBuild:
   variables:
     LOCAL_COMPOSE: "docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml"
 
@@ -8,10 +8,11 @@ b_urls_updater:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/updater:latest || true
     - cd gigadb/app/tools/files-url-updater
     - $LOCAL_COMPOSE build updater
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com # log in to Gitlab so we can push the container image there
     - docker tag ${CI_PROJECT_NAME}_updater:latest registry.gitlab.com/$CI_PROJECT_PATH/updater:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/updater:latest
 
-t_urls_updater:
+FilesUrlsUpdaterTest:
   variables:
     LOCAL_COMPOSE: "docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml"
     GIGADB_HOST: "172.17.0.1"
@@ -62,5 +63,4 @@ t_urls_updater:
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept build
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/unit
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/functional
-  dependencies:
-    - b_urls_updater
+  needs: ["FilesUrlsUpdaterBuild"]
