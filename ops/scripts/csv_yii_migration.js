@@ -171,7 +171,8 @@ for(let a = 0; a < files.length; a ++) {
     });
     // Read handlebars template as string
     let template = "";
-    if (tokens[0] == "reset_password_request") {
+    // Use triple stash to avoid escaping HTML tags in specific tables
+    if (tokens[0] == "reset_password_request" || tokens[0] == "dataset") {
         template = fs.readFileSync(TRIPLE_STASH_HANDLEBARS_TEMPLATE_FILE, "utf8");
     } else {
         template = fs.readFileSync(HANDLEBARS_TEMPLATE_FILE, "utf8");
