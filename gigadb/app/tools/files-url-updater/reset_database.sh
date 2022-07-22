@@ -95,4 +95,14 @@ if [[ $loadStatus -eq 0 ]];then
   popd
 fi
 
+# housekeeping
+if [[ $downloadLatestRestoreStatus -eq 0 && -z $downloadSpecificRestoreStatus && $convertStatus -eq 0 && $loadStatus -eq 0 ]];then
+  rm -f converted/gigadbv3_${latest}_v${version}.backup
+fi
+
+if [[ $downloadSpecificRestoreStatus -eq 0 && -z $downloadLatestRestoreStatus  && $convertStatus -eq 0 && $loadStatus -eq 0 ]];then
+  rm -f converted/gigadbv3_${backupDate}_v${version}.backup
+fi
+
+
 exit 0
