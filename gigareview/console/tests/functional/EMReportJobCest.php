@@ -2,6 +2,7 @@
 namespace console\tests\functional;
 use console\tests\FunctionalTester;
 use yii\console\ExitCode;
+use console\models\ManuscriptsWorker;
 
 class EMReportJobCest
 {
@@ -24,30 +25,20 @@ class EMReportJobCest
 
     public function tryToMatchManuscriptReportWithTable(FunctionalTester $I)
     {
-        $manuscriptReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
+        $manuscriptCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
 
-        $manuscriptData = [];
-        $columnHeader = [
-            'Manuscript Number' => 'manuscript_number',
-            'Article Title' => 'article_title',
-            'Editorial Status Date' => 'editorial_status_date',
-            'Editorial Status' => 'editorial_status',
-        ];
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
-        $spreadsheet = $reader->load($manuscriptReport);
-        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-
-        foreach ($sheetData as $row) {
-            if (!in_array("Manuscript Number", $row)) {
-                $manuscriptData[] = array_combine($columnHeader,$row);
-            }
-        }
+        $manuscriptWorker = new ManuscriptsWorker();
+        $manuscriptCsvData = $manuscriptWorker->parseManuscriptReport($manuscriptCsvReport);
 
         $I->runShellCommand("./yii_test fetch-reports/fetch", false);
         $I->runShellCommand("/usr/local/bin/php /app/yii_test manuscripts-q/run --verbose", false);
 
-        for ($i = 0; $i <= count($manuscriptData) - 1; $i++) {
-            $I->canSeeInDatabase('manuscript', $manuscriptData[$i]);
+        $manuscriptCsvRow = count($manuscriptCsvData) - 1;
+
+        for ($i = 0; $i <= $manuscriptCsvRow; $i++) {
+            $I->canSeeInDatabase('manuscript', $manuscriptCsvData[$i]);
         }
+
+        $I->canSeeResultCodeIs(Exitcode::OK);
     }
 }
