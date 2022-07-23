@@ -59,7 +59,7 @@ Feature: A curator can manage file attributes in admin file update page
     Then I am on "/adminFile/view/id/13973"
     And I should not see "File Attribute"
 
-  @ok @javascript @published @wip
+  @ok @javascript @published
   Scenario: File attribute deletion is recorded in History tab
     Given I have signed in as admin
     And I am on "/adminFile/update/id/13973"
@@ -69,3 +69,63 @@ Feature: A curator can manage file attributes in admin file update page
     And I should see "Termitomyces sp. J132 fungus genome assembly data."
     When I follow "History"
     Then I should see "Termitomyces_assembly_v1.0.fa.gz: file attribute deleted"
+
+  @ok @javascript @nonPublished
+  Scenario: See a keyword attribute and a camera parameters attribute on admin file update page
+    Given I have signed in as admin
+    When I am on "/adminFile/update/id/95354"
+    Then I should see a file attribute table
+      | Attribute Name    | Value                            | Unit |
+      | keyword           | test Bauhinia                    |      |
+      | camera parameters | test photo                       |      |
+      | MD5 checksum      | b584eb4ce0947dbf9529acffc3e9f7cc |      |
+
+  @ok @javascript @nonPublished
+  Scenario: See File Attribute value on admin file view page
+    Given I have signed in as admin
+    When I am on "/adminFile/view/id/95354"
+    Then I should see a view file table with row name "File Attribute"
+      | File Attribute | test Bauhinia                    |
+      | File Attribute | test photo                       |
+      | File Attribute | b584eb4ce0947dbf9529acffc3e9f7cc |
+
+  @ok @javascript @nonPublished
+  Scenario: Delete a keyword attribute on admin file update page
+    Given I have signed in as admin
+    And I am on "/adminFile/update/id/95354"
+    When I press the button "Delete"
+    Then I should see a file attribute table
+      | Attribute Name    | Value                            | Unit |
+      | camera parameters | test photo                       |      |
+      | MD5 checksum      | b584eb4ce0947dbf9529acffc3e9f7cc |      |
+
+  @ok @javascript @nonPublished
+  Scenario: Delete a keyword attribute and save, then check for File Attribute Value on admin file view page
+    Given I have signed in as admin
+    And I am on "/adminFile/update/id/95354"
+    When I press the button "Delete"
+    And I press the button "Save"
+    Then I am on "/adminFile/view/id/95354"
+    And I should see a view file table with row name "File Attribute"
+      | File Attribute | test photo                       |
+      | File Attribute | b584eb4ce0947dbf9529acffc3e9f7cc |
+
+  @ok @javascript @nonPublished
+  Scenario: Delete all attributes from a non published dataset
+    Given I have signed in as admin
+    And I am on "/adminFile/update/id/95354"
+    When I press the button "Delete"
+    And I press the button "Delete"
+    Then I should not see "test Bauhinia"
+    And I should not see "test photo"
+
+  @ok @javascript @nonPublished
+  Scenario: Delete all attributes and save, File Attribute value on admin file view page should be empty
+    Given I have signed in as admin
+    And I am on "/adminFile/update/id/95354"
+    When I press the button "Delete"
+    And I press the button "Delete"
+    And I press the button "Delete"
+    And I press the button "Save"
+    Then I am on "/adminFile/view/id/95354"
+    And I should not see "File Attribute"
