@@ -13,5 +13,6 @@ id,attribute_name,definition,model,structured_comment_name,value_syntax,allowed_
 347,last_modified,the date the file was last modified,modified,last_modified,date,"",1,"",""
 376,estimated genome size,"An estimate of the size of the genome of the species being studied, in basepairs (Gb, Mb or Kb)","",est_genome_size,text,"",1,"",""
 455,keyword,"","",keywords,"","","","",""
+472,camera parameters,"","",camera_parameters,text,"",m,"",""
 497,urltoredirect,"","",urltoredirect,"","","","",""
 605,MD5 checksum,"The MD5 hash functions as a compact digital fingerprint of a file and is calculated by using the MD5 hashing algorithm md5sum, a program that is included in most Unix-like systems, Windows and Mac OS system alternatives are also readily available. md5sum is used to verify the integrity of files, as virtually any change to a file will cause its MD5 hash to change",,MD5sum,,,,,
