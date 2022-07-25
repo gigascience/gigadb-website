@@ -33,9 +33,21 @@ echo "Generating configuration for environment: $GIGADB_ENV"
 # fetch and set environment variables from GitLab
 # Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to build environment
 
+if [[ -z $GITLAB_PRIVATE_TOKEN ]];then
+  echo "GITLAB_PRIVATE_TOKEN is not defined!"
+fi
+
+if [[ -z $MISC_VARIABLES_URL ]];then
+  echo "MISC_VARIABLES_URL is not defined!"
+fi
+
+if [[ -z $GIGADB_ENV ]];then
+  echo "GIGADB_ENV is not defined!"
+fi
+
 if ! [ -s ./.secrets ];then
     echo "Retrieving variables from ${MISC_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT "$GIGADB_ENV" -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key | test("_ftp_") ) | .key + "=" + .value' > .secrets
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT "$GIGADB_ENV" -r '.[] | select(.environment_scope == "*" or .environment_scope == $ENVIRONMENT ) | select(.key | test("_ftp_") ) | .key + "=" + .value' > .secrets
 fi
 echo "Sourcing secrets"
 source "./.secrets"
