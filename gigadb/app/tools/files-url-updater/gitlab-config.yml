@@ -17,7 +17,8 @@ FilesUrlsUpdaterTest:
     LOCAL_COMPOSE: "docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml"
     GIGADB_HOST: "172.17.0.1"
     GIGADB_PASSWORD: ""
-
+    GIGADB_ENV: dev
+    MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
   stage: test
   artifacts:
     paths:
@@ -29,13 +30,17 @@ FilesUrlsUpdaterTest:
       - gigadb/app/tools/files-url-updater/composer.lock
       - gigadb/app/tools/files-url-updater/tests/acceptance.suite.yml
       - gigadb/app/tools/files-url-updater/tests/ci.acceptance.suite.yml
+      - gigadb/app/tools/files-url-updater/.env
+      - gigadb/app/tools/files-url-updater/.secrets
       - .env
       - .secrets
       - protected/config/db.json
     when: always
     expire_in: 1 week
   script:
+    - env | grep -iE "(GIGADB_ENV|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN)"| tee gigadb/app/tools/files-url-updater/.env
     - cd gigadb/app/tools/files-url-updater
+    - $LOCAL_COMPOSE run --rm config
     - $LOCAL_COMPOSE run --rm updater composer install
     - $LOCAL_COMPOSE up -d pg9_3
     - echo yes | $LOCAL_COMPOSE run --rm updater ./yii dataset-files/download-restore-backup --default
