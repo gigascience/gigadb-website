@@ -3,6 +3,7 @@ namespace console\tests\functional;
 use common\models\EMReportJob;
 use console\tests\FunctionalTester;
 use yii\console\ExitCode;
+use console\models\ManuscriptsWorker;
 
 class EMReportJobCest
 {
