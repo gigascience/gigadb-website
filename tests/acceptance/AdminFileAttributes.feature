@@ -35,7 +35,7 @@ Feature: A curator can manage file attributes in admin file update page
     And I should see a submit button "Save"
 
   @ok @javascript @published
-  Scenario:  See the File Attribute value of the last modified attribute on admin file view page
+  Scenario: See the File Attribute value of the last modified attribute on admin file view page
     Given I have signed in as admin
     When I am on "/adminFile/view/id/13973"
     Then I should see a view file table
@@ -51,23 +51,18 @@ Feature: A curator can manage file attributes in admin file update page
     And I should not see delete file attribute link button
 
   @ok @javascript @published
-  Scenario: File Attribute value is empty after deleting an attribute and saving
+  Scenario: There is no file attribute value on view file page after pressing save on file update page
     Given I have signed in as admin
     And I am on "/adminFile/update/id/13973"
-    When I press the button "Delete"
-    And I press the button "Save"
+    When I press the button "Save"
     Then I am on "/adminFile/view/id/13973"
     And I should not see "File Attribute"
 
   @ok @javascript @published
-  Scenario: File attribute deletion is recorded in History tab
+  Scenario: File attribute deletion for file id 13973 is recorded in History tab
     Given I have signed in as admin
-    And I am on "/adminFile/update/id/13973"
-    And I press the button "Delete"
-    And I press the button "Save"
-    And I am on "/dataset/100056"
-    And I should see "Termitomyces sp. J132 fungus genome assembly data."
-    When I follow "History"
+    When I am on "/dataset/100056"
+    And I follow "History"
     Then I should see "Termitomyces_assembly_v1.0.fa.gz: file attribute deleted"
 
   @ok @javascript @nonPublished
@@ -84,7 +79,7 @@ Feature: A curator can manage file attributes in admin file update page
   Scenario: See File Attribute value on admin file view page
     Given I have signed in as admin
     When I am on "/adminFile/view/id/95354"
-    Then I should see a view file table with row name "File Attribute"
+    Then I should see a view file table
       | File Attribute | test Bauhinia                    |
       | File Attribute | test photo                       |
       | File Attribute | b584eb4ce0947dbf9529acffc3e9f7cc |
@@ -100,32 +95,26 @@ Feature: A curator can manage file attributes in admin file update page
       | MD5 checksum      | b584eb4ce0947dbf9529acffc3e9f7cc |      |
 
   @ok @javascript @nonPublished
-  Scenario: Delete a keyword attribute and save, then check for File Attribute Value on admin file view page
+  Scenario: Delete camera parameters attribute and save, then check for File Attribute Value on admin file view page
     Given I have signed in as admin
     And I am on "/adminFile/update/id/95354"
     When I press the button "Delete"
     And I press the button "Save"
     Then I am on "/adminFile/view/id/95354"
-    And I should see a view file table with row name "File Attribute"
-      | File Attribute | test photo                       |
+    And I should see a view file table
       | File Attribute | b584eb4ce0947dbf9529acffc3e9f7cc |
 
   @ok @javascript @nonPublished
-  Scenario: Delete all attributes from a non published dataset
+  Scenario: Delete last MD5 checksum file attribute from a non published dataset
     Given I have signed in as admin
     And I am on "/adminFile/update/id/95354"
     When I press the button "Delete"
-    And I press the button "Delete"
     Then I should not see "test Bauhinia"
     And I should not see "test photo"
+    And I should not see "b584eb4ce0947dbf9529acffc3e9f7cc"
 
   @ok @javascript @nonPublished
-  Scenario: Delete all attributes and save, File Attribute value on admin file view page should be empty
+  Scenario: Check admin file view page is now empty after all file attributes have been deleted
     Given I have signed in as admin
-    And I am on "/adminFile/update/id/95354"
-    When I press the button "Delete"
-    And I press the button "Delete"
-    And I press the button "Delete"
-    And I press the button "Save"
-    Then I am on "/adminFile/view/id/95354"
+    When I am on "/adminFile/view/id/95354"
     And I should not see "File Attribute"
