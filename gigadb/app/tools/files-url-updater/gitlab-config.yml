@@ -18,7 +18,6 @@ FilesUrlsUpdaterTest:
     GIGADB_HOST: "172.17.0.1"
     GIGADB_PASSWORD: ""
     GIGADB_ENV: dev
-    GITLAB_PRIVATE_TOKEN: $CI_BUILD_TOKEN
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
     FOO: "bar"
   stage: test
@@ -50,3 +49,5 @@ FilesUrlsUpdaterTest:
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/unit
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/functional
   needs: ["FilesUrlsUpdaterBuild"]
+  environment:
+    name: dev
