@@ -85,7 +85,7 @@ class FilesCommand extends CConsoleCommand
     private function findDatasetMd5FileUrl($doi): string
     {
         // Directory names representing ranges of dataset DOIs
-        $ranges = ['102001_103000', '101001_102000', '100001_101000'];
+        $ranges = ['104001_105000', '103001_104000', '102001_103000', '101001_102000', '100001_101000'];
 
         foreach ($ranges as $range) {
             $url = "https://ftp.cngb.org/pub/gigadb/pub/10.5524/$range/$doi/$doi.md5";
