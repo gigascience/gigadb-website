@@ -20,6 +20,7 @@ FilesUrlsUpdaterTest:
     GIGADB_ENV: dev
     GITLAB_PRIVATE_TOKEN: $CI_BUILD_TOKEN
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
+    FOO: "bar"
   stage: test
   artifacts:
     paths:
