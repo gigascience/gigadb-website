@@ -49,13 +49,12 @@ class ManuscriptsWorker
      */
     public function saveManuscripts($manuscriptContents)
     {
-        $manuscriptContentsSize = count($manuscriptContents) - 1;
-        for ($i = 0; $i <= $manuscriptContentsSize; $i++) {
+        foreach ($manuscriptContents as $content) {
             $manuscripts = new Manuscript();
-            $manuscripts->manuscript_number = $manuscriptContents[$i]['manuscript_number'];
-            $manuscripts->article_title = $manuscriptContents[$i]['article_title'];
-            $manuscripts->editorial_status_date = $manuscriptContents[$i]['editorial_status_date'];
-            $manuscripts->editorial_status = $manuscriptContents[$i]['editorial_status'];
+            $manuscripts->manuscript_number = $content['manuscript_number'];
+            $manuscripts->article_title = $content['article_title'];
+            $manuscripts->editorial_status_date = $content['editorial_status_date'];
+            $manuscripts->editorial_status = $content['editorial_status'];
             $manuscripts->save();
         }
     }
