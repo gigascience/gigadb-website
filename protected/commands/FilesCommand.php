@@ -24,7 +24,7 @@ class FilesCommand extends CConsoleCommand
         $helpText = "Checks files url for a specific dataset in the database" . PHP_EOL;
         $helpText .= "Usage: ./protected/yiic files checkUrls --doi=<DOI>" . PHP_EOL;
         $helpText .= "Updates md5 checksum attribute value for all files in a given dataset" . PHP_EOL;
-        $helpText .= "Usage: ./protected/yiic files updateAllMD5FileAttributes --doi=<DOI>" . PHP_EOL;
+        $helpText .= "Usage: ./protected/yiic files updateMD5FileAttributes --doi=<DOI>" . PHP_EOL;
 
         return $helpText;
     }
