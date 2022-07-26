@@ -5,7 +5,7 @@ namespace console\models;
 use \Yii;
 use common\models\Manuscript;
 
-class ManuscriptsWorker extends \yii\base\Component implements \yii\queue\JobInterface
+class ManuscriptsWorker
 {
 
     public function init()
