@@ -46,6 +46,8 @@ FilesUrlsUpdaterTest:
     - $LOCAL_COMPOSE up -d pg9_3
     - echo yes | $LOCAL_COMPOSE run --rm updater ./yii dataset-files/download-restore-backup --default
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept build
+    - sleep 5
+    - $LOCAL_COMPOSE ps
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/unit
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/functional
   needs: ["FilesUrlsUpdaterBuild"]
