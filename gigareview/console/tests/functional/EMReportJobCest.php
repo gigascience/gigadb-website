@@ -60,10 +60,23 @@ class EMReportJobCest
 
     public function tryToUpdateNoResultsReportStatusInIngestTable(FunctionalTester $I)
     {
+        // Create temporary no result report with more recent timestamp console/tests/_data
+        // so this file will be fetched, as it is the latest
+        $noResultCsvReportDir = "console/tests/_data/";
+        $tempNoResultCsvReportName = "Report-GIGA-em-manuscripts-latest-214-20220611007777.csv";
+        file_put_contents($noResultCsvReportDir.$tempNoResultCsvReportName, "No Results");
+
         $I->runShellCommand("./yii_test fetch-reports/fetch", false);
-        $I->canSeeInDatabase('ingest', ["file_name"=>"Report-GIGA-em-manuscripts-latest-214-no-results.csv", "report_type"=>1, "fetch_status"=>3, "parse_status"=>null, "store_status"=>null, "remote_file_status"=>null]);
+        $I->canSeeInDatabase('ingest', ["file_name"=>$tempNoResultCsvReportName, "report_type"=>1, "fetch_status"=>3, "parse_status"=>null, "store_status"=>null, "remote_file_status"=>null]);
+
         $I->runShellCommand("/usr/local/bin/php /app/yii_test manuscripts-q/run --verbose", false);
-        $I->canSeeInDatabase('ingest', ["file_name"=>"Report-GIGA-em-manuscripts-latest-214-no-results.csv", "report_type"=>1, "fetch_status"=>3, "parse_status"=>0, "store_status"=>null, "remote_file_status"=>0]);
+        $I->canSeeInDatabase('ingest', ["file_name"=>$tempNoResultCsvReportName, "report_type"=>1, "fetch_status"=>3, "parse_status"=>0, "store_status"=>null, "remote_file_status"=>0]);
+
+        unlink($noResultCsvReportDir.$tempNoResultCsvReportName);
+
+        // To check the manuscript table is empty
+        $I->seeNumRecords(0, 'manuscript');
+        $I->canSeeResultCodeIs(Exitcode::OK);
 
     }
 }
