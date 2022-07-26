@@ -42,7 +42,8 @@ services:
   sftp_test:
     image: atmoz/sftp
     volumes:
-      - ./console/tests/_data:/home/testuser/editorialmanager
+      - ./console/tests/_data/remote_exists:/home/testuser/editorialmanager
+      - ./console/tests/_data/remote_no_results:/home/testuser/editorialmanager_no_results
     expose:
       - "22"
     command: testuser:testpass:::editorialmanager
