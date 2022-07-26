@@ -104,6 +104,9 @@ If the script has any output, and the command's response code is 0 (``rc=0``), t
 
 ### 6. Generate MD5 checksums
 
+The MD5 values for a dataset's files come from a `<dataset_doi>.md5` file which 
+is available from the CNGB FTP server via its URL. This file must be present in 
+order for MD5 file attributes to be added into the database for the dataset.
 ```
 # Log into bastion server and run this command:
 $ docker-compose run --rm  test ./protected/yiic files updateMD5FileAttributes --doi=<insert doi here>
