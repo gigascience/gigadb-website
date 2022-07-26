@@ -2,6 +2,9 @@
 
 class AdminFileController extends Controller
 {
+    /** @const string  DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM the attribute id for MD5 checksum in attribute database table */
+    const DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM = "605";
+
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -1024,12 +1027,12 @@ EO_MAIL;
     public function updateMd5Checksum($file_id, $md5_value) {
         $fa = FileAttributes::model()->findByAttributes(array(
             'file_id' => $file_id,
-            'attribute_id' => "605",
+            'attribute_id' => self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM,
         ));
         // In case no MD5 FileAttribute can be found for $file_id
         if($fa === null) {
             $fa = new FileAttributes;
-            $fa->attribute_id = "605";
+            $fa->attribute_id = self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM;
         }
         echo "File attribute id is: ".$fa->id.PHP_EOL;
         $fa->value = $md5_value;
