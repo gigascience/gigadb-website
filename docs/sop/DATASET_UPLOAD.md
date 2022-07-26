@@ -104,7 +104,10 @@ If the script has any output, and the command's response code is 0 (``rc=0``), t
 
 ### 6. Generate MD5 checksums
 
-TODO
+```
+# Log into bastion server and run this command:
+$ docker-compose run --rm  test ./protected/yiic files updateMD5FileAttributes --doi=<insert doi here>
+```
 
 ### 7. Send a report to curators
 
