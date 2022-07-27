@@ -41,4 +41,22 @@ class EMReportJobCest
 
         $I->canSeeResultCodeIs(Exitcode::OK);
     }
+
+    public function tryToSeeNoResultsReportNotSaveToTable(FunctionalTester $I)
+    {
+        // Create temporary no result report with more recent timestamp console/tests/_data
+        // so this file will be fetched, as it is the latest
+        $noResultCsvReportDir = "console/tests/_data/";
+        $tempNoResultCsvReportName = "Report-GIGA-em-manuscripts-latest-214-20220611007777.csv";
+        file_put_contents($noResultCsvReportDir.$tempNoResultCsvReportName, "No Results");
+
+        $I->runShellCommand("./yii_test fetch-reports/fetch", false);
+        $I->runShellCommand("/usr/local/bin/php /app/yii_test manuscripts-q/run --verbose", false);
+
+        unlink($noResultCsvReportDir.$tempNoResultCsvReportName);
+
+        // To check the manuscript table is empty
+        $I->seeNumRecords(0, 'manuscript');
+        $I->canSeeResultCodeIs(Exitcode::OK);
+    }
 }
