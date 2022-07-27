@@ -26,7 +26,7 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             file_put_contents($tempManuscriptCsvFile, $this->content);
 
             $manuscriptsWorker = new ManuscriptsWorker();
-            $manuscriptsWorker->saveManuscripts($this->parseReport($tempManuscriptCsvFile));
+            $manuscriptsWorker->saveManuscripts($manuscriptsWorker->parseManuscriptReport($tempManuscriptCsvFile));
             unlink($tempManuscriptCsvFile);
 
             //TODO: Will be implemented in ticket no. #1065
