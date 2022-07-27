@@ -25,20 +25,13 @@ class ManuscriptsWorker
     public function parseManuscriptReport(string $manuscriptPath): array
     {
         $manuscriptData = [];
-        $columnHeader = [
-            'Manuscript Number' => 'manuscript_number',
-            'Article Title' => 'article_title',
-            'Editorial Status Date' => 'editorial_status_date',
-            'Editorial Status' => 'editorial_status',
-        ];
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
         $spreadsheet = $reader->load($manuscriptPath);
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 
+        $columnHeader = str_replace(' ', '_', array_map('strtolower', array_shift($sheetData)));
         foreach ($sheetData as $row) {
-            if (!in_array("Manuscript Number", $row)) {
                 $manuscriptData[] = array_combine($columnHeader,$row);
-            }
         }
         return ($manuscriptData);
     }
