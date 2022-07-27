@@ -2,6 +2,7 @@
 
 namespace console\models;
 
+use common\models\EMReportJob;
 use \Yii;
 use common\models\Manuscript;
 
@@ -24,15 +25,8 @@ class ManuscriptsWorker
      */
     public function parseManuscriptReport(string $manuscriptPath): array
     {
-        $manuscriptData = [];
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
-        $spreadsheet = $reader->load($manuscriptPath);
-        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-
-        $columnHeader = str_replace(' ', '_', array_map('strtolower', array_shift($sheetData)));
-        foreach ($sheetData as $row) {
-                $manuscriptData[] = array_combine($columnHeader,$row);
-        }
+        $emReportJob = new EMReportJob();
+        $manuscriptData = $emReportJob->parseReport($manuscriptPath);
         return ($manuscriptData);
     }
 

@@ -26,7 +26,7 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             file_put_contents($tempManuscriptCsvFile, $this->content);
 
             $manuscriptsWorker = new ManuscriptsWorker();
-            $manuscriptsWorker->saveManuscripts($manuscriptsWorker->parseManuscriptReport($tempManuscriptCsvFile));
+            $manuscriptsWorker->saveManuscripts($this->parseReport($tempManuscriptCsvFile));
             unlink($tempManuscriptCsvFile);
 
             //TODO: Will be implemented in ticket no. #1065
@@ -43,6 +43,24 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
 //            $ingest->parse_status = Ingest::PARSE_STATUS_NO;
 //            $ingest->update();
 //        }
+    }
+
+    /**
+     * @param string $emReportPath
+     * @return array
+     */
+    public function parseReport(string $emReportPath):array
+    {
+        $reportData = [];
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        $spreadsheet = $reader->load($emReportPath);
+        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+        $columnHeader = str_replace(' ', '_', array_map('strtolower', array_shift($sheetData)));
+        foreach ($sheetData as $row) {
+            $reportData[] = array_combine($columnHeader,$row);
+        }
+        return ($reportData);
     }
 
 }
