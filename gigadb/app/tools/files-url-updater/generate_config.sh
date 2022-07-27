@@ -51,13 +51,13 @@ if ! [ -s ./.secrets ];then
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100&page=1"  > .project_var_raw1
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100&page=2"  > .project_var_raw2
     jq -s 'add' .project_var_raw1 .project_var_raw2 > .project_vars.json
-    cat .project_vars.json | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select( .environment_scope == $ENVIRONMENT ) | select(.key | test("gigadb_db_") ) |.key + "=" + .value' > .project_var
+    cat .project_vars.json | jq --arg ENVIRONMENT "$GIGADB_ENV" -r '.[] | select( .environment_scope == $ENVIRONMENT ) | select(.key | test("gigadb_db_") ) |.key + "=" + .value' > .project_var
 
     echo "Retrieving variables from ${MISC_VARIABLES_URL}"
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT "$GIGADB_ENV" -r '.[] | select(.environment_scope == "*" or .environment_scope == $ENVIRONMENT ) | select(.key | test("_ftp_") ) | .key + "=" + .value' > .misc_var
 
     # Create .secrets from the multiple parts
-    cat .project_var .misc_var > .secrets && rm .project_var && rm .misc_var && rm .project_var_raw1 && rm .project_var_raw2 && rm .project_vars.json
+    cat .project_var .misc_var > .secrets #&& rm .project_var && rm .misc_var && rm .project_var_raw1 && rm .project_var_raw2 && rm .project_vars.json
 fi
 echo "Sourcing secrets"
 source "./.secrets"
