@@ -2,6 +2,7 @@
 FilesUrlsUpdaterTest:
   variables:
     LOCAL_COMPOSE: "docker-compose -f ./docker-compose.yml"
+    REPO_NAME: $CI_PROJECT_NAME
     GIGADB_HOST: "172.17.0.1"
     GIGADB_PASSWORD: ""
     GIGADB_ENV: dev
