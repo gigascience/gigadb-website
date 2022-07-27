@@ -77,10 +77,10 @@ FilesUrlsUpdaterBuildStaging:
 
 FilesUrlsUpdaterDeployStaging:
   stage: staging deploy
-    variables:
-      GIGADB_ENV: staging
-      REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
-      REMOTE_BASTION_DOCKER: "$remote_bastion_public_ip:2376"
+  variables:
+    GIGADB_ENV: staging
+    REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
+    REMOTE_BASTION_DOCKER: "$remote_bastion_public_ip:2376"
   script:
     # Deployment to bastion server
     - mkdir -pv ~/.docker
