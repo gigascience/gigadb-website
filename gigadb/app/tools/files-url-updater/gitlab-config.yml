@@ -75,7 +75,6 @@ FilesUrlsUpdaterBuildStaging:
     expire_in: 3 days
   needs: ["FilesUrlsUpdaterTest"]
 
-
 FilesUrlsUpdaterDeployStaging:
   stage: staging deploy
   variables:
