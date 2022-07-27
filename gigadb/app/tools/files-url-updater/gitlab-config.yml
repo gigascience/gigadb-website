@@ -5,6 +5,7 @@ FilesUrlsUpdaterTest:
     GIGADB_HOST: "172.17.0.1"
     GIGADB_PASSWORD: ""
     GIGADB_ENV: dev
+    PROJECT_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
     FOO: "bar"
   stage: test
@@ -47,8 +48,6 @@ FilesUrlsUpdaterBuildStaging:
     LOCAL_COMPOSE: "docker-compose -f ./docker-compose.production.yml"
     REPO_NAME: $CI_PROJECT_NAME
     GIGADB_ENV: staging
-    GROUP_VARIABLES_URL: "https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
-    FORK_VARIABLES_URL: "https://gitlab.com/api/v4/groups/3501869/variables"
     PROJECT_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
   script:
