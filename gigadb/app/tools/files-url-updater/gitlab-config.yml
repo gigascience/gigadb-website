@@ -74,3 +74,4 @@ FilesUrlsUpdaterBuildStaging:
       - .ci_env
     when: always
     expire_in: 3 days
+    needs: ["FilesUrlsUpdaterTest"]
