@@ -1,7 +1,7 @@
 
 FilesUrlsUpdaterTest:
   variables:
-    LOCAL_COMPOSE: "docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml"
+    LOCAL_COMPOSE: "docker-compose -f ./docker-compose.yml"
     GIGADB_HOST: "172.17.0.1"
     GIGADB_PASSWORD: ""
     GIGADB_ENV: dev
@@ -37,6 +37,6 @@ FilesUrlsUpdaterTest:
     - $LOCAL_COMPOSE ps
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/unit
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/functional
-  needs: ["check_PSR2","check_PHPDoc","container_scanning","phpcs-security-audit-sast"]
+  needs: ["container_scanning","phpcs-security-audit-sast"]
   environment:
     name: dev
