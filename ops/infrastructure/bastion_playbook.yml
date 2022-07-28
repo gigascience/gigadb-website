@@ -232,7 +232,7 @@
     - name: Create .env with RDS DSN
       template:
         src: ../../../../gigadb/app/tools/files-url-updater/bastion-env.j2
-        dest: /home/centos/files-url-updater/.env
+        dest: /home/centos/.env
         owner: root
         group: root
         mode: 0644
