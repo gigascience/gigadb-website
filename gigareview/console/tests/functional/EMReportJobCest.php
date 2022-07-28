@@ -33,10 +33,8 @@ class EMReportJobCest
         $I->runShellCommand("./yii_test fetch-reports/fetch", false);
         $I->runShellCommand("/usr/local/bin/php /app/yii_test manuscripts-q/run --verbose", false);
 
-        $manuscriptCsvRow = count($manuscriptCsvData) - 1;
-
-        for ($i = 0; $i <= $manuscriptCsvRow; $i++) {
-            $I->canSeeInDatabase('manuscript', $manuscriptCsvData[$i]);
+        foreach ($manuscriptCsvData as $row) {
+            $I->canSeeInDatabase('manuscript', $row);
         }
 
         $I->canSeeResultCodeIs(Exitcode::OK);
