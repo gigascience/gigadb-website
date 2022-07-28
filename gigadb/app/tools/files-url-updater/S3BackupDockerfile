@@ -1,4 +1,4 @@
 FROM alpine:3.15
-RUN apk --no-cache add postgresql12-client rclone
+RUN apk --no-cache add postgresql12-client rclone bash
 COPY upload_database_backup_to_S3.sh /upload_database_backup_to_S3.sh
 ENTRYPOINT [ "/upload_database_backup_to_S3.sh" ]
