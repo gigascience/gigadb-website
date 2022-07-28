@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source ./.env
-
 export PATH=/usr/local/bin/:$PATH
 # preflight checks
 which rclone

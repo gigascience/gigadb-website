@@ -1,6 +1,14 @@
 version: '3.7'
 services:
 
+  production_s3backup:
+    build:
+      context: .
+      dockerfile: S3BackupDockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_s3backup:$GIGADB_ENV"
+
+
   production_updater:
     build:
       context: .
