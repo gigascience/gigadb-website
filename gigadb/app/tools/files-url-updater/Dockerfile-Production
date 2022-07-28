@@ -17,6 +17,7 @@ RUN apt-get update -yq && \
         libpng-dev \
         libfreetype6-dev \
         libssl-dev \
+        rclone \
         bc && \
         apt-get clean
 
