@@ -9,7 +9,7 @@ Feature: main search function
     When I fill in the field of "id" "keyword" with "penguin"
     And I press the button "Search"
     And I wait "1" seconds
-    Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    Then I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
     And I should see a link "Pygoscelis_adeliae" to "/dataset/100006"
     And I should see the files:
     | download link title | download link url| file type | size |
@@ -27,12 +27,14 @@ Feature: main search function
     When I fill in the field of "id" "keyword" with "genome"
     And I press the button "Search"
     And I wait "1" seconds
-    Then I should see "Showing 1 - 2 of 3 datasets"
+    Then I should see "Showing 1 - 2 of 5 datasets"
+    And I should see a link "Three Bauhinia species transcriptome sequence data" to "/dataset/100245"
     And I should see a link "Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies." to "/dataset/100094"
-    And I should see a link "Genome data from foxtail millet (<em>Setaria italica</em>)." to "/dataset/100020"
-    And I should not see "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)."
+    And I should not see "Genome data from foxtail millet (Setaria italica)."
+    And I should not see "Genomic data from Adelie penguin (Pygoscelis adeliae)."
     And I should see a link "1" to ""
     And I should see a link "2" to ""
+    And I should see a link "3" to ""
 
   @ok
   Scenario: Can navigate to the next page
@@ -41,7 +43,7 @@ Feature: main search function
     And I press the button "Search"
     And I wait "1" seconds
     When I follow "2"
-    Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    Then I should see a link "Termitomyces sp. J132 fungus genome assembly data." to "/dataset/100056"
     And I should not see "Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies."
 
   @ok
@@ -51,7 +53,7 @@ Feature: main search function
     And I press the button "Search"
     And I wait "1" seconds
     Then I should see "Showing 1 - 1 of 1 datasets"
-    And I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
     And I should see the files:
       | download link title | download link url| file type | size |
       | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
@@ -65,7 +67,7 @@ Feature: main search function
     And I press the button "Search"
     And I wait "1" seconds
     Then I should see "Showing 1 - 1 of 1 datasets"
-    And I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
     And I should see the files:
       | download link title | download link url| file type | size |
       | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
@@ -78,7 +80,7 @@ Feature: main search function
     And I press the button "Search"
     And I wait "1" seconds
     Then I should see "Showing 1 - 1 of 1 datasets"
-    And I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
     And I should see the files:
       | download link title | download link url| file type | size |
       | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
@@ -91,8 +93,8 @@ Feature: main search function
     And I press the button "Search"
     And I wait "1" seconds
     Then I should see "Showing 1 - 2 of 2 datasets"
-    And I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
-    And I should see a link "Genome data from foxtail millet (<em>Setaria italica</em>)." to "/dataset/100020"
+    And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
+    And I should see a link "Genome data from foxtail millet (Setaria italica)." to "/dataset/100020"
 
   @ok
   Scenario: can limit search to specific month
@@ -101,8 +103,8 @@ Feature: main search function
     And I press the button "Search"
     And I wait "1" seconds
     Then I should see "Showing 1 - 1 of 1 datasets"
-    And I should see a link "Genome data from foxtail millet (<em>Setaria italica</em>)." to "/dataset/100020"
-    And I should not see "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)."
+    And I should see a link "Genome data from foxtail millet (Setaria italica)." to "/dataset/100020"
+    And I should not see "Genomic data from Adelie penguin (Pygoscelis adeliae)."
 
   @ok
   Scenario: can limit search to specific day
@@ -111,8 +113,8 @@ Feature: main search function
     And I press the button "Search"
     And I wait "1" seconds
     Then I should see "Showing 1 - 1 of 1 datasets"
-    And I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
-    And I should not see "Genome data from foxtail millet (<em>Setaria italica</em>)."
+    And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
+    And I should not see "Genome data from foxtail millet (Setaria italica)."
 
   @ok
   Scenario: Limit results to datasets
@@ -123,7 +125,7 @@ Feature: main search function
     And I check the field "type_0"
     And I press the button "Apply Filter"
     And I wait "1" seconds
-    Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    Then I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
     And I should not see "Pygoscelis_adeliae"
 
   @ok
@@ -135,7 +137,7 @@ Feature: main search function
     And I check the field "type_1"
     And I press the button "Apply Filter"
     And I wait "1" seconds
-    Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    Then I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
     Then I should see a link "Pygoscelis_adeliae" to "/dataset/100006"
     And I should not see "Pygoscelis_adeliae."
 
@@ -149,7 +151,7 @@ Feature: main search function
     And I check the field "type_2"
     And I press the button "Apply Filter"
     And I wait "1" seconds
-    Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    Then I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
     Then I should see a link "Pygoscelis_adeliae.s..." to "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz"
     And I should not see "Adelie penguin NCBI taxonomy"
 
@@ -174,7 +176,7 @@ Feature: main search function
     And I fill in the field of "id" "keyword" with "epigenomic"
     And I press the button "Search"
     And I wait "1" seconds
-    Then I should see a link "Genome data from foxtail millet (<em>Setaria italica</em>)." to "/dataset/100020"
+    Then I should see a link "Genome data from foxtail millet (Setaria italica)." to "/dataset/100020"
 
   @ok
   Scenario: Query for specific author id
