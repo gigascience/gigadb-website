@@ -181,4 +181,4 @@ Feature: main search function
     Given I am on "/dataset/100006"
     When I follow "Lambert DM"
     And I wait "1" seconds
-    Then I should see a link "Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>)." to "/dataset/100006"
+    Then I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
