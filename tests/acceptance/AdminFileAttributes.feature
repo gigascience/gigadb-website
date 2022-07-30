@@ -1,3 +1,4 @@
+@admin-file @issue-457
 Feature: A curator can manage file attributes in admin file update page
   As a curator
   I want to manage file attributes from the update form
@@ -51,17 +52,22 @@ Feature: A curator can manage file attributes in admin file update page
     And I should not see delete file attribute link button
 
   @ok @javascript @published
-  Scenario: There is no file attribute value on view file page after pressing save on file update page
+  Scenario: File Attribute value is empty after deleting an attribute and saving
     Given I have signed in as admin
     And I am on "/adminFile/update/id/13973"
-    When I press the button "Save"
+    When I press the button "Delete"
+    And I press the button "Save"
     Then I am on "/adminFile/view/id/13973"
     And I should not see "File Attribute"
 
   @ok @javascript @published
-  Scenario: File attribute deletion for file id 13973 is recorded in History tab
+  Scenario: File attribute deletion is recorded in History tab
     Given I have signed in as admin
-    When I am on "/dataset/100056"
+    When I am on "/adminFile/update/id/13973"
+    And I press the button "Delete"
+    And I press the button "Save"
+    And I am on "/dataset/100056"
+    And I should see "Termitomyces sp. J132 fungus genome assembly data."
     And I follow "History"
     Then I should see "Termitomyces_assembly_v1.0.fa.gz: file attribute deleted"
 
@@ -102,6 +108,7 @@ Feature: A curator can manage file attributes in admin file update page
     And I press the button "Save"
     Then I am on "/adminFile/view/id/95354"
     And I should see a view file table
+      | File Attribute | test photo                       |
       | File Attribute | b584eb4ce0947dbf9529acffc3e9f7cc |
 
   @ok @javascript @nonPublished
@@ -109,6 +116,8 @@ Feature: A curator can manage file attributes in admin file update page
     Given I have signed in as admin
     And I am on "/adminFile/update/id/95354"
     When I press the button "Delete"
+    And I press the button "Delete"
+    And I press the button "Delete"
     Then I should not see "test Bauhinia"
     And I should not see "test photo"
     And I should not see "b584eb4ce0947dbf9529acffc3e9f7cc"
@@ -116,5 +125,10 @@ Feature: A curator can manage file attributes in admin file update page
   @ok @javascript @nonPublished
   Scenario: Check admin file view page is now empty after all file attributes have been deleted
     Given I have signed in as admin
-    When I am on "/adminFile/view/id/95354"
+    And I am on "/adminFile/update/id/95354"
+    When I press the button "Delete"
+    And I press the button "Delete"
+    And I press the button "Delete"
+    And I press the button "Save"
+    Then I am on "/adminFile/view/id/95354"
     And I should not see "File Attribute"
