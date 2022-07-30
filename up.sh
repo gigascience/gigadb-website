@@ -84,6 +84,7 @@ docker-compose up -d fuw-worker gigadb-worker
 # create the database dumps needed by functional tests and acceptance tests
 ./ops/scripts/make_pgdmp_gigadb_testdata.sh
 ./ops/scripts/make_pgdmp_production_like.sh
+./ops/scripts/make_pgdmp_gigadb.sh
 
 # generate reference data feed for file formats and file types
 docker-compose run --rm test ./protected/yiic generatefiletypes

@@ -75,6 +75,7 @@ features.txt
 features.xml
 sql/gigadb_testdata.pgdmp
 sql/production_like.pgdmp
+sql/gigadb.pgdmp
 
 .terraform
 terraform.tfstate*
