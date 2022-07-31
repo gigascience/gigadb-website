@@ -33,7 +33,7 @@ Feature: Change password
   Scenario: Filling in form to provide user@gigadb.org with original password
     Given I am on "/site/login"
     And I fill in the field of "name" "LoginForm[username]" with "user@gigadb.org"
-    And I fill in the field of "name" "LoginForm[password]" with "123456787"
+    And I fill in the field of "name" "LoginForm[password]" with "gigadb"
     And I press the button "Login"
     When I am on "/user/changePassword"
     And I fill in the field of "id" "ChangePasswordForm_password" with "gigadb"
