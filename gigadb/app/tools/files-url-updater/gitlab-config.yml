@@ -58,11 +58,14 @@ FilesUrlsUpdaterBuildStaging:
     - docker-compose -f docker-compose.yml run --rm updater composer install # install composer dependencies
     - $LOCAL_COMPOSE build production_updater # build production container from the production docker file
     - $LOCAL_COMPOSE build production_s3backup # build the container for production s3 backup
+    - $LOCAL_COMPOSE build production_pg9_3 # build the container for production version of legacy database server
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com # log in to Gitlab so we can push the container image there
     - docker tag ${CI_PROJECT_NAME}_production_updater:latest registry.gitlab.com/$CI_PROJECT_PATH/production_updater:$GIGADB_ENV
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_updater:$GIGADB_ENV
     - docker tag ${CI_PROJECT_NAME}_production_s3backup:latest registry.gitlab.com/$CI_PROJECT_PATH/production_s3backup:$GIGADB_ENV
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_s3backup:$GIGADB_ENV
+    - docker tag ${CI_PROJECT_NAME}_production_pg9_3:latest registry.gitlab.com/$CI_PROJECT_PATH/production_production_pg9_3:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_production_pg9_3:$GIGADB_ENV
   dependencies: []
   environment:
     name: staging

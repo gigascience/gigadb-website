@@ -21,3 +21,13 @@ services:
     volumes:
       - .:/app
     command: /app/generate_config.sh
+
+
+  production_pg9_3:
+    build:
+      context: .
+      dockerfile: LegacyPgDockerfile
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_pg9_3:$GIGADB_ENV"
+    ports:
+      - '5432:5432'

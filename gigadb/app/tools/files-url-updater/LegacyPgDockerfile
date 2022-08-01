@@ -1,0 +1,4 @@
+FROM postgres:9.3
+
+COPY exportLegacyToTextBackup.sh /
+
