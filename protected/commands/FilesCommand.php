@@ -88,7 +88,7 @@ class FilesCommand extends CConsoleCommand
         $ranges = ['104001_105000', '103001_104000', '102001_103000', '101001_102000', '100001_101000'];
 
         foreach ($ranges as $range) {
-            $url = "https://ftp.cngb.org/pub/gigadb/pub/10.5524/$range/$doi/$doi.md5";
+            $url = Yii::app()->params['dataset_file_url_origin']."/pub/gigadb/pub/10.5524/$range/$doi/$doi.md5";
             $file_exists = @fopen($url, 'r');
             if ($file_exists)
                 return $url;
