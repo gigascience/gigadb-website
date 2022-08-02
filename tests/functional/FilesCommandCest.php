@@ -24,7 +24,7 @@ class FilesCommandCest
     public function tryToUpdateMD5FileAttributes(FunctionalTester $I)
     {
         // Execute FileCommand function to update md5 values for penguin dataset 100006
-        $output = shell_exec("./protected/yiic files updateMD5FileAttributes --doi=100006");
+        $output = shell_exec("./protected/yiic_test files updateMD5FileAttributes --doi=100006");
         codecept_debug($output);
 
         // Assert expected md5 values in file attributes table
