@@ -65,7 +65,7 @@ FilesUrlsUpdaterBuildStaging:
     - docker tag ${CI_PROJECT_NAME}_production_s3backup:latest registry.gitlab.com/$CI_PROJECT_PATH/production_s3backup:$GIGADB_ENV
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_s3backup:$GIGADB_ENV
     - docker tag ${CI_PROJECT_NAME}_production_pg9_3:latest registry.gitlab.com/$CI_PROJECT_PATH/production_pg9_3:$GIGADB_ENV
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_production_pg9_3:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_pg9_3:$GIGADB_ENV
   dependencies: []
   environment:
     name: staging
