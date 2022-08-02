@@ -66,7 +66,7 @@ class FilesCommand extends CConsoleCommand
             }
         }
         catch (Exception $e) {
-            Yii::log($e->getMessage(), "error");
+            echo $e->getMessage();
         }
     }
 
@@ -89,12 +89,13 @@ class FilesCommand extends CConsoleCommand
 
         foreach ($ranges as $range) {
             $url = Yii::app()->params['ftp_connection_url']."/pub/gigadb/pub/10.5524/$range/$doi/$doi.md5";
+            // Check URL resolves to a file
             $file_exists = @fopen($url, 'r');
             if ($file_exists)
                 return $url;
         }
-
-        throw new ErrorException("$doi.md5 file not found for dataset DOI $doi");
+        // Generate exception if md5 file cannot be found
+        throw new Exception("$doi.md5 file not found for dataset DOI $doi at $url");
     }
 
     /**
