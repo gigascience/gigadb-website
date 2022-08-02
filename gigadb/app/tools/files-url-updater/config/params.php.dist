@@ -2,7 +2,7 @@
 
 return [
     'db' => [
-        "host" => "pg9_3",
+        "host" => "$legacy_host",
         "port" => "5432",
         "database" => "gigadb",
         "test_database" => "gigadb_test",

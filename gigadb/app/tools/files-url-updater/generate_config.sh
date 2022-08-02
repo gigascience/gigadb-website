@@ -67,8 +67,14 @@ set +a
 
 # generate config for Yii2 config files
 
+if [[ $GIGADB_ENV == "dev" ]];then
+  export legacy_host=pg9_3
+else
+  export legacy_host=host.docker.internal
+fi
+
 SOURCE=${APP_SOURCE}/config/params.php.dist
 TARGET=${APP_SOURCE}/config/params.php
-VARS='$cngbbackup_ftp_hostname:$cngbbackup_ftp_username:$cngbbackup_ftp_password'
+VARS='$legacy_host:$cngbbackup_ftp_hostname:$cngbbackup_ftp_username:$cngbbackup_ftp_password'
 envsubst $VARS < $SOURCE > $TARGET
 envsubst $VARS < $SOURCE > $TARGET
