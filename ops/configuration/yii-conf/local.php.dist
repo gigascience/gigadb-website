@@ -61,6 +61,6 @@ return array(
         'signing_key' => '${HASH_SECRET_KEY}',
         
         // For creating hash for password reset functionality
-        'dataset_file_url_origin' => 'https://ftp.cngb.org',
+        'ftp_connection_url' => '${FTP_CONNECTION_URL}',
     ),
 );
