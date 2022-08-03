@@ -1,5 +1,5 @@
 FROM postgres:9.3
 
 COPY exportLegacyToTextBackup.sh /
-COPY sql/bootstrap_gigadb.sql /docker-entrypoint-initdb.d/gigadb.sql
+COPY sql/init-user-db.sh /docker-entrypoint-initdb.d/init-user-db.sh
 
