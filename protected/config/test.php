@@ -19,7 +19,7 @@ return CMap::mergeArray(
             ),
         ),
         'params'=>array(
-            // For creating hash for password reset functionality
+            // For fetching dataset files from @pli888's web server
             'ftp_connection_url' => 'https://gigatools.net',
         ),
     )
