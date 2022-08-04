@@ -2,6 +2,9 @@
 
 return array(
     'components' => array(
+        'downloadService' => array(
+            'class'     => 'application.components.DownloadService',
+            ),
         'cryptoService' => array(
             'class'     => 'application.components.CryptoService',
             ),
@@ -60,7 +63,7 @@ return array(
         // For creating hash for password reset functionality
         'signing_key' => '${HASH_SECRET_KEY}',
         
-        // For creating hash for password reset functionality
+        // For creating URLs to dataset files
         'ftp_connection_url' => '${FTP_CONNECTION_URL}',
     ),
 );
