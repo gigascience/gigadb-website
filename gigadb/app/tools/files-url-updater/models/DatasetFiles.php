@@ -318,11 +318,11 @@ class DatasetFiles extends \Yii\base\BaseObject {
 
         if($dbPassword) {
             system("PGPASSWORD=$dbPassword psql -U $dbUser -h {$dbConfig['host']} -p {$dbConfig['port']} -c 'drop owned by $dbUser;' 2> /logs/drop_restore.log >&2");
-            system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --no-owner --verbose --use-list $restoreList -h {$dbConfig['host']} -p {$dbConfig['port']} -U $dbUser --dbname $dbName  sql/gigadbv3_{$dateStr}.backup 2> /logs/drop_restore.log >&2");
+            system("PGPASSWORD=$dbPassword pg_restore --exit-on-error --no-owner --verbose --use-list $restoreList -h {$dbConfig['host']} -p {$dbConfig['port']} -U $dbUser --dbname $dbName  /downloads/gigadbv3_{$dateStr}.backup 2> /logs/drop_restore.log >&2");
         }
         else {
             system("psql -U $dbUser -h {$dbConfig['host']} -p {$dbConfig['port']}  -c 'drop owned by $dbUser;' 2> /logs/drop_restore.log >&2");
-            system("pg_restore --exit-on-error --no-owner --verbose --use-list $restoreList -h {$dbConfig['host']} -U $dbUser -p {$dbConfig['port']} --dbname $dbName  sql/gigadbv3_$dateStr.backup 2> /logs/drop_restore.log >&2");
+            system("pg_restore --exit-on-error --no-owner --verbose --use-list $restoreList -h {$dbConfig['host']} -U $dbUser -p {$dbConfig['port']} --dbname $dbName  /downloads/gigadbv3_$dateStr.backup 2> /logs/drop_restore.log >&2");
         }
     }
 

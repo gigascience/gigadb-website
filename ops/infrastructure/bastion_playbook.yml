@@ -339,11 +339,14 @@
 
   - name: Create a backups directory for storing database dump files
     ansible.builtin.file:
-      path: /home/centos/backups
+      path: "{{ item }}"
       state: directory
       mode: '0755'
       owner: centos
       group: centos
+    loop:
+      - "/home/centos/backups"
+      - "/home/centos/downloads"
 
   - name: Setup cronjob to automate copying database backup file to S3
     ansible.builtin.cron:

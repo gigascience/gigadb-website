@@ -134,11 +134,11 @@ class DatasetFilesController extends Controller
 
                 if ($optDefault) {
                     $downloadHost = DatasetFiles::TESTDATA_HOST;
-                    $lastLine = system("curl -o sql/gigadbv3_default.backup --user {$ftpConfig['username']}:{$ftpConfig['password']} $downloadHost/gigadbv3_default.backup", $returnValue);
+                    $lastLine = system("curl -o /downloads/gigadbv3_default.backup --user {$ftpConfig['username']}:{$ftpConfig['password']} $downloadHost/gigadbv3_default.backup", $returnValue);
                 }
                 else {
                     $downloadHost = $ftpConfig['host'];
-                    $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} $downloadHost /app/sql/ /gigadbv3_{$optDate}.backup", $returnValue);
+                    $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} $downloadHost /downloads/ /gigadbv3_{$optDate}.backup", $returnValue);
                 }
                 if(0 !== $returnValue) {
                     throw new Exception("Failed downloading backup file for date $optDate".$lastLine);
