@@ -46,14 +46,20 @@ class FilesCommand extends CConsoleCommand
             $dataset = Dataset::model()->findByAttributes(array(
                 'identifier' => $doi,
             ));
+            echo $doi;
+            print_r("Dataset: ".$dataset->id.PHP_EOL);
 
             # Download and parse dataset md5 file
-            $contents = file_get_contents($url);
+            //$contents = file_get_contents($url);
+            $contents = DownloadService::downloadFile($url);
+
             $lines = explode("\n", $contents);
             foreach ($lines as $line) {
+                echo "Doing: ".$line.PHP_EOL;
                 $tokens = explode("  ", $line);
                 $md5 = $tokens[0];
                 $filename = basename($tokens[1]);
+                echo $filename.PHP_EOL;
                 if ($filename === "$doi.md5")  // Ignore $doi.md5 file
                     continue;
 

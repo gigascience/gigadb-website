@@ -7,6 +7,7 @@ RUN apt-get update -yq && \
     apt-get install -y --no-install-recommends \
         procps \
         curl \
+        libcurl4-gnutls-dev \
         libmemcached-dev \
         libz-dev \
         libpq-dev \
@@ -24,7 +25,8 @@ RUN apt-get update -yq && \
 
 RUN docker-php-ext-install pdo_pgsql && \
     docker-php-ext-install bcmath && \
-    docker-php-ext-install pcntl
+    docker-php-ext-install pcntl && \
+    docker-php-ext-install curl
 
 # Install the PHP gd library
 RUN docker-php-ext-install gd && \
