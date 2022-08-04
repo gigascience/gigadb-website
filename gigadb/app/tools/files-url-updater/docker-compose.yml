@@ -4,11 +4,6 @@ services:
     build:
       context: .
       dockerfile: LegacyPgDockerfile
-    volumes:
-    # init script that create the necessary DB roles and databases
-      - ./sql/bootstrap_gigadb.sql:/docker-entrypoint-initdb.d/gigadb.sql
-    # we need to expose the port to the docker host so Gigadb webapp can use it
-    # Make sure there's no other daemons using port 5432 on the docker host
     ports:
       - '5432:5432'
 

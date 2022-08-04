@@ -33,6 +33,7 @@ FilesUrlsUpdaterTest:
     - $LOCAL_COMPOSE run --rm config
     - $LOCAL_COMPOSE run --rm updater composer install
     - $LOCAL_COMPOSE up -d pg9_3
+    - $LOCAL_COMPOSE logs pg9_3
     - echo yes | $LOCAL_COMPOSE run --rm updater ./yii dataset-files/download-restore-backup --default
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept build
     - sleep 5
