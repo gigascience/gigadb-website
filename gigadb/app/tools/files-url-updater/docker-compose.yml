@@ -12,6 +12,7 @@ services:
       context: .
     volumes:
       - .:/app
+      - .:/logs
 
 
   config:
