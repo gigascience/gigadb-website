@@ -162,7 +162,7 @@ class DatasetFilesController extends Controller
                 // Ask for confirmation to proceed
                 $dbHost = Yii::$app->params["db"]["host"];
                 $this->stdout("\nWarning! ", Console::FG_RED);
-                switch($this->confirm("This command will drop the configured database (hosted on $dbHost) and restore it from the {$optDate} backup, are you sure you want to proceed?\n")) {
+                switch($this->confirm("This command will drop the configured database (hosted on $dbHost) and restore it from the {$optDate} backup, are you sure you want to proceed?")) {
                     case false:
                         $this->stdout("Aborting.\n", Console::FG_BLUE);
                         return ExitCode::NOPERM;
