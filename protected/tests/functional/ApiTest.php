@@ -95,7 +95,7 @@ class ApiTest extends FunctionalTesting
         $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
-        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->gigadb_entry->files->file[0]->name);
+        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->gigadb_entry->files->file[5]->name);
         $this->assertNull($feed->gigadb_entry->samples->sample);
         $this->assertNull($feed->gigadb_entry->dataset->title);
     }
