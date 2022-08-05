@@ -1,5 +1,6 @@
 <?php
 namespace console\tests\functional;
+use common\models\Manuscript;
 use console\tests\FunctionalTester;
 use yii\console\ExitCode;
 use console\models\ManuscriptsWorker;
@@ -27,8 +28,7 @@ class EMReportJobCest
     {
         $manuscriptCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
 
-        $manuscriptWorker = new ManuscriptsWorker();
-        $manuscriptCsvData = $manuscriptWorker->parseManuscriptReport($manuscriptCsvReport);
+        $manuscriptCsvData = Manuscript::buildFromEmReport($manuscriptCsvReport);
 
         $I->runShellCommand("./yii_test fetch-reports/fetch", false);
         $I->runShellCommand("/usr/local/bin/php /app/yii_test manuscripts-q/run --verbose", false);

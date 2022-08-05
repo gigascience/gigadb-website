@@ -20,22 +20,16 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
 
     public function execute($queue)
     {
-        if ($this->scope === "manuscripts" && $this->content !== "No Results") {
-            $tempManuscriptCsvFile = tempnam(sys_get_temp_dir(), "test-manuscripts").".csv";
-
-            file_put_contents($tempManuscriptCsvFile, $this->content);
-
-            $manuscriptsWorker = new ManuscriptsWorker();
-            $manuscriptsWorker->saveManuscripts($manuscriptsWorker->parseManuscriptReport($tempManuscriptCsvFile));
-            unlink($tempManuscriptCsvFile);
-
+        if ($this->scope === "manuscripts") {
+            $this->executeManuscriptJob($this->content);
+        }
             //TODO: Will be implemented in ticket no. #1065
 //            $ingest = Ingest::findOne(["report_type" => "1", "parse_status" => null]);
 //            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_EXISTS;
 //            $ingest->parse_status = Ingest::PARSE_STATUS_YES;
 //            $ingest->update();
 
-        }
+//        }
             //TODO: Will be implemented in ticket no. #1065
 //        elseif ($this->scope === "manuscripts" && $this->content === "No Results") {
 //            $ingest = Ingest::findOne(["report_type" => "1", "parse_status" => null]);
@@ -45,22 +39,13 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
 //        }
     }
 
-    /**
-     * @param string $emReportPath
-     * @return array
-     */
-    public function parseReport(string $emReportPath):array
+    public function executeManuscriptJob(string $content)
     {
-        $reportData = [];
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
-        $spreadsheet = $reader->load($emReportPath);
-        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+        if ($content !== "No Results") {
+            $tempManuscriptCsvFile = tempnam(sys_get_temp_dir(), "test-manuscripts").".csv";
+            file_put_contents($tempManuscriptCsvFile, $content);
 
-        $columnHeader = str_replace(' ', '_', array_map('strtolower', array_shift($sheetData)));
-        foreach ($sheetData as $row) {
-            $reportData[] = array_combine($columnHeader,$row);
+            Manuscript::saveManuscriptReport($tempManuscriptCsvFile);
         }
-        return ($reportData);
     }
-
 }
