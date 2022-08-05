@@ -12,6 +12,11 @@ modules:
             dsn: 'pgsql:host=database;dbname=gigadb;port=5432'
             user: 'gigadb'
             password: ''
+#            dump: 'sql/gigadb.pgdmp'
+#            populate: true # run populator before all tests
+#            cleanup: true # run populator before each test
+#            # Can use --verbose in pg_restore command to output progress messages
+#            populator: 'PGPASSWORD=$password pg_restore -h database -p $port -U gigadb -d gigadb --no-owner /var/www/sql/gigadb.pgdmp'
         # add a framework module here
         - \Helper\Functional
         - \Helper\MailHelper
