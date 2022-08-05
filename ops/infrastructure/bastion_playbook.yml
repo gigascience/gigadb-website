@@ -347,6 +347,7 @@
     loop:
       - "/home/centos/backups"
       - "/home/centos/downloads"
+      - "/home/centos/converted"
 
   - name: Setup cronjob to automate copying database backup file to S3
     ansible.builtin.cron:
