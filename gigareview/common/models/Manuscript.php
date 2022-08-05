@@ -68,4 +68,41 @@ class Manuscript extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    /**
+     * @param $emReportPath
+     * @return array
+     */
+    public static function buildFromEmReport($emReportPath): array
+    {
+        $reportData = [];
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        $spreadsheet = $reader->load($emReportPath);
+        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+        $columnHeader = str_replace(' ', '_', array_map('strtolower', array_shift($sheetData)));
+        foreach ($sheetData as $row) {
+            $reportData[] = array_combine($columnHeader,$row);
+        }
+        return $reportData;
+    }
+
+    /**
+     * @param $emReportPath
+     * @return Manuscript
+     */
+    public static function saveManuscriptReport($emReportPath): Manuscript
+    {
+        $reportContent = self::buildFromEmReport($emReportPath);
+        file_put_contents('test-content.txt', print_r($reportContent,true));
+        foreach ($reportContent as $content) {
+            $manuscript = new Manuscript();
+            $manuscript->manuscript_number = $content['manuscript_number'];
+            $manuscript->article_title = $content['article_title'];
+            $manuscript->editorial_status_date = $content['editorial_status_date'];
+            $manuscript->editorial_status = $content['editorial_status'];
+            $manuscript->save();
+        }
+        return $manuscript;
+    }
 }
