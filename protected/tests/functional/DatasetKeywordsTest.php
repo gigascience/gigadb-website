@@ -42,7 +42,7 @@ class DatasetKeywordsTest extends FunctionalTesting
         $this->fillDatasetUpdateFormJustKeywords($input);
 
         // Check that after submission we land on the dataset view
-        $this->assertEquals( "http://gigadb.dev/dataset/100002", $this->getCurrentUrl() );
+        $this->assertEquals( "http://gigadb.dev/dataset/100006", $this->getCurrentUrl() );
 
         // Check that the content of the page match our $expectation given $input
         foreach($expectation as $keyword) {

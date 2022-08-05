@@ -4,3 +4,4 @@ id,attribute_name,definition,model,structured_comment_name,value_syntax,allowed_
 422,Source material identifiers,,,,,,,,
 455,keyword,,,keywords,,,,,
 497,urltoredirect,,,urltoredirect,,,,,
+605,MD5 checksum,"The MD5 hash functions as a compact digital fingerprint of a file and is calculated by using the MD5 hashing algorithm md5sum, a program that is included in most Unix-like systems, Windows and Mac OS system alternatives are also readily available. md5sum is used to verify the integrity of files, as virtually any change to a file will cause its MD5 hash to change",,MD5sum,,,,,
