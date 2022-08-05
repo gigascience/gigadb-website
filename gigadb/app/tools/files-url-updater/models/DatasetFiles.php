@@ -308,7 +308,7 @@ class DatasetFiles extends \Yii\base\BaseObject {
             var_dump($dbName);
         }
 
-        system("head -2 sql/gigadbv3_$dateStr.backup | tail -1 | cat -e | grep 9.3",$retval); # test whether we have test data or real production backup
+        system("head -2 /downloads/gigadbv3_$dateStr.backup | tail -1 | cat -e | grep 9.3",$retval); # test whether we have test data or real production backup
         if(0 === $retval) {
             $restoreList = "sql/default_restore.list";
         }
