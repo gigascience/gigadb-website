@@ -94,7 +94,6 @@ class Manuscript extends \yii\db\ActiveRecord
     public static function saveManuscriptReport($emReportPath): Manuscript
     {
         $reportContent = self::buildFromEmReport($emReportPath);
-        file_put_contents('test-content.txt', print_r($reportContent,true));
         foreach ($reportContent as $content) {
             $manuscript = new Manuscript();
             $manuscript->manuscript_number = $content['manuscript_number'];
