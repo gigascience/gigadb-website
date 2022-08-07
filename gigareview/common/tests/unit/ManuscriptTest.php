@@ -2,6 +2,7 @@
 namespace common\tests;
 
 use common\models\Manuscript;
+use Manuscript as GlobalManuscript;
 
 class ManuscriptTest extends \Codeception\Test\Unit
 {
@@ -60,5 +61,16 @@ class ManuscriptTest extends \Codeception\Test\Unit
 
         $parsedCsvReportData = Manuscript::buildFromEmReport($sampleCsvReport);
         $this->assertEquals($expectCsvReportData, $parsedCsvReportData, "Csv failed to parse!");
+    }
+
+    public function testCanSaveToManuscriptTable()
+    {
+        $sampleCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
+        $saveToManuscriptTable = Manuscript::saveManuscriptReport($sampleCsvReport);
+
+        file_put_contents('test-save.txt', print_r($saveToManuscriptTable,true));
+        // $this->assertTrue(is_bool($saveToManuscriptTable) === true, "bool is returned");
+        // $this->assertTrue(true === $saveToManuscriptTable, "No new entry is saved to manuscript table");
+
     }
 }
