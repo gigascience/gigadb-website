@@ -17,7 +17,8 @@ $submitter_email=$model->submitter->email;
 $xml.="<email>$submitter_email</email>";
 $xml.="</submitter>";
 //title,description,
-$xml.="<title>$model->title </title>";
+$title = strip_tags($model->title);
+$xml.="<title>$title</title>";
 $model->description=  str_replace("<br>","<br />", $model->description);
 $model->description= htmlspecialchars($model->description, ENT_XML1, 'UTF-8');
 $xml.="<description> $model->description</description>";

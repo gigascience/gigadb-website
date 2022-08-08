@@ -14,19 +14,17 @@ class ApiTest extends FunctionalTesting
 {
     use BrowserPageSteps;
 
-	public function testItShouldOutputDatasetOnly() {
+    public function testItShouldOutputDatasetOnly() {
         $url = "http://gigadb.dev/api/dataset/doi/100006?result=dataset" ;
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
-        print_r($feed);
 
         // Validate text presence on a page.
         $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", $feed->dataset->title);
         $this->assertNull($feed->samples->sample);
         $this->assertNull($feed->files->file);
-
-	}
+    }
 
     public function testItShouldOutputSamplesOnly() {
         $url = "http://gigadb.dev/api/dataset/doi/100006?result=sample" ;
