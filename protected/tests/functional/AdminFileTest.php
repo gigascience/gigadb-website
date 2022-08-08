@@ -32,7 +32,7 @@ class AdminFileTest extends FunctionalTesting
      * @dataProvider adminFileExamplesOfAppropriateMetricDisplayOfFileSize
      */
     public function testItShouldDisplayFormattedFileSize($size_value, $size_unit) {
-        $url = "http://gigadb.dev/adminFile/create1/id/211/" ;
+        $url = "http://gigadb.dev/adminFile/create1/id/22/" ;
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "$size_value $size_unit");
     }
 
@@ -45,7 +45,7 @@ class AdminFileTest extends FunctionalTesting
      */
     public function testItShouldDisplayFormattedFileSizeOnUpdate($size_value, $size_unit) {
         // Go to the file admin tab of the Dataset wizard
-        $url = "http://gigadb.dev/adminFile/update1/?id=211" ;
+        $url = "http://gigadb.dev/adminFile/update1/?id=22" ;
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, "$size_value $size_unit");
     }
 
