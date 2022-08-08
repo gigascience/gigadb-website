@@ -15,13 +15,13 @@ class AuthorisedDatasetFilesUploadAction extends FunctionalTesting
     use DatabaseSteps;
 
     /** @var string $url url of file upload endpoint to test access control on */
-    public $url = "http://gigadb.dev/authorisedDataset/uploadFiles/id/100005" ;
+    public $url = "http://gigadb.dev/authorisedDataset/uploadFiles/id/100142" ;
 
     /** @var string $userEmail email of logged in user */
-    private $userEmail = "user@gigadb.org";
+    private $userEmail = "test+336@gigasciencejournal.com";
 
     /** @var string $doi DOI to use for testing */
-    private $doi = "100005";
+    private $doi = "100142";
 
     /** @var PDO $dbh database handle for GigaDB database */
     public $dbh;
@@ -96,13 +96,13 @@ class AuthorisedDatasetFilesUploadAction extends FunctionalTesting
     public function testSubmitterCanPerformAction() {
 
         // set upload status to the correct UserUploadingData
-        $this->setUpDatasetUploadStatus($this->dbh, "100005","UserUploadingData");
+        $this->setUpDatasetUploadStatus($this->dbh, "100142","UserUploadingData");
 
         //regular user who own that dataset is logged to gigadb
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
-            "user@gigadb.org",
+            "test+336@gigasciencejournal.com",
             "gigadb",
-            "John's GigaDB Page");
+            "Hugh's GigaDB Page");
 
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull(
                 $this->url, "GigaDB - UploadFiles AuthorisedDataset");
@@ -112,7 +112,7 @@ class AuthorisedDatasetFilesUploadAction extends FunctionalTesting
     public function testOtherLoggedUsersCannotPerformAction() {
 
         // set upload status to the correct UserUploadingData
-        $this->setUpDatasetUploadStatus($this->dbh, "100005","UserUploadingData");
+        $this->setUpDatasetUploadStatus($this->dbh, "100142","UserUploadingData");
 
         //Joy Fox user is logged to gigadb
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
@@ -128,13 +128,13 @@ class AuthorisedDatasetFilesUploadAction extends FunctionalTesting
     public function testWrongStatusNoOneCanPerformAction() {
 
         // set upload status to something not UserUploadingData
-        $this->setUpDatasetUploadStatus($this->dbh, "100005","Published");
+        $this->setUpDatasetUploadStatus($this->dbh, "100142","Published");
 
         //regular user who own that dataset is logged to gigadb
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
-            "user@gigadb.org",
+            "test+336@gigasciencejournal.com",
             "gigadb",
-            "John's GigaDB Page");
+            "Hugh's GigaDB Page");
 
         $this->session->visit($this->url);
         $this->assertEquals(409, $this->session->getStatusCode());
@@ -144,7 +144,7 @@ class AuthorisedDatasetFilesUploadAction extends FunctionalTesting
     public function testGuestsAreRedirected() {
 
         // set upload status to the correct UserUploadingData
-        $this->setUpDatasetUploadStatus($this->dbh, "100005","UserUploadingData");
+        $this->setUpDatasetUploadStatus($this->dbh, "100142","UserUploadingData");
 
         $this->session->visit($this->url);
         $this->assertEquals("http://gigadb.dev/site/login", $this->session->getCurrentUrl());
@@ -152,25 +152,25 @@ class AuthorisedDatasetFilesUploadAction extends FunctionalTesting
 
     public function testAuthorSeeUploaderAndNoUploadsExist() {
         // set upload status to the correct UserUploadingData
-        $this->setUpDatasetUploadStatus($this->dbh, "100005","UserUploadingData");
+        $this->setUpDatasetUploadStatus($this->dbh, "100142","UserUploadingData");
 
         //regular user who own that dataset is logged to gigadb
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
-            "user@gigadb.org",
+            "test+336@gigasciencejournal.com",
             "gigadb",
-            "John's GigaDB Page");
+            "Hugh's GigaDB Page");
 
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull(
                 $this->url, "GigaDB - UploadFiles AuthorisedDataset");
 
         $this->assertNotFalse( 
             strstr($this->session->getPage()->getContent(), 
-                    '<uploader identifier="100005" endpoint="/fileserver/" />'
+                    '<uploader identifier="100142" endpoint="/fileserver/" />'
             )
         );
         $this->assertNotFalse( 
             strstr($this->session->getPage()->getContent(), 
-                    '<pager identifier="100005" uploads-exist="0"/>'
+                    '<pager identifier="100142" uploads-exist="0"/>'
                 )
         );        
 
@@ -193,19 +193,19 @@ class AuthorisedDatasetFilesUploadAction extends FunctionalTesting
         $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
             $this->userEmail,
             "gigadb",
-            "John's GigaDB Page");
+            "Hugh's GigaDB Page");
 
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull(
                 $this->url, "GigaDB - UploadFiles AuthorisedDataset");
 
         $this->assertNotFalse( 
             strstr($this->session->getPage()->getContent(), 
-                    '<uploader identifier="100005" endpoint="/fileserver/" />'
+                    '<uploader identifier="100142" endpoint="/fileserver/" />'
             )
         );        
         $this->assertNotFalse( 
             strstr($this->session->getPage()->getContent(), 
-                    '<pager identifier="100005" uploads-exist="2"/>'
+                    '<pager identifier="100142" uploads-exist="2"/>'
             )
         );
     }

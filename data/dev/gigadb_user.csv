@@ -5,7 +5,7 @@ id,email,password,first_name,last_name,affiliation,role,is_activated,newsletter,
 38,admin1@gigasciencejournal.com,bcf839ae349d13cb0c3c4a9ec0cc243e,C,H,BGI,admin,t,t,t,,,,114715812788877222335,admin1@gigasciencejournal.com,,EBI
 44,test+gigadb44@gigasciencejournal.com,5a4f75053077a32e681f81daa8792f95,test,gigadb44,BGI,"",false,true,false,,,,,test+gigadb44@gigasciencejournal.com,,EBI
 163,test+163@gigasciencejournal.com,5a4f75053077a32e681f81daa8792f95,Carson,Chow,National Institutes of Health,user,t,f,t,,,,,test+163@gigasciencejournal.com,,EBI
-336,test+336@gigasciencejournal.com,5a4f75053077a32e681f81daa8792f95,Hugh,Shanahan,"Department of Computer Science, Royal Holloway, University of London, Egham, TW20 0EX, UK","",f,t,f,,,,,test+336@gigasciencejournal.com,,EBI
+336,test+336@gigasciencejournal.com,5a4f75053077a32e681f81daa8792f95,Hugh,Shanahan,"Department of Computer Science, Royal Holloway, University of London, Egham, TW20 0EX, UK","",t,t,f,,,,,test+336@gigasciencejournal.com,,EBI
 339,test+339@gigasciencejournal.com,5a4f75053077a32e681f81daa8792f95,Scott,Edmunds,BGI,admin,true,true,false,,,,,test+339@gigasciencejournal.com,,EBI
 345,test+345@gigasciencejournal.com,5a4f75053077a32e681f81daa8792f95,John,Smith,BGI,user,t,f,t,,,,,test+345@gigasciencejournal.com,EBI
 ,admin@gigadb.org,5a4f75053077a32e681f81daa8792f95,Joe,Bloggs,BGI,admin,true,false,true,,,,,admin@gigadb.org,,EBI

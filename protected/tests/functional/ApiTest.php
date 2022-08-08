@@ -19,6 +19,7 @@ class ApiTest extends FunctionalTesting
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
+        print_r($feed);
 
         // Validate text presence on a page.
         $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", $feed->dataset->title);
@@ -105,6 +106,7 @@ class ApiTest extends FunctionalTesting
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
+        print_r($feed);
 
         // Validate text presence on a page.
         $this->assertEquals("Pygoscelis_adeliae", $feed->gigadb_entry->samples->sample[0]->name);

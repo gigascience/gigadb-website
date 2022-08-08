@@ -22,11 +22,11 @@ trait CommonDataProviders
      **/
     public function adminFileExamplesOfAppropriateMetricDisplayOfFileSize() {
         return [
-            'millet.chr.version2.3.fa.gz: 109B' => ["109", "B"],
-            'Millet.fa.glean.cds.v3.gz: 13000B' => ["12.70", "KiB"],
-            'Millet.fa.glean.pep.v3.gz: 85000000B' => ["81.06", "MiB"],
-            'Millet.fa.glean.v3.gff: 14000000B' => ["13.35", "MiB"],
-            'Millet_scaffoldVersion2.3.fa.gz: 109000B' => ["106.45", "KiB"],
+            'millet.chr.version2.3.fa.gz: 109000000B' => ["109.92", "MiB"],
+            'Millet.fa.glean.cds.v3.gz: 13000000B' => ["13.10", "MiB"],
+            'Millet.fa.glean.pep.v3.gz: 8500000B' => ["8.50", "MiB"],
+            'Millet.fa.glean.v3.gff: 14000000B' => ["14.04", "MiB"],
+            'Millet_scaffoldVersion2.3.fa.gz: 109000000B' => ["109.37", "MiB"],
         ];
     }
 }

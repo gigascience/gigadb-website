@@ -31,7 +31,7 @@ class DatasetMockupViewActionTest extends FunctionalTesting
         parent::setUp();
 
         $this->url = "http://gigadb.dev/dataset/mockup" ;
-        $this->doi = "100005";
+        $this->doi = "100142";
 
         try {
             $this->dbh_gigadb = new PDO("pgsql:host=".getenv("GIGADB_HOST").";dbname=".getenv("GIGADB_DB"), getenv("GIGADB_USER"), getenv("GIGADB_PASSWORD"));
