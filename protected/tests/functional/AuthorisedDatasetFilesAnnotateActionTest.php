@@ -147,7 +147,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         ];
         $response = $webClient->request('POST', $this->url . "authorisedDataset/annotateFiles/id/" . $this->doi, [
             'cookies' => $jar,
-            form_params => $metadata
+            'form_params' => $metadata
         ]);
         $this->assertEquals(302, $container[0]['response']->getStatusCode());
 
