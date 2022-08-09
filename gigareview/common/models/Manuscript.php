@@ -71,9 +71,9 @@ class Manuscript extends \yii\db\ActiveRecord
 
     /**
      * @param $emReportPath
-     * @return array
+     * @return Manuscript
      */
-    public static function buildFromEmReport($emReportPath): array
+    public static function createFromEmReport($emReportPath): Manuscript
     {
         $reportData = [];
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
@@ -84,7 +84,16 @@ class Manuscript extends \yii\db\ActiveRecord
         foreach ($sheetData as $row) {
             $reportData[] = array_combine($columnHeader,$row);
         }
-        return $reportData;
+
+        foreach ($reportData as $data) {
+            $manuscriptReport = new Manuscript();
+            $manuscriptReport->manuscript_number = $data['manuscript_number'];
+            $manuscriptReport->article_title = $data['article_title'];
+            $manuscriptReport->editorial_status_date =$data['editorial_status_date'];
+            $manuscriptReport->editorial_status = $data['editorial_status'];
+        }
+
+        return $manuscriptReport;
     }
 
     /**
@@ -93,7 +102,7 @@ class Manuscript extends \yii\db\ActiveRecord
      */
     public static function saveManuscriptReport($emReportPath): Manuscript
     {
-        $reportContent = self::buildFromEmReport($emReportPath);
+        $reportContent = self::createFromEmReport($emReportPath);
         foreach ($reportContent as $content) {
             $manuscript = new Manuscript();
             $manuscript->manuscript_number = $content['manuscript_number'];
