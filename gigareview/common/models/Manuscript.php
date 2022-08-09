@@ -85,15 +85,17 @@ class Manuscript extends \yii\db\ActiveRecord
             $reportData[] = array_combine($columnHeader,$row);
         }
 
+        $manuscript = new Manuscript();
         foreach ($reportData as $data) {
             $manuscriptReport = new Manuscript();
-            $manuscriptReport->manuscript_number = $data['manuscript_number'];
-            $manuscriptReport->article_title = $data['article_title'];
-            $manuscriptReport->editorial_status_date =$data['editorial_status_date'];
-            $manuscriptReport->editorial_status = $data['editorial_status'];
+            $manuscript->manuscript_number = $data['manuscript_number'];
+            $manuscript->article_title = $data['article_title'];
+            $manuscript->editorial_status_date =$data['editorial_status_date'];
+            $manuscript->editorial_status = $data['editorial_status'];
+            $manuscript->save();
         }
 
-        return $manuscriptReport;
+        return $manuscript;
     }
 
     /**
