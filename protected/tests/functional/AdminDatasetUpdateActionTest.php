@@ -45,13 +45,13 @@ class AdminDatasetUpdateActionTest extends FunctionalTesting
             exit("Failed connecting to database fuw:". $e->getMessage());
         }
 
-        $this->url = "http://gigadb.dev/adminDataset/update/id/213" ;
+        $this->url = "http://gigadb.dev/adminDataset/update/id/200" ;
 
     }
 
     public function tearDown()
     {
-        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "100005","Published");
+        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "100142","Published");
         $this->tearDownFiledropAccount($this->dbh_fuw);
         $this->tearDownUserIdentity(
             $this->dbh_fuw,
@@ -67,7 +67,7 @@ class AdminDatasetUpdateActionTest extends FunctionalTesting
 
     public function testSetUploadToRejected() {
 
-        $testDOI = "100005";
+        $testDOI = "100142";
         $curationEntry = "Status changed to Rejected";
         // set upload status to the  UserUploadingData
         $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","DataAvailableForReview");
@@ -90,7 +90,7 @@ class AdminDatasetUpdateActionTest extends FunctionalTesting
 
     public function testSetUploadToSubmitted() {
 
-        $testDOI = "100005";
+        $testDOI = "100142";
         $curationEntry = "Status changed to Submitted";
         // set upload status to the  UserUploadingData
         $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","DataAvailableForReview");
@@ -113,7 +113,7 @@ class AdminDatasetUpdateActionTest extends FunctionalTesting
 
     public function testSetUploadToPublished() {
 
-        $testDOI = "100005";
+        $testDOI = "100142";
         $curationEntry = "Status changed to Published";
         // set upload status to the  UserUploadingData
         $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","Private");
