@@ -36,7 +36,7 @@ class DatasetKeywordsTest extends FunctionalTesting
     {
 
         // Make a call to the dataset update form
-        $url = "http://gigadb.dev/adminDataset/update/id/210" ;
+        $url = "http://gigadb.dev/adminDataset/update/id/8" ;
         $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull( $url, null);
 
         $this->fillDatasetUpdateFormJustKeywords($input);
