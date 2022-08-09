@@ -358,39 +358,3 @@
       job: "docker run --rm --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/{{ gitlab_project }}/production_s3backup:staging"
       state: "{{ upload_database_backup_to_S3_cronjob_state }}"
 
-
-
-  #TODO: remove the next three blocks when gigareview is built and deployed through Gitlab Pipeline
-  - name: Unarchive a file that needs to be downloaded (added in 2.0)
-    ansible.builtin.unarchive:
-      src: https://github.com/rija/gigadb-website/archive/refs/heads/review-workers.zip
-      dest: /home/centos
-      remote_src: yes
-      owner: centos
-      group: centos
-
-  - name: Install local gigareview .env
-    ansible.builtin.copy:
-      src: ../../../../gigareview/.env
-      dest: /home/centos/gigadb-website-review-workers/gigareview
-      owner: centos
-      group: centos
-
-  - name: Replace environment to staging
-    ansible.builtin.replace:
-      path: /home/centos/gigadb-website-review-workers/gigareview/.env
-      regexp: 'REVIEW_ENV=\w+'
-      replace: 'REVIEW_ENV={{ gigadb_environment }}'
-
-  - name: Start gigareview on bastion host
-    ansible.builtin.command: ./up.sh
-    args:
-      chdir: /home/centos/gigadb-website-review-workers/gigareview
-
-  - name: Setup cronjob to automate Editorial Manager report ingest
-    ansible.builtin.cron:
-      name: "Fetch latest EM reports"
-      minute: "00"
-      hour: "13"
-      user: "centos"
-      job: "cd /home/centos/gigadb-website-review-workers/gigareview ; /usr/local/bin/docker-compose run --rm console ./yii fetch-reports/fetch latest 2> $HOME/logs/em_reports_ingest_errors.log 1> $HOME/logs/em_reports_ingest_output.log"
