@@ -127,7 +127,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         $jar = new \GuzzleHttp\Cookie\CookieJar;
         $response = $webClient->request('POST', $this->url . 'site/login', [
             'cookies' => $jar,
-            form_params => [
+            'form_params' => [
                 "LoginForm[username]" => "user@gigadb.org",
                 "LoginForm[password]" => "gigadb",
                 "LoginForm[rememberMe]" => "2592000",
@@ -147,7 +147,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         ];
         $response = $webClient->request('POST', $this->url . "authorisedDataset/annotateFiles/id/" . $this->doi, [
             'cookies' => $jar,
-            form_params => $metadata
+            'form_params' => $metadata
         ]);
         $this->assertEquals(302, $container[0]['response']->getStatusCode());
 
@@ -178,7 +178,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         $jar = new \GuzzleHttp\Cookie\CookieJar;
         $response = $webClient->request('POST', $this->url . 'site/login', [
             'cookies' => $jar,
-            form_params => [
+            'form_params' => [
                 "LoginForm[username]" => "user@gigadb.org",
                 "LoginForm[password]" => "gigadb",
                 "LoginForm[rememberMe]" => "2592000",
@@ -212,7 +212,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         ];
         $response = $webClient->request('POST', $this->url . "authorisedDataset/annotateFiles/id/" . $this->doi, [
             'cookies' => $jar,
-            form_params => $metadata
+            'form_params' => $metadata
         ]);
         $this->assertEquals(302, $container[0]['response']->getStatusCode());
         $this->assertTrue(preg_match("/3 attribute\(s\) added for upload someFile\.csv/", $response->getBody()) == 1);
@@ -256,7 +256,7 @@ public function testPostUploadsMetadataSpreadsheet() {
         $jar = new \GuzzleHttp\Cookie\CookieJar;
         $response = $webClient->request('POST', $this->url . 'site/login', [
             'cookies' => $jar,
-            form_params => [
+            'form_params' => [
                 "LoginForm[username]" => "user@gigadb.org",
                 "LoginForm[password]" => "gigadb",
                 "LoginForm[rememberMe]" => "2592000",
