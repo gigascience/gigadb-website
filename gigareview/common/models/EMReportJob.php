@@ -4,10 +4,6 @@ namespace common\models;
 
 use \Yii;
 use yii\queue\Queue;
-use \PhpOffice\PhpSpreadsheet\Reader;
-use common\models\Ingest;
-use console\models\ManuscriptsWorker;
-
 
 class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterface
 {
@@ -39,13 +35,50 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
 //        }
     }
 
-    public function executeManuscriptJob(string $content)
+
+    public function executeManuscriptJob(string $content): void
     {
         if ($content !== "No Results") {
+            //Step 1: Put queue content to csv
             $tempManuscriptCsvFile = tempnam(sys_get_temp_dir(), "test-manuscripts").".csv";
             file_put_contents($tempManuscriptCsvFile, $content);
 
-            Manuscript::saveManuscriptReport($tempManuscriptCsvFile);
+            //Step 2: Parse the csv
+            $reportData = self::parseReport($content);
+
+            //Step 3: Create manuscript instance
+//            $manuscriptContents = Manuscript::createInstanceFromEmReport($reportData);
+
+//            //Step 4: Save content to table
+//            $this->storeManuscript($manuscriptContents);
+
         }
     }
+
+    /**
+     * @param $emReportPath
+     * @return array
+     */
+
+    public static function parseReport($emReportPath): array
+    {
+        $reportData = [];
+
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        $spreadsheet = $reader->load($emReportPath);
+        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+        $columnHeader = str_replace(' ', '_', array_map('strtolower', array_shift($sheetData)));
+        foreach ($sheetData as $row) {
+            $reportData[] = array_combine($columnHeader,$row);
+        }
+        return $reportData;
+    }
+
+//    public function storeManuscript(array $manuscriptReport)
+//    {
+//        foreach ($manuscriptReport as $report) {
+//            $report->save();
+//        }
+//    }
 }
