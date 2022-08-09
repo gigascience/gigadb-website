@@ -73,18 +73,8 @@ class Manuscript extends \yii\db\ActiveRecord
      * @param $emReportPath
      * @return Manuscript[]
      */
-    public static function createInstanceFromEmReport($emReportPath): array
+    public static function createInstanceFromEmReport($reportData): array
     {
-        $reportData = [];
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
-        $spreadsheet = $reader->load($emReportPath);
-        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-
-        $columnHeader = str_replace(' ', '_', array_map('strtolower', array_shift($sheetData)));
-        foreach ($sheetData as $row) {
-            $reportData[] = array_combine($columnHeader,$row);
-        }
-
         $manuscripts = [];
 
         foreach ($reportData as $data) {
