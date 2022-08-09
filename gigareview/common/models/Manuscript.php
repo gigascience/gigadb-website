@@ -70,7 +70,7 @@ class Manuscript extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param $emReportPath
+     * @param $reportData
      * @return Manuscript[]
      */
     public static function createInstanceFromEmReport($reportData): array
