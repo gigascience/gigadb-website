@@ -1,6 +1,7 @@
 <?php
 namespace common\tests;
 
+use common\models\EMReportJob;
 use common\models\Manuscript;
 use Manuscript as GlobalManuscript;
 
@@ -34,7 +35,7 @@ class ManuscriptTest extends \Codeception\Test\Unit
         $this->assertGreaterThan($manuscript->created_at, $manuscript->updated_at);
     }
 
-    public function testCreateInstanceFromReport()
+    public function testCanCreateInstanceFromReport()
     {
         $expectCsvReportData = [
             [
@@ -59,7 +60,8 @@ class ManuscriptTest extends \Codeception\Test\Unit
 
         $sampleCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
 
-        $manuscriptData = Manuscript::createInstanceFromEmReport($sampleCsvReport);
+        $reportData = EMReportJob::parseReport($sampleCsvReport);
+        $manuscriptData = Manuscript::createInstanceFromEmReport($reportData);
         $this->assertNotNull($manuscriptData);
 
         for ($i=0; $i <= count($expectCsvReportData) - 1; $i++) {
@@ -70,17 +72,17 @@ class ManuscriptTest extends \Codeception\Test\Unit
         }
     }
 
-//    public function testCanSaveToManuscriptTable()
-//    {
-////        $sampleCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
-////        $saveToManuscriptTable = Manuscript::saveManuscriptReport($sampleCsvReport);
-////
-////        $this->assertNotNull($saveToManuscriptTable);
-////        $this->assertTrue(is_a($saveToManuscriptTable, Manuscript::class));
+    public function testCanStoreToManuscriptTable()
+    {
+//        $sampleCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
+//        $saveToManuscriptTable = Manuscript::saveManuscriptReport($sampleCsvReport);
 //
-//        // file_put_contents('test-manuscript.txt', print_r(is_bool($saveToManuscriptTable),true));
-//        // $this->assertTrue(is_bool($saveToManuscriptTable) === true, "bool is returned");
-//        // $this->assertTrue(true === $saveToManuscriptTable, "No new entry is saved to manuscript table");
-//
-//    }
+//        $this->assertNotNull($saveToManuscriptTable);
+//        $this->assertTrue(is_a($saveToManuscriptTable, Manuscript::class));
+
+        // file_put_contents('test-manuscript.txt', print_r(is_bool($saveToManuscriptTable),true));
+        // $this->assertTrue(is_bool($saveToManuscriptTable) === true, "bool is returned");
+        // $this->assertTrue(true === $saveToManuscriptTable, "No new entry is saved to manuscript table");
+
+    }
 }
