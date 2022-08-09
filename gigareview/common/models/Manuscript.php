@@ -71,9 +71,9 @@ class Manuscript extends \yii\db\ActiveRecord
 
     /**
      * @param $emReportPath
-     * @return Manuscript
+     * @return Manuscript[]
      */
-    public static function createFromEmReport($emReportPath): Manuscript
+    public static function createInstanceFromEmReport($emReportPath): array
     {
         $reportData = [];
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
@@ -85,34 +85,16 @@ class Manuscript extends \yii\db\ActiveRecord
             $reportData[] = array_combine($columnHeader,$row);
         }
 
-        $manuscript = new Manuscript();
+        $manuscripts = [];
+
         foreach ($reportData as $data) {
             $manuscriptReport = new Manuscript();
-            $manuscript->manuscript_number = $data['manuscript_number'];
-            $manuscript->article_title = $data['article_title'];
-            $manuscript->editorial_status_date =$data['editorial_status_date'];
-            $manuscript->editorial_status = $data['editorial_status'];
-            $manuscript->save();
+            $manuscriptReport->manuscript_number = $data['manuscript_number'];
+            $manuscriptReport->article_title = $data['article_title'];
+            $manuscriptReport->editorial_status_date =$data['editorial_status_date'];
+            $manuscriptReport->editorial_status = $data['editorial_status'];
+            $manuscripts[] = $manuscriptReport;
         }
-
-        return $manuscript;
-    }
-
-    /**
-     * @param $emReportPath
-     * @return Manuscript
-     */
-    public static function saveManuscriptReport($emReportPath): Manuscript
-    {
-        $reportContent = self::createFromEmReport($emReportPath);
-        foreach ($reportContent as $content) {
-            $manuscript = new Manuscript();
-            $manuscript->manuscript_number = $content['manuscript_number'];
-            $manuscript->article_title = $content['article_title'];
-            $manuscript->editorial_status_date = $content['editorial_status_date'];
-            $manuscript->editorial_status = $content['editorial_status'];
-            $manuscript->save();
-        }
-        return $manuscript;
+        return $manuscripts;
     }
 }
