@@ -57,7 +57,7 @@ class FilesCommand extends CConsoleCommand
             foreach ($lines as $line) {
                 echo "Doing: ".$line.PHP_EOL;
                 $tokens = explode("  ", $line);
-                $md5 = $tokens[0];
+                $md5_value = $tokens[0];
                 $filename = basename($tokens[1]);
                 echo $filename.PHP_EOL;
                 if ($filename === "$doi.md5")  // Ignore $doi.md5 file
@@ -68,7 +68,7 @@ class FilesCommand extends CConsoleCommand
                     'dataset_id' => $dataset->id,
                     'name' => $filename,
                 ));
-                $adminFileController->updateMd5Checksum($file->id, $md5);
+                $adminFileController->updateMd5Checksum($file->id, $md5_value);
             }
         }
         catch (Exception $e) {
@@ -95,7 +95,7 @@ class FilesCommand extends CConsoleCommand
 
         foreach ($ranges as $range) {
             $url = Yii::app()->params['ftp_connection_url']."/pub/gigadb/pub/10.5524/$range/$doi/$doi.md5";
-            // Check URL resolves to a file
+            // Check URL resolves to a real file
             $file_exists = @fopen($url, 'r');
             if ($file_exists)
                 return $url;

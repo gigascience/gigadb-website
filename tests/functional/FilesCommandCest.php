@@ -19,7 +19,8 @@ class FilesCommandCest
     }
 
     /**
-     * Check actionUpdateAllMD5FileAttributes($doi) function in FilesCommand
+     * Check DOI 100006 can be used to download a md5 file that is then used to
+     * update md5 file attribute values
      */
     public function tryToUpdateMD5FileAttributes(FunctionalTester $I)
     {
@@ -35,6 +36,16 @@ class FilesCommandCest
         $I->seeInDatabase('file_attributes', ['id' => '10673', 'value' => 'bd9bed43475eaa22b6ab62b9fb7a3909']);
         $I->seeInDatabase('file_attributes', ['id' => '10674', 'value' => '55c764721558086197bfbd663e1567a6']);
         $I->seeInDatabase('file_attributes', ['id' => '10675', 'value' => '826b699c854cc0f06e982d836410a81b']);
+    }
+
+    /**
+     * Check dummy DOI cannot resolve to a real md5 file
+     */
+    public function tryToUpdateMD5FileAttributesWithUnresolvableMD5File(FunctionalTester $I)
+    {
+        // Execute FileCommand function with dummy doi
+        $output = shell_exec("./protected/yiic_test files updateMD5FileAttributes --doi=888888");
+        $I->assertContains("888888.md5 file not found for dataset DOI 888888", $output);
     }
 
     public function tryNotToOutputResolvableLinks(FunctionalTester $I)
