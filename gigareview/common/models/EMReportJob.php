@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use \Yii;
 use yii\queue\Queue;
 
@@ -44,13 +45,13 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             file_put_contents($tempManuscriptCsvFile, $content);
 
             //Step 2: Parse the csv
-            $reportData = self::parseReport($content);
+            $reportData = self::parseReport($tempManuscriptCsvFile);
 
             //Step 3: Create manuscript instance
-//            $manuscriptContents = Manuscript::createInstanceFromEmReport($reportData);
+            $manuscriptContents = Manuscript::createInstanceFromEmReport($reportData);
 
 //            //Step 4: Save content to table
-//            $this->storeManuscript($manuscriptContents);
+            $this->storeManuscript($manuscriptContents);
 
         }
     }
@@ -64,7 +65,7 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     {
         $reportData = [];
 
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        $reader = new Csv();
         $spreadsheet = $reader->load($emReportPath);
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
 
@@ -75,10 +76,10 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
         return $reportData;
     }
 
-//    public function storeManuscript(array $manuscriptReport)
-//    {
-//        foreach ($manuscriptReport as $report) {
-//            $report->save();
-//        }
-//    }
+    public function storeManuscript(array $manuscriptReport)
+    {
+        foreach ($manuscriptReport as $report) {
+            $report->save();
+        }
+    }
 }
