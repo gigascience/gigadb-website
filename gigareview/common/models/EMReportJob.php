@@ -84,10 +84,10 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     {
         $saveStatus = 0;
         foreach ($manuscriptObject as $manuscript) {
-            if (!$manuscript->save()) {
-                $saveStatus = 0;
-            } else {
+            if ($manuscript->save()) {
                 $saveStatus = 1;
+            } else {
+                $saveStatus = 0;
             }
         }
         return $saveStatus;
