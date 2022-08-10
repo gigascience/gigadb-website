@@ -3,6 +3,7 @@
  * Command to check fils url
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
+ * @author Peter Li <peter+git@gigasciencejournal.com>
  * @license GPL-3.0
  */
 
@@ -33,6 +34,7 @@ class FilesCommand extends CConsoleCommand
      * Update MD5 checksum attribute for all files in a dataset given its DOI
      * 
      * @param $doi
+     * @return void
      */
     public function actionUpdateMD5FileAttributes($doi) {
         Yii::import('application.controllers.*');
@@ -46,20 +48,14 @@ class FilesCommand extends CConsoleCommand
             $dataset = Dataset::model()->findByAttributes(array(
                 'identifier' => $doi,
             ));
-            echo $doi;
-            print_r("Dataset: ".$dataset->id.PHP_EOL);
 
             # Download and parse dataset md5 file
-            //$contents = file_get_contents($url);
             $contents = DownloadService::downloadFile($url);
-
             $lines = explode("\n", $contents);
             foreach ($lines as $line) {
-                echo "Doing: ".$line.PHP_EOL;
                 $tokens = explode("  ", $line);
                 $md5_value = $tokens[0];
                 $filename = basename($tokens[1]);
-                echo $filename.PHP_EOL;
                 if ($filename === "$doi.md5")  // Ignore $doi.md5 file
                     continue;
 
@@ -100,7 +96,6 @@ class FilesCommand extends CConsoleCommand
             if ($file_exists)
                 return $url;
         }
-        // Generate exception if md5 file cannot be found
         throw new Exception("$doi.md5 file not found for dataset DOI $doi at $url");
     }
 
