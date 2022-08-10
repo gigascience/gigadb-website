@@ -5,4 +5,5 @@ COPY restore_database_from_s3_backup.sh /restore_database_from_s3_backup.sh
 COPY restore_database_from_converted_backup.sh /restore_database_from_converted_backup.sh
 COPY dropConstraints.sh /dropConstraints.sh
 COPY addConstraints.sh /addConstraints.sh
+COPY databaseReset.sh /databaseReset.sh
 ENTRYPOINT [ "/upload_database_backup_to_S3.sh" ]
