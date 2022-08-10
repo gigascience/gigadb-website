@@ -1,9 +1,8 @@
 <?php
 namespace console\tests\functional;
-use common\models\Manuscript;
+use common\models\EMReportJob;
 use console\tests\FunctionalTester;
 use yii\console\ExitCode;
-use console\models\ManuscriptsWorker;
 
 class EMReportJobCest
 {
@@ -26,14 +25,14 @@ class EMReportJobCest
 
     public function tryToMatchManuscriptReportWithTable(FunctionalTester $I)
     {
-        $manuscriptCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
+        $sampleCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
 
-        $manuscriptCsvData = Manuscript::buildFromEmReport($manuscriptCsvReport);
+        $sampleCsvReportData = EMReportJob::parseReport($sampleCsvReport);
 
         $I->runShellCommand("./yii_test fetch-reports/fetch", false);
         $I->runShellCommand("/usr/local/bin/php /app/yii_test manuscripts-q/run --verbose", false);
 
-        foreach ($manuscriptCsvData as $row) {
+        foreach ($sampleCsvReportData as $row) {
             $I->canSeeInDatabase('manuscript', $row);
         }
 
