@@ -81,7 +81,7 @@ class Manuscript extends \yii\db\ActiveRecord
             $manuscriptReport = new Manuscript();
             $manuscriptReport->manuscript_number = $data['manuscript_number'];
             $manuscriptReport->article_title = $data['article_title'];
-            $manuscriptReport->editorial_status_date =$data['editorial_status_date'];
+            $manuscriptReport->editorial_status_date = $data['editorial_status_date'];
             $manuscriptReport->editorial_status = $data['editorial_status'];
             $manuscripts[] = $manuscriptReport;
         }
