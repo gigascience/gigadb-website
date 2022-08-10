@@ -143,6 +143,13 @@
         - "/home/centos/files-url-updater/sql"
         - "/home/centos/files-url-updater/converted"
 
+    - name: Install new wrapper script to reset database
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/files-url-updater/databaseReset.sh"
+        dest: /home/centos/
+        owner: centos
+        group: centos
+
     - name: Install codebase for files-url-updater
       ansible.builtin.copy:
         src: "{{ item }}"
