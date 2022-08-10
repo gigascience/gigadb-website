@@ -107,6 +107,19 @@ class DatasetFilesCest {
 
     }
 
+    /**
+     * @group download-restore
+     * @param FunctionalTester $I
+     */
+    public function tryNoDownloadRestoreBackupWithLatestForceOptions(\FunctionalTester $I) {
+        $dateStamp = date('Ymd', strtotime(date('Ymd')." - 1 day"));
+
+        $I->runShellCommand("echo no |./yii_test dataset-files/download-restore-backup --latest --force --nodownload");
+        $I->canSeeInShellOutput("Restoring the backup for $dateStamp");
+        $I->seeResultCodeIs(Exitcode::OK);
+
+    }
+
 // Disabling update-ftp-urls test as this was adhoc work to legacy production server that's gonna be replaced soon
 //    /**
 //     * @group update-ftp-urls

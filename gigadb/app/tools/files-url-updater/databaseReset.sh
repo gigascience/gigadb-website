@@ -4,7 +4,7 @@ set -exu
 
 docker run --rm --detach --name pg9_3 -p 5432:5432 registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_pg9_3:staging
 
-echo yes | docker run --rm --add-host=host.docker.internal:host-gateway -it -v /home/centos:/logs -v /home/centos/downloads:/downloads registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_updater:staging ./yii dataset-files/download-restore-backup --latest
+docker run --rm --add-host=host.docker.internal:host-gateway -v /home/centos:/logs -v /home/centos/downloads:/downloads registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_updater:staging ./yii dataset-files/download-restore-backup --latest --force
 
 docker run --rm --user=1000 --add-host=host.docker.internal:host-gateway -v /home/centos/converted:/converted registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_pg9_3:staging /exportLegacyToTextBackup.sh
 
