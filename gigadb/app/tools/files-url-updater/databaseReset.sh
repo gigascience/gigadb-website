@@ -16,7 +16,7 @@ docker run --rm --env-file .env -v /home/centos:/sql --entrypoint /dropConstrain
 
 docker run --rm -e YII_PATH=/var/www/vendor/yiisoft/yii -v /home/centos:/var/www/protected/runtime registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_app:staging /var/www/protected/scripts/updateDBSchema.sh
 
-docker run --rm --env-file .env -v /home/centos:/sql --entrypoint /addContraints.sh registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_s3backup:staging
+docker run --rm --env-file .env -v /home/centos:/sql --entrypoint /addConstraints.sh registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_s3backup:staging
 
 docker stop pg9_3
 
