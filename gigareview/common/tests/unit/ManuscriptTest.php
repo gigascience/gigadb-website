@@ -63,6 +63,7 @@ class ManuscriptTest extends \Codeception\Test\Unit
         $reportData = EMReportJob::parseReport($sampleCsvReport);
         $manuscriptData = Manuscript::createInstanceFromEmReport($reportData);
         $this->assertNotNull($manuscriptData);
+        $this->assertIsArray($manuscriptData);
 
         for ($i=0; $i <= count($expectCsvReportData) - 1; $i++) {
             $this->assertEquals($expectCsvReportData[$i]['manuscript_number'], $manuscriptData[$i]->manuscript_number, "Manuscript number is not matched!");
@@ -70,19 +71,5 @@ class ManuscriptTest extends \Codeception\Test\Unit
             $this->assertEquals($expectCsvReportData[$i]['editorial_status_date'], $manuscriptData[$i]->editorial_status_date, "Editorial status date is not matched!");
             $this->assertEquals($expectCsvReportData[$i]['editorial_status'], $manuscriptData[$i]->editorial_status, "Editorial status is not matched!");
         }
-    }
-
-    public function testCanStoreToManuscriptTable()
-    {
-//        $sampleCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
-//        $saveToManuscriptTable = Manuscript::saveManuscriptReport($sampleCsvReport);
-//
-//        $this->assertNotNull($saveToManuscriptTable);
-//        $this->assertTrue(is_a($saveToManuscriptTable, Manuscript::class));
-
-        // file_put_contents('test-manuscript.txt', print_r(is_bool($saveToManuscriptTable),true));
-        // $this->assertTrue(is_bool($saveToManuscriptTable) === true, "bool is returned");
-        // $this->assertTrue(true === $saveToManuscriptTable, "No new entry is saved to manuscript table");
-
     }
 }
