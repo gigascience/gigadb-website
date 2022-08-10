@@ -36,7 +36,10 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
 //        }
     }
 
-
+    /**
+     * @param string $content
+     * @return void
+     */
     public function executeManuscriptJob(string $content): void
     {
         if ($content !== "No Results") {
@@ -50,9 +53,8 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             //Step 3: Create manuscript instance
             $manuscriptInstances = Manuscript::createInstanceFromEmReport($reportData);
 
-//            //Step 4: Save content to table
+            //Step 4: Save content to table
             $this->storeManuscript($manuscriptInstances);
-
         }
     }
 
