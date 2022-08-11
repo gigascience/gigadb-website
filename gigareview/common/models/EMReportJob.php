@@ -84,14 +84,14 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
      */
     public function storeManuscript(array $manuscriptObject): bool
     {
-        $saveStatus = 0;
+        $storeStatus = 0;
         foreach ($manuscriptObject as $manuscript) {
             if ($manuscript->save()) {
-                $saveStatus = 1;
+                $storeStatus = 1;
             } else {
-                $saveStatus = 0;
+                $storeStatus = 0;
             }
         }
-        return $saveStatus;
+        return $storeStatus;
     }
 }
