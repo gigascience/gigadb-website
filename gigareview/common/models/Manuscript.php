@@ -70,10 +70,10 @@ class Manuscript extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param $reportData
+     * @param array $reportData
      * @return Manuscript[]
      */
-    public static function createInstanceFromEmReport($reportData): array
+    public static function createInstancesFromEmReport(array $reportData): array
     {
         $manuscripts = [];
 

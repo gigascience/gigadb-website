@@ -54,10 +54,10 @@ class EMReportJobTest extends \Codeception\Test\Unit
     {
         $sampleCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
         $parsedCsvReportData = EMReportJob::parseReport($sampleCsvReport);
-        $manuscriptInstance = Manuscript::createInstanceFromEmReport($parsedCsvReportData);
+        $manuscriptInstance = Manuscript::createInstancesFromEmReport($parsedCsvReportData);
 
         $emReportJob = new EMReportJob();
-        $storeStatus = $emReportJob->storeManuscript($manuscriptInstance);
+        $storeStatus = $emReportJob->storeManuscripts($manuscriptInstance);
 
         $this->assertTrue(is_bool($storeStatus) === true, "return is not a bool");
         $this->assertTrue($storeStatus === true, "records stored to manuscript table");

@@ -35,7 +35,7 @@ class ManuscriptTest extends \Codeception\Test\Unit
         $this->assertGreaterThan($manuscript->created_at, $manuscript->updated_at);
     }
 
-    public function testCanCreateInstanceFromReport()
+    public function testCanCreateInstancesFromReport()
     {
         $expectCsvReportData = [
             [
@@ -61,7 +61,7 @@ class ManuscriptTest extends \Codeception\Test\Unit
         $sampleCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
 
         $reportData = EMReportJob::parseReport($sampleCsvReport);
-        $manuscriptData = Manuscript::createInstanceFromEmReport($reportData);
+        $manuscriptData = Manuscript::createInstancesFromEmReport($reportData);
         $this->assertNotNull($manuscriptData);
         $this->assertIsArray($manuscriptData);
 

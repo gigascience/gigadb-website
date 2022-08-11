@@ -51,10 +51,10 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             $reportData = self::parseReport($tempManuscriptCsvFile);
 
             //Step 3: Create manuscript instance
-            $manuscriptInstances = Manuscript::createInstanceFromEmReport($reportData);
+            $manuscriptInstances = Manuscript::createInstancesFromEmReport($reportData);
 
             //Step 4: Save content to table
-            $this->storeManuscript($manuscriptInstances);
+            $this->storeManuscripts($manuscriptInstances);
         }
     }
 
@@ -79,17 +79,15 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     }
 
     /**
-     * @param array $manuscriptObject
+     * @param array Manuscript[]
      * @return bool
      */
-    public function storeManuscript(array $manuscriptObject): bool
+    public function storeManuscripts(array $manuscripts): bool
     {
         $storeStatus = 0;
-        foreach ($manuscriptObject as $manuscript) {
+        foreach ($manuscripts as $manuscript) {
             if ($manuscript->save()) {
                 $storeStatus = 1;
-            } else {
-                $storeStatus = 0;
             }
         }
         return $storeStatus;
