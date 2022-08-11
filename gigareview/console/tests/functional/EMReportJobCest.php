@@ -23,7 +23,7 @@ class EMReportJobCest
         $I->canSeeResultCodeIs(Exitcode::OK);
     }
 
-    public function tryToMatchManuscriptReportWithTable(FunctionalTester $I)
+    public function tryToMatchManuscriptReportWithEntriesFoundInTable(FunctionalTester $I)
     {
         $sampleCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
 
@@ -39,7 +39,7 @@ class EMReportJobCest
         $I->canSeeResultCodeIs(Exitcode::OK);
     }
 
-    public function tryToSeeNoResultsReportNotSaveToTable(FunctionalTester $I)
+    public function tryToSeeNoResultsReportNotStoreToTable(FunctionalTester $I)
     {
         // Create temporary no result report with more recent timestamp console/tests/_data
         // so this file will be fetched, as it is the latest
