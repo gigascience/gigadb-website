@@ -209,5 +209,8 @@ return CMap::mergeArray(array(
         'display_short_date_format' => "%d-%m",
         'language' => 'en' ,
         'languages' => array('en' => 'EN', 'zh_tw' => 'TW'),
+
+        // For creating URLs to dataset files
+        'ftp_connection_url' => '${FTP_CONNECTION_URL}',
     ),
 ), $pre_config);
