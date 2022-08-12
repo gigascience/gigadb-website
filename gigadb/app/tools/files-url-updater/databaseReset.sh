@@ -4,8 +4,11 @@ set -exu
 
 # Calculate dates
 latest=$(date --date="1 days ago" +"%Y%m%d")
-backupDate=${1:-latest}
-
+if [ -z ${1+x} ];then
+  backupDate=$latest
+else
+  backupDate=$1
+fi
 
 docker run --rm --detach --name pg9_3 -p 5432:5432 registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_pg9_3:staging
 
@@ -28,5 +31,3 @@ docker stop pg9_3
 rm -f /home/centos/converted/gigadbv3*.backup
 
 rm -f /home/centos/downloads/gigadbv3*.backup
-
-docker system prune --force --volumes
