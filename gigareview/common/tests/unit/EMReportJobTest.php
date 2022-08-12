@@ -1,5 +1,6 @@
 <?php
 namespace common\tests;
+use Codeception\Stub;
 use common\models\EMReportJob;
 use common\models\Manuscript;
 
@@ -50,17 +51,26 @@ class EMReportJobTest extends \Codeception\Test\Unit
 
     }
 
-    public function testCanStoreToManuscriptTable()
+    public function testCanStoreOneInstanceToManuscriptTable()
     {
-        $sampleCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
-        $parsedCsvReportData = EMReportJob::parseReport($sampleCsvReport);
-        $manuscriptInstance = Manuscript::createInstancesFromEmReport($parsedCsvReportData);
+        $mockManuscript = $this->make(Manuscript::class,
+            [
+            'manuscript_number' => 'GIGA-D-22-00054',
+            'article_title' => 'A machine learning framework for discovery and enrichment of metagenomics metadata from open access publications',
+            'editorial_status_date' => '6/7/2022',
+            'editorial_status' => 'Final Decision Accept'
+            ]
+        );
 
+        $this->assertInstanceOf('common\models\Manuscript', $mockManuscript, "Mock manuscript instance not created!");
         $emReportJob = new EMReportJob();
-        $storeStatus = $emReportJob->storeManuscripts($manuscriptInstance);
+        $storeStatus = $emReportJob->storeManuscripts(array($mockManuscript));
 
         $this->assertTrue(is_bool($storeStatus) === true, "return is not a bool");
         $this->assertTrue($storeStatus === true, "records stored to manuscript table");
+    }
 
+    public function testCanStoreTwoInstancesToManuscriptTable()
+    {
     }
 }
