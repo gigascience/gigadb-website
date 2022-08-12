@@ -29,4 +29,4 @@ rm -f /home/centos/converted/gigadbv3*.backup
 
 rm -f /home/centos/downloads/gigadbv3*.backup
 
-docker system prune --force --all --volumes
+docker system prune --force --volumes
