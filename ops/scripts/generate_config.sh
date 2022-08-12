@@ -114,7 +114,7 @@ envsubst $VARS < $SOURCE > $TARGET
 
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/console.php.dist
 TARGET=${APP_SOURCE}/protected/config/console.php
-VARS='$NONE'
+VARS='$FTP_CONNECTION_URL'
 envsubst $VARS < $SOURCE > $TARGET
 
 
