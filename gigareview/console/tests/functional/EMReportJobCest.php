@@ -39,7 +39,7 @@ class EMReportJobCest
         $I->canSeeResultCodeIs(Exitcode::OK);
     }
 
-    public function tryToSeeNoResultsReportNotStoreToTable(FunctionalTester $I)
+    public function tryToSeeNoResultsManuscriptReportNotStoredToTable(FunctionalTester $I)
     {
         // Create temporary no result report with more recent timestamp console/tests/_data
         // so this file will be fetched, as it is the latest
