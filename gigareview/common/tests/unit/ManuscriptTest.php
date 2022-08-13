@@ -82,15 +82,12 @@ class ManuscriptTest extends \Codeception\Test\Unit
         $this->assertNotNull($manuscriptInstances);
         $this->assertIsArray($manuscriptInstances);
 
-        foreach ($manuscriptInstances as $instance) {
-            $this->assertInstanceOf('common\models\Manuscript', $instance, "Manuscript Instance is not instantiated!");
-            $this->assertArrayHasKey('manuscript_number', $instance, "Key is not found in Manuscript instance!");
-            $this->assertArrayHasKey('article_title', $instance, "Key is not found in Manuscript instance!");
-            $this->assertArrayHasKey('editorial_status_date', $instance, "Key is not found in Manuscript instance!");
-            $this->assertArrayHasKey('editorial_status', $instance, "Key is not found in Manuscript instance!");
-        }
-
         for ($i=0; $i <= count($sampleCsvReportData) - 1; $i++) {
+            $this->assertInstanceOf('common\models\Manuscript', $manuscriptInstances[$i], "Manuscript Instance is not instantiated!");
+            $this->assertArrayHasKey('manuscript_number', $manuscriptInstances[$i], "Key is not found in Manuscript instance!");
+            $this->assertArrayHasKey('article_title', $manuscriptInstances[$i], "Key is not found in Manuscript instance!");
+            $this->assertArrayHasKey('editorial_status_date', $manuscriptInstances[$i], "Key is not found in Manuscript instance!");
+            $this->assertArrayHasKey('editorial_status', $manuscriptInstances[$i], "Key is not found in Manuscript instance!");
             $this->assertEquals($sampleCsvReportData[$i]['manuscript_number'], $manuscriptInstances[$i]->manuscript_number, "Value is not matched in Manuscript instance!");
             $this->assertEquals($sampleCsvReportData[$i]['article_title'], $manuscriptInstances[$i]->article_title, "Value is not matched in Manuscript instance!");
             $this->assertEquals($sampleCsvReportData[$i]['editorial_status_date'], $manuscriptInstances[$i]->editorial_status_date, "Value is not matched in Manuscript instance!");
