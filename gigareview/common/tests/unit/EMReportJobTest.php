@@ -42,9 +42,9 @@ class EMReportJobTest extends \Codeception\Test\Unit
             ],
         ];
 
-        $sampleCsvReport = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
+        $sampleCsvReportPath = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
 
-        $parsedCsvReportData = EMReportJob::parseReport($sampleCsvReport);
+        $parsedCsvReportData = EMReportJob::parseReport($sampleCsvReportPath);
 
         $this->assertEquals($expectCsvReportData, $parsedCsvReportData, "Csv failed to parse!");
 
