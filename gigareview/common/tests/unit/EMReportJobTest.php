@@ -52,7 +52,7 @@ class EMReportJobTest extends \Codeception\Test\Unit
 
     public function testCanStoreOneInstanceToManuscriptTable()
     {
-        $mockManuscript = $this->make(Manuscript::class,
+        $mockManuscriptOne = $this->make(Manuscript::class,
             [
             'manuscript_number' => 'GIGA-D-22-00054',
             'article_title' => 'A machine learning framework for discovery and enrichment of metagenomics metadata from open access publications',
@@ -61,12 +61,17 @@ class EMReportJobTest extends \Codeception\Test\Unit
             ]
         );
 
-        $this->assertInstanceOf('common\models\Manuscript', $mockManuscript, "Mock manuscript instance not created!");
-        $emReportJob = new EMReportJob();
-        $storeStatus = $emReportJob->storeManuscripts(array($mockManuscript));
+        $mockManuscript[] = $mockManuscriptOne;
 
-        $this->assertTrue(is_bool($storeStatus) === true, "return is not a bool");
-        $this->assertTrue($storeStatus === true, "records stored to manuscript table");
+        foreach ($mockManuscript as $manuscript) {
+            $this->assertInstanceOf('common\models\Manuscript', $manuscript, "Mock manuscript instance not created!");
+        }
+
+        $emReportJob = new EMReportJob();
+        $storeStatus = $emReportJob->storeManuscripts($mockManuscript);
+
+        $this->assertTrue(is_bool($storeStatus) === true, "Return is not a bool");
+        $this->assertTrue($storeStatus === true, "Record stored to manuscript table");
     }
 
     public function testCanStoreTwoInstancesToManuscriptTable()
