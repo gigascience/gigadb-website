@@ -89,7 +89,7 @@ class EMReportJobTest extends \Codeception\Test\Unit
             ]
         );
 
-        $mockManuscripts = [] ;
+        $mockManuscripts = [];
         array_push($mockManuscripts, $mockManuscriptOne, $mockManuscriptTwo);
 
         foreach ($mockManuscripts as $mockManuscript) {
@@ -101,5 +101,22 @@ class EMReportJobTest extends \Codeception\Test\Unit
 
         $this->assertTrue(is_bool($storeStatus) === true, "Return is not a bool");
         $this->assertTrue($storeStatus === true, "Records stored to manuscript table");
+    }
+
+    public function testCannotStoreEmptyInstanceToManuscriptTable()
+    {
+        $mockManuscriptEmpty = $this->make(Manuscript::class);
+
+        $mockManuscripts[] = $mockManuscriptEmpty;
+
+        foreach ($mockManuscripts as $mockManuscript) {
+            $this->assertInstanceOf('common\models\Manuscript', $mockManuscript, "Mock manuscript instance not created!");
+        }
+
+        $emReportJob = new EMReportJob();
+        $storeStatus = $emReportJob->storeManuscripts($mockManuscripts);
+
+        $this->assertTrue(is_bool($storeStatus) === true, "Return is not a bool");
+        $this->assertFalse($storeStatus === false, "Records stored to manuscript table");
     }
 }
