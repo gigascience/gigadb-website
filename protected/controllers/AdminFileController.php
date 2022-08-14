@@ -1034,7 +1034,7 @@ EO_MAIL;
             $fa = new FileAttributes;
             $fa->attribute_id = self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM;
         }
-        echo "File attribute id is: ".$fa->id.PHP_EOL;
+        echo "Updating md5 file attribute id: ".$fa->id.PHP_EOL;
         $fa->value = $md5_value;
         $fa->save();
     }

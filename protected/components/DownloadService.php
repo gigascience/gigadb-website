@@ -24,9 +24,7 @@ class DownloadService extends yii\base\Component
         $curl = new Curl\Curl();
         // open the file where the request response should be written
         $tempfile = tmpfile();
-        echo "Tempfile: ".$tempfile.PHP_EOL;
         $path = stream_get_meta_data($tempfile)['uri']; // eg: /tmp/phpFx0513a
-        echo "Path: ".$path.PHP_EOL;
         $file_handle = fopen($path, 'w+');
         // pass it to the curl resource
         $curl->setOpt(CURLOPT_FILE, $file_handle);

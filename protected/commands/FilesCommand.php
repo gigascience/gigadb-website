@@ -54,17 +54,20 @@ class FilesCommand extends CConsoleCommand
             $lines = explode("\n", $contents);
             foreach ($lines as $line) {
                 $tokens = explode("  ", $line);
-                $md5_value = $tokens[0];
-                $filename = basename($tokens[1]);
-                if ($filename === "$doi.md5")  // Ignore $doi.md5 file
-                    continue;
+                // Only parse lines with content in md5 file
+                if($tokens[0] !== "") {
+                    $md5_value = $tokens[0];
+                    $filename = basename($tokens[1]);
+                    if ($filename === "$doi.md5")  // Ignore $doi.md5 file
+                        continue;
 
-                # Update file_attributes table with md5 checksum value
-                $file = File::model()->findByAttributes(array(
-                    'dataset_id' => $dataset->id,
-                    'name' => $filename,
-                ));
-                $adminFileController->updateMd5Checksum($file->id, $md5_value);
+                    # Update file_attributes table with md5 checksum value
+                    $file = File::model()->findByAttributes(array(
+                        'dataset_id' => $dataset->id,
+                        'name' => $filename,
+                    ));
+                    $adminFileController->updateMd5Checksum($file->id, $md5_value);
+                }
             }
         }
         catch (Exception $e) {
