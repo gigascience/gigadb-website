@@ -96,7 +96,7 @@ Use it to sanity check related information like authors, samples, files, links, 
 
 ```
 $ cd ops/infrastructure/envs/staging
-$ ansible -i ../../inventories name_bastion_server_staging_(lowercase IAM role here) -a "docker run -e YII_PATH=/var/www/vendor/yiisoft/yii -it registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_ap:staging ./protected/yiic files checkUrls --doi=(insert DOI here)"
+$ ansible -i ../../inventories name_bastion_server_staging_(lowercase IAM role here) -a "docker run -e YII_PATH=/var/www/vendor/yiisoft/yii -it registry.gitlab.com/gigascience/forks/<your project prefix>-gigadb-website/production_app:staging ./protected/yiic files checkUrls --doi=(insert DOI here)"
 
 ```
 
@@ -108,8 +108,9 @@ The MD5 values for a dataset's files come from a `<dataset_doi>.md5` file which
 is available from the CNGB FTP server via its URL. This file must be present in 
 order for MD5 file attributes to be added into the database for the dataset.
 ```
-# Log into bastion server and run this command:
-$ docker-compose run --rm  test ./protected/yiic files updateMD5FileAttributes --doi=<insert doi here>
+# Use bastion server to run command:
+$ cd ops/infrastructure/envs/staging
+$ ansible -i ../../inventories name_bastion_server_staging_<lowercase IAM role here> -a "docker run -e YII_PATH=/var/www/vendor/yiisoft/yii -it registry.gitlab.com/gigascience/forks/<your project prefix>-gigadb-website/production_app:staging ./protected/yiic files updateMD5FileAttributes --doi=<insert DOI here>"
 ```
 
 ### 7. Send a report to curators
