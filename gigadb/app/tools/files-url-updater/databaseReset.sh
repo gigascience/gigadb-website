@@ -6,6 +6,8 @@ set -exu
 latest=$(date --date="1 days ago" +"%Y%m%d")
 if [ -z ${1+x} ];then
   backupDate=$latest
+elif [ $1 == "latest" ];then
+  backupDate=$latest
 else
   backupDate=$1
 fi
