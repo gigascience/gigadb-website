@@ -94,18 +94,4 @@ class ManuscriptTest extends \Codeception\Test\Unit
             $this->assertEquals($sampleCsvReportData[$i]['editorial_status'], $manuscriptInstances[$i]->editorial_status, "Value is not matched in Manuscript instance!");
         }
     }
-
-    public function testCreateEmptyInstanceFromReportWithNoResults()
-    {
-        $sampleCsvReportData = [];
-
-        $manuscriptInstances = Manuscript::createInstancesFromEmReport($sampleCsvReportData);
-        $this->assertIsArray($manuscriptInstances);
-
-        foreach ($manuscriptInstances as $instance) {
-            $this->assertInstanceOf('common\models\Manuscript', $instance, "Manuscript Instance is not instantiated!");
-            $this->assertNull($instance, "Manuscript Instance contains variables!");
-            $this->assertEmpty($instance, "Manuscript Instance contains variables!");
-        }
-    }
 }
