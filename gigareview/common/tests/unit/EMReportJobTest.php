@@ -109,4 +109,14 @@ class EMReportJobTest extends \Codeception\Test\Unit
 
         $this->assertFalse($storeStatus === false, "Records stored to manuscript table!");
     }
+
+    public function testCanLogStatusToIngestTable()
+    {
+        $emReportJob = new EMReportJob();
+        $logStatus = $emReportJob->logStatus();
+        file_put_contents('test-ingest-table.txt', print_r($logStatus,true));
+
+        $this->assertTrue(is_bool($logStatus) === true);
+        $this->assertTrue($logStatus === true);
+    }
 }
