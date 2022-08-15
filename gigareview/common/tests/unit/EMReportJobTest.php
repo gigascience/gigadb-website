@@ -70,8 +70,8 @@ class EMReportJobTest extends \Codeception\Test\Unit
         $emReportJob = new EMReportJob();
         $storeStatus = $emReportJob->storeManuscripts($mockManuscript);
 
-        $this->assertTrue(is_bool($storeStatus) === true, "Return is not a bool");
-        $this->assertTrue($storeStatus === true, "Record stored to manuscript table");
+        $this->assertTrue(is_bool($storeStatus) === true, "Return is not a bool!");
+        $this->assertTrue($storeStatus === true, "Record is not stored to manuscript table!");
     }
 
     public function testCanStoreTwoInstancesToManuscriptTable()
@@ -104,8 +104,8 @@ class EMReportJobTest extends \Codeception\Test\Unit
         $emReportJob = new EMReportJob();
         $storeStatus = $emReportJob->storeManuscripts($mockManuscripts);
 
-        $this->assertTrue(is_bool($storeStatus) === true, "Return is not a bool");
-        $this->assertTrue($storeStatus === true, "Records stored to manuscript table");
+        $this->assertTrue(is_bool($storeStatus) === true, "Return is not a bool!");
+        $this->assertTrue($storeStatus === true, "Records are not stored to manuscript table!");
     }
 
     public function testCannotStoreEmptyInstanceToManuscriptTable()
@@ -121,7 +121,7 @@ class EMReportJobTest extends \Codeception\Test\Unit
         $emReportJob = new EMReportJob();
         $storeStatus = $emReportJob->storeManuscripts($mockManuscripts);
 
-        $this->assertTrue(is_bool($storeStatus) === true, "Return is not a bool");
-        $this->assertFalse($storeStatus === false, "Records stored to manuscript table");
+        $this->assertTrue(is_bool($storeStatus) === true, "Return is not a bool!");
+        $this->assertFalse($storeStatus === false, "Records stored to manuscript table!");
     }
 }
