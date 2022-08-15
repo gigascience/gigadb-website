@@ -30,9 +30,9 @@ $ terraform output
 $ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@<bastion public ip>
 ```
 
-Execute the command to restore the database
+Execute the command to restore the database from a backup taken on YYYYMMDD
 ```
-$ docker run --rm --env-file .env -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh  registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_s3backup:staging
+$ docker run --rm --env-file .env -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh  registry.gitlab.com/gigascience/forks/rija-gigadb-website/production_s3backup:staging YYYYMMDD
 ```
 
 Check https://beta.gigadb.org and look at the RSS feed. Does it contain the feed
