@@ -51,15 +51,14 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             } else {
                 $ingest->store_status = Ingest::STORE_STATUS_NO;
             }
-            $ingest->save();
 
         } else {
             $ingest = Ingest::findOne(["report_type" => 1, "parse_status" => null]);
             $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_NO_RESULTS;
             $ingest->parse_status = Ingest::PARSE_STATUS_NO;
             $ingest->store_status = Ingest::STORE_STATUS_NO;
-            $ingest->save();
         }
+        $ingest->save();
     }
 
     /**
