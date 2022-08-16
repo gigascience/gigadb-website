@@ -2,7 +2,6 @@
 
 namespace common\models;
 
-use ErrorException;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use \Yii;
 use yii\queue\Queue;
