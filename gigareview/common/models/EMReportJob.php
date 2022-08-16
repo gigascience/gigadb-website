@@ -53,8 +53,6 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             }
             $ingest->save();
 
-            //Step 5: Log the status to ingest table
-//            $this->logStatus();
         } else {
             $ingest = Ingest::findOne(["report_type" => 1, "parse_status" => null]);
             $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_NO_RESULTS;
@@ -102,25 +100,4 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
         }
         return $storeStatus;
     }
-
-//    public function logStatus(): bool
-//    {
-//        $ingest = Ingest::findOne(["report_type" => 1, "parse_status" => null]);
-//        if ($ingest) {
-//            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_EXISTS;
-//            $ingest->parse_status = Ingest::PARSE_STATUS_YES;
-//            return $ingest->save();
-//        } else {
-//            throw new ErrorException("Ingest table is not found, so failed updating report status to it!");
-//        }
-//    }
-
-
-//    public function logNoResultsStatus(): bool
-//    {
-//        $ingest = Ingest::findOne(["report_type"=>"1", "parse_status"=>null]);
-//        $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_NO_RESULTS;
-//        $ingest->parse_status = Ingest::PARSE_STATUS_NO;
-//        return $ingest->save();
-//    }
 }
