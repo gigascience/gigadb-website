@@ -42,13 +42,25 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             //Step 3: Create manuscript instance
             $manuscriptInstances = Manuscript::createInstancesFromEmReport($reportData);
 
-            //Step 4: Save content to table
-            $this->storeManuscripts($manuscriptInstances);
+            //Step 4: Save content to  manuscript table and update status in ingest table
+            $ingest = Ingest::findOne(["report_type" => 1, "parse_status" => null]);
+            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_EXISTS;
+            $ingest->parse_status = Ingest::PARSE_STATUS_YES;
+            if ($this->storeManuscripts($manuscriptInstances)) {
+                $ingest->store_status = Ingest::STORE_STATUS_YES;
+            } else {
+                $ingest->store_status = Ingest::STORE_STATUS_NO;
+            }
+            $ingest->save();
 
             //Step 5: Log the status to ingest table
-            $this->logStatus();
+//            $this->logStatus();
         } else {
-            $this->logNoResultsStatus();
+            $ingest = Ingest::findOne(["report_type" => 1, "parse_status" => null]);
+            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_NO_RESULTS;
+            $ingest->parse_status = Ingest::PARSE_STATUS_NO;
+            $ingest->store_status = Ingest::STORE_STATUS_NO;
+            $ingest->save();
         }
     }
 
@@ -91,24 +103,24 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
         return $storeStatus;
     }
 
-    public function logStatus(): bool
-    {
-        $ingest = Ingest::findOne(["report_type" => 1, "parse_status" => null]);
-        if ($ingest) {
-            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_EXISTS;
-            $ingest->parse_status = Ingest::PARSE_STATUS_YES;
-            return $ingest->save();
-        } else {
-            throw new ErrorException("Ingest table is not found, so failed updating report status to it!");
-        }
-    }
+//    public function logStatus(): bool
+//    {
+//        $ingest = Ingest::findOne(["report_type" => 1, "parse_status" => null]);
+//        if ($ingest) {
+//            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_EXISTS;
+//            $ingest->parse_status = Ingest::PARSE_STATUS_YES;
+//            return $ingest->save();
+//        } else {
+//            throw new ErrorException("Ingest table is not found, so failed updating report status to it!");
+//        }
+//    }
 
 
-    public function logNoResultsStatus(): bool
-    {
-        $ingest = Ingest::findOne(["report_type"=>"1", "parse_status"=>null]);
-        $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_NO_RESULTS;
-        $ingest->parse_status = Ingest::PARSE_STATUS_NO;
-        return $ingest->save();
-    }
+//    public function logNoResultsStatus(): bool
+//    {
+//        $ingest = Ingest::findOne(["report_type"=>"1", "parse_status"=>null]);
+//        $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_NO_RESULTS;
+//        $ingest->parse_status = Ingest::PARSE_STATUS_NO;
+//        return $ingest->save();
+//    }
 }

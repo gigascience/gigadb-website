@@ -70,7 +70,7 @@ class EMReportJobCest
         $I->canSeeInDatabase('ingest', ["file_name"=>$tempNoResultCsvReportName, "report_type"=>1, "fetch_status"=>3, "parse_status"=>null, "store_status"=>null, "remote_file_status"=>null]);
 
         $I->runShellCommand("/usr/local/bin/php /app/yii_test manuscripts-q/run --verbose", false);
-        $I->canSeeInDatabase('ingest', ["file_name"=>$tempNoResultCsvReportName, "report_type"=>1, "fetch_status"=>3, "parse_status"=>0, "store_status"=>null, "remote_file_status"=>0]);
+        $I->canSeeInDatabase('ingest', ["file_name"=>$tempNoResultCsvReportName, "report_type"=>1, "fetch_status"=>3, "parse_status"=>0, "store_status"=>0, "remote_file_status"=>0]);
 
         unlink($noResultCsvReportDir.$tempNoResultCsvReportName);
 
