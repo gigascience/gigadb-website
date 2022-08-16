@@ -15,3 +15,5 @@
 | PARSE_STATUS_NO                | 0     | Report has not been parsed                        |
 | REMOTE_FILES_STATUS_EXISTS     | 1     | Report contains real data                         | 
 | REMOTE_FILES_STATUS_NO_RESULTS | 0     | Report contains no data                           |
+| STORE_STATUS_YES               | 1     | Report content is stored                          |
+| STORE_STATUS_NO                | 0     | Report content is not stored                      |

@@ -34,6 +34,9 @@ class Ingest extends \yii\db\ActiveRecord
     const REMOTE_FILES_STATUS_EXISTS = 1;
     const REMOTE_FILES_STATUS_NO_RESULTS = 0;
 
+    const STORE_STATUS_YES = 1;
+    const STORE_STATUS_NO = 0;
+
     /**
      * {@inheritdoc}
      */
