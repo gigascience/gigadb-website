@@ -83,16 +83,17 @@ class ManuscriptTest extends \Codeception\Test\Unit
         $this->assertNotNull($manuscriptInstances);
         $this->assertIsArray($manuscriptInstances);
 
-        for ($i=0; $i <= count($sampleCsvReportData) - 1; $i++) {
-            $this->assertInstanceOf('common\models\Manuscript', $manuscriptInstances[$i], "Manuscript Instance is not instantiated!");
-            $this->assertArrayHasKey('manuscript_number', $manuscriptInstances[$i], "Key manuscript_number is not found in Manuscript instance!");
-            $this->assertArrayHasKey('article_title', $manuscriptInstances[$i], "Key article_title is not found in Manuscript instance!");
-            $this->assertArrayHasKey('editorial_status_date', $manuscriptInstances[$i], "Key editorial_status_date is not found in Manuscript instance!");
-            $this->assertArrayHasKey('editorial_status', $manuscriptInstances[$i], "Key editorial_status is not found in Manuscript instance!");
-            $this->assertEquals($sampleCsvReportData[$i]['manuscript_number'], $manuscriptInstances[$i]->manuscript_number, "Value ".$sampleCsvReportData[$i]['manuscript_number']." is not matched in Manuscript instance!");
-            $this->assertEquals($sampleCsvReportData[$i]['article_title'], $manuscriptInstances[$i]->article_title, "Value ".$sampleCsvReportData[$i]['article_title']." is not matched in Manuscript instance!");
-            $this->assertEquals($sampleCsvReportData[$i]['editorial_status_date'], $manuscriptInstances[$i]->editorial_status_date, "Value ".$sampleCsvReportData[$i]['editorial_status_date']." is not matched in Manuscript instance!");
-            $this->assertEquals($sampleCsvReportData[$i]['editorial_status'], $manuscriptInstances[$i]->editorial_status, "Value ".$sampleCsvReportData[$i]['editorial_status']." is not matched in Manuscript instance!");
-        }
+        array_map(function($sampleData, $manuscriptInstance){
+            $this->assertInstanceOf('common\models\Manuscript', $manuscriptInstance, "Manuscript Instance is not instantiated!");
+            $this->assertArrayHasKey('manuscript_number', $manuscriptInstance, "Key manuscript_number is not found in Manuscript instance!");
+            $this->assertArrayHasKey('article_title', $manuscriptInstance, "Key article_title is not found in Manuscript instance!");
+            $this->assertArrayHasKey('editorial_status_date', $manuscriptInstance, "Key editorial_status_date is not found in Manuscript instance!");
+            $this->assertArrayHasKey('editorial_status', $manuscriptInstance, "Key editorial_status is not found in Manuscript instance!");
+            $this->assertEquals($sampleData['manuscript_number'], $manuscriptInstance->manuscript_number, "Value ".$sampleData['manuscript_number']." is not matched in Manuscript instance!");
+            $this->assertEquals($sampleData['article_title'], $manuscriptInstance->article_title, "Value ".$sampleData['article_title']." is not matched in Manuscript instance!");
+            $this->assertEquals($sampleData['editorial_status_date'], $manuscriptInstance->editorial_status_date, "Value ".$sampleData['editorial_status_date']." is not matched in Manuscript instance!");
+            $this->assertEquals($sampleData['editorial_status'], $manuscriptInstance->editorial_status, "Value ".$sampleData['editorial_status']." is not matched in Manuscript instance!");
+
+        }, $sampleCsvReportData, $manuscriptInstances);
     }
 }
