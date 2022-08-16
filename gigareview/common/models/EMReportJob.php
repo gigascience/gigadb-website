@@ -37,6 +37,8 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     }
 
     /**
+     * Create manuscript instances from the queue content and save then to the manuscript table
+     *
      * @param string $content
      * @return void
      */
@@ -59,6 +61,8 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     }
 
     /**
+     * Create an associative array from the csv file
+     *
      * @param $emReportPath
      * @return array
      */
@@ -79,6 +83,8 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     }
 
     /**
+     * Store manuscript object to its table
+     *
      * @param array Manuscript[]
      * @return bool
      */

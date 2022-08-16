@@ -70,6 +70,8 @@ class Manuscript extends \yii\db\ActiveRecord
     }
 
     /**
+     * Factory method to make a new instance of manuscript class using data from the EM report
+     *
      * @param array $reportData
      * @return Manuscript[]
      */
