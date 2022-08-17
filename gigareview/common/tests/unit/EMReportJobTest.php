@@ -63,9 +63,7 @@ class EMReportJobTest extends \Codeception\Test\Unit
 
         $mockManuscript[] = $mockManuscriptOne;
 
-        foreach ($mockManuscript as $manuscript) {
-            $this->assertInstanceOf('common\models\Manuscript', $manuscript, "Mock manuscript instance not created!");
-        }
+        $this->assertInstanceOf('common\models\Manuscript', $mockManuscript[0], "Mock manuscript instance not created!");
 
         $emReportJob = new EMReportJob();
         $storeStatus = $emReportJob->storeManuscripts($mockManuscript);
