@@ -10,6 +10,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property int $id
  * @property string|null $file_name
+ * @property string $report_id (=report_type)
  * @property int|null $report_type
  * @property int|null $fetch_status
  * @property int|null $parse_status
@@ -64,7 +65,7 @@ class Ingest extends \yii\db\ActiveRecord
             [['report_type', 'fetch_status', 'parse_status', 'store_status', 'remote_file_status'], 'default', 'value' => null],
             [['report_type', 'fetch_status', 'parse_status', 'store_status', 'remote_file_status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['file_name'], 'string', 'max' => 255],
+            [['file_name', 'report_id'], 'string', 'max' => 255],
         ];
     }
 
@@ -76,6 +77,7 @@ class Ingest extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'file_name' => 'File Name',
+            'report_id' => 'Report Id',
             'report_type' => 'Report Type',
             'fetch_status' => 'Fetch Status',
             'parse_status' => 'Parse Status',
