@@ -47,7 +47,7 @@ if ! [ -s ./.secrets ];then
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100&page=1"  > .project_var_raw1
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100&page=2"  > .project_var_raw2
     jq -s 'add' .project_var_raw1 .project_var_raw2 > .project_vars.json
-    cat .project_vars.json | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key | test("key|ca|pem|cert";"i") | not ) |.key + "=" + .value' > .project_var
+    cat .project_vars.json | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key | test("private_key|tlsauth|ca|pem|cert";"i") | not ) |.key + "=" + .value' > .project_var
 
     echo "Retrieving variables from ${MISC_VARIABLES_URL}"
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key | test("sftp_") ) | .key + "=" + .value' > .misc_var
