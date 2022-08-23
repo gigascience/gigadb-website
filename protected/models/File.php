@@ -347,6 +347,7 @@ class File extends CActiveRecord
      */
     public function updateMd5Checksum($md5_value) {
         $fa = FileAttributes::model()->findByAttributes(array(
+            'file_id' => $this->id,
             'attribute_id' => self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM,
         ));
         // In case no MD5 FileAttribute can be found for $file_id
