@@ -78,3 +78,8 @@ SOURCE=${APP_SOURCE}/config-sources/acceptance.suite.yml.template
 TARGET=${APP_SOURCE}/console/tests/acceptance.suite.yml
 VARS='$TESTDB_HOST:$TESTDB_PORT:$TESTDB_DBNAME:$TESTDB_USER:$TESTDB_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
+
+SOURCE=${APP_SOURCE}/config-sources/functional.suite.yml.template
+TARGET=${APP_SOURCE}/console/tests/functional.suite.yml
+VARS='$TESTDB_HOST:$TESTDB_PORT:$TESTDB_DBNAME:$TESTDB_USER:$TESTDB_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET

@@ -1,0 +1,11 @@
+suite_namespace: console\tests\functional
+actor: FunctionalTester
+modules:
+    enabled:
+        - Filesystem
+        - Asserts
+        - Cli
+        - Db:
+            dsn: 'pgsql:host=$TESTDB_HOST;port=$TESTDB_PORT;dbname=$TESTDB_DBNAME'
+            user: '$TESTDB_USER'
+            password: '$TESTDB_PASSWORD'
