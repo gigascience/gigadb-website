@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "674547ac19d3f64eac2d54aa362215ba",
+    "content-hash": "32d4ca1c161fc205f86069fb7a09f26d",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -280,64 +280,6 @@
                 "source": "https://github.com/creocoder/yii2-flysystem/tree/0.9.4"
             },
             "time": "2020-02-17T18:06:21+00:00"
-        },
-        {
-            "name": "curl/curl",
-            "version": "2.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-mod/curl.git",
-                "reference": "ec22ad27dead47093f0944f5e651df4b12846f5a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-mod/curl/zipball/ec22ad27dead47093f0944f5e651df4b12846f5a",
-                "reference": "ec22ad27dead47093f0944f5e651df4b12846f5a",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": "^5.6 | ^7.0 | ^8.0"
-            },
-            "require-dev": {
-                "yoast/phpunit-polyfills": "^0.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Curl": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "php-curl-class",
-                    "homepage": "https://github.com/php-curl-class"
-                },
-                {
-                    "name": "Hassan Amouhzi",
-                    "email": "hassan@anezi.net",
-                    "homepage": "http://hassan.amouhzi.com"
-                },
-                {
-                    "name": "user52",
-                    "homepage": "https://github.com/user52"
-                }
-            ],
-            "description": "cURL class for PHP",
-            "homepage": "https://github.com/php-mod/curl",
-            "keywords": [
-                "curl",
-                "dot"
-            ],
-            "support": {
-                "issues": "https://github.com/php-mod/curl/issues",
-                "source": "https://github.com/php-mod/curl/tree/2.3.3"
-            },
-            "time": "2021-11-30T20:19:35+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -10525,5 +10467,5 @@
     "platform-overrides": {
         "php": "7.3.33"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }

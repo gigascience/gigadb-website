@@ -29,8 +29,7 @@
          "creocoder/yii2-flysystem": "~0.9.0",
          "ramsey/uuid": "~3.9.0",
          "neam/yii-streamlog": "^1.0.0",
-         "gregwar/captcha": "^1.1.9",
-         "curl/curl": "^2.3.3"
+         "gregwar/captcha": "^1.1.9"
     },
     "require-dev": {
         "behat/behat": "^3.5",

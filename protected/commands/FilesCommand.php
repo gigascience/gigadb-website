@@ -69,12 +69,15 @@ class FilesCommand extends CConsoleCommand
         }
         catch (Exception $e) {
             echo $e->getMessage();
+        } 
+        catch (\GuzzleHttp\Exception\GuzzleException $ge) {
+            echo $ge->getMessage();
         }
     }
 
     /**
      * Returns the URL for a dataset's md5 file
-     * 
+     *
      * Determines the URL of the md5 file as it could be:
      * https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/100006.md5
      * https://ftp.cngb.org/pub/gigadb/pub/10.5524/101001_102000/101001/101001.md5
@@ -82,7 +85,7 @@ class FilesCommand extends CConsoleCommand
      *
      * @param $doi
      * @return string
-     * @throws ErrorException
+     * @throws Exception
      */
     private function findDatasetMd5FileUrl($doi): string
     {
