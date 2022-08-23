@@ -38,7 +38,10 @@ class File extends CActiveRecord
     public $value;
     public $unit_id;
 
-	/**
+    /** @const string  DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM the attribute id for MD5 checksum in attribute database table */
+    const DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM = "605";
+
+    /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return File the static model class
@@ -334,5 +337,25 @@ class File extends CActiveRecord
                 }
             }
         }
+    }
+
+    /**
+     * Updates the MD5 checksum file attribute for a given file
+     *
+     * @param $md5_value
+     * @return void
+     */
+    public function updateMd5Checksum($md5_value) {
+        $fa = FileAttributes::model()->findByAttributes(array(
+            'attribute_id' => self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM,
+        ));
+        // In case no MD5 FileAttribute can be found for $file_id
+        if($fa === null) {
+            $fa = new FileAttributes;
+            $fa->attribute_id = self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM;
+        }
+        echo "Updating md5 file attribute id: ".$fa->id.PHP_EOL;
+        $fa->value = $md5_value;
+        $fa->save();
     }
 }

@@ -37,9 +37,6 @@ class FilesCommand extends CConsoleCommand
      * @return void
      */
     public function actionUpdateMD5FileAttributes($doi) {
-        Yii::import('application.controllers.*');
-        $adminFileController = new AdminFileController('afc');
-        
         try {
             $url = $this->findDatasetMd5FileUrl($doi);
             echo "Processing $url".PHP_EOL;
@@ -66,7 +63,7 @@ class FilesCommand extends CConsoleCommand
                         'dataset_id' => $dataset->id,
                         'name' => $filename,
                     ));
-                    $adminFileController->updateMd5Checksum($file->id, $md5_value);
+                    $file->updateMd5Checksum($md5_value);
                 }
             }
         }
