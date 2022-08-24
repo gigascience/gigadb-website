@@ -1,7 +1,0 @@
-suite_namespace: console\tests\functional
-actor: FunctionalTester
-modules:
-    enabled:
-        - Filesystem
-        - Asserts
-        - Cli

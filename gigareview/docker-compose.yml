@@ -68,3 +68,15 @@ services:
       - "11300:11300"
     expose:
       - "11300"
+
+  manuscripts-worker:
+    build: console
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ./:/app
+    depends_on:
+      - reviewdb
+      - beanstalkd
+    command: "/usr/local/bin/php /app/yii manuscripts-q/run --verbose"

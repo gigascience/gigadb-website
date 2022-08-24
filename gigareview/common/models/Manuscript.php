@@ -68,4 +68,25 @@ class Manuscript extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    /**
+     * Factory method to make a new instance of manuscript class using data from the EM report
+     *
+     * @param array $reportData
+     * @return Manuscript[]
+     */
+    public static function createInstancesFromEmReport(array $reportData): array
+    {
+        $manuscripts = [];
+
+        foreach ($reportData as $data) {
+            $manuscriptReport = new Manuscript();
+            $manuscriptReport->manuscript_number = $data['manuscript_number'];
+            $manuscriptReport->article_title = $data['article_title'];
+            $manuscriptReport->editorial_status_date = $data['editorial_status_date'];
+            $manuscriptReport->editorial_status = $data['editorial_status'];
+            $manuscripts[] = $manuscriptReport;
+        }
+        return $manuscripts;
+    }
 }

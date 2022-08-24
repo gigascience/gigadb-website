@@ -28,6 +28,13 @@ class Ingest extends \yii\db\ActiveRecord
     const FETCH_STATUS_DISPATCHED = 3;
     const FETCH_STATUS_ERROR = 0 ;
 
+    //TODO: Will be implemented in ticket no. #1065
+//    const PARSE_STATUS_YES = 1;
+//    const PARSE_STATUS_NO = 0;
+//
+//    const REMOTE_FILES_STATUS_EXISTS = 1;
+//    const REMOTE_FILES_STATUS_NO_RESULTS = 0;
+
     /**
      * {@inheritdoc}
      */
