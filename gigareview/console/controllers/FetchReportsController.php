@@ -87,7 +87,8 @@ final class FetchReportsController extends Controller
             $this->stdout("Fetching $reportType report...\n", Console::BOLD);
             try {
                 $reportFile = $this->getLatestOfType($reportType);
-                $ingest->file_name = pathinfo($reportFile)['filename'].".".pathinfo($reportFile)['extension'];
+                $reportFileName = pathinfo($reportFile)['filename'].".".pathinfo($reportFile)['extension'];
+                $ingest->file_name = $reportFileName;
                 $ingest->fetch_status = Ingest::FETCH_STATUS_FOUND;
                 $ingest->save();
 
@@ -105,7 +106,8 @@ final class FetchReportsController extends Controller
                         'content' => $content,
                         'effectiveDate' =>  (new \DateTime('yesterday'))->format('c'),
                         'fetchDate' => (new \DateTime())->format('c'),
-                        'scope' => "$reportType"
+                        'scope' => "$reportType",
+                        'reportFileName' => "$reportFileName"
                     ])
                 );
                 $this->stdout("Pushed a new job with ID $jobId for report $reportType to ${reportType}_q".PHP_EOL);
