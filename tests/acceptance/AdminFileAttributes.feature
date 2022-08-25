@@ -35,7 +35,7 @@ Feature: A curator can manage file attributes in admin file update page
     And I should see delete file attribute link button
     And I should see a submit button "Save"
 
-  @ok @javascript @published
+  @ok @published
   Scenario: See the File Attribute value of the last modified attribute on admin file view page
     Given I have signed in as admin
     When I am on "/adminFile/view/id/13973"
@@ -72,7 +72,7 @@ Feature: A curator can manage file attributes in admin file update page
     And I follow "History"
     Then I should see "Termitomyces_assembly_v1.0.fa.gz: file attribute deleted"
 
-  @ok @javascript @nonPublished
+  @ok @nonPublished
   Scenario: See a keyword attribute and a camera parameters attribute on admin file update page
     Given I have signed in as admin
     When I am on "/adminFile/update/id/95354"
@@ -82,7 +82,7 @@ Feature: A curator can manage file attributes in admin file update page
       | camera parameters | test photo                       |      |
       | MD5 checksum      | b584eb4ce0947dbf9529acffc3e9f7cc |      |
 
-  @ok @javascript @nonPublished
+  @ok @nonPublished
   Scenario: See File Attribute value on admin file view page
     Given I have signed in as admin
     When I am on "/adminFile/view/id/95354"
