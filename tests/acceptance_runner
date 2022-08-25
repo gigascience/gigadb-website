@@ -11,6 +11,6 @@ if [[ $(uname -m) == 'arm64' ]]; then
   profile="apple-silicon"
 fi
 
-docker-compose run --rm test ./vendor/codeception/codeception/codecept run -vvv -g ok acceptance
+docker-compose run --rm test ./vendor/codeception/codeception/codecept run -vvv -g ok -x javascript acceptance
 docker-compose run --rm application ./protected/yiic migrate --interactive=0
 docker-compose run --rm test ./vendor/behat/behat/bin/behat --profile $profile -v --stop-on-failure
