@@ -15,7 +15,6 @@ class m220608_101045_create_ingest_table extends Migration
         $this->createTable('{{%ingest}}', [
             'id' => $this->primaryKey(),
             'file_name' => $this->string(),
-            'report_id' => $this->string(),
             'report_type' => $this->integer(),
             'fetch_status' => $this->smallInteger(),
             'parse_status' => $this->smallInteger(),
