@@ -19,7 +19,7 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     public function execute($queue)
     {
         if ($this->scope === "manuscripts") {
-            $this->executeManuscriptJob($this->content, $this->reportFileName);
+            $this->executeManuscriptJob($this->content, $this->reportFileName, $this->scope);
         }
     }
 
@@ -30,7 +30,7 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
      * @param string $reportFileName
      * @return void
      */
-    public function executeManuscriptJob(string $content, string $reportFileName): void
+    public function executeManuscriptJob(string $content, string $reportFileName, string $scope): void
     {
         if ($content !== "No Results") {
             //Step 1: Put queue content to csv
@@ -44,30 +44,15 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             $manuscriptInstances = Manuscript::createInstancesFromEmReport($reportData);
 
             //Step 4: Save content to  manuscript table and update status in ingest table
-//            $ingest = Ingest::findOne(["report_type" => 1, "parse_status" => null]);
-            $ingest = new Ingest();
-            $ingest->file_name = $reportFileName;
-            $ingest->report_type = Ingest::REPORT_TYPES['manuscripts'];
-            $ingest->fetch_status = Ingest::FETCH_STATUS_DISPATCHED;
-            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_EXISTS;
-            $ingest->parse_status = Ingest::PARSE_STATUS_YES;
             if ($this->storeManuscripts($manuscriptInstances)) {
-                $ingest->store_status = Ingest::STORE_STATUS_YES;
+                Ingest::logStatusAfterSave($reportFileName, $scope);
             } else {
-                $ingest->store_status = Ingest::STORE_STATUS_NO;
+                Ingest::logStatusFailSave($reportFileName, $scope);
             }
 
         } else {
-//            $ingest = Ingest::findOne(["report_type" => 1, "parse_status" => null]);
-            $ingest = new Ingest();
-            $ingest->file_name = $reportFileName;
-            $ingest->report_type = Ingest::REPORT_TYPES['manuscripts'];
-            $ingest->fetch_status = Ingest::FETCH_STATUS_DISPATCHED;
-            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_NO_RESULTS;
-            $ingest->parse_status = Ingest::PARSE_STATUS_NO;
-            $ingest->store_status = Ingest::STORE_STATUS_NO;
+            Ingest::logNoResultsReportStatus($reportFileName,$scope);
         }
-        $ingest->save();
     }
 
     /**
