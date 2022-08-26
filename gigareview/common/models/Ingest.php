@@ -97,7 +97,7 @@ class Ingest extends \yii\db\ActiveRecord
     {
         $ingest = new Ingest();
         $ingest->file_name = $reportFileName;
-        $ingest->report_type = Ingest::REPORT_TYPES[$scope];
+        $ingest->report_type = self::REPORT_TYPES[$scope];
         return $ingest;
     }
 
