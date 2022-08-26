@@ -85,4 +85,71 @@ class Ingest extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
         ];
     }
+
+    /**
+     * Create Ingest instance
+     *
+     * @param string $reportFileName
+     * @param string $scope
+     * @return Ingest
+     */
+    public static function createIngestInstance(string $reportFileName, string $scope): Ingest
+    {
+        $ingest = new Ingest();
+        $ingest->file_name = $reportFileName;
+        $ingest->report_type = Ingest::REPORT_TYPES[$scope];
+        return $ingest;
+    }
+
+    /**
+     * Update status in ingest table after save successfully
+     *
+     * @param string $reportFileName
+     * @param string $scope
+     * @return bool
+     */
+    public static function logStatusAfterSave(string $reportFileName, string $scope): bool
+    {
+        $ingest = self::createIngestInstance($reportFileName, $scope);
+        $ingest->fetch_status = self::FETCH_STATUS_DISPATCHED;
+        $ingest->remote_file_status = self::REMOTE_FILES_STATUS_EXISTS;
+        $ingest->parse_status = self::PARSE_STATUS_YES;
+        $ingest->store_status = self::STORE_STATUS_YES;
+        return $ingest->save();
+
+    }
+
+    /**
+     * Update status in ingest table if fail to save
+     *
+     * @param string $reportFileName
+     * @param string $scope
+     * @return bool
+     */
+    public static function logStatusFailSave(string $reportFileName, string $scope): bool
+    {
+        $ingest = self::createIngestInstance($reportFileName, $scope);
+        $ingest->fetch_status = self::FETCH_STATUS_DISPATCHED;
+        $ingest->remote_file_status = self::REMOTE_FILES_STATUS_EXISTS;
+        $ingest->parse_status = self::PARSE_STATUS_YES;
+        $ingest->store_status = self::STORE_STATUS_NO;
+        return $ingest->save();
+    }
+
+    /**
+     * Update statuses in ingest table for no results EM report
+     *
+     * @param string $reportFileName
+     * @param string $scope
+     * @return bool
+     */
+    public static function logNoResultsReportStatus(string $reportFileName, string $scope): bool
+    {
+        $ingest = self::createIngestInstance($reportFileName, $scope);
+        $ingest->fetch_status = self::FETCH_STATUS_DISPATCHED;
+        $ingest->remote_file_status = self::REMOTE_FILES_STATUS_NO_RESULTS;
+        $ingest->parse_status = self::PARSE_STATUS_NO;
+        $ingest->store_status = self::STORE_STATUS_NO;
+        return $ingest->save();
+    }
 }
