@@ -3,7 +3,6 @@ namespace console\tests\functional;
 use common\models\EMReportJob;
 use console\tests\FunctionalTester;
 use yii\console\ExitCode;
-use console\models\ManuscriptsWorker;
 
 class EMReportJobCest
 {
@@ -53,7 +52,7 @@ class EMReportJobCest
         $I->canSeeResultCodeIs(Exitcode::OK);
     }
 
-    public function tryToSeeNoResultsManuscriptReportNotStoredToTableAndUpdateStatusInIngestTable(FunctionalTester $I)
+    public function tryToSeeNoResultsManuscriptReportNotStoredToManuscriptTableAndUpdateStatusInIngestTable(FunctionalTester $I)
     {
         // Create temporary no result report with more recent timestamp console/tests/_data
         // so this file will be fetched, as it is the latest
