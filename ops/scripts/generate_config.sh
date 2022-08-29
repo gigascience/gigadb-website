@@ -47,10 +47,10 @@ if ! [ -s ./.secrets ];then
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100&page=1"  > .project_var_raw1
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${PROJECT_VARIABLES_URL}?per_page=100&page=2"  > .project_var_raw2
     jq -s 'add' .project_var_raw1 .project_var_raw2 > .project_vars.json
-    cat .project_vars.json | jq --arg ENVIRONMENT $REVIEW_ENV -r '.[] | select( .environment_scope == "dev" ) | select(.key | test("key|ca|pem|cert";"i") | not ) |.key + "=" + .value' > .project_var
+    cat .project_vars.json | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key | test("private_key|tlsauth|ca|pem|cert";"i") | not ) |.key + "=" + .value' > .project_var
 
     echo "Retrieving variables from ${MISC_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT $REVIEW_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key | test("sftp_") ) | .key + "=" + .value' > .misc_var
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key | test("sftp_") ) | .key + "=" + .value' > .misc_var
 
 
     cat .group_var .fork_var .project_var .misc_var > .secrets && rm .group_var && rm .fork_var && rm .project_var && rm .misc_var && rm .project_var_raw1 && rm .project_var_raw2 && rm .project_vars.json
@@ -209,13 +209,9 @@ fi
 ## Configuring other tools and apps
 
 
-export DB_BACKUP_HOST=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/cngbbackup_ftp_hostname" | jq -r '.value' )
-export DB_BACKUP_USERNAME=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/cngbbackup_ftp_username" | jq -r '.value' )
-export DB_BACKUP_PASSWORD=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/cngbbackup_ftp_password" | jq -r '.value' )
-
 SOURCE=${APP_SOURCE}/gigadb/app/tools/files-url-updater/config/params.php.dist
 TARGET=${APP_SOURCE}/gigadb/app/tools/files-url-updater/config/params.php
-VARS='$DB_BACKUP_HOST:$DB_BACKUP_USERNAME:$DB_BACKUP_PASSWORD'
+VARS='$cngbbackup_ftp_hostname:$cngbbackup_ftp_username:$cngbbackup_ftp_password'
 envsubst $VARS < $SOURCE > $TARGET
 
 # Download example dataset files

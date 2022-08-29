@@ -1,12 +1,9 @@
 version: '3.7'
 services:
   pg9_3:
-    image: postgres:9.3
-    volumes:
-    # init script that create the necessary DB roles and databases
-      - ./sql/bootstrap_gigadb.sql:/docker-entrypoint-initdb.d/gigadb.sql
-    # we need to expose the port to the docker host so Gigadb webapp can use it
-    # Make sure there's no other daemons using port 5432 on the docker host
+    build:
+      context: .
+      dockerfile: LegacyPgDockerfile
     ports:
       - '5432:5432'
 
@@ -15,3 +12,12 @@ services:
       context: .
     volumes:
       - .:/app
+      - .:/logs
+      - ./sql:/downloads
+
+
+  config:
+    image: rija/docker-alpine-shell-tools:1.0.1
+    volumes:
+      - .:/app
+    command: /app/generate_config.sh

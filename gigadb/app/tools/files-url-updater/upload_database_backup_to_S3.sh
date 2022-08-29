@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source ./.env
-
 export PATH=/usr/local/bin/:$PATH
 # preflight checks
 which rclone
@@ -20,6 +18,9 @@ export PGPASSWORD=$DB_PG_PASSWORD; pg_dump --host=$DB_PG_HOST -p 5432 --username
 
 # Upload dump files in backups folder to S3 using rclone - skips identical files
 rclone copy backups/ s3_remote:gigadb-database-backups
+cloneStatus=$?
 
-# Delete back up files older than 20 days
-find backups/* -mtime +20 -exec rm {} +
+# Housekeeping
+if [[ $cloneStatus -eq 0 ]];then
+  rm -f backups/gigadb_${gitlab_project}_${gitlab_environment}_${latest}.backup
+fi

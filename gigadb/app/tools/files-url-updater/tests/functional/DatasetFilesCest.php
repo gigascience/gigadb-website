@@ -108,90 +108,104 @@ class DatasetFilesCest {
     }
 
     /**
-     * @group update-ftp-urls
-     * @param FunctionalTester $I
-     */
-    public function tryUpdateFtpUrlNextAfter(\FunctionalTester $I) {
-        $command = Yii::$app->createControllerByID('dataset-files');
-        $outcome = $command->run('update-ftp-urls',[
-            "next" => 5,
-            "after" => 10,
-            "dryrun" => true,
-        ]);
-        $I->assertEquals(Exitcode::OK, $outcome);
-    }
-
-    /**
-     * @group update-ftp-urls
-     * @param FunctionalTester $I
-     */
-    public function tryReplacementCommandUsageWhenNoOptions(\FunctionalTester $I)
-    {
-        $I->runShellCommand("./yii_test dataset-files/update-ftp-urls", false);
-        $I->canSeeInShellOutput("Usage:");
-        $I->canSeeInShellOutput("dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun][--verbose]");
-        $I->canSeeResultCodeIs(Exitcode::USAGE);
-    }
-
-    /**
      * @group download-restore
      * @param FunctionalTester $I
      */
-    public function tryDownloadCommandUsageWhenNoOptions(\FunctionalTester $I)
-    {
-        $I->runShellCommand("./yii_test dataset-files/download-restore-backup", false);
-        $I->canSeeInShellOutput("Usage:");
-        $I->canSeeInShellOutput("dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload]");
-        $I->canSeeResultCodeIs(Exitcode::USAGE);
-    }
+    public function tryNoDownloadRestoreBackupWithLatestForceOptions(\FunctionalTester $I) {
+        $dateStamp = date('Ymd', strtotime(date('Ymd')." - 1 day"));
 
-    /**
-     * @group update-ftp-urls
-     * @param FunctionalTester $I
-     */
-    public function tryReplacementCommandWithPendingDatasetsProceed(\FunctionalTester $I)
-    {
-        $I->runShellCommand("echo yes | ./yii_test dataset-files/update-ftp-urls --next 5");
-        $I->canSeeInShellOutput("Warning! This command will alter 5 datasets in the database, are you sure you want to proceed?");
-        $I->canSeeInShellOutput("Executing command...");
+        $I->runShellCommand("echo no |./yii_test dataset-files/download-restore-backup --latest --force --nodownload");
+        $I->canSeeInShellOutput("Restoring the backup for $dateStamp");
+        $I->seeResultCodeIs(Exitcode::OK);
 
     }
 
-    /**
-     * @group update-ftp-urls
-     * @param FunctionalTester $I
-     */
-    public function tryReplacementCommandWithPendingDatasetsAbort(\FunctionalTester $I)
-    {
-        $I->runShellCommand("echo no | ./yii_test dataset-files/update-ftp-urls --next 5", false);
-        $I->canSeeInShellOutput("Warning! This command will alter 5 datasets in the database, are you sure you want to proceed?");
-        $I->canSeeInShellOutput("Aborting.");
-        $I->canSeeResultCodeIs(ExitCode::NOPERM);
-
-    }
-
-    /**
-     * @group update-ftp-urls
-     * @param FunctionalTester $I
-     */
-    public function tryReplacementCommandNoPendingDatasets(\FunctionalTester $I)
-    {
-        $I->runShellCommand("./yii_test dataset-files/update-ftp-urls --next 5 --after 99999");
-        $I->canSeeInShellOutput("There are no pending datasets with url to replace.");
-    }
-
-    /**
-     * @group update-ftp-urls
-     * @param FunctionalTester $I
-     */
-    public function tryReplacementCommandShowsConfig(\FunctionalTester $I)
-    {
-        $I->runShellCommand("./yii_test dataset-files/update-ftp-urls --config", false);
-        $I->canSeeInShellOutput("[db] => Array");
-        $I->canSeeInShellOutput("[ftp] => Array");
-        $I->canSeeInShellOutput("pgsql:host=pg9_3;dbname=gigadb_test;port=5432");
-        $I->canSeeResultCodeIs(ExitCode::CONFIG);
-    }
+// Disabling update-ftp-urls test as this was adhoc work to legacy production server that's gonna be replaced soon
+//    /**
+//     * @group update-ftp-urls
+//     * @param FunctionalTester $I
+//     */
+//    public function tryUpdateFtpUrlNextAfter(\FunctionalTester $I) {
+//        $command = Yii::$app->createControllerByID('dataset-files');
+//        $outcome = $command->run('update-ftp-urls',[
+//            "next" => 5,
+//            "after" => 10,
+//            "dryrun" => true,
+//        ]);
+//        $I->assertEquals(Exitcode::OK, $outcome);
+//    }
+//
+//    /**
+//     * @group update-ftp-urls
+//     * @param FunctionalTester $I
+//     */
+//    public function tryReplacementCommandUsageWhenNoOptions(\FunctionalTester $I)
+//    {
+//        $I->runShellCommand("./yii_test dataset-files/update-ftp-urls", false);
+//        $I->canSeeInShellOutput("Usage:");
+//        $I->canSeeInShellOutput("dataset-files/update-ftp-url --next <batch size> [--after <dataset id>][--dryrun][--verbose]");
+//        $I->canSeeResultCodeIs(Exitcode::USAGE);
+//    }
+//
+//    /**
+//     * @group download-restore
+//     * @param FunctionalTester $I
+//     */
+//    public function tryDownloadCommandUsageWhenNoOptions(\FunctionalTester $I)
+//    {
+//        $I->runShellCommand("./yii_test dataset-files/download-restore-backup", false);
+//        $I->canSeeInShellOutput("Usage:");
+//        $I->canSeeInShellOutput("dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload]");
+//        $I->canSeeResultCodeIs(Exitcode::USAGE);
+//    }
+//
+//    /**
+//     * @group update-ftp-urls
+//     * @param FunctionalTester $I
+//     */
+//    public function tryReplacementCommandWithPendingDatasetsProceed(\FunctionalTester $I)
+//    {
+//        $I->runShellCommand("echo yes | ./yii_test dataset-files/update-ftp-urls --next 5");
+//        $I->canSeeInShellOutput("Warning! This command will alter 5 datasets in the database, are you sure you want to proceed?");
+//        $I->canSeeInShellOutput("Executing command...");
+//
+//    }
+//
+//    /**
+//     * @group update-ftp-urls
+//     * @param FunctionalTester $I
+//     */
+//    public function tryReplacementCommandWithPendingDatasetsAbort(\FunctionalTester $I)
+//    {
+//        $I->runShellCommand("echo no | ./yii_test dataset-files/update-ftp-urls --next 5", false);
+//        $I->canSeeInShellOutput("Warning! This command will alter 5 datasets in the database, are you sure you want to proceed?");
+//        $I->canSeeInShellOutput("Aborting.");
+//        $I->canSeeResultCodeIs(ExitCode::NOPERM);
+//
+//    }
+//
+//    /**
+//     * @group update-ftp-urls
+//     * @param FunctionalTester $I
+//     */
+//    public function tryReplacementCommandNoPendingDatasets(\FunctionalTester $I)
+//    {
+//        $I->runShellCommand("./yii_test dataset-files/update-ftp-urls --next 5 --after 99999");
+//        $I->canSeeInShellOutput("There are no pending datasets with url to replace.");
+//    }
+//
+//    /**
+//     * @group update-ftp-urls
+//     * @param FunctionalTester $I
+//     */
+//    public function tryReplacementCommandShowsConfig(\FunctionalTester $I)
+//    {
+//        $I->runShellCommand("./yii_test dataset-files/update-ftp-urls --config", false);
+//        $I->canSeeInShellOutput("[db] => Array");
+//        $I->canSeeInShellOutput("[ftp] => Array");
+//        $I->canSeeInShellOutput("pgsql:host=pg9_3;dbname=gigadb_test;port=5432");
+//        $I->canSeeResultCodeIs(ExitCode::CONFIG);
+//    }
 
     /**
      * @group download-restore

@@ -66,10 +66,15 @@ class DatasetFilesController extends Controller
      */
     public bool $verbose = false;
 
+    /**
+     * @var bool true to run restoration without confirmation prompt
+     */
+    public bool $force = false;
+
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help','config','date','next','after','dryrun','verbose','nodownload','norestore','latest','default'];
+        return ['color', 'interactive', 'help','config','date','next','after','dryrun','verbose','nodownload','norestore','latest','default', 'force'];
     }
 
 
@@ -79,12 +84,12 @@ class DatasetFilesController extends Controller
      *  Usage:
      *      ./yii dataset-files/download-restore-backup
      *      ./yii dataset-files/download-restore-backup --config
-     *      ./yii dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload][--norestore]
+     *      ./yii dataset-files/download-restore-backup --date 20210608 | --latest | --default [--nodownload][--norestore] | --force
      *
      * @throws \Throwable
      * @return int Exit code
      */
-    public function actionDownloadRestoreBackup()
+    public function actionDownloadRestoreBackup(): int
     {
         $returnValue = 0;
         $optConfig = $this->config;
@@ -93,6 +98,7 @@ class DatasetFilesController extends Controller
         $optNoRestore = $this->norestore;
         $optLatest = $this->latest;
         $optDefault = $this->default;
+        $optForce= $this->force;
 
         //Return config
         if($optConfig) {
@@ -134,11 +140,11 @@ class DatasetFilesController extends Controller
 
                 if ($optDefault) {
                     $downloadHost = DatasetFiles::TESTDATA_HOST;
-                    $lastLine = system("curl -o sql/gigadbv3_default.backup --user {$ftpConfig['username']}:{$ftpConfig['password']} $downloadHost/gigadbv3_default.backup", $returnValue);
+                    $lastLine = system("curl -o /downloads/gigadbv3_default.backup --user {$ftpConfig['username']}:{$ftpConfig['password']} $downloadHost/gigadbv3_default.backup", $returnValue);
                 }
                 else {
                     $downloadHost = $ftpConfig['host'];
-                    $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} $downloadHost /app/sql/ /gigadbv3_{$optDate}.backup", $returnValue);
+                    $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} $downloadHost /downloads/ /gigadbv3_{$optDate}.backup", $returnValue);
                 }
                 if(0 !== $returnValue) {
                     throw new Exception("Failed downloading backup file for date $optDate".$lastLine);
@@ -155,23 +161,26 @@ class DatasetFilesController extends Controller
             if(!$optNoRestore) {
 
                 // Check the backup file exists first, otherwise throw exception to cause exit
-                if (!file_exists("/app/sql/gigadbv3_$optDate.backup")) {
+                if (!file_exists("/downloads/gigadbv3_$optDate.backup")) {
                     throw new Exception("Backup file not found for date $optDate");
                 }
 
-                // Ask for confirmation to proceed
+                // Ask for confirmation to proceed (unless --force option is present in which case with proceed directly without user interaction)
                 $dbHost = Yii::$app->params["db"]["host"];
-                $this->stdout("\nWarning! ", Console::FG_RED);
-                switch($this->confirm("This command will drop the configured database (hosted on $dbHost) and restore it from the {$optDate} backup, are you sure you want to proceed?\n")) {
-                    case false:
-                        $this->stdout("Aborting.\n", Console::FG_BLUE);
-                        return ExitCode::NOPERM;
-                    default:
-                        $this->stdout("Executing command...\n", Console::FG_BLUE);
+                if (!$optForce) {
+                    $this->stdout("\nWarning! ", Console::FG_RED);
+                    switch($this->confirm("This command will drop the configured database (hosted on $dbHost) and restore it from the {$optDate} backup, are you sure you want to proceed?")) {
+                        case false:
+                            $this->stdout("Aborting.\n", Console::FG_BLUE);
+                            return ExitCode::NOPERM;
+                        default:
+                            $this->stdout("Executing command...\n", Console::FG_BLUE);
+                    }
                 }
                 // proceed
                 $this->stdout("\nRestoring the backup for {$optDate}\n", Console::BOLD);
                 DatasetFiles::reloadDb($optDate);
+
             }
         }
         catch (Exception $e) {
