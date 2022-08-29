@@ -243,11 +243,11 @@ Feature: form to update dataset details
     And I should see "Image Photographer"
 
 
-  @todo
-  Scenario: No image is shown if image object's url is not valid url
-    When I am on "/adminDataset/update/id/144"
+  @ok
+  Scenario: No image, but metadata only is shown if image record's url is not valid url
+    When I am on "/adminDataset/update/id/668"
     Then I should see an image located in ""
-    And I should not see "Remove image"
+    And I should see "Remove image"
     And I should see "Image URL"
     And I should see "Image Source"
     And I should see "Image Tag"
@@ -269,7 +269,7 @@ Feature: form to update dataset details
 
   @todo
   Scenario: Delete dataset's non-existing custom image (but not the image metadata)
-    When I am on "/adminDataset/update/id/200"
+    When I am on "/adminDataset/update/id/668"
     And I follow "Delete image file"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "1" seconds
