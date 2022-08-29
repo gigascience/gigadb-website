@@ -70,14 +70,17 @@ class AcceptanceTester extends \Codeception\Actor
 
 
     /**
-     * @Then the EM report spreadsheet is downloaded
+     * @Then the EM :report_type report spreadsheet is downloaded
      */
-    public function theEMReportSpreadsheetIsDownloaded()
+    public function theEMReportSpreadsheetIsDownloaded($report_type)
     {
         $this->seeInDatabase('ingest',[
-            "file_name" =>"Report-GIGA-em-authors-latest-214-20220607004243.csv",
-            "report_type" => Ingest::REPORT_TYPES["authors"],
+            "file_name" =>"Report-GIGA-em-$report_type-latest-214-20220607004243.csv",
+            "report_type" => Ingest::REPORT_TYPES[$report_type],
             "fetch_status" => Ingest::FETCH_STATUS_DISPATCHED,
+            "parse_status" => null,
+            "remote_file_status" => null,
+            "store_status" => null,
         ]);
     }
 
