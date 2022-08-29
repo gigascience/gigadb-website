@@ -1,6 +1,7 @@
 <?php
 namespace console\tests;
 
+use Behat\Gherkin\Node\TableNode;
 use common\models\Ingest;
 
 /**
@@ -84,4 +85,35 @@ class AcceptanceTester extends \Codeception\Actor
         ]);
     }
 
+    /**
+     * @When the queue job is pushed to :report_type worker
+     */
+    public function theQueueJobIsPushedToWorker($report_type)
+    {
+        $output = shell_exec("/usr/local/bin/php /app/yii_test $report_type-q/run --verbose");
+        codecept_debug($output);
+    }
+
+    /**
+     * @Then the EM :report_type report spreadsheet is parsed
+     */
+    public function theEMReportSpreadsheetIsParsed($report_type)
+    {
+        $this->seeInDatabase('ingest',[
+            "file_name" =>"Report-GIGA-em-$report_type-latest-214-20220607004243.csv",
+            "report_type" => Ingest::REPORT_TYPES[$report_type],
+            "parse_status" => Ingest::PARSE_STATUS_YES,
+            "remote_file_status" => Ingest::REMOTE_FILES_STATUS_EXISTS,
+        ]);
+    }
+
+    /**
+     * @Then I should see in :report_type table
+     */
+    public function iShouldSeeInTable($report_type, TableNode $table)
+    {
+        foreach ($table as $row) {
+            $this->canSeeInDatabase($report_type, $row);
+        }
+    }
 }
