@@ -38,15 +38,14 @@ class FilesCommand extends CConsoleCommand
      */
     public function actionUpdateMD5FileAttributes($doi) {
         try {
-            $url = $this->findDatasetMd5FileUrl($doi);
-            echo "Processing $url".PHP_EOL;
-
             // Dataset id is required for querying files
             $dataset = Dataset::model()->findByAttributes(array(
                 'identifier' => $doi,
             ));
 
             # Download and parse dataset md5 file
+            $url = $this->findDatasetMd5FileUrl($dataset);
+            echo "Processing $url".PHP_EOL;
             $contents = DownloadService::downloadFile($url);
             $lines = explode("\n", $contents);
             foreach ($lines as $line) {
@@ -83,16 +82,15 @@ class FilesCommand extends CConsoleCommand
      * https://ftp.cngb.org/pub/gigadb/pub/10.5524/101001_102000/101001/101001.md5
      * https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102236/102236.md5
      *
-     * @param $doi
+     * @param $dataset
      * @return string
      * @throws Exception
      */
-    private function findDatasetMd5FileUrl($doi): string
+    private function findDatasetMd5FileUrl($dataset): string
     {
-        // Directory names representing ranges of dataset DOIs
-        $ranges = ['104001_105000', '103001_104000', '102001_103000', '101001_102000', '100001_101000'];
-
-        foreach ($ranges as $range) {
+        $doi = $dataset->doi;
+        $url = "";
+        foreach ($dataset::RANGES as $range) {
             $url = Yii::app()->params['ftp_connection_url']."/pub/gigadb/pub/10.5524/$range/$doi/$doi.md5";
             // Check URL resolves to a real file
             $file_exists = @fopen($url, 'r');

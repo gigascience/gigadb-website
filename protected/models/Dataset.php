@@ -15,6 +15,8 @@ class Dataset extends CActiveRecord
     const URL_BIBTEXT = 'http://data.datacite.org/application/x-bibtex/10.5524/';
     const URL_TEXT = 'http://data.datacite.org/application/x-datacite+text/10.5524/';
 
+    // Directory names representing ranges of dataset DOIs
+    const RANGES = ['104001_105000', '103001_104000', '102001_103000', '101001_102000', '100001_101000'];
 
     public $dTypes="";
     public $commonNames="";
