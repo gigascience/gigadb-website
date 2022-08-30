@@ -115,6 +115,18 @@ class Image extends CActiveRecord
         return false;
     }
 
+    /**
+     * Method return true if image's url property is valid, false otherwise
+     *
+     * @return bool
+     */
+    public function isUrlValid(): bool
+    {
+        if ( CompatibilityHelper::str_starts_with($this->url,"https://" ) )
+            return true;
+        return false;
+    }
+
 
     public function beforeDelete()
     {

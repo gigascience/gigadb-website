@@ -115,13 +115,9 @@ echo $form->hiddenField($model, "image_id");
                         $img_url = $model->image->url;
                         $img_location = $model->image->location;
                         $no_img_url = 'https://assets.gigadb-cdn.net/images/datasets/no_image.png';
-                        if($img_url){
+                        if( $model->image->isUrlValid() ){
                             echo CHtml::image($img_url, $img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
                             echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
-                        } else {
-                            echo CHtml::image($no_img_url, $no_img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
-                            echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
-
                         }
                     ?>
                     <div class="control-group">

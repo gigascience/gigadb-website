@@ -1,5 +1,6 @@
 <?php
 
+use \Codeception\Example;
 use CUploadedFile;
 use creocoder\flysystem\AwsS3Filesystem;
 use League\Flysystem\AdapterInterface;
@@ -94,4 +95,26 @@ class ImageTest extends \Codeception\Test\Unit
 
     }
 
+    /**
+     * Test method for checking URL validity
+     *
+     * @dataProvider urlsProvider
+     */
+    public function testCheckURL(?string $url, bool $expectedReturn)
+    {
+        $sut = new Image(); // System Under Test
+        $sut->url = $url;
+        $this->assertEquals($expectedReturn, $sut->isUrlValid());
+    }
+
+
+    public function urlsProvider() {
+        return [
+            "valid url" => [ "https://foo.bar", true],
+            "invalid url (local path)" => [ "var/somepath", false],
+            "invalid url (http)" => [ "http://foo.bar", false],
+            "invalid url (empty string)" => [ "", false],
+            "invalid url (null)" => [ null, false],
+        ];
+    }
 }
