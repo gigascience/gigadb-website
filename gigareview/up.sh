@@ -60,6 +60,9 @@ if [ -f ./yii_test ];then
   docker-compose run --rm console ./yii_test migrate --interactive=0
 fi
 
+# Creating db dump file for dev
+docker-compose run --rm console ./make_pgdmp_reviewdb_test.sh
+
 # Launching all the remaining services
 docker-compose up -d public api
 
