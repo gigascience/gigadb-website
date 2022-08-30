@@ -130,7 +130,7 @@ echo $form->hiddenField($model, "image_id");
                         <div class="controls">
                             <ul>
                                 <li style="list-style: none;"><?php echo CHtml::fileField('datasetImage'); ?></li>
-                                <li style="list-style: none;"><?php echo CHtml::ajaxLink('Remove image',Yii::app()->createUrl('/adminDataset/removeImage/'),
+                                <li style="list-style: none;"><?php echo CHtml::ajaxLink('Remove image record (file+metadata)',Yii::app()->createUrl('/adminDataset/removeImage/'),
                                         array(
                                             'type'=>'POST',
                                             'data'=> array('doi'=>'js:$("#Dataset_identifier").val()'),
@@ -149,7 +149,8 @@ echo $form->hiddenField($model, "image_id");
                                             }',
                                         ),array('class'=>'btn btn-sm',
                                                 'id' =>'removeButton',
-                                                'style'=>'width:40%;font-size: smaller; font-weight: lighter;color: #fff ; background: #c12e2a',
+                                                'style'=>'width:90%;font-size: smaller; font-weight: lighter;color: #fff ; background: #c12e2a',
+                                                'title' => 'the dataset will be associated with the generic image record afterward',
                                                 'confirm'=>'Are you sure? This will take effect immediately',
                                                 
                                         ));
