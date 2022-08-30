@@ -88,16 +88,15 @@ class FilesCommand extends CConsoleCommand
      */
     private function findDatasetMd5FileUrl($dataset): string
     {
-        $doi = $dataset->doi;
-        $url = "";
+        $doi = $dataset->identifier;
         foreach ($dataset::RANGES as $range) {
             $url = Yii::app()->params['ftp_connection_url']."/pub/gigadb/pub/10.5524/$range/$doi/$doi.md5";
             // Check URL resolves to a real file
-            $file_exists = @fopen($url, 'r');
+            $file_exists = DownloadService::fileExists($url);
             if ($file_exists)
                 return $url;
         }
-        throw new Exception("$doi.md5 file not found for dataset DOI $doi at $url");
+        throw new Exception("No $doi.md5 file could be found for dataset DOI $doi");
     }
 
     /**

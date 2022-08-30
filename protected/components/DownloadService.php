@@ -31,5 +31,23 @@ class DownloadService extends yii\base\Component
         else
             throw new Exception("Error downloading file by DownloadService: status code " . $response->getStatusCode());
     }
+
+    /**
+     * Check remote file exists
+     *
+     * @param string $url
+     * @return boolean
+     */
+    public static function fileExists(string $url)
+    {
+        try {
+            $webClient = new \GuzzleHttp\Client();
+            $webClient->head($url);
+            return true;
+        } catch (GuzzleHttp\Exception\ClientException $e) {
+            echo "No file found at $url".PHP_EOL;
+            return false;
+        }
+    }
 }
 ?>
