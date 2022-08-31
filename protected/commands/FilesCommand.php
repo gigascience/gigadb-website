@@ -42,6 +42,8 @@ class FilesCommand extends CConsoleCommand
             $dataset = Dataset::model()->findByAttributes(array(
                 'identifier' => $doi,
             ));
+            if(is_null($dataset))
+                throw new Exception("No dataset found in database with DOI $doi");
 
             # Download and parse dataset md5 file
             $url = $this->findDatasetMd5FileUrl($dataset);

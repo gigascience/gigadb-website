@@ -39,13 +39,13 @@ class FilesCommandCest
     }
 
     /**
-     * Check dummy DOI cannot resolve to a real md5 file
+     * Check dummy DOI is not associated with any dataset
      */
-    public function tryToUpdateMD5FileAttributesWithUnresolvableMD5File(FunctionalTester $I)
+    public function tryToUpdateMD5FileAttributesWithFakeDOI(FunctionalTester $I)
     {
-        // Execute FileCommand function with dummy doi
+        // Execute FileCommand function with fake doi
         $output = shell_exec("./protected/yiic_test files updateMD5FileAttributes --doi=888888");
-        $I->assertContains("888888.md5 file not found for dataset DOI 888888", $output);
+        $I->assertContains("No dataset found in database with DOI 888888", $output);
     }
 
     public function tryNotToOutputResolvableLinks(FunctionalTester $I)
