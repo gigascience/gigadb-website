@@ -243,10 +243,10 @@ Feature: form to update dataset details
     And I should see "Image License"
     And I should see "Image Photographer"
 
-  @todo
+  @ok @datasetimage
   Scenario: Delete dataset's existing custom image file (but not the image metadata)
-    When I am on "/adminDataset/update/id/200"
-    And I follow "Delete image file"
+    When I am on "/adminDataset/update/id/700"
+    And I press the button "[x]"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "1" seconds
     Then I should see "Image URL"
@@ -255,18 +255,7 @@ Feature: form to update dataset details
     And I should see "Image License"
     And I should see "Image Photographer"
     And I should see an image located in ""
-
-  @todo
-  Scenario: Delete dataset's non-existing custom image (but not the image metadata)
-    When I am on "/adminDataset/update/id/668"
-    And I follow "Delete image file"
-    And I confirm to "Are you sure? This will take effect immediately"
-    And I wait "1" seconds
-    Then I should see "Image URL"
-    And I should see "Image Source"
-    And I should see "Image Tag"
-    And I should see "Image License"
-    And I should see "Image Photographer"
-    And I should see an image located in ""
+    And I should not see "[x]"
+    And I should see "Remove image"
 
 

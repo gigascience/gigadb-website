@@ -32,7 +32,7 @@ class AdminDatasetController extends Controller
     {
         return array(
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                  'actions'=>array('create','admin','update','private', 'removeImage','mint','checkDOIExist', 'assignFTPBox','sendInstructions','saveInstructions','mockup','moveFiles'),
+                  'actions'=>array('create','admin','update','private', 'removeImage','clearImageFile','mint','checkDOIExist', 'assignFTPBox','sendInstructions','saveInstructions','mockup','moveFiles'),
                   'roles'=>array('admin'),
             ),
             array('deny',  // deny all users
@@ -417,6 +417,32 @@ class AdminDatasetController extends Controller
             $model->save();
             $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
         }
+    }
+
+
+    /**
+     * Remove image file url on the custom image record associated to a dataset
+     * @return void
+     */
+    public function actionClearImageFile()
+    {
+        $result['status'] = false;
+        if (isset($_POST['doi'])) {
+            $doi = $_POST['doi'];
+            $model = Dataset::model()->findByAttributes([ 'identifier' => $doi ]);
+            $fileToClear = $model->image->url;
+            $model->image->url = null;
+            if ($model->image->save()) {
+                $result['status'] = true;
+                Yii::log("Success clearing image file $fileToClear for dataset $doi","error");
+            }
+            else {
+                Yii::log("Failed clearing image file $fileToClear for dataset $doi","error");
+            }
+        }
+
+        echo json_encode($result);
+        Yii::app()->end();
     }
 
     /**

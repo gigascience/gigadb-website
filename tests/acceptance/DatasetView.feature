@@ -118,13 +118,13 @@ Feature: a user visit the dataset page
     And I uncheck "attribute" checkbox
     And I should see "attribute" checkbox is not checked
 
-  @ok
+  @ok @datasetimage
   Scenario: Dataset with image associated will show dataset image
     Given I have not signed in
     When I am on "dataset/100006"
     Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
 
-  @ok
+  @ok @datasetimage
   Scenario: Dataset with no image associated will show generic image
     Given I have not signed in
     When I am on "dataset/300070"
