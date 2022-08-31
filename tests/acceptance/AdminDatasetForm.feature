@@ -37,18 +37,8 @@ Feature: form to update dataset details
     And I should see a button "Create New Log" with creation log link
     And I should not see "Publisher"
 
-  @ok
-  Scenario: Can display generic image, but no image meta data fields for no image dataset in update page
-    When I am on "/adminDataset/update/id/144"
-    Then I should see an image located in "https://assets.gigadb-cdn.net/images/datasets/no_image.png"
-    And I should not see "Remove image"
-    And I should not see "Image URL"
-    And I should not see "Image Source*"
-    And I should not see "Image Tag"
-    And I should not see "Image License*"
-    And I should not see "Image Photographer*"
 
-  @ok
+  @ok @datasetimage
   Scenario: Can preview uploaded image and display image meta data fields for no image dataset in update page
     When I am on "/adminDataset/update/id/144"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
@@ -59,7 +49,7 @@ Feature: form to update dataset details
     And I should see "Image License"
     And I should see "Image Photographer"
 
-  @ok
+  @ok @datasetimage
   Scenario: Can save image to no image dataset update page
     When I am on "/adminDataset/update/id/144"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
@@ -67,7 +57,7 @@ Feature: form to update dataset details
     Then I am on "/dataset/100094"
     And I should see an image located in "/images/datasets/9febbdcf-3f7c-5558-abaa-448e633a109d/bgi_logo_new.png"
 
-  @ok
+  @ok @datasetimage
   Scenario: Can display dataset image, meta data and remove image button in update page
     When I am on "/adminDataset/update/id/8"
     Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
@@ -78,7 +68,7 @@ Feature: form to update dataset details
     And I should see "Image License"
     And I should see "Image Photographer"
 
-  @ok
+  @ok @datasetimage
   Scenario: Can preview uploaded image and display image meta data fields update page
     When I am on "/adminDataset/update/id/8"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
@@ -90,19 +80,18 @@ Feature: form to update dataset details
     And I should see "Image License"
     And I should see "Image Photographer"
 
-  @ok
+  @ok @datasetimage
   Scenario: No meta image data fields when no image is loaded in create page
     When I am on "/adminDataset/admin"
     And I press the button "Create Dataset"
     Then I should see "Fields with * are required"
-    And I should see an image located in "https://assets.gigadb-cdn.net/images/datasets/no_image.png"
     And I should not see "Image URL"
     And I should not see "Image Source"
     And I should not see "Image Tag"
     And I should not see "Image License"
     And I should not see "Image Photographer"
 
-  @ok
+  @ok @datasetimage
   Scenario: Can preview image and display image meta data fields when image is loaded in create page
     When I am on "adminDataset/create"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
@@ -113,7 +102,7 @@ Feature: form to update dataset details
     And I should see "Image License"
     And I should see "Image Photographer"
 
-  @ok
+  @ok @datasetimage
   Scenario: Can create dataset with image
     When I am on "adminDataset/create"
     And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
@@ -243,7 +232,7 @@ Feature: form to update dataset details
     And I should see "Image Photographer"
 
 
-  @ok
+  @ok @datasetimage
   Scenario: No image, but metadata only is shown if image record's url is not valid url
     When I am on "/adminDataset/update/id/668"
     Then I should see an image located in ""

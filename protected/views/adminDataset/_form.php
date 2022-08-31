@@ -114,11 +114,9 @@ echo $form->hiddenField($model, "image_id");
                     <?
                         $img_url = $model->image->url;
                         $img_location = $model->image->location;
-                        $no_img_url = 'https://assets.gigadb-cdn.net/images/datasets/no_image.png';
-                        if( $model->image->isUrlValid() ){
-                            echo CHtml::image($img_url, $img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
-                            echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
-                        }
+                        echo CHtml::image($img_url, $img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
+                        echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
+
                     ?>
                     <div class="control-group">
                         <label for="image_upload_image" class="control-label">Image Status</label>
@@ -499,22 +497,26 @@ if(image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
 };
 
 //Show image meta data, preview uploaded image in create page
-if(image.src == 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
-    document.getElementById("datasetImage").addEventListener('change', (event) => {
-        if(event.target.files.length != 0) {
-            var src = URL.createObjectURL(event.target.files[0]);
-            var preview = document.getElementById("imagePreview");
-            preview.src = src;
-            preview.style.display = "block";
-            $('.meta-fields').css('display', '');
-            $('#showImage').css('display', 'none');
-        } else {
-            $('.meta-fields').css('display', 'none');
-            $('#showImage').css('display', 'block');
-            $('#imagePreview').css('display', 'none');
-        }
-    });
-};
+
+document.getElementById("datasetImage").addEventListener('change', (event) => {
+    if(event.target.files.length != 0) {
+        var src = URL.createObjectURL(event.target.files[0]);
+        var preview = document.getElementById("imagePreview");
+        preview.src = src;
+        preview.style.display = "block";
+        $('.meta-fields').css('display', '');
+        $('#showImage').css('display', 'none');
+    } else {
+        $('.meta-fields').css('display', 'none');
+        $('#showImage').css('display', 'block');
+        $('#imagePreview').css('display', 'none');
+    }
+});
+
+// if no image loaded and no image selected for upload, don't show metadata fields
+if ('' == image.src && 0 == document.getElementById("datasetImage").files.length) {
+    $('.meta-fields').css('display', 'none');
+}
 </script>
 
 
