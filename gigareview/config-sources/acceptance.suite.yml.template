@@ -41,3 +41,5 @@ gherkin:
 extensions:
   enabled:
     - Codeception\Extension\Recorder
+
+bootstrap: initdb.php

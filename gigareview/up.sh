@@ -56,9 +56,6 @@ docker-compose run --rm console ./database.sh
 
 # Running database migrations
 docker-compose run --rm console ./yii migrate --interactive=0
-if [ -f ./yii_test ];then
-  docker-compose run --rm console ./yii_test migrate --interactive=0
-fi
 
 # Creating db dump file for dev
 docker-compose run --rm console ./make_pgdmp_reviewdb_test.sh
