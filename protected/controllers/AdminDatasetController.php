@@ -430,15 +430,11 @@ class AdminDatasetController extends Controller
         if (isset($_POST['doi'])) {
             $doi = $_POST['doi'];
             $model = Dataset::model()->findByAttributes([ 'identifier' => $doi ]);
-            $fileToClear = $model->image->url;
-            $model->image->url = null;
-            if ($model->image->save()) {
+
+            if ($model->image && $model->image->url && $model->image->deleteFile(Yii::app()->db) )
                 $result['status'] = true;
-                Yii::log("Success clearing image file $fileToClear for dataset $doi","error");
-            }
-            else {
-                Yii::log("Failed clearing image file $fileToClear for dataset $doi","error");
-            }
+            else
+                Yii::log("Failed clearing image file for dataset $doi","error");
         }
 
         echo json_encode($result);

@@ -107,10 +107,37 @@ class ImageTest extends \Codeception\Test\Unit
         $this->assertEquals($expectedReturn, $sut->isUrlValid());
     }
 
+    /**
+     * Test method for checking qeueing deletion
+     *
+     * @dataProvider urlsProvider
+     */
+    public function testQueueDeleteImage(?string $url, bool $expectedReturn)
+    {
+
+        $dbCommand = $this->make('CDbCommand', [
+            "insert" => function ()  { return true;},
+        ]);
+        $dbConnection = $this->make('CDbConnection',[
+            "createCommand" => function () use ($dbCommand) { return $dbCommand;},
+        ]);
+        $sut = new Image(); // System Under Test
+        $sut->url = $url;
+        $sut->save();
+        $this->assertEquals(
+                            $expectedReturn,
+                            $sut->deleteFile($dbConnection)
+        );
+        if (true === $expectedReturn)
+            $this->assertTrue( empty($sut->url) );
+        else
+            $this->assertEquals($url, $sut->url);
+
+    }
 
     public function urlsProvider() {
         return [
-            "valid url" => [ "https://foo.bar", true],
+            "valid url" => [ "https://foo.bar", true, true],
             "invalid url (local path)" => [ "var/somepath", false],
             "invalid url (http)" => [ "http://foo.bar", false],
             "invalid url (empty string)" => [ "", false],

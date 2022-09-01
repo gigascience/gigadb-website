@@ -127,20 +127,37 @@ class Image extends CActiveRecord
         return false;
     }
 
+    /**
+     * @param object|null $db
+     * @return bool
+     * @throws CDbException
+     */
+    public function deleteFile(?object $db): bool
+    {
+        $dbConnection = !empty($db) ? $db : $this->getDbConnection();
+        try {
+            if( $this->isUrlValid() ) {
+                $inserted = $dbConnection->createCommand()->insert("images_todelete", [
+                    "url" => $this->url
+                ]);
+                if ($inserted) {
+                    $this->url = null;
+                    $this->save();
+                }
+                return true;
+            }
+            return false;
+        }
+        catch (CDbException $e) {
+            Yii::log($e->getMessage(),"error");
+            return false;
+        }
+    }
 
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
-            try {
-                Yii::app()->db->createCommand()->insert("images_todelete", [
-                    "url" => $this->url
-                ]);
-                return true;
-            }
-            catch (CDbException $e) {
-                Yii::log($e->getMessage(),"error");
-                return false;
-            }
+            return $this->deleteFile();
         }
         return false;
 
