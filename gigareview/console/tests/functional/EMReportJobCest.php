@@ -13,6 +13,12 @@ class EMReportJobCest
         $I->runShellCommand("./yii_test migrate/up --interactive=0", false);
     }
 
+    public function _after(FunctionalTester $I)
+    {
+        if (file_exists("console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220611007777.csv"))
+            unlink("console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220611007777.csv");
+    }
+
     // tests
     public function tryToPushManuscriptQueueJobToManuscriptTableAndUpdateStatusInIngestTable(FunctionalTester $I)
     {
@@ -68,8 +74,6 @@ class EMReportJobCest
         $I->runShellCommand("/usr/local/bin/php /app/yii_test manuscripts-q/run --verbose", false);
         $I->canSeeInDatabase("ingest", ["file_name"=>$tempNoResultCsvReportName, "report_type"=>Ingest::REPORT_TYPES['manuscripts'], "fetch_status"=>Ingest::FETCH_STATUS_DISPATCHED, "parse_status"=>null, "store_status"=>null, "remote_file_status"=>null]);
         $I->canSeeInDatabase("ingest", ["file_name"=>$tempNoResultCsvReportName, "report_type"=>Ingest::REPORT_TYPES['manuscripts'], "fetch_status"=>Ingest::FETCH_STATUS_DISPATCHED, "parse_status"=>Ingest::PARSE_STATUS_NO, "store_status"=>Ingest::STORE_STATUS_NO, "remote_file_status"=>Ingest::REMOTE_FILES_STATUS_NO_RESULTS]);
-
-        unlink($noResultCsvReportDir.$tempNoResultCsvReportName);
 
         // To check the manuscript table is empty
         $I->seeNumRecords(0, "manuscript");
