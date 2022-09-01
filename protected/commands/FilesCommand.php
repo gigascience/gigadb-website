@@ -131,16 +131,9 @@ END;
                     echo $row['location'].PHP_EOL;
                     continue;
                 }
-                $headers = get_headers($row['location'], self::RETURN_ASSOCIATIVE_ARRAY, stream_context_create([
-                    'http' => [
-                        'method' => 'HEAD'
-                    ],
-                    'ssl' => [
-                        'verify_peer' => false,
-                        'verify_peer_name' => false,
-                    ],
-                ]));
-                if(!CompatibilityHelper::str_contains($headers[0],self::HTTP_STATUS_OK))
+
+                $file_exists = DownloadService::fileExists($row['location']);
+                if(!$file_exists)
                     echo $row['location'].PHP_EOL;
             }
 
