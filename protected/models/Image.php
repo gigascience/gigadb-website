@@ -132,13 +132,14 @@ class Image extends CActiveRecord
      * @return bool
      * @throws CDbException
      */
-    public function deleteFile(?object $db): bool
+    public function deleteFile(object $db = null): bool
     {
         $dbConnection = !empty($db) ? $db : $this->getDbConnection();
+        $oldUrl = $this->url;
         try {
             if( $this->isUrlValid() ) {
                 $inserted = $dbConnection->createCommand()->insert("images_todelete", [
-                    "url" => $this->url
+                    "url" => $oldUrl
                 ]);
                 if ($inserted) {
                     $this->url = null;
@@ -146,6 +147,8 @@ class Image extends CActiveRecord
                 }
                 return true;
             }
+            Yii::log("Failed deleting file for url $oldUrl". "error");
+
             return false;
         }
         catch (CDbException $e) {
@@ -157,7 +160,9 @@ class Image extends CActiveRecord
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
-            return $this->deleteFile();
+            if( !empty($this->url))
+                return $this->deleteFile();
+            return true;
         }
         return false;
 

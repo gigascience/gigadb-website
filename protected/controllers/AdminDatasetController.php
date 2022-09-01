@@ -431,7 +431,7 @@ class AdminDatasetController extends Controller
             $doi = $_POST['doi'];
             $model = Dataset::model()->findByAttributes([ 'identifier' => $doi ]);
 
-            if ($model->image && $model->image->url && $model->image->deleteFile(Yii::app()->db) )
+            if ($model->image && $model->image->url && $model->image->deleteFile() )
                 $result['status'] = true;
             else
                 Yii::log("Failed clearing image file for dataset $doi","error");
@@ -455,6 +455,8 @@ class AdminDatasetController extends Controller
                 try {
                     if ( Image::model()->findByPk($oldImageID)->delete() )
                         $result['status'] = true;
+                    else
+                        Yii::log("Failed deleting image record $oldImageID", "error");
                 } catch (CDbException $e) {
                     Yii::log($e->getMessage(),"error");
                 }

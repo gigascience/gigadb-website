@@ -258,4 +258,18 @@ Feature: form to update dataset details
     And I should not see "[x]"
     And I should see "Remove image"
 
-
+  @ok @datasetimage
+  Scenario: Delete an image's file and then remove the image record
+    When I am on "/adminDataset/update/id/5"
+    And I press the button "[x]"
+    And I confirm to "Are you sure? This will take effect immediately"
+    And I wait "2" seconds
+    And I follow "Remove image"
+    And I confirm to "Are you sure? This will take effect immediately"
+    And I wait "1" seconds
+    Then I should not see "Image URL"
+    And I should not see "Image Source"
+    And I should not see "Image Tag"
+    And I should not see "Image License"
+    And I should not see "Image Photographer"
+    And I should see an image located in "/images/datasets/no_image.png"
