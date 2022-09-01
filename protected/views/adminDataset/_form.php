@@ -117,7 +117,7 @@ echo $form->hiddenField($model, "image_id");
 
                                 <?php
 
-                                if ($model->image && $model->image->isUrlValid() ) {
+                                if ($model->image && 0 !== $model->image_id && $model->image->isUrlValid() ) {
 
                                     echo CHtml::ajaxButton('[x]',Yii::app()->createUrl('/adminDataset/clearImageFile/'),
                                         array(

@@ -273,3 +273,4 @@ Feature: form to update dataset details
     And I should not see "Image License"
     And I should not see "Image Photographer"
     And I should see an image located in "/images/datasets/no_image.png"
+    And I should not see "[x]"
