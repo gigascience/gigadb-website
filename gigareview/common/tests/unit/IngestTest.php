@@ -58,7 +58,7 @@ class IngestTest extends \Codeception\Test\Unit
         $storeStatus = 1;
 
         $updateStatusAfterSave = Ingest::logStatusAfterSave($reportFileName, $scope);
-        $this->assertTrue(true===$updateStatusAfterSave);
+        $this->assertTrue($updateStatusAfterSave);
 
         $ingest = Ingest::findOne(['file_name'=>$reportFileName, 'report_type'=>$reportType, 'fetch_status'=>$fetchStatus, 'parse_status'=>$parseStatus, 'remote_file_status'=>$remoteFileStatus, 'store_status'=>$storeStatus]);
         $this->assertNotNull($ingest);
@@ -82,7 +82,7 @@ class IngestTest extends \Codeception\Test\Unit
         $storeStatus = 0;
 
         $updateStatusFailSave = Ingest::logStatusFailSave($reportFileName, $scope);
-        $this->assertTrue(true===$updateStatusFailSave);
+        $this->assertTrue($updateStatusFailSave);
 
         $ingest = Ingest::findOne(['file_name'=>$reportFileName, 'report_type'=>$reportType, 'fetch_status'=>$fetchStatus, 'parse_status'=>$parseStatus, 'remote_file_status'=>$remoteFileStatus, 'store_status'=>$storeStatus]);
         $this->assertNotNull($ingest);
@@ -106,7 +106,7 @@ class IngestTest extends \Codeception\Test\Unit
         $storeStatus = 0;
 
         $updateNoResultsStatus = Ingest::logNoResultsReportStatus($noResultsReportFileName, $scope);
-        $this->assertTrue(true===$updateNoResultsStatus);
+        $this->assertTrue($updateNoResultsStatus);
 
         $ingest = Ingest::findOne(['file_name'=>$noResultsReportFileName, 'report_type'=>$reportType, 'fetch_status'=>$fetchStatus, 'parse_status'=>$parseStatus, 'remote_file_status'=>$remoteFileStatus, 'store_status'=>$storeStatus]);
         $this->assertNotNull($ingest);
