@@ -1,3 +1,3 @@
 <?php
 
-shell_exec("./yii_test migrate --interactive=0");
+shell_exec("./yii_test migrate/fresh --interactive=0");
