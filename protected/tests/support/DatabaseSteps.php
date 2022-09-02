@@ -122,7 +122,7 @@ values(681,'$email','5a4f75053077a32e681f81daa8792f95','$firstname','$lastname',
 	public function setUpUserIdentity(PDO $dbh, string $email): void
 	{
 		if ($dbh && $email) {
-			$sql = "insert into public.user (username, auth_key, password_hash, email, created_at, updated_at) values(:username, :auth_key, :password_hash, :email, :created_at, :updated_at)";
+			$sql = "insert into public.user (username, auth_key, password_hash, email, created_at, updated_at) values(:username, :auth_key, :password_hash, :email, :created_at, :updated_at) ON CONFLICT (email) DO NOTHING";
 			$sth = $dbh->prepare($sql);
 			$sth->bindValue(":username", Yii::$app->security->generateRandomString(6));
 			$sth->bindValue(":auth_key", Yii::$app->security->generateRandomString(6));

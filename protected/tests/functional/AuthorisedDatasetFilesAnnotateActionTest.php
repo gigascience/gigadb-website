@@ -24,7 +24,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
     private $userEmail = "user@gigadb.org";
 
     /** @var string $doi DOI to use for testing */
-    private $doi = "100005";
+    private $doi = "100142";
 
     /** @var PDO $dbh database handle for GigaDB database */
     public $dbh;
@@ -127,8 +127,8 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         $jar = new \GuzzleHttp\Cookie\CookieJar;
         $response = $webClient->request('POST', $this->url . 'site/login', [
             'cookies' => $jar,
-            form_params => [
-                "LoginForm[username]" => "user@gigadb.org",
+            'form_params' => [
+                "LoginForm[username]" => "test+336@gigasciencejournal.com",
                 "LoginForm[password]" => "gigadb",
                 "LoginForm[rememberMe]" => "2592000",
                 "yt0" => "Login",
@@ -147,7 +147,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         ];
         $response = $webClient->request('POST', $this->url . "authorisedDataset/annotateFiles/id/" . $this->doi, [
             'cookies' => $jar,
-            form_params => $metadata
+            'form_params' => $metadata
         ]);
         $this->assertEquals(302, $container[0]['response']->getStatusCode());
 
@@ -158,7 +158,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
     }
 
     public function testPostUploadsAndAttributesData() {
-        $doi = "100005";
+        $doi = "100142";
         // set upload status to the correct UserUploadingData
         $this->setUpDatasetUploadStatus($this->dbh, $doi ,"UserUploadingData");
 
@@ -178,8 +178,8 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         $jar = new \GuzzleHttp\Cookie\CookieJar;
         $response = $webClient->request('POST', $this->url . 'site/login', [
             'cookies' => $jar,
-            form_params => [
-                "LoginForm[username]" => "user@gigadb.org",
+            'form_params' => [
+                "LoginForm[username]" => "test+336@gigasciencejournal.com",
                 "LoginForm[password]" => "gigadb",
                 "LoginForm[rememberMe]" => "2592000",
                 "yt0" => "Login",
@@ -212,7 +212,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         ];
         $response = $webClient->request('POST', $this->url . "authorisedDataset/annotateFiles/id/" . $this->doi, [
             'cookies' => $jar,
-            form_params => $metadata
+            'form_params' => $metadata
         ]);
         $this->assertEquals(302, $container[0]['response']->getStatusCode());
         $this->assertTrue(preg_match("/3 attribute\(s\) added for upload someFile\.csv/", $response->getBody()) == 1);
@@ -236,7 +236,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
     }
 
 public function testPostUploadsMetadataSpreadsheet() {
-        $doi = "100005";
+        $doi = "100142";
         // set upload status to the correct UserUploadingData
         $this->setUpDatasetUploadStatus($this->dbh, $doi ,"UserUploadingData");
 
@@ -256,8 +256,8 @@ public function testPostUploadsMetadataSpreadsheet() {
         $jar = new \GuzzleHttp\Cookie\CookieJar;
         $response = $webClient->request('POST', $this->url . 'site/login', [
             'cookies' => $jar,
-            form_params => [
-                "LoginForm[username]" => "user@gigadb.org",
+            'form_params' => [
+                "LoginForm[username]" => "test+336@gigasciencejournal.com",
                 "LoginForm[password]" => "gigadb",
                 "LoginForm[rememberMe]" => "2592000",
                 "yt0" => "Login",

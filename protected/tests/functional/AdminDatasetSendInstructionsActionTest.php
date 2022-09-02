@@ -51,7 +51,7 @@ class AdminDatasetSendInstructionsActionTest extends FunctionalTesting
 
     public function tearDown()
     {
-        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "100005","Published");
+        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "100142","Published");
         $this->tearDownFiledropAccount($this->dbh_fuw);
         $this->tearDownUserIdentity(
             $this->dbh_fuw,
@@ -67,7 +67,7 @@ class AdminDatasetSendInstructionsActionTest extends FunctionalTesting
 
     public function testAddInstructionsToCurationLogAndCreateAuthorisedIdentity() {
 
-        $testDOI = "100005";
+        $testDOI = "100142";
         $testInstructions = "foo bar is test insructions";
         // set upload status to the  UserUploadingData
         $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","UserUploadingData");
@@ -82,14 +82,14 @@ class AdminDatasetSendInstructionsActionTest extends FunctionalTesting
         $this->session->visit($this->url."/id/$testDOI/fid/$filedropAccountId");
 
         // Check the confirmation message
-        $this->assertTrue($this->session->getPage()->hasContent("Instructions sent to user@gigadb."));
+        $this->assertTrue($this->session->getPage()->hasContent("Instructions sent to test+336@gigasciencejournal.com."));
         
         // check there is a new curation_log entry
-        $this->session->visit("http://gigadb.dev/adminDataset/update/id/213");
+        $this->session->visit("http://gigadb.dev/adminDataset/update/id/200");
         $this->assertTrue($this->session->getPage()->hasContent($testInstructions));
         
         // check an identity is created in FUW database to authorize authors workflow
-        $this->assertUserIdentity($this->dbh_fuw, "user@gigadb.org");
+        $this->assertUserIdentity($this->dbh_fuw, "test+336@gigasciencejournal.com");
 
         $testDOI = null;
         $testInstructions = null;

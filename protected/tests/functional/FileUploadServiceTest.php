@@ -50,7 +50,7 @@ class FileUploadServiceTest extends CTestCase
         $this->dbhf->active=true;
 
         // setup DOI and file drop account for testing
-        $this->doi = "100004";
+        $this->doi = "100094";
         // create a filedrop acccount
         $this->account = $this->setUpFiledropAccount(
             $this->dbhf->getPdoInstance(), $this->doi
@@ -130,7 +130,8 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+//            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+            "requesterEmail" => \User::model()->findByAttributes(array('email'=>"admin@gigadb.org"))->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -176,7 +177,8 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+//            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+            "requesterEmail" => \User::model()->findByAttributes(array('email'=>"admin@gigadb.org"))->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -226,7 +228,8 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+//            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+            "requesterEmail" => \User::model()->findByAttributes(array('email'=>"admin@gigadb.org"))->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -274,7 +277,8 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+//            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+            "requesterEmail" => \User::model()->findByAttributes(array('email'=>"admin@gigadb.org"))->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -321,7 +325,8 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+//            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+            "requesterEmail" => \User::model()->findByAttributes(array('email'=>"admin@gigadb.org"))->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -377,7 +382,8 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+//            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+            "requesterEmail" => \User::model()->findByAttributes(array('email'=>"admin@gigadb.org"))->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -442,7 +448,8 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+//            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+            "requesterEmail" => \User::model()->findByAttributes(array('email'=>"admin@gigadb.org"))->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,
@@ -517,7 +524,8 @@ class FileUploadServiceTest extends CTestCase
                                   'dt' => new DateTime(),
                                 ]),
             "webClient" => $webClient,
-            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+//            "requesterEmail" => \User::model()->findByPk(344)->email, //admin user
+            "requesterEmail" => \User::model()->findByAttributes(array('email'=>"admin@gigadb.org"))->email, //admin user
             "identifier"=> $this->doi,
             "dataset" => new DatasetDAO(["identifier" => $this->doi]),
             "dryRunMode"=> false,

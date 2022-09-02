@@ -14,8 +14,8 @@ class ApiTest extends FunctionalTesting
 {
     use BrowserPageSteps;
 
-	public function testItShouldOutputDatasetOnly() {
-        $url = "http://gigadb.dev/api/dataset/doi/100002?result=dataset" ;
+    public function testItShouldOutputDatasetOnly() {
+        $url = "http://gigadb.dev/api/dataset/doi/100006?result=dataset" ;
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -24,11 +24,10 @@ class ApiTest extends FunctionalTesting
         $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", $feed->dataset->title);
         $this->assertNull($feed->samples->sample);
         $this->assertNull($feed->files->file);
-
-	}
+    }
 
     public function testItShouldOutputSamplesOnly() {
-        $url = "http://gigadb.dev/api/dataset/doi/100002?result=sample" ;
+        $url = "http://gigadb.dev/api/dataset/doi/100006?result=sample" ;
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -41,19 +40,19 @@ class ApiTest extends FunctionalTesting
     }
 
     public function testItShouldOutputFilesOnly() {
-        $url = "http://gigadb.dev/api/dataset/doi/100002?result=file" ;
+        $url = "http://gigadb.dev/api/dataset/doi/100006?result=file" ;
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
-        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->files->file[0]->name);
+        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->files->file[5]->name);
         $this->assertNull($feed->samples->sample);
         $this->assertNull($feed->dataset->title);
     }
 
     public function testItShouldOutputFullDataset() {
-        $url = "http://gigadb.dev/api/dataset/doi/100002?result=all" ;
+        $url = "http://gigadb.dev/api/dataset/doi/100006?result=all" ;
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -61,11 +60,11 @@ class ApiTest extends FunctionalTesting
         // Validate text presence on a page.
         $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", $feed->dataset->title);
         $this->assertEquals("9238", $feed->samples->sample[0]->species->tax_id);
-        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->files->file[0]->name);
+        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->files->file[5]->name);
     }
 
     public function testItShouldOutputFullDatasetByDefault() {
-        $url = "http://gigadb.dev/api/dataset/doi/100002" ;
+        $url = "http://gigadb.dev/api/dataset/doi/100006" ;
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -73,7 +72,7 @@ class ApiTest extends FunctionalTesting
         // Validate text presence on a page.
         $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", $feed->dataset->title);
         $this->assertEquals("9238", $feed->samples->sample[0]->species->tax_id);
-        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->files->file[0]->name);
+        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->files->file[5]->name);
     }
 
     public function testItShouldSearchWithKeywordAndOutputDatasetOnly() {
@@ -95,7 +94,7 @@ class ApiTest extends FunctionalTesting
         $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
-        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->gigadb_entry->files->file[0]->name);
+        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->gigadb_entry->files->file[5]->name);
         $this->assertNull($feed->gigadb_entry->samples->sample);
         $this->assertNull($feed->gigadb_entry->dataset->title);
     }
@@ -105,6 +104,7 @@ class ApiTest extends FunctionalTesting
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
+        print_r($feed);
 
         // Validate text presence on a page.
         $this->assertEquals("Pygoscelis_adeliae", $feed->gigadb_entry->samples->sample[0]->name);

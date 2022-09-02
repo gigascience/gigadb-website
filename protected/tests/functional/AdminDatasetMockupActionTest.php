@@ -39,13 +39,13 @@ class AdminDatasetMockupActionTest extends FunctionalTesting
             exit("Failed connecting to database fuw:". $e->getMessage());
         }
 
-        $this->url = "http://gigadb.dev/adminDataset/update/id/213" ;
+        $this->url = "http://gigadb.dev/adminDataset/update/id/200" ;
 
     }
 
     public function tearDown()
     {
-        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "100005","Published");
+        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "100142","Published");
         $this->tearDownFiledropAccount($this->dbh_fuw);
         $this->tearDownUserIdentity(
             $this->dbh_fuw,
@@ -73,7 +73,7 @@ class AdminDatasetMockupActionTest extends FunctionalTesting
     public function testCreateNewMockupAccess() {
 
         try{
-            $testDOI = "100005";
+            $testDOI = "100142";
             $reviewerEmail = "reviewer@gigadb.dev";
             $monthsOfValidity = 6 ;
             $newMockupPreMessage = "Unique ($reviewerEmail), time-limited ($monthsOfValidity months) mockup url ready";
@@ -113,7 +113,7 @@ class AdminDatasetMockupActionTest extends FunctionalTesting
 
     public function testNoMockupButtonIfWrongUploadStatus() {
 
-        $testDOI = "100005";
+        $testDOI = "100142";
 
         // set upload status to the  Submitted
         $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","Rejected");
@@ -131,7 +131,7 @@ class AdminDatasetMockupActionTest extends FunctionalTesting
 
     public function testCreateNewMockupInvalid() {
 
-        $testDOI = "100005";
+        $testDOI = "100142";
 
         // set upload status to the  Submitted
         $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","Rejected");
@@ -148,7 +148,7 @@ class AdminDatasetMockupActionTest extends FunctionalTesting
 
     public function testBackToUpdateFormIfPublished() {
 
-        $testDOI = "100005";
+        $testDOI = "100142";
 
         // set upload status to the  Submitted
         $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","Published");
@@ -159,7 +159,7 @@ class AdminDatasetMockupActionTest extends FunctionalTesting
             "admin@gigadb.org",
             "gigadb",
             "Admin");
-        $this->session->visit("http://gigadb.dev/adminDataset/mockup/id/213");
+        $this->session->visit("http://gigadb.dev/adminDataset/mockup/id/200");
         $this->assertEquals($this->url,$this->session->getCurrentUrl());
     }
 }

@@ -10,11 +10,110 @@
 class CuratorSteps extends \Codeception\Actor
 {
     protected $I;
+    protected $module;
 
 
     public function __construct(AcceptanceTester $I)
     {
         $this->I = $I;
+    }
+
+    /**
+     * @Given I have not signed in
+     */
+    public function iHaveNotSignedIn()
+    {
+        $this->I->amOnPage('site/logout');
+    }
+
+    /**
+     * @Then I should see a view file table
+     */
+    public function iShouldSeeAViewFileTable(\Behat\Gherkin\Node\TableNode $viewFileTable)
+    {
+        foreach ($viewFileTable->getRows() as $index => $row) {
+            // Check page contains expected View File table values
+            $this->I->see($row[0], 'th');
+            $this->I->see($row[1], 'td');
+        }
+    }
+
+    /**
+     * @Then I should see a file attribute table
+     */
+    public function iShouldSeeAFileAttributeTable(\Behat\Gherkin\Node\TableNode $fileAttributes)
+    {
+        foreach ($fileAttributes->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                $this->I->assertEquals($keys, ["Attribute Name", "Value", "Unit"], "File attributes table contain unexpected column names");
+                continue;
+            }
+            // Check Attribute Name table data cell
+            $this->I->see($row[0], 'td');
+            // Check Value table cell data cell
+            $this->I->see($row[1], 'td');
+            // Check unit table cell data cell
+            $this->I->see($row[2], 'td');
+        }
+    }
+
+    /**
+     * @Then I should see delete file attribute link button
+     *
+     * Used to check button in /adminFile/update/id/$doi pages
+     */
+    public function iShouldSeeDeleteFileAttributeLinkButton()
+    {
+        $actualButton = $this->I->grabTextFrom("//a[contains(@class, 'btn js-delete')]");
+        $this->I->assertEquals($actualButton, "Delete");
+    }
+
+    /**
+     * @Then I should not see delete file attribute link button
+     *
+     * Used to check button in /adminFile/update/id/$doi pages
+     */
+    public function iShouldNotSeeDeleteFileAttributeLinkButton()
+    {
+        $this->I->dontSeeLink('Delete');
+    }
+
+    /**
+     * @Then I should see edit file attribute link button
+     *
+     * Used to check button in /adminFile/update/id/$doi pages
+     */
+    public function iShouldSeeEditFileAttributeLinkButton()
+    {
+        $actualButton = $this->I->grabTextFrom("//a[contains(@class, 'btn btn-edit js-edit')]");
+        $this->I->assertEquals($actualButton, "Edit");
+    }
+
+    /**
+     * @Then I should see create new file attribute link button
+     *
+     * Used to check button in /adminFile/update/id/$doi pages
+     */
+    public function iShouldSeeCreateNewFileAttributeLinkButton()
+    {
+        $actualButton = $this->I->grabTextFrom("//a[contains(@class, 'btn btn-attr')]");
+        $this->I->assertEquals($actualButton, "New Attribute");
+    }
+
+    /**
+     * @Then I should see the files:
+     *4
+     */
+    public function iShouldSeeTheFiles(\Behat\Gherkin\Node\TableNode $files)
+    {
+        foreach ($files->getRows() as $index => $row) {
+            if ($index === 0) { // first row to define fields
+                $keys = $row;
+                continue;
+            }
+            $this->I->seeLink($row[0],$row[1]);
+        }
     }
 
     /**

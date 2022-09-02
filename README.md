@@ -295,6 +295,13 @@ and `54321` as the `Port` value. The `Maintenance database` is `gigadb`,
 For further investigation, check out the [docker-compose.yml](ops/deployment/docker-compose.yml) 
 to see how the services are assembled and what scripts they run.
 
+### Restore dev database
+
+To quickly restore the `dev` database, execute:
+```
+$ docker-compose run --rm test bash -c "pg_restore -h database -p 5432 -U gigadb -d gigadb --clean --no-owner -v sql/gigadb.pgdmp"
+```
+
 ## Life cycle
 
 To regenerate the web application configuration files, *e.g.* because a variable 

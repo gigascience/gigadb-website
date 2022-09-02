@@ -85,6 +85,7 @@ return CMap::mergeArray($pre_config, array(
     # application-level parameters that can be accessed
     # using Yii::app()->params['paramName']
     'params'=>array(
-
+        // For creating URLs to dataset files
+        'ftp_connection_url' => '${FTP_CONNECTION_URL}',
     ),
 ));

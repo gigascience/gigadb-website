@@ -148,7 +148,7 @@ Feature: form to update dataset details
     And I press the button "Create/Reset Private URL"
     And I wait "1" seconds
     Then I should see current url contains "/dataset/100039/token/"
-    And I should see "Genomic data of the Puerto Rican Parrot (<em>Amazona vittata</em>) from a locally funded project."
+    And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
   @ok @issue-1023
   Scenario: Open private url is working
@@ -158,7 +158,7 @@ Feature: form to update dataset details
     And I am on "/adminDataset/update/id/5"
     And I follow "Open Private URL"
     Then I should see current url contains "/dataset/100039/token/"
-    And I should see "Genomic data of the Puerto Rican Parrot (<em>Amazona vittata</em>) from a locally funded project."
+    And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
   @ok @issue-1023
   Scenario: Create AuthorReview dataset with token URL
@@ -178,16 +178,38 @@ Feature: form to update dataset details
 
   @ok @issue-1023
   Scenario: AuthorReview dataset with private URL buttons
-    When I am on "/adminDataset/update/id/2344"
-    Then I should see "AuthorReview"
+    When I am on "/adminDataset/admin/"
+    And I press the button "Create Dataset"
+    And I wait "1" seconds
+    And I should see "AuthorReview"
+    And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
+    And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    And I fill in the field of "name" "Dataset[title]" with "test dataset"
+    And I fill in the field of "name" "Dataset[identifier]" with "123789"
+    And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I am on "/adminDataset/update/id/2343"
+    And I should see "AuthorReview"
     And I should see "123789"
     And I should see "Create/Reset Private URL"
     And I should see "Open Private URL"
 
   @ok @issue-1023
   Scenario: Open Private URL from AuthorReview dataset
-    When I am on "/adminDataset/update/id/2344"
-    And  I follow "Open Private URL"
+    When I am on "/adminDataset/admin/"
+    And I press the button "Create Dataset"
+    And I wait "1" seconds
+    And I should see "AuthorReview"
+    And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
+    And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    And I fill in the field of "name" "Dataset[title]" with "test dataset"
+    And I fill in the field of "name" "Dataset[identifier]" with "123789"
+    And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
+    And I press the button "Create"
+    And I wait "1" seconds
+    And I am on "/adminDataset/update/id/2343"
+    And I follow "Open Private URL"
     And I wait "1" seconds
     Then I should see current url contains "/dataset/123789/token/"
     And I should see "https://doi.org/10.5524/123789"
