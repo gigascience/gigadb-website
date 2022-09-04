@@ -352,11 +352,14 @@ class File extends CActiveRecord
         ));
         // In case no MD5 FileAttribute can be found for $file_id
         if($fa === null) {
-            $fa = new FileAttributes;
+            $fa = new FileAttributes();
+            $fa->file_id = $this->id;
             $fa->attribute_id = self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM;
         }
         $fa->value = $md5_value;
-        $fa->save();
-        echo "Updated md5 file attribute id: ".$fa->id.PHP_EOL;
+        if( ! $fa->save() ) {
+            var_dump($fa->getErrors());
+        }
+        echo "Saved md5 file attribute with id: ".$fa->id.PHP_EOL;
     }
 }
