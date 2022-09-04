@@ -81,19 +81,7 @@ class AdminDatasetImageCest
      */
     public function tryToRemoveCustomImageThenUploadNewOne(FunctionalTester $I)
     {
-
-        // Ensure removal performed in previous test is reverted first
-        $I->haveInDatabase("image", [
-            "id" => 8,
-            "location" => "100006_Pygoscelis_adeliae.jpg",
-            "tag" => "Adelie penguin",
-            "url" => "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg",
-            "license" => "Public Domain, US Government",
-            "photographer" => "Michael Van Woert, 1998",
-            "source" => "&lt;a href&#x3D;&quot;http://www.photolib.noaa.gov/htmls/corp2479.htm&quot;&gt;NOAA Photo Library&lt;/a&gt;",
-        ]);
-        $I->updateInDatabase('dataset',['image_id' => 8], ['id' => 8]);
-
+        
         //Login as admin
         $I->amOnPage("/site/login");
         $I->submitForm('form.form-horizontal',[
