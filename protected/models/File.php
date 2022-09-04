@@ -355,8 +355,8 @@ class File extends CActiveRecord
             $fa = new FileAttributes;
             $fa->attribute_id = self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM;
         }
-        echo "Updating md5 file attribute id: ".$fa->id.PHP_EOL;
         $fa->value = $md5_value;
         $fa->save();
+        echo "Updated md5 file attribute id: ".$fa->id.PHP_EOL;
     }
 }
