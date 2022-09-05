@@ -17,3 +17,16 @@ Feature:
     | GIGA-D-22-00060   | A chromosome-level genome of the booklouse, Liposcelis brunnea provides insight into louse evolution and environmental stress adaptation | 6/7/2022 | Final Decision Reject |
     | GIGA-D-22-00030   | A novel ground truth multispectral image dataset with weight, anthocyanins and brix index measures of grape berries tested for its utility in machine learning pipelines | 6/7/2022 | Final Decision Pending |
 
+
+  @wip
+  Scenario: Download EM manuscript no results report
+    Given the "manuscripts" no results report is created and found in the sftp
+    And the database is clean
+    And the file ingester has run
+    And the EM "manuscripts" no results report spreadsheet is downloaded
+    When the queue job is pushed to "manuscripts" worker
+    Then I should see in "ingest" table
+    | file_name                         | report_type | fetch_status | parse_status | store_status | remote_file_status |
+    | Report-GIGA-em-manuscripts-latest-214-20220611007777.csv | 1 | 3 | 0 | 0 | 0 |
+    And Remove temporary "manuscripts" no results report spreadsheet
+    And I should see "manuscript" table is empty
