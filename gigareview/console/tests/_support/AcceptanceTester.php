@@ -86,6 +86,18 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then the EM :report_type no results report spreadsheet is downloaded
+     */
+    public function theEMNoResultsReportIsDownloaded($report_type)
+    {
+        $this->seeInDatabase('ingest',[
+            "file_name" =>"Report-GIGA-em-$report_type-latest-214-20220611007777.csv",
+            "report_type" => Ingest::REPORT_TYPES[$report_type],
+            "fetch_status" => Ingest::FETCH_STATUS_DISPATCHED,
+        ]);
+    }
+
+    /**
      * @When the queue job is pushed to :report_type worker
      */
     public function theQueueJobIsPushedToWorker($report_type)
@@ -116,4 +128,44 @@ class AcceptanceTester extends \Codeception\Actor
             $this->canSeeInDatabase($report_type, $row);
         }
     }
+
+    /**
+     * @Then the database is clean
+     */
+    public function theDatabaseIsClean()
+    {
+        $output = shell_exec("./yii_test migrate/fresh --interactive=0");
+        codecept_debug($output);
+    }
+
+    /**
+     * @Given the :report_type no results report is created and found in the sftp
+     */
+    public function theNoResultsReportIsCreatedAndFoundInTheSftp($report_type)
+    {
+        $noResultCsvReportDir = "console/tests/_data/";
+        $tempNoResultCsvReportName = "Report-GIGA-em-$report_type-latest-214-20220611007777.csv";
+        file_put_contents($noResultCsvReportDir.$tempNoResultCsvReportName, "No Results");
+
+        $reports = shell_exec("./yii_test fetch-reports/list -20220611");
+        codecept_debug($reports);
+        $this->assertContains("Report-GIGA-em-$report_type-latest", $reports);
+    }
+
+    /**
+     * @Then I should see :report_type table is empty
+     */
+    public function iShouldSeeTableIsEmpty($report_type)
+    {
+        $this->seeNumRecords(0, $report_type);
+    }
+
+    /**
+     * @Then Remove temporary :report_type no results report spreadsheet
+     */
+    public function removeTemporaryNoResultsReportSpreadsheet($report_type)
+    {
+        unlink("console/tests/_data/Report-GIGA-em-$report_type-latest-214-20220611007777.csv");
+    }
+
 }
