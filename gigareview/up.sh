@@ -57,9 +57,6 @@ docker-compose run --rm console ./database.sh
 # Running database migrations
 docker-compose run --rm console ./yii migrate --interactive=0
 
-# Creating db dump file for dev
-docker-compose run --rm console ./make_pgdmp_reviewdb_test.sh
-
 # Launching all the remaining services
 docker-compose up -d public api
 
