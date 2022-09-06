@@ -3,10 +3,12 @@ Feature:
   I want the automatically downloaded EM reports spreadsheet to be ingested automatically
   So that I can maintain an up-to-date database of peer reviews to be curated and to be shown on GigaReviews
 
-  @ok
+  Background:
+    Given the database is reset
+
+  @wip
   Scenario: EM manuscript report is downloaded and saved to manuscript table
     Given the file is on the sftp server
-    And the database is clean
     And the file ingester has run
     And the EM "manuscripts" report spreadsheet is downloaded
     When the queue job is pushed to "manuscripts" worker
@@ -18,10 +20,9 @@ Feature:
     | GIGA-D-22-00030   | A novel ground truth multispectral image dataset with weight, anthocyanins and brix index measures of grape berries tested for its utility in machine learning pipelines | 6/7/2022 | Final Decision Pending |
 
 
-  @ok
+  @wip
   Scenario: Download EM manuscript no results report
     Given the "manuscripts" no results report is created and found in the sftp
-    And the database is clean
     And the file ingester has run
     And the EM "manuscripts" no results report spreadsheet is downloaded
     When the queue job is pushed to "manuscripts" worker

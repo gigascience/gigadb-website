@@ -146,7 +146,7 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then the database is clean
+     * @Then the database is reset
      */
     public function theDatabaseIsClean()
     {
