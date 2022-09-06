@@ -6,7 +6,7 @@ Feature:
   Background:
     Given the database is reset
 
-  @wip
+  @ok
   Scenario: EM manuscript report is downloaded and saved to manuscript table
     Given the file is on the sftp server
     And the file ingester has run
@@ -20,7 +20,7 @@ Feature:
     | GIGA-D-22-00030   | A novel ground truth multispectral image dataset with weight, anthocyanins and brix index measures of grape berries tested for its utility in machine learning pipelines | 6/7/2022 | Final Decision Pending |
 
 
-  @wip
+  @ok
   Scenario: Download EM manuscript no results report
     Given the "manuscripts" no results report is created and found in the sftp
     And the file ingester has run
