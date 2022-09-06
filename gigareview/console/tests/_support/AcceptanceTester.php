@@ -107,17 +107,33 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then the EM :report_type report spreadsheet is parsed
+     * @Then the EM :report_type report spreadsheet is parsed and saved
      */
-    public function theEMReportSpreadsheetIsParsed($report_type)
+    public function theEMReportSpreadsheetIsParsedAndSaved($report_type)
     {
         $this->seeInDatabase('ingest',[
             "file_name" =>"Report-GIGA-em-$report_type-latest-214-20220607004243.csv",
             "report_type" => Ingest::REPORT_TYPES[$report_type],
             "parse_status" => Ingest::PARSE_STATUS_YES,
+            "store_status" => Ingest::STORE_STATUS_YES,
             "remote_file_status" => Ingest::REMOTE_FILES_STATUS_EXISTS,
         ]);
     }
+
+    /**
+     * @Then the EM :report_type report spreadsheet is not parsed nor saved
+     */
+    public function theEMReportSpreadsheetIsNotParsedNorSaved($report_type)
+    {
+        $this->seeInDatabase('ingest',[
+            "file_name" =>"Report-GIGA-em-$report_type-latest-214-20220611007777.csv",
+            "report_type" => Ingest::REPORT_TYPES[$report_type],
+            "parse_status" => Ingest::PARSE_STATUS_NO,
+            "store_status" => Ingest::STORE_STATUS_NO,
+            "remote_file_status" => Ingest::REMOTE_FILES_STATUS_NO_RESULTS,
+        ]);
+    }
+
 
     /**
      * @Then I should see in :report_type table
@@ -161,7 +177,7 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then Remove temporary :report_type no results report spreadsheet
+     * @Then remove temporary :report_type no results report spreadsheet
      */
     public function removeTemporaryNoResultsReportSpreadsheet($report_type)
     {
