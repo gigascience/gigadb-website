@@ -30,8 +30,6 @@ modules:
             password: '$TESTDB_PASSWORD'
             cleanup: false # don't reload dump between tests
             populate: false # don't load dump before all tests
-            initial_queries:
-              - "delete from ingest;"
 
 gherkin:
   contexts:
