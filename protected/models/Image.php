@@ -128,9 +128,12 @@ class Image extends CActiveRecord
     }
 
     /**
+     * Clear the url property and queue its old value in a new images_todelete record
+     *
      * @param object|null $db
      * @return bool
      * @throws CDbException
+     * @throws Exception
      */
     public function deleteFile(object $db = null): bool
     {
@@ -143,7 +146,8 @@ class Image extends CActiveRecord
                 ]);
                 if ($inserted) {
                     $this->url = null;
-                    $this->save();
+                    if ( ! $this->save() )
+                        throw new Exception($this->getError());
                 }
                 return true;
             }
@@ -151,7 +155,7 @@ class Image extends CActiveRecord
 
             return false;
         }
-        catch (CDbException $e) {
+        catch (Exception | CDbException $e) {
             Yii::log($e->getMessage(),"error");
             return false;
         }
