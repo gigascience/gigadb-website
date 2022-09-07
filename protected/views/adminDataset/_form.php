@@ -143,9 +143,9 @@ echo $form->hiddenField($model, "image_id");
                                         ));
                                 }
 
-                                $img_url = $model->image->url;
-                                $img_location = $model->image->location;
-                                echo CHtml::image($img_url, $img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
+                                if ( $model->image ) {
+                                    echo CHtml::image($model->image->url, $model->image->isUrlValid()?$model->image->tag:"", array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
+                                }
                                 echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
                                 ?>
                             </div>
