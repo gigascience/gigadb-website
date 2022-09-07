@@ -45,7 +45,6 @@ class ManuscriptTest extends \Codeception\Test\Unit
         ];
 
         $manuscriptInstance = Manuscript::createInstancesFromEmReport($sampleCsvReportData);
-        file_put_contents('test-1instance.txt', print_r($manuscriptInstance,true));
         $this->assertNotNull($manuscriptInstance);
         $this->assertIsArray($manuscriptInstance);
 
