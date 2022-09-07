@@ -13,36 +13,24 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     public string $effectiveDate ;
     public string $fetchDate ;
     public string $scope;
+    public string $reportFileName;
 
 
     public function execute($queue)
     {
         if ($this->scope === "manuscripts") {
-            $this->executeManuscriptJob($this->content);
+            $this->executeManuscriptJob($this->content, $this->reportFileName, $this->scope);
         }
-            //TODO: Will be implemented in ticket no. #1065
-//            $ingest = Ingest::findOne(["report_type" => "1", "parse_status" => null]);
-//            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_EXISTS;
-//            $ingest->parse_status = Ingest::PARSE_STATUS_YES;
-//            $ingest->update();
-
-//        }
-            //TODO: Will be implemented in ticket no. #1065
-//        elseif ($this->scope === "manuscripts" && $this->content === "No Results") {
-//            $ingest = Ingest::findOne(["report_type" => "1", "parse_status" => null]);
-//            $ingest->remote_file_status = Ingest::REMOTE_FILES_STATUS_NO_RESULTS;
-//            $ingest->parse_status = Ingest::PARSE_STATUS_NO;
-//            $ingest->update();
-//        }
     }
 
     /**
      * Create manuscript instances from the queue content and save then to the manuscript table
      *
      * @param string $content
+     * @param string $reportFileName
      * @return void
      */
-    public function executeManuscriptJob(string $content): void
+    public function executeManuscriptJob(string $content, string $reportFileName, string $scope): void
     {
         if ($content !== "No Results") {
             //Step 1: Put queue content to csv
@@ -55,8 +43,15 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
             //Step 3: Create manuscript instance
             $manuscriptInstances = Manuscript::createInstancesFromEmReport($reportData);
 
-            //Step 4: Save content to table
-            $this->storeManuscripts($manuscriptInstances);
+            //Step 4: Save content to  manuscript table and update status in ingest table
+            if ($this->storeManuscripts($manuscriptInstances)) {
+                Ingest::logStatusAfterSave($reportFileName, $scope);
+            } else {
+                Ingest::logStatusFailSave($reportFileName, $scope);
+            }
+
+        } else {
+            Ingest::logNoResultsReportStatus($reportFileName,$scope);
         }
     }
 
