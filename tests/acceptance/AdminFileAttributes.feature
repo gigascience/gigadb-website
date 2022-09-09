@@ -43,7 +43,7 @@ Feature: A curator can manage file attributes in admin file update page
       | File Attribute | 2013-7-15 |
     
   #TODO: Fix problem why this test can sometimes randomly fail  
-  @ok @javascript @published
+  @javascript @published
   Scenario: Delete a last modified attribute on admin file update page
     Given I have signed in as admin
     And I am on "/adminFile/update/id/13973"
