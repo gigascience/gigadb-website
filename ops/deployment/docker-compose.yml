@@ -238,6 +238,25 @@ services:
       - "fuw-public-api:172.16.238.10"
     command: bash -c "pwd"
 
+  codecept:
+    build:
+      context: .
+      dockerfile: ../packaging/Codecept-Dockerfile
+    environment:
+      YII_PATH: ${YII_PATH}
+      YII2_PATH: ${YII2_PATH}
+    volumes:
+      - ${APPLICATION}/:/project
+      - ${APPLICATION}/:/var/www
+    networks:
+      - web-tier
+      - db-tier
+    extra_hosts:
+      - "gigadb.dev:172.16.238.10"
+      - "gigadb.test:172.16.238.10"
+      - "fuw-admin-api:172.16.238.10"
+      - "fuw-public-api:172.16.238.10"
+
   csv-to-migrations:
     image: node:$NODE_VERSION-buster-slim
     working_dir: /var/www/ops/scripts
