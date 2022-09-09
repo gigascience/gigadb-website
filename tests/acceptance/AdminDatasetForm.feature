@@ -274,3 +274,12 @@ Feature: form to update dataset details
     And I should not see "Image Photographer"
     And I should see an image located in "/images/datasets/no_image.png"
     And I should not see "[x]"
+
+  @ok
+  Scenario: can save keywords on update
+    When I am on "/adminDataset/update/id/8"
+    And I click on keywords field
+    And I fill in keywords fields with "bam"
+    And I press the button "Save"
+    Then I am on "dataset/100006"
+    And I should see "bam"
