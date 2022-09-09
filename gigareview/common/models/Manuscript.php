@@ -48,6 +48,7 @@ class Manuscript extends \yii\db\ActiveRecord
             [['doi', 'created_at', 'updated_at'], 'default', 'value' => null],
             [['doi', 'created_at', 'updated_at'], 'integer'],
             [['publication_date', 'editorial_status_date'], 'safe'],
+            [['manuscript_number'], 'match', 'pattern' => '/^GIGA\-D\-[0-9]{2}\-[0-9]{5}/'],
             [['editors_note'], 'string'],
             [['manuscript_number', 'article_title', 'editorial_status'], 'string', 'max' => 255],
         ];
