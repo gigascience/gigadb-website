@@ -211,5 +211,6 @@ a_gigadb:
     - ./up.sh
     - cd $APPLICATION
     - ./tests/acceptance_runner ci-js
+  needs: ["sd_gigadb"]
   environment:
     name: dev
