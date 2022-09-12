@@ -21,7 +21,7 @@ Feature: main search function
     | Pygoscelis_adeliae.p... | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.pep.gz              | Protein sequence | 4.17 MiB|
     | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
 
-  @ok
+  @todo @broken
   Scenario: pagination show correct number of pages
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "genome"
@@ -36,7 +36,7 @@ Feature: main search function
     And I should see a link "2" to ""
     And I should see a link "3" to ""
 
-  @ok
+  @todo @broken
   Scenario: Can navigate to the next page
     Given I am on "/"
     And I fill in the field of "id" "keyword" with "genome"
