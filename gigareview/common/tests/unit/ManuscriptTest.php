@@ -27,7 +27,7 @@ class ManuscriptTest extends \Codeception\Test\Unit
         $this->assertNull($manuscript->updated_at);
         $manuscript->save();
         $this->assertNotNull($manuscript->created_at);
-        $manuscript->manuscript_number = "Test-GIGA-D-22-12345";
+        $manuscript->manuscript_number = "GIGA-D-22-12345";
         sleep(1);
         $manuscript->save();
         $this->assertGreaterThan($manuscript->created_at, $manuscript->updated_at);
@@ -54,7 +54,7 @@ class ManuscriptTest extends \Codeception\Test\Unit
             $this->assertArrayHasKey('article_title', $instance, "Key article_title is not found in Manuscript instance!");
             $this->assertArrayHasKey('editorial_status_date', $instance, "Key editorial_status_date is not found in Manuscript instance!");
             $this->assertArrayHasKey('editorial_status', $instance, "Key editorial_status is not found in Manuscript instance!");
-            $this->assertRegExp('/^GIGA\-D\-[0-9]{2}\-[0-9]{5}/', $sampleCsvReportData[0]['manuscript_number'], "Value ".$sampleCsvReportData[0]['manuscript_number']." pattern is not matched in Manuscript instance!");
+            $this->assertRegExp('/^GIGA\-D\-\d{2}\-\d{5}/', $sampleCsvReportData[0]['manuscript_number'], "Value ".$sampleCsvReportData[0]['manuscript_number']." pattern is not matched in Manuscript instance!");
             $this->assertEquals($sampleCsvReportData[0]['manuscript_number'], $instance->manuscript_number, "Value ".$sampleCsvReportData[0]['manuscript_number']." is not matched in Manuscript instance!");
             $this->assertEquals($sampleCsvReportData[0]['article_title'], $instance->article_title, "Value ".$sampleCsvReportData[0]['article_title']." is not matched in Manuscript instance!");
             $this->assertEquals($sampleCsvReportData[0]['editorial_status_date'], $instance->editorial_status_date, "Value ".$sampleCsvReportData[0]['editorial_status_date']." is not matched in Manuscript instance!");
@@ -89,7 +89,7 @@ class ManuscriptTest extends \Codeception\Test\Unit
             $this->assertArrayHasKey('article_title', $manuscriptInstance, "Key article_title is not found in Manuscript instance!");
             $this->assertArrayHasKey('editorial_status_date', $manuscriptInstance, "Key editorial_status_date is not found in Manuscript instance!");
             $this->assertArrayHasKey('editorial_status', $manuscriptInstance, "Key editorial_status is not found in Manuscript instance!");
-            $this->assertRegExp('/^GIGA\-D\-[0-9]{2}\-[0-9]{5}/', $manuscriptInstance->manuscript_number,"Value ".$sampleData['manuscript_number']." pattern is not matched in Manuscript instance!");
+            $this->assertRegExp('/^GIGA\-D\-\d{2}\-\d{5}/', $manuscriptInstance->manuscript_number,"Value ".$sampleData['manuscript_number']." pattern is not matched in Manuscript instance!");
             $this->assertEquals($sampleData['manuscript_number'], $manuscriptInstance->manuscript_number, "Value ".$sampleData['manuscript_number']." is not matched in Manuscript instance!");
             $this->assertEquals($sampleData['article_title'], $manuscriptInstance->article_title, "Value ".$sampleData['article_title']." is not matched in Manuscript instance!");
             $this->assertEquals($sampleData['editorial_status_date'], $manuscriptInstance->editorial_status_date, "Value ".$sampleData['editorial_status_date']." is not matched in Manuscript instance!");
