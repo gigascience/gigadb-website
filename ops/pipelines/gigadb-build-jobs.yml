@@ -242,7 +242,7 @@ build_staging:
   stage: staging build
   tags:
     - $GITLAB_USER_LOGIN
-  needs: ["legacy_tests","unit_func_tests","integration_tests"]
+  needs: ["base_images","legacy_tests","unit_func_tests","integration_tests"]
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
