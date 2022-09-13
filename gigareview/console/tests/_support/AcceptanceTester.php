@@ -28,14 +28,15 @@ class AcceptanceTester extends \Codeception\Actor
      */
 
     /**
-     * @Given a EM report is uploaded daily to a sftp server
+     * @Given EM reports are uploaded daily to a sftp server
      *
      * Note: only this step needs to talk to the real SFTP server, all subsequent steps will you test environment for speed and isolation
      */
-    public function aEMReportIsUploadedDailyToASftpServer()
+    public function EMReportsAreUploadedDailyToASftpServer()
     {
-        $testDate= (new \DateTime("yesterday"))->format("Ymd");
-        $reports = shell_exec("./yii fetch-reports/list -$testDate") ;
+//        $testDate= (new \DateTime("yesterday"))->format("Ymd");
+        $testDate = "20220607";
+        $reports = shell_exec("./yii_test fetch-reports/list -$testDate") ;
         codecept_debug($reports);
         $this->assertContains("Report-GIGA-em-manuscripts-latest",$reports);
         $this->assertContains("Report-GIGA-em-authors-latest",$reports);
