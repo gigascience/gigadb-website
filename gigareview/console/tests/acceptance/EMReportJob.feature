@@ -8,10 +8,10 @@ Feature:
 
   @ok
   Scenario: EM manuscript report is downloaded and saved to manuscript table
-    Given the file is on the sftp server
+    Given EM report files are on the sftp server
     And the file ingester has run
     And the EM "manuscripts" report spreadsheet is downloaded
-    When the queue job is pushed to "manuscripts" worker
+    When the "manuscripts" worker executes the queue job
     And the EM "manuscripts" report spreadsheet is parsed and saved
     Then I should see in "manuscript" table
     | manuscript_number | article_title | editorial_status_date | editorial_status |
@@ -25,7 +25,7 @@ Feature:
     Given the "manuscripts" no results report is created and found in the sftp
     And the file ingester has run
     And the EM "manuscripts" no results report spreadsheet is downloaded
-    When the queue job is pushed to "manuscripts" worker
+    When the "manuscripts" worker executes the queue job
     Then the EM "manuscripts" report spreadsheet is not parsed nor saved
     And I should see "manuscript" table is empty
     And remove temporary "manuscripts" no results report spreadsheet

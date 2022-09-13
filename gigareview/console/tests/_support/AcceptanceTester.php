@@ -46,9 +46,9 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @When the file is on the sftp server
+     * @When EM report files are on the sftp server
      */
-    public function theFileIsOnTheSftpServer()
+    public function EMReportFilesAreOnTheSftpServer()
     {
         $testDate="20220607";
         $reports = shell_exec("./yii_test fetch-reports/list -$testDate") ;
@@ -99,9 +99,9 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @When the queue job is pushed to :report_type worker
+     * @When the :report_type worker executes the queue job
      */
-    public function theQueueJobIsPushedToWorker($report_type)
+    public function theWorkerExecutesTheQueueJob($report_type)
     {
         $output = shell_exec("/usr/local/bin/php /app/yii_test $report_type-q/run --verbose");
         codecept_debug($output);
