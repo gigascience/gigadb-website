@@ -4,7 +4,7 @@ Feature: FetchReports
   So that the regular reviews spreadsheet in the report is downloaded and can be further processed
 
   Scenario: try FetchReports
-    Given a EM report is uploaded daily to a sftp server
+    Given EM reports are uploaded daily to a sftp server
     And the database is reset
     When the file is on the sftp server
     And the file ingester has run
