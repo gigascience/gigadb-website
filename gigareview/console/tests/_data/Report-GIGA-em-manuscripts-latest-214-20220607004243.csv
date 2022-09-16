@@ -2,3 +2,5 @@ Manuscript Number,Article Title,Editorial Status Date,Editorial Status
 GIGA-D-22-00054,"A machine learning framework for discovery and enrichment of metagenomics metadata from open access publications",6/7/2022,Final Decision Accept
 GIGA-D-22-00060,"A chromosome-level genome of the booklouse, Liposcelis brunnea provides insight into louse evolution and environmental stress adaptation",6/7/2022,Final Decision Reject
 GIGA-D-22-00030,"A novel ground truth multispectral image dataset with weight, anthocyanins and brix index measures of grape berries tested for its utility in machine learning pipelines",6/7/2022,Final Decision Pending
+GIGA-D-22-abcde,"Test manuscript review with invalid manuscript number format",6/7/2022,Final Decision Accept
+GIGA-D-22-00099,"Test manuscript review with invalid date format",6-7-2022,Final Decision Accept
