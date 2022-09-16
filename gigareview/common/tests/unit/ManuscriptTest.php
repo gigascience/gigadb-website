@@ -55,7 +55,7 @@ class ManuscriptTest extends \Codeception\Test\Unit
             $this->assertArrayHasKey('editorial_status_date', $instance, "Key editorial_status_date is not found in Manuscript instance!");
             $this->assertArrayHasKey('editorial_status', $instance, "Key editorial_status is not found in Manuscript instance!");
             $this->assertRegExp('/^GIGA\-D\-\d{2}\-\d{5}$/', $sampleCsvReportData[0]['manuscript_number'], "Value ".$sampleCsvReportData[0]['manuscript_number']." pattern is not matched in Manuscript csv file!");
-            $this->assertRegExp('/^Final\sDecision\s[a-zA-Z]+$/', $sampleCsvReportData[0]['editorial_status'], "Value ".$sampleCsvReportData[0]['editorial_status']." pattern is not matched in Manuscript csv file!");
+            $this->assertStringMatchesFormat('Final Decision Accept', $sampleCsvReportData[0]['editorial_status'], "Value ".$sampleCsvReportData[0]['editorial_status']." pattern is not matched in Manuscript csv file!");
             $this->assertEquals($sampleCsvReportData[0]['manuscript_number'], $instance->manuscript_number, "Value ".$sampleCsvReportData[0]['manuscript_number']." is not matched in Manuscript instance!");
             $this->assertEquals($sampleCsvReportData[0]['article_title'], $instance->article_title, "Value ".$sampleCsvReportData[0]['article_title']." is not matched in Manuscript instance!");
             $this->assertEquals($sampleCsvReportData[0]['editorial_status_date'], $instance->editorial_status_date, "Value ".$sampleCsvReportData[0]['editorial_status_date']." is not matched in Manuscript instance!");
@@ -76,7 +76,7 @@ class ManuscriptTest extends \Codeception\Test\Unit
                 'manuscript_number' => 'GIGA-D-22-00060',
                 'article_title' => 'A chromosome-level genome of the booklouse, Liposcelis brunnea provides insight into louse evolution and environmental stress adaptation',
                 'editorial_status_date' => '6/7/2022',
-                'editorial_status' => 'Final Decision Reject'
+                'editorial_status' => 'Final Decision Accept'
             ],
         ];
 
@@ -91,7 +91,7 @@ class ManuscriptTest extends \Codeception\Test\Unit
             $this->assertArrayHasKey('editorial_status_date', $manuscriptInstance, "Key editorial_status_date is not found in Manuscript instance!");
             $this->assertArrayHasKey('editorial_status', $manuscriptInstance, "Key editorial_status is not found in Manuscript instance!");
             $this->assertRegExp('/^GIGA\-D\-\d{2}\-\d{5}$/', $sampleData['manuscript_number'],"Value ".$sampleData['manuscript_number']." pattern is not matched in Manuscript csv file!");
-            $this->assertRegExp('/^Final\sDecision\s[a-zA-Z]+$/', $sampleData['editorial_status'], "Value ".$sampleData['editorial_status']." pattern is not matched in Manuscript csv file!");
+            $this->assertStringMatchesFormat('Final Decision Accept', $sampleData['editorial_status'], "Value ".$sampleData['editorial_status']." pattern is not matched in Manuscript csv file!");
             $this->assertEquals($sampleData['manuscript_number'], $manuscriptInstance->manuscript_number, "Value ".$sampleData['manuscript_number']." is not matched in Manuscript instance!");
             $this->assertEquals($sampleData['article_title'], $manuscriptInstance->article_title, "Value ".$sampleData['article_title']." is not matched in Manuscript instance!");
             $this->assertEquals($sampleData['editorial_status_date'], $manuscriptInstance->editorial_status_date, "Value ".$sampleData['editorial_status_date']." is not matched in Manuscript instance!");
