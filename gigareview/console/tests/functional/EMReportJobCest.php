@@ -52,7 +52,6 @@ class EMReportJobCest
         $sampleCsvReportName = "Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
 
         $sampleCsvReportData = EMReportJob::parseReport($csvReportDir.$sampleCsvReportName);
-        file_put_contents('test-row.txt', print_r($sampleCsvReportData,true));
 
         $I->runShellCommand("./yii_test fetch-reports/fetch", false);
         $I->canSeeInDatabase("ingest", ["file_name"=>"Report-GIGA-em-manuscripts-latest-214-20220607004243.csv", "report_type"=>Ingest::REPORT_TYPES['manuscripts'], "fetch_status"=>Ingest::FETCH_STATUS_DISPATCHED, "parse_status"=>null, "store_status"=>null, "remote_file_status"=>null]);
