@@ -40,6 +40,18 @@ class EMReportJobTest extends \Codeception\Test\Unit
                 'editorial_status_date' => '6/7/2022',
                 'editorial_status' => 'Final Decision Pending'
             ],
+            [
+                'manuscript_number' => 'GIGA-D-22-abcde',
+                'article_title' => 'Test manuscript review with invalid manuscript number format',
+                'editorial_status_date' => '6/7/2022',
+                'editorial_status' => 'Final Decision Accept'
+            ],
+            [
+                'manuscript_number' => 'GIGA-D-22-00099',
+                'article_title' => 'Test manuscript review with invalid date format',
+                'editorial_status_date' => '6-7-2022',
+                'editorial_status' => 'Final Decision Accept'
+            ]
         ];
 
         $sampleCsvReportPath = "console/tests/_data/Report-GIGA-em-manuscripts-latest-214-20220607004243.csv";
