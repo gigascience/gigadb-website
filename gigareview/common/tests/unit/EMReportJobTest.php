@@ -30,15 +30,9 @@ class EMReportJobTest extends \Codeception\Test\Unit
             ],
             [
                 'manuscript_number' => 'GIGA-D-22-00060',
-                'article_title' => 'A chromosome-level genome of the booklouse, Liposcelis brunnea provides insight into louse evolution and environmental stress adaptation',
+                'article_title' => 'Test manuscript review with invalid editorial status',
                 'editorial_status_date' => '6/7/2022',
                 'editorial_status' => 'Final Decision Reject'
-            ],
-            [
-                'manuscript_number' => 'GIGA-D-22-00030',
-                'article_title' => 'A novel ground truth multispectral image dataset with weight, anthocyanins and brix index measures of grape berries tested for its utility in machine learning pipelines',
-                'editorial_status_date' => '6/7/2022',
-                'editorial_status' => 'Final Decision Pending'
             ],
             [
                 'manuscript_number' => 'GIGA-D-22-abcde',
