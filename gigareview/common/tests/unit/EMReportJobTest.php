@@ -72,7 +72,7 @@ class EMReportJobTest extends \Codeception\Test\Unit
         $emReportJob = new EMReportJob();
         $storeStatus = $emReportJob->storeManuscripts($mockManuscript);
 
-        $this->assertTrue($storeStatus === true, "Record is not stored to manuscript table!");
+        $this->assertTrue($storeStatus, "Record is not stored to manuscript table!");
     }
 
     public function testCanStoreTwoInstancesToManuscriptTable()
@@ -91,7 +91,7 @@ class EMReportJobTest extends \Codeception\Test\Unit
                 'manuscript_number' => 'GIGA-D-22-00060',
                 'article_title' => 'A chromosome-level genome of the booklouse, Liposcelis brunnea provides insight into louse evolution and environmental stress adaptation',
                 'editorial_status_date' => '6/7/2022',
-                'editorial_status' => 'Final Decision Reject'
+                'editorial_status' => 'Final Decision Accept'
             ]
         );
 
@@ -101,18 +101,63 @@ class EMReportJobTest extends \Codeception\Test\Unit
         $emReportJob = new EMReportJob();
         $storeStatus = $emReportJob->storeManuscripts($mockManuscripts);
 
-        $this->assertTrue($storeStatus === true, "Records are not stored to manuscript table!");
+        $this->assertTrue($storeStatus, "Records are not stored to manuscript table!");
     }
 
-    public function testCannotStoreEmptyInstanceToManuscriptTable()
+    public function testCannotStoreInstanceWithInvalidManuscriptNumberToManuscriptTable()
     {
-        $mockManuscriptEmpty = $this->make(Manuscript::class);
+        $mockManuscriptOne = $this->make(Manuscript::class,
+            [
+                'manuscript_number' => 'GIGA-D-22-abcde',
+                'article_title' => 'Test manuscript review with invalid manuscript number',
+                'editorial_status_date' => '6/7/2022',
+                'editorial_status' => 'Final Decision Accept'
+            ]
+        );
 
-        $mockManuscripts[] = $mockManuscriptEmpty;
+        $mockManuscript[] = $mockManuscriptOne;
 
         $emReportJob = new EMReportJob();
-        $storeStatus = $emReportJob->storeManuscripts($mockManuscripts);
+        $storeStatus = $emReportJob->storeManuscripts($mockManuscript);
 
-        $this->assertFalse($storeStatus === false, "Records stored to manuscript table!");
+        $this->assertFalse($storeStatus, "Instance is stored to manuscript table!");
+    }
+
+    public function testCannotStoreInstanceWithInvalidDateFormatToManuscriptTable()
+    {
+        $mockManuscriptOne = $this->make(Manuscript::class,
+            [
+                'manuscript_number' => 'GIGA-D-22-00099',
+                'article_title' => 'Test manuscript review with invalid date format',
+                'editorial_status_date' => '6-7-2022',
+                'editorial_status' => 'Final Decision Accept'
+            ]
+        );
+
+        $mockManuscript[] = $mockManuscriptOne;
+
+        $emReportJob = new EMReportJob();
+        $storeStatus = $emReportJob->storeManuscripts($mockManuscript);
+
+        $this->assertFalse($storeStatus, "Instance is stored to manuscript table!");
+    }
+
+    public function testCannotStoreInstanceWithInvalidEditorialStatusToManuscriptTable()
+    {
+        $mockManuscriptOne = $this->make(Manuscript::class,
+            [
+                'manuscript_number' => 'GIGA-D-22-00060',
+                'article_title' => 'Test manuscript review with invalid editorial status',
+                'editorial_status_date' => '6/7/2022',
+                'editorial_status' => 'Final Decision Reject'
+            ]
+        );
+
+        $mockManuscript[] = $mockManuscriptOne;
+
+        $emReportJob = new EMReportJob();
+        $storeStatus = $emReportJob->storeManuscripts($mockManuscript);
+
+        $this->assertFalse($storeStatus, "Instance is stored to manuscript table!");
     }
 }
