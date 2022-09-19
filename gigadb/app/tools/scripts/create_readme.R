@@ -27,9 +27,10 @@ tryCatch({
     print("Unable to connect to Database.")
 })
 
-# Input DOIs
 doi_list <- c(102272,102273,102274,102275,102276,102277,102278,102279,102280,102281,102282,102283,102284,102285,102286,102287,102288,102289,102290,102291,102292,102293,102294,102295,102296,102297,102298,102299,102300,102301,102302,102303,102304,102305,102306,102307,102308,102309,102310,102311,102312,102313,102314)
+
 small_doi_list <- c(102272,102273)
+
 doi <- "100006"
 
 # [DOI]
@@ -41,10 +42,16 @@ get_doi <- function(doi) {
 get_title <- function(doi) {
   title_sql <- paste("SELECT title FROM dataset WHERE identifier = '", doi, "'", sep = "")
   title_df <- dbGetQuery(connec, title_sql)
-  title <- title_df$title
+  title <- paste("[Title] ", title_df$title, ".\n", sep="")
   return(title)
 }
-title <- paste("[Title] ", get_title(doi), "\n", sep = "")
+
+get_title_for_citation <- function(doi) {
+  title_sql <- paste("SELECT title FROM dataset WHERE identifier = '", doi, "'", sep = "")
+  title_df <- dbGetQuery(connec, title_sql)
+  title <- paste(title_df$title, ".", sep="")
+  return(title)
+}
 
 # [Release Date]
 get_reldate <- function(doi) {
@@ -70,14 +77,10 @@ get_citation <- function(doi) {
   # Create author list
   authors <- c()
   for (author_id in author_ids) {
-    #print(author_id)
     authors_sql <- paste("SELECT surname, first_name, middle_name FROM author WHERE id = '", author_id, "'", sep = "")
-    #print(authors_sql)
     authors_df <- dbGetQuery(connec, authors_sql)
-    #print.data.frame(authors_df)
     name <- paste(authors_df$surname, substr(authors_df$first_name, 0, 1), sep=", ")
     authors <- append(authors, name)
-    #author_list <- paste(author_list, name, sep = "; ")
   }
   author_list <- paste(authors, collapse = "; ")
   
@@ -91,8 +94,7 @@ get_citation <- function(doi) {
   #Get DOI URL
   doi_url <- paste("http://dx.doi.org/10.5524/", doi, sep = "")
   
-  citation <- paste("[Citation]", author_list, publication_year, get_title(doi), "GigaScience Database.", doi_url, "\n")
-  
+  citation <- paste("[Citation]", author_list, publication_year, get_title_for_citation(doi), "GigaScience Database.", doi_url, "\n")
 }
 
 # [Data Type]
@@ -122,7 +124,6 @@ get_datatype <- function(doi) {
 get_summary <- function(doi) {
   description_sql <- paste("SELECT description FROM dataset WHERE identifier = '", doi, "'", sep = "")
   description_df <- dbGetQuery(connec, description_sql)
-  #title <- paste("[Title] ", title_df$title, "\n\n", sep = "")
   description <- paste("[Dataset Summary]", description_df$description, "\n")
   return(description)
 }
@@ -176,9 +177,8 @@ get_end <- function() {
   return("[End]")
 }
 
-# Loop over list of DOIs
 for (doi in doi_list) {
-  out <- paste(get_doi(doi), title, get_reldate(doi), get_citation(doi), get_datatype(doi), get_summary(doi), get_location(doi), get_files(doi), get_license(), get_comments(), get_end(), sep = "\n")
-  out_filename <- paste("~/Desktop/readme_", doi, ".txt", sep = "")
+  out <- paste(get_doi(doi), get_title(doi), get_reldate(doi), get_citation(doi), get_datatype(doi), get_summary(doi), get_location(doi), get_files(doi), get_license(), get_comments(), get_end(), sep = "\n")
+  out_filename <- paste("~/Desktop/readmes/readme_", doi, ".txt", sep = "")
   cat(out, file = out_filename)
 }
