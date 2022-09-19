@@ -72,7 +72,7 @@ class EMReportJobTest extends \Codeception\Test\Unit
         $emReportJob = new EMReportJob();
         $storeStatus = $emReportJob->storeManuscripts($mockManuscript);
 
-        $this->assertTrue($storeStatus, "Record is not stored to manuscript table!");
+        $this->assertTrue($storeStatus, "Instance is not stored to the manuscript table!");
     }
 
     public function testCanStoreTwoInstancesToManuscriptTable()
@@ -101,7 +101,7 @@ class EMReportJobTest extends \Codeception\Test\Unit
         $emReportJob = new EMReportJob();
         $storeStatus = $emReportJob->storeManuscripts($mockManuscripts);
 
-        $this->assertTrue($storeStatus, "Records are not stored to manuscript table!");
+        $this->assertTrue($storeStatus, "Instances are not stored to the manuscript table!");
     }
 
     public function testCannotStoreInstanceWithInvalidManuscriptNumberToManuscriptTable()
@@ -120,7 +120,7 @@ class EMReportJobTest extends \Codeception\Test\Unit
         $emReportJob = new EMReportJob();
         $storeStatus = $emReportJob->storeManuscripts($mockManuscript);
 
-        $this->assertFalse($storeStatus, "Instance is stored to manuscript table!");
+        $this->assertFalse($storeStatus, "Instance with invalid manuscript number is stored to the manuscript table!");
     }
 
     public function testCannotStoreInstanceWithInvalidDateFormatToManuscriptTable()
@@ -139,7 +139,7 @@ class EMReportJobTest extends \Codeception\Test\Unit
         $emReportJob = new EMReportJob();
         $storeStatus = $emReportJob->storeManuscripts($mockManuscript);
 
-        $this->assertFalse($storeStatus, "Instance is stored to manuscript table!");
+        $this->assertFalse($storeStatus, "Instance with invalid date format is stored to the manuscript table!");
     }
 
     public function testCannotStoreInstanceWithInvalidEditorialStatusToManuscriptTable()
@@ -158,6 +158,6 @@ class EMReportJobTest extends \Codeception\Test\Unit
         $emReportJob = new EMReportJob();
         $storeStatus = $emReportJob->storeManuscripts($mockManuscript);
 
-        $this->assertFalse($storeStatus, "Instance is stored to manuscript table!");
+        $this->assertFalse($storeStatus, "Instance with invalid editorial status is stored to the manuscript table!");
     }
 }
