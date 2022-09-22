@@ -134,6 +134,14 @@
         group: centos
         mode: a+x
 
+    - name: Copy dataset upload tool shell post upload script
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/excel-spreadsheet-uploader/postUpload.sh"
+        dest: /home/centos/
+        owner: centos
+        group: centos
+        mode: a+x
+
     - name: Create env file for database  (for pg_client docker service)
       ansible.builtin.template:
         src: ../../../../gigadb/app/tools/excel-spreadsheet-uploader/env.j2

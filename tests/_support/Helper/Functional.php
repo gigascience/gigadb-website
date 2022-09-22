@@ -18,4 +18,21 @@ class Functional extends \Codeception\Module
         return md5($this->getModule('PhpBrowser')->_getResponseContent());
     }
 
+    /**
+     * Method to delete rows in the database based on criteria. Intended to be used in _after() methods.
+     *
+     * @param string $table
+     * @param array $criteria
+     * @return void
+     */
+    public function deleteRowByCriteria(string $table, array $criteria): void
+    {
+        try {
+            $this->getModule('Db')->_getDriver()->deleteQueryByCriteria($table,$criteria);
+        }
+        catch (\Exception $e) {
+            $this->debug("Couldn't delete record " . json_encode($criteria) ." from $table");
+        }
+    }
+
 }

@@ -32,7 +32,7 @@ class AdminDatasetController extends Controller
     {
         return array(
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                  'actions'=>array('create','admin','update','private', 'mint','checkDOIExist', 'assignFTPBox','sendInstructions','saveInstructions','mockup','moveFiles'),
+                  'actions'=>array('create','admin','update','private', 'removeImage','clearImageFile','mint','checkDOIExist', 'assignFTPBox','sendInstructions','saveInstructions','mockup','moveFiles'),
                   'roles'=>array('admin'),
             ),
             array('deny',  // deny all users
@@ -61,16 +61,10 @@ class AdminDatasetController extends Controller
 	 */
 	public function actionCreate()
     {
-        $dataset = new Dataset;
-//        $dataset->image = new Image;
+        $dataset = new Dataset; // needed for the CActiveForm field for dataset model
+        $dataset->image = new Image; // needed for the CActiveForm field for image model
 
         $datasetPageSettings = new DatasetPageSettings($dataset);
-
-        if(!empty($_POST['Image'])) { //User has uploaded an image
-            $dataset->image = new Image;
-        } else {
-            $dataset->image = Image::model()->findByAttributes(array('location' => 'no_image.png'));
-        }
 
         if (!empty($_POST['Dataset']) && !empty($_POST['Image'])) {
         	Yii::log("Processing submitted data", 'info');
@@ -85,31 +79,34 @@ class AdminDatasetController extends Controller
         		$dataset_post_data['fairnuse'] = null;
         	}
 
-            // $dataset->attributes=$dataset_post_data;
             $dataset->setAttributes($dataset_post_data, true);
-            Yii::log("dataset title: ".$dataset->title,'debug');
-            $dataset->image->attributes = $_POST['Image'];
-
             if( !$dataset->validate() ) {
-            	Yii::log("Dataset instance is not valid", 'info');
+                Yii::log("Dataset instance is not valid", 'info');
             }
 
             $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
-            if($datasetImage) {
-                Yii::log($datasetImage->getTempName(), "warning");
-                $imageDir = Yii::$app->params["environment"]."/images/datasets/";
-                Yii::$app->cloudStore->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()), [
-                    'visibility' => AdapterInterface::VISIBILITY_PUBLIC
-                ]);
 
-                $dataset->image->url = "https://assets.gigadb-cdn.net/$imageDir".$datasetImage->name;
+            if($datasetImage && !empty($_POST['Image'])) { //User has uploaded an image
+                Yii::log("action Create: image form data exists and a file has been uploaded, so creating a new image object","warning");
+                $dataset->image->attributes = $_POST['Image'];
+                Yii::log($datasetImage->getTempName(), "warning");
+                if( ! $dataset->image->write(Yii::$app->cloudStore, $dataset->getUuid(), $datasetImage) ) {
+                    Yii::log("Error writing file to storage for dataset ".$dataset->identifier, "error");
+                }
+            } else { //we use the generic image
+                $dataset->image = Image::model()->findByPk(Image::GENERIC_IMAGE_ID);
+                Yii::log("action Create: Using generic image","warning");
             }
 
+
            	if ( !$dataset->hasErrors() && $dataset->image->validate('update') ) {
-            	Yii::log("Image data associated to new dataset is valid and saved", 'info');
+            	Yii::log("Image data associated to new dataset is valid", "info");
                 // save image
                 if( $dataset->image->save() ) {
 	                $dataset->image_id = $dataset->image->id;
+                }
+                else {
+                    Yii::log(print_r($dataset->image->getErrors(), true), "error");
                 }
 
                 // save dataset
@@ -248,7 +245,7 @@ class AdminDatasetController extends Controller
             }
 
             $datasetAttr = $_POST['Dataset'];
-
+            Yii::log("**** new attributes: ".print_r($datasetAttr,true),"warning");
             $model->setAttributes($datasetAttr, true);
 
             if ($model->upload_status == 'Published') {
@@ -279,10 +276,6 @@ class AdminDatasetController extends Controller
                 }
             }
 
-            // Image information
-            $image = $model->image;
-            $image->attributes = $_POST['Image'];
-            $image->scenario = 'update';
 
             if ($model->publication_date == "") {
                 $model->publication_date = null;
@@ -294,17 +287,34 @@ class AdminDatasetController extends Controller
                 $model->fairnuse = null;
             }
 
+            // Image information
+
             $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
+
+            if (0 === $model->image->id && !empty($_POST['Image']) && $datasetImage) {
+                $model->image =  new Image();
+                Yii::log("Generic image was associated with dataset, so creating a new Image object","warning");
+            }
+            else {
+                $model->image->scenario = 'update';
+                Yii::log("Dataset is already associated with image :". $model->image->id,"warning");
+            }
+            $model->image->attributes = $_POST['Image'];
+
             if($datasetImage) {
-                Yii::log($datasetImage->getTempName(), "warning");
-                $imageDir = Yii::$app->params["environment"]."/images/datasets/";
-                Yii::$app->cloudStore->put($imageDir.$datasetImage->name, file_get_contents($datasetImage->getTempName()), [
-                    'visibility' => AdapterInterface::VISIBILITY_PUBLIC
-                ]);
-                $model->image->url = "https://assets.gigadb-cdn.net/$imageDir".$datasetImage->name;
+                if( ! $model->image->write(Yii::$app->cloudStore, $model->getUuid(), $datasetImage) ) {
+                    Yii::log("Error writing file to storage for dataset ".$model->identifier, "error");
+                }
+                // save image
+                if( $model->image->save() ) {
+                    $model->image_id = $model->image->id;
+                }
+                else {
+                    Yii::log(print_r($model->image->getErrors(), true), 'error');
+                }
             }
 
-            if ($model->save() && $image->save()) {
+            if ($model->save()) {
                 if (isset($_POST['datasettypes'])) {
                     $datasettypes = $_POST['datasettypes'];
                 }
@@ -407,6 +417,57 @@ class AdminDatasetController extends Controller
             $model->save();
             $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
         }
+    }
+
+
+    /**
+     * Remove image file url on the custom image record associated to a dataset
+     * @return void
+     */
+    public function actionClearImageFile()
+    {
+        $result['status'] = false;
+        if (isset($_POST['doi'])) {
+            $doi = $_POST['doi'];
+            $model = Dataset::model()->findByAttributes([ 'identifier' => $doi ]);
+
+            if ($model->image && $model->image->url && $model->image->deleteFile() )
+                $result['status'] = true;
+            else
+                Yii::log("Failed clearing image file for dataset $doi","error");
+        }
+
+        echo json_encode($result);
+        Yii::app()->end();
+    }
+
+    /**
+     * Remove custom image and associate generic image
+     */
+    public function actionRemoveImage()
+    {
+        $result['status'] = false;
+        if (isset($_POST['doi'])) {
+            $model = Dataset::model()->findByAttributes([ 'identifier' => $_POST['doi'] ]);
+            $oldImageID = $model->image_id;
+            $model->image_id = Image::GENERIC_IMAGE_ID;
+            if ($model->save()) {
+                try {
+                    if ( Image::model()->findByPk($oldImageID)->delete() )
+                        $result['status'] = true;
+                    else
+                        Yii::log("Failed deleting image record $oldImageID", "error");
+                } catch (CDbException $e) {
+                    Yii::log($e->getMessage(),"error");
+                }
+            }
+            else {
+                Yii::log("Failed associating generic image","error");
+            }
+        }
+
+        echo json_encode($result);
+        Yii::app()->end();
     }
 
     /**

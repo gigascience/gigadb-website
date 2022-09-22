@@ -1,6 +1,8 @@
 <?php
 Yii::import('application.extensions.CAdvancedArBehavior');
 
+use Ramsey\Uuid\Uuid;
+
 class Dataset extends CActiveRecord
 {
     /**
@@ -8,6 +10,8 @@ class Dataset extends CActiveRecord
      * @param string $className active record class name.
      * @return Dataset the static model class
      */
+
+    const NAMESPACE = "http://gigadb.org/namespaces/dataset";
 
     const DATASET_PRIVATE = 'Private';
 
@@ -603,5 +607,15 @@ class Dataset extends CActiveRecord
 
 
         return $xml->asXML();
+    }
+
+    /**
+     * Return a UUID based on the dataset id
+     *
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return Uuid::uuid5(Uuid::NAMESPACE_URL, self::NAMESPACE."/id/".$this->id);
     }
 }

@@ -111,71 +111,121 @@ echo $form->hiddenField($model, "image_id");
                     &nbsp;
                 </div>
                 <div class="span5">
-                    <?
-                        $img_url = $model->image->url;
-                        $img_location = $model->image->location;
-                        $no_img_url = 'https://assets.gigadb-cdn.net/images/datasets/no_image.png';
-                        if($img_url){
-                            echo CHtml::image($img_url, $img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto; margin-top:-40px'));
-                            echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto; margin-top:-40px'));
-                        } else {
-                            echo CHtml::image($no_img_url, $no_img_url, array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto; margin-top:-40px'));
-                            echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto; margin-top:-40px'));
+                    <div id="imageFields">
+                        <div class="control-group">
+                            <div style="position:relative">
 
-                        }
-                    ?>
-                    <div class="control-group">
-                        <label for="image_upload_image" class="control-label">Image Status</label>
-                        <?php if($img_url && $img_location !== "no_image.png" ){ ?>
-                        <div class="controls">
-                            <ul>
-                                <li style="list-style: none;"><?php echo CHtml::fileField('datasetImage',); ?></li>
-                                <li style="list-style: none;"><?php echo CHtml::htmlButton('Remove image', ['id' => 'removeButton', 'class' => 'btn btn-sm']); ?></li>
-                            </ul>
-                        </div>
-                        <?php } else { ?>
-                            <div class="controls">
-                                <?php echo CHtml::fileField('datasetImage'); ?>
+                                <?php
+
+                                if ($model->image && 0 !== $model->image_id && $model->image->isUrlValid() ) {
+
+                                    echo CHtml::ajaxButton('[x]',Yii::app()->createUrl('/adminDataset/clearImageFile/'),
+                                        array(
+                                            'type'=>'POST',
+                                            'data'=> array('doi'=>'js:$("#Dataset_identifier").val()'),
+                                            'dataType'=>'json',
+                                            'success'=>'js:function(output){
+                                                    console.log(output);
+                                                    if(output.status){
+                                                        $("#showImage").src = "";
+                                                        $("#showImage").css("display", "none");
+                                                        $("#clearFileUrl").css("display", "none");
+                                                        window.location.reload();
+                                                    }else {
+                                                        $("#removing").html("Failed clearing image file url");
+                                                    }
+                                                }',
+                                        ),array(
+                                            'id' =>'clearFileUrl',
+                                            'style'=>'position:absolute;top:-10px;right:-10px',
+                                            'title' => 'Delete file',
+                                            'confirm'=>'Are you sure? This will take effect immediately',
+                                        ));
+                                }
+
+                                if ( $model->image ) {
+                                    echo CHtml::image($model->image->url, $model->image->isUrlValid()?$model->image->tag:"", array('id'=>'showImage','style'=>'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
+                                }
+                                echo CHtml::image("", "", array('id' => 'imagePreview', 'style' => 'width:100px; display:block; margin-left:auto; margin-top:-40px;'));
+                                ?>
                             </div>
-                        <?php } ?>
-                    </div>
-                    <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'url',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
-                        <div class="controls">
-                            <?php echo $form->textField($model->image,'url',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
-                            <?php echo $form->error($model->image,'url'); ?>
-                        </div>
-                    </div>
+                            <label for="image_upload_image" class="control-label">Image Status</label>
+                            <?php if($model->image && 0 != $model->image->id ){ ?>
+                            <div class="controls">
+                                <ul>
+                                    <li style="list-style: none;"><?php echo CHtml::fileField('datasetImage'); ?></li>
+                                    <li style="list-style: none;"><?php echo CHtml::ajaxLink('Remove image record (file+metadata)',Yii::app()->createUrl('/adminDataset/removeImage/'),
+                                            array(
+                                                'type'=>'POST',
+                                                'data'=> array('doi'=>'js:$("#Dataset_identifier").val()'),
+                                                'dataType'=>'json',
+                                                'success'=>'js:function(output){
+                                                    console.log(output);
+                                                    if(output.status){
+                                                        $("#showImage").src = "https://assets.gigadb-cdn.net/images/datasets/no_image.png";
+                                                        $(".meta-fields").css("display", "none");
+                                                        $("#showImage").css("display", "none");
+                                                        $("#removeButton").css("display", "none");
+                                                        window.location.reload();
+                                                    }else {
+                                                        $("#removing").html("Failed removing image");
+                                                    }
+                                                }',
+                                            ),array('class'=>'btn btn-sm',
+                                                    'id' =>'removeButton',
+                                                    'style'=>'width:90%;font-size: smaller; font-weight: lighter;color: #fff ; background: #c12e2a',
+                                                    'title' => 'the dataset will be associated with the generic image record afterward',
+                                                    'confirm'=>'Are you sure? This will take effect immediately',
 
-                    <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'source',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
-                        <div class="controls">
-                            <?php echo $form->textField($model->image,'source',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
-                            <?php echo $form->error($model->image,'source'); ?>
+                                            ));
+     ?></li>
+                                    <li style="list-style: none;"><div id="removing"></div></li>
+                                </ul>
+                            </div>
+                            <?php } else { ?>
+                                <div class="controls">
+                                    <?php echo CHtml::fileField('datasetImage'); ?>
+                                </div>
+                            <?php } ?>
                         </div>
-                    </div>
-
-                    <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'tag',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
-                        <div class="controls">
-                            <?php echo $form->textField($model->image,'tag',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
-                            <?php echo $form->error($model->image,'tag'); ?>
+                        <div class="control-group">
+                            <?php echo $form->labelEx($model->image,'url',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
+                            <div class="controls">
+                                <?php echo $form->textField($model->image,'url',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
+                                <?php echo $form->error($model->image,'url'); ?>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'license',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
-                        <div class="controls">
-                            <?php echo $form->textField($model->image,'license',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
-                            <?php echo $form->error($model->image,'license'); ?>
+                        <div class="control-group">
+                            <?php echo $form->labelEx($model->image,'source',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
+                            <div class="controls">
+                                <?php echo $form->textField($model->image,'source',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
+                                <?php echo $form->error($model->image,'source'); ?>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="control-group">
-                        <?php echo $form->labelEx($model->image,'photographer',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
-                        <div class="controls">
-                            <?php echo $form->textField($model->image,'photographer',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
-                            <?php echo $form->error($model->image,'photographer'); ?>
+                        <div class="control-group">
+                            <?php echo $form->labelEx($model->image,'tag',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
+                            <div class="controls">
+                                <?php echo $form->textField($model->image,'tag',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
+                                <?php echo $form->error($model->image,'tag'); ?>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <?php echo $form->labelEx($model->image,'license',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
+                            <div class="controls">
+                                <?php echo $form->textField($model->image,'license',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
+                                <?php echo $form->error($model->image,'license'); ?>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <?php echo $form->labelEx($model->image,'photographer',array('class'=>'control-label meta-fields','style'=>'display:none')); ?>
+                            <div class="controls">
+                                <?php echo $form->textField($model->image,'photographer',array('class'=>'span4 meta-fields','style'=>'display:none;margin-top:-40px')); ?>
+                                <?php echo $form->error($model->image,'photographer'); ?>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -455,6 +505,7 @@ $(function(){
 });
 
 var image = document.getElementById("showImage");
+var image_id = document.getElementById("Dataset_image_id").value;
 
 //Show image meta data, preview uploaded image in update page
 if(image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
@@ -478,22 +529,30 @@ if(image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
 };
 
 //Show image meta data, preview uploaded image in create page
-if(image.src == 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
-    document.getElementById("datasetImage").addEventListener('change', (event) => {
-        if(event.target.files.length != 0) {
-            var src = URL.createObjectURL(event.target.files[0]);
-            var preview = document.getElementById("imagePreview");
-            preview.src = src;
-            preview.style.display = "block";
-            $('.meta-fields').css('display', '');
-            $('#showImage').css('display', 'none');
-        } else {
-            $('.meta-fields').css('display', 'none');
-            $('#showImage').css('display', 'block');
-            $('#imagePreview').css('display', 'none');
-        }
-    });
-};
+
+document.getElementById("datasetImage").addEventListener('change', (event) => {
+    if(event.target.files.length != 0) {
+        var src = URL.createObjectURL(event.target.files[0]);
+        var preview = document.getElementById("imagePreview");
+        preview.src = src;
+        preview.style.display = "block";
+        $('.meta-fields').css('display', '');
+        $('#showImage').css('display', 'none');
+    } else {
+        $('.meta-fields').css('display', 'none');
+        $('#showImage').css('display', 'block');
+        $('#imagePreview').css('display', 'none');
+    }
+});
+
+// if no image loaded and no image selected for upload, don't show metadata fields (unless there is a custom image associated with the dataset)
+if ('' == image.src && 0 == document.getElementById("datasetImage").files.length) {
+
+    if (0 == image_id || null == image_id) {
+        $('.meta-fields').css('display', 'none');
+    }
+}
+
 </script>
 
 

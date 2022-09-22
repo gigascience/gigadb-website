@@ -1,4 +1,9 @@
+
 <?php
+
+use \creocoder\flysystem\Filesystem;
+use League\Flysystem\AdapterInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * This is the model class for table "image".
@@ -17,6 +22,12 @@
  */
 class Image extends CActiveRecord
 {
+    /** @const int  database id of the generic image (no_image.png) */
+    const GENERIC_IMAGE_ID = 0 ;
+
+    /** @const string bucket name when storage is in the cloud  */
+    const BUCKET = "assets.gigadb-cdn.net";
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -79,5 +90,85 @@ class Image extends CActiveRecord
             'source' => 'Image Source',
             'image_upload' => 'Upload Image',
         );
+    }
+
+
+    /**
+     * write an image to the desired (Flysystem managed) storage mechanism and update url property with the location
+     *
+     * @param Filesystem $targetStorage
+     * @param string $enclosingDirectory
+     * @param CUploadedFile $uploadedFile
+     * @return bool
+     */
+    public function write(Filesystem $targetStorage, string $enclosingDirectory, CUploadedFile $uploadedFile): bool
+    {
+        $imagePath = Yii::$app->params["environment"]."/images/datasets/$enclosingDirectory/".$uploadedFile->getName();
+        if ( $targetStorage->put($imagePath, file_get_contents($uploadedFile->getTempName()), [
+            'visibility' => AdapterInterface::VISIBILITY_PUBLIC
+        ]) ) {
+            $this->location = $uploadedFile->getName();
+            $this->url = "https://".self::BUCKET."/$imagePath" ;
+            return true;
+        }
+        Yii::log("Error attempting to write image to the storage","error");
+        return false;
+    }
+
+    /**
+     * Method return true if image's url property is valid, false otherwise
+     *
+     * @return bool
+     */
+    public function isUrlValid(): bool
+    {
+        if ( CompatibilityHelper::str_starts_with($this->url,"https://" ) )
+            return true;
+        return false;
+    }
+
+    /**
+     * Clear the url property and queue its old value in a new images_todelete record
+     *
+     * @param object|null $db
+     * @return bool
+     * @throws CDbException
+     * @throws Exception
+     */
+    public function deleteFile(object $db = null): bool
+    {
+        $dbConnection = !empty($db) ? $db : $this->getDbConnection();
+        $oldUrl = $this->url;
+        try {
+            if( $this->isUrlValid() ) {
+                $inserted = $dbConnection->createCommand()->insert("images_todelete", [
+                    "url" => $oldUrl
+                ]);
+                if ($inserted) {
+                    $this->url = null;
+                    if ( ! $this->save() )
+                        throw new Exception($this->getError());
+                }
+                return true;
+            }
+            Yii::log("Failed deleting file for url $oldUrl". "error");
+
+            return false;
+        }
+        catch (Exception | CDbException $e) {
+            Yii::log($e->getMessage(),"error");
+            return false;
+        }
+    }
+
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            if( !empty($this->url))
+                return $this->deleteFile();
+            return true;
+        }
+        return false;
+
     }
 }

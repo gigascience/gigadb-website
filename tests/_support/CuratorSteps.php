@@ -138,5 +138,24 @@ class CuratorSteps extends \Codeception\Actor
         $this->I->waitForText("Home",10);
     }
 
+    /**
+     * @When I click on keywords field
+     */
+    public function iClickOnKeywordsField()
+    {
+//        $this->I->click('keywords');
+        $this->I->click(['css' => '.placeholder']);
+    }
+
+    /**
+     * @When I fill in keywords fields with :keyword
+     */
+    public function iFillInKeywordsFieldsWith($keyword)
+    {
+        $this->I->type($keyword);
+        $this->I->clickWithLeftButton(['css' => '#urltoredirect']);
+        $this->I->waitForText($keyword,5,".tag-editor-tag");
+    }
+
 
 }

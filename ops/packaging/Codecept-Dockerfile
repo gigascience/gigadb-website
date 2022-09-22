@@ -1,0 +1,5 @@
+FROM codeception/codeception:5.0.2
+
+RUN apt-get update -yq \
+    && apt-get install -y postgresql-client-13 \
+    && apt-get clean

@@ -23,7 +23,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                     <div class="media">
                         <div class="media-left">
                                         <?php if($model->image) {
-                $url = $model->getImageUrl();
+                $url = $model->image->isUrlValid() ? $model->image->url : "https://assets.gigadb-cdn.net/live/images/datasets/no_image.png";
 
                 ?>
             <a href="<?= $url ?>" >

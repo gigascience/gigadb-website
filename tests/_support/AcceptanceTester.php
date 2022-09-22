@@ -312,4 +312,13 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->seeInCurrentUrl($value);
     }
+
+    /**
+     * @When I confirm to :message
+     */
+    public function iConfirmTo($message)
+    {
+        $this->seeInPopup($message);
+        $this->acceptPopup();
+    }
 }
