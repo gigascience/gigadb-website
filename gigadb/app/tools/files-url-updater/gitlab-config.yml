@@ -24,6 +24,10 @@ FilesUrlsUpdaterTest:
       - gigadb/app/tools/files-url-updater/.secrets
       - .env
       - .secrets
+      - .project_var
+      - .project_var_raw1
+      - .project_var_raw2
+      - .project_vars.json
       - protected/config/db.json
     when: always
     expire_in: 1 week
