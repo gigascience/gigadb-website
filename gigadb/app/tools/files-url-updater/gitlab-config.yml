@@ -33,6 +33,7 @@ FilesUrlsUpdaterTest:
     expire_in: 1 week
   script:
     - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN)"| tee gigadb/app/tools/files-url-updater/.env
+    - cp .secrets gigadb/app/tools/files-url-updater/
     - cd gigadb/app/tools/files-url-updater
     - $LOCAL_COMPOSE run --rm config
     - $LOCAL_COMPOSE run --rm updater composer install
