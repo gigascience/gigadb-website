@@ -44,7 +44,7 @@ FilesUrlsUpdaterTest:
     - sleep 5
     - $LOCAL_COMPOSE ps
     - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/unit
-    - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/functional
+#    - $LOCAL_COMPOSE run --rm updater ./vendor/bin/codecept run tests/functional
   needs: ["container_scanning","phpcs-security-audit-sast"]
   environment:
     name: dev
