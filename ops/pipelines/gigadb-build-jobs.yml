@@ -255,6 +255,7 @@ build_live:
   stage: live build
   tags:
     - $GITLAB_USER_LOGIN
+  needs: ["a_gigadb"]
   environment:
     name: "live"
     deployment_tier: production
