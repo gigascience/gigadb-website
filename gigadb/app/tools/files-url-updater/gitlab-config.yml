@@ -24,6 +24,7 @@ FilesUrlsUpdaterTest:
       - gigadb/app/tools/files-url-updater/.secrets
       - .env
       - .secrets
+      - .ci_env
       - gigadb/app/tools/files-url-updater/.project_var
       - gigadb/app/tools/files-url-updater/.project_var_raw1
       - gigadb/app/tools/files-url-updater/.project_var_raw2
@@ -32,7 +33,7 @@ FilesUrlsUpdaterTest:
     when: always
     expire_in: 1 week
   script:
-    - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN)"| tee gigadb/app/tools/files-url-updater/.env
+    - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN|CI_PROJECT_URL)"| tee gigadb/app/tools/files-url-updater/.env
     - cd gigadb/app/tools/files-url-updater
     - $LOCAL_COMPOSE run --rm config
     - $LOCAL_COMPOSE run --rm updater composer install
@@ -57,7 +58,7 @@ FilesUrlsUpdaterBuildStaging:
     PROJECT_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
   script:
-    - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN)"| tee gigadb/app/tools/files-url-updater/.env
+    - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN|CI_PROJECT_URL)"| tee gigadb/app/tools/files-url-updater/.env
     - cd gigadb/app/tools/files-url-updater
     - $LOCAL_COMPOSE run --rm config #run generate_config to create configuration file with variables from staging
     - docker-compose -f docker-compose.yml run --rm updater composer install # install composer dependencies
@@ -118,8 +119,7 @@ FilesUrlsUpdaterBuildLive:
     PROJECT_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
   script:
-    - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN)"| tee gigadb/app/tools/files-url-updater/.env
-    - cp .secrets gigadb/app/tools/files-url-updater/
+    - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN|CI_PROJECT_URL)"| tee gigadb/app/tools/files-url-updater/.env
     - cd gigadb/app/tools/files-url-updater
     - $LOCAL_COMPOSE run --rm config #run generate_config to create configuration file with variables from staging
     - docker-compose -f docker-compose.yml run --rm updater composer install # install composer dependencies
