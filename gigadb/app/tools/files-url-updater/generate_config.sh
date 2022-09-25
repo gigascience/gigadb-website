@@ -49,7 +49,7 @@ if ! [ -s ./.secrets ];then
 
     # deal with special case we are in Upstream
     if [[ $CI_PROJECT_URL == "https://gitlab.com/gigascience/upstream/gigadb-website" ]];then
-      PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fupstream%2F$REPO_NAME/variables"
+      PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fupstream%2Fgigadb-website/variables"
     fi
 
     echo "Retrieving variables from ${PROJECT_VARIABLES_URL}"
