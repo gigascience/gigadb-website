@@ -19,6 +19,10 @@ GigaReviewTest:
     paths:
       - gigareview/.env
       - gigareview/.secrets
+      - gigareview/.group_var
+      - gigareview/.fork_var
+      - gigareview/.project_var
+      - gigareview/.misc_var
       - gigareview/environments
       - .env
       - .secrets
