@@ -5,6 +5,7 @@ GigaReviewTest:
     REVIEW_ENV: dev
     POSTGRES_MAJOR_VERSION: 12
     GROUP_VARIABLES_URL: "https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
+    FORK_VARIABLES_URL: "https://gitlab.com/api/v4/groups/3501869/variables"
     PROJECT_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
   stage: test
