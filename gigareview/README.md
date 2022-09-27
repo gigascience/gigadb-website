@@ -76,6 +76,10 @@ They should already bet set on the Gigascience's Forks subgroup and on Upstream'
 | POSTGRES_USER     | postgres | no     | All          |
 | POSTGRES_PASSWORD | *******  | yes    | All          |
 
+Additionally, the variable POSTGRES_MAJOR_VERSION is also in use,
+but it hard-coded in the ``gitlab-config.yml`` file,
+so there is no need for it to be in Gitlab variables.
+
 # More detailed information (not necessary to get started)
 
 ## How was the project bootstrapped (for info only)
