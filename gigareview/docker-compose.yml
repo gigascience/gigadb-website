@@ -2,10 +2,22 @@ version: '3.7'
 
 services:
 
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/app
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - public
+
   public:
     build: frontend
     ports:
       - "9010:9000"
+    expose:
+      - "9000"
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
