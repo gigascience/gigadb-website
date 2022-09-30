@@ -5,10 +5,12 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Manuscript $model */
 
-$this->title = 'Update Manuscript: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Manuscripts', 'url' => ['index']];
+$this->title = Yii::t('app', 'Update Manuscript: {name}', [
+    'name' => $model->id,
+]);
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Manuscripts'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="manuscript-update">
 
