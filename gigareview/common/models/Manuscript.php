@@ -15,6 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string|null $publication_date
  * @property string|null $editorial_status
  * @property string|null $editorial_status_date
+ * @property string|null $editors_note
  * @property int|null $created_at
  * @property int|null $updated_at
  */
@@ -46,7 +47,10 @@ class Manuscript extends \yii\db\ActiveRecord
         return [
             [['doi', 'created_at', 'updated_at'], 'default', 'value' => null],
             [['doi', 'created_at', 'updated_at'], 'integer'],
-            [['publication_date', 'editorial_status_date'], 'safe'],
+            [['publication_date', 'editorial_status_date'], 'date', 'format' => 'dd/MM/yyyy'],
+            [['manuscript_number'], 'match', 'pattern' => '/^GIGA\-D\-\d{2}\-\d{5}$/'],
+            [['editors_note'], 'string'],
+            [['editorial_status'], 'match', 'pattern' => '/^Final\sDecision\sAccept$/'],
             [['manuscript_number', 'article_title', 'editorial_status'], 'string', 'max' => 255],
         ];
     }
@@ -64,6 +68,7 @@ class Manuscript extends \yii\db\ActiveRecord
             'publication_date' => 'Publication Date',
             'editorial_status' => 'Editorial Status',
             'editorial_status_date' => 'Editorial Status Date',
+            'editors_note' => 'Editors Note',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

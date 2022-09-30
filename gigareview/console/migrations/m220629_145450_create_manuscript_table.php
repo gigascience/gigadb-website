@@ -20,6 +20,7 @@ class m220629_145450_create_manuscript_table extends Migration
             'publication_date' => $this->date(),
             'editorial_status' => $this->string(),
             'editorial_status_date' => $this->date(),
+            'editors_note' => $this->text(),
             'created_at' => $this->biginteger(),
             'updated_at' => $this->biginteger(),
         ]);
