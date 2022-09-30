@@ -5,12 +5,10 @@ services:
   web:
     image: nginx:latest
     ports:
-      - "80:80"
+      - "9180:80"
     volumes:
       - ./:/app
       - ./default.conf:/etc/nginx/conf.d/default.conf
-    links:
-      - public
 
   public:
     build: frontend
