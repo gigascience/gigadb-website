@@ -10,6 +10,20 @@ services:
       - ./:/app
       - ./default.conf:/etc/nginx/conf.d/default.conf
 
+  application:
+    build:
+      context: .
+      dockerfile: ./common/Dockerfile
+    ports:
+      - "9009:9000"
+    expose:
+      - "9000"
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ./:/app
+
   public:
     build: frontend
     ports:
