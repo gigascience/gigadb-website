@@ -114,6 +114,7 @@ ld_gigadb:
   stage: live deploy
   tags:
     - $GITLAB_USER_LOGIN
+  needs: ["base_images","build_live"]
   environment:
     name: "live"
     deployment_tier: production

@@ -51,7 +51,7 @@ As prerequisite, ensure the following variables are defined in Gitlab at project
 
 | Key | Value            | Masked  | Environments |
 | --- |------------------|---------|--------------|
-| REVIEW_DB_DATABASE | reviewdb         | staging | staging      |
+| REVIEW_DB_DATABASE | reviewdb         | no      | staging      |
 | REVIEW_DB_HOST | reviewdb         | no      | staging      |
 | REVIEW_DB_PASSWORD | (choose a value) | yes     | staging      |
 | REVIEW_DB_PORT | 5432             | no      | staging      |
@@ -61,6 +61,24 @@ As prerequisite, ensure the following variables are defined in Gitlab at project
 | REVIEW_DB_PASSWORD | (choose a value) | yes     | live         |
 | REVIEW_DB_PORT | 5432             | no      | live         |
 | REVIEW_DB_USERNAME | reviewdb         | no      | live         |
+
+
+## Other important variables
+
+Developers typically don't have to set those as they are not specific to a fork, 
+but they are needed by the Gigareview application.
+
+They should already bet set on the Gigascience's Forks subgroup and on Upstream's gigadb-website project.
+
+ Key               | Value    | Masked | Environments |
+|-------------------|----------|--------|--------------|
+| POSTGRES_DB       | postgres | no     | All          |
+| POSTGRES_USER     | postgres | no     | All          |
+| POSTGRES_PASSWORD | *******  | yes    | All          |
+
+Additionally, the variable POSTGRES_MAJOR_VERSION is also in use,
+but it hard-coded in the ``gitlab-config.yml`` file,
+so there is no need for it to be in Gitlab variables.
 
 # More detailed information (not necessary to get started)
 

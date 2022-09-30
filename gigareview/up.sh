@@ -51,6 +51,9 @@ docker-compose up -d beanstalkd sftp_test
 # Starting webdriver service for the headless browser used in acceptance testing
 docker-compose up -d webdriver
 
+# Make sure DB server is in good state
+docker-compose ps
+docker-compose logs reviewdb
 # (Re)Creating Postgresql database and user for our application
 docker-compose run --rm console ./database.sh
 

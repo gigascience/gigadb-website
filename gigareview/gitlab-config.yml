@@ -10,7 +10,7 @@ GigaReviewTest:
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
   stage: test
   script:
-    - env | grep -iE "(REVIEW_ENV|REPO_NAME|POSTGRES_MAJOR_VERSION|POSTGRES_DB|POSTGRES_USER|POSTGRES_PASSWORD|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN)"| tee gigareview/.env
+    - env | grep -iE "(REVIEW_ENV|REPO_NAME|POSTGRES_MAJOR_VERSION|POSTGRES_DB|POSTGRES_USER|POSTGRES_PASSWORD|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN|CI_PROJECT_URL)"| tee gigareview/.env
     - cd gigareview
     - ./up.sh
     - "./tests/unit_runner && ./tests/functional_runner && ./tests/acceptance_runner"
@@ -20,6 +20,10 @@ GigaReviewTest:
     paths:
       - gigareview/.env
       - gigareview/.secrets
+      - gigareview/.group_var
+      - gigareview/.fork_var
+      - gigareview/.project_var
+      - gigareview/.misc_var
       - gigareview/environments
       - .env
       - .secrets
@@ -38,7 +42,7 @@ GigaReviewBuildStaging:
     PROJECT_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
   script:
-    - env | grep -iE "(REVIEW_ENV|REPO_NAME|POSTGRES_MAJOR_VERSION|POSTGRES_DB|POSTGRES_USER|POSTGRES_PASSWORD|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN)"| tee gigareview/.env
+    - env | grep -iE "(REVIEW_ENV|REPO_NAME|POSTGRES_MAJOR_VERSION|POSTGRES_DB|POSTGRES_USER|POSTGRES_PASSWORD|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN|CI_PROJECT_URL)"| tee gigareview/.env
     - cd gigareview
     - ls -alrt
     - docker-compose -f docker-compose.production.yml run --rm config #run generate_config to create configuration file with variables from staging
