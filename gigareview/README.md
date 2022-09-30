@@ -2,13 +2,29 @@
 
 ## Getting started
 
-Go to the gigareview diredctory then start the gigareview application
+Go to the gigareview directory then start the gigareview application
 ```
 $ cd gigareview
 $ ./up.sh
 
 ```
 >**Note**: In the rest of this doc, we assume we are in the ``gigareview`` directory
+
+## Operating GigaReview
+
+Fetch latest EM reports from SFTP server:
+```
+$ docker-compose run --rm console ./yii fetch-reports/fetch
+```
+
+Process jobs in manuscript queue:
+```
+$ docker-compose run --rm console ./yii manuscripts-q/run
+```
+
+Go to http://gigareview.gigasciencejournal.com:9180/frontend/web/index.php?r=manuscript.
+If there were manuscripts that have been accepted for publication during the
+previous day then these will be displayed on the Manuscripts page.
 
 ## Run the tests
 
