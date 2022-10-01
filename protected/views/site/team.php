@@ -126,6 +126,24 @@
                         <tr>
                             <td>
                                 <div class="thumbnail">
+                                    <img src="../images/team/yannan.jpeg">
+                                    <div class="caption">
+                                        <h3>Yannan Fan<br><small>Assistant Data Editor</small></h3>
+                                        <p>Background with web application development and plant genome evolutional analysis, and now she joins the team as a data editor.</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="thumbnail">
+                                    <img src="../images/team/image-coming-soon.jpg">
+                                    <div class="caption">
+                                        <h3>Nafisa Qazi<br><small>Editorial Office Manager (GigaScience Press)</small></h3>
+                                        <p>Nafisa works on both GigaScience, and GigaByte Journals, overseeing the communications between journal editors and database curators, as well as managing the GigaByte accounts and production.</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="thumbnail">
                                     <img src="../images/team/laurie.png">
                                     <div class="caption">
                                         <h3>Laurie Goodman<br><small>Editor-in-Chief</small></h3>
