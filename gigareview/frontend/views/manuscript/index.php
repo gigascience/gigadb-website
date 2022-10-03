@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'publication_date',
             //'editorial_status',
             //'editorial_status_date',
+            //'editors_note:ntext',
             //'created_at',
             //'updated_at',
             [
