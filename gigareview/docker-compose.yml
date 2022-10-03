@@ -5,7 +5,7 @@ services:
   web:
     image: nginx:latest
     ports:
-      - "9180:80"
+      - "9170:80"
     volumes:
       - ./:/app
       - ./default.conf:/etc/nginx/conf.d/default.conf

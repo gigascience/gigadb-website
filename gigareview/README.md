@@ -22,7 +22,7 @@ Process jobs in manuscript queue:
 $ docker-compose run --rm console ./yii manuscripts-q/run
 ```
 
-Go to http://gigareview.gigasciencejournal.com:9180/frontend/web/index.php?r=manuscript.
+Go to http://gigadb.gigasciencejournal.com:9170/gigareview/index.php?r=manuscript.
 If there were manuscripts that have been accepted for publication during the
 previous day then these will be displayed on the Manuscripts page.
 
