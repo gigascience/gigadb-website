@@ -59,7 +59,7 @@
                             </td>
                             <td>
                                 <div class="thumbnail">
-                                    <img src="../images/team/qi.jpg">
+                                    <img src="../images/team/qi.png">
                                     <div class="caption">
                                         <h3>Qi Chen<br><small>Senior secretary</small></h3>
                                         <p></p>
@@ -68,7 +68,7 @@
                             </td>
                             <td>
                                 <div class="thumbnail">
-                                    <img src="../images/team/hans.jpg">
+                                    <img src="../images/team/hans.png">
                                     <div class="caption">
                                         <h3>Hans Zauner<br><small>Assistant Editor</small></h3>
                                         <p>Hans is Assistant Editor at GigaScience and also writes for Laborjournal. Many years ago, Hans did research in evolutionary and developmental biology. He clipped fish fins and handled a laser beam to shoot at reproductive organs of worms. Now in safe distance from any lab bench, he works on various science communication projects.</p>
@@ -115,7 +115,7 @@
                             </td>
                             <td>
                                 <div class="thumbnail">
-                                    <img src="../images/team/hongfang.jpg">
+                                    <img src="../images/team/hongfang.png">
                                     <div class="caption">
                                         <h3>HongFang Zhang<br><small>Junior Editor</small></h3>
                                         <p>Junior editor for GigaScience and GigaByte journals.</p>
@@ -124,6 +124,24 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>
+                                <div class="thumbnail">
+                                    <img src="../images/team/yannan.jpeg">
+                                    <div class="caption">
+                                        <h3>Yannan Fan<br><small>Assistant Data Editor</small></h3>
+                                        <p>Background with web application development and plant genome evolutional analysis, and now she joins the team as a data editor.</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="thumbnail">
+                                    <img src="../images/team/image-coming-soon.jpg">
+                                    <div class="caption">
+                                        <h3>Nafisa Qazi<br><small>Editorial Office Manager (GigaScience Press)</small></h3>
+                                        <p>Nafisa works on both GigaScience, and GigaByte Journals, overseeing the communications between journal editors and database curators, as well as managing the GigaByte accounts and production.</p>
+                                    </div>
+                                </div>
+                            </td>
                             <td>
                                 <div class="thumbnail">
                                     <img src="../images/team/laurie.png">
