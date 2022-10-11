@@ -37,7 +37,7 @@ base_images:
       - ops/scripts/node_modules
       - gigadb/app/client/web/node_modules
 
-b_gigadb:
+.b_gigadb:
   variables:
     PORTAINER_BCRYPT: ""
     REMOTE_DOCKER_HOSTNAME: ""
@@ -159,6 +159,7 @@ b_gigadb:
     - time docker-compose run --rm config
     - time docker-compose run --rm application composer install -a --no-dev
     - docker-compose run --rm less
+    - ./tests/cert_check
 #    - docker-compose run --rm fuw-config
 #    - docker-compose run --rm console bash -c "cd /app && composer install -a --no-dev"
 #    - docker-compose run --rm console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer install -a --no-dev'
@@ -234,7 +235,7 @@ b_gigadb:
     when: on_failure
     expire_in: 1 week
 
-build_staging:
+.build_staging:
   variables:
     GIGADB_ENV: "staging"
     YII_DEBUG: "true"

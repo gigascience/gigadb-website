@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+set -a
+source .env
+set +a
+
+# Check the cert expiry date
+echo "Prepare to run the cert check"
+./tests/cert_check
+echo "cert check complete!"
