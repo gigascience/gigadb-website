@@ -14,8 +14,6 @@ services:
     build:
       context: .
       dockerfile: ./common/Dockerfile
-    ports:
-      - "9009:9000"
     expose:
       - "9000"
     volumes:
@@ -26,8 +24,6 @@ services:
 
   public:
     build: frontend
-    ports:
-      - "9010:9000"
     expose:
       - "9000"
     volumes:
@@ -38,8 +34,6 @@ services:
 
   api:
     build: backend
-    ports:
-      - "9011:9000"
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
