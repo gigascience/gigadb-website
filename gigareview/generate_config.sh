@@ -80,6 +80,9 @@ SOURCE=${APP_SOURCE}/config-sources/AppAsset.php.dist
 TARGET=${APP_SOURCE}/frontend/assets/AppAsset.php
 cp $SOURCE $TARGET
 
+mkdir -p ${APP_SOURCE}/frontend/web/assets && chmod 777 ${APP_SOURCE}/frontend/web/assets
+mkdir -p ${APP_SOURCE}/backend/web/assets && chmod 777 ${APP_SOURCE}/backend/web/assets
+
 export TESTDB_HOST=$REVIEW_DB_HOST
 export TESTDB_PORT=$REVIEW_DB_PORT
 export TESTDB_DBNAME=${REVIEW_DB_DATABASE}_test
